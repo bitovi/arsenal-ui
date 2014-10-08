@@ -52,6 +52,7 @@ $ npm install && bower install
 On this project, we use a specific workflow for writing new features and fixing bugs. This workflow helps to make sure that all changes go through a code review process, and that the radar workflow and the development workflow are synchronized.
 
 The workflow involves three kinds of branches:
+
 * The **master** branch, which should always be stable and is the branch that gets pushed to other environments.
 * The **develop** branch, which has all the reviewed code changes in it.
 * Development (or **dev/**) branches, where developers make their changes.
@@ -59,6 +60,7 @@ The workflow involves three kinds of branches:
 No one except the designated project integrator should push to `develop` or `master`.
 
 Here is the entire workflow, from being assigned a radar to releasing the app:
+
 1. Set the radar you're working on to **Analyze/Fix** status.
 1. Start a development branch. You should only work on one feature or bug in each development branch.
 1. Work on the development branch, committing and pushing to origin when sensible.
