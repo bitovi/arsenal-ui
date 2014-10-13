@@ -1,2 +1,2 @@
 <h1>Dashboard Placeholder</h1>
-<p>The rest of the dashboard should go here.</p>
+<p>The rest of /{{appstate.page}} should go here.</p>

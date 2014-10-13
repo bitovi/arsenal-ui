@@ -22,8 +22,8 @@ appstate.bind('page', function(ev, newVal, oldVal) {
   newVal = newVal || appstate.constuctor.prototype.defaults.page;
 
   System.import('components/page-' + newVal + '/').then(function(pageComponent) {
-    var template = '<page-' + newVal + '></page-' + newVal + '>';
-    $('#page').html(can.stache(template)());
+    var template = '<page-' + newVal + ' appstate="{appstate}"></page-' + newVal + '>';
+    $('#page').html(can.stache(template)({appstate: appstate}));
   }).catch(function(ex) {
     // TODO: Do something more intelligent with miss cases, like defaulting to the Dashboard.
     $('#page').html('<p class="error">Invalid page!</p>');

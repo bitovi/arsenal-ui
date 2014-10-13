@@ -1,2 +1,2 @@
 <h1>Payment Bundle Placeholder</h1>
-<p>The rest of the payment bundle page should go here.</p>
+<p>The rest of /{{appstate.page}} should go here.</p>
