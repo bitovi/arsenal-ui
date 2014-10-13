@@ -123,6 +123,7 @@ $ git checkout -t origin/dev/12456789/shaving-the-yak # check out the existing b
 ```
 
 After committing to the shared branch (and before pushing to origin):
+
 ```sh
 $ git pull --rebase # pull changes your collaborator has made and play your changes on top of them
 ```
