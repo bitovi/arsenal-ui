@@ -36,7 +36,10 @@
 			"bootstrap": "bower_components/bootstrap/dist/js/bootstrap.js",
 			"bootstrap.css": "bower_components/bootstrap/dist/css/bootstrap.csscss",
 			"qunit": "bower_components/qunit/qunit/qunit.js",
-			"qunit.css": "bower_components/qunit/qunit/qunit.csscss"
+			"qunit.css": "bower_components/qunit/qunit/qunit.csscss",
+			"bootstrap-datetimepicker": "bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js",
+			"bootstrap-datetimepicker.css": "bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.csscss",
+			"moment": "bower_components/moment/min/moment.min.js"
 		},
 		meta: {
 			jquery: {

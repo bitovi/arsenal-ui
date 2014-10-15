@@ -1,5 +1,7 @@
 import Component from 'can/component/';
 
+import datePicker from 'components/date-picker/';
+
 import template from './template.stache!';
 import styles from './page-add-invoice.less!';
 

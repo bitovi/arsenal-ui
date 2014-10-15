@@ -64,19 +64,20 @@
 				    
 				     <label for="inputPassword3" class="col-lg-2 control-label">Received Date:</label>
 				    <div class="col-lg-4">
-				      <calendar-componentsnew name="receiveddate" placeholder=""></calendar-componentsnew>
+				      <date-picker name="receiveddate" placeholder=""></date-picker>
+				      
 				    </div>
 				  </div>
 				  
 				   <div class="form-group">
 				    <label for="inputPassword3" class="col-lg-2 control-label">Invoice Date:</label>
 				    <div class="col-lg-4">
-				     <calendar-componentsnew name="invoicedate" placeholder=""></calendar-componentsnew>
+				     <date-picker name="invoicedate" placeholder=""></date-picker>
 				    </div>
 				    
 				     <label for="inputPassword3" class="col-lg-2 control-label">Invoice Due Date:</label>
 				    <div class="col-lg-4">
-				     <calendar-componentsnew name="invoiceduedate" placeholder=""></calendar-componentsnew>
+				     <date-picker name="invoiceduedate" placeholder=""></date-picker>
 				    </div>
 				  </div>
 				  

@@ -1,0 +1,6 @@
+<div class="input-group date" id="{{name}}" data-date-format="DD/MM/YYYY">
+<input type="text" class="form-control datetimePickerCal" name="datetimePicker" placeholder="{{placeholder}}" />
+<span class="input-group-addon">
+<span class="glyphicon glyphicon-calendar"></span>
+</span>
+</div>
