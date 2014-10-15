@@ -3,7 +3,7 @@
     <span class="parameter-name">Store Type:</span>
     <select>
       {{#each storeTypes}}
-      <option {{data 'storeType'}}>{{name}}</option>
+      <option {{isSelected 'storeType' id}} {{data 'storeType'}}>{{name}}</option>
       {{/each}}
     </select>
   </li>
@@ -11,7 +11,7 @@
     <span class="parameter-name">Region:</span>
     <select>
       {{#each regions}}
-      <option {{data 'region'}}>{{name}}</option>
+      <option {{isSelected 'region' id}} {{data 'region'}}>{{name}}</option>
       {{/each}}
     </select>
   </li>
@@ -19,7 +19,7 @@
     <span class="parameter-name">Licensor:</span>
     <select>
       {{#each licensors}}
-      <option {{data 'licensor'}}>{{name}}</option>
+      <option {{isSelected 'licensor' id}} {{data 'licensor'}}>{{name}}</option>
       {{/each}}
     </select>
   </li>

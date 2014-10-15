@@ -17,6 +17,15 @@ var GlobalParameterBar = Component.extend({
     regions: [],
     licensors: []
   },
+  helpers: {
+    isSelected: function(parameterName, modelID) {
+      if(this.appstate.attr(parameterName) && this.appstate.attr(parameterName).id === modelID()) {
+        return 'selected="selected"';
+      } else {
+        return '';
+      }
+    }
+  },
   events: {
     '#region select change': function(el, ev) {
       var selectedRegion = $(el[0].selectedOptions).data('region');
