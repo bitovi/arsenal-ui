@@ -15,6 +15,14 @@
       {{/each}}
     </select>
   </li>
+  <li id="country">
+    <span class="parameter-name">Country:</span>
+    <select>
+      {{#each countries}}
+      <option {{isSelected 'country' id}} {{data 'country'}}>{{name}}</option>
+      {{/each}}
+    </select>
+  </li>
   <li id="licensor">
     <span class="parameter-name">Licensor:</span>
     <select>

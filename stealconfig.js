@@ -31,6 +31,7 @@
 		},
 		paths: {
 			"jquery": "bower_components/jquery/dist/jquery.js",
+			"lodash": "bower_components/lodash/dist/lodash.js",
 			"can/*": "bower_components/canjs/*.js",
       "bundles/*": "../bundles/*css",
 			"bootstrap": "bower_components/bootstrap/dist/js/bootstrap.js",

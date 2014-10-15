@@ -3,6 +3,7 @@ import Component from 'can/component/';
 // Models
 import StoreType from 'models/store-type/';
 import Region from 'models/region/';
+import Country from 'models/country/';
 import Licensor from 'models/licensor/';
 
 import template from './template.stache!';
@@ -15,6 +16,7 @@ var GlobalParameterBar = Component.extend({
     appstate: undefined, // this gets passed in
     storeTypes: [],
     regions: [],
+    countries: [],
     licensors: []
   },
   helpers: {
@@ -27,9 +29,26 @@ var GlobalParameterBar = Component.extend({
     }
   },
   events: {
+    '#store-type select change': function(el, ev) {
+      var selected = $(el[0].selectedOptions).data('storeType');
+      this.scope.appstate.attr('storeType', selected);
+    },
     '#region select change': function(el, ev) {
-      var selectedRegion = $(el[0].selectedOptions).data('region');
-      this.scope.appstate.attr('region', selectedRegion);
+      var selected = $(el[0].selectedOptions).data('region');
+      this.scope.appstate.attr('region', selected);
+
+      var self = this;
+      Country.findAll({region: selected.id}).then(function(countries) {
+        self.scope.countries.replace(countries);
+      });
+    },
+    '#countries select change': function(el, ev) {
+      var selected = $(el[0].selectedOptions).data('country');
+      this.scope.appstate.attr('country', selected);
+    },
+    '#licensor select change': function(el, ev) {
+      var selected = $(el[0].selectedOptions).data('licensor');
+      this.scope.appstate.attr('licensor', selected);
     }
   },
   init: function() {
