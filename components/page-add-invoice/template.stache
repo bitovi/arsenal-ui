@@ -1,8 +1,9 @@
+<form class="form-horizontal"  id="invoiceform" role="form">
 <div class="col-lg-12">
     <div class="col-lg-12 pageTitle">
 		<h3>Add Invoice</h3>
 	</div>
-	<form class="form-horizontal" role="form">
+
 		<div class="col-lg-12">
 			
 			 	<div class="form-group">
@@ -38,21 +39,24 @@
 				    
 				     <label for="inputPassword3" class="col-lg-2 control-label">Fx Rate:</label>
 				    <div class="col-lg-4">
-				      <input type="text" class="form-control" id="inputPassword3" placeholder="Fx Rate">
+				      <input type="text" class="form-control" name ="fxrate" id="fxrate" placeholder="Fx Rate">
+				      <img src="images/alert.png" class="form-control-feedback field-invalid" id = "fxrate-err" style="display:none;">
 				    </div>
 				  </div>
 				  
 				  <div class="form-group">
 				    <label for="inputEmail3" class="col-lg-2 control-label">Invoice Number: </label>
 				    <div class="col-lg-5">
-				      <input type="text" class="form-control" id="inputEmail3" placeholder="Invoice Number">
+				      <input type="text" class="form-control" id="invoicenumber" name="invoicenumber" placeholder="Invoice Number">
+				      <img src="images/alert.png" class="form-control-feedback field-invalid" id = "invoicenumber-err" style="display:none;">
 				    </div>
 				  </div>
 				  
 				   <div class="form-group">
 				    <label for="inputEmail3" class="col-lg-2 control-label">Licensor Notes: </label>
 				    <div class="col-lg-5">
-				      <textarea class="form-control"></textarea>
+				      <textarea class="form-control" id ="licnotes" name="licnotes"></textarea>
+				       <img src="images/alert.png" class="form-control-feedback field-invalid" id = "licnotes-err" style="display:none;">
 				    </div>
 				  </div>
 				  
@@ -105,7 +109,8 @@
 				   <div class="form-group">
 				    <label for="inputEmail3" class="col-lg-2 control-label">User Comments: </label>
 				    <div class="col-lg-5">
-				      <textarea class="form-control"></textarea>
+				      <textarea class="form-control" name="usercomments" id="usercomments"></textarea>
+				      <img src="images/alert.png" class="form-control-feedback field-invalid" id = "usercomments-err" style="display:none;">
 				    </div>
 				  </div>
 			
@@ -197,7 +202,7 @@
 			</div>
 	
 	
-</form>
+
 
 <div class="col-lg-12">
     <div class="col-lg-12" style="text-align:right;padding:15px;">
@@ -210,7 +215,8 @@
 		        </select>
         </div>
         <button type="button" class="btn btn-default buttonCancel">Cancel</button>
-        <button id="buttonholes" type="submit"  class="btn btn-primary buttonSubmit">Submit</button>
+        <button id="addInvSubmit" type="submit"  class="btn btn-primary buttonSubmit">Submit</button>
     </div>
  </div>
 </div>
+</form>
