@@ -9,10 +9,16 @@ import bootstrapValidator from 'bootstrapValidator';
 import template from './template.stache!';
 import styles from './page-add-invoice.less!';
 
+import InvoiceType from 'models/invoice-type/';
+
 var page = Component.extend({
   tag: 'page-add-invoice',
   template: template,
-  scope: {},
+  scope: {
+  	rowindex:1,
+  	invoiceTypes: []
+  //	amount: []
+  },
   events: {
     	"inserted": function(){
     		
@@ -90,8 +96,31 @@ var page = Component.extend({
                         return false;
 
        		 });
-         }
+         },
+         ".addRow click":function(){
+         	
+         	var self = this;
+         	//console.log(self.scope.attr("rowindex"));
+         	var rowindex = self.scope.attr("rowindex");
+         	self.scope.attr("rowindex", rowindex + 1)
+            
+
+			//rowindex++;
+			$("#breakrow0").after($("#breakrow0").clone().attr("id","breakrow" + rowindex));
+			$("#breakrow" + rowindex + " .removeRow").attr("id","removeRow" + rowindex);
+			
+			$("#removeRow" + rowindex).click(function(){
+		            $(this).closest("tr").remove();
+		     }); 
+		}
     
+   },
+   init: function(){
+   	 	Promise.all([
+		      InvoiceType.findAll()
+		     	]).then(function(values) {
+		      self.scope.invoiceTypes.replace(values[0]);
+		 });
    },
   helpers: {
 
