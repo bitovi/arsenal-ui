@@ -1,0 +1,189 @@
+.invoiceContainer{
+	border:2px solid #DAD7D7;
+	padding:10px;
+}
+#invoiceGrid .dataTables_scrollBody {
+	height: 300px !important;
+}
+#invoiceGrid .dataTables_wrapper{
+	overflow: auto;
+}
+#invoiceGrid .dataTables_scroll{
+	border:1px solid #ddd;
+	margin-top:10px;
+	min-width: 1200px;
+}
+.dataTables_scrollHead table {
+	/*background-color: #848484;*/
+	background: -moz-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+	background: -webkit-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+	background: -o-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+	font-size: small;
+	color: white;
+}
+.dataTables_scrollFoot table {
+	background: -moz-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+	background: -webkit-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+	background: -o-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+	font-size: small;
+	color: white;
+}
+
+table.dataTable thead th, table.dataTable thead td {
+	border: 1px solid #848484;
+}
+table.dataTable tfoot th, table.dataTable tfoot td {
+	border: 1px solid #848484;
+}
+table.dataTable tbody tr.country{
+	background-color: #E4E4E4;
+}
+table.dataTable tbody tr.licensor{
+	background-color: #F6F6F6;
+}
+table.dataTable.cell-border tbody td {
+	border-top: 1px solid #ffffff;
+	border-right: 1px solid #bdbdbd;
+}
+
+/*Add invoice start*/
+		.pageTitle{
+		  padding-right:5px;padding-bottom:25px;
+		}
+		
+		.lineDivider{
+			height:2px;background-color:#000000;margin-bottom:20px;
+		}
+		
+		.textLeftAlign{
+		text-align:left;
+		}
+		
+		.fileUploadContainer{
+		height:150px;
+		background-color:#D6D6D6;
+		}
+		
+		.fileUploadButtonPosition{
+			position:absolute;
+			right:5px;
+			bottom:5px;
+		}
+		
+		.breakDown{
+			margin-left:5px;
+			text-align:left;
+		}
+		
+		.breakDownBorder{
+		 border:1px solid #000000;
+		}
+		
+		.breakDownIconSize{
+			width:16px;
+			height:16px;
+		}
+		
+		.buttonCancel{
+			 margin-left:70px;
+		}
+		
+		.buttonSubmit{
+			margin-left:10px;
+		}
+/*Add invoice end*/
+
+
+/*invoice list based on new UX */
+
+.topFilterContainer{
+	margin: 15px 0px 15px 0px;
+}
+
+.gridControlsContainer{
+	 margin: 15px 35px 15px 35px;
+}
+
+.bottomContainer{
+	margin: 15px 35px 15px 35px;
+}
+
+
+.btn-custom-small.active {
+  color: rgba(255, 255, 255, 0.75);
+}
+.btn-custom-small {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #1581F4;
+  background-image: -moz-linear-gradient(top, #1581F4, #63ADF1);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#1581F4), to(#63ADF1));
+  background-image: -webkit-linear-gradient(top, #1581F4, #63ADF1);
+  background-image: -o-linear-gradient(top, #1581F4, #63ADF1);
+  background-image: linear-gradient(to bottom, #1581F4, #63ADF1);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff00aaff', GradientType=0);
+  border-color: #0A66CB #0A66CB #0A66CB;
+  //border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #1581F4;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border-radius:6px !important;
+  padding: 3px 22px !important;
+}
+.btn-custom-small:hover,
+.btn-custom-small:focus,
+.btn-custom-small:active,
+.btn-custom-small.active,
+.btn-custom-small.disabled,
+.btn-custom-small[disabled] {
+  color: #ffffff;
+  background-color: #00aaff;
+  *background-color: #0099e6;
+}
+.btn-custom-small:active,
+.btn-custom-small.active {
+  background-color: #0088cc ;
+}
+
+
+.btn-custom-big {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #1581F4;
+  background-image: -moz-linear-gradient(top, #1581F4, #63ADF1);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#1581F4), to(#63ADF1));
+  background-image: -webkit-linear-gradient(top, #1581F4, #63ADF1);
+  background-image: -o-linear-gradient(top, #1581F4, #63ADF1);
+  background-image: linear-gradient(to bottom, #1581F4, #63ADF1);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff00aaff', GradientType=0);
+  border-color: #0A66CB #0A66CB #0A66CB;
+  //border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #1581F4;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border-radius:6px !important;
+  padding: 6px 22px !important;
+}
+.btn-custom-big:hover,
+.btn-custom-big:focus,
+.btn-custom-big:active,
+.btn-custom-big.active,
+.btn-custom-big.disabled,
+.btn-custom-big[disabled] {
+  color: #ffffff;
+  background-color: #00aaff;
+  *background-color: #0099e6;
+}
+.btn-custom-big:active,
+.btn-custom-big.active {
+  background-color: #0088cc ;
+}
+
+ul.token-input-list-facebook {
+	width: 250px;
+}
+
