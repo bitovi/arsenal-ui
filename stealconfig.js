@@ -33,6 +33,7 @@
 			"jquery": "bower_components/jquery/dist/jquery.js",
 			"can/*": "bower_components/canjs/*.js",
       "bundles/*": "../bundles/*css",
+      		"lodash": "bower_components/lodash/dist/lodash.js",
 			"bootstrap": "bower_components/bootstrap/dist/js/bootstrap.js",
 			"bootstrap.css": "bower_components/bootstrap/dist/css/bootstrap.csscss",
 			"qunit": "bower_components/qunit/qunit/qunit.js",
@@ -41,7 +42,15 @@
 			"bootstrap-datetimepicker.css": "bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.csscss",
 			"moment": "bower_components/moment/min/moment.min.js",
 			"bootstrapValidator": "bower_components/bootstrapValidator/dist/js/bootstrapValidator.min.js",
-			"bootstrapValidator.css": "bower_components/bootstrapValidator/dist/css/bootstrapValidator.csscss"
+			"bootstrapValidator.css": "bower_components/bootstrapValidator/dist/css/bootstrapValidator.csscss",
+			"datatables": "bower_components/DataTables/media/js/jquery.dataTables.js",
+			"datatables.css": "bower_components/DataTables/media/css/jquery.dataTables.csscss",
+			"treetables": "bower_components/jquery-treetable/jquery.treetable.js",
+			"treetables.css": "bower_components/jquery-treetable/css/jquery.treetable.csscss",
+			"treetables_theme.css": "bower_components/jquery-treetable/css/jquery.treetable.theme.default.csscss",
+			"tokeninput": "bower_components/jquery-tokeninput/src/jquery.tokeninput.js",
+			"tokeninput.css": "bower_components/jquery-tokeninput/styles/token-input.csscss",
+			"tokeninput_theme.css": "bower_components/jquery-tokeninput/styles/token-input-facebook.csscss",
 		},
 		meta: {
 			jquery: {
