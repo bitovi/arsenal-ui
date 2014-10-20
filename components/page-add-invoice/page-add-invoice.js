@@ -10,6 +10,10 @@ import template from './template.stache!';
 import styles from './page-add-invoice.less!';
 
 import InvoiceType from 'models/invoice-type/';
+import ContentType from 'models/content-type/';
+import Licensor from 'models/licensor/';
+import Currency from 'models/currency/';
+import Country from 'models/country/';
 
 var page = Component.extend({
   tag: 'page-add-invoice',
@@ -17,6 +21,10 @@ var page = Component.extend({
   scope: {
   	rowindex:1,
   	invoiceTypes:[],
+  	licensor:[],
+  	currency:[],
+  	country:[],
+  	contentType:[],
   	totalAmount:[],
   	totAmount:function(){
   		//return this.attr("totalAmount");
@@ -154,14 +162,19 @@ var page = Component.extend({
    init: function(){
    	 	var self = this;
    	 	Promise.all([
-		      InvoiceType.findAll()
-		     	]).then(function(values) {
-		     		console.log("values are "+JSON.stringify(values[0]["invoiceTypes"]));
-		      		//self.scope.attr("invoiceTypes").replace(values[0][0]["invoiceTypes"][0]["_data"]);
+			      	InvoiceType.findAll(),
+			       	ContentType.findAll(),
+			        Licensor.findAll(),
+			        Country.findAll(),
+			        Currency.findAll()
+				]).then(function(values) {
+		     		 self.scope.attr("invoiceTypes").replace(values[0][0]["invoiceTypes"]);
+		     		 self.scope.attr("contentType").replace(values[0][0]["contentTypes"]);
+		     		 self.scope.attr("licensor").replace(values[0][0]["licensors"]);
+		     		 self.scope.attr("country").replace(values[0][0]["countries"]);
+		     		 self.scope.attr("currency").replace(values[0][0]["currencies"]);
 
-		      		self.scope.attr("invoiceTypes").replace(values[0][0]["invoiceTypes"]);
-
-		 });
+				});
 
     /*     var amountMap = can.Map({
          			amount:0,

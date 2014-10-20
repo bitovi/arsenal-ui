@@ -1,6 +1,6 @@
 import Model from 'can/model/';
 
-var InvoiceType = Model.extend({
+var Licensor = Model.extend({
   // using finaAll instead of resource because I don't want to be able to save.
  /* findAll: function(){
   	return $.ajax({
@@ -15,4 +15,4 @@ findAll: 'GET /licensor'
 
 /* able to get data in ajax done function*/
 
-export default InvoiceType;
+export default Licensor;
