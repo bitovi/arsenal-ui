@@ -156,7 +156,7 @@
 							        	</select>	
 						            </td>
 						            <td>
-						            	<input type="text" class="form-control" id="inputPassword3" placeholder="" value = "{{amount}}"">
+						            	<input type="text" class="form-control amountText classAmtTotal" id="amountText0" placeholder="" can-value="val0">
 						            </td>
 						            <td>
 						            	<select id="inputCountry"  class="form-control" >
@@ -181,7 +181,7 @@
 				   <div class="col-lg-12" style="height:20px;"></div>
 				   <div style="text-align:right">
 						   <div class="col-lg-9">Net Total:</div>
-						   <div class="col-lg-3">7,000</div>
+						   <div class="col-lg-3">{{totAmount}}</div>
 						 
 						 	<div class="col-lg-9">Tax:</div>
 						   <div class="col-lg-3"><input type="text"></div>

@@ -18,6 +18,10 @@ import appstate from 'models/appstate/';
 import index_template from 'index.stache!';
 import less_index from 'index.less!';
 
+// Fixtures?
+import _fixtures from 'models/fixtures/';
+
+
 appstate.bind('page', function(ev, newVal, oldVal) {
   newVal = newVal || appstate.constuctor.prototype.defaults.page;
 
@@ -27,7 +31,7 @@ appstate.bind('page', function(ev, newVal, oldVal) {
   }).catch(function(ex) {
     // TODO: Do something more intelligent with miss cases, like defaulting to the Dashboard.
     $('#page').html('<p class="error">Invalid page!</p>');
-    console.error('ex');
+    console.error(ex);
   });
 });
 

@@ -16,12 +16,27 @@ var page = Component.extend({
   template: template,
   scope: {
   	rowindex:1,
-  	invoiceTypes: []
+  	invoiceTypes:[],
+  	totalAmount:[],
+  	totAmount:function(){
+  		//return this.attr("totalAmount");
+  		this.totalAmount.attr().length;
+  		var total = 0;
+        for(var i =0; i < this.totalAmount.attr().length; i++){
+        		total += parseInt(this.totalAmount.attr(i));
+        }
+       return total;
+     //  console.log(this.attr("totalAmount")+"edqwdeqwe");
+  	},
+  	totalAms:2
+
   //	amount: []
   },
   events: {
     	"inserted": function(){
-    		
+           var self = this;  
+  
+    		//alert(amountMapInstance.totalAmount);
 	    		$('#invoiceform').bootstrapValidator({
 	    			container: 'tooltip',
 			        feedbackIcons: {
@@ -96,6 +111,22 @@ var page = Component.extend({
                         return false;
 
        		 });
+         /*Total amount code*/
+
+         /*$("input[id^='amountText']").blur(function(event){
+         	self.scope.totalAmount.push(event.currentTarget.value);
+         	console.log(event.currentTarget.value);
+         	alert("yes");
+         })*/
+
+		//console.log($("input[id^='amountText']").val());
+
+
+         },
+         ".classAmtTotal blur": function(event){
+         	this.scope.totalAmount.push(event[0].value);
+         	//this.scope.attr().totalAms = 30;
+         	console.log(this.scope.totalAmount.attr());
          },
          ".addRow click":function(){
          	
@@ -108,21 +139,55 @@ var page = Component.extend({
 			//rowindex++;
 			$("#breakrow0").after($("#breakrow0").clone().attr("id","breakrow" + rowindex));
 			$("#breakrow" + rowindex + " .removeRow").attr("id","removeRow" + rowindex);
+			$("#breakrow" + rowindex + " .amountText").attr("id","amountText" + rowindex);
+
 			
 			$("#removeRow" + rowindex).click(function(){
 		            $(this).closest("tr").remove();
 		     }); 
+			
+		
+
 		}
     
    },
    init: function(){
+   	 	var self = this;
    	 	Promise.all([
 		      InvoiceType.findAll()
 		     	]).then(function(values) {
-		      self.scope.invoiceTypes.replace(values[0]);
+		     		console.log("values are "+JSON.stringify(values[0]["invoiceTypes"]));
+		      		//self.scope.attr("invoiceTypes").replace(values[0][0]["invoiceTypes"][0]["_data"]);
+
+		      		self.scope.attr("invoiceTypes").replace(values[0][0]["invoiceTypes"]);
+
 		 });
-   },
+
+    /*     var amountMap = can.Map({
+         			amount:0,
+         			totalAmount:function(){
+						return this.attr('amount');
+         			}
+         });*/
+
+  /* var amountMap = new can.Map({
+   			amount0:null,
+   			totalamount:function(){
+					console.log(this.attr());
+			}
+					
+   })*/
+
+       
+
+       // console.log(amountMap);
+       // console.log(amountMapInst);
+	},
   helpers: {
+  	 totalAmountCal: function(){
+  	 	var tot = this.attr("totalAmount");
+  	 	return tot.length;
+  	 }
 
   }
 });
