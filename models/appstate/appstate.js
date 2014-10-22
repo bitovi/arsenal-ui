@@ -26,7 +26,10 @@ var State = Map.extend({
 });
 
 var stateDefaults = {
-  page: 'dashboard'
+  page: 'dashboard',
+  licensor: undefined,
+  region: undefined,
+  storeType: undefined
 };
 
 var appState = new State({

@@ -3,6 +3,8 @@ import Component from 'can/component/';
 import template from './template.stache!';
 import styles from './header-navigation.less!';
 
+import GlobalParameterBar from 'components/global-parameter-bar/';
+
 var headerNavigation = Component.extend({
   tag: 'header-navigation',
   template: template,

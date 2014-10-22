@@ -1,0 +1,34 @@
+<ul class="parameters">
+  <li id="store-type">
+    <span class="parameter-name">Store Type:</span>
+    <select>
+      {{#each storeTypes}}
+      <option {{isSelected 'storeType' id}} {{data 'storeType'}}>{{name}}</option>
+      {{/each}}
+    </select>
+  </li>
+  <li id="region">
+    <span class="parameter-name">Region:</span>
+    <select>
+      {{#each regions}}
+      <option {{isSelected 'region' id}} {{data 'region'}}>{{name}}</option>
+      {{/each}}
+    </select>
+  </li>
+  <li id="country">
+    <span class="parameter-name">Country:</span>
+    <select>
+      {{#each countries}}
+      <option {{isSelected 'country' id}} {{data 'country'}}>{{name}}</option>
+      {{/each}}
+    </select>
+  </li>
+  <li id="licensor">
+    <span class="parameter-name">Licensor:</span>
+    <select>
+      {{#each licensors}}
+      <option {{isSelected 'licensor' id}} {{data 'licensor'}}>{{name}}</option>
+      {{/each}}
+    </select>
+  </li>
+</ul>

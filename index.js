@@ -8,6 +8,9 @@ import css_bootstrap from 'bootstrap.css!';
 import can from 'can/';
 import can_stache from 'can/view/stache/';
 
+// Fixtures?
+import _fixtures from 'models/fixtures/';
+
 // Components
 import headerNavigation from 'components/header-navigation/';
 
@@ -34,3 +37,7 @@ appstate.bind('page', function(ev, newVal, oldVal) {
 $(document.body).append(index_template({appstate: appstate}));
 
 appstate.startRouting();
+
+// TODO: REMOVE BEFORE DEPLOYING
+// FOR DEV ONLY
+window.AppState = appstate;
