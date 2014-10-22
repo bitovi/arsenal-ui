@@ -9,7 +9,7 @@
 			 	<div class="form-group">
 				    <label for="inputEmail3" class="col-lg-1 control-label">Invoice Type: </label>
 				    <div class="col-lg-3">
-				      <select id="invoiceType"  class="form-control">
+				      <select id="invoiceType" class="form-control" can-value="invoicetypeSelect">
 						        {{#each invoiceTypes}}
 						        	<option value="{{id}}">{{value}}</option>
 						       	{{/each}}
@@ -22,32 +22,39 @@
 				    <label for="inputEmail3" class="col-lg-2 control-label">Licensor: </label>
 				    <div class="col-lg-5">
 				      <select id="licensor" class="form-control" >
-						        <option value="ARESA">ARESA</option>
-						        <option value="CELAS">CELAS</option>
+						       {{#each licensor}}
+						        	<option value="{{id}}">{{value}}</option>
+						       	{{/each}}
 					   </select>
 				    </div>
 				  </div>
 				  
 				  <div class="form-group">
-				    <label for="inputPassword3" class="col-lg-2 control-label">Currency:</label>
-				    <div class="col-lg-4">
-				      <select id="currency" class="form-control" >
-						        <option value="AUT">DKK</option>
-						        <option value="BEL">EUR</option>
-					   </select>
-				    </div>
-				    
-				     <label for="inputPassword3" class="col-lg-2 control-label">Fx Rate:</label>
-				    <div class="col-lg-4">
-				      <input type="text" class="form-control" name ="fxrate" id="fxrate" placeholder="Fx Rate">
-				      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "fxrate-err" style="display:none;">
-				    </div>
+				     <div class="row">
+						 <div class="col-lg-6">   
+							    <label for="inputPassword3" class="col-lg-4 control-label">Currency:</label>
+							    <div class="col-lg-8">
+							      <select id="currency" class="form-control" >
+									       {{#each currency}}
+									       	 <option value="{{id}}">{{value}}</option>
+									        {{/each}}
+								   </select>
+							    </div>
+						    </div>
+						    <div class="col-lg-6 fxrate">
+							    <label for="inputPassword3" class="col-lg-4 control-label">Fx Rate:</label>
+							    <div class="col-lg-8">
+							      <input type="text" class="form-control" name ="fxrate" id="fxrate" placeholder="">
+							      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "fxrate-err" style="display:none;">
+							    </div>
+						    </div>
+						</div>   
 				  </div>
 				  
 				  <div class="form-group">
 				    <label for="inputEmail3" class="col-lg-2 control-label">Invoice Number: </label>
 				    <div class="col-lg-5">
-				      <input type="text" class="form-control" id="invoicenumber" name="invoicenumber" placeholder="Invoice Number">
+				      <input type="text" class="form-control" id="invoicenumber" name="invoicenumber" placeholder="" maxlength="50">
 				      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "invoicenumber-err" style="display:none;">
 				    </div>
 				  </div>
@@ -55,40 +62,49 @@
 				   <div class="form-group">
 				    <label for="inputEmail3" class="col-lg-2 control-label">Licensor Notes: </label>
 				    <div class="col-lg-5">
-				      <textarea class="form-control" id ="licnotes" name="licnotes"></textarea>
+				      <textarea class="form-control" id ="licnotes" name="licnotes" maxlength="1024"></textarea>
 				       <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "licnotes-err" style="display:none;">
 				    </div>
 				  </div>
 				  
 				   <div class="form-group">
-				    <label for="inputPassword3" class="col-lg-2 control-label">Create Date:</label>
-				    <div class="col-lg-4" style="text-align:left;">
-				       06/10/2014
-				    </div>
-				    
-				     <label for="inputPassword3" class="col-lg-2 control-label">Received Date:</label>
-				    <div class="col-lg-4">
-				      <date-picker name="receiveddate" placeholder=""></date-picker>
-				      
-				    </div>
+				   		<div class="row">
+				   			<div class="col-lg-6">
+							    <label for="inputPassword3" class="col-lg-4 control-label">Create Date:</label>
+							    <div class="col-lg-8" style="text-align:left;">
+							       {{currentDate}}
+							    </div>
+							 </div>
+							 <div class="col-lg-6 recdate">   
+						    	<label for="inputPassword3" class="col-lg-4 control-label">Received Date:</label>
+								    <div class="col-lg-8">
+								      <date-picker name="receiveddate" placeholder=""></date-picker>
+								     </div>
+							  </div>   
+						 </div>    
 				  </div>
 				  
 				   <div class="form-group">
-				    <label for="inputPassword3" class="col-lg-2 control-label">Invoice Date:</label>
-				    <div class="col-lg-4">
-				     <date-picker name="invoicedate" placeholder=""></date-picker>
-				    </div>
-				    
-				     <label for="inputPassword3" class="col-lg-2 control-label">Invoice Due Date:</label>
-				    <div class="col-lg-4">
-				     <date-picker name="invoiceduedate" placeholder=""></date-picker>
-				    </div>
+				    	<div class="row">
+				    		<div class="col-lg-6 invdate">
+							    <label for="inputPassword3" class="col-lg-4 control-label">Invoice Date:</label>
+							    <div class="col-lg-8">
+							     <date-picker name="invoicedate" placeholder=""></date-picker>
+							    </div>
+						    </div>
+						    <div class="col-lg-6 invduedate">
+							     <label for="inputPassword3" class="col-lg-4 control-label">Invoice Due Date:</label>
+							    <div class="col-lg-8">
+							     <date-picker name="invoiceduedate" placeholder=""></date-picker>
+							    </div>
+						    </div>
+				  		</div>
 				  </div>
 				  
 				  <div class="form-group">
 					<label for="inputEmail3" class="col-lg-2 col-lg-offset-6 control-label">Calculated Due Date: </label>
 				    <div class="col-lg-2 textLeftAlign">
-				      07/10/2014
+				      {{calculatedDueDate}}
 				    </div>
 				  </div>
 				  
@@ -109,7 +125,7 @@
 				   <div class="form-group">
 				    <label for="inputEmail3" class="col-lg-2 control-label">User Comments: </label>
 				    <div class="col-lg-5">
-				      <textarea class="form-control" name="usercomments" id="usercomments"></textarea>
+				      <textarea class="form-control" name="usercomments" id="usercomments" maxlength="1024"></textarea>
 				      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "usercomments-err" style="display:none;">
 				    </div>
 				  </div>
@@ -131,16 +147,19 @@
 						            <th>&nbsp;&nbsp;</th>
 						            <th>Amount</th>
 						            <th>Country</th>
-						            <th>CCID Document</th>
-						            <th>&nbsp;</th>
+						            <th>{{isAdhoc}}</th>
+						            <th><img src="resources/images/button_plus_blue.png" class="breakDownIconSize addRow" id="addRow"></th>
 						        </tr>
 						    </thead>
 						    <tbody>
-						        <tr id="breakrow0">
+						     
+						         <tr id="breakrow0">
 						            <td> 
+						            	
 						            	<select id="inputCountry-{{rowindex}}"  class="form-control" >
-							        			<option value="AUT">Music</option>
-							        			<option value="BEL">TV/Movie</option>
+							        			{{#each contentType}}
+						        					<option value="{{id}}">{{value}}</option>
+						       					{{/each}}
 						        		</select>
 						        	</td>
 						            <td>
@@ -156,20 +175,60 @@
 							        	</select>	
 						            </td>
 						            <td>
-						            	<input type="text" class="form-control amountText classAmtTotal" id="amountText0" placeholder="" can-value="val0">
+						            	<input type="text" class="form-control amountText classAmtTotal" name=amount[] id="amountText0" placeholder="" can-value="val0">
 						            </td>
 						            <td>
 						            	<select id="inputCountry"  class="form-control" >
-									        <option value="AUT">DNK-1704-Denmark</option>
-									        <option value="BEL">DNK-1704-Denmark</option>
+									        	{{#each country}}
+						        					<option value="{{id}}">{{value}}</option>
+						       					{{/each}}
 						        		</select>
 						            </td>
 						           <td>
 						            	<input type="text" class="form-control" id="inputPassword3" placeholder="">
 						           </td>
 						           <td>
-						           		<img src="resources/images/button_plus_blue.png" class="breakDownIconSize addRow" id="addRow">
-										<img src="resources/images/button_minus_red.png" class="breakDownIconSize removeRow" id="removeRow">
+						           		
+										<img src="resources/images/button_minus_red.png" class="breakDownIconSize removeRow" id="removeRow" style="display:none;">
+						           </td>
+						         </tr>
+						         <tr class="hide" id="breakrowTemplate">
+						            <td> 
+						            	
+						            	<select id="inputCountry-{{rowindex}}"  class="form-control" >
+							        			{{#each contentType}}
+						        					<option value="{{id}}">{{value}}</option>
+						       					{{/each}}
+						        		</select>
+						        	</td>
+						            <td>
+						            	<select id="inputCountry" class="form-control">
+										        <option value="AUT">P09 - Jun</option>
+										        <option value="BEL">P10 - Jun</option>
+							        	</select>
+							        </td>
+							        <td>	
+							        	<select id="inputCountry" class="form-control">
+										        <option value="AUT">FY13</option>
+										        <option value="BEL">FY13</option>
+							        	</select>	
+						            </td>
+						            <td>
+						            	<input type="text" class="form-control amountText classAmtTotal"  name=amount[] placeholder="" can-value="val0">
+						            </td>
+						            <td>
+						            	<select id="inputCountry"  class="form-control" >
+									        	{{#each country}}
+						        					<option value="{{id}}">{{value}}</option>
+						       					{{/each}}
+						        		</select>
+						            </td>
+						           <td>
+						            	<input type="text" class="form-control" id="inputPassword3" placeholder="">
+						           </td>
+						           <td>
+						           		
+										<img src="resources/images/button_minus_red.png" class="breakDownIconSize removeRow" id="removeRow" style="display:none;">
 						           </td>
 						        </tr>
 						     </tbody>
@@ -181,16 +240,16 @@
 				   <div class="col-lg-12" style="height:20px;"></div>
 				   <div style="text-align:right">
 						   <div class="col-lg-9">Net Total:</div>
-						   <div class="col-lg-3">{{totAmount}}</div>
+						   <div class="col-lg-3">{{totalAmountVal}}</div>
 						 
 						 	<div class="col-lg-9">Tax:</div>
-						   <div class="col-lg-3"><input type="text"></div>
+						   <div class="col-lg-3"><input type="text" can-value="tax"></div>
 						   
 						   <div class="col-lg-9">Tax %:</div>
-						   <div class="col-lg-3">12</div>
+						   <div class="col-lg-3">{{calculateTaxPercent}}</div>
 						 
 						 	<div class="col-lg-9">Gross Total:</div>
-						   <div class="col-lg-3">7,056</div>
+						   <div class="col-lg-3">{{grandTotal}}</div>
 						   
 						   <div class="col-lg-9"><b>Invoice Total:</b></div>
 						   <div class="col-lg-3"><b>6,056 DKK</b></div>

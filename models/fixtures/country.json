@@ -1,1 +1,1 @@
-{"countries":[{"value":"United Kingdom","id":"GBR"},{"value":"United States","id":"USA"}],"responseHeader":{"statusCode":"200","exceptionID":"000","exceptionMessage":"SUCCESS"}}
+[{"countries":[{"value":"United Kingdom","id":"GBR"},{"value":"United States","id":"USA"}],"responseHeader":{"statusCode":"200","exceptionID":"000","exceptionMessage":"SUCCESS"}}]

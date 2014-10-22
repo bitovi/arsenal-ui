@@ -25,28 +25,20 @@ var page = Component.extend({
   	currency:[],
   	country:[],
   	contentType:[],
-  	totalAmount:[],
-  	totAmount:function(){
-  		//return this.attr("totalAmount");
-  		this.totalAmount.attr().length;
-  		var total = 0;
-        for(var i =0; i < this.totalAmount.attr().length; i++){
-        		total += parseInt(this.totalAmount.attr(i));
-        }
-       return total;
-     //  console.log(this.attr("totalAmount")+"edqwdeqwe");
-  	},
-  	totalAms:2
-
-  //	amount: []
-  },
+  	AmountStore:{},
+ 	totalAmountVal:0,
+  	calduedate:0,
+  	tax:0,
+  	taxStore:{},
+  	invoicetypeSelect:{}
+ },
   events: {
     	"inserted": function(){
            var self = this;  
   
-    		//alert(amountMapInstance.totalAmount);
+    		
 	    		$('#invoiceform').bootstrapValidator({
-	    			container: 'tooltip',
+	    			container: 'popover',
 			        feedbackIcons: {
 			            valid: 'glyphicon glyphicon-okass',
 			            invalid: 'alert',
@@ -57,21 +49,30 @@ var page = Component.extend({
 			                validators: {
 			                    notEmpty: {
 			                        message: 'The invoice number is required'
-			                    } 
+			                    },
+			                    regexp: {
+			                        regexp: /^([0-9]|[a-z])+([0-9a-z]+)$/i,
+			                        message: 'Please provide valid characters'
+			                    }
 			                }
 			            },
 			            fxrate: {
+			                group:'.fxrate',
 			                validators: {
-			                    notEmpty: {
-			                        message: 'The licensor notes is required'
-			                    }
-			                }
-			            },
-			            licnotes: {
-			                validators: {
-			                    notEmpty: {
-			                        message: 'The licensor notes is required'
-			                    }
+			                    numeric: {
+			                        separator:',',
+			                        message: 'Please provide numeric value for Fx Rate'
+                    			},
+                    			callback: {
+			                            message: 'Please provide positive Fx Rate',
+			                            callback: function (value, validator, $field) {
+			                              if((value != "")  && (parseFloat(value) < 0)){
+			                              	return false;
+			                              }
+			                              return true;
+			                            }
+                        		}
+                    			
 			                }
 			            },
 			            usercomments :{
@@ -82,35 +83,81 @@ var page = Component.extend({
 			                }
 			            },
 			            invoicedate :{
+			                group:'.invdate',
 			                validators: {
 			                    notEmpty: {
 			                        message: 'The invoicedate is required'
-			                    }
-			                }
+			                    },
+			                    date: {
+				                        format: 'MM/DD/YYYY',
+				                        message: 'Please provide valid date in MM/DD/YYYY format.'
+	                    		}
+				              }
 			            },
 			            invoiceduedate :{
+			                group:'.invduedate',
 			                validators: {
 			                    notEmpty: {
-			                        message: 'The invoiceduedate is required'
-			                    }
-			                }
+			                        message: 'Please provide invoiceduedate.'
+			                    },
+			                    date: {
+				                        format: 'MM/DD/YYYY',
+				                        message: 'Please provide valid date in MM/DD/YYYY format.'
+	                    		},
+                    			callback: {
+			                            message: 'Invoice Due date must be less than calculated due date',
+			                            callback: function (value, validator, $field) {
+			                              if(value != ""){
+			                              	var invduedate = new Date(value);
+			                              	var calduedate = new Date(self.scope.attr("calduedate"));
+			                              	var timeDiff = Math.abs(invduedate.getTime() - calduedate.getTime());
+											var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+											if(Math.abs(invduedate.getTime()) > Math.abs(calduedate.getTime())){
+												return false;
+											}
+										  }
+			                              return true;
+			                            }
+                        		}
+				              }
 			            },
 			            receiveddate :{
+			                group:'.recdate',
 			                validators: {
 			                    notEmpty: {
-			                        message: 'The receiveddate is required'
-			                    }
-			                }
-			            }
+			                        message: 'The invoicedate is required'
+			                    },
+			                    date: {
+				                        format: 'MM/DD/YYYY',
+				                        message: 'Please provide valid date in MM/DD/YYYY format.'
+	                    		}
+				              }
+			            },
+			            'amount[]': {
+		                    validators: {
+		                        notEmpty: {
+		                            message: 'The option required and cannot be empty'
+		                        },
+		                        stringLength: {
+		                            max: 100,
+		                            message: 'The option must be less than 100 characters long'
+		                        }
+		                    }
+                		}
 
 			         }
 			    }).on('error.field.bv', function(e, data) {
 			    	$("#"+data.field+"-err").css("display", "block");
+			   	$('*[data-bv-icon-for="'+data.field +'"]').popover('show');
+console.log(data.field);
 			    	
 			    	
            
         		}).on('success.field.bv', function(e, data) {
+        			console.log(data.field);
+        			$('*[data-bv-icon-for="'+data.field +'"]').popover('destroy');
         			$("#"+data.field+"-err").css("display", "none");
+
         			
 			          
 			  	}).on('success.form.bv', function(e) {
@@ -119,88 +166,99 @@ var page = Component.extend({
                         return false;
 
        		 });
-         /*Total amount code*/
-
-         /*$("input[id^='amountText']").blur(function(event){
-         	self.scope.totalAmount.push(event.currentTarget.value);
-         	console.log(event.currentTarget.value);
-         	alert("yes");
-         })*/
-
-		//console.log($("input[id^='amountText']").val());
-
-
+        
          },
          ".classAmtTotal blur": function(event){
-         	this.scope.totalAmount.push(event[0].value);
-         	//this.scope.attr().totalAms = 30;
-         	console.log(this.scope.totalAmount.attr());
-         },
-         ".addRow click":function(){
+         	this.scope.AmountStore.attr(event[0].id, event[0].value)
+         	console.log(this.scope.AmountStore.attr());
+		},
+         "{AmountStore} change": function() {
+         		var totalAmount = 0;
+  	 			this.scope.attr("AmountStore").each(function(val, key){
+  	 				if(val == ""){
+  	 					val =0;
+  	 				}
+  	 				totalAmount += parseInt(val);
+  	 			});
+  	      		this.scope.attr("totalAmountVal", totalAmount);
+
+         },	
+			".addRow click":function(){
          	
          	var self = this;
-         	//console.log(self.scope.attr("rowindex"));
          	var rowindex = self.scope.attr("rowindex");
          	self.scope.attr("rowindex", rowindex + 1)
-            
+          
+			var $template = $('#breakrowTemplate'),
+                $clone    = $template
+                                .clone()
+                                .removeClass('hide')
+                                .removeAttr('id')
+                                .attr("id","breakrow"+rowindex)
+                                .insertBefore($template);
+                               $("#breakrow"+rowindex+" .amountText").attr("id","amountText"+rowindex).val(" ");
+                               $("#breakrow"+rowindex+" .removeRow").css("display", "block"); 
 
-			//rowindex++;
-			$("#breakrow0").after($("#breakrow0").clone().attr("id","breakrow" + rowindex));
-			$("#breakrow" + rowindex + " .removeRow").attr("id","removeRow" + rowindex);
-			$("#breakrow" + rowindex + " .amountText").attr("id","amountText" + rowindex);
-
-			
-			$("#removeRow" + rowindex).click(function(){
-		            $(this).closest("tr").remove();
-		     }); 
-			
-		
-
-		}
+                               $(".removeRow").click(function(event){
+						            console.log($(this)+"qeqew"+$(this).length);
+						            $(this).closest("tr").remove();
+						            console.log(event);
+						            self.scope.AmountStore.removeAttr("amountText"+rowindex);
+						            //alert($(this));
+						     });
+					}
     
    },
    init: function(){
    	 	var self = this;
    	 	Promise.all([
 			      	InvoiceType.findAll(),
-			       	ContentType.findAll(),
-			        Licensor.findAll(),
-			        Country.findAll(),
-			        Currency.findAll()
+			     	Licensor.findAll(),
+			     	Currency.findAll(),
+			        ContentType.findAll(),
+			      	Country.findAll()
+			      //  Currency.findAll()*/
 				]).then(function(values) {
 		     		 self.scope.attr("invoiceTypes").replace(values[0][0]["invoiceTypes"]);
-		     		 self.scope.attr("contentType").replace(values[0][0]["contentTypes"]);
-		     		 self.scope.attr("licensor").replace(values[0][0]["licensors"]);
-		     		 self.scope.attr("country").replace(values[0][0]["countries"]);
-		     		 self.scope.attr("currency").replace(values[0][0]["currencies"]);
+		     		 self.scope.attr("licensor").replace(values[1][0]["licensors"]);
+		     		 self.scope.attr("currency").replace(values[2][0]["currencies"]);
+		     		 self.scope.attr("contentType").replace(values[3][0]["contentTypes"]);
+		     		 self.scope.attr("country").replace(values[4][0]["countries"]);
+		    });
 
-				});
+	   		
 
-    /*     var amountMap = can.Map({
-         			amount:0,
-         			totalAmount:function(){
-						return this.attr('amount');
-         			}
-         });*/
-
-  /* var amountMap = new can.Map({
-   			amount0:null,
-   			totalamount:function(){
-					console.log(this.attr());
-			}
-					
-   })*/
-
-       
-
-       // console.log(amountMap);
-       // console.log(amountMapInst);
-	},
+    },
   helpers: {
-  	 totalAmountCal: function(){
-  	 	var tot = this.attr("totalAmount");
-  	 	return tot.length;
-  	 }
+  	 currentDate: function(){
+  	 	var date = new Date();
+		return ((date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear())
+  	 },
+  	 calculatedDueDate: function(){
+  	 	var date = new Date();
+  	 	date.setMonth(date.getMonth() + 1);
+  	 	var calduedate = ((date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear());
+  	 	this.attr("calduedate", calduedate);  
+		return calduedate;
+		
+  	 },
+  	 calculateTaxPercent: function(){
+  	 	this.attr("taxStore", this.attr("tax"));
+  	 	var percent = (this.attr("tax")/this.attr("totalAmountVal"))*100;
+  	 	if(isNaN(percent))
+  	 	return ""
+  	 	else
+  	 	return percent.toFixed(2); //Round to Two decimal only
+  	 },
+  	 isAdhoc: function(){
+  	 	if(this.attr("invoicetypeSelect") == "2"){  /*Adhoc*/
+  	 		return "GL Account"
+  	 	}
+  	 	else{
+  	 		return "CCID Document"
+  	 	}
+  	 },
+
 
   }
 });
