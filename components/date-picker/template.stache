@@ -1,5 +1,5 @@
 <div class="input-group date" id="{{name}}" data-date-format="DD/MM/YYYY">
-<input type="text" class="form-control datetimePickerCal" name="{{name}}" placeholder="{{placeholder}}" />
+<input type="text" class="form-control datetimePickerCal" name="{{name}}" placeholder="{{placeholder}}" can-value="{{name}}"/>
 <img src="resources/images/alert.png" class="form-control-feedback field-invalid-date" id = "{{name}}-err" style="display:none;">
 <span class="input-group-addon">
 <span class="glyphicon glyphicon-calendar"></span>

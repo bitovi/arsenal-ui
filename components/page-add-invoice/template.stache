@@ -8,8 +8,9 @@
 			
 			 	<div class="form-group">
 				    <label for="inputEmail3" class="col-lg-1 control-label">Invoice Type: </label>
-				    <div class="col-lg-3">
-				      <select id="invoiceType" class="form-control" can-value="invoicetypeSelect">
+				    <div class="col-lg-3 requiredBar">
+				      <select id="invoiceType" class="form-control" can-value="invoicetypeSelect" name="invoiceType">
+						        <option value="">Select</option>
 						        {{#each invoiceTypes}}
 						        	<option value="{{id}}">{{value}}</option>
 						       	{{/each}}
@@ -20,10 +21,11 @@
 			<div class="col-lg-6">	
 				<div class="form-group">
 				    <label for="inputEmail3" class="col-lg-2 control-label">Licensor: </label>
-				    <div class="col-lg-5">
-				      <select id="licensor" class="form-control" >
+				    <div class="col-lg-5 requiredBar">
+				      <select id="licensor" class="form-control" name="licensor" can-value="licensorStore">
+						       <option value="">Select</option>	
 						       {{#each licensor}}
-						        	<option value="{{id}}">{{value}}</option>
+						       		<option value="{{id}}">{{value}}</option>
 						       	{{/each}}
 					   </select>
 				    </div>
@@ -33,10 +35,11 @@
 				     <div class="row">
 						 <div class="col-lg-6">   
 							    <label for="inputPassword3" class="col-lg-4 control-label">Currency:</label>
-							    <div class="col-lg-8">
-							      <select id="currency" class="form-control" >
+							    <div class="col-lg-8 requiredBar">
+							      <select id="currency" class="form-control" name="currency" can-value="currencyStore">
+									        <option value="">Select</option>
 									       {{#each currency}}
-									       	 <option value="{{id}}">{{value}}</option>
+									       		<option value="{{id}}">{{value}}</option>
 									        {{/each}}
 								   </select>
 							    </div>
@@ -44,7 +47,7 @@
 						    <div class="col-lg-6 fxrate">
 							    <label for="inputPassword3" class="col-lg-4 control-label">Fx Rate:</label>
 							    <div class="col-lg-8">
-							      <input type="text" class="form-control" name ="fxrate" id="fxrate" placeholder="">
+							      <input type="text" class="form-control" name ="fxrate" id="fxrate" placeholder="" can-value="fxrateStore">
 							      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "fxrate-err" style="display:none;">
 							    </div>
 						    </div>
@@ -54,15 +57,15 @@
 				  <div class="form-group">
 				    <label for="inputEmail3" class="col-lg-2 control-label">Invoice Number: </label>
 				    <div class="col-lg-5">
-				      <input type="text" class="form-control" id="invoicenumber" name="invoicenumber" placeholder="" maxlength="50">
+				      <div class="requiredBar"><input type="text" class="form-control" id="invoicenumber" name="invoicenumber" placeholder="" maxlength="50" can-value="invoicenumberStore"></div>
 				      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "invoicenumber-err" style="display:none;">
 				    </div>
 				  </div>
 				  
 				   <div class="form-group">
 				    <label for="inputEmail3" class="col-lg-2 control-label">Licensor Notes: </label>
-				    <div class="col-lg-5">
-				      <textarea class="form-control" id ="licnotes" name="licnotes" maxlength="1024"></textarea>
+				    <div class="col-lg-5 requiredBar">
+				      <textarea class="form-control" id ="licnotes" name="licnotes" maxlength="1024" can-value="licnotesStore"></textarea>
 				       <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "licnotes-err" style="display:none;">
 				    </div>
 				  </div>
@@ -77,7 +80,7 @@
 							 </div>
 							 <div class="col-lg-6 recdate">   
 						    	<label for="inputPassword3" class="col-lg-4 control-label">Received Date:</label>
-								    <div class="col-lg-8">
+								    <div class="col-lg-8 requiredBar">
 								      <date-picker name="receiveddate" placeholder=""></date-picker>
 								     </div>
 							  </div>   
@@ -88,13 +91,13 @@
 				    	<div class="row">
 				    		<div class="col-lg-6 invdate">
 							    <label for="inputPassword3" class="col-lg-4 control-label">Invoice Date:</label>
-							    <div class="col-lg-8">
+							    <div class="col-lg-8 requiredBar">
 							     <date-picker name="invoicedate" placeholder=""></date-picker>
 							    </div>
 						    </div>
 						    <div class="col-lg-6 invduedate">
 							     <label for="inputPassword3" class="col-lg-4 control-label">Invoice Due Date:</label>
-							    <div class="col-lg-8">
+							    <div class="col-lg-8 requiredBar">
 							     <date-picker name="invoiceduedate" placeholder=""></date-picker>
 							    </div>
 						    </div>
@@ -124,8 +127,8 @@
 				  
 				   <div class="form-group">
 				    <label for="inputEmail3" class="col-lg-2 control-label">User Comments: </label>
-				    <div class="col-lg-5">
-				      <textarea class="form-control" name="usercomments" id="usercomments" maxlength="1024"></textarea>
+				    <div class="col-lg-5 requiredBar">
+				      <textarea class="form-control" name="usercomments" id="usercomments" maxlength="1024" can-value="usercommentsStore"></textarea>
 				      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "usercomments-err" style="display:none;">
 				    </div>
 				  </div>
@@ -156,20 +159,23 @@
 						         <tr id="breakrow0">
 						            <td> 
 						            	
-						            	<select id="inputCountry-{{rowindex}}"  class="form-control" >
+						            	<select id="inputContent0" name="inputContent" class="form-control inputContent">
+						            			<option value="">Select</option>
 							        			{{#each contentType}}
-						        					<option value="{{id}}">{{value}}</option>
+							        				<option value="{{id}}">{{value}}</option>
 						       					{{/each}}
 						        		</select>
 						        	</td>
-						            <td>
-						            	<select id="inputCountry" class="form-control">
+						            <td class="breakdownPeriod">
+						            	<select id="inputMonth0" name="inputMonth" class="form-control inputMonth">
+						            			<option value="">Select</option>
 										        <option value="AUT">P09 - Jun</option>
 										        <option value="BEL">P10 - Jun</option>
 							        	</select>
 							        </td>
 							        <td>	
-							        	<select id="inputCountry" class="form-control">
+							        	<select id="inputYear0" name="inputYear" class="form-control inputYear">
+							        			<option value="">Select</option>
 										        <option value="AUT">FY13</option>
 										        <option value="BEL">FY13</option>
 							        	</select>	
@@ -177,15 +183,16 @@
 						            <td>
 						            	<input type="text" class="form-control amountText classAmtTotal" name=amount[] id="amountText0" placeholder="" can-value="val0">
 						            </td>
-						            <td>
-						            	<select id="inputCountry"  class="form-control" >
+						            <td class="breakdownCountry">
+						            	<select id="inputCountry0"  name="inputCountry" class="form-control inputCountry" >
+									        		<option value="">Select</option>
 									        	{{#each country}}
-						        					<option value="{{id}}">{{value}}</option>
+									        		<option value="{{id}}">{{value}}</option>
 						       					{{/each}}
 						        		</select>
 						            </td>
 						           <td>
-						            	<input type="text" class="form-control" id="inputPassword3" placeholder="">
+						            	<input type="text" class="form-control ccidGL" id="ccidGL0" name="ccidGL" placeholder="" can-value="ccidGLStore">
 						           </td>
 						           <td>
 						           		
@@ -195,20 +202,23 @@
 						         <tr class="hide" id="breakrowTemplate">
 						            <td> 
 						            	
-						            	<select id="inputCountry-{{rowindex}}"  class="form-control" >
+						            	<select id="inputContent" name="inputContent"  class="form-control inputContent">
+							        				<option value="">Select</option>
 							        			{{#each contentType}}
-						        					<option value="{{id}}">{{value}}</option>
+							        				<option value="{{id}}">{{value}}</option>
 						       					{{/each}}
 						        		</select>
 						        	</td>
-						            <td>
-						            	<select id="inputCountry" class="form-control">
+						            <td class="breakdownPeriod">
+						            	<select id="inputMonth" name="inputMonth" class="form-control inputMonth">
+						            			<option value="">Select</option>
 										        <option value="AUT">P09 - Jun</option>
 										        <option value="BEL">P10 - Jun</option>
 							        	</select>
 							        </td>
 							        <td>	
-							        	<select id="inputCountry" class="form-control">
+							        	<select id="inputYear" name="inputYear" class="form-control inputYear">
+							        			<option value="">Select</option>
 										        <option value="AUT">FY13</option>
 										        <option value="BEL">FY13</option>
 							        	</select>	
@@ -216,15 +226,16 @@
 						            <td>
 						            	<input type="text" class="form-control amountText classAmtTotal"  name=amount[] placeholder="" can-value="val0">
 						            </td>
-						            <td>
-						            	<select id="inputCountry"  class="form-control" >
+						            <td class="breakdownCountry">
+						            	<select id="inputCountry" name="inputCountry" class="form-control inputCountry">
+									        		<option value="">Select</option>
 									        	{{#each country}}
-						        					<option value="{{id}}">{{value}}</option>
+									        		<option value="{{id}}">{{value}}</option>
 						       					{{/each}}
 						        		</select>
 						            </td>
 						           <td>
-						            	<input type="text" class="form-control" id="inputPassword3" placeholder="">
+						            	<input type="text" class="form-control ccidGL" id="ccidGL" name="ccidGL" placeholder="" can-value="ccidGLStore">
 						           </td>
 						           <td>
 						           		
@@ -243,13 +254,13 @@
 						   <div class="col-lg-3">{{totalAmountVal}}</div>
 						 
 						 	<div class="col-lg-9">Tax:</div>
-						   <div class="col-lg-3"><input type="text" can-value="tax"></div>
+						   <div class="col-lg-3"><input type="text" name="taxAmount" class="taxAmount" can-value="tax"></div>
 						   
 						   <div class="col-lg-9">Tax %:</div>
 						   <div class="col-lg-3">{{calculateTaxPercent}}</div>
 						 
 						 	<div class="col-lg-9">Gross Total:</div>
-						   <div class="col-lg-3">{{grandTotal}}</div>
+						   <div class="col-lg-3">{{grossTotal}}</div>
 						   
 						   <div class="col-lg-9"><b>Invoice Total:</b></div>
 						   <div class="col-lg-3"><b>6,056 DKK</b></div>
@@ -267,14 +278,14 @@
     <div class="col-lg-12" style="text-align:right;padding:15px;">
      
         <label class="col-lg-2 col-lg-offset-6" for="inputCountry">Bundle Name:</label>
-          <div class="col-lg-2">
+          <div class="col-lg-2 requiredBar">
 		        <select id="inputCountry"  class="form-control" >
 			        <option value="AUT">Europe P07 FY14 Invoices</option>
 			        <option value="BEL">Create New Bundle</option>
 		        </select>
         </div>
         <button type="button" class="btn btn-default buttonCancel">Cancel</button>
-        <button id="addInvSubmit" type="submit"  class="btn btn-primary buttonSubmit">Submit</button>
+        <button id="addInvSubmit" type="submit"  class="btn btn-primary buttonSubmit addInvSubmit">Submit</button>
     </div>
  </div>
 </div>
