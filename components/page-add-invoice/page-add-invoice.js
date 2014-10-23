@@ -14,6 +14,8 @@ import ContentType from 'models/content-type/';
 import Licensor from 'models/licensor/';
 import Currency from 'models/currency/';
 import Country from 'models/country/';
+//import Invoice from 'models/invoice/';
+
 
 var page = Component.extend({
   tag: 'page-add-invoice',
@@ -43,14 +45,13 @@ var page = Component.extend({
   	invoiceduedate:"",
   	contentTypeStore:{},
   	countryStore:{},
-  	ccidGLStore:"",
+  	ccidGLStore:{},
   	yearStore:{},
   	monthStore:{},
   	grossTotalStore:{},
-
-
-
 	/*Form value*/
+
+  	errorMsg:{},
 
   	isRequired: function(){
   	 		if(this.attr("invoicetypeSelect") != "2"){  /*Adhoc*/
@@ -194,9 +195,7 @@ var page = Component.extend({
         				$('*[data-bv-icon-for="'+data.field +'"]').popover('destroy');
 	        			$("#"+data.field+"-err").css("display", "none");
 				}).on('success.form.bv', function(e, data) {
-			  			//var res = $('#invoiceform').serializeArray();
-                        //console.log(res);
-                         //data.bv.disableSubmitButtons(false);
+			  			
                         
                       console.log(self);
 
@@ -219,70 +218,65 @@ var page = Component.extend({
 					   createInvoiceData.invoice["invoiceDate"] = self.scope.invoicedate;
 					   createInvoiceData.invoice["invoiceCalculatedDueDate"] = self.scope.calduedate;
 					   createInvoiceData.invoice["invoiceDueDate"] = self.scope.invoiceduedate;
+					   createInvoiceData.invoice["comments"] = [];
+					   createInvoiceData.invoice["comments"].comments = self.scope.usercommentsStore;
+					   createInvoiceData.invoice["documents"] = [];
+					   createInvoiceData.invoice["documents"].fileName = "";
+					   createInvoiceData.invoice["documents"].location = "";
 
-					 var comments = {};
-					 createInvoiceData.invoice["invoiceDueDate"].push(comments);
+					   createInvoiceData.invoice["invoiceLines"] = [];
+					   	var index = 0;
+					   self.scope.attr("contentTypeStore").each(function(value, key){  /*Iterating contentType as it is mandatory for all invoice type*/
+					   		//createInvoiceData.invoice["invoiceLines"][index]. = 
+					   		
+
+					   		//var invoiceLineTemp = {};
+					   		var inputContent = "inputContent"+index;
+					   		console.log(self.scope.contentTypeStore.attr("inputContent0")+"dsdgghf");
+
+					   	//	var createInvoiceData.invoice["invoiceLines"][index] = {};
+					   		
+					   		var tempArry = {};
 
 
+					   		tempArry["countryId"] = self.scope.countryStore.attr("inputCountry"+index);
+					   		tempArry["fiscalPeriod"] = "201306";
+					   		tempArry["periodType"] = "P";
+					   		tempArry["contentType"] = self.scope.contentTypeStore.attr("inputContent"+index);
+					   		tempArry["lineAmount"] = self.scope.contentTypeStore.attr("amountText"+index);
+					   		tempArry["adhocTypeId"] = "";
+					   		if(self.scope.attr("invoicetypeSelect") == "2"){  
+					  	 		
+					  	 		tempArry["glAccount"] = self.scope.ccidGLStore.attr(inputContent);
+					  	 		tempArry["ccidName"] = "";
+					  	 	}
+					  	 	else{
+					  	 		tempArry["glAccount"] = "";
+					  	 		tempArry["ccidName"] = self.scope.ccidGLStore.attr(inputContent);
+					  	 	}
+
+					   		
+					   		createInvoiceData.invoice["invoiceLines"].push(tempArry);
+					   		index++;
 
 
-					  
+					   });
 
-
-
-
-
-
-
-/*
-
-                       var createInvoiceData = {
-												    "invoices": [
-												        {
-												            "invoiceNumber": self.scope.invoicenumberStore,
-												            "invoiceTypeId": invoicetypeSelect,
-															"entityId": contentTypeStore,
-															"invoiceCcy": currencyStore,
-															"fxRate": fxrateStore,
-															"notes": licnotesStore,
-															"invoiceAmount": totalAmountVal,
-															"tax": tax,
-															"grossTotal": grossTotalStore,
-															"userAdjAmt": "",
-															"bundleId": "", 
-															"bundleName": “newly created bundle”, //optional
-															"receivedDate": receiveddate,
-															"invoiceDate": invoicedate,
-															"invoiceCalculatedDueDate": calduedate,	
-															"invoiceDueDate": invoiceduedate,
-
-												            "comments": [
-												                {
-												                    "comments": self.scope.usercommentsStore
-												                }
-												            ],
-												            "documents": [
-												                {
-												                    "location": "/tmp"
-												                }
-												            ],
-												            "invoiceLines": [
-												                {
-												                    "countryId": "DKK",
-												                    "fiscalPeriod": "201306",
-												                    "periodType": "P",
-												                    "contentType": "music",
-												                    "lineAmount": "2000.00"
-												                }
-												            ]
-												        }
-												    ]
-												}*/
-
-									//var createInvoiceData = new Object();
-
-									console.log(createInvoiceData);			
-
+									console.log(createInvoiceData);	
+									//self.scope.attr("errorMsg").replace(Invoice.create(createInvoiceData));
+							   	 	//console.log(Invoice.create(createInvoiceData));
+							   	 	self.scope.errorMsg.attr("errorCode", "0000");
+							   	 	self.scope.errorMsg.attr("responseText", "Invoice created successfully.");
+							   	 	console.log(self.scope.attr("errorMsg"));	
+							   	 	/*Promise.all([
+										      	Invoice.create(createInvoiceData)
+										     ]).then(function(values) {
+									     		 console.log("values");
+									     		 self.scope.attr("errorMsg").replace(values);
+									     	});*/
+								template();
+								
+                        
                         return false;
 
        		 });
@@ -294,6 +288,7 @@ var page = Component.extend({
 		},
 		".inputContent change": function(event){
          	this.scope.contentTypeStore.attr(event[0].id, event[0].value)
+         	alert("test");
 		},
 		".inputMonth change": function(event){
          	this.scope.monthStore.attr(event[0].id, event[0].value)
