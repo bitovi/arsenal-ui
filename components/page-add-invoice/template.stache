@@ -10,7 +10,7 @@
 	</div>
 
 		<div class="col-lg-12">
-			
+
 			 	<div class="form-group">
 				    <label for="inputEmail3" class="col-lg-1 control-label">Invoice Type: </label>
 				    <div class="col-lg-3 requiredBar">
@@ -22,23 +22,23 @@
 					   </select>
 				    </div>
 				  </div>
-			<div class="col-lg-12 lineDivider"></div>	  
-			<div class="col-lg-6">	
+			<div class="col-lg-12 lineDivider"></div>
+			<div class="col-lg-6">
 				<div class="form-group">
 				    <label for="inputEmail3" class="col-lg-2 control-label">Licensor: </label>
 				    <div class="col-lg-5 requiredBar">
 				      <select id="licensor" class="form-control" name="licensor" can-value="licensorStore">
-						       <option value="">Select</option>	
+						       <option value="">Select</option>
 						       {{#each licensor}}
 						       		<option value="{{id}}">{{value}}</option>
 						       	{{/each}}
 					   </select>
 				    </div>
 				  </div>
-				  
+
 				  <div class="form-group">
 				     <div class="row">
-						 <div class="col-lg-6">   
+						 <div class="col-lg-6">
 							    <label for="inputPassword3" class="col-lg-4 control-label">Currency:</label>
 							    <div class="col-lg-8 requiredBar">
 							      <select id="currency" class="form-control" name="currency" can-value="currencyStore">
@@ -56,9 +56,9 @@
 							      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "fxrate-err" style="display:none;">
 							    </div>
 						    </div>
-						</div>   
+						</div>
 				  </div>
-				  
+
 				  <div class="form-group">
 				    <label for="inputEmail3" class="col-lg-2 control-label">Invoice Number: </label>
 				    <div class="col-lg-5">
@@ -66,7 +66,7 @@
 				      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "invoicenumber-err" style="display:none;">
 				    </div>
 				  </div>
-				  
+
 				   <div class="form-group">
 				    <label for="inputEmail3" class="col-lg-2 control-label">Licensor Notes: </label>
 				    <div class="col-lg-5 requiredBar">
@@ -74,7 +74,7 @@
 				       <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "licnotes-err" style="display:none;">
 				    </div>
 				  </div>
-				  
+
 				   <div class="form-group">
 				   		<div class="row">
 				   			<div class="col-lg-6">
@@ -83,15 +83,15 @@
 							       {{currentDate}}
 							    </div>
 							 </div>
-							 <div class="col-lg-6 recdate">   
+							 <div class="col-lg-6 recdate">
 						    	<label for="inputPassword3" class="col-lg-4 control-label">Received Date:</label>
 								    <div class="col-lg-8 requiredBar">
 								      <date-picker name="receiveddate" placeholder=""></date-picker>
 								     </div>
-							  </div>   
-						 </div>    
+							  </div>
+						 </div>
 				  </div>
-				  
+
 				   <div class="form-group">
 				    	<div class="row">
 				    		<div class="col-lg-6 invdate">
@@ -108,19 +108,19 @@
 						    </div>
 				  		</div>
 				  </div>
-				  
+
 				  <div class="form-group">
 					<label for="inputEmail3" class="col-lg-2 col-lg-offset-6 control-label">Calculated Due Date: </label>
 				    <div class="col-lg-2 textLeftAlign">
 				      {{calculatedDueDate}}
 				    </div>
 				  </div>
-				  
-				  
+
+
 				   <div class="form-group">
 				    <label for="inputEmail3" class="col-lg-2 control-label">Supporting Documents: </label>
 				    <div class="col-lg-5 fileUploadContainer">
-				          
+
 				     		<div class="fileUploadButtonPosition">
 						    		<span class="file-input btn btn-primary btn-file">
 							                Upload File <input type="file" multiple="">
@@ -128,8 +128,8 @@
 					         </div>
 				    </div>
 				  </div>
-				  
-				  
+
+
 				   <div class="form-group">
 				    <label for="inputEmail3" class="col-lg-2 control-label">User Comments: </label>
 				    <div class="col-lg-5 requiredBar">
@@ -137,14 +137,14 @@
 				      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "usercomments-err" style="display:none;">
 				    </div>
 				  </div>
-			
-	   	</div>	   	 
+
+	   	</div>
 	   	 <div class="col-lg-6">
 				<div class="col-lg-12 breakDown">
 						Break Down
 				 </div>
 
-		   
+
 			   <div class="col-lg-12">
 			   <div class="table-responsive">
 					  <table class="table table-condensed breakdown" id="breakTable">
@@ -160,10 +160,10 @@
 						        </tr>
 						    </thead>
 						    <tbody>
-						     
+
 						         <tr id="breakrow0">
-						            <td> 
-						            	
+						            <td>
+
 						            	<select id="inputContent0" name="inputContent" class="form-control inputContent">
 						            			<option value="">Select</option>
 							        			{{#each contentType}}
@@ -178,12 +178,12 @@
 										        <option value="6">P10 - Jun</option>
 							        	</select>
 							        </td>
-							        <td>	
+							        <td>
 							        	<select id="inputYear0" name="inputYear" class="form-control inputYear">
 							        			<option value="">Select</option>
 										        <option value="AUT">FY13</option>
 										        <option value="BEL">FY13</option>
-							        	</select>	
+							        	</select>
 						            </td>
 						            <td>
 						            	<input type="text" class="form-control amountText classAmtTotal" name=amount[] id="amountText0" placeholder="" can-value="val0">
@@ -200,13 +200,13 @@
 						            	<input type="text" class="form-control ccidGL" id="ccidGL0" name="ccidGL" placeholder="" >
 						           </td>
 						           <td>
-						           		
+
 										<img src="resources/images/button_minus_red.png" class="breakDownIconSize removeRow" id="removeRow" style="display:none;">
 						           </td>
 						         </tr>
 						         <tr class="hide" id="breakrowTemplate">
-						            <td> 
-						            	
+						            <td>
+
 						            	<select id="inputContent" name="inputContent"  class="form-control inputContent">
 							        				<option value="">Select</option>
 							        			{{#each contentType}}
@@ -221,12 +221,12 @@
 										        <option value="BEL">P10 - Jun</option>
 							        	</select>
 							        </td>
-							        <td>	
+							        <td>
 							        	<select id="inputYear" name="inputYear" class="form-control inputYear">
 							        			<option value="">Select</option>
 										        <option value="AUT">FY13</option>
 										        <option value="BEL">FY13</option>
-							        	</select>	
+							        	</select>
 						            </td>
 						            <td>
 						            	<input type="text" class="form-control amountText classAmtTotal"  name=amount[] placeholder="" can-value="val0">
@@ -243,42 +243,42 @@
 						            	<input type="text" class="form-control ccidGL" id="ccidGL" name="ccidGL" placeholder="" >
 						           </td>
 						           <td>
-						           		
+
 										<img src="resources/images/button_minus_red.png" class="breakDownIconSize removeRow" id="removeRow" style="display:none;">
 						           </td>
 						        </tr>
 						     </tbody>
 					</table>
 				</div>
-				</div>	
-		   
-		   
+				</div>
+
+
 				   <div class="col-lg-12" style="height:20px;"></div>
 				   <div style="text-align:right">
 						   <div class="col-lg-9">Net Total:</div>
 						   <div class="col-lg-3">{{totalAmountVal}}</div>
-						 
+
 						 	<div class="col-lg-9">Tax:</div>
 						   <div class="col-lg-3"><input type="text" name="taxAmount" class="taxAmount" can-value="tax"></div>
-						   
+
 						   <div class="col-lg-9">Tax %:</div>
 						   <div class="col-lg-3">{{calculateTaxPercent}}</div>
-						 
+
 						  <div class="col-lg-9"><b>Invoice Total:</b></div>
 						   <div class="col-lg-3"><b>{{grossTotal}} <!--Currency --></b></div>
-						 
-						 
+
+
 						   <div class="col-lg-3 col-lg-offset-9"><!--891 USD --></div>
 				   </div>
 				  </div>
 			</div>
-	
-	
+
+
 
 
 <div class="col-lg-12">
     <div class="col-lg-12" style="text-align:right;padding:15px;">
-     
+
         <label class="col-lg-2 col-lg-offset-6" for="inputCountry">Bundle Name:</label>
           <div class="col-lg-2 requiredBar">
 		        <select id="inputCountry"  class="form-control" >
