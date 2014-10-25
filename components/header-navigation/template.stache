@@ -14,6 +14,7 @@
         <li {{isActive 'dashboard'}}><a href="/dashboard">Dashboard</a></li>
         <li {{isActive 'payment-bundles'}}><a href="/payment-bundles">Payment Bundles</a></li>
         <li {{isActive 'add-invoice'}}><a href="/add-invoice">Add Invoice</a></li>
+        <li {{isActive 'edit-invoice'}}><a href="/edit-invoice">Edit Invoice</a></li>
         <li {{isActive 'invoices'}}><a href="/invoices">Invoices</a></li>
         <li {{isActive 'invalid-page'}}><a href="/invalid-page">Invalid page</a></li>
       </ul>
