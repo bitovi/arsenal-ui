@@ -1,0 +1,90 @@
+ [
+    {
+      "responseHeader": {
+        "errorCode": "0000",
+        "responseText": "SUCCESS"
+      }
+    },
+    {
+      "invoice":  [{
+          "id": "6788",
+          "invoiceNumber": "inv2509",
+          "invoiceTypeId": 2,
+          "invoiceTypeName": "Regular",
+          "entityId": "3065",
+          "entityName": "ASCAP",
+          "invoiceCcy": "USD",   
+          "fxRate": 1,
+          "notes": "Notes from licensors",
+          "periodType": "P",
+          "invoiceAmount": "7000",
+          "tax": "56",
+          "grossTotal": "2056",
+          "userAdjAmt": "",
+          "bundleName": "EUROPE P07 FY14 INVOICES",
+          "bundleId": "3456",
+          "status": "Open",
+          "paymentState": "",
+          "receivedDate": "06/19/2014",
+          "invoiceDate": "06/19/2014",
+          "invoiceCalculatedDueDate": "09/24/2014", 
+          "invoiceDueDate": "09/19/2014",
+          "comments": [
+          {
+              "id": "",
+              "commentId": "",
+              "comments": "This is a Regular Invoice comment",
+              "createdBy": "12345",
+              "createdDate": "06/19/2014"
+          },
+          {
+              "id": "",
+              "commentId": "",
+              "comments": "This is a Adhoc Invoice comment",
+              "createdBy": "12347",
+              "createdDate": "06/19/2015"
+          }],
+          "invoiceLines": [ 
+            {
+              "invoiceId": "",
+              "countryId": "121",
+              "countryName":"USA",
+              "invoiceCcy": "DKK",
+              "fiscalPeriod": "201306",
+              "periodType": "P",
+              "contentType": "2",
+              "lineAmount": "3000",
+              "adhocTypeId": "",
+              "glAccount": ""
+            },
+            {
+              "invoiceId": "",
+              "countryId": "121",
+              "countryName":"USA",
+              "invoiceCcy": "DKK",
+              "fiscalPeriod": "201306",
+              "periodType": "P",
+              "contentType": "1",
+              "lineAmount": "4000",
+              "adhocTypeId": "",
+              "glAccount": ""
+            },
+            {
+              "invoiceId": "",
+              "countryId": "121",
+              "countryName":"USA",
+              "invoiceCcy": "DKK",
+              "fiscalPeriod": "201306",
+              "periodType": "P",
+              "contentType": "2",
+              "lineAmount": "4000",
+              "adhocTypeId": "",
+              "glAccount": ""
+            }
+
+          ]
+      }]
+    }
+]
+
+

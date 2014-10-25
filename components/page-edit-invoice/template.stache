@@ -2,7 +2,7 @@
 <div class="container-fluid">
   <div class="row">  
     <div class="col-sm-5 pageTitle">
-		<h3>Add Invoice</h3>
+		<h3>Edit Invoice</h3>
 	</div>
 	<div class="col-sm-2">
 		{{#if errorMsg.responseText}}
@@ -96,7 +96,7 @@
 				   			<div class="col-sm-6">
 							    <label for="inputPassword3" class="col-sm-4 control-label">Create Date:</label>
 							    <div class="col-sm-4" style="text-align:left;">
-							       {{currentDate}}
+							         {{createDateStore}}
 							    </div>
 							 </div>
 							 <div class="col-sm-6 recdate">   
@@ -185,16 +185,15 @@
 						    </thead>
 						    <tbody>
 						     
-						         <tr id="breakrow0">
-						            <td class="form-group"> 
+						       <!--  <tr id="breakrow0">
+						            <td> 
 						            	
-						            	<select id="inputContent0" name="inputContent[]" class="form-control inputContent">
+						            	<select id="inputContent0" name="inputContent" class="form-control inputContent">
 						            			<option value="">Select</option>
 							        			{{#each contentType}}
 							        				<option value="{{id}}">{{value}}</option>
 						       					{{/each}}
 						        		</select>
-						        		
 						        	</td>
 						            <td class="breakdownPeriod">
 						            	<select id="inputMonth0" name="inputMonth" class="form-control inputMonth">
@@ -202,7 +201,6 @@
 										        <option value="6">P09 - Jun</option>
 										        <option value="6">P10 - Jun</option>
 							        	</select>
-
 							        </td>
 							        <td>	
 							        	<select id="inputYear0" name="inputYear" class="form-control inputYear">
@@ -211,9 +209,8 @@
 										        <option value="BEL">FY13</option>
 							        	</select>	
 						            </td>
-						            <td class="form-group">
+						            <td>
 						            	<input type="text" class="form-control amountText classAmtTotal" name=amount[] id="amountText0" placeholder="" can-value="val0">
-						            
 						            </td>
 						            <td class="breakdownCountry">
 						            	<select id="inputCountry0"  name="inputCountry" class="form-control inputCountry" >
@@ -230,11 +227,11 @@
 						           		
 										<img src="resources/images/button_minus_red.png" class="breakDownIconSize removeRow" id="removeRow" style="display:none;">
 						           </td>
-						         </tr>
+						         </tr> -->
 						         <tr class="hide" id="breakrowTemplate">
 						            <td> 
 						            	
-						            	<select id="inputContent" name="inputContent[]"  class="form-control inputContent">
+						            	<select id="inputContent" name="inputContent"  class="form-control inputContent">
 							        				<option value="">Select</option>
 							        			{{#each contentType}}
 							        				<option value="{{id}}">{{value}}</option>
@@ -285,16 +282,8 @@
 						   <div class="col-sm-9"><label class="control-label">Net Total: </label></div>
 						   <div class="col-sm-3 total-amount">{{totalAmountVal}}</div>
 						 
-						 	<!--<div class="col-sm-9"></div>
-						   <div class="col-sm-3 form-group tax-amount"></div>-->
-
-						    <div class="col-sm-12 tax-amount">
-							   <label class="control-label col-sm-9">Tax: </label>
-							    <div class="col-sm-3" style="padding-left:2px;">
-							      <input type="text" name="taxAmount"  class="form-control taxAmount" can-value="tax">
-							      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "taxAmount-err" style="display:none;">
-							    </div>
-						    </div>
+						 	<div class="col-sm-9"><label class="control-label">Tax: </label></div>
+						   <div class="col-sm-3"><input type="text" name="taxAmount" class="form-control taxAmount" can-value="tax"></div>
 						   
 						   <div class="col-sm-9"><label class="control-label">Tax %:</label></div>
 						   <div class="col-sm-3">{{calculateTaxPercent}}</div>
