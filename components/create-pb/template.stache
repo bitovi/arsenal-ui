@@ -1,0 +1,18 @@
+<label  style="margin-left:10px" for="inputPaymentBundle">Bundle Name:</label>
+{{#if isCreatePB}}
+<select id="paymentBundleNames" class="form-control" can-value="paymentBundleId" name="paymentBundleNames">
+    <option value="" selected>--Select--</option>
+      {{#each bundleNames}}
+        <option value="{{bundleId}}">{{bundleName}}</option>
+       {{/each}}
+       <option value="createB">Create Bundle</option>
+</select>
+{{#else}}
+<div class="input-group">
+  <input type="text" class="form-control" id="newPaymentBundle" can-value = "paymentBundleName" >
+  <div class="input-group-btn">
+     <button id="btnCancel" class="btn btn-danger" type="button">X</button>
+  </div>
+</div>
+
+{{/if}}

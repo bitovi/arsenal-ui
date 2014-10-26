@@ -5,6 +5,8 @@ import dataTables from 'components/data-tables/';
 import treetables from 'treetables';
 import css_treetables from 'treetables.css!';
 
+import createpb from 'components/create-pb/';
+
 import tokeninput from 'tokeninput';
 import css_tokeninput from 'tokeninput.css!';
 import css_tokeninput_theme from 'tokeninput_theme.css!';
@@ -28,8 +30,8 @@ var page = Component.extend({
 	    $("#invoiceGrid").html( f );*/
       var self = this;
       $("#tokenSearch").tokenInput([
-          {id: 1, name: "Search"} //This is needed 
-        ], 
+          {id: 1, name: "Search"} //This is needed
+        ],
         {
             theme: "facebook",
             preventDuplicates: true,
@@ -47,7 +49,7 @@ var page = Component.extend({
                 self.scope.tokenInputData.replace(item);
                 var $subComp = $('data-grid', self.element);
                 $subComp.scope().refreshTokenInput(item,"Add");
-                
+
             },
             onDelete: function (item) {
                 //doSearch(item,"delete");
@@ -56,7 +58,7 @@ var page = Component.extend({
                 $subComp.scope().refreshTokenInput(item,"Delete");
             }
       });
-	    
+
   	}
   }
 });
