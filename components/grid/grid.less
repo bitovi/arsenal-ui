@@ -1,0 +1,134 @@
+/* Put grid styles here. */
+.grid-mixin() {
+
+  @dark-border: 1px solid hsl(0, 0%, 40%);
+  @light-border: 1px solid hsl(0, 0%, 75%);
+
+  @header-background: linear-gradient(to bottom, hsl(0, 0%, 75%), hsl(0, 0%, 50%));
+
+  @font-color: hsl(0, 0%, 50%);
+
+  @disclosure-symbol: '▶︎';
+
+  & > table {
+    width: 100%;
+    border-radius: 8px;
+    border-spacing: 0;
+
+    color: @font-color;
+
+    /* getting border radius to work right */
+    thead:first-child > tr:first-of-type {
+      td:first-child, th:first-child {
+        border-radius: 8px 0 0 0;
+      }
+
+      td:last-child, th:last-child {
+        border-radius: 0 8px 0 0;
+      }
+    }
+    tbody:first-child > tr:first-of-type {
+      td:first-child, th:first-child {
+        border-radius: 8px 0 0 0;
+      }
+
+      td:last-child, th:last-child {
+        border-radius: 0 8px 0 0;
+      }
+    }
+    tbody:last-child > tr:last-of-type {
+      td:first-child, th:first-child {
+        border-radius: 0 0 0 8px;
+      }
+
+      td:last-child, th:last-child {
+        border-radius: 0 0 8px 0;
+      }
+
+      td {
+        border-bottom: @light-border;
+      }
+    }
+    tfoot:last-child > tr:last-of-type {
+      td:first-child, th:first-child {
+        border-radius: 0 0 0 8px;
+      }
+
+      td:last-child, th:last-child {
+        border-radius: 0 0 8px 0;
+      }
+
+      td {
+        border-bottom: @light-border;
+      }
+    }
+  }
+
+  thead {
+    background: @header-background;
+
+    color: white;
+
+    th {
+      text-align: left;
+      font-weight: normal;
+      padding: .5em 1em;
+      border-right: @dark-border;
+      border-top: @dark-border;
+      border-bottom: @dark-border;
+
+      &:first-child {
+        border-left: @dark-border;
+      }
+    }
+  }
+
+  tbody {
+
+    tr {
+
+      td {
+        padding: 1em;
+
+        border-top: @light-border;
+
+        &:first-child {
+          border-left: @light-border;
+        }
+        &:last-child {
+          border-right: @light-border;
+        }
+      }
+
+      &:first-child td {
+        border-top: none;
+      }
+    }
+
+    tr.child {
+      display: none;
+
+      &.visible {
+        display: table-row;
+      }
+    }
+  }
+
+  span.open-toggle {
+    display: inline-block;
+
+    &:before {
+      content: @disclosure-symbol;
+    }
+  }
+
+  tr.open span.open-toggle {
+    transform: rotate(90deg);
+  }
+
+}
+
+/* Mix them under the appropriate tag like this: */
+rn-grid {
+  .grid-mixin();
+}
