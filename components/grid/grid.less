@@ -1,0 +1,117 @@
+/* Put grid styles here. */
+.grid-mixin() {
+
+  @dark-border: 1px solid hsl(0, 0%, 33%);
+  @light-border: 1px solid hsl(0, 0%, 75%);
+
+  @header-background: linear-gradient(to bottom, hsl(0, 0%, 75%), hsl(0, 0%, 50%));
+
+  @font-color: hsl(0, 0%, 50%);
+
+  @disclosure-symbol: '▶︎';
+
+  & > table {
+    width: 100%;
+    border: @light-border;
+    border-radius: 8px;
+    border-spacing: 0;
+
+    color: @font-color;
+
+    /* getting border radius to work right */
+    thead:first-child > tr:first-of-type {
+      td:first-child, th:first-child {
+        border-radius: 8px 0 0 0;
+      }
+
+      td:last-child, th:last-child {
+        border-radius: 0 8px 0 0;
+      }
+    }
+    tbody:first-child > tr:first-of-type {
+      td:first-child, th:first-child {
+        border-radius: 8px 0 0 0;
+      }
+
+      td:last-child, th:last-child {
+        border-radius: 0 8px 0 0;
+      }
+    }
+    tbody:last-child > tr:last-of-type {
+      td:first-child, th:first-child {
+        border-radius: 0 0 0 8px;
+      }
+
+      td:last-child, th:last-child {
+        border-radius: 0 0 8px 0;
+      }
+    }
+    tfoot:last-child > tr:last-of-type {
+      td:first-child, th:first-child {
+        border-radius: 0 0 0 8px;
+      }
+
+      td:last-child, th:last-child {
+        border-radius: 0 0 8px 0;
+      }
+    }
+  }
+
+  thead {
+    color: white;
+
+    background: @header-background;
+    border-radius: 8px;
+
+    th {
+      font-weight: normal;
+      padding: .5em 1em;
+      border-left: @dark-border;
+
+      &:first-child {
+        border-left: none;
+      }
+    }
+  }
+
+  tbody {
+
+    td {
+      padding: 1em;
+    }
+
+    tr td {
+      border-top: @light-border;
+    }
+
+    tr:first-child td {
+      border-top: none;
+    }
+
+    tr.child {
+      display: none;
+
+      &.visible {
+        display: table-row;
+      }
+    }
+  }
+
+  span.open-toggle {
+    display: inline-block;
+
+    &:before {
+      content: @disclosure-symbol;
+    }
+  }
+
+  tr.open span.open-toggle {
+    transform: rotate(90deg);
+  }
+
+}
+
+/* Mix them under the appropriate tag like this: */
+rn-grid {
+  .grid-mixin();
+}
