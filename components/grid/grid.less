@@ -1,7 +1,7 @@
 /* Put grid styles here. */
 .grid-mixin() {
 
-  @dark-border: 1px solid hsl(0, 0%, 33%);
+  @dark-border: 1px solid hsl(0, 0%, 40%);
   @light-border: 1px solid hsl(0, 0%, 75%);
 
   @header-background: linear-gradient(to bottom, hsl(0, 0%, 75%), hsl(0, 0%, 50%));
@@ -12,7 +12,6 @@
 
   & > table {
     width: 100%;
-    border: @light-border;
     border-radius: 8px;
     border-spacing: 0;
 
@@ -45,6 +44,10 @@
       td:last-child, th:last-child {
         border-radius: 0 0 8px 0;
       }
+
+      td {
+        border-bottom: @light-border;
+      }
     }
     tfoot:last-child > tr:last-of-type {
       td:first-child, th:first-child {
@@ -54,38 +57,52 @@
       td:last-child, th:last-child {
         border-radius: 0 0 8px 0;
       }
+
+      td {
+        border-bottom: @light-border;
+      }
     }
   }
 
   thead {
+    background: @header-background;
+
     color: white;
 
-    background: @header-background;
-    border-radius: 8px;
-
     th {
+      text-align: left;
       font-weight: normal;
       padding: .5em 1em;
-      border-left: @dark-border;
+      border-right: @dark-border;
+      border-top: @dark-border;
+      border-bottom: @dark-border;
 
       &:first-child {
-        border-left: none;
+        border-left: @dark-border;
       }
     }
   }
 
   tbody {
 
-    td {
-      padding: 1em;
-    }
+    tr {
 
-    tr td {
-      border-top: @light-border;
-    }
+      td {
+        padding: 1em;
 
-    tr:first-child td {
-      border-top: none;
+        border-top: @light-border;
+
+        &:first-child {
+          border-left: @light-border;
+        }
+        &:last-child {
+          border-right: @light-border;
+        }
+      }
+
+      &:first-child td {
+        border-top: none;
+      }
     }
 
     tr.child {
