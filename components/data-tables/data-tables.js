@@ -1,4 +1,5 @@
 import Component from 'can/component/';
+import appstate from 'models/appstate/';
 
 import AllInvoices from 'models/allInvoices/';
 
@@ -258,7 +259,8 @@ var dataTables = Component.extend({
 	             });
         	}
         },
-        ".dataTables_scrollBody scroll": function(){
+        
+        ".dataTables_scrollBody click": function(){
         	//alert(JSON.stringify(this.scope.attr().next));
         	
         	var self = this;
@@ -333,13 +335,22 @@ var dataTables = Component.extend({
             });
             if(flag==false){
                 $("#paymentBundleNames").attr("disabled","disabled");
+                $("#btnSubmit").attr("disabled","disabled");
                 $("#invoiceTypeError").html("<label style='color:red'>Selected rows has different Invoice Types</label>")
             }else {
                 $("#paymentBundleNames").removeAttr("disabled");
+                $("#btnSubmit").removeAttr("disabled");
                 $("#invoiceTypeError").text("");
             }
+        },
+        "#{name}>tbody>tr dblclick": function(){
+            //console.log(JSON.stringify(appstate));
+            appstate.attr('page','add-invoice');
+            //appstate.attr('invoiceid','123')
+
         }
     }
+    
 });
 
 export default dataTables;
