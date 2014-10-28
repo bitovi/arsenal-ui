@@ -37,14 +37,14 @@ the command line.
 
 ```sh
 $ git clone git@gitlab.corp.apple.com:ist-finance/arsenal-ui.git && cd arsenal-ui
-$ sudo npm install -g grunt-cli bower http-server
+$ sudo npm install -g grunt-cli bower
 $ npm install && bower install
 ```
 
 ## Running Arsenal
 
 1. Make sure you are in the `arsenal-ui` directory (the one you created when you cloned the project).
-1. Run `http-server` on the command line.
+1. Run `grunt serve` on the command line.
 1. Visit http://localhost:8080/ in your browser.
 
 # Developing for Arsenal
