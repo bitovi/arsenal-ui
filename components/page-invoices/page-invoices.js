@@ -23,7 +23,21 @@ var page = Component.extend({
   tag: 'page-invoices',
   template: template,
   scope: {
-    "tokenInputData": []
+    "tokenInputData": [],
+    "gridColumnText": [
+          { "sTitle": "", "mData": "id" },
+          { "sTitle": "Entity", "mData": "entity" },
+          { "sTitle": "Invoice Type", "mData": "invoiceType" },
+          { "sTitle": "Content Type", "mData": "contentType" },
+          { "sTitle": "Country", "mData": "country" },
+          { "sTitle": "Invoice No", "mData": "invoiceNum"},
+          { "sTitle": "Invoice Amount", "mData": "invoiceAmt"},
+          { "sTitle": "Due date", "mData": "dueDate"},
+          { "sTitle": "Currency",  "mData": "currency"},
+          { "sTitle": "Status",  "mData": "status"},
+          { "sTitle": "Payment Bundle Name",  "mData": "bundleName"},
+          { "sTitle": "User comments",  "mData": "comments"}
+        ]
   },
   events: {
   	"inserted": function(){

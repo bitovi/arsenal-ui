@@ -9,10 +9,10 @@
 
 
     <div class="col-lg-10" style="text-align:center;padding:10px;">
-      <button class="btn btn-custom-small" type="button" style="margin-left:10px;">Delete</button>&nbsp;
-      <button type="button" class="btn btn-custom-small" style="margin-left:10px;" id="btnAdd">Add</button>&nbsp;
-      <button type="button" class="btn btn-custom-small" style="margin-left:10px;" id="btnAddFromiCSV">Add from ICSV</button>&nbsp;
-      <button type="button" class="btn btn-custom-small" style="margin-left:10px;">Attach</button>
+      <button id="btnDelete" class="btn btn-primary buttonSubmit" type="button" style="margin-left:10px;" disabled>Delete</button>&nbsp;
+      <button type="button" class="btn btn-primary buttonSubmit" style="margin-left:10px;" id="btnAdd">Add</button>&nbsp;
+      <button type="button" class="btn btn-primary buttonSubmit" style="margin-left:10px;" id="btnAddFromiCSV">Add from ICSV</button>&nbsp;
+      <button id="btnAttach" type="button" class="btn btn-primary buttonSubmit" style="margin-left:10px;" disabled>Attach</button>
     </div>
 
     <div class="col-lg-2" style="padding:10px;">
@@ -21,7 +21,7 @@
 
 
     <div id="invoiceGrid">
-        <data-grid name='invoiceSearchTable' type='getAllInvoices'></data-grid>
+        <data-grid name='invoiceSearchTable' type='getAllInvoices' columnText={gridColumnText}></data-grid>
     </div>
 </div>
 
@@ -29,17 +29,20 @@
 
 
     <div class="col-md-12" style="text-align:right;padding:10px;">
-      <label  for="inputAnalyze">Anayze </label>
+      <label  for="inputAnalyze">Analyze </label>
 
-        <select id="inputAnalyze"  class="form-control" >
+        <select id="inputAnalyze"  class="form-control resizeBox" >
           <option value="0">All</option>
           <option value="1">Open Unbundled</option>
           <option value="2">Partial Unbundled</option>
         </select>
 
-        <!--<create-pb name="IESearch"></create-pb>-->
+        <label  style="margin-left:10px" for="inputPaymentBundle">Bundle Name:</label>
+        <create-pb name="IESearch"></create-pb>
 
         <button type="button" class="btn btn-default buttonCancel">Cancel</button>
-        <button id="buttonholes" type="submit"  class="btn btn-primary buttonSubmit">Submit</button>
+        <button id="btnSubmit" type="submit"  class="btn btn-primary buttonSubmit" disabled>Submit</button>
+    </div>
+    <div id="invoiceTypeError" class="col-md-12" style="text-align:right;padding-right:50px;">
     </div>
 </div>

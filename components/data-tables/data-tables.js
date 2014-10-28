@@ -44,7 +44,8 @@ var dataTables = Component.extend({
       		});
       	}
       	//console.log(type+"&&"+JSON.stringify(this.attr('tokenInput')));
-     }
+     },
+     checkedRows:[]
     },
     init: function() {
     	var self = this;   
@@ -261,7 +262,8 @@ var dataTables = Component.extend({
 	             });
         	}
         },
-        ".dataTables_scrollBody scroll": function(){
+        
+        ".dataTables_scrollBody click": function(){
         	//alert(JSON.stringify(this.scope.attr().next));
         	
         	var self = this;
@@ -298,13 +300,60 @@ var dataTables = Component.extend({
 			    self.scope.next.replace(nextVal);
 			}
         },
-       "#{name}>tbody>tr dblclick": function(){
-            appstate.attr('page','create-invoice');
+        "input:checkbox click": function(item, el, ev){
+            var self = this;
+            var val = $(item[0]).attr("value");
+            
+            if($(item[0]).is(":checked"))
+                self.scope.attr('checkedRows').push(val);
+            else {
+                self.scope.attr('checkedRows').each(function(value, key) {
+                    
+                    if(val == value){
+                        var i = self.scope.attr('checkedRows').indexOf(value);
+                        self.scope.attr('checkedRows').splice(i,1);
+                    }
+                });
+            }
+            console.log("Checked rows: "+JSON.stringify(self.scope.attr('checkedRows')));
+        },
+        "{checkedRows} change": function(){
+            var self = this;
+            if(self.scope.attr('checkedRows').length > 0){
+                $("#btnDelete").removeAttr("disabled");
+                $("#btnAttach").removeAttr("disabled");
+                $("#btnSubmit").removeAttr("disabled");
+            }
+            else{
+                $("#btnDelete").attr("disabled","disabled");
+                $("#btnAttach").attr("disabled","disabled");
+                $("#btnSubmit").attr("disabled","disabled");
+            }
+            var flag=true;
+            self.scope.attr('checkedRows').each(function(val, key) {
+                self.scope.attr('checkedRows').each(function(value, key) {
+                    if(val!=value)
+                        flag = false;
+                });
+            });
+            if(flag==false){
+                $("#paymentBundleNames").attr("disabled","disabled");
+                $("#btnSubmit").attr("disabled","disabled");
+                $("#invoiceTypeError").html("<label style='color:red'>Selected rows has different Invoice Types</label>")
+            }else {
+                $("#paymentBundleNames").removeAttr("disabled");
+                $("#btnSubmit").removeAttr("disabled");
+                $("#invoiceTypeError").text("");
+            }
+        },
+        "#{name}>tbody>tr dblclick": function(){
+            appstate.attr('page','create-invoice');
             invoicemap.attr('invoiceid','123');
         }
        
 
     }
+    
 });
 
 export default dataTables;
