@@ -36,14 +36,14 @@ the command line.
 1. Run these commands:
 
 ```sh
-$ git clone git@gitlab.sd.apple.com:ist-finance/arsenal.git && cd arsenal
+$ git clone git@gitlab.corp.apple.com:ist-finance/arsenal-ui.git && cd arsenal-ui
 $ sudo npm install -g grunt-cli bower http-server
 $ npm install && bower install
 ```
 
 ## Running Arsenal
 
-1. Make sure you are in the `arsenal` directory (the one you created when you cloned the project).
+1. Make sure you are in the `arsenal-ui` directory (the one you created when you cloned the project).
 1. Run `http-server` on the command line.
 1. Visit http://localhost:8080/ in your browser.
 
@@ -64,7 +64,7 @@ Here is the entire workflow, from being assigned a radar to releasing the app:
 1. Set the radar you're working on to **Analyze/Fix** status.
 1. Start a development branch. You should only work on one feature or bug in each development branch.
 1. Work on the development branch, committing and pushing to origin when sensible.
-1. When you're done with your work, go to [Gitlab's merge requests page](https://gitlab.sd.apple.com/ist-finance/arsenal/merge_requests) and create a new merge request from your development branch to the `develop` branch.
+1. When you're done with your work, go to [Gitlab's merge requests page](https://gitlab.corp.apple.com/ist-finance/arsenal-ui/merge_requests) and create a new merge request from your development branch to the `develop` branch.
  * Put the associated radar URL in the title of the merge request, along with a short description of what you changed.
  * If you need more detail, use the *Description* field.
  * Assign the merge request to someone else on the team for review. (To start, this will be Eli or Sudesna).
