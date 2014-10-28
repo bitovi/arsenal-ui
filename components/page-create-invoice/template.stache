@@ -2,7 +2,11 @@
 <div class="container-fluid">
   <div class="row">  
     <div class="col-sm-5 pageTitle">
-		<h3>Add Invoice</h3>
+		    {{#if editpage}}
+			    <h3>Edit Invoice</h3>
+			{{else}}
+			     <h3>Add Invoice</h3>
+		  	{{/if}}
 	</div>
 	<div class="col-sm-2">
 		{{#if errorMsg.responseText}}
@@ -96,7 +100,11 @@
 				   			<div class="col-sm-6">
 							    <label for="inputPassword3" class="col-sm-4 control-label">Create Date:</label>
 							    <div class="col-sm-4" style="text-align:left;">
-							       {{currentDate}}
+							       {{#if editpage}}
+							       		{{createDateStore}}
+							       {{else}}
+							        	{{currentDate}}
+							       {{/if}}
 							    </div>
 							 </div>
 							 <div class="col-sm-6 recdate">   
@@ -184,7 +192,7 @@
 						        </tr>
 						    </thead>
 						    <tbody>
-						     
+						     {{#unless editpage}}
 						         <tr id="breakrow0">
 						            <td class="form-group"> 
 						            	
@@ -231,6 +239,7 @@
 										<img src="resources/images/button_minus_red.png" class="breakDownIconSize removeRow" id="removeRow" style="display:none;">
 						           </td>
 						         </tr>
+						         {{/unless}}
 						         <tr class="hide" id="breakrowTemplate">
 						            <td> 
 						            	
@@ -312,13 +321,11 @@
 					    <div class="col-sm-12" style="text-align:right;padding:15px;">
 					     
 					        <label class="col-sm-2" for="inputCountry">Bundle Name:</label>
-					          <div class="col-sm-4 requiredBar">
-							        <select id="inputCountry"  class="form-control" >
-								        <option value="AUT">Europe P07 FY14 Invoices</option>
-								        <option value="BEL">Create New Bundle</option>
-							        </select>
-					        </div>
-					        <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled">Cancel</button>
+					         <div class="col-sm-4 requiredBar">
+							 	<!--<create-pb name="IESearch"></create-pb>-->
+					         </div>
+					        
+					        <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
 					        <button id="addInvSubmit" type="submit"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>
 					    </div>
 					 </div>		  

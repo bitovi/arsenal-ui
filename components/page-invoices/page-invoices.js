@@ -1,6 +1,9 @@
 import Component from 'can/component/';
 import View from 'can/view/';
 
+import appstate from 'models/appstate/';
+import invoicemap from 'models/sharedMap/invoice';
+
 import dataTables from 'components/data-tables/';
 import treetables from 'treetables';
 import css_treetables from 'treetables.css!';
@@ -59,7 +62,12 @@ var page = Component.extend({
             }
       });
 
-  	}
+  	},
+     "#btnAdd click": function(){
+            appstate.attr('page','create-invoice');
+            invoicemap.attr('invoiceid','');
+           
+    }
   }
 });
 

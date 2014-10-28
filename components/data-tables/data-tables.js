@@ -2,6 +2,10 @@ import Component from 'can/component/';
 
 import AllInvoices from 'models/allInvoices/';
 
+import appstate from 'models/appstate/';
+
+import invoicemap from 'models/sharedMap/invoice';
+
 import datatables from 'datatables';
 import css_datatables from 'datatables.css!';
 import treetables from 'treetables';
@@ -293,7 +297,13 @@ var dataTables = Component.extend({
 			    });
 			    self.scope.next.replace(nextVal);
 			}
+        },
+       "#{name}>tbody>tr dblclick": function(){
+            appstate.attr('page','create-invoice');
+            invoicemap.attr('invoiceid','123');
         }
+       
+
     }
 });
 

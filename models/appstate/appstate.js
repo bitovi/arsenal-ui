@@ -29,10 +29,13 @@ var stateDefaults = {
   page: 'dashboard'
 };
 
+
+
 var appState = new State({
   startRouting: function() {
     // Create a route and pass in initial values.
     route(':page', stateDefaults);
+   
     // start routing!
     route.ready();
   }
