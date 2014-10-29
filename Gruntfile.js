@@ -8,6 +8,12 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('testee');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks('grunt-contrib-clean');
+
+  grunt.loadTasks('tasks/write-files');
+
+  // Create some configuration settings.
+  var buildDir = __dirname + '/dist/bundles';
 
   // Configure the tasks we loaded.
   grunt.initConfig({
@@ -17,6 +23,7 @@ module.exports = function (grunt) {
           system: {
             config: __dirname + "/stealconfig.js",
             main: "index",
+            bundlesPath: buildDir
           },
           buildOptions: {
             bundleSteal: true
@@ -114,6 +121,16 @@ module.exports = function (grunt) {
           ]
         }
       }
+    },
+
+    clean: {
+      build: [ buildDir ]
+    },
+
+    writeFiles: {
+      build: {
+        dstDir: buildDir
+      }
     }
 
   });
@@ -121,7 +138,7 @@ module.exports = function (grunt) {
   // `grunt test`
   grunt.registerTask('test', 'Run tests.', ['testee']);
   // `grunt build`
-  grunt.registerTask('build', 'Make a build.', ['stealBuild']);
+  grunt.registerTask('build', 'Make a build.', ['clean:build', 'stealBuild', 'writeFiles']);
 
   // `grunt release`
   grunt.registerTask('release', 'Create a release.', function(releaseType) {

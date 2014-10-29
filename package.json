@@ -16,6 +16,7 @@
     "grunt-contrib-connect": "~0.8.0",
     "send": "~0.10.0",
     "morgan": "~1.4.0",
-    "url": "~0.10.1"
+    "url": "~0.10.1",
+    "grunt-contrib-clean": "~0.6.0"
   }
 }
