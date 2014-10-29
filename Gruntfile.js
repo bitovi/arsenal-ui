@@ -7,13 +7,19 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('steal-tools');
   grunt.loadNpmTasks('testee');
   grunt.loadNpmTasks('grunt-shell');
+  grunt.loadNpmTasks('grunt-concurrent');
   grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks('grunt-connect-proxy');
   grunt.loadNpmTasks('grunt-contrib-clean');
 
   grunt.loadTasks('tasks/write-files');
 
   // Create some configuration settings.
   var buildDir = __dirname + '/dist/bundles';
+  var proxyConfig = {
+    localhost: 'localhost:8090',
+    proxyhost: 'ma-rinsd-lapp01.corp.apple.com:8090'
+  };
 
   // Configure the tasks we loaded.
   grunt.initConfig({
@@ -111,8 +117,9 @@ module.exports = function (grunt) {
           middleware: [
             morgan(':method :url :status'),
             function(req, res, next) {
-              var pathname = url.parse(req.url).pathname;
-              if(pathname.indexOf('.') < 0 || pathname.substr(-5) === '.html') {
+              var parsedURL = url.parse(req.url);
+
+              if(parsedURL.pathname.indexOf('.') < 0 || parsedURL.pathname.substr(-5) === '.html') {
                 send(req, __dirname + '/index.html').pipe(res);
               } else {
                 send(req, __dirname + req.url).pipe(res);
@@ -120,6 +127,39 @@ module.exports = function (grunt) {
             }
           ]
         }
+      },
+      proxy: {
+        options: {
+          hostname: 'localhost',
+          port: 8090,
+          keepalive: true,
+          middleware: function(connect, options) {
+            var proxy = require('grunt-connect-proxy/lib/utils').proxyRequest;
+            return [
+              morgan(':method :url :status'),
+              function (req, res, next) {
+                  res.setHeader('Access-Control-Allow-Origin', '*');
+                  res.setHeader('Access-Control-Allow-Methods', '*');
+                  next();
+              },
+              proxy
+            ];
+          }
+        },
+        proxies: [
+          {
+            context: '/',
+            host: 'ma-rinsd-lapp01.corp.apple.com',
+            port: 8090
+          }
+        ]
+      }
+    },
+
+    concurrent: {
+      servers: ['server', 'proxy'],
+      options: {
+        logConcurrentOutput: true
       }
     },
 
@@ -148,9 +188,12 @@ module.exports = function (grunt) {
   // `grunt publish`
   grunt.registerTask('publish', 'Publish the project.', ['shell:publish']);
 
+  // `grunt server`
+  grunt.registerTask('server', 'Start an HTTP server.', ['connect:server']);
+  // `grunt proxy`
+  grunt.registerTask('proxy', 'Start the proxy server.', ['configureProxies:proxy', 'connect:proxy']);
   // `grunt serve`
-  grunt.registerTask('serve', 'Start an HTTP server.', ['connect:server']);
-  grunt.registerTask('server', ['serve']);
+  grunt.registerTask('serve', 'Start all servers.', ['concurrent:servers']);
 
   // Tell grunt what to do when we just run `grunt`
   grunt.registerTask('default', 'Run tests and make a build.', ['test', 'build']);
