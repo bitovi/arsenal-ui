@@ -136,12 +136,12 @@ module.exports = function (grunt) {
           middleware: function(connect, options) {
             var proxy = require('grunt-connect-proxy/lib/utils').proxyRequest;
             return [
-              morgan(':method :url :status'),
               function (req, res, next) {
                   res.setHeader('Access-Control-Allow-Origin', '*');
                   res.setHeader('Access-Control-Allow-Methods', '*');
                   next();
               },
+              morgan('\x1b[35m:method :url\x1b[0m :status'),
               proxy
             ];
           }
