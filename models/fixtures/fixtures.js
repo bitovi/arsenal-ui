@@ -14,3 +14,11 @@ fixture('GET /contentType', '/models/fixtures/contentType.json');
 
 fixture('GET /getInvoiceById/1024', '/models/fixtures/getInvoiceById.json');
 
+fixture('GET /global-licensors', '/models/fixtures/global-licensor.json');
+
+fixture('GET /global-regions', '/models/fixtures/global-region.json');
+
+import fixture_country from './global-country';
+
+fixture('GET /global-storeTypes', '/models/fixtures/global-store-type.json');
+

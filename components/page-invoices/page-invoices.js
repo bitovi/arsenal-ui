@@ -2,6 +2,9 @@ import Component from 'can/component/';
 import View from 'can/view/';
 
 import appstate from 'models/appstate/';
+
+import GlobalParameterBar from 'components/global-parameter-bar/';
+
 import invoicemap from 'models/sharedMap/invoice';
 
 import dataTables from 'components/data-tables/';

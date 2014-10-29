@@ -342,8 +342,10 @@ var dataTables = Component.extend({
                 $("#invoiceTypeError").html("<label style='color:red'>Selected rows has different Invoice Types</label>")
             }else {
                 $("#paymentBundleNames").removeAttr("disabled");
-                $("#btnSubmit").removeAttr("disabled");
                 $("#invoiceTypeError").text("");
+                if(self.scope.attr('checkedRows').length > 0)
+                    $("#btnSubmit").removeAttr("disabled");
+                
             }
         },
         "#{name}>tbody>tr dblclick": function(){
