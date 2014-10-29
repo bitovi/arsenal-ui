@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "name": "North America"
+  },
+  {
+    "id": 2,
+    "name": "Europe"
+  },
+  {
+    "id": 3,
+    "name": "APAC"
+  },
+  {
+    "id": 4,
+    "name": "Latin and South America"
+  }
+]

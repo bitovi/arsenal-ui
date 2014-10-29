@@ -1,0 +1,46 @@
+<ul class="parameters">
+  <li id="store-type">
+    <span class="parameter-name">Store Type:</span>
+    <select>
+      {{#each storeTypes}}
+      <option {{isSelected 'storeType' id}} {{data 'storeType'}}>{{name}}</option>
+      {{/each}}
+    </select>
+  </li>
+  <li id="region">
+    <span class="parameter-name">Region:</span>
+    <select>
+      {{#each regions}}
+      <option {{isSelected 'region' id}} {{data 'region'}}>{{name}}</option>
+      {{/each}}
+    </select>
+  </li>
+  <li id="country">
+    <span class="parameter-name">Country:</span>
+    <select>
+      {{#each countries}}
+      <option {{isSelected 'country' id}} {{data 'country'}}>{{name}}</option>
+      {{/each}}
+    </select>
+  </li>
+  <li id="licensor">
+    <span class="parameter-name">Licensor:</span>
+    <select>
+      {{#each licensors}}
+      <option {{isSelected 'licensor' id}} {{data 'licensor'}}>{{name}}</option>
+      {{/each}}
+    </select>
+  </li>
+  <li id="contentType">
+    <span class="parameter-name">Content Type:</span>
+    <select id="conType" name="inputMonth">
+        <option value="">Select</option>
+        <option value="6">Music</option>
+        <option value="6">Tv</option>
+        <option value="6">Cloud</option>
+    </select>
+  </li>
+  <li id="btnFetch">
+    <button type="button" class="btn btn-primary buttonSubmit btn-custom-big" style="margin-left:10px;" id="btnAdd">Fetch</button>
+  </li>
+</ul>
