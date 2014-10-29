@@ -4,9 +4,9 @@ var BundleNames = Model.extend({
 
   findAll: function(){
     return $.ajax({
-      url: 'http://localhost:8090/paymentBundle/names',
-      type: 'POST',
-      dataType: 'json'
+      url: 'http://ma-rinsd-lapp01.corp.apple.com:8090/paymentBundle/names',
+      type: 'POST'
+   
     })
   }
   //findAll: 'GET /invoiceType'

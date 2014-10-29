@@ -4,7 +4,7 @@ var Invoice = Model.extend({
  findOne: 'GET /getInvoiceById/1024',	
  create: function(params){
  	return $.ajax({
-  		url: 'http://localhost:8090/invoice/create',
+  		url: 'http://ma-rinsd-lapp01.corp.apple.com:8090/invoice/create',
   		type: 'POST'
      	//data: params 
   	})

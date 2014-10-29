@@ -1,5 +1,5 @@
 <form class="form-horizontal"  id="invoiceform" role="form">
-<div class="container-fluid">
+<div class="container-fluid create-invoice">
   <div class="row">  
     <div class="col-sm-5 pageTitle">
 		    {{#if editpage}}
@@ -17,7 +17,7 @@
 
 		<div class="row">
 			
-			 	<div class="form-group">
+			 	<div class="form-group col-sm-12">
 				 	<div class="col-sm-6">
 				 		<div class="col-sm-6">
 						    <label for="inputEmail3" class="col-sm-4 control-label">Invoice Type: </label>
@@ -32,7 +32,7 @@
 					  	</div>
 					 </div>
 				</div>
-			<div class="row lineDivider"></div>	  
+			<div class="col-sm-12 lineDividerInvoice"></div>	  
 			<div class="col-sm-6 right-border" {{setHeight}}>	
 				<div class="form-group">
 				  <div class="col-sm-6">   
@@ -182,12 +182,11 @@
 					  <table class="table table-condensed table-striped breakdown" id="breakTable">
 						    <thead>
 						        <tr>
-						            <th style="width:20%;">Content Type</th>
+						            <th style="width:20%;">{{isAdhocStrore.contentAdhoc}}</th>
 						            <th>Period</th>
-						            <th>&nbsp;&nbsp;</th>
 						            <th>Amount</th>
 						            <th>Country</th>
-						            <th>{{isAdhoc}}</th>
+						            <th>{{isAdhocStrore.ccidGL}}</th>
 						            <th><img src="resources/images/button_plus_blue.png" class="breakDownIconSize addRow" id="addRow"></th>
 						        </tr>
 						    </thead>
@@ -207,19 +206,14 @@
 						            <td class="breakdownPeriod">
 						            	<select id="inputMonth0" name="inputMonth" class="form-control inputMonth">
 						            			<option value="">Select</option>
-										        <option value="6">P09 - Jun</option>
-										        <option value="6">P10 - Jun</option>
+										        <option value="201301">P1FY13</option>
+										        <option value="201302">P2FY13</option>
+										        <option value="201303">P4FY13</option>
+										        <option value="201304">P4FY13</option>
 							        	</select>
 
 							        </td>
-							        <td>	
-							        	<select id="inputYear0" name="inputYear" class="form-control inputYear">
-							        			<option value="">Select</option>
-										        <option value="AUT">FY13</option>
-										        <option value="BEL">FY13</option>
-							        	</select>	
-						            </td>
-						            <td class="form-group">
+							        <td class="form-group">
 						            	<input type="text" class="form-control amountText classAmtTotal" name=amount[] id="amountText0" placeholder="" can-value="val0">
 						            
 						            </td>
@@ -232,7 +226,17 @@
 						        		</select>
 						            </td>
 						           <td>
-						            	<input type="text" class="form-control ccidGL" id="ccidGL0" name="ccidGL" placeholder="" >
+						            	 {{#if isAdhocStrore.invtype}} 
+								            	<select id="ccidGL0" name="ccidGL" class="form-control inputMonth">
+								            			<option value="">Select</option>
+												        <option value="4200023">4200023</option>
+										        		<option value="4200025">4200025</option>
+										        		<option value="4207023">4207023</option>
+										        		<option value="4208027">4208027</option>
+									        	</select>
+						            	  {{else}}
+						            	 		<input type="text" class="form-control ccidGL" id="ccidGL0" name="ccidGL" placeholder="" >  
+						            	 {{/if}}  
 						           </td>
 						           <td>
 						           		
@@ -253,18 +257,13 @@
 						            <td class="breakdownPeriod">
 						            	<select id="inputMonth" name="inputMonth" class="form-control inputMonth">
 						            			<option value="">Select</option>
-										        <option value="AUT">P09 - Jun</option>
-										        <option value="BEL">P10 - Jun</option>
+										        <option value="201301">P1FY13</option>
+										        <option value="201302">P2FY13</option>
+										        <option value="201303">P4FY13</option>
+										        <option value="201304">P4FY13</option>
 							        	</select>
 							        </td>
-							        <td>	
-							        	<select id="inputYear" name="inputYear" class="form-control inputYear">
-							        			<option value="">Select</option>
-										        <option value="AUT">FY13</option>
-										        <option value="BEL">FY13</option>
-							        	</select>	
-						            </td>
-						            <td>
+							        <td>
 						            	<input type="text" class="form-control amountText classAmtTotal"  name=amount[] placeholder="" can-value="val0">
 						            </td>
 						            <td class="breakdownCountry">
@@ -276,7 +275,17 @@
 						        		</select>
 						            </td>
 						           <td>
-						            	<input type="text" class="form-control ccidGL" id="ccidGL" name="ccidGL" placeholder="" >
+						            	{{#if isAdhocStrore.invtype}} 
+								            	<select id="ccidGL" name="ccidGL" class="form-control inputMonth">
+								            			<option value="">Select</option>
+												        <option value="4200023">4200023</option>
+										        		<option value="4200025">4200025</option>
+										        		<option value="4207023">4207023</option>
+										        		<option value="4208027">4208027</option>
+									        	</select>
+						            	  {{else}}
+						            	 		<input type="text" class="form-control ccidGL" id="ccidGL" name="ccidGL" placeholder="" >  
+						            	 {{/if}}  
 						           </td>
 						           <td>
 						           		
@@ -306,27 +315,32 @@
 						    </div>
 						   
 						   <div class="col-sm-9"><label class="control-label">Tax %:</label></div>
-						   <div class="col-sm-3">{{calculateTaxPercent}}</div>
+						   <div class="col-sm-3 taxpercent">{{calculateTaxPercent}}</div>
 						 
 						<div class="col-sm-12 invoice-total-container">
 						   <div class="col-sm-9"><label class="control-label large-value">Invoice Total:</label></div>
 						   <div class="col-sm-3 large-value">{{grossTotal}} 
-									<label class="control-label">{{currencyStore}}</label><!--Currency --></div>
+									<label class="control-label">{{currencyStore}}</label><!--Currency -->
+							</div>
+							<div class="col-sm-3 col-sm-offset-9">{{calculateUSD}}
+							   {{#if totalAmountVal}}
+							   <label class="control-label">USD</label>
+							   {{/if}}
+						    </div>
 						 </div>
-						 
-						   <div class="col-sm-3 col-sm-offset-9"><!--891 USD --></div>
-				   </div>
+					    </div>
 				  
 				  <div class="col-sm-12">
 					    <div class="col-sm-12" style="text-align:right;padding:15px;">
 					     
 					        <label class="col-sm-2" for="inputCountry">Bundle Name:</label>
 					         <div class="col-sm-4 requiredBar">
-							 	<!--<create-pb name="IESearch"></create-pb>-->
+							 	<create-pb name="createinvoice"></create-pb>
 					         </div>
-					        
+					        <div class="col-sm-6 ">
 					        <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
 					        <button id="addInvSubmit" type="submit"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>
+					        </div>
 					    </div>
 					 </div>		  
 				  

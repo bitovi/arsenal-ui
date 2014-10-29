@@ -2,14 +2,14 @@ import Model from 'can/model/';
 
 var ContentType = Model.extend({
   // using finaAll instead of resource because I don't want to be able to save.
- /* findAll: function(){
+  findAll: function(){
   	return $.ajax({
-  		url: 'http://127.0.0.1:8090/rins/common/getInvoiceTypes',
-  		type: 'GET',
-  		dataType: 'json'
+  		url: 'http://ma-rinsd-lapp01.corp.apple.com:8090/getContentTypes',
+  		type: 'POST'
+  		
   	})
-  }*/
-findAll: 'GET /contentType'
+  }
+//findAll: 'GET /contentType'
 
 }, {});
 

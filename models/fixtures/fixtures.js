@@ -14,3 +14,5 @@ fixture('GET /contentType', '/models/fixtures/contentType.json');
 
 fixture('GET /getInvoiceById/1024', '/models/fixtures/getInvoiceById.json');
 
+fixture('GET /fxrate', '/models/fixtures/fxrate.json');
+

@@ -21,6 +21,7 @@ import Licensor from 'models/licensor/';
 import Currency from 'models/currency/';
 import Country from 'models/country/';
 import Invoice from 'models/invoice/';
+import Fxrate from 'models/fxrate/';
 
 //import Invoice from 'models/invoice/';
 
@@ -35,11 +36,13 @@ var page = Component.extend({
   	currency:[],
   	country:[],
   	contentType:[],
+  	fxrate:[],
   	AmountStore:{},
  	totalAmountVal:0,
   	calduedate:0,
   	tax:0,
   	taxStore:{},
+  	isAdhocStrore:{"ccidGL":"CCID Document", "contentAdhoc":"Content Type"},
   	/*Form value*/
   	invoicetypeSelect:{},
   	licensorStore:{},
@@ -75,6 +78,7 @@ var page = Component.extend({
   	 		} */
 		},
 	createBreakline: function(rowindex){
+				var self = this;
 				var $template = $('#breakrowTemplate'),
                 $clone    = $template
                                 .clone()
@@ -85,15 +89,15 @@ var page = Component.extend({
                                $("#breakrow"+rowindex+" .amountText").attr("id","amountText"+rowindex).val(" ");
                                $("#breakrow"+rowindex+" #inputContent").attr("id","inputContent"+rowindex);
                                $("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex);
-                               $("#breakrow"+rowindex+" #inputYear").attr("id","inputYear"+rowindex);
+                              // $("#breakrow"+rowindex+" #inputYear").attr("id","inputYear"+rowindex);
                                $("#breakrow"+rowindex+" #inputCountry").attr("id","inputCountry"+rowindex);
-                               $("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val(" ");
+                               $("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val("");
                                if(rowindex != 0)
                                $("#breakrow"+rowindex+" .removeRow").css("display", "block"); 
 
                                $(".removeRow").click(function(event){
 						            $(this).closest("tr").remove();
-						            self.scope.AmountStore.removeAttr("amountText"+rowindex);
+						            self.AmountStore.removeAttr("amountText"+rowindex);
 						        });
 			
 		}	
@@ -365,7 +369,7 @@ var page = Component.extend({
 						                               self.scope.AmountStore.attr("amountText0", " ");
 						                               $("#breakrow0 #inputContent0").attr("id","inputContent0").val("");
 						                               $("#breakrow0 #inputMonth0").attr("id","inputMonth0").val("");
-						                               $("#breakrow0 #inputYear0").attr("id","inputYear0").val("");
+						                              // $("#breakrow0 #inputYear0").attr("id","inputYear0").val("");
 						                               $("#breakrow0 #inputCountry0").attr("id","inputCountry0").val("");
 						                               $("#breakrow0 #ccidGL0").attr("id","ccidGL0").val("");
 												 	   // self.scope.contentTypeStore.attr("amountPeriod0","");
@@ -381,30 +385,30 @@ var page = Component.extend({
 								
 								
                         
-                        return false;
+			                        return false;
 
-       		 });
+			       		 });
 
-			$('#invoicedate').on('dp.change dp.show', function (e) {
-            			$('#invoiceform').bootstrapValidator('revalidateField', 'invoicedate');
-        	});
+						$('#invoicedate').on('dp.change dp.show', function (e) {
+			            			$('#invoiceform').bootstrapValidator('revalidateField', 'invoicedate');
+			        	});
 
-	        $('#receiveddate').on('dp.change dp.show', function (e) {
-	           			$('#invoiceform').bootstrapValidator('revalidateField', 'receiveddate');
-	        });
+				        $('#receiveddate').on('dp.change dp.show', function (e) {
+				           			$('#invoiceform').bootstrapValidator('revalidateField', 'receiveddate');
+				        });
 
 
-			$('#invoiceduedate').on('dp.change dp.show', function (e) {
-	            		$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
-	        });
+						$('#invoiceduedate').on('dp.change dp.show', function (e) {
+				            		$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
+				        });
 
-		/*	if(!self.scope.attr("invoiceid") && self.scope.attr("allModelReady"))
-				self.scope.createBreakline(0);*/  
+						/*	if(!self.scope.attr("invoiceid") && self.scope.attr("allModelReady"))
+								self.scope.createBreakline(0);*/  
 
-		},
-		 "{invoiceContainer} change": function() {
-		 		var self = this;  /*This block is used to update data in view with two way binding*/
-		 		
+				},
+				 "{invoiceContainer} change": function() {
+				 		var self = this;  /*This block is used to update data in view with two way binding*/
+				 		
 		 		//console.log(self.scope.attr().invoiceContainer[0].invoiceNumber);
 		 		
 		 		var invoiceData = self.scope.attr().invoiceContainer[0];
@@ -433,9 +437,9 @@ var page = Component.extend({
 		 		/*Breakdown start*/
 		 		//var self = this;
          	
-         	var $template = $('#breakrowTemplate');
+         		var $template = $('#breakrowTemplate');
          	
-         	for(var i=0;i<invoiceData.invoiceLines.length;i++){
+         		for(var i=0;i<invoiceData.invoiceLines.length;i++){
 					self.scope.attr("rowindex",i)
 					var rowindex = self.scope.attr("rowindex");
                
@@ -448,8 +452,8 @@ var page = Component.extend({
                                $("#breakrow"+rowindex+" .amountText").attr("id","amountText"+rowindex).val(invoiceData.invoiceLines[i].lineAmount);
                                self.scope.AmountStore.attr("amountText"+rowindex, invoiceData.invoiceLines[i].lineAmount);
                                $("#breakrow"+rowindex+" #inputContent").attr("id","inputContent"+rowindex).val(invoiceData.invoiceLines[i].contentType);
-                               $("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex);
-                               $("#breakrow"+rowindex+" #inputYear").attr("id","inputYear"+rowindex);
+                               $("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).val(invoiceData.invoiceLines[i].fiscalPeriod);
+                              // $("#breakrow"+rowindex+" #inputYear").attr("id","inputYear"+rowindex);
                                $("#breakrow"+rowindex+" #inputCountry").attr("id","inputCountry"+rowindex).val(invoiceData.invoiceLines[i].countryName);
                                $("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val(invoiceData.invoiceLines[i].glAccount);
                                if(rowindex != 0)
@@ -480,9 +484,9 @@ var page = Component.extend({
 		".inputMonth change": function(event){
          	this.scope.monthStore.attr(event[0].id, event[0].value)
 		},
-		".inputYear change": function(event){
+	/*	".inputYear change": function(event){
          	this.scope.yearStore.attr(event[0].id, event[0].value)
-		},
+		},*/
 		".inputCountry change": function(event){
          	this.scope.countryStore.attr(event[0].id, event[0].value)
          	console.log(this.scope.countryStore.attr());
@@ -495,6 +499,33 @@ var page = Component.extend({
 
 		"#invoiceType change": function(){
 			this.scope.isRequired();
+			var self = this;
+			$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
+				if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
+					$(this).remove();
+					
+					}
+			  });
+			$("#breakrow0 .amountText").attr("id","amountText0").val(" ");
+			
+			self.scope.attr("AmountStore").each(function(val, key){
+  	 				self.scope.AmountStore.removeAttr(key);
+  	 			});
+			
+			this.scope.attr("totalAmountVal", 0);
+			
+			if(this.scope.attr("invoicetypeSelect") == "2"){  /*Adhoc*/
+				this.scope.isAdhocStrore.attr("ccidGL", "GL Account");
+	  	 		this.scope.isAdhocStrore.attr("contentAdhoc", "Adhoc Type");
+	  	 		this.scope.isAdhocStrore.attr("invtype", "Adhoc");
+
+	  	 	 }
+			 else{
+			  	 this.scope.isAdhocStrore.attr("ccidGL", "CCID Document");
+			  	 this.scope.isAdhocStrore.attr("contentAdhoc", "Content Type");
+			  	 this.scope.isAdhocStrore.attr("invtype", "");
+			 }
+
 		},
          "{AmountStore} change": function() {
          		var totalAmount = 0;
@@ -548,7 +579,7 @@ var page = Component.extend({
 
     
    },
-  init: function(){
+  	init: function(){
    	 	var self = this;
    	 	var i = 1;
    	 	Promise.all([
@@ -556,16 +587,19 @@ var page = Component.extend({
 			     	Licensor.findAll(),
 			     	Currency.findAll(),
 			        ContentType.findAll(),
-			      	Country.findAll()
+			      	Country.findAll(),
+			      	Fxrate.findAll()
 			      	//  Currency.findAll()*/
 				]).then(function(values) {
-		     		 self.scope.attr("invoiceTypes").replace(values[0][0]["invoiceTypes"]);
-		     		 self.scope.attr("licensor").replace(values[1][0]["licensors"]);
-		     		 self.scope.attr("currency").replace(values[2][0]["currencies"]);
-		     		 self.scope.attr("contentType").replace(values[3][0]["contentTypes"]);
-		     		 self.scope.attr("country").replace(values[4][0]["countries"]);
+		     		 self.scope.attr("invoiceTypes").replace(values[0][0]["data"]);
+		     		 self.scope.attr("licensor").replace(values[1][0]["data"]);
+		     		 self.scope.attr("currency").replace(values[2][0]["data"]);
+		     		 self.scope.attr("contentType").replace(values[3][0]["data"]);
+		     		 self.scope.attr("country").replace(values[4][0]["data"]);
+		     		 self.scope.attr("fxrate").replace(values[5][0]["data"][0]["fxrate"]);
+		     		console.log(self.scope.fxrate.attr()[0]);
 		     	
-		     		 console.log(invoicemap.attr("invoiceid")+"wejege");
+		     		
 		     	//	 self.scope.attr("invoiceid", invoicemap.attr("invoiceid"));
 
 		     		 if(invoicemap.attr("invoiceid")){
@@ -588,16 +622,6 @@ var page = Component.extend({
 		     	});
 
 				
-				
-
-				
-				
-					
-					
-
-					
-
-
 	},
   	helpers: {
 			  	currentDate: function(){
@@ -622,11 +646,16 @@ var page = Component.extend({
 			  	},
 			  	isAdhoc: function(){
 			  	 	if(this.attr("invoicetypeSelect") == "2"){  /*Adhoc*/
-			  	 		console.log(this);
-			  	 		return "GL Account"
+			  	 		
+			  	 		return "Adhoc";
+			  	 		//console.log(this.isAdhocStrore);
+			  	 		//this.attr("isAdhoc").contentGL
+			  	 		//return "GL Account"
 			  	 	}
 			  	 	else{
-			  	 		return "CCID Document"
+			  	 		this.isAdhocStrore.attr("ccidGL", "CCID Document");
+			  	 		return this.isAdhocStrore;
+			  	 		//return "CCID Document"
 			  	 	}
 			  	},
 			  	grossTotal: function(){
@@ -641,7 +670,23 @@ var page = Component.extend({
 				setMinHeightBreak: function(){
 			  	 	var vph = $(window).height()-500;
 			  	 	return 'Style="min-height:'+vph+'px"';
+				},
+				calculateUSD:function(){
+					var fxrate = this.fxrate.attr()[0];
+					return this.attr("totalAmountVal")*fxrate;
+					//return fxrate;
+				},
+				disableInvoiceType:function(){
+					if(this.attr("editpage"))
+					{
+					  return "disabled"; 
+					}
+					else
+					{
+						return ""; 
+					}
 				}
+
   	 	}
 });
 

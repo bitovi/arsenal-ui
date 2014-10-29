@@ -3,7 +3,8 @@
 		"invoiceTypes":
 		[
 			{"value":"Regular","id":"1"},
-			{"value":"Adhoc","id":"2"}
+			{"value":"Adhoc","id":"2"},
+			{"value":"Cash Adjustments","id":"3"}
 		],
 		"responseHeader":{
 			"statusCode":"200",

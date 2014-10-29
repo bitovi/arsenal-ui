@@ -5,7 +5,7 @@ var Licensor = Model.extend({
 
 findAll: function(){
   return $.ajax({
-    url: 'http://ma-rinsd-lapp01.corp.apple.com:8090/rins/common/getLicensors',
+    url: 'http://ma-rinsd-lapp01.corp.apple.com:8090/getLicensors',
     type: 'POST'
   })
 }

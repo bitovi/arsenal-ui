@@ -2,13 +2,14 @@ import Model from 'can/model/';
 
 var Country = Model.extend({
   // using finaAll instead of resource because I don't want to be able to save.
- findAll: function(){
+ /* findAll: function(){
   	return $.ajax({
-  		url: 'http://ma-rinsd-lapp01.corp.apple.com:8090/getCountries',
-  		type: 'POST'
+  		url: 'http://127.0.0.1:8090/rins/common/getInvoiceTypes',
+  		type: 'GET',
+  		dataType: 'json'
   	})
-  }
-//findAll: 'GET /country'
+  }*/
+findAll: 'GET /fxrate'
 
 }, {});
 
