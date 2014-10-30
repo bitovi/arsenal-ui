@@ -33,6 +33,7 @@ appstate.bind('page', function(ev, newVal, oldVal) {
     $('#page').html('<p class="error">Invalid page!</p>');
     console.log(ex);
     console.error('Invalid page linked!');
+    throw ex;
   });
 });
 

@@ -57,3 +57,19 @@ fixture('GET /getPricingModelVersion', '/models/fixtures/pricingModelVersion.jso
 fixture('GET /getPricingMethods', '/models/fixtures/pricingMethods.json');
 
 fixture('GET /validateicsv', '/models/fixtures/validateicsv.json');
+
+/* Payment Bundles */
+import fixture_paymentBundle from './payment-bundle';
+var BUNDLES = _.times(4, fixture_paymentBundle.makeBundle);
+
+fixture('POST localhost:8090/rins/paymentBundle/getAll', function(req, res, headers) {
+  res(200, {
+    responseCode: '0000',
+    responseTest: 'SUCCESS',
+    paymentBundle: BUNDLES
+  });
+});
+
+fixture('POST localhost:8090/rins/paymentBundle/get', function(req, res, headers) {
+  return fixture_paymentBundle.makeBundleWithDetails(req.data.bundleId);
+});

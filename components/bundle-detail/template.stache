@@ -1,0 +1,14 @@
+{{#if pageState.selectedBundle}}
+<div class="controls">
+</div>
+<ul class="tabs">
+  <li class="{{selectedTabClass 'licensor'}}" data-tab-value="licensor">Licensor</li>
+  <li class="{{selectedTabClass 'country'}}" data-tab-value="country">Country</li>
+</ul>
+<div class="grid-container">
+  {{#if pageState.selectedBundle.bundleDetailsGroup.length}}
+  <rn-bundle-detail-grid columns="{gridColumns}" page-state="{pageState}"></rn-bundle-detail-grid>
+  {{/if}}
+</div>
+<!-- other stuff down here, like progress bar and so on -->
+{{/if}}

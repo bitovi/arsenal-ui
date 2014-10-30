@@ -1,2 +1,5 @@
-<h1>Payment Bundle Placeholder</h1>
-<p>The rest of /{{appstate.page}} should go here.</p>
+<h1>Payment Bundle Review</h1>
+{{#showPage}}
+<rn-bundle-grid rows="{pageState.bundles}" page-state="{pageState}"></rn-bundle-grid>
+<rn-bundle-detail page-state="{pageState}" appstate="{appstate}"></rn-bundle-detail>
+{{/showPage}}
