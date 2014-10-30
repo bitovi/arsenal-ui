@@ -85,7 +85,7 @@ var page = Component.extend({
     },
     '.clipboard click': function(el, ev) {
       // copy bundle list information to clipboard
-    },
+    }
   }
 });
 
