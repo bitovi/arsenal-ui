@@ -59,7 +59,6 @@ fixture('GET /getPricingMethods', '/models/fixtures/pricingMethods.json');
 
 fixture('GET /validateicsv', '/models/fixtures/validateicsv.json');
 
-/*
 // Payment Bundles
 import fixture_paymentBundle from './payment-bundle';
 var BUNDLES = _.times(6, fixture_paymentBundle.makeBundle);
@@ -89,4 +88,3 @@ fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'paymentBundle/validationResult', fu
 
 // Workflow Steps
 fixture('POST ' + URLs.UI_SERVICE_URL + 'rinsworkflow/view', '/models/fixtures/workflow-step.json');
-*/
