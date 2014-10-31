@@ -1,12 +1,14 @@
 import Model from 'can/model/';
 
+import RinsCommon from 'models/rinsCommon/';
+
 var BundleNames = Model.extend({
 
   findAll: function(){
     return $.ajax({
-      url: 'http://ma-rinsd-lapp01.corp.apple.com:8090/paymentBundle/names',
+      url: RinsCommon.DOMAIN_SERVICE_URL+'paymentBundle/names',
       type: 'POST'
-   
+
     })
   }
   //findAll: 'GET /invoiceType'
