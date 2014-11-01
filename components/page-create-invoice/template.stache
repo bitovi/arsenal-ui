@@ -193,13 +193,19 @@
 						    <tbody>
 						     {{#unless editpage}}
 						         <tr id="breakrow0">
-						            <td class="form-group"> 
+						            <td> 
 						            	
 						            	<select id="inputContent0" name="inputContent[]" class="form-control inputContent">
 						            			<option value="">Select</option>
-							        			{{#each contentType}}
-							        				<option value="{{id}}">{{value}}</option>
-						       					{{/each}}
+							        			{{#if isAdhocStrore.adhoc}}
+								        			{{#each adhocType}}
+								        				<option value="{{id}}">{{value}}</option>
+							       					{{/each}}
+						       					{{else}}
+							       					{{#each contentType}}
+								        				<option value="{{id}}">{{value}}</option>
+							       					{{/each}}
+						       					{{/if}}
 						        		</select>
 						        		
 						        	</td>
@@ -214,7 +220,7 @@
 
 							        </td>
 							        <td class="form-group">
-						            	<input type="text" class="form-control amountText classAmtTotal" name=amount[] id="amountText0" placeholder="" can-value="val0">
+						            	<input type="text" class="form-control amountText classAmtTotal" name="amount[]" id="amountText0" placeholder="" can-value="val0" >
 						            
 						            </td>
 						            <td class="breakdownCountry">
@@ -235,7 +241,7 @@
 										        		<option value="4208027">4208027</option>
 									        	</select>
 						            	  {{else}}
-						            	 		<input type="text" class="form-control ccidGL" id="ccidGL0" name="ccidGL" placeholder="" >  
+						            	 		<input type="text" class="form-control ccidGL" id="ccidGL0" name="ccidGL" placeholder="" readonly="true">  
 						            	 {{/if}}  
 						           </td>
 						           <td>
@@ -263,8 +269,8 @@
 										        <option value="201304">P4FY13</option>
 							        	</select>
 							        </td>
-							        <td>
-						            	<input type="text" class="form-control amountText classAmtTotal"  name=amount[] placeholder="" can-value="val0">
+							        <td class="form-group">
+						            	<input type="text" class="form-control amountText classAmtTotal"  name="amount[]" placeholder="" can-value="val0">
 						            </td>
 						            <td class="breakdownCountry">
 						            	<select id="inputCountry" name="inputCountry" class="form-control inputCountry">
@@ -284,7 +290,7 @@
 										        		<option value="4208027">4208027</option>
 									        	</select>
 						            	  {{else}}
-						            	 		<input type="text" class="form-control ccidGL" id="ccidGL" name="ccidGL" placeholder="" >  
+						            	 		<input type="text" class="form-control ccidGL" id="ccidGL" name="ccidGL" placeholder="" readonly="true">  
 						            	 {{/if}}  
 						           </td>
 						           <td>
@@ -332,11 +338,20 @@
 				  
 				  <div class="col-sm-12">
 					    <div class="col-sm-12" style="text-align:right;padding:15px;">
-					     
-					        <label class="col-sm-2" for="inputCountry">Bundle Name:</label>
-					         <div class="col-sm-4 requiredBar">
+					    				
+						 {{#if showPBR}}	
+							<label class="col-sm-2" for="inputCountry">Bundle Name:</label>
+					        <div class="col-sm-4 requiredBar">
 							 	<create-pb name="createinvoice"></create-pb>
-					         </div>
+					        </div>
+					       {{else}} 
+					        <label class="col-sm-2" for="inputCountry"></label>
+					        <div class="col-sm-4 ">
+							 	
+					        </div>
+
+					       {{/if}}
+					        
 					        <div class="col-sm-6 ">
 					        <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
 					        <button id="addInvSubmit" type="submit"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>

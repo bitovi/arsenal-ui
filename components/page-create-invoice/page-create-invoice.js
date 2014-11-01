@@ -24,7 +24,7 @@ import Invoice from 'models/invoice/';
 import Fxrate from 'models/fxrate/';
 import icsvmap from 'models/sharedMap/icsv';
 import topfilter from 'models/sharedMap/topfilter';
-import validate from 'can/map/validations/';
+import AdhocTypes from 'models/adhoc-types/';
 
 //import Invoice from 'models/invoice/';
 
@@ -39,6 +39,7 @@ var page = Component.extend({
   	currency:[],
   	country:[],
   	contentType:[],
+  	adhocType:[],
   	fxrate:[],
   	AmountStore:{},
  	totalAmountVal:0,
@@ -47,7 +48,7 @@ var page = Component.extend({
   	taxStore:{},
   	isAdhocStrore:{"ccidGL":"CCID Document", "contentAdhoc":"Content Type"},
   	/*Form value*/
-  	invoicetypeSelect:{},
+  	invoicetypeSelect:"",
   	licensorStore:{},
   	currencyStore:"",
   	fxrateStore:"",
@@ -67,6 +68,7 @@ var page = Component.extend({
 
   	errorMsg:{},
   	invoiceContainer:[],
+  	showPBR:true,
     //invoiceid:"",
   	editpage:false,
     isRequired: function(){
@@ -96,10 +98,17 @@ var page = Component.extend({
                                if(rowindex != 0)
                                $("#breakrow"+rowindex+" .removeRow").css("display", "block"); 
 
+                                var $option   = $clone.find('[name="amount[]"]');
+                                $('#invoiceform').bootstrapValidator('addField', $option);
+
                                $(".removeRow").click(function(event){
+                               		$('#invoiceform').bootstrapValidator('removeField', $option);
 						            $(this).closest("tr").remove();
 						            self.AmountStore.removeAttr("amountText"+rowindex);
 						        });
+
+                               //console.log($clone.find('[name="amount[]"]'));
+                               
 			
 		}	
  },
@@ -131,7 +140,6 @@ var page = Component.extend({
 			                        message: 'The invoice number is required'
 			                    },
 			                    regexp: {
-			                        //regexp: /^([0-9]|[a-z])+([0-9a-z]+)$/i,
 			                        regexp: /^[a-zA-Z0-9_\- ]*$/i,
 			                        message: 'Please provide valid characters'
 			                    }
@@ -160,7 +168,7 @@ var page = Component.extend({
 		                validators: {
 		                	group:'.usercomments',
 		                    notEmpty: {
-		                        message: 'The licensor notes is required'
+		                        message: 'The comments is required'
 		                    }
 		                }
 		            },
@@ -238,39 +246,26 @@ var page = Component.extend({
 		                validators: {
 		                    notEmpty: {
 		                        message: 'The amount is required'
-		                    }
-		                   
-		                }
-		            }
-			          /*   ,
-			            'inputContent[]': {
-			                validators: {
-			                    notEmpty: {
-			                        message: 'The inputContent is required'
-			                    }
-			                   
-			                }
-			            },
-			            'amount[]': {
-			                validators: {
-			                    notEmpty: {
-			                        message: 'The amount is required'
-			                    }
-			                   
-			                }
-			            }
-			           ,
-			            'amount[]': {
-		                    validators: {
-		                        notEmpty: {
-		                            message: 'The option required and cannot be empty'
-		                        },
-		                        stringLength: {
-		                            max: 100,
-		                            message: 'The option must be less than 100 characters long'
-		                        }
-		                    }
-                		} */
+		                    },
+		                    numeric: {
+		                        separator:',',
+		                        message: 'Please provide numeric value for Fx Rate'
+                			},
+                			callback: {
+		                            message: 'Please provide positive Fx Rate',
+		                            callback: function (value, validator, $field) {
+			                              if((value != "")  && (parseFloat(value) < 0)){
+			                              	return {
+				                                    valid: false,
+				                                    message: 'Please provide positive invoice amount'
+				                                }
+			                              }
+										return true;
+		                            }
+                    			}
+		                	}
+		            	}
+			          
 
 			         }
 			    }).on('error.field.bv', function(e, data) {
@@ -480,7 +475,8 @@ var page = Component.extend({
 		 		
 		 },
  		".classAmtTotal blur": function(event){
-         	this.scope.AmountStore.attr(event[0].id, event[0].value)
+ 			var amountStr = event[0].value;
+ 			this.scope.AmountStore.attr(event[0].id, parseFloat(amountStr.replace(/,/g, '')));
          	
 		},
 		".inputContent change": function(event){
@@ -524,12 +520,23 @@ var page = Component.extend({
 				this.scope.isAdhocStrore.attr("ccidGL", "GL Account");
 	  	 		this.scope.isAdhocStrore.attr("contentAdhoc", "Adhoc Type");
 	  	 		this.scope.isAdhocStrore.attr("invtype", "Adhoc");
+	  	 		this.scope.isAdhocStrore.attr("adhoc", true);
+	  	 		this.scope.attr("showPBR", true);
 
 	  	 	 }
+	  	 	 else if(this.scope.attr("invoicetypeSelect") == "3"){
+			  	 this.scope.isAdhocStrore.attr("ccidGL", "CCID Document");
+			  	 this.scope.isAdhocStrore.attr("contentAdhoc", "Content Type");
+			  	 this.scope.isAdhocStrore.attr("invtype", "");
+			  	 this.scope.isAdhocStrore.attr("adhoc", false);
+				 this.scope.attr("showPBR", false);
+			 }
 			 else{
 			  	 this.scope.isAdhocStrore.attr("ccidGL", "CCID Document");
 			  	 this.scope.isAdhocStrore.attr("contentAdhoc", "Content Type");
 			  	 this.scope.isAdhocStrore.attr("invtype", "");
+			  	 this.scope.isAdhocStrore.attr("adhoc", false);
+			  	 this.scope.attr("showPBR", true);
 			 }
 
 		},
@@ -541,7 +548,14 @@ var page = Component.extend({
   	 				}
   	 				totalAmount += parseInt(val);
   	 			});
-  	      		this.scope.attr("totalAmountVal", totalAmount);
+  	      		
+  	 			if(!isNaN(totalAmount)){
+  	 				this.scope.attr("totalAmountVal", totalAmount);
+  	 			}
+  	 			else{
+  	 				this.scope.attr("totalAmountVal", "");
+  	 			}
+  	      		
 
          },
          ".addRow click":function(){
@@ -595,18 +609,21 @@ var page = Component.extend({
 			     	Currency.findAll(),
 			        ContentType.findAll(),
 			      	Country.findAll(),
-			      	Fxrate.findAll()
+			      	Fxrate.findAll(),
+			      	AdhocTypes.findAll()
+
 			      	//  Currency.findAll()*/
 				]).then(function(values) {
 		     		 self.scope.attr("invoiceTypes").replace(values[0][0]["data"]);
 		     		 self.scope.attr("licensor").replace(values[1][0]["data"]);
 		     		 self.scope.attr("currency").replace(values[2][0]["data"]);
-		     		 self.scope.attr("contentType").replace(values[3][0]["data"]);
 		     		 self.scope.attr("country").replace(values[4][0]["data"]);
 		     		 self.scope.attr("fxrate").replace(values[5][0]["data"][0]["fxrate"]);
-		     		console.log(self.scope.fxrate.attr()[0]);
-		     		console.log(self.scope.attr("invoiceTypes").replace(values[0][0]["data"]));
-		     	
+		     		 self.scope.attr("adhocType").replace(values[6][0]["data"]);
+		     		 self.scope.attr("contentType").replace(values[3][0]["data"]);
+
+		     		
+		     		
 		     		
 		     	//	 self.scope.attr("invoiceid", invoicemap.attr("invoiceid"));
 
