@@ -25,7 +25,7 @@ var dataTables = Component.extend({
     scope: {
      name: "@",
      type: "@",
-     columnText: "@",
+     columntext: [],
      next: [],
      invoicesMap:[],
      searchFlag: [],
@@ -63,7 +63,7 @@ var dataTables = Component.extend({
 	},
     events: {
         "inserted": function(){
-           
+           //console.log("columns are "+this.scope.attr().columntext);
         },
         "{tokenInput} change": function(){
         	var self= this;
@@ -339,7 +339,7 @@ var dataTables = Component.extend({
             if(flag==false){
                 $("#paymentBundleNames").attr("disabled","disabled");
                 $("#btnSubmit").attr("disabled","disabled");
-                $("#invoiceTypeError").html("<label style='color:red'>Selected rows has different Invoice Types</label>")
+                $("#invoiceTypeError").html("<label class='errorMessage'>Selected rows has different Invoice Types</label>")
             }else {
                 $("#paymentBundleNames").removeAttr("disabled");
                 $("#invoiceTypeError").text("");

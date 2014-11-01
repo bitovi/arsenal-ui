@@ -27,7 +27,7 @@ var page = Component.extend({
   template: template,
   scope: {
     "tokenInputData": [],
-    "gridColumnText": [
+    "gridcolumntext": [
           { "sTitle": "", "mData": "id" },
           { "sTitle": "Entity", "mData": "entity" },
           { "sTitle": "Invoice Type", "mData": "invoiceType" },
