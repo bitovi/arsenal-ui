@@ -1,15 +1,15 @@
 import Model from 'can/model/';
+import RinsCommon from 'models/rinsCommon/';
 
 var Invoice = Model.extend({
- findOne: 'GET /getInvoiceById/1024',	
+ findOne: 'GET /getInvoiceById/1024',
  create: function(params){
  	return $.ajax({
-  		url: 'http://ma-rinsd-lapp01.corp.apple.com:8090/invoice/create',
+  		url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/create',
   		type: 'POST'
-     	//data: params 
+     	//data: params
   	})
   }
 }, {});
 
 export default Invoice;
-

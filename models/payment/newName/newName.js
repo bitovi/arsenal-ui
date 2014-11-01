@@ -1,10 +1,12 @@
 import Model from 'can/model/';
 
+import RinsCommon from 'models/rinsCommon/';
+
 var NewPBName = Model.extend({
 
   findAll: function(param){
     return $.ajax({
-      url: 'http://localhost:8090/paymentBundle/newName',
+      url: RinsCommon.DOMAIN_SERVICE_URL+'paymentBundle/newName',
       type: 'POST',
       params: param,
       dataType: 'json'
