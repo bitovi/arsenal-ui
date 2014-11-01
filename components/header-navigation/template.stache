@@ -1,4 +1,4 @@
-<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<div class="navbar navbar-inverse" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
@@ -13,9 +13,14 @@
       <ul class="nav navbar-nav">
         <li {{isActive 'dashboard'}}><a href="/dashboard">Dashboard</a></li>
         <li {{isActive 'payment-bundles'}}><a href="/payment-bundles">Payment Bundles</a></li>
-        <li {{isActive 'invoices'}}><a href="/invoices">Invoices</a></li>
         <li {{isActive 'invalid-page'}}><a href="/invalid-page">Invalid page</a></li>
+        <li {{isActive 'icsv'}}><a href="/icsv">ICSV</a></li>
+        <li {{isActive 'invoices'}}><a href="/invoices">Invoices</a></li>
       </ul>
     </div><!--/.nav-collapse -->
   </div>
 </div>
+{{topfilter}}
+{{#if show}}
+<global-parameter-bar appstate="{appstate}"></global-parameter-bar>
+{{/if}}

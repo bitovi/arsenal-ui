@@ -22,6 +22,9 @@ import Currency from 'models/currency/';
 import Country from 'models/country/';
 import Invoice from 'models/invoice/';
 import Fxrate from 'models/fxrate/';
+import icsvmap from 'models/sharedMap/icsv';
+import topfilter from 'models/sharedMap/topfilter';
+import validate from 'can/map/validations/';
 
 //import Invoice from 'models/invoice/';
 
@@ -66,9 +69,7 @@ var page = Component.extend({
   	invoiceContainer:[],
     //invoiceid:"",
   	editpage:false,
-  	
-
-  	isRequired: function(){
+    isRequired: function(){
   	 	/*	if(this.attr("invoicetypeSelect") != "2"){  /*Adhoc*/
   	 	/*			$(".breakdownCountry").addClass("requiredBar");
   	 				$(".breakdownPeriod").addClass("requiredBar");
@@ -105,6 +106,8 @@ var page = Component.extend({
   events: {
     	"inserted": function(){
           	var self = this;  
+          	topfilter.attr("show", false);
+
 			this.scope.isRequired(); /*For breakdown required field*/
     			$('#invoiceform').on('init.form.bv', function(e, data) {
 			           	data.bv.disableSubmitButtons(true);
@@ -122,12 +125,14 @@ var page = Component.extend({
 			        },
 			        fields: {
 			            invoicenumber: {
+			            	group:'.invoicenumber',
 			                validators: {
 			                    notEmpty: {
 			                        message: 'The invoice number is required'
 			                    },
 			                    regexp: {
-			                        regexp: /^([0-9]|[a-z])+([0-9a-z]+)$/i,
+			                        //regexp: /^([0-9]|[a-z])+([0-9a-z]+)$/i,
+			                        regexp: /^[a-zA-Z0-9_\- ]*$/i,
 			                        message: 'Please provide valid characters'
 			                    }
 			                }
@@ -153,6 +158,7 @@ var page = Component.extend({
 		            },
 		            usercomments :{
 		                validators: {
+		                	group:'.usercomments',
 		                    notEmpty: {
 		                        message: 'The licensor notes is required'
 		                    }
@@ -582,6 +588,7 @@ var page = Component.extend({
   	init: function(){
    	 	var self = this;
    	 	var i = 1;
+   	 	topfilter.attr("show", false); /*hiding top filter*/
    	 	Promise.all([
 			      	InvoiceType.findAll(),
 			     	Licensor.findAll(),
@@ -598,6 +605,7 @@ var page = Component.extend({
 		     		 self.scope.attr("country").replace(values[4][0]["data"]);
 		     		 self.scope.attr("fxrate").replace(values[5][0]["data"][0]["fxrate"]);
 		     		console.log(self.scope.fxrate.attr()[0]);
+		     		console.log(self.scope.attr("invoiceTypes").replace(values[0][0]["data"]));
 		     	
 		     		
 		     	//	 self.scope.attr("invoiceid", invoicemap.attr("invoiceid"));
