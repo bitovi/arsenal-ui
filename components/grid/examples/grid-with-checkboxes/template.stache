@@ -15,4 +15,9 @@
     </tr>
     {{/filteredRows}}
   </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="3">Checked rows: {{listCheckedRowIndexes}}</td>
+    </tr>
+  </tfoot>
 </table>

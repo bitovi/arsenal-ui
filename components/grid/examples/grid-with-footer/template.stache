@@ -15,4 +15,9 @@
     </tr>
     {{/filteredRows}}
   </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="2">Number of rows displayed: {{rows.length}}</td>
+    </tr>
+  </tfoot>
 </table>
