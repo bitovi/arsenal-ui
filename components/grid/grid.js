@@ -14,7 +14,7 @@ var Grid = Component.extend({
         id: 'example',
         title: 'Example Column',
         className: 'example', // optional
-        value: function(row) { return row.prop; } // optional, returns whatever you can return from a helper
+        contents: function(row) { return row.prop; } // optional, returns whatever you can return from a helper
       }, ...
     */],
     rows: []
@@ -81,9 +81,10 @@ var Grid = Component.extend({
       return '';
     },
     cellContents: function(row, column) {
+      row.attr();
       // By default, if column has a value function, run the row through that.
       // Otherwise, return the value of the property on the row named for the column ID.
-      return _.isFunction(column.value) ? column.value(row.attr()) : row.attr(column.attr('id')).toString();
+      return _.isFunction(column.contents) ? column.contents(row) : row.attr(column.attr('id')).toString();
     }
   },
 

@@ -9,12 +9,12 @@ Grid.extend({
       {
         id: 'licensor',
         title: 'Licensor',
-        value: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{licensor}}')({licensor: row.licensor, isChild: row.__isChild}); }
+        contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{licensor}}')({licensor: row.licensor, isChild: row.__isChild}); }
       },
       {
         id: 'type',
         title: 'Type',
-        value: function(row) { return 'Payment'; }
+        contents: function(row) { return 'Payment'; }
       },
       {
         id: 'description',
