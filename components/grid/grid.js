@@ -106,7 +106,10 @@ var Grid = Component.extend({
       row.attr();
       // By default, if column has a value function, run the row through that.
       // Otherwise, return the value of the property on the row named for the column ID.
-      return _.isFunction(column.contents) ? column.contents.call(this, row) : row.attr(column.attr('id')).toString();
+      return _.isFunction(column.value) ? column.value(row.attr()) : row.attr(column.attr('id')).toString();
+    },
+    tfoot: function() {
+      return '';
     }
   },
 

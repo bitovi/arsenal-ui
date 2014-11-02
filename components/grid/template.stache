@@ -15,4 +15,5 @@
     </tr>
     {{/filteredRows}}
   </tbody>
+  {{tfoot}}
 </table>
