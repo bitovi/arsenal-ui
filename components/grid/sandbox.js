@@ -2,8 +2,6 @@ import $ from 'jquery';
 import stache from 'can/view/stache/';
 import Grid from './grid';
 
-var h3tmpl = can.stache('<h3>{{txt}}</h3>');
-
 /* Extend grid with the columns */
 Grid.extend({
   scope: {

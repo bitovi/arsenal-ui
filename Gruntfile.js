@@ -119,11 +119,30 @@ module.exports = function (grunt) {
             function(req, res, next) {
               var parsedURL = url.parse(req.url);
 
-              if(parsedURL.pathname.indexOf('.') < 0 || parsedURL.pathname.substr(-5) === '.html') {
-                send(req, __dirname + '/index.html').pipe(res);
+              var isHTMLPage = parsedURL.pathname.indexOf('.') < 0 || parsedURL.pathname.substr(-5) === '.html';
+
+              var paths = [
+                { prefix: '/components', sub: false },
+                { prefix: '/models', sub: false },
+                { prefix: '/test', sub: false },
+                { prefix: '/dist/bundles', sub: '/dist/bundles.html' },
+                { prefix: '/', sub: '/index.html' }
+              ];
+              var sub;
+              for(var i = 0; i < paths.length; ++i) {
+                if(parsedURL.pathname.indexOf(paths[i].prefix) === 0) {
+                  sub = paths[i].sub;
+                  break;
+                }
+              }
+
+              if(isHTMLPage && sub) {
+                grunt.log.writeln('\x1b[33m' + parsedURL.pathname + ' -> ' + sub + '\x1b[0m');
+                send(req, __dirname + sub).pipe(res);
               } else {
                 send(req, __dirname + req.url).pipe(res);
               }
+
             }
           ]
         }
