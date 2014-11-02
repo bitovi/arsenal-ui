@@ -11,7 +11,7 @@ var GridWithCheckboxes = Grid.extend({
       {
         id: 'checkbox',
         title: '',
-        contents: function(row) {
+        value: function(row) {
           return can.stache('<input type="checkbox"/>')();
         }
       },

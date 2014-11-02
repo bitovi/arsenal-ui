@@ -2,7 +2,7 @@
   <thead>
     <tr>
       {{#filteredColumns}}
-      <th class="{{columnClass column}}" {{data 'column'}}>{{{columnTitle column}}}</th>
+      <th class="{{columnClass column}}" {{data 'column'}}>{{columnTitle column}}</th>
       {{/filteredColumns}}
     </tr>
   </thead>
@@ -10,7 +10,7 @@
     {{#filteredRows}}
     <tr class="{{rowClass row}} {{#if isOpen}}open{{/if}} {{#if isChild}}child{{/if}} {{#if isVisible}}visible{{/if}}" {{data 'row'}}>
       {{#filteredColumns}}
-      <td class="{{columnClass column}} {{cellClass row column}}" {{data 'column'}}>{{{cellContents row column}}}</td>
+      <td class="{{columnClass column}} {{cellClass row column}}" {{data 'column'}}>{{cellContents row column}}</td>
       {{/filteredColumns}}
     </tr>
     {{/filteredRows}}
