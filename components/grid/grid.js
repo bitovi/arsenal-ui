@@ -15,9 +15,6 @@ var Grid = Component.extend({
         id: 'example',
         title: 'Example Column', // could also be a function, returns whatever you can from a helper
         className: 'example', // optional
-        sortable: true,
-        compare: function(a, b) { return a[this.id] - b[this.id]; }, // `this` is the column def, a and b are rows.
-        defaultSortDirection: 'asc', // or 'desc' - which way do we sort first?
         contents: function(row) { return row.prop; } // optional, returns whatever you can return from a helper
       }, ...
     */],
@@ -106,7 +103,7 @@ var Grid = Component.extend({
       row.attr();
       // By default, if column has a value function, run the row through that.
       // Otherwise, return the value of the property on the row named for the column ID.
-      return _.isFunction(column.value) ? column.value(row.attr()) : row.attr(column.attr('id')).toString();
+      return _.isFunction(column.contents) ? column.contents(row) : row.attr(column.attr('id')).toString();
     }
   },
 

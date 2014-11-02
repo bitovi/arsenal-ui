@@ -33,6 +33,10 @@
 
     tbody:last-child, tfoot:last-child {
       & > tr:last-of-type {
+        td, th {
+          border-bottom: @light-border;
+        }
+
         td:first-child, th:first-child {
           border-bottom-left-radius: @border-radius;
         }
