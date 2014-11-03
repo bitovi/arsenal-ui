@@ -12,12 +12,17 @@ var Grid = Component.extend({
     columns: [/*
       {
         id: 'example',
-        title: 'Example Column',
+        title: 'Example Column', // could also be a function, returns whatever you can from a helper
         className: 'example', // optional
+        sortable: true,
+        compare: function(a, b) { return a[this.id] - b[this.id]; }, // `this` is the column def, a and b are rows.
+        defaultSortDirection: 'asc', // or 'desc' - which way do we sort first?
         contents: function(row) { return row.prop; } // optional, returns whatever you can return from a helper
       }, ...
     */],
-    rows: []
+    rows: [],
+    sortedColumn: null,
+    sortedDirection: null, // should be 'asc' or 'desc'
   },
   helpers: {
     tableClass: function() {
@@ -32,9 +37,25 @@ var Grid = Component.extend({
       // By default, just return the className property on the column, or the ID, or nothing.
       return column.attr('className') || column.attr('id') || '';
     },
+    sortClass: function(column) {
+      if(column.attr('sortable') && this.attr('sortedColumn') && this.attr('sortedColumn').id === column.attr('id')) {
+        return 'sorted ' + this.attr('sortedDirection');
+      } else {
+        return '';
+      }
+    },
     columnTitle: function(column) {
+      column.attr();
       // By default, just use the title property of the column.
-      return column.attr('title');
+      return _.isFunction(column.title) ? column.title.call(this, column) : column.attr('title');
+    },
+    sortArrow: function(column) {
+      this.attr();
+      if(column.attr('sortable') && this.attr('sortedColumn') && this.sortedColumn.id === column.attr('id')) {
+        return this.sortedDirection === 'desc' ? '▽' : '△';
+      } else {
+        return '';
+      }
     },
     filteredRows: function(options) {
       // By default, rows are a bit more complex.
@@ -84,7 +105,7 @@ var Grid = Component.extend({
       row.attr();
       // By default, if column has a value function, run the row through that.
       // Otherwise, return the value of the property on the row named for the column ID.
-      return _.isFunction(column.contents) ? column.contents(row) : row.attr(column.attr('id')).toString();
+      return _.isFunction(column.contents) ? column.contents.call(this, row) : row.attr(column.attr('id')).toString();
     }
   },
 
@@ -92,8 +113,58 @@ var Grid = Component.extend({
     '.open-toggle click': function(el, ev) {
       var row = el.closest('tr').data('row').row;
       row.attr('__isOpen', !row.attr('__isOpen'));
+    },
+    'th click': function(el, ev) {
+      var column = el.data('column').column;
+
+      if(this.scope.attr('sortedColumn') && this.scope.attr('sortedColumn').id === column.id) {
+        this.scope.attr('sortedDirection', this.scope.attr('sortedDirection') === 'asc' ? 'desc' : 'asc');
+        console.log('sort change');
+      } else if(column.sortable) {
+        can.batch.start();
+        this.scope.attr('sortedColumn', column);
+        this.scope.attr('sortedDirection', column.defaultSortDirection || 'asc');
+        can.batch.stop();
+      }
+    },
+    // these are what you override if you need to reload rows for sorting or something
+    '{scope} sortedColumn': function() {
+      return resort.apply(this, arguments);
+    },
+    '{scope} sortedDirection': function() {
+      return resort.apply(this, arguments);
     }
   }
 });
+
+var sortRows = function(rows, compare, reverse) {
+  var compareFunc = reverse ? function(a, b) { return compare(b, a); } : compare;
+  // so... the reason we can't just sort a bunch of rows is because we have parent and child rows
+  // which screws a lot of things up. Like, a lot of things.
+  var rowsets = [];
+  for(var i = 0; i < rows.length; ++i) {
+    var set = { parent: rows[i], children: [] };
+    while(rows[i+1] && rows[i+1].__isChild) {
+      i++;
+      set.children.push(rows[i]);
+    }
+    rowsets.push(set);
+  }
+  rowsets.sort(function(a, b) { return compareFunc(a.parent, b.parent); });
+
+  var sorted = [];
+  _.each(rowsets, function(set) { sorted.push(set.parent); sorted.push.apply(sorted, set.children.sort(compareFunc)); });
+  return new can.List(sorted);
+};
+
+var resort = function(ev) {
+  var col = this.scope.sortedColumn;
+  var compare = _.isFunction(col.compare) ? col.compare : function(a, b) {
+    var aVal = a[col.id], bVal = b[col.id];
+    return (aVal < bVal ? -1 : (aVal > bVal ? 1 : 0));
+  };
+  var sorted = sortRows(this.scope.rows, compare, this.scope.sortedDirection === 'desc');
+  this.scope.rows.splice.apply(this.scope.rows, [0, this.scope.rows.length].concat(Array.from(sorted)));
+};
 
 export default Grid;

@@ -18,11 +18,15 @@ Grid.extend({
       },
       {
         id: 'description',
-        title: 'Description'
+        title: 'Description',
+        sortable: true,
+        compare: function(a, b) { return (a.description < b.description ? -1 : (a.description > b.description ? 1 : 0)); }
       },
       {
         id: 'region',
-        title: 'Region'
+        title: 'Region',
+        sortable: true,
+        defaultSortDirection: 'desc'
       }
     ]
   }
@@ -32,8 +36,8 @@ var rows = new can.List(_.times(10, i => {
   return {
     licensor: 'Licensor ' + (i + 1),
     type: 'Payment',
-    description: 'Invoice #' + (i + 1),
-    region: 'Europe',
+    description: 'Invoice #' + _.random(1, 1000),
+    region: 'Europe ' + _.random(1, 9),
     '__isChild': (i % 3) !== 0
   };
 }));
