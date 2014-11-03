@@ -1,0 +1,118 @@
+/* Put grid styles here. */
+.grid-mixin() {
+
+  @dark-border: 1px solid hsl(0, 0%, 40%);
+  @light-border: 1px solid hsl(0, 0%, 75%);
+  @border-radius: 8px;
+
+  @header-background: linear-gradient(to bottom, hsl(0, 0%, 75%), hsl(0, 0%, 50%));
+
+  @font-color: hsl(0, 0%, 50%);
+
+  @disclosure-symbol: '▶︎';
+
+  & > table {
+    width: 100%;
+    border-radius: 8px;
+    border-spacing: 0;
+    border-bottom: @light-border;
+    color: @font-color;
+
+    /* getting border radius to work right */
+    thead:first-child, tbody:first-child {
+      & > tr:first-of-type {
+        td:first-child, th:first-child {
+          border-top-left-radius: @border-radius;
+        }
+
+        td:last-child, th:last-child {
+          border-top-right-radius: @border-radius;
+        }
+      }
+    }
+
+    tbody:last-child, tfoot:last-child {
+      & > tr:last-of-type {
+        td, th {
+          border-bottom: @light-border;
+        }
+
+        td:first-child, th:first-child {
+          border-bottom-left-radius: @border-radius;
+        }
+
+        td:last-child, th:last-child {
+          border-bottom-right-radius: @border-radius;
+        }
+      }
+    }
+  }
+
+  thead, tfoot {
+    background: @header-background;
+
+    color: white;
+
+    th, td {
+      text-align: left;
+      font-weight: normal;
+      padding: .5em 1em;
+      border-right: @dark-border;
+      border-top: @dark-border;
+      border-bottom: ;
+
+      &:first-child {
+        border-left: @dark-border;
+      }
+    }
+  }
+
+  tbody {
+
+    tr {
+
+      td {
+        padding: 1em;
+
+        border-top: @light-border;
+
+        &:first-child {
+          border-left: @light-border;
+        }
+        &:last-child {
+          border-right: @light-border;
+        }
+      }
+
+      &:first-child td {
+        border-top: none;
+      }
+    }
+
+    tr.child {
+      display: none;
+
+      &.visible {
+        display: table-row;
+      }
+    }
+  }
+
+  span.open-toggle {
+    display: inline-block;
+
+    &:before {
+      content: @disclosure-symbol;
+    }
+  }
+
+  tr.open span.open-toggle {
+    transform: rotate(90deg);
+  }
+
+}
+
+/* Mix them under the appropriate tag like this: */
+rn-grid {
+  .grid-mixin();
+}
