@@ -9,6 +9,20 @@ var Invoice = Model.extend({
   		type: 'POST'
      	//data: params
   	})
+  },
+  /*findOne: function(params){
+ 	return $.ajax({
+  		url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/getByID',
+  		type: 'POST'
+     	//data: params
+  	})
+  },*/
+  update: function(data){
+ 	return $.ajax({
+  		url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/update',
+  		type: 'POST'
+     	//data: params
+  	})
   }
 }, {});
 

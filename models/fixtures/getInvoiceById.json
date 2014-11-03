@@ -44,10 +44,16 @@
               "createdBy": "12347",
               "createdDate": "06/19/2015"
           }],
+          "documents": [
+          {
+            "id": "345",
+            "inboundFileId": "656",
+            "fileName": ""
+          }],
           "invoiceLines": [ 
             {
               "invoiceId": "",
-              "countryId": "5660",
+              "countryId": "AUT",
               "countryName":"5660",
               "invoiceCcy": "DKK",
               "fiscalPeriod": "201301",
@@ -55,11 +61,12 @@
               "contentType": "2",
               "lineAmount": "3000",
               "adhocTypeId": "",
-              "glAccount": ""
+              "glAccount": "",
+              "ccidName":""
             },
             {
               "invoiceId": "",
-              "countryId": "5660",
+              "countryId": "BEL",
               "countryName":"5660",
               "invoiceCcy": "DKK",
               "fiscalPeriod": "201302",
@@ -67,19 +74,21 @@
               "contentType": "1",
               "lineAmount": "4000",
               "adhocTypeId": "",
-              "glAccount": ""
+              "glAccount": "",
+              "ccidName":""
             },
             {
               "invoiceId": "",
-              "countryId": "5660",
+              "countryId": "BGR",
               "countryName":"5660",
               "invoiceCcy": "DKK",
               "fiscalPeriod": "201303",
               "periodType": "P",
               "contentType": "2",
-              "lineAmount": "4000",
+              "lineAmount": "5000",
               "adhocTypeId": "",
-              "glAccount": ""
+              "glAccount": "",
+              "ccidName":""
             }
 
           ]

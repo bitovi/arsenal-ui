@@ -192,7 +192,7 @@
 						    </thead>
 						    <tbody>
 						     {{#unless editpage}}
-						         <tr id="breakrow0">
+						         <tr id="breakrow0" rowid="0">
 						            <td> 
 						            	
 						            	<select id="inputContent0" name="inputContent[]" class="form-control inputContent">
