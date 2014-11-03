@@ -281,8 +281,8 @@ var page = Component.extend({
 	        			
 				}).on('success.form.bv', function(e, data) {
 			  			
-                        
-                      console.log(self);
+                       
+						/*Add invoice object creation start*/
 
                        var createInvoiceData = {};
 					   createInvoiceData.invoice = [];
@@ -341,9 +341,6 @@ var page = Component.extend({
 						});
 									self.scope.errorMsg.attr("errorCode", "0000");
 							   	 	
-							   	 	console.log(self.scope.attr("errorMsg"));	
-							   	 	
-							   	 	console.log(createInvoiceData);
 							   	 	Promise.all([
 										      	Invoice.create(createInvoiceData)
 										     ]).then(function(values) {
@@ -374,17 +371,16 @@ var page = Component.extend({
 						                               $("#breakrow0 #inputCountry0").attr("id","inputCountry0").val("");
 						                               $("#breakrow0 #ccidGL0").attr("id","ccidGL0").val("");
 												 	   // self.scope.contentTypeStore.attr("amountPeriod0","");
-												 		
-												 		
-
-									     		   }
-
-									     		 
-
-									     		 //self.scope.attr("errorMsg").replace(values);
-									     	});
+												 	}
+												});
 								
-								
+								/* Add invoice end*/
+
+								/*Edit invoice onject creation start*/
+									var editInvoiceData = {};
+									
+
+								/*Edit invoice end*/
                         
 			                        return false;
 
