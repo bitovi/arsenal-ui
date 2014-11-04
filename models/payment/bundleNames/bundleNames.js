@@ -4,11 +4,12 @@ import RinsCommon from 'models/rinsCommon/';
 
 var BundleNames = Model.extend({
 
-  findAll: function(){
+  findOne: function(params){
+    //  console.log(JSON.stringify(params));
     return $.ajax({
       url: RinsCommon.DOMAIN_SERVICE_URL+'paymentBundle/names',
-      type: 'POST'
-
+      type: 'POST',
+      data: JSON.stringify(params)
     })
   }
   //findAll: 'GET /invoiceType'

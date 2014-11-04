@@ -3,7 +3,7 @@
   <li id="store-type">
     <span class="parameter-name">Store Type:</span>
     <select id="storeTypesFilter" class="form-control resizeBox">
-           <option value="">Select</option> 
+           <option value="">Select</option>
            {{#each storetypes}}
               <option {{isSelected 'storetype' id}} {{data 'storetype'}}>{{value}}</option>
             {{/each}}
@@ -12,7 +12,7 @@
   <li id="region">
     <span class="parameter-name">Region:</span>
     <select id="regionsFilter" class="form-control resizeBox">
-           <option value="">Select</option> 
+           <option value="">Select</option>
            {{#each regions}}
               <option {{isSelected 'region' id}} {{data 'region'}}>{{value}}</option>
             {{/each}}
@@ -21,7 +21,7 @@
   <li id="country">
     <span class="parameter-name">Country:</span>
     <select id="countriesFilter" class="form-control resizeBox">
-      <option value="">Select</option> 
+      <option value="">Select</option>
       {{#each countries}}
         <option {{isSelected 'country' id}} {{data 'country'}}>{{value}}</option>
       {{/each}}
@@ -30,7 +30,7 @@
   <li id="licensor">
     <span class="parameter-name">Licensor:</span>
      <select id="licensorsFilter" class="form-control resizeBox">
-           <option value="">Select</option> 
+           <option value="">Select</option>
            {{#each licensors}}
               <option {{isSelected 'licensor' id}} {{data 'licensor'}}>{{value}}</option>
             {{/each}}
@@ -39,14 +39,14 @@
   <li id="contentType">
     <span class="parameter-name">Content Type:</span>
     <select id="contentTypesFilter" class="form-control resizeBox">
-           <option value="">Select</option> 
+           <option value="">Select</option>
            {{#each contenttypes}}
               <option {{isSelected 'contenttype' id}} {{data 'contenttype'}}>{{value}}</option>
             {{/each}}
      </select>
   </li>
   <li id="btnFetch">
-    <button type="button" class="btn btn-primary buttonSubmit btn-custom-small" style="margin-left:10px;" id="btnAdd">Fetch</button>
+    <button type="button" id="globalSearch" class="btn btn-primary buttonSubmit btn-custom-small" style="margin-left:10px;">Fetch</button>
   </li>
 </ul>
 </div>
