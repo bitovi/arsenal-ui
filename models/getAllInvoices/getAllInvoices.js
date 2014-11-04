@@ -5,7 +5,7 @@ var GetAllInvoices = Model.extend({
   // using findAll instead of resource because I don't want to be able to save.
   findAll: function(){
     return $.ajax({
-      url: RinsCommon.UI_SERVICE_URL+'invoice/get',
+      url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/get',
       type: 'POST'
     })
   }

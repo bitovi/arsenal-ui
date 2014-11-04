@@ -2,8 +2,6 @@ import Component from 'can/component/';
 import View from 'can/view/';
 import _ from 'lodash';
 
-import appstate from 'models/appstate/';
-
 import GlobalParameterBar from 'components/global-parameter-bar/';
 import Grid from 'components/grid/';
 import stache from 'can/view/stache/';
@@ -28,6 +26,7 @@ import styles from './page-invoices.less!';
 /* Extend grid with the columns */
 Grid.extend({
   scope: {
+    appstate:undefined,
     columns: [
       {
         id: 'id',
@@ -92,12 +91,12 @@ Grid.extend({
     '.id :checkbox change': function(item, el, ev) {
       var self = this;
       var val = $(item[0]).attr("value");
-      
+
       if($(item[0]).is(":checked"))
           self.scope.attr('checkedRows').push(val);
       else {
           self.scope.attr('checkedRows').each(function(value, key) {
-              
+
               if(val == value){
                   var i = self.scope.attr('checkedRows').indexOf(value);
                   self.scope.attr('checkedRows').splice(i,1);
@@ -135,11 +134,11 @@ Grid.extend({
               $("#invoiceTypeError").text("");
               if(self.scope.attr('checkedRows').length > 0)
                   $("#btnSubmit").removeAttr("disabled");
-              
+
           }
       },
       ".rn-grid >tbody>tr dblclick": function(){
-          appstate.attr('page','create-invoice');
+            this.scope.appstate.attr('page','create-invoice');
             invoicemap.attr('invoiceid','123');
       }
   }
@@ -154,13 +153,13 @@ var page = Component.extend({
       //console.log("val is "+JSON.stringify(val));
       var self = this;
       //var prev = self.attr('refreshCount');
-        
+
         if(type=="Add")
           self.attr('tokenInput').push(val);
         else if(type=="Delete"){
           //console.log(JSON.stringify(self.tokenInput.attr()));
           this.attr('tokenInput').each(function(value, key) {
-            
+
             console.log(key+" "+val.id+" "+value.id);
             if(val.id == value.id){
               self.attr('tokenInput').splice(key,1);
@@ -168,7 +167,7 @@ var page = Component.extend({
             }
 
           });
-         
+
         }
         //console.log(type+"&&"+JSON.stringify(this.attr('tokenInput')));
      },
@@ -189,6 +188,8 @@ var page = Component.extend({
         allInvoicesMap:[]
   },
   init: function(){
+    console.log(" loading Invoices");
+
 
   },
   events: {
@@ -245,18 +246,18 @@ var page = Component.extend({
           Promise.all([
               /* While search,  Token parameter has to be sent with page data */
               /* tokenInput holds that search token info */
-            //AllInvoices.findAll({searchParam: tokenInput}) 
+            //AllInvoices.findAll({searchParam: tokenInput})
             GetAllInvoices.findAll()
         ]).then(function(values) {
           if(values[0][0]["responseCode"]=="0000"){
             self.scope.allInvoicesMap.replace(values[0][0]);
           }
-          
+
         });
     },
     "{allInvoicesMap} change": function() {
         var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
-        
+
         var gridData = {"data":[]};
 
         for(var i=0;i<invoiceData.length;i++){
@@ -326,16 +327,13 @@ var page = Component.extend({
         //console.log(JSON.stringify(gridData));
         var rows = new can.List(gridData.data);
         $('#invoiceGrid1').html(stache('<rn-grid rows="{rows}"></rn-grid>')({rows}));
-         
+
     },
      "#btnAdd click": function(){
-            appstate.attr('page','create-invoice');
+            this.scope.appstate.attr('page','create-invoice');
             invoicemap.attr('invoiceid','');
-           
     }
   }
 });
 
 export default page;
-
-

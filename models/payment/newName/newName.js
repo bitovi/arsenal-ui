@@ -4,15 +4,16 @@ import RinsCommon from 'models/rinsCommon/';
 
 var NewPBName = Model.extend({
 
-  findAll: function(param){
+  findOne: function(param){
     return $.ajax({
       url: RinsCommon.DOMAIN_SERVICE_URL+'paymentBundle/newName',
       type: 'POST',
-      params: param,
+      data: JSON.stringify(param),
       dataType: 'json'
     })
-  }
+   }
 }, {});
+
 
 /* able to get data in ajax done function*/
 

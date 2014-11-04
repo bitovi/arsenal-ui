@@ -29,7 +29,8 @@ var stateDefaults = {
   page: 'dashboard',
   licensor: undefined,
   region: undefined,
-  storeType: undefined
+  storeType: undefined,
+  globalSearch:undefined
 };
 
 
@@ -38,7 +39,7 @@ var appState = new State({
   startRouting: function() {
     // Create a route and pass in initial values.
     route(':page', stateDefaults);
-   
+
     // start routing!
     route.ready();
   }
