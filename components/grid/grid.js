@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import Component from 'can/component/';
+import can from 'can/';
 
 import template from './template.stache!';
 import _less from './grid.less!';
@@ -72,10 +73,10 @@ var Grid = Component.extend({
       };
 
       var out = [],
-          childRowsAreVisible = false,
-          scope = this;
+          childRowsAreVisible = false;
+      can.__reading(this.rows, 'change'); // TODO: figure out if there's a better way to do this.
+                                          // Note for others - don't use can.__reading yourself!
 
-      this.rows.attr('length');
       return _.map(this.rows, function(row) {
         var isChild = isRowAChild(row);
 
@@ -119,7 +120,6 @@ var Grid = Component.extend({
 
       if(this.scope.attr('sortedColumn') && this.scope.attr('sortedColumn').id === column.id) {
         this.scope.attr('sortedDirection', this.scope.attr('sortedDirection') === 'asc' ? 'desc' : 'asc');
-        console.log('sort change');
       } else if(column.sortable) {
         can.batch.start();
         this.scope.attr('sortedColumn', column);
