@@ -3,36 +3,9 @@
 rn-scrolling-grid-example {
   display: block;
   position: relative;
+  height: 20em;
+  overflow-y: scroll;
 
   .grid-mixin();
-
-
-  table {
-    display: block;
-    width: 100%;
-
-    thead {
-
-    }
-    tbody {
-
-      height: 100px;
-      overflow: auto;
-      display: block;
-
-    }
-
-    thead, tbody {
-      & > tr {
-        display: table;
-        table-layout: fixed;
-        width: 100%;
-      }
-
-      td:nth-child(2), th:nth-child(2) {
-        width: 60px;
-      }
-    }
-  }
 
 }
