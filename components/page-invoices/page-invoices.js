@@ -6,7 +6,9 @@ import GlobalParameterBar from 'components/global-parameter-bar/';
 import Grid from 'components/grid/';
 import stache from 'can/view/stache/';
 
+import UserReq from 'models/rinsCommon/request/';
 import GetAllInvoices from 'models/getAllInvoices/';
+import Invoice from 'models/invoice/';
 import invoicemap from 'models/sharedMap/invoice';
 import topfilterMap from 'models/sharedMap/topfilter';
 
@@ -104,7 +106,7 @@ var page = Component.extend({
           var flag=true;
           this.attr('tokenInput').each(function(value, key) {
 
-            console.log(key+" "+val.id+" "+value.id);
+            //console.log(key+" "+val.id+" "+value.id);
             if(val.id == value.id){
                 self.attr('tokenInput').splice(key,1);
               //console.log("updated " +JSON.stringify(self.tokenInput.attr()));
@@ -131,7 +133,7 @@ var page = Component.extend({
         ]
   },
   init: function(){
-    console.log(" loading Invoices "+JSON.stringify(this.scope.appstate.attr()));
+                        console.log(" loading Invoices "+JSON.stringify(this.scope.appstate.attr()));
   },
   events: {
     "inserted": function(){
@@ -195,7 +197,6 @@ var page = Component.extend({
         });
     },
     "{allInvoicesMap} change": function() {
-      console.log("here");
         var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
 
         var gridData = {"data":[]};
@@ -327,20 +328,74 @@ var page = Component.extend({
 
           }
       },
+      "#inputAnalyze change": function(){
+              var self=this;
+              var invSearchRequest = {};
+              invSearchRequest.searchRequest = {};
+              invSearchRequest.searchRequest["serviceTypeId"] = this.scope.appstate.attr('storeType');
+              invSearchRequest.searchRequest["regionId"] = this.scope.appstate.attr('region');
+              invSearchRequest.searchRequest["entityId"] = this.scope.appstate.attr('licensor');
+              
+              invSearchRequest.searchRequest["periodType"] = "P";
+              invSearchRequest.searchRequest["periodFrom"] = "201304";
+              invSearchRequest.searchRequest["periodTo"] = "201307";
+              
+              invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
+              invSearchRequest.searchRequest["offset"] = "0";
+              invSearchRequest.searchRequest["limit"] = "10";
+              invSearchRequest.searchRequest["filter"] = self.scope.tokenInput.attr();
+
+              invSearchRequest.searchRequest["sortBy"] = "invoiceNumber";
+              invSearchRequest.searchRequest["sortOrder"] = "ASC";
+
+              GetAllInvoices.findAll(UserReq.formRequestDetails(invSearchRequest),function(data){
+                  //console.log("passing params is "+JSON.stringify(data[0].attr()));
+                  self.scope.allInvoicesMap.replace(data[0]);
+              },function(xhr){
+                console.error("Error while loading: bundleNames"+xhr);
+              });
+      },
+      "#btnDelete click": function(){
+          var self=this;
+          //console.log("selected Invoices are "+ self.scope.checkedRows.attr());
+          var invoiceDelete = {"searchRequest":{}};
+          invoiceDelete.searchRequest.ids = self.scope.checkedRows.attr();
+          /* Getting cross origin error - need to check with Hardeep to correct the JSON REquest Header */
+          Invoice.destroy(UserReq.formRequestDetails(invoiceDelete),function(data){
+                  console.log("passing params is "+JSON.stringify(data[0].attr()));
+                  
+          },function(xhr){
+            console.error("Error while loading: bundleNames"+xhr);
+          });
+      },
       '{scope.appstate} change': function() {
+          var self=this;
           console.log("appState set to "+JSON.stringify(this.scope.appstate.attr()));
           if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch') ){
               this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
               console.log("User clicked on invoice search");
 
-              var bundleSearchRequest = {};
-              bundleSearchRequest.bundleSearch = {};
-              bundleSearchRequest.bundleSearch["serviceTypeId"] = this.scope.appstate.attr('storeType');
-              bundleSearchRequest.bundleSearch["region"] = this.scope.appstate.attr('region');
-              bundleSearchRequest.bundleSearch["type"] = this.scope.appstate.attr('page');
+              var invSearchRequest = {};
+              invSearchRequest.searchRequest = {};
+              invSearchRequest.searchRequest["serviceTypeId"] = this.scope.appstate.attr('storeType');
+              invSearchRequest.searchRequest["regionId"] = this.scope.appstate.attr('region');
+              invSearchRequest.searchRequest["entityId"] = this.scope.appstate.attr('licensor');
+              
+              invSearchRequest.searchRequest["periodType"] = "P";
+              invSearchRequest.searchRequest["periodFrom"] = "201304";
+              invSearchRequest.searchRequest["periodTo"] = "201307";
+              
+              invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
+              invSearchRequest.searchRequest["offset"] = "0";
+              invSearchRequest.searchRequest["limit"] = "10";
+              invSearchRequest.searchRequest["filter"] = self.scope.tokenInput.attr();
 
-              BundleNamesModel.findOne(UserReq.formRequestDetails(bundleSearchRequest),function(data){
-                  //self.scope.bundleNames.replace(data["paymentBundles"]);
+              invSearchRequest.searchRequest["sortBy"] = "invoiceNumber";
+              invSearchRequest.searchRequest["sortOrder"] = "ASC";
+
+              GetAllInvoices.findAll(UserReq.formRequestDetails(invSearchRequest),function(data){
+                  //console.log("passing params is "+JSON.stringify(data[0].attr()));
+                  self.scope.allInvoicesMap.replace(data[0]);
               },function(xhr){
                 console.error("Error while loading: bundleNames"+xhr);
               });
