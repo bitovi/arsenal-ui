@@ -9,12 +9,13 @@
 	</div>
   </div>
   <div class="row">
-			<div class="col-sm-12 lineDividerInvoice"></div>	  
-			<div class="col-sm-6 right-border">iCSV Upload</div>	   	 
-	   	    <div class="col-sm-6 left-border">iCSV Summary</div>
+			  
+			
+		
+
 			<div class="col-sm-12 lineDividerInvoice" style="padding:0px;">
-				<div id="row1" style="background-color:red;width:100%;height:20px;"></div>
-				<div id="row2" style="background-color:yellow;width:100%;height:20px;"></div>
+				<div id="icsvinvoiceGrid">
+        		</div>
 			</div>
 			<div class="col-sm-12 lineDividerInvoice">
 				  <div class="col-sm-12">
