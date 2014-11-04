@@ -23,6 +23,13 @@ var Invoice = Model.extend({
   		type: 'POST'
      	//data: params
   	})
+  },
+  destroy: function(params){
+  return $.ajax({
+      url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/delete',
+      type: 'DELETE',
+      data: JSON.stringify(params)
+    })
   }
 }, {});
 
