@@ -22,6 +22,7 @@ var Grid = Component.extend({
       }, ...
     */],
     rows: [],
+    allOpen: false,
     sortedColumn: null,
     sortedDirection: null, // should be 'asc' or 'desc'
   },
@@ -114,6 +115,14 @@ var Grid = Component.extend({
     '.open-toggle click': function(el, ev) {
       var row = el.closest('tr').data('row').row;
       row.attr('__isOpen', !row.attr('__isOpen'));
+    },
+    '.open-toggle-all click': function(el, ev) {
+      var allOpen = _.every(this.scope.rows, row => row.__isChild ? true : row.__isOpen);
+      can.batch.start();
+      // open parent rows if they are closed; close them if they are open
+      this.scope.rows.each(row => row.__isChild || row.attr('__isOpen', !allOpen));
+      this.scope.attr('allOpen', !allOpen);
+      can.batch.stop();
     },
     'th click': function(el, ev) {
       var column = el.data('column').column;

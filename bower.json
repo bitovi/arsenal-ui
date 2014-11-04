@@ -26,5 +26,8 @@
     "funcunit": "~2.0.4",
     "qunit": "~1.15.0",
     "lodash": "~2.4.1"
+  },
+  "resolutions": {
+    "jquery": "~2.1.1"
   }
 }

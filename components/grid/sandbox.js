@@ -7,9 +7,14 @@ Grid.extend({
   scope: {
     columns: [
       {
+        id: 'toggle',
+        title: '<span class="open-toggle-all"></span>',
+        contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}}')({isChild: row.__isChild}); }
+      },
+      {
         id: 'licensor',
         title: 'Licensor',
-        contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{licensor}}')({licensor: row.licensor, isChild: row.__isChild}); }
+        contents: function(row) { return stache('{{licensor}}')({licensor: row.licensor}); }
       },
       {
         id: 'type',
