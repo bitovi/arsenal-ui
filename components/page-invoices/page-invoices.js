@@ -29,10 +29,10 @@ Grid.extend({
     appstate:undefined,
     columns: [
       {
-        id: 'id',
+        id: 'invId',
         title: '',
         contents: function(row) {
-          return stache('{{#id}}<input type="checkbox" value="{{id}}"/>{{/id}}')({id: row.id});
+          return stache('{{#invId}}<input type="checkbox" value="{{invId}}"/>{{/invId}}')({invId: row.invId});
         }
       },
       {
@@ -80,15 +80,205 @@ Grid.extend({
         id: 'comments',
         title: 'User comments'
       }
-    ],
-    checkedRows: []
+    ]
+  }
+});
+
+var page = Component.extend({
+  tag: 'page-invoices',
+  template: template,
+  scope: {
+    localGlobalSearch:undefined,
+    allInvoicesMap:[],
+    checkedRows: [],
+    tokenInput: [],
+    refreshTokenInput: function(val, type){
+      //console.log("val is "+JSON.stringify(val));
+      var self = this;
+      //var prev = self.attr('refreshCount');
+
+        if(type=="Add")
+          self.attr('tokenInput').push(val);
+        else if(type=="Delete"){
+          //console.log(JSON.stringify(self.tokenInput.attr()));
+          var flag=true;
+          this.attr('tokenInput').each(function(value, key) {
+
+            console.log(key+" "+val.id+" "+value.id);
+            if(val.id == value.id){
+                self.attr('tokenInput').splice(key,1);
+              //console.log("updated " +JSON.stringify(self.tokenInput.attr()));
+            }
+
+          });
+
+        }
+        //console.log(type+"&&"+JSON.stringify(this.attr('tokenInput')));
+     },
+    "gridcolumntext": [
+          { "sTitle": "", "mData": "id" },
+          { "sTitle": "Entity", "mData": "entity" },
+          { "sTitle": "Invoice Type", "mData": "invoiceType" },
+          { "sTitle": "Content Type", "mData": "contentType" },
+          { "sTitle": "Country", "mData": "country" },
+          { "sTitle": "Invoice No", "mData": "invoiceNum"},
+          { "sTitle": "Invoice Amount", "mData": "invoiceAmt"},
+          { "sTitle": "Due date", "mData": "dueDate"},
+          { "sTitle": "Currency",  "mData": "currency"},
+          { "sTitle": "Status",  "mData": "status"},
+          { "sTitle": "Payment Bundle Name",  "mData": "bundleName"},
+          { "sTitle": "User comments",  "mData": "comments"}
+        ]
+  },
+  init: function(){
+    console.log(" loading Invoices "+JSON.stringify(this.scope.appstate.attr()));
   },
   events: {
-    '.open-toggle click': function(el, ev) {
-      var row = el.closest('tr').data('row').row;
-      row.attr('__isOpen', !row.attr('__isOpen'));
+    "inserted": function(){
+      topfilterMap.attr("show", true);
+      /*var ingTemplate = View.stache("<data-grid name='invoiceSearchTable' type='getAllInvoices' columnText='{gridCoulmnText}'></data-grid>");
+      var f = ingTemplate();
+      $("#invoiceGrid").html( f );*/
+      var self = this;
+      $("#tokenSearch").tokenInput([
+          {id: 1, name: "Search"} //This is needed
+        ],
+        {
+            theme: "facebook",
+            preventDuplicates: true,
+            onResult: function (item) {
+              //alert(item);
+                if($.isEmptyObject(item)){
+                      return [{id:$("#token-input-tokenSearch").val(),name: $("#token-input-tokenSearch").val()}];
+                }else{
+                      return item;
+                }
+            },
+            onAdd: function (item) {
+              //alert(JSON.stringify(item));
+                //doSearch(item,"add");
+                //self.scope.tokenInputData.replace(item);
+                self.scope.refreshTokenInput(item,"Add");
+                //var $subComp = $('data-grid', self.element);
+                //$subComp.scope().refreshTokenInput(item,"Add");
+
+            },
+            onDelete: function (item) {
+                //doSearch(item,"delete");
+                 //self.scope.tokenInputData.replace(item);
+                 self.scope.refreshTokenInput(item,"Delete");
+                //var $subComp = $('data-grid', self.element);
+                //$subComp.scope().refreshTokenInput(item,"Delete");
+            }
+      });
+
+      Promise.all([
+            GetAllInvoices.findAll()
+        ]).then(function(values) {
+          //console.log(JSON.stringify(values[0][0].attr()));
+          //if(values[0][0]["responseCode"]==="0000")
+            self.scope.allInvoicesMap.replace(values[0][0]);
+        });
+
     },
-    '.id :checkbox change': function(item, el, ev) {
+    "{tokenInput} change": function(){
+          var self= this;
+          console.log(JSON.stringify(self.scope.tokenInput.attr()));
+          Promise.all([
+              /* While search,  Token parameter has to be sent with page data */
+              /* tokenInput holds that search token info */
+            //AllInvoices.findAll({searchParam: tokenInput})
+            GetAllInvoices.findAll()
+        ]).then(function(values) {
+            self.scope.allInvoicesMap.replace(values[0][0]);
+
+        });
+    },
+    "{allInvoicesMap} change": function() {
+      console.log("here");
+        var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
+
+        var gridData = {"data":[]};
+
+        for(var i=0;i<invoiceData.length;i++){
+            var invTemp = {};
+            invTemp["invId"] = invoiceData[i]["invId"];
+            invTemp["__isChild"] = false;
+            invTemp["entity"] = invoiceData[i]["entityName"];
+            invTemp["invoiceType"] = invoiceData[i]["invoiceType"];
+            invTemp["contentType"] = "";
+            invTemp["country"] = "";
+            invTemp["invoiceNum"] = invoiceData[i]["invoiceNumber"];
+            invTemp["invoiceAmt"] = invoiceData[i]["invoiceAmount"];
+            invTemp["dueDate"] = invoiceData[i]["invoiceDueDate"];
+            invTemp["currency"] = invoiceData[i]["invoiceCcy"];
+            invTemp["status"] = invoiceData[i]["status"];
+            invTemp["bundleName"] = invoiceData[i]["bundleName"];
+            invTemp["comments"] = invoiceData[i]["comments"][0]["comments"];
+            gridData.data.push(invTemp);
+            var insertedId = gridData.data.length-1;
+
+            var invoiceLineItems = invoiceData[i]["invoiceLines"];
+            var contentTypeArr = [], countryArr = [];
+            if(invoiceLineItems.length > 0){
+              for(var j=0;j<invoiceLineItems.length;j++){
+                var invLITemp={};
+                invLITemp["invId"] = "";
+                invLITemp["__isChild"] = true;
+                invLITemp["entity"] = "";
+                invLITemp["invoiceType"] = "";
+                invLITemp["contentType"] = invoiceLineItems[j]["contentGrpName"];
+                invLITemp["country"] = invoiceLineItems[j]["country"];
+                invLITemp["invoiceNum"] = "";
+                invLITemp["invoiceAmt"] = invoiceLineItems[j]["lineAmount"];
+                invLITemp["dueDate"] = "";
+                invLITemp["currency"] = invTemp["currency"];
+                invLITemp["status"] = "";
+                invLITemp["bundleName"] = "";
+                invLITemp["comments"] = "";
+                contentTypeArr.push(invLITemp["contentType"]);
+                countryArr.push(invLITemp["country"]);
+                gridData.data.push(invLITemp);
+              }
+
+            }
+
+            /*Below function is to remove the duplicate content type and find the count */
+            contentTypeArr = contentTypeArr.filter( function( item, index, inputArray ) {
+                   return inputArray.indexOf(item) == index;
+            });
+            if(contentTypeArr.length>1){
+              gridData.data[insertedId]["contentType"] = contentTypeArr.length+" types of Content";
+            }
+            else if(contentTypeArr.length==1)
+              gridData.data[insertedId]["contentType"] = contentTypeArr[0];
+
+            /*Below function is to remove the duplicate country and find the count */
+            countryArr = countryArr.filter( function( item, index, inputArray ) {
+              return inputArray.indexOf(item) == index;
+            });
+            if(countryArr.length>1){
+              gridData.data[insertedId]["country"] = countryArr.length+ " Countries";
+            }
+            else if(countryArr.length==1)
+              gridData.data[insertedId]["country"] = countryArr[0];
+
+          }
+        //console.log("grid data is "+JSON.stringify(gridData));
+        var rows = new can.List(gridData.data);
+        $('#invoiceGrid').html(stache('<rn-grid rows="{rows}"></rn-grid>')({rows}));
+         
+
+    },
+     "#btnAdd click": function(){
+            this.scope.appstate.attr('page','create-invoice');
+            invoicemap.attr('invoiceid','');
+    },
+    ".rn-grid>tbody>tr dblclick": function(){
+           this.scope.appstate.attr('page','create-invoice');
+           invoicemap.attr('invoiceid','123');
+    },
+    '.invId :checkbox change': function(item, el, ev) {
       var self = this;
       var val = $(item[0]).attr("value");
 
@@ -136,204 +326,27 @@ Grid.extend({
                   $("#btnSubmit").removeAttr("disabled");
 
           }
+      },
+      '{scope.appstate} change': function() {
+          console.log("appState set to "+JSON.stringify(this.scope.appstate.attr()));
+          if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch') ){
+              this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
+              console.log("User clicked on invoice search");
+
+              var bundleSearchRequest = {};
+              bundleSearchRequest.bundleSearch = {};
+              bundleSearchRequest.bundleSearch["serviceTypeId"] = this.scope.appstate.attr('storeType');
+              bundleSearchRequest.bundleSearch["region"] = this.scope.appstate.attr('region');
+              bundleSearchRequest.bundleSearch["type"] = this.scope.appstate.attr('page');
+
+              BundleNamesModel.findOne(UserReq.formRequestDetails(bundleSearchRequest),function(data){
+                  //self.scope.bundleNames.replace(data["paymentBundles"]);
+              },function(xhr){
+                console.error("Error while loading: bundleNames"+xhr);
+              });
+
+          }
       }
-  }
-});
-
-var page = Component.extend({
-  tag: 'page-invoices',
-  template: template,
-  scope: {
-    "tokenInput": [],
-    refreshTokenInput: function(val, type){
-      //console.log("val is "+JSON.stringify(val));
-      var self = this;
-      //var prev = self.attr('refreshCount');
-
-        if(type=="Add")
-          self.attr('tokenInput').push(val);
-        else if(type=="Delete"){
-          //console.log(JSON.stringify(self.tokenInput.attr()));
-          this.attr('tokenInput').each(function(value, key) {
-
-            console.log(key+" "+val.id+" "+value.id);
-            if(val.id == value.id){
-              self.attr('tokenInput').splice(key,1);
-              //console.log("updated " +JSON.stringify(self.tokenInput.attr()));
-            }
-
-          });
-
-        }
-        //console.log(type+"&&"+JSON.stringify(this.attr('tokenInput')));
-     },
-    "gridcolumntext": [
-          { "sTitle": "", "mData": "id" },
-          { "sTitle": "Entity", "mData": "entity" },
-          { "sTitle": "Invoice Type", "mData": "invoiceType" },
-          { "sTitle": "Content Type", "mData": "contentType" },
-          { "sTitle": "Country", "mData": "country" },
-          { "sTitle": "Invoice No", "mData": "invoiceNum"},
-          { "sTitle": "Invoice Amount", "mData": "invoiceAmt"},
-          { "sTitle": "Due date", "mData": "dueDate"},
-          { "sTitle": "Currency",  "mData": "currency"},
-          { "sTitle": "Status",  "mData": "status"},
-          { "sTitle": "Payment Bundle Name",  "mData": "bundleName"},
-          { "sTitle": "User comments",  "mData": "comments"}
-        ],
-        allInvoicesMap:[]
-  },
-  init: function(){
-    console.log(" loading Invoices");
-
-
-  },
-  events: {
-    "inserted": function(){
-      topfilterMap.attr("show", true);
-      /*var ingTemplate = View.stache("<data-grid name='invoiceSearchTable' type='getAllInvoices' columnText='{gridCoulmnText}'></data-grid>");
-      var f = ingTemplate();
-      $("#invoiceGrid").html( f );*/
-      var self = this;
-      $("#tokenSearch").tokenInput([
-          {id: 1, name: "Search"} //This is needed
-        ],
-        {
-            theme: "facebook",
-            preventDuplicates: true,
-            onResult: function (item) {
-              //alert(item);
-                if($.isEmptyObject(item)){
-                      return [{id:$("#token-input-tokenSearch").val(),name: $("#token-input-tokenSearch").val()}];
-                }else{
-                      return item;
-                }
-            },
-            onAdd: function (item) {
-              //alert(JSON.stringify(item));
-                //doSearch(item,"add");
-                //self.scope.tokenInputData.replace(item);
-                self.scope.refreshTokenInput(item,"Add");
-                //var $subComp = $('data-grid', self.element);
-                //$subComp.scope().refreshTokenInput(item,"Add");
-
-            },
-            onDelete: function (item) {
-                //doSearch(item,"delete");
-                 //self.scope.tokenInputData.replace(item);
-                 self.scope.refreshTokenInput(item,"Delete");
-                //var $subComp = $('data-grid', self.element);
-                //$subComp.scope().refreshTokenInput(item,"Delete");
-            }
-      });
-
-      Promise.all([
-            GetAllInvoices.findAll()
-        ]).then(function(values) {
-          //console.log(JSON.stringify(values[0][0].attr()));
-          if(values[0][0]["responseCode"]==="0000")
-            self.scope.allInvoicesMap.replace(values[0][0]);
-        });
-
-    },
-    "{tokenInput} change": function(){
-          var self= this;
-          console.log(JSON.stringify(self.scope.tokenInput.attr()));
-          Promise.all([
-              /* While search,  Token parameter has to be sent with page data */
-              /* tokenInput holds that search token info */
-            //AllInvoices.findAll({searchParam: tokenInput})
-            GetAllInvoices.findAll()
-        ]).then(function(values) {
-          if(values[0][0]["responseCode"]=="0000"){
-            self.scope.allInvoicesMap.replace(values[0][0]);
-          }
-
-        });
-    },
-    "{allInvoicesMap} change": function() {
-        var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
-
-        var gridData = {"data":[]};
-
-        for(var i=0;i<invoiceData.length;i++){
-            var invTemp = {};
-            invTemp["id"] = invoiceData[i]["id"];
-            invTemp["__isChild"] = false;
-            invTemp["entity"] = invoiceData[i]["entityId"];
-            invTemp["invoiceType"] = invoiceData[i]["invoiceType"];
-            invTemp["contentType"] = "";
-            invTemp["country"] = "";
-            invTemp["invoiceNum"] = invoiceData[i]["invoiceNumber"];
-            invTemp["invoiceAmt"] = invoiceData[i]["invoiceAmount"];
-            invTemp["dueDate"] = invoiceData[i]["invoiceDueDate"];
-            invTemp["currency"] = invoiceData[i]["invoiceCcy"];
-            invTemp["status"] = invoiceData[i]["status"];
-            invTemp["bundleName"] = invoiceData[i]["bundleName"];
-            invTemp["comments"] = invoiceData[i]["comments"][0]["comments"];
-            gridData.data.push(invTemp);
-            var insertedId = gridData.data.length-1;
-
-            var invoiceLineItems = invoiceData[i]["invoiceLines"];
-            var contentTypeArr = [], countryArr = [];
-            if(invoiceLineItems.length > 0){
-              for(var j=0;j<invoiceLineItems.length;j++){
-                var invLITemp={};
-                invLITemp["id"] = "";
-                invLITemp["__isChild"] = true;
-                invLITemp["entity"] = "";
-                invLITemp["invoiceType"] = "";
-                invLITemp["contentType"] = invoiceLineItems[j]["contentType"];
-                invLITemp["country"] = invoiceLineItems[j]["countryId"];
-                invLITemp["invoiceNum"] = "";
-                invLITemp["invoiceAmt"] = invoiceLineItems[j]["lineAmount"];
-                invLITemp["dueDate"] = "";
-                invLITemp["currency"] = invTemp["currency"];
-                invLITemp["status"] = "";
-                invLITemp["bundleName"] = "";
-                invLITemp["comments"] = "";
-                contentTypeArr.push(invLITemp["contentType"]);
-                countryArr.push(invLITemp["country"]);
-                gridData.data.push(invLITemp);
-              }
-
-            }
-
-            /*Below function is to remove the duplicate content type and find the count */
-            contentTypeArr = contentTypeArr.filter( function( item, index, inputArray ) {
-                   return inputArray.indexOf(item) == index;
-            });
-            if(contentTypeArr.length>1){
-              gridData.data[insertedId]["contentType"] = contentTypeArr.length+" types of Content";
-            }
-            else if(contentTypeArr.length==1)
-              gridData.data[insertedId]["contentType"] = contentTypeArr[0];
-
-            /*Below function is to remove the duplicate country and find the count */
-            countryArr = countryArr.filter( function( item, index, inputArray ) {
-              return inputArray.indexOf(item) == index;
-            });
-            if(countryArr.length>1){
-              gridData.data[insertedId]["country"] = countryArr.length+ " Countries";
-            }
-            else if(countryArr.length==1)
-              gridData.data[insertedId]["country"] = countryArr[0];
-
-          }
-        //console.log(JSON.stringify(gridData));
-        var rows = new can.List(gridData.data);
-        $('#invoiceGrid').html(stache('<rn-grid rows="{rows}"></rn-grid>')({rows}));
-         
-
-    },
-     "#btnAdd click": function(){
-            this.scope.appstate.attr('page','create-invoice');
-            invoicemap.attr('invoiceid','');
-    },
-    ".rn-grid>tbody>tr dblclick": function(){
-           this.scope.appstate.attr('page','create-invoice');
-           invoicemap.attr('invoiceid','123');
-    }
   }
 });
 
