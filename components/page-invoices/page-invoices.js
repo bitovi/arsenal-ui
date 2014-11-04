@@ -326,7 +326,8 @@ var page = Component.extend({
           }
         //console.log(JSON.stringify(gridData));
         var rows = new can.List(gridData.data);
-        $('#invoiceGrid1').html(stache('<rn-grid rows="{rows}"></rn-grid>')({rows}));
+        $('#invoiceGrid').html(stache('<rn-grid rows="{rows}"></rn-grid>')({rows}));
+         
 
     },
      "#btnAdd click": function(){
