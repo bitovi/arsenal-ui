@@ -136,10 +136,6 @@ Grid.extend({
                   $("#btnSubmit").removeAttr("disabled");
 
           }
-      },
-      ".rn-grid >tbody>tr dblclick": function(){
-            this.scope.appstate.attr('page','create-invoice');
-            invoicemap.attr('invoiceid','123');
       }
   }
 });
@@ -333,6 +329,10 @@ var page = Component.extend({
      "#btnAdd click": function(){
             this.scope.appstate.attr('page','create-invoice');
             invoicemap.attr('invoiceid','');
+    },
+    ".rn-grid>tbody>tr dblclick": function(){
+           this.scope.appstate.attr('page','create-invoice');
+           invoicemap.attr('invoiceid','123');
     }
   }
 });

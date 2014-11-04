@@ -61,7 +61,7 @@ var GlobalParameterBar = Component.extend({
     } ,
     '#globalSearch click':function(){
       //To idntify, user has clicked the button
-      if(this.  .appstate.attr('globalSearch')){
+      if(this.appstate.attr('globalSearch')){
         this.scope.appstate.attr('globalSearch', false);
       }else{
         this.scope.appstate.attr('globalSearch', true);
