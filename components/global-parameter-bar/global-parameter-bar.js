@@ -38,7 +38,7 @@ var GlobalParameterBar = Component.extend({
       this.scope.appstate.attr('storeType', selected);
     },
     '#region select change': function(el, ev) {
-      console.log("globalFetch Global Search: ");
+      //console.log("globalFetch Global Search: ");
       var selected = $(el[0].selectedOptions).data('region');
       this.scope.appstate.attr('region', selected);
 
@@ -61,7 +61,7 @@ var GlobalParameterBar = Component.extend({
     } ,
     '#globalSearch click':function(){
       //To idntify, user has clicked the button
-      if(this.scope.appstate.attr('globalSearch')){
+      if(this.  .appstate.attr('globalSearch')){
         this.scope.appstate.attr('globalSearch', false);
       }else{
         this.scope.appstate.attr('globalSearch', true);

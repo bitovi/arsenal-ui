@@ -76,18 +76,19 @@ var page = Component.extend({
             this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
             console.log("User clicked on bundle search");
 
+            var self = this;
             var bundleSearchRequest = {};
             bundleSearchRequest.bundleSearch = {};
             bundleSearchRequest.bundleSearch["serviceTypeId"] = this.scope.appstate.attr('storeType');
             bundleSearchRequest.bundleSearch["region"] = this.scope.appstate.attr('region');
             bundleSearchRequest.bundleSearch["type"] = this.scope.appstate.attr('page');
 
-            Promise.all([
-               BundleNamesModel.findAll(UserReq.formRequestDetails(bundleSearchRequest))
-            ]).then(function(values) {
-              //console.log(values[0][0]["bundleNames"].attr("bundleId"));
-              self.scope.bundleNames.replace(values[0][0]["bundleNames"]);
+            BundleNamesModel.findOne(UserReq.formRequestDetails(bundleSearchRequest),function(data){
+                self.scope.bundleNames.replace(data["paymentBundles"]);
+            },function(xhr){
+              console.error("Error while loading: bundleNames"+xhr);
             });
+
 
             //console.log("  User clicked "+this.scope.localGlobalSearch+" Other:"+this.scope.appstate.attr('globalSearch') );
           }
