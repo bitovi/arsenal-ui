@@ -10,7 +10,7 @@ import UserReq from 'models/rinsCommon/request/';
 import GetAllInvoices from 'models/getAllInvoices/';
 import Invoice from 'models/invoice/';
 import invoicemap from 'models/sharedMap/invoice';
-import topfilterMap from 'models/sharedMap/topfilter';
+
 
 import dataTables from 'components/data-tables/';
 import treetables from 'treetables';
@@ -133,11 +133,12 @@ var page = Component.extend({
         ]
   },
   init: function(){
-                        console.log(" loading Invoices "+JSON.stringify(this.scope.appstate.attr()));
+    this.scope.appstate.attr("renderGlobalSearch",true);
+
   },
   events: {
+
     "inserted": function(){
-      topfilterMap.attr("show", true);
       /*var ingTemplate = View.stache("<data-grid name='invoiceSearchTable' type='getAllInvoices' columnText='{gridCoulmnText}'></data-grid>");
       var f = ingTemplate();
       $("#invoiceGrid").html( f );*/
@@ -268,7 +269,7 @@ var page = Component.extend({
         //console.log("grid data is "+JSON.stringify(gridData));
         var rows = new can.List(gridData.data);
         $('#invoiceGrid').html(stache('<rn-grid rows="{rows}"></rn-grid>')({rows}));
-         
+
 
     },
      "#btnAdd click": function(){
@@ -335,11 +336,11 @@ var page = Component.extend({
               invSearchRequest.searchRequest["serviceTypeId"] = this.scope.appstate.attr('storeType');
               invSearchRequest.searchRequest["regionId"] = this.scope.appstate.attr('region');
               invSearchRequest.searchRequest["entityId"] = this.scope.appstate.attr('licensor');
-              
+
               invSearchRequest.searchRequest["periodType"] = "P";
               invSearchRequest.searchRequest["periodFrom"] = "201304";
               invSearchRequest.searchRequest["periodTo"] = "201307";
-              
+
               invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
               invSearchRequest.searchRequest["offset"] = "0";
               invSearchRequest.searchRequest["limit"] = "10";
@@ -363,7 +364,7 @@ var page = Component.extend({
           /* Getting cross origin error - need to check with Hardeep to correct the JSON REquest Header */
           Invoice.destroy(UserReq.formRequestDetails(invoiceDelete),function(data){
                   console.log("passing params is "+JSON.stringify(data[0].attr()));
-                  
+
           },function(xhr){
             console.error("Error while loading: bundleNames"+xhr);
           });
@@ -380,11 +381,11 @@ var page = Component.extend({
               invSearchRequest.searchRequest["serviceTypeId"] = this.scope.appstate.attr('storeType');
               invSearchRequest.searchRequest["regionId"] = this.scope.appstate.attr('region');
               invSearchRequest.searchRequest["entityId"] = this.scope.appstate.attr('licensor');
-              
+
               invSearchRequest.searchRequest["periodType"] = "P";
               invSearchRequest.searchRequest["periodFrom"] = "201304";
               invSearchRequest.searchRequest["periodTo"] = "201307";
-              
+
               invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
               invSearchRequest.searchRequest["offset"] = "0";
               invSearchRequest.searchRequest["limit"] = "10";

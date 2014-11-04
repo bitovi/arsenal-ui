@@ -193,8 +193,8 @@
 						    <tbody>
 						     {{#unless editpage}}
 						         <tr id="breakrow0" rowid="0">
-						            <td> 
-						            	
+						            <td>
+
 						            	<select id="inputContent0" name="inputContent[]" class="form-control inputContent">
 						            			<option value="">Select</option>
 							        			{{#if isAdhocStrore.adhoc}}
@@ -342,7 +342,9 @@
 						 {{#if showPBR}}
 							<label class="col-sm-2" for="inputCountry">Bundle Name:</label>
 					        <div class="col-sm-4 requiredBar">
-                 <create-pb name="createinvoice" appstate="{appstate}" ></create-pb>
+
+                 <create-pb type="invoices" appstate="{appstate}" ></create-pb>
+
 					        </div>
 					       {{else}}
 					        <label class="col-sm-2" for="inputCountry"></label>

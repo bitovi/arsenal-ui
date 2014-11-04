@@ -1,11 +1,7 @@
 import Component from 'can/component/';
 
-import appstate from 'models/appstate/';
-
-import invoicemap from 'models/sharedMap/invoice';
 
 import datePicker from 'components/date-picker/';
-
 import createpb from 'components/create-pb/';
 
 import css_bootstrapValidator from 'bootstrapValidator.css!';
@@ -15,16 +11,16 @@ import bootstrapValidator from 'bootstrapValidator';
 import template from './template.stache!';
 import styles from './page-create-invoice.less!';
 
-import InvoiceType from 'models/invoice-type/';
-import ContentType from 'models/content-type/';
-import Licensor from 'models/licensor/';
-import Currency from 'models/currency/';
-import Country from 'models/country/';
+import invoicemap from 'models/sharedMap/invoice';
+import InvoiceType from 'models/common/invoice-type/';
+import ContentType from 'models/common/content-type/';
+import Licensor from 'models/common/licensor/';
+import Currency from 'models/common/currency/';
+import Country from 'models/common/country/';
 import Invoice from 'models/invoice/';
-import Fxrate from 'models/fxrate/';
+import Fxrate from 'models/common/fxrate/';
 import icsvmap from 'models/sharedMap/icsv';
-import topfilter from 'models/sharedMap/topfilter';
-import AdhocTypes from 'models/adhoc-types/';
+import AdhocTypes from 'models/common/adhoc-types/';
 import GLaccounts from 'models/glaccounts/';
 
 //import Invoice from 'models/invoice/';
@@ -34,6 +30,7 @@ var page = Component.extend({
   tag: 'page-create-invoice',
   template: template,
   scope: {
+    appstate:undefined,
   	rowindex:1,
   	invoiceTypes:[],
   	licensor:[],
@@ -102,7 +99,7 @@ var page = Component.extend({
                                $("#breakrow"+rowindex+" #inputCountry").attr("id","inputCountry"+rowindex);
                                $("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val("");
                                if(rowindex != 0)
-                               $("#breakrow"+rowindex+" .removeRow").css("display", "block"); 
+                               $("#breakrow"+rowindex+" .removeRow").css("display", "block");
 
                                 var $option   = $clone.find('[name="amount[]"]');
                                 $('#invoiceform').bootstrapValidator('addField', $option);
@@ -114,22 +111,22 @@ var page = Component.extend({
 						        });
 
                                //console.log($clone.find('[name="amount[]"]'));
-                               
-			
-		}	
+
+
+		}
  },
   events: {
     	"inserted": function(){
-          	var self = this;  
-          	topfilter.attr("show", false);
+          	var self = this;
+
 
 			this.scope.isRequired(); /*For breakdown required field*/
     			$('#invoiceform').on('init.form.bv', function(e, data) {
 			           	data.bv.disableSubmitButtons(true);
-		       		 	
+
 			        }).on('init.field.bv', function(e, data) {
-			            
-			        
+
+
 			      	})
 	    			.bootstrapValidator({
 	    			container: 'popover',
@@ -167,7 +164,7 @@ var page = Component.extend({
 		                              return true;
 		                            }
                     		}
-                			
+
 		                }
 		            },
 		            usercomments :{
@@ -207,7 +204,7 @@ var page = Component.extend({
 		                              	var invduedate = new Date(value);
 		                              	var calduedate = new Date(self.scope.attr("calduedate"));
 		                              	var timeDiff = Math.abs(invduedate.getTime() - calduedate.getTime());
-										var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+										var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 										if(Math.abs(invduedate.getTime()) > Math.abs(calduedate.getTime())){
 											return false;
 										}
@@ -245,7 +242,7 @@ var page = Component.extend({
 		                              return true;
 		                            }
                     		}
-                			
+
 		                }
 		            },
 		            'amount[]': {
@@ -271,7 +268,7 @@ var page = Component.extend({
                     			}
 		                	}
 		            	}
-			          
+
 
 			         }
 			    }).on('error.field.bv', function(e, data) {
@@ -284,14 +281,14 @@ var page = Component.extend({
         				if(data.field != "amount[]"){
 				    		$("#"+data.field+"-err").css("display", "none");
 				    	}
-	        			
+
 				}).on('success.form.bv', function(e, data) {
-			  			
-                       
+
+
 						/*Add invoice object creation start*/
 
 					if(!self.scope.editpage)
-					{	
+					{
                        var createInvoiceData = {};
 					   createInvoiceData.invoice = [];
 
@@ -318,14 +315,14 @@ var page = Component.extend({
 					   createInvoiceData.invoice["documents"].location = "";
 
 					   createInvoiceData.invoice["invoiceLines"] = [];
-					   	
+
 					   var rowNumber = 0;
-					   	$("[id^=breakrow]").each(function(i){  
+					   	$("[id^=breakrow]").each(function(i){
 							if(this.id !="breakrowTemplate"){
 								var index = $(this).attr("rowid");
 							 	console.log(index);
 					   			var inputContent = "inputContent"+index;
-							   		
+
 								var tempArry = {};
 
 								tempArry["countryId"] = self.scope.countryStore.attr("inputCountry"+index);
@@ -334,8 +331,8 @@ var page = Component.extend({
 						   		tempArry["contentType"] = self.scope.contentTypeStore.attr("inputContent"+index);
 						   		tempArry["lineAmount"] = self.scope.AmountStore.attr("amountText"+index);
 						   		tempArry["adhocTypeId"] = "";
-						   		if(self.scope.attr("invoicetypeSelect") == "2"){  
-						  	 		
+						   		if(self.scope.attr("invoicetypeSelect") == "2"){
+
 						  	 		tempArry["glAccount"] = self.scope.ccidGLStore.attr(inputContent);
 						  	 		tempArry["ccidName"] = "";
 						  	 	}
@@ -344,16 +341,16 @@ var page = Component.extend({
 						  	 		tempArry["ccidName"] = self.scope.ccidGLStore.attr(inputContent);
 						  	 	}
 
-						   		
+
 							   		createInvoiceData.invoice["invoiceLines"].push(tempArry);
-							   		
+
 
 									}
 								rowNumber++;
 								});
 									self.scope.errorMsg.attr("errorCode", "0000");
 							   	 	console.log(createInvoiceData);
-							   	 	
+
 							   	 	Promise.all([
 										      	Invoice.create(createInvoiceData)
 										     ]).then(function(values) {
@@ -385,16 +382,16 @@ var page = Component.extend({
 						                               $("#breakrow0 #ccidGL0").attr("id","ccidGL0").val("");
 												 	   // self.scope.contentTypeStore.attr("amountPeriod0","");
 												 	}
-												
+
 
 
 												});
 								}else{
-								
+
 								/* Add invoice end*/
 
 								/*Edit invoice onject creation start*/
-									
+
 
 								   var editInvoiceData = {};
 								   editInvoiceData.invoice = [];
@@ -421,8 +418,8 @@ var page = Component.extend({
 
 								  // console.log(self.scope.attr().invoiceContainer[0].comments.length+"test");
 								  // alert("yes");
-								   
-								   
+
+
 								  /*comment start*/
 								   editInvoiceData.invoice["comments"] = [];
 								   for(var j=0;j<self.scope.attr().invoiceContainer[0].comments.length;j++){  /*old comments*/
@@ -451,7 +448,7 @@ var page = Component.extend({
 										tempDocuments.status = "";
 										tempDocuments.id = 100;
 										editInvoiceData.invoice["documents"].push(tempDocuments);
-									}	
+									}
 
 										var tempDocuments = {};  /*new documents*/
 										tempDocuments.filename="";
@@ -462,13 +459,13 @@ var page = Component.extend({
 										editInvoiceData.invoice["documents"].push(tempDocuments);
 
 								   /*document end*/
-								   
+
 								  editInvoiceData.invoice["invoiceLines"] = [];
-								   $("[id^=breakrow]").each(function(i){  
+								   $("[id^=breakrow]").each(function(i){
 											if(this.id !="breakrowTemplate"){
 												var index = $(this).attr("rowid");
 												var inputContent = "inputContent"+index;
-									   		
+
 													var tempArry = {};
 
 
@@ -479,8 +476,8 @@ var page = Component.extend({
 											   		tempArry["lineAmount"] = self.scope.AmountStore.attr("amountText"+index);
 											   		tempArry["lineStatus"] = "";
 											   		tempArry["adhocTypeId"] = "";
-											   		if(self.scope.attr("invoicetypeSelect") == "2"){  
-											  	 		
+											   		if(self.scope.attr("invoicetypeSelect") == "2"){
+
 											  	 		tempArry["glAccount"] = self.scope.ccidGLStore.attr(inputContent);
 											  	 		tempArry["ccidName"] = "";
 											  	 	}
@@ -489,15 +486,15 @@ var page = Component.extend({
 											  	 		tempArry["ccidName"] = self.scope.ccidGLStore.attr(inputContent);
 											  	 	}
 
-											   		
-												   		editInvoiceData.invoice["invoiceLines"].push(tempArry);
-												   		
 
-												   		
+												   		editInvoiceData.invoice["invoiceLines"].push(tempArry);
+
+
+
 												   			}
 												});
-									
-									
+
+
 									 $.merge(editInvoiceData.invoice["invoiceLines"], self.scope.attr().DelInvoiceline); /*merging invoice line with deleted row*/
 
 								 console.log(editInvoiceData);
@@ -506,10 +503,10 @@ var page = Component.extend({
 								     ]).then(function(values) {
 									    self.scope.errorMsg.attr("responseText", values[0][0]["responseText"]);
 								   });
-								
-							}	 
+
+							}
 								/*Edit invoice end*/
-                        
+
 			                        return false;
 
 			       		 });
@@ -528,14 +525,14 @@ var page = Component.extend({
 				        });
 
 						/*	if(!self.scope.attr("invoiceid") && self.scope.attr("allModelReady"))
-								self.scope.createBreakline(0);*/  
+								self.scope.createBreakline(0);*/
 
 				},
 				 "{invoiceContainer} change": function() {
 				 		var self = this;  /*This block is used to update data in view with two way binding*/
-				 		
+
 		 		//console.log(self.scope.attr().invoiceContainer[0].invoiceNumber);
-		 		
+
 		 		var invoiceData = self.scope.attr().invoiceContainer[0];
 		 		self.scope.attr("invoicenumberStore", invoiceData.invoiceNumber);
 		 		self.scope.attr("invoicetypeSelect", invoiceData.invoiceTypeId);
@@ -548,7 +545,7 @@ var page = Component.extend({
 		 		self.scope.attr("invoicedate", invoiceData.invoiceDate);
 		 		self.scope.attr("invoiceduedate", invoiceData.invoiceDueDate);
 
-		 		
+
 		 		self.scope.attr("tax", invoiceData.tax);
 		 		//self.scope.attr("calduedate", invoiceData.invoiceCalculatedDueDate);
 		 		//self.scope.attr("calduedate", invoiceData.invoiceCalculatedDueDate);
@@ -557,19 +554,19 @@ var page = Component.extend({
 		 		var comment = "";
 		 		for(var i=0;i<invoiceData.comments.length;i++){
 		 			 comment += invoiceData.comments[i].comments+"   Commented By:"+invoiceData.comments[i].createdBy+" On "+invoiceData.comments[i].createdDate+"                                     ";
-				}	
+				}
 				self.scope.attr("usercommentsStore", comment);
 		 		/*Comment end*/
 
 		 		/*Breakdown start*/
 		 		//var self = this;
-         	
+
          		var $template = $('#breakrowTemplate');
-         	
+
          		for(var i=0;i<invoiceData.invoiceLines.length;i++){
 					self.scope.attr("rowindex",i)
 					var rowindex = self.scope.attr("rowindex");
-               
+
                 	var $clone = $template
                                 .clone()
                                 .removeClass('hide')
@@ -581,48 +578,48 @@ var page = Component.extend({
                                $("#breakrow"+rowindex+" #inputContent").attr("id","inputContent"+rowindex).val(invoiceData.invoiceLines[i].contentType);
                                if(self.scope.attr("invoicetypeSelect") == "2"){
                                		self.scope.contentTypeStore.attr("inputContent"+rowindex, invoiceData.invoiceLines[i].adhocTypeId);
-						 			
-						 			
+
+
 						 		}
 						 		else
 						 		{
-						 			
+
 						 			self.scope.contentTypeStore.attr("inputContent"+rowindex, invoiceData.invoiceLines[i].contentType);
-						 		}	
-                               
+						 		}
+
                                $("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).val(invoiceData.invoiceLines[i].fiscalPeriod);
                               // $("#breakrow"+rowindex+" #inputYear").attr("id","inputYear"+rowindex);
                                $("#breakrow"+rowindex+" #inputCountry").attr("id","inputCountry"+rowindex).val(invoiceData.invoiceLines[i].countryId);
                                   self.scope.countryStore.attr("inputCountry"+rowindex, invoiceData.invoiceLines[i].countryId);
-                                
+
                                $("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val(invoiceData.invoiceLines[i].glAccount);
-                               
+
                                if(self.scope.attr("invoicetypeSelect") == "2"){
-						 			
+
 						 			self.scope.ccidGLStore.attr("ccidGL"+rowindex, invoiceData.invoiceLines[i].glAccount);
 						 		}
 						 		else
 						 		{
-						 			
+
 						 			self.scope.ccidGLStore.attr("ccidGL"+rowindex, invoiceData.invoiceLines[i].ccidName);
-						 		}	
+						 		}
 
 
 
 
                                if(rowindex != 0)
-                               $("#breakrow"+rowindex+" .removeRow").css("display", "block"); 
+                               $("#breakrow"+rowindex+" .removeRow").css("display", "block");
 
                                  var $option   = $clone.find('[name="amount[]"]');
                                 $('#invoiceform').bootstrapValidator('addField', $option);
 
-                           	}     
-                                
+                           	}
+
 
                       $(".removeRow").click(function(event){
                       	           $('#invoiceform').bootstrapValidator('removeField', $option);
 						           	var rowindex = $(this).closest("tr").attr("rowid");
-						          
+
 										var inputContent = "inputContent"+rowindex;
 										var tempDelObj = {};
 										tempDelObj["countryId"] = self.scope.countryStore.attr("inputCountry"+rowindex);
@@ -632,8 +629,8 @@ var page = Component.extend({
 								   		tempDelObj["lineAmount"] = self.scope.AmountStore.attr("amountText"+rowindex);
 								   		tempDelObj["lineStatus"] = "delete";
 								   		tempDelObj["adhocTypeId"] = "";
-								   		if(self.scope.attr("invoicetypeSelect") == "2"){  
-								  	 		
+								   		if(self.scope.attr("invoicetypeSelect") == "2"){
+
 								  	 		tempDelObj["glAccount"] = self.scope.ccidGLStore.attr(inputContent);
 								  	 		tempDelObj["ccidName"] = "";
 								  	 	}
@@ -641,30 +638,30 @@ var page = Component.extend({
 								  	 		tempDelObj["glAccount"] = "";
 								  	 		tempDelObj["ccidName"] = self.scope.ccidGLStore.attr(inputContent);
 								  	 	}
-									
+
 									//console.log(tempDelObj);
 									self.scope.DelInvoiceline.push(tempDelObj);
 									$(this).closest("tr").remove();
 						           	self.scope.AmountStore.removeAttr("amountText"+rowindex);
 						           	self.scope.contentTypeStore.removeAttr("inputContent"+rowindex);
-									
-						     });    
 
-               /*Breakdown end*/    
+						     });
+
+               /*Breakdown end*/
 
 
 
-		 		
+
 		 },
  		".classAmtTotal blur": function(event){
  			var amountStr = event[0].value;
  			this.scope.AmountStore.attr(event[0].id, parseFloat(amountStr.replace(/,/g, '')));
-         	
+
 		},
 		".inputContent change": function(event){
          	this.scope.contentTypeStore.attr(event[0].id, event[0].value)
          	console.log(this.scope.contentTypeStore.attr());
-         	
+
 		},
 		".inputMonth change": function(event){
          	this.scope.monthStore.attr(event[0].id, event[0].value)
@@ -688,17 +685,17 @@ var page = Component.extend({
 			$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
 				if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
 					$(this).remove();
-					
+
 					}
 			  });
 			$("#breakrow0 .amountText").attr("id","amountText0").val(" ");
-			
+
 			self.scope.attr("AmountStore").each(function(val, key){
   	 				self.scope.AmountStore.removeAttr(key);
   	 			});
-			
+
 			this.scope.attr("totalAmountVal", 0);
-			
+
 			if(this.scope.attr("invoicetypeSelect") == "2"){  /*Adhoc*/
 				this.scope.isAdhocStrore.attr("ccidGL", "GL Account");
 	  	 		this.scope.isAdhocStrore.attr("contentAdhoc", "Adhoc Type");
@@ -731,14 +728,14 @@ var page = Component.extend({
   	 				}
   	 				totalAmount += parseInt(val);
   	 			});
-  	      		
+
   	 			if(!isNaN(totalAmount)){
   	 				this.scope.attr("totalAmountVal", totalAmount);
   	 			}
   	 			else{
   	 				this.scope.attr("totalAmountVal", "");
   	 			}
-  	      		
+
 
          },
          "{paymentBundleId} change": function() {
@@ -748,11 +745,11 @@ var page = Component.extend({
          	//console.log(this.scope.attr());
   	     },
          ".addRow click":function(){
-         	
+
          	var self = this;
          	var rowindex = self.scope.attr("rowindex");
          	self.scope.attr("rowindex", rowindex + 1);
-          
+
 			//alert(self.scope.attr("rowindex"));
 			/*var $template = $('#breakrowTemplate'),
                 $clone    = $template
@@ -767,32 +764,33 @@ var page = Component.extend({
                                $("#breakrow"+rowindex+" #inputYear").attr("id","inputYear"+rowindex);
                                $("#breakrow"+rowindex+" #inputCountry").attr("id","inputCountry"+rowindex);
                                $("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val(" ");
-                               $("#breakrow"+rowindex+" .removeRow").css("display", "block"); 
+                               $("#breakrow"+rowindex+" .removeRow").css("display", "block");
 
                                $(".removeRow").click(function(event){
 						            $(this).closest("tr").remove();
 						            self.scope.AmountStore.removeAttr("amountText"+rowindex);
 						        });*/
-					
-					
-                   self.scope.createBreakline(self.scope.attr("rowindex"));            	
+
+
+                   self.scope.createBreakline(self.scope.attr("rowindex"));
 
 
 					},
 				"#addInvSubmit click":function(){
 
-					
+
 				},
 				"#buttonCancel click":function(){
-					appstate.attr('page','invoices');
+					this.scope.appstate.attr('page','invoices');
 				}
 
-    
+
    },
   	init: function(){
    	 	var self = this;
    	 	var i = 1;
-   	 	topfilter.attr("show", false); /*hiding top filter*/
+      this.scope.appstate.attr("renderGlobalSearch",false);
+
    	 	Promise.all([
 			      	InvoiceType.findAll(),
 			     	Licensor.findAll(),
@@ -814,15 +812,15 @@ var page = Component.extend({
 		     		 self.scope.attr("contentType").replace(values[3][0]["data"]);
 		     	//	 self.scope.attr("glaccounts").replace(values[7][0]["data"]);
 
-		     		
-		     		
-		     		
+
+
+
 		     	//	 self.scope.attr("invoiceid", invoicemap.attr("invoiceid"));
 
 		     		 if(invoicemap.attr("invoiceid")){
-					
+
 						//this.attr("editpage", true);
-						
+
 						//console.log(invoiceid+"dadajsd");
 
 						self.scope.attr("editpage", true);
@@ -830,15 +828,15 @@ var page = Component.extend({
 				      				Invoice.findOne()
 				    			]).then(function(values) {
 						     		 self.scope.attr("invoiceContainer").replace(values[0][1]["invoice"]);
-						    	});	
-						}	
-					
+						    	});
+						}
+
 
 
 
 		     	});
 
-				
+
 	},
   	helpers: {
 			  	currentDate: function(){
@@ -849,9 +847,9 @@ var page = Component.extend({
 			  	 	var date = new Date();
 			  	 	date.setMonth(date.getMonth() + 1);
 			  	 	var calduedate = ((date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear());
-			  	 	this.attr("calduedate", calduedate);  
+			  	 	this.attr("calduedate", calduedate);
 					return calduedate;
-					
+
 			  	},
 			  	calculateTaxPercent: function(){
 			  	 	this.attr("taxStore", this.attr("tax"));
@@ -863,7 +861,7 @@ var page = Component.extend({
 			  	},
 			  	isAdhoc: function(){
 			  	 	if(this.attr("invoicetypeSelect") == "2"){  /*Adhoc*/
-			  	 		
+
 			  	 		return "Adhoc";
 			  	 		//console.log(this.isAdhocStrore);
 			  	 		//this.attr("isAdhoc").contentGL
@@ -896,11 +894,11 @@ var page = Component.extend({
 				disableInvoiceType:function(){
 					if(this.attr("editpage"))
 					{
-					  return "disabled"; 
+					  return "disabled";
 					}
 					else
 					{
-						return ""; 
+						return "";
 					}
 				}
 

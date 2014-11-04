@@ -15,7 +15,7 @@ var page = Component.extend({
   template: template,
   scope: {
     appstate: undefined,// this gets passed in
-    name: "@",
+    type: "@",
     isCreatePB:true,
     "bundleNames":[],
     "paymentBundleId":"",
@@ -31,7 +31,7 @@ var page = Component.extend({
          bundleSearchRequest.bundleSearch = {};
          bundleSearchRequest.bundleSearch["serviceTypeId"] = this.scope.appstate.attr('storeType');
          bundleSearchRequest.bundleSearch["region"] = this.scope.appstate.attr('region');
-         bundleSearchRequest.bundleSearch["type"] = this.scope.appstate.attr('page');
+         bundleSearchRequest.bundleSearch["type"] = this.scope.attr('type');
          console.log("bundleSearchRequest : "+JSON.stringify(bundleSearchRequest.bundleSearch));
 
           BundleNamesModel.findOne(UserReq.formRequestDetails(bundleSearchRequest),function(data){

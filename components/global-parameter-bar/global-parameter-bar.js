@@ -1,12 +1,11 @@
 import Component from 'can/component/';
 
 // Models
-import StoreType from 'models/store-type/';
-import Region from 'models/region/';
-import Country from 'models/country/';
-//import Licensor from 'models/global-param-licensor/';
-import Licensor from 'models/licensor/';
-import ContentType from 'models/content-type/';
+import StoreType from 'models/common/store-type/';
+import Region from 'models/common/region/';
+import Country from 'models/common/country/';
+import Licensor from 'models/common/licensor/';
+import ContentType from 'models/common/content-type/';
 
 import template from './template.stache!';
 import styles from './global-parameter-bar.less!';

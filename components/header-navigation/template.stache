@@ -20,7 +20,5 @@
     </div><!--/.nav-collapse -->
   </div>
 </div>
-{{topfilter}}
-{{#if show}}
-<global-parameter-bar appstate="{appstate}"></global-parameter-bar>
-{{/if}}
+
+<global-parameter-bar appstate="{appstate}" {{renderGlobalSearch}} ></global-parameter-bar>

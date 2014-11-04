@@ -7,7 +7,6 @@ import stache from 'can/view/stache/';
 
 import template from './template.stache!';
 import styles from './page-icsv.less!';
-import topfilter from 'models/sharedMap/topfilter';
 import dataTables from 'components/data-tables/';
 import icsvmap from 'models/sharedMap/icsv';
 
@@ -67,15 +66,15 @@ Grid.extend({
 var page = Component.extend({
   tag: 'page-icsv',
   template: template,
-  scope: { 
+  scope: {
       //summaryData:{},
       invoicesData:{}
     },
     init:function(){
-    topfilter.attr("show",false);
-      var self = this; 
+      var self = this;
+      this.scope.appstate.attr("renderGlobalSearch",false);
       self.scope.attr("invoicesData", icsvmap.invoicedata);
-     
+
      /* icsvmap.bind('uploadiCSV', function(ev, newVal, oldVal) {
          self.scope.attr("uploadData", newVal);
 
@@ -98,14 +97,14 @@ var page = Component.extend({
              this.scope.invoicesData = newval.invoices;
              console.log(newval.invoices);
          }); */
-          
+
         var gridData = [];
 
 
         console.log(self.scope.invoicesData.attr()[0].invoices);
 
         var tempArr = self.scope.invoicesData.attr()[0].invoices;
-        
+
         for(var i=0; i< tempArr.length; i++){
           var tempObj = {};
           tempObj.id= tempArr[i].invoiceNumber;
@@ -126,11 +125,11 @@ var page = Component.extend({
 
        // var gridData = [{id:"1", error:"error", licensor:"lic"},{id:"1", error:"error", licensor:"lic"}];
         var rows = new can.List(gridData);
-       $('#icsvinvoiceGrid').html(stache('<rn-grid rows="{rows}"></rn-grid>')({rows})); 
+       $('#icsvinvoiceGrid').html(stache('<rn-grid rows="{rows}"></rn-grid>')({rows}));
       },
       "{invoicesData} change":function(){
 
-        
+
 
       }
     }
