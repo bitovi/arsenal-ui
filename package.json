@@ -11,6 +11,14 @@
   "devDependencies": {
     "grunt": "~0.4.5",
     "steal-tools": "~0.4.0",
-    "testee": "~0.1.1"
+    "testee": "~0.1.1",
+    "grunt-shell": "~1.1.1",
+    "grunt-contrib-connect": "~0.8.0",
+    "send": "~0.10.0",
+    "morgan": "~1.4.0",
+    "url": "~0.10.1",
+    "grunt-contrib-clean": "~0.6.0",
+    "grunt-concurrent": "~1.0.0",
+    "grunt-connect-proxy": "~0.1.11"
   }
 }
