@@ -10,6 +10,8 @@ import styles from './page-icsv.less!';
 import dataTables from 'components/data-tables/';
 import icsvmap from 'models/sharedMap/icsv';
 
+import icsvsummary from 'components/icsv-summary/';
+
 Grid.extend({
   scope: {
     appstate:undefined,

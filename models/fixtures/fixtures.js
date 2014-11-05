@@ -22,3 +22,5 @@ fixture('GET /global-regions', '/models/fixtures/global-region.json');
 import fixture_country from './global-country';
 
 fixture('GET /global-storeTypes', '/models/fixtures/global-store-type.json');
+
+fixture('GET /invoiceicsv', '/models/fixtures/icsv.json');
