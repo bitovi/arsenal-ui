@@ -3,6 +3,7 @@
 
   @dark-border: 1px solid hsl(0, 0%, 40%);
   @light-border: 1px solid hsl(0, 0%, 75%);
+  @border-radius: 8px;
 
   @header-background: linear-gradient(to bottom, hsl(0, 0%, 75%), hsl(0, 0%, 50%));
 
@@ -18,60 +19,44 @@
     color: @font-color;
 
     /* getting border radius to work right */
-    thead:first-child > tr:first-of-type {
-      td:first-child, th:first-child {
-        border-radius: 8px 0 0 0;
-      }
+    thead:first-child, tbody:first-child {
+      & > tr:first-of-type {
+        td:first-child, th:first-child {
+          border-top-left-radius: @border-radius;
+        }
 
-      td:last-child, th:last-child {
-        border-radius: 0 8px 0 0;
+        td:last-child, th:last-child {
+          border-top-right-radius: @border-radius;
+        }
       }
     }
-    tbody:first-child > tr:first-of-type {
-      td:first-child, th:first-child {
-        border-radius: 8px 0 0 0;
-      }
 
-      td:last-child, th:last-child {
-        border-radius: 0 8px 0 0;
-      }
-    }
-    tbody:last-child > tr:last-of-type {
-      td:first-child, th:first-child {
-        border-radius: 0 0 0 8px;
-      }
+    tbody:last-child, tfoot:last-child {
+      & > tr:last-of-type {
+        td, th {
+          border-bottom: @light-border;
+        }
 
-      td:last-child, th:last-child {
-        border-radius: 0 0 8px 0;
-      }
+        td:first-child, th:first-child {
+          border-bottom-left-radius: @border-radius;
+        }
 
-      td {
-        border-bottom: @light-border;
-      }
-    }
-    tfoot:last-child > tr:last-of-type {
-      td:first-child, th:first-child {
-        border-radius: 0 0 0 8px;
-      }
-
-      td:last-child, th:last-child {
-        border-radius: 0 0 8px 0;
-      }
-
-      td {
-        border-bottom: @light-border;
+        td:last-child, th:last-child {
+          border-bottom-right-radius: @border-radius;
+        }
       }
     }
   }
 
-  thead {
+  thead, tfoot {
     background: @header-background;
 
     color: white;
 
-    th {
+    th, td {
       text-align: left;
       font-weight: normal;
+      height: 1.5em;
       padding: .5em 1em;
       border-right: @dark-border;
       border-top: @dark-border;
@@ -90,7 +75,7 @@
       td {
         padding: 1em;
 
-        border-top: @light-border;
+        border-bottom: @light-border;
 
         &:first-child {
           border-left: @light-border;
@@ -114,7 +99,8 @@
     }
   }
 
-  span.open-toggle {
+  span.open-toggle,
+  span.open-toggle-all {
     display: inline-block;
 
     &:before {
@@ -122,7 +108,8 @@
     }
   }
 
-  tr.open span.open-toggle {
+  tr.open span.open-toggle,
+  tr.open span.open-toggle-all {
     transform: rotate(90deg);
   }
 

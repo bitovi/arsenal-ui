@@ -21,12 +21,13 @@
   "dependencies": {
     "steal": "~0.3.0",
     "jquery": "~2.1.1",
-"canjs": "git://github.com/bitovi/canjs.git#1295-extending-components",    
-"bootstrap": "~3.2.0",
+    "canjs": "git://github.com/bitovi/canjs.git#1295-extending-components",
+    "bootstrap": "~3.2.0",
     "funcunit": "~2.0.4",
     "qunit": "~1.15.0",
     "lodash": "~2.4.1"
+  },
+  "resolutions": {
+    "jquery": "~2.1.1"
   }
 }
-
-
