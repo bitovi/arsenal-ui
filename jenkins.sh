@@ -1,5 +1,5 @@
 # clean up any previous clones
-rm -rf ./arsenal-ui
+rm -rf ./arsenal-ui ./arsenal-ui.tgz
 # clone the repo
 git clone git@gitlab.corp.apple.com:ist-finance/arsenal-ui.git arsenal-ui
 # go into the repo
