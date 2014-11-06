@@ -5,7 +5,7 @@ import styles from './highchart.less!';
 
 import highcharts from 'highcharts';
 
-//import bootstrap-exporting from 'bootstrap-highchart-exporting';
+import exporting from 'exporting';
 
 import HighChart from 'models/highchart/';
 
@@ -13,23 +13,41 @@ var highchartpage = Component.extend({
   tag: 'high-chart',
   template: template,
   scope: {
-	  details:[]
+	  details:[],
+	  invoiceAmount:[]
   },
   init: function(){
 	 console.log('Inside high chart'); 
 
-	 
-	 
-//	 $('#highChartDetails').innerHtml="";
-	 
-	 
     },
     events: {
     	"inserted": function(){
+    		 var highChartdata;
+    		  	 var self = this;
     		console.log("data is"+JSON.stringify(this.scope.attr()));
+    		  $("#highChartDetails").removeClass("hide");
+    		Promise.all([
+   	         HighChart.findAll()
+   	     	 ]).then(function(values) {
+   	    	  console.log("High chart values :"+JSON.stringify(values[0][0].attr()));
+   	    	  var servicedata = values[0][0].attr().highCharts;
+   	    	   highChartdata = prepareCanMap(values[0][0].attr().highCharts);
+   	    	var months = new Array("Volvo", "BMW");
+   	    	months.push(201405);
+   	     	 var data = new can.List([1,3]);
+
+   	     	 //$('#highChartDetails').fadeIn("fast");
     		$('#highChartDetails').highcharts({
+    			chart: {
+					renderTo: 'highChartDetails',
+					defaultSeriesType: 'line',
+					animation: false,
+					className: 'chartBorder',
+					marginBottom: 120,
+		           	marginLeft: 80
+				},
 		        title: {
-		            text: 'CELAS GBR MUSIC',
+		            text: servicedata[0].countryName+"-"+servicedata[0].licensorName,
 		            x: -20 //center
 		        },
 		        subtitle: {
@@ -41,12 +59,14 @@ var highchartpage = Component.extend({
 			                    text: 'Period',
 			                    align: 'middle'
 			                },
-		            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-		                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+		            categories: highChartdata["FISCAL_PERIOD"],
+		              labels: {
+							rotation: -45
+						}
 		        },
 		        yAxis: {
 		            title: {
-		                text: 'Temperature (°C)'
+		                text: 'Amount in '
 		            },
 		            plotLines: [{
 		                value: 0,
@@ -55,7 +75,10 @@ var highchartpage = Component.extend({
 		            }]
 		        },
 		        tooltip: {
-		            valueSuffix: '°C'
+		        	formatter: function () {
+						return '<b>' + this.series.name + '</b><br/>' + this.x + ': ' + this.y;
+					},
+		            valueSuffix: ''
 		        },
 		        legend: {
 		            layout: 'vertical',
@@ -65,18 +88,16 @@ var highchartpage = Component.extend({
 		        },
 		        series: [{
 		            name: 'Invoice Amount',
-		            data: [10, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+		            data: highChartdata["INVOICE_AMOUNT"] 
 		        }, {
 		            name: 'Overrep Amount',
-		            data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+		            data: highChartdata["OVERREP_AMOUNT"]
 		        }, {
 		            name: 'Line item dispute',
-		            data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
-		        }, {
-		            name: 'London',
-		            data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+		            data: highChartdata["LINE_ITEM_AMOUNT"]
 		        }]
 		    });
+			 });
     	},
     	"{{details}} change": function(){
     		console.log('got data');
@@ -91,5 +112,29 @@ var highchartpage = Component.extend({
     }
 });
 
+
+function prepareCanMap(object){
+	console.log("inside prepare map ----"+object.length);
+	var highChartdata = new Array();
+	var periodList=[];
+	var invoiceAmountList = [];
+	var overRepAmountList = [];
+	var lineItemAmountList = [];
+	for(var i=0; i<object.length;i++){
+		var obj = object[i];
+		console.log("Inside for loop :"+obj.fiscalPeriod);
+		 periodList[i]=obj.fiscalPeriod;
+		 invoiceAmountList[i] = obj.invoiceAmount;
+		 overRepAmountList[i] = obj.overRepAmount;
+		 lineItemAmountList[i] = obj.lineItemsAmount;
+	}
+	console.log("chart data:"+periodList);
+	highChartdata["FISCAL_PERIOD"] = periodList;
+	highChartdata["INVOICE_AMOUNT"] = invoiceAmountList;
+	highChartdata["OVERREP_AMOUNT"] = overRepAmountList;
+	highChartdata["LINE_ITEM_AMOUNT"] = lineItemAmountList;
+	//console.log("chart data:"+highChartdata["LINE_ITEM_AMOUNT"]);
+	return highChartdata;
+}
 
 export default highchartpage;

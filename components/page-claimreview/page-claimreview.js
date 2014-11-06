@@ -28,7 +28,7 @@ var page = Component.extend({
     		console.log("Click on high chart");
         var details = new can.List({"country":"AUT","society":"CELAS"});
         $("#highChartDetails").append(stache('<high-chart details={details}></high-chart>')({details}));
-        $("#highChartDetails").removeClass("hide")
+       // $("#highChartDetails").removeClass("hide")
     		
     	}
     }

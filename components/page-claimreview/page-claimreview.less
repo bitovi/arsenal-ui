@@ -1,9 +1,28 @@
 .overlay{
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 5;
+  left: 5;
   width: 50%;
   height: 50%;
   z-index: 10;
   background-color: rgba(0,0,0,0.5); /*dim the background*/
+}
+
+.hide {
+	display: none;
+}
+
+.close{
+display: block;
+outline: none;
+text-indent: -9999px;
+position: absolute;
+top: -10px;
+left: -13px;
+width: 28px;
+height: 28px;
+background-image: url("/rinsresources/images/close.png");
+background-repeat: no-repeat;
+z-index: 100000;
+cursor: pointer;
 }
