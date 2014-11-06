@@ -19,7 +19,7 @@
     color: @font-color;
 
     /* getting border radius to work right */
-    thead:first-child, tbody:first-child {
+    colgroup + thead, colgroup + tbody {
       & > tr:first-of-type {
         td:first-child, th:first-child {
           border-top-left-radius: @border-radius;

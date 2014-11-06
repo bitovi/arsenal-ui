@@ -1,11 +1,88 @@
-@import '../../grid.less';
+.scrolling-grid-mixin() {
+
+  @dark-border: 1px solid hsl(0, 0%, 40%);
+  @light-border: 1px solid hsl(0, 0%, 75%);
+  @border-radius: 8px;
+
+  @header-background: linear-gradient(to bottom, hsl(0, 0%, 75%), hsl(0, 0%, 50%));
+
+  @font-color: hsl(0, 0%, 50%);
+
+  @disclosure-symbol: '▶︎';
+
+  & > table {
+    width: 100%;
+    border-radius: 8px;
+    border-spacing: 0;
+    border: @dark-border;
+
+    color: @font-color;
+  }
+
+  thead, tbody {
+    display: block;
+
+    tr {
+      display: block;
+      width: 100%;
+    }
+  }
+
+  tbody {
+    height: 20em;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  thead, tfoot {
+    background: @header-background;
+
+    color: white;
+
+    th, td {
+      text-align: left;
+      font-weight: normal;
+      height: 1.5em;
+      padding: .5em 1em;
+    }
+  }
+
+  tbody > tr {
+
+    border-top: @light-border;
+    &:first-child {
+      border-top: none;
+    }
+
+    td {
+      padding: 1em;
+    }
+
+    &.child {
+      display: none;
+
+      &.visible {
+        display: table-row;
+      }
+    }
+  }
+
+  span.open-toggle,
+  span.open-toggle-all {
+    display: inline-block;
+
+    &:before {
+      content: @disclosure-symbol;
+    }
+  }
+
+  tr.open span.open-toggle,
+  tr.open span.open-toggle-all {
+    transform: rotate(90deg);
+  }
+
+}
 
 rn-scrolling-grid-example {
-  display: block;
-  position: relative;
-  height: 20em;
-  overflow-y: scroll;
-
-  .grid-mixin();
-
+  .scrolling-grid-mixin();
 }
