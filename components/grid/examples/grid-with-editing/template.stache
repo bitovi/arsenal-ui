@@ -1,8 +1,8 @@
 <table class="rn-grid {{tableClass}}">
   <thead>
-    <tr class="{{#if allOpen}}open{{/if}}">
+    <tr>
       {{#filteredColumns}}
-      <th class="{{columnClass column}} {{sortClass column}}" {{data 'column'}}>{{{columnTitle column}}} <span class="sort-arrow">{{{sortArrow column}}}</span></th>
+      <th class="{{columnClass column}}" {{data 'column'}}>{{{columnTitle column}}}</th>
       {{/filteredColumns}}
     </tr>
   </thead>
