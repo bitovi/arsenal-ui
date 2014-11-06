@@ -1,5 +1,4 @@
 <h1>Claim Review Placeholder</h1>
-<p>The rest of /{{appstate.page}} should go here.</p>
  <img src="resources/images/highchart.png" class="" id="highChart">
 <div id="highChartDetails" class="overlay hide" >
 </div>
