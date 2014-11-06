@@ -39,7 +39,7 @@
 			"qunit": "bower_components/qunit/qunit/qunit.js",
 			"qunit.css": "bower_components/qunit/qunit/qunit.csscss",
 			"highcharts": "bower_components/highcharts-release/highcharts.js",
-			"bootstrap-highchart-exporting": "bower_components/highcharts-release/modules/exporting.js"
+			"exporting": "bower_components/highcharts-release/modules/exporting.js"
 		},
 		meta: {
 			jquery: {
