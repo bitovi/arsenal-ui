@@ -1,10 +1,11 @@
 import Component from 'can/component/';
 
 // Models
-import StoreType from 'models/store-type/';
-import Region from 'models/region/';
-import Country from 'models/country/';
-import Licensor from 'models/licensor/';
+import StoreType from 'models/common/store-type/';
+import Region from 'models/common/region/';
+import Country from 'models/common/country/';
+import Licensor from 'models/common/licensor/';
+import ContentType from 'models/common/content-type/';
 
 import template from './template.stache!';
 import styles from './global-parameter-bar.less!';
@@ -14,10 +15,11 @@ var GlobalParameterBar = Component.extend({
   template: template,
   scope: {
     appstate: undefined, // this gets passed in
-    storeTypes: [],
+    storetypes: [],
     regions: [],
     countries: [],
-    licensors: []
+    licensors: [],
+    contenttypes:[]
   },
   helpers: {
     isSelected: function(parameterName, modelID) {
@@ -30,25 +32,39 @@ var GlobalParameterBar = Component.extend({
   },
   events: {
     '#store-type select change': function(el, ev) {
-      var selected = $(el[0].selectedOptions).data('storeType');
+       var selected = $(el[0].selectedOptions).data('storetype');
+       //console.log("contetntytpe " +JSON.stringify(selected));
       this.scope.appstate.attr('storeType', selected);
     },
     '#region select change': function(el, ev) {
+      //console.log("globalFetch Global Search: ");
       var selected = $(el[0].selectedOptions).data('region');
       this.scope.appstate.attr('region', selected);
 
-      var self = this;
+      /*var self = this;
       Country.findAll({region: selected.id}).then(function(countries) {
         self.scope.countries.replace(countries);
-      });
+      });*/
     },
-    '#countries select change': function(el, ev) {
+    '#country select change': function(el, ev) {
       var selected = $(el[0].selectedOptions).data('country');
       this.scope.appstate.attr('country', selected);
     },
     '#licensor select change': function(el, ev) {
       var selected = $(el[0].selectedOptions).data('licensor');
       this.scope.appstate.attr('licensor', selected);
+    },
+    '#contentType select change': function(el, ev) {
+      var selected = $(el[0].selectedOptions).data('contenttype');
+      this.scope.appstate.attr('contentType', selected);
+    } ,
+    '#globalSearch click':function(){
+      //To idntify, user has clicked the button
+      if(this.scope.appstate.attr('globalSearch')){
+        this.scope.appstate.attr('globalSearch', false);
+      }else{
+        this.scope.appstate.attr('globalSearch', true);
+      }
     }
   },
   init: function() {
@@ -57,11 +73,15 @@ var GlobalParameterBar = Component.extend({
     Promise.all([
       StoreType.findAll(),
       Region.findAll(),
-      Licensor.findAll()
+      Country.findAll(),
+      Licensor.findAll(),
+      ContentType.findAll()
     ]).then(function(values) {
-      self.scope.storeTypes.replace(values[0]);
-      self.scope.regions.replace(values[1]);
-      self.scope.licensors.replace(values[2]);
+      self.scope.storetypes.replace(values[0][0]["data"]);
+      self.scope.regions.replace(values[1][0]["data"]);
+      self.scope.countries.replace(values[2][0]["data"]);
+      self.scope.licensors.replace(values[3][0]["data"]);
+      self.scope.contenttypes.replace(values[4][0]["data"]);
     });
   }
 });
