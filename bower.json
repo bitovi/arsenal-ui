@@ -28,6 +28,7 @@
     "lodash": "~2.4.1",
     "highcharts.com": "~4.0.4",
     "highcharts-release": "~4.0.4",
-    "draggable-legend": "https://rawgithub.com/highslide-software/draggable-legend/master/draggable-legend.js"
+    "draggable-legend": "https://rawgithub.com/highslide-software/draggable-legend/master/draggable-legend.js",
+    "jquery-tokeninput": "~1.7.0"
   }
 }

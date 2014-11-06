@@ -40,6 +40,10 @@
 			"qunit.css": "bower_components/qunit/qunit/qunit.csscss",
 			"highcharts": "bower_components/highcharts-release/highcharts.js",
 			"exporting": "bower_components/highcharts-release/modules/exporting.js"
+			"bootstrap-highchart-exporting": "bower_components/highcharts-release/modules/exporting.js",
+			"tokeninput": "bower_components/jquery-tokeninput/src/jquery.tokeninput.js",
+			"tokeninput.css": "bower_components/jquery-tokeninput/styles/token-input.csscss",
+			"tokeninput_theme.css": "bower_components/jquery-tokeninput/styles/token-input-facebook.csscss"
 		},
 		meta: {
 			jquery: {
