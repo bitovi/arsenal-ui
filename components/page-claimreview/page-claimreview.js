@@ -191,9 +191,26 @@ var page = Component.extend({
     		console.log("Click on high chart");
         var details = new can.List({"country":"AUT","society":"CELAS"});
         $("#highChartDetails").append(stache('<high-chart details={details}></high-chart>')({details}));
-       // $("#highChartDetails").removeClass("hide")
     		
     	},
+      "#highChartDetails mousedown": function(item, el, ev){
+        if(el.toElement.id == 'close'){
+          $("#highChartDetails").addClass("hide")
+        }else{
+             $(item[0]).addClass("draggable").parents().on('mousemove', function(e) {
+              $('.draggable').offset({
+                  top: e.pageY - $('.draggable').outerHeight() / 2,
+                  left: e.pageX - $('.draggable').outerWidth() / 2
+              }).on('mouseup', function() {
+                  $(this).removeClass('draggable');
+              });
+          });
+        }
+        e.preventDefault();
+      },
+      "#highChartDetails mouseup": function(item, el, ev){
+        $(item[0]).removeClass("draggable")
+      },
       "#claimLicencorGrid table>tbody>tr click":function(item, el, ev){
           $(item[0]).toggleClass("selected");
           //$(".clicked td:first-child").css("color","blue");

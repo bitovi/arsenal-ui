@@ -7,7 +7,12 @@ import highcharts from 'highcharts';
 
 import exporting from 'exporting';
 
+import exportingSrc from 'exporting.src';
+
+
 import HighChart from 'models/highchart/';
+
+import dragableHighChart from 'index';
 
 var highchartpage = Component.extend({
   tag: 'high-chart',
@@ -18,10 +23,10 @@ var highchartpage = Component.extend({
   },
   init: function(){
 	 console.log('Inside high chart'); 
-
     },
     events: {
     	"inserted": function(){
+    		console.log('inserted'+this.scope.details.attr());
     		 var highChartdata;
     		  	 var self = this;
     		console.log("data is"+JSON.stringify(this.scope.attr()));
@@ -32,20 +37,31 @@ var highchartpage = Component.extend({
    	    	  console.log("High chart values :"+JSON.stringify(values[0][0].attr()));
    	    	  var servicedata = values[0][0].attr().highCharts;
    	    	   highChartdata = prepareCanMap(values[0][0].attr().highCharts);
-   	    	var months = new Array("Volvo", "BMW");
-   	    	months.push(201405);
-   	     	 var data = new can.List([1,3]);
 
+   	    	   console.log(highChartdata["FISCAL_PERIOD"]);
    	     	 //$('#highChartDetails').fadeIn("fast");
     		$('#highChartDetails').highcharts({
     			chart: {
-					renderTo: 'highChartDetails',
-					defaultSeriesType: 'line',
-					animation: false,
-					className: 'chartBorder',
-					marginBottom: 120,
-		           	marginLeft: 80
-				},
+			        renderTo: 'highChartDetails',
+			        type: 'line',
+			        marginRight: 130,
+			        marginBottom: 25,
+			        events: {
+			            load: function() {
+			                this.renderer.image('resources/images/highchart.png', 70, 10, 28, 28)
+			                .css({
+			                    cursor: 'pointer',
+			                    position: 'relative',
+			                    "margin-left": "-10px",
+			                    opacity: 0.75
+			                }).attr({
+			                    id: 'close',
+			                    zIndex: -100
+			                }).add();
+			            }
+			        }
+			    },
+
 		        title: {
 		            text: servicedata[0].countryName+"-"+servicedata[0].licensorName,
 		            x: -20 //center
@@ -61,7 +77,7 @@ var highchartpage = Component.extend({
 			                },
 		            categories: highChartdata["FISCAL_PERIOD"],
 		              labels: {
-							rotation: -45
+							//rotation: -45
 						}
 		        },
 		        yAxis: {
@@ -98,17 +114,14 @@ var highchartpage = Component.extend({
 		        }]
 		    });
 			 });
-    	},
-    	"{{details}} change": function(){
-    		console.log('got data');
-    		//$("#highChartDetails").append(stache('<high-chart></high-chart>'));
-//    		 var self = this;
-//    	      Promise.all([
-//    	         HighChart.findAll()
-//    	      ]).then(function(values) {
-//    	    	  console.log("High chart values :"+JSON.stringify(values[0][0].attr()));
-//    	      });
+		
+			$("#highChartDetails").resizable({
+				containment: 'document'
+			});
     	}
+    },
+    "#myImage click ":function(){
+    	$("#highChartDetails").addClass("hide");
     }
 });
 
