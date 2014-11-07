@@ -158,7 +158,7 @@ var claimLicensorInvoices = [
 ];
 
 
-fixture('GET /GetClaimLicensor', function(req, res, headers) {
+fixture('GET /claimLicensorInvoices', function(req, res, headers) {
 /*  res(
     200,
     _.filter(invoices, {region: req.data.region})
