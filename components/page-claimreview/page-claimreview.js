@@ -267,6 +267,39 @@ var page = Component.extend({
         //console.log("grid data for "+currencyType+" currency is "+JSON.stringify(gridData));
         var rows = new can.List(gridData.data);
         $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid rows="{rows}"></rn-claim-licensor-grid>')({rows}));
+      },
+      '{scope.appstate} change': function() {
+          var self=this;
+          console.log("appState set to "+JSON.stringify(this.scope.appstate.attr()));
+          if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch') ){
+              this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
+              console.log("User clicked on  search");
+
+              var claimLicSearchRequest = {};
+              claimLicSearchRequest.searchRequest = {};
+              claimLicSearchRequest.searchRequest["serviceTypeId"] = this.scope.appstate.attr('storeType');
+              claimLicSearchRequest.searchRequest["regionId"] = this.scope.appstate.attr('region');
+              claimLicSearchRequest.searchRequest["entityId"] = this.scope.appstate.attr('licensor');
+
+              claimLicSearchRequest.searchRequest["periodType"] = "P";
+              claimLicSearchRequest.searchRequest["periodFrom"] = "201304";
+              claimLicSearchRequest.searchRequest["periodTo"] = "201307";
+
+              claimLicSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
+              claimLicSearchRequest.searchRequest["offset"] = "0";
+              claimLicSearchRequest.searchRequest["limit"] = "10";
+              claimLicSearchRequest.searchRequest["filter"] = self.scope.tokenInput.attr();
+
+              claimLicSearchRequest.searchRequest["sortBy"] = "";
+              claimLicSearchRequest.searchRequest["sortOrder"] = "ASC";
+
+              claimLicensorInvoices.findAll(UserReq.formRequestDetails(claimLicSearchRequest),function(values){
+                  //console.log("data is "+JSON.stringify(values[0].attr()));
+                  self.scope.allClaimLicensorMap.replace(values[0]);
+              },function(xhr){
+                console.error("Error while loading: "+xhr);
+              });
+          }
       }
     }
 });
