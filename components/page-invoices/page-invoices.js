@@ -395,8 +395,17 @@ var page = Component.extend({
           var invoiceDelete = {"searchRequest":{}};
           invoiceDelete.searchRequest.ids = self.scope.checkedRows.attr();
           /* Getting cross origin error - need to check with Hardeep to correct the JSON REquest Header */
-          Invoice.destroy(UserReq.formRequestDetails(invoiceDelete),function(data){
-                  console.log("passing params is "+JSON.stringify(data[0].attr()));
+          Invoice.update(UserReq.formRequestDetails(invoiceDelete),"invoiceDelete",function(data){
+                  console.log("passing params is "+JSON.stringify(data[0]));
+          if(data[0]["status"]=="SUCCESS"){
+             $("#messageDiv").html("<label class='successMessage'>"+data[0]["responseText"]+"</label>")
+             $("#messageDiv").show();
+             setTimeout(function(){
+                $("#messageDiv").hide();
+             },2000)
+          }
+          else 
+            $("#messageDiv").html("<label class='errorMessage'>Failed to delete invoice</label>")
 
           },function(xhr){
             console.error("Error while loading: bundleNames"+xhr);

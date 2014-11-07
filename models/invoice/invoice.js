@@ -17,19 +17,21 @@ var Invoice = Model.extend({
      	//data: params
   	})
   },*/
-  update: function(data){
- 	return $.ajax({
-  		url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/update',
-  		type: 'POST'
-     	//data: params
-  	})
-  },
-  destroy: function(params){
-  return $.ajax({
-      url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/delete',
-      type: 'DELETE',
-      data: JSON.stringify(params)
-    })
+  update: function(data,type){
+    if(type=="invoiceDelete"){
+      console.log("here invoice delete")
+        return $.ajax({
+          url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/delete',
+          type: 'POST'
+          //data: JSON.stringify(params)
+        })
+    } else {
+      return $.ajax({
+          url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/update',
+          type: 'POST'
+          //data: params
+        })
+    }
   }
 }, {});
 
