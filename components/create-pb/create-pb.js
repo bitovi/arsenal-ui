@@ -35,7 +35,8 @@ var page = Component.extend({
          console.log("bundleSearchRequest : "+JSON.stringify(bundleSearchRequest.bundleSearch));
 
           BundleNamesModel.findOne(UserReq.formRequestDetails(bundleSearchRequest),function(data){
-              self.scope.bundleNames.replace(data["paymentBundles"]);
+              //console.log("passing params is "+JSON.stringify(data[0].attr()));
+              self.scope.bundleNames.replace(data[0]["paymentBundles"]);
           },function(xhr){
             console.error("Error while loading: bundleNames"+xhr);
           });
@@ -58,7 +59,8 @@ var page = Component.extend({
             newBundleNameRequest.paymentBundle["bundleType"] = "Regular";
 
               NewBundleNameModel.findOne(UserReq.formRequestDetails(newBundleNameRequest),function(data){
-                  self.scope.attr("paymentBundleName" , data.paymentBundle.bundleName);
+                  //console.log("passing params is "+JSON.stringify(data[0].attr()));
+                  self.scope.attr("paymentBundleName" , data[0].paymentBundle.bundleName);
               },function(xhr){
                 console.error("Error while loading: bundleNames"+xhr);
               });

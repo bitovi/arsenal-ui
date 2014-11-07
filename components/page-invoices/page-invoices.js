@@ -9,6 +9,7 @@ import stache from 'can/view/stache/';
 import UserReq from 'models/rinsCommon/request/';
 import GetAllInvoices from 'models/getAllInvoices/';
 import Invoice from 'models/invoice/';
+import BundleNamesModel from 'models/payment/bundleNames/';
 import invoicemap from 'models/sharedMap/invoice';
 
 
@@ -93,6 +94,7 @@ var page = Component.extend({
     localGlobalSearch:undefined,
     allInvoicesMap:[],
     checkedRows: [],
+    sortColumns:[],
     tokenInput: [],
     refreshTokenInput: function(val, type){
       //console.log("val is "+JSON.stringify(val));
@@ -280,6 +282,37 @@ var page = Component.extend({
            this.scope.appstate.attr('page','create-invoice');
            invoicemap.attr('invoiceid','123');
     },
+    ".rn-grid>thead>tr>th click": function(item, el, ev){
+          var self=this;
+           //console.log($(item[0]).attr("class"));
+          var val = $(item[0]).attr("class");
+           self.scope.attr('sortColumns').push(val);
+           
+            var invSearchRequest = {};
+            invSearchRequest.searchRequest = {};
+            invSearchRequest.searchRequest["serviceTypeId"] = this.scope.appstate.attr('storeType');
+            invSearchRequest.searchRequest["regionId"] = this.scope.appstate.attr('region');
+            invSearchRequest.searchRequest["entityId"] = this.scope.appstate.attr('licensor');
+
+            invSearchRequest.searchRequest["periodType"] = "P";
+            invSearchRequest.searchRequest["periodFrom"] = "201304";
+            invSearchRequest.searchRequest["periodTo"] = "201307";
+
+            invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
+            invSearchRequest.searchRequest["offset"] = "0";
+            invSearchRequest.searchRequest["limit"] = "10";
+            invSearchRequest.searchRequest["filter"] = self.scope.tokenInput.attr();
+
+            invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr();
+            invSearchRequest.searchRequest["sortOrder"] = "ASC";
+
+            GetAllInvoices.findAll(UserReq.formRequestDetails(invSearchRequest),function(data){
+                //console.log("passing params is "+JSON.stringify(data[0].attr()));
+                self.scope.allInvoicesMap.replace(data[0]);
+            },function(xhr){
+              console.error("Error while loading: bundleNames"+xhr);
+            });
+    },
     '.invId :checkbox change': function(item, el, ev) {
       var self = this;
       var val = $(item[0]).attr("value");
@@ -320,10 +353,10 @@ var page = Component.extend({
           if(flag==false){
               $("#paymentBundleNames").attr("disabled","disabled");
               $("#btnSubmit").attr("disabled","disabled");
-              $("#invoiceTypeError").html("<label class='errorMessage'>Selected rows has different Invoice Types</label>")
+              $("#messageDiv").html("<label class='errorMessage'>Selected rows has different Invoice Types</label>");
           }else {
               $("#paymentBundleNames").removeAttr("disabled");
-              $("#invoiceTypeError").text("");
+              $("#messageDiv").text("");
               if(self.scope.attr('checkedRows').length > 0)
                   $("#btnSubmit").removeAttr("disabled");
 
@@ -346,7 +379,7 @@ var page = Component.extend({
               invSearchRequest.searchRequest["limit"] = "10";
               invSearchRequest.searchRequest["filter"] = self.scope.tokenInput.attr();
 
-              invSearchRequest.searchRequest["sortBy"] = "invoiceNumber";
+              invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr();
               invSearchRequest.searchRequest["sortOrder"] = "ASC";
 
               GetAllInvoices.findAll(UserReq.formRequestDetails(invSearchRequest),function(data){
@@ -358,7 +391,7 @@ var page = Component.extend({
       },
       "#btnDelete click": function(){
           var self=this;
-          //console.log("selected Invoices are "+ self.scope.checkedRows.attr());
+          console.log("selected Invoices are "+ self.scope.checkedRows.attr());
           var invoiceDelete = {"searchRequest":{}};
           invoiceDelete.searchRequest.ids = self.scope.checkedRows.attr();
           /* Getting cross origin error - need to check with Hardeep to correct the JSON REquest Header */
@@ -368,6 +401,61 @@ var page = Component.extend({
           },function(xhr){
             console.error("Error while loading: bundleNames"+xhr);
           });
+      },
+      "#btnSubmit click":function(){
+        var self = this;
+        var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
+        //console.log(JSON.stringify(invoiceData));
+        console.log(JSON.stringify(self.scope.checkedRows.attr()));
+
+
+        var selInvoices = self.scope.checkedRows.attr();
+        var bundleLines = [];
+        for(var i=0;i<invoiceData.length;i++){
+          var invId = invoiceData[i]["invId"];
+          var lineType = invoiceData[i]["invoiceType"];
+          var periodType = invoiceData[i]["periodType"];
+          var invoiceLineItems = invoiceData[i]["invoiceLines"];
+          if(invoiceLineItems.length > 0 && selInvoices.indexOf(invId)>-1){
+            for(var j=0;j<invoiceLineItems.length;j++){
+              var temp = {};
+                temp["lineId"]= invoiceLineItems[j]["invLineId"];
+                temp["lineType"] = lineType;
+                temp["periodType"] = periodType; 
+                bundleLines.push(temp);
+            }
+          }
+          
+        }
+        
+        var bundleType = lineType;
+        var bundleRequest = {};
+        bundleRequest["bundleId"] = $("#paymentBundleNames :selected").val();
+        bundleRequest["bundleName"] = $("#paymentBundleNames :selected").text();
+        if($("#newPaymentBundle").val())
+          bundleRequest["bundleName"] = $("#newPaymentBundle").val();
+         
+        bundleRequest["bundleType"] =lineType;
+        bundleRequest["mode"] ="ADD";
+        bundleRequest["bundleLines"] =bundleLines;
+
+        console.log(JSON.stringify(bundleRequest));
+        BundleNamesModel.create(UserReq.formRequestDetails(bundleRequest),function(data){
+            console.log("passing params is "+JSON.stringify(data));
+            if(data[0]["responseText"]=="SUCCESS"){
+             $("#messageDiv").html("<label class='successMessage'>Invoices added to payment bundle successfully</label>")
+             $("#messageDiv").show();
+             setTimeout(function(){
+                $("#messageDiv").hide();
+             },2000)
+            }
+            else 
+              $("#messageDiv").html("<label class='errorMessage'>Failed to add invoices</label>")
+        },function(xhr){
+          console.error("Error while loading: bundleNames"+xhr);
+        });
+
+
       },
       '{scope.appstate} change': function() {
           var self=this;
@@ -391,12 +479,14 @@ var page = Component.extend({
               invSearchRequest.searchRequest["limit"] = "10";
               invSearchRequest.searchRequest["filter"] = self.scope.tokenInput.attr();
 
-              invSearchRequest.searchRequest["sortBy"] = "invoiceNumber";
+              invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr();
               invSearchRequest.searchRequest["sortOrder"] = "ASC";
 
               GetAllInvoices.findAll(UserReq.formRequestDetails(invSearchRequest),function(data){
                   //console.log("passing params is "+JSON.stringify(data[0].attr()));
                   self.scope.allInvoicesMap.replace(data[0]);
+                  
+
               },function(xhr){
                 console.error("Error while loading: bundleNames"+xhr);
               });

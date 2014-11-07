@@ -11,6 +11,14 @@ var BundleNames = Model.extend({
       type: 'POST',
       data: JSON.stringify(params)
     })
+  },
+  create: function(params){
+    //  console.log(JSON.stringify(params));
+    return $.ajax({
+      url: RinsCommon.DOMAIN_SERVICE_URL+'paymentBundle/manage',
+      type: 'POST',
+      data: JSON.stringify(params)
+    })
   }
   //findAll: 'GET /invoiceType'
 }, {});
