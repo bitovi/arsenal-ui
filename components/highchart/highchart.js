@@ -7,7 +7,7 @@ import highcharts from 'highcharts';
 
 import exporting from 'exporting';
 
-import exportingSrc from 'exporting.src';
+//import exportingSrc from 'exporting.src';
 
 
 import HighChart from 'models/highchart/';
