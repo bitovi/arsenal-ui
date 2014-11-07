@@ -246,11 +246,33 @@ var page = Component.extend({
             console.error("Error while loading: "+xhr);
           });
       },
+      "#currencyType change": function(){
+        var self=this;
+        console.log("value changed");
+        var invoiceData = self.scope.attr().allClaimLicensorMap[0].claimLicensor;
+        var currencyType = $("#currencyType").val();
+
+        var  gridData = generateTableData(invoiceData,currencyType);
+        //console.log("grid data for "+currencyType+" currency is "+JSON.stringify(gridData));
+        var rows = new can.List(gridData.data);
+        $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid rows="{rows}"></rn-claim-licensor-grid>')({rows}));
+
+      },
       "{allClaimLicensorMap} change": function() {
         var self = this;
         var invoiceData = self.scope.attr().allClaimLicensorMap[0].claimLicensor;
+        var currencyType = $("#currencyType").val();
 
-        var gridData = {"data":[]};
+        var  gridData = generateTableData(invoiceData,currencyType);
+        //console.log("grid data for "+currencyType+" currency is "+JSON.stringify(gridData));
+        var rows = new can.List(gridData.data);
+        $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid rows="{rows}"></rn-claim-licensor-grid>')({rows}));
+      }
+    }
+});
+
+var generateTableData = function(invoiceData,currencyType){
+  var gridData = {"data":[]};
 
         for(var i=0;i<invoiceData.length;i++){
             var invTemp = {};
@@ -258,7 +280,12 @@ var page = Component.extend({
             invTemp["__isChild"] = false;
             invTemp["entity"] = invoiceData[i]["entityName"];
             invTemp["invoiceNum"] = invoiceData[i]["invoiceNumber"];
-            invTemp["currency"] = invoiceData[i]["paymentCurrency"];
+            if(currencyType=="invoice")
+              invTemp["currency"] = invoiceData[i]["paymentCurrency"];
+            else if(currencyType=="accural"){
+              invTemp["currency"] = invoiceData[i]["accuralCurrency"];
+              invTemp["fxRate"] = invoiceData[i]["fxRate"];
+            }
             
             invTemp["period"] = "";
             invTemp["country"] = "";
@@ -295,41 +322,97 @@ var page = Component.extend({
                 invLITemp["country"] = invoiceLineItems[j]["countryId"];
                 invLITemp["contentType"] = invoiceLineItems[j]["contentType"];
                 
-                invLITemp["invoiceAmt"] = invoiceLineItems[j]["invoiceAmount"];
-                invTemp["invoiceAmt"] += parseInt(invoiceLineItems[j]["invoiceAmount"]);
+                if(currencyType=="invoice"){
+                  invLITemp["invoiceAmt"] = invoiceLineItems[j]["invoiceAmount"];
+                  invTemp["invoiceAmt"] += parseInt(invoiceLineItems[j]["invoiceAmount"]);
+                }
+                else if(currencyType=="accural"){
+                  invLITemp["invoiceAmt"] = (parseInt(invoiceLineItems[j]["invoiceAmount"])*parseFloat(invTemp["fxRate"]));
+                  invTemp["invoiceAmt"] += (parseInt(invoiceLineItems[j]["invoiceAmount"])*parseFloat(invTemp["fxRate"]));
+                }
 
-                invLITemp["orDispAmt"] = invoiceLineItems[j]["overRepDisputeAmount"];
-                invTemp["orDispAmt"] += parseInt(invoiceLineItems[j]["overRepDisputeAmount"]);
+
                 
-                invLITemp["liDispAmt"] = invoiceLineItems[j]["lineItemDisputeAmount"];
-                invTemp["liDispAmt"] += parseInt(invoiceLineItems[j]["lineItemDisputeAmount"]);               
+                if(currencyType=="invoice"){
+                  invLITemp["orDispAmt"] = invoiceLineItems[j]["overRepDisputeAmount"];
+                  invTemp["orDispAmt"] += parseInt(invoiceLineItems[j]["overRepDisputeAmount"]);
+                }
+                else if(currencyType=="accural"){
+                  invLITemp["orDispAmt"] = (parseInt(invoiceLineItems[j]["overRepDisputeAmount"])*parseFloat(invTemp["fxRate"]));
+                  invTemp["orDispAmt"] += (parseInt(invoiceLineItems[j]["overRepDisputeAmount"])*parseFloat(invTemp["fxRate"]));
+                }
                 
-                invLITemp["reconDispAmt"] = invoiceLineItems[j]["reconAmount"];
-                invTemp["reconDispAmt"] += parseInt(invoiceLineItems[j]["reconAmount"]);
                 
-                invLITemp["qaAlloc"] = invoiceLineItems[j]["onAccountAllocated"];
-                invTemp["qaAlloc"] += parseInt(invoiceLineItems[j]["onAccountAllocated"]);
+                if(currencyType=="invoice"){
+                  invLITemp["liDispAmt"] = invoiceLineItems[j]["lineItemDisputeAmount"];
+                  invTemp["liDispAmt"] += parseInt(invoiceLineItems[j]["lineItemDisputeAmount"]); 
+                }
+                else if(currencyType=="accural"){
+                  invLITemp["liDispAmt"] = (parseInt(invoiceLineItems[j]["lineItemDisputeAmount"])*parseFloat(invTemp["fxRate"]));
+                  invTemp["liDispAmt"] += (parseInt(invoiceLineItems[j]["lineItemDisputeAmount"])*parseFloat(invTemp["fxRate"]));              
+                }
                 
-                invLITemp["cnAlloc"] = invoiceLineItems[j]["cashAdjustmentAllocated"];
-                invTemp["cnAlloc"] += parseInt(invoiceLineItems[j]["cashAdjustmentAllocated"]);
                 
-                invLITemp["balance"] = invoiceLineItems[j]["balance"];
-                invTemp["balance"] += parseInt(invoiceLineItems[j]["balance"]);
+                if(currencyType=="invoice"){
+                  invLITemp["reconDispAmt"] = invoiceLineItems[j]["reconAmount"];
+                  invTemp["reconDispAmt"] += parseInt(invoiceLineItems[j]["reconAmount"]);
+                }
+                else if(currencyType=="accural"){
+                  invLITemp["reconDispAmt"] = (parseInt(invoiceLineItems[j]["reconAmount"])*parseFloat(invTemp["fxRate"]));
+                  invTemp["reconDispAmt"] += (parseInt(invoiceLineItems[j]["reconAmount"])*parseFloat(invTemp["fxRate"]));
+                }
                 
-                invLITemp["priorPaid"] = invoiceLineItems[j]["priorPaid"];
-                invTemp["priorPaid"] += parseInt(invoiceLineItems[j]["priorPaid"]);
+                
+                if(currencyType=="invoice"){
+                  invLITemp["qaAlloc"] = invoiceLineItems[j]["onAccountAllocated"];
+                  invTemp["qaAlloc"] += parseInt(invoiceLineItems[j]["onAccountAllocated"]);
+                }
+                else if(currencyType=="accural"){
+                  invLITemp["qaAlloc"] = (parseInt(invoiceLineItems[j]["onAccountAllocated"])*parseFloat(invTemp["fxRate"]));
+                  invTemp["qaAlloc"] += (parseInt(invoiceLineItems[j]["onAccountAllocated"])*parseFloat(invTemp["fxRate"]));
+                }
+                
+                
+                if(currencyType=="invoice"){
+                  invLITemp["cnAlloc"] = invoiceLineItems[j]["cashAdjustmentAllocated"];
+                  invTemp["cnAlloc"] += parseInt(invoiceLineItems[j]["cashAdjustmentAllocated"]);
+                }
+                else if(currencyType=="accural"){
+                  invLITemp["cnAlloc"] = (parseInt(invoiceLineItems[j]["cashAdjustmentAllocated"])*parseFloat(invTemp["fxRate"]));
+                  invTemp["cnAlloc"] += (parseInt(invoiceLineItems[j]["cashAdjustmentAllocated"])*parseFloat(invTemp["fxRate"]));
+                }
+                
+                
+                if(currencyType=="invoice"){
+                  invLITemp["balance"] = invoiceLineItems[j]["balance"];
+                  invTemp["balance"] += parseInt(invoiceLineItems[j]["balance"]);
+                }
+                else if(currencyType=="accural"){
+                  invLITemp["balance"] = (parseInt(invoiceLineItems[j]["balance"])*parseFloat(invTemp["fxRate"]));
+                  invTemp["balance"] += (parseInt(invoiceLineItems[j]["balance"])*parseFloat(invTemp["fxRate"]));
+                }
+                
+                
+                if(currencyType=="invoice"){
+                  invLITemp["priorPaid"] = invoiceLineItems[j]["priorPaid"];
+                  invTemp["priorPaid"] += parseInt(invoiceLineItems[j]["priorPaid"]);
+                }
+                else if(currencyType=="accural"){
+                  invLITemp["priorPaid"] = (parseInt(invoiceLineItems[j]["priorPaid"])*parseFloat(invTemp["fxRate"]));
+                  invTemp["priorPaid"] += (parseInt(invoiceLineItems[j]["priorPaid"])*parseFloat(invTemp["fxRate"]));
+                }
                 
                 invLITemp["invPaySat"] = invoiceLineItems[j]["invPaymentSat"];
-                invTemp["invPaySat"] += parseInt(invoiceLineItems[j]["invPaymentSat"]);
+                invTemp["invPaySat"] = (invTemp["invPaySat"]+parseInt(invoiceLineItems[j]["invPaymentSat"]));
                 
                 invLITemp["paySat"] = invoiceLineItems[j]["paymentSat"];
-                invTemp["paySat"] += parseInt(invoiceLineItems[j]["paymentSat"]);
+                invTemp["paySat"] = (invTemp["paySat"]+parseInt(invoiceLineItems[j]["paymentSat"]));
                 
                 invLITemp["orDispPerc"] = invoiceLineItems[j]["overRepDispPercent"];
-                invTemp["orDispPerc"] += parseInt(invoiceLineItems[j]["overRepDispPercent"]);
+                invTemp["orDispPerc"] = (invTemp["orDispPerc"]+parseInt(invoiceLineItems[j]["overRepDispPercent"]));
                 
                 invLITemp["liDispPerc"] = invoiceLineItems[j]["liDispPercent"];
-                invTemp["liDispPerc"] += parseInt(invoiceLineItems[j]["liDispPercent"]);
+                invTemp["liDispPerc"] = (invTemp["liDispPerc"]+parseInt(invoiceLineItems[j]["liDispPercent"]));
                 
                 invLITemp["status"] = invoiceLineItems[j]["status"];
                 contentTypeArr.push(invLITemp["contentType"]);
@@ -361,11 +444,6 @@ var page = Component.extend({
 
 
           }
-        //console.log("grid data is "+JSON.stringify(gridData));
-        var rows = new can.List(gridData.data);
-        $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid rows="{rows}"></rn-claim-licensor-grid>')({rows}));
-      }
-    }
-});
-
+          return gridData;
+}
 export default page;
