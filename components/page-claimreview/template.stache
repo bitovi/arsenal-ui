@@ -6,7 +6,11 @@
 
 <div class="col-lg-12 claimContainer">
     <div id="invoiceTypeError" class="col-md-12" style="text-align:center;padding-top:5px;"></div>
-    <div class="col-sm-9" style="text-align:center;padding:10px;">
+    <div class="col-sm-9 form-inline" style="text-align:right;padding:10px;">
+    	Currency: <select id="currencyType" class="form-control resizeBox">
+    		<option value="invoice">Invoice</option>
+    		<option value="accural">Accural</option>
+    	</select>
     </div>
 
     <div class="col-sm-3" id="searchDiv" style="padding:10px;">
@@ -14,22 +18,24 @@
         <img src="resources/images/exportExcelIcon.png" class="" id="exportExcel">
         <img src="resources/images/copyToClipboardIcon.png" class="" id="copyToClipboard">
     </div>
-    <ul id="myTab" class="nav nav-tabs">
-	   <li class="active">
-	      <a href="#licensorView" data-toggle="tab">
-	         Licensor
-	      </a>
-	   </li>
-	   <li><a href="#countryView" data-toggle="tab">Country</a></li>
-	</ul>
+    <div class="col-lg-12">
+	    <ul id="myTab" class="nav nav-tabs">
+		   <li class="active">
+		      <a href="#licensorView" data-toggle="tab">
+		         Licensor
+		      </a>
+		   </li>
+		   <li><a href="#countryView" data-toggle="tab">Country</a></li>
+		</ul>
 
-	<div id="myTabContent" class="tab-content">
-	   <div class="tab-pane fade in active" id="licensorView" style="padding:10px;border:1px solid #ddd; border-top:0px;">
-	      <div id="claimLicencorGrid"></div>
-	   </div>
-	   <div class="tab-pane fade" id="countryView" style="padding:10px;border:1px solid #ddd; border-top:0px;">
-	      <p>Country View Table shown here......</p>
-	   </div>
+		<div id="myTabContent" class="tab-content">
+		   <div class="tab-pane fade in active" id="licensorView" style="padding:10px;border:1px solid #ddd; border-top:0px;">
+		      <div id="claimLicencorGrid"></div>
+		   </div>
+		   <div class="tab-pane fade" id="countryView" style="padding:10px;border:1px solid #ddd; border-top:0px;">
+		      <p>Country View Table shown here......</p>
+		   </div>
+		</div>
 	</div>
 
     
