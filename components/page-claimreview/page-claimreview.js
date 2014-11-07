@@ -7,7 +7,8 @@ import styles from './page-claimreview.less!';
 import Grid from 'components/grid/';
 import stache from 'can/view/stache/';
 
-import GetClaimLicensor from 'models/claim/licensor/';
+import UserReq from 'models/rinsCommon/request/';
+import claimLicensorInvoices from 'models/claim/licensor/';
 
 import tokeninput from 'tokeninput';
 import css_tokeninput from 'tokeninput.css!';
@@ -21,13 +22,13 @@ Grid.extend({
   scope: {
     appstate:undefined,
     columns: [
-      {
+      /*{
         id: 'entityId',
         title: '',
         contents: function(row) {
           return stache('{{#entityId}}<input type="checkbox" value="{{entityId}}"/>{{/entityId}}')({entityId: row.entityId});
         }
-      },
+      },*/
       {
         id: 'entity',
         title: 'Entity',
@@ -179,10 +180,10 @@ var page = Component.extend({
         });
 
         Promise.all([
-            GetClaimLicensor.findAll()
+            claimLicensorInvoices.findAll()
         ]).then(function(values) {
-          //console.log(JSON.stringify(values[0][1].attr()));
-          self.scope.allClaimLicensorMap.replace(values[0][1]);
+          //console.log(JSON.stringify(values[0].attr()));
+          self.scope.allClaimLicensorMap.replace(values[0]);
         });
         
     	},
@@ -193,8 +194,44 @@ var page = Component.extend({
        // $("#highChartDetails").removeClass("hide")
     		
     	},
+      "#claimLicencorGrid table>tbody>tr click":function(item, el, ev){
+          $(item[0]).toggleClass("selected");
+          //$(".clicked td:first-child").css("color","blue");
+
+      },
+      "{tokenInput} change": function(){
+        var self = this;
+          console.log(JSON.stringify(self.scope.tokenInput.attr()));
+          console.log("appState set to "+JSON.stringify(self.scope.appstate.attr()));
+
+          var claimLicSearchRequest = {};
+          claimLicSearchRequest.searchRequest = {};
+          claimLicSearchRequest.searchRequest["serviceTypeId"] = this.scope.appstate.attr('storeType');
+          claimLicSearchRequest.searchRequest["regionId"] = this.scope.appstate.attr('region');
+          claimLicSearchRequest.searchRequest["entityId"] = this.scope.appstate.attr('licensor');
+
+          claimLicSearchRequest.searchRequest["periodType"] = "P";
+          claimLicSearchRequest.searchRequest["periodFrom"] = "201304";
+          claimLicSearchRequest.searchRequest["periodTo"] = "201307";
+
+          claimLicSearchRequest.searchRequest["status"] = "";
+          claimLicSearchRequest.searchRequest["offset"] = "0";
+          claimLicSearchRequest.searchRequest["limit"] = "10";
+          claimLicSearchRequest.searchRequest["filter"] = self.scope.tokenInput.attr();
+
+          claimLicSearchRequest.searchRequest["sortBy"] = "invoiceNumber";
+          claimLicSearchRequest.searchRequest["sortOrder"] = "ASC";
+
+          claimLicensorInvoices.findAll(UserReq.formRequestDetails(claimLicSearchRequest),function(values){
+              //console.log("data is "+JSON.stringify(values[0].attr()));
+              self.scope.allClaimLicensorMap.replace(values[0]);
+          },function(xhr){
+            console.error("Error while loading: "+xhr);
+          });
+      },
       "{allClaimLicensorMap} change": function() {
-        var invoiceData = this.scope.attr().allClaimLicensorMap[0].claimLicensor;
+        var self = this;
+        var invoiceData = self.scope.attr().allClaimLicensorMap[0].claimLicensor;
 
         var gridData = {"data":[]};
 
@@ -307,7 +344,7 @@ var page = Component.extend({
 
 
           }
-        console.log("grid data is "+JSON.stringify(gridData));
+        //console.log("grid data is "+JSON.stringify(gridData));
         var rows = new can.List(gridData.data);
         $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid rows="{rows}"></rn-claim-licensor-grid>')({rows}));
       }
