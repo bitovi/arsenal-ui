@@ -1,0 +1,30 @@
+
+<div class="outer">
+
+
+
+<output id="list"></output>
+
+
+
+{{#each fileList }}
+        <li>
+
+			<strong>{{name}}</strong> ({{convertToKB size}})
+       		<a class='destroy'>X</a>
+    	</li>
+ {{/each}}
+ 
+{{#if isLoaded}}
+	<input type="submit" id="submitFiles" value="Submit"/>
+{{else}}
+	<input type="file" id="fileSelect"  name ="Upload File"  style="display: none;" multiple />
+	<input type="submit" id="uploadFiles" value="UpLoad" />
+{{/if}}
+
+
+
+<input type="submit" id="cancelUpload" value="Cancel">
+
+</div>
+
