@@ -6,7 +6,7 @@ import styles from './create-pb.less!';
 import BundleNamesModel from 'models/payment/bundleNames/';
 import NewBundleNameModel from 'models/payment/newName/';
 
-import UserReq from 'models/rinsCommon/request/';
+import UserReq from 'utils/request/';
 
 
 

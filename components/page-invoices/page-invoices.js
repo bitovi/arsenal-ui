@@ -6,7 +6,7 @@ import GlobalParameterBar from 'components/global-parameter-bar/';
 import Grid from 'components/grid/';
 import stache from 'can/view/stache/';
 
-import UserReq from 'models/rinsCommon/request/';
+import UserReq from 'utils/request/';
 import GetAllInvoices from 'models/getAllInvoices/';
 import Invoice from 'models/invoice/';
 import BundleNamesModel from 'models/payment/bundleNames/';

@@ -1,5 +1,5 @@
 import Model from 'can/model/';
-import RinsCommon from 'models/rinsCommon/';
+import RinsCommon from 'utils/';
 
 var GLaccounts = Model.extend({
   // using finaAll instead of resource because I don't want to be able to save.

@@ -6,6 +6,8 @@ import Region from 'models/common/region/';
 import Country from 'models/common/country/';
 import Licensor from 'models/common/licensor/';
 import ContentType from 'models/common/content-type/';
+import PeriodFrom from 'models/common/periodFrom/';
+import PeriodTo from 'models/common/periodTo/';
 
 import template from './template.stache!';
 import styles from './global-parameter-bar.less!';
@@ -15,6 +17,8 @@ var GlobalParameterBar = Component.extend({
   template: template,
   scope: {
     appstate: undefined, // this gets passed in
+    periodFrom: [],
+    periodTo : [],
     storetypes: [],
     regions: [],
     countries: [],
@@ -31,20 +35,21 @@ var GlobalParameterBar = Component.extend({
     }
   },
   events: {
+     '#periodFrom select change': function(el, ev) {
+         var selected = $(el[0].selectedOptions).data('periodFrom');
+         this.scope.appstate.attr('periodFrom', selected);
+     },
+     '#periodTo select change': function(el, ev) {
+         var selected = $(el[0].selectedOptions).data('periodTo');
+         this.scope.appstate.attr('periodTo', selected);
+     },
     '#store-type select change': function(el, ev) {
        var selected = $(el[0].selectedOptions).data('storetype');
-       //console.log("contetntytpe " +JSON.stringify(selected));
       this.scope.appstate.attr('storeType', selected);
     },
     '#region select change': function(el, ev) {
-      //console.log("globalFetch Global Search: ");
       var selected = $(el[0].selectedOptions).data('region');
       this.scope.appstate.attr('region', selected);
-
-      /*var self = this;
-      Country.findAll({region: selected.id}).then(function(countries) {
-        self.scope.countries.replace(countries);
-      });*/
     },
     '#country select change': function(el, ev) {
       var selected = $(el[0].selectedOptions).data('country');
@@ -71,17 +76,22 @@ var GlobalParameterBar = Component.extend({
     var self = this;
 
     Promise.all([
+      PeriodFrom.findAll(),
+      PeriodTo.findAll(),
       StoreType.findAll(),
       Region.findAll(),
       Country.findAll(),
       Licensor.findAll(),
       ContentType.findAll()
     ]).then(function(values) {
-      self.scope.storetypes.replace(values[0][0]["data"]);
-      self.scope.regions.replace(values[1][0]["data"]);
-      self.scope.countries.replace(values[2][0]["data"]);
-      self.scope.licensors.replace(values[3][0]["data"]);
-      self.scope.contenttypes.replace(values[4][0]["data"]);
+
+      self.scope.periodFrom.replace(values[0][0]["data"]);
+      self.scope.periodTo.replace(values[1][0]["data"]);
+      self.scope.storetypes.replace(values[2][0]["data"]);
+      self.scope.regions.replace(values[3][0]["data"]);
+      self.scope.countries.replace(values[4][0]["data"]);
+      self.scope.licensors.replace(values[5][0]["data"]);
+      self.scope.contenttypes.replace(values[6][0]["data"]);
     });
   }
 });
