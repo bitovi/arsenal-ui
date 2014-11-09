@@ -280,7 +280,7 @@ var page = Component.extend({
     },
     ".rn-grid>tbody>tr dblclick": function(){
            this.scope.appstate.attr('page','create-invoice');
-           invoicemap.attr('invoiceid','123');
+           invoicemap.attr('invoiceid','104');
     },
     ".rn-grid>thead>tr>th click": function(item, el, ev){
           var self=this;

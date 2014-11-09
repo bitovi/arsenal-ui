@@ -2,21 +2,23 @@ import Model from 'can/model/';
 import RinsCommon from 'utils/';
 
 var Invoice = Model.extend({
- findOne: 'GET /getInvoiceById/1024',
+ //findOne: 'GET /getInvoiceById/1024',
  create: function(params){
  	return $.ajax({
   		url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/create',
-  		type: 'POST'
-     	//data: params
+  		type: 'POST',
+  		data: JSON.stringify(params),
+  	    dataType: 'json'
   	})
   },
-  /*findOne: function(params){
+  findOne: function(params){
  	return $.ajax({
   		url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/getByID',
-  		type: 'POST'
-     	//data: params
+  		type: 'POST',
+  		data: JSON.stringify(params),
+  	  	dataType: 'json'
   	})
-  },*/
+  },
   update: function(data,type){
     if(type=="invoiceDelete"){
       console.log("here invoice delete")

@@ -11,6 +11,8 @@ import bootstrapValidator from 'bootstrapValidator';
 import template from './template.stache!';
 import styles from './page-create-invoice.less!';
 
+import UserReq from 'utils/request/';
+
 import invoicemap from 'models/sharedMap/invoice';
 import InvoiceType from 'models/common/invoice-type/';
 import ContentType from 'models/common/content-type/';
@@ -74,6 +76,7 @@ var page = Component.extend({
   	DelInvoiceline:[],
     //invoiceid:"",
   	editpage:false,
+  	formSuccessCount:1,
     isRequired: function(){
   	 	/*	if(this.attr("invoicetypeSelect") != "2"){  /*Adhoc*/
   	 	/*			$(".breakdownCountry").addClass("requiredBar");
@@ -122,7 +125,10 @@ var page = Component.extend({
 
 
 			this.scope.isRequired(); /*For breakdown required field*/
-    			$('#invoiceform').on('init.form.bv', function(e, data) {
+    		
+    			
+    		
+				$('#invoiceform').on('init.form.bv', function(e, data) {
 			           	data.bv.disableSubmitButtons(true);
 
 			        }).on('init.field.bv', function(e, data) {
@@ -298,39 +304,49 @@ var page = Component.extend({
 	        				}
         				}
         				
-        			}).on('success.form.bv', function(e, data) {
-
-
+        			}).on('success.form.bv', function(e) {
+        				
+        				if(self.scope.formSuccessCount == 1){
+        					
+        				
+        				
 						/*Add invoice object creation start*/
-
+        				
 					if(!self.scope.editpage)
 					{
                        var createInvoiceData = {};
-					   createInvoiceData.invoice = [];
+					   createInvoiceData.invoices = [];
 
-					   createInvoiceData.invoice["invoiceNumber"] = self.scope.invoicenumberStore;
-					   createInvoiceData.invoice["invoiceTypeId"] = self.scope.invoicetypeSelect;
-					   createInvoiceData.invoice["entityId"] = self.scope.contentTypeStore;
-					   createInvoiceData.invoice["invoiceCcy"] = self.scope.currencyStore;
-					   createInvoiceData.invoice["fxRate"] = self.scope.fxrateStore;
-					   createInvoiceData.invoice["notes"] = self.scope.licnotesStore;
-					   createInvoiceData.invoice["invoiceAmount"] = self.scope.totalAmountVal;
-					   createInvoiceData.invoice["tax"] = self.scope.tax;
-					   createInvoiceData.invoice["grossTotal"] = self.scope.grossTotalStore;
-					   createInvoiceData.invoice["userAdjAmt"] = "";
-					   createInvoiceData.invoice["bundleId"] = self.scope.paymentBundleId;
-					   createInvoiceData.invoice["bundleName"] = self.scope.paymentBundleName;
-					   createInvoiceData.invoice["receivedDate"] = self.scope.receiveddate;
-					   createInvoiceData.invoice["invoiceDate"] = self.scope.invoicedate;
-					   createInvoiceData.invoice["invoiceCalculatedDueDate"] = self.scope.calduedate;
-					   createInvoiceData.invoice["invoiceDueDate"] = self.scope.invoiceduedate;
-					   createInvoiceData.invoice["comments"] = [];
-					   createInvoiceData.invoice["comments"].comments = self.scope.usercommentsStore;
-					   createInvoiceData.invoice["documents"] = [];
-					   createInvoiceData.invoice["documents"].fileName = "";
-					   createInvoiceData.invoice["documents"].location = "";
+					   createInvoiceData.invoices["invoiceNumber"] = self.scope.invoicenumberStore;
+					   createInvoiceData.invoices["invoiceTypeId"] = self.scope.invoicetypeSelect;
+					   createInvoiceData.invoices["serviceTypeId"] = "1";
+					   createInvoiceData.invoices["invoiceType"] = "Regular";
+					   createInvoiceData.invoices["entityId"] = self.scope.licensorStore;
+					   createInvoiceData.invoices["regionId"] = "4";
+					   createInvoiceData.invoices["entityName"] = "CELAS";
+					   createInvoiceData.invoices["invoiceCcy"] = "USD"//self.scope.currencyStore;
+					   createInvoiceData.invoices["fxRate"] = self.scope.fxrateStore;
+					   createInvoiceData.invoices["notes"] = self.scope.licnotesStore;
+					   createInvoiceData.invoices["invoiceAmount"] = self.scope.totalAmountVal;
+					   createInvoiceData.invoices["grossTotal"] = self.scope.grossTotalStore;
+					   createInvoiceData.invoices["finalInvoiceAmount"] = self.scope.grossTotalStore;
+					   createInvoiceData.invoices["periodType"] = "P";
+					   createInvoiceData.invoices["netTotal"] = self.scope.totalAmountVal;
+					   createInvoiceData.invoices["userAdjAmt"] = "0";
+					   createInvoiceData.invoices["bundleId"] = "23"//self.scope.paymentBundleId;
+					   createInvoiceData.invoices["bundleName"] = " BUNDLE"//self.scope.paymentBundleName;
+					   createInvoiceData.invoices["receivedDate"] = "06/19/2014"//self.scope.receiveddate;
+					   createInvoiceData.invoices["invoiceDate"] = "06/19/2014"//self.scope.invoicedate;
+					   createInvoiceData.invoices["invoiceCalcDueDate"] = "07/19/2014"//self.scope.calduedate;
+					   createInvoiceData.invoices["invoiceDueDate"] = "06/19/2014"//self.scope.invoiceduedate;
+					   createInvoiceData.invoices["createdBy"] = "1000";
+					   createInvoiceData.invoices["comments"] = [];
+					   createInvoiceData.invoices["comments"].comments = self.scope.usercommentsStore;
+					   createInvoiceData.invoices["invoiceDocuments"] = [];
+					   createInvoiceData.invoices["invoiceDocuments"].fileName = "pom.xml";
+					   createInvoiceData.invoices["invoiceDocuments"].location = "/tmp";
 
-					   createInvoiceData.invoice["invoiceLines"] = [];
+					   createInvoiceData.invoices["invoiceLines"] = [];
 
 					   var rowNumber = 0;
 					   	$("[id^=breakrow]").each(function(i){
@@ -341,30 +357,40 @@ var page = Component.extend({
 
 								var tempArry = {};
 
-								tempArry["countryId"] = self.scope.countryStore.attr("inputCountry"+index);
+								tempArry["country"] = self.scope.countryStore.attr("inputCountry"+index);
 						   		tempArry["fiscalPeriod"] = "201306";
 						   		tempArry["periodType"] = "P";
-						   		tempArry["contentType"] = self.scope.contentTypeStore.attr("inputContent"+index);
+						   		tempArry["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent"+index);
+						   		tempArry["contentGrpName"] = "MUSIC"
 						   		tempArry["lineAmount"] = self.scope.AmountStore.attr("amountText"+index);
 						   		tempArry["adhocTypeId"] = "";
 						   		if(self.scope.attr("invoicetypeSelect") == "2"){
 
-						  	 		tempArry["glAccount"] = self.scope.ccidGLStore.attr(inputContent);
-						  	 		tempArry["ccidName"] = "";
+						  	 		tempArry["glAccRefId"] = self.scope.ccidGLStore.attr(inputContent);
+						  	 		tempArry["ccidFileName"] = "";
 						  	 	}
 						  	 	else{
-						  	 		tempArry["glAccount"] = "";
-						  	 		tempArry["ccidName"] = self.scope.ccidGLStore.attr(inputContent);
+						  	 		tempArry["glAccRefId"] = "";
+						  	 		tempArry["ccidFileName"] = "FILE"//self.scope.ccidGLStore.attr(inputContent);
 						  	 	}
 
 
-							   		createInvoiceData.invoice["invoiceLines"].push(tempArry);
+							   		createInvoiceData.invoices["invoiceLines"].push(tempArry);
 
 
 									}
 								rowNumber++;
 								});
 									self.scope.errorMsg.attr("errorCode", "0000");
+									createInvoiceData.requestTimeStamp = "";
+									createInvoiceData.validationStatus = "";
+									createInvoiceData.prsId  = "";
+									createInvoiceData.appId = "";
+									createInvoiceData.secretKey = "";
+									createInvoiceData.roleIds = [""];
+									
+									
+									
 							   	 	console.log(createInvoiceData);
 
 							   	 	Promise.all([
@@ -372,7 +398,7 @@ var page = Component.extend({
 										     ]).then(function(values) {
 									     		   self.scope.errorMsg.attr("responseText", values[0][0]["responseText"]);
 
-									     		   if((values[0][0]["responseCode"] == "0000")){
+									     		  if((values[0][0]["responseCode"] == "0000")){
 									     		   		self.scope.attr("invoicenumberStore", "");
 												 		self.scope.attr("invoicetypeSelect", "");
 												 		self.scope.attr("licensorStore", "");
@@ -397,11 +423,13 @@ var page = Component.extend({
 						                               $("#breakrow0 #inputCountry0").attr("id","inputCountry0").val("");
 						                               $("#breakrow0 #ccidGL0").attr("id","ccidGL0").val("");
 												 	   // self.scope.contentTypeStore.attr("amountPeriod0","");
-												 	}
+												 	}  
 
 
 
 												});
+								
+							   	 
 								}else{
 
 								/* Add invoice end*/
@@ -512,6 +540,14 @@ var page = Component.extend({
 
 
 									 $.merge(editInvoiceData.invoice["invoiceLines"], self.scope.attr().DelInvoiceline); /*merging invoice line with deleted row*/
+									 
+									    editInvoiceData.requestTimeStamp = "";
+									    editInvoiceData.validationStatus = "";
+									    editInvoiceData.prsId  = "";
+									    editInvoiceData.appId = "";
+									    editInvoiceData.secretKey = "";
+									    editInvoiceData.authToken = "3B9LrucRihXmNuM6";
+									    editInvoiceData.roleIds = [""];
 
 								 console.log(editInvoiceData);
 
@@ -522,10 +558,15 @@ var page = Component.extend({
 
 							}
 								/*Edit invoice end*/
+									
+					        self.scope.formSuccessCount++;
+						return false;
+        				}
+        				
+        		return false;
 
-			                        return false;
-
-			       		 });
+			  });
+    		
 
 						$('#invoicedate').on('dp.change dp.show', function (e) {
 			            			$('#invoiceform').bootstrapValidator('revalidateField', 'invoicedate');
@@ -547,7 +588,7 @@ var page = Component.extend({
 				 "{invoiceContainer} change": function() {
 				 		var self = this;  /*This block is used to update data in view with two way binding*/
 
-		 		//console.log(self.scope.attr().invoiceContainer[0].invoiceNumber);
+		 	console.log(self.scope.attr().invoiceContainer[0]);
 
 		 		var invoiceData = self.scope.attr().invoiceContainer[0];
 		 		self.scope.attr("invoicenumberStore", invoiceData.invoiceNumber);
@@ -838,12 +879,17 @@ var page = Component.extend({
 						//this.attr("editpage", true);
 
 						//console.log(invoiceid+"dadajsd");
+		     			 
+		     			var getByIDReq = {"searchRequest":{}};
+		     			getByIDReq.searchRequest.ids = invoicemap.attr("invoiceid");
+		     			 
 
 						self.scope.attr("editpage", true);
 						Promise.all([
-				      				Invoice.findOne()
+				      				Invoice.findOne(UserReq.formRequestDetails(getByIDReq))
 				    			]).then(function(values) {
-						     		 self.scope.attr("invoiceContainer").replace(values[0][1]["invoice"]);
+				    				//console.log(values);
+						     		 self.scope.attr("invoiceContainer").replace(values[0][0]["invoices"]);
 						    	});
 						}
 
