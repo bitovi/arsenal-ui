@@ -16,6 +16,7 @@ var headerNavigation = Component.extend({
   },
   helpers: {
     isActive: function(pageName) {
+    	$('.popover').popover('destroy');/*To remove popover when going to other page*/	
       return 'class="' + (pageName === this.appstate.attr('page') ? 'active' : '') + '"'
     },
     renderGlobalSearch: function(){

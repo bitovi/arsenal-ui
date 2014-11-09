@@ -19,8 +19,8 @@
 
 			 	<div class="form-group col-sm-12">
 				 	<div class="col-sm-6">
-				 		<div class="col-sm-6">
-						    <label for="inputEmail3" class="col-sm-4 control-label">Invoice Type: </label>
+				 		<div class="col-sm-6 singleField">
+						    <label for="inputEmail3" class="col-sm-6 control-label">Invoice Type: </label>
 						    <div class="col-sm-4 requiredBar">
 						      <select id="invoiceType" class="form-control" can-value="invoicetypeSelect" name="invoiceType">
 								        <option value="">Select</option>
@@ -36,7 +36,7 @@
 			<div class="col-sm-6 right-border" {{setHeight}}>
 				<div class="form-group">
 				  <div class="col-sm-6">
-					    <label for="inputEmail3" class="col-sm-4 control-label">Licensor: </label>
+					    <label for="inputEmail3" class="col-sm-6 control-label">Licensor: </label>
 					    <div class="col-sm-4 requiredBar">
 					      <select id="licensor" class="form-control" name="licensor" can-value="licensorStore">
 							       <option value="">Select</option>
@@ -52,7 +52,7 @@
 				  <div class="form-group">
 
 						 <div class="col-sm-6">
-							    <label for="inputPassword3" class="col-sm-4 control-label">Currency:</label>
+							    <label for="inputPassword3" class="col-sm-6 control-label">Currency:</label>
 							    <div class="col-sm-4 requiredBar">
 							      <select id="currency" class="form-control" name="currency" can-value="currencyStore">
 									        <option value="">Select</option>
@@ -74,9 +74,9 @@
 
 				  <div class="form-group">
 						  <div class="col-sm-6">
-							    <label for="inputEmail3" class="col-sm-4 control-label">Invoice Number: </label>
+							    <label for="inputEmail3" class="col-sm-6 control-label">Invoice Number: </label>
 								    <div class="col-sm-6 requiredBar invoicenumber">
-									      <input type="text" class="form-control" id="invoicenumber" name="invoicenumber" placeholder="" maxlength="50" can-value="invoicenumberStore">
+									      <input type="text" class="form-control" id="invoicenumber" name="invoicenumber" placeholder=""  can-value="invoicenumberStore">
 									      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "invoicenumber-err" style="display:none;">
 								    </div>
 						  </div>
@@ -85,9 +85,9 @@
 				  </div>
 
 				   <div class="form-group">
-				   		 <div class="col-sm-12">
-							    <label for="inputEmail3" class="col-sm-2 control-label">Licensor Notes: </label>
-							    <div class="col-sm-10 requiredBar">
+				   		 <div class="col-sm-12 singleField">
+							    <label for="inputEmail3" class="col-sm-3 control-label">Licensor Notes: </label>
+							    <div class="col-sm-9 requiredBar">
 							      <textarea class="form-control" id ="licnotes" name="licnotes" maxlength="1024" can-value="licnotesStore"></textarea>
 							       <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "licnotes-err" style="display:none;">
 							    </div>
@@ -98,7 +98,7 @@
 				   <div class="form-group">
 
 				   			<div class="col-sm-6">
-							    <label for="inputPassword3" class="col-sm-4 control-label">Create Date:</label>
+							    <label for="inputPassword3" class="col-sm-6 control-label">Create Date:</label>
 							    <div class="col-sm-4" style="text-align:left;">
 							       {{#if editpage}}
 							       		{{createDateStore}}
@@ -118,7 +118,7 @@
 
 				   <div class="form-group">
 				    	<div class="col-sm-6 ">
-							    <label for="inputPassword3" class="col-sm-4 control-label">Invoice Date:</label>
+							    <label for="inputPassword3" class="col-sm-6 control-label">Invoice Date:</label>
 							    <div class="col-sm-6 invdate requiredBar">
 							     <date-picker name="invoicedate" placeholder=""></date-picker>
 							    </div>
@@ -144,9 +144,9 @@
 
 
 				   <div class="form-group">
-				    <div class="col-sm-12">
-				    <label for="inputEmail3" class="col-sm-2 control-label">Supporting Documents: </label>
-				    <div class="col-sm-10 fileUploadContainer">
+				    <div class="col-sm-12 singleField">
+				    <label for="inputEmail3" class="col-sm-3 control-label">Supporting Documents: </label>
+				    <div class="col-sm-9 fileUploadContainer">
 
 				     		<div class="fileUploadButtonPosition">
 						    		<span class="file-input btn btn-primary btn-file btn-custom-big-disabled">
@@ -160,9 +160,9 @@
 
 
 				   <div class="form-group">
-				   <div class="col-sm-12">
-					    <label for="inputEmail3" class="col-sm-2 control-label">User Comments: </label>
-					    <div class="col-sm-10 requiredBar usercomments">
+				   <div class="col-sm-12 singleField">
+					    <label for="inputEmail3" class="col-sm-3 control-label">User Comments: </label>
+					    <div class="col-sm-9 requiredBar usercomments">
 					      <textarea class="form-control" name="usercomments" id="usercomments" maxlength="1024" can-value="usercommentsStore"></textarea>
 					      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "usercomments-err" style="display:none;">
 					    </div>
@@ -182,12 +182,12 @@
 					  <table class="table table-condensed table-striped breakdown" id="breakTable">
 						    <thead>
 						        <tr>
-						            <th style="width:20%;">{{isAdhocStrore.contentAdhoc}}</th>
-						            <th>Period</th>
-						            <th>Amount</th>
-						            <th>Country</th>
-						            <th>{{isAdhocStrore.ccidGL}}</th>
-						            <th><img src="resources/images/button_plus_blue.png" class="breakDownIconSize addRow" id="addRow"></th>
+						            <th class="breakdownHead">{{isAdhocStrore.contentAdhoc}}</th>
+						            <th class="breakdownHead">Period</th>
+						            <th class="breakdownHead">Amount</th>
+						            <th class="breakdownHead">Country</th>
+						            <th class="breakdownHead">{{isAdhocStrore.ccidGL}}</th>
+						            <th class="breakdownIcon"><img src="resources/images/button_plus_blue.png" class="breakDownIconSize addRow" id="addRow"></th>
 						        </tr>
 						    </thead>
 						    <tbody>
@@ -340,8 +340,8 @@
 					    <div class="col-sm-12" style="text-align:right;padding:15px;">
 
 						 {{#if showPBR}}
-							<label class="col-sm-2" for="inputCountry">Bundle Name:</label>
-					        <div class="col-sm-4 requiredBar">
+							<label class="col-sm-3" for="inputCountry">Bundle Name:</label>
+					        <div class="col-sm-3 requiredBar">
 
                  <create-pb type="invoices" appstate="{appstate}" ></create-pb>
 

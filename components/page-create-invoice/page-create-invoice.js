@@ -25,6 +25,7 @@ import GLaccounts from 'models/glaccounts/';
 
 //import Invoice from 'models/invoice/';
 
+var mandatoryField = ["invoicenumber", "usercomments", "invoicedate", "invoiceduedate", "receiveddate", "amount[]"];
 
 var page = Component.extend({
   tag: 'page-create-invoice',
@@ -110,7 +111,7 @@ var page = Component.extend({
 						            self.AmountStore.removeAttr("amountText"+rowindex);
 						        });
 
-                             
+                               //console.log($clone.find('[name="amount[]"]'));
 
 
 		}
@@ -141,6 +142,11 @@ var page = Component.extend({
 			                validators: {
 			                    notEmpty: {
 			                        message: 'The invoice number is required'
+			                    },
+			                    stringLength: {
+			                        max:50,
+			                        message: 'Only Maximum 50 characters allowed',
+			                        utf8Bytes: true
 			                    },
 			                    regexp: {
 			                        regexp: /^[a-zA-Z0-9_\- ]*$/i,
@@ -276,13 +282,23 @@ var page = Component.extend({
 				    		$("#"+data.field+"-err").css("display", "block");
 				    	}
 				    	$('*[data-bv-icon-for="'+data.field +'"]').popover('show');
+				    	
 				}).on('success.field.bv', function(e, data) {
         				$('*[data-bv-icon-for="'+data.field +'"]').popover('destroy');
         				if(data.field != "amount[]"){
 				    		$("#"+data.field+"-err").css("display", "none");
 				    	}
-
-				}).on('success.form.bv', function(e, data) {
+        				
+        				if(!self.scope.editpage){
+	        				for(var i= 0; i < mandatoryField.length; i++){
+	        					if(!data.bv.isValidField(mandatoryField[i])){
+	        						 data.bv.disableSubmitButtons(true);
+	        						 break;
+	        					}
+	        				}
+        				}
+        				
+        			}).on('success.form.bv', function(e, data) {
 
 
 						/*Add invoice object creation start*/
@@ -320,7 +336,7 @@ var page = Component.extend({
 					   	$("[id^=breakrow]").each(function(i){
 							if(this.id !="breakrowTemplate"){
 								var index = $(this).attr("rowid");
-							 
+							 	console.log(index);
 					   			var inputContent = "inputContent"+index;
 
 								var tempArry = {};
@@ -349,7 +365,7 @@ var page = Component.extend({
 								rowNumber++;
 								});
 									self.scope.errorMsg.attr("errorCode", "0000");
-							   	 
+							   	 	console.log(createInvoiceData);
 
 							   	 	Promise.all([
 										      	Invoice.create(createInvoiceData)
@@ -416,7 +432,8 @@ var page = Component.extend({
 								   editInvoiceData.invoice["invoiceCalculatedDueDate"] = self.scope.calduedate;
 								   editInvoiceData.invoice["invoiceDueDate"] = self.scope.invoiceduedate;
 
-								  
+								  // console.log(self.scope.attr().invoiceContainer[0].comments.length+"test");
+								  // alert("yes");
 
 
 								  /*comment start*/
@@ -496,7 +513,7 @@ var page = Component.extend({
 
 									 $.merge(editInvoiceData.invoice["invoiceLines"], self.scope.attr().DelInvoiceline); /*merging invoice line with deleted row*/
 
-								
+								 console.log(editInvoiceData);
 
 								 Promise.all([Invoice.update(editInvoiceData)
 								     ]).then(function(values) {
@@ -523,13 +540,14 @@ var page = Component.extend({
 				            		$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
 				        });
 
-						
+						/*	if(!self.scope.attr("invoiceid") && self.scope.attr("allModelReady"))
+								self.scope.createBreakline(0);*/
 
 				},
 				 "{invoiceContainer} change": function() {
 				 		var self = this;  /*This block is used to update data in view with two way binding*/
 
-		 		
+		 		//console.log(self.scope.attr().invoiceContainer[0].invoiceNumber);
 
 		 		var invoiceData = self.scope.attr().invoiceContainer[0];
 		 		self.scope.attr("invoicenumberStore", invoiceData.invoiceNumber);
@@ -545,7 +563,8 @@ var page = Component.extend({
 
 
 		 		self.scope.attr("tax", invoiceData.tax);
-		 		
+		 		//self.scope.attr("calduedate", invoiceData.invoiceCalculatedDueDate);
+		 		//self.scope.attr("calduedate", invoiceData.invoiceCalculatedDueDate);
 
 		 		/* Comments */
 		 		var comment = "";
@@ -636,7 +655,7 @@ var page = Component.extend({
 								  	 		tempDelObj["ccidName"] = self.scope.ccidGLStore.attr(inputContent);
 								  	 	}
 
-									
+									//console.log(tempDelObj);
 									self.scope.DelInvoiceline.push(tempDelObj);
 									$(this).closest("tr").remove();
 						           	self.scope.AmountStore.removeAttr("amountText"+rowindex);
@@ -657,15 +676,18 @@ var page = Component.extend({
 		},
 		".inputContent change": function(event){
          	this.scope.contentTypeStore.attr(event[0].id, event[0].value)
-         
+         	console.log(this.scope.contentTypeStore.attr());
 
 		},
 		".inputMonth change": function(event){
          	this.scope.monthStore.attr(event[0].id, event[0].value)
 		},
+	/*	".inputYear change": function(event){
+         	this.scope.yearStore.attr(event[0].id, event[0].value)
+		},*/
 		".inputCountry change": function(event){
          	this.scope.countryStore.attr(event[0].id, event[0].value)
-         
+         	console.log(this.scope.countryStore.attr());
 		},
 		".ccidGL change": function(event){
          	this.scope.ccidGLStore.attr(event[0].id, event[0].value)
@@ -732,16 +754,51 @@ var page = Component.extend({
 
 
          },
-        ".addRow click":function(){
+         "{paymentBundleId} change": function() {
+         	//console.log(this.scope.attr());
+		},
+         "{paymentBundleName} change": function() {
+         	//console.log(this.scope.attr());
+  	     },
+         ".addRow click":function(){
 
          	var self = this;
          	var rowindex = self.scope.attr("rowindex");
          	self.scope.attr("rowindex", rowindex + 1);
-					self.scope.createBreakline(self.scope.attr("rowindex"));
-			},
-			"#buttonCancel click":function(){
+
+			//alert(self.scope.attr("rowindex"));
+			/*var $template = $('#breakrowTemplate'),
+                $clone    = $template
+                                .clone()
+                                .removeClass('hide')
+                                .removeAttr('id')
+                                .attr("id","breakrow"+rowindex)
+								.insertBefore($template);
+                               $("#breakrow"+rowindex+" .amountText").attr("id","amountText"+rowindex).val(" ");
+                               $("#breakrow"+rowindex+" #inputContent").attr("id","inputContent"+rowindex);
+                               $("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex);
+                               $("#breakrow"+rowindex+" #inputYear").attr("id","inputYear"+rowindex);
+                               $("#breakrow"+rowindex+" #inputCountry").attr("id","inputCountry"+rowindex);
+                               $("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val(" ");
+                               $("#breakrow"+rowindex+" .removeRow").css("display", "block");
+
+                               $(".removeRow").click(function(event){
+						            $(this).closest("tr").remove();
+						            self.scope.AmountStore.removeAttr("amountText"+rowindex);
+						        });*/
+
+
+                   self.scope.createBreakline(self.scope.attr("rowindex"));
+
+
+					},
+				"#addInvSubmit click":function(){
+
+
+				},
+				"#buttonCancel click":function(){
 					this.scope.appstate.attr('page','invoices');
-			}
+				}
 
 
    },
@@ -760,7 +817,7 @@ var page = Component.extend({
 			      	AdhocTypes.findAll()
 			    //  	GLaccounts.findAll()
 
-			      
+			      	//  Currency.findAll()*/
 				]).then(function(values) {
 		     		 self.scope.attr("invoiceTypes").replace(values[0][0]["data"]);
 		     		 self.scope.attr("licensor").replace(values[1][0]["data"]);
@@ -769,9 +826,18 @@ var page = Component.extend({
 		     		 self.scope.attr("fxrate").replace(values[5][0]["data"][0]["fxrate"]);
 		     		 self.scope.attr("adhocType").replace(values[6][0]["data"]);
 		     		 self.scope.attr("contentType").replace(values[3][0]["data"]);
-		     	
+		     	//	 self.scope.attr("glaccounts").replace(values[7][0]["data"]);
+
+
+
+
+		     	//	 self.scope.attr("invoiceid", invoicemap.attr("invoiceid"));
 
 		     		 if(invoicemap.attr("invoiceid")){
+
+						//this.attr("editpage", true);
+
+						//console.log(invoiceid+"dadajsd");
 
 						self.scope.attr("editpage", true);
 						Promise.all([
@@ -813,12 +879,14 @@ var page = Component.extend({
 			  	 	if(this.attr("invoicetypeSelect") == "2"){  /*Adhoc*/
 
 			  	 		return "Adhoc";
-			  	 		
+			  	 		//console.log(this.isAdhocStrore);
+			  	 		//this.attr("isAdhoc").contentGL
+			  	 		//return "GL Account"
 			  	 	}
 			  	 	else{
 			  	 		this.isAdhocStrore.attr("ccidGL", "CCID Document");
 			  	 		return this.isAdhocStrore;
-			  	 		
+			  	 		//return "CCID Document"
 			  	 	}
 			  	},
 			  	grossTotal: function(){
