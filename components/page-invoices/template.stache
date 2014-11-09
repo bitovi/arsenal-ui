@@ -23,7 +23,6 @@
 
 
     <div id="invoiceGrid">
-        <!--<data-grid name='invoiceSearchTable' type='getAllInvoices' columntext='{gridcolumntext}'></data-grid>-->
     </div>
     <div id="invoiceGrid1">
 
