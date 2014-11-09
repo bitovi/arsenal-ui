@@ -1,6 +1,5 @@
 import Component from 'can/component/';
 
-import AllInvoices from 'models/allInvoices/';
 
 import appstate from 'models/appstate/';
 
@@ -53,7 +52,7 @@ var dataTables = Component.extend({
     	if(self.scope.type=="getAllInvoices"){
 	    	Promise.all([
 		     	//AllInvoices.findAll({region: 2})
-		     	AllInvoices.findAll()
+                GetAllInvoices.findAll()
 		    ]).then(function(values) {
 		    	//console.log(JSON.stringify(values[0][1]));
 		    	if(values[0][0]["responseHeader"]["errorCode"]=="0000")
@@ -71,7 +70,7 @@ var dataTables = Component.extend({
         			/* While search,  Token parameter has to be sent with page data */
 	        		/* tokenInput holds that search token info */
 			     	//AllInvoices.findAll({searchParam: tokenInput}) 
-			     	AllInvoices.findAll()
+                GetAllInvoices.findAll()
 		    ]).then(function(values) {
 		    	if(values[0][0]["responseHeader"]["errorCode"]=="0000"){
 		    		self.scope.searchFlag.replace("Yes");
@@ -288,7 +287,7 @@ var dataTables = Component.extend({
 	        		/* while scroll, request parameter has to be sent with page info */
 	        		/* nextVal holds that page info */
 			     	//AllInvoices.findAll({next: nextVal}) 
-			     	AllInvoices.findAll()
+                    GetAllInvoices.findAll()
 			    ]).then(function(values) {
 			    	if(values[0][0]["responseHeader"]["errorCode"]=="0000"){
 			    		//$("#"+self.scope.attr().name).remove();
