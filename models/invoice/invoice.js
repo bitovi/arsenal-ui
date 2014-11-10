@@ -8,7 +8,7 @@ var Invoice = Model.extend({
   		url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/create',
   		type: 'POST',
   		data: JSON.stringify(params),
-  	    dataType: 'json'
+  	  dataType: 'json'
   	})
   },
   findOne: function(params){
@@ -16,10 +16,10 @@ var Invoice = Model.extend({
   		url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/getByID',
   		type: 'POST',
   		data: JSON.stringify(params),
-  	  	dataType: 'json'
+  	  dataType: 'json'
   	})
   },
-  update: function(data,type){
+  update: function(params,type){
     if(type=="invoiceDelete"){
       console.log("here invoice delete")
         return $.ajax({
@@ -30,8 +30,9 @@ var Invoice = Model.extend({
     } else {
       return $.ajax({
           url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/update',
-          type: 'POST'
-          //data: params
+          type: 'POST',
+          data: JSON.stringify(params),
+          dataType: 'json'
         })
     }
   }

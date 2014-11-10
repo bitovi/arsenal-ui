@@ -9,7 +9,7 @@
 </select>
 {{#else}}
 <div class="input-group">
-  <input type="text" class="form-control resizeBox" id="newPaymentBundle" can-value = "paymentBundleName" >
+  <input name= "paymentBundleName" type="text" class="form-control resizeBox" id="newPaymentBundle" can-value = "paymentBundleName" maxlength="100">
   <div class="input-group-btn">
      <button id="btnCancel" class="btn btn-xs btn-danger" type="button">X</button>
   </div>
