@@ -24,6 +24,7 @@ import Fxrate from 'models/common/fxrate/';
 import icsvmap from 'models/sharedMap/icsv';
 import AdhocTypes from 'models/common/adhoc-types/';
 import GLaccounts from 'models/glaccounts/';
+import stache from 'can/view/stache/';
 
 //import Invoice from 'models/invoice/';
 
@@ -74,6 +75,7 @@ var page = Component.extend({
   	invoiceContainer:[],
   	showPBR:true,
   	DelInvoiceline:[],
+  	currentdate:"",
     //invoiceid:"",
   	editpage:false,
   	formSuccessCount:1,
@@ -306,7 +308,7 @@ var page = Component.extend({
         				
         			}).on('success.form.bv', function(e) {
         				
-        				if(self.scope.formSuccessCount == 1){
+        				e.preventDefault();
         					
         				
         				
@@ -314,39 +316,53 @@ var page = Component.extend({
         				
 					if(!self.scope.editpage)
 					{
+                      
+                      if(self.scope.formSuccessCount == 1){
                        var createInvoiceData = {};
 					   createInvoiceData.invoices = [];
 
-					   createInvoiceData.invoices["invoiceNumber"] = self.scope.invoicenumberStore;
-					   createInvoiceData.invoices["invoiceTypeId"] = self.scope.invoicetypeSelect;
-					   createInvoiceData.invoices["serviceTypeId"] = "1";
-					   createInvoiceData.invoices["invoiceType"] = "Regular";
-					   createInvoiceData.invoices["entityId"] = self.scope.licensorStore;
-					   createInvoiceData.invoices["regionId"] = "4";
-					   createInvoiceData.invoices["entityName"] = "CELAS";
-					   createInvoiceData.invoices["invoiceCcy"] = "USD"//self.scope.currencyStore;
-					   createInvoiceData.invoices["fxRate"] = self.scope.fxrateStore;
-					   createInvoiceData.invoices["notes"] = self.scope.licnotesStore;
-					   createInvoiceData.invoices["invoiceAmount"] = self.scope.totalAmountVal;
-					   createInvoiceData.invoices["grossTotal"] = self.scope.grossTotalStore;
-					   createInvoiceData.invoices["finalInvoiceAmount"] = self.scope.grossTotalStore;
-					   createInvoiceData.invoices["periodType"] = "P";
-					   createInvoiceData.invoices["netTotal"] = self.scope.totalAmountVal;
-					   createInvoiceData.invoices["userAdjAmt"] = "0";
-					   createInvoiceData.invoices["bundleId"] = "23"//self.scope.paymentBundleId;
-					   createInvoiceData.invoices["bundleName"] = " BUNDLE"//self.scope.paymentBundleName;
-					   createInvoiceData.invoices["receivedDate"] = "06/19/2014"//self.scope.receiveddate;
-					   createInvoiceData.invoices["invoiceDate"] = "06/19/2014"//self.scope.invoicedate;
-					   createInvoiceData.invoices["invoiceCalcDueDate"] = "07/19/2014"//self.scope.calduedate;
-					   createInvoiceData.invoices["invoiceDueDate"] = "06/19/2014"//self.scope.invoiceduedate;
-					   createInvoiceData.invoices["createdBy"] = "1000";
-					   createInvoiceData.invoices["comments"] = [];
-					   createInvoiceData.invoices["comments"].comments = self.scope.usercommentsStore;
-					   createInvoiceData.invoices["invoiceDocuments"] = [];
-					   createInvoiceData.invoices["invoiceDocuments"].fileName = "pom.xml";
-					   createInvoiceData.invoices["invoiceDocuments"].location = "/tmp";
+					   var tempInvoiceData = {};
 
-					   createInvoiceData.invoices["invoiceLines"] = [];
+					   tempInvoiceData["invoiceNumber"] = self.scope.invoicenumberStore;
+					   tempInvoiceData["invoiceTypeId"] = self.scope.invoicetypeSelect;
+					   tempInvoiceData["serviceTypeId"] = "1";
+					   tempInvoiceData["invoiceType"] = "Regular";
+					   tempInvoiceData["entityId"] = self.scope.licensorStore;
+					   tempInvoiceData["regionId"] = "4";
+					   tempInvoiceData["entityName"] = "CELAS";
+					   tempInvoiceData["invoiceCcy"] = "USD"//self.scope.currencyStore;
+					   tempInvoiceData["fxRate"] = self.scope.fxrateStore;
+					   tempInvoiceData["notes"] = self.scope.licnotesStore;
+					   tempInvoiceData["invoiceAmount"] = self.scope.totalAmountVal;
+					   tempInvoiceData["grossTotal"] = self.scope.grossTotalStore;
+					   tempInvoiceData["finalInvoiceAmount"] = self.scope.grossTotalStore;
+					   tempInvoiceData["periodType"] = "P";
+					   tempInvoiceData["netTotal"] = self.scope.totalAmountVal;
+					   tempInvoiceData["userAdjAmt"] = "0";
+					   tempInvoiceData["bundleId"] = $("#paymentBundleNames").val();//self.scope.paymentBundleId;
+					   tempInvoiceData["bundleName"] = $("#paymentBundleNames").text();//self.scope.paymentBundleName;
+					   
+					   if(typeof $("#paymentBundleNames").val() == "undefined"){
+					   	 tempInvoiceData["bundleId"] = "";
+					   	 tempInvoiceData["bundleName"] = $("#newPaymentBundle").val();
+					   }else{
+					   	 tempInvoiceData["bundleId"] = $("#paymentBundleNames").val();
+					   	 tempInvoiceData["bundleName"] = $("#paymentBundleNames option:selected").text();
+					   }
+
+
+					   tempInvoiceData["receivedDate"] = $("#receiveddate input[type=text]").val();//"06/19/2014"//self.scope.receiveddate;
+					   tempInvoiceData["invoiceDate"] = $("#invoicedate input[type=text]").val();//"06/19/2014"//self.scope.invoicedate;
+					   tempInvoiceData["invoiceCalcDueDate"] = self.scope.calduedate;
+					   tempInvoiceData["invoiceDueDate"] = $("#invoiceduedate input[type=text]").val(); //"06/19/2014"//self.scope.invoiceduedate;
+					   tempInvoiceData["createdBy"] = "1000";
+					   tempInvoiceData["comments"] = [];
+					   tempInvoiceData["comments"].comments = self.scope.usercommentsStore;
+					   tempInvoiceData["invoiceDocuments"] = [];
+					   tempInvoiceData["invoiceDocuments"].fileName = "pom.xml";
+					   tempInvoiceData["invoiceDocuments"].location = "/tmp";
+
+					   tempInvoiceData["invoiceLines"] = [];
 
 					   var rowNumber = 0;
 					   	$("[id^=breakrow]").each(function(i){
@@ -375,26 +391,27 @@ var page = Component.extend({
 						  	 	}
 
 
-							   		createInvoiceData.invoices["invoiceLines"].push(tempArry);
+							   		tempInvoiceData["invoiceLines"].push(tempArry);
 
 
 									}
 								rowNumber++;
 								});
 									self.scope.errorMsg.attr("errorCode", "0000");
-									createInvoiceData.requestTimeStamp = "";
+								/*	createInvoiceData.requestTimeStamp = "";
 									createInvoiceData.validationStatus = "";
 									createInvoiceData.prsId  = "";
 									createInvoiceData.appId = "";
 									createInvoiceData.secretKey = "";
-									createInvoiceData.roleIds = [""];
+									createInvoiceData.roleIds = [""];*/
 									
+									createInvoiceData.invoices.push(tempInvoiceData);
 									
 									
 							   	 	console.log(createInvoiceData);
 
 							   	 	Promise.all([
-										      	Invoice.create(createInvoiceData)
+										      	Invoice.create(UserReq.formRequestDetails(createInvoiceData))
 										     ]).then(function(values) {
 									     		   self.scope.errorMsg.attr("responseText", values[0][0]["responseText"]);
 
@@ -428,6 +445,12 @@ var page = Component.extend({
 
 
 												});
+												
+									 var formCount = self.scope.attr("formSuccessCount") + 1;
+									 self.scope.attr("formSuccessCount", formCount) ;
+									  return false;
+								    
+        							}			
 								
 							   	 
 								}else{
@@ -438,60 +461,70 @@ var page = Component.extend({
 
 
 								   var editInvoiceData = {};
-								   editInvoiceData.invoice = [];
-								   editInvoiceData.invoice["invid"] = 6788;
-								   editInvoiceData.invoice["invoiceNumber"] = self.scope.invoicenumberStore;
-								   editInvoiceData.invoice["invoiceTypeId"] = self.scope.invoicetypeSelect;
-								   editInvoiceData.invoice["invoiceType"] = "Regular";
-								   editInvoiceData.invoice["entityId"] = self.scope.contentTypeStore;
-								   editInvoiceData.invoice["invoiceCcy"] = self.scope.currencyStore;
-								   editInvoiceData.invoice["fxRate"] = self.scope.fxrateStore;
-								   editInvoiceData.invoice["notes"] = self.scope.licnotesStore;
-								   editInvoiceData.invoice["docid"] = "3245";
-								   editInvoiceData.invoice["commentid"] = "789";
-								   editInvoiceData.invoice["invoiceAmount"] = self.scope.totalAmountVal;
-								   editInvoiceData.invoice["tax"] = self.scope.tax;
-								   editInvoiceData.invoice["grossTotal"] = self.scope.grossTotalStore;
-								   editInvoiceData.invoice["userAdjAmt"] = "";
-								   editInvoiceData.invoice["bundleId"] = self.scope.paymentBundleId;
-								   editInvoiceData.invoice["bundleName"] = self.scope.paymentBundleName;
-								   editInvoiceData.invoice["receivedDate"] = self.scope.receiveddate;
-								   editInvoiceData.invoice["invoiceDate"] = self.scope.invoicedate;
-								   editInvoiceData.invoice["invoiceCalculatedDueDate"] = self.scope.calduedate;
-								   editInvoiceData.invoice["invoiceDueDate"] = self.scope.invoiceduedate;
+								   editInvoiceData.invoices = [];
+
+								   var tempEditInvoiceData = {};
+
+								   tempEditInvoiceData["invid"] = invoicemap.attr("invoiceid");
+								   tempEditInvoiceData["invoiceNumber"] = self.scope.invoicenumberStore;
+								   tempEditInvoiceData["invoiceTypeId"] = self.scope.invoicetypeSelect;
+								   tempEditInvoiceData["invoiceType"] = "Regular";   //need to get nemae from service
+								   tempEditInvoiceData["entityId"] = self.scope.licensorStore;
+								   tempEditInvoiceData["invoiceCcy"] = self.scope.currencyStore;
+								   tempEditInvoiceData["fxRate"] = self.scope.fxrateStore;
+								   tempEditInvoiceData["notes"] = self.scope.licnotesStore;
+								   tempEditInvoiceData["docid"] = "3245"; //need to check, if needed
+								   tempEditInvoiceData["commentid"] = "789"; //need to check, if needed
+								   tempEditInvoiceData["invoiceAmount"] = self.scope.totalAmountVal;
+								   tempEditInvoiceData["tax"] = self.scope.tax;
+								   tempEditInvoiceData["grossTotal"] = self.scope.grossTotalStore;
+								   tempEditInvoiceData["userAdjAmt"] = "";
+								   tempEditInvoiceData["bundleId"] = $("#paymentBundleNames").val(); //self.scope.paymentBundleId;
+								   if(typeof $("#paymentBundleNames").val() == "undefined"){
+								   	 tempEditInvoiceData["bundleId"] = "";
+								   	 tempEditInvoiceData["bundleName"] = $("#newPaymentBundle").val();
+								   }else{
+								   	tempEditInvoiceData["bundleId"] = $("#paymentBundleNames").val();
+								   	tempEditInvoiceData["bundleName"] = $("#paymentBundleNames option:selected").text();
+								   }
+
+								   tempEditInvoiceData["receivedDate"] = self.scope.receiveddate; //$("#receiveddate").val();//"06/19/2014",//self.scope.receiveddate;
+								   tempEditInvoiceData["invoiceDate"] = self.scope.invoicedate;
+								   tempEditInvoiceData["invoiceCalculatedDueDate"] = self.scope.calduedate;
+								   tempEditInvoiceData["invoiceDueDate"] = self.scope.invoiceduedate;
 
 								  // console.log(self.scope.attr().invoiceContainer[0].comments.length+"test");
 								  // alert("yes");
 
 
 								  /*comment start*/
-								   editInvoiceData.invoice["comments"] = [];
+								   tempEditInvoiceData["comments"] = [];
 								   for(var j=0;j<self.scope.attr().invoiceContainer[0].comments.length;j++){  /*old comments*/
 								   		  var tempComments = {};
 								   		  tempComments.comments = self.scope.attr().invoiceContainer[0].comments[j].comments;
 								   		  tempComments.id = self.scope.attr().invoiceContainer[0].comments[j].id;
 								   		  tempComments.createdBy = self.scope.attr().invoiceContainer[0].comments[j].createdBy;
 								   		  tempComments.createdDate = self.scope.attr().invoiceContainer[0].comments[j].createdDate;
-								   		  editInvoiceData.invoice["comments"].push(tempComments);
+								   		  tempEditInvoiceData["comments"].push(tempComments);
 									}
 										var tempComments = {};  /*new comments*/
 										tempComments.comments = self.scope.usercommentsStore;
 									   	tempComments.id = "";
 									   	tempComments.createdBy = "";
-									   	tempComments.createdDate = "";
-									   	editInvoiceData.invoice["comments"].push(tempComments);
+									   	tempComments.createdDate = self.scope.currentdate;
+									   	tempEditInvoiceData["comments"].push(tempComments);
 								    /*comment end*/
 
 								   /*document start*/
-								   editInvoiceData.invoice["documents"] = [];
-									for(var j=0;j<self.scope.attr().invoiceContainer[0].documents.length;j++){   /*old documents*/
+								   tempEditInvoiceData["invoiceDocuments"] = [];
+									for(var j=0;j<self.scope.attr().invoiceContainer[0].invoiceDocuments.length;j++){   /*old documents*/
 										var tempDocuments = {};
 										tempDocuments.filename="";
 										tempDocuments.location = "";
 										tempDocuments.inboundField = "";
 										tempDocuments.status = "";
 										tempDocuments.id = 100;
-										editInvoiceData.invoice["documents"].push(tempDocuments);
+										tempEditInvoiceData["invoiceDocuments"].push(tempDocuments);
 									}
 
 										var tempDocuments = {};  /*new documents*/
@@ -500,11 +533,11 @@ var page = Component.extend({
 										tempDocuments.inboundField = "";
 										tempDocuments.status = "";
 										tempDocuments.id = 100;
-										editInvoiceData.invoice["documents"].push(tempDocuments);
+										tempEditInvoiceData["invoiceDocuments"].push(tempDocuments);
 
 								   /*document end*/
 
-								  editInvoiceData.invoice["invoiceLines"] = [];
+								  tempEditInvoiceData["invoiceLines"] = [];
 								   $("[id^=breakrow]").each(function(i){
 											if(this.id !="breakrowTemplate"){
 												var index = $(this).attr("rowid");
@@ -531,7 +564,7 @@ var page = Component.extend({
 											  	 	}
 
 
-												   		editInvoiceData.invoice["invoiceLines"].push(tempArry);
+												   		tempEditInvoiceData["invoiceLines"].push(tempArry);
 
 
 
@@ -539,31 +572,26 @@ var page = Component.extend({
 												});
 
 
-									 $.merge(editInvoiceData.invoice["invoiceLines"], self.scope.attr().DelInvoiceline); /*merging invoice line with deleted row*/
+									 $.merge(tempEditInvoiceData["invoiceLines"], self.scope.attr().DelInvoiceline); /*merging invoice line with deleted row*/
 									 
-									    editInvoiceData.requestTimeStamp = "";
-									    editInvoiceData.validationStatus = "";
-									    editInvoiceData.prsId  = "";
-									    editInvoiceData.appId = "";
-									    editInvoiceData.secretKey = "";
-									    editInvoiceData.authToken = "3B9LrucRihXmNuM6";
-									    editInvoiceData.roleIds = [""];
+									  editInvoiceData.invoices.push(tempEditInvoiceData);
+
+									  
 
 								 console.log(editInvoiceData);
 
-								 Promise.all([Invoice.update(editInvoiceData)
+								 Promise.all([Invoice.update(UserReq.formRequestDetails(editInvoiceData))
 								     ]).then(function(values) {
 									    self.scope.errorMsg.attr("responseText", values[0][0]["responseText"]);
+									    $("#invoiceform").data('bootstrapValidator').resetForm();
 								   });
 
 							}
 								/*Edit invoice end*/
 									
-					        self.scope.formSuccessCount++;
-						return false;
-        				}
+					     
         				
-        		return false;
+        		
 
 			  });
     		
@@ -734,6 +762,15 @@ var page = Component.extend({
          	this.scope.ccidGLStore.attr(event[0].id, event[0].value)
 		},
 
+		"#licensor change": function(event){
+			var genObj = {licensorid:event[0].value};
+			var self = this;
+			Promise.all([Currency.findOne(UserReq.formRequestDetails(genObj))
+			     ]).then(function(values) {
+				    self.scope.attr("currency").replace(values[0][0]["data"]);
+			   });
+		},
+
 
 
 		"#invoiceType change": function(){
@@ -834,7 +871,12 @@ var page = Component.extend({
 
 					},
 				"#addInvSubmit click":function(){
-
+					//$("#invoiceform").data('bootstrapValidator').validate();
+					
+					if(this.scope.attr("formSuccessCount") > 1)
+					{
+					 this.scope.attr("formSuccessCount", 1);
+					}
 
 				},
 				"#buttonCancel click":function(){
@@ -848,14 +890,15 @@ var page = Component.extend({
    	 	var i = 1;
       this.scope.appstate.attr("renderGlobalSearch",false);
 
+   	 	var genObj = {};
    	 	Promise.all([
-			      	InvoiceType.findAll(),
-			     	Licensor.findAll(),
-			     	Currency.findAll(),
-			        ContentType.findAll(),
-			      	Country.findAll(),
-			      	Fxrate.findAll(),
-			      	AdhocTypes.findAll()
+			      	InvoiceType.findAll(UserReq.formRequestDetails(genObj)),
+			     	Licensor.findAll(UserReq.formRequestDetails(genObj)),
+			     	Currency.findAll(UserReq.formRequestDetails(genObj)),
+			        ContentType.findAll(UserReq.formRequestDetails(genObj)),
+			      	Country.findAll(UserReq.formRequestDetails(genObj)),
+			      	Fxrate.findAll(UserReq.formRequestDetails(genObj)),
+			      	AdhocTypes.findAll(UserReq.formRequestDetails(genObj))
 			    //  	GLaccounts.findAll()
 
 			      	//  Currency.findAll()*/
@@ -903,7 +946,8 @@ var page = Component.extend({
   	helpers: {
 			  	currentDate: function(){
 			  	 	var date = new Date();
-					return ((date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear())
+			  	 	this.attr("currentdate", (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear());
+					return this.attr("currentdate");
 			  	},
 			  	calculatedDueDate: function(){
 			  	 	var date = new Date();
@@ -966,5 +1010,7 @@ var page = Component.extend({
 
   	 	}
 });
+
+
 
 export default page;
