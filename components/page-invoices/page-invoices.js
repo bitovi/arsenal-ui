@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 import GlobalParameterBar from 'components/global-parameter-bar/';
 import Grid from 'components/grid/';
+import gridtemplate from './gridtemplate.stache!';
 import stache from 'can/view/stache/';
 
 import UserReq from 'utils/request/';
@@ -12,6 +13,8 @@ import Invoice from 'models/invoice/';
 import BundleNamesModel from 'models/payment/bundleNames/';
 import invoicemap from 'models/sharedMap/invoice';
 
+import bootstrapmultiselect from 'bootstrap-multiselect';
+import css_bootstrapmultiselect from 'bootstrap-multiselect.css!';
 
 import dataTables from 'components/data-tables/';
 import treetables from 'treetables';
@@ -28,6 +31,8 @@ import styles from './page-invoices.less!';
 
 /* Extend grid with the columns */
 Grid.extend({
+  tag: 'rn-grid-invoice',
+  template: gridtemplate,
   scope: {
     appstate:undefined,
     columns: [
@@ -202,8 +207,8 @@ var page = Component.extend({
     "{allInvoicesMap} change": function() {
         var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
 
-        var gridData = {"data":[]};
-
+        var gridData = {"data":[],"footer":[]};
+        var currencyList = {};
         for(var i=0;i<invoiceData.length;i++){
             var invTemp = {};
             invTemp["invId"] = invoiceData[i]["invId"];
@@ -219,6 +224,13 @@ var page = Component.extend({
             invTemp["status"] = invoiceData[i]["status"];
             invTemp["bundleName"] = invoiceData[i]["bundleName"];
             invTemp["comments"] = invoiceData[i]["comments"][0]["comments"];
+
+            if(currencyList[invTemp["currency"]]!=undefined){
+              currencyList[invTemp["currency"]] = parseInt(currencyList[invTemp["currency"]])+parseInt(invTemp["invoiceAmt"]);
+            }else {
+              currencyList[invTemp["currency"]] = parseInt(invTemp["invoiceAmt"]);
+            }
+
             gridData.data.push(invTemp);
             var insertedId = gridData.data.length-1;
 
@@ -268,9 +280,41 @@ var page = Component.extend({
               gridData.data[insertedId]["country"] = countryArr[0];
 
           }
-        //console.log("grid data is "+JSON.stringify(gridData));
+
+          var first = "true";
+          var ccyTemp;
+          for(var obj in currencyList){
+            ccyTemp = {};
+            ccyTemp["invId"] = "";
+            if(first == "true"){
+              ccyTemp["__isChild"] = false;
+              ccyTemp["entity"] = "Total";
+              first = "false";
+            }
+            else {
+              ccyTemp["__isChild"] = true;
+              ccyTemp["entity"] = "";
+            }
+            
+            ccyTemp["invoiceType"] = "";
+            ccyTemp["contentType"] = "";
+            ccyTemp["country"] = "";
+            ccyTemp["invoiceNum"] = "";
+            ccyTemp["invoiceAmt"] = currencyList[obj].toString();
+            ccyTemp["dueDate"] = "";
+            ccyTemp["currency"] = obj;
+            ccyTemp["status"] = "";
+            ccyTemp["bundleName"] = "";
+            ccyTemp["comments"] = "";
+
+            gridData["footer"].push(ccyTemp);
+            
+          }
+
+        //console.log("currencyList is "+JSON.stringify(gridData.footer));
         var rows = new can.List(gridData.data);
-        $('#invoiceGrid').html(stache('<rn-grid rows="{rows}"></rn-grid>')({rows}));
+        var footerrows = new can.List(gridData.footer);
+        $('#invoiceGrid').html(stache('<rn-grid-invoice rows="{rows}" footerrows="{footerrows}"></rn-grid-invoice>')({rows, footerrows}));
 
 
     },
@@ -330,7 +374,7 @@ var page = Component.extend({
       }
       //console.log("Checked rows: "+JSON.stringify(self.scope.attr('checkedRows')));
     },
-    "{checkedRows} change": function(){
+    "{checkedRows} change": function(item,el,ev){
           var self = this;
           //console.log(JSON.stringify(self.scope.checkedRows.attr()));
           if(self.scope.attr('checkedRows').length > 0){
@@ -344,12 +388,28 @@ var page = Component.extend({
               $("#btnSubmit").attr("disabled","disabled");
           }
           var flag=true;
-          self.scope.attr('checkedRows').each(function(val, key) {
-              self.scope.attr('checkedRows').each(function(value, key) {
-                  if(val!=value)
-                      flag = false;
-              });
+          
+          
+          var invTypeArr =[];
+          var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
+          self.scope.attr('checkedRows').each(function(value, key) {
+            for(var i=0;i<invoiceData.length;i++){
+              if(invoiceData[i]["invId"]==value){
+                  invTypeArr.push(invoiceData[i]["invoiceType"]);
+              }
+            }
           });
+
+          var counter=0;
+          for(var z=0;z<invTypeArr.length;z++){
+            for(var y=0;y<invTypeArr.length;y++){
+              if(z!=y){
+                if(invTypeArr[z]==invTypeArr[y])
+                  flag=false;
+              }
+            }
+          }
+
           if(flag==false){
               $("#paymentBundleNames").attr("disabled","disabled");
               $("#btnSubmit").attr("disabled","disabled");

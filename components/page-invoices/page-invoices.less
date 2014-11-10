@@ -1,3 +1,44 @@
+@import 'components/grid/grid.less';
+
+rn-grid-invoice {
+  .grid-mixin();
+
+  th.checbox, td.checkbox {
+    width: 30px;
+  }
+  tfoot {
+
+    tr {
+
+      td {
+        padding: 0.5em 1em 0.5em 1em;
+
+        border-top: @light-border;
+        border-right: 0px !important;
+
+        &:first-child {
+          border-left: @light-border;
+        }
+        &:last-child {
+          border-right: @light-border;
+        }
+      }
+
+      &:first-child td {
+        border-top: none;
+      }
+    }
+
+    tr.child {
+      display: none;
+
+      &.visible {
+        display: table-row;
+      }
+    }
+  }
+}
+
 .invoiceContainer{
 	border: 0px !important;
 	padding:10px;
@@ -17,6 +58,10 @@
 	#invoiceGrid {
 		background: #f4f4f4;
 		clear: both;
+
+		.invoiceAmt {
+			text-align: right;
+		}
 		
 		.dataTables_scrollBody {
 			height: 300px !important;

@@ -4,7 +4,8 @@ import RinsCommon from 'utils/';
 
 var Licensor = Model.extend({
 
-    findAll: 'POST ' + RinsCommon.UI_SERVICE_URL + 'getLicensors'
+    findAll: 'POST ' + RinsCommon.UI_SERVICE_URL + 'getLicensors',
+    findOne: 'POST ' + RinsCommon.UI_SERVICE_URL + 'getLicensorsRegion'
 
 }, {});
 

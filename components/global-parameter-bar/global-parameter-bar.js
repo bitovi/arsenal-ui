@@ -9,6 +9,9 @@ import ContentType from 'models/common/content-type/';
 import PeriodFrom from 'models/common/periodFrom/';
 import PeriodTo from 'models/common/periodTo/';
 
+import bootstrapmultiselect from 'bootstrap-multiselect';
+import css_bootstrapmultiselect from 'bootstrap-multiselect.css!';
+
 import template from './template.stache!';
 import styles from './global-parameter-bar.less!';
 
@@ -35,9 +38,65 @@ var GlobalParameterBar = Component.extend({
     }
   },
   events: {
+      'inserted': function(){
+          setTimeout(function(){
+            $("#periodFromFilter").multiselect({
+                numberDisplayed: 1,
+                includeSelectAllOption: true,
+                selectAllText: 'Select All',
+                 onChange: function(option, checked, select) {
+                      //alert('Changed option ' + checked + '.');
+                      if(checked == true)
+                        $(option).attr("selected", "selected");
+                  }
+                
+           });
+            $("#periodToFilter").multiselect({
+                numberDisplayed: 1,
+                includeSelectAllOption: true,
+                selectAllText: 'Select All',
+                
+           });
+            $("#storeTypesFilter").multiselect({
+                numberDisplayed: 1,
+                includeSelectAllOption: true,
+                selectAllText: 'Select All',
+                
+           });
+            $("#regionsFilter").multiselect({
+                numberDisplayed: 1,
+                includeSelectAllOption: true,
+                selectAllText: 'Select All',
+                
+           });
+            $("#countriesFilter").multiselect({
+                numberDisplayed: 1,
+                includeSelectAllOption: true,
+                selectAllText: 'Select All',
+                maxHeight: 200
+                
+           });
+            $("#licensorsFilter").multiselect({
+                numberDisplayed: 1,
+                includeSelectAllOption: true,
+                selectAllText: 'Select All',
+                
+           });
+            $("#contentTypesFilter").multiselect({
+                numberDisplayed: 1,
+                includeSelectAllOption: true,
+                selectAllText: 'Select All',
+                
+           });
+          },2000);
+      },
      '#periodFrom select change': function(el, ev) {
          var selected = $(el[0].selectedOptions).data('periodFrom');
          this.scope.appstate.attr('periodFrom', selected);
+         //var b = $('#periodFrom .btn-group button.multiselect').attr("title");
+         //console.log("b is "+b);
+
+         //console.log("selected values are "+JSON.stringify(this.scope.appstate.attr()));
      },
      '#periodTo select change': function(el, ev) {
          var selected = $(el[0].selectedOptions).data('periodTo');
@@ -48,8 +107,24 @@ var GlobalParameterBar = Component.extend({
       this.scope.appstate.attr('storeType', selected);
     },
     '#region select change': function(el, ev) {
+      var self = this;
       var selected = $(el[0].selectedOptions).data('region');
       this.scope.appstate.attr('region', selected);
+
+      Promise.all([
+        Country.findOne(),
+        Licensor.findOne()
+      ]).then(function(values) {
+        //console.log(JSON.stringify(values[0][0]["data"].attr()));
+        self.scope.countries.replace(values[0][0]["data"]);
+        self.scope.licensors.replace(values[1][0]["data"]);
+
+        setTimeout(function(){
+              $("#countriesFilter").multiselect('rebuild');
+              $("#licensorsFilter").multiselect('rebuild');
+        },2000);
+      });
+
     },
     '#country select change': function(el, ev) {
       var selected = $(el[0].selectedOptions).data('country');

@@ -2,8 +2,7 @@
 <ul class="parameters">
  <li id="periodFrom">
     <span class="parameter-name">Period From:</span>
-    <select id="periodFromFilter" class="form-control resizeBox">
-           <option value="">Select</option>
+    <select id="periodFromFilter" class="form-control resizeBox" multiple="multiple">
            {{#each periodFrom}}
               <option {{isSelected 'periodFrom' id}} {{data 'periodFrom'}}>{{value}}</option>
             {{/each}}
@@ -12,8 +11,7 @@
 
    <li id="periodTo">
       <span class="parameter-name">Period To:</span>
-      <select id="periodToFilter" class="form-control resizeBox">
-             <option value="">Select</option>
+      <select id="periodToFilter" class="form-control resizeBox" multiple="multiple">
              {{#each periodTo}}
                 <option {{isSelected 'periodTo' id}} {{data 'periodTo'}}>{{value}}</option>
               {{/each}}
@@ -22,8 +20,7 @@
 
   <li id="store-type">
     <span class="parameter-name">Store Type:</span>
-    <select id="storeTypesFilter" class="form-control resizeBox">
-           <option value="">Select</option>
+    <select id="storeTypesFilter" class="form-control resizeBox" multiple="multiple">
            {{#each storetypes}}
               <option {{isSelected 'storetype' id}} {{data 'storetype'}}>{{value}}</option>
             {{/each}}
@@ -33,8 +30,7 @@
 
   <li id="region">
     <span class="parameter-name">Region:</span>
-    <select id="regionsFilter" class="form-control resizeBox">
-           <option value="">Select</option>
+    <select id="regionsFilter" class="form-control resizeBox" multiple="multiple">
            {{#each regions}}
               <option {{isSelected 'region' id}} {{data 'region'}}>{{value}}</option>
             {{/each}}
@@ -42,8 +38,7 @@
   </li>
   <li id="country">
     <span class="parameter-name">Country:</span>
-    <select id="countriesFilter" class="form-control resizeBox">
-      <option value="">Select</option>
+    <select id="countriesFilter" class="form-control resizeBox" multiple="multiple">
       {{#each countries}}
         <option {{isSelected 'country' id}} {{data 'country'}}>{{value}}</option>
       {{/each}}
@@ -52,8 +47,7 @@
 
   <li id="licensor">
     <span class="parameter-name">Licensor:</span>
-     <select id="licensorsFilter" class="form-control resizeBox">
-           <option value="">Select</option>
+     <select id="licensorsFilter" class="form-control resizeBox" multiple="multiple">
            {{#each licensors}}
               <option {{isSelected 'licensor' id}} {{data 'licensor'}}>{{value}}</option>
             {{/each}}
@@ -62,8 +56,7 @@
   </li>
   <li id="contentType">
     <span class="parameter-name">Content Type:</span>
-    <select id="contentTypesFilter" class="form-control resizeBox">
-           <option value="">Select</option>
+    <select id="contentTypesFilter" class="form-control resizeBox" multiple="multiple">
            {{#each contenttypes}}
               <option {{isSelected 'contenttype' id}} {{data 'contenttype'}}>{{value}}</option>
             {{/each}}

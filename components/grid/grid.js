@@ -17,7 +17,8 @@ var Grid = Component.extend({
         contents: function(row) { return row.prop; } // optional, returns whatever you can return from a helper
       }, ...
     */],
-    rows: []
+    rows: [],
+    footerrows: []
   },
   helpers: {
     tableClass: function() {
@@ -39,7 +40,6 @@ var Grid = Component.extend({
     filteredRows: function(options) {
       // By default, rows are a bit more complex.
       // We have to account for child rows being invisible when their parents aren't open.
-
       var isRowAChild = function(row) {
         // by default, just looking for __isChild = true
         return !!row.attr('__isChild');
@@ -56,6 +56,42 @@ var Grid = Component.extend({
 
       this.rows.attr('length');
       return _.map(this.rows, function(row) {
+        var isChild = isRowAChild(row);
+
+        // if the row is a parent and isn't open, its children shouldn't be visible -
+        // this flag is only true for the children of an open parent row
+        if(!isChild) {
+          childRowsAreVisible = isRowOpen(row);
+        }
+
+        return options.fn({
+          row: row,
+          isOpen: isChild ? false : isRowOpen(row), // child rows are never open
+          isChild: isChild,
+          isVisible: isChild ? childRowsAreVisible : true // parent rows are always visible
+        });
+      });
+    },
+    footerRows: function(options) {
+      // By default, rows are a bit more complex.
+      // We have to account for child rows being invisible when their parents aren't open.
+      console.log("Footer Rows are "+JSON.stringify(this.footerrows.attr()));
+      var isRowAChild = function(row) {
+        // by default, just looking for __isChild = true
+        return !!row.attr('__isChild');
+      };
+
+      var isRowOpen = function(row) {
+        // by default, just looking for __isOpen = true
+        return !!row.attr('__isOpen');
+      };
+
+      var out = [],
+          childRowsAreVisible = false,
+          scope = this;
+
+      this.footerrows.attr('length');
+      return _.map(this.footerrows, function(row) {
         var isChild = isRowAChild(row);
 
         // if the row is a parent and isn't open, its children shouldn't be visible -
