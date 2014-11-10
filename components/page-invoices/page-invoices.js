@@ -143,6 +143,24 @@ var page = Component.extend({
     this.scope.appstate.attr("renderGlobalSearch",true);
 
   },
+  helpers: {
+        createPBRequest:function(){
+                var requestObject = {
+                    mode:"Create",
+                    bundleSearch:{
+                      type:"invoices"
+                    },
+                    paymentBundle:{
+                      region:"Europe",
+                      periodFrom:'201303',
+                      periodTo:'201304',
+                      bundleType:'Regular'
+                    }
+                  };
+          // console.log(requestObject);
+          return JSON.stringify(requestObject);
+        }
+    },
   events: {
 
     "inserted": function(){
@@ -295,7 +313,7 @@ var page = Component.extend({
               ccyTemp["__isChild"] = true;
               ccyTemp["entity"] = "";
             }
-            
+
             ccyTemp["invoiceType"] = "";
             ccyTemp["contentType"] = "";
             ccyTemp["country"] = "";
@@ -308,7 +326,7 @@ var page = Component.extend({
             ccyTemp["comments"] = "";
 
             gridData["footer"].push(ccyTemp);
-            
+
           }
 
         //console.log("currencyList is "+JSON.stringify(gridData.footer));
@@ -331,7 +349,7 @@ var page = Component.extend({
            //console.log($(item[0]).attr("class"));
           var val = $(item[0]).attr("class");
            self.scope.attr('sortColumns').push(val);
-           
+
             var invSearchRequest = {};
             invSearchRequest.searchRequest = {};
             invSearchRequest.searchRequest["serviceTypeId"] = this.scope.appstate.attr('storeType');
@@ -388,8 +406,8 @@ var page = Component.extend({
               $("#btnSubmit").attr("disabled","disabled");
           }
           var flag=true;
-          
-          
+
+
           var invTypeArr =[];
           var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
           self.scope.attr('checkedRows').each(function(value, key) {
@@ -464,7 +482,7 @@ var page = Component.extend({
                 $("#messageDiv").hide();
              },2000)
           }
-          else 
+          else
             $("#messageDiv").html("<label class='errorMessage'>Failed to delete invoice</label>")
 
           },function(xhr){
@@ -490,20 +508,20 @@ var page = Component.extend({
               var temp = {};
                 temp["lineId"]= invoiceLineItems[j]["invLineId"];
                 temp["lineType"] = lineType;
-                temp["periodType"] = periodType; 
+                temp["periodType"] = periodType;
                 bundleLines.push(temp);
             }
           }
-          
+
         }
-        
+
         var bundleType = lineType;
         var bundleRequest = {};
         bundleRequest["bundleId"] = $("#paymentBundleNames :selected").val();
         bundleRequest["bundleName"] = $("#paymentBundleNames :selected").text();
         if($("#newPaymentBundle").val())
           bundleRequest["bundleName"] = $("#newPaymentBundle").val();
-         
+
         bundleRequest["bundleType"] =lineType;
         bundleRequest["mode"] ="ADD";
         bundleRequest["bundleLines"] =bundleLines;
@@ -518,7 +536,7 @@ var page = Component.extend({
                 $("#messageDiv").hide();
              },2000)
             }
-            else 
+            else
               $("#messageDiv").html("<label class='errorMessage'>Failed to add invoices</label>")
         },function(xhr){
           console.error("Error while loading: bundleNames"+xhr);
@@ -554,7 +572,7 @@ var page = Component.extend({
               GetAllInvoices.findAll(UserReq.formRequestDetails(invSearchRequest),function(data){
                   //console.log("passing params is "+JSON.stringify(data[0].attr()));
                   self.scope.allInvoicesMap.replace(data[0]);
-                  
+
 
               },function(xhr){
                 console.error("Error while loading: bundleNames"+xhr);

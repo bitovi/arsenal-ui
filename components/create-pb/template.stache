@@ -1,5 +1,5 @@
 <!--<label  style="margin-left:10px" for="inputPaymentBundle">Bundle Name:</label>-->
-{{#if isCreatePB}}
+{{#if createPBFlag.select }}
 <select id="paymentBundleNames" class="form-control resizeBox" can-value="paymentBundleId" name="paymentBundleNames">
     <option value="" selected>--Select--</option>
       {{#each bundleNames}}
@@ -7,12 +7,22 @@
        {{/each}}
        <option value="createB">Create Bundle</option>
 </select>
-{{#else}}
+{{/if}}
+
+{{#if createPBFlag.input }}
+
 <div class="input-group">
   <input name= "paymentBundleName" type="text" class="form-control resizeBox" id="newPaymentBundle" can-value = "paymentBundleName" maxlength="100">
   <div class="input-group-btn">
-     <button id="btnCancel" class="btn btn-xs btn-danger" type="button">X</button>
+     <button id="btnCancel" class="btn btn-sms btn-danger" type="button">X</button>
   </div>
 </div>
 
+{{/if}}
+
+
+{{#if createPBFlag.read }}
+<select id="paymentBundleNames" class="form-control resizeBox" can-value="paymentBundleId" name="paymentBundleNames">
+    <option value="{{paymentBundleId}}">{{paymentBundleName}}</option>
+</select>
 {{/if}}

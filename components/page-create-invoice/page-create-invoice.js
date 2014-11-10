@@ -127,9 +127,9 @@ var page = Component.extend({
 
 
 			this.scope.isRequired(); /*For breakdown required field*/
-    		
-    			
-    		
+
+
+
 				$('#invoiceform').on('init.form.bv', function(e, data) {
 			           	data.bv.disableSubmitButtons(true);
 
@@ -290,13 +290,13 @@ var page = Component.extend({
 				    		$("#"+data.field+"-err").css("display", "block");
 				    	}
 				    	$('*[data-bv-icon-for="'+data.field +'"]').popover('show');
-				    	
+
 				}).on('success.field.bv', function(e, data) {
         				$('*[data-bv-icon-for="'+data.field +'"]').popover('destroy');
         				if(data.field != "amount[]"){
 				    		$("#"+data.field+"-err").css("display", "none");
 				    	}
-        				
+
         				if(!self.scope.editpage){
 	        				for(var i= 0; i < mandatoryField.length; i++){
 	        					if(!data.bv.isValidField(mandatoryField[i])){
@@ -305,18 +305,18 @@ var page = Component.extend({
 	        					}
 	        				}
         				}
-        				
+
         			}).on('success.form.bv', function(e) {
-        				
+
         				e.preventDefault();
-        					
-        				
-        				
+
+
+
 						/*Add invoice object creation start*/
-        				
+
 					if(!self.scope.editpage)
 					{
-                      
+
                       if(self.scope.formSuccessCount == 1){
                        var createInvoiceData = {};
 					   createInvoiceData.invoices = [];
@@ -341,7 +341,7 @@ var page = Component.extend({
 					   tempInvoiceData["userAdjAmt"] = "0";
 					   tempInvoiceData["bundleId"] = $("#paymentBundleNames").val();//self.scope.paymentBundleId;
 					   tempInvoiceData["bundleName"] = $("#paymentBundleNames").text();//self.scope.paymentBundleName;
-					   
+
 					   if(typeof $("#paymentBundleNames").val() == "undefined"){
 					   	 tempInvoiceData["bundleId"] = "";
 					   	 tempInvoiceData["bundleName"] = $("#newPaymentBundle").val();
@@ -404,10 +404,10 @@ var page = Component.extend({
 									createInvoiceData.appId = "";
 									createInvoiceData.secretKey = "";
 									createInvoiceData.roleIds = [""];*/
-									
+
 									createInvoiceData.invoices.push(tempInvoiceData);
-									
-									
+
+
 							   	 	console.log(createInvoiceData);
 
 							   	 	Promise.all([
@@ -440,19 +440,19 @@ var page = Component.extend({
 						                               $("#breakrow0 #inputCountry0").attr("id","inputCountry0").val("");
 						                               $("#breakrow0 #ccidGL0").attr("id","ccidGL0").val("");
 												 	   // self.scope.contentTypeStore.attr("amountPeriod0","");
-												 	}  
+												 	}
 
 
 
 												});
-												
+
 									 var formCount = self.scope.attr("formSuccessCount") + 1;
 									 self.scope.attr("formSuccessCount", formCount) ;
 									  return false;
-								    
-        							}			
-								
-							   	 
+
+        							}
+
+
 								}else{
 
 								/* Add invoice end*/
@@ -573,10 +573,10 @@ var page = Component.extend({
 
 
 									 $.merge(tempEditInvoiceData["invoiceLines"], self.scope.attr().DelInvoiceline); /*merging invoice line with deleted row*/
-									 
+
 									  editInvoiceData.invoices.push(tempEditInvoiceData);
 
-									  
+
 
 								 console.log(editInvoiceData);
 
@@ -588,13 +588,13 @@ var page = Component.extend({
 
 							}
 								/*Edit invoice end*/
-									
-					     
-        				
-        		
+
+
+
+
 
 			  });
-    		
+
 
 						$('#invoicedate').on('dp.change dp.show', function (e) {
 			            			$('#invoiceform').bootstrapValidator('revalidateField', 'invoicedate');
@@ -872,7 +872,7 @@ var page = Component.extend({
 					},
 				"#addInvSubmit click":function(){
 					//$("#invoiceform").data('bootstrapValidator').validate();
-					
+
 					if(this.scope.attr("formSuccessCount") > 1)
 					{
 					 this.scope.attr("formSuccessCount", 1);
@@ -922,10 +922,10 @@ var page = Component.extend({
 						//this.attr("editpage", true);
 
 						//console.log(invoiceid+"dadajsd");
-		     			 
+
 		     			var getByIDReq = {"searchRequest":{}};
 		     			getByIDReq.searchRequest.ids = invoicemap.attr("invoiceid");
-		     			 
+
 
 						self.scope.attr("editpage", true);
 						Promise.all([
@@ -944,6 +944,22 @@ var page = Component.extend({
 
 	},
   	helpers: {
+          createPBRequest:function(){
+                  var requestObject = {
+                      mode:"Create",
+                      bundleSearch:{
+                        type:"invoices"
+                      },
+                      paymentBundle:{
+                        region:"Europe",
+                        periodFrom:'201303',
+                        periodTo:'201304',
+                        bundleType:'Regular'
+                      }
+                    };
+            // console.log(requestObject);
+            return JSON.stringify(requestObject);
+          },
 			  	currentDate: function(){
 			  	 	var date = new Date();
 			  	 	this.attr("currentdate", (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear());

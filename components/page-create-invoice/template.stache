@@ -343,7 +343,7 @@
 							<label class="col-sm-3" for="inputCountry">Bundle Name:</label>
 					        <div class="col-sm-3 requiredBar">
 
-                 <create-pb type="invoices" appstate="{appstate}" ></create-pb>
+                <create-pb request="{{createPBRequest}}" ></create-pb>
 
 					        </div>
 					       {{else}}
