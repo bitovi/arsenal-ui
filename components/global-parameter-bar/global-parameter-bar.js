@@ -40,35 +40,7 @@ var GlobalParameterBar = Component.extend({
   events: {
       'inserted': function(){
           setTimeout(function(){
-            $("#periodFromFilter").multiselect({
-                numberDisplayed: 1,
-                includeSelectAllOption: true,
-                selectAllText: 'Select All',
-                 onChange: function(option, checked, select) {
-                      //alert('Changed option ' + checked + '.');
-                      if(checked == true)
-                        $(option).attr("selected", "selected");
-                  }
-                
-           });
-            $("#periodToFilter").multiselect({
-                numberDisplayed: 1,
-                includeSelectAllOption: true,
-                selectAllText: 'Select All',
-                
-           });
-            $("#storeTypesFilter").multiselect({
-                numberDisplayed: 1,
-                includeSelectAllOption: true,
-                selectAllText: 'Select All',
-                
-           });
-            $("#regionsFilter").multiselect({
-                numberDisplayed: 1,
-                includeSelectAllOption: true,
-                selectAllText: 'Select All',
-                
-           });
+            
             $("#countriesFilter").multiselect({
                 numberDisplayed: 1,
                 includeSelectAllOption: true,
