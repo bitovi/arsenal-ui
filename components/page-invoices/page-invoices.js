@@ -140,6 +140,7 @@ var page = Component.extend({
         ]
   },
   init: function(){
+    console.log("inside init");
     this.scope.appstate.attr("renderGlobalSearch",true);
 
   },
@@ -167,6 +168,7 @@ var page = Component.extend({
       /*var ingTemplate = View.stache("<data-grid name='invoiceSearchTable' type='getAllInvoices' columnText='{gridCoulmnText}'></data-grid>");
       var f = ingTemplate();
       $("#invoiceGrid").html( f );*/
+
       var self = this;
       $("#tokenSearch").tokenInput([
           {id: 1, name: "Search"} //This is needed
@@ -223,6 +225,7 @@ var page = Component.extend({
         });
     },
     "{allInvoicesMap} change": function() {
+      this.scope.appstate.attr("renderGlobalSearch",true);
         var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
 
         var gridData = {"data":[],"footer":[]};

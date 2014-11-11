@@ -25,7 +25,7 @@ var Invoice = Model.extend({
         return $.ajax({
           url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/delete',
           type: 'POST'
-          //data: JSON.stringify(params)
+          data: JSON.stringify(params)
         })
     } else {
       return $.ajax({

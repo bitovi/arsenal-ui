@@ -3,6 +3,7 @@
  <li id="periodFrom">
     <span class="parameter-name">Period From:</span>
     <select id="periodFromFilter" class="form-control resizeBox">
+          <option>Select</option>
            {{#each periodFrom}}
               <option {{isSelected 'periodFrom' id}} {{data 'periodFrom'}}>{{value}}</option>
             {{/each}}
@@ -12,6 +13,7 @@
    <li id="periodTo">
       <span class="parameter-name">Period To:</span>
       <select id="periodToFilter" class="form-control resizeBox">
+              <option>Select</option>
              {{#each periodTo}}
                 <option {{isSelected 'periodTo' id}} {{data 'periodTo'}}>{{value}}</option>
               {{/each}}
@@ -21,6 +23,7 @@
   <li id="store-type">
     <span class="parameter-name">Store Type:</span>
     <select id="storeTypesFilter" class="form-control resizeBox">
+            <option>Select</option>
            {{#each storetypes}}
               <option {{isSelected 'storetype' id}} {{data 'storetype'}}>{{value}}</option>
             {{/each}}
@@ -31,6 +34,7 @@
   <li id="region">
     <span class="parameter-name">Region:</span>
     <select id="regionsFilter" class="form-control resizeBox">
+            <option>Select</option>
            {{#each regions}}
               <option {{isSelected 'region' id}} {{data 'region'}}>{{value}}</option>
             {{/each}}
