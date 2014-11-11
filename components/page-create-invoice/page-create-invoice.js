@@ -948,6 +948,7 @@ var page = Component.extend({
                   var requestObject = {
                       mode:"Create",
                       bundleSearch:{
+                        region : "Europe",
                         type:"invoices"
                       },
                       paymentBundle:{

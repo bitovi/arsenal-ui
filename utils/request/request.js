@@ -9,7 +9,7 @@ var UserReqMap = can.Map.extend({
    formRequestDetails:function(params){
       var userRequest = {};
       userRequest = params ;
-      userRequest["prsId"] = "12345";
+      userRequest["prsId"] = "2002005724";
       userRequest["appId"] = "12345";
       userRequest["secretKey"] = "";
       userRequest["roleIds"] = [""];
