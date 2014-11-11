@@ -8,6 +8,7 @@ import Licensor from 'models/common/licensor/';
 import ContentType from 'models/common/content-type/';
 import PeriodFrom from 'models/common/periodFrom/';
 import PeriodTo from 'models/common/periodTo/';
+import UserReq from 'utils/request/';
 
 import bootstrapmultiselect from 'bootstrap-multiselect';
 import css_bootstrapmultiselect from 'bootstrap-multiselect.css!';
@@ -82,10 +83,10 @@ var GlobalParameterBar = Component.extend({
       var self = this;
       var selected = $(el[0].selectedOptions).data('region');
       this.scope.appstate.attr('region', selected);
-
+      //console.log("region id is "+JSON.stringify(selected.id));
       Promise.all([
-        Country.findOne(),
-        Licensor.findOne()
+        Country.findOne(UserReq.formRequestDetails({"regionId":selected.id})),
+        Licensor.findOne(UserReq.formRequestDetails({"regionId":selected.id}))
       ]).then(function(values) {
         //console.log(JSON.stringify(values[0][0]["data"].attr()));
         self.scope.countries.replace(values[0][0]["data"]);
