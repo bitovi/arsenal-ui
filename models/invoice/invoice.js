@@ -21,10 +21,9 @@ var Invoice = Model.extend({
   },
   update: function(params,type){
     if(type=="invoiceDelete"){
-      console.log("here invoice delete")
-        return $.ajax({
+     return $.ajax({
           url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/delete',
-          type: 'POST'
+          type: 'POST',
           data: JSON.stringify(params)
         })
     } else {
