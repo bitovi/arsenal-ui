@@ -307,15 +307,15 @@
 				   <div class="col-sm-12" style="height:20px;"></div>
 				   <div style="text-align:right">
 						   <div class="col-sm-9"><label class="control-label">Net Total: </label></div>
-						   <div class="col-sm-3 total-amount">{{totalAmountVal}}</div>
+						   <div class="col-sm-3 total-amount">{{netTotal}}</div>
 
 						 	<!--<div class="col-sm-9"></div>
 						   <div class="col-sm-3 form-group tax-amount"></div>-->
 
 						    <div class="col-sm-12 tax-amount">
 							   <label class="control-label col-sm-9">Tax: </label>
-							    <div class="col-sm-3" style="padding-left:2px;">
-							      <input type="text" name="taxAmount"  class="form-control taxAmount" can-value="tax">
+							    <div class="col-sm-3 " style="padding-left:2px;">
+							      <input type="text" name="taxAmount" id="taxAmount" class="form-control taxAmount" can-value="tax">
 							      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "taxAmount-err" style="display:none;">
 							    </div>
 						    </div>

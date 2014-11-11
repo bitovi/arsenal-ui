@@ -252,12 +252,14 @@ table.dataTable.cell-border tbody td {
 	right:-10px !important;
 	height:20px;
 	width:20px;
+	top:4px;
 }
 
 .field-invalid-date{
 	right:-30px !important;
 	height:20px;
 	width:20px;
+	top:4px;
 }
 
 table.breakdown thead {
@@ -424,7 +426,38 @@ width:19%;
 width:5%;
 }
 
-textarea.form-control{
-	height:100%;
+textarea#licnotes, textarea#usercomments{
+	height:100% !important;
+	resize: none;
 }
+
+select#invoiceType{
+	min-width:120px;
 }
+
+.popover{
+	max-width:500px;
+	width:250px;
+}
+
+}
+/*Bootstrap validator popover*/
+
+.popover{
+	max-width:500px;
+	
+}
+
+
+
+
+.popover .arrow{
+	top:auto;
+}
+
+.datepicker th{
+	color:#000000;
+}
+
+
+
