@@ -4,19 +4,22 @@
     <span class="parameter-name">Period From:</span>
     <select id="periodFromFilter" class="form-control resizeBox">
           <option>Select</option>
-           {{#each periodFrom}}
-              <option {{isSelected 'periodFrom' id}} {{data 'periodFrom'}}>{{value}}</option>
-            {{/each}}
+          <option value="201301">P1FY13</option>
+          <option value="201302">P2FY13</option>
+          <option value="201303">P3FY13</option>
+          <option value="201304">P4FY13</option>
+           
      </select>
   </li>
 
    <li id="periodTo">
       <span class="parameter-name">Period To:</span>
       <select id="periodToFilter" class="form-control resizeBox">
-              <option>Select</option>
-             {{#each periodTo}}
-                <option {{isSelected 'periodTo' id}} {{data 'periodTo'}}>{{value}}</option>
-              {{/each}}
+            <option>Select</option>
+            <option value="201301">P1FY13</option>
+            <option value="201302">P2FY13</option>
+            <option value="201303">P3FY13</option>
+            <option value="201304">P4FY13</option>
        </select>
     </li>
 

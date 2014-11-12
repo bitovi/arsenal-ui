@@ -53,12 +53,14 @@ var GlobalParameterBar = Component.extend({
                 numberDisplayed: 1,
                 includeSelectAllOption: true,
                 selectAllText: 'Select All',
+                maxHeight: 200
                 
            });
             $("#contentTypesFilter").multiselect({
                 numberDisplayed: 1,
                 includeSelectAllOption: true,
                 selectAllText: 'Select All',
+                maxHeight: 200
                 
            });
           },2000);
@@ -85,12 +87,12 @@ var GlobalParameterBar = Component.extend({
       this.scope.appstate.attr('region', selected);
       //console.log("region id is "+JSON.stringify(selected.id));
       Promise.all([
-        Country.findOne(UserReq.formRequestDetails({"regionId":selected.id})),
-        Licensor.findOne(UserReq.formRequestDetails({"regionId":selected.id}))
+        Country.findAll(UserReq.formRequestDetails({"regionId":selected.id})),
+        Licensor.findAll(UserReq.formRequestDetails({"regionId":selected.id}))
       ]).then(function(values) {
         //console.log(JSON.stringify(values[0][0]["data"].attr()));
         self.scope.countries.replace(values[0]);
-        self.scope.licensors.replace(values[1]);
+        self.scope.licensors.replace(values[0]);
 
         setTimeout(function(){
               $("#countriesFilter").multiselect('rebuild');
@@ -133,10 +135,7 @@ var GlobalParameterBar = Component.extend({
       //PeriodFrom.findAll(),
       //PeriodTo.findAll()
     ]).then(function(values) {
-      console.log(JSON.stringify(values[1]));
-      console.log(JSON.stringify(values[2]));
-      console.log(JSON.stringify(values[3]));
-      console.log(JSON.stringify(values[4]));
+
       self.scope.storetypes.replace(values[0]);
       self.scope.regions.replace(values[1]);
       self.scope.countries.replace(values[2]);

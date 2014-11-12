@@ -5,11 +5,12 @@ import RinsCommon from 'utils/';
 var Licensor = Model.extend({
     findAll: function(params){
      	return $.ajax({
-     		contentType: 'application/json; charset=utf-8',
       		url: RinsCommon.UI_SERVICE_URL +'getLicensors',
+      		//url: 'http://17.149.230.135:10645/getLicensors',
       		type: 'POST',
       		data: JSON.stringify(params),
-      		dataType:'json'
+      		dataType:'json',
+      		contentType: 'application/json'
       	});
     }
 }, {});
