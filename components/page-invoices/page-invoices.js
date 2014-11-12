@@ -201,31 +201,67 @@ var page = Component.extend({
                 //$subComp.scope().refreshTokenInput(item,"Delete");
             }
       });
+    
+      var invSearchRequest = {};
+      invSearchRequest.searchRequest = {};
+      invSearchRequest.searchRequest["serviceTypeId"] = this.scope.appstate.attr('storeType');
+      invSearchRequest.searchRequest["regionId"] = this.scope.appstate.attr('region');
+      invSearchRequest.searchRequest["entityId"] = this.scope.appstate.attr('licensor');
+
+      invSearchRequest.searchRequest["periodType"] = "P";
+      invSearchRequest.searchRequest["periodFrom"] = "201304";
+      invSearchRequest.searchRequest["periodTo"] = "201307";
+
+      invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
+      invSearchRequest.searchRequest["offset"] = "0";
+      invSearchRequest.searchRequest["limit"] = "10";
+      invSearchRequest.searchRequest["filter"] = self.scope.tokenInput.attr();
+
+      invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr();
+      invSearchRequest.searchRequest["sortOrder"] = "ASC";
 
       Promise.all([
-            GetAllInvoices.findAll()
+            GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest))
         ]).then(function(values) {
-          //console.log(JSON.stringify(values[0][0].attr()));
+         // console.log(JSON.stringify(values));
           //if(values[0][0]["responseCode"]==="0000")
-            self.scope.allInvoicesMap.replace(values[0][0]);
+            self.scope.allInvoicesMap.replace(values[0]);
         });
 
     },
     "{tokenInput} change": function(){
           var self= this;
           console.log(JSON.stringify(self.scope.tokenInput.attr()));
+          var invSearchRequest = {};
+          invSearchRequest.searchRequest = {};
+          invSearchRequest.searchRequest["serviceTypeId"] = this.scope.appstate.attr('storeType');
+          invSearchRequest.searchRequest["regionId"] = this.scope.appstate.attr('region');
+          invSearchRequest.searchRequest["entityId"] = this.scope.appstate.attr('licensor');
+
+          invSearchRequest.searchRequest["periodType"] = "P";
+          invSearchRequest.searchRequest["periodFrom"] = "201304";
+          invSearchRequest.searchRequest["periodTo"] = "201307";
+
+          invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
+          invSearchRequest.searchRequest["offset"] = "0";
+          invSearchRequest.searchRequest["limit"] = "10";
+          invSearchRequest.searchRequest["filter"] = self.scope.tokenInput.attr();
+
+          invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr();
+          invSearchRequest.searchRequest["sortOrder"] = "ASC";
+
           Promise.all([
               /* While search,  Token parameter has to be sent with page data */
               /* tokenInput holds that search token info */
             //AllInvoices.findAll({searchParam: tokenInput})
-            GetAllInvoices.findAll()
+            GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest))
         ]).then(function(values) {
-            self.scope.allInvoicesMap.replace(values[0][0]);
+            self.scope.allInvoicesMap.replace(values[0]);
 
         });
     },
     "{allInvoicesMap} change": function() {
-      this.scope.appstate.attr("renderGlobalSearch",true);
+        this.scope.appstate.attr("renderGlobalSearch",true);
         var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
 
         var gridData = {"data":[],"footer":[]};
@@ -371,9 +407,9 @@ var page = Component.extend({
             invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr();
             invSearchRequest.searchRequest["sortOrder"] = "ASC";
 
-            GetAllInvoices.findAll(UserReq.formRequestDetails(invSearchRequest),function(data){
+            GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){
                 //console.log("passing params is "+JSON.stringify(data[0].attr()));
-                self.scope.allInvoicesMap.replace(data[0]);
+                self.scope.allInvoicesMap.replace(data);
             },function(xhr){
               console.error("Error while loading: bundleNames"+xhr);
             });
@@ -420,12 +456,12 @@ var page = Component.extend({
               }
             }
           });
-
+          //console.log(invTypeArr);
           var counter=0;
           for(var z=0;z<invTypeArr.length;z++){
             for(var y=0;y<invTypeArr.length;y++){
               if(z!=y){
-                if(invTypeArr[z]==invTypeArr[y])
+                if(invTypeArr[z]!=invTypeArr[y])
                   flag=false;
               }
             }
@@ -463,9 +499,9 @@ var page = Component.extend({
               invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr();
               invSearchRequest.searchRequest["sortOrder"] = "ASC";
 
-              GetAllInvoices.findAll(UserReq.formRequestDetails(invSearchRequest),function(data){
+              GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){
                   //console.log("passing params is "+JSON.stringify(data[0].attr()));
-                  self.scope.allInvoicesMap.replace(data[0]);
+                  self.scope.allInvoicesMap.replace(data);
               },function(xhr){
                 console.error("Error while loading: bundleNames"+xhr);
               });
@@ -532,7 +568,7 @@ var page = Component.extend({
         console.log(JSON.stringify(bundleRequest));
         BundleNamesModel.create(UserReq.formRequestDetails(bundleRequest),function(data){
             console.log("passing params is "+JSON.stringify(data));
-            if(data[0]["responseText"]=="SUCCESS"){
+            if(data["responseText"]=="SUCCESS"){
              $("#messageDiv").html("<label class='successMessage'>Invoices added to payment bundle successfully</label>")
              $("#messageDiv").show();
              setTimeout(function(){
@@ -572,9 +608,9 @@ var page = Component.extend({
               invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr();
               invSearchRequest.searchRequest["sortOrder"] = "ASC";
 
-              GetAllInvoices.findAll(UserReq.formRequestDetails(invSearchRequest),function(data){
-                  //console.log("passing params is "+JSON.stringify(data[0].attr()));
-                  self.scope.allInvoicesMap.replace(data[0]);
+              GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){
+                  console.log("passing params is "+JSON.stringify(data.attr()));
+                  self.scope.allInvoicesMap.replace(data);
 
 
               },function(xhr){

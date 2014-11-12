@@ -55,8 +55,8 @@ var page = Component.extend({
         if(requestObj.mode == "Create"){
 
             BundleNamesModel.findOne(UserReq.formRequestDetails(requestObj),function(data){
-                  //console.log("passing params is "+JSON.stringify(data[0].attr()));
-                  self.scope.bundleNames.replace(data[0]["paymentBundles"]);
+                  console.log("passing params is "+JSON.stringify(data.attr()));
+                  self.scope.bundleNames.replace(data["paymentBundles"]);
             },function(xhr){
                 console.error("Error while loading: bundleNames"+xhr);
             });
