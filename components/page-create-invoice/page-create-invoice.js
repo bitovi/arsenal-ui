@@ -109,6 +109,7 @@ var page = Component.extend({
 
                                 var $option   = $clone.find('[name="amount[]"]');
                                 $('#invoiceform').bootstrapValidator('addField', $option);
+                                 $("#addInvSubmit").attr("disabled", true);
 
                                $(".removeRow").click(function(event){
                                		$('#invoiceform').bootstrapValidator('removeField', $option);
@@ -334,7 +335,7 @@ var page = Component.extend({
 					var self = this;
 
 					if(event[0].id == "newPaymentBundle"){
-						if(String(event[0].value).length > 10){
+						if(String(event[0].value).length > 100){
 							showError(event[0].id, "Maximum 100 characters allowed");
 						}
 						else{
@@ -497,7 +498,7 @@ var page = Component.extend({
 		"#licensor change": function(event){
 			var genObj = {licensorId:event[0].value};
 			var self = this;
-			Promise.all([Currency.findOne(UserReq.formRequestDetails(genObj))
+			Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
 			     ]).then(function(values) {
 				    self.scope.attr("currency").replace(values[0]);
 			   });
@@ -720,9 +721,11 @@ var page = Component.extend({
 							   	 	Promise.all([
 										      	Invoice.create(UserReq.formRequestDetails(createInvoiceData))
 										     ]).then(function(values) {
-									     		   self.scope.errorMsg.attr("responseText", values[0][0]["responseText"]);
+									     		   self.scope.errorMsg.attr("responseText", values[0]["responseText"]);
 
-									     		  if((values[0][0]["responseCode"] == "0000")){
+									     		 
+
+									     	/*	  if((values[0]["responseCode"] == "0000")){
 									     		   		self.scope.attr("invoicenumberStore", "");
 												 		self.scope.attr("invoicetypeSelect", "");
 												 		self.scope.attr("licensorStore", "");
@@ -748,12 +751,14 @@ var page = Component.extend({
 						                               $("#breakrow0 #ccidGL0").attr("id","ccidGL0").val("");
 												 	   // self.scope.contentTypeStore.attr("amountPeriod0","");
 												 	}
-
-
+														*/
+														 $("#invoiceform")[0].reset();
+														 $("#invoiceform").data('bootstrapValidator').resetForm();
+														 $("#addInvSubmit").attr("disabled", true);
 
 												});
 
-									 
+									
 
 
 								}else{
@@ -885,7 +890,7 @@ var page = Component.extend({
 
 								 Promise.all([Invoice.update(UserReq.formRequestDetails(editInvoiceData))
 								     ]).then(function(values) {
-									    self.scope.errorMsg.attr("responseText", values[0][0]["responseText"]);
+									    self.scope.errorMsg.attr("responseText", values[0]["responseText"]);
 									    $("#invoiceform").data('bootstrapValidator').resetForm();
 								   });
 
@@ -911,10 +916,10 @@ var page = Component.extend({
 			     	Licensor.findAll(UserReq.formRequestDetails(genObj)),
 			     	Currency.findAll(UserReq.formRequestDetails(genObj)),
 			        ContentType.findAll(UserReq.formRequestDetails(genObj)),
-			      	//Country.findAll(UserReq.formRequestDetails(genObj)),
-			      	//Fxrate.findAll(UserReq.formRequestDetails(genObj)),
-			      	//AdhocTypes.findAll(UserReq.formRequestDetails(genObj)),
-			      	//GLaccounts.findAll(UserReq.formRequestDetails(genObj))
+			      	Country.findAll(UserReq.formRequestDetails(genObj)),
+			      	
+			      	AdhocTypes.findAll(UserReq.formRequestDetails(genObj)),
+			      	GLaccounts.findAll(UserReq.formRequestDetails(genObj))
 
 			      	//  Currency.findAll()*/
 				]).then(function(values) {
@@ -922,10 +927,10 @@ var page = Component.extend({
 		     		 self.scope.attr("licensor").replace(values[1]);
 		     		 self.scope.attr("currency").replace(values[2]);
 		     		 self.scope.attr("contentType").replace(values[3]);
-		     		 //self.scope.attr("country").replace(values[4]);
-		     		// self.scope.attr("fxrate").replace(values[5]);
-		     		 //self.scope.attr("adhocType").replace(values[6]);
-		     		// self.scope.attr("glaccounts").replace(values[7]);
+		     		 self.scope.attr("country").replace(values[4]);
+		     		
+		     		 self.scope.attr("adhocType").replace(values[5]);
+		     		 self.scope.attr("glaccounts").replace(values[6]);
 
 
 
@@ -1025,7 +1030,7 @@ var page = Component.extend({
 			  	 	return 'Style="min-height:'+vph+'px"';
 				},
 				calculateUSD:function(){
-					var fxrate = this.fxrate.attr()[0];
+					var fxrate = this.fxrate.attr();
 					return CurrencyFormat(this.attr("totalAmountVal")*fxrate);
 					//return fxrate;
 				},
@@ -1048,37 +1053,8 @@ var page = Component.extend({
 
 function CurrencyFormat(number)
 {
-  var decimalplaces = 2;
-  var decimalcharacter = ".";
-  var thousandseparater = ",";
-  number = parseFloat(number);
-  var sign = number < 0 ? "-" : "";
-  var formatted = new String(number.toFixed(decimalplaces));
-  if( decimalcharacter.length && decimalcharacter != "." ) { formatted = formatted.replace(/\./,decimalcharacter); }
-  var integer = "";
-  var fraction = "";
-  var strnumber = new String(formatted);
-  var dotpos = decimalcharacter.length ? strnumber.indexOf(decimalcharacter) : -1;
-  if( dotpos > -1 )
-  {
-     if( dotpos ) { integer = strnumber.substr(0,dotpos); }
-     fraction = strnumber.substr(dotpos+1);
-  }
-  else { integer = strnumber; }
-  if( integer ) { integer = String(Math.abs(integer)); }
-  while( fraction.length < decimalplaces ) { fraction += "0"; }
- var temparray = new Array();
-  while( integer.length > 3 )
-  {
-     temparray.unshift(integer.substr(-3));
-     integer = integer.substr(0,integer.length-3);
-  }
-  temparray.unshift(integer);
-  integer = temparray.join(thousandseparater);
- if(isNaN(integer)){
- 	integer = 0;
- }
-  return sign + integer + decimalcharacter + fraction;
+  var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+	return n;
 }
 
 function showError(id, message){

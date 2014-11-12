@@ -1,4 +1,5 @@
 import Model from 'can/model/';
+import RinsCommon from 'utils/';
 
 var FXRate = Model.extend({
 findAll: function(params){
