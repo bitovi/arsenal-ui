@@ -89,8 +89,8 @@ var GlobalParameterBar = Component.extend({
         Licensor.findOne(UserReq.formRequestDetails({"regionId":selected.id}))
       ]).then(function(values) {
         //console.log(JSON.stringify(values[0][0]["data"].attr()));
-        self.scope.countries.replace(values[0][0]["data"]);
-        self.scope.licensors.replace(values[1][0]["data"]);
+        self.scope.countries.replace(values[0]);
+        self.scope.licensors.replace(values[1]);
 
         setTimeout(function(){
               $("#countriesFilter").multiselect('rebuild');
@@ -133,13 +133,13 @@ var GlobalParameterBar = Component.extend({
       ContentType.findAll()
     ]).then(function(values) {
 
-      self.scope.periodFrom.replace(values[0][0]["data"]);
-      self.scope.periodTo.replace(values[1][0]["data"]);
-      self.scope.storetypes.replace(values[2][0]["data"]);
-      self.scope.regions.replace(values[3][0]["data"]);
-      self.scope.countries.replace(values[4][0]["data"]);
-      self.scope.licensors.replace(values[5][0]["data"]);
-      self.scope.contenttypes.replace(values[6][0]["data"]);
+      self.scope.periodFrom.replace(values[0]);
+      self.scope.periodTo.replace(values[1]);
+      self.scope.storetypes.replace(values[2]);
+      self.scope.regions.replace(values[3]);
+      self.scope.countries.replace(values[4]);
+      self.scope.licensors.replace(values[5]);
+      self.scope.contenttypes.replace(values[6]);
     });
   }
 });
