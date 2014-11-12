@@ -497,7 +497,7 @@ var page = Component.extend({
 		"#licensor change": function(event){
 			var genObj = {licensorId:event[0].value};
 			var self = this;
-			Promise.all([Currency.findOne(UserReq.formRequestDetails(genObj))
+			Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
 			     ]).then(function(values) {
 				    self.scope.attr("currency").replace(values[0]);
 			   });
@@ -911,7 +911,7 @@ var page = Component.extend({
 			     	Licensor.findAll(UserReq.formRequestDetails(genObj)),
 			     	Currency.findAll(UserReq.formRequestDetails(genObj)),
 			        ContentType.findAll(UserReq.formRequestDetails(genObj)),
-			      	//Country.findAll(UserReq.formRequestDetails(genObj)),
+			      	Country.findAll(UserReq.formRequestDetails(genObj)),
 			      	//Fxrate.findAll(UserReq.formRequestDetails(genObj)),
 			      	//AdhocTypes.findAll(UserReq.formRequestDetails(genObj)),
 			      	//GLaccounts.findAll(UserReq.formRequestDetails(genObj))
@@ -922,7 +922,7 @@ var page = Component.extend({
 		     		 self.scope.attr("licensor").replace(values[1]);
 		     		 self.scope.attr("currency").replace(values[2]);
 		     		 self.scope.attr("contentType").replace(values[3]);
-		     		 //self.scope.attr("country").replace(values[4]);
+		     		 self.scope.attr("country").replace(values[4]);
 		     		// self.scope.attr("fxrate").replace(values[5]);
 		     		 //self.scope.attr("adhocType").replace(values[6]);
 		     		// self.scope.attr("glaccounts").replace(values[7]);
