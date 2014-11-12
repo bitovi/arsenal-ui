@@ -4,7 +4,7 @@ import RinsCommon from 'utils/';
 var GLaccounts = Model.extend({
 	findAll: function(params){
 	 	return $.ajax({
-	 		url: RinsCommon.UI_SERVICE_URL +'getGlAccounts',
+	 		url: RinsCommon.UI_SERVICE_URL +'getGLAccounts',
 	  		type: 'POST',
 	  		data: JSON.stringify(params),
 	  		dataType:'json',
