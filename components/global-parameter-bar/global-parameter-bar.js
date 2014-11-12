@@ -122,24 +122,28 @@ var GlobalParameterBar = Component.extend({
   },
   init: function() {
     var self = this;
-
+    console.log("in init");
+    var genObj = {};
     Promise.all([
-      PeriodFrom.findAll(),
-      PeriodTo.findAll(),
-      StoreType.findAll(),
-      Region.findAll(),
-      Country.findAll(),
-      Licensor.findAll(),
-      ContentType.findAll()
+      StoreType.findAll(UserReq.formRequestDetails(genObj)),
+      Region.findAll(UserReq.formRequestDetails(genObj)),
+      Country.findAll(UserReq.formRequestDetails(genObj)),
+      Licensor.findAll(UserReq.formRequestDetails(genObj)),
+      ContentType.findAll(UserReq.formRequestDetails(genObj))
+      //PeriodFrom.findAll(),
+      //PeriodTo.findAll()
     ]).then(function(values) {
-
-      self.scope.periodFrom.replace(values[0]);
-      self.scope.periodTo.replace(values[1]);
-      self.scope.storetypes.replace(values[2]);
-      self.scope.regions.replace(values[3]);
-      self.scope.countries.replace(values[4]);
-      self.scope.licensors.replace(values[5]);
-      self.scope.contenttypes.replace(values[6]);
+      console.log(JSON.stringify(values[1]));
+      console.log(JSON.stringify(values[2]));
+      console.log(JSON.stringify(values[3]));
+      console.log(JSON.stringify(values[4]));
+      self.scope.storetypes.replace(values[0]);
+      self.scope.regions.replace(values[1]);
+      self.scope.countries.replace(values[2]);
+      self.scope.licensors.replace(values[3]);
+      self.scope.contenttypes.replace(values[4]);
+      //self.scope.periodFrom.replace(values[5]);
+      //self.scope.periodTo.replace(values[6]);
     });
   }
 });
