@@ -2,8 +2,16 @@ import Model from 'can/model/';
 import RinsCommon from 'utils/';
 
 var AdhocType = Model.extend({
-  findAll: 'POST ' +  RinsCommon.UI_SERVICE_URL+'getAdhocTypes'
-}, {});
+	findAll: function(params){
+	 	return $.ajax({
+	 		url: RinsCommon.UI_SERVICE_URL +'getAdhocTypes',
+	  		type: 'POST',
+	  		data: JSON.stringify(params),
+	  		dataType:'json',
+	  		contentType: 'application/json'
+	  	});
+	}
+	}, {});
 
 /* able to get data in ajax done function*/
 

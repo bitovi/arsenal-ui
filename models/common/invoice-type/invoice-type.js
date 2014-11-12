@@ -4,8 +4,15 @@ import RinsCommon from 'utils/';
 
 
 var InvoiceType = Model.extend({
-    findAll: 'POST ' + RinsCommon.UI_SERVICE_URL + 'getInvoiceTypes'
-
+    findAll: function(params){
+     	return $.ajax({
+     		contentType: 'application/json; charset=utf-8',
+      		url: RinsCommon.UI_SERVICE_URL +'getInvoiceTypes',
+      		type: 'POST',
+      		data: JSON.stringify(params),
+      		dataType:'json'
+      	});
+    }
 }, {});
 
 export default InvoiceType;

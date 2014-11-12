@@ -8,11 +8,13 @@ var UserReqMap = can.Map.extend({
    },
    formRequestDetails:function(params){
       var userRequest = {};
+      var date = new Date();
       userRequest = params ;
-      userRequest["prsId"] = "2002005724";
-      userRequest["appId"] = "12345";
-      userRequest["secretKey"] = "";
+      userRequest["prsId"] = "2002005722";
+      userRequest["appId"] = "1179";
+      userRequest["secretKey"] = "f4166789-30bb-4e12-9973-a76376745096";
       userRequest["roleIds"] = [""];
+      userRequest["requestTimeStamp"]=date.getTime();
       return userRequest;
    }
 

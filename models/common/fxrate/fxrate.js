@@ -1,8 +1,15 @@
 import Model from 'can/model/';
 
-var Country = Model.extend({
-findAll: 'GET /fxrate'
-
+var FXRate = Model.extend({
+findAll: function(params){
+ 	return $.ajax({
+ 		url: RinsCommon.UI_SERVICE_URL +'getFXRate',
+  		type: 'POST',
+  		data: JSON.stringify(params),
+  		dataType:'json',
+  		contentType: 'application/json'
+  	});
+}
 }, {});
 
-export default Country;
+export default FXRate;
