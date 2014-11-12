@@ -965,19 +965,27 @@ var page = Component.extend({
 	},
   	helpers: {
           createPBRequest:function(){
-                  var requestObject = {
-                      mode:"Create",
-                      bundleSearch:{
-                        region : "Europe",
-                        type:"invoices"
-                      },
-                      paymentBundle:{
-                        region:"Europe",
-                        periodFrom:'201303',
-                        periodTo:'201304',
-                        bundleType:'Regular'
-                      }
-                    };
+                  var requestObject = {"get": {
+                    mode:"Create",
+                    bundleSearch:{
+                      type:"invoices"
+                    },
+                    paymentBundle:{
+                      region:"Europe",
+                      periodFrom:'201303',
+                      periodTo:'201304',
+                      bundleType:'Regular'
+                    }
+                  },
+                  "newName":{
+                    paymentBundle:{
+                      region:"Europe",
+                      periodFrom:'201303',
+                      periodTo:'201304',
+                      bundleType:'Regular'
+                    }
+                  }
+                };
             // console.log(requestObject);
             return JSON.stringify(requestObject);
           },
