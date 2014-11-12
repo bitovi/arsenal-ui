@@ -6,7 +6,7 @@ var NewPBName = Model.extend({
 
   findOne: function(param){
     return $.ajax({
-      url: RinsCommon.DOMAIN_SERVICE_URL+'paymentBundle/newName',
+      url: RinsCommon.DOMAIN_SERVICE_URL+'paymentBundle/proposeNewName',
       type: 'POST',
       data: JSON.stringify(param),
       dataType: 'json'

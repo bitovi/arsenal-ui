@@ -52,20 +52,20 @@ var page = Component.extend({
 
         var requestObj = JSON.parse(self.scope.attr("request"));
 
-        if(requestObj.mode == "Create"){
+        if(requestObj["get"].mode == "Create"){
 
-            BundleNamesModel.findOne(UserReq.formRequestDetails(requestObj),function(data){
+            BundleNamesModel.findOne(UserReq.formRequestDetails(requestObj["get"]),function(data){
                   console.log("passing params is "+JSON.stringify(data.attr()));
                   self.scope.bundleNames.replace(data["paymentBundles"]);
             },function(xhr){
                 console.error("Error while loading: bundleNames"+xhr);
             });
 
-        }else if (requestObj.mode == "Read"){
+        }else if (requestObj["get"].mode == "Read"){
 
           self.scope.attr("createPBFlag",{read:true});
-          self.scope.attr("paymentBundleName",requestObj.paymentBundleName);
-          self.scope.attr("paymentBundleId",requestObj.paymentBundleId);
+          self.scope.attr("paymentBundleName",requestObj["get"].paymentBundleName);
+          self.scope.attr("paymentBundleId",requestObj["get"].paymentBundleId);
 
         }else{
           console.error("Craete Payment Bundle: Invalid Mode!!");
@@ -76,12 +76,12 @@ var page = Component.extend({
       "#paymentBundleNames change":function(){
         var self = this;
         var requestObj = JSON.parse(self.scope.attr("request"));
-
+        console.log("requestObj "+JSON.stringify(UserReq.formRequestDetails(requestObj["newName"])));
           if( this.scope.attr("paymentBundleId") == 'createB'){
               self.scope.attr("createPBFlag",{input:true});
-              NewBundleNameModel.findOne(UserReq.formRequestDetails(requestObj),function(data){
-                      //console.log("passing params is "+JSON.stringify(data[0].attr()));
-                      self.scope.attr("paymentBundleName" , data[0].paymentBundle.bundleName);
+              NewBundleNameModel.findOne(UserReq.formRequestDetails(requestObj["newName"]),function(data){
+                      //console.log("passing params is "+JSON.stringify(data));
+                      self.scope.attr("paymentBundleName" , data.paymentBundle.bundleName);
               },function(xhr){
                     console.error("Error while loading: bundleNames"+xhr);
               });
