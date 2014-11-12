@@ -495,11 +495,11 @@ var page = Component.extend({
 		},
 
 		"#licensor change": function(event){
-			var genObj = {licensorid:event[0].value};
+			var genObj = {licensorId:event[0].value};
 			var self = this;
 			Promise.all([Currency.findOne(UserReq.formRequestDetails(genObj))
 			     ]).then(function(values) {
-				    self.scope.attr("currency").replace(values[0][0]["data"]);
+				    self.scope.attr("currency").replace(values[0]);
 			   });
 		},
 
@@ -561,7 +561,15 @@ var page = Component.extend({
   	 			else{
   	 				this.scope.attr("totalAmountVal", "");
   	 			}
-
+  	 			var genObj = {fromCurrency:'USD',
+  	 					toCurrency:this.scope.currencyStore,fiscalPeriod:'201401',periodType:'P'};
+  	 			//Fxrate.findAll(UserReq.formRequestDetails(genObj)),
+  	 			Fxrate.findAll(UserReq.formRequestDetails(genObj),function(data){
+                  //console.log("passing params is "+JSON.stringify(data[0].attr()));
+  	 			 self.scope.attr("fxrate").replace(data);
+            },function(xhr){
+                console.error("Error while loading: FXRATE"+xhr);
+            });
 
          },
          "{paymentBundleId} change": function() {
@@ -903,21 +911,21 @@ var page = Component.extend({
 			     	Licensor.findAll(UserReq.formRequestDetails(genObj)),
 			     	Currency.findAll(UserReq.formRequestDetails(genObj)),
 			        ContentType.findAll(UserReq.formRequestDetails(genObj)),
-			      	Country.findAll(UserReq.formRequestDetails(genObj)),
-			      	Fxrate.findAll(UserReq.formRequestDetails(genObj)),
-			      	AdhocTypes.findAll(UserReq.formRequestDetails(genObj))
-			    //  	GLaccounts.findAll()
+			      	//Country.findAll(UserReq.formRequestDetails(genObj)),
+			      	//Fxrate.findAll(UserReq.formRequestDetails(genObj)),
+			      	//AdhocTypes.findAll(UserReq.formRequestDetails(genObj)),
+			      	//GLaccounts.findAll(UserReq.formRequestDetails(genObj))
 
 			      	//  Currency.findAll()*/
 				]).then(function(values) {
-		     		 self.scope.attr("invoiceTypes").replace(values[0][0]["data"]);
-		     		 self.scope.attr("licensor").replace(values[1][0]["data"]);
-		     		 self.scope.attr("currency").replace(values[2][0]["data"]);
-		     		 self.scope.attr("country").replace(values[4][0]["data"]);
-		     		 self.scope.attr("fxrate").replace(values[5][0]["data"][0]["fxrate"]);
-		     		 self.scope.attr("adhocType").replace(values[6][0]["data"]);
-		     		 self.scope.attr("contentType").replace(values[3][0]["data"]);
-		     	//	 self.scope.attr("glaccounts").replace(values[7][0]["data"]);
+		     		 self.scope.attr("invoiceTypes").replace(values[0]);
+		     		 self.scope.attr("licensor").replace(values[1]);
+		     		 self.scope.attr("currency").replace(values[2]);
+		     		 self.scope.attr("contentType").replace(values[3]);
+		     		 //self.scope.attr("country").replace(values[4]);
+		     		// self.scope.attr("fxrate").replace(values[5]);
+		     		 //self.scope.attr("adhocType").replace(values[6]);
+		     		// self.scope.attr("glaccounts").replace(values[7]);
 
 
 
