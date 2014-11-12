@@ -10,18 +10,35 @@ Component.extend ({
 
   scope: {
    isLoaded : false,
-   fileList :new can.List(),
- },
+   fileList :[],
+
+   removeUpload : function(file, ev, el){
+        var idx = this.attr("fileList").indexOf(file);
+        if(confirm('Are you sure?')){
+          this.attr("fileList").splice(idx, 1);
+        };
+
+        var size = this.attr("fileList").length
+        if(size ==0) {
+            this.attr("isLoaded", false);
+         }
+      }
+
+},
+
+
 
  init: function() {
 
 },
 
+
+
 helpers: {
         convertToKB: function (size) {
-               return ((size/1000) + 'KB')
-
-        }
+          return (Math.max(size/1024, 0.1).toFixed(1)  + 'KB')
+        },
+       
 },
 
 
@@ -43,32 +60,39 @@ helpers: {
 
                   }
                      this.scope.attr("isLoaded", true);
-                    $("#cancelUpload").removeAttr("disabled");
              },
 
              '#submitFiles click': function() {
 
-                  
-                  var  fileInfoArray = [];
                   var count = this.scope.attr("fileList").length;
+                  var dataToSend = '';
+                  var boundary = 'xxx' 
                   $.each(this.scope.attr("fileList"), function(key, file) {
-                    
+                      var text = '--' + boundary + '\r\n' + 'Content-Disposition: form-data; name=uploadedFile;';
                       var textReader = new FileReader();
                       textReader.onload = function(e) { 
                           var contents = e.target.result;
-                          //alert("Name of the file with Contents: " + file.name + contents);
-                          var fileInfo = {}
-                          fileInfo['fileName'] = file.name;
-                          fileInfo['contents'] = contents;
-                          fileInfoArray.push(fileInfo)
+                          
+                          text +="filename="
+                          text += file.name;
+                          text += '\r\n\r\n';
+                          text +=''
+                          text += contents;
+                          text += '\r\n'
+                          text += '--' + boundary;
+                          dataToSend += text;
+                          dataToSend  += '--';
+                          dataToSend += "\r\n";
                       }
                       textReader.readAsText(file);
+                      //textReader.readAsDataURL(file);
                       count  = count -1;
-
+                     
                       if(count == 0) {
+                          
                           textReader.onloadend = function(e) { 
-                              FileLoad.update(fileInfoArray,function(data){
-                                alert("Return data:"+JSON.stringify(data));
+                              FileLoad.findOne(dataToSend,function(data){
+                                alert("Return data:"+JSON.stringify(data.responseText));
                               },function(xhr){
                                 console.error("Error while loading:"+xhr);
                             });
@@ -82,25 +106,18 @@ helpers: {
 
                 '#cancelUpload click': function() {
 
-                      this.scope.attr("isLoaded", false);
-                       var size = this.scope.attr("fileList").length
-                       this.scope.attr("fileList").splice(0,size)
-                },
-
-                'li click': function(el, ev) {
-                 
-                    this.scope.attr("fileList").splice(0,1)
+                    this.scope.attr("isLoaded", false);
                     var size = this.scope.attr("fileList").length
-                    if(size ==0) {
-                      this.scope.attr("isLoaded", false);
-                    }
-
+                    this.scope.attr("fileList").splice(0,size)
                 },
 
-               
-
+                
      }
  
 })
+
+
+
+
 
 

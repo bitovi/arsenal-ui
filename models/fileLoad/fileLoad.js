@@ -1,19 +1,21 @@
 import Model from 'can/model/';
 
 var FileLoad = Model.extend({
-	 
-    update: function(params) {
-    	alert("Passing file name and contents to  rest call");
-		return $.ajax({
-	    				url: '/rins/upLoad',
+	
+    findOne: function(params) {
+    	return $.ajax({
+	    				url: 'http://localhost:10645/api/v1/rinsui/uploadFiles',
 	    				type: 'POST',
-	    				dataType: 'json',
-	    				data: JSON.stringify(params)
+	    				contentType: 'multipart/form-data;boundary=xxx' ,
+	    				processData: false,
+	    				data: params
 
 					});
 	   	
 	}
 
  } ,{});
+
+
 
 export default FileLoad;
