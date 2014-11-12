@@ -7,9 +7,9 @@ var NewPBName = Model.extend({
   findOne: function(param){
     return $.ajax({
       url: RinsCommon.DOMAIN_SERVICE_URL+'paymentBundle/proposeNewName',
-      type: 'POST',
+      type: 'post',
       data: JSON.stringify(param),
-      dataType: 'json'
+      dataType:'json'
     })
    }
 }, {});

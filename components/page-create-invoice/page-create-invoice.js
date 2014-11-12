@@ -340,11 +340,11 @@ var page = Component.extend({
 						}
 						else{
 							removeError(event[0].id);
-							
+
 						}
 					}
-		          	
-					
+
+
 				},
 				 "{invoiceContainer} change": function() {
 				 		var self = this;  /*This block is used to update data in view with two way binding*/
@@ -625,7 +625,7 @@ var page = Component.extend({
 
 						/*Add invoice object creation start*/
 
-                     
+
                        var createInvoiceData = {};
 					   createInvoiceData.invoices = [];
 
@@ -633,7 +633,7 @@ var page = Component.extend({
 
 					   tempInvoiceData["invoiceNumber"] = self.scope.invoicenumberStore;
 					   tempInvoiceData["invoiceTypeId"] = self.scope.invoicetypeSelect;
-					   tempInvoiceData["serviceTypeId"] = ""; 
+					   tempInvoiceData["serviceTypeId"] = "";
 					   tempInvoiceData["invoiceType"] = $("#invoiceType option:selected").text();
 					   tempInvoiceData["entityId"] = self.scope.licensorStore;
 					   tempInvoiceData["regionId"] = "";
@@ -663,7 +663,7 @@ var page = Component.extend({
 					   tempInvoiceData["invoiceDate"] = $("#invoicedate input[type=text]").val();//"06/19/2014"//self.scope.invoicedate;
 					   tempInvoiceData["invoiceCalcDueDate"] = self.scope.calduedate;
 					   tempInvoiceData["invoiceDueDate"] = $("#invoiceduedate input[type=text]").val(); //"06/19/2014"//self.scope.invoiceduedate;
-					   tempInvoiceData["createdBy"] = "1000";  
+					   tempInvoiceData["createdBy"] = "1000";
 					   tempInvoiceData["comments"] = [];
 					   tempInvoiceData["comments"].comments = self.scope.usercommentsStore;
 					   tempInvoiceData["invoiceDocuments"] = [];
@@ -723,7 +723,7 @@ var page = Component.extend({
 										     ]).then(function(values) {
 									     		   self.scope.errorMsg.attr("responseText", values[0]["responseText"]);
 
-									     		 
+
 
 									     	/*	  if((values[0]["responseCode"] == "0000")){
 									     		   		self.scope.attr("invoicenumberStore", "");
@@ -758,7 +758,7 @@ var page = Component.extend({
 
 												});
 
-									
+
 
 
 								}else{
@@ -917,7 +917,7 @@ var page = Component.extend({
 			     	Currency.findAll(UserReq.formRequestDetails(genObj)),
 			        ContentType.findAll(UserReq.formRequestDetails(genObj)),
 			      	Country.findAll(UserReq.formRequestDetails(genObj)),
-			      	
+
 			      	AdhocTypes.findAll(UserReq.formRequestDetails(genObj)),
 			      	GLaccounts.findAll(UserReq.formRequestDetails(genObj))
 
@@ -928,7 +928,7 @@ var page = Component.extend({
 		     		 self.scope.attr("currency").replace(values[2]);
 		     		 self.scope.attr("contentType").replace(values[3]);
 		     		 self.scope.attr("country").replace(values[4]);
-		     		
+
 		     		 self.scope.attr("adhocType").replace(values[5]);
 		     		 self.scope.attr("glaccounts").replace(values[6]);
 
@@ -965,26 +965,22 @@ var page = Component.extend({
 	},
   	helpers: {
           createPBRequest:function(){
-                  var requestObject = {"get": {
+                  var requestObject = {
                     mode:"Create",
-                    bundleSearch:{
-                      type:"invoices"
-                    },
-                    paymentBundle:{
-                      region:"Europe",
-                      periodFrom:'201303',
-                      periodTo:'201304',
-                      bundleType:'Regular'
+                    "searchRequest":{
+                        bundleSearch:{
+                          region : "North America",
+                          type:"invoice"
+                        }
+                      },
+                    "newNameRequest":{
+                      paymentBundle:{
+                        region:"Europe",
+                        periodFrom:'201303',
+                        periodTo:'201304',
+                        bundleType:'Regular'
+                      }
                     }
-                  },
-                  "newName":{
-                    paymentBundle:{
-                      region:"Europe",
-                      periodFrom:'201303',
-                      periodTo:'201304',
-                      bundleType:'Regular'
-                    }
-                  }
                 };
             // console.log(requestObject);
             return JSON.stringify(requestObject);

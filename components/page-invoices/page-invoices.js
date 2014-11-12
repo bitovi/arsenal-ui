@@ -145,28 +145,22 @@ var page = Component.extend({
 
   },
   helpers: {
-        createPBRequest:function(){
-                var requestObject = {"get": {
-                    mode:"Create",
-                    bundleSearch:{
-                      type:"invoices"
-                    },
-                    paymentBundle:{
-                      region:"Europe",
-                      periodFrom:'201303',
-                      periodTo:'201304',
-                      bundleType:'Regular'
-                    }
-                  },
-                  "newName":{
-                    paymentBundle:{
-                      region:"Europe",
-                      periodFrom:'201303',
-                      periodTo:'201304',
-                      bundleType:'Regular'
-                    }
-                  }
-                };
+        var requestObject = {
+            mode:"Create",
+            "searchRequest":{
+                bundleSearch:{
+                  type:"invoices"
+                }
+              },
+            "newNameRequest":{
+              paymentBundle:{
+                region:"Europe",
+                periodFrom:'201303',
+                periodTo:'201304',
+                bundleType:'Regular'
+              }
+            }
+        };
           // console.log(requestObject);
           return JSON.stringify(requestObject);
         }
@@ -210,7 +204,7 @@ var page = Component.extend({
                 //$subComp.scope().refreshTokenInput(item,"Delete");
             }
       });
-    
+
       var invSearchRequest = {};
       invSearchRequest.searchRequest = {};
       invSearchRequest.searchRequest["serviceTypeId"] = this.scope.appstate.attr('storeType');

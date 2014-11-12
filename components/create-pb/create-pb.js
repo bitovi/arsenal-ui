@@ -20,15 +20,19 @@ var page = Component.extend({
     {
         mode:"Create",//Create or Read
         //Other request object is mentioned below
+        "searchRequest":{
         bundleSearch:{
           type:"invoices"
         },
+      },
+      "newNameRequest":{
         paymentBundle:{
           region:"Europe",
           periodFrom:'201303',
           periodTo:'201304',
           bundleType:'Regular'
         }
+      }
       };
 
       Ex: Read
@@ -52,20 +56,20 @@ var page = Component.extend({
 
         var requestObj = JSON.parse(self.scope.attr("request"));
 
-        if(requestObj["get"].mode == "Create"){
+        if(requestObj.mode == "Create"){
 
-            BundleNamesModel.findOne(UserReq.formRequestDetails(requestObj["get"]),function(data){
+            BundleNamesModel.findOne(UserReq.formRequestDetails(requestObj["searchRequest"]),function(data){
                   console.log("passing params is "+JSON.stringify(data.attr()));
                   self.scope.bundleNames.replace(data["paymentBundles"]);
             },function(xhr){
                 console.error("Error while loading: bundleNames"+xhr);
             });
 
-        }else if (requestObj["get"].mode == "Read"){
+        }else if (requestObj.mode == "Read"){
 
           self.scope.attr("createPBFlag",{read:true});
-          self.scope.attr("paymentBundleName",requestObj["get"].paymentBundleName);
-          self.scope.attr("paymentBundleId",requestObj["get"].paymentBundleId);
+          self.scope.attr("paymentBundleName",requestObj.paymentBundleName);
+          self.scope.attr("paymentBundleId",requestObj.paymentBundleId);
 
         }else{
           console.error("Craete Payment Bundle: Invalid Mode!!");
@@ -76,10 +80,12 @@ var page = Component.extend({
       "#paymentBundleNames change":function(){
         var self = this;
         var requestObj = JSON.parse(self.scope.attr("request"));
-        console.log("requestObj "+JSON.stringify(UserReq.formRequestDetails(requestObj["newName"])));
+        
+
+        console.log("requestObj "+JSON.stringify(UserReq.formRequestDetails(requestObj["newNameRequest"])));
           if( this.scope.attr("paymentBundleId") == 'createB'){
               self.scope.attr("createPBFlag",{input:true});
-              NewBundleNameModel.findOne(UserReq.formRequestDetails(requestObj["newName"]),function(data){
+              NewBundleNameModel.findOne(UserReq.formRequestDetails(requestObj["newNameRequest"]),function(data){
                       //console.log("passing params is "+JSON.stringify(data));
                       self.scope.attr("paymentBundleName" , data.paymentBundle.bundleName);
               },function(xhr){

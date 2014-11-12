@@ -15,6 +15,7 @@ var UserReqMap = can.Map.extend({
       userRequest["secretKey"] = "f4166789-30bb-4e12-9973-a76376745096";
       userRequest["roleIds"] = [""];
       userRequest["requestTimeStamp"]=date.getTime();
+      console.log("User Request:"+userRequest);
       return userRequest;
    }
 
