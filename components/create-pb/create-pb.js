@@ -86,7 +86,7 @@ var page = Component.extend({
           if( this.scope.attr("paymentBundleId") == 'createB'){
               self.scope.attr("createPBFlag",{input:true});
               NewBundleNameModel.findOne(UserReq.formRequestDetails(requestObj["newNameRequest"]),function(data){
-                      //console.log("passing params is "+JSON.stringify(data));
+                      console.log("passing params is "+JSON.stringify(data));
                       self.scope.attr("paymentBundleName" , data.paymentBundle.bundleName);
               },function(xhr){
                     console.error("Error while loading: bundleNames"+xhr);

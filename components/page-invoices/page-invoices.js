@@ -155,11 +155,20 @@ var page = Component.extend({
                       }
                     },
                   "newNameRequest":{
-                    paymentBundle:{
-                      region:"Europe",
-                      periodFrom:'201303',
-                      periodTo:'201304',
-                      bundleType:'Regular'
+
+                    "paymentBundle" : {
+
+                      "region": "Europe",
+                      "bundleDetailsGroup" : [{ 
+                        "bndlLineId" : 1402, 
+                        "refLineType" : "REGULAR_INV",
+                        "periodType":"P"
+                         }, { 
+                        "bndlLineId" : 1602, 
+                        "refLineType" : "REGULAR_INV",
+                        "periodType":"P"
+                      }],   
+                      "bundleType": "REGULAR_INV"
                     }
                   }
               };
@@ -711,29 +720,36 @@ var page = Component.extend({
         var self = this;
         var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
         //console.log(JSON.stringify(invoiceData));
-        console.log(JSON.stringify(self.scope.checkedRows.attr()));
+        //console.log(JSON.stringify(self.scope.checkedRows.attr()));
 
 
         var selInvoices = self.scope.checkedRows.attr();
+        console.log("selInvoices "+JSON.stringify(selInvoices));
         var bundleLines = [];
         for(var i=0;i<invoiceData.length;i++){
           var invId = invoiceData[i]["invId"];
           var lineType = invoiceData[i]["invoiceType"];
           var periodType = invoiceData[i]["periodType"];
           var invoiceLineItems = invoiceData[i]["invoiceLines"];
-          if(invoiceLineItems.length > 0 && selInvoices.indexOf(invId)>-1){
+            //console.log("here is "+invoiceLineItems.length+","+selInvoices.indexOf(invId.toString()));
+
+          if(invoiceLineItems.length > 0 && selInvoices.indexOf(invId.toString())>-1){
+            console.log("here");
             for(var j=0;j<invoiceLineItems.length;j++){
               var temp = {};
                 temp["lineId"]= invoiceLineItems[j]["invLineId"];
                 temp["lineType"] = lineType;
-                temp["periodType"] = periodType;
+                temp["periodType"] = (periodType==null)?"P":periodType;
                 bundleLines.push(temp);
             }
           }
 
         }
+        console.log("bundleLines "+JSON.stringify(bundleLines));
+
 
         var bundleType = lineType;
+        var overAllBundleRequest = {"paymentBundle":[]};
         var bundleRequest = {};
         bundleRequest["bundleId"] = $("#paymentBundleNames :selected").val();
         bundleRequest["bundleName"] = $("#paymentBundleNames :selected").text();
@@ -744,8 +760,9 @@ var page = Component.extend({
         bundleRequest["mode"] ="ADD";
         bundleRequest["bundleLines"] =bundleLines;
 
-        //console.log(JSON.stringify(bundleRequest));
-        BundleNamesModel.create(UserReq.formRequestDetails(bundleRequest),function(data){
+        overAllBundleRequest["paymentBundle"].push(bundleRequest);
+        console.log(JSON.stringify(UserReq.formRequestDetails(overAllBundleRequest)));
+        BundleNamesModel.create(UserReq.formRequestDetails(overAllBundleRequest),function(data){
             console.log("passing params is "+JSON.stringify(data));
             if(data["responseText"]=="SUCCESS"){
              $("#messageDiv").html("<label class='successMessage'>Invoices added to payment bundle successfully</label>")
