@@ -150,7 +150,7 @@ var page = Component.extend({
                   mode:"Create",
                   "searchRequest":{
                       bundleSearch:{
-                        region : "North America",
+                        region : "Europe",
                         type:"invoice"
                       }
                     },
@@ -207,28 +207,71 @@ var page = Component.extend({
             }
       });
 
-      var invSearchRequest = {};
-      invSearchRequest.searchRequest = {};
-      invSearchRequest.searchRequest["serviceTypeId"] = this.scope.appstate.attr('storeType');
-      invSearchRequest.searchRequest["regionId"] = this.scope.appstate.attr('region');
-      invSearchRequest.searchRequest["entityId"] = this.scope.appstate.attr('licensor');
+            var periodFrom = this.scope.appstate.attr('periodFrom');
+              var periodTo = this.scope.appstate.attr('periodTo');
+              var serTypeId = this.scope.appstate.attr('storeType');
+              var regId = this.scope.appstate.attr('region');
+              var countryId = this.scope.appstate.attr('country');
+              var licId = this.scope.appstate.attr('licensor');
+              var contGrpId = this.scope.appstate.attr('contentType');
+              //console.log("ser type id "+typeof(licId));
 
-      invSearchRequest.searchRequest["periodType"] = "P";
-      invSearchRequest.searchRequest["periodFrom"] = "201304";
-      invSearchRequest.searchRequest["periodTo"] = "201307";
+              var invSearchRequest = {};
+              invSearchRequest.searchRequest = {};
+              if(typeof(periodFrom)=="undefined")
+                invSearchRequest.searchRequest["periodFrom"] = "";
+              else
+                invSearchRequest.searchRequest["periodFrom"] = periodFrom;
 
-      invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
-      invSearchRequest.searchRequest["offset"] = "0";
-      invSearchRequest.searchRequest["limit"] = "10";
-      invSearchRequest.searchRequest["filter"] = self.scope.tokenInput.attr();
+              if(typeof(periodTo)=="undefined")
+                invSearchRequest.searchRequest["periodTo"] = "";
+              else
+                invSearchRequest.searchRequest["periodTo"] = periodTo;
 
-      invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr();
-      invSearchRequest.searchRequest["sortOrder"] = "ASC";
+              if(typeof(serTypeId)=="undefined")
+                invSearchRequest.searchRequest["serviceTypeId"] = "";
+              else
+                invSearchRequest.searchRequest["serviceTypeId"] = serTypeId['id'];
 
+              if(typeof(regId)=="undefined")
+                invSearchRequest.searchRequest["regionId"] = "";
+              else
+                invSearchRequest.searchRequest["regionId"] = regId['id'];
+              
+              invSearchRequest.searchRequest["country"] = [];
+              if(typeof(countryId)!="undefined")
+                invSearchRequest.searchRequest["country"].push(countryId['value']);
+
+              invSearchRequest.searchRequest["entityId"] = [];
+              if(typeof(licId)!="undefined")
+                invSearchRequest.searchRequest["entityId"].push(licId['id']);
+
+              invSearchRequest.searchRequest["contentGrpId"] = [];
+              if(typeof(contGrpId)!="undefined")
+                invSearchRequest.searchRequest["contentGrpId"].push(contGrpId['id']);
+
+              invSearchRequest.searchRequest["periodType"] = "P";
+
+              invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
+              invSearchRequest.searchRequest["offset"] = "0";
+              invSearchRequest.searchRequest["limit"] = "10";
+              
+              var filterData = self.scope.tokenInput.attr();
+              var newFilterData = [];
+              if(filterData.length>0){
+                for(var p=0;p<filterData.length;p++)
+                  newFilterData.push(filterData[p]["name"]);
+              }
+              invSearchRequest.searchRequest["filter"] = newFilterData;
+
+              invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr().toString();
+              invSearchRequest.searchRequest["sortOrder"] = "ASC";
+
+      console.log("Request is "+JSON.stringify(UserReq.formRequestDetails(invSearchRequest)));
       Promise.all([
             GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest))
         ]).then(function(values) {
-         // console.log(JSON.stringify(values));
+          //console.log("fhjdhsfsgdjhf isa "+JSON.stringify(values[0].attr()));
           //if(values[0][0]["responseCode"]==="0000")
             self.scope.allInvoicesMap.replace(values[0]);
         });
@@ -237,24 +280,67 @@ var page = Component.extend({
     "{tokenInput} change": function(){
           var self= this;
           console.log(JSON.stringify(self.scope.tokenInput.attr()));
-          var invSearchRequest = {};
-          invSearchRequest.searchRequest = {};
-          invSearchRequest.searchRequest["serviceTypeId"] = this.scope.appstate.attr('storeType');
-          invSearchRequest.searchRequest["regionId"] = this.scope.appstate.attr('region');
-          invSearchRequest.searchRequest["entityId"] = this.scope.appstate.attr('licensor');
+          var periodFrom = this.scope.appstate.attr('periodFrom');
+              var periodTo = this.scope.appstate.attr('periodTo');
+              var serTypeId = this.scope.appstate.attr('storeType');
+              var regId = this.scope.appstate.attr('region');
+              var countryId = this.scope.appstate.attr('country');
+              var licId = this.scope.appstate.attr('licensor');
+              var contGrpId = this.scope.appstate.attr('contentType');
+              //console.log("ser type id "+typeof(licId));
 
-          invSearchRequest.searchRequest["periodType"] = "P";
-          invSearchRequest.searchRequest["periodFrom"] = "201304";
-          invSearchRequest.searchRequest["periodTo"] = "201307";
+              var invSearchRequest = {};
+              invSearchRequest.searchRequest = {};
+              if(typeof(periodFrom)=="undefined")
+                invSearchRequest.searchRequest["periodFrom"] = "";
+              else
+                invSearchRequest.searchRequest["periodFrom"] = periodFrom;
 
-          invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
-          invSearchRequest.searchRequest["offset"] = "0";
-          invSearchRequest.searchRequest["limit"] = "10";
-          invSearchRequest.searchRequest["filter"] = self.scope.tokenInput.attr();
+              if(typeof(periodTo)=="undefined")
+                invSearchRequest.searchRequest["periodTo"] = "";
+              else
+                invSearchRequest.searchRequest["periodTo"] = periodTo;
 
-          invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr();
-          invSearchRequest.searchRequest["sortOrder"] = "ASC";
+              if(typeof(serTypeId)=="undefined")
+                invSearchRequest.searchRequest["serviceTypeId"] = "";
+              else
+                invSearchRequest.searchRequest["serviceTypeId"] = serTypeId['id'];
 
+              if(typeof(regId)=="undefined")
+                invSearchRequest.searchRequest["regionId"] = "";
+              else
+                invSearchRequest.searchRequest["regionId"] = regId['id'];
+              
+              invSearchRequest.searchRequest["country"] = [];
+              if(typeof(countryId)!="undefined")
+                invSearchRequest.searchRequest["country"].push(countryId['value']);
+
+              invSearchRequest.searchRequest["entityId"] = [];
+              if(typeof(licId)!="undefined")
+                invSearchRequest.searchRequest["entityId"].push(licId['id']);
+
+              invSearchRequest.searchRequest["contentGrpId"] = [];
+              if(typeof(contGrpId)!="undefined")
+                invSearchRequest.searchRequest["contentGrpId"].push(contGrpId['id']);
+
+              invSearchRequest.searchRequest["periodType"] = "P";
+
+              invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
+              invSearchRequest.searchRequest["offset"] = "0";
+              invSearchRequest.searchRequest["limit"] = "10";
+
+              var filterData = self.scope.tokenInput.attr();
+              var newFilterData = [];
+              if(filterData.length>0){
+                for(var p=0;p<filterData.length;p++)
+                  newFilterData.push(filterData[p]["name"]);
+              }
+              invSearchRequest.searchRequest["filter"] = newFilterData;
+
+              invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr().toString();
+              invSearchRequest.searchRequest["sortOrder"] = "ASC";
+
+              console.log("Request is "+JSON.stringify(UserReq.formRequestDetails(invSearchRequest)));
           Promise.all([
               /* While search,  Token parameter has to be sent with page data */
               /* tokenInput holds that search token info */
@@ -268,24 +354,24 @@ var page = Component.extend({
     "{allInvoicesMap} change": function() {
         this.scope.appstate.attr("renderGlobalSearch",true);
         var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
-
+        //console.log("dsada "+JSON.stringify(invoiceData));
         var gridData = {"data":[],"footer":[]};
         var currencyList = {};
         for(var i=0;i<invoiceData.length;i++){
             var invTemp = {};
             invTemp["invId"] = invoiceData[i]["invId"];
             invTemp["__isChild"] = false;
-            invTemp["entity"] = invoiceData[i]["entityName"];
-            invTemp["invoiceType"] = invoiceData[i]["invoiceType"];
+            invTemp["entity"] = (invoiceData[i]["entityName"]==null)?"":invoiceData[i]["entityName"];
+            invTemp["invoiceType"] = (invoiceData[i]["invoiceType"]==null)?"":invoiceData[i]["invoiceType"];
             invTemp["contentType"] = "";
             invTemp["country"] = "";
-            invTemp["invoiceNum"] = invoiceData[i]["invoiceNumber"];
-            invTemp["invoiceAmt"] = invoiceData[i]["invoiceAmount"];
-            invTemp["dueDate"] = invoiceData[i]["invoiceDueDate"];
-            invTemp["currency"] = invoiceData[i]["invoiceCcy"];
-            invTemp["status"] = invoiceData[i]["status"];
-            invTemp["bundleName"] = invoiceData[i]["bundleName"];
-            invTemp["comments"] = invoiceData[i]["comments"][0]["comments"];
+            invTemp["invoiceNum"] = (invoiceData[i]["invoiceNumber"]==null)?"":invoiceData[i]["invoiceNumber"];
+            invTemp["invoiceAmt"] = (invoiceData[i]["invoiceAmount"]==null)?0:invoiceData[i]["invoiceAmount"];
+            invTemp["dueDate"] = (invoiceData[i]["invoiceDueDate"]==null)?"":invoiceData[i]["invoiceDueDate"];
+            invTemp["currency"] = (invoiceData[i]["invoiceCcy"]==null)?"":invoiceData[i]["invoiceCcy"];
+            invTemp["status"] = (invoiceData[i]["status"]==null)?"":invoiceData[i]["status"];
+            invTemp["bundleName"] = (invoiceData[i]["bundleName"]==null)?"":invoiceData[i]["bundleName"];
+            invTemp["comments"] = (invoiceData[i]["comments"]==null || invoiceData[i]["comments"].length==0)?"":invoiceData[i]["comments"][0];
 
             if(currencyList[invTemp["currency"]]!=undefined){
               currencyList[invTemp["currency"]] = parseInt(currencyList[invTemp["currency"]])+parseInt(invTemp["invoiceAmt"]);
@@ -305,10 +391,10 @@ var page = Component.extend({
                 invLITemp["__isChild"] = true;
                 invLITemp["entity"] = "";
                 invLITemp["invoiceType"] = "";
-                invLITemp["contentType"] = invoiceLineItems[j]["contentGrpName"];
-                invLITemp["country"] = invoiceLineItems[j]["country"];
+                invLITemp["contentType"] = (invoiceLineItems[j]["contentGrpName"]==null)?"":invoiceLineItems[j]["contentGrpName"];
+                invLITemp["country"] = (invoiceLineItems[j]["country"]==null)?"":invoiceLineItems[j]["country"];
                 invLITemp["invoiceNum"] = "";
-                invLITemp["invoiceAmt"] = invoiceLineItems[j]["lineAmount"];
+                invLITemp["invoiceAmt"] = (invoiceLineItems[j]["lineAmount"]==null)?0:invoiceLineItems[j]["lineAmount"];
                 invLITemp["dueDate"] = "";
                 invLITemp["currency"] = invTemp["currency"];
                 invLITemp["status"] = "";
@@ -373,6 +459,7 @@ var page = Component.extend({
 
           }
 
+        //console.log("gridData is "+JSON.stringify(gridData));
         //console.log("currencyList is "+JSON.stringify(gridData.footer));
         var rows = new can.List(gridData.data);
         var footerrows = new can.List(gridData.footer);
@@ -394,23 +481,66 @@ var page = Component.extend({
           var val = $(item[0]).attr("class");
            self.scope.attr('sortColumns').push(val);
 
-            var invSearchRequest = {};
-            invSearchRequest.searchRequest = {};
-            invSearchRequest.searchRequest["serviceTypeId"] = this.scope.appstate.attr('storeType');
-            invSearchRequest.searchRequest["regionId"] = this.scope.appstate.attr('region');
-            invSearchRequest.searchRequest["entityId"] = this.scope.appstate.attr('licensor');
+            var periodFrom = this.scope.appstate.attr('periodFrom');
+              var periodTo = this.scope.appstate.attr('periodTo');
+              var serTypeId = this.scope.appstate.attr('storeType');
+              var regId = this.scope.appstate.attr('region');
+              var countryId = this.scope.appstate.attr('country');
+              var licId = this.scope.appstate.attr('licensor');
+              var contGrpId = this.scope.appstate.attr('contentType');
+              //console.log("ser type id "+typeof(licId));
 
-            invSearchRequest.searchRequest["periodType"] = "P";
-            invSearchRequest.searchRequest["periodFrom"] = "201304";
-            invSearchRequest.searchRequest["periodTo"] = "201307";
+              var invSearchRequest = {};
+              invSearchRequest.searchRequest = {};
+              if(typeof(periodFrom)=="undefined")
+                invSearchRequest.searchRequest["periodFrom"] = "";
+              else
+                invSearchRequest.searchRequest["periodFrom"] = periodFrom;
 
-            invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
-            invSearchRequest.searchRequest["offset"] = "0";
-            invSearchRequest.searchRequest["limit"] = "10";
-            invSearchRequest.searchRequest["filter"] = self.scope.tokenInput.attr();
+              if(typeof(periodTo)=="undefined")
+                invSearchRequest.searchRequest["periodTo"] = "";
+              else
+                invSearchRequest.searchRequest["periodTo"] = periodTo;
 
-            invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr();
-            invSearchRequest.searchRequest["sortOrder"] = "ASC";
+              if(typeof(serTypeId)=="undefined")
+                invSearchRequest.searchRequest["serviceTypeId"] = "";
+              else
+                invSearchRequest.searchRequest["serviceTypeId"] = serTypeId['id'];
+
+              if(typeof(regId)=="undefined")
+                invSearchRequest.searchRequest["regionId"] = "";
+              else
+                invSearchRequest.searchRequest["regionId"] = regId['id'];
+              
+              invSearchRequest.searchRequest["country"] = [];
+              if(typeof(countryId)!="undefined")
+                invSearchRequest.searchRequest["country"].push(countryId['value']);
+
+              invSearchRequest.searchRequest["entityId"] = [];
+              if(typeof(licId)!="undefined")
+                invSearchRequest.searchRequest["entityId"].push(licId['id']);
+
+              invSearchRequest.searchRequest["contentGrpId"] = [];
+              if(typeof(contGrpId)!="undefined")
+                invSearchRequest.searchRequest["contentGrpId"].push(contGrpId['id']);
+
+              invSearchRequest.searchRequest["periodType"] = "P";
+
+              invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
+              invSearchRequest.searchRequest["offset"] = "0";
+              invSearchRequest.searchRequest["limit"] = "10";
+              
+              var filterData = self.scope.tokenInput.attr();
+              var newFilterData = [];
+              if(filterData.length>0){
+                for(var p=0;p<filterData.length;p++)
+                  newFilterData.push(filterData[p]["name"]);
+              }
+              invSearchRequest.searchRequest["filter"] = newFilterData;
+
+              invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr().toString();
+              invSearchRequest.searchRequest["sortOrder"] = "ASC";
+
 
             GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){
                 //console.log("passing params is "+JSON.stringify(data[0].attr()));
@@ -486,23 +616,67 @@ var page = Component.extend({
       },
       "#inputAnalyze change": function(){
               var self=this;
+              var periodFrom = this.scope.appstate.attr('periodFrom');
+              var periodTo = this.scope.appstate.attr('periodTo');
+              var serTypeId = this.scope.appstate.attr('storeType');
+              var regId = this.scope.appstate.attr('region');
+              var countryId = this.scope.appstate.attr('country');
+              var licId = this.scope.appstate.attr('licensor');
+              var contGrpId = this.scope.appstate.attr('contentType');
+              //console.log("ser type id "+typeof(licId));
+
               var invSearchRequest = {};
               invSearchRequest.searchRequest = {};
-              invSearchRequest.searchRequest["serviceTypeId"] = this.scope.appstate.attr('storeType');
-              invSearchRequest.searchRequest["regionId"] = this.scope.appstate.attr('region');
-              invSearchRequest.searchRequest["entityId"] = this.scope.appstate.attr('licensor');
+              if(typeof(periodFrom)=="undefined")
+                invSearchRequest.searchRequest["periodFrom"] = "";
+              else
+                invSearchRequest.searchRequest["periodFrom"] = periodFrom;
+
+              if(typeof(periodTo)=="undefined")
+                invSearchRequest.searchRequest["periodTo"] = "";
+              else
+                invSearchRequest.searchRequest["periodTo"] = periodTo;
+
+              if(typeof(serTypeId)=="undefined")
+                invSearchRequest.searchRequest["serviceTypeId"] = "";
+              else
+                invSearchRequest.searchRequest["serviceTypeId"] = serTypeId['id'];
+
+              if(typeof(regId)=="undefined")
+                invSearchRequest.searchRequest["regionId"] = "";
+              else
+                invSearchRequest.searchRequest["regionId"] = regId['id'];
+              
+              invSearchRequest.searchRequest["country"] = [];
+              if(typeof(countryId)!="undefined")
+                invSearchRequest.searchRequest["country"].push(countryId['value']);
+
+              invSearchRequest.searchRequest["entityId"] = [];
+              if(typeof(licId)!="undefined")
+                invSearchRequest.searchRequest["entityId"].push(licId['id']);
+
+              invSearchRequest.searchRequest["contentGrpId"] = [];
+              if(typeof(contGrpId)!="undefined")
+                invSearchRequest.searchRequest["contentGrpId"].push(contGrpId['id']);
 
               invSearchRequest.searchRequest["periodType"] = "P";
-              invSearchRequest.searchRequest["periodFrom"] = "201304";
-              invSearchRequest.searchRequest["periodTo"] = "201307";
 
               invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
               invSearchRequest.searchRequest["offset"] = "0";
               invSearchRequest.searchRequest["limit"] = "10";
-              invSearchRequest.searchRequest["filter"] = self.scope.tokenInput.attr();
+              
+              var filterData = self.scope.tokenInput.attr();
+              var newFilterData = [];
+              if(filterData.length>0){
+                for(var p=0;p<filterData.length;p++)
+                  newFilterData.push(filterData[p]["name"]);
+              }
+              invSearchRequest.searchRequest["filter"] = newFilterData;
 
-              invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr();
+              invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr().toString();
               invSearchRequest.searchRequest["sortOrder"] = "ASC";
+
+              console.log("Request are "+JSON.stringify(UserReq.formRequestDetails(invSearchRequest)));
 
               GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){
                   //console.log("passing params is "+JSON.stringify(data[0].attr()));
@@ -595,26 +769,69 @@ var page = Component.extend({
               this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
               console.log("User clicked on invoice search");
 
+              var periodFrom = this.scope.appstate.attr('periodFrom');
+              var periodTo = this.scope.appstate.attr('periodTo');
+              var serTypeId = this.scope.appstate.attr('storeType');
+              var regId = this.scope.appstate.attr('region');
+              var countryId = this.scope.appstate.attr('country');
+              var licId = this.scope.appstate.attr('licensor');
+              var contGrpId = this.scope.appstate.attr('contentType');
+              //console.log("ser type id "+typeof(licId));
+
               var invSearchRequest = {};
               invSearchRequest.searchRequest = {};
-              invSearchRequest.searchRequest["serviceTypeId"] = this.scope.appstate.attr('storeType');
-              invSearchRequest.searchRequest["regionId"] = this.scope.appstate.attr('region');
-              invSearchRequest.searchRequest["entityId"] = this.scope.appstate.attr('licensor');
+              if(typeof(periodFrom)=="undefined")
+                invSearchRequest.searchRequest["periodFrom"] = "";
+              else
+                invSearchRequest.searchRequest["periodFrom"] = periodFrom;
+
+              if(typeof(periodTo)=="undefined")
+                invSearchRequest.searchRequest["periodTo"] = "";
+              else
+                invSearchRequest.searchRequest["periodTo"] = periodTo;
+
+              if(typeof(serTypeId)=="undefined")
+                invSearchRequest.searchRequest["serviceTypeId"] = "";
+              else
+                invSearchRequest.searchRequest["serviceTypeId"] = serTypeId['id'];
+
+              if(typeof(regId)=="undefined")
+                invSearchRequest.searchRequest["regionId"] = "";
+              else
+                invSearchRequest.searchRequest["regionId"] = regId['id'];
+              
+              invSearchRequest.searchRequest["country"] = [];
+              if(typeof(countryId)!="undefined")
+                invSearchRequest.searchRequest["country"].push(countryId['value']);
+
+              invSearchRequest.searchRequest["entityId"] = [];
+              if(typeof(licId)!="undefined")
+                invSearchRequest.searchRequest["entityId"].push(licId['id']);
+
+              invSearchRequest.searchRequest["contentGrpId"] = [];
+              if(typeof(contGrpId)!="undefined")
+                invSearchRequest.searchRequest["contentGrpId"].push(contGrpId['id']);
 
               invSearchRequest.searchRequest["periodType"] = "P";
-              invSearchRequest.searchRequest["periodFrom"] = "201304";
-              invSearchRequest.searchRequest["periodTo"] = "201307";
 
               invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
               invSearchRequest.searchRequest["offset"] = "0";
               invSearchRequest.searchRequest["limit"] = "10";
-              invSearchRequest.searchRequest["filter"] = self.scope.tokenInput.attr();
+              
+              var filterData = self.scope.tokenInput.attr();
+              var newFilterData = [];
+              if(filterData.length>0){
+                for(var p=0;p<filterData.length;p++)
+                  newFilterData.push(filterData[p]["name"]);
+              }
+              invSearchRequest.searchRequest["filter"] = newFilterData;
 
-              invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr();
+              invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr().toString();
               invSearchRequest.searchRequest["sortOrder"] = "ASC";
 
+              console.log("Request are "+JSON.stringify(UserReq.formRequestDetails(invSearchRequest)));
               GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){
-                  console.log("passing params is "+JSON.stringify(data.attr()));
+                  console.log("response is "+JSON.stringify(data.attr()));
                   self.scope.allInvoicesMap.replace(data);
 
 
