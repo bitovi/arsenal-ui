@@ -20,15 +20,19 @@ var page = Component.extend({
     {
         mode:"Create",//Create or Read
         //Other request object is mentioned below
+        "searchRequest":{
         bundleSearch:{
           type:"invoices"
         },
+      },
+      "newNameRequest":{
         paymentBundle:{
           region:"Europe",
           periodFrom:'201303',
           periodTo:'201304',
           bundleType:'Regular'
         }
+      }
       };
 
       Ex: Read
@@ -54,7 +58,7 @@ var page = Component.extend({
 
         if(requestObj.mode == "Create"){
 
-            BundleNamesModel.findOne(UserReq.formRequestDetails(requestObj),function(data){
+            BundleNamesModel.findOne(UserReq.formRequestDetails(requestObj["searchRequest"]),function(data){
                   console.log("passing params is "+JSON.stringify(data.attr()));
                   self.scope.bundleNames.replace(data["paymentBundles"]);
             },function(xhr){
@@ -76,12 +80,14 @@ var page = Component.extend({
       "#paymentBundleNames change":function(){
         var self = this;
         var requestObj = JSON.parse(self.scope.attr("request"));
+        
 
+        console.log("requestObj "+JSON.stringify(UserReq.formRequestDetails(requestObj["newNameRequest"])));
           if( this.scope.attr("paymentBundleId") == 'createB'){
               self.scope.attr("createPBFlag",{input:true});
-              NewBundleNameModel.findOne(UserReq.formRequestDetails(requestObj),function(data){
-                      //console.log("passing params is "+JSON.stringify(data[0].attr()));
-                      self.scope.attr("paymentBundleName" , data[0].paymentBundle.bundleName);
+              NewBundleNameModel.findOne(UserReq.formRequestDetails(requestObj["newNameRequest"]),function(data){
+                      //console.log("passing params is "+JSON.stringify(data));
+                      self.scope.attr("paymentBundleName" , data.paymentBundle.bundleName);
               },function(xhr){
                     console.error("Error while loading: bundleNames"+xhr);
               });

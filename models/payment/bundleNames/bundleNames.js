@@ -9,6 +9,8 @@ var BundleNames = Model.extend({
     return $.ajax({
       url: RinsCommon.DOMAIN_SERVICE_URL+'paymentBundle/names',
       type: 'POST',
+      contentType: 'application/json; charset=utf-8',
+      dataType:'json',
       data: JSON.stringify(params)
     })
   },
@@ -17,7 +19,9 @@ var BundleNames = Model.extend({
     return $.ajax({
       url: RinsCommon.DOMAIN_SERVICE_URL+'paymentBundle/manage',
       type: 'POST',
-      data: JSON.stringify(params)
+      data: JSON.stringify(params),
+      dataType:'json',
+      contentType: 'application/json'
     })
   }
   //findAll: 'GET /invoiceType'

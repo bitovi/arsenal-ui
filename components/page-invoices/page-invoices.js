@@ -147,17 +147,22 @@ var page = Component.extend({
   helpers: {
         createPBRequest:function(){
                 var requestObject = {
-                    mode:"Create",
-                    bundleSearch:{
-                      type:"invoices"
+                  mode:"Create",
+                  "searchRequest":{
+                      bundleSearch:{
+                        region : "North America",
+                        type:"invoice"
+                      }
                     },
+                  "newNameRequest":{
                     paymentBundle:{
                       region:"Europe",
                       periodFrom:'201303',
                       periodTo:'201304',
                       bundleType:'Regular'
                     }
-                  };
+                  }
+              };
           // console.log(requestObject);
           return JSON.stringify(requestObject);
         }
@@ -201,7 +206,7 @@ var page = Component.extend({
                 //$subComp.scope().refreshTokenInput(item,"Delete");
             }
       });
-    
+
       var invSearchRequest = {};
       invSearchRequest.searchRequest = {};
       invSearchRequest.searchRequest["serviceTypeId"] = this.scope.appstate.attr('storeType');
@@ -565,7 +570,7 @@ var page = Component.extend({
         bundleRequest["mode"] ="ADD";
         bundleRequest["bundleLines"] =bundleLines;
 
-        console.log(JSON.stringify(bundleRequest));
+        //console.log(JSON.stringify(bundleRequest));
         BundleNamesModel.create(UserReq.formRequestDetails(bundleRequest),function(data){
             console.log("passing params is "+JSON.stringify(data));
             if(data["responseText"]=="SUCCESS"){

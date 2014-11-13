@@ -72,6 +72,7 @@ var page = Component.extend({
 	/*Form value*/
 
   	errorMsg:{},
+  	errorStatus:{},
   	invoiceContainer:[],
   	showPBR:true,
   	DelInvoiceline:[],
@@ -340,11 +341,11 @@ var page = Component.extend({
 						}
 						else{
 							removeError(event[0].id);
-							
+
 						}
 					}
-		          	
-					
+
+
 				},
 				 "{invoiceContainer} change": function() {
 				 		var self = this;  /*This block is used to update data in view with two way binding*/
@@ -394,7 +395,7 @@ var page = Component.extend({
                                $("#breakrow"+rowindex+" .amountText").attr("id","amountText"+rowindex).val(invoiceData.invoiceLines[i].lineAmount);
                                self.scope.AmountStore.attr("amountText"+rowindex, invoiceData.invoiceLines[i].lineAmount);
                                $("#breakrow"+rowindex+" #inputContent").attr("id","inputContent"+rowindex).val(invoiceData.invoiceLines[i].contentType);
-                               if(self.scope.attr("invoicetypeSelect") == "2"){
+                               if(self.scope.attr("invoicetypeSelect") == "2|ADHOC_INV"){
                                		self.scope.contentTypeStore.attr("inputContent"+rowindex, invoiceData.invoiceLines[i].adhocTypeId);
 
 
@@ -412,7 +413,7 @@ var page = Component.extend({
 
                                $("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val(invoiceData.invoiceLines[i].glAccount);
 
-                               if(self.scope.attr("invoicetypeSelect") == "2"){
+                               if(self.scope.attr("invoicetypeSelect") == "2|ADHOC_INV"){
 
 						 			self.scope.ccidGLStore.attr("ccidGL"+rowindex, invoiceData.invoiceLines[i].glAccount);
 						 		}
@@ -447,7 +448,7 @@ var page = Component.extend({
 								   		tempDelObj["lineAmount"] = self.scope.AmountStore.attr("amountText"+rowindex);
 								   		tempDelObj["lineStatus"] = "delete";
 								   		tempDelObj["adhocTypeId"] = "";
-								   		if(self.scope.attr("invoicetypeSelect") == "2"){
+								   		if(self.scope.attr("invoicetypeSelect") == "2|ADHOC_INV"){
 
 								  	 		tempDelObj["glAccount"] = self.scope.ccidGLStore.attr(inputContent);
 								  	 		tempDelObj["ccidName"] = "";
@@ -495,7 +496,7 @@ var page = Component.extend({
          	this.scope.ccidGLStore.attr(event[0].id, event[0].value)
 		},
 
-		"#licensor change": function(event){
+		"#invoicelicensor change": function(event){
 			var genObj = {licensorId:event[0].value};
 			var self = this;
 			Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
@@ -523,7 +524,7 @@ var page = Component.extend({
 
 			this.scope.attr("totalAmountVal", 0);
 
-			if(this.scope.attr("invoicetypeSelect") == "2"){  /*Adhoc*/
+			if(this.scope.attr("invoicetypeSelect") == "2|ADHOC_INV"){  /*Adhoc*/
 				this.scope.isAdhocStrore.attr("ccidGL", "GL Account");
 	  	 		this.scope.isAdhocStrore.attr("contentAdhoc", "Adhoc Type");
 	  	 		this.scope.isAdhocStrore.attr("invtype", "Adhoc");
@@ -531,7 +532,7 @@ var page = Component.extend({
 	  	 		this.scope.attr("showPBR", true);
 
 	  	 	 }
-	  	 	 else if(this.scope.attr("invoicetypeSelect") == "3"){
+	  	 	 else if(this.scope.attr("invoicetypeSelect") == "3|CASHADJ_INV"){
 			  	 this.scope.isAdhocStrore.attr("ccidGL", "CCID Document");
 			  	 this.scope.isAdhocStrore.attr("contentAdhoc", "Content Type");
 			  	 this.scope.isAdhocStrore.attr("invtype", "");
@@ -565,12 +566,12 @@ var page = Component.extend({
   	 			var genObj = {fromCurrency:'USD',
   	 					toCurrency:this.scope.currencyStore,fiscalPeriod:'201401',periodType:'P'};
   	 			//Fxrate.findAll(UserReq.formRequestDetails(genObj)),
-  	 			Fxrate.findAll(UserReq.formRequestDetails(genObj),function(data){
+  	 		/*	Fxrate.findAll(UserReq.formRequestDetails(genObj),function(data){
                   //console.log("passing params is "+JSON.stringify(data[0].attr()));
   	 			 self.scope.attr("fxrate").replace(data);
             },function(xhr){
                 console.error("Error while loading: FXRATE"+xhr);
-            });
+            }); */
 
          },
          "{paymentBundleId} change": function() {
@@ -625,19 +626,19 @@ var page = Component.extend({
 
 						/*Add invoice object creation start*/
 
-                     
+
                        var createInvoiceData = {};
 					   createInvoiceData.invoices = [];
-
+					   console.log($("#invoicelicensor option:selected").text());
 					   var tempInvoiceData = {};
-
+					   var invoicetypeVal = self.scope.invoicetypeSelect.split('|');
 					   tempInvoiceData["invoiceNumber"] = self.scope.invoicenumberStore;
-					   tempInvoiceData["invoiceTypeId"] = self.scope.invoicetypeSelect;
+					   tempInvoiceData["invoiceTypeId"] = invoicetypeVal[0];
 					   tempInvoiceData["serviceTypeId"] = 1; 
-					   tempInvoiceData["invoiceType"] = $("#invoiceType option:selected").text();
+					   tempInvoiceData["invoiceType"] = invoicetypeVal[1];
 					   tempInvoiceData["entityId"] = self.scope.licensorStore;
 					   tempInvoiceData["regionId"] = 2;
-					   tempInvoiceData["entityName"] = $("#licensor option:selected").text();
+					   tempInvoiceData["entityName"] = $("#invoicelicensor option:selected").text();
 					   tempInvoiceData["invoiceCcy"] = self.scope.currencyStore;
 					   tempInvoiceData["fxRate"] = self.scope.fxrateStore;
 					   tempInvoiceData["notes"] = self.scope.licnotesStore;
@@ -646,7 +647,8 @@ var page = Component.extend({
 					   tempInvoiceData["finalInvoiceAmount"] = self.scope.grossTotalStore;
 					   tempInvoiceData["periodType"] = "P";
 					   tempInvoiceData["netTotal"] = self.scope.totalAmountVal;
-					   tempInvoiceData["userAdjAmt"] = "0";
+					   tempInvoiceData["tax"] = self.scope.tax;
+					  
 					   tempInvoiceData["bundleId"] = $("#paymentBundleNames").val();
 					   tempInvoiceData["bundleName"] = $("#paymentBundleNames").text();
 
@@ -664,11 +666,21 @@ var page = Component.extend({
 					   tempInvoiceData["invoiceCalcDueDate"] = dateFormatter(self.scope.calduedate);
 					   tempInvoiceData["invoiceDueDate"] = dateFormatter($("#invoiceduedate input[type=text]").val()); //"06/19/2014"//self.scope.invoiceduedate;
 					   tempInvoiceData["createdBy"] = "1000";  
+					   
 					   tempInvoiceData["comments"] = [];
-					   tempInvoiceData["comments"].comments = self.scope.usercommentsStore;
+					   var tempComment = {};
+					   tempComment.comments = self.scope.usercommentsStore;
+					   tempInvoiceData["comments"].push(tempComment);
+
+					   
 					   tempInvoiceData["invoiceDocuments"] = [];
-					   tempInvoiceData["invoiceDocuments"].fileName = "file.csv";  /* this will come from file upload plugin*/
-					   tempInvoiceData["invoiceDocuments"].location = "/sample"; /* this will come from file upload plugin*/
+					   var tempDocument = {};
+					   tempDocument.fileName = "file.csv"; 
+					   tempDocument.location = "/sample";
+
+					   tempInvoiceData["invoiceDocuments"].push(tempDocument);
+
+					  
 
 					   tempInvoiceData["invoiceLines"] = [];
 
@@ -684,17 +696,20 @@ var page = Component.extend({
 								tempArry["country"] = self.scope.countryStore.attr("inputCountry"+index);
 						   		tempArry["fiscalPeriod"] = "201306"; /* this will come from period selector plugin*/
 						   		tempArry["periodType"] = "P"; /* this will come from period selector plugin*/
-						   		tempArry["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent"+index);
-						   		tempArry["contentGrpName"] = $("#inputContent"+index).text();
+						   		
+						   		
 						   		tempArry["lineAmount"] = self.scope.AmountStore.attr("amountText"+index);
-						   		tempArry["adhocTypeId"] = self.scope.contentTypeStore.attr("inputContent"+index);
-						   		if(self.scope.attr("invoicetypeSelect") == "2"){
+						   		
+						   		if(self.scope.attr("invoicetypeSelect") == "2|ADHOC_INV"){
 
 						  	 		tempArry["glAccRefId"] = self.scope.ccidGLStore.attr(inputContent);
+						  	 		tempArry["adhocTypeId"] = self.scope.contentTypeStore.attr("inputContent"+index);
 						  	 	//	tempArry["ccidFileName"] = "";
 						  	 	}
 						  	 	else{
-						  	 		tempArry["glAccRefId"] = "";
+						  	 		//tempArry["glAccRefId"] = "";
+						  	 		tempArry["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent"+index);
+						  	 		tempArry["contentGrpName"] = $("#inputContent"+index+" option:selected").text();
 						  	 	//	tempArry["ccidFileName"] = self.scope.ccidGLStore.attr(inputContent);
 						  	 	}
 
@@ -711,21 +726,58 @@ var page = Component.extend({
 									createInvoiceData.invoices.push(tempInvoiceData);
 
 
-							   	 	console.log(createInvoiceData);
+							   	 	console.log(JSON.stringify(createInvoiceData));
 
 							   	 	Promise.all([
 										      	Invoice.create(UserReq.formRequestDetails(createInvoiceData))
 										     ]).then(function(values) {
-									     		   self.scope.errorMsg.attr("responseText", values[0]["responseText"]);
+									     		  
 
-									 
-														 $("#invoiceform")[0].reset();
+												  if(values[0]["status"]=="SUCCESS"){
+			                                  		 	 var msg = "Invoice number "+self.scope.invoicenumberStore+" was saved successfully."
+											             $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
+											             $("#invmessageDiv").show();
+											             setTimeout(function(){
+											                $("#invmessageDiv").hide();
+											             },5000)
+
+
+
+												 		/*for(var i = 1; i <= rowNumber; i++){
+												 				$("#breakrow"+i).remove();
+												 		}*/
+												 	//	self.scope.attr("totalAmountVal", " ");
+													 
+						                             //  self.scope.AmountStore.attr("amountText0", " ");
+						                               
+						                              
+						                            
+
+
+
+											             $("#invoiceform")[0].reset();
 														 $("#invoiceform").data('bootstrapValidator').resetForm();
 														 $("#addInvSubmit").attr("disabled", true);
 
+														 self.scope.attr("totalAmountVal", 0);
+														 self.scope.attr("tax", 0);
+
+														self.scope.attr("AmountStore").each(function(val, key){
+										  	 				self.scope.AmountStore.removeAttr(key);
+										  	 			});
+
+											          }
+											          else
+											          {
+											          	 var msg = "Invoice number "+self.scope.invoicenumberStore+" was not saved successfully."
+											          	$("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
+											            }
+											       
+
+														 
 												});
 
-									
+
 
 
 								}else{
@@ -740,10 +792,12 @@ var page = Component.extend({
 
 								   var tempEditInvoiceData = {};
 
+								     var invoicetypeVal = self.scope.invoicetypeSelect.split('|');
+
 								   tempEditInvoiceData["invid"] = invoicemap.attr("invoiceid");
 								   tempEditInvoiceData["invoiceNumber"] = self.scope.invoicenumberStore;
-								   tempEditInvoiceData["invoiceTypeId"] = self.scope.invoicetypeSelect;
-								   tempEditInvoiceData["invoiceType"] = $("#invoiceType option:selected").text();
+								   tempEditInvoiceData["invoiceTypeId"] = invoicetypeVal[0];
+								   tempEditInvoiceData["invoiceType"] = invoicetypeVal[1];
 								   tempEditInvoiceData["entityId"] = self.scope.licensorStore;
 								   tempEditInvoiceData["invoiceCcy"] = self.scope.currencyStore;
 								   tempEditInvoiceData["fxRate"] = self.scope.fxrateStore;
@@ -753,7 +807,7 @@ var page = Component.extend({
 								   tempEditInvoiceData["invoiceAmount"] = self.scope.totalAmountVal;
 								   tempEditInvoiceData["tax"] = self.scope.tax;
 								   tempEditInvoiceData["grossTotal"] = self.scope.grossTotalStore;
-								   tempEditInvoiceData["userAdjAmt"] = "";
+								   
 								   tempEditInvoiceData["bundleId"] = $("#paymentBundleNames").val(); //self.scope.paymentBundleId;
 								   if(typeof $("#paymentBundleNames").val() == "undefined"){
 								   	 tempEditInvoiceData["bundleId"] = "";
@@ -763,7 +817,7 @@ var page = Component.extend({
 								   	tempEditInvoiceData["bundleName"] = $("#paymentBundleNames option:selected").text();
 								   }
 
-								   tempEditInvoiceData["receivedDate"] = dateFormatter((self.scope.receiveddate); //$("#receiveddate").val();//"06/19/2014",//self.scope.receiveddate;
+								   tempEditInvoiceData["receivedDate"] = dateFormatter(self.scope.receiveddate); //$("#receiveddate").val();//"06/19/2014",//self.scope.receiveddate;
 								   tempEditInvoiceData["invoiceDate"] = dateFormatter(self.scope.invoicedate);
 								   tempEditInvoiceData["invoiceCalculatedDueDate"] = dateFormatter(self.scope.calduedate);
 								   tempEditInvoiceData["invoiceDueDate"] = dateFormatter(self.scope.invoiceduedate);
@@ -824,18 +878,20 @@ var page = Component.extend({
 											   		tempArry["countryId"] = self.scope.countryStore.attr("inputCountry"+index);
 											   		tempArry["fiscalPeriod"] = "201304"; /*Data populate from period selector plugin*/
 											   		tempArry["periodType"] = "P";
-											   		tempArry["contentType"] = self.scope.contentTypeStore.attr("inputContent"+index);
+											   		
 											   		tempArry["lineAmount"] = self.scope.AmountStore.attr("amountText"+index);
 											   		tempArry["lineStatus"] = "";
-											   		tempArry["adhocTypeId"] = self.scope.contentTypeStore.attr("inputContent"+index);
-											   		if(self.scope.attr("invoicetypeSelect") == "2"){
+											   		
+											   		if(self.scope.attr("invoicetypeSelect") == "2|ADHOC_INV"){
 
 											  	 		tempArry["glAccount"] = self.scope.ccidGLStore.attr(inputContent);
-											  	 		tempArry["ccidName"] = "";
+											  	 		tempArry["adhocTypeId"] = self.scope.contentTypeStore.attr("inputContent"+index);
+											  	 		//tempArry["ccidName"] = "";
 											  	 	}
 											  	 	else{
 											  	 		tempArry["glAccount"] = "";
-											  	 		tempArry["ccidName"] = self.scope.ccidGLStore.attr(inputContent);
+											  	 		tempArry["contentType"] = self.scope.contentTypeStore.attr("inputContent"+index);
+											  	 		//tempArry["ccidName"] = self.scope.ccidGLStore.attr(inputContent);
 											  	 	}
 
 
@@ -884,7 +940,7 @@ var page = Component.extend({
 			     	Currency.findAll(UserReq.formRequestDetails(genObj)),
 			        ContentType.findAll(UserReq.formRequestDetails(genObj)),
 			      	Country.findAll(UserReq.formRequestDetails(genObj)),
-			      	
+
 			      	AdhocTypes.findAll(UserReq.formRequestDetails(genObj)),
 			      	GLaccounts.findAll(UserReq.formRequestDetails(genObj))
 
@@ -895,7 +951,7 @@ var page = Component.extend({
 		     		 self.scope.attr("currency").replace(values[2]);
 		     		 self.scope.attr("contentType").replace(values[3]);
 		     		 self.scope.attr("country").replace(values[4]);
-		     		
+
 		     		 self.scope.attr("adhocType").replace(values[5]);
 		     		 self.scope.attr("glaccounts").replace(values[6]);
 
@@ -933,18 +989,22 @@ var page = Component.extend({
   	helpers: {
           createPBRequest:function(){
                   var requestObject = {
-                      mode:"Create",
-                      bundleSearch:{
-                        region : "Europe",
-                        type:"invoices"
+                    mode:"Create",
+                    "searchRequest":{
+                        bundleSearch:{
+                          region : "Europe",
+                          type:"invoice"
+                        }
                       },
+                    "newNameRequest":{
                       paymentBundle:{
                         region:"Europe",
                         periodFrom:'201303',
                         periodTo:'201304',
                         bundleType:'Regular'
                       }
-                    };
+                    }
+                };
             // console.log(requestObject);
             return JSON.stringify(requestObject);
           },
@@ -970,7 +1030,7 @@ var page = Component.extend({
 			  	 	return percent.toFixed(2); //Round to Two decimal only
 			  	},
 			  	isAdhoc: function(){
-			  	 	if(this.attr("invoicetypeSelect") == "2"){  /*Adhoc*/
+			  	 	if(this.attr("invoicetypeSelect") == "2|ADHOC_INV"){  /*Adhoc*/
 
 			  	 		return "Adhoc";
 			  	 		//console.log(this.isAdhocStrore);
@@ -998,7 +1058,7 @@ var page = Component.extend({
 				},
 				calculateUSD:function(){
 					//var fxrate = this.fxrate.attr();
-					var fxrate = 2;
+					var fxrate = 0.75; 
 					
 					return CurrencyFormat(this.attr("totalAmountVal")*fxrate);
 					//return fxrate;

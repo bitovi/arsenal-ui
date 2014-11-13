@@ -8,10 +8,11 @@
 			     <h3 class="pageHead">Invoice Entry</h3>
 		  	{{/if}}
 	</div>
-	<div class="col-sm-2">
-		{{#if errorMsg.responseText}}
-   				<div class="alert-success alert-dimension" role="alert">{{errorMsg.responseText}}</div>
-		{{/if}}
+	<div class="col-sm-7">
+		
+		  <div id="invmessageDiv" role="alert">
+			  
+		   </div>
 	</div>
   </div>
 
@@ -38,7 +39,7 @@
 				  <div class="col-sm-6">
 					    <label for="inputEmail3" class="col-sm-6 control-label">Licensor: </label>
 					    <div class="col-sm-4 requiredBar">
-					      <select id="licensor" class="form-control" name="licensor" can-value="licensorStore">
+					      <select id="invoicelicensor" class="form-control" name="licensor" can-value="licensorStore">
 							       <option value="">Select</option>
 							       {{#each licensor}}
 							       		<option value="{{id}}">{{value}}</option>
@@ -105,7 +106,7 @@
 							       {{else}}
 							        	{{currentDate}}
 							       {{/if}}
-							    </div>
+							    </div> 
 							 </div>
 							 <div class="col-sm-6 ">
 						    	<label for="inputPassword3" class="col-sm-6 control-label">Received Date:</label>
@@ -117,7 +118,7 @@
 				  </div>
 
 				   <div class="form-group">
-				    	<div class="col-sm-6 ">
+				    	   <div class="col-sm-6 ">
 							    <label for="inputPassword3" class="col-sm-6 control-label">Invoice Date:</label>
 							    <div class="col-sm-6 invdate requiredBar">
 							     <date-picker name="invoicedate" placeholder=""></date-picker>
@@ -150,7 +151,7 @@
 
 				     		<div class="fileUploadButtonPosition">
 						    		<span class="file-input btn btn-primary btn-file btn-custom-big-disabled">
-							                Upload File <input type="file" multiple="">
+							                Select File <input type="file" multiple="">
 							         </span>
 					         </div>
 				    </div>
@@ -311,7 +312,7 @@
 				   <div class="col-sm-12" style="height:20px;"></div>
 				   <div style="text-align:right">
 						   <div class="col-sm-9"><label class="control-label">Net Total: </label></div>
-						   <div class="col-sm-3 total-amount">{{netTotal}}</div>
+						   <div class="col-sm-3 total-amount">{{netTotal}}</div> 
 
 						 	<!--<div class="col-sm-9"></div>
 						   <div class="col-sm-3 form-group tax-amount"></div>-->
