@@ -145,22 +145,24 @@ var page = Component.extend({
 
   },
   helpers: {
-        var requestObject = {
-            mode:"Create",
-            "searchRequest":{
-                bundleSearch:{
-                  type:"invoices"
-                }
-              },
-            "newNameRequest":{
-              paymentBundle:{
-                region:"Europe",
-                periodFrom:'201303',
-                periodTo:'201304',
-                bundleType:'Regular'
-              }
-            }
-        };
+        createPBRequest:function(){
+                var requestObject = {
+                  mode:"Create",
+                  "searchRequest":{
+                      bundleSearch:{
+                        region : "North America",
+                        type:"invoice"
+                      }
+                    },
+                  "newNameRequest":{
+                    paymentBundle:{
+                      region:"Europe",
+                      periodFrom:'201303',
+                      periodTo:'201304',
+                      bundleType:'Regular'
+                    }
+                  }
+              };
           // console.log(requestObject);
           return JSON.stringify(requestObject);
         }

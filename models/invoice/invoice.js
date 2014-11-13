@@ -7,16 +7,18 @@ var Invoice = Model.extend({
  	return $.ajax({
   		url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/create',
   		type: 'POST',
-  		data: JSON.stringify(params),
-  	  dataType: 'json'
+      datatype:'json',
+      contentType: 'application/json; charset=utf-8',
+  		data: JSON.stringify(params)
   	})
   },
   findOne: function(params){
  	return $.ajax({
   		url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/getByID',
   		type: 'POST',
-  		data: JSON.stringify(params),
-  	  dataType: 'json'
+      datatype:'json',
+      contentType: 'application/json; charset=utf-8',
+  		data: JSON.stringify(params)
   	})
   },
   update: function(params,type){
@@ -24,14 +26,17 @@ var Invoice = Model.extend({
      return $.ajax({
           url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/delete',
           type: 'POST',
+          datatype:'json',
+          contentType: 'application/json; charset=utf-8',
           data: JSON.stringify(params)
         })
     } else {
       return $.ajax({
           url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/update',
           type: 'POST',
-          data: JSON.stringify(params),
-          dataType: 'json'
+          datatype:'json',
+          contentType: 'application/json; charset=utf-8',
+          data: JSON.stringify(params)
         })
     }
   }

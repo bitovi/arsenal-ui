@@ -7,6 +7,8 @@ var GetAllInvoices = Model.extend({
     return $.ajax({
       url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/get',
       type: 'POST',
+      datatype:'json',
+      contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(params)
     })
   }
