@@ -1053,8 +1053,8 @@ var page = Component.extend({
 			  	 	return 'Style="height:'+vph+'px"';
 				},
 				setMinHeightBreak: function(){
-			  	 	var vph = $(window).height()-500;
-			  	 	return 'Style="min-height:'+vph+'px"';
+			  	 	var vph = $(window).height()-650;
+			  	 	return 'Style="height:'+vph+'px;overflow-y:auto"';
 				},
 				calculateUSD:function(){
 					//var fxrate = this.fxrate.attr();
