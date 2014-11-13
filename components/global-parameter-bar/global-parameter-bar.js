@@ -40,41 +40,16 @@ var GlobalParameterBar = Component.extend({
   },
   events: {
       'inserted': function(){
-          setTimeout(function(){
-            
-            $("#countriesFilter").multiselect({
-                numberDisplayed: 1,
-                includeSelectAllOption: true,
-                selectAllText: 'Select All',
-                maxHeight: 200
-                
-           });
-            $("#licensorsFilter").multiselect({
-                numberDisplayed: 1,
-                includeSelectAllOption: true,
-                selectAllText: 'Select All',
-                maxHeight: 200
-                
-           });
-            $("#contentTypesFilter").multiselect({
-                numberDisplayed: 1,
-                includeSelectAllOption: true,
-                selectAllText: 'Select All',
-                maxHeight: 200
-                
-           });
-          },2000);
+          document.getElementById("regionsFilter").selectedIndex = 2;
       },
      '#periodFrom select change': function(el, ev) {
-         var selected = $(el[0].selectedOptions).data('periodFrom');
+         //var selected = $(el[0].selectedOptions).data('periodFrom');
+         var selected = $(el[0]).val();
          this.scope.appstate.attr('periodFrom', selected);
-         //var b = $('#periodFrom .btn-group button.multiselect').attr("title");
-         //console.log("b is "+b);
-
-         //console.log("selected values are "+JSON.stringify(this.scope.appstate.attr()));
      },
      '#periodTo select change': function(el, ev) {
-         var selected = $(el[0].selectedOptions).data('periodTo');
+         //var selected = $(el[0].selectedOptions).data('periodTo');
+         var selected = $(el[0]).val();
          this.scope.appstate.attr('periodTo', selected);
      },
     '#store-type select change': function(el, ev) {
@@ -92,7 +67,7 @@ var GlobalParameterBar = Component.extend({
       ]).then(function(values) {
         //console.log(JSON.stringify(values[0][0]["data"].attr()));
         self.scope.countries.replace(values[0]);
-        self.scope.licensors.replace(values[0]);
+        self.scope.licensors.replace(values[1]);
 
         setTimeout(function(){
               $("#countriesFilter").multiselect('rebuild');
@@ -143,6 +118,33 @@ var GlobalParameterBar = Component.extend({
       self.scope.contenttypes.replace(values[4]);
       //self.scope.periodFrom.replace(values[5]);
       //self.scope.periodTo.replace(values[6]);
+
+        setTimeout(function(){
+          document.getElementById("regionsFilter").selectedIndex = 2;
+          self.scope.appstate.attr('region', "2");
+              
+          $("#countriesFilter").multiselect({
+              numberDisplayed: 1,
+              includeSelectAllOption: true,
+              selectAllText: 'Select All',
+              maxHeight: 200
+              
+         });
+          $("#licensorsFilter").multiselect({
+              numberDisplayed: 1,
+              includeSelectAllOption: true,
+              selectAllText: 'Select All',
+              maxHeight: 200
+              
+         });
+          $("#contentTypesFilter").multiselect({
+              numberDisplayed: 1,
+              includeSelectAllOption: true,
+              selectAllText: 'Select All',
+              maxHeight: 200
+              
+         });
+        },2000);
     });
   }
 });
