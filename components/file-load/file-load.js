@@ -68,21 +68,24 @@ helpers: {
                   var dataToSend = '';
                   var boundary = 'xxx' 
                   $.each(this.scope.attr("fileList"), function(key, file) {
-                      var text = '--' + boundary + '\r\n' + 'Content-Disposition: form-data; name=uploadedFile;';
+                      var text = '--' + boundary + '\r\n' + 'Content-Disposition: form-data; name="uploadedFile";';
                       var textReader = new FileReader();
                       textReader.onload = function(e) { 
                           var contents = e.target.result;
                           
                           text +="filename="
                           text += file.name;
+                          text += '\r\n';
+                          text +='Content-Type:'
+                          text += file.type
                           text += '\r\n\r\n';
-                          text +=''
                           text += contents;
                           text += '\r\n'
-                          text += '--' + boundary;
+                          //text += '--' + boundary;
                           dataToSend += text;
-                          dataToSend  += '--';
+                        //  dataToSend  += '--';
                           dataToSend += "\r\n";
+                         // alert(decodeURI(encodeURI(contents)))
                       }
                       textReader.readAsText(file);
                       //textReader.readAsDataURL(file);
@@ -92,7 +95,8 @@ helpers: {
                           
                           textReader.onloadend = function(e) { 
                               FileLoad.findOne(dataToSend,function(data){
-                                alert("Return data:"+JSON.stringify(data.responseText));
+                                //alert("Return data:"+JSON.stringify(data.responseText));
+                                console.log(JSON.stringify(data.responseText))
                               },function(xhr){
                                 console.error("Error while loading:"+xhr);
                             });
@@ -115,9 +119,4 @@ helpers: {
      }
  
 })
-
-
-
-
-
 
