@@ -15,7 +15,7 @@
   <input name= "paymentBundleName" type="text" class="form-control resizeBox" id="newPaymentBundle" can-value = "paymentBundleName">
   <img src="resources/images/alert.png" class="form-control-feedback field-invalid-date" id = "newPaymentBundle-err" style="display:none;">
   <div class="input-group-btn">
-     <button id="btnCancel" class="btn btn-sms btn-danger" type="button">X</button>
+     <button id="btnCancel" class="btn btn-sms btn-danger btn-custom" type="button">X</button>
   </div>
 </div>
 

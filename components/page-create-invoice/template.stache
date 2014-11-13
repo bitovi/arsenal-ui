@@ -1,7 +1,7 @@
 <form class="form-horizontal"  id="invoiceform" role="form">
 <div class="container-fluid create-invoice">
   <div class="row">
-    <div class="col-sm-5 pageTitle">
+    <div class="col-sm-5 pageTitleInv">
 		    {{#if editpage}}
 			    <h3 class="pageHead">Edit Invoice</h3>
 			{{else}}
@@ -173,9 +173,7 @@
 
 	   	</div>
 	   	 <div class="col-sm-6 left-border" {{setHeight}}>
-				<div class="col-sm-12 breakDown mid-header">
-						Break Down
-				 </div>
+				
 
 
 			   <div class="col-sm-12">
@@ -317,13 +315,14 @@
 						 	<!--<div class="col-sm-9"></div>
 						   <div class="col-sm-3 form-group tax-amount"></div>-->
 
-						    <div class="col-sm-12 tax-amount">
-							   <label class="control-label col-sm-9">Tax: </label>
-							    <div class="col-sm-3 " style="padding-left:2px;">
-							      <input type="text" name="taxAmount" id="taxAmount" class="form-control taxAmount" can-value="tax">
+						    <div class="col-sm-9" style="text-align:right;">
+							   <label class="control-label>Tax: </label>
+							</div>   
+							  <div class="col-sm-3 tax-amount" style="padding-left:2px;">
+							      <input type="text" name="taxAmount" id="taxAmount" class="form-control taxAmount" can-value="tax" style="width:92%;">
 							      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "taxAmount-err" style="display:none;">
-							    </div>
-						    </div>
+							  </div>
+						    
 
 						   <div class="col-sm-9"><label class="control-label">Tax %:</label></div>
 						   <div class="col-sm-3 taxpercent">{{calculateTaxPercent}}</div>

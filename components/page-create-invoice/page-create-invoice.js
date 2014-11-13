@@ -694,7 +694,7 @@ var page = Component.extend({
 								var tempArry = {};
 
 								tempArry["country"] = self.scope.countryStore.attr("inputCountry"+index);
-						   		tempArry["fiscalPeriod"] = "201306"; /* this will come from period selector plugin*/
+						   		tempArry["fiscalPeriod"] = self.scope.monthStore.attr("inputMonth"+index);/* this will come from period selector plugin*/
 						   		tempArry["periodType"] = "P"; /* this will come from period selector plugin*/
 						   		
 						   		
@@ -876,7 +876,7 @@ var page = Component.extend({
 
 
 											   		tempArry["countryId"] = self.scope.countryStore.attr("inputCountry"+index);
-											   		tempArry["fiscalPeriod"] = "201304"; /*Data populate from period selector plugin*/
+											   		tempArry["fiscalPeriod"] = self.scope.monthStore.attr("inputMonth"+index); //"201304"; /*Data populate from period selector plugin*/
 											   		tempArry["periodType"] = "P";
 											   		
 											   		tempArry["lineAmount"] = self.scope.AmountStore.attr("amountText"+index);
@@ -1024,7 +1024,7 @@ var page = Component.extend({
 			  	calculateTaxPercent: function(){
 			  	 	this.attr("taxStore", this.attr("tax"));
 			  	 	var percent = (this.attr("tax")/this.attr("totalAmountVal"))*100;
-			  	 	if(isNaN(percent))
+			  	 	if(!isFinite(percent))
 			  	 	return ""
 			  	 	else
 			  	 	return percent.toFixed(2); //Round to Two decimal only
@@ -1044,8 +1044,15 @@ var page = Component.extend({
 			  	 	}
 			  	},
 			  	grossTotal: function(){
+			  	 	
+
+			  	// 	console.log(this.attr("totalAmountVal"));
 			  	 	var grossTotal = (parseFloat(this.attr("tax")) + parseFloat(this.attr("totalAmountVal")));
 			  	 	this.attr("grossTotalStore", grossTotal);
+			  	 	if(isNaN(grossTotal)){
+			  	 		grossTotal = 0;
+			  	 	}
+
 			  	 	return CurrencyFormat(grossTotal);
 			  	},
 			  	setHeight: function(){
@@ -1053,14 +1060,20 @@ var page = Component.extend({
 			  	 	return 'Style="height:'+vph+'px"';
 				},
 				setMinHeightBreak: function(){
-			  	 	var vph = $(window).height()-650;
+			  	 	//var vph = $(window).height()-650;
+			  	 	var vph = 282;
 			  	 	return 'Style="height:'+vph+'px;overflow-y:auto"';
 				},
 				calculateUSD:function(){
 					//var fxrate = this.fxrate.attr();
 					var fxrate = 0.75; 
+					var calUSD = this.attr("totalAmountVal")*fxrate;
+
+					if(isNaN(calUSD)){
+						calUSD = 0;
+					}
 					
-					return CurrencyFormat(this.attr("totalAmountVal")*fxrate);
+					return CurrencyFormat(calUSD);
 					//return fxrate;
 				},
 				disableInvoiceType:function(){
@@ -1074,7 +1087,11 @@ var page = Component.extend({
 					}
 				},
 				netTotal:function(){
-					return CurrencyFormat(this.attr("totalAmountVal"));
+					var netTotal = this.attr("totalAmountVal");
+					if(isNaN(netTotal)){
+						netTotal = 0;
+					}
+					return CurrencyFormat(netTotal);
 				}
 
   	 	}
