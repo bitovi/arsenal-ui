@@ -48,8 +48,9 @@ table.dataTable.cell-border tbody td {
 }
 
 /*Add invoice start*/
-		.pageTitle{
-		  padding-left:75px;padding-bottom:25px;
+		.pageTitleInv{
+		  padding-left:75px;
+		 // padding-bottom:25px;
 		}
 
 		.lineDividerInvoice{
@@ -62,7 +63,7 @@ table.dataTable.cell-border tbody td {
 		}
 
 		.fileUploadContainer{
-		height:150px;
+		height:70px;
 		background-color:#D6D6D6;
 		}
 
@@ -100,6 +101,9 @@ table.dataTable.cell-border tbody td {
 .btn-file {
   position: relative;
   overflow: hidden;
+  height:30px;
+  width:100%;
+ padding-bottom:5px;
 }
 .btn-file input[type=file] {
   position: absolute;
@@ -431,13 +435,19 @@ textarea#licnotes, textarea#usercomments{
 	resize: none;
 }
 
-select#invoiceType{
-	min-width:120px;
+select#invoiceType, select#invoicelicensor, select#currency{
+	min-width:140px;
 }
 
 .popover{
 	max-width:500px;
 	width:250px;
+}
+
+.pageHead{
+	margin-top:0px;
+	padding-top:0px;
+	margin-bottom:20px;
 }
 
 }

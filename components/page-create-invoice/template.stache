@@ -1,17 +1,18 @@
 <form class="form-horizontal"  id="invoiceform" role="form">
 <div class="container-fluid create-invoice">
   <div class="row">
-    <div class="col-sm-5 pageTitle">
+    <div class="col-sm-5 pageTitleInv">
 		    {{#if editpage}}
-			    <h3>Edit Invoice</h3>
+			    <h3 class="pageHead">Edit Invoice</h3>
 			{{else}}
-			     <h3>Invoice Entry</h3>
+			     <h3 class="pageHead">Invoice Entry</h3>
 		  	{{/if}}
 	</div>
-	<div class="col-sm-2">
-		{{#if errorMsg.responseText}}
-   				<div class="alert-success alert-dimension" role="alert">{{errorMsg.responseText}}</div>
-		{{/if}}
+	<div class="col-sm-7">
+		
+		  <div id="invmessageDiv" role="alert">
+			  
+		   </div>
 	</div>
   </div>
 
@@ -38,7 +39,7 @@
 				  <div class="col-sm-6">
 					    <label for="inputEmail3" class="col-sm-6 control-label">Licensor: </label>
 					    <div class="col-sm-4 requiredBar">
-					      <select id="licensor" class="form-control" name="licensor" can-value="licensorStore">
+					      <select id="invoicelicensor" class="form-control" name="licensor" can-value="licensorStore">
 							       <option value="">Select</option>
 							       {{#each licensor}}
 							       		<option value="{{id}}">{{value}}</option>
@@ -105,7 +106,7 @@
 							       {{else}}
 							        	{{currentDate}}
 							       {{/if}}
-							    </div>
+							    </div> 
 							 </div>
 							 <div class="col-sm-6 ">
 						    	<label for="inputPassword3" class="col-sm-6 control-label">Received Date:</label>
@@ -117,7 +118,7 @@
 				  </div>
 
 				   <div class="form-group">
-				    	<div class="col-sm-6 ">
+				    	   <div class="col-sm-6 ">
 							    <label for="inputPassword3" class="col-sm-6 control-label">Invoice Date:</label>
 							    <div class="col-sm-6 invdate requiredBar">
 							     <date-picker name="invoicedate" placeholder=""></date-picker>
@@ -150,7 +151,7 @@
 
 				     		<div class="fileUploadButtonPosition">
 						    		<span class="file-input btn btn-primary btn-file btn-custom-big-disabled">
-							                Upload File <input type="file" multiple="">
+							                Select File <input type="file" multiple="">
 							         </span>
 					         </div>
 				    </div>
@@ -172,9 +173,7 @@
 
 	   	</div>
 	   	 <div class="col-sm-6 left-border" {{setHeight}}>
-				<div class="col-sm-12 breakDown mid-header">
-						Break Down
-				 </div>
+				
 
 
 			   <div class="col-sm-12">
@@ -214,8 +213,10 @@
 						            			<option value="">Select</option>
 										        <option value="201301">P1FY13</option>
 										        <option value="201302">P2FY13</option>
-										        <option value="201303">P4FY13</option>
+										        <option value="201303">P3FY13</option>
 										        <option value="201304">P4FY13</option>
+										        <option value="201305">P5FY13</option>
+										        <option value="201306">P6FY13</option>
 							        	</select>
 
 							        </td>
@@ -265,8 +266,10 @@
 						            			<option value="">Select</option>
 										        <option value="201301">P1FY13</option>
 										        <option value="201302">P2FY13</option>
-										        <option value="201303">P4FY13</option>
+										        <option value="201303">P3FY13</option>
 										        <option value="201304">P4FY13</option>
+										        <option value="201305">P5FY13</option>
+										        <option value="201306">P6FY13</option>
 							        	</select>
 							        </td>
 							        <td class="form-group">
@@ -307,18 +310,19 @@
 				   <div class="col-sm-12" style="height:20px;"></div>
 				   <div style="text-align:right">
 						   <div class="col-sm-9"><label class="control-label">Net Total: </label></div>
-						   <div class="col-sm-3 total-amount">{{netTotal}}</div>
+						   <div class="col-sm-3 total-amount">{{netTotal}}</div> 
 
 						 	<!--<div class="col-sm-9"></div>
 						   <div class="col-sm-3 form-group tax-amount"></div>-->
 
-						    <div class="col-sm-12 tax-amount">
-							   <label class="control-label col-sm-9">Tax: </label>
-							    <div class="col-sm-3 " style="padding-left:2px;">
-							      <input type="text" name="taxAmount" id="taxAmount" class="form-control taxAmount" can-value="tax">
+						    <div class="col-sm-9" style="text-align:right;">
+							   <label class="control-label>Tax: </label>
+							</div>   
+							  <div class="col-sm-3 tax-amount" style="padding-left:2px;">
+							      <input type="text" name="taxAmount" id="taxAmount" class="form-control taxAmount" can-value="tax" style="width:92%;">
 							      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "taxAmount-err" style="display:none;">
-							    </div>
-						    </div>
+							  </div>
+						    
 
 						   <div class="col-sm-9"><label class="control-label">Tax %:</label></div>
 						   <div class="col-sm-3 taxpercent">{{calculateTaxPercent}}</div>
