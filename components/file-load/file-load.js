@@ -3,6 +3,8 @@ import template from './template.stache!';
 
 import FileLoad from 'models/fileLoad/';
 
+import RinsCommon from 'utils/';
+
 Component.extend ({
 
  tag: 'file-load',
@@ -66,7 +68,7 @@ helpers: {
 
                   var count = this.scope.attr("fileList").length;
                   var dataToSend = '';
-                  var boundary = 'xxx' 
+                  var boundary = RinsCommon.BOUNDARY 
                   $.each(this.scope.attr("fileList"), function(key, file) {
                       var text = '--' + boundary + '\r\n' + 'Content-Disposition: form-data; name="uploadedFile";';
                       var textReader = new FileReader();
@@ -79,24 +81,24 @@ helpers: {
                           text +='Content-Type:'
                           text += file.type
                           text += '\r\n\r\n';
-                          text += contents;
+                          var matches = contents.match(/^data:.+\/(.+);base64,(.*)$/);
+                          text += matches[2];
                           text += '\r\n'
-                          //text += '--' + boundary;
                           dataToSend += text;
-                        //  dataToSend  += '--';
                           dataToSend += "\r\n";
-                         // alert(decodeURI(encodeURI(contents)))
+                       
                       }
-                      textReader.readAsText(file);
-                      //textReader.readAsDataURL(file);
+                      textReader.readAsDataURL(file);
                       count  = count -1;
                      
                       if(count == 0) {
                           
                           textReader.onloadend = function(e) { 
-                              FileLoad.findOne(dataToSend,function(data){
-                                //alert("Return data:"+JSON.stringify(data.responseText));
-                                console.log(JSON.stringify(data.responseText))
+
+
+                              FileLoad.findOne(dataToSend,function(data) {
+                                 //document.write (dataToSend);
+                               console.log(JSON.stringify(data));
                               },function(xhr){
                                 console.error("Error while loading:"+xhr);
                             });
@@ -119,4 +121,9 @@ helpers: {
      }
  
 })
+
+
+
+
+
 

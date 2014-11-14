@@ -1,12 +1,13 @@
 import Model from 'can/model/';
+import RinsCommon from 'utils/';
 
 var FileLoad = Model.extend({
 	
     findOne: function(params) {
     	return $.ajax({
-			url: 'http://http://ma-rinsd-lapp01.corp.apple.com:10645/api/v1/rinsui/uploadFiles',
-	    		type: 'POST',
-	 				contentType: 'multipart/form-data;boundary=xxx' ,
+    		            url: RinsCommon.UPLOAD_SERVICE_URL,
+	    				type: 'POST',
+	    				contentType: 'multipart/form-data;boundary=' + RinsCommon.BOUNDARY +';' ,
 	    				processData: false,
 	    				data: params
 
