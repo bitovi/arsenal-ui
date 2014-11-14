@@ -59,7 +59,7 @@ var page = Component.extend({
         if(requestObj.mode == "Create"){
 
             BundleNamesModel.findOne(UserReq.formRequestDetails(requestObj["searchRequest"]),function(data){
-                  console.log("passing params is "+JSON.stringify(data.attr()));
+                  //console.log(" BundleNamesModel response is "+JSON.stringify(data.attr()));
                   self.scope.bundleNames.replace(data["paymentBundles"]);
             },function(xhr){
                 console.error("Error while loading: bundleNames"+xhr);
@@ -82,11 +82,11 @@ var page = Component.extend({
         var requestObj = JSON.parse(self.scope.attr("request"));
         
 
-        console.log("requestObj "+JSON.stringify(UserReq.formRequestDetails(requestObj["newNameRequest"])));
+        //console.log("requestObj "+JSON.stringify(UserReq.formRequestDetails(requestObj["newNameRequest"])));
           if( this.scope.attr("paymentBundleId") == 'createB'){
               self.scope.attr("createPBFlag",{input:true});
               NewBundleNameModel.findOne(UserReq.formRequestDetails(requestObj["newNameRequest"]),function(data){
-                      console.log("passing params is "+JSON.stringify(data));
+                      //console.log("NewBundleNameModel response is "+JSON.stringify(data));
                       self.scope.attr("paymentBundleName" , data.paymentBundle.bundleName);
               },function(xhr){
                     console.error("Error while loading: bundleNames"+xhr);

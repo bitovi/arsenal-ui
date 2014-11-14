@@ -99,7 +99,6 @@ var GlobalParameterBar = Component.extend({
   },
   init: function() {
     var self = this;
-    console.log("in init");
     var genObj = {};
     Promise.all([
       StoreType.findAll(UserReq.formRequestDetails(genObj)),
@@ -121,7 +120,8 @@ var GlobalParameterBar = Component.extend({
 
         setTimeout(function(){
           document.getElementById("regionsFilter").selectedIndex = 2;
-          self.scope.appstate.attr('region', "2");
+          var regionInfo = {"id":"2","value":"Europe"};
+          self.scope.appstate.attr('region', regionInfo);
               
           $("#countriesFilter").multiselect({
               numberDisplayed: 1,
