@@ -40,7 +40,7 @@ Grid.extend({
         id: 'invId',
         title: '',
         contents: function(row) {
-          return stache('{{#invId}}<input type="checkbox" value="{{invId}}"/>{{/invId}}')({invId: row.invId});
+          return stache('{{#invId}}<input type="checkbox" value="{{invId}}" {{#if isChecked}}checked{{/if}}/>{{/invId}}')({invId: row.invId, isChecked: row.__isChecked});
         }
       },
       {
@@ -123,21 +123,7 @@ var page = Component.extend({
 
         }
         //console.log(type+"&&"+JSON.stringify(this.attr('tokenInput')));
-     },
-    "gridcolumntext": [
-          { "sTitle": "", "mData": "id" },
-          { "sTitle": "Entity", "mData": "entity" },
-          { "sTitle": "Invoice Type", "mData": "invoiceType" },
-          { "sTitle": "Content Type", "mData": "contentType" },
-          { "sTitle": "Country", "mData": "country" },
-          { "sTitle": "Invoice No", "mData": "invoiceNum"},
-          { "sTitle": "Invoice Amount", "mData": "invoiceAmt"},
-          { "sTitle": "Due date", "mData": "dueDate"},
-          { "sTitle": "Currency",  "mData": "currency"},
-          { "sTitle": "Status",  "mData": "status"},
-          { "sTitle": "Payment Bundle Name",  "mData": "bundleName"},
-          { "sTitle": "User comments",  "mData": "comments"}
-        ]
+     }
   },
   init: function(){
     //console.log("inside init");
@@ -160,15 +146,15 @@ var page = Component.extend({
 
                       "region": "Europe",
                       "bundleDetailsGroup" : [{ 
-                        "bndlLineId" : 1402, 
-                        "refLineType" : "REGULAR_INV",
+                        "refLineId" : 1402, 
+                        "refLineType" : "regular",
                         "periodType":"P"
                          }, { 
-                        "bndlLineId" : 1602, 
-                        "refLineType" : "REGULAR_INV",
+                        "refLineId" : 1602, 
+                        "refLineType" : "regular",
                         "periodType":"P"
                       }],   
-                      "bundleType": "REGULAR_INV"
+                      "bundleType": "regular"
                     }
                   }
               };
@@ -203,149 +189,27 @@ var page = Component.extend({
             }
         });
 
-        var periodFrom = this.scope.appstate.attr('periodFrom');
-        var periodTo = this.scope.appstate.attr('periodTo');
-        var serTypeId = this.scope.appstate.attr('storeType');
-        var regId = this.scope.appstate.attr('region');
-        var countryId = this.scope.appstate.attr('country');
-        var licId = this.scope.appstate.attr('licensor');
-        var contGrpId = this.scope.appstate.attr('contentType');
-        //console.log("ser type id "+typeof(licId));
+        /* Bundle Names is selectable only when any row is selected */ 
+        $("#paymentBundleNames").attr("disabled","disabled");
 
-        var invSearchRequest = {};
-        invSearchRequest.searchRequest = {};
-        if(typeof(periodFrom)=="undefined")
-          invSearchRequest.searchRequest["periodFrom"] = "";
-        else
-          invSearchRequest.searchRequest["periodFrom"] = periodFrom;
-
-        if(typeof(periodTo)=="undefined")
-          invSearchRequest.searchRequest["periodTo"] = "";
-        else
-          invSearchRequest.searchRequest["periodTo"] = periodTo;
-
-        if(typeof(serTypeId)=="undefined")
-          invSearchRequest.searchRequest["serviceTypeId"] = "";
-        else
-          invSearchRequest.searchRequest["serviceTypeId"] = serTypeId['id'];
-
-        if(typeof(regId)=="undefined")
-          invSearchRequest.searchRequest["regionId"] = "";
-        else
-          invSearchRequest.searchRequest["regionId"] = regId['id'];
-        
-        invSearchRequest.searchRequest["country"] = [];
-        if(typeof(countryId)!="undefined")
-          invSearchRequest.searchRequest["country"].push(countryId['value']);
-
-        invSearchRequest.searchRequest["entityId"] = [];
-        if(typeof(licId)!="undefined")
-          invSearchRequest.searchRequest["entityId"].push(licId['id']);
-
-        invSearchRequest.searchRequest["contentGrpId"] = [];
-        if(typeof(contGrpId)!="undefined")
-          invSearchRequest.searchRequest["contentGrpId"].push(contGrpId['id']);
-
-        invSearchRequest.searchRequest["periodType"] = "P";
-
-        invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
-        invSearchRequest.searchRequest["offset"] = "0";
-        invSearchRequest.searchRequest["limit"] = "10";
-        
-        var filterData = self.scope.tokenInput.attr();
-        var newFilterData = [];
-        if(filterData.length>0){
-          for(var p=0;p<filterData.length;p++)
-            newFilterData.push(filterData[p]["name"]);
-        }
-        invSearchRequest.searchRequest["filter"] = newFilterData;
-
-        invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr().toString();
-        invSearchRequest.searchRequest["sortOrder"] = "ASC";
-
-        console.log("Request is "+JSON.stringify(UserReq.formRequestDetails(invSearchRequest)));
-        Promise.all([
-            GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest))
-        ]).then(function(values) {
-          //console.log("fhjdhsfsgdjhf isa "+JSON.stringify(values[0].attr()));
-          //if(values[0][0]["responseCode"]==="0000")
-            self.scope.allInvoicesMap.replace(values[0]);
-        });
-
+         /* The below code calls {scope.appstate} change event that gets the new data for grid*/
+          /* All the neccessary parameters will be set in that event */
+         if(self.scope.appstate.attr('globalSearch')){
+            self.scope.appstate.attr('globalSearch', false);
+          }else{
+            self.scope.appstate.attr('globalSearch', true);
+          }
     },
     "{tokenInput} change": function(){
           var self= this;
           //console.log(JSON.stringify(self.scope.tokenInput.attr()));
-          var periodFrom = this.scope.appstate.attr('periodFrom');
-          var periodTo = this.scope.appstate.attr('periodTo');
-          var serTypeId = this.scope.appstate.attr('storeType');
-          var regId = this.scope.appstate.attr('region');
-          var countryId = this.scope.appstate.attr('country');
-          var licId = this.scope.appstate.attr('licensor');
-          var contGrpId = this.scope.appstate.attr('contentType');
-          //console.log("ser type id "+typeof(licId));
-
-          var invSearchRequest = {};
-          invSearchRequest.searchRequest = {};
-          if(typeof(periodFrom)=="undefined")
-            invSearchRequest.searchRequest["periodFrom"] = "";
-          else
-            invSearchRequest.searchRequest["periodFrom"] = periodFrom;
-
-          if(typeof(periodTo)=="undefined")
-            invSearchRequest.searchRequest["periodTo"] = "";
-          else
-            invSearchRequest.searchRequest["periodTo"] = periodTo;
-
-          if(typeof(serTypeId)=="undefined")
-            invSearchRequest.searchRequest["serviceTypeId"] = "";
-          else
-            invSearchRequest.searchRequest["serviceTypeId"] = serTypeId['id'];
-
-          if(typeof(regId)=="undefined")
-            invSearchRequest.searchRequest["regionId"] = "";
-          else
-            invSearchRequest.searchRequest["regionId"] = regId['id'];
-          
-          invSearchRequest.searchRequest["country"] = [];
-          if(typeof(countryId)!="undefined")
-            invSearchRequest.searchRequest["country"].push(countryId['value']);
-
-          invSearchRequest.searchRequest["entityId"] = [];
-          if(typeof(licId)!="undefined")
-            invSearchRequest.searchRequest["entityId"].push(licId['id']);
-
-          invSearchRequest.searchRequest["contentGrpId"] = [];
-          if(typeof(contGrpId)!="undefined")
-            invSearchRequest.searchRequest["contentGrpId"].push(contGrpId['id']);
-
-          invSearchRequest.searchRequest["periodType"] = "P";
-
-          invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
-          invSearchRequest.searchRequest["offset"] = "0";
-          invSearchRequest.searchRequest["limit"] = "10";
-
-          var filterData = self.scope.tokenInput.attr();
-          var newFilterData = [];
-          if(filterData.length>0){
-            for(var p=0;p<filterData.length;p++)
-              newFilterData.push(filterData[p]["name"]);
+           /* The below code calls {scope.appstate} change event that gets the new data for grid*/
+          /* All the neccessary parameters will be set in that event */
+         if(self.scope.appstate.attr('globalSearch')){
+            self.scope.appstate.attr('globalSearch', false);
+          }else{
+            self.scope.appstate.attr('globalSearch', true);
           }
-          invSearchRequest.searchRequest["filter"] = newFilterData;
-
-          invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr().toString();
-          invSearchRequest.searchRequest["sortOrder"] = "ASC";
-
-          console.log("Request is "+JSON.stringify(UserReq.formRequestDetails(invSearchRequest)));
-          Promise.all([
-              /* While search,  Token parameter has to be sent with page data */
-              /* tokenInput holds that search token info */
-            //AllInvoices.findAll({searchParam: tokenInput})
-              GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest))
-          ]).then(function(values) {
-              self.scope.allInvoicesMap.replace(values[0]);
-
-          });
     },
     "{allInvoicesMap} change": function() {
         this.scope.appstate.attr("renderGlobalSearch",true);
@@ -366,8 +230,8 @@ var page = Component.extend({
             invTemp["dueDate"] = (invoiceData[i]["invoiceDueDate"]==null)?"":invoiceData[i]["invoiceDueDate"];
             invTemp["currency"] = (invoiceData[i]["invoiceCcy"]==null)?"":invoiceData[i]["invoiceCcy"];
             invTemp["status"] = (invoiceData[i]["status"]==null)?"":invoiceData[i]["status"];
-            invTemp["bundleName"] = (invoiceData[i]["bundleName"]==null)?"":invoiceData[i]["bundleName"];
-            invTemp["comments"] = (invoiceData[i]["comments"]==null || invoiceData[i]["comments"].length==0)?"":invoiceData[i]["comments"][0];
+            invTemp["bundleName"] = (invoiceData[i]["bundleName"]==null || invoiceData[i]["bundleName"]=="--Select--")?"":invoiceData[i]["bundleName"];
+            invTemp["comments"] = (invoiceData[i]["comments"]==null || invoiceData[i]["comments"].length==0)?"":invoiceData[i]["comments"][0]["comments"];
 
             if(currencyList[invTemp["currency"]]!=undefined){
               currencyList[invTemp["currency"]] = parseInt(currencyList[invTemp["currency"]])+parseInt(invTemp["invoiceAmt"]);
@@ -480,83 +344,27 @@ var page = Component.extend({
           var val = $(item[0]).attr("class");
            self.scope.attr('sortColumns').push(val);
 
-          var periodFrom = this.scope.appstate.attr('periodFrom');
-          var periodTo = this.scope.appstate.attr('periodTo');
-          var serTypeId = this.scope.appstate.attr('storeType');
-          var regId = this.scope.appstate.attr('region');
-          var countryId = this.scope.appstate.attr('country');
-          var licId = this.scope.appstate.attr('licensor');
-          var contGrpId = this.scope.appstate.attr('contentType');
-          //console.log("ser type id "+typeof(licId));
-
-          var invSearchRequest = {};
-          invSearchRequest.searchRequest = {};
-          if(typeof(periodFrom)=="undefined")
-            invSearchRequest.searchRequest["periodFrom"] = "";
-          else
-            invSearchRequest.searchRequest["periodFrom"] = periodFrom;
-
-          if(typeof(periodTo)=="undefined")
-            invSearchRequest.searchRequest["periodTo"] = "";
-          else
-            invSearchRequest.searchRequest["periodTo"] = periodTo;
-
-          if(typeof(serTypeId)=="undefined")
-            invSearchRequest.searchRequest["serviceTypeId"] = "";
-          else
-            invSearchRequest.searchRequest["serviceTypeId"] = serTypeId['id'];
-
-          if(typeof(regId)=="undefined")
-            invSearchRequest.searchRequest["regionId"] = "";
-          else
-            invSearchRequest.searchRequest["regionId"] = regId['id'];
-          
-          invSearchRequest.searchRequest["country"] = [];
-          if(typeof(countryId)!="undefined")
-            invSearchRequest.searchRequest["country"].push(countryId['value']);
-
-          invSearchRequest.searchRequest["entityId"] = [];
-          if(typeof(licId)!="undefined")
-            invSearchRequest.searchRequest["entityId"].push(licId['id']);
-
-          invSearchRequest.searchRequest["contentGrpId"] = [];
-          if(typeof(contGrpId)!="undefined")
-            invSearchRequest.searchRequest["contentGrpId"].push(contGrpId['id']);
-
-          invSearchRequest.searchRequest["periodType"] = "P";
-
-          invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
-          invSearchRequest.searchRequest["offset"] = "0";
-          invSearchRequest.searchRequest["limit"] = "10";
-          
-          var filterData = self.scope.tokenInput.attr();
-          var newFilterData = [];
-          if(filterData.length>0){
-            for(var p=0;p<filterData.length;p++)
-              newFilterData.push(filterData[p]["name"]);
-          }
-          invSearchRequest.searchRequest["filter"] = newFilterData;
-
-          invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr().toString();
-          invSearchRequest.searchRequest["sortOrder"] = "ASC";
-
-
-          GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){
-              //console.log("invSearchRequest response is "+JSON.stringify(data[0].attr()));
-              self.scope.allInvoicesMap.replace(data);
-          },function(xhr){
-            console.error("Error while loading: bundleNames"+xhr);
-          });
+           /* The below code calls {scope.appstate} change event that gets the new data for grid*/
+           /* All the neccessary parameters will be set in that event */
+           if(self.scope.appstate.attr('globalSearch')){
+              self.scope.appstate.attr('globalSearch', false);
+            }else{
+              self.scope.appstate.attr('globalSearch', true);
+            }   
+    
     },
     '.invId :checkbox change': function(item, el, ev) {
       var self = this;
-      var val = $(item[0]).attr("value");
+      var val = parseInt($(item[0]).attr("value"));
+      var row = item.closest('tr').data('row').row;       
 
-      if($(item[0]).is(":checked"))
+      if($(item[0]).is(":checked")){
+          row.attr('__isChecked', true);   
           self.scope.attr('checkedRows').push(val);
-      else {
-          self.scope.attr('checkedRows').each(function(value, key) {
 
+      } else {
+          self.scope.attr('checkedRows').each(function(value, key) {
+              row.attr('__isChecked', false);
               if(val == value){
                   var i = self.scope.attr('checkedRows').indexOf(value);
                   self.scope.attr('checkedRows').splice(i,1);
@@ -571,11 +379,13 @@ var page = Component.extend({
           if(self.scope.attr('checkedRows').length > 0){
               $("#btnDelete").removeAttr("disabled");
               $("#btnAttach").removeAttr("disabled");
+              $("#paymentBundleNames").removeAttr("disabled");
               $("#btnSubmit").removeAttr("disabled");
           }
           else{
               $("#btnDelete").attr("disabled","disabled");
               $("#btnAttach").attr("disabled","disabled");
+              $("#paymentBundleNames").attr("disabled","disabled");
               $("#btnSubmit").attr("disabled","disabled");
           }
           var flag=true;
@@ -615,74 +425,14 @@ var page = Component.extend({
       },
       "#inputAnalyze change": function(){
               var self=this;
-              var periodFrom = this.scope.appstate.attr('periodFrom');
-              var periodTo = this.scope.appstate.attr('periodTo');
-              var serTypeId = this.scope.appstate.attr('storeType');
-              var regId = this.scope.appstate.attr('region');
-              var countryId = this.scope.appstate.attr('country');
-              var licId = this.scope.appstate.attr('licensor');
-              var contGrpId = this.scope.appstate.attr('contentType');
-              //console.log("ser type id "+typeof(licId));
 
-              var invSearchRequest = {};
-              invSearchRequest.searchRequest = {};
-              if(typeof(periodFrom)=="undefined")
-                invSearchRequest.searchRequest["periodFrom"] = "";
-              else
-                invSearchRequest.searchRequest["periodFrom"] = periodFrom;
-
-              if(typeof(periodTo)=="undefined")
-                invSearchRequest.searchRequest["periodTo"] = "";
-              else
-                invSearchRequest.searchRequest["periodTo"] = periodTo;
-
-              if(typeof(serTypeId)=="undefined")
-                invSearchRequest.searchRequest["serviceTypeId"] = "";
-              else
-                invSearchRequest.searchRequest["serviceTypeId"] = serTypeId['id'];
-
-              if(typeof(regId)=="undefined")
-                invSearchRequest.searchRequest["regionId"] = "";
-              else
-                invSearchRequest.searchRequest["regionId"] = regId['id'];
-              
-              invSearchRequest.searchRequest["country"] = [];
-              if(typeof(countryId)!="undefined")
-                invSearchRequest.searchRequest["country"].push(countryId['value']);
-
-              invSearchRequest.searchRequest["entityId"] = [];
-              if(typeof(licId)!="undefined")
-                invSearchRequest.searchRequest["entityId"].push(licId['id']);
-
-              invSearchRequest.searchRequest["contentGrpId"] = [];
-              if(typeof(contGrpId)!="undefined")
-                invSearchRequest.searchRequest["contentGrpId"].push(contGrpId['id']);
-
-              invSearchRequest.searchRequest["periodType"] = "P";
-
-              invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
-              invSearchRequest.searchRequest["offset"] = "0";
-              invSearchRequest.searchRequest["limit"] = "10";
-              
-              var filterData = self.scope.tokenInput.attr();
-              var newFilterData = [];
-              if(filterData.length>0){
-                for(var p=0;p<filterData.length;p++)
-                  newFilterData.push(filterData[p]["name"]);
+              /* The below code calls {scope.appstate} change event that gets the new data for grid*/
+              /* All the neccessary parameters will be set in that event */
+             if(self.scope.appstate.attr('globalSearch')){
+                self.scope.appstate.attr('globalSearch', false);
+              }else{
+                self.scope.appstate.attr('globalSearch', true);
               }
-              invSearchRequest.searchRequest["filter"] = newFilterData;
-
-              invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr().toString();
-              invSearchRequest.searchRequest["sortOrder"] = "ASC";
-
-              console.log("Request are "+JSON.stringify(UserReq.formRequestDetails(invSearchRequest)));
-
-              GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){
-                  //console.log("passing params is "+JSON.stringify(data[0].attr()));
-                  self.scope.allInvoicesMap.replace(data);
-              },function(xhr){
-                console.error("Error while loading: bundleNames"+xhr);
-              });
       },
       "#btnDelete click": function(){
           var self=this;
@@ -697,7 +447,14 @@ var page = Component.extend({
              $("#messageDiv").show();
              setTimeout(function(){
                 $("#messageDiv").hide();
-             },2000)
+             },2000);
+
+             /* The below calls {scope.appstate} change event that gets the new data for grid*/
+             if(this.scope.appstate.attr('globalSearch')){
+                this.scope.appstate.attr('globalSearch', false);
+              }else{
+                this.scope.appstate.attr('globalSearch', true);
+              }
           }
           else{
             $("#messageDiv").html("<label class='errorMessage'>Failed to delete invoice</label>");
@@ -732,8 +489,8 @@ var page = Component.extend({
             console.log("here");
             for(var j=0;j<invoiceLineItems.length;j++){
               var temp = {};
-                temp["lineId"]= invoiceLineItems[j]["invLineId"];
-                temp["lineType"] = lineType;
+                temp["refLineId"]= invoiceLineItems[j]["invLineId"];
+                temp["refLineType"] = lineType;
                 temp["periodType"] = (periodType==null)?"P":periodType;
                 bundleLines.push(temp);
             }
@@ -764,7 +521,7 @@ var page = Component.extend({
              $("#messageDiv").show();
              setTimeout(function(){
                 $("#messageDiv").hide();
-             },2000)
+             },2000);
             }
             else
               $("#messageDiv").html("<label class='errorMessage'>Failed to add invoices</label>")

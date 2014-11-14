@@ -128,6 +128,7 @@ var Grid = Component.extend({
     '.open-toggle click': function(el, ev) {
       var row = el.closest('tr').data('row').row;
       row.attr('__isOpen', !row.attr('__isOpen'));
+      row.attr('__isChecked', row.attr('__isChecked'));
     }
   }
 });
