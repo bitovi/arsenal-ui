@@ -306,19 +306,14 @@ var page = Component.extend({
 
 var generateTableData = function(invoiceData,currencyType){
   var gridData = {"data":[]};
-
+        
         for(var i=0;i<invoiceData.length;i++){
             var invTemp = {};
             invTemp["entityId"] = invoiceData[i]["entityId"];
             invTemp["__isChild"] = false;
             invTemp["entity"] = invoiceData[i]["entityName"];
             invTemp["invoiceNum"] = invoiceData[i]["invoiceNumber"];
-            if(currencyType=="invoice")
-              invTemp["currency"] = invoiceData[i]["paymentCurrency"];
-            else if(currencyType=="accural"){
-              invTemp["currency"] = invoiceData[i]["accuralCurrency"];
-              invTemp["fxRate"] = invoiceData[i]["fxRate"];
-            }
+            invTemp["currency"] = invoiceData[i]["paymentCurrency"];
             
             invTemp["period"] = "";
             invTemp["country"] = "";
@@ -336,6 +331,7 @@ var generateTableData = function(invoiceData,currencyType){
             invTemp["orDispPerc"] = 0;
             invTemp["liDispPerc"] = 0;
             invTemp["status"] = "";
+
             gridData.data.push(invTemp);
             var insertedId = gridData.data.length-1;
 
@@ -354,86 +350,30 @@ var generateTableData = function(invoiceData,currencyType){
                 invLITemp["period"] = invoiceLineItems[j]["fiscalPeriod"];
                 invLITemp["country"] = invoiceLineItems[j]["countryId"];
                 invLITemp["contentType"] = invoiceLineItems[j]["contentType"];
-                
-                if(currencyType=="invoice"){
+
                   invLITemp["invoiceAmt"] = invoiceLineItems[j]["invoiceAmount"];
                   invTemp["invoiceAmt"] += parseInt(invoiceLineItems[j]["invoiceAmount"]);
-                }
-                else if(currencyType=="accural"){
-                  invLITemp["invoiceAmt"] = (parseInt(invoiceLineItems[j]["invoiceAmount"])*parseFloat(invTemp["fxRate"]));
-                  invTemp["invoiceAmt"] += (parseInt(invoiceLineItems[j]["invoiceAmount"])*parseFloat(invTemp["fxRate"]));
-                }
 
-
-                
-                if(currencyType=="invoice"){
                   invLITemp["orDispAmt"] = invoiceLineItems[j]["overRepDisputeAmount"];
                   invTemp["orDispAmt"] += parseInt(invoiceLineItems[j]["overRepDisputeAmount"]);
-                }
-                else if(currencyType=="accural"){
-                  invLITemp["orDispAmt"] = (parseInt(invoiceLineItems[j]["overRepDisputeAmount"])*parseFloat(invTemp["fxRate"]));
-                  invTemp["orDispAmt"] += (parseInt(invoiceLineItems[j]["overRepDisputeAmount"])*parseFloat(invTemp["fxRate"]));
-                }
                 
-                
-                if(currencyType=="invoice"){
                   invLITemp["liDispAmt"] = invoiceLineItems[j]["lineItemDisputeAmount"];
                   invTemp["liDispAmt"] += parseInt(invoiceLineItems[j]["lineItemDisputeAmount"]); 
-                }
-                else if(currencyType=="accural"){
-                  invLITemp["liDispAmt"] = (parseInt(invoiceLineItems[j]["lineItemDisputeAmount"])*parseFloat(invTemp["fxRate"]));
-                  invTemp["liDispAmt"] += (parseInt(invoiceLineItems[j]["lineItemDisputeAmount"])*parseFloat(invTemp["fxRate"]));              
-                }
                 
-                
-                if(currencyType=="invoice"){
                   invLITemp["reconDispAmt"] = invoiceLineItems[j]["reconAmount"];
                   invTemp["reconDispAmt"] += parseInt(invoiceLineItems[j]["reconAmount"]);
-                }
-                else if(currencyType=="accural"){
-                  invLITemp["reconDispAmt"] = (parseInt(invoiceLineItems[j]["reconAmount"])*parseFloat(invTemp["fxRate"]));
-                  invTemp["reconDispAmt"] += (parseInt(invoiceLineItems[j]["reconAmount"])*parseFloat(invTemp["fxRate"]));
-                }
-                
-                
-                if(currencyType=="invoice"){
+
                   invLITemp["qaAlloc"] = invoiceLineItems[j]["onAccountAllocated"];
                   invTemp["qaAlloc"] += parseInt(invoiceLineItems[j]["onAccountAllocated"]);
-                }
-                else if(currencyType=="accural"){
-                  invLITemp["qaAlloc"] = (parseInt(invoiceLineItems[j]["onAccountAllocated"])*parseFloat(invTemp["fxRate"]));
-                  invTemp["qaAlloc"] += (parseInt(invoiceLineItems[j]["onAccountAllocated"])*parseFloat(invTemp["fxRate"]));
-                }
-                
-                
-                if(currencyType=="invoice"){
+
                   invLITemp["cnAlloc"] = invoiceLineItems[j]["cashAdjustmentAllocated"];
                   invTemp["cnAlloc"] += parseInt(invoiceLineItems[j]["cashAdjustmentAllocated"]);
-                }
-                else if(currencyType=="accural"){
-                  invLITemp["cnAlloc"] = (parseInt(invoiceLineItems[j]["cashAdjustmentAllocated"])*parseFloat(invTemp["fxRate"]));
-                  invTemp["cnAlloc"] += (parseInt(invoiceLineItems[j]["cashAdjustmentAllocated"])*parseFloat(invTemp["fxRate"]));
-                }
                 
-                
-                if(currencyType=="invoice"){
                   invLITemp["balance"] = invoiceLineItems[j]["balance"];
                   invTemp["balance"] += parseInt(invoiceLineItems[j]["balance"]);
-                }
-                else if(currencyType=="accural"){
-                  invLITemp["balance"] = (parseInt(invoiceLineItems[j]["balance"])*parseFloat(invTemp["fxRate"]));
-                  invTemp["balance"] += (parseInt(invoiceLineItems[j]["balance"])*parseFloat(invTemp["fxRate"]));
-                }
                 
-                
-                if(currencyType=="invoice"){
                   invLITemp["priorPaid"] = invoiceLineItems[j]["priorPaid"];
                   invTemp["priorPaid"] += parseInt(invoiceLineItems[j]["priorPaid"]);
-                }
-                else if(currencyType=="accural"){
-                  invLITemp["priorPaid"] = (parseInt(invoiceLineItems[j]["priorPaid"])*parseFloat(invTemp["fxRate"]));
-                  invTemp["priorPaid"] += (parseInt(invoiceLineItems[j]["priorPaid"])*parseFloat(invTemp["fxRate"]));
-                }
                 
                 invLITemp["invPaySat"] = invoiceLineItems[j]["invPaymentSat"];
                 invTemp["invPaySat"] = (invTemp["invPaySat"]+parseInt(invoiceLineItems[j]["invPaymentSat"]));
@@ -477,6 +417,8 @@ var generateTableData = function(invoiceData,currencyType){
 
 
           }
+          //console.log("currency list is "+JSON.stringify(gridData));
+          
           return gridData;
 }
 export default page;
