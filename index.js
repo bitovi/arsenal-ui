@@ -21,7 +21,7 @@ import appstate from 'models/appstate/';
 import index_template from 'index.stache!';
 import less_index from 'index.less!';
 
-import FileLoad from './components/file-load/';
+import FileUpLoader from './components/file-uploader/';
 
 appstate.bind('page', function(ev, newVal, oldVal) {
   newVal = newVal || appstate.constuctor.prototype.defaults.page;

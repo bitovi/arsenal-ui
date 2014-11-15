@@ -1,5 +1,5 @@
 
-import Model from 'can/model/';
+import Map from 'can/map/';
 
 /**
  * rinsCommon object is used to maintain for the common Properties which can be used across.
@@ -14,6 +14,6 @@ var rinsCommonObject = {
 
     },
 
-    RinsCommon = new can.Map(rinsCommonObject);
+    RinsCommon = new Map(rinsCommonObject);
 
 export default RinsCommon;
