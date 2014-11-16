@@ -59,7 +59,9 @@
         <span class="parameter-name">Country:</span>
         <select id="countriesFilter" class="form-control resizeBox" multiple="multiple">
           {{#each countries}}
-            <option {{isSelected 'country' id}} {{data 'country'}}>{{value}}</option>
+            <!--<option {{isSelected 'country' id}} {{data 'country'}}>{{value}}</option>-->
+            <option value="{{id}}">{{value}}</option>
+
           {{/each}}
         </select>
       </div>
@@ -70,7 +72,8 @@
         <span class="parameter-name">Licensor:</span>
          <select id="licensorsFilter" class="form-control resizeBox" multiple="multiple">
                {{#each licensors}}
-                  <option {{isSelected 'licensor' id}} {{data 'licensor'}}>{{value}}</option>
+                  <!--<option {{isSelected 'licensor' id}} {{data 'licensor'}}>{{value}}</option>-->
+                  <option value="{{id}}">{{value}}</option>
                 {{/each}}
          </select>
        </div>
@@ -81,7 +84,8 @@
         <span class="parameter-name">Content Type:</span>
         <select id="contentTypesFilter" class="form-control resizeBox" multiple="multiple">
                {{#each contenttypes}}
-                  <option {{isSelected 'contenttype' id}} {{data 'contenttype'}}>{{value}}</option>
+                  <!--<option {{isSelected 'contenttype' id}} {{data 'contenttype'}}>{{value}}</option>-->
+                  <option value="{{id}}">{{value}}</option>
                 {{/each}}
          </select>
       </div>

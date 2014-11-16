@@ -121,6 +121,10 @@ var Grid = Component.extend({
       // By default, if column has a value function, run the row through that.
       // Otherwise, return the value of the property on the row named for the column ID.
       return _.isFunction(column.contents) ? column.contents(row) : row.attr(column.attr('id')).toString();
+    },
+    getColumnLength: function(options){
+      //console.log("column length is "+ JSON.stringify(this.attr("columns").length));
+      return this.attr("columns").length;
     }
   },
 
@@ -128,6 +132,7 @@ var Grid = Component.extend({
     '.open-toggle click': function(el, ev) {
       var row = el.closest('tr').data('row').row;
       row.attr('__isOpen', !row.attr('__isOpen'));
+      row.attr('__isChecked', row.attr('__isChecked'));
     }
   }
 });

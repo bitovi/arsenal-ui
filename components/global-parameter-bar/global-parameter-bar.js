@@ -77,16 +77,30 @@ var GlobalParameterBar = Component.extend({
 
     },
     '#country select change': function(el, ev) {
-      var selected = $(el[0].selectedOptions).data('country');
-      this.scope.appstate.attr('country', selected);
+
+      //var selected = $(el[0].selectedOptions).data('country');
+      //console.log("Country sel id is "+$(el[0]).val());
+      var selected = $(el[0]).val();
+      if(selected != null)
+        this.scope.appstate.attr('country', selected);
+      else 
+        this.scope.appstate.removeAttr('country');
     },
     '#licensor select change': function(el, ev) {
-      var selected = $(el[0].selectedOptions).data('licensor');
-      this.scope.appstate.attr('licensor', selected);
+      //var selected = $(el[0].selectedOptions).data('licensor');
+      var selected = $(el[0]).val();
+      if(selected != null)
+        this.scope.appstate.attr('licensor', selected);
+      else 
+        this.scope.appstate.removeAttr('licensor');
     },
     '#contentType select change': function(el, ev) {
-      var selected = $(el[0].selectedOptions).data('contenttype');
-      this.scope.appstate.attr('contentType', selected);
+      //var selected = $(el[0].selectedOptions).data('contenttype');
+      var selected = $(el[0]).val();
+      if(selected != null)
+        this.scope.appstate.attr('contentType', selected);
+      else 
+        this.scope.appstate.removeAttr('contentType');
     } ,
     '#globalSearch click':function(){
       //To idntify, user has clicked the button
@@ -127,7 +141,16 @@ var GlobalParameterBar = Component.extend({
               numberDisplayed: 1,
               includeSelectAllOption: true,
               selectAllText: 'Select All',
-              maxHeight: 200
+              maxHeight: 200,
+              onChange: function(option, checked, select) {
+                  //alert('Changed option ' + $(option).val() + '.');
+                  //console.log(checked);
+                  //$(option).attr("selected","selected");
+                  var selVal = $(option).val();
+
+                  //$("#countriesFilter").val(selVal);
+                  //document.getElementById("countriesFilter").value = selVal;
+              }
               
          });
           $("#licensorsFilter").multiselect({
