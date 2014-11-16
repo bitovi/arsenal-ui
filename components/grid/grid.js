@@ -108,7 +108,12 @@ var Grid = Component.extend({
       // By default, if column has a value function, run the row through that.
       // Otherwise, return the value of the property on the row named for the column ID.
       return _.isFunction(column.contents) ? column.contents.call(this, row) : row.attr(column.attr('id')).toString();
+    },
+    getColumnLength: function(options){
+      //console.log("column length is "+ JSON.stringify(this.attr("columns").length));
+      return this.attr("columns").length;
     }
+    
   },
 
   events: {

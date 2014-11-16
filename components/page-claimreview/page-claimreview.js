@@ -114,7 +114,9 @@ var page = Component.extend({
   tag: 'page-claimreview',
   template: template,
   scope: {
+    localGlobalSearch:undefined,
     allClaimLicensorMap: [],
+    sortColumns:[],
 	  tokenInput: [],
     refreshTokenInput: function(val, type){
       //console.log("val is "+JSON.stringify(val));
@@ -216,35 +218,33 @@ var page = Component.extend({
           //$(".clicked td:first-child").css("color","blue");
 
       },
+      ".rn-grid>thead>tr>th click": function(item, el, ev){
+          var self=this;
+           //console.log($(item[0]).attr("class"));
+          var val = $(item[0]).attr("class");
+           self.scope.attr('sortColumns').push(val);
+
+           /* The below code calls {scope.appstate} change event that gets the new data for grid*/
+           /* All the neccessary parameters will be set in that event */
+           if(self.scope.appstate.attr('globalSearch')){
+              self.scope.appstate.attr('globalSearch', false);
+            }else{
+              self.scope.appstate.attr('globalSearch', true);
+            }   
+    
+      },
       "{tokenInput} change": function(){
         var self = this;
           console.log(JSON.stringify(self.scope.tokenInput.attr()));
           console.log("appState set to "+JSON.stringify(self.scope.appstate.attr()));
 
-          var claimLicSearchRequest = {};
-          claimLicSearchRequest.searchRequest = {};
-          claimLicSearchRequest.searchRequest["serviceTypeId"] = this.scope.appstate.attr('storeType');
-          claimLicSearchRequest.searchRequest["regionId"] = this.scope.appstate.attr('region');
-          claimLicSearchRequest.searchRequest["entityId"] = this.scope.appstate.attr('licensor');
-
-          claimLicSearchRequest.searchRequest["periodType"] = "P";
-          claimLicSearchRequest.searchRequest["periodFrom"] = "201304";
-          claimLicSearchRequest.searchRequest["periodTo"] = "201307";
-
-          claimLicSearchRequest.searchRequest["status"] = "";
-          claimLicSearchRequest.searchRequest["offset"] = "0";
-          claimLicSearchRequest.searchRequest["limit"] = "10";
-          claimLicSearchRequest.searchRequest["filter"] = self.scope.tokenInput.attr();
-
-          claimLicSearchRequest.searchRequest["sortBy"] = "invoiceNumber";
-          claimLicSearchRequest.searchRequest["sortOrder"] = "ASC";
-
-          claimLicensorInvoices.findAll(UserReq.formRequestDetails(claimLicSearchRequest),function(values){
-              //console.log("data is "+JSON.stringify(values[0].attr()));
-              self.scope.allClaimLicensorMap.replace(values[0]);
-          },function(xhr){
-            console.error("Error while loading: "+xhr);
-          });
+          /* The below code calls {scope.appstate} change event that gets the new data for grid*/
+          /* All the neccessary parameters will be set in that event */
+         if(self.scope.appstate.attr('globalSearch')){
+            self.scope.appstate.attr('globalSearch', false);
+          }else{
+            self.scope.appstate.attr('globalSearch', true);
+          }
       },
       "#currencyType change": function(){
         var self=this;
@@ -252,21 +252,28 @@ var page = Component.extend({
         var invoiceData = self.scope.attr().allClaimLicensorMap[0].claimLicensor;
         var currencyType = $("#currencyType").val();
 
-        var  gridData = generateTableData(invoiceData,currencyType);
-        //console.log("grid data for "+currencyType+" currency is "+JSON.stringify(gridData));
-        var rows = new can.List(gridData.data);
-        $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid rows="{rows}"></rn-claim-licensor-grid>')({rows}));
-
+        if(invoiceData!=null){
+          var  gridData = generateTableData(invoiceData,currencyType);
+          //console.log("grid data for "+currencyType+" currency is "+JSON.stringify(gridData));
+          var rows = new can.List(gridData.data);
+          $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid rows="{rows}"></rn-claim-licensor-grid>')({rows}));
+        } else {
+          $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid emptyrows="{emptyrows}"></rn-claim-licensor-grid>')({emptyrows:true}));
+        }
       },
       "{allClaimLicensorMap} change": function() {
         var self = this;
         var invoiceData = self.scope.attr().allClaimLicensorMap[0].claimLicensor;
         var currencyType = $("#currencyType").val();
 
-        var  gridData = generateTableData(invoiceData,currencyType);
-        //console.log("grid data for "+currencyType+" currency is "+JSON.stringify(gridData));
-        var rows = new can.List(gridData.data);
-        $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid rows="{rows}"></rn-claim-licensor-grid>')({rows}));
+        if(invoiceData!=null){
+          var  gridData = generateTableData(invoiceData,currencyType);
+          //console.log("grid data for "+currencyType+" currency is "+JSON.stringify(gridData));
+          var rows = new can.List(gridData.data);
+          $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid rows="{rows}"></rn-claim-licensor-grid>')({rows}));
+        } else {
+          $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid emptyrows="{emptyrows}"></rn-claim-licensor-grid>')({emptyrows:true}));
+        }
       },
       '{scope.appstate} change': function() {
           var self=this;
@@ -275,23 +282,67 @@ var page = Component.extend({
               this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
               console.log("User clicked on  search");
 
+              var periodFrom = this.scope.appstate.attr('periodFrom');
+              var periodTo = this.scope.appstate.attr('periodTo');
+              var serTypeId = this.scope.appstate.attr('storeType');
+              var regId = this.scope.appstate.attr('region');
+              var countryId = this.scope.appstate.attr()['country'];
+              var licId = this.scope.appstate.attr()['licensor'];
+              var contGrpId = this.scope.appstate.attr()['contentType'];
+
               var claimLicSearchRequest = {};
               claimLicSearchRequest.searchRequest = {};
-              claimLicSearchRequest.searchRequest["serviceTypeId"] = this.scope.appstate.attr('storeType');
-              claimLicSearchRequest.searchRequest["regionId"] = this.scope.appstate.attr('region');
-              claimLicSearchRequest.searchRequest["entityId"] = this.scope.appstate.attr('licensor');
+              if(typeof(periodFrom)=="undefined")
+                claimLicSearchRequest.searchRequest["periodFrom"] = "";
+              else
+                claimLicSearchRequest.searchRequest["periodFrom"] = periodFrom;
+
+              if(typeof(periodTo)=="undefined")
+                claimLicSearchRequest.searchRequest["periodTo"] = "";
+              else
+                claimLicSearchRequest.searchRequest["periodTo"] = periodTo;
+
+              if(typeof(serTypeId)=="undefined")
+                claimLicSearchRequest.searchRequest["serviceTypeId"] = "";
+              else
+                claimLicSearchRequest.searchRequest["serviceTypeId"] = serTypeId['id'];
+
+              if(typeof(regId)=="undefined")
+                claimLicSearchRequest.searchRequest["regionId"] = "";
+              else
+                claimLicSearchRequest.searchRequest["regionId"] = regId['id'];
+              
+              claimLicSearchRequest.searchRequest["country"] = [];
+              if(typeof(countryId)!="undefined")
+                //claimLicSearchRequest.searchRequest["country"].push(countryId['value']);
+                claimLicSearchRequest.searchRequest["country"]=countryId;
+
+              claimLicSearchRequest.searchRequest["entityId"] = [];
+              if(typeof(licId)!="undefined")
+                claimLicSearchRequest.searchRequest["entityId"] = licId;
+
+              claimLicSearchRequest.searchRequest["contentGrpId"] = [];
+              if(typeof(contGrpId)!="undefined")
+                claimLicSearchRequest.searchRequest["contentGrpId"] = contGrpId;
 
               claimLicSearchRequest.searchRequest["periodType"] = "P";
-              claimLicSearchRequest.searchRequest["periodFrom"] = "201304";
-              claimLicSearchRequest.searchRequest["periodTo"] = "201307";
 
               claimLicSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
               claimLicSearchRequest.searchRequest["offset"] = "0";
               claimLicSearchRequest.searchRequest["limit"] = "10";
-              claimLicSearchRequest.searchRequest["filter"] = self.scope.tokenInput.attr();
+              
+              var filterData = self.scope.tokenInput.attr();
+              var newFilterData = [];
+              if(filterData.length>0){
+                for(var p=0;p<filterData.length;p++)
+                  newFilterData.push(filterData[p]["name"]);
+              }
+              claimLicSearchRequest.searchRequest["filter"] = newFilterData;
 
-              claimLicSearchRequest.searchRequest["sortBy"] = "";
+              claimLicSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr().toString();
               claimLicSearchRequest.searchRequest["sortOrder"] = "ASC";
+
+              console.log("Request are "+JSON.stringify(UserReq.formRequestDetails(claimLicSearchRequest)));
 
               claimLicensorInvoices.findAll(UserReq.formRequestDetails(claimLicSearchRequest),function(values){
                   //console.log("data is "+JSON.stringify(values[0].attr()));

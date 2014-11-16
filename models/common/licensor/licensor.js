@@ -1,19 +1,20 @@
 import Model from 'can/model/';
 
-import RinsCommon from 'models/rinsCommon/';
+import RinsCommon from 'utils/';
+
 var Licensor = Model.extend({
-  // using finaAll instead of resource because I don't want to be able to save.
-
-findAll: function(){
-  return $.ajax({
-    url: RinsCommon.UI_SERVICE_URL+'getLicensors',
-    type: 'POST'
-  })
-}
-
-//findAll: 'GET /licensor'
-
+    findAll: function(params){
+     	return $.ajax({
+      		url: RinsCommon.UI_SERVICE_URL +'getLicensors',
+      		//url: 'http://17.149.230.135:10645/getLicensors',
+      		type: 'POST',
+      		data: JSON.stringify(params),
+      		dataType:'json',
+      		contentType: 'application/json'
+      	});
+    }
 }, {});
+
 
 /* able to get data in ajax done function*/
 
