@@ -1,11 +1,30 @@
 @import 'components/grid/grid.less';
+@white-border: 1px solid #fff;
 
 rn-claim-licensor-grid{
   .grid-mixin();
-
+  th, td {
+  	white-space: nowrap;
+  }
   th.checbox, td.checkbox {
     width: 30px;
   }
+  tbody {
+
+    tr {
+
+      td {
+      	border-right: @light-border;
+      	border-bottom: @white-border;
+      }
+    }
+    tr.child{
+		td {
+			background: hsl(0, 0%, 100%)
+		}
+    }
+  }
+
 }
 
 .claimContainer{
@@ -22,10 +41,21 @@ rn-claim-licensor-grid{
 		margin:0px 5px 0px 0px;
 	}
 	ul.token-input-list-facebook{
-		width:80% !important;
+		width:70% !important;
+		height: 20px !important;
+		border-radius: 4px;
+		border-color: #C6C6C6;
+	}
+	#licensorView {
+		padding:10px;
+		padding-bottom: 1px;
+		border:1px solid #ddd; 
+		border-top:0px;
 	}
 	#claimLicencorGrid {
 		background: #f4f4f4;
+		max-height: 400px;
+		overflow: auto;
 		clear: both;
 		
 		.dataTables_scrollBody {

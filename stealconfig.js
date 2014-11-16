@@ -42,7 +42,9 @@
 			"exporting": "bower_components/highcharts-release/modules/exporting.js",
 			"tokeninput": "bower_components/jquery-tokeninput/src/jquery.tokeninput.js",
 			"tokeninput.css": "bower_components/jquery-tokeninput/styles/token-input.csscss",
-			"tokeninput_theme.css": "bower_components/jquery-tokeninput/styles/token-input-facebook.csscss"
+			"tokeninput_theme.css": "bower_components/jquery-tokeninput/styles/token-input-facebook.csscss",
+			"bootstrap-multiselect": "bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect.js",
+			"bootstrap-multiselect.css": "bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.csscss",
 		},
 		meta: {
 			jquery: {
