@@ -219,114 +219,114 @@ var page = Component.extend({
         var gridData = {"data":[],"footer":[]};
         var currencyList = {};
         if(invoiceData!=null){
-        for(var i=0;i<invoiceData.length;i++){
-            var invTemp = {};
-            invTemp["invId"] = invoiceData[i]["invId"];
-            invTemp["__isChild"] = false;
-            invTemp["entity"] = (invoiceData[i]["entityName"]==null)?"":invoiceData[i]["entityName"];
-            invTemp["invoiceType"] = (invoiceData[i]["invoiceType"]==null)?"":invoiceData[i]["invoiceType"];
-            invTemp["contentType"] = "";
-            invTemp["country"] = "";
-            invTemp["invoiceNum"] = (invoiceData[i]["invoiceNumber"]==null)?"":invoiceData[i]["invoiceNumber"];
-            invTemp["invoiceAmt"] = (invoiceData[i]["invoiceAmount"]==null)?0:parseFloat(invoiceData[i]["invoiceAmount"]);
-            invTemp["dueDate"] = (invoiceData[i]["invoiceDueDate"]==null)?"":invoiceData[i]["invoiceDueDate"];
-            invTemp["currency"] = (invoiceData[i]["invoiceCcy"]==null)?"":invoiceData[i]["invoiceCcy"];
-            invTemp["status"] = (invoiceData[i]["status"]==null)?"":StatusCodes[invoiceData[i]["status"]];
-            invTemp["bundleName"] = (invoiceData[i]["bundleName"]==null || invoiceData[i]["bundleName"]=="--Select--")?"":invoiceData[i]["bundleName"];
-            invTemp["comments"] = (invoiceData[i]["comments"]==null || invoiceData[i]["comments"].length==0)?"":invoiceData[i]["comments"][0]["comments"];
+          for(var i=0;i<invoiceData.length;i++){
+              var invTemp = {};
+              invTemp["invId"] = invoiceData[i]["invId"];
+              invTemp["__isChild"] = false;
+              invTemp["entity"] = (invoiceData[i]["entityName"]==null)?"":invoiceData[i]["entityName"];
+              invTemp["invoiceType"] = (invoiceData[i]["invoiceType"]==null)?"":invoiceData[i]["invoiceType"];
+              invTemp["contentType"] = "";
+              invTemp["country"] = "";
+              invTemp["invoiceNum"] = (invoiceData[i]["invoiceNumber"]==null)?"":invoiceData[i]["invoiceNumber"];
+              invTemp["invoiceAmt"] = (invoiceData[i]["invoiceAmount"]==null)?0:parseFloat(invoiceData[i]["invoiceAmount"]);
+              invTemp["dueDate"] = (invoiceData[i]["invoiceDueDate"]==null)?"":invoiceData[i]["invoiceDueDate"];
+              invTemp["currency"] = (invoiceData[i]["invoiceCcy"]==null)?"":invoiceData[i]["invoiceCcy"];
+              invTemp["status"] = (invoiceData[i]["status"]==null)?"":StatusCodes[invoiceData[i]["status"]];
+              invTemp["bundleName"] = (invoiceData[i]["bundleName"]==null || invoiceData[i]["bundleName"]=="--Select--")?"":invoiceData[i]["bundleName"];
+              invTemp["comments"] = (invoiceData[i]["comments"]==null || invoiceData[i]["comments"].length==0)?"":invoiceData[i]["comments"][0]["comments"];
 
-            if(currencyList[invTemp["currency"]]!=undefined){
-              currencyList[invTemp["currency"]] = parseFloat(currencyList[invTemp["currency"]])+parseFloat(invTemp["invoiceAmt"]);
-            }else {
-              currencyList[invTemp["currency"]] = parseFloat(invTemp["invoiceAmt"]);
-            }
-
-            invTemp["invoiceAmt"] = CurrencyFormat(invTemp["invoiceAmt"]); //This is to format the amount with commas
-            gridData.data.push(invTemp);
-            var insertedId = gridData.data.length-1;
-
-            var invoiceLineItems = invoiceData[i]["invoiceLines"];
-            var contentTypeArr = [], countryArr = [];
-            if(invoiceLineItems.length > 0){
-              for(var j=0;j<invoiceLineItems.length;j++){
-                var invLITemp={};
-                invLITemp["invId"] = "";
-                invLITemp["__isChild"] = true;
-                invLITemp["entity"] = "";
-                invLITemp["invoiceType"] = "";
-                invLITemp["contentType"] = (invoiceLineItems[j]["contentGrpName"]==null)?"":invoiceLineItems[j]["contentGrpName"];
-                invLITemp["country"] = (invoiceLineItems[j]["country"]==null)?"":invoiceLineItems[j]["country"];
-                invLITemp["invoiceNum"] = "";
-                invLITemp["invoiceAmt"] = (invoiceLineItems[j]["lineAmount"]==null)?0:invoiceLineItems[j]["lineAmount"];
-                invLITemp["dueDate"] = "";
-                invLITemp["currency"] = invTemp["currency"];
-                invLITemp["status"] = "";
-                invLITemp["bundleName"] = "";
-                invLITemp["comments"] = "";
-                contentTypeArr.push(invLITemp["contentType"]);
-                countryArr.push(invLITemp["country"]);
-                gridData.data.push(invLITemp);
+              if(currencyList[invTemp["currency"]]!=undefined){
+                currencyList[invTemp["currency"]] = parseFloat(currencyList[invTemp["currency"]])+parseFloat(invTemp["invoiceAmt"]);
+              }else {
+                currencyList[invTemp["currency"]] = parseFloat(invTemp["invoiceAmt"]);
               }
 
+              invTemp["invoiceAmt"] = CurrencyFormat(invTemp["invoiceAmt"]); //This is to format the amount with commas
+              gridData.data.push(invTemp);
+              var insertedId = gridData.data.length-1;
+
+              var invoiceLineItems = invoiceData[i]["invoiceLines"];
+              var contentTypeArr = [], countryArr = [];
+              if(invoiceLineItems.length > 0){
+                for(var j=0;j<invoiceLineItems.length;j++){
+                  var invLITemp={};
+                  invLITemp["invId"] = "";
+                  invLITemp["__isChild"] = true;
+                  invLITemp["entity"] = "";
+                  invLITemp["invoiceType"] = "";
+                  invLITemp["contentType"] = (invoiceLineItems[j]["contentGrpName"]==null)?"":invoiceLineItems[j]["contentGrpName"];
+                  invLITemp["country"] = (invoiceLineItems[j]["country"]==null)?"":invoiceLineItems[j]["country"];
+                  invLITemp["invoiceNum"] = "";
+                  invLITemp["invoiceAmt"] = (invoiceLineItems[j]["lineAmount"]==null)?0:invoiceLineItems[j]["lineAmount"];
+                  invLITemp["dueDate"] = "";
+                  invLITemp["currency"] = invTemp["currency"];
+                  invLITemp["status"] = "";
+                  invLITemp["bundleName"] = "";
+                  invLITemp["comments"] = "";
+                  contentTypeArr.push(invLITemp["contentType"]);
+                  countryArr.push(invLITemp["country"]);
+                  gridData.data.push(invLITemp);
+                }
+
+              }
+
+              /*Below function is to remove the duplicate content type and find the count */
+              contentTypeArr = contentTypeArr.filter( function( item, index, inputArray ) {
+                     return inputArray.indexOf(item) == index;
+              });
+              if(contentTypeArr.length>1){
+                gridData.data[insertedId]["contentType"] = contentTypeArr.length+" types of Content";
+              }
+              else if(contentTypeArr.length==1)
+                gridData.data[insertedId]["contentType"] = contentTypeArr[0];
+
+              /*Below function is to remove the duplicate country and find the count */
+              countryArr = countryArr.filter( function( item, index, inputArray ) {
+                return inputArray.indexOf(item) == index;
+              });
+              if(countryArr.length>1){
+                gridData.data[insertedId]["country"] = countryArr.length+ " Countries";
+              }
+              else if(countryArr.length==1)
+                gridData.data[insertedId]["country"] = countryArr[0];
+
             }
 
-            /*Below function is to remove the duplicate content type and find the count */
-            contentTypeArr = contentTypeArr.filter( function( item, index, inputArray ) {
-                   return inputArray.indexOf(item) == index;
-            });
-            if(contentTypeArr.length>1){
-              gridData.data[insertedId]["contentType"] = contentTypeArr.length+" types of Content";
-            }
-            else if(contentTypeArr.length==1)
-              gridData.data[insertedId]["contentType"] = contentTypeArr[0];
+            var first = "true";
+            var ccyTemp;
+            for(var obj in currencyList){
+              ccyTemp = {};
+              ccyTemp["invId"] = "";
+              if(first == "true"){
+                ccyTemp["__isChild"] = false;
+                ccyTemp["entity"] = "Total in Regional Currency";
+                first = "false";
+              }
+              else {
+                ccyTemp["__isChild"] = true;
+                ccyTemp["entity"] = "";
+              }
 
-            /*Below function is to remove the duplicate country and find the count */
-            countryArr = countryArr.filter( function( item, index, inputArray ) {
-              return inputArray.indexOf(item) == index;
-            });
-            if(countryArr.length>1){
-              gridData.data[insertedId]["country"] = countryArr.length+ " Countries";
-            }
-            else if(countryArr.length==1)
-              gridData.data[insertedId]["country"] = countryArr[0];
+              ccyTemp["invoiceType"] = "";
+              ccyTemp["contentType"] = "";
+              ccyTemp["country"] = "";
+              ccyTemp["invoiceNum"] = "";
+              ccyTemp["invoiceAmt"] = CurrencyFormat(currencyList[obj]);
+              ccyTemp["dueDate"] = "";
+              ccyTemp["currency"] = obj;
+              ccyTemp["status"] = "";
+              ccyTemp["bundleName"] = "";
+              ccyTemp["comments"] = "";
 
-          }
+              gridData["footer"].push(ccyTemp);
 
-          var first = "true";
-          var ccyTemp;
-          for(var obj in currencyList){
-            ccyTemp = {};
-            ccyTemp["invId"] = "";
-            if(first == "true"){
-              ccyTemp["__isChild"] = false;
-              ccyTemp["entity"] = "Total in Regional Currency";
-              first = "false";
-            }
-            else {
-              ccyTemp["__isChild"] = true;
-              ccyTemp["entity"] = "";
             }
 
-            ccyTemp["invoiceType"] = "";
-            ccyTemp["contentType"] = "";
-            ccyTemp["country"] = "";
-            ccyTemp["invoiceNum"] = "";
-            ccyTemp["invoiceAmt"] = CurrencyFormat(currencyList[obj]);
-            ccyTemp["dueDate"] = "";
-            ccyTemp["currency"] = obj;
-            ccyTemp["status"] = "";
-            ccyTemp["bundleName"] = "";
-            ccyTemp["comments"] = "";
-
-            gridData["footer"].push(ccyTemp);
-
-          }
-
-        //console.log("gridData is "+JSON.stringify(gridData));
-        //console.log("currencyList is "+JSON.stringify(gridData.footer));
-        var rows = new can.List(gridData.data);
-        var footerrows = new can.List(gridData.footer);
-        $('#invoiceGrid').html(stache('<rn-grid-invoice rows="{rows}" footerrows="{footerrows}" emptyrows="{emptyrows}"></rn-grid-invoice>')({rows, footerrows, emptyrows:false}));
+          //console.log("gridData is "+JSON.stringify(gridData));
+          //console.log("currencyList is "+JSON.stringify(gridData.footer));
+          var rows = new can.List(gridData.data);
+          var footerrows = new can.List(gridData.footer);
+          $('#invoiceGrid').html(stache('<rn-grid-invoice rows="{rows}" footerrows="{footerrows}" emptyrows="{emptyrows}"></rn-grid-invoice>')({rows, footerrows, emptyrows:false}));
         } else {
           $('#invoiceGrid').html(stache('<rn-grid-invoice emptyrows="{emptyrows}"></rn-grid-invoice>')({emptyrows:true}));
         }
