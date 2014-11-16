@@ -8,6 +8,7 @@ import gridtemplate from './gridtemplate.stache!';
 import stache from 'can/view/stache/';
 
 import UserReq from 'utils/request/';
+import StatusCodes from 'models/common/statuscodes/';
 import GetAllInvoices from 'models/getAllInvoices/';
 import Invoice from 'models/invoice/';
 import BundleNamesModel from 'models/payment/bundleNames/';
@@ -190,7 +191,7 @@ var page = Component.extend({
         });
 
         /* Bundle Names is selectable only when any row is selected */ 
-        $("#paymentBundleNames").attr("disabled","disabled");
+        $('#paymentBundleNames').prop('disabled', 'disabled');
 
          /* The below code calls {scope.appstate} change event that gets the new data for grid*/
           /* All the neccessary parameters will be set in that event */
@@ -217,6 +218,7 @@ var page = Component.extend({
         //console.log("dsada "+JSON.stringify(invoiceData));
         var gridData = {"data":[],"footer":[]};
         var currencyList = {};
+        if(invoiceData!=null){
         for(var i=0;i<invoiceData.length;i++){
             var invTemp = {};
             invTemp["invId"] = invoiceData[i]["invId"];
@@ -226,19 +228,20 @@ var page = Component.extend({
             invTemp["contentType"] = "";
             invTemp["country"] = "";
             invTemp["invoiceNum"] = (invoiceData[i]["invoiceNumber"]==null)?"":invoiceData[i]["invoiceNumber"];
-            invTemp["invoiceAmt"] = (invoiceData[i]["invoiceAmount"]==null)?0:invoiceData[i]["invoiceAmount"];
+            invTemp["invoiceAmt"] = (invoiceData[i]["invoiceAmount"]==null)?0:parseFloat(invoiceData[i]["invoiceAmount"]);
             invTemp["dueDate"] = (invoiceData[i]["invoiceDueDate"]==null)?"":invoiceData[i]["invoiceDueDate"];
             invTemp["currency"] = (invoiceData[i]["invoiceCcy"]==null)?"":invoiceData[i]["invoiceCcy"];
-            invTemp["status"] = (invoiceData[i]["status"]==null)?"":invoiceData[i]["status"];
+            invTemp["status"] = (invoiceData[i]["status"]==null)?"":StatusCodes[invoiceData[i]["status"]];
             invTemp["bundleName"] = (invoiceData[i]["bundleName"]==null || invoiceData[i]["bundleName"]=="--Select--")?"":invoiceData[i]["bundleName"];
             invTemp["comments"] = (invoiceData[i]["comments"]==null || invoiceData[i]["comments"].length==0)?"":invoiceData[i]["comments"][0]["comments"];
 
             if(currencyList[invTemp["currency"]]!=undefined){
-              currencyList[invTemp["currency"]] = parseInt(currencyList[invTemp["currency"]])+parseInt(invTemp["invoiceAmt"]);
+              currencyList[invTemp["currency"]] = parseFloat(currencyList[invTemp["currency"]])+parseFloat(invTemp["invoiceAmt"]);
             }else {
-              currencyList[invTemp["currency"]] = parseInt(invTemp["invoiceAmt"]);
+              currencyList[invTemp["currency"]] = parseFloat(invTemp["invoiceAmt"]);
             }
 
+            invTemp["invoiceAmt"] = CurrencyFormat(invTemp["invoiceAmt"]); //This is to format the amount with commas
             gridData.data.push(invTemp);
             var insertedId = gridData.data.length-1;
 
@@ -296,7 +299,7 @@ var page = Component.extend({
             ccyTemp["invId"] = "";
             if(first == "true"){
               ccyTemp["__isChild"] = false;
-              ccyTemp["entity"] = "Total";
+              ccyTemp["entity"] = "Total in Regional Currency";
               first = "false";
             }
             else {
@@ -308,7 +311,7 @@ var page = Component.extend({
             ccyTemp["contentType"] = "";
             ccyTemp["country"] = "";
             ccyTemp["invoiceNum"] = "";
-            ccyTemp["invoiceAmt"] = currencyList[obj].toString();
+            ccyTemp["invoiceAmt"] = CurrencyFormat(currencyList[obj]);
             ccyTemp["dueDate"] = "";
             ccyTemp["currency"] = obj;
             ccyTemp["status"] = "";
@@ -323,8 +326,10 @@ var page = Component.extend({
         //console.log("currencyList is "+JSON.stringify(gridData.footer));
         var rows = new can.List(gridData.data);
         var footerrows = new can.List(gridData.footer);
-        $('#invoiceGrid').html(stache('<rn-grid-invoice rows="{rows}" footerrows="{footerrows}"></rn-grid-invoice>')({rows, footerrows}));
-
+        $('#invoiceGrid').html(stache('<rn-grid-invoice rows="{rows}" footerrows="{footerrows}" emptyrows="{emptyrows}"></rn-grid-invoice>')({rows, footerrows, emptyrows:false}));
+        } else {
+          $('#invoiceGrid').html(stache('<rn-grid-invoice emptyrows="{emptyrows}"></rn-grid-invoice>')({emptyrows:true}));
+        }
 
     },
      "#btnAdd click": function(){
@@ -334,7 +339,7 @@ var page = Component.extend({
     ".rn-grid>tbody>tr td dblclick": function(item, el, ev){
           //var invoiceid = el.closest('tr').data('row').row.id;
           var invoiceid = item.closest('tr').data('row').row.invId;
-          console.log("invoice id is "+invoiceid);
+          //console.log("invoice id is "+invoiceid);
           this.scope.appstate.attr('page','create-invoice');
           invoicemap.attr('invoiceid',invoiceid);
     },
@@ -379,13 +384,14 @@ var page = Component.extend({
           if(self.scope.attr('checkedRows').length > 0){
               $("#btnDelete").removeAttr("disabled");
               $("#btnAttach").removeAttr("disabled");
-              $("#paymentBundleNames").removeAttr("disabled");
+              $('#paymentBundleNames').prop('disabled', false);
+              $('#inputAnalyze').prop('disabled', false);
               $("#btnSubmit").removeAttr("disabled");
           }
           else{
               $("#btnDelete").attr("disabled","disabled");
               $("#btnAttach").attr("disabled","disabled");
-              $("#paymentBundleNames").attr("disabled","disabled");
+              $('#paymentBundleNames').prop('disabled', 'disabled');
               $("#btnSubmit").attr("disabled","disabled");
           }
           var flag=true;
@@ -436,7 +442,7 @@ var page = Component.extend({
       },
       "#btnDelete click": function(){
           var self=this;
-          console.log("selected Invoices are "+ self.scope.checkedRows.attr());
+          //console.log("selected Invoices are "+ self.scope.checkedRows.attr());
           var invoiceDelete = {"searchRequest":{}};
           invoiceDelete.searchRequest.ids = self.scope.checkedRows.attr();
           console.log("Delete request params are "+JSON.stringify(UserReq.formRequestDetails(invoiceDelete)));
@@ -476,7 +482,7 @@ var page = Component.extend({
 
 
         var selInvoices = self.scope.checkedRows.attr();
-        console.log("selInvoices "+JSON.stringify(selInvoices));
+        //console.log("selInvoices "+JSON.stringify(selInvoices));
         var bundleLines = [];
         for(var i=0;i<invoiceData.length;i++){
           var invId = invoiceData[i]["invId"];
@@ -485,8 +491,7 @@ var page = Component.extend({
           var invoiceLineItems = invoiceData[i]["invoiceLines"];
             //console.log("here is "+invoiceLineItems.length+","+selInvoices.indexOf(invId.toString()));
 
-          if(invoiceLineItems.length > 0 && selInvoices.indexOf(invId.toString())>-1){
-            console.log("here");
+          if(invoiceLineItems.length > 0 && selInvoices.indexOf(invId)>-1){
             for(var j=0;j<invoiceLineItems.length;j++){
               var temp = {};
                 temp["refLineId"]= invoiceLineItems[j]["invLineId"];
@@ -513,9 +518,9 @@ var page = Component.extend({
         bundleRequest["bundleLines"] =bundleLines;
 
         overAllBundleRequest["paymentBundle"].push(bundleRequest);
-        console.log(JSON.stringify(UserReq.formRequestDetails(overAllBundleRequest)));
+        console.log("Add to bundle request is "+JSON.stringify(UserReq.formRequestDetails(overAllBundleRequest)));
         BundleNamesModel.create(UserReq.formRequestDetails(overAllBundleRequest),function(data){
-            //console.log("passing params is "+JSON.stringify(data));
+            console.log("passing params is "+JSON.stringify(data));
             if(data["responseText"]=="SUCCESS"){
              $("#messageDiv").html("<label class='successMessage'>Invoices added to payment bundle successfully</label>")
              $("#messageDiv").show();
@@ -533,7 +538,7 @@ var page = Component.extend({
       },
       '{scope.appstate} change': function() {
           var self=this;
-          console.log("appState set to "+JSON.stringify(this.scope.appstate.attr()));
+          //console.log("appState set to "+JSON.stringify(this.scope.appstate.attr()));
           if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch')){
               this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
 
@@ -541,9 +546,9 @@ var page = Component.extend({
               var periodTo = this.scope.appstate.attr('periodTo');
               var serTypeId = this.scope.appstate.attr('storeType');
               var regId = this.scope.appstate.attr('region');
-              var countryId = this.scope.appstate.attr('country');
-              var licId = this.scope.appstate.attr('licensor');
-              var contGrpId = this.scope.appstate.attr('contentType');
+              var countryId = this.scope.appstate.attr()['country'];
+              var licId = this.scope.appstate.attr()['licensor'];
+              var contGrpId = this.scope.appstate.attr()['contentType'];
 
               var invSearchRequest = {};
               invSearchRequest.searchRequest = {};
@@ -569,15 +574,16 @@ var page = Component.extend({
               
               invSearchRequest.searchRequest["country"] = [];
               if(typeof(countryId)!="undefined")
-                invSearchRequest.searchRequest["country"].push(countryId['value']);
+                //invSearchRequest.searchRequest["country"].push(countryId['value']);
+                invSearchRequest.searchRequest["country"]=countryId;
 
               invSearchRequest.searchRequest["entityId"] = [];
               if(typeof(licId)!="undefined")
-                invSearchRequest.searchRequest["entityId"].push(licId['id']);
+                invSearchRequest.searchRequest["entityId"] = licId;
 
               invSearchRequest.searchRequest["contentGrpId"] = [];
               if(typeof(contGrpId)!="undefined")
-                invSearchRequest.searchRequest["contentGrpId"].push(contGrpId['id']);
+                invSearchRequest.searchRequest["contentGrpId"] = contGrpId;
 
               invSearchRequest.searchRequest["periodType"] = "P";
 
@@ -598,7 +604,7 @@ var page = Component.extend({
 
               console.log("Request are "+JSON.stringify(UserReq.formRequestDetails(invSearchRequest)));
               GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){
-                  console.log("response is "+JSON.stringify(data.attr()));
+                  //console.log("response is "+JSON.stringify(data.attr()));
                   self.scope.allInvoicesMap.replace(data);
 
 
@@ -610,5 +616,11 @@ var page = Component.extend({
       }
   }
 });
+
+function CurrencyFormat(number)
+{
+  var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+  return n;
+}
 
 export default page;

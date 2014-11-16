@@ -30,6 +30,7 @@ var stateDefaults = {
   periodFrom: undefined,
   periodTo: undefined,
   licensor: undefined,
+  country: undefined,
   region: undefined,
   storeType: undefined,
   renderGlobalSearch:false,

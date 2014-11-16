@@ -1,5 +1,6 @@
 @import 'components/grid/grid.less';
 
+@white-border: 1px solid #fff;
 rn-grid-invoice {
   .grid-mixin();
   th, td {
@@ -7,6 +8,21 @@ rn-grid-invoice {
   }
   th.checbox, td.checkbox {
     width: 30px;
+  }
+  tbody {
+
+    tr {
+
+      td {
+      	border-right: @light-border;
+      	border-bottom: @white-border;
+      }
+    }
+    tr.child{
+		td {
+			background: hsl(0, 0%, 100%)
+		}
+    }
   }
   tfoot {
 
@@ -16,7 +32,6 @@ rn-grid-invoice {
         padding: 0.5em 1em 0.5em 1em;
 
         border-top: @light-border;
-        border-right: 0px !important;
 
         &:first-child {
           border-left: @light-border;
