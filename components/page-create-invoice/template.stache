@@ -3,9 +3,9 @@
   <div class="row">
     <div class="col-sm-5 pageTitleInv">
 		    {{#if editpage}}
-			    <h3 class="pageHead">Edit Invoice</h3>
+			    <div class="pageHead">Edit Invoice</div>
 			{{else}}
-			     <h3 class="pageHead">Invoice Entry</h3>
+			     <div class="pageHead">Invoice Entry</div>
 		  	{{/if}}
 	</div>
 	<div class="col-sm-7">
@@ -23,10 +23,11 @@
 				 		<div class="col-sm-6 singleField">
 						    <label for="inputEmail3" class="col-sm-6 control-label">Invoice Type: </label>
 						    <div class="col-sm-4 requiredBarNone">
+						      
 						      <select id="invoiceType" class="form-control" can-value="invoicetypeSelect" name="invoiceType">
 								        
 								        {{#each invoiceTypes}}
-								        	<option name="{{name}}" value="{{id}}">{{value}}</option>
+								        	<option name="{{invoiceTypeName}}" value="{{invoiceTypeId}}">{{description}}</option>
 								       	{{/each}}
 							   </select>
 						    </div>
@@ -35,6 +36,22 @@
 				</div>
 			<div class="col-sm-12 lineDividerInvoice"></div>
 			<div class="col-sm-6 right-border" {{setHeight}}>
+
+				<div class="form-group">
+				  <div class="col-sm-6">
+					    <label for="inputEmail3" class="col-sm-6 control-label">Region: </label>
+					    <div class="col-sm-4 requiredBar region">
+					      <select id="invoiceRegion" class="form-control" name="region" can-value="regionStore">
+							       <option value="">Select</option>
+							       {{#each regions}}
+							       		<option value="{{id}}">{{value}}</option>
+							       	{{/each}}
+						   </select>
+					    </div>
+				  	</div>
+				  	 <div class="col-sm-6"></div>
+				  </div>
+
 				<div class="form-group">
 				  <div class="col-sm-6">
 					    <label for="inputEmail3" class="col-sm-6 control-label">Licensor: </label>
@@ -157,8 +174,12 @@
 				   <div class="col-sm-12 singleField">
 					    <label for="inputEmail3" class="col-sm-3 control-label">User Comments: </label>
 					    <div class="col-sm-9 requiredBarNone usercomments">
-					      <textarea class="form-control" name="usercomments" id="usercomments"  can-value="usercommentsStore"></textarea>
-					      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "usercomments-err" style="display:none;">
+					    {{#if editpage}}
+					      	<multiple-comments textareaid="usercomments" divid="usercommentsdiv" options="{editcommentArr}" divheight="100" isreadOnly="n"></multiple-comments>
+					    {{else}}	
+						      <textarea class="form-control" name="usercomments" id="usercomments"  can-value="usercommentsStore"></textarea>
+						      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "usercomments-err" style="display:none;"> 
+					    {{/if}}
 					    </div>
 				  	</div>
 
@@ -186,8 +207,9 @@
 						     {{#unless editpage}}
 						         <tr id="breakrow0" rowid="0">
 						            <td>
-
+						            	
 						            	<select id="inputContent0" name="inputContent[]" class="form-control inputContent">
+
 						            			<option value="">Select</option>
 							        			{{#if isAdhocStrore.adhoc}}
 								        			{{#each adhocType}}
@@ -195,13 +217,16 @@
 							       					{{/each}}
 						       					{{else}}
 							       					{{#each contentType}}
-								        				<option value="{{id}}">{{value}}</option>
+								        				<option serviceTypeId="{{serviceTypeId}}" value="{{contentGroupId}}">{{contentGroupName}}
+								        				</option>
 							       					{{/each}}
 						       					{{/if}}
 						        		</select>
+						        		
 
 						        	</td>
-						            <td class="breakdownPeriod form-group">
+						            <td class="form-group">
+						            	<div class="breakdownPeriod">
 						            	<select id="inputMonth0" name="inputMonth[]" class="form-control inputMonth">
 						            			<option value="">Select</option>
 										        <option value="201301">P1FY13</option>
@@ -211,28 +236,31 @@
 										        <option value="201305">P5FY13</option>
 										        <option value="201306">P6FY13</option>
 							        	</select>
+							        	</div>
 
 							        </td>
-							        <td class="form-group requiredBar">
-						            	<input type="text" class="form-control amountText classAmtTotal" name="amount[]" id="amountText0" placeholder="" can-value="val0" >
-
+							        <td class="form-group">
+								        <div class="requiredBar">
+							            	<input type="text" class="form-control amountText classAmtTotal" name="amount[]" id="amountText0" placeholder="" can-value="val0" >
+							            </div>	
 						            </td>
-						            <td class="breakdownCountry form-group">
+						            <td class="form-group">
+						            	<div class="breakdownCountry">
 						            	<select id="inputCountry0"  name="inputCountry[]" class="form-control inputCountry" >
 									        		<option value="">Select</option>
 									        	{{#each country}}
 									        		<option value="{{id}}">{{value}}</option>
 						       					{{/each}}
 						        		</select>
+						        		</div>
 						            </td>
 						           <td>
 						            	 {{#if isAdhocStrore.invtype}}
 								            	<select id="ccidGL0" name="ccidGL" class="form-control inputMonth">
 								            			<option value="">Select</option>
-												        <option value="4200023">4200023</option>
-										        		<option value="4200025">4200025</option>
-										        		<option value="4207023">4207023</option>
-										        		<option value="4208027">4208027</option>
+												        {{#each glaccounts}}
+									        				<option value="{{id}}">{{value}}</option>
+						       							{{/each}}
 									        	</select>
 						            	  {{else}}
 						            	 		<input type="text" class="form-control ccidGL" id="ccidGL0" name="ccidGL" placeholder="" readonly="true">
@@ -254,7 +282,8 @@
 						       					{{/each}}
 						        		</select>
 						        	</td>
-						            <td class="breakdownPeriod form-group">
+						            <td class="form-group">
+						            	<div class="breakdownPeriod">
 						            	<select id="inputMonth" name="inputMonth[]" class="form-control inputMonth">
 						            			<option value="">Select</option>
 										        <option value="201301">P1FY13</option>
@@ -264,26 +293,30 @@
 										        <option value="201305">P5FY13</option>
 										        <option value="201306">P6FY13</option>
 							        	</select>
+							        	</div>
 							        </td>
-							        <td class="form-group requiredBar">
-						            	<input type="text" class="form-control amountText classAmtTotal"  name="amount[]" placeholder="" can-value="val0">
+							        <td class="form-group">
+							        	  <div class="requiredBar">
+						            		<input type="text" class="form-control amountText classAmtTotal"  name="amount[]" placeholder="" can-value="val0">
+						            	  </div>	
 						            </td>
-						            <td class="breakdownCountry form-group">
+						            <td class="form-group">
+						            	<div class="breakdownCountry">
 						            	<select id="inputCountry" name="inputCountry[]" class="form-control inputCountry">
 									        		<option value="">Select</option>
 									        	{{#each country}}
 									        		<option value="{{id}}">{{value}}</option>
 						       					{{/each}}
 						        		</select>
+						        		</div>
 						            </td>
 						           <td>
 						            	{{#if isAdhocStrore.invtype}}
 								            	<select id="ccidGL" name="ccidGL" class="form-control inputMonth">
 								            			<option value="">Select</option>
-												        <option value="4200023">4200023</option>
-										        		<option value="4200025">4200025</option>
-										        		<option value="4207023">4207023</option>
-										        		<option value="4208027">4208027</option>
+												        {{#each glaccounts}}
+									        				<option value="{{id}}">{{value}}</option>
+						       							{{/each}}
 									        	</select>
 						            	  {{else}}
 						            	 		<input type="text" class="form-control ccidGL" id="ccidGL" name="ccidGL" placeholder="" readonly="true">
@@ -326,13 +359,15 @@
 						   <div class="col-sm-3 taxpercent">{{calculateTaxPercent}}</div>
 
 						<div class="col-sm-12 invoice-total-container">
-						   <div class="col-sm-9"><label class="control-label large-value">Invoice Total:</label></div>
-						   <div class="col-sm-3 large-value">{{grossTotal}}
-									<label class="control-label">{{currencyStore}}</label><!--Currency -->
+						   <div class="col-sm-6"></div>
+						   <div class="col-sm-6 large-value">
+						   	<label class="control-label large-value invtotal-head">Invoice Total:</label>
+						   			<label class="invtotal-value">{{grossTotal}}</label>
+							<label class="control-label inv-total">{{currencyStore}}</label><!--Currency -->
 							</div>
-							<div class="col-sm-3 col-sm-offset-9">{{calculateUSD}}
+							<div class="col-sm-3 col-sm-offset-9">
 							   {{#if totalAmountVal}}
-							   <label class="control-label">USD</label>
+							   <label class="control-label">{{calculateUSD}} USD</label>
 							   {{/if}}
 						    </div>
 						 </div>
