@@ -39,41 +39,12 @@
                   },
 
                  '#submitFiles click': function() {
-
-                    var count = this.scope.attr("fileList").length;
-                    var dataToSend = '';
-                    var boundary = RinsCommon.BOUNDARY
-                    $.each(this.scope.attr("fileList"), function(key, file) {
-                        var text = '--' + boundary + '\r\n' + 'Content-Disposition: form-data; name="uploadedFile";';
-                        var textReader = new FileReader();
-                        textReader.onload = function(e) {
-                          var contents = e.target.result;
-                          text +="filename="
-                          text += file.name;
-                          text += '\r\n';
-                          text +='Content-Type:'
-                          text += file.type
-                          text += '\r\n\r\n';
-                          var matches = contents.match(/^data:.+\/(.+);base64,(.*)$/);
-                          text += matches[2];
-                          text += '\r\n'
-                          dataToSend += text;
-                          dataToSend += "\r\n";
-                        }
-                        textReader.onloadend = function(e) {
-                        //  console.log("Data To Send=" + dataToSend)
-                          if(count == 0) {
-                            FileUpLoader.create(dataToSend,function(data) {
-                              console.log("Return data from call"+JSON.stringify(data));
-                            },function(xhr) {
-                              console.error("Error while loading:"+xhr);
-                            });
-                          }
-                        }
-                        textReader.readAsDataURL(file);
-                        count  = count - 1;
-                  });
-                },
+                   FileUpLoader.create(this.scope.attr("fileList"),function(data) {
+                      console.log("Return data from call"+JSON.stringify(data));
+                    },function(xhr) {
+                      console.error("Error while loading:"+xhr);
+                    });
+                  },
 
                 '#cancelUpload click': function() {
                     var size = this.scope.attr("fileList").length;
