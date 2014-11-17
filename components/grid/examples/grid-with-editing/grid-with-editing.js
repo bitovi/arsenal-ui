@@ -1,12 +1,10 @@
 import _ from 'lodash';
 import stache from 'can/view/stache/';
 import _less from './grid-with-editing.less!';
-import template from './template.stache!';
 import Grid from '../../grid';
 
 var GridWithEditing = Grid.extend({
   tag: 'rn-editing-grid-example',
-  template: template,
   scope: {
     editingRow: null,
     editingColumn: null
@@ -16,7 +14,7 @@ var GridWithEditing = Grid.extend({
       if(this.attr('editingRow') === row && this.attr('editingColumn') === column) {
         return stache('<input class="editing" value="{{value}}"/>')({value: column.getEditingValue(row)});
       } else {
-        return Grid.prototype.helpers.cellContents(row, column);
+        return Grid.prototype.helpers.cellContents.call(this, row, column);
       }
     }
   },
