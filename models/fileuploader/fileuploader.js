@@ -6,7 +6,7 @@ var FileUpLoader = Model.extend({
     create: function(params) {
 
     	return $.ajax({
-    		            url: RinsCommon.UI_SERVICE_URL+'/uploadFiles',
+    		            url: RinsCommon.UI_SERVICE_URL+'uploadFiles',
 	    							type: 'POST',
 	    							contentType: 'multipart/form-data;boundary=' + RinsCommon.BOUNDARY +';' ,
 	    							processData: false,
