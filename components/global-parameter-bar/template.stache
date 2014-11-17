@@ -85,7 +85,7 @@
         <select id="contentTypesFilter" class="form-control resizeBox" multiple="multiple">
                {{#each contenttypes}}
                   <!--<option {{isSelected 'contenttype' id}} {{data 'contenttype'}}>{{value}}</option>-->
-                  <option value="{{id}}">{{value}}</option>
+                  <option value="{{contentGroupId}}" data-servicetypeid={{serviceTypeId}}>{{contentGroupName}}</option>
                 {{/each}}
          </select>
       </div>

@@ -22,6 +22,7 @@ var Grid = Component.extend({
       }, ...
     */],
     rows: [],
+    footerrows:[],
     allOpen: false,
     sortedColumn: null,
     sortedDirection: null, // should be 'asc' or 'desc'
@@ -99,6 +100,7 @@ var Grid = Component.extend({
       // By default, rows are a bit more complex.
       // We have to account for child rows being invisible when their parents aren't open.
       //console.log("Footer Rows are "+JSON.stringify(this.footerrows.attr()));
+      //console.log("Footer Rows are "+JSON.stringify(this.footerrows));
       var isRowAChild = function(row) {
         // by default, just looking for __isChild = true
         return !!row.attr('__isChild');
