@@ -7,9 +7,14 @@ Grid.extend({
   scope: {
     columns: [
       {
+        id: 'toggle',
+        title: '<span class="open-toggle-all"></span>',
+        contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}}')({isChild: row.__isChild}); }
+      },
+      {
         id: 'licensor',
         title: 'Licensor',
-        contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{licensor}}')({licensor: row.licensor, isChild: row.__isChild}); }
+        contents: function(row) { return stache('{{licensor}}')({licensor: row.licensor}); }
       },
       {
         id: 'type',
@@ -18,11 +23,15 @@ Grid.extend({
       },
       {
         id: 'description',
-        title: 'Description'
+        title: 'Description',
+        sortable: true,
+        compare: function(a, b) { return (a.description < b.description ? -1 : (a.description > b.description ? 1 : 0)); }
       },
       {
         id: 'region',
-        title: 'Region'
+        title: 'Region',
+        sortable: true,
+        defaultSortDirection: 'desc'
       }
     ]
   }
@@ -32,8 +41,8 @@ var rows = new can.List(_.times(10, i => {
   return {
     licensor: 'Licensor ' + (i + 1),
     type: 'Payment',
-    description: 'Invoice #' + (i + 1),
-    region: 'Europe',
+    description: 'Invoice #' + _.random(1, 1000),
+    region: 'Europe ' + _.random(1, 9),
     '__isChild': (i % 3) !== 0
   };
 }));

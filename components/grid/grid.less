@@ -15,7 +15,7 @@
     width: 100%;
     border-radius: 8px;
     border-spacing: 0;
-    border-bottom: @light-border;
+
     color: @font-color;
 
     /* getting border radius to work right */
@@ -56,10 +56,11 @@
     th, td {
       text-align: left;
       font-weight: normal;
+      height: 1.5em;
       padding: .5em 1em;
       border-right: @dark-border;
       border-top: @dark-border;
-      border-bottom: ;
+      border-bottom: @dark-border;
 
       &:first-child {
         border-left: @dark-border;
@@ -74,7 +75,7 @@
       td {
         padding: 1em;
 
-        border-top: @light-border;
+        border-bottom: @light-border;
 
         &:first-child {
           border-left: @light-border;
@@ -98,7 +99,8 @@
     }
   }
 
-  span.open-toggle {
+  span.open-toggle,
+  span.open-toggle-all {
     display: inline-block;
 
     &:before {
@@ -106,7 +108,8 @@
     }
   }
 
-  tr.open span.open-toggle {
+  tr.open span.open-toggle,
+  tr.open span.open-toggle-all {
     transform: rotate(90deg);
   }
 

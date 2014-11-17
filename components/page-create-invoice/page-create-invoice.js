@@ -14,6 +14,8 @@ import styles from './page-create-invoice.less!';
 
 import UserReq from 'utils/request/';
 
+import fileUpload from 'components/file-uploader/'
+
 import invoicemap from 'models/sharedMap/invoice';
 import InvoiceType from 'models/common/invoice-type/';
 import ContentType from 'models/common/content-type/';
