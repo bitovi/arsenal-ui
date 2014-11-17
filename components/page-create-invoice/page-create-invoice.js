@@ -170,12 +170,9 @@ var page = Component.extend({
           	var self = this;
           	
 			this.scope.isRequired(); /*For breakdown required field*/
-<<<<<<< HEAD
 
 				$('#invoiceform').on('init.form.bv', function(e, data) {
-=======
-			$('#invoiceform').on('init.form.bv', function(e, data) {
->>>>>>> 9777b9e0f56fc8f5a4bceb296e08dac901f162bf
+					$('#invoiceform').on('init.form.bv', function(e, data) {
 			           	data.bv.disableSubmitButtons(true);
 						 $("#uploadFiles").attr("disabled", false);
 					     $("#cancelUpload").attr("disabled", false);
@@ -435,7 +432,7 @@ var page = Component.extend({
 								self.scope.createBreakline(0);*/
 
 				},
-			".form-control keyup": function(event){
+				".form-control keyup": function(event){
 
 					var self = this;
 
@@ -664,10 +661,6 @@ var page = Component.extend({
 				    self.scope.attr("currency").replace(values[0]);
 			   });
 		},
-<<<<<<< HEAD
-
-		
-=======
 		"#invoiceRegion change": function(event){
 			var genObj = {regionId:event[0].value};
 			var self = this;
@@ -677,8 +670,6 @@ var page = Component.extend({
 				    self.scope.attr("licensor").replace(values[0].entities.Licensor);
 			   });
 		},
->>>>>>> 9777b9e0f56fc8f5a4bceb296e08dac901f162bf
-
 		"#invoiceType change": function(){
 			this.scope.isRequired();
 			var self = this;
