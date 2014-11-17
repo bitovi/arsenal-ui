@@ -127,15 +127,16 @@ var GlobalParameterBar = Component.extend({
       self.scope.storetypes.replace(values[0]);
       self.scope.regions.replace(values[1]);
       self.scope.countries.replace(values[2]);
-      self.scope.licensors.replace(values[3]);
-      self.scope.contenttypes.replace(values[4]);
+      self.scope.licensors.replace(values[3]["entities"]["Licensor"]);
+      self.scope.contenttypes.replace(values[4]["contentTypes"]);
       //self.scope.periodFrom.replace(values[5]);
       //self.scope.periodTo.replace(values[6]);
-
+      var regionInfo = {"id":"2","value":"Europe"};
+      self.scope.appstate.attr('region', regionInfo);
+      
         setTimeout(function(){
           document.getElementById("regionsFilter").selectedIndex = 2;
-          var regionInfo = {"id":"2","value":"Europe"};
-          self.scope.appstate.attr('region', regionInfo);
+          
               
           $("#countriesFilter").multiselect({
               numberDisplayed: 1,

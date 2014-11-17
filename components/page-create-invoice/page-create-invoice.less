@@ -277,6 +277,7 @@ table.breakdown thead {
 
 table.breakdown thead th{
 	border: 1px solid #848484;
+	font-weight:normal;
 }
 
 .breakdown-div{
@@ -291,7 +292,17 @@ table.breakdown thead th{
 	border-left: 2px solid #d24849;
     padding-left: 2px;
     box-sizing: none;
+    height:20px;
 }
+
+.rbar{
+	border-left: 2px solid #d24849;
+    padding-left: 2px;
+    box-sizing: none;
+    height:20px;
+    float:left;
+}
+
 .requiredBarNone{
 	border-left: 2px solid transparent;
     padding-left: 2px;
@@ -386,6 +397,7 @@ label{
 	font-family:HelveticaNeue, "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif; ;
 	font-size:12px;
 	color:#848484;
+	font-weight:normal;
 }
 
 .mid-header{
@@ -399,8 +411,8 @@ label{
 }
 
 .invoice-total-container{
-	border-top: 2px solid #B0B0B5;
-	border-bottom:2px solid #B0B0B5;
+	border-top: 1px solid #c6c6c6;
+	border-bottom:1px solid #c6c6c6;
 	padding: 10px;
 }
 .large-value{
@@ -441,7 +453,7 @@ textarea#licnotes, textarea#usercomments{
 	resize: none;
 }
 
-select#invoiceType, select#invoicelicensor, select#currency{
+select#invoiceType, select#invoicelicensor, select#currency, select#invoiceRegion{
 	min-width:140px;
 }
 
@@ -454,11 +466,25 @@ select#invoiceType, select#invoicelicensor, select#currency{
 	margin-top:0px;
 	padding-top:0px;
 	margin-bottom:20px;
+	color:#1e2025;
+	font-size:24px;
 }
 
 .textDate{
 	text-align:left;
 	padding-left:0px;
+}
+
+.invtotal-head{
+	font-size:21px;
+	color:#1e2025;
+	font-weight:normal;
+}
+
+.invtotal-value{
+	font-weight:bold;
+	font-size:21px;
+	color:#3d3d3d;
 }
 
 }

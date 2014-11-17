@@ -15,6 +15,7 @@ var page = Component.extend({
   template: template,
   scope: {
     request: "@",
+    newbundlenamereq:"@",
     /*
     Ex: Create
     {
@@ -55,10 +56,10 @@ var page = Component.extend({
 
 
         var requestObj = JSON.parse(self.scope.attr("request"));
+        //console.log("requestObj is "+JSON.stringify(requestObj));
 
-        if(requestObj.mode == "Create"){
-
-            BundleNamesModel.findOne(UserReq.formRequestDetails(requestObj["searchRequest"]),function(data){
+        if(requestObj!="undefined"){
+            BundleNamesModel.findOne(UserReq.formRequestDetails(requestObj),function(data){
                   //console.log(" BundleNamesModel response is "+JSON.stringify(data.attr()));
                   self.scope.bundleNames.replace(data["paymentBundles"]);
             },function(xhr){
@@ -101,10 +102,24 @@ var page = Component.extend({
       "#btnCancel click":function(){
         this.scope.attr("createPBFlag",{select:true});
         this.scope.attr("paymentBundleId", '');
+      },
+      "{newbundlenamereq} change":function(){
+        var self = this;
+        console.log("here");
+        var requestObj = self.scope.attr("newbundlenamereq");
+        
+        console.log("requestObj "+JSON.stringify(requestObj));
+        self.scope.attr("createPBFlag",{input:true});
+        NewBundleNameModel.findOne(UserReq.formRequestDetails(requestObj),function(data){
+                console.log("NewBundleNameModel response is "+JSON.stringify(data));
+                self.scope.attr("paymentBundleName" , data.paymentBundle.bundleName);
+        },function(xhr){
+              console.error("Error while loading: bundleNames"+xhr);
+        });
+        
+
       }
     }
-
-
 });
 
 

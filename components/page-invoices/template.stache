@@ -37,7 +37,7 @@
         </select>
 
         <label  style="margin-left:10px" for="inputPaymentBundle">Bundle Name:</label>
-        <create-pb request="{{createPBRequest}}"></create-pb>
+        <create-pb request="{{createPBRequest}}" newbundlenamereq="{{newPBnameRequest}}"></create-pb>
 
         <button id="btnSubmit" type="submit"  class="btn btn-primary buttonSubmit btn-custom-big" disabled>Add to Payment Bundle</button>
     </div>
