@@ -22,11 +22,11 @@
 				 	<div class="col-sm-6">
 				 		<div class="col-sm-6 singleField">
 						    <label for="inputEmail3" class="col-sm-6 control-label">Invoice Type: </label>
-						    <div class="col-sm-4 requiredBar">
+						    <div class="col-sm-4 requiredBarNone">
 						      <select id="invoiceType" class="form-control" can-value="invoicetypeSelect" name="invoiceType">
-								        <option value="">Select</option>
+								        
 								        {{#each invoiceTypes}}
-								        	<option value="{{id}}">{{value}}</option>
+								        	<option name="{{name}}" value="{{id}}">{{value}}</option>
 								       	{{/each}}
 							   </select>
 						    </div>
@@ -38,7 +38,7 @@
 				<div class="form-group">
 				  <div class="col-sm-6">
 					    <label for="inputEmail3" class="col-sm-6 control-label">Licensor: </label>
-					    <div class="col-sm-4 requiredBar">
+					    <div class="col-sm-4 requiredBar licensor">
 					      <select id="invoicelicensor" class="form-control" name="licensor" can-value="licensorStore">
 							       <option value="">Select</option>
 							       {{#each licensor}}
@@ -54,7 +54,7 @@
 
 						 <div class="col-sm-6">
 							    <label for="inputPassword3" class="col-sm-6 control-label">Currency:</label>
-							    <div class="col-sm-4 requiredBar">
+							    <div class="col-sm-4 requiredBar currency">
 							      <select id="currency" class="form-control" name="currency" can-value="currencyStore">
 									        <option value="">Select</option>
 									       {{#each currency}}
@@ -88,8 +88,8 @@
 				   <div class="form-group">
 				   		 <div class="col-sm-12 singleField">
 							    <label for="inputEmail3" class="col-sm-3 control-label">Licensor Notes: </label>
-							    <div class="col-sm-9 requiredBar">
-							      <textarea class="form-control" id ="licnotes" name="licnotes" maxlength="1024" can-value="licnotesStore"></textarea>
+							    <div class="col-sm-9 requiredBarNone licnotes">
+							      <textarea class="form-control" id ="licnotes" name="licnotes"  can-value="licnotesStore"></textarea>
 							       <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "licnotes-err" style="display:none;">
 							    </div>
 						     </div>
@@ -99,13 +99,15 @@
 				   <div class="form-group">
 
 				   			<div class="col-sm-6">
-							    <label for="inputPassword3" class="col-sm-6 control-label">Create Date:</label>
-							    <div class="col-sm-4" style="text-align:left;">
-							       {{#if editpage}}
-							       		{{createDateStore}}
-							       {{else}}
-							        	{{currentDate}}
-							       {{/if}}
+							    <label for="inputPassword3" class="col-sm-6 control-label">Calculated Due Date:</label>
+							    <div class="col-sm-4 textDate">
+							 		{{#if editpage}}
+									    {{calduedate}}
+									{{else}}
+									    {{calculatedDueDate}}
+								  	{{/if}}
+
+
 							    </div> 
 							 </div>
 							 <div class="col-sm-6 ">
@@ -126,22 +128,13 @@
 						    </div>
 						    <div class="col-sm-6 invduedate">
 							     <label for="inputPassword3" class="col-sm-6 control-label">Invoice Due Date:</label>
-							    <div class="col-sm-6 invduedate requiredBar">
-							     <date-picker name="invoiceduedate" placeholder=""></date-picker>
+							    <div class="col-sm-6 invduedate requiredBarNone">
+							     <date-picker name="invoiceduedate" placeholder="{{currentDate}}"></date-picker>
 							    </div>
 						    </div>
 				  		</div>
 
-				  <div class="form-group">
-				  <div class="col-sm-6"></div>
-				   <div class="col-sm-6">
-						<label for="inputEmail3" class="col-sm-6 control-label">Calculated Due Date: </label>
-					    <div class="col-sm-6 textLeftAlign">
-					      {{calculatedDueDate}}
-					    </div>
-				  	</div>
-
-				  </div>
+				  
 
 
 				   <div class="form-group">
@@ -163,8 +156,8 @@
 				   <div class="form-group">
 				   <div class="col-sm-12 singleField">
 					    <label for="inputEmail3" class="col-sm-3 control-label">User Comments: </label>
-					    <div class="col-sm-9 requiredBar usercomments">
-					      <textarea class="form-control" name="usercomments" id="usercomments" maxlength="1024" can-value="usercommentsStore"></textarea>
+					    <div class="col-sm-9 requiredBarNone usercomments">
+					      <textarea class="form-control" name="usercomments" id="usercomments"  can-value="usercommentsStore"></textarea>
 					      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "usercomments-err" style="display:none;">
 					    </div>
 				  	</div>
@@ -208,8 +201,8 @@
 						        		</select>
 
 						        	</td>
-						            <td class="breakdownPeriod">
-						            	<select id="inputMonth0" name="inputMonth" class="form-control inputMonth">
+						            <td class="breakdownPeriod form-group">
+						            	<select id="inputMonth0" name="inputMonth[]" class="form-control inputMonth">
 						            			<option value="">Select</option>
 										        <option value="201301">P1FY13</option>
 										        <option value="201302">P2FY13</option>
@@ -220,12 +213,12 @@
 							        	</select>
 
 							        </td>
-							        <td class="form-group">
+							        <td class="form-group requiredBar">
 						            	<input type="text" class="form-control amountText classAmtTotal" name="amount[]" id="amountText0" placeholder="" can-value="val0" >
 
 						            </td>
-						            <td class="breakdownCountry">
-						            	<select id="inputCountry0"  name="inputCountry" class="form-control inputCountry" >
+						            <td class="breakdownCountry form-group">
+						            	<select id="inputCountry0"  name="inputCountry[]" class="form-control inputCountry" >
 									        		<option value="">Select</option>
 									        	{{#each country}}
 									        		<option value="{{id}}">{{value}}</option>
@@ -261,8 +254,8 @@
 						       					{{/each}}
 						        		</select>
 						        	</td>
-						            <td class="breakdownPeriod">
-						            	<select id="inputMonth" name="inputMonth" class="form-control inputMonth">
+						            <td class="breakdownPeriod form-group">
+						            	<select id="inputMonth" name="inputMonth[]" class="form-control inputMonth">
 						            			<option value="">Select</option>
 										        <option value="201301">P1FY13</option>
 										        <option value="201302">P2FY13</option>
@@ -272,11 +265,11 @@
 										        <option value="201306">P6FY13</option>
 							        	</select>
 							        </td>
-							        <td class="form-group">
+							        <td class="form-group requiredBar">
 						            	<input type="text" class="form-control amountText classAmtTotal"  name="amount[]" placeholder="" can-value="val0">
 						            </td>
-						            <td class="breakdownCountry">
-						            	<select id="inputCountry" name="inputCountry" class="form-control inputCountry">
+						            <td class="breakdownCountry form-group">
+						            	<select id="inputCountry" name="inputCountry[]" class="form-control inputCountry">
 									        		<option value="">Select</option>
 									        	{{#each country}}
 									        		<option value="{{id}}">{{value}}</option>
@@ -315,13 +308,18 @@
 						 	<!--<div class="col-sm-9"></div>
 						   <div class="col-sm-3 form-group tax-amount"></div>-->
 
-						    <div class="col-sm-9" style="text-align:right;">
-							   <label class="control-label>Tax: </label>
-							</div>   
-							  <div class="col-sm-3 tax-amount" style="padding-left:2px;">
-							      <input type="text" name="taxAmount" id="taxAmount" class="form-control taxAmount" can-value="tax" style="width:92%;">
-							      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "taxAmount-err" style="display:none;">
+						      
+							  <div class="col-sm-6" >
 							  </div>
+
+							  <div class="col-sm-6 ">
+							    <label  class="col-sm-6 control-label">Tax:</label>
+							    <div class="col-sm-6 tax-amount" style="padding-left:2px;">
+							       <input type="text" name="taxAmount" id="taxAmount" class="form-control taxAmount" can-value="tax" >
+							      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "taxAmount-err" style="display:none;">
+							    </div>
+						    </div>
+
 						    
 
 						   <div class="col-sm-9"><label class="control-label">Tax %:</label></div>

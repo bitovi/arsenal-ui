@@ -14,7 +14,7 @@ var Invoice = Model.extend({
   },
   findOne: function(params){
  	return $.ajax({
-  		url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/getByID',
+  		url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/get',
   		type: 'POST',
       datatype:'json',
       contentType: 'application/json; charset=utf-8',

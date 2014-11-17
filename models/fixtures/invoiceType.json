@@ -2,9 +2,9 @@
 	{
 		"invoiceTypes":
 		[
-			{"value":"Regular","id":"1"},
-			{"value":"Adhoc","id":"2"},
-			{"value":"Cash Adjustments","id":"3"}
+			{"value":"Regular","id":"1", "name":"REGULAR_INV"},
+			{"value":"Adhoc","id":"2", "name":"ADHOC_INV"},
+			{"value":"Cash Adjustments","id":"3", "name":"CASHADJ_INV"}
 		],
 		"responseHeader":{
 			"statusCode":"200",
