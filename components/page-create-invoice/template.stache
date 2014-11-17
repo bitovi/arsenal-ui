@@ -140,14 +140,9 @@
 				   <div class="form-group">
 				    <div class="col-sm-12 singleField">
 				    <label for="inputEmail3" class="col-sm-3 control-label">Supporting Documents: </label>
-				    <div class="col-sm-9 fileUploadContainer">
-
-				     		<div class="fileUploadButtonPosition">
-						    		<span class="file-input btn btn-primary btn-file btn-custom-big-disabled">
-							                Select File <input type="file" multiple="">
-							         </span>
-					         </div>
-				    </div>
+				    
+				     				<rn-file-uploader></rn-file-uploader>
+				  
 				    </div>
 
 				  </div>
