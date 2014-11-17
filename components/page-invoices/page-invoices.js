@@ -102,6 +102,8 @@ var page = Component.extend({
     checkedRows: [],
     sortColumns:[],
     tokenInput: [],
+    disableBundleName:undefined,
+    newpaymentbundlenamereq:undefined,
     refreshTokenInput: function(val, type){
       //console.log("val is "+JSON.stringify(val));
       var self = this;
@@ -132,35 +134,31 @@ var page = Component.extend({
 
   },
   helpers: {
-        createPBRequest:function(){
-                var requestObject = {
-                  mode:"Create",
-                  "searchRequest":{
-                      bundleSearch:{
-                        region : "Europe",
-                        type:"invoice"
-                      }
-                    },
-                  "newNameRequest":{
+        createPBRequest: function(){
+          var bundleNamesRequest = {"bundleSearch":{}};
 
-                    "paymentBundle" : {
+          var serTypeId = this.appstate.attr('storeType');
+          var regId = this.appstate.attr('region');
 
-                      "region": "Europe",
-                      "bundleDetailsGroup" : [{ 
-                        "refLineId" : 1402, 
-                        "refLineType" : "regular",
-                        "periodType":"P"
-                         }, { 
-                        "refLineId" : 1602, 
-                        "refLineType" : "regular",
-                        "periodType":"P"
-                      }],   
-                      "bundleType": "regular"
-                    }
-                  }
-              };
-          // console.log(requestObject);
-          return JSON.stringify(requestObject);
+          //bundleNamesRequest["mode"] = "Get"
+
+          if(typeof(serTypeId)!="undefined")
+            bundleNamesRequest.bundleSearch["serviceTypeId"] = serTypeId['id'];
+
+          if(typeof(regId)=="undefined")
+            bundleNamesRequest.bundleSearch["region"] = "";
+          else
+            bundleNamesRequest.bundleSearch["region"] = regId['value'];
+            
+          bundleNamesRequest.bundleSearch["type"] = "invoice";
+          
+
+          //console.log("GetBundleNamesRequest is "+JSON.stringify(bundleNamesRequest));
+
+          return JSON.stringify(bundleNamesRequest);
+        },
+        newPBnameRequest: function(){
+          return this.attr("newpaymentbundlenamereq");
         }
     },
   events: {
@@ -323,7 +321,7 @@ var page = Component.extend({
             }
 
           //console.log("gridData is "+JSON.stringify(gridData));
-          //console.log("currencyList is "+JSON.stringify(gridData.footer));
+          //console.log("Footer is "+JSON.stringify(gridData.footer));
           var rows = new can.List(gridData.data);
           var footerrows = new can.List(gridData.footer);
           $('#invoiceGrid').html(stache('<rn-grid-invoice rows="{rows}" footerrows="{footerrows}" emptyrows="{emptyrows}"></rn-grid-invoice>')({rows, footerrows, emptyrows:false}));
@@ -338,10 +336,23 @@ var page = Component.extend({
     },
     ".rn-grid>tbody>tr td dblclick": function(item, el, ev){
           //var invoiceid = el.closest('tr').data('row').row.id;
-          var invoiceid = item.closest('tr').data('row').row.invId;
-          //console.log("invoice id is "+invoiceid);
-          this.scope.appstate.attr('page','create-invoice');
-          invoicemap.attr('invoiceid',invoiceid);
+          var self=this;
+          var row = item.closest('tr').data('row').row; 
+          var invoiceid = row.invId;
+          var status = row.status;
+          var invoiceno = row.invoiceNum;
+          //console.log("invoice id is "+JSON.stringify(invoiceid));
+          if(status=="UNBUNDLED" || status=="PENDING_WITH_BM (Bundled)" || status=="BM_REJECTED"){
+            invoicemap.attr('invoiceid',invoiceid);
+            self.scope.appstate.attr('page','create-invoice');
+            
+          } else {
+            $("#messageDiv").html("<label class='errorMessage'>"+invoiceno+" : Cannot edit the invoice </label>");
+            $("#messageDiv").show();
+            setTimeout(function(){
+                $("#messageDiv").hide();
+            },4000)
+          }
     },
     ".rn-grid>thead>tr>th click": function(item, el, ev){
           var self=this;
@@ -355,7 +366,7 @@ var page = Component.extend({
               self.scope.appstate.attr('globalSearch', false);
             }else{
               self.scope.appstate.attr('globalSearch', true);
-            }   
+            }  
     
     },
     '.invId :checkbox change': function(item, el, ev) {
@@ -384,19 +395,23 @@ var page = Component.extend({
           if(self.scope.attr('checkedRows').length > 0){
               $("#btnDelete").removeAttr("disabled");
               $("#btnAttach").removeAttr("disabled");
-              $('#paymentBundleNames').prop('disabled', false);
-              $('#inputAnalyze').prop('disabled', false);
               $("#btnSubmit").removeAttr("disabled");
+              $("#paymentBundleNames").removeAttr("disabled");
+            
+              //self.scope.attr('disableBundleName', "no");  
           }
           else{
+            
               $("#btnDelete").attr("disabled","disabled");
               $("#btnAttach").attr("disabled","disabled");
-              $('#paymentBundleNames').prop('disabled', 'disabled');
               $("#btnSubmit").attr("disabled","disabled");
+              $("#paymentBundleNames").attr("disabled","disabled");
+              
+              //self.scope.attr('disableBundleName', "yes");
+              
           }
+
           var flag=true;
-
-
           var invTypeArr =[];
           var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
           self.scope.attr('checkedRows').each(function(value, key) {
@@ -415,6 +430,8 @@ var page = Component.extend({
                   flag=false;
               }
             }
+            if(invTypeArr[z] == "Cash Adjustments")
+              flag=false;
           }
 
           if(flag==false){
@@ -422,11 +439,11 @@ var page = Component.extend({
               $("#btnSubmit").attr("disabled","disabled");
               $("#messageDiv").html("<label class='errorMessage'>Selected rows has different Invoice Types</label>");
           }else {
-              $("#paymentBundleNames").removeAttr("disabled");
               $("#messageDiv").text("");
-              if(self.scope.attr('checkedRows').length > 0)
+              if(self.scope.attr('checkedRows').length > 0){
                   $("#btnSubmit").removeAttr("disabled");
-
+                  $("#paymentBundleNames").removeAttr("disabled");
+              }
           }
       },
       "#inputAnalyze change": function(){
@@ -473,6 +490,53 @@ var page = Component.extend({
           },function(xhr){
             console.error("Error while loading: bundleNames"+xhr);
           });
+      },
+      "#paymentBundleNames change": function(){
+          var self = this;
+          var pbval = $("#paymentBundleNames").val();
+          if(pbval=="createB"){
+              
+              var regId = self.scope.appstate.attr('region');
+              var invoiceData = self.scope.attr().allInvoicesMap[0].invoices;
+              //console.log(JSON.stringify(invoiceData));
+              //console.log(JSON.stringify(self.scope.checkedRows.attr()));
+
+
+              var selInvoices = self.scope.checkedRows.attr();
+              //console.log("selInvoices "+JSON.stringify(selInvoices));
+              var bundleLines = [];
+              for(var i=0;i<invoiceData.length;i++){
+                var invId = invoiceData[i]["invId"];
+                var lineType = invoiceData[i]["invoiceType"];
+                var periodType = invoiceData[i]["periodType"];
+                var invoiceLineItems = invoiceData[i]["invoiceLines"];
+                  //console.log("here is "+invoiceLineItems.length+","+selInvoices.indexOf(invId.toString()));
+
+                if(invoiceLineItems.length > 0 && selInvoices.indexOf(invId)>-1){
+                  for(var j=0;j<invoiceLineItems.length;j++){
+                    var temp = {};
+                      temp["refLineId"]= invoiceLineItems[j]["invLineId"];
+                      temp["refLineType"] = lineType;
+                      temp["periodType"] = (periodType==null)?"P":periodType;
+                      bundleLines.push(temp);
+                  }
+                }
+
+              }
+              //console.log("bundleLines "+JSON.stringify(bundleLines));
+
+
+              var bundleType = lineType;
+              var newBundleNameRequest = {"paymentBundle":{}};
+              var bundleRequest = {};
+
+              bundleRequest["region"] = regId['value'];
+              bundleRequest["bundleType"] =lineType;
+              bundleRequest["bundleDetailsGroup"] =bundleLines;
+              newBundleNameRequest["paymentBundle"] = bundleRequest;
+              console.log("New Bundle name request is "+JSON.stringify(newBundleNameRequest));
+              self.scope.attr('newpaymentbundlenamereq', newBundleNameRequest);
+          }
       },
       "#btnSubmit click":function(){
         var self = this;

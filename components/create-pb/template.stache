@@ -1,6 +1,6 @@
 <!--<label  style="margin-left:10px" for="inputPaymentBundle">Bundle Name:</label>-->
 {{#if createPBFlag.select }}
-<select id="paymentBundleNames" class="form-control resizeBox" can-value="paymentBundleId" name="paymentBundleNames">
+<select id="paymentBundleNames" class="form-control resizeBox" can-value="paymentBundleId" name="paymentBundleNames" >
     <option value="" selected>--Select--</option>
       {{#each bundleNames}}
         <option value="{{bundleId}}">{{bundleName}}</option>
