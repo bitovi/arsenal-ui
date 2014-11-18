@@ -33,7 +33,7 @@
 		      <div id="claimLicencorGrid"></div>
 		   </div>
 		   <div class="tab-pane fade" id="countryView" style="padding:10px;border:1px solid #ddd; border-top:0px;">
-		      <p>Country View Table shown here......</p>
+		      <div id="claimCountryGrid"></div>
 		   </div>
 		</div>
 	</div>
