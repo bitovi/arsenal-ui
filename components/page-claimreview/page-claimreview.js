@@ -9,6 +9,7 @@ import stache from 'can/view/stache/';
 
 import UserReq from 'models/rinsCommon/request/';
 import claimLicensorInvoices from 'models/claim/licensor/';
+import claimCountryInvoices from 'models/claim/country/';
 
 import tokeninput from 'tokeninput';
 import css_tokeninput from 'tokeninput.css!';
@@ -129,12 +130,125 @@ Grid.extend({
   }
 });
 
+Grid.extend({
+  tag: "rn-claim-country-grid",
+  scope: {
+    appstate:undefined,
+    columns: [
+      /*{
+        id: 'entityId',
+        title: '',
+        contents: function(row) {
+          return stache('{{#entityId}}<input type="checkbox" value="{{entityId}}"/>{{/entityId}}')({entityId: row.entityId});
+        }
+      },*/
+      {
+        id: 'country',
+        title: 'Country',
+        sortable: true,
+        contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{entity}}')({entity: row.country, isChild: row.__isChild}); }
+      },
+      {
+        id: 'invoiceNum',
+        title: 'Invoice #',
+        sortable: true
+      },
+      {
+        id: 'currency',
+        title: 'CCY',
+        sortable: true
+      },
+      {
+        id: 'period',
+        title: 'Period',
+        sortable: true
+      },
+      {
+        id: 'entity',
+        title: 'Entity',
+        sortable: true,
+      },
+      {
+        id: 'contentType',
+        title: 'Con Type',
+        sortable: true
+      },
+      {
+        id: 'invoiceAmt',
+        title: 'Inv Amt',
+        sortable: true
+      },
+      {
+        id: 'orDispAmt',
+        title: 'Over Rep',
+        sortable: true
+      },
+      {
+        id: 'liDispAmt',
+        title: 'LI Disp',
+        sortable: true
+      },
+      {
+        id: 'reconDispAmt',
+        title: 'Recon',
+        sortable: true
+      },
+      {
+        id: 'qaAlloc',
+        title: 'QA Alloc',
+        sortable: true
+      },
+      {
+        id: 'cnAlloc',
+        title: 'CN Alloc',
+        sortable: true
+      },
+      {
+        id: 'balance',
+        title: 'Balance',
+        sortable: true
+      },
+      {
+        id: 'priorPaid',
+        title: 'Total Paid',
+        sortable: true
+      },
+      {
+        id: 'invPaySat',
+        title: 'Inv Pymt Sat',
+        sortable: true
+      },
+      {
+        id: 'paySat',
+        title: 'Pymt Sat',
+        sortable: true
+      },
+      {
+        id: 'orDispPerc',
+        title: 'OR Disp %',
+        sortable: true
+      },
+      {
+        id: 'liDispPerc',
+        title: 'LI Disp %',
+        sortable: true
+      },
+      {
+        id: 'status',
+        title: 'Status',
+        sortable: true
+      }
+    ]
+  }
+});
+
 var page = Component.extend({
   tag: 'page-claimreview',
   template: template,
   scope: {
     localGlobalSearch:undefined,
     allClaimLicensorMap: [],
+    allClaimCountryMap: [],
     sortColumns:[],
 	  tokenInput: [],
     refreshTokenInput: function(val, type){
@@ -201,10 +315,13 @@ var page = Component.extend({
         });
 
         Promise.all([
-            claimLicensorInvoices.findAll()
+            claimLicensorInvoices.findAll(),
+            claimCountryInvoices.findAll()
         ]).then(function(values) {
           //console.log(JSON.stringify(values[0].attr()));
+          //console.log("Country values are "+JSON.stringify(values[1].attr()));
           self.scope.allClaimLicensorMap.replace(values[0]);
+          self.scope.allClaimCountryMap.replace(values[1]);
         });
         
     	},
@@ -234,6 +351,7 @@ var page = Component.extend({
       },
       "#claimLicencorGrid table>tbody>tr click":function(item, el, ev){
           $(item[0]).toggleClass("selected");
+
           //$(".clicked td:first-child").css("color","blue");
 
       },
@@ -287,11 +405,25 @@ var page = Component.extend({
         //console.log("invoice data is sss  "+JSON.stringify(invoiceData));
         if(invoiceData!=null){
           var  gridData = generateTableData(invoiceData,currencyType);
-          console.log("grid data for "+currencyType+" currency is "+JSON.stringify(gridData));
+          //console.log("grid data for "+currencyType+" currency is "+JSON.stringify(gridData));
           var rows = new can.List(gridData.data);
           $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid rows="{rows}"></rn-claim-licensor-grid>')({rows}));
         } else {
           $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid emptyrows="{emptyrows}"></rn-claim-licensor-grid>')({emptyrows:true}));
+        }
+      },
+      "{allClaimCountryMap} change": function() {
+        var self = this;
+        var invoiceData = self.scope.attr().allClaimCountryMap[0].claimReviewLicensor;
+        var currencyType = $("#currencyType").val();
+        //console.log("invoice data is sss  "+JSON.stringify(invoiceData));
+        if(invoiceData!=null){
+          var  gridData = generateTableData(invoiceData,currencyType);
+          //console.log("grid data for "+currencyType+" currency is "+JSON.stringify(gridData));
+          var rows = new can.List(gridData.data);
+          $('#claimCountryGrid').html(stache('<rn-claim-country-grid rows="{rows}"></rn-claim-country-grid>')({rows}));
+        } else {
+          $('#claimCountryGrid').html(stache('<rn-claim-country-grid emptyrows="{emptyrows}"></rn-claim-country-grid>')({emptyrows:true}));
         }
       },
       '{scope.appstate} change': function() {
@@ -414,7 +546,7 @@ var generateTableData = function(invoiceData,currencyType){
               for(var j=0;j<invoiceLineItems.length;j++){
                 var invLITemp={};
 
-                invLITemp["entityId"] = "";
+                invLITemp["entityId"] = invTemp["entityId"]+","+  invTemp["entity"] ;
                 invLITemp["__isChild"] = true;
                 invLITemp["entity"] = "";
                 invLITemp["invoiceNum"] = "";
