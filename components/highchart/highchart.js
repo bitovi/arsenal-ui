@@ -7,8 +7,7 @@ import highcharts from 'highcharts';
 
 import exporting from 'exporting';
 
-//import exportingSrc from 'exporting.src';
-
+import UserReq from 'utils/request/';
 
 import HighChart from 'models/highchart/';
 
@@ -26,20 +25,25 @@ var highchartpage = Component.extend({
     },
     events: {
     	"inserted": function(){
-    		console.log('inserted'+this.scope.details.attr());
+    	
     		 var highChartdata;
     		  	 var self = this;
-    		console.log("data is"+JSON.stringify(this.scope.attr()));
+    	
     		  $("#highChartDetails").removeClass("hide");
+    		  var genObj = {};
+    		     genObj["requestFrom"]="byCountry";
+    		     genObj["licensorId"]="CELAS";
+    		     genObj["countryId"]="AUT";
+    		     genObj["fiscalPeriod"]="201401";
+    		     genObj["periodType"]="P";
+    		     genObj["contentType"]="Music";
     		Promise.all([
-   	         HighChart.findAll()
+   	         HighChart.findOne(UserReq.formRequestDetails(genObj))
    	     	 ]).then(function(values) {
-   	    	  console.log("High chart values :"+JSON.stringify(values[0][0].attr()));
-   	    	  var servicedata = values[0][0].attr().highCharts;
-   	    	   highChartdata = prepareCanMap(values[0][0].attr().highCharts);
+   	    	  var servicedata = values[0].historicalTrends;
+   	    	  console.log(JSON.stringify(servicedata));
+   	    	   highChartdata = prepareCanMap(values[0].historicalTrends);
 
-   	    	   console.log(highChartdata["FISCAL_PERIOD"]);
-   	     	 //$('#highChartDetails').fadeIn("fast");
     		$('#highChartDetails').highcharts({
     			chart: {
 			        renderTo: 'highChartDetails',
@@ -48,7 +52,7 @@ var highchartpage = Component.extend({
 			        marginBottom: 25,
 			        events: {
 			            load: function() {
-			                this.renderer.image('resources/images/highchart.png', 70, 10, 28, 28)
+			                this.renderer.image('resources/images/delete.png', 50, 10, 28, 28)
 			                .css({
 			                    cursor: 'pointer',
 			                    position: 'relative',
@@ -67,7 +71,7 @@ var highchartpage = Component.extend({
 		            x: -20 //center
 		        },
 		        subtitle: {
-		            text: 'Source: WorldClimate.com',
+		           // text: 'Source: WorldClimate.com',
 		            x: -20
 		        },
 		        xAxis: {
