@@ -9,7 +9,7 @@ var FileUpLoader = Model.extend({
       var dataToSend = '';
       params.forEach(function(file, index) {
 
-           var boundary = RinsCommon.BOUNDARY
+           var boundary = "XXXXX"
            var text = '--' + boundary + '\r\n' + 'Content-Disposition: form-data; name="uploadedFile";';
            var textReader = new FileReader();
 
@@ -34,7 +34,7 @@ var FileUpLoader = Model.extend({
                 return $.ajax({
                         url: RinsCommon.UPLOAD_SERVICE_URL,
                         type: 'POST',
-                        contentType: 'multipart/form-data;boundary=' + RinsCommon.BOUNDARY +';' ,
+                        contentType: 'multipart/form-data;boundary=' + boundary +';' ,
                         processData: false,
                         data: dataToSend
                       });
