@@ -32,79 +32,98 @@ Grid.extend({
       {
         id: 'entity',
         title: 'Entity',
+        sortable: true,
         contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{entity}}')({entity: row.entity, isChild: row.__isChild}); }
       },
       {
         id: 'invoiceNum',
-        title: 'Invoice #'
+        title: 'Invoice #',
+        sortable: true
       },
       {
         id: 'currency',
-        title: 'CCY'
+        title: 'CCY',
+        sortable: true
       },
       {
         id: 'period',
-        title: 'Period'
+        title: 'Period',
+        sortable: true
       },
       {
         id: 'country',
-        title: 'Country'
+        title: 'Country',
+        sortable: true
       },
       {
         id: 'contentType',
-        title: 'Con Type'
+        title: 'Con Type',
+        sortable: true
       },
       {
         id: 'invoiceAmt',
-        title: 'Inv Amt'
+        title: 'Inv Amt',
+        sortable: true
       },
       {
         id: 'orDispAmt',
-        title: 'Over Rep'
+        title: 'Over Rep',
+        sortable: true
       },
       {
         id: 'liDispAmt',
-        title: 'LI Disp'
+        title: 'LI Disp',
+        sortable: true
       },
       {
         id: 'reconDispAmt',
-        title: 'Recon'
+        title: 'Recon',
+        sortable: true
       },
       {
         id: 'qaAlloc',
-        title: 'QA Alloc'
+        title: 'QA Alloc',
+        sortable: true
       },
       {
         id: 'cnAlloc',
-        title: 'CN Alloc'
+        title: 'CN Alloc',
+        sortable: true
       },
       {
         id: 'balance',
-        title: 'Balance'
+        title: 'Balance',
+        sortable: true
       },
       {
         id: 'priorPaid',
-        title: 'Total Paid'
+        title: 'Total Paid',
+        sortable: true
       },
       {
         id: 'invPaySat',
-        title: 'Inv Pymt Sat'
+        title: 'Inv Pymt Sat',
+        sortable: true
       },
       {
         id: 'paySat',
-        title: 'Pymt Sat'
+        title: 'Pymt Sat',
+        sortable: true
       },
       {
         id: 'orDispPerc',
-        title: 'OR Disp %'
+        title: 'OR Disp %',
+        sortable: true
       },
       {
         id: 'liDispPerc',
-        title: 'LI Disp %'
+        title: 'LI Disp %',
+        sortable: true
       },
       {
         id: 'status',
-        title: 'Status'
+        title: 'Status',
+        sortable: true
       }
     ]
   }
@@ -218,20 +237,20 @@ var page = Component.extend({
           //$(".clicked td:first-child").css("color","blue");
 
       },
-      ".rn-grid>thead>tr>th click": function(item, el, ev){
-          var self=this;
+      "#claimLicencorGrid .rn-grid>thead>tr>th click": function(item, el, ev){
+          /*var self=this;
            //console.log($(item[0]).attr("class"));
           var val = $(item[0]).attr("class");
            self.scope.attr('sortColumns').push(val);
-
+        */
            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
            /* All the neccessary parameters will be set in that event */
-           if(self.scope.appstate.attr('globalSearch')){
+          /* if(self.scope.appstate.attr('globalSearch')){
               self.scope.appstate.attr('globalSearch', false);
             }else{
               self.scope.appstate.attr('globalSearch', true);
             }   
-    
+          */
       },
       "{tokenInput} change": function(){
         var self = this;
@@ -249,7 +268,7 @@ var page = Component.extend({
       "#currencyType change": function(){
         var self=this;
         console.log("value changed");
-        var invoiceData = self.scope.attr().allClaimLicensorMap[0].claimLicensor;
+        var invoiceData = self.scope.attr().allClaimLicensorMap[0].claimReviewLicensor;
         var currencyType = $("#currencyType").val();
 
         if(invoiceData!=null){
@@ -263,12 +282,12 @@ var page = Component.extend({
       },
       "{allClaimLicensorMap} change": function() {
         var self = this;
-        var invoiceData = self.scope.attr().allClaimLicensorMap[0].claimLicensor;
+        var invoiceData = self.scope.attr().allClaimLicensorMap[0].claimReviewLicensor;
         var currencyType = $("#currencyType").val();
-
+        //console.log("invoice data is sss  "+JSON.stringify(invoiceData));
         if(invoiceData!=null){
           var  gridData = generateTableData(invoiceData,currencyType);
-          //console.log("grid data for "+currencyType+" currency is "+JSON.stringify(gridData));
+          console.log("grid data for "+currencyType+" currency is "+JSON.stringify(gridData));
           var rows = new can.List(gridData.data);
           $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid rows="{rows}"></rn-claim-licensor-grid>')({rows}));
         } else {
@@ -356,6 +375,7 @@ var page = Component.extend({
 });
 
 var generateTableData = function(invoiceData,currencyType){
+  //console.log("invoiceData is "+JSON.stringify(invoiceData));
   var gridData = {"data":[]};
         
         for(var i=0;i<invoiceData.length;i++){
@@ -364,7 +384,7 @@ var generateTableData = function(invoiceData,currencyType){
             invTemp["__isChild"] = false;
             invTemp["entity"] = invoiceData[i]["entityName"];
             invTemp["invoiceNum"] = invoiceData[i]["invoiceNumber"];
-            invTemp["currency"] = invoiceData[i]["paymentCurrency"];
+            invTemp["currency"] = invoiceData[i]["currency"];
             
             invTemp["period"] = "";
             invTemp["country"] = "";
@@ -384,9 +404,11 @@ var generateTableData = function(invoiceData,currencyType){
             invTemp["status"] = "";
 
             gridData.data.push(invTemp);
-            var insertedId = gridData.data.length-1;
 
-            var invoiceLineItems = invoiceData[i]["claimLicensorLines"];
+            var insertedId = gridData.data.length-1;
+            
+
+            var invoiceLineItems = invoiceData[i]["claimReviewLicDetails"];
             var contentTypeArr = [], countryArr = [];
             if(invoiceLineItems.length > 0){
               for(var j=0;j<invoiceLineItems.length;j++){
@@ -398,27 +420,27 @@ var generateTableData = function(invoiceData,currencyType){
                 invLITemp["invoiceNum"] = "";
                 invLITemp["currency"] = invTemp["currency"];
 
-                invLITemp["period"] = invoiceLineItems[j]["fiscalPeriod"];
-                invLITemp["country"] = invoiceLineItems[j]["countryId"];
-                invLITemp["contentType"] = invoiceLineItems[j]["contentType"];
+                invLITemp["period"] = invoiceLineItems[j]["period"];
+                invLITemp["country"] = invoiceLineItems[j]["country_id"];
+                invLITemp["contentType"] = invoiceLineItems[j]["contentTypeName"];
 
-                  invLITemp["invoiceAmt"] = invoiceLineItems[j]["invoiceAmount"];
-                  invTemp["invoiceAmt"] += parseInt(invoiceLineItems[j]["invoiceAmount"]);
+                  invLITemp["invoiceAmt"] = invoiceLineItems[j]["invoiceLineItemAmount"];
+                  invTemp["invoiceAmt"] += parseInt(invoiceLineItems[j]["invoiceLineItemAmount"]);
 
-                  invLITemp["orDispAmt"] = invoiceLineItems[j]["overRepDisputeAmount"];
-                  invTemp["orDispAmt"] += parseInt(invoiceLineItems[j]["overRepDisputeAmount"]);
+                  invLITemp["orDispAmt"] = invoiceLineItems[j]["overrepAmount"];
+                  invTemp["orDispAmt"] += parseInt(invoiceLineItems[j]["overrepAmount"]);
                 
-                  invLITemp["liDispAmt"] = invoiceLineItems[j]["lineItemDisputeAmount"];
-                  invTemp["liDispAmt"] += parseInt(invoiceLineItems[j]["lineItemDisputeAmount"]); 
+                  invLITemp["liDispAmt"] = invoiceLineItems[j]["liDispAmount"];
+                  invTemp["liDispAmt"] += parseInt(invoiceLineItems[j]["liDispAmount"]); 
                 
                   invLITemp["reconDispAmt"] = invoiceLineItems[j]["reconAmount"];
                   invTemp["reconDispAmt"] += parseInt(invoiceLineItems[j]["reconAmount"]);
 
-                  invLITemp["qaAlloc"] = invoiceLineItems[j]["onAccountAllocated"];
-                  invTemp["qaAlloc"] += parseInt(invoiceLineItems[j]["onAccountAllocated"]);
+                  invLITemp["qaAlloc"] = invoiceLineItems[j]["oaAllocated"];
+                  invTemp["qaAlloc"] += parseInt(invoiceLineItems[j]["oaAllocated"]);
 
-                  invLITemp["cnAlloc"] = invoiceLineItems[j]["cashAdjustmentAllocated"];
-                  invTemp["cnAlloc"] += parseInt(invoiceLineItems[j]["cashAdjustmentAllocated"]);
+                  invLITemp["cnAlloc"] = invoiceLineItems[j]["caAllocated"];
+                  invTemp["cnAlloc"] += parseInt(invoiceLineItems[j]["caAllocated"]);
                 
                   invLITemp["balance"] = invoiceLineItems[j]["balance"];
                   invTemp["balance"] += parseInt(invoiceLineItems[j]["balance"]);
@@ -426,17 +448,17 @@ var generateTableData = function(invoiceData,currencyType){
                   invLITemp["priorPaid"] = invoiceLineItems[j]["priorPaid"];
                   invTemp["priorPaid"] += parseInt(invoiceLineItems[j]["priorPaid"]);
                 
-                invLITemp["invPaySat"] = invoiceLineItems[j]["invPaymentSat"];
-                invTemp["invPaySat"] = (invTemp["invPaySat"]+parseInt(invoiceLineItems[j]["invPaymentSat"]));
+                invLITemp["invPaySat"] = invoiceLineItems[j]["invPmtSaturation"];
+                invTemp["invPaySat"] = (invTemp["invPaySat"]+parseInt(invoiceLineItems[j]["invPmtSaturation"]));
                 
-                invLITemp["paySat"] = invoiceLineItems[j]["paymentSat"];
-                invTemp["paySat"] = (invTemp["paySat"]+parseInt(invoiceLineItems[j]["paymentSat"]));
+                invLITemp["paySat"] = invoiceLineItems[j]["pmtSaturation"];
+                invTemp["paySat"] = (invTemp["paySat"]+parseInt(invoiceLineItems[j]["pmtSaturation"]));
                 
-                invLITemp["orDispPerc"] = invoiceLineItems[j]["overRepDispPercent"];
-                invTemp["orDispPerc"] = (invTemp["orDispPerc"]+parseInt(invoiceLineItems[j]["overRepDispPercent"]));
+                invLITemp["orDispPerc"] = invoiceLineItems[j]["overrepDispPer"];
+                invTemp["orDispPerc"] = (invTemp["orDispPerc"]+parseInt(invoiceLineItems[j]["overrepDispPer"]));
                 
-                invLITemp["liDispPerc"] = invoiceLineItems[j]["liDispPercent"];
-                invTemp["liDispPerc"] = (invTemp["liDispPerc"]+parseInt(invoiceLineItems[j]["liDispPercent"]));
+                invLITemp["liDispPerc"] = invoiceLineItems[j]["liDispPer"];
+                invTemp["liDispPerc"] = (invTemp["liDispPerc"]+parseInt(invoiceLineItems[j]["liDispPer"]));
                 
                 invLITemp["status"] = invoiceLineItems[j]["status"];
                 contentTypeArr.push(invLITemp["contentType"]);
@@ -446,6 +468,8 @@ var generateTableData = function(invoiceData,currencyType){
 
             }
 
+            //console.log("gridData is ffsdfs "+JSON.stringify(gridData));
+            //console.log("countryArr is ffsdfs "+JSON.stringify(countryArr));
             /*Below function is to remove the duplicate content type and find the count */
             contentTypeArr = contentTypeArr.filter( function( item, index, inputArray ) {
                    return inputArray.indexOf(item) == index;
@@ -468,7 +492,7 @@ var generateTableData = function(invoiceData,currencyType){
 
 
           }
-          //console.log("currency list is "+JSON.stringify(gridData));
+          console.log("gridData is "+JSON.stringify(gridData));
           
           return gridData;
 }
