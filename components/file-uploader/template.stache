@@ -4,16 +4,14 @@
      {{#if isAnyFileLoaded}}
           <ul class="filelist">
               {{#fileList}}
-                <li>
+                <li {{#data ‘listView’}}>
                      {{name}} ({{convertToKB size}})
-                     <a  class="action-link" can-click="removeSelectedFile">X</a>
+                     <a  class="action-link">X</a>
                 </li>
               {{/files}}
            </ul>
       {{/if}}
-
-
-
+    
         {{#if isAnyFileLoaded}}
         	<input type="submit" id="submitFiles" value="Submit"/>
         {{else}}

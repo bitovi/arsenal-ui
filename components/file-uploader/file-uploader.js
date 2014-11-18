@@ -14,10 +14,6 @@
                   fileList : new can.List(),
                   isAnyFileLoaded : can.compute(function() { return this.fileList.attr('length') > 0; }),
 
-                  removeSelectedFile : function(file, ev, el) {
-                      var idx = this.attr("fileList").indexOf(file);
-                      this.attr("fileList").splice(idx, 1);
-                  }
               },
         init: function() {
 
@@ -51,6 +47,16 @@
                     this.scope.attr("fileList").splice(0,size);
                 },
 
+                '.filelist li click': function(el, ev) {
+                    var liText = el.text();
+                    var index = liText.indexOf("(")
+                    var name = '';
+                    if(index != -1) {
+                       name = liText.substring(0,index);
+                       var idx = this.scope.attr("fileList").indexOf(name);
+                       this.scope.attr("fileList").splice(idx, 1);
+                    }
+                  },
             }
       })
 
