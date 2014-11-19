@@ -21,7 +21,7 @@ var highchartpage = Component.extend({
 	  invoiceAmount:[]
   },
   init: function(){
-	 console.log('Inside high chart'); 
+	 //console.log('Inside high chart'); 
     },
     events: {
     	"inserted": function(){
@@ -70,7 +70,8 @@ var highchartpage = Component.extend({
 						    },
 
 					        title: {
-					            text: servicedata[0].countryName+"-"+servicedata[0].licensorName,
+					            //text: servicedata[0].countryName+"-"+servicedata[0].licensorName,
+					        	text: chartdata.countryId+"-"+chartdata.licensorId,
 					            x: -20 //center
 					        },
 					        subtitle: {

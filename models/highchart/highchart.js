@@ -4,7 +4,7 @@ import RinsCommon from 'models/rinsCommon/';
 var highchart = Model.extend({
 findOne: function(params){
  	return $.ajax({
- 		url: 'http://localhost:10645/api/v1/rinsui/getHighChart',
+ 		url: RinsCommon.UI_SERVICE_URL+'getHighChart',
   		type: 'POST',
   		data: JSON.stringify(params),
   		dataType:'json',
