@@ -250,6 +250,7 @@ var page = Component.extend({
     allClaimLicensorMap: [],
     allClaimCountryMap: [],
     sortColumns:[],
+    details:{},
 	  tokenInput: [],
     refreshTokenInput: function(val, type){
       //console.log("val is "+JSON.stringify(val));
@@ -326,10 +327,12 @@ var page = Component.extend({
         
     	},
     	"#highChart click":function(){
-    		console.log("Click on high chart");
-        var details = new can.List({"country":"AUT","society":"CELAS"});
-        $("#highChartDetails").append(stache('<high-chart details={details}></high-chart>')({details}));
-    		
+        if(this.scope.details.isChild){
+          var data = this.scope.details;
+             $("#highChartDetails").append(stache('<high-chart details={data}></high-chart>')({data}));
+        }else{
+          console.log('Data not set so not showing the chart');
+        }
     	},
       "#highChartDetails mousedown": function(item, el, ev){
         if(el.toElement.id == 'close'){
@@ -351,9 +354,16 @@ var page = Component.extend({
       },
       "#claimLicencorGrid table>tbody>tr click":function(item, el, ev){
           $(item[0]).toggleClass("selected");
-
-          //$(".clicked td:first-child").css("color","blue");
-
+          var row = item.closest('tr').data('row').row;
+          var className = item.closest('tr').hasClass("child");
+           console.log("row "+JSON.stringify(row.attr()));
+           this.scope.details["countryId"]=row.country;
+           this.scope.details["requestFrom"]="Licensor";
+           this.scope.details["licensorId"]=row.entityId.split(",")[1];
+           this.scope.details["fiscalPeriod"]=row.period;
+           this.scope.details["periodType"]="P";
+           this.scope.details["contentType"]=row.contentType;
+           this.scope.details["isChild"]=className;
       },
       "#claimLicencorGrid .rn-grid>thead>tr>th click": function(item, el, ev){
           /*var self=this;
@@ -369,6 +379,7 @@ var page = Component.extend({
               self.scope.appstate.attr('globalSearch', true);
             }   
           */
+
       },
       "{tokenInput} change": function(){
         var self = this;
