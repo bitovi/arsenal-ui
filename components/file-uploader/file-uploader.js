@@ -13,7 +13,6 @@
         scope: {
                   fileList : new can.List(),
                   isAnyFileLoaded : can.compute(function() { return this.fileList.attr('length') > 0; }),
-
               },
         init: function() {
 
@@ -25,16 +24,16 @@
         },
         events: {
 
-                 '#uploadFiles  click': function() {
+                 '.uploadFiles  click': function() {
                     this.element.find('input[type=file]').click();
                   },
 
-                 '#fileSelect change' : function(el, ev) {
+                 '.fileSelect change' : function(el, ev) {
                     var files = el[0].files;
                     this.scope.fileList.push.apply(this.scope.fileList, files);
                   },
 
-                 '#submitFiles click': function() {
+                 '.submitFiles click': function() {
                    FileUpLoader.create(this.scope.attr("fileList"),function(data) {
                       console.log("Return data from call"+JSON.stringify(data));
                     },function(xhr) {
@@ -42,7 +41,7 @@
                     });
                   },
 
-                '#cancelUpload click': function() {
+                '.cancelUpload click': function() {
                     var size = this.scope.attr("fileList").length;
                     this.scope.attr("fileList").splice(0,size);
                 },
@@ -51,10 +50,15 @@
                     var liText = el.text();
                     var index = liText.indexOf("(")
                     var name = '';
+                    var selectedIndex = '';
                     if(index != -1) {
-                       name = liText.substring(0,index);
-                       var idx = this.scope.attr("fileList").indexOf(name);
-                       this.scope.attr("fileList").splice(idx, 1);
+                      name = liText.substring(0,index);
+                      this.scope.attr("fileList").forEach(function(file, index) {
+                          if(file.name == name.trim()) {
+                            selectedIndex = index;
+                          }
+                      });
+                      this.scope.attr("fileList").splice(selectedIndex,1);
                     }
                   },
             }

@@ -4,20 +4,20 @@
      {{#if isAnyFileLoaded}}
           <ul class="filelist">
               {{#fileList}}
-                <li {{#data ‘listView’}}>
+                <li {{data ‘listView’}}>
                      {{name}} ({{convertToKB size}})
                      <a  class="action-link">X</a>
                 </li>
               {{/files}}
            </ul>
       {{/if}}
-    
+
         {{#if isAnyFileLoaded}}
-        	<input type="submit" id="submitFiles" value="Submit"/>
+        	<input type="submit" class="submitFiles" value="Submit"/>
         {{else}}
-        	<input type="file" id="fileSelect"  name ="Upload File"  style="display: none;" multiple />
-        	<input type="submit" id="uploadFiles" value="UpLoad" />
+        	<input type="file" class="fileSelect"  name ="Upload File"  style="display: none;" multiple />
+        	<input type="submit" class="uploadFiles" value="UpLoad" />
         {{/if}}
-        <input type="submit" id="cancelUpload" value="Cancel">
+        <input type="submit" class="cancelUpload" value="Cancel">
 
 </div>
