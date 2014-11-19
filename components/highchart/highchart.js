@@ -17,7 +17,7 @@ var highchartpage = Component.extend({
   tag: 'high-chart',
   template: template,
   scope: {
-	  details:[],
+	  details:{},
 	  invoiceAmount:[]
   },
   init: function(){
@@ -28,100 +28,107 @@ var highchartpage = Component.extend({
     	
     		 var highChartdata;
     		  	 var self = this;
+
+    		  	 var chartdata = self.scope.details;
+    		  	// console.log(JSON.stringify(self.scope.details));
     	
-    		  $("#highChartDetails").removeClass("hide");
     		  var genObj = {};
-    		     genObj["requestFrom"]="byCountry";
-    		     genObj["licensorId"]="CELAS";
-    		     genObj["countryId"]="AUT";
-    		     genObj["fiscalPeriod"]="201401";
-    		     genObj["periodType"]="P";
-    		     genObj["contentType"]="Music";
+    		     genObj["requestFrom"]=chartdata.requestFrom;
+    		     genObj["licensorId"]=chartdata.licensorId;
+    		     genObj["countryId"]=chartdata.countryId;
+    		     genObj["fiscalPeriod"]=chartdata.fiscalPeriod;
+    		     genObj["periodType"]=chartdata.periodType;
+    		     genObj["contentType"]=chartdata.contentType;
+    		     console.log(" Data passed to service to fetch charts "+JSON.stringify(genObj));
     		Promise.all([
    	         HighChart.findOne(UserReq.formRequestDetails(genObj))
    	     	 ]).then(function(values) {
    	    	  var servicedata = values[0].historicalTrends;
-   	    	  console.log(JSON.stringify(servicedata));
-   	    	   highChartdata = prepareCanMap(values[0].historicalTrends);
+   	    	   		if(values[0].historicalTrends.length){
+   	    	   			highChartdata = prepareCanMap(values[0].historicalTrends);
+   	    	   			$("#highChartDetails").removeClass("hide");
+			    		$('#highChartDetails').highcharts({
+			    			chart: {
+						        renderTo: 'highChartDetails',
+						        type: 'line',
+						        marginRight: 130,
+						        marginBottom: 25,
+						        events: {
+						            load: function() {
+						                this.renderer.image('resources/images/delete.png', 50, 10, 28, 28)
+						                .css({
+						                    cursor: 'pointer',
+						                    position: 'relative',
+						                    "margin-left": "-10px",
+						                    opacity: 0.75
+						                }).attr({
+						                    id: 'close',
+						                    zIndex: -100
+						                }).add();
+						            }
+						        }
+						    },
 
-    		$('#highChartDetails').highcharts({
-    			chart: {
-			        renderTo: 'highChartDetails',
-			        type: 'line',
-			        marginRight: 130,
-			        marginBottom: 25,
-			        events: {
-			            load: function() {
-			                this.renderer.image('resources/images/delete.png', 50, 10, 28, 28)
-			                .css({
-			                    cursor: 'pointer',
-			                    position: 'relative',
-			                    "margin-left": "-10px",
-			                    opacity: 0.75
-			                }).attr({
-			                    id: 'close',
-			                    zIndex: -100
-			                }).add();
-			            }
-			        }
-			    },
+					        title: {
+					            text: servicedata[0].countryName+"-"+servicedata[0].licensorName,
+					            x: -20 //center
+					        },
+					        subtitle: {
+					           // text: 'Source: WorldClimate.com',
+					            x: -20
+					        },
+					        xAxis: {
+					            title: {
+						                    text: 'Period',
+						                    align: 'middle'
+						                },
+					            categories: highChartdata["FISCAL_PERIOD"],
+					              labels: {
+										//rotation: -45
+									}
+					        },
+					        yAxis: {
+					            title: {
+					                text: 'Amount in '
+					            },
+					            plotLines: [{
+					                value: 0,
+					                width: 1,
+					                color: '#FFFFFF'
+					            }]
+					        },
+					        tooltip: {
+					        	formatter: function () {
+									return '<b>' + this.series.name + '</b><br/>' + this.x + ': ' + this.y;
+								},
+					            valueSuffix: ''
+					        },
+					        legend: {
+					            layout: 'vertical',
+					            align: 'right',
+					            verticalAlign: 'middle',
+					            borderWidth: 0
+					        },
+					        series: [{
+					            name: 'Invoice Amount',
+					            data: highChartdata["INVOICE_AMOUNT"] 
+					        }, {
+					            name: 'Overrep Amount',
+					            data: highChartdata["OVERREP_AMOUNT"]
+					        }, {
+					            name: 'Line item dispute',
+					            data: highChartdata["LINE_ITEM_AMOUNT"]
+					        }]
+					    });
 
-		        title: {
-		            text: servicedata[0].countryName+"-"+servicedata[0].licensorName,
-		            x: -20 //center
-		        },
-		        subtitle: {
-		           // text: 'Source: WorldClimate.com',
-		            x: -20
-		        },
-		        xAxis: {
-		            title: {
-			                    text: 'Period',
-			                    align: 'middle'
-			                },
-		            categories: highChartdata["FISCAL_PERIOD"],
-		              labels: {
-							//rotation: -45
-						}
-		        },
-		        yAxis: {
-		            title: {
-		                text: 'Amount in '
-		            },
-		            plotLines: [{
-		                value: 0,
-		                width: 1,
-		                color: '#FFFFFF'
-		            }]
-		        },
-		        tooltip: {
-		        	formatter: function () {
-						return '<b>' + this.series.name + '</b><br/>' + this.x + ': ' + this.y;
-					},
-		            valueSuffix: ''
-		        },
-		        legend: {
-		            layout: 'vertical',
-		            align: 'right',
-		            verticalAlign: 'middle',
-		            borderWidth: 0
-		        },
-		        series: [{
-		            name: 'Invoice Amount',
-		            data: highChartdata["INVOICE_AMOUNT"] 
-		        }, {
-		            name: 'Overrep Amount',
-		            data: highChartdata["OVERREP_AMOUNT"]
-		        }, {
-		            name: 'Line item dispute',
-		            data: highChartdata["LINE_ITEM_AMOUNT"]
-		        }]
-		    });
+					}else{
+						console.log('high chart did not return any data');
+						$("#highChartDetails").addClass("hide");
+					}
+						// $("#highChartDetails").resizable({
+						// 	containment: 'document'
+						// });
 			 });
-		
-			$("#highChartDetails").resizable({
-				containment: 'document'
-			});
     	}
     },
     "#myImage click ":function(){
