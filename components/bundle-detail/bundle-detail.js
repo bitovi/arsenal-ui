@@ -1,7 +1,9 @@
+import _ from 'lodash';
 import Component from 'can/component/';
 import List from 'can/list/';
 
 import BundleDetailGrid from 'components/bundle-detail-grid/';
+import Switcher from 'components/switcher/';
 
 import licensorColumns from './column-sets/licensor-columns';
 import countryColumns from './column-sets/country-columns';
@@ -9,10 +11,18 @@ import countryColumns from './column-sets/country-columns';
 import template from './template.stache!';
 import _less from './bundle-detail.less!';
 
-var columnSets = {
-  'licensor': licensorColumns,
-  'country': countryColumns
-};
+var columnSets = [
+  {
+    value: 'licensor',
+    text: 'Licensor',
+    columns: licensorColumns
+  },
+  {
+    value: 'country',
+    text: 'Country',
+    columns: countryColumns
+  }
+];
 
 var BundleDetailTabs = Component.extend({
   tag: 'rn-bundle-detail',
@@ -20,20 +30,19 @@ var BundleDetailTabs = Component.extend({
   scope: {
     appstate: null, // passed in
     pageState: null, // passed in
-    selectedTab: 'licensor', // by default
+    columnSets: columnSets,
+    selectedTab: null, // by default
     isCashAdjusted: false, // TODO: set up checkbox
     paymentType: 'recon', // TODO: set up dropdown
-    gridColumns: columnSets['licensor'],
+    gridColumns: columnSets[0].columns,
     gridRows: new List([])
   },
-  helpers: {
-    selectedTabClass: function(tabName) {
-      return this.attr('selectedTab') === tabName ? 'selected' : '';
-    }
-  },
   events: {
+    init: function() {
+      this.scope.attr('selectedTab', this.scope.columnSets[0]);
+    },
     '{scope} selectedTab': function(scope, ev, newVal) {
-      this.scope.attr('gridColumns', columnSets[newVal]);
+      this.scope.attr('gridColumns', newVal.columns);
     },
     '{scope} pageState.selectedBundle': function(scope, ev, newBundle) {
       var self = this;
@@ -43,9 +52,6 @@ var BundleDetailTabs = Component.extend({
         this.scope.attr('isCashAdjusted'),
         this.scope.attr('paymentType')
       );
-    },
-    '.tabs > li click': function(el, ev) {
-      this.scope.attr('selectedTab', el.data('tabValue'));
     }
   }
 });
