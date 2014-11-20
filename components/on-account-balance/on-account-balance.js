@@ -38,8 +38,8 @@ var onAccountBalance = Grid.extend({
       var obj={id: 'Country',
         title: 'Country'
       };
-      self.scope.columns.replace(obj);
-
+      //self.scope.columns.replace(obj);
+      self.scope.columns.push(obj);
       onAccountBalance.findAll().then(function(rows) {
         // // mangle rows here
         // _.each(rows, function(row, ix) {
