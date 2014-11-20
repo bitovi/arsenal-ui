@@ -1,11 +1,14 @@
 {{#if pageState.selectedBundle}}
 <div class="controls">
-  <div class="perspective">
-    <div>Perspective:</div>
-    <rn-switcher options="{columnSets}" selected-option="{selectedTab}"></rn-switcher>
+  <rn-switcher options="{columnSets}" selected-option="{selectedTab}"></rn-switcher>
+  {{#showAggregateControl}}
+  <div class="aggregate-control">
+    <input type="checkbox" can-value="{aggregatePeriod}"><label>Aggregate Period</label>
   </div>
+  {{/showAggregateControl}}
 </div>
 <div class="grid-container">
+  <h3>Getting details: {{gettingDetails}}</h3>
   {{#if pageState.selectedBundle.bundleDetailsGroup.length}}
   <rn-bundle-detail-grid columns="{gridColumns}" page-state="{pageState}"></rn-bundle-detail-grid>
   {{/if}}

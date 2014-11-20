@@ -32,10 +32,34 @@ var BundleDetailTabs = Component.extend({
     pageState: null, // passed in
     columnSets: columnSets,
     selectedTab: null, // by default
-    isCashAdjusted: false, // TODO: set up checkbox
+    aggregatePeriod: false,
     paymentType: 'recon', // TODO: set up dropdown
     gridColumns: columnSets[0].columns,
-    gridRows: new List([])
+    gridRows: new List([]),
+
+    gettingDetails: false,
+    getNewDetails: function(bundle) {
+      var scope = this;
+
+      var view = this.attr('selectedTab').value;
+      if(view === 'country' && this.attr('aggregatePeriod')) {
+        view = 'aggregate';
+      }
+
+      this.attr('gettingDetails', true);
+      bundle.getDetails(
+        this.appstate,
+        view,
+        this.paymentType
+      ).then(function() {
+        scope.attr('gettingDetails', false);
+      });
+    }
+  },
+  helpers: {
+    showAggregateControl: function(options) {
+      return this.attr('selectedTab').value === 'country' ? options.fn(this) : '';
+    }
   },
   events: {
     init: function() {
@@ -43,15 +67,13 @@ var BundleDetailTabs = Component.extend({
     },
     '{scope} selectedTab': function(scope, ev, newVal) {
       this.scope.attr('gridColumns', newVal.columns);
+      scope.pageState.selectedBundle && scope.getNewDetails(scope.pageState.selectedBundle);
     },
     '{scope} pageState.selectedBundle': function(scope, ev, newBundle) {
-      var self = this;
-
-      newBundle.getDetails(
-        this.scope.attr('appstate'),
-        this.scope.attr('isCashAdjusted'),
-        this.scope.attr('paymentType')
-      );
+      scope.getNewDetails(newBundle);
+    },
+    '{scope} aggregatePeriod': function(scope, ev, newBundle) {
+      scope.getNewDetails(scope.pageState.selectedBundle);
     }
   }
 });

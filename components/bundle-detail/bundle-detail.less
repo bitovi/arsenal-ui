@@ -4,16 +4,55 @@
 
 rn-bundle-detail {
   display: block;
-  margin-top: 2em;
+  margin-top: .5em;
+  border-top: 1px solid @dark-grey;
 
   .controls {
-    padding-left: 3em;
+    background: @light-grey;
+    padding-top: 1em;
+  }
+
+  rn-switcher {
+    margin-bottom: -1px;
+    padding-left: 1em;
+
+    ul.switcher > li {
+      display: inline-block;
+      color: white;
+      background: @middle-grey;
+      padding: .5em 1em;
+
+      border-color: @dark-grey;
+      border-style: solid;
+      border-width: 1px 1px 0 1px;
+
+      &, &:first-child, &:last-child {
+        border-radius: 4px 4px 0 0;
+        margin-right: .25em;
+      }
+
+      &.selected {
+        background: @light-grey;
+        color: @dark-grey;
+        border-color: @middle-grey;
+      }
+    }
+  }
+
+  .aggregate-control {
+    display: inline-block;
+    margin-left: 2em;
+
+    label {
+      font-weight: normal;
+      margin-left: .25em;
+    }
   }
 
   .grid-container {
     background-color: @light-grey;
-    border-top: 1px solid @middle-grey;
-    margin-top: 1.5em;
+    border-top: 1px solid @dark-grey;
+    padding-top: .25em;
     margin-bottom: 2em;
   }
 

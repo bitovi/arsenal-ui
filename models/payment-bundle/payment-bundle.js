@@ -60,7 +60,6 @@ var PaymentBundle = Model.extend({
   },
   findOne: function(params) {
     var appstate = params.appstate,
-        isCashAdjusted = !!params.isCashAdjusted,
         paymentType = params.paymentType,
         view = params.view,
         bundleID = params.bundleID;
@@ -70,7 +69,6 @@ var PaymentBundle = Model.extend({
       token: appstate.userinfo.token,
       paymentBundle: {
         bundleID,
-        isCashAdjusted,
         paymentType,
         view
       }
@@ -93,13 +91,12 @@ var PaymentBundle = Model.extend({
       }
     }
   },
-  getDetails: function(appstate, view, isCashAdjusted, paymentType) {
+  getDetails: function(appstate, view, paymentType) {
     var self = this;
 
     return PaymentBundle.findOne({
       appstate,
       bundleID: self.bundleId,
-      isCashAdjusted,
       paymentType,
       view
     }).then(function(bundle) {
@@ -109,8 +106,6 @@ var PaymentBundle = Model.extend({
       self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
       can.batch.stop();
       return self;
-    }, function() {
-      console.error('error', arguments);
     });
   }
 });
