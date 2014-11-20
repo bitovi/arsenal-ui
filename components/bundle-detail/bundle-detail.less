@@ -1,4 +1,4 @@
-@light-grey: hsl(0, 0%, 90%);
+@light-grey: #f6f6f6;
 @middle-grey: hsl(0, 0%, 50%);
 @dark-grey: hsl(0, 0%, 25%);
 
@@ -12,7 +12,7 @@ rn-bundle-detail {
   border-top: 1px solid @dark-grey;
 
   .top-controls {
-    background: @light-grey;
+    background: #ececec;
     padding-top: 1em;
   }
 
@@ -57,11 +57,12 @@ rn-bundle-detail {
     background-color: @light-grey;
     border-top: 1px solid @dark-grey;
     padding-top: .25em;
-    margin-bottom: 2em;
   }
 
   .bottom-controls {
     display: flex;
+    background-color: @light-grey;
+    padding-top: 1em;
 
     & > * {
       display: block;
@@ -69,10 +70,11 @@ rn-bundle-detail {
     }
 
     & > .progress-display {
-      flex-grow: 1;
+      flex-grow: 0;
     }
 
     & > .payment-option {
+      flex-grow: 0;
       text-align: center;
 
       label {
@@ -86,6 +88,7 @@ rn-bundle-detail {
 
     & > .approval-comment {
       min-width: 25%;
+      flex-grow: 1;
 
       label {
         display: block;

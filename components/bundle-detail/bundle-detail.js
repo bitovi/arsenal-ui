@@ -2,8 +2,11 @@ import _ from 'lodash';
 import Component from 'can/component/';
 import List from 'can/list/';
 
+import WorkflowStep from 'models/workflow-step/';
+
 import BundleDetailGrid from 'components/bundle-detail-grid/';
 import Switcher from 'components/switcher/';
+import WorkflowDisplay from 'components/workflow-display/';
 
 import licensorColumns from './column-sets/licensor-columns';
 import countryColumns from './column-sets/country-columns';
@@ -35,8 +38,11 @@ var BundleDetailTabs = Component.extend({
     aggregatePeriod: false,
     paymentType: 1,
     approvalComment: '',
+
     gridColumns: columnSets[0].columns,
     gridRows: new List([]),
+
+    workflowSteps: new WorkflowStep.List([]),
 
     gettingDetails: false,
     getNewDetails: function(bundle) {
@@ -48,12 +54,13 @@ var BundleDetailTabs = Component.extend({
       }
 
       this.attr('gettingDetails', true);
-      bundle.getDetails(
+      return bundle.getDetails(
         this.appstate,
         view,
         this.paymentType
-      ).then(function() {
+      ).then(function(bundle) {
         scope.attr('gettingDetails', false);
+        return bundle;
       });
     }
   },
@@ -71,13 +78,19 @@ var BundleDetailTabs = Component.extend({
       scope.pageState.selectedBundle && scope.getNewDetails(scope.pageState.selectedBundle);
     },
     '{scope} pageState.selectedBundle': function(scope) {
-      scope.getNewDetails(scope.pageState.selectedBundle);
+      scope.workflowSteps.splice(0, scope.workflowSteps.length);
+      scope.getNewDetails(scope.pageState.selectedBundle).then(function(bundle) {
+        return WorkflowStep.findAll({
+          workflowInstanceId: bundle.workflowInstanceId
+        });
+      }).then(function(steps) {
+        scope.workflowSteps.replace(steps);
+      });
     },
     '{scope} aggregatePeriod': function(scope) {
       scope.getNewDetails(scope.pageState.selectedBundle);
     },
     '{scope} paymentType': function(scope) {
-      console.log('paymentType changed', arguments);
       scope.getNewDetails(scope.pageState.selectedBundle);
     },
   }

@@ -12,9 +12,9 @@
   <rn-bundle-detail-grid columns="{gridColumns}" page-state="{pageState}" {{#if gettingDetails}}style="display: none;"{{/if}}></rn-bundle-detail-grid>
   {{/if}}
 </div>
-{{/if}}
+{{#if pageState.selectedBundle.bundleDetailsGroup.length}}
 <div class="bottom-controls">
-  <div class="progress-display" style="border: 3px solid red; background: pink;">Progress Display Here</div>
+  <rn-workflow-display steps="{workflowSteps}" class="progress-display"></rn-workflow-display>
   <div class="payment-option">
     <label>Payment Option:</label>
     <select can-value="{paymentType}">
@@ -39,3 +39,5 @@
     </div>
   </div>
 </div>
+{{/if}}
+{{/if}}

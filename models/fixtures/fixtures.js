@@ -73,3 +73,6 @@ fixture('POST localhost:8090/rins/paymentBundle/getAll', function(req, res, head
 fixture('POST localhost:8090/rins/paymentBundle/get', function(req, res, headers) {
   return fixture_paymentBundle.makeBundleWithDetails(req.data.bundleId);
 });
+
+/* Workflow Steps */
+fixture('POST localhost:8090/rins/rinsworkflow/view', '/models/fixtures/workflow-step.json');
