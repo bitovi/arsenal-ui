@@ -3,49 +3,23 @@
 
   @dark-border: 1px solid hsl(0, 0%, 40%);
   @light-border: 1px solid hsl(0, 0%, 75%);
-  @border-radius: 8px;
 
-  @header-background: linear-gradient(to bottom, hsl(0, 0%, 75%), hsl(0, 0%, 50%));
+  @row-hover-outline: 3px solid #f1c8c8;
 
-  @font-color: hsl(0, 0%, 50%);
+  @header-background: linear-gradient(to bottom, #7e7e83, #afafb4);
+  @parent-background: #e4e4e4;
+  @child-background: #f6f6f6;
+  @selected-background: #d3f0fe;
+
+  @font-color: hsl(0, 0%, 0%);
 
   @disclosure-symbol: '▶︎';
 
   & > table {
     width: 100%;
-    border-radius: 8px;
     border-spacing: 0;
 
     color: @font-color;
-
-    /* getting border radius to work right */
-    colgroup + thead, colgroup + tbody {
-      & > tr:first-of-type {
-        td:first-child, th:first-child {
-          border-top-left-radius: @border-radius;
-        }
-
-        td:last-child, th:last-child {
-          border-top-right-radius: @border-radius;
-        }
-      }
-    }
-
-    tbody:last-child, tfoot:last-child {
-      & > tr:last-of-type {
-        td, th {
-          border-bottom: @light-border;
-        }
-
-        td:first-child, th:first-child {
-          border-bottom-left-radius: @border-radius;
-        }
-
-        td:last-child, th:last-child {
-          border-bottom-right-radius: @border-radius;
-        }
-      }
-    }
   }
 
   thead, tfoot {
@@ -56,14 +30,19 @@
     th, td {
       text-align: left;
       font-weight: normal;
+      padding: .33em .5em;
       height: 1.5em;
-      padding: .5em 1em;
+
       border-right: @dark-border;
       border-top: @dark-border;
       border-bottom: @dark-border;
 
       &:first-child {
         border-left: @dark-border;
+      }
+
+      & .sort-arrow {
+        font-size: .5em;
       }
     }
   }
@@ -72,8 +51,23 @@
 
     tr {
 
+      background-color: @parent-background;
+
+      &.child {
+        background-color: @child-background;
+      }
+
+      &.selected {
+        background-color: @selected-background;
+      }
+
+      &:hover {
+        outline: @row-hover-outline;
+      }
+
       td {
-        padding: 1em;
+        padding: .33em .5em;
+        height: 1.5em;
 
         border-bottom: @light-border;
 
