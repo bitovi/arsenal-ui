@@ -2,15 +2,61 @@ import Component from 'can/component/';
 import stache from 'can/view/stache/';
 
 import template from './template.stache!';
+import gridtemplate from './gridtemplate.stache!';
+//import _less from './page-on-account.less!';
 
 import stache from 'can/view/stache/';
 
 import UserReq from 'models/rinsCommon/request/';
 
+import OnAccountGrid from 'components/on-account-balance/';
+import Grid from 'components/grid/';
+
+// Grid.extend({
+//   tag: 'rn-grid-onaccount',
+//   template: gridtemplate,
+//   scope: {
+//      columns: [
+//       {
+//         id: 'toggle',
+//         title: '<span class="open-toggle-all"></span>',
+//         contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}}')({isChild: row.__isChild}); }
+//       },
+//       {
+//         id: 'licensor',
+//         title: 'Licensor',
+//         contents: function(row) { return stache('{{licensor}}')({licensor: row.licensor}); }
+//       },
+//       {
+//         id: 'type',
+//         title: 'Type',
+//         contents: function(row) { return 'Payment'; }
+//       },
+//       {
+//         id: 'description',
+//         title: 'Description',
+//         sortable: true,
+//         compare: function(a, b) { return (a.description < b.description ? -1 : (a.description > b.description ? 1 : 0)); }
+//       },
+//       {
+//         id: 'region',
+//         title: 'Region',
+//         sortable: true,
+//         defaultSortDirection: 'desc'
+//       }
+//     ]
+//   },
+//   events: {
+//     'inserted': function(ev) {
+     
+//     }
+      
+//   }
+// });
 
 
 var page = Component.extend({
-  tag: 'page-claimreview',
+  tag: 'page-on-account',
   template: template,
   scope: {
     localGlobalSearch:undefined
@@ -21,6 +67,20 @@ var page = Component.extend({
     },
     events: {
     	"inserted": function(){
+        // var rows = new can.List(_.times(10, i => {
+        //   return {
+        //     licensor: 'Licensor ' + (i + 1),
+        //     type: 'Payment',
+        //     description: 'Invoice #' + _.random(1, 1000),
+        //     region: 'Europe ' + _.random(1, 9),
+        //     '__isChild': (i % 3) !== 0
+        //   };
+        // }));
+        // console.log(JSON.stringify(rows));
+        //$('#onAccount').append(stache('<rn-grid-onaccount rows={rows}></rn-grid-onaccount>')({rows}));
+       // $("#onAccount").append(stache('<rn-grid-onaccount details={rows}></rn-grid-onaccount>')({rows}));
+
+        $('#onAccount').append(stache('<on-account-grid></on-account-grid>')());
     	},
       '{scope.appstate} change': function() {
 

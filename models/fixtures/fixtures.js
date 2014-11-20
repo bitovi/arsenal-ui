@@ -11,3 +11,5 @@ import fixture_country from './country';
 fixture('GET /storeTypes', '/models/fixtures/store-type.json');
 
 fixture('GET /highchart', '/models/fixtures/highchart.json');
+
+fixture('GET /onAccountBalance', '/models/fixtures/onAccountBalance.json');
