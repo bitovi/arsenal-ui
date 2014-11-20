@@ -13,6 +13,7 @@
       <ul class="nav navbar-nav">
         <li {{isActive 'dashboard'}}><a href="/dashboard">Dashboard</a></li>
         <li {{isActive 'payment-bundles'}}><a href="/payment-bundles">Payment Bundles</a></li>
+        <li {{isActive 'pricing-models'}}><a href="/pricing-models">Pricing Models</a></li>
         <li {{isActive 'invalid-page'}}><a href="/invalid-page">Invalid page</a></li>
       </ul>
     </div><!--/.nav-collapse -->

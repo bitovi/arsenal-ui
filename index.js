@@ -30,7 +30,7 @@ appstate.bind('page', function(ev, newVal, oldVal) {
   }).catch(function(ex) {
     // TODO: Do something more intelligent with miss cases, like defaulting to the Dashboard.
     $('#page').html('<p class="error">Invalid page!</p>');
-    console.error('Invalid page linked!');
+    console.error(ex);
   });
 });
 
