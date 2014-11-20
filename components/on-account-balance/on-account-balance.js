@@ -8,7 +8,7 @@ import _less from './on-account-balance.less!';
 import template from './template.stache!';
 import Grid from 'components/grid/';
 
-var GridWithCall = Grid.extend({
+var onAccountBalance = Grid.extend({
   tag: 'on-account-grid',
   template: template,
   scope: {
@@ -35,8 +35,8 @@ var GridWithCall = Grid.extend({
   events: {
     'inserted': function(ev) {
       var self = this;
-      var obj={id: 'Naveen',
-        title: 'Naveen'
+      var obj={id: 'Country',
+        title: 'Country'
       };
       self.scope.columns.replace(obj);
 
@@ -60,4 +60,4 @@ var GridWithCall = Grid.extend({
   }
 });
 
-export default GridWithCall;
+export default onAccountBalance;
