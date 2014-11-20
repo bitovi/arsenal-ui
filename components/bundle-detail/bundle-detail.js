@@ -33,7 +33,8 @@ var BundleDetailTabs = Component.extend({
     columnSets: columnSets,
     selectedTab: null, // by default
     aggregatePeriod: false,
-    paymentType: 'recon', // TODO: set up dropdown
+    paymentType: 1,
+    approvalComment: '',
     gridColumns: columnSets[0].columns,
     gridRows: new List([]),
 
@@ -69,12 +70,16 @@ var BundleDetailTabs = Component.extend({
       this.scope.attr('gridColumns', newVal.columns);
       scope.pageState.selectedBundle && scope.getNewDetails(scope.pageState.selectedBundle);
     },
-    '{scope} pageState.selectedBundle': function(scope, ev, newBundle) {
-      scope.getNewDetails(newBundle);
-    },
-    '{scope} aggregatePeriod': function(scope, ev, newBundle) {
+    '{scope} pageState.selectedBundle': function(scope) {
       scope.getNewDetails(scope.pageState.selectedBundle);
-    }
+    },
+    '{scope} aggregatePeriod': function(scope) {
+      scope.getNewDetails(scope.pageState.selectedBundle);
+    },
+    '{scope} paymentType': function(scope) {
+      console.log('paymentType changed', arguments);
+      scope.getNewDetails(scope.pageState.selectedBundle);
+    },
   }
 });
 

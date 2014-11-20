@@ -2,12 +2,16 @@
 @middle-grey: hsl(0, 0%, 50%);
 @dark-grey: hsl(0, 0%, 25%);
 
+@button-text: white;
+@button-border: 1px solid #1367f3;
+@button-fill: linear-gradient(to top, #1581f4, #63adf1);
+
 rn-bundle-detail {
   display: block;
   margin-top: .5em;
   border-top: 1px solid @dark-grey;
 
-  .controls {
+  .top-controls {
     background: @light-grey;
     padding-top: 1em;
   }
@@ -56,4 +60,56 @@ rn-bundle-detail {
     margin-bottom: 2em;
   }
 
+  .bottom-controls {
+    display: flex;
+
+    & > * {
+      display: block;
+      margin: 1em;
+    }
+
+    & > .progress-display {
+      flex-grow: 1;
+    }
+
+    & > .payment-option {
+      text-align: center;
+
+      label {
+        font-weight: normal;
+      }
+
+      select {
+        margin: 0 auto;
+      }
+    }
+
+    & > .approval-comment {
+      min-width: 25%;
+
+      label {
+        display: block;
+      }
+
+      textarea {
+        display: block;
+        width: 100%;
+        min-height: 3em;
+      }
+
+      .buttons {
+        text-align: right;
+        margin-top: .5em;
+
+        button {
+          color: @button-text;
+          background: @button-fill;
+          border: @button-border;
+          border-radius: .33em;
+          padding: .33em 1.5em;
+
+        }
+      }
+    }
+  }
 }

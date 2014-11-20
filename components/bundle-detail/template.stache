@@ -1,5 +1,5 @@
 {{#if pageState.selectedBundle}}
-<div class="controls">
+<div class="top-controls">
   <rn-switcher options="{columnSets}" selected-option="{selectedTab}"></rn-switcher>
   {{#showAggregateControl}}
   <div class="aggregate-control">
@@ -8,10 +8,34 @@
   {{/showAggregateControl}}
 </div>
 <div class="grid-container">
-  <h3>Getting details: {{gettingDetails}}</h3>
   {{#if pageState.selectedBundle.bundleDetailsGroup.length}}
-  <rn-bundle-detail-grid columns="{gridColumns}" page-state="{pageState}"></rn-bundle-detail-grid>
+  <rn-bundle-detail-grid columns="{gridColumns}" page-state="{pageState}" {{#if gettingDetails}}style="display: none;"{{/if}}></rn-bundle-detail-grid>
   {{/if}}
 </div>
-<!-- other stuff down here, like progress bar and so on -->
 {{/if}}
+<div class="bottom-controls">
+  <div class="progress-display" style="border: 3px solid red; background: pink;">Progress Display Here</div>
+  <div class="payment-option">
+    <label>Payment Option:</label>
+    <select can-value="{paymentType}">
+      <option value="1">Payment - In Full</option>
+      <option value="2">Payment LI Disputes</option>
+      <option value="3">Payment Recon Amount</option>
+      <option value="4">Payment Over Rep Disputes</option>
+    </select>
+  </div>
+  <div class="approval-comment">
+    <label>Approval Comment</label>
+    <textarea can-value="{approvalComment}"></textarea>
+    <div class="buttons">
+    {{#if appstate.userInfo.isBM}}
+      <button>Delete</button>
+      <button>Recall</button>
+      <button>Propose</button>
+    {{else}}
+      <button>Reject</button>
+      <button>Approve</button>
+    {{/if}}
+    </div>
+  </div>
+</div>
