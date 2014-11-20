@@ -33,6 +33,7 @@ var Grid = Component.extend({
     },
     filteredColumns: function(options) {
       // By default, use all the columns.
+      this.columns.attr('length'); // also re-render when the column length changes
       return _.map(this.attr('columns'), column => options.fn({column}));
     },
     columnClass: function(column) {
@@ -113,7 +114,7 @@ var Grid = Component.extend({
       //console.log("column length is "+ JSON.stringify(this.attr("columns").length));
       return this.attr("columns").length;
     }
-    
+
   },
 
   events: {

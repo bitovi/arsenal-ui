@@ -8,7 +8,7 @@ import _less from './on-account-balance.less!';
 import template from './template.stache!';
 import Grid from 'components/grid/';
 
-var onAccountBalance = Grid.extend({
+var OnAccountBalance = Grid.extend({
   tag: 'on-account-grid',
   template: template,
   scope: {
@@ -38,7 +38,7 @@ var onAccountBalance = Grid.extend({
       var obj={id: 'Country',
         title: 'Country'
       };
-      self.scope.columns.replace(obj);
+      self.scope.columns.push(obj)
 
       onAccountBalance.findAll().then(function(rows) {
         // // mangle rows here
@@ -60,4 +60,4 @@ var onAccountBalance = Grid.extend({
   }
 });
 
-export default onAccountBalance;
+export default OnAccountBalance;
