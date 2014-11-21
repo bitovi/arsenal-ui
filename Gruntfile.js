@@ -124,6 +124,7 @@ module.exports = function (grunt) {
               var paths = [
                 { prefix: '/components', sub: false },
                 { prefix: '/models', sub: false },
+                { prefix: '/resources', sub: false },
                 { prefix: '/test', sub: false },
                 { prefix: '/dist/bundles', sub: '/dist/bundles.html' },
                 { prefix: '/', sub: '/index.html' }
