@@ -1,9 +1,24 @@
 import Model from 'can/model/';
+import URLs from 'utils/urls';
 
 import PaymentBundleDetail from './payment-bundle-detail';
 
 var PaymentBundleDetailGroup = Model.extend({
-  id: "invoiceId" // I think?
+  id: "invoiceId", // I think?
+  destroy: function(id, invoice) {
+    // TODO: when infrastructure gets set up, fix this.
+    var data = {
+      searchRequest: {
+        ids: [id]
+      }
+    };
+
+    return $.ajax({
+      url:  URLs.DOMAIN_SERVICE_URL + 'rins/invoice/delete',
+      type: 'POST',
+      data: data
+    });
+  }
 }, {
   define : {
     bundleDetails: {

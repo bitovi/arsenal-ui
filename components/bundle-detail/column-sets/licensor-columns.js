@@ -6,6 +6,11 @@ export default [
     title: '<span class="open-toggle-all"></span>',
     contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}}')({isChild: row.__isChild}); }
   }, {
+    id: 'validations',
+    title: '<img src="/resources/images/rn_WarningActive@2x.png"/>',
+    contents: function(row) { return stache('{{#if validationMessages.length}}<img src="/resources/images/rn_WarningSelected@2x.png"/>{{/if}}')(row); },
+    validationsOnly: true
+  }, {
     id: 'licensor',
     title: 'Licensor',
     contents: row => row.__isChild ? '' : row.entityName

@@ -14,8 +14,12 @@ import headerNavigation from 'components/header-navigation/';
 // Models
 import appstate from 'models/appstate/';
 
+// Util
+import URLs from 'utils/urls';
+
 // App
 import index_template from 'index.stache!';
+import less_common from 'common.less!';
 import less_index from 'index.less!';
 
 // Fixtures?
@@ -40,3 +44,19 @@ appstate.bind('page', function(ev, newVal, oldVal) {
 $(document.body).append(index_template({appstate: appstate}));
 
 appstate.startRouting();
+
+$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
+  // Every domain service call requires some common params, so we do them here to save effort.
+  if(options.url.indexOf(URLs.DOMAIN_SERVICE_URL) === 0) {
+    var data = can.deparam(options.data);
+    can.extend(data, {
+      token: (appstate.userinfo && appstate.userinfo.token) || ''
+      // there's probably more that goes here.
+    });
+    options.data = can.param(data);
+  }
+});
+
+// TODO: REMOVE BEFORE DEPLOYING
+// FOR DEV ONLY
+window.AppState = appstate;

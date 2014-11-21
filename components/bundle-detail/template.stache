@@ -6,10 +6,20 @@
     <input type="checkbox" can-value="{aggregatePeriod}"><label>Aggregate Period</label>
   </div>
   {{/showAggregateControl}}
+  <div class="bundle-detail-actions">
+    {{#canRemoveInvoice}}
+    <button class="remove-invoice">Remove Invoice From Bundle</button>
+    {{/canRemoveInvoice}}
+    {{#canShowChart}}
+    <img class="show-chart" src="/resources/images/chart.png"/>
+    {{/canShowChart}}
+    <img class="excel" src="/resources/images/excel.png"/>
+    <img class="clipboard" src="/resources/images/clipboard.png"/>
+  </div>
 </div>
 <div class="grid-container">
   {{#if pageState.selectedBundle.bundleDetailsGroup.length}}
-  <rn-bundle-detail-grid columns="{gridColumns}" page-state="{pageState}" {{#if gettingDetails}}style="display: none;"{{/if}}></rn-bundle-detail-grid>
+  <rn-bundle-detail-grid columns="{gridColumns}" page-state="{pageState}" selected-rows="{selectedRows}" {{#if gettingDetails}}style="display: none;"{{/if}}></rn-bundle-detail-grid>
   {{/if}}
 </div>
 {{#if pageState.selectedBundle.bundleDetailsGroup.length}}
@@ -29,12 +39,12 @@
     <textarea can-value="{approvalComment}"></textarea>
     <div class="buttons">
     {{#if appstate.userInfo.isBM}}
-      <button>Delete</button>
-      <button>Recall</button>
-      <button>Propose</button>
+      <button class="action" data-action="delete">Delete</button>
+      <button class="action" data-action="recall">Recall</button>
+      <button class="action" data-action="approve">Propose</button>
     {{else}}
-      <button>Reject</button>
-      <button>Approve</button>
+      <button class="action" data-action="reject">Reject</button>
+      <button class="action" data-action="approve">Approve</button>
     {{/if}}
     </div>
   </div>

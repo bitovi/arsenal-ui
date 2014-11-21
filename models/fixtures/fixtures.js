@@ -1,4 +1,5 @@
 import fixture from 'can/util/fixture/';
+import URLs from 'utils/urls';
 
 
 import fixture_allInvoices from './allInvoices';
@@ -62,7 +63,7 @@ fixture('GET /validateicsv', '/models/fixtures/validateicsv.json');
 import fixture_paymentBundle from './payment-bundle';
 var BUNDLES = _.times(4, fixture_paymentBundle.makeBundle);
 
-fixture('POST localhost:8090/rins/paymentBundle/getAll', function(req, res, headers) {
+fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/getAll', function(req, res, headers) {
   res(200, {
     responseCode: '0000',
     responseTest: 'SUCCESS',
@@ -70,9 +71,9 @@ fixture('POST localhost:8090/rins/paymentBundle/getAll', function(req, res, head
   });
 });
 
-fixture('POST localhost:8090/rins/paymentBundle/get', function(req, res, headers) {
+fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/get', function(req, res, headers) {
   return fixture_paymentBundle.makeBundleWithDetails(req.data.bundleId);
 });
 
 /* Workflow Steps */
-fixture('POST localhost:8090/rins/rinsworkflow/view', '/models/fixtures/workflow-step.json');
+fixture('POST ' + URLs.UI_SERVICE_URL + 'rins/rinsworkflow/view', '/models/fixtures/workflow-step.json');

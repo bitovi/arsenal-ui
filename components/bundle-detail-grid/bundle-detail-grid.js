@@ -26,6 +26,13 @@ var BundleDetailGrid = Grid.extend({
     aggregateRows: [],
     makeAggregateRowsFromBundle: function(bundle) {
       return [bundle];
+    },
+
+    selectedRows: [],
+
+    thereAreValidationMessages: function(rows) {
+      // TODO: make this real
+      return false;
     }
   },
   helpers: {
@@ -37,7 +44,14 @@ var BundleDetailGrid = Grid.extend({
         filteredColumns = _.filter(filteredColumns, column => !column.verboseOnly);
       }
 
+      if(!this.thereAreValidationMessages(this.attr('rows'))) {
+        filteredColumns = _.filter(filteredColumns, column => !column.validationsOnly);
+      }
+
       return _.map(filteredColumns, column => options.fn({column}));
+    },
+    filteredRows: function(options) {
+      return Grid.prototype.helpers.filteredRows.apply(this, arguments);
     },
     footerRows: function(options) {
       // By default, rows are a bit more complex.
@@ -74,6 +88,14 @@ var BundleDetailGrid = Grid.extend({
           isVisible: isChild ? childRowsAreVisible : true // parent rows are always visible
         });
       });
+    },
+    // override rowClass handler to add a class if the row is selected
+    rowClass: function(row) {
+      if(this.selectedRows.indexOf(row) > -1) {
+        return 'selected';
+      } else {
+        return '';
+      }
     }
   },
   events: {
@@ -84,6 +106,21 @@ var BundleDetailGrid = Grid.extend({
     '{scope.pageState.selectedBundle.bundleDetailsGroup} length': function() {
       this.scope.rows.splice(0, this.scope.rows.length, ...this.scope.makeRowsFromBundle(this.scope.pageState.selectedBundle));
       this.scope.aggregateRows.splice(0, this.scope.aggregateRows.length, ...this.scope.makeAggregateRowsFromBundle(this.scope.pageState.selectedBundle));
+    },
+    'tbody tr click': function(el, ev) {
+      if(ev.target.classList.contains('open-toggle')) {
+        return;
+      }
+
+      var row = el.data('row').row;
+
+      // toggle selecting a row
+      var ix = this.scope.selectedRows.indexOf(row);
+      if(ix > -1) {
+        this.scope.selectedRows.splice(ix, 1);
+      } else {
+        this.scope.selectedRows.push(row);
+      }
     }
   }
 });

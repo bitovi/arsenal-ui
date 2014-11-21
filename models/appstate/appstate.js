@@ -29,7 +29,7 @@ var stateDefaults = {
   // TODO: instead of this, go get the current user and replace this info
   // for right now, this is just a mock-up
   userinfo: {
-    token: ''
+    token: 'FAKE TOKEN'
   },
   page: 'dashboard',
   periodFrom: "",

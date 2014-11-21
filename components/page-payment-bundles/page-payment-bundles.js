@@ -57,14 +57,27 @@ var page = Component.extend({
   },
   events: {
     'inserted': function(ev, el) {
-      var scope = self.scope;
       this.scope.refreshBundles.apply(this);
     },
     '{scope} change': function(scope, ev, attr) {
       if(attr.substr(0, 8) === 'appstate') {
         this.scope.refreshBundles.apply(this);
       }
-    }
+    },
+    '.delete-bundle click': function(el, ev) {
+      this.scope.pageState.selectedBundle.destroy({
+        appstate: this.scope.appstate
+      });
+    },
+    '.add-invoice click': function(el, ev) {
+      // go to Add Invoice page
+    },
+    '.excel click': function(el, ev) {
+      // call excel download service (make this a method in the model)
+    },
+    '.clipboard click': function(el, ev) {
+      // copy bundle list information to clipboard
+    },
   }
 });
 

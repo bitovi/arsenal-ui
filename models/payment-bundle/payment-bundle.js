@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import Model from 'can/model/';
 import can_define from 'can/map/define/'
+import URLs from 'utils/urls';
 
 import PaymentBundleDetailGroup from './payment-bundle-detail-group';
 
@@ -39,7 +40,6 @@ var PaymentBundle = Model.extend({
     var appstate = params.appstate;
     // TODO: when infrastructure gets set up, fix this.
     var data = {
-      token: appstate.userinfo.token,
       "bundleSearch": {
         "serviceTypeId": appstate.storeType.id, // store type
         "entityId": [appstate.licensor.id], // selected licensors
@@ -53,20 +53,18 @@ var PaymentBundle = Model.extend({
     };
 
     return $.ajax({
-      url: 'localhost:8090/rins/paymentBundle/getAll',
+      url: URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/getAll',
       type: 'POST',
       data: data
     });
   },
   findOne: function(params) {
-    var appstate = params.appstate,
-        paymentType = params.paymentType,
+    var paymentType = params.paymentType,
         view = params.view,
         bundleID = params.bundleID;
 
     // TODO: when infrastructure gets set up, fix this.
     var data = {
-      token: appstate.userinfo.token,
       paymentBundle: {
         bundleID,
         paymentType,
@@ -75,7 +73,21 @@ var PaymentBundle = Model.extend({
     };
 
     return $.ajax({
-      url: 'localhost:8090/rins/paymentBundle/get',
+      url: URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/get',
+      type: 'POST',
+      data: data
+    });
+  },
+  destroy: function(id, bundle) {
+    // TODO: when infrastructure gets set up, fix this.
+    var data = {
+      searchRequest: {
+        ids: [id]
+      }
+    };
+
+    return $.ajax({
+      url: URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/delete',
       type: 'POST',
       data: data
     });
@@ -105,7 +117,53 @@ var PaymentBundle = Model.extend({
       self.attr(bundle.attr());
       self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
       can.batch.stop();
+
+      bundle.getValidations();
       return self;
+    });
+  },
+  getValidations: function(view) {
+    var bundle = this;
+
+    return $.ajax({
+      url: URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/validationResult',
+      type: 'POST',
+      data: {
+        paymentBundle: {
+          bundleId: bundle.bundleId,
+          view: view
+        }
+      }
+    }).then(function(validationResponse) {
+      // for now, we have no invoiceId to hook up bundles with, so...
+      // I guess we have to do it the hard way.
+
+
+      return validationResponse;
+    });
+  },
+  moveInWorkflow: function(params) {
+    if(['approve', 'reject', 'recall', 'delete'].indexOf(params.action) < 0) {
+      throw new Error('Invalid action for payment bundle move. Only "approve", "reject", "recall", and "delete" are valid.');
+    }
+
+    var requestData = {
+      paymentBundle: {
+        action: params.action.toUpperCase(), // APPROVE, REJECT, RECALL, DELETE
+        bundleType: this.bundleType,
+        bundleLines: _.map(this.bundleDetailsGroup, (group) => ({
+          refLineId: group.refLineId,
+          refLineType: group.refLineType,
+          periodType: group.periodType
+        })),
+        comments: params.approvalComment
+      }
+    };
+
+    return $.ajax({
+      url: URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/' + params.action,
+      type: 'POST',
+      data: requestData
     });
   }
 });

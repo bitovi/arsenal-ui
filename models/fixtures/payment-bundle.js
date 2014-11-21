@@ -2,7 +2,7 @@ import _ from 'lodash';
 import fixture from 'can/util/fixture/';
 
 var makeBundleDetails = function(bundle, invoice) {
-  return _.times(2, function(i) {
+  return _.times(3, function(i) {
     return {
       "bndlLineId": 170 + i,
       "bundleId": bundle.bundleId,
@@ -55,7 +55,7 @@ var makeBundleDetails = function(bundle, invoice) {
 };
 
 var makeInvoices = function(bundle) {
-  return _.times(2, function(j) {
+  return _.times(3, function(j) {
     var invoice = {
       "invoiceId": 2402 + j,
       "invoiceNumber": "#" + (2402 + j),

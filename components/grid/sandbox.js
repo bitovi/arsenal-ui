@@ -64,4 +64,7 @@ var rows = new can.List(_.times(10, i => {
   };
 }));
 
-$('#sandbox').append(stache('<rn-grid rows="{rows}"></rn-grid>')({rows}));
+var rows = createRows();
+_.each(rows, row => row.attr('childRows', createRows()));
+
+$('#sandbox').append(stache('<rn-grid rows="{rows}"></rn-grid><rn-grid rows="{rows.0.childRows}"></rn-grid>')({rows}));
