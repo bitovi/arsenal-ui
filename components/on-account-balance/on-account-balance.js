@@ -13,11 +13,6 @@ var OnAccountBalance = Grid.extend({
   template: template,
   scope: {
     columns: [
-      // {
-      //   id: 'toggle',
-      //   title: '',
-      //   contents: function(row) { return row.__isChild ? '' : '<span class="open-toggle"></span>'; }
-      // },
       {
         id: 'Licensor',
         title: 'Licensor'
@@ -30,34 +25,90 @@ var OnAccountBalance = Grid.extend({
         id: 'ContentType',
         title: 'Content Type'
       }
-    ]
+    ],
+    request:{}
+    //sample:"@"
   },
+  init: function(){
+
+    var self = this;
+     console.log(JSON.stringify(self.scope.request.searchRequest.attr()));
+     var quarters = getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
+
+     for(var i=0;i<quarters.length;i++){
+      var column={
+        id:quarters[i],
+        title:quarters[i]
+      };
+      self.scope.columns.push(column);
+     }
+
+      var balanceColumn={
+        id:'onAccountBalance',
+        title:'onAccount Bal'
+      };
+      self.scope.columns.push(balanceColumn);
+
+      var cashAdjustColumn={
+        id:'cashAdjust',
+        title:'Licensor Cash Adjustment'
+      };
+      self.scope.columns.push(cashAdjustColumn);
+
+
+
+   
+     onAccountBalance.findAll().then(function(rows) {
+        self.scope.rows.replace(rows);
+      });
+      //Grid.prototype['inserted'] && Grid.prototype['inserted'].apply(self, arguments);
+
+    },
   events: {
     'inserted': function(ev) {
-      var self = this;
-      var obj={id: 'Country',
-        title: 'Country'
-      };
-      self.scope.columns.push(obj)
 
-      onAccountBalance.findAll().then(function(rows) {
-        // // mangle rows here
-        // _.each(rows, function(row, ix) {
-        //   row.__isChild = (ix % 3) !== 0;
-        // });
 
-        console.log('Got exception');
-      //self.scope.columns.push(obj);
-        console.log(JSON.stringify((self.scope.columns.attr())));
+      // onAccountBalance.findAll().then(function(data) {
+        
+      //   this.scope.rows.replace(data);
+      // });
 
-        // replace them into the scope
-        //self.scope.rows.replace(rows);
-      });
-
-      // call super - it's only polite
-      Grid.prototype['inserted'] && Grid.prototype['inserted'].apply(this, arguments);
+      // // call super - it's only polite
+      // Grid.prototype['inserted'] && Grid.prototype['inserted'].apply(this, arguments);
+    },
+    '{scope} request change':function(){
+      
     }
   }
 });
+
+var getQuarter=function(periodFrom,periodTO){
+  console.log(periodFrom);
+  console.log(periodTO);
+   var obj=[];
+    var qFrom = periodFrom.substring(1, 2);
+    var qTo = periodTO.substring(1, 2);
+    var yearFrom = periodFrom.substring(periodFrom.length, periodFrom.length-2);
+    var yearTo = periodTO.substring(periodTO.length, periodTO.length-2);  
+    if(qFrom == qTo && yearFrom == yearTo){
+        var sam = "Q"+qFrom+"FY"+yearFrom;
+        obj.push(sam);
+    } else if(yearFrom < yearTo){
+         for(var i=yearFrom;i<=yearTo;i++){
+             var quarterTo = qTo;
+             if(i != yearTo){
+                quarterTo = 4;  
+             }
+             for(var j = qFrom ; j <= quarterTo; j++){
+                obj.push("Q"+j+"FY"+i);
+            }
+         }
+    }else{
+        for(var i = qFrom ; i <= qTo; i++){
+               obj.push("Q"+i+"FY"+yearFrom);
+            }
+    }
+    return obj;
+}
 
 export default OnAccountBalance;

@@ -67,100 +67,82 @@ var page = Component.extend({
     },
     events: {
     	"inserted": function(){
-        // var rows = new can.List(_.times(10, i => {
-        //   return {
-        //     licensor: 'Licensor ' + (i + 1),
-        //     type: 'Payment',
-        //     description: 'Invoice #' + _.random(1, 1000),
-        //     region: 'Europe ' + _.random(1, 9),
-        //     '__isChild': (i % 3) !== 0
-        //   };
-        // }));
-        // console.log(JSON.stringify(rows));
-        //$('#onAccount').append(stache('<rn-grid-onaccount rows={rows}></rn-grid-onaccount>')({rows}));
-       // $("#onAccount").append(stache('<rn-grid-onaccount details={rows}></rn-grid-onaccount>')({rows}));
 
-        $('#onAccount').append(stache('<on-account-grid></on-account-grid>')());
+
+        var data={id: 'Country',
+        title: 'Country'
+      };
+
+       
+       
     	},
       '{scope.appstate} change': function() {
 
-          console.log('changed');
-          var self=this;
-          console.log("appState set to "+JSON.stringify(this.scope.appstate.attr()));
-          if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch') ){
-              this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
-              console.log("User clicked on  search");
-
-              var periodFrom = this.scope.appstate.attr('periodFrom');
-              var periodTo = this.scope.appstate.attr('periodTo');
-              var serTypeId = this.scope.appstate.attr('storeType');
-              var regId = this.scope.appstate.attr('region');
-              var countryId = this.scope.appstate.attr()['country'];
-              var licId = this.scope.appstate.attr()['licensor'];
-              var contGrpId = this.scope.appstate.attr()['contentType'];
-
-              var claimLicSearchRequest = {};
-              claimLicSearchRequest.searchRequest = {};
-              if(typeof(periodFrom)=="undefined")
-                claimLicSearchRequest.searchRequest["periodFrom"] = "";
-              else
-                claimLicSearchRequest.searchRequest["periodFrom"] = periodFrom;
-
-              if(typeof(periodTo)=="undefined")
-                claimLicSearchRequest.searchRequest["periodTo"] = "";
-              else
-                claimLicSearchRequest.searchRequest["periodTo"] = periodTo;
-
-              if(typeof(serTypeId)=="undefined")
-                claimLicSearchRequest.searchRequest["serviceTypeId"] = "";
-              else
-                claimLicSearchRequest.searchRequest["serviceTypeId"] = serTypeId['id'];
-
-              if(typeof(regId)=="undefined")
-                claimLicSearchRequest.searchRequest["regionId"] = "";
-              else
-                claimLicSearchRequest.searchRequest["regionId"] = regId['id'];
-              
-              claimLicSearchRequest.searchRequest["country"] = [];
-              if(typeof(countryId)!="undefined")
-                //claimLicSearchRequest.searchRequest["country"].push(countryId['value']);
-                claimLicSearchRequest.searchRequest["country"]=countryId;
-
-              claimLicSearchRequest.searchRequest["entityId"] = [];
-              if(typeof(licId)!="undefined")
-                claimLicSearchRequest.searchRequest["entityId"] = licId;
-
-              claimLicSearchRequest.searchRequest["contentGrpId"] = [];
-              if(typeof(contGrpId)!="undefined")
-                claimLicSearchRequest.searchRequest["contentGrpId"] = contGrpId;
-
-              claimLicSearchRequest.searchRequest["periodType"] = "P";
-
-              claimLicSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
-              claimLicSearchRequest.searchRequest["offset"] = "0";
-              claimLicSearchRequest.searchRequest["limit"] = "10";
-              
-              var filterData = self.scope.tokenInput.attr();
-              var newFilterData = [];
-              if(filterData.length>0){
-                for(var p=0;p<filterData.length;p++)
-                  newFilterData.push(filterData[p]["name"]);
-              }
-              claimLicSearchRequest.searchRequest["filter"] = newFilterData;
-
-              claimLicSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr().toString();
-              claimLicSearchRequest.searchRequest["sortOrder"] = "ASC";
-
-              console.log("Request are "+JSON.stringify(UserReq.formRequestDetails(claimLicSearchRequest)));
-
-              claimLicensorInvoices.findAll(UserReq.formRequestDetails(claimLicSearchRequest),function(values){
-                  //console.log("data is "+JSON.stringify(values[0].attr()));
-                  self.scope.allClaimLicensorMap.replace(values[0]);
-              },function(xhr){
-                console.error("Error while loading: "+xhr);
-              });
-          }
+        if(this.scope.appstate.attr('globalSearch')){
+             var request = frameRequest(this.scope.appstate); 
+            //$('#onAccount').append(stache('<on-account-grid request={{request}}></on-account-grid>')({request}));
+            var sample = 'naveen';
+             $('#onAccount').append(stache('<on-account-grid request={request}></on-account-grid>')({request}));
+        }
       }
     }
 });
+
+var frameRequest = function(appstate){
+      var onAccountrequest = {};
+      var periodFrom = appstate.attr('periodFrom');
+      var periodTo = appstate.attr('periodTo');
+      var serTypeId = appstate.attr('storeType');
+      var regId = appstate.attr('region');
+      var countryId = appstate.attr()['country'];
+      var licId = appstate.attr()['licensor'];
+      var contGrpId = appstate.attr()['contentType'];
+
+      
+      onAccountrequest.searchRequest = {};
+      onAccountrequest.searchRequest["periodFrom"] = "";
+      onAccountrequest.searchRequest["periodTo"] = "";
+      onAccountrequest.searchRequest["serviceTypeId"] = "";
+      onAccountrequest.searchRequest["regionId"] = "";
+      onAccountrequest.searchRequest["country"] = [];
+      onAccountrequest.searchRequest["entityId"] = [];
+      onAccountrequest.searchRequest["contentGrpId"] = [];
+      onAccountrequest.searchRequest["periodType"] = "Q";
+      onAccountrequest.searchRequest["type"] = "BALANCE";
+
+      if(typeof(periodFrom) != "undefined"){
+        onAccountrequest.searchRequest["periodFrom"] = periodFrom;
+      }
+
+      if(typeof(periodTo)!="undefined"){
+        onAccountrequest.searchRequest["periodTo"] = periodTo;
+      }
+
+      if(typeof(serTypeId)!="undefined"){
+        onAccountrequest.searchRequest["serviceTypeId"] = serTypeId['id'];
+      }
+
+      if(typeof(regId)!="undefined"){
+        onAccountrequest.searchRequest["regionId"] = regId['id'];
+      }
+      
+      
+      if(typeof(countryId)!="undefined"){
+        onAccountrequest.searchRequest["country"]=countryId;
+      }
+
+      
+      if(typeof(licId)!="undefined"){
+        onAccountrequest.searchRequest["entityId"]=licId;
+      }
+
+      
+      if(typeof(contGrpId)!="undefined"){
+        onAccountrequest.searchRequest["contentGrpId"]=contGrpId;
+      }
+
+      console.log('The request is :'+JSON.stringify(onAccountrequest));
+  return onAccountrequest;
+} 
+
 export default page;

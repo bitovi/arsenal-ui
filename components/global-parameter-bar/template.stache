@@ -5,12 +5,12 @@
         <span class="parameter-name">Period From:</span>
         <select id="periodFromFilter" class="form-control resizeBox ">
               <option value="">Select</option>
-              <option value="201301">P1FY13</option>
-              <option value="201302">P2FY13</option>
-              <option value="201303">P3FY13</option>
-              <option value="201304">P4FY13</option>
-              <option value="201305">P5FY13</option>
-              <option value="201306">P6FY13</option>
+              <option value="Q1FY13">Q1FY13</option>
+              <option value="Q2FY13">Q2FY13</option>
+              <option value="Q3FY13">Q3FY13</option>
+              <option value="Q4FY13">Q4FY13</option>
+              <option value="Q5FY13">Q5FY13</option>
+              <option value="Q6FY13">Q6FY13</option>
                
          </select>
        </div>
@@ -21,12 +21,12 @@
           <span class="parameter-name">Period To:</span>
           <select id="periodToFilter" class="form-control resizeBox">
                 <option value="">Select</option>
-                <option value="201301">P1FY13</option>
-                <option value="201302">P2FY13</option>
-                <option value="201303">P3FY13</option>
-                <option value="201304">P4FY13</option>
-                <option value="201305">P5FY13</option>
-                <option value="201306">P6FY13</option>
+                <option value="Q1FY13">Q1FY13</option>
+                <option value="Q2FY13">Q2FY13</option>
+                <option value="Q3FY13">Q3FY13</option>
+                <option value="Q4FY13">Q4FY13</option>
+                <option value="Q5FY13">Q5FY13</option>
+                <option value="Q6FY13">Q6FY13</option>
            </select>
          </div>
       </li>
