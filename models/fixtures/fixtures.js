@@ -1,7 +1,6 @@
 import fixture from 'can/util/fixture/';
 import URLs from 'utils/urls';
 
-
 import fixture_allInvoices from './allInvoices';
 
 import fixture_claimLicensorInvoices from './claimLicensorInvoices';
