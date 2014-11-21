@@ -68,6 +68,9 @@ var BundleDetailGrid = Grid.extend({
     filteredRows: function fdR(options) {
       return Grid.prototype.helpers.filteredRows.apply(this, arguments);
     },
+    filteredRows: function(options) {
+      return Grid.prototype.helpers.filteredRows.apply(this, arguments);
+    },
     footerRows: function(options) {
       // By default, rows are a bit more complex.
       // We have to account for child rows being invisible when their parents aren't open.

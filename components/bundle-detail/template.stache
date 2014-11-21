@@ -7,15 +7,19 @@
     <input type="checkbox" can-value="{aggregatePeriod}"><label>Aggregate Period</label>
   </div>
   {{/showAggregateControl}}
+<<<<<<< HEAD
   {{#validationStatus}}
   <div class="validation-status">{{validationRulesCompleted}} out of {{validationRulesTotal}} rules complete.</div>
   {{/validationStatus}}
   {{/if}}
+=======
+>>>>>>> All the controls are in place. Now I just have to hook them up.
   <div class="bundle-detail-actions">
     {{#canRemoveInvoice}}
     <button class="remove-invoice">Remove Invoice From Bundle</button>
     {{/canRemoveInvoice}}
     {{#canShowChart}}
+<<<<<<< HEAD
     <img class="show-chart" src="/resources/images/rn_BundleActive@2x.png"/>
     {{/canShowChart}}
     <img class="excel" src="/resources/images/rn_ExcelActive@2x.png"/>
@@ -23,6 +27,12 @@
     {{#showVerboseToggle}}
     <img class="verbose-toggle" src="/resources/images/approval_arrow_{{#if pageState.verboseGrid}}left{{else}}right{{/if}}.png"/>
     {{/showVerboseToggle}}
+=======
+    <img class="show-chart" src="/resources/images/chart.png"/>
+    {{/canShowChart}}
+    <img class="excel" src="/resources/images/excel.png"/>
+    <img class="clipboard" src="/resources/images/clipboard.png"/>
+>>>>>>> All the controls are in place. Now I just have to hook them up.
   </div>
 </div>
 <div class="grid-container">
