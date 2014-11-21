@@ -65,10 +65,7 @@ var BundleDetailGrid = Grid.extend({
       this.prefilteredColumns.attr('length');
       return _.map(this.attr('prefilteredColumns'), column => options.fn({column}));
     },
-    filteredRows: function fdR(options) {
-      return Grid.prototype.helpers.filteredRows.apply(this, arguments);
-    },
-    filteredRows: function fdR(options) {
+    filteredRows: function (options) {
       return Grid.prototype.helpers.filteredRows.apply(this, arguments);
     },
     footerRows: function(options) {
