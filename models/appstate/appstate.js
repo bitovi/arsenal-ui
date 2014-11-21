@@ -27,15 +27,23 @@ var State = Map.extend({
 
 var stateDefaults = {
   page: 'dashboard',
+  periodFrom: undefined,
+  periodTo: undefined,
   licensor: undefined,
+  country: undefined,
   region: undefined,
-  storeType: undefined
+  storeType: undefined,
+  renderGlobalSearch:false,
+  globalSearch:undefined//Used caputures global filter Button ( Fetch)
 };
+
+
 
 var appState = new State({
   startRouting: function() {
     // Create a route and pass in initial values.
     route(':page', stateDefaults);
+
     // start routing!
     route.ready();
   }

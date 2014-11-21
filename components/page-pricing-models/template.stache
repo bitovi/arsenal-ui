@@ -1,5 +1,94 @@
+<div class="container-fluid pricing-model">
+	<div class="row topsection">
+		    <div class="col-sm-5 pageTitleInv">
+				<div class="pageHead">Pricing Models</div>
+			</div>
+			<div class="col-sm-7">
+				<div role="alert"></div>
+			</div>
+		 
+			<div class="form-group col-sm-12">
+			 	<div class="col-sm-6">
+			 		<div class="col-sm-6 singleField">
+					    <label for="inputEmail3" class="col-sm-3 control-label">Region:</label>
+					    <div class="col-sm-4">
+					      
+					      <select id="invoiceRegion" class="form-control" name="region" can-value="regions">
+							       <option value="">Select</option>
+							       {{#each regionStore}}
+							       		<option value="{{id}}">{{value}}</option>
+							       	{{/each}}
+						   </select>
+					    </div>
+				  	</div>
+				 </div>
+			</div>
+	  </div>
 
-<p>The rest of /{{appstate.page}} should go here.</p>
-<div id="addrow">Add</div>
-<div id="pricingbasemodelGrid">wfsdfs</div>
+	  <div class="col-sm-4">
+			<div>
+				<table class="table table-condensed table-striped pricingmodelGrid">
+						    <thead>
+						        <tr>
+						            <th>Models</th>
+						            <th>Model Type</th>
+						        </tr>
+						    </thead>
+						    <tbody>
+						    	{{#each modeltypeGrid}}
+						    	<tr version="{{version}}">
+						    		<td>{{model}}</td>
+						    		<td>{{modeltype}}</td>
+						    	</tr>
+						    	{{/each}}	
+						    </tbody>
+				</table>		    
+			</div>
+	  		<div class="version"> <label for="inputEmail3" class="col-sm-3 control-label">Version</label>: {{version}}</div>
+	  </div>
+	  <div class="col-sm-8">
+	  	right
+	  </div>
+
+
+
+
+
+
+</div> 
+
+
+
+
+<!--<div class="col-sm-12">
+			   <div class="table-responsive">
+					  <table class="table table-condensed table-striped breakdown" id="breakTable">
+						    <thead>
+						        <tr>
+						         
+						            <th class="breakdownHead">Base Rate[%]</th>
+						           
+						            <th class="breakdownIcon"><a id="addbasemodel" href="#">Add</a></th>
+						        </tr>
+						    </thead>
+						    <tbody>
+						     {{#each rownum}}
+						      <tr id="breakrow0" rowid="0">
+						            <td class="form-group">
+						            	<div class="breakdownPeriod">
+						            		<input id='baserate' can-value="rownum.baserate{{@index}}" name="baserate[]">
+							        	</div>
+									</td>
+							       <td>
+						           		<div>	
+											<a id="addbasemodeldel" href="#">Delete</a>
+										</div>
+						           </td>
+						       </tr>
+						    {{/each}}   
+							
+						    </tbody>
+					</table>
+				</div>
+				</div>-->
 

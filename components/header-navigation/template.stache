@@ -12,11 +12,59 @@
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
         <li {{isActive 'dashboard'}}><a href="/dashboard">Dashboard</a></li>
-        <li {{isActive 'payment-bundles'}}><a href="/payment-bundles">Payment Bundles</a></li>
-        <li {{isActive 'pricing-models'}}><a href="/pricing-models">Pricing Models</a></li>
-        <li {{isActive 'invalid-page'}}><a href="/invalid-page">Invalid page</a></li>
+        <li class="dropdown">
+                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Invoices<span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a class="dropDwn" href="/create-invoice">Invoice Entry</a></li>
+                    <li class="divider dropDwn"></li>
+                    <li><a class="dropDwn" href="/icsv">iCSV Entry</a></li>
+                    <li class="divider dropDwn"></li>
+                    <li><a class="dropDwn" href="/invoices">Search Invoice</a></li>
+                    <li class="divider dropDwn"></li>
+                    <li><a class="dropDwn" href="#">Recon Stats</a></li>
+                </ul>
+         </li>
+
+        <li class="dropdown">
+                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference<span class="caret"></span></a>
+                       <ul class="dropdown-menu" role="menu">
+                           <li><a class="dropDwn" href="#">Licensor</a></li>
+                           <li class="divider dropDwn"></li>
+                           <li><a class="dropDwn" href="#">Entity</a></li>
+                           <li class="divider dropDwn"></li>
+                           <li><a class="dropDwn" href="#">Licensor Entity</a></li>
+                           <li class="divider dropDwn"></li>
+                           <li><a class="dropDwn" href="/pricing-models">Pricing Model</a></li>
+                       </ul>
+        </li>
+
+         <li class="dropdown">
+                               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Payment<span class="caret"></span></a>
+                               <ul class="dropdown-menu" role="menu">
+                                   <li><a class="dropDwn" href="#">Payment Bundle Review</a></li>
+                               </ul>
+         </li>
+
+         <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Analytics<span class="caret"></span></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a class="dropDwn" href="#">Claim Review</a></li>
+                                            <li class="divider dropDwn"></li>
+                                            <li><a class="dropDwn" href="#">Global Revenue</a></li>
+                                            <li class="divider dropDwn"></li>
+                                            <li><a class="dropDwn" href="#">Monthly Billings Reconciliation</a></li>
+                                             <li class="divider dropDwn"></li>
+                                             <li><a class="dropDwn" href="#">Unclaimed Stats Config</a></li>
+                                             <li class="divider dropDwn"></li>
+                                             <li><a class="dropDwn" href="#">Unclaimed Summary</a></li>
+                                        </ul>
+         </li>
+
       </ul>
-    </div><!--/.nav-collapse -->
+    </div>
   </div>
 </div>
-<global-parameter-bar appstate="{appstate}"></global-parameter-bar>
+
+<global-parameter-bar appstate="{appstate}" {{renderGlobalSearch}} ></global-parameter-bar>
+
+

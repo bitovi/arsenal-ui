@@ -7,3 +7,5 @@ fixture('GET /regions', '/models/fixtures/region.json');
 import fixture_country from './country';
 
 fixture('GET /storeTypes', '/models/fixtures/store-type.json');
+
+fixture('GET /pricingModels', '/models/fixtures/pricing-models.json');
