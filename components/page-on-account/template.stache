@@ -1,7 +1,45 @@
 <div class="col-lg-12 pageTitle">
-    <h3>On Account </h3>
+    <h3>on Account </h3>
 </div>
+<div id="honAccount" class="overlay hide"></div>
 
+<div class="col-lg-12 claimContainer">
+    <div id="invoiceTypeError" class="col-md-12" style="text-align:center;padding-top:5px;"></div>
+    <div class="col-sm-9 form-inline" style="text-align:right;">
+    	Previous Quarter:   <select id="currencyType" class="form-control resizeBox">
+    		<option value="invoice">Invoice</option>
+    		<option value="accural">Accural</option>
+    	</select>
+    	<button type="button" id="globalSearch" class="btn btn-primary buttonSubmit btn-custom-small" style="margin-left:10px;">Copy on Accounts</button>
+    </div>
 
-<div id="onAccount"> 
+    <div class="col-sm-3" id="searchDiv" style="">
+        <img src="resources/images/exportExcelIcon.png" class="" id="highChart">
+        <img src="resources/images/copyToClipboardIcon.png" class="" id="copyToClipboard">
+    </div>
+    <div class="col-lg-12">
+	    <ul id="myTabs" class="nav nav-tabs">
+		   <li class="active">
+		      <a href="#NewonAccount" data-toggle="tab">
+		         New on Account
+		      </a>
+		   </li>
+		   <div class="tab-pane fade in active" id="licensorView">
+		      <div id="claimLicencorGrid"></div>
+		   </div>
+		   <li><a href="#onAccountBalance" data-toggle="tab">on Account Balance</a></li>
+		   <li><a href="#ProposedonAccount" data-toggle="tab">Proposed onAccount</a></li>
+		</ul>
+
+		<div id="myTabContent" class="tab-content">
+		   <div class="tab-pane fade in active" id="NewonAccount">
+		      <div id="NewonAccountGrid"></div>
+		   </div>
+		   <div class="tab-pane fade" id="countryView" style="padding:10px;border:1px solid #ddd; border-top:0px;">
+		      <div id="countryViewGrid"></div>
+		   </div>
+		</div>
+	</div>
+
+    
 </div>
