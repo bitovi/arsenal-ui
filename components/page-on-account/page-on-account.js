@@ -3,7 +3,7 @@ import stache from 'can/view/stache/';
 
 import template from './template.stache!';
 import gridtemplate from './gridtemplate.stache!';
-//import _less from './page-on-account.less!';
+import _less from './page-on-account.less!';
 
 import stache from 'can/view/stache/';
 
@@ -11,49 +11,6 @@ import UserReq from 'models/rinsCommon/request/';
 
 import OnAccountGrid from 'components/on-account-balance/';
 import Grid from 'components/grid/';
-
-// Grid.extend({
-//   tag: 'rn-grid-onaccount',
-//   template: gridtemplate,
-//   scope: {
-//      columns: [
-//       {
-//         id: 'toggle',
-//         title: '<span class="open-toggle-all"></span>',
-//         contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}}')({isChild: row.__isChild}); }
-//       },
-//       {
-//         id: 'licensor',
-//         title: 'Licensor',
-//         contents: function(row) { return stache('{{licensor}}')({licensor: row.licensor}); }
-//       },
-//       {
-//         id: 'type',
-//         title: 'Type',
-//         contents: function(row) { return 'Payment'; }
-//       },
-//       {
-//         id: 'description',
-//         title: 'Description',
-//         sortable: true,
-//         compare: function(a, b) { return (a.description < b.description ? -1 : (a.description > b.description ? 1 : 0)); }
-//       },
-//       {
-//         id: 'region',
-//         title: 'Region',
-//         sortable: true,
-//         defaultSortDirection: 'desc'
-//       }
-//     ]
-//   },
-//   events: {
-//     'inserted': function(ev) {
-     
-//     }
-      
-//   }
-// });
-
 
 var page = Component.extend({
   tag: 'page-on-account',
@@ -66,14 +23,7 @@ var page = Component.extend({
 	 
     },
     events: {
-    	"inserted": function(){
-
-
-        var data={id: 'Country',
-        title: 'Country'
-      };
-
-       
+    	"inserted": function(){ 
        
     	},
       '{scope.appstate} change': function() {
@@ -81,7 +31,6 @@ var page = Component.extend({
         if(this.scope.appstate.attr('globalSearch')){
              var request = frameRequest(this.scope.appstate); 
             //$('#onAccount').append(stache('<on-account-grid request={{request}}></on-account-grid>')({request}));
-            var sample = 'naveen';
              $('#onAccount').append(stache('<on-account-grid request={request}></on-account-grid>')({request}));
         }
       }

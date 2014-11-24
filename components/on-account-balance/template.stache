@@ -2,7 +2,7 @@
   <thead>
     <tr>
       {{#filteredColumns}}
-      <th class="{{columnClass column}} {{sortClass column}}" {{data 'column'}}>{{{columnTitle column}}} <span class="sort-arrow">{{{sortArrow column}}}</span></th>
+      <th class="{{columnClass column}}" {{data 'column'}}>{{columnTitle column}}</th>
       {{/filteredColumns}}
     </tr>
   </thead>
@@ -10,14 +10,21 @@
     {{#filteredRows}}
     <tr class="{{rowClass row}} {{#if isOpen}}open{{/if}} {{#if isChild}}child{{/if}} {{#if isVisible}}visible{{/if}}" {{data 'row'}}>
       {{#filteredColumns}}
-      <td class="{{columnClass column}} {{cellClass row column}}" {{data 'column'}}>{{{cellContents row column}}}</td>
+      <td class="{{columnClass column}} {{cellClass row column}}" {{data 'column'}}>{{cellContents row column}}</td>
       {{/filteredColumns}}
     </tr>
     {{/filteredRows}}
   </tbody>
-  <!-- <tfoot>
-    <tr>
-      <td colspan="3">Number of rows displayed: {{rows.length}}</td>
-    </tr>
-  </tfoot> -->
+  <tfoot>
+      {{#footerRows}}
+      <tr class="{{rowClass row}} {{#if isOpen}}open{{/if}} {{#if isChild}}child{{/if}} {{#if isVisible}}visible{{/if}}" {{data 'row'}}>
+        {{#filteredColumns}}
+        <td class="{{columnClass column}} {{cellClass row column}}" {{data 'column'}}>{{cellContents row column}}</td>
+        {{/filteredColumns}}
+      </tr>
+      {{/footerRows}}
+      {{#if emptyrows}}
+        <tr><td style="text-align:center;background:#fff;color:#000;" colspan="{{#getColumnLength}}">Data Not Available</td</tr>
+      {{/if}}
+  </tfoot>
 </table>

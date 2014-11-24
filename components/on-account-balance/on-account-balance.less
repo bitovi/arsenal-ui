@@ -2,4 +2,13 @@
 
 on-account-grid {
   .grid-mixin();
+  tfoot {
+  	tr.child {
+      display: none;
+
+      &.visible {
+        display: table-row;
+      }
+    }
+  }
 }
