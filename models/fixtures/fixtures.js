@@ -9,3 +9,5 @@ import fixture_country from './country';
 fixture('GET /storeTypes', '/models/fixtures/store-type.json');
 
 fixture('GET /pricingModels', '/models/fixtures/pricing-models.json');
+
+fixture('GET /pricingModelsFindOne', '/models/fixtures/pricing-model-findone.json');
