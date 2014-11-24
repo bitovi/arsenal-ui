@@ -1,6 +1,10 @@
+ <!-- Commented the success message.
+ <div style="{{displayMessage}}" class="alert-success alert-dimension" role="alert">
+              <a href="#" class="close" data-dismiss="alert">&times;</a>
+              Files uploaded successfully!
+ </div>-->
 
 <div class="outer">
-
      {{#if isAnyFileLoaded}}
           <ul class="filelist">
               {{#fileList}}
@@ -13,11 +17,10 @@
       {{/if}}
 
         {{#if isAnyFileLoaded}}
-        	<input type="submit" class="submitFiles" value="Submit"/>
+        	<input type="submit" class="submitFiles uploadFiles" value="Upload"/>
+        	<input type="submit"  class="cancelUpload uploadFiles" value="Cancel">
         {{else}}
-        	<input type="file" class="fileSelect"  name ="Upload File"  style="display: none;" multiple />
-        	<input type="submit" class="uploadFiles" value="UpLoad" />
+        	<input type="file" class="fileSelect"  name ="UploadFile"  style="display: none;" multiple />
+        	<input type="submit" class="uploadFiles" value="Select Files" />
         {{/if}}
-        <input type="submit" class="cancelUpload" value="Cancel">
-
 </div>

@@ -12,7 +12,10 @@
 
         scope: {
                   fileList : new can.List(),
-                  isAnyFileLoaded : can.compute(function() { return this.fileList.attr('length') > 0; }),
+                  displayMessage:"display:none",
+                  fileUpload:false,
+                  isAnyFileLoaded : can.compute(function() { return this.fileList.attr('length') > 0; })
+
               },
         init: function() {
 
@@ -20,12 +23,14 @@
         helpers: {
                 convertToKB: function (size) {
                   return (Math.max(size/1024, 0.1).toFixed(1)  + 'KB');
-                },
+                }
         },
         events: {
 
                  '.uploadFiles  click': function() {
                     this.element.find('input[type=file]').click();
+                    this.scope.attr("fileUpload" , true);
+
                   },
 
                  '.fileSelect change' : function(el, ev) {
@@ -34,8 +39,13 @@
                   },
 
                  '.submitFiles click': function() {
-                   FileUpLoader.create(this.scope.attr("fileList"),function(data) {
-                      console.log("Return data from call"+JSON.stringify(data));
+                    var self = this.scope;
+                    var size = this.scope.attr("fileList").length;
+                    FileUpLoader.create(this.scope.attr("fileList"),function(data) {
+                    self.attr("fileUpload" , true);
+                    self.attr("displayMessage","display:block");
+                    self.attr("fileList").splice(0,size);
+
                     },function(xhr) {
                       console.error("Error while loading:"+xhr);
                     });
@@ -48,7 +58,7 @@
 
                 '.filelist li click': function(el, ev) {
                     var liText = el.text();
-                    var index = liText.indexOf("(")
+                    var index = liText.indexOf("(");
                     var name = '';
                     var selectedIndex = '';
                     if(index != -1) {
@@ -60,7 +70,8 @@
                       });
                       this.scope.attr("fileList").splice(selectedIndex,1);
                     }
-                  },
+                  }
+
             }
       })
 
