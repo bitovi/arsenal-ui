@@ -102,14 +102,14 @@ var makeBundleValidations = function(bundle) {
         return {
           bundleId: bundle.bundleId,
           invoiceId: invoice.invoiceId,
-          vldtnBatchResultColor: '#FF0000',
+          vldtnBatchResultColor: '#bada55',
           vldtnMessage: ['Frobnitz needs to be kibitz\'d.', 'Poiuyt is unstable.'],
           bundleDetails: _.map(invoice.bundleDetails, function(detail) {
             return {
               bundleId: bundle.bundleId,
               invoiceId: invoice.invoiceId,
               bndlLineId: detail.bndlLineId,
-              vldtnBatchResultColor: '#FF0000',
+              vldtnBatchResultColor: '#a55bad',
               vldtnMessage: [['Frobnitz needs to be kibitz\'d.', 'Poiuyt is unstable.'][_.random(0, 1)]],
               vldtnRulesCompletedCnt: 1,
               vldtnRulesTotalCnt: 2
