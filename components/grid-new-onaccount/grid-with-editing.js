@@ -12,8 +12,7 @@ var GridWithEditing = Grid.extend({
   helpers: {
     cellContents: function(row, column) {
       if(this.attr('editingRow') === row && this.attr('editingColumn') === column) {
-        console.log(column);
-        return stache('<input class="editing" value="{{value}}"/>')({value: column.getEditingValue(row)});
+        return stache('<input class="editing" value="{{value}}"/>')({value: column.getEditingValue(row,column.title)});
       } else {
         return Grid.prototype.helpers.cellContents.call(this, row, column);
       }
@@ -42,7 +41,7 @@ var GridWithEditing = Grid.extend({
       var column = el.closest('td').data('column').column;
       var row = el.closest('tr').data('row').row;
       console.log('setting new value', el.val(), column, row);
-      column.setValue(row, el.val());
+      column.setValue(row, el.val(),column.title);
       this.scope.attr({
         'editingRow': null,
         'editingColumn': null

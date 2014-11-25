@@ -65,12 +65,13 @@ var page = Component.extend({
                //$('#onAccountBalanceGrid').append(stache('<rn-onaccount-balance-grid request={request}></rn-onaccount-balance-grid>')({request}));
             }else if(this.scope.tabsClicked=="NEW_ON_ACC"){
               console.log("inside NEW_ON_ACC");
-                $('#newonAccountGrid').append(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
+                $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
                //$('#newonAccountGrid').append(stache('<rn-new-onaccount-grid rows="{rows}"></rn-new-onaccount-grid>')({rows}));
             }
 
         }
 
+        this.scope.attr("localGlobalSearch",false);
         
       },
       "#onAccountBalance click":function(el, ev){

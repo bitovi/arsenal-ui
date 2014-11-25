@@ -1,7 +1,8 @@
 import $ from 'jquery';
 import stache from 'can/view/stache/';
 import GridWithEditing from './grid-with-editing';
-//import utils from 'components/page-on-account/utils';
+import Currency from 'models/common/currency/';
+import UserReq from 'utils/request/';
 
 var newOnAccountGrid = GridWithEditing.extend({
   scope: {
@@ -37,32 +38,34 @@ var newOnAccountGrid = GridWithEditing.extend({
         id:quarters[i],
         title:quarters[i],
          editable: true,
-        getEditingValue: function(row,column) {
-          console.log(column);
-          return row.attr(quarters[i]);
+        getEditingValue: function(row,title) {
+          console.log(title);
+          return row.attr(title);
         },
-        setValue: function(row, newValue) {
-          row.attr(quarters[i]);
+        setValue: function(row, newValue,title) {
+          row.attr(title,newValue);
         }
       };
+
       self.scope.columns.push(column);
 
-      var rows = new can.List(_.times(2, i => {
-        return {
-          licensor: 'Licensor ' + (i + 1),
-          Q1FY13: '30',
-          '__isChild': (i % 2) !== 0
-        };
-      }));
-
-      self.scope.rows.replace(rows);
-
+      var genObj = {};
+      genObj["licensorId"]="18";
+       Currency.findAll(UserReq.formRequestDetails(genObj)).then(function(data) {
+       console.log(JSON.stringify(data.attr()));
+       var rows = frameRows(licensor,data,quarters);
+        self.scope.rows.replace(rows);
+      });
 
      }
     
     }
 });
 
+var frameRows=function(licensor,data,quarters){
+  var rows = new can.List();
+  console.log(data[0].id);
+}
 var getQuarter=function(periodFrom,periodTO){
   console.log(periodFrom);
   console.log(periodTO);
