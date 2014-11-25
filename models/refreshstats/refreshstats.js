@@ -15,22 +15,12 @@ var Stats = Model.extend({
       //contentType: 'application/json; charset=utf-8',
       //data: JSON.stringify(params)
     })
-  },
-
-
-findAll: function(params){
-    
-    return $.ajax({
-      url: RinsCommon.DOMAIN_SERVICE_URL+'/recon/refresh',
-      url: 'http://ma-rinsd-lapp01.corp.apple.com:10649/recon/refresh',
-      type: 'POST',
-      datatype:'json'
-      contentType: 'application/json; charset=utf-8',
-      
-    })
-  },
+  }
 
 }
+
+
+
 
 , {});
 
