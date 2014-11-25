@@ -11,6 +11,7 @@ import UserReq from 'models/rinsCommon/request/';
 
 import OnAccountGrid from 'components/grid-onaccount-balance/';
 import Grid from 'components/grid/';
+import newOnAccountGrid from 'components/grid-new-onaccount/';
 
 var page = Component.extend({
   tag: 'page-on-account',
@@ -22,24 +23,55 @@ var page = Component.extend({
   },
   init: function(){
 	 //console.log('inside Claim Review');
+
+   this.scope.tabsClicked="NEW_ON_ACC";
 	 
     },
     events: {
     	"inserted": function(){ 
+
+
+            // var firstNames = ['Ed', 'Edna', 'Gwendolyn', 'Ernestine', 'Matt', 'Kyle', 'Raquel', 'Roman', 'Ron', 'Paulette'];
+            // var lastNames = ['Underwood', 'Barker', 'Todd', 'Arnold', 'Campbell', 'Wilkins', 'Jefferson', 'Cannon', 'Lucas', 'Francis'];
+            // var rows = new can.List(_.times(10, i => {
+            //   return {
+            //     index: i,
+            //     firstName: firstNames[i],
+            //     lastName: lastNames[i]
+            //   };
+            // }));
+
+            // var request = frameRequest(this.scope.appstate); 
+            // $('#onAccountBalanceGrid').append(stache('<rn-onaccount-balance-grid request={request}></rn-onaccount-balance-grid>')({request}));
+
+
+            // $('#newonAccountGrid').append(stache(
+            //   '<rn-new-onaccount-grid rows="{rows}"></rn-new-onaccount-grid>'
+            // )({rows}));
        
     	},
       '{scope.appstate} change': function() {
 
         this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
 
-        //&& this.scope.tabsClicked=="ON_ACC_BALANCE"
+        var request = frameRequest(this.scope.appstate); 
 
-        if(this.scope.appstate.attr('globalSearch') && this.scope.tabsClicked=="ON_ACC_BALANCE"){
-          //alert('inside');
-             var request = frameRequest(this.scope.appstate); 
-            //$('#onAccount').append(stache('<on-account-grid request={{request}}></on-account-grid>')({request}));
-             $('#onAccountBalanceGrid').append(stache('<rn-onaccount-balance-grid request={request}></rn-onaccount-balance-grid>')({request}));
+        if(this.scope.appstate.attr('globalSearch')){
+
+            if(this.scope.tabsClicked=="ON_ACC_BALANCE"){
+            //alert('inside');
+               var request = frameRequest(this.scope.appstate); 
+              //$('#onAccount').append(stache('<on-account-grid request={{request}}></on-account-grid>')({request}));
+               //$('#onAccountBalanceGrid').append(stache('<rn-onaccount-balance-grid request={request}></rn-onaccount-balance-grid>')({request}));
+            }else if(this.scope.tabsClicked=="NEW_ON_ACC"){
+              console.log("inside NEW_ON_ACC");
+                $('#newonAccountGrid').append(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
+               //$('#newonAccountGrid').append(stache('<rn-new-onaccount-grid rows="{rows}"></rn-new-onaccount-grid>')({rows}));
+            }
+
         }
+
+        
       },
       "#onAccountBalance click":function(el, ev){
         ev.preventDefault();
