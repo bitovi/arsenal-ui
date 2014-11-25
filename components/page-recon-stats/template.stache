@@ -1,0 +1,6 @@
+<div>
+
+	<recon-stats loadRefresh="true" refreshStatsReq="{refreshStatsReq}"></recon-stats>		
+	
+</div>
+

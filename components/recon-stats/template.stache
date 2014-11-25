@@ -1,0 +1,239 @@
+
+<div style="width:100%;height:50%">
+	<div class="spaceDiv">&nbsp;</div>
+		
+	<div class="spaceDiv">&nbsp;</div>
+
+</div>
+
+<div>
+
+
+			<div>
+				<span class="refreshButton">
+					<button type="button" id="refreshReconStats"  name="refreshReconStatsName"
+						class="btn buttonSubmit btn-custom-small" 
+						style="margin-left:10px;">
+						Refresh</button>
+				</span>
+			</div>
+
+			<div class="spaceDiv">&nbsp;</div>
+
+				<table class="statsTable" >
+					<tr>
+						<td>
+							<div class="spaceDiv">&nbsp;</div>
+
+							<div width="100%>
+
+								<!-- todo export buttons -->
+
+								
+								<table style="width:100%">
+									<tr width="100%" style="vertical-align: top;" colspan="3">
+
+										<td width="5%">
+											&nbsp;&nbsp;
+										</td>
+
+										<td width="55%">
+											<div id="ingestionStatsDiv" style="display:none">
+												<table id="summaryTopTable">
+													<tr>
+														<td width="50%">
+															<div class="spaceDiv">&nbsp;</div>
+															<div>Ingestion Stats</div>
+														</td>
+														
+														<td style="width:20%;">
+															<div class="spaceDiv">&nbsp;</div>
+															<div style="float: right;">
+																<img src="resources/images/exportExcelIcon.png" class="" id="exportExcelSum">
+				        										<img src="resources/images/copyToClipboardIcon.png" class="" id="copyToClipboardSum">
+															</div>
+															
+														</td>
+													</tr>
+												</table>
+
+												
+												<div class="spaceDiv">&nbsp;</div>
+
+												<div id="ingestionReconStats"><div>
+											</div>
+
+										</td>
+
+
+								 <!-- can js insert -->
+
+										<td width="40%" class="summaryStatsTab">
+
+											<div id="summaryStatsDiv" style="display:none">
+												<table id="summaryTopTable">
+													<tr>
+														<td width="55%">
+															<div class="spaceDiv">&nbsp;</div>
+															<div>Summary Stats</div>
+														</td>
+														<td width="35%">
+															<div style="font-size:12px">
+																Convert to Currency
+															</div>
+															<div>
+																<select id="currency" class="currency" name="currency">
+																        <option value="">Select</option>
+																       {{#each currencyScope}}
+																       		<option value="{{id}}">{{value}}</option>
+																        {{/each}}
+															   </select>
+															</div>
+														</td>
+
+														<td style="width:7%;">
+															<div class="spaceDiv">&nbsp;</div>
+															<div>
+																<img src="resources/images/exportExcelIcon.png" class="" id="exportExcel">
+				        										<img src="resources/images/copyToClipboardIcon.png" class="" id="copyToClipboard">
+															</div>
+															
+														</td>
+													</tr>
+												</table>
+											
+
+												<div class="spaceDiv">&nbsp;</div>
+									
+												<table id="summaryStatsTab">
+													<thead>
+														<tr>
+													 		<th class="ssStatus" style="width:55%">Stats</th>
+													 		<th class="ssvalue" style="width:45%">Value</th>
+													 	</tr>
+													</thead>
+
+													<!-- can js -->
+													<tbody>
+													{{#each summaryStatsData}}
+													
+													<tr>
+														<td>
+															Recon Records #
+														</td>
+														<td>
+															{{noOfReconRecords}}
+														</td>
+
+
+													</tr>
+
+													<tr>
+														<td>
+															Recon Records %
+														</td>
+														<td>
+															{{reconRecordsPercentage}}
+														</td>
+
+														
+													</tr>
+
+														<tr>
+														<td>
+															Recon Amt
+														</td>
+														<td>
+															{{reconAmount}}
+														</td>
+
+														
+													</tr>
+
+														<tr>
+														<td>
+															Recon Amt %
+														</td>
+														<td>
+															{{reconAmountPercentage}}
+														</td>
+
+														
+													</tr>
+
+													<tr>
+														<td>
+															Lineitem Dispute
+														</td>
+														<td>
+															{{lineItemDispute}}
+														</td>
+														
+													</tr>
+
+													<tr>
+													
+														<td>
+															Overrep Dispute
+														</td>
+														<td>
+															{{overRepDispute}}
+														</td>
+														
+													</tr>
+
+													<tr>
+														<td>
+															Total Pub fee
+														</td>
+														<td>
+															{{totalPubFee}}
+														</td>
+														
+													</tr>
+
+													<tr>
+														<td>
+															Recommended Payment
+														</td>
+														<td>
+															{{recommendedPayment}}
+														</td>
+
+														
+													</tr>
+
+													<tr>
+
+														<td>
+															Actual Payment
+														</td>
+														<td>
+															{{actualPayment}}
+														</td>
+														
+													</tr>
+
+												{{/each}}
+												</tbody>
+
+												</table>
+											</div>
+
+												
+
+										</td>
+
+									</tr>
+								</table>
+							</div>
+
+						</td>
+					</tr>
+					<div class="spaceDiv">&nbsp;</div>
+				</table>
+
+				<div class="spaceDiv">&nbsp;</div>
+	
+</div>
+
