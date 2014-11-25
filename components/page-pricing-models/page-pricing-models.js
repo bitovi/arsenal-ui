@@ -12,6 +12,8 @@ import template from './template.stache!';
 import styles from './page-pricing-models.less!';
 import Region from 'models/common/region/';
 import ContentType from 'models/common/content-type/';
+import Country from 'models/common/country/';
+import Licensor from 'models/common/licensor/';
 import Pricingmodels from 'models/pricing-models/';
 
 
@@ -26,10 +28,22 @@ var page = Component.extend({
     appstate:undefined,
     regionStore:[],
     contentType:[],
+    countryStore:[],
+    licensorStore:[],
     regions:"",
     version:"",
     modeltypeGrid:[],
-    basemodelContainer:[]
+    basemodelContainer:[],
+    rowindextrack:0,
+    rownumtrack:new can.List(),
+    trackContainer:[],
+    modelname:"",
+    pricingmodeltypeStore:[],
+    pricingmodeltype:"",
+    
+    modelId:"",
+
+
 
   },
   init:function(){
@@ -38,10 +52,19 @@ var page = Component.extend({
       var genObj = {};
       Promise.all([
           Region.findAll(UserReq.formRequestDetails(genObj)),
-          ContentType.findAll(UserReq.formRequestDetails(genObj))
+          ContentType.findAll(UserReq.formRequestDetails(genObj)),
+          Country.findAll(UserReq.formRequestDetails(genObj)),
+          Licensor.findAll(UserReq.formRequestDetails(genObj)),
+          Pricingmodels.findOne(UserReq.formRequestDetails(genObj),'modeltype')
+
         ]).then(function(values) {
           self.scope.attr("regionStore").replace(values[0]);
           self.scope.attr("contentType").replace(values[1].contentTypes);
+          self.scope.attr("countryStore").replace(values[2]);
+          self.scope.attr("licensorStore").replace(values[3].entities[0].entities);
+          self.scope.attr("pricingmodeltypeStore").replace(values[4].modelTypes);
+          console.log(values[4]);
+          
       });       
   },
   events:{
@@ -50,92 +73,95 @@ var page = Component.extend({
     },
     "{scope} regions":function(){
         var self = this;
-        var genObj = {regionId:self.scope.attr("regionStore")};
+        var genObj = {region:"Europe",countryId:"GBR",entityId:"19"};
+        console.log(JSON.stringify(UserReq.formRequestDetails(genObj)));
         
-        Promise.all([Pricingmodels.findAll()
+        Promise.all([Pricingmodels.findOne(UserReq.formRequestDetails(genObj), 'summary')
              ]).then(function(values) {
-                var gridData = [];
-              
-                var pricingmodels = values[0][0].pricingModels;
-             
-            for(var i =0; i < pricingmodels.length; i++){
-                var tempObj = {};
-                tempObj.model= pricingmodels[i].modelName;
-                tempObj.modeltype= pricingmodels[i].modelDescription;  
-                tempObj.version= pricingmodels[i].version;  
-                tempObj.modelid= pricingmodels[i].modelId;  
-                self.scope.modeltypeGrid.push(tempObj);
-                console.log(self.scope.modeltypeGrid);
-              }
+                var pricingmodels = values[0].pricingModels;
+                 for(var i =0; i < pricingmodels.length; i++){
+                    var tempObj = {};
+                    tempObj.model= pricingmodels[i].modelDescription;
+                    tempObj.modeltype= pricingmodels[i].modelName;  
+                    tempObj.version= pricingmodels[i].version;  
+                    tempObj.modelid= pricingmodels[i].modelId;  
+                    self.scope.modeltypeGrid.push(tempObj);
+                    console.log(self.scope.modeltypeGrid);
+                }
           });
     },
      ".pricingmodelGrid tr click":function(el){
       var self = this;
       var selrow = el.closest('tr').attr("version");
       self.scope.attr("version", selrow);
+      var genObj = {modelId:"24005"};
 
-
-      Promise.all([Pricingmodels.findOne()
+      Promise.all([Pricingmodels.findOne(UserReq.formRequestDetails(genObj), 'details')
              ]).then(function(values) {
+              /** Base Model Parameter Grid*/
+
+              self.scope.attr("modelname", values[0].pricingModel.pricingModel.modelDescription);
+              self.scope.attr("pricingmodeltype", values[0].pricingModel.pricingModel.modelName);
+              
+
               self.scope.attr("rownum").replace([]); /*cleaning table row to load new data on click*/
-              self.scope.attr("basemodelContainer").replace(values[0][0].details.baseModelParameters);
-
-               self.scope.attr("rowindex", 0);
-              alert(self.scope.attr("rowindex"));
-
-               var basemodelCount = self.scope.basemodelContainer.attr().length;
-
-               var basemodelData = self.scope.basemodelContainer.attr();
-
+              self.scope.attr("basemodelContainer").replace(values[0].pricingModel.baseModelParameters);
+              self.scope.attr("rowindex", 0);
              
-             
-             
+              var basemodelCount = self.scope.basemodelContainer.attr().length;
+
+              var basemodelData = self.scope.basemodelContainer.attr();
 
              for(var i=0; i < basemodelCount; i++){
-              console.log(basemodelData[i].contentGroup);
-              var contenttype = "contenttype"+self.scope.rowindex;
-              var baserate =  "baserate"+self.scope.rowindex;
-              var minima = "minima"+self.scope.rowindex;
-              var listhoursminima = "listhoursminima"+self.scope.rowindex;
-              var discount = "discount"+self.scope.rowindex;
-              var isdefault = "isdefault"+self.scope.rowindex;
+                  
+                  var tempgrid = {};
+                  tempgrid["contentGroup"] = basemodelData[i].contentGroup;
+                  tempgrid["baseRate"] = basemodelData[i].baseRate;
+                  tempgrid["minima"] = basemodelData[i].minima;
+                  tempgrid["listenerMinima"] = basemodelData[i].listenerMinima;
+                  tempgrid["discount"] = basemodelData[i].discount;
+                  tempgrid["isDefault"] = basemodelData[i].isDefault.toString();
+                  tempgrid["baseId"] = basemodelData[i].baseId;
+                  tempgrid["modelId"] = basemodelData[i].modelId;
 
-              var tempgrid = {};
-              tempgrid[contenttype] = basemodelData[i].contentGroup;
-              tempgrid[baserate] = basemodelData[i].baseRate;
-              tempgrid[minima] = basemodelData[i].minima;
-              tempgrid[listhoursminima] = basemodelData[i].listenerMinima;
-              tempgrid[discount] = basemodelData[i].discount;
-              tempgrid[isdefault] = basemodelData[i].isDefault;
-
-              
-                 
+                  self.scope.attr("modelId", basemodelData[i].modelId);
 
 
-
-               //  var tempgrid = {contenttype:3, baserate:basemodelData[i].baseRate,  minima:"", listhoursminima:"", discount:"", isdefault:""};
-
-                  var temprows = new can.List(tempgrid);
-                   self.scope.attr("rownum").push(temprows);
-
-                  /*  self.scope.rownum.attr(contenttype, basemodelData[i].contentGroup);
-                    self.scope.rownum.attr("0.baserate0", basemodelData[i].baseRate);
-                    self.scope.rownum.attr(minima, basemodelData[i].minima);
-                    self.scope.rownum.attr(listhoursminima, basemodelData[i].listenerMinima);
-                    self.scope.rownum.attr(discount, basemodelData[i].discount);
-                    self.scope.rownum.attr(isdefault, basemodelData[i].isDefault);*/
-               
-                //  self.scope.rownum.attr(temprows);
-                //  console.log(self.scope.attr("rownum"));
-                  var newrowindex = self.scope.attr("rowindex")+1;
-                  self.scope.attr("rowindex", newrowindex);
+                  self.scope.attr("rownum").push(tempgrid);
                 }
+          
+                 /** Track count minima Grid*/
 
-           //  var temprow = self.scope.rownum.attr();
-           // console.log(temprow);
 
+                  self.scope.attr("rownumtrack").replace([]); /*cleaning table row to load new data on click*/
+                  console.log(self.scope.attr("rownumtrack"));
 
-        });
+                  self.scope.attr("trackContainer").replace(values[0].pricingModel.trackCounts);
+                  self.scope.attr("rowindextrack", 0);
+             
+                  var trackCount = self.scope.trackContainer.attr().length;
+
+                  var trackData = self.scope.trackContainer.attr();
+
+                  for(var i=0; i < trackCount; i++){
+                  
+                        var tempgrid = {};
+                        tempgrid["description"] = trackData[i].description;
+                        tempgrid["from"] = trackData[i].from;
+                        tempgrid["to"] = trackData[i].to;
+                        tempgrid["modelId"] = trackData[i].modelId;
+                        tempgrid["minima"] = trackData[i].minima;
+                        tempgrid["tierId"] = trackData[i].tierId;
+                        tempgrid["paramId"] = trackData[i].paramId;
+                       
+                        self.scope.attr("rownumtrack").push(tempgrid);
+
+                       
+                  }
+
+                console.log(self.scope.rownum.attr());
+
+          });
     },
      
     "{basemodelContainer} change":function(){
@@ -155,80 +181,91 @@ var page = Component.extend({
     },
     ".breakdownPeriod blur":function(){
       var self = this;
-     /*  for(var i =0; i < self.scope.rownum.length; i++){
-        var baseratenew = "baserate"+i;
-        console.log(baseratenew)
-        console.log(self.scope.rownum[0].attr(baseratenew));
-      }*/
        console.log(self.scope.rownum.attr());
-       /*Trying to get updated value of baserate textbox.*/
+      
     },
     "#addbasemodel click":function(){
-      var self = this;
-    //  var baserate = "baserate"+self.scope.rowindex;
-   //   var tempgrid = {baserate0: "dasda"};
-      //var tempgrid = {};
-   //   tempgrid.baserate = "adasda";
-
-        var contenttype = "contenttype"+self.scope.rowindex;
-        var baserate = "baserate"+self.scope.rowindex;
-        var minima = "minima"+self.scope.rowindex;
-        var listhoursminima = "listhoursminima"+self.scope.rowindex;
-        var discount = "discount"+self.scope.rowindex;
-        var isdefault = "isdefault"+self.scope.rowindex;
-
-        var tempgrid = {};
-        tempgrid[contenttype] = "";
-        tempgrid[baserate] = "";
-        tempgrid[minima] = "";
-        tempgrid[listhoursminima] = "";
-        tempgrid[discount] = "";
-        tempgrid[isdefault] = "";
-
-       /* self.scope.rownum.attr(contenttype, "");
-        self.scope.rownum.attr(baserate, "");
-        self.scope.rownum.attr(minima, "");
-        self.scope.rownum.attr(listhoursminima, "");
-        self.scope.rownum.attr(discount, "");
-        self.scope.rownum.attr(isdefault, ""); */
-
-        var temprows = new can.List(tempgrid);
-       
-        self.scope.attr("rownum").push(temprows);
-        var newrowindex = self.scope.attr("rowindex")+1;
-        self.scope.attr("rowindex", newrowindex);
+        var self = this;
         
-
-
-
-
-
-
+        var tempgrid = {};
+        tempgrid["contentGroup"] = "";
+        tempgrid["baseRate"] = "";
+        tempgrid["minima"] = "";
+        tempgrid["listenerMinima"] = "";
+        tempgrid["discount"] = "";
+        tempgrid["isDefault"] = "";
+        tempgrid["modelId"] = self.scope.attr("modelId");
+        self.scope.attr("rownum").push(tempgrid);
     },
     "#addbasemodeldel click":function(el){
+        var self = this;
+        var selrow = el.closest('tr')[0].rowIndex;
+        self.scope.attr("rownum").removeAttr(selrow-1);
+
+    },
+    "#addtrack click":function(){
+        var self = this;
+        
+        var tempgrid = {};
+        tempgrid["description"] = "";
+        tempgrid["from"] = "";
+        tempgrid["to"] = "";
+        tempgrid["minima"] = "";
+        tempgrid["modelId"] = self.scope.attr("modelId");
+        
+        self.scope.attr("rownumtrack").push(tempgrid);
+       
+    },
+    "#trackdel click":function(el){
+        var self = this;
+        var selrow = el.closest('tr')[0].rowIndex;
+        self.scope.attr("rownumtrack").removeAttr(selrow-1);
+
+    },
+    "#save click":function(){
       var self = this;
-      var selrow = el.closest('tr')[0].rowIndex;
-      //console.log(selrow);
-      
-        var contenttype = "contenttype"+(selrow-1);
-        var baserate = "baserate"+(selrow-1);
-        var minima = "minima"+(selrow-1);
-        var listhoursminima = "listhoursminima"+(selrow-1);
-        var discount = "discount"+(selrow-1);
-        var isdefault = "isdefault"+(selrow-1);
-      
-      self.scope.attr("rownum").removeAttr(contenttype);
-      self.scope.attr("rownum").removeAttr(baserate);
-      self.scope.attr("rownum").removeAttr(minima);
-      self.scope.attr("rownum").removeAttr(listhoursminima);
-      self.scope.attr("rownum").removeAttr(discount);
-      self.scope.attr("rownum").removeAttr(isdefault);
 
-      self.scope.attr("rownum").removeAttr(selrow-1);
+        console.log(self.scope.rownum.attr());
 
-       var temprow = self.scope.rownum.attr();
-      console.log(temprow);
+      var saveRecord = {
+        "details":{  
+          "country":"GBR",
+          "region":null,
+          "entityId":19,
+          "trackCounts":self.scope.rownumtrack.attr(),
+          "createdBy":0,
+          "userComments":"JUnitUserComment",
+          "baseModelParameters":self.scope.rownum.attr(),
+          "pricingModel":{  
+             "region":"Europe",
+             "modelId":221,
+             "commentId":9685,
+             "comments":null,
+             "createdBy":299221510,
+             "modelDescription":"JUnitTest:Tue Nov 25 15:52:45 IST 2014",
+             "modelName":"STANDARD",
+             "version":59
+          },
+          "entity":null
+        }
+      }
+
+    
+
+    
      
+      
+
+
+
+      Promise.all([Pricingmodels.create(UserReq.formRequestDetails(saveRecord))
+             ]).then(function(values) {
+                console.log(values);
+                 
+          });
+
+
+
     }
   }
 });

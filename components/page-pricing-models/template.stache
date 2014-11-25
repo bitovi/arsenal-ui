@@ -8,12 +8,12 @@
 			</div>
 		 
 			<div class="form-group col-sm-12">
-			 	<div class="col-sm-6">
+			 	<div class="col-sm-3">
 			 		<div class="col-sm-6 singleField">
 					    <label for="inputEmail3" class="col-sm-3 control-label">Region:</label>
 					    <div class="col-sm-4">
 					      
-					      <select id="invoiceRegion" class="form-control" name="region" can-value="regions">
+					      <select id="regions" class="form-control" name="regions" can-value="regions">
 							       <option value="">Select</option>
 							       {{#each regionStore}}
 							       		<option value="{{id}}">{{value}}</option>
@@ -22,11 +22,52 @@
 					    </div>
 				  	</div>
 				 </div>
+
+				 <div class="col-sm-3">
+			 		<div class="col-sm-6 singleField">
+					    <label for="inputEmail3" class="col-sm-3 control-label">Country:</label>
+					    <div class="col-sm-4">
+					      
+					      <select id="country" class="form-control" name="country" can-value="country">
+							       <option value="">Select</option>
+							       {{#each countryStore}}
+							       		<option value="{{id}}">{{value}}</option>
+							       	{{/each}}
+						   </select>
+					    </div>
+				  	</div>
+				 </div>
+
+				 <div class="col-sm-3">
+			 		<div class="col-sm-6 singleField">
+					    <label for="inputEmail3" class="col-sm-3 control-label">Entity:</label>
+					    <div class="col-sm-4">
+					      
+					      <select id="entity" class="form-control" name="entity" can-value="entity">
+							       <option value="">Select</option>
+							       {{#each licensorStore}}
+							       		<option value="{{id}}">{{value}}</option>
+							       	{{/each}}
+						   </select>
+					    </div>
+				  	</div>
+				 </div>
+			
+				<div class="col-sm-3">
+			 		<button id="fetch" type="submit" class="btn btn-primary btn-custom-big">Fetch</button>
+				 </div>
+
+
+
+
+
+
+
 			</div>
 	  </div>
 
 	  <div class="col-sm-4">
-			<div>
+			<div class="modelsummary">
 				<table class="table table-condensed table-striped pricingmodelGrid">
 						    <thead>
 						        <tr>
@@ -52,9 +93,12 @@
 				 		<div class="singleField">
 						    <label for="inputEmail3" class="col-sm-3 control-label">Pricing Model:</label>
 						    <div class="col-sm-4">
-						      
-						      <select  class="form-control" name="pricing" >
-								       <option value="">Select</option>
+						    
+						      <select  class="form-control" name="pricingmodeltype" can-value="pricingmodeltype">
+						       <option value="">Select</option>
+						        {{#each pricingmodeltypeStore}}
+								  <option value="{{modelName}}">{{modelName}}</option>     
+								 {{/each}}      
 								</select>
 						    </div>
 					  	</div>
@@ -65,7 +109,7 @@
 						    <label for="inputEmail3" class="col-sm-3 control-label">Model Name:</label>
 						    <div class="col-sm-4">
 						      
-						     <input type="text" name="modelname">
+						     <input type="text" name="modelname" can-value="modelname">
 						    </div>
 					  	</div>
 					</div>
@@ -94,10 +138,10 @@
 						      <tr id="breakrow0" rowid="0">
 						      		<td class="form-group">
 						            	<div class="breakdownPeriod">
-						            		<select id='contenttype' can-value="rownum.contenttype{{@index}}" name="contenttype[]">
+						            		<select id='contentGroup' can-value="rownum.{{@index}}.contentGroup" name="contentGroup[]">
 						            			<option value="">Select</option>
 						            			{{#each contentType}}
-								        				<option serviceTypeId="{{serviceTypeId}}" value="{{contentGroupId}}">{{contentGroupName}}
+								        				<option serviceTypeId="{{serviceTypeId}}" value="{{contentGroupName}}">{{contentGroupName}}
 								        				</option>
 							       				{{/each}}
 						            		</select>
@@ -105,27 +149,27 @@
 									</td>
 									<td class="form-group">
 						            	<div class="breakdownPeriod">
-						            		<input id='baserate' can-value="rownum.{{@index}}.0.baserate{{@index}}" name="baserate[]">
+						            		<input id='baseRate' can-value="rownum.{{@index}}.baseRate" name="baseRate[]">
 							        	</div>
 									</td>
 									<td class="form-group">
 						            	<div class="breakdownPeriod">
-						            		<input type="text" id='minima' can-value="rownum.{{@index}}.0.minima{{@index}}" name="minima[]">
+						            		<input type="text" id='minima' can-value="rownum.{{@index}}.minima" name="minima[]">
 							        	</div>
 									</td>	
 									<td class="form-group">
 						            	<div class="breakdownPeriod">
-						            		<input type="text" id='listhoursminima' can-value="rownum.{{@index}}.0.listhoursminima{{@index}}" name="listhoursminima[]">
+						            		<input type="text" id='listenerMinima' can-value="rownum.{{@index}}.listenerMinima" name="listenerMinima[]">
 							        	</div>
 									</td>
 									<td class="form-group">
 						            	<div class="breakdownPeriod">
-						            		<input type="text" id='discount' can-value="rownum.{{@index}}.0.discount{{@index}}" name="discount[]">
+						            		<input type="text" id='discount' can-value="rownum.{{@index}}.discount" name="discount[]">
 							        	</div>
 									</td>
 						            <td class="form-group">
 						            	<div class="breakdownPeriod">
-						            		<input type="checkbox" id='isdefault' can-value="rownum.{{@index}}.0.isdefault{{@index}}" name="isdefault[]">
+						            		<input type="checkbox" id='isDefault' can-value="rownum.{{@index}}.isDefault" can-true-value=1 can-false-value=0 name="isDefault[]">
 							        	</div>
 									</td>
 							       <td>
@@ -141,7 +185,66 @@
 				</div>
 
 				</fieldset>
-			
+
+
+				<fieldset class="scheduler-border">
+					<legend class="scheduler-border">Track Count Minima</legend>
+					<div class="table-responsive">
+					  <table class="table table-condensed table-striped breakdown" id="breakTable">
+						    <thead>
+						        <tr>
+						         	<th class="pbTableHead">Description</th>
+						            <th class="pbTableHead">From</th>
+						            <th class="pbTableHead">To</th>
+						            <th class="pbTableHead">Minima</th>
+						             <th class="pbTableHead"><a id="addtrack" href="#">Add</a></th>
+						        </tr>
+						    </thead>
+						    <tbody>
+						  	{{#each rownumtrack}}
+
+						      <tr id="breakrow0" rowid="0">
+						      		
+									<td class="form-group">
+						            	<div class="breakdownPeriod">
+						            		<input id='description' can-value="rownumtrack.{{@index}}.description" name="description[]">
+							        	</div>
+									</td>
+									<td class="form-group">
+						            	<div class="breakdownPeriod">
+						            		<input type="text" id='from' can-value="rownumtrack.{{@index}}.from" name="from[]">
+							        	</div>
+									</td>	
+									<td class="form-group">
+						            	<div class="breakdownPeriod">
+						            		<input type="text" id='to' can-value="rownumtrack.{{@index}}.to" name="to[]">
+							        	</div>
+									</td>
+									<td class="form-group">
+						            	<div class="breakdownPeriod">
+						            		<input type="text" id='minima' can-value="rownumtrack.{{@index}}.minima" name="minima[]">
+							        	</div>
+									</td>
+						            
+							       <td>
+						           		<div>	
+											<a id="trackdel" href="#">Delete</a>
+										</div>
+						           </td>
+						       </tr>
+						 	{{/each}}
+							
+						    </tbody>
+					</table>
+				</div>
+
+				</fieldset>
+
+
+			</div>
+			<div class="col-sm-4 col-sm-offset-8" >
+				<button id="save" type="submit" class="btn btn-primary btn-custom-big">Save</button>
+				<button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
 			</div>
 		</div>	
 
