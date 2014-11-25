@@ -15,6 +15,10 @@ var newOnAccountGrid = GridWithEditing.extend({
       {
         id: 'licensor',
         title: 'Licensor'
+      },
+      {
+        id: 'currency',
+        title: 'Currency'
       }
     ],
     request:{}
@@ -53,7 +57,7 @@ var newOnAccountGrid = GridWithEditing.extend({
       genObj["licensorId"]="18";
        Currency.findAll(UserReq.formRequestDetails(genObj)).then(function(data) {
        console.log(JSON.stringify(data.attr()));
-       var rows = frameRows(licensor,data,quarters);
+       var rows = frameRows("PAECOL",data,quarters);
         self.scope.rows.replace(rows);
       });
 
@@ -64,8 +68,33 @@ var newOnAccountGrid = GridWithEditing.extend({
 
 var frameRows=function(licensor,data,quarters){
   var rows = new can.List();
-  console.log(data[0].id);
+  
+  var row ={};
+  row.licensor=licensor;
+  row.currency="";
+  for(var i=0;i<quarters.length;i++){
+    row[quarters[i]]="";
+  }
+  row.__isChild=false;
+  rows.push(row);
+
+  for(var i=0; i<data.length;i++){  
+    var childrow ={};
+    childrow.licensor="";
+    childrow.currency=data[i].id;
+    for(var k=0;k<quarters.length;k++){
+        childrow[quarters[k]]=0;
+      }
+    childrow.__isChild=true;
+    rows.push(childrow);
+  }
+  console.log('data created');
+  console.log(rows);
+  return rows;
 }
+
+
+
 var getQuarter=function(periodFrom,periodTO){
   console.log(periodFrom);
   console.log(periodTO);
