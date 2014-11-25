@@ -5,7 +5,7 @@ import Stats from 'models/refreshstats/refreshstats';
 import Grid from 'components/grid/';
 import injestiontemplate from './stat-injestion.stache!';
 import stache from 'can/view/stache/';
-import Currency from 'models/currency/';
+import Currency from 'models/common/currency/';
 import UserReq from 'utils/request/';
 
 
