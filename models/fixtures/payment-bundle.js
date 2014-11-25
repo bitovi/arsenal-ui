@@ -91,6 +91,40 @@ var makeInvoices = function(bundle) {
   });
 };
 
+var makeFooter = function(bundle) {
+  return {
+    currency: 'EUR',
+    invoiceAmt: 54,
+    lineAmt: 53,
+    reconAmt: 52,
+    orDispAmt: 51,
+    liDispAmt: 50,
+    priorPaid: 49,
+    proposedAmt: 48,
+    paymentAmt: 47,
+    onaccountAllocatedAmt: 46,
+    cashadjAllocatedAmt: 45,
+    paymentSaturation: 44,
+    balance: 43,
+    bdlFooterDetails: _.map(['GBP', 'USD', 'JPY'], (currency) => ({
+      currency: currency,
+      invoiceAmt: 45,
+      lineAmt: 44,
+      reconAmt: 43,
+      orDispAmt: 42,
+      liDispAmt: 41,
+      priorPaid: 40,
+      proposedAmt: 39,
+      paymentAmt: 38,
+      onaccountAllocatedAmt: 37,
+      cashadjAllocatedAmt: 36,
+      paymentSaturation: 35,
+      balance: 34,
+      bdlFooterDetails: null
+    }))
+  };
+};
+
 var makeBundleValidations = function(bundle) {
   return {
     paymentBundle: {
@@ -150,6 +184,7 @@ var makeBundleWithDetails = function(bundleId) {
   };
 
   bundle.bundleDetailsGroup = makeInvoices(bundle);
+  bundle.bdlFooter = makeFooter(bundle);
 
   return bundle;
 };

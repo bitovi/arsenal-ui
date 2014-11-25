@@ -6,6 +6,9 @@
     <input type="checkbox" can-value="{aggregatePeriod}"><label>Aggregate Period</label>
   </div>
   {{/showAggregateControl}}
+  {{#validationStatus}}
+  <div class="validation-status">{{validationRulesCompleted}} out of {{validationRulesTotal}} rules complete.</div>
+  {{/validationStatus}}
   <div class="bundle-detail-actions">
     {{#canRemoveInvoice}}
     <button class="remove-invoice">Remove Invoice From Bundle</button>
@@ -15,6 +18,7 @@
     {{/canShowChart}}
     <img class="excel" src="/resources/images/excel.png"/>
     <img class="clipboard" src="/resources/images/clipboard.png"/>
+    <img class="verbose-toggle" src="/resources/images/approval_arrow_{{#if pageState.verboseGrid}}left{{else}}right{{/if}}.png"/>
   </div>
 </div>
 <div class="grid-container">

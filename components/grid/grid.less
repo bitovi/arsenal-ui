@@ -7,7 +7,7 @@
 
   @row-hover-outline: 3px solid #f1c8c8;
 
-  @header-background: linear-gradient(to bottom, #7e7e83, #afafb4);
+  @header-background: linear-gradient(to top, #7e7e83, #afafb4);
   @parent-background: #e4e4e4;
   @child-background: #f6f6f6;
   @selected-background: #d3f0fe;
@@ -138,9 +138,17 @@
         }
 
       }
+  }
 
-      tr.child {
-        display: none;
+  tbody, tfoot {
+    tr.child {
+      display: none;
+      background-color: @child-background;
+      color: @font-color;
+
+      & td {
+        border-right: 1px solid transparent;
+      }
 
         &.visible {
           display: table-row;

@@ -70,6 +70,9 @@ var BundleDetailTabs = Component.extend({
     showAggregateControl: function(options) {
       return this.attr('selectedTab').value === 'country' ? options.fn(this) : '';
     },
+    validationStatus: function(options) {
+      return this.pageState.selectedBundle && this.pageState.selectedBundle.attr('validationRulesTotal') > 0 ? options.fn(this.pageState.selectedBundle) : '';
+    },
     canRemoveInvoice: function(options) {
       if(this.selectedRows.attr('length') > 0 && _.every(this.attr('selectedRows'), row => row instanceof PaymentBundleDetailGroup)) {
         return options.fn(this);
@@ -100,6 +103,9 @@ var BundleDetailTabs = Component.extend({
     },
     '.clipboard click': function(el, ev) {
       // copy data to the clipboard
+    },
+    '.verbose-toggle click': function(el, ev) {
+      this.scope.pageState.attr('verboseGrid', !this.scope.pageState.verboseGrid);
     },
     '.approval-comment .buttons .action click': function(el, ev) {
       var action = el.data('action'),

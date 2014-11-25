@@ -116,6 +116,7 @@ var PaymentBundle = Model.extend({
       can.batch.start();
       self.attr(bundle.attr());
       self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
+      self.attr('bundleFooter', transformFooter(bundle.bdlFooter));
       can.batch.stop();
 
       bundle.getValidations();
@@ -155,6 +156,12 @@ var PaymentBundle = Model.extend({
           rulesTotal += detail.vldtnRulesTotalCnt;
         });
       });
+
+      bundle.attr({
+        validationRulesCompleted: rulesCompleted,
+        validationRulesTotal: rulesTotal
+      });
+
       can.batch.stop();
 
       return validationResponse;
@@ -185,5 +192,14 @@ var PaymentBundle = Model.extend({
     });
   }
 });
+
+var transformFooter = function(bundleFooter) {
+  bundleFooter.attr('paymentCcy', bundleFooter.currency);
+  bundleFooter.bdlFooterDetails.forEach(function(detail) {
+    detail.attr('paymentCcy', detail.currency);
+  });
+
+  return bundleFooter;
+};
 
 export default PaymentBundle;

@@ -26,7 +26,16 @@ var BundleDetailGrid = Grid.extend({
     },
     aggregateRows: [],
     makeAggregateRowsFromBundle: function(bundle) {
-      return [bundle];
+      var rows = [];
+      if(bundle.bundleFooter) {
+        rows.push(bundle.bundleFooter);
+        bundle.bundleFooter.bdlFooterDetails.forEach(function(detail) {
+          detail.attr('__isChild', true);
+          rows.push(detail);
+        });
+
+        return rows;
+      }
     },
 
     selectedRows: []
