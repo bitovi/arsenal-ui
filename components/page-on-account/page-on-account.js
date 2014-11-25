@@ -59,14 +59,11 @@ var page = Component.extend({
         if(this.scope.appstate.attr('globalSearch')){
 
             if(this.scope.tabsClicked=="ON_ACC_BALANCE"){
-            //alert('inside');
-               var request = frameRequest(this.scope.appstate); 
-              //$('#onAccount').append(stache('<on-account-grid request={{request}}></on-account-grid>')({request}));
-               //$('#onAccountBalanceGrid').append(stache('<rn-onaccount-balance-grid request={request}></rn-onaccount-balance-grid>')({request}));
+               //var request = frameRequest(this.scope.appstate);   
+               $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={request}></rn-onaccount-balance-grid>')({request}));
             }else if(this.scope.tabsClicked=="NEW_ON_ACC"){
               console.log("inside NEW_ON_ACC");
                 $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
-               //$('#newonAccountGrid').append(stache('<rn-new-onaccount-grid rows="{rows}"></rn-new-onaccount-grid>')({rows}));
             }
 
         }
