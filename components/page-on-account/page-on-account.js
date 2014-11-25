@@ -9,14 +9,16 @@ import stache from 'can/view/stache/';
 
 import UserReq from 'models/rinsCommon/request/';
 
-import OnAccountGrid from 'components/on-account-balance/';
+import OnAccountGrid from 'components/grid-onaccount-balance/';
 import Grid from 'components/grid/';
 
 var page = Component.extend({
   tag: 'page-on-account',
   template: template,
   scope: {
-    localGlobalSearch:undefined
+    localGlobalSearch:undefined,
+    request:{},
+    tabsClicked:"@"
   },
   init: function(){
 	 //console.log('inside Claim Review');
@@ -28,11 +30,45 @@ var page = Component.extend({
     	},
       '{scope.appstate} change': function() {
 
-        if(this.scope.appstate.attr('globalSearch')){
+        this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
+
+        //&& this.scope.tabsClicked=="ON_ACC_BALANCE"
+
+        if(this.scope.appstate.attr('globalSearch') && this.scope.tabsClicked=="ON_ACC_BALANCE"){
+          //alert('inside');
              var request = frameRequest(this.scope.appstate); 
             //$('#onAccount').append(stache('<on-account-grid request={{request}}></on-account-grid>')({request}));
-             $('#onAccount').append(stache('<on-account-grid request={request}></on-account-grid>')({request}));
+             $('#onAccountBalanceGrid').append(stache('<rn-onaccount-balance-grid request={request}></rn-onaccount-balance-grid>')({request}));
         }
+      },
+      "#onAccountBalance click":function(el, ev){
+        ev.preventDefault();
+        this.scope.tabsClicked="ON_ACC_BALANCE";
+        $("#onAccountBalanceDiv").addClass('active');
+         $("#onAccountBalanceDiv").removeClass('fade');
+
+        $("#newonAccountDiv").removeClass('active');
+        console.log(this.scope.tabsClicked);
+      },
+      "#newonAccount click":function(el, ev){
+        ev.preventDefault();
+        this.scope.tabsClicked="NEW_ON_ACC";
+        $("#newonAccountDiv").addClass('active');
+         $("#newonAccountDiv").removeClass('fade');
+
+        $("#onAccountBalanceDiv").removeClass('active');
+        $("#proposedonAccountDiv").removeClass('active');
+        console.log(this.scope.tabsClicked);
+      },
+      "#proposedonAccount click":function(el, ev){
+        ev.preventDefault();
+        this.scope.tabsClicked="PROPOSED_ON_ACC";
+        $("#proposedonAccountDiv").addClass('active');
+         $("#proposedonAccountDiv").removeClass('fade');
+
+        $("#newonAccountDiv").removeClass('active');
+        $("#onAccountBalanceDiv").removeClass('active');
+        console.log(this.scope.tabsClicked);
       }
     }
 });

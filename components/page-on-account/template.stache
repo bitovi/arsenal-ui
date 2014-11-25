@@ -20,30 +20,29 @@
     <div class="col-lg-12">
 	    <ul id="myTabs" class="nav nav-tabs">
 		   <li class="active">
-		      <a href="#NewonAccount" data-toggle="tab">
+		      <a id = "newonAccount" href="#NewonAccountDiv" data-toggle="tab">
 		         New on Account
 		      </a>
 		   </li>
-		   <div class="tab-pane fade in active" id="licensorView">
-		      <div id="claimLicencorGrid"></div>
-		   </div>
-		   <li><a href="#onAccountBalance" data-toggle="tab">on Account Balance</a></li>
-		   <li><a href="#ProposedonAccount" data-toggle="tab">Proposed onAccount</a></li>
+		   <li><a id = "onAccountBalance" href="#onAccountBalanceDiv" data-toggle="tab">on Account Balance</a></li>
+		   <li><a id = "proposedonAccount" href="#proposedonAccountDiv" data-toggle="tab">Proposed onAccount</a></li>
 		</ul>
 
 		<div id="myTabContent" class="tab-content">
-		   <div class="tab-pane fade in active" id="NewonAccount">
+		   <div class="tab-pane fade in active" id="NewonAccountDiv">
 		      <div id="NewonAccountGrid"></div>
 		   </div>
-		   <div class="tab-pane fade" id="countryView" style="padding:10px;border:1px solid #ddd; border-top:0px;">
-		      <div id="countryViewGrid"></div>
-		   </div>
+		   <div class="tab-pane fade" id = "onAccountBalanceDiv"  style="padding:10px;border:0px solid #ddd; border-top:0px;">
+		   		<div id="onAccountBalanceGrid"></div>
+			</div>
+
+			<div class="tab-pane fade" id = "proposedonAccountDiv"  style="padding:10px;border:0px solid #ddd; border-top:0px;">
+		   			<div id=""></div>
+			</div>
+
 		</div>
 	</div>    
 </div>
 
-<div style="height:10px">
-	</div>
 
-	<div id="onAccount">
-	</div>
+	
