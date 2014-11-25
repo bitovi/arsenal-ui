@@ -91,6 +91,36 @@ var makeInvoices = function(bundle) {
   });
 };
 
+var makeBundleValidations = function(bundle) {
+  return {
+    paymentBundle: {
+      bundleId: bundle.bundleId,
+      bundleName: bundle.bundleName,
+      view: 'COUNTRY',
+      vldtnStatus: null,
+      bundleDetailsGroup: _.map(bundle.bundleDetailsGroup, function(invoice) {
+        return {
+          bundleId: bundle.bundleId,
+          invoiceId: invoice.invoiceId,
+          vldtnBatchResultColor: '#FF0000',
+          vldtnMessage: ['Frobnitz needs to be kibitz\'d.', 'Poiuyt is unstable.'],
+          bundleDetails: _.map(invoice.bundleDetails, function(detail) {
+            return {
+              bundleId: bundle.bundleId,
+              invoiceId: invoice.invoiceId,
+              bndlLineId: detail.bndlLineId,
+              vldtnBatchResultColor: '#FF0000',
+              vldtnMessage: [['Frobnitz needs to be kibitz\'d.', 'Poiuyt is unstable.'][_.random(0, 1)]],
+              vldtnRulesCompletedCnt: 1,
+              vldtnRulesTotalCnt: 2
+            };
+          })
+        };
+      })
+    }
+  };
+};
+
 var makeBundleWithDetails = function(bundleId) {
   var bundle = {
     "bundleId": bundleId,
@@ -149,5 +179,6 @@ var makeBundle = function() {
 
 export default {
   makeBundle,
-  makeBundleWithDetails
+  makeBundleWithDetails,
+  makeBundleValidations
 };

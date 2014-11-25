@@ -137,7 +137,25 @@ var PaymentBundle = Model.extend({
     }).then(function(validationResponse) {
       // for now, we have no invoiceId to hook up bundles with, so...
       // I guess we have to do it the hard way.
+      var rulesCompleted = 0,
+          rulesTotal = 0;
 
+      can.batch.start();
+      validationResponse.paymentBundle.bundleDetailsGroup.forEach(function(group) {
+        var target = _.find(bundle.bundleDetailsGroup, {invoiceId: group.invoiceId});
+        target.attr('validationMessages', group.vldtnMessage);
+        target.attr('validationColor', group.vldtnBatchResultColor);
+
+        group.bundleDetails.forEach(function(detail) {
+          var lineTarget = _.find(target.bundleDetails, {bndlLineId: detail.bndlLineId});
+          lineTarget.attr('validationMessages', detail.vldtnMessage);
+          lineTarget.attr('validationColor', detail.vldtnBatchResultColor);
+
+          rulesCompleted += detail.vldtnRulesCompletedCnt;
+          rulesTotal += detail.vldtnRulesTotalCnt;
+        });
+      });
+      can.batch.stop();
 
       return validationResponse;
     });

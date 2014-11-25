@@ -20,9 +20,6 @@ var WorkflowDisplay = Component.extend({
         return options.fn(this);
       }
     }
-  },
-  events: {
-    '{scope} steps': function() { console.log('wds', arguments); }
   }
 });
 

@@ -8,7 +8,9 @@ export default [
   }, {
     id: 'validations',
     title: '<img src="/resources/images/rn_WarningActive@2x.png"/>',
-    contents: function(row) { return stache('{{#if validationMessages.length}}<img src="/resources/images/rn_WarningSelected@2x.png"/>{{/if}}')(row); },
+    contents: function(row) {
+      return stache('{{#if validationMessages.length}}<img src="/resources/images/rn_WarningSelected@2x.png" {{data \'row\'}}/>{{/if}}')(row);
+    },
     validationsOnly: true
   }, {
     id: 'licensor',

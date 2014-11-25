@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import Grid from 'components/grid/';
 
 import template from './template.stache!';
@@ -28,23 +29,20 @@ var BundleDetailGrid = Grid.extend({
       return [bundle];
     },
 
-    selectedRows: [],
-
-    thereAreValidationMessages: function(rows) {
-      // TODO: make this real
-      return false;
-    }
+    selectedRows: []
   },
   helpers: {
-    // overwrite this to deal with verbose/expanded mode
     filteredColumns: function(options) {
+      can.__reading(this.rows, 'change'); // TODO: figure out if there's a better way to do this.
+                                          // Note for others - don't use can.__reading yourself!
+
       var filteredColumns = this.attr('columns');
       if(! this.pageState.attr('verboseGrid')) {
         // use only the ones without verboseOnly = true
         filteredColumns = _.filter(filteredColumns, column => !column.verboseOnly);
       }
 
-      if(!this.thereAreValidationMessages(this.attr('rows'))) {
+      if(!_.some(this.attr('rows'), row => row.attr('validationMessages') && row.attr('validationMessages').attr('length'))) {
         filteredColumns = _.filter(filteredColumns, column => !column.validationsOnly);
       }
 
@@ -121,6 +119,17 @@ var BundleDetailGrid = Grid.extend({
       } else {
         this.scope.selectedRows.push(row);
       }
-    }
+    },
+    'td.validations img mouseover': function(el, ev) {
+      var row = el.data('row');
+      el.popover({
+        content: row.validationMessages.join(' '),
+        trigger: 'manual'
+      });
+      el.popover('show');
+    },
+    'td.validations img mouseout': function(el, ev) {
+      el.popover('hide');
+    },
   }
 });

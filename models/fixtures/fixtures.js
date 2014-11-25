@@ -72,7 +72,14 @@ fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/getAll', functio
 });
 
 fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/get', function(req, res, headers) {
-  return fixture_paymentBundle.makeBundleWithDetails(req.data.bundleId);
+  var index = _.findIndex(BUNDLES, {bundleId: req.data.paymentBundle.bundleID});
+  var withDetails = fixture_paymentBundle.makeBundleWithDetails(req.data.paymentBundle.bundleID);
+  BUNDLES[index] = withDetails;
+  return withDetails;
+});
+
+fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/validationResult', function(req, res, headers) {
+  return fixture_paymentBundle.makeBundleValidations(_.find(BUNDLES, {bundleId: req.data.paymentBundle.bundleId}));
 });
 
 /* Workflow Steps */
