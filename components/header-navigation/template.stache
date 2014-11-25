@@ -13,7 +13,9 @@
       <ul class="nav navbar-nav">
         <li {{isActive 'dashboard'}}><a href="/dashboard">Dashboard</a></li>
         <li {{isActive 'payment-bundles'}}><a href="/payment-bundles">Payment Bundles</a></li>
+        <li {{isActive 'recon-stats'}}><a href="/recon-stats">Recon Stats</a></li>
         <li {{isActive 'invalid-page'}}><a href="/invalid-page">Invalid page</a></li>
+
       </ul>
     </div><!--/.nav-collapse -->
   </div>
