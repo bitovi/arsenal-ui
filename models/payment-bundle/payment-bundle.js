@@ -179,7 +179,7 @@ var PaymentBundle = Model.extend({
     };
 
     return $.ajax({
-      url: URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/' + params.action,
+      url: URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/' + (params.action === 'delete' ? 'manage' : params.action),
       type: 'POST',
       data: requestData
     });
