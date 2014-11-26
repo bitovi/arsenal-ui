@@ -13,12 +13,15 @@ import OnAccountGrid from 'components/grid-onaccount-balance/';
 import Grid from 'components/grid/';
 import newOnAccountGrid from 'components/grid-new-onaccount/';
 
+import createpb from 'components/create-pb/';
+
 var page = Component.extend({
   tag: 'page-on-account',
   template: template,
   scope: {
     localGlobalSearch:undefined,
     request:{},
+    newpaymentbundlenamereq:undefined,
     tabsClicked:"@"
   },
   init: function(){
@@ -53,6 +56,31 @@ var page = Component.extend({
             // )({rows}));
        
     	},
+      "#paymentBundleNames change": function(){
+          var self = this;
+          var pbval = $("#paymentBundleNames").val();
+          console.log("val djsi is "+ pbval);
+          if(pbval=="createB"){
+              
+              var regId = self.scope.appstate.attr('region');
+
+
+              var newBundleNameRequest = {"paymentBundle":{}};
+              var bundleRequest = {};
+
+              bundleRequest["region"] = regId['value'];
+              bundleRequest["periodFrom"] = "201303";
+              bundleRequest["periodTo"] = "201304";
+              //bundleRequest["bundleType"] =lineType;
+              bundleRequest["bundleType"] ="ON_ACCOUNT";
+
+              newBundleNameRequest["paymentBundle"] = bundleRequest;
+              console.log("New Bundle name request is "+JSON.stringify(newBundleNameRequest));
+              self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
+          } else {
+            self.scope.attr('newpaymentbundlenamereq', "undefined");
+          }
+      },
       '{scope.appstate} change': function() {
 
         this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
@@ -103,7 +131,30 @@ var page = Component.extend({
         $("#onAccountBalanceDiv").removeClass('active');
         console.log(this.scope.tabsClicked);
       }
-    }
+    },
+    helpers: {
+           createPBRequest: function(){
+          var bundleNamesRequest = {"bundleSearch":{}};
+
+          var serTypeId = this.appstate.attr('storeType');
+          var regId = this.appstate.attr('region');
+
+          if(typeof(serTypeId)!="undefined")
+            bundleNamesRequest.bundleSearch["serviceTypeId"] = serTypeId['id'];
+
+          if(typeof(regId)=="undefined")
+            bundleNamesRequest.bundleSearch["region"] = "";
+          else
+            bundleNamesRequest.bundleSearch["region"] = regId['value'];
+            
+          bundleNamesRequest.bundleSearch["type"] = "ON_ACCOUNT";
+          
+
+          //console.log("GetBundleNamesRequest is "+JSON.stringify(bundleNamesRequest));
+
+          return JSON.stringify(bundleNamesRequest);
+        }
+      }
 });
 
 var frameRequest = function(appstate){
