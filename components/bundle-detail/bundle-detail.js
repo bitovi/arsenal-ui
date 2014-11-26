@@ -10,24 +10,27 @@ import BundleDetailGrid from 'components/bundle-detail-grid/';
 import Switcher from 'components/switcher/';
 import WorkflowDisplay from 'components/workflow-display/';
 
-import licensorColumns from './column-sets/licensor-columns';
-import countryColumns from './column-sets/country-columns';
+import columnSets from './column-sets';
 
 import template from './template.stache!';
 import _less from './bundle-detail.less!';
 
-var columnSets = [
-  {
-    value: 'licensor',
-    text: 'Licensor',
-    columns: licensorColumns
-  },
-  {
-    value: 'country',
-    text: 'Country',
-    columns: countryColumns
-  }
-];
+var bundleTypeColumnSets = {
+  'REGULAR_INV': [
+    {
+      value: 'licensor',
+      text: 'Licensor',
+      columns: columnSets.regularLicensor
+    },
+    {
+      value: 'country',
+      text: 'Country',
+      columns: columnSets.regularCountry
+    }
+  ],
+  'ON_ACCOUNT': columnSets.onAccount,
+  'ADHOC_INV': columnSets.adHoc,
+};
 
 var BundleDetailTabs = Component.extend({
   tag: 'rn-bundle-detail',
@@ -35,13 +38,13 @@ var BundleDetailTabs = Component.extend({
   scope: {
     appstate: null, // passed in
     pageState: null, // passed in
-    columnSets: columnSets,
-    selectedTab: null, // set in init below
+    tabs: [],
+    selectedTab: null,
     aggregatePeriod: false,
     paymentType: 1,
     approvalComment: '',
 
-    gridColumns: columnSets[0].columns,
+    gridColumns: [],
     selectedRows: [],
 
     workflowSteps: new WorkflowStep.List([]),
@@ -50,9 +53,14 @@ var BundleDetailTabs = Component.extend({
     getNewDetails: function(bundle) {
       var scope = this;
 
-      var view = this.attr('selectedTab').value;
-      if(view === 'country' && this.attr('aggregatePeriod')) {
-        view = 'aggregate';
+      var view;
+      if(bundle.bundleType === 'REGULAR_INV') {
+          view = this.attr('selectedTab').value;
+          if(view === 'country' && this.attr('aggregatePeriod')) {
+            view = 'aggregate';
+          }
+      } else {
+        view = 'licensor';
       }
 
       this.attr('gettingDetails', true);
@@ -68,30 +76,40 @@ var BundleDetailTabs = Component.extend({
   },
   helpers: {
     showAggregateControl: function(options) {
-      return this.attr('selectedTab').value === 'country' ? options.fn(this) : '';
+      return this.attr('selectedTab') && this.selectedTab.value === 'country' ? options.fn(this) : '';
     },
     validationStatus: function(options) {
       return this.pageState.selectedBundle && this.pageState.selectedBundle.attr('validationRulesTotal') > 0 ? options.fn(this.pageState.selectedBundle) : '';
     },
     canRemoveInvoice: function(options) {
-      if(this.selectedRows.attr('length') > 0 && _.every(this.attr('selectedRows'), row => row instanceof PaymentBundleDetailGroup)) {
+      if(this.pageState.attr('selectedBundle.bundleType') === 'REGULAR_INV' &&
+         this.selectedRows.attr('length') > 0
+         && _.every(this.attr('selectedRows'), row => row instanceof PaymentBundleDetailGroup
+      )) {
         return options.fn(this);
       } else {
         '';
       }
     },
     canShowChart: function(options) {
-      if(this.selectedRows.attr('length') > 0 && _.every(this.attr('selectedRows'), row => row instanceof PaymentBundleDetail)) {
+      if(this.pageState.attr('selectedBundle.bundleType') === 'REGULAR_INV' &&
+         this.selectedRows.attr('length') > 0 &&
+         _.every(this.attr('selectedRows'), row => row instanceof PaymentBundleDetail)
+      ) {
         return options.fn(this);
       } else {
         '';
       }
-    }
+    },
+    showVerboseToggle: function(options) {
+      if(_.some(this.attr('columns'), column => column.verboseOnly)) {
+        return options.fn(this);
+      } else {
+        '';
+      }
+    },
   },
   events: {
-    init: function() {
-      this.scope.attr('selectedTab', this.scope.columnSets[0]);
-    },
     '.remove-invoice click': function(el, ev) {
       this.scope.selectedRows.forEach(row => row.destroy());
     },
@@ -123,13 +141,39 @@ var BundleDetailTabs = Component.extend({
         pageState.bundles.splice(index, 1);
       });
     },
-    '{scope} selectedTab': function(scope, ev, newVal) {
-      this.scope.attr('gridColumns', newVal.columns);
-      scope.pageState.selectedBundle && scope.getNewDetails(scope.pageState.selectedBundle);
+    '{scope} selectedTab': function(scope, ev, newTab) {
+      if(newTab) {
+        this.scope.attr('gridColumns', newTab.columns);
+        scope.pageState.selectedBundle && scope.getNewDetails(scope.pageState.selectedBundle);
+      }
     },
     '{scope} pageState.selectedBundle': function(scope) {
+      var selectedBundle = scope.pageState.selectedBundle;
+
+      can.batch.start();
+      // clear out selectedRows
+      scope.selectedRows.splice(0, scope.selectedRows.length);
+
+      // change the columns to be correct
+      var tabs = [],
+          columns;
+      if(['REGULAR_INV'].indexOf(selectedBundle.bundleType) >= 0) {
+        // tabs ahoy!
+        tabs = bundleTypeColumnSets[selectedBundle.bundleType];
+        columns = bundleTypeColumnSets[selectedBundle.bundleType][0].columns;
+      } else {
+        // no tabs
+        columns = bundleTypeColumnSets[selectedBundle.bundleType];
+      }
+      scope.tabs.splice(0, scope.tabs.length, ...tabs);
+      scope.attr('selectedTab', scope.tabs.length ? scope.tabs[0] : null);
+      scope.gridColumns.splice(0, scope.gridColumns.length, ...columns);
+
+      // clear out the workflow steps
       scope.workflowSteps.splice(0, scope.workflowSteps.length);
-      scope.getNewDetails(scope.pageState.selectedBundle).then(function(bundle) {
+      can.batch.stop();
+
+      scope.getNewDetails(selectedBundle).then(function(bundle) {
         return WorkflowStep.findAll({
           workflowInstanceId: bundle.workflowInstanceId
         });

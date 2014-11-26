@@ -33,9 +33,9 @@ var BundleDetailGrid = Grid.extend({
           detail.attr('__isChild', true);
           rows.push(detail);
         });
-
-        return rows;
       }
+
+      return rows;
     },
 
     selectedRows: []
@@ -106,7 +106,7 @@ var BundleDetailGrid = Grid.extend({
     }
   },
   events: {
-    '{scope.pageState} selectedBundle': function(ev, newBundle) {
+    '{scope.pageState} selectedBundle': function(scope, ev, newBundle) {
       this.scope.rows.splice(0, this.scope.rows.length, ...(newBundle ? this.scope.makeRowsFromBundle(newBundle) : []));
       this.scope.aggregateRows.splice(0, this.scope.aggregateRows.length, ...(newBundle ? this.scope.makeAggregateRowsFromBundle(newBundle) : []));
     },

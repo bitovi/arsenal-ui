@@ -1,6 +1,7 @@
 {{#if pageState.selectedBundle}}
 <div class="top-controls">
-  <rn-switcher options="{columnSets}" selected-option="{selectedTab}"></rn-switcher>
+  {{#if tabs.length}}
+  <rn-switcher options="{tabs}" selected-option="{selectedTab}"></rn-switcher>
   {{#showAggregateControl}}
   <div class="aggregate-control">
     <input type="checkbox" can-value="{aggregatePeriod}"><label>Aggregate Period</label>
@@ -9,6 +10,7 @@
   {{#validationStatus}}
   <div class="validation-status">{{validationRulesCompleted}} out of {{validationRulesTotal}} rules complete.</div>
   {{/validationStatus}}
+  {{/if}}
   <div class="bundle-detail-actions">
     {{#canRemoveInvoice}}
     <button class="remove-invoice">Remove Invoice From Bundle</button>
@@ -18,7 +20,9 @@
     {{/canShowChart}}
     <img class="excel" src="/resources/images/excel.png"/>
     <img class="clipboard" src="/resources/images/clipboard.png"/>
+    {{#showVerboseToggle}}
     <img class="verbose-toggle" src="/resources/images/approval_arrow_{{#if pageState.verboseGrid}}left{{else}}right{{/if}}.png"/>
+    {{/showVerboseToggle}}
   </div>
 </div>
 <div class="grid-container">

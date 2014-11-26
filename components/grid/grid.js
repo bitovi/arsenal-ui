@@ -183,7 +183,7 @@ var Grid = Component.extend({
       this.scope.attr('allOpen', !allOpen);
       can.batch.stop();
     },
-    'th click': function(el, ev) {
+    'tbody th, tfoot th click': function(el, ev) {
       var column = el.data('column').column;
 
       if(this.scope.attr('sortedColumn') && this.scope.attr('sortedColumn').id === column.id) {
