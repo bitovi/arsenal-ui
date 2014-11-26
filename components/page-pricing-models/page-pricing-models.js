@@ -88,6 +88,10 @@ var page = Component.extend({
                     self.scope.modeltypeGrid.push(tempObj);
                     //console.log(self.scope.modeltypeGrid);
                 }
+          }).then(function(){
+            alert("yes");
+            $('#bottomsection').removeClass('bottomparthide').addClass('bottompartshow');
+            $('#pricingmodelGrid tr:nth-child(1)').trigger('click');
           });
     },
      ".pricingmodelGrid tr click":function(el){

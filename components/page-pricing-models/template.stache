@@ -36,228 +36,229 @@
 
 
 			</div>
-	  </div>
+	 </div>
 
-	  <div class="col-sm-4">
-			<div class="modelsummary">
-				<table class="table table-condensed table-striped pricingmodelGrid">
-						    <thead>
-						        <tr>
-						            <th>Models</th>
-						            <th>Model Type</th>
-						        </tr>
-						    </thead>
-						    <tbody>
-						    	{{#each modeltypeGrid}}
-						    	<tr version="{{version}}" modelid="{{modelid}}">
-						    		<td>{{model}}</td>
-						    		<td>{{modeltype}}</td>
-						    	</tr>
-						    	{{/each}}	
-						    </tbody>
-				</table>		    
-			</div>
-	  		<div class="version"> <label for="inputEmail3" class="col-sm-3 control-label">Version</label>: {{version}}</div>
-	  </div>
-	  <div class="col-sm-8">
-		  	<div class="right-pb-container">
-
-		  		<div class="col-sm-6">
-				 		<div class="singleField">
-						    <label for="inputEmail3" class="col-sm-3 control-label">Country:</label>
-						    <div class="col-sm-4">
-						    
-						      <select id="country" class="form-control" name="country" can-value="country">
-							       <option value="">Select</option>
-							       {{#each countryStore}}
-							       		<option value="{{id}}">{{value}}</option>
-							       	{{/each}}
-						   </select>
-						    </div>
-					  	</div>
-					 </div>
-				
-				<div class="col-sm-6">
-				 		<div class="singleField">
-						    <label for="inputEmail3" class="col-sm-3 control-label">Entity:</label>
-						    <div class="col-sm-4">
-						      
-						      <select id="entity" class="form-control" name="entity" can-value="entity">
-							       <option value="">Select</option>
-							       {{#each licensorStore}}
-							       		<option value="{{id}}">{{value}}</option>
-							       	{{/each}}
-						   </select>
-						    </div>
-					  	</div>
-					</div>
-				<div>
-
-
-				<div class="col-sm-6">
-				 		<div class="singleField">
-						    <label for="inputEmail3" class="col-sm-3 control-label">Pricing Model:</label>
-						    <div class="col-sm-4">
-						    
-						      <select  class="form-control" name="pricingmodeltype" can-value="pricingmodeltype">
-						       <option value="">Select</option>
-						        {{#each pricingmodeltypeStore}}
-								  <option value="{{modelName}}">{{modelName}}</option>     
-								 {{/each}}      
-								</select>
-						    </div>
-					  	</div>
-					 </div>
-				
-				<div class="col-sm-6">
-				 		<div class="singleField">
-						    <label for="inputEmail3" class="col-sm-3 control-label">Model Name:</label>
-						    <div class="col-sm-4">
-						      
-						     <input type="text" name="modelname" can-value="modelname">
-						    </div>
-					  	</div>
-					</div>
-				<div>
-		
-			<div class="col-sm-12">
-			
-				<fieldset class="scheduler-border">
-					<legend class="scheduler-border">Base Model parameter</legend>
-					<div class="table-responsive">
-					  <table class="table table-condensed table-striped breakdown" id="breakTable">
-						    <thead>
-						        <tr>
-						         	<th class="pbTableHead">Content Group</th>
-						            <th class="pbTableHead">Base Rate[%]</th>
-						            <th class="pbTableHead">Minima</th>
-						            <th class="pbTableHead">Listener Hours Minima</th>
-						            <th class="pbTableHead">Discount[%]</th>
-						            <th class="pbTableHead">is Default</th>
-						            <th class="pbTableHead"><a id="addbasemodel" href="#">Add</a></th>
-						        </tr>
-						    </thead>
-						    <tbody>
-						  	{{#each rownum}}
-
-						      <tr id="breakrow0" rowid="0">
-						      		<td class="form-group">
-						            	<div class="breakdownPeriod">
-						            		<select id='contentGroup' can-value="rownum.{{@index}}.contentGroup" name="contentGroup[]">
-						            			<option value="">Select</option>
-						            			{{#each contentType}}
-								        				<option serviceTypeId="{{serviceTypeId}}" value="{{contentGroupName}}">{{contentGroupName}}
-								        				</option>
-							       				{{/each}}
-						            		</select>
-							        	</div>
-									</td>
-									<td class="form-group">
-						            	<div class="breakdownPeriod">
-						            		<input id='baseRate' can-value="rownum.{{@index}}.baseRate" name="baseRate[]">
-							        	</div>
-									</td>
-									<td class="form-group">
-						            	<div class="breakdownPeriod">
-						            		<input type="text" id='minima' can-value="rownum.{{@index}}.minima" name="minima[]">
-							        	</div>
-									</td>	
-									<td class="form-group">
-						            	<div class="breakdownPeriod">
-						            		<input type="text" id='listenerMinima' can-value="rownum.{{@index}}.listenerMinima" name="listenerMinima[]">
-							        	</div>
-									</td>
-									<td class="form-group">
-						            	<div class="breakdownPeriod">
-						            		<input type="text" id='discount' can-value="rownum.{{@index}}.discount" name="discount[]">
-							        	</div>
-									</td>
-						            <td class="form-group">
-						            	<div class="breakdownPeriod">
-						            		<input type="checkbox" id='isDefault' can-value="rownum.{{@index}}.isDefault" can-true-value=1 can-false-value=0 name="isDefault[]">
-							        	</div>
-									</td>
-							       <td>
-						           		<div>	
-											<a id="addbasemodeldel" href="#">Delete</a>
-										</div>
-						           </td>
-						       </tr>
-						 	{{/each}}
-							
-						    </tbody>
-					</table>
+	<div id="bottomsection" class="bottomparthide">
+		  <div class="col-sm-4">
+				<div class="modelsummary">
+					<table id="pricingmodelGrid" class="table table-condensed table-striped pricingmodelGrid">
+							    <thead>
+							        <tr>
+							            <th>Models</th>
+							            <th>Model Type</th>
+							        </tr>
+							    </thead>
+							    <tbody>
+							    	{{#each modeltypeGrid}}
+							    	<tr version="{{version}}" modelid="{{modelid}}">
+							    		<td>{{model}}</td>
+							    		<td>{{modeltype}}</td>
+							    	</tr>
+							    	{{/each}}	
+							    </tbody>
+					</table>		    
 				</div>
+		  		<div class="version"> <label for="inputEmail3" class="col-sm-3 control-label">Version</label>: {{version}}</div>
+		  </div>
+		  
+		  <div class="col-sm-8">
+			  	<div class="right-pb-container">
 
-				</fieldset>
-
-
-				<fieldset class="scheduler-border">
-					<legend class="scheduler-border">Track Count Minima</legend>
-					<div class="table-responsive">
-					  <table class="table table-condensed table-striped breakdown" id="breakTable">
-						    <thead>
-						        <tr>
-						         	<th class="pbTableHead">Description</th>
-						            <th class="pbTableHead">From</th>
-						            <th class="pbTableHead">To</th>
-						            <th class="pbTableHead">Minima</th>
-						             <th class="pbTableHead"><a id="addtrack" href="#">Add</a></th>
-						        </tr>
-						    </thead>
-						    <tbody>
-						  	{{#each rownumtrack}}
-
-						      <tr id="breakrow0" rowid="0">
-						      		
-									<td class="form-group">
-						            	<div class="breakdownPeriod">
-						            		<input id='description' can-value="rownumtrack.{{@index}}.description" name="description[]">
-							        	</div>
-									</td>
-									<td class="form-group">
-						            	<div class="breakdownPeriod">
-						            		<input type="text" id='from' can-value="rownumtrack.{{@index}}.from" name="from[]">
-							        	</div>
-									</td>	
-									<td class="form-group">
-						            	<div class="breakdownPeriod">
-						            		<input type="text" id='to' can-value="rownumtrack.{{@index}}.to" name="to[]">
-							        	</div>
-									</td>
-									<td class="form-group">
-						            	<div class="breakdownPeriod">
-						            		<input type="text" id='minima' can-value="rownumtrack.{{@index}}.minima" name="minima[]">
-							        	</div>
-									</td>
-						            
-							       <td>
-						           		<div>	
-											<a id="trackdel" href="#">Delete</a>
-										</div>
-						           </td>
-						       </tr>
-						 	{{/each}}
-							
-						    </tbody>
-					</table>
-				</div>
-
-				</fieldset>
+			  		<div class="col-sm-6">
+					 		<div class="singleField">
+							    <label for="inputEmail3" class="col-sm-3 control-label">Country:</label>
+							    <div class="col-sm-4">
+							    
+							      <select id="country" class="form-control" name="country" can-value="country">
+								       <option value="">Select</option>
+								       {{#each countryStore}}
+								       		<option value="{{id}}">{{value}}</option>
+								       	{{/each}}
+							   </select>
+							    </div>
+						  	</div>
+						 </div>
+					
+					<div class="col-sm-6">
+					 		<div class="singleField">
+							    <label for="inputEmail3" class="col-sm-3 control-label">Entity:</label>
+							    <div class="col-sm-4">
+							      
+							      <select id="entity" class="form-control" name="entity" can-value="entity">
+								       <option value="">Select</option>
+								       {{#each licensorStore}}
+								       		<option value="{{id}}">{{value}}</option>
+								       	{{/each}}
+							   </select>
+							    </div>
+						  	</div>
+						</div>
+					<div>
 
 
-			</div>
-			<div class="col-sm-4 col-sm-offset-8" >
-				<button id="save" type="submit" class="btn btn-primary btn-custom-big">Save</button>
-				<button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
-			</div>
-		</div>	
-
-
-		</div>
+					<div class="col-sm-6">
+					 		<div class="singleField">
+							    <label for="inputEmail3" class="col-sm-3 control-label">Pricing Model:</label>
+							    <div class="col-sm-4">
+							    
+							      <select  class="form-control" name="pricingmodeltype" can-value="pricingmodeltype">
+							       <option value="">Select</option>
+							        {{#each pricingmodeltypeStore}}
+									  <option value="{{modelName}}">{{modelName}}</option>     
+									 {{/each}}      
+									</select>
+							    </div>
+						  	</div>
+						 </div>
+					
+					<div class="col-sm-6">
+					 		<div class="singleField">
+							    <label for="inputEmail3" class="col-sm-3 control-label">Model Name:</label>
+							    <div class="col-sm-4">
+							      
+							     <input type="text" name="modelname" can-value="modelname">
+							    </div>
+						  	</div>
+						</div>
+					<div>
 			
+				<div class="col-sm-12">
+				
+					<fieldset class="scheduler-border">
+						<legend class="scheduler-border">Base Model parameter</legend>
+						<div class="table-responsive">
+						  <table class="table table-condensed table-striped breakdown" id="breakTable">
+							    <thead>
+							        <tr>
+							         	<th class="pbTableHead">Content Group</th>
+							            <th class="pbTableHead">Base Rate[%]</th>
+							            <th class="pbTableHead">Minima</th>
+							            <th class="pbTableHead">Listener Hours Minima</th>
+							            <th class="pbTableHead">Discount[%]</th>
+							            <th class="pbTableHead">is Default</th>
+							            <th class="pbTableHead"><a id="addbasemodel" href="#">Add</a></th>
+							        </tr>
+							    </thead>
+							    <tbody>
+							  	{{#each rownum}}
+
+							      <tr id="breakrow0" rowid="0">
+							      		<td class="form-group">
+							            	<div class="breakdownPeriod">
+							            		<select id='contentGroup' can-value="rownum.{{@index}}.contentGroup" name="contentGroup[]">
+							            			<option value="">Select</option>
+							            			{{#each contentType}}
+									        				<option serviceTypeId="{{serviceTypeId}}" value="{{contentGroupName}}">{{contentGroupName}}
+									        				</option>
+								       				{{/each}}
+							            		</select>
+								        	</div>
+										</td>
+										<td class="form-group">
+							            	<div class="breakdownPeriod">
+							            		<input id='baseRate' can-value="rownum.{{@index}}.baseRate" name="baseRate[]">
+								        	</div>
+										</td>
+										<td class="form-group">
+							            	<div class="breakdownPeriod">
+							            		<input type="text" id='minima' can-value="rownum.{{@index}}.minima" name="minima[]">
+								        	</div>
+										</td>	
+										<td class="form-group">
+							            	<div class="breakdownPeriod">
+							            		<input type="text" id='listenerMinima' can-value="rownum.{{@index}}.listenerMinima" name="listenerMinima[]">
+								        	</div>
+										</td>
+										<td class="form-group">
+							            	<div class="breakdownPeriod">
+							            		<input type="text" id='discount' can-value="rownum.{{@index}}.discount" name="discount[]">
+								        	</div>
+										</td>
+							            <td class="form-group">
+							            	<div class="breakdownPeriod">
+							            		<input type="checkbox" id='isDefault' can-value="rownum.{{@index}}.isDefault" can-true-value=1 can-false-value=0 name="isDefault[]">
+								        	</div>
+										</td>
+								       <td>
+							           		<div>	
+												<a id="addbasemodeldel" href="#">Delete</a>
+											</div>
+							           </td>
+							       </tr>
+							 	{{/each}}
+								
+							    </tbody>
+						</table>
+					</div>
+
+					</fieldset>
+
+
+					<fieldset class="scheduler-border">
+						<legend class="scheduler-border">Track Count Minima</legend>
+						<div class="table-responsive">
+						  <table class="table table-condensed table-striped breakdown" id="breakTable">
+							    <thead>
+							        <tr>
+							         	<th class="pbTableHead">Description</th>
+							            <th class="pbTableHead">From</th>
+							            <th class="pbTableHead">To</th>
+							            <th class="pbTableHead">Minima</th>
+							             <th class="pbTableHead"><a id="addtrack" href="#">Add</a></th>
+							        </tr>
+							    </thead>
+							    <tbody>
+							  	{{#each rownumtrack}}
+
+							      <tr id="breakrow0" rowid="0">
+							      		
+										<td class="form-group">
+							            	<div class="breakdownPeriod">
+							            		<input id='description' can-value="rownumtrack.{{@index}}.description" name="description[]">
+								        	</div>
+										</td>
+										<td class="form-group">
+							            	<div class="breakdownPeriod">
+							            		<input type="text" id='from' can-value="rownumtrack.{{@index}}.from" name="from[]">
+								        	</div>
+										</td>	
+										<td class="form-group">
+							            	<div class="breakdownPeriod">
+							            		<input type="text" id='to' can-value="rownumtrack.{{@index}}.to" name="to[]">
+								        	</div>
+										</td>
+										<td class="form-group">
+							            	<div class="breakdownPeriod">
+							            		<input type="text" id='minima' can-value="rownumtrack.{{@index}}.minima" name="minima[]">
+								        	</div>
+										</td>
+							            
+								       <td>
+							           		<div>	
+												<a id="trackdel" href="#">Delete</a>
+											</div>
+							           </td>
+							       </tr>
+							 	{{/each}}
+								
+							    </tbody>
+						</table>
+					</div>
+
+					</fieldset>
+
+
+				</div>
+				<div class="col-sm-4 col-sm-offset-8" >
+					<button id="save" type="submit" class="btn btn-primary btn-custom-big">Save</button>
+					<button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
+				</div>
+		  </div>	
 	</div>
-</div> 
+
+</div>
+			
+
 
 
 
