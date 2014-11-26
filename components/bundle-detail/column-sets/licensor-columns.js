@@ -1,4 +1,6 @@
+import _ from 'lodash';
 import stache from 'can/view/stache/';
+import formats from 'utils/formats';
 
 export default [
   {
@@ -32,40 +34,49 @@ export default [
     title: 'ContentType'
   }, {
     id: 'invoiceAmt',
-    title: 'Invoice'
+    title: 'Invoice',
+    format: formats.currency
   }, {
     id: 'orDispAm',
     title: 'OverRep',
-    verboseOnly: true
+    verboseOnly: true,
+    format: formats.currency
   }, {
     id: 'liDispAmt',
     title: 'Line Item',
-    verboseOnly: true
+    verboseOnly: true,
+    format: formats.currency
   }, {
     id: 'reconAmount',
     title: 'Recon',
-    verboseOnly: true
+    verboseOnly: true,
+    format: formats.currency
   }, {
     id: 'onaccountAllocatedAmt',
     title: 'OA Allocated',
-    verboseOnly: true
+    verboseOnly: true,
+    format: formats.currency
   }, {
     id: 'cashAdjAllocatedAmt',
     title: 'CA Allocated',
-    verboseOnly: true
+    verboseOnly: true,
+    format: formats.currency
   }, {
     id: 'priorPaid',
     title: 'Prior Paid',
-    verboseOnly: true
+    verboseOnly: true,
+    format: formats.currency
   }, {
     id: 'netPayment',
     title: 'Net Payment',
     contents: row => 0
   }, {
     id: 'invoiceSaturation',
-    title: 'Invoice Sat'
+    title: 'Invoice Sat',
+    format: formats.formatIf(_.isNumber, formats.percent, '0%')
   }, {
     id: 'paymentSaturation',
-    title: 'Pymt Sat'
+    title: 'Pymt Sat',
+    format: formats.formatIf(_.isNumber, formats.percent, '0%')
   }
 ];
