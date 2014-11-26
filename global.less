@@ -1,0 +1,507 @@
+/** Styles for Nav bar at the top start*/
+
+/*** Overwriting Bootstrap styles starts ***/
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+label {
+  font-size: 12px;
+  color: #3d3d3d;
+}
+
+span {
+  font-size: 12px;
+}
+
+select {
+  height: 20px !important;
+  font-size: 12px !important;
+  color: #1e2025;
+}
+
+.form-control{
+  height: 20px !important;
+}
+hr{
+  margin-bottom: 5px;
+}
+h3 {
+  padding-top: 0px !important;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.pageTitle {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+.btn[disabled]{
+  color: #ddd !important;
+}
+table {
+  thead {
+    tr>th{
+      font-family: "HelveticaNeue-medium";
+      font-size: 12px;
+      color: #ffffff;
+    }
+  }
+  tbody {
+    tr>td{
+      font-family: "Helvetica Neue";
+      font-size: 12px;
+      color: #3d3d3d;
+    }
+  }
+  tfoot {
+    tr>td{
+      font-family: "Helvetica Neue";
+      font-size: 12px;
+      color: #ffffff;
+      padding: 0px;
+    }
+  }
+}
+
+button {
+  font-size: 12px !important;
+}
+/*** Overwriting Bootstrap styles ends ***/
+
+
+/*** Styles for Nav bar at the top Ends here ***/
+
+
+.top-buffer {
+	margin-top:20px;
+}
+
+.rightAligned{
+	float:right !important;
+}
+
+
+label.topFilter{
+
+	width:100%;
+}
+
+input.datetimePickerCal{
+	width:100% !important;
+}
+
+
+/*** Styles for the Tabs in Recon stats & OnAccount ***/
+	.rnotes-nav-tabs{
+		padding-left: 5%;
+		background-color: #D6D6D6;
+		padding-top:2%;
+		border:1px solid #ABABAB;	  /*overwriting the botstrap css to accomodate design*/
+	//border-bottom-color:transparent;
+	}
+	.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+		border:1px solid #ABABAB;	  /*overwriting the botstrap css to accomodate design*/
+		border-bottom-color:transparent;
+	}
+
+	li.tabicons{
+		position:absolute;
+		right:10px;
+		background-color:transparent;
+	}
+/*** Styles for the Tabs ends ***/
+
+
+/** Notification settings */
+.notif-setting-item {
+    margin:10px 0px 6px 20px !important;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.notif-setting-subitem {
+    margin:10px 0px 6px 35px !important;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#notificationList {
+	height: 284px;
+    overflow-y: scroll;
+}
+.notifications-menu .ni-header .title{
+    font-size: 16px;
+    padding-left: 20px;
+
+}
+.notifications-menu .ni-header{
+    margin:0 0 -3px 2px;
+}
+
+.notifications-menu .ni-header .glyphicon{
+    float: right;
+    padding-right: 10px;
+    padding-top: 3px;
+	cursor:pointer;
+}
+
+.notfication-item {
+    width: 250px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.notification-item .content {
+    float: left;
+    margin-top: 10px;
+}
+
+.notifications-menu a {
+    padding: 0;
+}
+
+.notifications-menu a.ni-viewed {
+    background-color: #f5f5f5;
+}
+
+.notfication-item .user-type-text {
+    text-align: right;
+    display: block;
+    width: inherit;
+    font-size: 11px;
+}
+
+.notfication-item .ni-data-type-text {
+    font-size: 11px;
+}
+
+.notfication-item .ni-desc-text {
+    font-size: 11px;
+    word-wrap: break-word;
+    width: 228px !important;
+}
+
+.notfication-item .ni-desc-text strong {
+    font-size: 13px;
+}
+
+.notfication-item .content .ni-time {
+    font-size: 11px;
+}
+.notfication-item .ni-user-text {
+    font-size: 11px;
+    font-weight: bold;
+    float: right;
+    padding-top: 3px;
+}
+
+.notifications-menu .btn-primary {
+  margin: 2px 0px 0px 100px
+}
+.notBtn button{
+    border: none;
+    background: #3071A9;
+    color: white;
+    border-radius: 8px;
+    width: 35%;
+    margin: 2px 18px 0 0;
+
+}
+
+/** end of notifications */
+
+/** bookmarks start*/
+.bookmarks-menu .ni-header .title{
+    font-size: 16px;
+    padding-left: 20px;
+    padding-top: 8px;
+}
+
+.bookmarks-menu .ni-header .glyphicon{
+    float: right;
+    padding-right: 10px;
+    padding-top: 3px;
+}
+
+.bookmark-item {
+    width: 250px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.bookmark-item .content {
+    float: left;
+    margin-top: 10px;
+}
+
+.bookmarks-menu a {
+    padding: 0;
+}
+
+.bookmarks-menu a.ni-viewed {
+    background-color: #f5f5f5;
+}
+
+.bookmark-item .user-type-text {
+    text-align: right;
+    display: block;
+    width: inherit;
+    font-size: 11px;
+}
+
+.bookmark-item .ni-data-type-text {
+    font-size: 11px;
+}
+
+.bookmark-item .ni-desc-text {
+    font-size: 11px;
+    word-wrap: break-word;
+    width: 228px !important;
+}
+
+.bookmark-item .ni-desc-text strong {
+    font-size: 13px;
+}
+
+.bookmark-item .content .ni-time {
+    font-size: 11px;
+}
+.bookmark-item .ni-user-text {
+    font-size: 11px;
+    font-weight: bold;
+    float: right;
+    padding-top: 3px;
+}
+
+.bookmarks-menu .btn-primary {
+    background-color: rgb(22, 19, 19);
+	border-color: grey;
+	padding: 0 0 0 0;
+	margin: 2px -14px 1px 29px;
+	width: 87px;
+	border-radius: 50px;
+}
+.bookmarks-menu  .bookmark-btn{
+	background-color: #3071A9;
+    border-radius: 24px;
+    float: right;
+    font-weight: bold;
+    margin: 8px 27px 8px 10px;
+    padding: 0;
+    width: 100px;
+}
+
+.bookmarkHead{
+    border:1px solid grey;
+    background:grey
+    }
+.btn-list{
+    border-top:1px solid;
+    border-bottom:1px solid;
+    overflow:hidden;
+    background:#f6f6f6
+}
+.chkbook{
+    float: left;
+    margin: 3px!important;
+}
+.descTxt{ float: left;
+    width: 180px;}
+
+.bookList{
+    padding-left:15px;
+}
+.bookListLbl{
+    padding-top: 10px;
+    padding-left:15px
+}
+.bookListInput{
+    margin-left:15px
+}
+.markLbl label{
+    padding:15px 15px 0 15px;
+    font-weight:normal;
+}
+.bookBtn button{
+    border-top: grey;
+    background: #3071A9;
+    color: white;
+    border-radius: 8px;
+    width:88px;
+    }
+
+
+.bookmarkHead{
+    border:1px solid grey;
+    background:grey;
+    height: 30px;
+    margin:-5px 0 0 0
+}
+
+
+.dropdown-menu .divider{
+    background-color: white;
+}
+
+.settingsButton .notifSave{
+    border: grey;
+    width: 69px;
+    background: blue;
+    color: white;
+}
+.notification-back{
+   padding: 4px;
+   border-bottom: 1px solid;
+   margin: -5px 0px 0px 0px;
+
+}
+/** end of bookmarks */
+
+/** extend caret class for right arrow**/
+.caret-right {
+	display: inline-block;
+	width: 0;
+	height: 0;
+	vertical-align: middle;
+    border-left: 4px solid;
+    border-bottom: 4px solid transparent;
+    border-top: 4px solid transparent;
+}
+.text-center button{
+    border: none;
+    background: #3071A9;
+    color: white;
+    border-radius: 8px;
+    width: 35%;
+    margin: 2px 18px 0 0;
+    height:31px;
+}
+
+/*invoice list based on new UX */
+
+.topFilterContainer{
+    margin: 15px 0px 15px 0px;
+}
+
+.gridControlsContainer{
+     margin: 15px 35px 15px 35px;
+}
+
+.bottomContainer{
+    margin: 15px 35px 15px 35px;
+}
+
+
+.btn-custom-small.active {
+  color: rgba(255, 255, 255, 0.75);
+}
+.btn-custom-small {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #1581F4;
+  background-image: -moz-linear-gradient(top, #1581F4, #63ADF1);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#1581F4), to(#63ADF1));
+  background-image: -webkit-linear-gradient(top, #1581F4, #63ADF1);
+  background-image: -o-linear-gradient(top, #1581F4, #63ADF1);
+  background-image: linear-gradient(to bottom, #1581F4, #63ADF1);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff00aaff', GradientType=0);
+  border-color: #0A66CB #0A66CB #0A66CB;
+  //border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #1581F4;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border-radius:6px !important;
+  padding: 3px 22px !important;
+}
+.btn-custom-small:hover,
+.btn-custom-small:focus,
+.btn-custom-small:active,
+.btn-custom-small.active,
+.btn-custom-small.disabled,
+.btn-custom-small[disabled] {
+  color: #ffffff;
+  background-color: #00aaff;
+  *background-color: #0099e6;
+}
+.btn-custom-small:active,
+.btn-custom-small.active {
+  background-color: #0088cc ;
+}
+
+
+.btn-custom-big {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #1581F4;
+  background-image: -moz-linear-gradient(top, #1581F4, #63ADF1);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#1581F4), to(#63ADF1));
+  background-image: -webkit-linear-gradient(top, #1581F4, #63ADF1);
+  background-image: -o-linear-gradient(top, #1581F4, #63ADF1);
+  background-image: linear-gradient(to bottom, #1581F4, #63ADF1);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff00aaff', GradientType=0);
+  border-color: #0A66CB #0A66CB #0A66CB;
+  //border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #1581F4;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border-radius:6px !important;
+  padding: 6px 22px !important;
+}
+.btn-custom-big:hover,
+.btn-custom-big:focus,
+.btn-custom-big:active,
+.btn-custom-big.active,
+.btn-custom-big.disabled,
+.btn-custom-big[disabled] {
+  color: #ffffff;
+  background-color: #00aaff;
+  *background-color: #0099e6;
+}
+.btn-custom-big:active,
+.btn-custom-big.active {
+  background-color: #0088cc ;
+}
+.successMessage {
+    font-weight: normal;
+    border: 1px solid #91c278;
+    border-radius: 5px;
+    padding: 10px 15px;
+    background-color: #d0e3c3;
+    font-size:14px !important;
+    color:#3d3d3d!important;
+    font-family:HelveticaNeue!important;
+    white-space: nowrap;
+
+}
+.errorMessage {
+    font-weight: normal;
+    border: 1px solid #ec9c5d;
+    border-radius: 5px;
+    padding: 10px 15px;
+    background-color: #f7e472;
+    font-size:14px !important;
+    font-family:HelveticaNeue !important;
+    font-size:14px !important;
+    color:#3d3d3d!important;
+    white-space: nowrap;
+}
