@@ -23,35 +23,7 @@
 				  	</div>
 				 </div>
 
-				 <div class="col-sm-3">
-			 		<div class="col-sm-6 singleField">
-					    <label for="inputEmail3" class="col-sm-3 control-label">Country:</label>
-					    <div class="col-sm-4">
-					      
-					      <select id="country" class="form-control" name="country" can-value="country">
-							       <option value="">Select</option>
-							       {{#each countryStore}}
-							       		<option value="{{id}}">{{value}}</option>
-							       	{{/each}}
-						   </select>
-					    </div>
-				  	</div>
-				 </div>
-
-				 <div class="col-sm-3">
-			 		<div class="col-sm-6 singleField">
-					    <label for="inputEmail3" class="col-sm-3 control-label">Entity:</label>
-					    <div class="col-sm-4">
-					      
-					      <select id="entity" class="form-control" name="entity" can-value="entity">
-							       <option value="">Select</option>
-							       {{#each licensorStore}}
-							       		<option value="{{id}}">{{value}}</option>
-							       	{{/each}}
-						   </select>
-					    </div>
-				  	</div>
-				 </div>
+				
 			
 				<div class="col-sm-3">
 			 		<button id="fetch" type="submit" class="btn btn-primary btn-custom-big">Fetch</button>
@@ -89,6 +61,39 @@
 	  </div>
 	  <div class="col-sm-8">
 		  	<div class="right-pb-container">
+
+		  		<div class="col-sm-6">
+				 		<div class="singleField">
+						    <label for="inputEmail3" class="col-sm-3 control-label">Country:</label>
+						    <div class="col-sm-4">
+						    
+						      <select id="country" class="form-control" name="country" can-value="country">
+							       <option value="">Select</option>
+							       {{#each countryStore}}
+							       		<option value="{{id}}">{{value}}</option>
+							       	{{/each}}
+						   </select>
+						    </div>
+					  	</div>
+					 </div>
+				
+				<div class="col-sm-6">
+				 		<div class="singleField">
+						    <label for="inputEmail3" class="col-sm-3 control-label">Entity:</label>
+						    <div class="col-sm-4">
+						      
+						      <select id="entity" class="form-control" name="entity" can-value="entity">
+							       <option value="">Select</option>
+							       {{#each licensorStore}}
+							       		<option value="{{id}}">{{value}}</option>
+							       	{{/each}}
+						   </select>
+						    </div>
+					  	</div>
+					</div>
+				<div>
+
+
 				<div class="col-sm-6">
 				 		<div class="singleField">
 						    <label for="inputEmail3" class="col-sm-3 control-label">Pricing Model:</label>

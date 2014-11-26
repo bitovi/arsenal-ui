@@ -71,9 +71,9 @@ var page = Component.extend({
   	"inserted":function(){
   		var self = this;
     },
-    "{scope} regions":function(){
+    "#fetch click":function(){
         var self = this;
-        var genObj = {region:"Europe",countryId:"GBR",entityId:"19"};
+        var genObj = {region:"Europe"};
         console.log(JSON.stringify(UserReq.formRequestDetails(genObj)));
         
         Promise.all([Pricingmodels.findOne(UserReq.formRequestDetails(genObj), 'summary')
@@ -86,7 +86,7 @@ var page = Component.extend({
                     tempObj.version= pricingmodels[i].version;  
                     tempObj.modelid= pricingmodels[i].modelId;  
                     self.scope.modeltypeGrid.push(tempObj);
-                    console.log(self.scope.modeltypeGrid);
+                    //console.log(self.scope.modeltypeGrid);
                 }
           });
     },
