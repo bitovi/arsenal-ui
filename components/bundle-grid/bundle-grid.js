@@ -23,11 +23,19 @@ var BundleGrid = Grid.extend({
       },
       {
         id: 'totalPaymentAmount',
-        title: 'Amount'
+        title: 'Amount',
+        contents: row => row.totalPaymentAmount.toFixed(2)
       },
       {
         id: 'bundleType',
-        title: 'Bundle Type'
+        title: 'Bundle Type',
+        contents: function(row) {
+          return {
+            'REGULAR_INV': 'Regular',
+            'ON_ACCOUNT': 'On Account',
+            'ADHOC_INV': 'Ad Hoc'
+          }[row.bundleType];
+        }
       },
       {
         id: 'periodRange',

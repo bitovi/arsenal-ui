@@ -61,7 +61,7 @@ fixture('GET /validateicsv', '/models/fixtures/validateicsv.json');
 
 /* Payment Bundles */
 import fixture_paymentBundle from './payment-bundle';
-var BUNDLES = _.times(4, fixture_paymentBundle.makeBundle);
+var BUNDLES = _.times(6, fixture_paymentBundle.makeBundle);
 
 fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/getAll', function(req, res, headers) {
   res(200, {
@@ -72,10 +72,7 @@ fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/getAll', functio
 });
 
 fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/get', function(req, res, headers) {
-  var index = _.findIndex(BUNDLES, {bundleId: req.data.paymentBundle.bundleID});
-  var withDetails = fixture_paymentBundle.makeBundleWithDetails(req.data.paymentBundle.bundleID);
-  BUNDLES[index] = withDetails;
-  return withDetails;
+  return fixture_paymentBundle.makeBundleWithDetails(_.find(BUNDLES, {bundleId: req.data.paymentBundle.bundleID}));
 });
 
 fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/validationResult', function(req, res, headers) {

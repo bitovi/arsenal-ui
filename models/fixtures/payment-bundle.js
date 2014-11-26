@@ -155,60 +155,58 @@ var makeBundleValidations = function(bundle) {
   };
 };
 
-var makeBundleWithDetails = function(bundleId) {
-  var bundle = {
-    "bundleId": bundleId,
-    "bundleName": "Europe Q1Fy14 UK Invoices " + bundleId,
-    "bundleType": "REGULAR_INV",
-    "periodFrom": 201401,
-    "periodTo": 201404,
-    "proposedAmt": 10800.0,
-    "paymentAmt": 4800.0,
-    "onaccountAllocated": 0.0,
-    "cashadjAllocated": 0.0,
-    "paymentCcy": "EUR",
-    "invoiceSaturation": 0.0,
-    "paymentSaturation": 0.0,
-    "status": 1,
-    "paymentOption": 0,
-    "approvalId": 54321543,
-    "totalPaymentAmount": 4800.0,
-    "paymentType": 0,
-    "lastModifiedBy": 2002005712,
-    "createdBy": 2002005712,
-    "vldtnStatus": 0,
-    "view": "COUNTRY",
-    "periodType": "P",
-    "createdDate": "2014-11-13",
-    "modifiedDate": "2014-11-13",
+var makeBundleWithDetails = function(bundle) {
+
+  return {
+    bundleId: bundle.bundleId,
+    bundleName: bundle.bundleName,
+    periodFrom: bundle.periodFrom,
+    periodTo: bundle.periodTo,
+    proposedAmt: 10800.0,
+    paymentAmt: 4800.0,
+    onaccountAllocated: 0.0,
+    cashadjAllocated: 0.0,
+    paymentCcy: 'EUR',
+    invoiceSaturation: 0.0,
+    paymentSaturation: 0.0,
+    status: 1,
+    paymentOption: 0,
+    approvalId: 54321543,
+    totalPaymentAmount: bundle.totalPaymentAmount,
+    paymentType: 0,
+    lastModifiedBy: 2002005712,
+    createdBy: 2002005712,
+    vldtnStatus: 0,
+    view: "COUNTRY",
+    periodType: "P",
+    createdDate: "2014-11-13",
+    modifiedDate: "2014-11-13",
+
+    bundleDetailsGroup: makeInvoices(bundle),
+    bdlFooter: makeFooter(bundle)
   };
-
-  bundle.bundleDetailsGroup = makeInvoices(bundle);
-  bundle.bdlFooter = makeFooter(bundle);
-
-  return bundle;
 };
 
 var makeBundle = function() {
   var id = _.random(10000, 20000);
   return {
-    "bundleId": id,
-    "bundleName":"Europe Q1Fy14 UK Invoices " + id,
-    "totalPaymentAmount": 122349.61,
-    "paymentCurrency" : "EUR",
-    "bundleType":"Regular",
-    "periodType":"P",
-    "periodFrom":"201303",
-    "periodTo":"201303",
-    "region":"Europe",
-    "pendingWith":"Brina Collins",
-    "state":"Proposed",
-    "validationCode": "1",
-    "pendingDays":10,
-    "isHighPriority": "Y",
-    "isEditable": false,
-    "isRecallable": false,
-    "isDeletable": true
+    bundleId: id,
+    bundleName:"Europe Q1Fy14 UK Invoices " + id,
+    totalPaymentAmount: _.random(1000000, 5000000) / 100,
+    paymentCurrency: "EUR",
+    bundleType: ["REGULAR_INV", "ON_ACCOUNT", "ADHOC_INV"][_.random(0, 2)],
+    periodType:"P",
+    periodFrom:"201303",
+    periodTo:"201303",
+    region:"Europe",
+    pendingWith:"Brina Collins",
+    state:"Proposed",
+    validationCode: "1",
+    pendingDays:10,
+    isHighPriority: "Y",
+    isEditable: false,
+    isRecallable: false,
+    isDeletable: true
   };
 };
 

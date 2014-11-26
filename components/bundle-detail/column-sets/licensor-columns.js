@@ -36,7 +36,7 @@ export default [
     id: 'invoiceAmt',
     title: 'Invoice'
   }, {
-    id: 'orDispAm',
+    id: 'orDispAmt',
     title: 'OverRep',
     verboseOnly: true
   }, {
@@ -44,7 +44,7 @@ export default [
     title: 'Line Item',
     verboseOnly: true
   }, {
-    id: 'reconAmount',
+    id: 'reconAmt',
     title: 'Recon',
     verboseOnly: true
   }, {
@@ -52,7 +52,7 @@ export default [
     title: 'OA Allocated',
     verboseOnly: true
   }, {
-    id: 'cashAdjAllocatedAmt',
+    id: 'cashadjAllocatedAmt',
     title: 'CA Allocated',
     verboseOnly: true
   }, {
@@ -60,9 +60,8 @@ export default [
     title: 'Prior Paid',
     verboseOnly: true
   }, {
-    id: 'netPayment',
-    title: 'Net Payment',
-    contents: row => 0
+    id: 'paymentAmt',
+    title: 'Net Payment'
   }, {
     id: 'invoiceSaturation',
     title: 'Invoice Sat'

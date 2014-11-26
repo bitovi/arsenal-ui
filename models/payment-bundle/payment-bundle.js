@@ -15,13 +15,20 @@ var PaymentBundle = Model.extend({
   parseModels: function(data, xhr) {
     return data.paymentBundle;
   },
-  //parseModels: 'paymentBundle',
   model: function(data) {
     // TODO: periodFrom, periodTo, paymentCurrency, and region probably need some more handling.
-    data.isHighPriority = (data.isHighPriority === 'Y');
-    data.isEditable = !!data.isEditable;
-    data.isRecallable = !!data.isRecallable;
-    data.isDeletable = !!data.isDeletable;
+    if(data.hasOwnProperty('isHighPriority')) {
+      data.isHighPriority = (data.isHighPriority === 'Y');
+    }
+    if(data.hasOwnProperty('isEditable')) {
+      data.isEditable = !!data.isEditable;
+    }
+    if(data.hasOwnProperty('isRecallable')) {
+      data.isRecallable = !!data.isRecallable;
+    }
+    if(data.hasOwnProperty('isDeletable')) {
+      data.isDeletable = !!data.isDeletable;
+    }
 
     return Model.model.apply(this, arguments);
   },
