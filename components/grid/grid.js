@@ -151,6 +151,9 @@ var Grid = Component.extend({
         return column.contents.call(this, row);
       } else {
         var value = row.attr(column.attr('valueProperty') || column.attr('id'));
+        if(value === undefined) {
+          value = '';
+        }
         if(_.isFunction(column.format)) {
           value = column.format.call(null, value);
         }

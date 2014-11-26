@@ -62,6 +62,7 @@ fixture('GET /validateicsv', '/models/fixtures/validateicsv.json');
 /* Payment Bundles */
 import fixture_paymentBundle from './payment-bundle';
 var BUNDLES = _.times(6, fixture_paymentBundle.makeBundle);
+var BUNDLES_WITH_DETAILS = {};
 
 fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/getAll', function(req, res, headers) {
   res(200, {
@@ -72,11 +73,17 @@ fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/getAll', functio
 });
 
 fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/get', function(req, res, headers) {
-  return fixture_paymentBundle.makeBundleWithDetails(_.find(BUNDLES, {bundleId: req.data.paymentBundle.bundleID}));
+  var withDetails = fixture_paymentBundle.makeBundleWithDetails(_.find(BUNDLES, {bundleId: req.data.paymentBundle.bundleID}));
+  BUNDLES_WITH_DETAILS[req.data.paymentBundle.bundleID] = withDetails;
+  return withDetails;
 });
 
 fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/validationResult', function(req, res, headers) {
-  return fixture_paymentBundle.makeBundleValidations(_.find(BUNDLES, {bundleId: req.data.paymentBundle.bundleId}));
+  if(! BUNDLES_WITH_DETAILS[req.data.paymentBundle.bundleId]) {
+    BUNDLES_WITH_DETAILS[req.data.paymentBundle.bundleId] = fixture_paymentBundle.makeBundleWithDetails(_.find(BUNDLES, {bundleId: req.data.paymentBundle.bundleId}));
+  }
+
+  return fixture_paymentBundle.makeBundleValidations(BUNDLES_WITH_DETAILS[req.data.paymentBundle.bundleId]);
 });
 
 /* Workflow Steps */
