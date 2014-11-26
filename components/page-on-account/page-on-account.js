@@ -28,6 +28,9 @@ var page = Component.extend({
 	 
     },
     events: {
+      'rn-new-onaccount-grid onSelected': function (ele, event, val) {  
+            console.log(val);
+             },
     	"inserted": function(){ 
 
 

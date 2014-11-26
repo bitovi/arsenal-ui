@@ -7,11 +7,12 @@ var GridWithEditing = Grid.extend({
   tag: 'rn-new-onaccount-grid',
   scope: {
     editingRow: null,
-    editingColumn: null
+    editingColumn: null,
+    quarters:[]
   },
   helpers: {
-    cellContents: function(row, column) {
-      if(this.attr('editingRow') === row && this.attr('editingColumn') === column) {
+    cellContents: function(row, column) {    
+      if(column.editable && row.__isChild) {
         return stache('<input class="editing" value="{{value}}"/>')({value: column.getEditingValue(row,column.title)});
       } else {
         return Grid.prototype.helpers.cellContents.call(this, row, column);
@@ -19,35 +20,82 @@ var GridWithEditing = Grid.extend({
     }
   },
   events: {
-    'td dblclick': function(el, ev) {
-      var column = el.data('column').column;
-      if(column.editable) {
-        can.batch.start();
-        this.scope.attr('editingRow', el.closest('tr').data('row').row);
-        this.scope.attr('editingColumn', column);
-        can.batch.stop();
-      } else {
-        console.log('You cannot edit this.');
-      }
-    },
-    'td input.editing blur': function(el, ev) {
-      // do validation here first
-      if(el.val().indexOf(' ') < 0) {
-        el.addClass('error');
-        console.log('error detected!');
-        return;
-      }
+    // 'td dblclick': function(el, ev) {
+    //   var column = el.data('column').column;
+    //   if(column.editable) {
+    //     can.batch.start();
+    //     this.scope.attr('editingRow', el.closest('tr').data('row').row);
+    //     this.scope.attr('editingColumn', column);
+    //     can.batch.stop();
+    //   } else {
+    //     console.log('You cannot edit this.');
+    //   }
+    // },
+    // 'td input.editing blur': function(el, ev) {
+    //   // do validation here first
+    //   var value = $('td input').val();
+    //   if(value.indexOf(' ') < 0) {
+    //     //el.addClass('error');
+    //    // console.log('error detected!');
+    //     return;
+    //   }
 
+    //   // var column = el.closest('td').data('column').column;
+    //   // var row = el.closest('tr').data('row').row;
+    //   // //console.log('setting new value', value, column, row);
+    //   // column.setValue(row, value,column.title);
+    //   // this.scope.attr({
+    //   //   'editingRow': null,
+    //   //   'editingColumn': null
+    //   // });
+    // },
+    'td input.editing blur':function(el, ev){
+      //var value = $('td input').val();
+      var value = el.closest('td').find('.editing').val();
+
+        if(isNaN(value)){
+          el.addClass('error');
+          return;
+        }
+
+      var element = el.closest('td').find('.editing');
       var column = el.closest('td').data('column').column;
+
+     // console.log(el.val());
+      //console.log("val is "+value);
+
       var row = el.closest('tr').data('row').row;
-      console.log('setting new value', el.val(), column, row);
-      column.setValue(row, el.val(),column.title);
-      this.scope.attr({
-        'editingRow': null,
-        'editingColumn': null
-      });
+      row.attr(column.title,value);
+
+      //console.log(row.attr());
+
+      //console.log(this.scope.quarters.length);
+
+      //column.setValue(row, value,column.title);
+
+      var quarters=this.scope.quarters;
+      var total = 0;
+      for(var i=0; i<quarters.length;i++){
+            total = Number(total)+Number(row.attr(quarters[i]));
+            //console.log(quarters[i]);
+            //console.log(row.attr(quarters[i]));
+          }
+      
+
+       row.attr('total',total);
+      //console.log('rows');
+      //console.log(this.scope.rows);
+
+      //putting the rows to the page from grid component
+      var mainRows={};
+      mainRows.rows=this.scope.rows;
+    
+      $(this.element).trigger('onSelected', mainRows);
+      //Row got updated to the page to the grid component
+     
     }
   }
 });
+
 
 export default GridWithEditing;

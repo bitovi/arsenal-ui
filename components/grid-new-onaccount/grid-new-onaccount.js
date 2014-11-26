@@ -10,18 +10,20 @@ var newOnAccountGrid = GridWithEditing.extend({
     {
         id: 'toggle',
         title: '<span class="open-toggle-all"></span>',
+        editable:false,
         contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}}')({isChild: row.__isChild}); }
       },
       {
         id: 'licensor',
-        title: 'Licensor'
+        title: 'Licensor',
+        editable:false
       },
       {
         id: 'currency',
-        title: 'Currency'
+        title: 'Currency',
+        editable:false
       }
-    ],
-    request:{}
+    ]
   },
   init: function(){
 
@@ -35,23 +37,35 @@ var newOnAccountGrid = GridWithEditing.extend({
      //console.log(JSON.stringify(self.scope.request.searchRequest.attr()));
      var quarters = getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
 
-         console.log(quarters);
-
      for(var i=0;i<quarters.length;i++){
-      var column={
-        id:quarters[i],
-        title:quarters[i],
-         editable: true,
-        getEditingValue: function(row,title) {
-          console.log(title);
-          return row.attr(title);
-        },
-        setValue: function(row, newValue,title) {
-          row.attr(title,newValue);
-        }
-      };
+        var column={
+          id:quarters[i],
+          title:quarters[i],
+           editable:true,
+          getEditingValue: function(row,title) {
+            return row.attr(title);
+          },
+          setValue: function(row, newValue,title) {
+            row.attr(title,newValue);
+          }
+        };
+        self.scope.columns.push(column);
+      }
+      
+      var totalcolumn={
+          id:'total',
+          title:'Total',
+           editable:false,
+          getEditingValue: function(row,title) {
+            return row.attr(title);
+          },
+          setValue: function(row, newValue,title) {
+            row.attr(title,newValue);
+          }
+        };
+        self.scope.columns.push(totalcolumn);
+        self.scope.quarters.replace(quarters);
 
-      self.scope.columns.push(column);
 
       var genObj = {};
       genObj["licensorId"]="18";
@@ -60,10 +74,12 @@ var newOnAccountGrid = GridWithEditing.extend({
        var rows = frameRows("PAECOL",data,quarters);
         self.scope.rows.replace(rows);
       });
-
-     }
-    
     }
+//     events:{
+//       'rn-onaccount-balance-grid onSelected': function (ele, event, val) {  
+//             console.log('Inside new page');
+//              }
+//     }
 });
 
 var frameRows=function(licensor,data,quarters){
@@ -76,6 +92,7 @@ var frameRows=function(licensor,data,quarters){
     row[quarters[i]]="";
   }
   row.__isChild=false;
+  row.total="";
   rows.push(row);
 
   for(var i=0; i<data.length;i++){  
@@ -86,6 +103,7 @@ var frameRows=function(licensor,data,quarters){
         childrow[quarters[k]]=0;
       }
     childrow.__isChild=true;
+    childrow.total=0;
     rows.push(childrow);
   }
   console.log('data created');
