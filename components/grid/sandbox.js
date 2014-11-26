@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import stache from 'can/view/stache/';
 import Grid from './grid';
+import formats from 'utils/formats';
 
 /* Extend grid with the columns */
 Grid.extend({
@@ -15,6 +16,21 @@ Grid.extend({
         id: 'licensor',
         title: 'Licensor',
         contents: function(row) { return stache('{{licensor}}')({licensor: row.licensor}); }
+      },
+      {
+        id: 'licensor2',
+        title: 'Licensor 2',
+        valueProperty: 'licensor'
+      },
+      {
+        id: 'amount',
+        title: 'Amount',
+        format: formats.currency
+      },
+      {
+        id: 'amount2',
+        title: 'Amount R',
+        valueProperty: 'amount'
       },
       {
         id: 'type',
@@ -42,6 +58,7 @@ var rows = new can.List(_.times(10, i => {
     licensor: 'Licensor ' + (i + 1),
     type: 'Payment',
     description: 'Invoice #' + _.random(1, 1000),
+    amount: _.random(50, 300, true),
     region: 'Europe ' + _.random(1, 9),
     '__isChild': (i % 3) !== 0
   };

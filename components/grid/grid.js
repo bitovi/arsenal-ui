@@ -18,7 +18,9 @@ var Grid = Component.extend({
         sortable: true,
         compare: function(a, b) { return a[this.id] - b[this.id]; }, // `this` is the column def, a and b are rows.
         defaultSortDirection: 'asc', // or 'desc' - which way do we sort first?
-        contents: function(row) { return row.prop; } // optional, returns whatever you can return from a helper
+        contents: function(row) { return row.prop; }, // optional, returns whatever you can return from a helper,
+        valueProperty: 'example', // optional, which property on the row to use, defaults to whatever's in 'id'
+        format: function(value) { return format(value); } // optional, used if you don't include `contents`, most useful with utils/formats.js
       }, ...
     */],
     rows: [],
@@ -105,9 +107,17 @@ var Grid = Component.extend({
     },
     cellContents: function(row, column) {
       row.attr();
-      // By default, if column has a value function, run the row through that.
-      // Otherwise, return the value of the property on the row named for the column ID.
-      return _.isFunction(column.contents) ? column.contents.call(this, row) : row.attr(column.attr('id')).toString();
+      // By default, if column has a contents function, run the row through that.
+      // Else, use the value in the property named by 'valueProperty' (fall back to 'id'), and run it through 'format' if it exists.
+      if(_.isFunction(column.contents)) {
+        return column.contents.call(this, row);
+      } else {
+        var value = row.attr(column.attr('valueProperty') || column.attr('id'));
+        if(_.isFunction(column.format)) {
+          value = column.format.call(null, value);
+        }
+        return value.toString();
+      }
     }
   },
 
