@@ -33,11 +33,13 @@
 			"jquery": "bower_components/jquery/dist/jquery.js",
 			"lodash": "bower_components/lodash/dist/lodash.js",
 			"can/*": "bower_components/canjs/*.js",
-      "bundles/*": "../bundles/*css",
+      		"bundles/*": "../bundles/*css",
 			"bootstrap": "bower_components/bootstrap/dist/js/bootstrap.js",
 			"bootstrap.css": "bower_components/bootstrap/dist/css/bootstrap.csscss",
 			"qunit": "bower_components/qunit/qunit/qunit.js",
-			"qunit.css": "bower_components/qunit/qunit/qunit.csscss"
+			"qunit.css": "bower_components/qunit/qunit/qunit.csscss",
+			"bootstrapValidator": "bower_components/bootstrapValidator/dist/js/bootstrapValidator.min.js",
+			"bootstrapValidator.css": "bower_components/bootstrapValidator/dist/css/bootstrapValidator.csscss"
 		},
 		meta: {
 			jquery: {
