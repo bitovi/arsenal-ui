@@ -1,0 +1,37 @@
+<div id='period-calendar'>
+	<div class='box-modal'>
+		<div class="arrow_box"></div>
+		<div class='peroid-title'>Period Selector</div>
+		<div class='topmenucontainer'>
+			<div class='flbtn'> <input class="btn btn-default period-calendar-leftbtn" type="button" value="<">  </div>
+			<div class='fl'><input class="btn btn-default midbtn period-calendar-yearbtn" can-value='year'type="button" value="FY 2014">   </div>
+			<div class='flbtn'> <input class="btn btn-default period-calendar-rightbtn" type="button" value=">"> </div>
+		</div>
+		<div class='periods'>
+			<ul class='period q1'>
+				<li><a class="btn btn-default" href="#" role="button">Q1</a></li>
+				<li><a class="btn btn-default" href="#" role="button"><span>Oct</span><span class='smalltxt'>P01</span></a></li>
+				<li><a class="btn btn-default" href="#" role="button"><span>Nov</span><span class='smalltxt'>P02</span></a></li>
+				<li><a class="btn btn-default" href="#" role="button"><span>Dec</span><span class='smalltxt'>P03</span></a></li>
+			</ul>
+			<ul class='period q2'>
+				<li><a class="btn btn-default withbdr" href="#" role="button">Q2</a></li>
+				<li><a class="btn btn-default" href="#" role="button"><span>Jan</span><span class='smalltxt'>P04</span></a></li>
+				<li><a class="btn btn-default" href="#" role="button"><span>Feb</span><span class='smalltxt'>P05</span></a></li>
+				<li><a class="btn btn-default" href="#" role="button"><span>Mar</span><span class='smalltxt'>P06</span></a></li>
+			</ul>
+			<ul class='period q3'>
+				<li><a class="btn btn-default withbdr" href="#" role="button">Q3</a></li>
+				<li><a class="btn btn-default" href="#" role="button"><span>Apr</span><span class='smalltxt'>P07</span></a></li>
+				<li><a class="btn btn-default" href="#" role="button"><span>May</span><span class='smalltxt'>P08</span></a></li>
+				<li><a class="btn btn-default" href="#" role="button"><span>Jun</span><span class='smalltxt'>P09</span></a></li>
+			</ul>
+			<ul class='period q4'>
+				<li><a class="btn btn-default withbdr" href="#" role="button">Q4</a></li>
+				<li><a class="btn btn-default" href="#" role="button"><span>Jul</span><span class='smalltxt'>P10</span></a></li>
+				<li><a class="btn btn-default" href="#" role="button"><span>Aug</span><span class='smalltxt'>P11</span></a></li>
+				<li><a class="btn btn-default" href="#" role="button"><span>Sep</span><span class='smalltxt'>P12</span></a></li>
+			</ul>
+		</div>
+	</div>
+</div>
