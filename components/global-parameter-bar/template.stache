@@ -1,9 +1,9 @@
 <div class="form-inline globalFilterContainer">
   <ul class="parameters">
-   <li id="periodFrom">
+   <li id="periodFromcontainer">
       <div class="box">
         <span class="parameter-name">Period From:</span>
-        <select id="periodFromFilter" class="form-control resizeBox ">
+        <!--<select id="periodFromFilter" class="form-control resizeBox ">
               <option value="">Select</option>
               <option value="Q1FY13">Q1FY13</option>
               <option value="Q2FY13">Q2FY13</option>
@@ -12,14 +12,18 @@
               <option value="Q5FY13">Q5FY13</option>
               <option value="Q6FY13">Q6FY13</option>
                
-         </select>
-       </div>
+         </select>-->
+         <div class="calendarcls">
+            <input type='text' id="periodFrom" class="form-control  updateperoid"/>
+            <period-calendar  appstate="{appstate}"></period-calendar>
+         </div>
+          </div>
     </li>
 
-     <li id="periodTo">
+     <li id="periodTocontainer">
         <div class="box">
           <span class="parameter-name">Period To:</span>
-          <select id="periodToFilter" class="form-control resizeBox">
+          <!--select id="periodToFilter" class="form-control resizeBox">
                 <option value="">Select</option>
                 <option value="Q1FY13">Q1FY13</option>
                 <option value="Q2FY13">Q2FY13</option>
@@ -27,7 +31,12 @@
                 <option value="Q4FY13">Q4FY13</option>
                 <option value="Q5FY13">Q5FY13</option>
                 <option value="Q6FY13">Q6FY13</option>
-           </select>
+           </select-->
+          <div class="calendarcls">
+            <input type='text' id="periodTo" class="form-control  updateperoid"/>
+            <period-calendar appstate="{appstate}"></period-calendar>
+          </div>
+          
          </div>
       </li>
 
@@ -71,11 +80,15 @@
       <div class="box">
         <span class="parameter-name">Licensor:</span>
          <select id="licensorsFilter" class="form-control resizeBox" multiple="multiple">
-               {{#each licensors}}
-                  <!--<option {{isSelected 'licensor' id}} {{data 'licensor'}}>{{value}}</option>-->
-                  <option value="{{id}}">{{value}}</option>
+             {{#each licensors}}
+              <optgroup label="{{entityType}}">
+                {{#each entities}}
+                 <option value="{{id}}">{{value}}</option>
                 {{/each}}
+              </optgroup>
+            {{/each}}
          </select>
+         
        </div>
 
     </li>

@@ -16,6 +16,8 @@ import css_bootstrapmultiselect from 'bootstrap-multiselect.css!';
 import template from './template.stache!';
 import styles from './global-parameter-bar.less!';
 
+import periodCalendar from 'components/period-calendar/'
+
 var GlobalParameterBar = Component.extend({
   tag: 'global-parameter-bar',
   template: template,
@@ -27,7 +29,8 @@ var GlobalParameterBar = Component.extend({
     regions: [],
     countries: [],
     licensors: [],
-    contenttypes:[]
+    contenttypes:[],
+    periodchoosen:"@"
   },
   helpers: {
     isSelected: function(parameterName, modelID) {
@@ -39,6 +42,16 @@ var GlobalParameterBar = Component.extend({
     }
   },
   events: {
+        'period-calendar onSelected': function (ele, event, val) {  
+         this.scope.attr('periodchoosen', val);
+          var which = $(ele).parent().find('input[type=text]').attr('id');
+         this.scope.appstate.attr(which, this.scope.periodchoosen);
+        $(ele).parent().find('input[type=text]').val(this.scope.periodchoosen);
+         },
+        '.updateperoid focus':function(el){ 
+        $(el).closest('.calendarcls').find('.box-modal').is(':visible') ?
+        $(el).closest('.calendarcls').find('.box-modal').hide():$(el).closest('.calendarcls').find('.box-modal').show();
+        },
       'inserted': function(){
           document.getElementById("regionsFilter").selectedIndex = 2;
       },
@@ -48,7 +61,7 @@ var GlobalParameterBar = Component.extend({
          this.scope.appstate.attr('periodFrom', selected);
      },
      '#periodTo select change': function(el, ev) {
-         //var selected = $(el[0].selectedOptions).data('periodTo');
+        console.log('Period To changed');
          var selected = $(el[0]).val();
          this.scope.appstate.attr('periodTo', selected);
      },
@@ -127,7 +140,7 @@ var GlobalParameterBar = Component.extend({
       self.scope.storetypes.replace(values[0]);
       self.scope.regions.replace(values[1]);
       self.scope.countries.replace(values[2]);
-      self.scope.licensors.replace(values[3]["entities"]["Licensor"]);
+      self.scope.licensors.replace(values[3]["entities"][0]);
       self.scope.contenttypes.replace(values[4]["contentTypes"]);
       //self.scope.periodFrom.replace(values[5]);
       //self.scope.periodTo.replace(values[6]);

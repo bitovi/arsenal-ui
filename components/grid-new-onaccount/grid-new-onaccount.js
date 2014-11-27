@@ -114,6 +114,7 @@ var frameRows=function(licensor,data,quarters){
 
 
 var getQuarter=function(periodFrom,periodTO){
+  console.log('Inside quarters');
   console.log(periodFrom);
   console.log(periodTO);
    var obj=[];

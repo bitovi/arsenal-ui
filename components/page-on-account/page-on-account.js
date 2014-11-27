@@ -12,6 +12,7 @@ import UserReq from 'models/rinsCommon/request/';
 import OnAccountGrid from 'components/grid-onaccount-balance/';
 import Grid from 'components/grid/';
 import newOnAccountGrid from 'components/grid-new-onaccount/';
+import fileUpload from 'components/file-uploader/';
 
 import createpb from 'components/create-pb/';
 
