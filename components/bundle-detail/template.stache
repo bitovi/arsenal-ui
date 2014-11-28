@@ -16,10 +16,10 @@
     <button class="remove-invoice">Remove Invoice From Bundle</button>
     {{/canRemoveInvoice}}
     {{#canShowChart}}
-    <img class="show-chart" src="/resources/images/chart.png"/>
+    <img class="show-chart" src="/resources/images/rn_BundleActive@2x.png"/>
     {{/canShowChart}}
-    <img class="excel" src="/resources/images/excel.png"/>
-    <img class="clipboard" src="/resources/images/clipboard.png"/>
+    <img class="excel" src="/resources/images/rn_ExcelActive@2x.png"/>
+    <img class="clipboard" src="/resources/images/rn_CopyActive@2x.png"/>
     {{#showVerboseToggle}}
     <img class="verbose-toggle" src="/resources/images/approval_arrow_{{#if pageState.verboseGrid}}left{{else}}right{{/if}}.png"/>
     {{/showVerboseToggle}}

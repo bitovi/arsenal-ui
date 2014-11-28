@@ -1,4 +1,5 @@
 import Grid from '../grid/';
+import formats from 'utils/formats';
 import _less from './bundle-grid.less!';
 
 var BundleGrid = Grid.extend({
@@ -18,13 +19,13 @@ var BundleGrid = Grid.extend({
         title: 'Bundle Name'
       },
       {
-        id: 'paymentCurrency',
+        id: 'paymentCcy',
         title: 'Currency'
       },
       {
-        id: 'totalPaymentAmount',
+        id: 'paymentAmt',
         title: 'Amount',
-        contents: row => row.totalPaymentAmount.toFixed(2)
+        format: formats.fixed(2)
       },
       {
         id: 'bundleType',
@@ -58,7 +59,7 @@ var BundleGrid = Grid.extend({
         title: 'Pending With'
       },
       {
-        id: 'state',
+        id: 'status',
         title: 'Status'
       },
       {

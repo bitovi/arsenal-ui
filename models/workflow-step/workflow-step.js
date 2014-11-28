@@ -7,11 +7,12 @@ var WorkflowStep = Model.extend({
   parseModels: 'nodes',
   findAll: function(params) {
     return $.ajax({
-      url: URLs.UI_SERVICE_URL + 'rins/rinsworkflow/view',
+      url: URLs.UI_SERVICE_URL + 'rinsworkflow/view',
       type: 'POST',
       data: {
         workflowInstanceId: params.workflowInstanceId
-      }
+      },
+      processData: false
     });
   }
 }, {});

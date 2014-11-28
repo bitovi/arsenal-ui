@@ -59,26 +59,27 @@ fixture('GET /getPricingMethods', '/models/fixtures/pricingMethods.json');
 
 fixture('GET /validateicsv', '/models/fixtures/validateicsv.json');
 
-/* Payment Bundles */
+/*
+// Payment Bundles
 import fixture_paymentBundle from './payment-bundle';
 var BUNDLES = _.times(6, fixture_paymentBundle.makeBundle);
 var BUNDLES_WITH_DETAILS = {};
 
-fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/getAll', function(req, res, headers) {
+fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'paymentBundle/getAll', function(req, res, headers) {
   res(200, {
     responseCode: '0000',
     responseTest: 'SUCCESS',
-    paymentBundle: BUNDLES
+    paymentBundles: BUNDLES
   });
 });
 
-fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/get', function(req, res, headers) {
+fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'paymentBundle/get', function(req, res, headers) {
   var withDetails = fixture_paymentBundle.makeBundleWithDetails(_.find(BUNDLES, {bundleId: req.data.paymentBundle.bundleID}));
   BUNDLES_WITH_DETAILS[req.data.paymentBundle.bundleID] = withDetails;
   return withDetails;
 });
 
-fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/validationResult', function(req, res, headers) {
+fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'paymentBundle/validationResult', function(req, res, headers) {
   if(! BUNDLES_WITH_DETAILS[req.data.paymentBundle.bundleId]) {
     BUNDLES_WITH_DETAILS[req.data.paymentBundle.bundleId] = fixture_paymentBundle.makeBundleWithDetails(_.find(BUNDLES, {bundleId: req.data.paymentBundle.bundleId}));
   }
@@ -86,5 +87,6 @@ fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/validationResult
   return fixture_paymentBundle.makeBundleValidations(BUNDLES_WITH_DETAILS[req.data.paymentBundle.bundleId]);
 });
 
-/* Workflow Steps */
-fixture('POST ' + URLs.UI_SERVICE_URL + 'rins/rinsworkflow/view', '/models/fixtures/workflow-step.json');
+// Workflow Steps
+fixture('POST ' + URLs.UI_SERVICE_URL + 'rinsworkflow/view', '/models/fixtures/workflow-step.json');
+*/

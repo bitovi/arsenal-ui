@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import $ from 'jquery';
 import Grid from 'components/grid/';
 
@@ -13,19 +14,22 @@ var BundleDetailGrid = Grid.extend({
       // and each of those instances is a parent row
       // each BundleDetailGroup instance has a bundleDetails (which is a List of BundleDetail model instances)
       // and each of those is a child row
+      can.batch.start();
       var rows = [];
-      bundle.bundleDetailsGroup && bundle.bundleDetailsGroup.forEach(function(group) {
+      bundle.bundleDetailsGroup && _.each(bundle.bundleDetailsGroup, function(group) {
         rows.push(group);
-        group.bundleDetails.forEach(function(detail) {
+        _.each(group.bundleDetails, function(detail) {
           detail.attr('__isChild', true);
           rows.push(detail);
         });
       });
+      can.batch.stop();
 
       return rows;
     },
     aggregateRows: [],
     makeAggregateRowsFromBundle: function(bundle) {
+      can.batch.start();
       var rows = [];
       if(bundle.bundleFooter) {
         rows.push(bundle.bundleFooter);
@@ -34,30 +38,33 @@ var BundleDetailGrid = Grid.extend({
           rows.push(detail);
         });
       }
+      can.batch.stop();
 
       return rows;
     },
 
-    selectedRows: []
-  },
-  helpers: {
-    filteredColumns: function(options) {
-      can.__reading(this.rows, 'change'); // TODO: figure out if there's a better way to do this.
-                                          // Note for others - don't use can.__reading yourself!
+    selectedRows: [],
 
-      var filteredColumns = this.attr('columns');
-      if(! this.pageState.attr('verboseGrid')) {
+    prefilteredColumns: [],
+    filterColumns: function() {
+      var filteredColumns = this.scope.attr('columns');
+      if(! this.scope.pageState.attr('verboseGrid')) {
         // use only the ones without verboseOnly = true
         filteredColumns = _.filter(filteredColumns, column => !column.verboseOnly);
       }
 
-      if(!_.some(this.attr('rows'), row => row.attr('validationMessages') && row.attr('validationMessages').attr('length'))) {
+      if(!_.some(this.scope.attr('rows'), row => row.attr('validationMessages') && row.attr('validationMessages').attr('length'))) {
         filteredColumns = _.filter(filteredColumns, column => !column.validationsOnly);
       }
 
-      return _.map(filteredColumns, column => options.fn({column}));
+      return filteredColumns;
+    }
+  },
+  helpers: {
+    filteredColumns: function(options) {
+      return _.map(this.attr('prefilteredColumns'), column => options.fn({column}));
     },
-    filteredRows: function(options) {
+    filteredRows: function fdR(options) {
       return Grid.prototype.helpers.filteredRows.apply(this, arguments);
     },
     footerRows: function(options) {
@@ -140,5 +147,17 @@ var BundleDetailGrid = Grid.extend({
     'td.validations img mouseout': function(el, ev) {
       el.popover('hide');
     },
+    init: function() {
+      this.scope.prefilteredColumns.splice(0, this.scope.prefilteredColumns.length, ...this.scope.filterColumns.apply(this));
+    },
+    ' inserted': function() {
+      this.scope.prefilteredColumns.splice(0, this.scope.prefilteredColumns.length, ...this.scope.filterColumns.apply(this));
+    },
+    '{scope.pageState.verboseGrid} change': function() {
+      this.scope.prefilteredColumns.splice(0, this.scope.prefilteredColumns.length, ...this.scope.filterColumns.apply(this));
+    },
+    '{scope.columns} change': function() {
+      this.scope.prefilteredColumns.splice(0, this.scope.prefilteredColumns.length, ...this.scope.filterColumns.apply(this));
+    }
   }
 });

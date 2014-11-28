@@ -14,9 +14,10 @@ var PaymentBundleDetailGroup = Model.extend({
     };
 
     return $.ajax({
-      url:  URLs.DOMAIN_SERVICE_URL + 'rins/invoice/delete',
+      url:  URLs.DOMAIN_SERVICE_URL + 'invoice/delete',
       type: 'POST',
-      data: data
+      data: data,
+      processData: false
     });
   }
 }, {

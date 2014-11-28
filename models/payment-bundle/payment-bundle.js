@@ -13,21 +13,25 @@ var PaymentBundle = Model.extend({
   },
   id: 'bundleId',
   parseModels: function(data, xhr) {
-    return data.paymentBundle;
+    return data.paymentBundles;
+  },
+  parseModel: function(data, xhr) {
+    return data.hasOwnProperty('responseCode') ? data.paymentBundle : data;
   },
   model: function(data) {
     // TODO: periodFrom, periodTo, paymentCurrency, and region probably need some more handling.
+    // Apparently isHighPriority isn't coming back from the services anymore?
     if(data.hasOwnProperty('isHighPriority')) {
       data.isHighPriority = (data.isHighPriority === 'Y');
     }
-    if(data.hasOwnProperty('isEditable')) {
-      data.isEditable = !!data.isEditable;
+    if(data.hasOwnProperty('editable')) {
+      data.editable = !!data.editable;
     }
-    if(data.hasOwnProperty('isRecallable')) {
-      data.isRecallable = !!data.isRecallable;
+    if(data.hasOwnProperty('recallable')) {
+      data.recallable = !!data.recallable;
     }
-    if(data.hasOwnProperty('isDeletable')) {
-      data.isDeletable = !!data.isDeletable;
+    if(data.hasOwnProperty('deletable')) {
+      data.deletable = !!data.deletable;
     }
 
     return Model.model.apply(this, arguments);
@@ -48,41 +52,43 @@ var PaymentBundle = Model.extend({
     // TODO: when infrastructure gets set up, fix this.
     var data = {
       "bundleSearch": {
-        "serviceTypeId": appstate.storeType.id, // store type
-        "entityId": [appstate.licensor.id], // selected licensors
-        "regionId": appstate.region.id,
-        "contentGrpId": appstate.contentType.id,
-        "country": [appstate.country.id],
+        "serviceTypeId": +appstate.storeType.id, // store type
+        "entityId": [+appstate.licensor.id], // selected licensors
+        "regionId": +appstate.region.id,
+        "contentGrpId": [+appstate.contentType.id],
+        "country": [appstate.country.abbr],
         "periodType": "P",
-        "periodFrom": "201303",
-        "periodTo": "201303",
+        "periodFrom": 201401,
+        "periodTo": 201403,
       }
     };
 
     return $.ajax({
-      url: URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/getAll',
+      url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/getAll',
       type: 'POST',
-      data: data
+      data: data,
+      processData: false
     });
   },
   findOne: function(params) {
-    var paymentType = params.paymentType,
-        view = params.view,
-        bundleID = params.bundleID;
+    var paymentOption = params.paymentType,
+        view = params.view.toUpperCase(),
+        bundleId = params.bundleID;
 
     // TODO: when infrastructure gets set up, fix this.
     var data = {
       paymentBundle: {
-        bundleID,
-        paymentType,
+        bundleId,
+        paymentOption,
         view
       }
     };
 
     return $.ajax({
-      url: URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/get',
+      url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/get',
       type: 'POST',
-      data: data
+      data: data,
+      processData: false
     });
   },
   destroy: function(id, bundle) {
@@ -94,9 +100,10 @@ var PaymentBundle = Model.extend({
     };
 
     return $.ajax({
-      url: URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/delete',
+      url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/delete',
       type: 'POST',
-      data: data
+      data: data,
+      processData: false
     });
   }
 }, {
@@ -134,14 +141,15 @@ var PaymentBundle = Model.extend({
     var bundle = this;
 
     return $.ajax({
-      url: URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/validationResult',
+      url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/validationResult',
       type: 'POST',
       data: {
         paymentBundle: {
           bundleId: bundle.bundleId,
           view: view
         }
-      }
+      },
+      processData: false
     }).then(function(validationResponse) {
       // for now, we have no invoiceId to hook up bundles with, so...
       // I guess we have to do it the hard way.
@@ -193,9 +201,10 @@ var PaymentBundle = Model.extend({
     };
 
     return $.ajax({
-      url: URLs.DOMAIN_SERVICE_URL + 'rins/paymentBundle/' + (params.action === 'delete' ? 'manage' : params.action),
+      url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/' + (params.action === 'delete' ? 'manage' : params.action),
       type: 'POST',
-      data: requestData
+      data: requestData,
+      processData: false
     });
   }
 });

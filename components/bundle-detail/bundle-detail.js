@@ -141,8 +141,8 @@ var BundleDetailTabs = Component.extend({
         pageState.bundles.splice(index, 1);
       });
     },
-    '{scope} selectedTab': function(scope, ev, newTab) {
-      if(newTab) {
+    '{scope} selectedTab': function(scope, ev, newTab, oldTab) {
+      if(newTab && oldTab) { // only when *changing* tabs
         this.scope.attr('gridColumns', newTab.columns);
         scope.pageState.selectedBundle && scope.getNewDetails(scope.pageState.selectedBundle);
       }

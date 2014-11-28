@@ -47,13 +47,17 @@ appstate.startRouting();
 
 $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
   // Every domain service call requires some common params, so we do them here to save effort.
-  if(options.url.indexOf(URLs.DOMAIN_SERVICE_URL) === 0) {
-    var data = can.deparam(options.data);
+  if( options.url.indexOf(URLs.DOMAIN_SERVICE_URL) === 0 ||
+      options.url.indexOf(URLs.UI_SERVICE_URL) === 0
+  ) {
+    var data = options.data;
     can.extend(data, {
-      token: (appstate.userinfo && appstate.userinfo.token) || ''
+      authToken: (appstate.userinfo && appstate.userinfo.token) || '',
+      prsId: 2059
       // there's probably more that goes here.
     });
-    options.data = can.param(data);
+    options.data = JSON.stringify(data);
+    options.contentType = 'application/json';
   }
 });
 
