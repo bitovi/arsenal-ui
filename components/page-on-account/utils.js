@@ -27,7 +27,7 @@ getQuarter:function(periodFrom,periodTO){
     }
     return obj;
 },
-frameCreateRequest:function(request,onAccountRows,documents,comments,quarters,paymentBundleName){
+frameCreateRequest:function(request,onAccountRows,documents,comments,quarters,paymentBundleNameText){
 var onAccountCreateRequest ={};
 
     onAccountCreateRequest.searchRequest = {};
@@ -35,55 +35,69 @@ var onAccountCreateRequest ={};
     onAccountCreateRequest.searchRequest.serviceTypeId="";
 
     onAccountCreateRequest.onAccount={};
-    onAccountCreateRequest.onAccount.bundleName=paymentBundleName;
+    onAccountCreateRequest.onAccount.bundleName=paymentBundleNameText;
 
-    
+    console.log('documents');
+    console.log(documents);
+
     onAccountCreateRequest.onAccount.onAccountDetails=[];
     onAccountCreateRequest.onAccount.comments=[];
     onAccountCreateRequest.onAccount.documents=[];
 
-    console.log(onAccountRows.rows);
+    //console.log(onAccountRows.rows);
     var rows = onAccountRows.rows;
 
     //framing the onAccountDetails--start
-    for(var i=0; i<rows.length;i++){
-        var licensorName="";
-       if(rows[i].__isChild){
-            var onAccountDetails={};
-            onAccountDetails.entityId="";
-            onAccountDetails.entityName=licensorName;
-            onAccountDetails.contentGroupId="";
-            onAccountDetails.currencyCode=rows[i].currency;
-            onAccountDetails.periodType="Q";
+    if(rows != null && rows.length >0){
+        for(var i=0; i < rows.length;i++){
+            var licensorName="";
+           if(rows[i].__isChild){
+                var onAccountDetails={};
+                onAccountDetails.entityId="";
+                onAccountDetails.entityName=licensorName;
+                onAccountDetails.contentGroupId="";
+                onAccountDetails.currencyCode=rows[i].currency;
+                onAccountDetails.periodType="Q";
 
-            // console.log(quarters);
-            // console.log(rows[i]);
-
-            var periodMap = {};
-            for(var k=0;k<quarters.length;k++)
-            {
+                // console.log(quarters);
                 // console.log(rows[i]);
-                // console.log(quarters[k]);
-                // console.log(rows[i][quarters[k]]);
-                // console.log('Fiscal period:'+rows[i][quarters[k]]);
-                periodMap[quarters[k]]=rows[i][quarters[k]];
-            }
 
-            onAccountDetails.periodMap=periodMap;
+                var periodMap = {};
+                for(var k=0;k<quarters.length;k++)
+                {
+                    // console.log(rows[i]);
+                    // console.log(quarters[k]);
+                    // console.log(rows[i][quarters[k]]);
+                    // console.log('Fiscal period:'+rows[i][quarters[k]]);
+                    periodMap[quarters[k]]=rows[i][quarters[k]];
+                }
 
-       }else{
-        // console.log(rows[i]['licensor']);
-        licensorName=rows[i].licensor;
-       }
-       onAccountCreateRequest.onAccount.onAccountDetails.push(onAccountDetails);
-    }
+                onAccountDetails.periodMap=periodMap;
 
-    if(comments.length>0){
-        onAccountCreateRequest.onAccount.comments.push(comments);    
+           }else{
+            // console.log(rows[i]['licensor']);
+            licensorName=rows[i].licensor;
+           }
+           onAccountCreateRequest.onAccount.onAccountDetails.push(onAccountDetails);
+        }
+     }
+
+    if(comments != null && comments.length>0 ){
+        var commentobj={};
+        commentobj.comments=comments;
+        commentobj.createdBy="";
+        commentobj.createdDate=Date.now();
+        onAccountCreateRequest.onAccount.comments.push(commentobj);    
     }
     
-    if(documents.length>0){
-        onAccountCreateRequest.onAccount.documents.push(documents);
+    if(documents!= null && documents.length>0){
+        for(var i=0;i<documents.length;i++){
+            var documentsObj={};
+            documentsObj.fileName=documents[0].fileName;
+            documentsObj.location=documents[0].filePath;
+            documentsObj.createdDate=Date.now();
+            onAccountCreateRequest.onAccount.documents.push(documents);
+        }
     }
 
     //console.log('onAccountCreateRequest');

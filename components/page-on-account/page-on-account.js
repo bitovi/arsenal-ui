@@ -25,11 +25,13 @@ var page = Component.extend({
     localGlobalSearch:undefined,
     request:{},
     onAccountRows:{},
-    documents:{},
-    comments:{},
+    documents:[],
     newpaymentbundlenamereq:undefined,
     tabsClicked:"@",
-    paymentBundleName:"@"
+    paymentBundleName:"@",
+    usercommentsStore:"",
+    paymentBundleNameText:""
+
   },
   init: function(){
 	 //console.log('inside Claim Review');
@@ -38,16 +40,12 @@ var page = Component.extend({
 	 
     },
     events: {
-      'rn-new-onaccount-grid onSelected': function (ele, event, val) {  
-              this.scope.attr('onAccountRows',val);
-        },
     	"inserted": function(){ 
        
     	},
       "#paymentBundleNames change": function(){
           var self = this;
           var pbval = $("#paymentBundleNames").val();
-          console.log("val djsi is "+ pbval);
           if(pbval=="createB"){
               
               var regId = self.scope.appstate.attr('region');
@@ -67,6 +65,7 @@ var page = Component.extend({
               self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
           } else {
             self.scope.attr('paymentBundleName',pbval);
+            self.scope.attr('paymentBundleNameText',$("#paymentBundleNames option:selected").text());
             self.scope.attr('newpaymentbundlenamereq', "undefined");
           }
       },
@@ -101,14 +100,14 @@ var page = Component.extend({
         $('#newonAccountGrid, #newonAccountGridComps, #proposedonAccountDiv').hide();
         $('#onAccountBalanceDiv').show();
 
-        console.log(this.scope.tabsClicked);
+        //console.log(this.scope.tabsClicked);
       },
       "#newonAccount click":function(el, ev){
         ev.preventDefault();
         this.scope.tabsClicked="NEW_ON_ACC";
         $('#newonAccountGrid, #newonAccountGridComps').show();
         $('#onAccountBalanceDiv, #proposedonAccountDiv').hide();
-        console.log(this.scope.tabsClicked);
+        //console.log(this.scope.tabsClicked);
       },
       "#proposedonAccount click":function(el, ev){
         ev.preventDefault();
@@ -116,14 +115,22 @@ var page = Component.extend({
         $('#newonAccountGrid, #newonAccountGridComps, #onAccountBalanceDiv').hide();
         $('#proposedonAccountDiv').show();
 
-        console.log(this.scope.tabsClicked);
+        //console.log(this.scope.tabsClicked);
       },
       "#propose click":function(el,ev){
         var self = this;
+        //alert('user comment'+ this.scope.usercommentsStore);
         //console.log('scope value');
         //console.log(self.scope.onAccountRows);
         var quarters = utils.getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
-        var createrequest = utils.frameCreateRequest(self.scope.request,self.scope.onAccountRows,self.scope.documents,self.scope.comments,quarters,self.scope.paymentBundleName);
+        var createrequest = utils.frameCreateRequest(self.scope.request,self.scope.onAccountRows,self.scope.documents,self.scope.usercommentsStore,quarters,self.scope.paymentBundleName);
+        
+      },
+      'rn-new-onaccount-grid onSelected': function (ele, event, val) {  
+              this.scope.attr('onAccountRows',val);
+      },
+      'rn-file-uploader onSelected':function (ele, event, val){
+            this.scope.attr('documents').replace(val);
       }
     },
     helpers: {

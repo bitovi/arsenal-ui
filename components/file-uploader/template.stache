@@ -1,7 +1,6 @@
-
 <div class="outer">
 
-     {{#if isAnyFileLoaded}}
+    {{#if isAnyFileLoaded}}
           <ul class="filelist">
               {{#fileList}}
                 <li>
@@ -15,10 +14,10 @@
 
 
         {{#if isAnyFileLoaded}}
-        	<input type="submit" id="submitFiles" value="Submit"/>
+          <input type="submit" id="submitFiles" value="Submit"/>
         {{else}}
-        	<input type="file" id="fileSelect"  name ="Upload File"  style="display: none;" multiple />
-        	<input type="submit" id="uploadFiles" value="UpLoad" />
+          <input type="file" id="fileSelect"  name ="Upload File"  style="display: none;" multiple />
+          <input type="submit" id="uploadFiles" value="UpLoad" />
         {{/if}}
         <input type="submit" id="cancelUpload" value="Cancel">
 

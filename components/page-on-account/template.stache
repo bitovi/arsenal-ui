@@ -47,7 +47,7 @@
 		       		<div class="col-lg-6 usercommentsec"></div>
 		       		<div class="col-lg-4 usercommentsec">
 		       		<label for="inputEmail3" class="col-sm-4 control-label">User Comments: </label>
-		       		 <textarea class="form-control" name="usercomments" id="usercomments"  can-value="usercommentsStore"></textarea>
+		       		 <textarea class="form-control" name="usercomments" id="usercomments" maxlength="1024"  can-value="usercommentsStore"></textarea>
 					<img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "usercomments-err" style="display:none;"> 
 					<button type="button" id="propose" class="btn btn-primary buttonSubmit btn-custom-small" style="float:left">Propose</button>
 					</div>
