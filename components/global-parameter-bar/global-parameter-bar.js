@@ -46,7 +46,7 @@ var GlobalParameterBar = Component.extend({
          this.scope.attr('periodchoosen', val);
           var which = $(ele).parent().find('input[type=text]').attr('id');
          this.scope.appstate.attr(which, this.scope.periodchoosen);
-        $(ele).parent().find('input[type=text]').val(this.scope.periodchoosen);
+        $(ele).parent().find('input[type=text]').val(this.scope.periodchoosen).trigger( "change" ); ;
          },
         '.updateperoid focus':function(el){ 
         $(el).closest('.calendarcls').find('.box-modal').is(':visible') ?
@@ -55,12 +55,12 @@ var GlobalParameterBar = Component.extend({
       'inserted': function(){
           document.getElementById("regionsFilter").selectedIndex = 2;
       },
-     '#periodFrom select change': function(el, ev) {
+     '#periodFrom  change': function(el, ev) { 
          //var selected = $(el[0].selectedOptions).data('periodFrom');
-         var selected = $(el[0]).val();
-         this.scope.appstate.attr('periodFrom', selected);
+         var selected = $(el[0]).val(); 
+         this.scope.appstate.attr('periodFrom', selected); 
      },
-     '#periodTo select change': function(el, ev) {
+     '#periodTo change': function(el, ev) {
         console.log('Period To changed');
          var selected = $(el[0]).val();
          this.scope.appstate.attr('periodTo', selected);
@@ -117,11 +117,37 @@ var GlobalParameterBar = Component.extend({
     } ,
     '#globalSearch click':function(){
       //To idntify, user has clicked the button
+          var self = this;
+
+
       if(this.scope.appstate.attr('globalSearch')){
         this.scope.appstate.attr('globalSearch', false);
       }else{
         this.scope.appstate.attr('globalSearch', true);
       }
+
+
+      var from = this.scope.appstate.attr('periodFrom'),
+          to =  this.scope.appstate.attr('periodTo');
+          from = from.split('FY');
+          to = to.split('FY');
+
+    if(from[1].slice(-2) > to[1].slice(-2)){
+         $('.period-invalid').show();
+        return false;
+    }
+    if(from[0].charAt(0)!=to[0].charAt(0) || from[0].charAt(1) > to[0].charAt(1) ){
+        $('.period-invalid').show();
+        return false;
+     }
+      if(from[0].charAt(0)!=to[0].charAt(0) || from[0].charAt(2) > to[0].charAt(2)){
+         $('.period-invalid').show();
+        return false;
+     }
+     $('.period-invalid').hide();
+
+     
+      
     }
   },
   init: function() {
