@@ -68,7 +68,7 @@ var BundleDetailGrid = Grid.extend({
     filteredRows: function fdR(options) {
       return Grid.prototype.helpers.filteredRows.apply(this, arguments);
     },
-    filteredRows: function(options) {
+    filteredRows: function fdR(options) {
       return Grid.prototype.helpers.filteredRows.apply(this, arguments);
     },
     footerRows: function(options) {
