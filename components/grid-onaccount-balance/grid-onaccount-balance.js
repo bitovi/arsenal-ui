@@ -8,6 +8,7 @@ import _less from './grid-onaccount-balance.less!';
 import template from './template.stache!';
 import Grid from 'components/grid/';
 import stache from 'can/view/stache/';
+import utils from 'components/page-on-account/utils';
 
 var OnAccountBalance = Grid.extend({
   tag: 'rn-onaccount-balance-grid',
@@ -43,7 +44,7 @@ var OnAccountBalance = Grid.extend({
 
     var self = this;
      //console.log(JSON.stringify(self.scope.request.searchRequest.attr()));
-     var quarters = getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
+     var quarters = utils.getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
 
      for(var i=0;i<quarters.length;i++){
       var column={
@@ -86,34 +87,6 @@ var OnAccountBalance = Grid.extend({
   }
 });
 
-var getQuarter=function(periodFrom,periodTO){
-  console.log(periodFrom);
-  console.log(periodTO);
-   var obj=[];
-    var qFrom = periodFrom.substring(1, 2);
-    var qTo = periodTO.substring(1, 2);
-    var yearFrom = periodFrom.substring(periodFrom.length, periodFrom.length-2);
-    var yearTo = periodTO.substring(periodTO.length, periodTO.length-2);  
-    if(qFrom == qTo && yearFrom == yearTo){
-        var sam = "Q"+qFrom+"FY"+yearFrom;
-        obj.push(sam);
-    } else if(yearFrom < yearTo){
-         for(var i=yearFrom;i<=yearTo;i++){
-             var quarterTo = qTo;
-             if(i != yearTo){
-                quarterTo = 4;  
-             }
-             for(var j = qFrom ; j <= quarterTo; j++){
-                obj.push("Q"+j+"FY"+i);
-            }
-         }
-    }else{
-        for(var i = qFrom ; i <= qTo; i++){
-               obj.push("Q"+i+"FY"+yearFrom);
-            }
-    }
-    return obj;
-}
 
 var getFooterRows=function(quarters,rows){
   var periodMap = new Array();

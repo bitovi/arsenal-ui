@@ -27,9 +27,71 @@ getQuarter:function(periodFrom,periodTO){
     }
     return obj;
 },
-frameCreateRequest:function(){
+frameCreateRequest:function(request,onAccountRows,documents,comments,quarters,paymentBundleName){
+var onAccountCreateRequest ={};
+
+    onAccountCreateRequest.searchRequest = {};
+    onAccountCreateRequest.searchRequest.regionId=request.searchRequest.regionId;
+    onAccountCreateRequest.searchRequest.serviceTypeId="";
+
+    onAccountCreateRequest.onAccount={};
+    onAccountCreateRequest.onAccount.bundleName=paymentBundleName;
+
     
-},getPeriodForQuarter:function(quarter){
+    onAccountCreateRequest.onAccount.onAccountDetails=[];
+    onAccountCreateRequest.onAccount.comments=[];
+    onAccountCreateRequest.onAccount.documents=[];
+
+    console.log(onAccountRows.rows);
+    var rows = onAccountRows.rows;
+
+    //framing the onAccountDetails--start
+    for(var i=0; i<rows.length;i++){
+        var licensorName="";
+       if(rows[i].__isChild){
+            var onAccountDetails={};
+            onAccountDetails.entityId="";
+            onAccountDetails.entityName=licensorName;
+            onAccountDetails.contentGroupId="";
+            onAccountDetails.currencyCode=rows[i].currency;
+            onAccountDetails.periodType="Q";
+
+            // console.log(quarters);
+            // console.log(rows[i]);
+
+            var periodMap = {};
+            for(var k=0;k<quarters.length;k++)
+            {
+                // console.log(rows[i]);
+                // console.log(quarters[k]);
+                // console.log(rows[i][quarters[k]]);
+                // console.log('Fiscal period:'+rows[i][quarters[k]]);
+                periodMap[quarters[k]]=rows[i][quarters[k]];
+            }
+
+            onAccountDetails.periodMap=periodMap;
+
+       }else{
+        // console.log(rows[i]['licensor']);
+        licensorName=rows[i].licensor;
+       }
+       onAccountCreateRequest.onAccount.onAccountDetails.push(onAccountDetails);
+    }
+
+    if(comments.length>0){
+        onAccountCreateRequest.onAccount.comments.push(comments);    
+    }
+    
+    if(documents.length>0){
+        onAccountCreateRequest.onAccount.documents.push(documents);
+    }
+
+    //console.log('onAccountCreateRequest');
+    console.log(JSON.stringify(onAccountCreateRequest));
+
+    return onAccountCreateRequest;
+    },
+getPeriodForQuarter:function(quarter){
     var periods={
        "Q1":"03",
         "Q2":"06",

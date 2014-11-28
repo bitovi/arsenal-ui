@@ -15,6 +15,8 @@ import newOnAccountGrid from 'components/grid-new-onaccount/';
 import fileUpload from 'components/file-uploader/';
 
 import createpb from 'components/create-pb/';
+import utils from 'components/page-on-account/utils';
+import proposedOnAccountGrid from 'components/grid-proposed-onaccount/';
 
 var page = Component.extend({
   tag: 'page-on-account',
@@ -22,8 +24,12 @@ var page = Component.extend({
   scope: {
     localGlobalSearch:undefined,
     request:{},
+    onAccountRows:{},
+    documents:{},
+    comments:{},
     newpaymentbundlenamereq:undefined,
-    tabsClicked:"@"
+    tabsClicked:"@",
+    paymentBundleName:"@"
   },
   init: function(){
 	 //console.log('inside Claim Review');
@@ -33,28 +39,9 @@ var page = Component.extend({
     },
     events: {
       'rn-new-onaccount-grid onSelected': function (ele, event, val) {  
-            console.log(val);
-             },
+              this.scope.attr('onAccountRows',val);
+        },
     	"inserted": function(){ 
-
-
-            // var firstNames = ['Ed', 'Edna', 'Gwendolyn', 'Ernestine', 'Matt', 'Kyle', 'Raquel', 'Roman', 'Ron', 'Paulette'];
-            // var lastNames = ['Underwood', 'Barker', 'Todd', 'Arnold', 'Campbell', 'Wilkins', 'Jefferson', 'Cannon', 'Lucas', 'Francis'];
-            // var rows = new can.List(_.times(10, i => {
-            //   return {
-            //     index: i,
-            //     firstName: firstNames[i],
-            //     lastName: lastNames[i]
-            //   };
-            // }));
-
-            // var request = frameRequest(this.scope.appstate); 
-            // $('#onAccountBalanceGrid').append(stache('<rn-onaccount-balance-grid request={request}></rn-onaccount-balance-grid>')({request}));
-
-
-            // $('#newonAccountGrid').append(stache(
-            //   '<rn-new-onaccount-grid rows="{rows}"></rn-new-onaccount-grid>'
-            // )({rows}));
        
     	},
       "#paymentBundleNames change": function(){
@@ -76,9 +63,10 @@ var page = Component.extend({
               bundleRequest["bundleType"] ="ON_ACCOUNT";
 
               newBundleNameRequest["paymentBundle"] = bundleRequest;
-              console.log("New Bundle name request is "+JSON.stringify(newBundleNameRequest));
+              //console.log("New Bundle name request is "+JSON.stringify(newBundleNameRequest));
               self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
           } else {
+            self.scope.attr('paymentBundleName',pbval);
             self.scope.attr('newpaymentbundlenamereq', "undefined");
           }
       },
@@ -88,6 +76,8 @@ var page = Component.extend({
 
         var request = frameRequest(this.scope.appstate); 
 
+        this.scope.attr('request',request);
+
         if(this.scope.appstate.attr('globalSearch')){
 
             if(this.scope.tabsClicked=="ON_ACC_BALANCE"){
@@ -96,6 +86,8 @@ var page = Component.extend({
             }else if(this.scope.tabsClicked=="NEW_ON_ACC"){
               console.log("inside NEW_ON_ACC");
                 $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
+            }else if(this.scope.tabsClicked=="PROPOSED_ON_ACC"){
+              $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={request} checked-rows="{pagestate.selectedRows}"></rn-proposed-onaccount-grid>')({request}));
             }
 
         }
@@ -125,6 +117,13 @@ var page = Component.extend({
         $('#proposedonAccountDiv').show();
 
         console.log(this.scope.tabsClicked);
+      },
+      "#propose click":function(el,ev){
+        var self = this;
+        //console.log('scope value');
+        //console.log(self.scope.onAccountRows);
+        var quarters = utils.getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
+        var createrequest = utils.frameCreateRequest(self.scope.request,self.scope.onAccountRows,self.scope.documents,self.scope.comments,quarters,self.scope.paymentBundleName);
       }
     },
     helpers: {
