@@ -106,30 +106,24 @@ var page = Component.extend({
       "#onAccountBalance click":function(el, ev){
         ev.preventDefault();
         this.scope.tabsClicked="ON_ACC_BALANCE";
-        $("#onAccountBalanceDiv").addClass('active');
-         $("#onAccountBalanceDiv").removeClass('fade');
+        $('#newonAccountGrid, #newonAccountGridComps, #proposedonAccountDiv').hide();
+        $('#onAccountBalanceDiv').show();
 
-        $("#newonAccountDiv").removeClass('active');
         console.log(this.scope.tabsClicked);
       },
       "#newonAccount click":function(el, ev){
         ev.preventDefault();
         this.scope.tabsClicked="NEW_ON_ACC";
-        $("#newonAccountDiv").addClass('active');
-         $("#newonAccountDiv").removeClass('fade');
-
-        $("#onAccountBalanceDiv").removeClass('active');
-        $("#proposedonAccountDiv").removeClass('active');
+        $('#newonAccountGrid, #newonAccountGridComps').show();
+        $('#onAccountBalanceDiv, #proposedonAccountDiv').hide();
         console.log(this.scope.tabsClicked);
       },
       "#proposedonAccount click":function(el, ev){
         ev.preventDefault();
         this.scope.tabsClicked="PROPOSED_ON_ACC";
-        $("#proposedonAccountDiv").addClass('active');
-         $("#proposedonAccountDiv").removeClass('fade');
+        $('#newonAccountGrid, #newonAccountGridComps, #onAccountBalanceDiv').hide();
+        $('#proposedonAccountDiv').show();
 
-        $("#newonAccountDiv").removeClass('active');
-        $("#onAccountBalanceDiv").removeClass('active');
         console.log(this.scope.tabsClicked);
       }
     },

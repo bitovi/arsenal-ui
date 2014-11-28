@@ -31,10 +31,11 @@ var newOnAccountGrid = GridWithEditing.extend({
      //console.log(JSON.stringify(self.scope.request.searchRequest.attr()));
      //var quarters = getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
      console.log('Inside new on Account')
-     console.log(self.scope.request.searchRequest.periodFrom);
-
+    
      //var self = this;
      //console.log(JSON.stringify(self.scope.request.searchRequest.attr()));
+
+
      var quarters = getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
 
      for(var i=0;i<quarters.length;i++){
