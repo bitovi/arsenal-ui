@@ -136,6 +136,53 @@ pricing-models-left {
   }
 }
 
+table#pricingmodelGrid {
+
+	thead {
+
+		background: -webkit-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+
+    	tr {
+	    	th {
+	    			text-align: left;
+		    		padding-right: 0.625em;
+					height: 1.5em;
+	      			padding-top: .3em;
+	      			padding-bottom: .3em;
+	      			border: 1px solid hsl(0, 0%, 75%);
+				
+			}
+
+		}
+
+    }
+
+    tbody {
+
+		background: #F6F6F6 !important;
+
+	    tr {
+
+	    	height : 1.5625em;
+
+
+	      td { 
+
+	      		&:first-child {
+	        		border-left: 1px solid hsl(0, 0%, 75%);
+	      		}
+
+	      		&:last-child {
+	          		border-right: 1px solid hsl(0, 0%, 75%);
+	      		}
+
+	      		border-right: 1px solid #FFFFFF;
+
+	    	}
+	   	}
+	}
+
+}
 
 .pricing-model{
 	.pageHead {
@@ -161,7 +208,7 @@ pricing-models-left {
 
 	.right-pb-container{
 		border:1px solid #DAD7D7;
-		height:500px; 
+		height: 700px; 
 	}
 
 	fieldset.scheduler-border {
@@ -180,7 +227,7 @@ pricing-models-left {
 
 
 	.modelsummary{
-		height:300px;
+		height: 700px;
 		overflow-y:auto;
 	}
 
@@ -291,7 +338,7 @@ table.dataTable.cell-border tbody td {
 		}
 
 		.buttonCancel{
-			 margin-left:70px;
+			 margin-left:11px;
 		}
 
 		.buttonSubmit{
@@ -516,6 +563,7 @@ table.breakdown thead th{
 	height:1px;
 	padding:0px;
 	margin:0px;
+	top:5px;
 	}
 .valid-rnotes{
 	width:1px;
@@ -662,6 +710,9 @@ textarea#licnotes, textarea#usercomments{
 .popover{
 	max-width:500px;
 	width:250px;
+}
+.popover.top{
+	top:-20px;
 }
 
 .pageHead{

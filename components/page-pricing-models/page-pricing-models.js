@@ -7,6 +7,9 @@ import _ from 'lodash';
 import Grid from 'components/grid/';
 import stache from 'can/view/stache/';
 import validation from 'can/map/validations/';
+
+import css_bootstrapValidator from 'bootstrapValidator.css!';
+import bootstrapValidator from 'bootstrapValidator';
 /** for pricing model*/
 
 import UserReq from 'utils/request/';
@@ -17,9 +20,9 @@ import ContentType from 'models/common/content-type/';
 import Country from 'models/common/country/';
 import Licensor from 'models/common/licensor/';
 import Pricingmodels from 'models/pricing-models/';
-import css_bootstrapValidator from 'bootstrapValidator.css!';
-import bootstrapValidator from 'bootstrapValidator';
 
+
+import Comments from 'components/multiple-comments/';
 
 
 
@@ -51,30 +54,10 @@ var page = Component.extend({
     entity:"",
     editstate:true,
     selectedPriceModel:"",
-    validatePM:can.Map.extend({
-            init : function(){
-            // validates that birthday is in the future
-              this.validatePresenceOf(["field"]);
-            }
-          },{}),
-    validateStatus:new can.Map({}),
-    validateDynamic:function(dynamicobj, i){
-      var self = this;
-      var validatePMinstance = new self.validatePM(),
-            validState;
+    multipleComments : []
+    
 
-        for(var prop in dynamicobj){
-            validState = validatePMinstance.errors("field", dynamicobj[prop]);
-            var elid = prop+"-"+i;
-                  if(validState){
-                        self.validateStatus.attr(elid, false);
-                    } else {
-                        self.validateStatus.attr(elid, true);
-                }
-            }
-        }
-
-
+   
 
 
   },
@@ -95,18 +78,217 @@ var page = Component.extend({
           self.scope.attr("countryStore").replace(values[2]);
           self.scope.attr("licensorStore").replace(values[3].entities[0].entities);
           self.scope.attr("pricingmodeltypeStore").replace(values[4].modelTypes);
-          console.log(values[4]);
-
-         
-
-          
-
-
-          
       });       
   },
   events:{
   	"inserted":function(){
+  		var self = this;
+
+        $('#pmform').on('init.form.bv', function(e, data) {
+                  //data.bv.disableSubmitButtons(true);
+
+              }).on('init.field.bv', function(e, data) {
+
+
+              })
+            .bootstrapValidator({
+            container: 'popover',
+              feedbackIcons: {
+                  valid: 'valid-rnotes',
+                  invalid: 'alert-rnotes',
+                  validating: 'glyphicon glyphicon-refreshas'
+              },
+              fields: {
+                  regions: {
+                      group:'.regions',
+                      validators: {
+                          notEmpty: {
+                              message: 'Region is mandatory'
+                          }
+                          
+                      }
+                },
+                country :{
+                   validators: {
+                        notEmpty: {
+                            message: 'country is mandatory'
+                        }
+                        
+                    }
+                },
+                entity :{
+                    validators: {
+                        notEmpty: {
+                            message: 'Entity is mandatory'
+                        }
+                        
+                    }
+                },
+                pricingmodeltype :{
+                    validators: {
+                        notEmpty: {
+                            message: 'Pricing Model is mandatory'
+                        }
+                        
+                    }
+                },
+                modelname :{
+                    validators: {
+                        notEmpty: {
+                            message: 'Model name is mandatory'
+                        }
+                        
+                    }
+                },
+                'baseRate[]': {
+                      group:'.baseRate',
+                      validators: {
+                          callback: {
+                                  message: 'Baserate is mandatory',
+                                  callback: function (value, validator, $field) {
+                                    if(value == ""){
+                                         return false;
+                                    }
+                                    return true;
+                                  }
+                          }
+                      }
+                  },
+                'minima[]': {
+                      group:'.minima',
+                      validators: {
+                          callback: {
+                                  message: 'Minima is mandatory',
+                                  callback: function (value, validator, $field) {
+                                    if(value == ""){
+                                         return false;
+                                    }
+                                    return true;
+                                  }
+                          }
+                      }
+                  },
+                'listenerMinima[]': {
+                      group:'.listenerMinima',
+                      validators: {
+                          callback: {
+                                  message: 'ListenerMinima is mandatory',
+                                  callback: function (value, validator, $field) {
+                                    if(value == ""){
+                                         return false;
+                                    }
+                                    return true;
+                                  }
+                          }
+                      }
+                  },
+                  'discount[]': {
+                      group:'.discount',
+                      validators: {
+                          callback: {
+                                  message: 'Discount is mandatory',
+                                  callback: function (value, validator, $field) {
+                                    if(value == ""){
+                                         return false;
+                                    }
+                                    return true;
+                                  }
+                          }
+                      }
+                  },
+                  'description[]': {
+                      group:'.description',
+                      validators: {
+                          callback: {
+                                  message: 'Description is mandatory',
+                                  callback: function (value, validator, $field) {
+                                    if(value == ""){
+                                         return false;
+                                    }
+                                    return true;
+                                  }
+                          }
+                      }
+                  },
+                  'from[]': {
+                      group:'.from',
+                      validators: {
+                          callback: {
+                                  message: 'from is mandatory',
+                                  callback: function (value, validator, $field) {
+                                    if(value == ""){
+                                         return false;
+                                    }
+                                    return true;
+                                  }
+                          }
+                      }
+                  },
+                  'to[]': {
+                      group:'.to',
+                      validators: {
+                          callback: {
+                                  message: 'to is mandatory',
+                                  callback: function (value, validator, $field) {
+                                    if(value == ""){
+                                         return false;
+                                    }
+                                    return true;
+                                  }
+                          }
+                      }
+                  },
+                  'minimatrack[]': {
+                      group:'.minimatrack',
+                      validators: {
+                          callback: {
+                                  message: 'Minima is mandatory',
+                                  callback: function (value, validator, $field) {
+                                    if(value == ""){
+                                         return false;
+                                    }
+                                    return true;
+                                  }
+                          }
+                      }
+                  }
+            
+
+          }
+          }).on('error.field.bv', function(e, data) {
+           /*  if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]")){
+                $("#"+data.field+"-err").css("display", "block");
+              }*/
+              
+
+              $('*[data-bv-icon-for="'+data.field +'"]').popover('show');
+
+        }).on('success.field.bv', function(e, data) {
+            //    $('*[data-bv-icon-for="'+data.field +'"]').popover('destroy');
+           /*     if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]")){
+                $("#"+data.field+"-err").css("display", "none");
+              }
+           
+                if(!self.scope.editpage){
+                  var requireField = (self.scope.attr("invoicetypeSelect") == "2")?mandatoryFieldAdhoc:mandatoryField;
+
+                  for(var i= 0; i < requireField.length; i++){
+                    if(!data.bv.isValidField(mandatoryField[i])){
+                       data.bv.disableSubmitButtons(true);
+                       break;
+                    }
+                  }
+                }
+                if(self.scope.editpage){
+                  if(!data.bv.isValid()){
+                    data.bv.disableSubmitButtons(true);
+              }
+                 }*/
+
+              }).on('success.form.bv', function(e) {
+
+                e.preventDefault();
+          });
   		
        
     },
@@ -130,7 +312,7 @@ var page = Component.extend({
                     //console.log(self.scope.modeltypeGrid);
                 }
           }).then(function(){
-            alert("yes");
+            
             $('#bottomsection').removeClass('bottomparthide').addClass('bottompartshow');
             $('#pricingmodelGrid tbody tr:nth-child(1)').trigger('click').addClass("selected");
            // $(this).addClass("selected").siblings().removeClass("selected");
@@ -155,9 +337,7 @@ var page = Component.extend({
              ]).then(function(values) {
               /** Base Model Parameter Grid*/
 
-              
-
-
+              self.scope.attr("multipleComments", values[0].pricingModel.pricingModel.comments);
 
               self.scope.attr("modelname", values[0].pricingModel.pricingModel.modelDescription);
               self.scope.attr("pricingmodeltype", values[0].pricingModel.pricingModel.modelName);
@@ -191,16 +371,20 @@ var page = Component.extend({
 
                   self.scope.attr("modelId", basemodelData[i].modelId);
 
-                  self.scope.validateDynamic(tempgrid, i);
-
-                  
+                 // self.scope.validateDynamic(tempgrid, i);
 
 
+                $.when(self.scope.attr("rownum").push(tempgrid)).then(function(){
 
-                  self.scope.attr("rownum").push(tempgrid);
+                        var $option   = $("#baseModelTable").find('[name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
+                            $option.each(function(index){
+                              $('#pmform').bootstrapValidator('addField', $(this));
+                            });
+                    });
+                 
                 }
 
-                console.log(self.scope.validateStatus);
+               // console.log(self.scope.validateStatus);
           
                  /** Track count minima Grid*/
 
@@ -230,16 +414,27 @@ var page = Component.extend({
                         tempgrid["tierId"] = trackData[i].tierId;
                         tempgrid["paramId"] = trackData[i].paramId;
 
-                        self.scope.validateDynamic(tempgrid, i);
+                     //   self.scope.validateDynamic(tempgrid, i);
                        
-                        self.scope.attr("rownumtrack").push(tempgrid);
+                       // self.scope.attr("rownumtrack").push(tempgrid);
+
+                         $.when(self.scope.attr("rownumtrack").push(tempgrid)).then(function(){
+
+                          var $option = $("#trackCount").find('[name="description[]"], [name="from[]"], [name="to[]"], [name="minimatrack[]"]');
+                            $option.each(function(index){
+                              $('#pmform').bootstrapValidator('addField', $(this));
+                            });
+                        });
 
                        
                   }
 
                 console.log(self.scope.rownum.attr());
 
-          });
+          }).then(function(){
+					var tempcommentObj = self.scope.multipleComments;
+					$('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
+			});
     },
      
     "{basemodelContainer} change":function(){
@@ -276,14 +471,32 @@ var page = Component.extend({
         tempgrid["isDefault"] = "";
         tempgrid["modelId"] = self.scope.attr("modelId");
 
-        self.scope.validateDynamic(tempgrid, lastIndex);
+       // self.scope.validateDynamic(tempgrid, lastIndex);
 
 
-        self.scope.attr("rownum").push(tempgrid);
+        //self.scope.attr("rownum").push(tempgrid);
+
+        $.when(self.scope.attr("rownum").push(tempgrid)).then(function(){
+
+                        var $option   = $("#baseModelTable").find('[name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
+                            $option.each(function(index){
+                              $('#pmform').bootstrapValidator('addField', $(this));
+                            });
+                    });
     },
     "#addbasemodeldel click":function(el){
         var self = this;
         var selrow = el.closest('tr')[0].rowIndex;
+        $.when(selrow).then(function(){
+                    var $option   = $("#baseModelTable").find('[name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
+                            $option.each(function(index){
+                              $('#pmform').bootstrapValidator('addField', $(this));
+                            });
+                    }).then(function(){
+                      self.scope.attr("rownum").push(tempgrid)
+                    });
+
+
         self.scope.attr("rownum").removeAttr(selrow-1);
 
     },
@@ -299,10 +512,16 @@ var page = Component.extend({
         tempgrid["minima"] = "";
         tempgrid["modelId"] = self.scope.attr("modelId");
 
-        self.scope.validateDynamic(tempgrid, lastIndex);
+      //  self.scope.validateDynamic(tempgrid, lastIndex);
 
         
-        self.scope.attr("rownumtrack").push(tempgrid);
+        //self.scope.attr("rownumtrack").push(tempgrid);
+        $.when(self.scope.attr("rownumtrack").push(tempgrid)).then(function(){
+          var $option = $("#trackCount").find('[name="description[]"], [name="from[]"], [name="to[]"], [name="minimatrack[]"]');
+              $option.each(function(index){
+                $('#pmform').bootstrapValidator('addField', $(this));
+              });
+          });
        
     },
     "#trackdel click":function(el){
@@ -315,12 +534,28 @@ var page = Component.extend({
        //Cleaning data for add
        var self = this;
        self.scope.attr("editstate", false);
-       self.scope.attr("country", "");
+      
        self.scope.attr("entity", "");
        self.scope.attr("rownumtrack").replace([]); 
        self.scope.attr("rownum").replace([]); 
        self.scope.attr("modelname", "");
        self.scope.attr("pricingmodeltype", "");
+
+     // console.log($('#pmform').data('bootstrapValidator').resetForm());
+      
+      $.when(self.scope.attr("country", "")).then(function(){
+      
+        $('#pmform').data('bootstrapValidator').updateStatus('country', 'NOT_VALIDATED');
+
+      });
+
+      $.when(self.scope.attr("entity", "")).then(function(){
+      
+        $('#pmform').data('bootstrapValidator').updateStatus('entity', 'NOT_VALIDATED');
+
+      });
+      //$('#pmform').data('bootstrapValidator').updateStatus('entity', 'NOT_VALIDATED');
+
 
        $('#pricingmodelGrid tbody tr').removeClass("selected");
 
@@ -341,119 +576,7 @@ var page = Component.extend({
 
 
     },
-    ".form-control blur":function(event){
-        var self = this;
-        var elid = event[0].id;
-        var validatePMinstance = new self.scope.validatePM(),
-            validState;
-
-          console.log(elid);
-        
-
-        if(elid == "regions"){
-           validState = validatePMinstance.errors("field", self.scope.attr(elid));
-            if(validState){
-                showError(event[0].id, "Region is mandatory");
-                self.scope.validateStatus.attr(event[0].id, false);
-              } else {
-                removeError(event[0].id);
-                self.scope.validateStatus.attr(event[0].id, true);
-               
-            }
-          }
-
-          if(elid == "countrypm"){
-           validState = validatePMinstance.errors("field", self.scope.attr(elid));
-            if(validState){
-                showError(event[0].id, "Country is mandatory");
-                self.scope.validateStatus.attr(event[0].id, false);
-                alert("error");
-              } else {
-                removeError(event[0].id);
-                self.scope.validateStatus.attr(event[0].id, true);
-
-               
-            }
-          }
-
-          if(elid == "entity"){
-           validState = validatePMinstance.errors("field", self.scope.attr(elid));
-            if(validState){
-                showError(event[0].id, "Entity is mandatory");
-                self.scope.validateStatus.attr(event[0].id, false);
-              } else {
-                removeError(event[0].id);
-                self.scope.validateStatus.attr(event[0].id, true);
-               
-            }
-          }
-
-          if(elid == "modelname"){
-           validState = validatePMinstance.errors("field", self.scope.attr(elid));
-            if(validState){
-                showError(event[0].id, "Modelname is mandatory");
-                self.scope.validateStatus.attr(event[0].id, false);
-              } else {
-                removeError(event[0].id);
-                self.scope.validateStatus.attr(event[0].id, true);
-               
-            }
-          }
-
-          if(elid == "modelname"){
-           validState = validatePMinstance.errors("field", self.scope.attr(elid));
-            if(validState){
-                showError(event[0].id, "Modelname is mandatory");
-                self.scope.validateStatus.attr(event[0].id, false);
-              } else {
-                removeError(event[0].id);
-                self.scope.validateStatus.attr(event[0].id, true);
-               
-            }
-          }
-
-          if(elid == "pricingmodeltype"){
-           validState = validatePMinstance.errors("field", self.scope.attr(elid));
-            if(validState){
-                showError(event[0].id, "Pricing model is mandatory");
-                self.scope.validateStatus.attr(event[0].id, false);
-              } else {
-                removeError(event[0].id);
-                self.scope.validateStatus.attr(event[0].id, true);
-               
-            }
-          }
-          
-
-
-
-          console.log(self.scope.validateStatus);
-
-      /*  var rowid = elid.split("-");
-        console.log(rowid[1]+"|"+rowid[0]);
-        var pid = rowid[1];
-        var pstr = rowid[0];
-
-        console.log(self.scope.rownum[2].baseRate);
-
-         var task = new self.scope.validatePM(),
-          errors = task.errors("minima", self.scope.rownum[pid].attr(pstr));
-          //console.log(self.scope.rownum[1].baseRate);
-          //var err = self.scope.rownum[1].baseRate
-          
-          if(errors){
-            // give a warning
-              showError(event[0].id, "Maximum 1024 characters allowed");
-
-              
-          } else {
-            removeError(event[0].id);
-          }
-     console.log(task.errors("minima"));
-         // console.log(task.errors("minima", self.scope.rownum[1].baseRate));*/
-    },
-
-
+   
     "#save click":function(){
       var self = this;
 

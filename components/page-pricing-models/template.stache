@@ -1,4 +1,5 @@
 <div class="container-fluid pricing-model">
+<form id="pmform" role="form">
 
 	<div class="row topsection">
 		    <div class="col-sm-5 pageTitleInv">
@@ -8,11 +9,12 @@
 				<div role="alert"></div>
 			</div>
 		 
-			<div class="form-group col-sm-12">
-			 	<div class="col-sm-3">
-			 		<div class="col-sm-6 singleField">
-					    <label for="inputEmail3" class="col-sm-4 control-label">Region:</label>
-					    <div class="col-sm-4 requiredBar">
+			<div class="col-sm-12">
+			 	<div class="form-group col-sm-7">
+				 	<div class="col-sm-3 regions">
+				 		<div class="col-sm-12 singleField">
+						    <label for="inputEmail3" class="col-sm-4 control-label">Region:</label>
+						    <div class="col-sm-8 requiredBar">
 					      
 					      <select id="regions" class="form-control" name="regions" can-value="regions">
 							       <option value="">Select</option>
@@ -20,23 +22,29 @@
 							       		<option value="{{value}}">{{value}}</option>
 							       	{{/each}}
 						   </select>
+						   <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "regions-err" style="display:none;">
 					    </div>
 				  	</div>
 				 </div>
 
 				
 			
-				<div class="col-sm-2">
-			 		<button id="fetch"  class="btn btn-primary btn-custom-big">Fetch</button>
-				 </div>
-				 <div class="col-sm-2">
-			 		<button id="add"  class="btn btn-primary btn-custom-big">Add</button>
-				 </div>
+					<div class="col-sm-1">
+			 			<button id="fetch"  class="btn btn-primary btn-custom-big">Fetch</button>
+				 	</div>
+
+				 	<div class="col-sm-2">
+  						<div class="col-sm-2">
+			 				<button id="add"  class="btn btn-primary btn-custom-big">Add</button>
+				 		</div>
+				 	</div>
 
 				 	<div class="col-sm-6">
-							<div id="pbmessageDiv" role="alert">
-			  				</div>
-					</div>
+						<div id="pbmessageDiv" role="alert">
+			  			</div>
+				 	</div>
+
+				</div>
 
 
 
@@ -46,6 +54,8 @@
 
 			</div>
 	 </div>
+
+	 <div class="col-sm-12" style="height: 10px;">&nbsp;</div>
 
 	<div id="bottomsection" class="bottomparthide">
 		  <div class="col-sm-4">
@@ -77,27 +87,12 @@
 
 			  		
 					
-					<div class="col-sm-6 form-group">
-					 		<div class="singleField">
-							    <label for="inputEmail3" class="col-sm-3 control-label">Entity:</label>
-							    <div class="col-sm-3 requiredBar">
-							      
-							      <select id="entity" class="form-control" name="entity" can-value="entity">
-								       <option value="">Select</option>
-								       {{#each licensorStore}}
-								       		<option value="{{id}}">{{value}}</option>
-								       	{{/each}}
-							   </select>
-							    </div>
-						  	</div>
-						</div>
-					
+					<legend class="scheduler-border">View/Add/Edit Pricing Model</legend>
 
-
-					<div class="col-sm-6 form-group">
+						<div class="col-sm-6 form-group">
 					 		<div class="singleField">
 							    <label for="inputEmail3" class="col-sm-3 control-label">Country:</label>
-							    <div class="col-sm-3 requiredBar">
+							    <div class="col-sm-4 requiredBar">
 							    
 							      <select id="countrypm" class="form-control" name="country" can-value="country">
 								       <option value="">Select</option>
@@ -108,13 +103,27 @@
 							    </div>
 						  	</div>
 						 </div>
-					
-
 
 					<div class="col-sm-6 form-group">
 					 		<div class="singleField">
-							    <label for="inputEmail3" class="col-sm-4 control-label">Pricing Model:</label>
-							    <div class="col-sm-3 requiredBar">
+							    <label for="inputEmail3" class="col-sm-3 control-label">Entity:</label>
+							    <div class="col-sm-4 requiredBar">
+							      
+							      <select id="entity" class="form-control" name="entity" can-value="entity">
+								       <option value="">Select</option>
+								       {{#each licensorStore}}
+								       		<option value="{{id}}">{{value}}</option>
+								       	{{/each}}
+							   </select>
+							    </div>
+						  	</div>
+						</div>
+
+
+						<div class="col-sm-6 form-group">
+					 		<div class="singleField">
+							    <label for="inputEmail3" class="col-sm-3 control-label">Pricing Model:</label>
+							    <div class="col-sm-4 requiredBar">
 							    
 							      <select  class="form-control" name="pricingmodeltype" id="pricingmodeltype" can-value="pricingmodeltype">
 							       <option value="">Select</option>
@@ -128,13 +137,23 @@
 					
 					<div class="col-sm-6 form-group">
 					 		<div class="singleField">
-							    <label for="inputEmail3" class="col-sm-4 control-label">Model Name:</label>
-							    <div class="col-sm-3 requiredBar">
+							    <label for="inputEmail3" class="col-sm-3 control-label">Model Name:</label>
+							    <div class="col-sm-4 requiredBar">
 							      
 							     <input class="form-control" type="text" name="modelname" id="modelname" can-value="modelname">
 							    </div>
 						  	</div>
 						</div>
+					
+
+					<div class="col-sm-12">
+				
+					
+
+					<div class="col-sm-12" style="height: 10px;">&nbsp;</div>
+					
+					   
+					
 					
 			
 				<div class="col-sm-12">
@@ -142,7 +161,7 @@
 					<fieldset class="scheduler-border">
 						<legend class="scheduler-border">Base Model parameter</legend>
 						<div class="table-responsive">
-						  <table class="table table-condensed table-striped breakdown" id="breakTable">
+						  <table class="table table-condensed table-striped breakdown" id="baseModelTable">
 							    <thead>
 							        <tr>
 							         	<th class="pbTableHead">Content Group</th>
@@ -159,7 +178,7 @@
 
 							      <tr id="breakrow0" rowid="0">
 							      		<td class="form-group">
-							            	<div class="breakdownPeriod">
+							            	<div class="requiredBar">
 							            		<select id='contentGroup' can-value="rownum.{{@index}}.contentGroup" name="contentGroup[]">
 							            			<option value="">Select</option>
 							            			{{#each contentType}}
@@ -170,27 +189,27 @@
 								        	</div>
 										</td>
 										<td class="form-group">
-							            	<div class="breakdownPeriod">
+							            	<div class="baseRate requiredBar">
 							            		<input class="form-control" id='baseRate-{{@index}}' can-value="rownum.{{@index}}.baseRate" name="baseRate[]">
 								        	</div>
 										</td>
 										<td class="form-group">
-							            	<div class="breakdownPeriod">
+							            	<div class="minima requiredBar">
 							            		<input class="form-control" type="text" id='minima-{{@index}}' can-value="rownum.{{@index}}.minima" name="minima[]">
 								        	</div>
 										</td>	
 										<td class="form-group">
-							            	<div class="breakdownPeriod">
+							            	<div class="listenerMinima requiredBar">
 							            		<input class="form-control" type="text" id='listenerMinima-{{@index}}' can-value="rownum.{{@index}}.listenerMinima" name="listenerMinima[]">
 								        	</div>
 										</td>
 										<td class="form-group">
-							            	<div class="breakdownPeriod">
+							            	<div class="discount requiredBar">
 							            		<input class="form-control" type="text" id='discount-{{@index}}' can-value="rownum.{{@index}}.discount" name="discount[]">
 								        	</div>
 										</td>
 							            <td class="form-group">
-							            	<div class="breakdownPeriod">
+							            	<div class="requiredBar">
 							            		<input class="form-control" type="checkbox" id='isDefault-{{@index}}' can-value="rownum.{{@index}}.isDefault" can-true-value=1 can-false-value=0 name="isDefault[]">
 								        	</div>
 										</td>
@@ -212,7 +231,7 @@
 					<fieldset class="scheduler-border">
 						<legend class="scheduler-border">Track Count Minima</legend>
 						<div class="table-responsive">
-						  <table class="table table-condensed table-striped breakdown" id="breakTable">
+						  <table class="table table-condensed table-striped breakdown" id="trackCount">
 							    <thead>
 							        <tr>
 							         	<th class="pbTableHead">Description</th>
@@ -228,23 +247,23 @@
 							      <tr id="breakrow0" rowid="0">
 							      		
 										<td class="form-group">
-							            	<div class="breakdownPeriod">
+							            	<div class="description requiredBar">
 							            		<input class="form-control" id='description' can-value="rownumtrack.{{@index}}.description" id="description-{{@index}}" name="description[]">
 								        	</div>
 										</td>
 										<td class="form-group">
-							            	<div class="breakdownPeriod">
+							            	<div class="from requiredBar">
 							            		<input class="form-control" type="text" id='from-{{@index}}' can-value="rownumtrack.{{@index}}.from" name="from[]">
 								        	</div>
 										</td>	
 										<td class="form-group">
-							            	<div class="breakdownPeriod">
+							            	<div class="to requiredBar">
 							            		<input class="form-control" type="text" id='to-{{@index}}' can-value="rownumtrack.{{@index}}.to" name="to[]">
 								        	</div>
 										</td>
 										<td class="form-group">
-							            	<div class="breakdownPeriod">
-							            		<input class="form-control" type="text" id='minima-{{@index}}' can-value="rownumtrack.{{@index}}.minima" name="minima[]">
+							            	<div class="minimatrack requiredBar">
+							            		<input class="form-control" type="text" id='minima-{{@index}}' can-value="rownumtrack.{{@index}}.minima" name="minimatrack[]">
 								        	</div>
 										</td>
 							            
@@ -264,7 +283,12 @@
 
 
 				</div>
-				<div class="col-sm-4 col-sm-offset-8" >
+				
+				<div class="col-sm-12" id="multipleComments">
+					
+				</div>
+				<div class="col-sm-3 col-sm-offset-9" style="padding-right: 0px;">
+  					<div class="col-sm-10 col-sm-offset-4" style="float: right;padding-right: 0px;">
 					<button id="save" type="submit" class="btn btn-primary btn-custom-big">Save</button>
 					
 					{{#if editstate}}
@@ -272,11 +296,13 @@
 					{{else}}
 					<button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="addCancel">Cancel</button>
 					{{/if}}
-				
+				 </div>
 				</div>
 		  </div>	
 	</div>
-
+	   </div>
+	</div> 
+</form>
 </div>
 			
 
