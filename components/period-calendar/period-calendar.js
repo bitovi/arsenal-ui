@@ -24,6 +24,7 @@ var calander = Component.extend({
   	'.period-calendar-rightbtn click':function(btn,eve){ 
   		var temp = this.scope.year.split(" ")[1]; 
   		this.scope.year ='FY '+(parseInt(temp)+1);
+      btn.closest('.box-modal').find('.periods .period li a').removeClass('period-active');
   		btn.closest('.topmenucontainer').find('.period-calendar-yearbtn').val('FY'+(parseInt(temp)+1));
   		if(new Date().getFullYear()-this.scope.previousYearLimit<=temp){
   			$('#year').removeClass('disabled');	
@@ -31,6 +32,7 @@ var calander = Component.extend({
   	},
   	'.period-calendar-leftbtn click':function(btn,eve){   
   		var temp = this.scope.year.split(" ")[1]; 
+      btn.closest('.box-modal').find('.periods .period li a').removeClass('period-active');
   		if(new Date().getFullYear()-this.scope.previousYearLimit==temp){
   			btn.addClass('disabled');	
   		}else{
