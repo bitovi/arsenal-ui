@@ -1,5 +1,5 @@
 var utils={
-var getQuarter=function(periodFrom,periodTO){
+getQuarter:function(periodFrom,periodTO){
   console.log(periodFrom);
   console.log(periodTO);
    var obj=[];
@@ -26,8 +26,23 @@ var getQuarter=function(periodFrom,periodTO){
             }
     }
     return obj;
+},
+frameCreateRequest:function(){
+    
+},getPeriodForQuarter:function(quarter){
+    var periods={
+       "Q1":"03",
+        "Q2":"06",
+        "Q3":"09",
+        "Q4":"12"
+    }
+    var quart= quarter.substring(0, 2);
+    var year= quarter.substring(quarter.length, quarter.length-2);
+    console.log(quart);
+    console.log(periods);
+    return  '20'+year+periods[quart];
 }
-
+    
 };
 
 export default utils;
