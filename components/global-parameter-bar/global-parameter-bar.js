@@ -16,7 +16,7 @@ import css_bootstrapmultiselect from 'bootstrap-multiselect.css!';
 import template from './template.stache!';
 import styles from './global-parameter-bar.less!';
 
-import periodCalendar from 'components/period-calendar/'
+import periodCalendar from 'components/period-calendar/';
 
 var GlobalParameterBar = Component.extend({
   tag: 'global-parameter-bar',
