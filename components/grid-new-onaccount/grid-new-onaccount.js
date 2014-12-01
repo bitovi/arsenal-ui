@@ -64,7 +64,7 @@ var newOnAccountGrid = GridWithEditing.extend({
 
 
       var genObj = {};
-      genObj["licensorId"]="18";
+      genObj["licensorId"]="18,21";
        Currency.findAll(UserReq.formRequestDetails(genObj)).then(function(data) {
        //console.log(JSON.stringify(data.attr()));
        var rows = frameRows("PAECOL",data,quarters);

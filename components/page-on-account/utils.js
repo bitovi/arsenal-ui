@@ -11,14 +11,19 @@ getQuarter:function(periodFrom,periodTO){
         var sam = "Q"+qFrom+"FY"+yearFrom;
         obj.push(sam);
     } else if(yearFrom < yearTo){
+         var count=0;
          for(var i=yearFrom;i<=yearTo;i++){
              var quarterTo = qTo;
              if(i != yearTo){
                 quarterTo = 4;  
              }
+              if(count>0){
+               qFrom =1;  
+             }
              for(var j = qFrom ; j <= quarterTo; j++){
                 obj.push("Q"+j+"FY"+i);
             }
+            count = count+1;  
          }
     }else{
         for(var i = qFrom ; i <= qTo; i++){
@@ -114,8 +119,8 @@ getPeriodForQuarter:function(quarter){
     }
     var quart= quarter.substring(0, 2);
     var year= quarter.substring(quarter.length, quarter.length-2);
-    console.log(quart);
-    console.log(periods);
+    //console.log(quart);
+    //console.log(periods);
     return  '20'+year+periods[quart];
 }
     

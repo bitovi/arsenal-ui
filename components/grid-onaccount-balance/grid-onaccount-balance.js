@@ -9,6 +9,7 @@ import template from './template.stache!';
 import Grid from 'components/grid/';
 import stache from 'can/view/stache/';
 import utils from 'components/page-on-account/utils';
+import UserReq from 'utils/request/';
 
 var OnAccountBalance = Grid.extend({
   tag: 'rn-onaccount-balance-grid',
@@ -66,13 +67,30 @@ var OnAccountBalance = Grid.extend({
       };
       self.scope.columns.push(cashAdjustColumn);
 
+      console.log('EntityId');
+      console.log(self.scope.request.searchRequest.entityId.attr());
 
-   
-     onAccountBalance.findAll().then(function(rows) {
+      var genObj = {};
+      //genObj["licensorId"]="18";
+      genObj.searchRequest={};
+      genObj.searchRequest["type"]="BALANCE";
+      genObj.searchRequest["serviceTypeId"]="1";
+      genObj.searchRequest["entityId"]=self.scope.request.searchRequest.entityId.attr();
+      genObj.searchRequest["contentGrpId"]=self.scope.request.searchRequest.contentGrpId.attr();
+      genObj.searchRequest["regionId"]=self.scope.request.searchRequest.regionId;
+      genObj.searchRequest["periodType"]="Q";
+      genObj.searchRequest["periodFrom"]=utils.getPeriodForQuarter(self.scope.request.searchRequest.periodFrom);
+      genObj.searchRequest["periodTo"]=utils.getPeriodForQuarter(self.scope.request.searchRequest.periodTo);
+ 
+ 
+     //onAccountBalance.findOne(UserReq.formRequestDetails(genObj)).then(function(rows) {
+      onAccountBalance.findAll().then(function(rows) {
+        
+        //self.scope.rows.replace(getUiRowsFromResponse(quarters,rows));
+  
        var footerRows = getFooterRows(quarters,rows);
         self.scope.rows.replace(rows);
         self.scope.footerrows.replace(footerRows);
-
       });
 
     },
@@ -82,11 +100,49 @@ var OnAccountBalance = Grid.extend({
 
     },
     '{scope} request change':function(){
-      
     }
   }
 });
 
+var getUiRowsFromResponse=function(quarters,data){
+  //console.log(JSON.stringify(data.onAccount.attr()));
+  var onAccountDetails = data.onAccount.onAccountDetails
+  var periodData = data.onAccount.fiscalPeriodAmtMap;
+  var rows=[];
+  for (var i=0;i<onAccountDetails.length;i++){
+    var row = {};
+    row['id']= onAccountDetails[i].id;
+    row['entityId']=onAccountDetails[i].entityId;
+    row['Licensor']=onAccountDetails[i].entityName;
+    row['Currency']=onAccountDetails[i].currencyCode;
+    row['ContentType']=onAccountDetails[i].contentGroupName;
+    row['contentGroupId']=onAccountDetails[i].contentGroupId;
+    row['serviceTypeId']=onAccountDetails[i].serviceTypeId;
+
+    console.log(quarters);
+
+    for(var k=0;k<quarters.length;k++){
+      var period = utils.getPeriodForQuarter(quarters[k]);
+      var amtObject = periodData[period];
+      console.log('FiscalPeriod-----'+period);
+      console.log(periodData);
+      console.log(amtObject);
+      row[quarters[k]]=0;
+      if(amtObject != undefined){
+        var value = amtObject[onAccountDetails[i].id];
+        if(value == undefined){
+          value =0;
+        }
+        row[quarters[k]]=value;
+      }
+    }
+    row['onAccountBalance']= onAccountDetails[i].onAccountAmt;
+    row['cashAdjust']= onAccountDetails[i].entityCAAmt;
+    rows.push(row);
+  }
+  console.log(rows);
+  return rows;
+}
 
 var getFooterRows=function(quarters,rows){
   var periodMap = new Array();

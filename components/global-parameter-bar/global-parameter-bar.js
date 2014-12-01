@@ -133,15 +133,15 @@ var GlobalParameterBar = Component.extend({
           to = to.split('FY');
 
     if(from[1].slice(-2) > to[1].slice(-2)){
-         $('.period-invalid').show();
+         //$('.period-invalid').show();
         return false;
     }
     if(from[0].charAt(0)!=to[0].charAt(0) || from[0].charAt(1) > to[0].charAt(1) ){
-        $('.period-invalid').show();
+        //$('.period-invalid').show();
         return false;
      }
       if(from[0].charAt(0)!=to[0].charAt(0) || from[0].charAt(2) > to[0].charAt(2)){
-         $('.period-invalid').show();
+         //$('.period-invalid').show();
         return false;
      }
      $('.period-invalid').hide();
