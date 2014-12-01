@@ -64,10 +64,11 @@ var newOnAccountGrid = GridWithEditing.extend({
 
 
       var genObj = {};
-      genObj["licensorId"]="18,21";
+      genObj["licensorId"]=self.scope.request.searchRequest.entityId.attr().toString();
        Currency.findAll(UserReq.formRequestDetails(genObj)).then(function(data) {
        //console.log(JSON.stringify(data.attr()));
-       var rows = frameRows("PAECOL",data,quarters);
+       console.log(JSON.stringify(data.licensorCurrencies.attr()));
+       var rows = frameRows(data.licensorCurrencies,quarters);
         self.scope.rows.replace(rows);
       });
     }
@@ -78,32 +79,35 @@ var newOnAccountGrid = GridWithEditing.extend({
 //     }
 });
 
-var frameRows=function(licensor,data,quarters){
+var frameRows=function(data,quarters){
   var rows = new can.List();
   
-  var row ={};
-  row.licensor=licensor;
-  row.currency="";
-  for(var i=0;i<quarters.length;i++){
-    row[quarters[i]]="";
-  }
-  row.__isChild=false;
-  row.total="";
-  rows.push(row);
+  for(var i=0;i<data.length;i++){
+    var row ={};
+    row.licensor=data[i].licensor;
+    row.currency="";
+    for(var j=0;j<quarters.length;j++){
+      row[quarters[j]]="";
+    }
+    row.__isChild=false;
+    row.total="";
+    rows.push(row);
 
-  for(var i=0; i<data.length;i++){  
-    var childrow ={};
-    childrow.licensor="";
-    childrow.currency=data[i].id;
-    for(var k=0;k<quarters.length;k++){
-        childrow[quarters[k]]=0;
-      }
-    childrow.__isChild=true;
-    childrow.total=0;
-    rows.push(childrow);
+    var currencies = data[i].currencies;
+    for(var k=0;k<currencies.length;k++){
+      var childrow ={};
+      childrow.licensor="";
+      childrow.currency=currencies[k].id;
+      for(var z=0;z<quarters.length;z++){
+          childrow[quarters[z]]=0;
+        }
+        childrow.__isChild=true;
+        childrow.total=0;
+        rows.push(childrow);
+    }
+
   }
-  console.log('data created');
- // console.log(rows);
+
   return rows;
 }
 
