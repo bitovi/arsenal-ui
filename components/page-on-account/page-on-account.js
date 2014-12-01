@@ -135,16 +135,22 @@ var page = Component.extend({
         var req = this.scope.request;
         var deletableRows = [];
         var rows = this.scope.proposedOnAccountData.rows;
+        // console.log('checking');
+        // console.log(rows);
         var type = 'DELETE';
         if(rows != undefined && rows.length >0){
-            for(var i=0;i<rows.length;i++){
+            for(var i=0;i < rows.length;i++){
                   if(rows[i].__isChecked != undefined && rows[i].__isChecked){
                     deletableRows.push(rows[i]);
+                    //alert('Deleting');
                     rows.splice(i,1);
+                    i=i-1;
                   }
                 }
             
          }
+         //console.log('Delete');
+         //console.log(rows);
         req.attr('deletableRows',rows); 
 
         $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
