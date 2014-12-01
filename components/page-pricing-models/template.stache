@@ -161,10 +161,10 @@
 						  <table class="table table-condensed table-striped breakdown" id="baseModelTable">
 							    <thead>
 							        <tr>
-							         	<th class="pbTableHead" width="15%">Base Rate[%]</th>
+							         	<th class="pbTableHead" width="18%">Content Group</th>
+							            <th class="pbTableHead" width="18%">Base Rate[%]</th>
 							            <th class="pbTableHead" width="18%">Minima</th>
 							            <th class="pbTableHead" width="20%">Listener Hours Minima</th>
-							            <th class="pbTableHead" width="18%">Content Group</th>
 							            <th class="pbTableHead" width="18%">Discount[%]</th>
 							            <th class="pbTableHead" width="15%">isDefault</th>
 							            <th class="pbTableHead" width="5%"><img id="addbasemodel" class="breakDownIconSize" src="resources/images/button_plus_blue.png"></th>
