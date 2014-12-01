@@ -44,6 +44,16 @@ var page = Component.extend({
     	"inserted": function(){ 
        
     	},
+      'period-calendar onSelected': function (ele, event, val) {  
+         this.scope.attr('periodchoosen', val);
+          var which = $(ele).parent().find('input[type=text]').attr('id');
+         this.scope.appstate.attr(which, this.scope.periodchoosen);
+        $(ele).parent().find('input[type=text]').val(this.scope.periodchoosen).trigger( "change" ); ;
+         },
+        '.updateperoid focus':function(el){ 
+        $(el).closest('.calendarcls').find('.box-modal').is(':visible') ?
+        $(el).closest('.calendarcls').find('.box-modal').hide():$(el).closest('.calendarcls').find('.box-modal').show();
+        },
       "#paymentBundleNames change": function(){
           var self = this;
           var pbval = $("#paymentBundleNames").val();
@@ -84,7 +94,8 @@ var page = Component.extend({
                //var request = frameRequest(this.scope.appstate);   
                $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={request}></rn-onaccount-balance-grid>')({request}));
             }else if(this.scope.tabsClicked=="NEW_ON_ACC"){
-              console.log("inside NEW_ON_ACC");
+              //console.log("inside NEW_ON_ACC");
+              $('#newonAccountGrid, #newonAccountGridComps').show();
                 $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
             }else if(this.scope.tabsClicked=="PROPOSED_ON_ACC"){
               disableEditORDeleteButtons(true);

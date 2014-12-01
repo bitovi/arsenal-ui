@@ -61,7 +61,7 @@ var GlobalParameterBar = Component.extend({
          this.scope.appstate.attr('periodFrom', selected); 
      },
      '#periodTo change': function(el, ev) {
-        console.log('Period To changed');
+        //console.log('Period To changed');
          var selected = $(el[0]).val();
          this.scope.appstate.attr('periodTo', selected);
      },

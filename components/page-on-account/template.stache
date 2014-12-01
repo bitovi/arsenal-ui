@@ -6,10 +6,16 @@
 <div class="col-lg-12 claimContainer">
     <div id="invoiceTypeError" class="col-md-12" style="text-align:center;padding-top:5px;"></div>
     <div class="col-sm-9 form-inline" style="text-align:right;">
-    	Previous Quarter:   <select id="currencyType" class="form-control resizeBox">
+    	Previous Quarter:   
+    	<!--<select id="currencyType" class="form-control resizeBox">
     		<option value="invoice">Invoice</option>
     		<option value="accural">Accural</option>
-    	</select>
+    	</select>-->
+    	<div class="calendarcls">
+            <input type='text' id="copyQuarter" class="form-control  updateperoid"/>
+            <period-calendar  appstate="{appstate}"></period-calendar>
+         </div>
+
     	<button type="button" id="globalSearch" class="btn btn-primary buttonSubmit btn-custom-small" style="margin-left:10px;">Copy on Accounts</button>
     </div>
 
@@ -31,7 +37,7 @@
 		<div id="myTabContent" class="tab-content">
 		   <div class="tab-pane fade in active" id="NewonAccountDiv">
 		      	<div id="newonAccountGrid"></div>
-		       <div class="col-lg-12 marTop20" id='newonAccountGridComps'>
+		       <div class="col-lg-12 marTop20" id='newonAccountGridComps' style="display:none">
 		       		<div class="col-lg-6">
 		       			<div class="col-sm-6" id="uploadFile">
 							<rn-file-uploader></rn-file-uploader>
