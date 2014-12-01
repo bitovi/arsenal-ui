@@ -6,12 +6,12 @@
 				<div class="pageHead">Pricing Models</div>
 			</div>
 			<div class="col-sm-7">
-				<div role="alert"></div>
+				<div id="pbmessageDiv" role="alert"></div>
 			</div>
 		 
 			<div class="col-sm-12">
 			 	<div class="form-group col-sm-7">
-				 	<div class="col-sm-3 regions">
+				 	<div class="col-sm-4 regions">
 				 		<div class="col-sm-12 singleField">
 						    <label for="inputEmail3" class="col-sm-4 control-label">Region:</label>
 						    <div class="col-sm-8 requiredBar">
@@ -30,19 +30,16 @@
 				
 			
 					<div class="col-sm-1">
-			 			<button id="fetch"  class="btn btn-primary btn-custom-big">Fetch</button>
+			 			<button id="fetch"  class="btn btn-primary btn-custom-big" disabled>Fetch</button>
 				 	</div>
 
 				 	<div class="col-sm-2">
   						<div class="col-sm-2">
-			 				<button id="add"  class="btn btn-primary btn-custom-big">Add</button>
+			 				<button id="add"  class="btn btn-primary btn-custom-big" disabled>Add</button>
 				 		</div>
 				 	</div>
 
-				 	<div class="col-sm-6">
-						<div id="pbmessageDiv" role="alert">
-			  			</div>
-				 	</div>
+				 	
 
 				</div>
 
@@ -58,7 +55,7 @@
 	 <div class="col-sm-12" style="height: 10px;">&nbsp;</div>
 
 	<div id="bottomsection" class="bottomparthide">
-		  <div class="col-sm-4">
+		  <div class="col-sm-4" id="modelSummaryCont">
 				<div class="modelsummary">
 					<table id="pricingmodelGrid" class="table table-condensed  pricingmodelGrid">
 							    <thead>
@@ -82,7 +79,7 @@
 		  	<!--	<div class="version"> <label for="inputEmail3" class="col-sm-3 control-label">Version</label>: {{version}}</div>   -->
 		  </div>
 		  
-		  <div class="col-sm-8">
+		  <div class="col-sm-8" id="modelDetailCont">
 			  	<div class="right-pb-container">
 
 			  		
@@ -91,10 +88,10 @@
 
 						<div class="col-sm-6 form-group">
 					 		<div class="singleField">
-							    <label for="inputEmail3" class="col-sm-3 control-label">Country:</label>
+							    <label for="inputEmail3" class="col-sm-4 control-label">Country:</label>
 							    <div class="col-sm-4 requiredBar">
 							    
-							      <select id="countrypm" class="form-control" name="country" can-value="country">
+							      <select id="countrypm" class="form-control" name="country" can-value="country" readonly>
 								       <option value="">Select</option>
 								       {{#each countryStore}}
 								       		<option value="{{id}}">{{value}}</option>
@@ -106,10 +103,10 @@
 
 					<div class="col-sm-6 form-group">
 					 		<div class="singleField">
-							    <label for="inputEmail3" class="col-sm-3 control-label">Entity:</label>
+							    <label for="inputEmail3" class="col-sm-4 control-label">Entity:</label>
 							    <div class="col-sm-4 requiredBar">
 							      
-							      <select id="entity" class="form-control" name="entity" can-value="entity">
+							      <select id="entity" class="form-control" name="entity" can-value="entity" readonly>
 								       <option value="">Select</option>
 								       {{#each licensorStore}}
 								       		<option value="{{id}}">{{value}}</option>
@@ -122,7 +119,7 @@
 
 						<div class="col-sm-6 form-group">
 					 		<div class="singleField">
-							    <label for="inputEmail3" class="col-sm-3 control-label">Pricing Model:</label>
+							    <label for="inputEmail3" class="col-sm-4 control-label">Pricing Model:</label>
 							    <div class="col-sm-4 requiredBar">
 							    
 							      <select  class="form-control" name="pricingmodeltype" id="pricingmodeltype" can-value="pricingmodeltype">
@@ -137,7 +134,7 @@
 					
 					<div class="col-sm-6 form-group">
 					 		<div class="singleField">
-							    <label for="inputEmail3" class="col-sm-3 control-label">Model Name:</label>
+							    <label for="inputEmail3" class="col-sm-4 control-label">Model Name:</label>
 							    <div class="col-sm-4 requiredBar">
 							      
 							     <input class="form-control" type="text" name="modelname" id="modelname" can-value="modelname">
@@ -164,13 +161,13 @@
 						  <table class="table table-condensed table-striped breakdown" id="baseModelTable">
 							    <thead>
 							        <tr>
-							         	<th class="pbTableHead">Content Group</th>
-							            <th class="pbTableHead">Base Rate[%]</th>
-							            <th class="pbTableHead">Minima</th>
-							            <th class="pbTableHead">Listener Hours Minima</th>
-							            <th class="pbTableHead">Discount[%]</th>
-							            <th class="pbTableHead">is Default</th>
-							            <th class="pbTableHead"><a id="addbasemodel" href="#">Add</a></th>
+							         	<th class="pbTableHead" width="15%">Base Rate[%]</th>
+							            <th class="pbTableHead" width="18%">Minima</th>
+							            <th class="pbTableHead" width="20%">Listener Hours Minima</th>
+							            <th class="pbTableHead" width="18%">Content Group</th>
+							            <th class="pbTableHead" width="18%">Discount[%]</th>
+							            <th class="pbTableHead" width="15%">isDefault</th>
+							            <th class="pbTableHead" width="5%"><img id="addbasemodel" class="breakDownIconSize" src="resources/images/button_plus_blue.png"></th>
 							        </tr>
 							    </thead>
 							    <tbody>
@@ -210,12 +207,12 @@
 										</td>
 							            <td class="form-group">
 							            	<div class="requiredBar">
-							            		<input class="form-control" type="checkbox" id='isDefault-{{@index}}' can-value="rownum.{{@index}}.isDefault" can-true-value=1 can-false-value=0 name="isDefault[]">
+							            		<input type="checkbox" id='isDefault-{{@index}}' can-value="rownum.{{@index}}.isDefault" can-true-value=1 can-false-value=0 name="isDefault[]">
 								        	</div>
 										</td>
 								       <td>
 							           		<div>	
-												<a id="addbasemodeldel" href="#">Delete</a>
+												<img id="addbasemodeldel" class="breakDownIconSize" src="resources/images/button_minus_red.png">
 											</div>
 							           </td>
 							       </tr>
@@ -238,7 +235,7 @@
 							            <th class="pbTableHead">From</th>
 							            <th class="pbTableHead">To</th>
 							            <th class="pbTableHead">Minima</th>
-							             <th class="pbTableHead"><a id="addtrack" href="#">Add</a></th>
+							             <th class="pbTableHead"><img id="addtrack" class="breakDownIconSize" src="resources/images/button_plus_blue.png"></th>
 							        </tr>
 							    </thead>
 							    <tbody>
@@ -263,13 +260,13 @@
 										</td>
 										<td class="form-group">
 							            	<div class="minimatrack requiredBar">
-							            		<input class="form-control" type="text" id='minima-{{@index}}' can-value="rownumtrack.{{@index}}.minima" name="minimatrack[]">
+							            		<input  class="form-control" type="text" id='minima-{{@index}}' can-value="rownumtrack.{{@index}}.minima" name="minimatrack[]">
 								        	</div>
 										</td>
 							            
 								       <td>
 							           		<div>	
-												<a id="trackdel" href="#">Delete</a>
+												<img id="trackdel" class="breakDownIconSize" src="resources/images/button_minus_red.png">
 											</div>
 							           </td>
 							       </tr>
@@ -283,12 +280,17 @@
 
 
 				</div>
-				
+				<legend class="scheduler-border">Comments</legend>
+				{{#if editstate}}
 				<div class="col-sm-12" id="multipleComments">
 					
 				</div>
+				{{else}}
+				<textarea class="form-control" id="usercomments" name="usercomments"  can-value="usercommentsStore"></textarea>
+
+				{{/if}}
 				<div class="col-sm-3 col-sm-offset-9" style="padding-right: 0px;">
-  					<div class="col-sm-10 col-sm-offset-4" style="float: right;padding-right: 0px;">
+  					<div class="col-sm-11" style="float: right;padding-right: 0px;">
 					<button id="save" type="submit" class="btn btn-primary btn-custom-big">Save</button>
 					
 					{{#if editstate}}
@@ -310,35 +312,4 @@
 
 
 
-<!--<div class="col-sm-12">
-			   <div class="table-responsive">
-					  <table class="table table-condensed table-striped breakdown" id="breakTable">
-						    <thead>
-						        <tr>
-						         
-						            <th class="breakdownHead">Base Rate[%]</th>
-						           
-						            <th class="breakdownIcon"><a id="addbasemodel" href="#">Add</a></th>
-						        </tr>
-						    </thead>
-						    <tbody>
-						     {{#each rownum}}
-						      <tr id="breakrow0" rowid="0">
-						            <td class="form-group">
-						            	<div class="breakdownPeriod">
-						            		<input id='baserate' can-value="rownum.baserate{{@index}}" name="baserate[]">
-							        	</div>
-									</td>
-							       <td>
-						           		<div>	
-											<a id="addbasemodeldel" href="#">Delete</a>
-										</div>
-						           </td>
-						       </tr>
-						    {{/each}}   
-							
-						    </tbody>
-					</table>
-				</div>
-				</div>-->
 

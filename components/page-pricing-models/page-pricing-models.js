@@ -293,11 +293,20 @@ var page = Component.extend({
        
     },
     "#fetch click":function(){
+
+       $("#modelSummaryCont").removeClass("modelsummaryInVisible").addClass("modelsummaryVisible").removeClass("col-sm-0").addClass("col-sm-4");
+       $("#modelDetailCont").removeClass("col-sm-12").addClass("col-sm-8");
+
+       $("#countrypm").attr("readonly", true);
+       $("#entity").attr("readonly", true);
+
+
         var self = this;
         var genObj = {region:self.scope.attr("regions")};
         console.log(JSON.stringify(UserReq.formRequestDetails(genObj)));
 
         self.scope.modeltypeGrid.replace([]); 
+        self.scope.attr("editstate", true);
         
         Promise.all([Pricingmodels.findOne(UserReq.formRequestDetails(genObj), 'summary')
              ]).then(function(values) {
@@ -317,6 +326,9 @@ var page = Component.extend({
             $('#pricingmodelGrid tbody tr:nth-child(1)').trigger('click').addClass("selected");
            // $(this).addClass("selected").siblings().removeClass("selected");
           });
+
+           $("#pmform").data('bootstrapValidator').resetForm();
+            return false;
     },
      ".pricingmodelGrid tr click":function(el){
       
@@ -329,9 +341,10 @@ var page = Component.extend({
 
       self.scope.attr("selectedPriceModel", el.closest('tr')[0].rowIndex);
       var selrow = el.closest('tr').attr("version");
+      var selmodelid = el.closest('tr').attr("modelid");
       el.addClass("selected").siblings().removeClass("selected");
       self.scope.attr("version", selrow);
-      var genObj = {modelId:"24005"};
+      var genObj = {modelId:selmodelid};
       
       Promise.all([Pricingmodels.findOne(UserReq.formRequestDetails(genObj), 'details')
              ]).then(function(values) {
@@ -530,40 +543,55 @@ var page = Component.extend({
         self.scope.attr("rownumtrack").removeAttr(selrow-1);
 
     },
+    "#regions change":function(el){
+      //console.log(el[0].value);
+      if(el[0].value != ""){
+        $("button#fetch").attr("disabled", false);
+        $("button#add").attr("disabled", false);
+      }else{
+        $("button#fetch").attr("disabled", true);
+        $("button#add").attr("disabled", true);
+      }
+    },
     "#add click":function(){
        //Cleaning data for add
+      
+       $("#modelSummaryCont").addClass("modelsummaryInVisible").removeClass("col-sm-4").addClass("col-sm-0");
+       $("#modelDetailCont").removeClass("col-sm-8").addClass("col-sm-12");
+
+       $("#countrypm").attr("readonly", false);
+       $("#entity").attr("readonly", false);
+
+
+      $('#bottomsection').removeClass('bottomparthide').addClass('bottompartshow');
+
+
+
+
+
        var self = this;
        self.scope.attr("editstate", false);
-      
        self.scope.attr("entity", "");
+       self.scope.attr("country", "");
        self.scope.attr("rownumtrack").replace([]); 
        self.scope.attr("rownum").replace([]); 
        self.scope.attr("modelname", "");
        self.scope.attr("pricingmodeltype", "");
+        $("#addbasemodel").trigger("click");
+        $("#addtrack").trigger("click");
+        $('#pricingmodelGrid tbody tr').removeClass("selected");
 
-     // console.log($('#pmform').data('bootstrapValidator').resetForm());
-      
-      $.when(self.scope.attr("country", "")).then(function(){
-      
-        $('#pmform').data('bootstrapValidator').updateStatus('country', 'NOT_VALIDATED');
-
-      });
-
-      $.when(self.scope.attr("entity", "")).then(function(){
-      
-        $('#pmform').data('bootstrapValidator').updateStatus('entity', 'NOT_VALIDATED');
-
-      });
-      //$('#pmform').data('bootstrapValidator').updateStatus('entity', 'NOT_VALIDATED');
-
-
-       $('#pricingmodelGrid tbody tr').removeClass("selected");
+        $(".old-comments").remove();
+     
+       $("#pmform").data('bootstrapValidator').resetForm();
+       return false;
+  
 
     },
     "#addCancel click":function(){
        //Cleaning data for add
        $('#bottomsection').removeClass('bottompartshow').addClass('bottomparthide');
-       alert("add");
+       
 
     },
     "#editCancel click":function(){
@@ -572,7 +600,7 @@ var page = Component.extend({
       // $('#bottomsection').removeClass('bottompartshow').addClass('bottomparthide');
        var selRow = self.scope.attr("selectedPriceModel");
        $('#pricingmodelGrid tbody tr:nth-child('+selRow+')').trigger('click').addClass("selected");
-       alert("edit");
+      
 
 
     },

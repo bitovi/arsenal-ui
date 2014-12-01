@@ -30,7 +30,7 @@ var comments = Component.extend({
             //var commentsString=val.modifiedTime+"\t"+val.modifiedUser+":\n"+val.Comments;
             if(val.isEditable ==  undefined || val.isEditable == 'n'){        
               var textAreactrl=getTextArea();
-              $(textAreactrl).addClass("multiple-comments-editable").addClass("form-control-comments");
+              $(textAreactrl).addClass("multiple-comments-editable").addClass("form-control-comments").addClass("old-comments");
               $(textAreactrl).attr('readonly', 'readonly');
               $(textAreactrl).val(val.comments + "\n-" + val.createdBy + " on " + val.createdDate);
               $(msterObj).append(textAreactrl);     

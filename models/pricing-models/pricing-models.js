@@ -7,20 +7,22 @@ var pricingModels = Model.extend({
  findOne: function(params, type){
  		if(type == 'summary'){
 	 			return $.ajax({
-			 		url: RinsCommon.UI_SERVICE_URL +'getPricingModels',
-			  		type: 'POST',
-			  		data: JSON.stringify(params),
-			  		dataType:'json',
-			  		contentType: 'application/json'
+			 		url: 'http://ma-rinsd-lapp01.corp.apple.com:10649/getPricingModels',
+			 		//url: RinsCommon.UI_SERVICE_URL +'getPricingModels',
+			  		type: 'POST'
+			  		//data: JSON.stringify(params),
+			  		//dataType:'json',
+			  		//contentType: 'application/json'
 		  		});
  		}
  		else if(type == 'details'){
  			return $.ajax({
-			 		url: RinsCommon.UI_SERVICE_URL +'getPricingModelDetails',
-			  		type: 'POST',
-			  		data: JSON.stringify(params),
-			  		dataType:'json',
-			  		contentType: 'application/json'
+			 		//url: RinsCommon.UI_SERVICE_URL +'getPricingModelDetails',
+			 		url: 'http://ma-rinsd-lapp01.corp.apple.com:10649/getPricingModelDetails',
+			  		type: 'POST'
+			  		//data: JSON.stringify(params),
+			  		//dataType:'json',
+			  		//contentType: 'application/json'
 		  		});
 			}
 		else if(type == 'modeltype'){
