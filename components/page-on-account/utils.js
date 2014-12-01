@@ -1,7 +1,7 @@
 var utils={
 getQuarter:function(periodFrom,periodTO){
-  console.log(periodFrom);
-  console.log(periodTO);
+  //console.log(periodFrom);
+  //console.log(periodTO);
    var obj=[];
     var qFrom = periodFrom.substring(1, 2);
     var qTo = periodTO.substring(1, 2);

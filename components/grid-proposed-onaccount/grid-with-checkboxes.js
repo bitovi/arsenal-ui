@@ -42,6 +42,7 @@ var GridWithCheckboxes = Grid.extend({
         consoel.log("<<<<index of row>>>>",index);
         (index > -1) && this.scope.checkedRows.splice(index, 1);
       }
+      console.log(this.scope.checkedRows);
     }
   }
 });

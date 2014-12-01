@@ -30,7 +30,8 @@ var page = Component.extend({
     tabsClicked:"@",
     paymentBundleName:"@",
     usercommentsStore:"",
-    paymentBundleNameText:""
+    paymentBundleNameText:"",
+    proposedOnAccountData:{}
 
   },
   init: function(){
@@ -86,7 +87,8 @@ var page = Component.extend({
               console.log("inside NEW_ON_ACC");
                 $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
             }else if(this.scope.tabsClicked=="PROPOSED_ON_ACC"){
-              $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={request} checked-rows="{pagestate.selectedRows}"></rn-proposed-onaccount-grid>')({request}));
+              disableEditORDeleteButtons(true);
+              $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={request}></rn-proposed-onaccount-grid>')({request}));
             }
 
         }
@@ -112,8 +114,10 @@ var page = Component.extend({
       "#proposedonAccount click":function(el, ev){
         ev.preventDefault();
         this.scope.tabsClicked="PROPOSED_ON_ACC";
-        $('#newonAccountGrid, #newonAccountGridComps, #onAccountBalanceDiv').hide();
+        $('#newonAccountGrid, #onAccountBalanceDiv').hide();
         $('#proposedonAccountDiv').show();
+
+       disableEditORDeleteButtons(true);
 
         //console.log(this.scope.tabsClicked);
       },
@@ -126,11 +130,50 @@ var page = Component.extend({
         var createrequest = utils.frameCreateRequest(self.scope.request,self.scope.onAccountRows,self.scope.documents,self.scope.usercommentsStore,quarters,self.scope.paymentBundleName);
         
       },
+      "#proposedDelete click":function(el,ev){
+        disableEditORDeleteButtons(true);
+        var req = this.scope.request;
+        var deletableRows = [];
+        var rows = this.scope.proposedOnAccountData.rows;
+        var type = 'DELETE';
+        if(rows != undefined && rows.length >0){
+            for(var i=0;i<rows.length;i++){
+                  if(rows[i].__isChecked != undefined && rows[i].__isChecked){
+                    deletableRows.push(rows[i]);
+                    rows.splice(i,1);
+                  }
+                }
+            
+         }
+        req.attr('deletableRows',rows); 
+
+        $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
+      },
+      "#proposedEdit click":function(el,ev){
+          var req = this.scope.request;
+        console.log(this.scope.proposedOnAccountData.rows);
+        req.attr('editableRows',this.scope.proposedOnAccountData.rows);
+        var type = 'EDIT';
+        //console.log('Editing');
+        //console.log(this.scope.proposedOnAccountData.rows);
+        $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type}></rn-proposed-onaccount-grid>')({req,type}));
+      },
       'rn-new-onaccount-grid onSelected': function (ele, event, val) {  
               this.scope.attr('onAccountRows',val);
       },
       'rn-file-uploader onSelected':function (ele, event, val){
             this.scope.attr('documents').replace(val);
+      },
+      'rn-proposed-onaccount-grid onSelected':function(ele, event, val){
+            this.scope.attr('proposedOnAccountData',val);
+            if(val.checkedRows.length >0){
+                disableEditORDeleteButtons(false);
+            }else{
+                disableEditORDeleteButtons(true);
+            }
+      },
+      'rn-proposed-onaccount-grid save':function(ele, event, val){
+           //alert('came'); 
       }
     },
     helpers: {
@@ -211,8 +254,19 @@ var frameRequest = function(appstate){
         onAccountrequest.searchRequest["contentGrpId"]=contGrpId;
       }
 
-      console.log('The request is :'+JSON.stringify(onAccountrequest));
+      //console.log('The request is :'+JSON.stringify(onAccountrequest));
   return onAccountrequest;
 } 
+
+var disableEditORDeleteButtons = function(disable){
+  if(disable){
+       $("#proposedDelete").attr("disabled","disabled");
+       $("#proposedEdit").attr("disabled","disabled");
+  }else{
+      $("#proposedDelete").removeAttr("disabled");
+      $("#proposedEdit").removeAttr("disabled");
+  }
+
+}
 
 export default page;

@@ -19,7 +19,11 @@ var proposedonAccountGrid = Grid.extend({
         id: 'checkbox',
         title: '',
         contents: function(row) {
-          return can.stache('<input type="checkbox"/>')();
+          if(row.attr('__isChecked')== null || (row.attr('__isChecked')!= null && row.attr('__isChecked')==false)){
+            return can.stache('<input type="checkbox"/>')();
+          }else{
+            return stache('{{#checkbox}}<input type="checkbox" value="{{checkbox}}" {{#if isChecked}}checked{{/if}}/>{{/checkbox}}')({checkbox: row.__isChecked, isChecked: row.__isChecked});
+          }
         }
       },
             
@@ -47,67 +51,187 @@ var proposedonAccountGrid = Grid.extend({
       }
      ],
      request:{},
-     checkedRows: []
+     checkedRows: [],
+     type:"",
+     quarters:[]
     
   },
   init :function()
   {
      var self = this;
+     var rows = self.scope.request.rows;
+     var deletableRows = self.scope.request.deletableRows;
+     var editableRows = self.scope.request.editableRows;
+     var type =self.scope.type;
+     //console.log(self.scope.request.rows);
      var quarters = utils.getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
     for(var i=0;i<quarters.length;i++){
       var column={
         id:quarters[i],
-        title:quarters[i]
+        title:quarters[i],
+        editable:true,
+          getEditingValue: function(row,title) {
+            return row.attr(title);
+          },
+          setValue: function(row, newValue,title) {
+            row.attr(title,newValue);
+          }
       };
       self.scope.columns.push(column);
      }
 
-   
-   proposedOnAccount.findAll().then(function(rows) {
+      var totalcolumn={
+          id:'total',
+          title:'Total',
+           editable:false,
+          getEditingValue: function(row,title) {
+            return row.attr(title);
+          },
+          setValue: function(row, newValue,title) {
+            row.attr(title,newValue);
+          }
+        };
+        self.scope.columns.push(totalcolumn);
+        self.scope.quarters.replace(quarters);
+     
+   if(type == 'DELETE'&& deletableRows != undefined && deletableRows.length >0){
+      // for(var i=0;i<deletableRows.length;i++){
+      //       if(deletableRows[i].__isChecked != undefined && deletableRows[i].__isChecked){
+      //         deletableRows.splice(i,1);
+      //       }
+      //     }
+      self.scope.rows.replace(deletableRows);
+   }else if(type == 'EDIT' && editableRows != undefined && editableRows.length>0){
+        for(var i=0;i<editableRows.length;i++){
+          if(editableRows[i].__isChecked != undefined && editableRows[i].__isChecked){
+              editableRows[i].attr('__isEditable',true);
+            }
+          }
+          console.log('Editable Rows')
+          console.log(editableRows);
+          self.scope.rows.replace(editableRows);
+   }else{
+      proposedOnAccount.findAll().then(function(rows) {
        var footerRows = getFooterRows(quarters,rows);
         self.scope.rows.replace(rows);
         self.scope.footerrows.replace(footerRows);
-      });
+      }); 
+   }
+   
+
 
   },
 
   helpers: {
     listCheckedRowIndexes: function() {
       //return this.checkedRows.attr('length') ? _.map(this.checkedRows, row => row.index).join(', ') : 'None checked.';
+    },
+    cellContents:function(row, column){
+      //console.log(type);
+      //console.log(row.__isEditable);
+      if(column.editable && row.__isChecked && row.__isEditable) {
+        return stache('<input class="editing" value="{{value}}"/>')({value: column.getEditingValue(row,column.title)});
+      } else {
+        return Grid.prototype.helpers.cellContents.call(this, row, column);
+      }
     }
   },
   events: {
     '.checkbox :checkbox change': function(el, ev) {
+      //console.log(ev.)
       var row = el.closest('tr').data('row').row;
 
       if(el[0].checked) {
+        console.log('checked:'+row.checkbox);
+        //console.log(row);
+        //row.attr('Licensor', 'Naveen');
+        
+        row.attr('__isChecked', true); 
         this.scope.checkedRows.push(row);
-        console.log("Checkbox 222222 called:::::::::",this.scope.checkedRows);
-        deleterowfunction(this.scope.checkedRows);
       } else {
-        var index = _.find(this.scope.checkedRows, checkedRow => { checkedRow.index === row.index; });
-        (index > -1) && this.scope.checkedRows.splice(index, 1);
-      }
-    },
+        row.attr('__isChecked', false); 
+          var indexToBeDeleted;
+          this.scope.checkedRows.each(function(value, key) {
+            if(row == value){
+              indexToBeDeleted=key;
+            }
+             
+          });
 
+          this.scope.checkedRows.splice(indexToBeDeleted,1);
+      }
+
+      console.log(row);
+
+      var proposedOnAccountData={};
+      proposedOnAccountData.rows=this.scope.rows;
+      proposedOnAccountData.checkedRows=this.scope.checkedRows;
+
+      $(this.element).trigger('onSelected', proposedOnAccountData);
+      //console.log(this.scope.checkedRows);
+    },
+     'td input.editing blur':function(el, ev){
+      //alert('hi');
+      var value = el.closest('td').find('.editing').val();
+
+        if(isNaN(value)){
+          el.addClass('error');
+          return;
+        }
+
+      var element = el.closest('td').find('.editing');
+      var column = el.closest('td').data('column').column;
+
+     // console.log(el.val());
+      //console.log("val is "+value);
+
+      var row = el.closest('tr').data('row').row;
+      row.attr(column.title,value);
+
+      //console.log(row.attr());
+
+      //console.log(this.scope.quarters.length);
+
+      //column.setValue(row, value,column.title);
+
+      var quarters=this.scope.quarters;
+      var total = 0;
+      for(var i=0; i<quarters.length;i++){
+            total = Number(total)+Number(row.attr(quarters[i]));
+            //console.log(quarters[i]);
+            //console.log(row.attr(quarters[i]));
+          }
+      
+
+       row.attr('total',total);
+      //console.log('rows');
+      //console.log(this.scope.rows);
+
+      //putting the rows to the page from grid component
+      var mainRows={};
+      mainRows.rows=this.scope.rows;
+    
+      $(this.element).trigger('save', mainRows);
+      //Row got updated to the page to the grid component
+     
+    }
         
   },
   "inserted" : function()
   {
-    console.log("It is inside called >>>>>>>>>>>>>>");
+    //console.log("It is inside called >>>>>>>>>>>>>>");
   }
 });
 
 
 
 var getFooterRows=function(quarters,rows){
-   //console.log("!44444444444inside init function");
   var periodMap = new Array();
   var totalMap = new Array();
   var currencies=[];
-  console.log(quarters);
-  console.log(rows);
-  console.log(currencies[rows[1]["Currency"]]);
+ // console.log(quarters);
+  //console.log(rows);
+  //console.log(currencies[rows[1]["Currency"]]);
   for(var i=0;i<rows.length;i++){
     if(currencies[rows[i]["Currency"]] != undefined && currencies[rows[i]["Currency"]] != null){
       periodMap = currencies[rows[i]["Currency"]];
@@ -152,8 +276,8 @@ var getFooterRows=function(quarters,rows){
     currencies[rows[i]["Currency"]] = periodMap;
     //console.log(currencies[rows[1]["Currency"]]);
   }
-console.log(currencies);
-console.log(totalMap);
+//console.log(currencies);
+//console.log(totalMap);
 
   return frameFooter(currencies,totalMap,quarters);
 
@@ -164,8 +288,8 @@ var frameFooter=function(currencyPeriodArray,totalMap,quarters){
   var footerRows=[];
   var row ={};
   var currencies= Object.keys(currencyPeriodArray);
-  console.log('Currencies are :'+currencies);
-  console.log(quarters);
+  //console.log('Currencies are :'+currencies);
+  //console.log(quarters);
 
   row["Licensor"]= "Total";
   row["Currency"]= "EUR";
@@ -178,7 +302,7 @@ var frameFooter=function(currencyPeriodArray,totalMap,quarters){
   row["__isChild"]=false;
   row["tfooter"]=true;
   footerRows.push(row);
-  console.log("Total Parent Row created !");
+ // console.log("Total Parent Row created !");
   for(var k=0; k<currencies.length;k++){
 
     var childRow ={};
@@ -195,12 +319,12 @@ var frameFooter=function(currencyPeriodArray,totalMap,quarters){
     footerRows.push(childRow);
   }
 
-console.log('Footer rows are :'+JSON.stringify(footerRows));
+//console.log('Footer rows are :'+JSON.stringify(footerRows));
 return footerRows;
 }
 
 var deleterowfunction=function(ind)
     {
-      console.log("index is :::",ind);
+      //console.log("index is :::",ind);
     }
 export default GridWithCheckboxes;
