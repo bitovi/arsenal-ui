@@ -36,13 +36,13 @@ var page = Component.extend({
   },
   init: function(){
 	 //console.log('inside Claim Review');
-
+   $("#searchDiv").hide();
    this.scope.tabsClicked="NEW_ON_ACC";
 	 
     },
     events: {
     	"inserted": function(){ 
-       
+       $("#searchDiv").hide();
     	},
       'period-calendar onSelected': function (ele, event, val) {  
          this.scope.attr('periodchoosen', val);
@@ -104,28 +104,30 @@ var page = Component.extend({
 
         }
 
-        this.scope.attr("localGlobalSearch",false);
+        this.scope.appstate.attr('globalSearch',false);
         
       },
       "#onAccountBalance click":function(el, ev){
         ev.preventDefault();
         this.scope.tabsClicked="ON_ACC_BALANCE";
-        $('#newonAccountGrid, #newonAccountGridComps, #proposedonAccountDiv').hide();
+        $('#newonAccountGrid, #newonAccountGridComps, #proposedonAccountDiv, #forminlineElements,#searchDiv').hide();
         $('#onAccountBalanceDiv').show();
+        //$("#forminlineElements").hide();
+        $('rn-onaccount-balance-grid tbody tr').css("outline","0px solid #f1c8c8");
 
         //console.log(this.scope.tabsClicked);
       },
       "#newonAccount click":function(el, ev){
         ev.preventDefault();
         this.scope.tabsClicked="NEW_ON_ACC";
-        $('#newonAccountGrid, #newonAccountGridComps').show();
-        $('#onAccountBalanceDiv, #proposedonAccountDiv').hide();
+        $('#newonAccountGrid, #newonAccountGridComps, #forminlineElements').show();
+        $('#onAccountBalanceDiv, #proposedonAccountDiv,#searchDiv').hide();
         //console.log(this.scope.tabsClicked);
       },
       "#proposedonAccount click":function(el, ev){
         ev.preventDefault();
         this.scope.tabsClicked="PROPOSED_ON_ACC";
-        $('#newonAccountGrid, #onAccountBalanceDiv').hide();
+        $('#newonAccountGrid, #onAccountBalanceDiv, #forminlineElements,#searchDiv').hide();
         $('#proposedonAccountDiv').show();
 
        disableEditORDeleteButtons(true);
