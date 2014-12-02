@@ -196,13 +196,10 @@ var proposedonAccountGrid = Grid.extend({
       proposedOnAccountData.checkedRows=this.scope.checkedRows;
 
       $(this.element).trigger('onSelected', proposedOnAccountData);
-      //console.log(this.scope.checkedRows);
     },
      'td input.editing blur':function(el, ev){
-      //alert('hi');
       var value = el.closest('td').find('.editing').val();
-
-        if(isNaN(value)){
+        if(isNaN(value) || value==""){
           el.addClass('error');
           return;
         }
@@ -272,8 +269,6 @@ var getUiRowsFromResponse=function(quarters,data){
     row['docId']=onAccountDetails[i].docId;
     row['commentId']=onAccountDetails[i].commentId;
 
-    console.log(quarters);
-
     for(var k=0;k<quarters.length;k++){
       var period = utils.getPeriodForQuarter(quarters[k]);
       var amtObject = periodData[period];
@@ -289,7 +284,7 @@ var getUiRowsFromResponse=function(quarters,data){
         row[quarters[k]]=value;
       }
     }
-    row['totalAmt']=onAccountDetails[i].totalAmt;
+    row['total']=onAccountDetails[i].totalAmt;
     rows.push(row);
   }
   console.log(rows);

@@ -20,35 +20,6 @@ var GridWithEditing = Grid.extend({
     }
   },
   events: {
-    // 'td dblclick': function(el, ev) {
-    //   var column = el.data('column').column;
-    //   if(column.editable) {
-    //     can.batch.start();
-    //     this.scope.attr('editingRow', el.closest('tr').data('row').row);
-    //     this.scope.attr('editingColumn', column);
-    //     can.batch.stop();
-    //   } else {
-    //     console.log('You cannot edit this.');
-    //   }
-    // },
-    // 'td input.editing blur': function(el, ev) {
-    //   // do validation here first
-    //   var value = $('td input').val();
-    //   if(value.indexOf(' ') < 0) {
-    //     //el.addClass('error');
-    //    // console.log('error detected!');
-    //     return;
-    //   }
-
-    //   // var column = el.closest('td').data('column').column;
-    //   // var row = el.closest('tr').data('row').row;
-    //   // //console.log('setting new value', value, column, row);
-    //   // column.setValue(row, value,column.title);
-    //   // this.scope.attr({
-    //   //   'editingRow': null,
-    //   //   'editingColumn': null
-    //   // });
-    // },
     'td input.editing blur':function(el, ev){
       //var value = $('td input').val();
       var value = el.closest('td').find('.editing').val();
