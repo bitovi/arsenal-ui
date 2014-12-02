@@ -35,9 +35,10 @@
 		</ul>
 
 		<div id="myTabContent" class="tab-content">
-		   <div class="tab-pane fade in active" id="NewonAccountDiv" style="padding-top:10px;">
-		      	<div id="newonAccountGrid"></div>
-		       <div class="col-lg-12 marTop20" id='newonAccountGridComps' style="display:none">
+		   
+		   	<div class="tab-pane fade in active" id="NewonAccountDiv">
+		   		<div id="newonAccountGrid"></div>
+		       	<div class="col-lg-12 marTop20" id='newonAccountGridComps' style="display:none">
 		       		<div class="col-lg-6">
 		       			<div class="col-sm-6" id="uploadFile">
 							<rn-file-uploader></rn-file-uploader>
@@ -49,36 +50,26 @@
                 				<create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}"></create-pb>
 					        </div>
 		       		</div>
-
 		       		<div class="col-lg-6 usercommentsec"></div>
 		       		<div class="col-lg-4 usercommentsec">
-		       		<label for="inputEmail3" class="col-sm-4 control-label">User Comments: </label>
-		       		 <textarea class="form-control" name="usercomments" id="usercomments" maxlength="1024"  can-value="usercommentsStore" style="resize:none"></textarea>
-					<img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "usercomments-err" style="display:none;"> 
-					<button type="button" id="propose" class="btn btn-primary buttonSubmit btn-custom-small pull-right" style="margin-right:25%">Propose</button>
+		       			<label for="inputEmail3" class="col-sm-4 control-label">User Comments: </label>
+		       		 	<textarea class="form-control" name="usercomments" id="usercomments" maxlength="1024"  can-value="usercommentsStore" style="resize:none"></textarea>
+						<img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "usercomments-err" style="display:none;"> 
+						<button type="button" id="propose" class="btn btn-primary buttonSubmit btn-custom-small pull-right" style="margin-right:25%">Propose</button>
 					</div>
-					<div class="col-lg-1">
-			       		
-		       		</div>
-
-
+					<div class="col-lg-1"></div>
 		       </div>
-		       <div class="col-lg-12">
-		       		
-		       </div>
-		       <div class="col-lg-12" style="padding:0px !important;">
-		       		
-		       		
-		       <div>
-		   </div>
-		   <div class="tab-pane fade" id = "onAccountBalanceDiv"  style="padding:10px;border:0px solid #ddd; border-top:0px;">
+		      
+		   	</div>
+		  
+		   	<div class="tab-pane fade" id = "onAccountBalanceDiv">
 		   		<div id="onAccountBalanceGrid"></div>
 			</div>
 
-			<div class="tab-pane fade " id = "proposedonAccountDiv"  style="padding:10px;border:0px solid #ddd; border-top:0px;">
+			<div class="tab-pane fade" id="proposedonAccountDiv">
 				<button type="button" id="proposedDelete" class="btn btn-primary buttonSubmit btn-custom-small pull-right" style="margin-left:10px;">Delete</button>
 				<button type="button" id="proposedEdit" class="btn btn-primary buttonSubmit btn-custom-small pull-right" style="margin-left:10px;">Edit</button>
-		   			<div id="proposedOnAccountGrid"></div>
+		   		<div id="proposedOnAccountGrid"></div>
 			</div>
 
 		</div>

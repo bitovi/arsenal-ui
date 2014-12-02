@@ -1,4 +1,101 @@
-.claimContainer{
+@import 'components/grid/grid.less';
+@white-border: 1px solid #fff;
+
+
+rn-onaccount-balance-grid, rn-new-onaccount-grid{
+  .grid-mixin();
+    th, td {
+      white-space: nowrap;
+    }
+    th.checbox, td.checkbox {
+      width: 30px;
+    }
+  & > table {
+    border-radius: 0px;
+
+    /* getting border radius to work right */
+    thead:first-child, tbody:first-child {
+      & > tr:first-of-type {
+        td:first-child, th:first-child {
+          border-top-left-radius: 0px;
+        }
+
+        td:last-child, th:last-child {
+          border-top-right-radius: 0px;
+        }
+      }
+    }
+
+    thead, tfoot {
+      tr {
+        th {
+          padding-right: 0.625em;
+          height: 1.5em;
+          padding-top: .3em;
+          padding-bottom: .3em;
+        }
+      }
+      tr.child {
+          display: none;
+
+          &.visible {
+            display: table-row;
+          }
+        }
+
+    }
+
+    tbody:last-child {
+      & > tr:last-of-type {
+        td, th {
+          height : 1.5625em;
+          backgorund: !important;
+        }
+
+        td:first-child, th:first-child {
+          border-bottom-left-radius: 0px;
+          border-bottom: 1px solid #ffffff !important;
+          }
+
+        td:last-child, th:last-child {
+          border-bottom-right-radius: 0px;
+        }
+      }
+    }
+
+    tbody {
+      background: #F7F7F7 !important;
+      tr {
+        height : 1.5625em;
+
+        td {
+
+          padding-right: 0.5625em;
+          padding-left : 0.5625em;
+          padding-top  : 0em;
+          padding-bottom : 0em;
+
+          border-right: 1px solid hsl(0, 0%, 75%);
+          border-bottom: 1px solid #FFFFFF !important;
+
+        }
+
+      }
+
+      tr.child {
+        display: none;
+        td {
+          background: hsl(0, 0%, 100%)
+        }
+        &.visible {
+          display: table-row;
+        }
+      }
+    }
+  }
+
+}
+
   #myTabs{
    
   }
@@ -57,6 +154,7 @@
   .marTop20{
     margin-top:20px;
   }
+ 
   #newonAccountGrid{
       max-height: 300px;
       overflow: auto;
@@ -65,4 +163,15 @@
       max-height: 300px;
       overflow: auto;
   }
-}
+  
+  .claimContainer {
+    border: 0px !important;
+    padding: 0px 10px 10px 10px;
+  }
+  .tab-content {
+    padding: 10px;
+    padding-bottom: 1px;
+    border: 1px solid #ddd;
+    border-top: 0px;
+  }
+  
