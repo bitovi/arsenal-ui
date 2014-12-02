@@ -2,30 +2,29 @@ import Model from 'can/model/';
 import RinsCommon from 'utils/';
 
 var pricingModels = Model.extend({
-  // using findAll instead of resource because I don't want to be able to save.
-// findAll: 'GET /pricingModels',
- findOne: function(params, type){
- 		if(type == 'summary'){
+ findOne: function(params){
+ 		if(params.reqType === 'summary'){
+ 				delete params.reqType;
 	 			return $.ajax({
-			 		url: 'http://ma-rinsd-lapp01.corp.apple.com:10649/getPricingModels',
-			 		//url: RinsCommon.UI_SERVICE_URL +'getPricingModels',
-			  		type: 'POST'
-			  		//data: JSON.stringify(params),
-			  		//dataType:'json',
-			  		//contentType: 'application/json'
+			 		url: RinsCommon.UI_SERVICE_URL +'getPricingModels',
+			  		type: 'POST',
+			  		data: JSON.stringify(params),
+			  		dataType:'json',
+			  		contentType: 'application/json'
 		  		});
  		}
- 		else if(type == 'details'){
- 			return $.ajax({
-			 		//url: RinsCommon.UI_SERVICE_URL +'getPricingModelDetails',
-			 		url: 'http://ma-rinsd-lapp01.corp.apple.com:10649/getPricingModelDetails',
-			  		type: 'POST'
-			  		//data: JSON.stringify(params),
-			  		//dataType:'json',
-			  		//contentType: 'application/json'
+ 		else if(params.reqType == 'details'){
+ 				delete params.reqType;
+ 				return $.ajax({
+					url: RinsCommon.UI_SERVICE_URL +'getPricingModelDetails',
+		 			type: 'POST',
+		  			data: JSON.stringify(params),
+		  			dataType:'json',
+		  			contentType: 'application/json'
 		  		});
 			}
-		else if(type == 'modeltype'){
+		else if(params.reqType == 'modeltype'){
+			delete params.reqType;
 			return $.ajax({
 		 		url: RinsCommon.UI_SERVICE_URL +'getPricingModelTypes',
 		  		type: 'POST',

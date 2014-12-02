@@ -19,7 +19,6 @@ var comments = Component.extend({
   events: {
       "inserted": function(){
         var self = this;
-        console.log("options is "+JSON.stringify(self.scope.attr("options")));
         var commentsData=self.scope.options;
         var divid = $("#"+self.scope.divid);
         divid.empty();
@@ -27,38 +26,27 @@ var comments = Component.extend({
           var msterObj=divid;
           var editableRecComment="";    
           $.each(commentsData,function(i,val){
-            //var commentsString=val.modifiedTime+"\t"+val.modifiedUser+":\n"+val.Comments;
+            
             if(val.isEditable ==  undefined || val.isEditable == 'n'){        
               var textAreactrl=getTextArea();
-              $(textAreactrl).addClass("multiple-comments-editable").addClass("form-control-comments").addClass("old-comments");
+              $(textAreactrl).addClass("multiple-comments-editable").addClass("form-control-comments old-comments");
               $(textAreactrl).attr('readonly', 'readonly');
               $(textAreactrl).val(val.comments + "\n-" + val.createdBy + " on " + val.createdDate);
               $(msterObj).append(textAreactrl);     
               $(msterObj).append(getLine());
-              //textAreaAdjust(textAreactrl);
+              
             }else if(val.isEditable == 'y'){
               editableRecComment=val.Comments;
             }       
           });
           
           if(self.scope.isreadonly === 'n'){
-            console.log("inside add method");
             var editableTextarea=getTextArea();
-            $(editableTextarea).attr('id',self.scope.textareaid);
-            $(editableTextarea).attr('name',self.scope.textareaid);
-            $(editableTextarea).addClass("multiple-comments-editable").addClass("form-control-comments");
+            $(editableTextarea).attr('name',self.scope.divid);
+            $(editableTextarea).addClass("multiple-comments-editable").addClass("form-control-comments new-comments multiple-comments-editable-height");
             $(editableTextarea).text(editableRecComment);
-            $(editableTextarea).addClass("multiple-comments-editable-height");
-
-            $(editableTextarea).unbind('input propertychange').bind('input propertychange',function(e) {
-              //editableTextarea.style.height = '1px';
-              //editableTextarea.style.height = (25+editableTextarea.scrollHeight)+"px";
-            });
             $(msterObj).append(editableTextarea);
-            //textAreaAdjust(editableTextarea);
-              
           } 
-
         }
       } 
 });
