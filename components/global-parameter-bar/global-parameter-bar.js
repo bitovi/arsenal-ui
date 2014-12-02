@@ -42,28 +42,37 @@ var GlobalParameterBar = Component.extend({
     }
   },
   events: {
-        'period-calendar onSelected': function (ele, event, val) {  
+      'period-calendar onSelected': function (ele, event, val) {  
          this.scope.attr('periodchoosen', val);
           var which = $(ele).parent().find('input[type=text]').attr('id');
          this.scope.appstate.attr(which, this.scope.periodchoosen);
-        $(ele).parent().find('input[type=text]').val(this.scope.periodchoosen).trigger( "change" ); ;
+        $(ele).parent().find('input[type=text]').val(this.scope.periodchoosen).trigger( "change" ); 
+      
+        $(ele).closest('.calendarcls').find('.box-modal').hide();
+        $(ele).blur();
          },
-        '.updateperoid focus':function(el){ 
-        $(el).closest('.calendarcls').find('.box-modal').is(':visible') ?
-        $(el).closest('.calendarcls').find('.box-modal').hide():$(el).closest('.calendarcls').find('.box-modal').show();
+         '.updateperoid focus':function(el){ 
+          $(el).closest('.calendarcls').find('.box-modal').show().trigger( "focus" ); 
+         //$(el).closest('.calendarcls').find('.box-modal').is(':visible') ?
+          // $(el).closest('.calendarcls').find('.box-modal').hide():$(el).closest('.calendarcls').find('.box-modal').show();
         },
+       /*'{document}  click':function(el,ev){ 
+          console.log(el);
+       },*/
       'inserted': function(){
           document.getElementById("regionsFilter").selectedIndex = 2;
       },
-     '#periodFrom  change': function(el, ev) { 
-         //var selected = $(el[0].selectedOptions).data('periodFrom');
+     '#periodFrom  change': function(el, ev) {  
          var selected = $(el[0]).val(); 
          this.scope.appstate.attr('periodFrom', selected); 
+         var comp ='from';
+         showErrorMsg(this.scope.appstate.attr('periodFrom'),this.scope.appstate.attr('periodTo'),comp);
      },
      '#periodTo change': function(el, ev) {
-        //console.log('Period To changed');
          var selected = $(el[0]).val();
          this.scope.appstate.attr('periodTo', selected);
+          var comp ='to';
+         showErrorMsg(this.scope.appstate.attr('periodFrom'),this.scope.appstate.attr('periodTo'),comp);
      },
     '#store-type select change': function(el, ev) {
        var selected = $(el[0].selectedOptions).data('storetype');
@@ -127,24 +136,7 @@ var GlobalParameterBar = Component.extend({
       }
 
 
-      var from = this.scope.appstate.attr('periodFrom'),
-          to =  this.scope.appstate.attr('periodTo');
-          from = from.split('FY');
-          to = to.split('FY');
-
-    if(from[1].slice(-2) > to[1].slice(-2)){
-         //$('.period-invalid').show();
-        return false;
-    }
-    if(from[0].charAt(0)!=to[0].charAt(0) || from[0].charAt(1) > to[0].charAt(1) ){
-        //$('.period-invalid').show();
-        return false;
-     }
-      if(from[0].charAt(0)!=to[0].charAt(0) || from[0].charAt(2) > to[0].charAt(2)){
-         //$('.period-invalid').show();
-        return false;
-     }
-     $('.period-invalid').hide();
+      
 
      
       
@@ -211,5 +203,36 @@ var GlobalParameterBar = Component.extend({
     });
   }
 });
+
+var showErrorMsg = function(periodFrom,periodTo,whichcomp){
+
+        if(whichcomp=='from'){
+          var _root = $('#periodTocontainer');
+          _root.find('#period-calendar .period li a').removeClass('disabled');
+          if(periodFrom.charAt(0)=='Q'){
+              _root.find('#period-calendar .q1 li').not(":first").find('a').addClass('disabled');
+              _root.find('#period-calendar .q2 li').not(":first").find('a').addClass('disabled');
+              _root.find('#period-calendar .q3 li').not(":first").find('a').addClass('disabled');
+              _root.find('#period-calendar .q4 li').not(":first").find('a').addClass('disabled');
+           }else{
+             _root.find('#period-calendar .q1 li').first().find('a').addClass('disabled');
+             _root.find('#period-calendar .q2 li').first().find('a').addClass('disabled');
+             _root.find('#period-calendar .q3 li').first().find('a').addClass('disabled');
+             _root.find('#period-calendar .q4 li').first().find('a').addClass('disabled');
+           }
+       }
+
+    var showFlg=false;
+          var from = periodFrom,to =  periodTo;
+        if(from!=undefined &&  to!=undefined){
+            from = from.split('FY');
+            to = to.split('FY');  //console.log(from[0].substring(1,3)>to[0].substring(1,3));
+               if(from[1].slice(-2) > to[1].slice(-2)) showFlg=true;
+               if(from[1].slice(-2) > to[1].slice(-2) && from[0].charAt(0)!=to[0].charAt(0))showFlg=true;
+               if(from[1].slice(-2) > to[1].slice(-2) && from[0].substring(1,3) > to[0].substring(1,3))showFlg=true;
+           
+        }
+        if(showFlg==true){ $('.period-invalid').show(); return false;}else {showFlg=false; $('.period-invalid').hide();}
+}
 
 export default GlobalParameterBar;
