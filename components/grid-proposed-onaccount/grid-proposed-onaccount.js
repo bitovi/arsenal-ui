@@ -5,7 +5,7 @@ import template from './template.stache!';
 import Grid from 'components/grid/';
 import stache from 'can/view/stache/';
 import utils from 'components/page-on-account/utils';
-
+import UserReq from 'utils/request/';
 
 import GridWithCheckboxes from './grid-with-checkboxes';
 
@@ -58,6 +58,7 @@ var proposedonAccountGrid = Grid.extend({
   },
   init :function()
   {
+    //alert('proposed');
      var self = this;
      var rows = self.scope.request.rows;
      var deletableRows = self.scope.request.deletableRows;
@@ -111,10 +112,37 @@ var proposedonAccountGrid = Grid.extend({
           console.log(editableRows);
           self.scope.rows.replace(editableRows);
    }else{
-      proposedOnAccount.findAll().then(function(rows) {
-       var footerRows = getFooterRows(quarters,rows);
+      //alert('Inside get');
+
+      var genObj = {};
+      //genObj["licensorId"]="18";
+
+      genObj.searchRequest={};
+      genObj.searchRequest["type"]="PROPOSED";
+      genObj.searchRequest["serviceTypeId"]="1";
+
+
+      // genObj.searchRequest["entityId"]=self.scope.request.searchRequest.entityId.attr();
+      // genObj.searchRequest["contentGrpId"]=self.scope.request.searchRequest.contentGrpId.attr();
+      // genObj.searchRequest["regionId"]=self.scope.request.searchRequest.regionId;
+
+      genObj.searchRequest["entityId"]=[17];
+      genObj.searchRequest["contentGrpId"]=[1,2];
+      genObj.searchRequest["regionId"]=2;
+
+      genObj.searchRequest["periodType"]="Q";
+      genObj.searchRequest["periodFrom"]=201403;
+      genObj.searchRequest["periodTo"]=201403;
+
+      proposedOnAccount.findOne(UserReq.formRequestDetails(genObj)).then(function(data) {
+        //alert('hi');
+        //console.log(JSON.stringify(rows).attr());
+
+        var rows = getUiRowsFromResponse(quarters,data);
+
+       // var footerRows = getFooterRows(quarters,rows);
         self.scope.rows.replace(rows);
-        self.scope.footerrows.replace(footerRows);
+       //  self.scope.footerrows.replace(footerRows);
       }); 
    }
    
@@ -224,6 +252,49 @@ var proposedonAccountGrid = Grid.extend({
 });
 
 
+var getUiRowsFromResponse=function(quarters,data){
+  //console.log(JSON.stringify(data.onAccount.attr()));
+  var onAccountDetails = data.onAccount.onAccountDetails
+  var periodData = data.onAccount.fiscalPeriodAmtMap;
+  var rows=[];
+  for (var i=0;i<onAccountDetails.length;i++){
+    var row = {};
+    row['id']= onAccountDetails[i].id;
+    row['entityId']=onAccountDetails[i].entityId;
+    row['Licensor']=onAccountDetails[i].entityName;
+    row['Currency']=onAccountDetails[i].currencyCode;
+    //row['ContentType']=onAccountDetails[i].contentGroupName;
+    row['ContentType']="";
+    row['contentGroupId']=onAccountDetails[i].contentGroupId;
+    row['serviceTypeId']=onAccountDetails[i].serviceTypeId;
+    row['bundleId']=onAccountDetails[i].bundleId;
+    row['bundleName']=onAccountDetails[i].bundleName;
+    row['docId']=onAccountDetails[i].docId;
+    row['commentId']=onAccountDetails[i].commentId;
+
+    console.log(quarters);
+
+    for(var k=0;k<quarters.length;k++){
+      var period = utils.getPeriodForQuarter(quarters[k]);
+      var amtObject = periodData[period];
+      //console.log('FiscalPeriod-----'+period);
+      //console.log(periodData);
+      //console.log(amtObject);
+      row[quarters[k]]=0;
+      if(amtObject != undefined){
+        var value = amtObject[onAccountDetails[i].id];
+        if(value == undefined){
+          value =0;
+        }
+        row[quarters[k]]=value;
+      }
+    }
+    row['totalAmt']=onAccountDetails[i].totalAmt;
+    rows.push(row);
+  }
+  console.log(rows);
+  return rows;
+}
 
 var getFooterRows=function(quarters,rows){
   var periodMap = new Array();
