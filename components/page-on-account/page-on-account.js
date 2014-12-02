@@ -7,8 +7,6 @@ import _less from './page-on-account.less!';
 
 import stache from 'can/view/stache/';
 
-import UserReq from 'models/rinsCommon/request/';
-
 import OnAccountGrid from 'components/grid-onaccount-balance/';
 import Grid from 'components/grid/';
 import newOnAccountGrid from 'components/grid-new-onaccount/';
@@ -17,6 +15,9 @@ import fileUpload from 'components/file-uploader/';
 import createpb from 'components/create-pb/';
 import utils from 'components/page-on-account/utils';
 import proposedOnAccountGrid from 'components/grid-proposed-onaccount/';
+import proposedOnAccount from 'models/onAccount/proposedOnAccount/';
+import UserReq from 'utils/request/';
+import newOnAccount from 'models/onAccount/newOnAccount/'
 
 var page = Component.extend({
   tag: 'page-on-account',
@@ -31,7 +32,8 @@ var page = Component.extend({
     paymentBundleName:"@",
     usercommentsStore:"",
     paymentBundleNameText:"",
-    proposedOnAccountData:{}
+    proposedOnAccountData:{},
+    bundleNamesForDisplay:""
 
   },
   init: function(){
@@ -136,12 +138,46 @@ var page = Component.extend({
       },
       "#propose click":function(el,ev){
         var self = this;
-        //alert('user comment'+ this.scope.usercommentsStore);
-        //console.log('scope value');
-        //console.log(self.scope.onAccountRows);
         var quarters = utils.getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
-        var createrequest = utils.frameCreateRequest(self.scope.request,self.scope.onAccountRows,self.scope.documents,self.scope.usercommentsStore,quarters,self.scope.paymentBundleName);
+        var paymentBundleName = $("#newPaymentBundle").val();
+        if(paymentBundleName==undefined  ||  paymentBundleName==null || paymentBundleName ==""){
+            paymentBundleName = self.scope.paymentBundleName;
+        }
+        var createrequest = utils.frameCreateRequest(self.scope.request,self.scope.onAccountRows,self.scope.documents,self.scope.usercommentsStore,quarters,paymentBundleName);
         
+        newOnAccount.create(UserReq.formRequestDetails(createrequest),function(data){
+          console.log("Delete response is "+JSON.stringify(data));
+          if(data["status"]=="SUCCESS"){
+             $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
+             $("#messageDiv").show();
+             setTimeout(function(){
+                $("#messageDiv").hide();
+             },2000);
+
+             /* The below calls {scope.appstate} change event that gets the new data for grid*/
+             if(this.scope.appstate.attr('globalSearch')){
+                this.scope.appstate.attr('globalSearch', false);
+              }else{
+                this.scope.appstate.attr('globalSearch', true);
+              }
+          }
+          else{
+            $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+            $("#messageDiv").show();
+            setTimeout(function(){
+                $("#messageDiv").hide();
+            },2000)
+          }
+
+        req.attr('deletableRows',rows); 
+
+        $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
+
+          },function(xhr){
+            console.error("Error while loading: onAccount Details"+xhr);
+          });
+
+
       },
       "#proposedDelete click":function(el,ev){
         disableEditORDeleteButtons(true);
@@ -162,11 +198,48 @@ var page = Component.extend({
                 }
             
          }
-         //console.log('Delete');
-         //console.log(rows);
+          var request = utils.frameDeleteRequest(deletableRows,null);
+          proposedOnAccount.update(UserReq.formRequestDetails(request),"invoiceDelete",function(data){
+          console.log("Delete response is "+JSON.stringify(data));
+          if(data["status"]=="SUCCESS"){
+             $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
+             $("#messageDiv").show();
+             setTimeout(function(){
+                $("#messageDiv").hide();
+             },2000);
+
+             /* The below calls {scope.appstate} change event that gets the new data for grid*/
+             if(this.scope.appstate.attr('globalSearch')){
+                this.scope.appstate.attr('globalSearch', false);
+              }else{
+                this.scope.appstate.attr('globalSearch', true);
+              }
+          }
+          else{
+            $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+            $("#messageDiv").show();
+            setTimeout(function(){
+                $("#messageDiv").hide();
+            },2000)
+            var details = data.onAccount.onAccountDetails;
+            for(var i=0;i<details.length;i++){
+               var toBeAdded = utils.getRow(deletableRows,details[i].id);
+               if(toBeAdded !=null){
+                rows.push(toBeAdded);
+               }
+            }
+
+          }
+
         req.attr('deletableRows',rows); 
 
         $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
+
+          },function(xhr){
+            console.error("Error while loading: onAccount Details"+xhr);
+          });
+
+
       },
       "#proposedEdit click":function(el,ev){
           var req = this.scope.request;
@@ -193,6 +266,9 @@ var page = Component.extend({
       },
       'rn-proposed-onaccount-grid save':function(ele, event, val){
            //alert('came'); 
+      },
+      'rn-proposed-onaccount-grid bundNameChange':function(ele,event,val){
+        alert(val);
       }
     },
     helpers: {
@@ -206,9 +282,9 @@ var page = Component.extend({
             bundleNamesRequest.bundleSearch["serviceTypeId"] = serTypeId['id'];
 
           if(typeof(regId)=="undefined")
-            bundleNamesRequest.bundleSearch["region"] = "";
+            bundleNamesRequest.bundleSearch["region"] = "2";
           else
-            bundleNamesRequest.bundleSearch["region"] = regId['value'];
+            bundleNamesRequest.bundleSearch["region"] = regId['id'];
             
           bundleNamesRequest.bundleSearch["type"] = "ON_ACCOUNT";
           

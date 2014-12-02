@@ -53,6 +53,7 @@ var proposedonAccountGrid = Grid.extend({
      request:{},
      checkedRows: [],
      type:"",
+     bundleNames:[],
      quarters:[]
     
   },
@@ -81,18 +82,18 @@ var proposedonAccountGrid = Grid.extend({
       self.scope.columns.push(column);
      }
 
-      var totalcolumn={
-          id:'total',
-          title:'Total',
-           editable:false,
-          getEditingValue: function(row,title) {
-            return row.attr(title);
-          },
-          setValue: function(row, newValue,title) {
-            row.attr(title,newValue);
-          }
-        };
-        self.scope.columns.push(totalcolumn);
+      // var totalcolumn={
+      //     id:'total',
+      //     title:'Total',
+      //      editable:false,
+      //     getEditingValue: function(row,title) {
+      //       return row.attr(title);
+      //     },
+      //     setValue: function(row, newValue,title) {
+      //       row.attr(title,newValue);
+      //     }
+      //   };
+      //   self.scope.columns.push(totalcolumn);
         self.scope.quarters.replace(quarters);
      
    if(type == 'DELETE'&& deletableRows != undefined && deletableRows.length >0){
@@ -138,10 +139,15 @@ var proposedonAccountGrid = Grid.extend({
         //alert('hi');
         //console.log(JSON.stringify(rows).attr());
 
-        var rows = getUiRowsFromResponse(quarters,data);
+        var returnValue = getUiRowsFromResponse(quarters,data);
+        var arr = $.unique(returnValue['BUNDLE_NAMES']);
+        self.scope.attr('bundleNames',arr.toString());
 
+        //alert(self.scope.attr('bundleNames'));
+
+        //$(self).trigger('change', arr.toString());
        // var footerRows = getFooterRows(quarters,rows);
-        self.scope.rows.replace(rows);
+        self.scope.rows.replace(returnValue['ROWS']);
        //  self.scope.footerrows.replace(footerRows);
       }); 
    }
@@ -203,34 +209,24 @@ var proposedonAccountGrid = Grid.extend({
           el.addClass('error');
           return;
         }
-
       var element = el.closest('td').find('.editing');
       var column = el.closest('td').data('column').column;
 
-     // console.log(el.val());
-      //console.log("val is "+value);
 
-      var row = el.closest('tr').data('row').row;
-      row.attr(column.title,value);
+      // var row = el.closest('tr').data('row').row;
+      // row.attr(column.title,value);
 
-      //console.log(row.attr());
 
-      //console.log(this.scope.quarters.length);
-
-      //column.setValue(row, value,column.title);
-
-      var quarters=this.scope.quarters;
-      var total = 0;
-      for(var i=0; i<quarters.length;i++){
-            total = Number(total)+Number(row.attr(quarters[i]));
-            //console.log(quarters[i]);
-            //console.log(row.attr(quarters[i]));
-          }
+      // var quarters=this.scope.quarters;
+      // var total = 0;
+      // for(var i=0; i<quarters.length;i++){
+      //       total = Number(total)+Number(row.attr(quarters[i]));
+   
+      //     }
       
 
-       row.attr('total',total);
-      //console.log('rows');
-      //console.log(this.scope.rows);
+      //  row.attr('total',total);
+
 
       //putting the rows to the page from grid component
       var mainRows={};
@@ -239,20 +235,20 @@ var proposedonAccountGrid = Grid.extend({
       $(this.element).trigger('save', mainRows);
       //Row got updated to the page to the grid component
      
-    }
+    },
+    "inserted": function(){ 
+      //alert(this.scope.attr('bundleNames'));
+        //$(this.element).trigger('bundNameChange', this.scope.attr('bundleNames'));
+      },
         
-  },
-  "inserted" : function()
-  {
-    //console.log("It is inside called >>>>>>>>>>>>>>");
   }
 });
 
 
 var getUiRowsFromResponse=function(quarters,data){
-  //console.log(JSON.stringify(data.onAccount.attr()));
   var onAccountDetails = data.onAccount.onAccountDetails
   var periodData = data.onAccount.fiscalPeriodAmtMap;
+  var bundleNames=[];
   var rows=[];
   for (var i=0;i<onAccountDetails.length;i++){
     var row = {};
@@ -268,13 +264,12 @@ var getUiRowsFromResponse=function(quarters,data){
     row['bundleName']=onAccountDetails[i].bundleName;
     row['docId']=onAccountDetails[i].docId;
     row['commentId']=onAccountDetails[i].commentId;
+    row['createdBy']=onAccountDetails[i].createdBy;
+    row['createdDate']=onAccountDetails[i].createdDate;
 
     for(var k=0;k<quarters.length;k++){
       var period = utils.getPeriodForQuarter(quarters[k]);
       var amtObject = periodData[period];
-      //console.log('FiscalPeriod-----'+period);
-      //console.log(periodData);
-      //console.log(amtObject);
       row[quarters[k]]=0;
       if(amtObject != undefined){
         var value = amtObject[onAccountDetails[i].id];
@@ -285,10 +280,16 @@ var getUiRowsFromResponse=function(quarters,data){
       }
     }
     row['total']=onAccountDetails[i].totalAmt;
+
+    bundleNames.push(onAccountDetails[i].bundleName);
+
     rows.push(row);
   }
   console.log(rows);
-  return rows;
+  var returnValue = new Array();
+  returnValue['ROWS']=rows;
+  returnValue['BUNDLE_NAMES']=bundleNames;
+  return returnValue;
 }
 
 var getFooterRows=function(quarters,rows){
