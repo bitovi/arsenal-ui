@@ -42,24 +42,18 @@ var GlobalParameterBar = Component.extend({
     }
   },
   events: {
-      'period-calendar onSelected': function (ele, event, val) {  
-         this.scope.attr('periodchoosen', val);
-          var which = $(ele).parent().find('input[type=text]').attr('id');
-         this.scope.appstate.attr(which, this.scope.periodchoosen);
+    'period-calendar onSelected': function (ele, event, val) {  
+        this.scope.attr('periodchoosen', val);
+        var which = $(ele).parent().find('input[type=text]').attr('id');
+        this.scope.appstate.attr(which, this.scope.periodchoosen);
         $(ele).parent().find('input[type=text]').val(this.scope.periodchoosen).trigger( "change" ); 
-      
         $(ele).closest('.calendarcls').find('.box-modal').hide();
         $(ele).blur();
-         },
-         '.updateperoid focus':function(el){ 
-          $(el).closest('.calendarcls').find('.box-modal').show().trigger( "focus" ); 
-         //$(el).closest('.calendarcls').find('.box-modal').is(':visible') ?
-          // $(el).closest('.calendarcls').find('.box-modal').hide():$(el).closest('.calendarcls').find('.box-modal').show();
-        },
-       /*'{document}  click':function(el,ev){ 
-          console.log(el);
-       },*/
-      'inserted': function(){
+     },
+     '.updateperoid focus':function(el){ 
+       $(el).closest('.calendarcls').find('.box-modal').show().trigger( "focus" ); 
+     },
+     'inserted': function(){
           document.getElementById("regionsFilter").selectedIndex = 2;
       },
      '#periodFrom  change': function(el, ev) {  
@@ -208,17 +202,18 @@ var showErrorMsg = function(periodFrom,periodTo,whichcomp){
 
         if(whichcomp=='from'){
           var _root = $('#periodTocontainer');
-          _root.find('#period-calendar .period li a').removeClass('disabled');
+          //_root.find('#periodTo').val('');
+          _root.find('.period-calendar .period li a').removeClass('disabled period-active');
           if(periodFrom.charAt(0)=='Q'){
-              _root.find('#period-calendar .q1 li').not(":first").find('a').addClass('disabled');
-              _root.find('#period-calendar .q2 li').not(":first").find('a').addClass('disabled');
-              _root.find('#period-calendar .q3 li').not(":first").find('a').addClass('disabled');
-              _root.find('#period-calendar .q4 li').not(":first").find('a').addClass('disabled');
+              _root.find('.period-calendar .q1 li').not(":first").find('a').addClass('disabled');
+              _root.find('.period-calendar .q2 li').not(":first").find('a').addClass('disabled');
+              _root.find('.period-calendar .q3 li').not(":first").find('a').addClass('disabled');
+              _root.find('.period-calendar .q4 li').not(":first").find('a').addClass('disabled');
            }else{
-             _root.find('#period-calendar .q1 li').first().find('a').addClass('disabled');
-             _root.find('#period-calendar .q2 li').first().find('a').addClass('disabled');
-             _root.find('#period-calendar .q3 li').first().find('a').addClass('disabled');
-             _root.find('#period-calendar .q4 li').first().find('a').addClass('disabled');
+             _root.find('.period-calendar .q1 li').first().find('a').addClass('disabled');
+             _root.find('.period-calendar .q2 li').first().find('a').addClass('disabled');
+             _root.find('.period-calendar .q3 li').first().find('a').addClass('disabled');
+             _root.find('.period-calendar .q4 li').first().find('a').addClass('disabled');
            }
        }
 
