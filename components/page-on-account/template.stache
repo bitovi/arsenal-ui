@@ -1,30 +1,40 @@
-<div class="col-lg-12 pageTitle" style="padding-left:40px;">
-    <h3>On Account </h3>
-</div>
-<div id="honAccount" class="overlay hide" ></div>
+	<div class="col-lg-12 pageTitle">
+	   
+	   <div class="col-md-3"><h3>On Account </h3></div> 
+	   
+	   <div class="col-md-9">
+	   		<div class="form-inline row" id="forminlineElements">
+		    	<div class="col-md-10 marginTop-10">
+		    		   	<div class="pull-right">
+					    	
+					    	<span class="pull-inline">Previous Quarter: </span>
+					    	<div id="calendarclsdiv" class="calendarcls pull-inline">
+					            <input type='text' id="copyQuarter" class="form-control  updateperoid pull-inline"/>
+					            <period-calendar  appstate="{appstate}"></period-calendar>
+					         </div>
+					         <button type="button" id="globalSearch" class="marginLeft-5 pull-inline btn btn-primary buttonSubmit btn-custom-small">Copy on Accounts</button>
 
-<div class="col-lg-12 claimContainer style="float:left; text-align:right; padding:0px;!important;">
-    <div id="invoiceTypeError" class="col-md-12" style="text-align:right;padding-top:5px;"></div>
-    <div class="form-inline" style="margin-left: 42%;" id="forminlineElements">
-    	<span style="float:left;">Previous Quarter:  </span>   
-    	<!--<select id="currencyType" class="form-control resizeBox">
-    		<option value="invoice">Invoice</option>
-    		<option value="accural">Accural</option>
-    	</select>-->
-    	<div id="calendarclsdiv" class="calendarcls" style="float:left;">
-            <input type='text' id="copyQuarter" class="form-control  updateperoid"/>
-            <period-calendar  appstate="{appstate}"></period-calendar>
-         </div>
+				    	 </div>
+		    	</div>
+		    	<div class="col-md-2 marginTop-10" id="searchDiv" >
+		    		<span class="pull-left">
+			    		<img src="resources/images/exportExcelIcon.png" class="" id="highChart">
+			        	<img src="resources/images/copyToClipboardIcon.png" class="" id="copyToClipboard">
+		        	</span>
+		    	</div>
+		    </div>
+	   	</div>
+	</div>
 
-    	<button type="button" id="globalSearch" class="btn btn-primary buttonSubmit btn-custom-small" style="margin-left:10px;float:left;">Copy on Accounts</button>
-    </div>
+	<div id="honAccount" class="overlay hide" ></div>
 
-    <div class="col-sm-3" id="searchDiv" style="float: right; display:inline;">
-        <img src="resources/images/exportExcelIcon.png" class="" id="highChart">
-        <img src="resources/images/copyToClipboardIcon.png" class="" id="copyToClipboard">
-    </div>
+	<div class="col-lg-12 claimContainer>
+	    <div id="invoiceTypeError" class="col-md-12"></div>
+	</div>
+
     <div class="col-lg-12">
 	    <ul id="myTabs" class="nav nav-tabs">
+	    	<li></li>
 		   <li class="active">
 		      <a id = "newonAccount" href="#NewonAccountDiv" data-toggle="tab">
 		         New On Account
@@ -38,28 +48,38 @@
 		   
 		   	<div class="tab-pane fade in active" id="NewonAccountDiv">
 		   		<div id="newonAccountGrid"></div>
-		       	<div class="col-lg-12 marTop20" id='newonAccountGridComps' style="display:none">
-		       		<div class="col-lg-6">
-		       			<div class="col-sm-6" id="uploadFile">
-							<rn-file-uploader></rn-file-uploader>
-        				</div>
-		       		</div>
-		       		<div class="col-lg-6">
-							<label class="col-sm-3" for="inputCountry">Bundle Name:</label>
-					        <div class="col-sm-3 requiredBar">
-                				<create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}"></create-pb>
-					        </div>
-		       		</div>
-		       		<div class="col-lg-6 usercommentsec"></div>
-		       		<div class="col-lg-4 usercommentsec">
-		       			<label for="inputEmail3" class="col-sm-4 control-label">User Comments: </label>
-		       		 	<textarea class="form-control" name="usercomments" id="usercomments" maxlength="1024"  can-value="usercommentsStore" style="resize:none"></textarea>
-						<img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "usercomments-err" style="display:none;"> 
-						<button type="button" id="propose" class="btn btn-primary buttonSubmit btn-custom-small pull-right" style="margin-right:25%">Propose</button>
+		   		
+			       	<div class="col-lg-12 marginTop-10 lightestGrey" id='newonAccountGridComps'>
+			       		
+			       		<div class="col-lg-5">
+			       			<span id="uploadFile">
+								<rn-file-uploader></rn-file-uploader>
+	        				</span>
+			       		</div>
+			       		
+			       		<div class="col-lg-3 marginTop-10">
+								<!-- <label class="text-right" for="inputCountry">Bundle Name:</label> -->
+								<span class="pull-inline col-sm-6 text-right" >Bundle Name:</span>
+						        <!-- <div class="col-sm-6 requiredBar text-left"> -->
+	                				<span class="pull-inline col-sm-6 "><create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}"></create-pb></span>
+						        <!-- </div> -->
+			       		</div>
+			       		
+			       		<div class="col-lg-4 marginTop-10">
+			       			<span class="col-sm-4 pull-inline">User Comments: 
+			       				<!-- <label for="inputEmail3" class="control-label text-right">User Comments: </label> -->
+			       			</span>
+			       			
+			       		 	<span class="col-sm-8 pull-inline" style="margin-left:-35px;">
+			       		 		<textarea class="form-control" name="usercomments" id="usercomments" maxlength="1024"  can-value="usercommentsStore" style="resize:none; width:325px;"></textarea>
+								<img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "usercomments-err" style="display:none;"> 
+			       		 	</span>
+			       		 	
+			       		 	<div class="col-sm-12">
+								<button type="button" id="propose" class="btn btn-primary buttonSubmit btn-custom-small pull-right">Propose</button>
+							</div>
+						</div>
 					</div>
-					<div class="col-lg-1"></div>
-		       </div>
-		      
 		   	</div>
 		  
 		   	<div class="tab-pane fade" id = "onAccountBalanceDiv">
@@ -67,8 +87,8 @@
 			</div>
 
 			<div class="tab-pane fade" id="proposedonAccountDiv">
-				<button type="button" id="proposedDelete" class="btn btn-primary buttonSubmit btn-custom-small pull-right" style="margin-left:10px;">Delete</button>
-				<button type="button" id="proposedEdit" class="btn btn-primary buttonSubmit btn-custom-small pull-right" style="margin-left:10px;">Edit</button>
+				<button type="button" id="proposedDelete" class="btn btn-primary buttonSubmit btn-custom-small pull-right">Delete</button>
+				<button type="button" id="proposedEdit" class="btn btn-primary buttonSubmit btn-custom-small pull-right">Edit</button>
 		   		<div id="proposedOnAccountGrid"></div>
 			</div>
 

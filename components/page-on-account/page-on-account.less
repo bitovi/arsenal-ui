@@ -96,53 +96,47 @@ rn-onaccount-balance-grid, rn-new-onaccount-grid{
 
 }
 
-  #myTabs{
-   
-  }
+
   
   #myTabs li{
-    background-color: #AFAFB4 ;
+    background-color: #F8F8F8;
     margin-left:10px;
-    border: #848484 solid 1px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-      }
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+
   #myTabs li a
   {
    text-decoration: none;
-   color: #F6F6F6;
+   color: #FFFFFF;
    margin-right: 0px;
-
+   background-color:#686868;
   }
+
   #myTabs li a:hover
   {
-   color:#000;
-    background-color: #E4E4E4;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-
+    color:#000;
+    background-color: #E8E8E8;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
   }
+
    #myTabs li.active
   { 
     border:0;
-
   }
+
   #myTabs li.active a
   {
     text-decoration: none;
     color:#000 !important;
-    background-color: #E4E4E4;
-     height: 43px;
-     border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-     
-
+    background-color: #F8F8F8;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
   }
+
   #usercomments{
-   height: 70px !important;
-    width: 40%;
-    margin-right:20px;
-    float:left;
+    height: 150px !important;
   }
   #propose{
     margin-top:20px;
@@ -156,11 +150,11 @@ rn-onaccount-balance-grid, rn-new-onaccount-grid{
   }
  
   #newonAccountGrid{
-      max-height: 300px;
+      max-height: 200px;
       overflow: auto;
   }
   #proposedOnAccountGrid{
-      max-height: 300px;
+      max-height: 200px;
       overflow: auto;
   }
   
@@ -170,8 +164,26 @@ rn-onaccount-balance-grid, rn-new-onaccount-grid{
   }
   .tab-content {
     padding: 10px;
-    padding-bottom: 1px;
     border: 1px solid #ddd;
     border-top: 0px;
+    background-color: #F8F8F8;
+    overflow: hidden;
   }
-  
+  .pull-inline {
+    display: inline-block;
+    float: left;
+    padding-left:5px;
+  }
+  .marginLeft-5{
+    margin-left:5px;
+  }
+  .lightestGrey{ 
+    background-color:#E8E8E8;
+  }
+  .marginTop-10{
+    margin-top:10px;
+  }
+
+  rn-file-uploader .outer{
+    width: 100% !important;
+  }
