@@ -165,6 +165,103 @@ frameDeleteRequest:function(rowsToBedeleted,comments){
      }
      return onAccountDeleteRequest;
 },
+frameUpdateRequest:function(request,onAccountRows,documents,comments,quarters){
+var onAccountUpdateRequest ={};
+
+    onAccountUpdateRequest.searchRequest = {};
+
+    onAccountUpdateRequest.onAccount={};
+    onAccountUpdateRequest.onAccount.bundleId="";
+    onAccountUpdateRequest.onAccount.bundleName="";
+
+ 
+    onAccountUpdateRequest.onAccount.onAccountDetails=[];
+    onAccountUpdateRequest.onAccount.comments=[];
+    onAccountUpdateRequest.onAccount.documents=[];
+
+    //console.log(onAccountRows.rows);
+    var rows = onAccountRows.rows;
+
+    //framing the onAccountDetails--start
+    if(rows != null && rows.length >0){
+        for(var i=0; i < rows.length;i++){
+                for(var k=0;k<quarters.length;k++)
+                {
+                    var onAccountDetails={};
+                    onAccountDetails.id=rows[i].id;
+                    onAccountDetails.bundleId=rows[i].bundleId;
+                    onAccountDetails.bundleName=rows[i].bundleName;
+                    onAccountDetails.currencyCode=rows[i].Currency;
+                    var period = this.getPeriodForQuarter(quarters[k]);
+                    onAccountDetails.fiscalPeriod=period+'';
+                    onAccountDetails.onAccountAmt=rows[i][quarters[k]];
+                    onAccountDetails.commentId=rows[i].commentId;
+                    onAccountDetails.countryId=rows[i].countryId;
+                    onAccountDetails.entityId=rows[i].entityId;
+                    onAccountDetails.entityName=rows[i].Licensor;
+                    onAccountDetails.contentGroupId=rows[i].contentGroupId;
+                    onAccountDetails.periodType="Q";
+                    onAccountDetails.createdBy=rows[i].createdBy;
+                    onAccountDetails.createdDate=rows[i].createdDate;
+                    onAccountDetails.modifiedBy=rows[i].createdBy;
+                    onAccountDetails.modifiedDate=Date.now();
+                    onAccountDetails.serviceTypeId=rows[i].serviceTypeId;
+                    onAccountUpdateRequest.onAccount.onAccountDetails.push(onAccountDetails);
+                }
+        }
+     }
+
+    if(comments != null && comments.length>0 ){
+        var commentobj={};
+        commentobj.comments=comments;
+        commentobj.createdBy="";
+        commentobj.createdDate=Date.now();
+        onAccountUpdateRequest.onAccount.comments.push(commentobj);    
+    }
+    
+    if(documents!= null && documents.length>0){
+        for(var i=0;i<documents.length;i++){
+            var documentsObj={};
+            documentsObj.fileName=documents[0].fileName;
+            documentsObj.location=documents[0].filePath;
+            documentsObj.createdDate=Date.now();
+            //documentsObj.deleteFlag=true;
+            onAccountUpdateRequest.onAccount.documents.push(documents);
+        }
+    }
+
+    console.log(JSON.stringify(onAccountUpdateRequest));
+
+    return onAccountUpdateRequest;
+    },
+frameRowsForCopyOnAcc:function(originalRows,data,quarters){
+var onAccountDetails = data.onAccount.onAccountDetails;
+    if(onAccountDetails != null && onAccountDetails.length>0){
+        var licensorName="";
+        for(var i=0; i<originalRows.length;i++){
+           if(originalRows[i].__isChild){
+                var periodMap = {};
+                for(var k=0;k<quarters.length;k++)
+                {
+                    originalRows[i][quarters[k]]=this.getPeriodValue(licensorName,originalRows[i].entityId,originalRows[i].currency,onAccountDetails,quarters[k]);
+                }
+           }else{
+            licensorName=originalRows[i].licensor;
+           }
+           
+        }
+    }
+    return originalRows;
+},
+getPeriodValue:function(licensorName,entityId,currency,onAccountDetails,quarter){
+    var fiscalPeriod=this.getPeriodForQuarter(quarter);
+    for(var i=0;i<onAccountDetails.length;i++){
+        if(licensorName == onAccountDetails[i].entityName && entityId==onAccountDetails[i].entityId 
+            && currency==onAccountDetails[i].currencyCode && fiscalPeriod == onAccountDetails[i].fiscalPeriod){
+            return onAccountDetails[i].onAccountAmt;
+        }
+    }
+},
 getRow:function(rows,id){
     for(var i=0;i<rows.length;i++){
         if(id == rows[i].id){

@@ -17,7 +17,7 @@ import utils from 'components/page-on-account/utils';
 import proposedOnAccountGrid from 'components/grid-proposed-onaccount/';
 import proposedOnAccount from 'models/onAccount/proposedOnAccount/';
 import UserReq from 'utils/request/';
-import newOnAccount from 'models/onAccount/newOnAccount/'
+import newOnAccountModel from 'models/onAccount/newOnAccount/'
 
 var page = Component.extend({
   tag: 'page-on-account',
@@ -98,8 +98,11 @@ var page = Component.extend({
             }else if(this.scope.tabsClicked=="NEW_ON_ACC"){
               //console.log("inside NEW_ON_ACC");
               $('#newonAccountGrid, #newonAccountGridComps').show();
+              this.scope.columns;
+                console.log(this.scope.columns);
                 $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
             }else if(this.scope.tabsClicked=="PROPOSED_ON_ACC"){
+              disableProposedSubmitButton(true);
               disableEditORDeleteButtons(true);
               $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={request}></rn-proposed-onaccount-grid>')({request}));
             }
@@ -131,7 +134,7 @@ var page = Component.extend({
         this.scope.tabsClicked="PROPOSED_ON_ACC";
         $('#newonAccountGrid, #onAccountBalanceDiv, #forminlineElements,#searchDiv').hide();
         $('#proposedonAccountDiv').show();
-
+        disableProposedSubmitButton(true);
        disableEditORDeleteButtons(true);
 
         //console.log(this.scope.tabsClicked);
@@ -169,11 +172,6 @@ var page = Component.extend({
                 $("#messageDiv").hide();
             },2000)
           }
-
-        req.attr('deletableRows',rows); 
-
-        $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
-
           },function(xhr){
             console.error("Error while loading: onAccount Details"+xhr);
           });
@@ -215,6 +213,8 @@ var page = Component.extend({
               }else{
                 this.scope.appstate.attr('globalSearch', true);
               }
+              req.attr('deletableRows',rows); 
+             $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
           }
           else{
             $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
@@ -229,12 +229,9 @@ var page = Component.extend({
                 rows.push(toBeAdded);
                }
             }
-
+            req.attr('deletableRows',rows); 
+            $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
           }
-
-        req.attr('deletableRows',rows); 
-
-        $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
 
           },function(xhr){
             console.error("Error while loading: onAccount Details"+xhr);
@@ -247,12 +244,62 @@ var page = Component.extend({
         console.log(this.scope.proposedOnAccountData.rows);
         req.attr('editableRows',this.scope.proposedOnAccountData.rows);
         var type = 'EDIT';
-        //console.log('Editing');
-        //console.log(this.scope.proposedOnAccountData.rows);
+        disableProposedSubmitButton(false);
+        disableEditORDeleteButtons(true);
         $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type}></rn-proposed-onaccount-grid>')({req,type}));
+      },
+      "#proposedUpdate click":function(el,ev){
+         var updatableRows = [];
+        var req = this.scope.request;
+        var type = 'EDIT';
+        var rows = this.scope.proposedOnAccountData.rows;
+        if(rows != undefined && rows.length >0){
+            for(var i=0;i < rows.length;i++){
+                  if(rows[i].__isChecked != undefined && rows[i].__isChecked){
+                    updatableRows.push(rows[i]);
+                    rows[i].attr('__isChecked',false);
+                  }
+                }
+         }
+
+         var updateRequest = utils.frameUpdateRequest(self.scope.request,updatableRows,self.scope.documents,self.scope.usercommentsStore,quarters);
+          proposedOnAccount.update(UserReq.formRequestDetails(updateRequest),"UPDATE",function(data){
+          console.log("Update response is "+JSON.stringify(data));
+            if(data["status"]=="SUCCESS"){
+               $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
+               $("#messageDiv").show();
+               setTimeout(function(){
+                  $("#messageDiv").hide();
+               },2000);
+
+               /* The below calls {scope.appstate} change event that gets the new data for grid*/
+               if(this.scope.appstate.attr('globalSearch')){
+                  this.scope.appstate.attr('globalSearch', false);
+                }else{
+                  this.scope.appstate.attr('globalSearch', true);
+                }
+                req.attr('editableRows',rows);
+                $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
+            }
+            else{
+              $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+              $("#messageDiv").show();
+              setTimeout(function(){
+                  $("#messageDiv").hide();
+              },2000)  
+              req.attr('editableRows',this.scope.proposedOnAccountData.rows);
+              $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
+            }
+          },function(xhr){
+            console.error("Error while loading: onAccount Details"+xhr);
+          });
       },
       'rn-new-onaccount-grid onSelected': function (ele, event, val) {  
               this.scope.attr('onAccountRows',val);
+      },
+      'rn-new-onaccount-grid rowsForCopyOnAccount': function (ele, event, val) {  
+             //alert('hi');
+             console.log(val);
       },
       'rn-file-uploader onSelected':function (ele, event, val){
             this.scope.attr('documents').replace(val);
@@ -266,10 +313,46 @@ var page = Component.extend({
             }
       },
       'rn-proposed-onaccount-grid save':function(ele, event, val){
-           //alert('came'); 
+          this.scope.attr('proposedOnAccountData',val); 
       },
       'rn-proposed-onaccount-grid bundNameChange':function(ele,event,val){
         alert(val);
+      },
+       "#copyOnAccount click":function(el,ev){
+        var self=this;
+        var quarterValueForCopy = $("#copyQuarter").val();
+       var rows=this.scope.onAccountRows.rows;
+       console.log(rows);
+       newOnAccountModel.findOne("",function(data){
+          console.log("Update response is "+JSON.stringify(data));
+            if(data["status"]=="SUCCESS"){
+               $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
+               $("#messageDiv").show();
+               setTimeout(function(){
+                  $("#messageDiv").hide();
+               },2000);
+
+               /* The below calls {scope.appstate} change event that gets the new data for grid*/
+               // if(this.scope.appstate.attr('globalSearch')){
+               //    this.scope.appstate.attr('globalSearch', false);
+               //  }else{
+               //    this.scope.appstate.attr('globalSearch', true);
+               //  }
+                var quarters=utils.getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
+                var updatedRows = utils.frameRowsForCopyOnAcc(rows,data,quarters);
+                var type="copy";
+                $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid rows={updatedRows} type={type} ></rn-new-onaccount-grid>')({updatedRows,type}));
+            }
+            else{
+              $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+              $("#messageDiv").show();
+              setTimeout(function(){
+                  $("#messageDiv").hide();
+              },2000)
+            }
+          },function(xhr){
+            console.error("Error while loading: onAccount Details"+xhr);
+          });  
       }
     },
     helpers: {
@@ -358,11 +441,19 @@ var disableEditORDeleteButtons = function(disable){
   if(disable){
        $("#proposedDelete").attr("disabled","disabled");
        $("#proposedEdit").attr("disabled","disabled");
+       //disableProposedSubmitButton(true);
   }else{
       $("#proposedDelete").removeAttr("disabled");
       $("#proposedEdit").removeAttr("disabled");
   }
 
 }
+var disableProposedSubmitButton = function(disable){
+  if(disable){
+       $("#proposedUpdate").attr("disabled","disabled");
+  }else{
+      $("#proposedUpdate").removeAttr("disabled");
+  }
 
+}
 export default page;

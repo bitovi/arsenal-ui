@@ -60,7 +60,7 @@ var GridWithEditing = Grid.extend({
       //putting the rows to the page from grid component
       var mainRows={};
       mainRows.rows=this.scope.rows;
-    
+      mainRows.quarters=quarters
       $(this.element).trigger('onSelected', mainRows);
       //Row got updated to the page to the grid component
      

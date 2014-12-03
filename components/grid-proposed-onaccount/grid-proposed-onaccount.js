@@ -135,6 +135,8 @@ var proposedonAccountGrid = Grid.extend({
       genObj.searchRequest["periodFrom"]=201403;
       genObj.searchRequest["periodTo"]=201403;
 
+//uncomment below for Domain
+      /*
       proposedOnAccount.findOne(UserReq.formRequestDetails(genObj)).then(function(data) {
         //alert('hi');
         //console.log(JSON.stringify(rows).attr());
@@ -150,6 +152,20 @@ var proposedonAccountGrid = Grid.extend({
         self.scope.rows.replace(returnValue['ROWS']);
        //  self.scope.footerrows.replace(footerRows);
       }); 
+*/
+      proposedOnAccount.findAll().then(function(data) {
+        //var returnValue = getUiRowsFromResponse(quarters,data);
+        //var arr = $.unique(returnValue['BUNDLE_NAMES']);
+        //self.scope.attr('bundleNames',arr.toString());
+
+        //alert(self.scope.attr('bundleNames'));
+
+        //$(self).trigger('change', arr.toString());
+       // var footerRows = getFooterRows(quarters,rows);
+        self.scope.rows.replace(data);
+       //  self.scope.footerrows.replace(footerRows);
+      }); 
+    
    }
    
 
@@ -229,17 +245,18 @@ var proposedonAccountGrid = Grid.extend({
 
 
       //putting the rows to the page from grid component
-      var mainRows={};
-      mainRows.rows=this.scope.rows;
+      var proposedOnAccountData={};
+      proposedOnAccountData.rows=this.scope.rows;
+      proposedOnAccountData.checkedRows=this.scope.checkedRows;
     
-      $(this.element).trigger('save', mainRows);
+      $(this.element).trigger('save', proposedOnAccountData);
       //Row got updated to the page to the grid component
      
     },
     "inserted": function(){ 
       //alert(this.scope.attr('bundleNames'));
         //$(this.element).trigger('bundNameChange', this.scope.attr('bundleNames'));
-      },
+      }
         
   }
 });
