@@ -144,8 +144,9 @@ var page = Component.extend({
             paymentBundleName = self.scope.paymentBundleName;
         }
         var createrequest = utils.frameCreateRequest(self.scope.request,self.scope.onAccountRows,self.scope.documents,self.scope.usercommentsStore,quarters,paymentBundleName);
-        
-        newOnAccount.create(UserReq.formRequestDetails(createrequest),function(data){
+        var request = UserReq.formRequestDetails(createrequest);
+        console.log('Request:'+JSON.stringify(request));
+        newOnAccount.create(request,function(data){
           console.log("Delete response is "+JSON.stringify(data));
           if(data["status"]=="SUCCESS"){
              $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
