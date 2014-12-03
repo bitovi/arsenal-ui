@@ -37,13 +37,13 @@ var onAccountCreateRequest ={};
 
     onAccountCreateRequest.searchRequest = {};
     onAccountCreateRequest.searchRequest.regionId=request.searchRequest.regionId;
-    onAccountCreateRequest.searchRequest.serviceTypeId="";
+    onAccountCreateRequest.searchRequest.serviceTypeId="1";
 
     onAccountCreateRequest.onAccount={};
     onAccountCreateRequest.onAccount.bundleName=paymentBundleNameText;
 
-    console.log('documents');
-    console.log(documents);
+    //console.log('documents');
+    //console.log(documents);
 
     onAccountCreateRequest.onAccount.onAccountDetails=[];
     onAccountCreateRequest.onAccount.comments=[];
@@ -54,36 +54,38 @@ var onAccountCreateRequest ={};
 
     //framing the onAccountDetails--start
     if(rows != null && rows.length >0){
+        var licensorName="";
         for(var i=0; i < rows.length;i++){
-            var licensorName="";
            if(rows[i].__isChild){
-                var onAccountDetails={};
-                onAccountDetails.entityId="";
-                onAccountDetails.entityName=licensorName;
-                onAccountDetails.contentGroupId="";
-                onAccountDetails.currencyCode=rows[i].currency;
-                onAccountDetails.periodType="Q";
-
-                // console.log(quarters);
-                // console.log(rows[i]);
+                // var onAccountDetails={};
+                // onAccountDetails.entityId=rows[i].entityId;
+                // onAccountDetails.entityName=licensorName;
+                // onAccountDetails.contentGroupId=request.searchRequest.contentGrpId[0];
+                // onAccountDetails.currencyCode=rows[i].currency;
+                // onAccountDetails.periodType="Q";
 
                 var periodMap = {};
                 for(var k=0;k<quarters.length;k++)
                 {
-                    // console.log(rows[i]);
-                    // console.log(quarters[k]);
-                    // console.log(rows[i][quarters[k]]);
-                    // console.log('Fiscal period:'+rows[i][quarters[k]]);
-                    periodMap[quarters[k]]=rows[i][quarters[k]];
+                    var onAccountDetails={};
+                    onAccountDetails.entityId=rows[i].entityId;
+                    onAccountDetails.entityName=licensorName;
+                    onAccountDetails.contentGroupId=request.searchRequest.contentGrpId[0];
+                    onAccountDetails.currencyCode=rows[i].currency;
+                    onAccountDetails.periodType="Q";
+                    var period = this.getPeriodForQuarter(quarters[k]);
+                    onAccountDetails.fiscalPeriod=period+'';
+                    onAccountDetails.onAccountAmt=rows[i][quarters[k]];
+                    onAccountCreateRequest.onAccount.onAccountDetails.push(onAccountDetails);
                 }
 
-                onAccountDetails.periodMap=periodMap;
-
+                //onAccountDetails.periodMap=periodMap;
+                //onAccountCreateRequest.onAccount.onAccountDetails.push(onAccountDetails);
            }else{
             // console.log(rows[i]['licensor']);
             licensorName=rows[i].licensor;
            }
-           onAccountCreateRequest.onAccount.onAccountDetails.push(onAccountDetails);
+           
         }
      }
 
@@ -122,7 +124,56 @@ getPeriodForQuarter:function(quarter){
     //console.log(quart);
     //console.log(periods);
     return  '20'+year+periods[quart];
+},
+frameDeleteRequest:function(rowsToBedeleted,comments){
+    var onAccountDeleteRequest ={};
+
+    onAccountDeleteRequest.searchRequest = {};
+
+    onAccountDeleteRequest.onAccount={};
+    onAccountDeleteRequest.onAccount.bundleId="";
+    onAccountDeleteRequest.onAccount.bundleName="";
+
+    onAccountDeleteRequest.onAccount.onAccountDetails=[];
+    onAccountDeleteRequest.onAccount.comments=[];
+    onAccountDeleteRequest.onAccount.documents=[];
+
+    if(rowsToBedeleted != null && rowsToBedeleted.length >0){
+        for(var i=0; i < rowsToBedeleted.length;i++){
+            var onAccountDetails={};
+            onAccountDetails.id=rowsToBedeleted[i].id;
+            onAccountDetails.bundleId=rowsToBedeleted[i].bundleId;
+            onAccountDetails.bundleName=rowsToBedeleted[i].bundleName;
+            onAccountDetails.currencyCode=rowsToBedeleted[i].Currency;
+            onAccountDetails.fiscalPeriod="";
+            onAccountDetails.onAccountAmt="";
+            onAccountDetails.commentId="";
+            onAccountDetails.countryId="";
+            onAccountDetails.entityName=rowsToBedeleted[i].Licensor;
+            onAccountDetails.entityId=rowsToBedeleted[i].entityId;
+            onAccountDetails.contentGroupId=rowsToBedeleted[i].contentGroupId;
+            onAccountDetails.periodType="Q";
+            onAccountDetails.createdBy=rowsToBedeleted[i].createdBy;
+            onAccountDetails.createdDate=rowsToBedeleted[i].createdDate;
+            onAccountDetails.modifiedBy=rowsToBedeleted[i].createdBy;
+            onAccountDetails.modifiedDate=Date.now();
+            onAccountDetails.serviceTypeId=rowsToBedeleted[i].serviceTypeId;
+            onAccountDetails.status="I";
+
+           onAccountDeleteRequest.onAccount.onAccountDetails.push(onAccountDetails);
+        }
+     }
+     return onAccountDeleteRequest;
+},
+getRow:function(rows,id){
+    for(var i=0;i<rows.length;i++){
+        if(id == rows[i].id){
+            return rows[i];
+        }
+    }
+    return null;
 }
+
     
 };
 

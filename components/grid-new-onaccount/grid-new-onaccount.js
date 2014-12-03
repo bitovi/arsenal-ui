@@ -67,7 +67,7 @@ var newOnAccountGrid = GridWithEditing.extend({
       genObj["licensorId"]=self.scope.request.searchRequest.entityId.attr().toString();
        Currency.findAll(UserReq.formRequestDetails(genObj)).then(function(data) {
        //console.log(JSON.stringify(data.attr()));
-       console.log(JSON.stringify(data.licensorCurrencies.attr()));
+      // console.log(JSON.stringify(data.licensorCurrencies.attr()));
        var rows = frameRows(data.licensorCurrencies,quarters);
         self.scope.rows.replace(rows);
       });
@@ -97,7 +97,8 @@ var frameRows=function(data,quarters){
     for(var k=0;k<currencies.length;k++){
       var childrow ={};
       childrow.licensor="";
-      childrow.currency=currencies[k].id;
+      childrow.entityId=currencies[k].id;
+      childrow.currency=currencies[k].value;  
       for(var z=0;z<quarters.length;z++){
           childrow[quarters[z]]=0;
         }

@@ -16,7 +16,26 @@ var proposedOnAccount = Model.extend({
   		dataType:'json',
   		contentType: 'application/json'
   	});
-}
+},
+update: function(params,type){
+    if(type=="Delete"){
+     return $.ajax({
+          url: RinsCommon.DOMAIN_SERVICE_URL+'onaccount/delete',
+          type: 'POST',
+          datatype:'json',
+          contentType: 'application/json; charset=utf-8',
+          data: JSON.stringify(params)
+        })
+    } else {
+      return $.ajax({
+          url: RinsCommon.DOMAIN_SERVICE_URL+'onaccount/update',
+          type: 'POST',
+          datatype:'json',
+          contentType: 'application/json; charset=utf-8',
+          data: JSON.stringify(params)
+        })
+    }
+  }
 }, {});
 
 export default proposedOnAccount;
