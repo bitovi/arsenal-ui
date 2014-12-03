@@ -1,4 +1,4 @@
-<div id='period-calendar'>
+<div class='period-calendar'>
 	<div class='box-modal'>
 		<div class="arrow_box"></div>
 		<div class='peroid-title'>Period Selector</div>

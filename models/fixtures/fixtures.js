@@ -15,3 +15,5 @@ fixture('GET /highchart', '/models/fixtures/highchart.json');
 fixture('GET /onAccountBalance', '/models/fixtures/onAccountBalance.json');
 
 fixture('GET /proposedOnAccount', '/models/fixtures/proposedOnAccount.json');
+
+fixture('GET /copyOnAccount', '/models/fixtures/newOnAccount.json');

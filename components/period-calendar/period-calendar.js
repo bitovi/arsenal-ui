@@ -14,9 +14,9 @@ var calander = Component.extend({
   		li.closest('.periods').find('.period li a').removeClass('period-active');
   		li.addClass('period-active');
   		if(li.find('span:first').text()==''){
-  			this.scope.updateValue = li.text()+'FY'+this.scope.year.slice(-2);
+  			 this.scope.updateValue = li.text()+'FY'+this.scope.year.slice(-2);
         }else{
-  			this.scope.updateValue = li.find('span:last').text()+'FY'+this.scope.year.slice(-2);
+  			 this.scope.updateValue = li.find('span:last').text()+'FY'+this.scope.year.slice(-2);
   		}
       $(this.element).trigger('onSelected', this.scope.updateValue);
       return false;
@@ -27,7 +27,7 @@ var calander = Component.extend({
       btn.closest('.box-modal').find('.periods .period li a').removeClass('period-active');
   		btn.closest('.topmenucontainer').find('.period-calendar-yearbtn').val('FY'+(parseInt(temp)+1));
   		if(new Date().getFullYear()-this.scope.previousYearLimit<=temp){
-  			$('#year').removeClass('disabled');	
+  			$('.period-calendar-leftbtn').removeClass('disabled');	
   		}
   	},
   	'.period-calendar-leftbtn click':function(btn,eve){   
@@ -45,18 +45,12 @@ var calander = Component.extend({
           $('.box-modal').hide();
       }
     },
-    '{document}  click':function(el,ev){ 
-     /* var $temp =ev.target;
-      var tar = $($temp).attr('class');
-          tar = tar.split(" "); 
-      var other = $('.' +tar[tar.length-1]).parent().attr('class')
-      if(tar[tar.length-1]!='updateperoid' && other!='flbtn' && other!=undefined && other!='topmenucontainer' && other!='box-modal' && other!='fl'){
-          $('.box-modal').hide();
-       }*/
-
-
-
+    '{document}  click':function(el,e){ 
+      if ($(e.target).closest(".calendarcls").length === 0) {
+        $(".box-modal").hide();
+      }
     }
   }
+ 
 });
 export default calander;
