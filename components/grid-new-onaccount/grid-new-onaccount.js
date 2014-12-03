@@ -29,9 +29,14 @@ var newOnAccountGrid = GridWithEditing.extend({
   },
   init: function(){
 
-    var self = this;
     
-     var quarters = utils.getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
+    },
+    events:{
+      'inserted': function () {  
+          
+          var self = this;
+    
+     var quarters = self.scope.request.quarters;
 
      for(var i=0;i<quarters.length;i++){
         var column={
@@ -63,18 +68,16 @@ var newOnAccountGrid = GridWithEditing.extend({
         self.scope.quarters.replace(quarters);
 
 
-      var genObj = {};
-      genObj["licensorId"]=self.scope.request.searchRequest.entityId.attr().toString();
-       Currency.findAll(UserReq.formRequestDetails(genObj)).then(function(data) {
-       //console.log(JSON.stringify(data.attr()));
-      // console.log(JSON.stringify(data.licensorCurrencies.attr()));
-       var rows = frameRows(data.licensorCurrencies,quarters);
-        self.scope.rows.replace(rows);
-      });
-    },
-    events:{
-      'inserted': function () {  
-      
+      // var genObj = {};
+      // genObj["licensorId"]=self.scope.request.searchRequest.entityId.attr().toString();
+      //  Currency.findAll(UserReq.formRequestDetails(genObj)).then(function(data) {
+      //  //console.log(JSON.stringify(data.attr()));
+      // // console.log(JSON.stringify(data.licensorCurrencies.attr()));
+      //  var rows = frameRows(data.licensorCurrencies,quarters);
+      //   self.scope.rows.replace(rows);
+      // });
+      self.scope.rows.replace(self.scope.request.rows);
+
         },
       "{rows} change": function(){
         $(this.element).trigger('rowsForCopyOnAccount', this.scope.rows);
@@ -82,39 +85,6 @@ var newOnAccountGrid = GridWithEditing.extend({
       }
     }
 });
-
-var frameRows=function(data,quarters){
-  var rows = new can.List();
-  if(data !=null){
-    for(var i=0;i<data.length;i++){
-      var row ={};
-      row.licensor=data[i].licensor;
-      row.currency="";
-      for(var j=0;j<quarters.length;j++){
-        row[quarters[j]]="";
-      }
-      row.__isChild=false;
-      row.total="";
-      rows.push(row);
-
-      var currencies = data[i].currencies;
-      for(var k=0;k<currencies.length;k++){
-        var childrow ={};
-        childrow.licensor="";
-        childrow.entityId=currencies[k].id;
-        childrow.currency=currencies[k].value;  
-        for(var z=0;z<quarters.length;z++){
-            childrow[quarters[z]]=0;
-          }
-          childrow.__isChild=true;
-          childrow.total=0;
-          rows.push(childrow);
-      }
-
-    }
-  }
-  return rows;
-}
 
 export default newOnAccountGrid;
 

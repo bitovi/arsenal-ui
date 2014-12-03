@@ -269,6 +269,38 @@ getRow:function(rows,id){
         }
     }
     return null;
+},
+frameRows:function(data,quarters){
+  var rows = new can.List();
+  if(data !=null){
+    for(var i=0;i<data.length;i++){
+      var row ={};
+      row.licensor=data[i].licensor;
+      row.currency="";
+      for(var j=0;j<quarters.length;j++){
+        row[quarters[j]]="";
+      }
+      row.__isChild=false;
+      row.total="";
+      rows.push(row);
+
+      var currencies = data[i].currencies;
+      for(var k=0;k<currencies.length;k++){
+        var childrow ={};
+        childrow.licensor="";
+        childrow.entityId=currencies[k].id;
+        childrow.currency=currencies[k].value;  
+        for(var z=0;z<quarters.length;z++){
+            childrow[quarters[z]]=0;
+          }
+          childrow.__isChild=true;
+          childrow.total=0;
+          rows.push(childrow);
+      }
+
+    }
+  }
+  return rows;
 }
 
     

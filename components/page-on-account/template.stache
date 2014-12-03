@@ -12,7 +12,7 @@
 					            <input type='text' id="copyQuarter" class="form-control  updateperoid pull-inline"/>
 					            <period-calendar  appstate="{appstate}"></period-calendar>
 					         </div>
-					         <button type="button" id="globalSearch" class="marginLeft-5 pull-inline btn btn-primary buttonSubmit btn-custom-small">Copy on Accounts</button>
+					         <button type="button" id="copyOnAccount" class="marginLeft-5 pull-inline btn btn-primary buttonSubmit btn-custom-small">Copy on Accounts</button>
 
 				    	 </div>
 		    	</div>

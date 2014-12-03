@@ -18,6 +18,7 @@ import proposedOnAccountGrid from 'components/grid-proposed-onaccount/';
 import proposedOnAccount from 'models/onAccount/proposedOnAccount/';
 import UserReq from 'utils/request/';
 import newOnAccountModel from 'models/onAccount/newOnAccount/'
+import Currency from 'models/common/currency/';
 
 var page = Component.extend({
   tag: 'page-on-account',
@@ -33,7 +34,8 @@ var page = Component.extend({
     usercommentsStore:"",
     paymentBundleNameText:"",
     proposedOnAccountData:{},
-    bundleNamesForDisplay:""
+    bundleNamesForDisplay:"",
+    newOnAccountRows:[]
 
   },
   init: function(){
@@ -83,25 +85,35 @@ var page = Component.extend({
           }
       },
       '{scope.appstate} change': function() {
+        var self = this;
 
-        this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
+        self.scope.attr("localGlobalSearch",self.scope.appstate.attr('globalSearch'));
 
-        var request = frameRequest(this.scope.appstate); 
+        var request = frameRequest(self.scope.appstate); 
 
-        this.scope.attr('request',request);
+        self.scope.attr('request',request);
+        var quarters = utils.getQuarter(request.searchRequest.periodFrom,request.searchRequest.periodTo);
 
-        if(this.scope.appstate.attr('globalSearch')){
+        if(self.scope.appstate.attr('globalSearch')){
 
-            if(this.scope.tabsClicked=="ON_ACC_BALANCE"){
+            if(self.scope.tabsClicked=="ON_ACC_BALANCE"){
                //var request = frameRequest(this.scope.appstate);   
                $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={request}></rn-onaccount-balance-grid>')({request}));
-            }else if(this.scope.tabsClicked=="NEW_ON_ACC"){
+            }else if(self.scope.tabsClicked=="NEW_ON_ACC"){
               //console.log("inside NEW_ON_ACC");
               $('#newonAccountGrid, #newonAccountGridComps').show();
-              this.scope.columns;
-                console.log(this.scope.columns);
-                $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
-            }else if(this.scope.tabsClicked=="PROPOSED_ON_ACC"){
+                
+                 var genObj = {};
+                 //alert(request.searchRequest.entityId.toString());
+                genObj["licensorId"]=request.searchRequest.entityId.toString();
+                 Currency.findAll(UserReq.formRequestDetails(genObj)).then(function(data) {
+                  request.quarters=quarters;
+                 var rows = utils.frameRows(data.licensorCurrencies,quarters);
+                 request.rows=rows;
+                  self.scope.newOnAccountRows.replace(rows);
+                  $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
+                });
+            }else if(self.scope.tabsClicked=="PROPOSED_ON_ACC"){
               disableProposedSubmitButton(true);
               disableEditORDeleteButtons(true);
               $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={request}></rn-proposed-onaccount-grid>')({request}));
@@ -321,8 +333,8 @@ var page = Component.extend({
        "#copyOnAccount click":function(el,ev){
         var self=this;
         var quarterValueForCopy = $("#copyQuarter").val();
-       var rows=this.scope.onAccountRows.rows;
-       console.log(rows);
+       var rows=this.scope.newOnAccountRows;
+       //console.log(rows);
        newOnAccountModel.findOne("",function(data){
           console.log("Update response is "+JSON.stringify(data));
             if(data["status"]=="SUCCESS"){
@@ -340,8 +352,12 @@ var page = Component.extend({
                //  }
                 var quarters=utils.getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
                 var updatedRows = utils.frameRowsForCopyOnAcc(rows,data,quarters);
-                var type="copy";
-                $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid rows={updatedRows} type={type} ></rn-new-onaccount-grid>')({updatedRows,type}));
+
+                var request = self.scope.request;
+                request.quarters=quarters;
+                 request.rows=updatedRows;
+                  self.scope.newOnAccountRows.replace(updatedRows);
+                  $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
             }
             else{
               $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
