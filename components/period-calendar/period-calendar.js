@@ -45,18 +45,12 @@ var calander = Component.extend({
           $('.box-modal').hide();
       }
     },
-    '{document}  click':function(el,ev){ 
-     /* var $temp =ev.target;
-      var tar = $($temp).attr('class');
-          tar = tar.split(" "); 
-      var other = $('.' +tar[tar.length-1]).parent().attr('class')
-      if(tar[tar.length-1]!='updateperoid' && other!='flbtn' && other!=undefined && other!='topmenucontainer' && other!='box-modal' && other!='fl'){
-          $('.box-modal').hide();
-       }*/
-
-
-
+    '{document}  click':function(el,e){ 
+      if ($(e.target).closest(".calendarcls").length === 0) {
+        $(".box-modal").hide();
+      }
     }
   }
+ 
 });
 export default calander;

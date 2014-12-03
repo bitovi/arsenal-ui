@@ -226,10 +226,10 @@ var showErrorMsg = function(periodFrom,periodTo,whichcomp){
           var from = periodFrom,to =  periodTo;
         if(from!=undefined &&  to!=undefined){
             from = from.split('FY');
-            to = to.split('FY');  //console.log(from[0].substring(1,3)>to[0].substring(1,3));
+            to = to.split('FY');   //console.log(from[1].slice(-2)+'--------'+ to[1].slice(-2));
                if(from[1].slice(-2) > to[1].slice(-2)) showFlg=true;
-               if(from[1].slice(-2) > to[1].slice(-2) && from[0].charAt(0)!=to[0].charAt(0))showFlg=true;
-               if(from[1].slice(-2) > to[1].slice(-2) && from[0].substring(1,3) > to[0].substring(1,3))showFlg=true;
+               if(from[1].slice(-2) >= to[1].slice(-2) && from[0].charAt(0)!=to[0].charAt(0) )showFlg=true;
+               if(from[1].slice(-2) >= to[1].slice(-2) && parseInt(from[0].substring(1,3)) > parseInt(to[0].substring(1,3)))showFlg=true;
            
         }
         if(showFlg==true){ $('.period-invalid').show(); return false;}else {showFlg=false; $('.period-invalid').hide();}
