@@ -20,7 +20,7 @@ import ContentType from 'models/common/content-type/';
 import Country from 'models/common/country/';
 import Licensor from 'models/common/licensor/';
 import PricingModels from 'models/pricing-models/';
-
+import PricingModelsValidation from './pricingmodels.validation';
 
 import Comments from 'components/multiple-comments/';
 
@@ -53,7 +53,9 @@ var page = Component.extend({
     editstate:true,
     selectedPriceModel:"",
     multipleComments : [],
-    usercommentsStore:""
+    usercommentsStore:"",
+    addEditUIProperty:{},
+    showbottomSection:false
   },
   init:function(){
       var self = this;
@@ -79,179 +81,18 @@ var page = Component.extend({
   		var self = this;
           $('#pmform').on('init.form.bv', function(e, data) {
               }).on('init.field.bv', function(e, data) {
-              }).bootstrapValidator({
-              container: 'popover',
-              feedbackIcons: {
-                  valid: 'valid-rnotes',
-                  invalid: 'alert-rnotes',
-                  validating: 'glyphicon glyphicon-refreshas'
-              },
-              fields: {
-                  regions: {
-                      group:'.regions',
-                      validators: {
-                          notEmpty: {
-                              message: 'Region is mandatory'
-                          }
-                          
-                      }
-                },
-                country :{
-                   validators: {
-                        notEmpty: {
-                            message: 'country is mandatory'
-                        }
-                        
-                    }
-                },
-                entity :{
-                    validators: {
-                        notEmpty: {
-                            message: 'Entity is mandatory'
-                        }
-                        
-                    }
-                },
-                pricingmodeltype :{
-                    validators: {
-                        notEmpty: {
-                            message: 'Pricing Model is mandatory'
-                        }
-                        
-                    }
-                },
-                modelname :{
-                    validators: {
-                        notEmpty: {
-                            message: 'Model name is mandatory'
-                        }
-                        
-                    }
-                },
-                usercommentsdiv :{
-                    group:'#multipleComments',
-                    validators: {
-                        notEmpty: {
-                            message: 'Comment is mandatory'
-                        }
-                        
-                    }
-                },
-                'baseRate[]': {
-                      group:'.baseRate',
-                      validators: {
-                          notEmpty: {
-                              message: 'Baserate is mandatory'
-                          },
-                          numeric: {
-                            separator:'.',
-                            message: 'Please provide numeric value for baserate'
-                          }
-                      }
-                  },
-                'minima[]': {
-                      group:'.minima',
-                      validators: {
-                          notEmpty: {
-                              message: 'Minima is mandatory'
-                          },
-                          numeric: {
-                            separator:'.',
-                            message: 'Please provide numeric value for minima'
-                          }
-                      }
-                  },
-                'listenerMinima[]': {
-                      group:'.listenerMinima',
-                      validators: {
-                          notEmpty: {
-                              message: 'Listener Hours Minima is mandatory'
-                          },
-                          numeric: {
-                            separator:'.',
-                            message: 'Please provide numeric value for Listener Hours Minima'
-                          }
-                      }
-                  },
-                  'discount[]': {
-                      group:'.discount',
-                      validators: {
-                          notEmpty: {
-                              message: 'Discount is mandatory'
-                          },
-                          numeric: {
-                            separator:'.',
-                            message: 'Please provide numeric value for Discount'
-                          }
-                      }
-                  },
-                  'description[]': {
-                      group:'.description',
-                      validators: {
-                          notEmpty: {
-                              message: 'Description is mandatory'
-                          }
-                          
-                      }
-                  },
-                  'from[]': {
-                      group:'.from',
-                      validators: {
-                          notEmpty: {
-                              message: 'From is mandatory'
-                          },
-                          numeric: {
-                            separator:'.',
-                            message: 'Please provide numeric value for From'
-                          }
-                      }
-                  },
-                  'to[]': {
-                      group:'.to',
-                      validators: {
-                          notEmpty: {
-                              message: 'To is mandatory'
-                          },
-                          numeric: {
-                            separator:'.',
-                            message: 'Please provide numeric value for To'
-                          }
-                      }
-                  },
-                  'minimatrack[]': {
-                      group:'.minimatrack',
-                      validators: {
-                          notEmpty: {
-                              message: 'Minima is mandatory'
-                          },
-                          numeric: {
-                            separator:'.',
-                            message: 'Please provide numeric value for Minima'
-                          }
-                      }
-                  }
-            
-
-          }
-          }).on('error.field.bv', function(e, data) {
+              }).bootstrapValidator(PricingModelsValidation).on('error.field.bv', function(e, data) {
               $('*[data-bv-icon-for="'+data.field +'"]').popover('show');
           }).on('success.field.bv', function(e, data) {
           }).on('success.form.bv', function(e) {
               e.preventDefault();
           });
-  		
-       
-    },
+  	 },
     "#fetch click":function(){
-
-       $("#modelSummaryCont").removeClass("modelsummaryInVisible").addClass("modelsummaryVisible").removeClass("col-sm-0").addClass("col-sm-4");
-       $("#modelDetailCont").removeClass("col-sm-12").addClass("col-sm-8");
-
-       $("#countrypm").attr("readonly", true);
-       $("#entity").attr("readonly", true);
-        
-        var self = this;
-        var genObj = {region:self.scope.attr("regions"),reqType:'summary'};
+      var self = this;
+      self.scope.addEditUIProperty.attr("country", true);
+      self.scope.addEditUIProperty.attr("entity", true);
+      var genObj = {region:self.scope.attr("regions"),reqType:'summary'};
         
         self.scope.pricingModelList.replace([]); 
         self.scope.attr("editstate", true);
@@ -268,7 +109,7 @@ var page = Component.extend({
                 },function(xhr){
                 /*Error condition*/
               }).then(function(){
-                $('#bottomsection').removeClass('bottomparthide').addClass('bottompartshow');
+                self.scope.attr("showbottomSection", true);
                 $('#pricingmodelGrid tbody tr:nth-child(1)').trigger('click').addClass("selected");
               });
 
@@ -385,18 +226,15 @@ var page = Component.extend({
     "#addbasemodeldel click":function(el){
         var self = this;
         var selrow = el.closest('tr')[0].rowIndex;
+
         $.when(selrow).then(function(){
-                    var $option   = $("#baseModelTable").find('[name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
+                    var $option   = $("#baseModelTable tbody tr:nth-child("+selrow+")").find('[name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
                             $option.each(function(index){
-                              $('#pmform').bootstrapValidator('addField', $(this));
+                              $('#pmform').bootstrapValidator('removeField', $(this));
                             });
                     }).then(function(){
-                      self.scope.attr("baseModelParamList").push(tempgrid)
+                      self.scope.attr("baseModelParamList").removeAttr(selrow-1);
                     });
-
-
-        self.scope.attr("baseModelParamList").removeAttr(selrow-1);
-
     },
     "#addtrack click":function(){
         var self = this;
@@ -420,8 +258,14 @@ var page = Component.extend({
     "#trackdel click":function(el){
         var self = this;
         var selrow = el.closest('tr')[0].rowIndex;
-        self.scope.attr("trackCountMinimaList").removeAttr(selrow-1);
-
+         $.when(selrow).then(function(){
+                    var $option = $("#trackCount tbody tr:nth-child("+selrow+")").find('[name="description[]"], [name="from[]"], [name="to[]"], [name="minimatrack[]"]');
+                            $option.each(function(index){
+                              $('#pmform').bootstrapValidator('removeField', $(this));
+                            });
+                    }).then(function(){
+                       self.scope.attr("trackCountMinimaList").removeAttr(selrow-1);
+                    });
     },
     "#regions change":function(el){
       if(el[0].value != ""){
@@ -433,23 +277,11 @@ var page = Component.extend({
       }
     },
     "#add click":function(){
-       
-      
-       $("#modelSummaryCont").addClass("modelsummaryInVisible").removeClass("col-sm-4").addClass("col-sm-0");
-       $("#modelDetailCont").removeClass("col-sm-8").addClass("col-sm-12");
-
-       $("#countrypm").attr("readonly", false);
-       $("#entity").attr("readonly", false);
-
-
-      $('#bottomsection').removeClass('bottomparthide').addClass('bottompartshow');
-
-
-
-
-
-       var self = this;
-       self.scope.attr("editstate", false);
+        var self = this;  
+      self.scope.attr("showbottomSection", true);
+      self.scope.attr("editstate", false);
+       self.scope.addEditUIProperty.attr("country", false);
+       self.scope.addEditUIProperty.attr("entity", false);
        self.scope.attr("entity", "");
        self.scope.attr("country", "");
        self.scope.attr("trackCountMinimaList").replace([]); 
@@ -466,7 +298,7 @@ var page = Component.extend({
        return false;
     },
     "#addCancel click":function(){
-      $('#bottomsection').removeClass('bottompartshow').addClass('bottomparthide');
+      this.scope.attr("showbottomSection", false);
     },
     "#editCancel click":function(){
        
@@ -525,7 +357,30 @@ var page = Component.extend({
                 /*Error condition*/
               });
             }
-    }
+    },
+    helpers:{
+          controlVisSummary: function(){
+              if(this.attr("editstate")){
+                  return "modelsummaryVisible col-sm-4"
+              }else{
+                  return "modelsummaryInVisible col-sm-0"
+              }
+            },
+          controlVisDetails: function(){
+               if(this.attr("editstate")){
+                  return "col-sm-8"
+              }else{
+                  return "col-sm-12"
+              }
+            },
+          showBottomPart: function(){
+              if(this.attr("showbottomSection")){
+                return "bottompartshow"
+              }else{
+                return "bottomparthide"
+              }
+            }
+        }    
 });
 
 export default page;

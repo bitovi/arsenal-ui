@@ -13,7 +13,7 @@ var pricingModels = Model.extend({
 			  		contentType: 'application/json'
 		  		});
  		}
- 		else if(params.reqType == 'details'){
+ 		else if(params.reqType === 'details'){
  				delete params.reqType;
  				return $.ajax({
 					url: RinsCommon.UI_SERVICE_URL +'getPricingModelDetails',
@@ -23,7 +23,7 @@ var pricingModels = Model.extend({
 		  			contentType: 'application/json'
 		  		});
 			}
-		else if(params.reqType == 'modeltype'){
+		else if(params.reqType === 'modeltype'){
 			delete params.reqType;
 			return $.ajax({
 		 		url: RinsCommon.UI_SERVICE_URL +'getPricingModelTypes',
