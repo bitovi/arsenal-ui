@@ -1,0 +1,117 @@
+import _ from 'lodash';
+
+import fixture from 'can/util/fixture/';
+
+var reconIngest = {
+  "status": "SUCCESS",
+  "responseCode": "0000",
+  "responseText": "Records returned successfully.",
+  "reconStatsDetails": [
+    {
+      "entityId": 1,
+      "entityName": "CELAS",
+      "periodType": "P",
+      "status": "Not Ingested",
+      "rejectable": false,
+      "invFileName": "INVOICE_FILE.dat",
+      "countryId": "AUT",
+      "invFileType": "INBOUND",
+      "dtlHdrId": 1,
+      "dtlHdrType": "PDF",
+      "ccy": "EUR",
+      "contType": "Music",
+      "fiscalPeriod": 201406,
+      "ccidId": 101,
+      "pubfee": 68,
+      "reconAmt": 10,
+      "liDispAmt": 10,
+      "copConAmt": 8,
+      "unMatchedAmt": 9,
+      "badLines": "0",
+      "rcvdDate": "2014-11-12",
+      "invFileId": 1002,
+      "liDispFileId": 1003,
+      "liDispFileType": "OUTBOUND",
+      "badFileId": 1001,
+      "badFileType": "OUTBOUND",
+      "selfInvoice": "N"
+    },
+    {
+      "entityId": 1,
+      "entityName": "CELAS",
+      "periodType": "P",
+      "status": "Not Ingested",
+      "rejectable": false,
+      "invFileName": "INVOICE_FILE.dat",
+      "countryId": "AUT",
+      "invFileType": "INBOUND",
+      "dtlHdrId": 1,
+      "dtlHdrType": "PDF",
+      "ccy": "EUR",
+      "contType": "Music",
+      "fiscalPeriod": 201406,
+      "ccidId": 1010,
+      "pubfee": 68,
+      "reconAmt": 10,
+      "liDispAmt": 10,
+      "copConAmt": 8,
+      "unMatchedAmt": 9,
+      "badLines": "0",
+      "rcvdDate": "2014-11-12",
+      "invFileId": 1002,
+      "liDispFileId": 1003,
+      "liDispFileType": "OUTBOUND",
+      "badFileId": 1001,
+      "badFileType": "OUTBOUND",
+      "selfInvoice": "N"
+    },
+    {
+      "entityId": 1,
+      "entityName": "CELAS",
+      "periodType": "P",
+      "status": "Not Ingested",
+      "rejectable": false,
+      "invFileName": "INVOICE_FILE.dat",
+      "countryId": "AUT",
+      "invFileType": "INBOUND",
+      "dtlHdrId": 1,
+      "dtlHdrType": "PDF",
+      "ccy": "EUR",
+      "contType": "Music",
+      "fiscalPeriod": 201406,
+      "ccidId": 100,
+      "pubfee": 68,
+      "reconAmt": 10,
+      "liDispAmt": 10,
+      "copConAmt": 8,
+      "unMatchedAmt": 9,
+      "badLines": "0",
+      "rcvdDate": "2014-11-12",
+      "invFileId": 1002,
+      "liDispFileId": 1003,
+      "liDispFileType": "OUTBOUND",
+      "badFileId": 1001,
+      "badFileType": "OUTBOUND",
+      "selfInvoice": "N"
+    }
+  ],
+  "summary": {
+    "totalPubFee": 0,
+    "totalRecon": 0,
+    "totalLi": 0,
+    "totalCopCon": 0,
+    "totalUnMatched": 0,
+    "totalBadLines": 0
+  }
+}
+
+
+fixture('POST detailInvoice/fetch', function(req, res, headers) {
+  /*  res(
+  200,
+  _.filter(invoices, {region: req.data.region})
+  );*/
+  res(
+    200, reconIngest
+  );
+});

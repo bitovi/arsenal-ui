@@ -2,13 +2,13 @@
 
     <div id="content"><!-- Tabs - Start-->
         <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-            <li class="active"><a href="#ingested" data-toggle="tab"  >Ingested</a></li>
+            <li class="active"><a href="#ingested" data-toggle="tab"  >Ingested {{siz}}</a></li>
             <li><a href="#incomingDetails" data-toggle="tab"  >Incoming Details</a></li>
 
 
 						<div class="row">
 							<div class="col-xs-1">
-								<button  class="btn btn-primary buttonSubmit btn-custom-small" type="button"  id="btnReject" {{isRejectBtn 'Incoming Details'}}>Reject</button>&nbsp;
+								<button  class="btn btn-primary buttonSubmit btn-custom-small" type="button"  id="btnReject" {{isRejectBtn 0}}>Reject</button>&nbsp;
 							</div>
 							<div class="col-xs-1">
 								<button type="button" class="btn btn-primary buttonSubmit btn-custom-small" id="btnHolesReport">Holes Report</button>&nbsp;
@@ -23,18 +23,17 @@
 							<div class="col-xs-2"  style="float: right;">
 										<input type="text" class="form-control" id="tokenSearch" >
 							</div>
+
 						</div>
 
         </ul>
 
         <div id="my-tab-content" class="tab-content">
             <div class="tab-pane active" id="ingested">
-                <h4> Building ...... </h4>
-
+                <rn-recon-grid columns="{ingestGridColumns}" rows="{ingestList}" ></rn-recon-grid>
             </div>
             <div class="tab-pane" id="incomingDetails">
-                <h4> Building ......</h4>
-
+              <rn-recon-grid columns="{detailGridColumns}" rows="{ingestList}" ></rn-recon-grid>
             </div>
         </div>
     </div> <!-- Tabs - End-->
