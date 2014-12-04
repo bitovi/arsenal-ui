@@ -120,7 +120,7 @@ var getUiRowsFromResponse=function(quarters,data){
     row['contentGroupId']=onAccountDetails[i].contentGroupId;
     row['serviceTypeId']=onAccountDetails[i].serviceTypeId;
 
-    console.log(quarters);
+    //console.log(quarters);
 
     for(var k=0;k<quarters.length;k++){
       var period = utils.getPeriodForQuarter(quarters[k]);
@@ -141,7 +141,7 @@ var getUiRowsFromResponse=function(quarters,data){
     row['cashAdjust']= onAccountDetails[i].entityCAAmt;
     rows.push(row);
   }
-  console.log(rows);
+  //console.log(rows);
   return rows;
 }
 

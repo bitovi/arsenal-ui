@@ -234,16 +234,17 @@ var onAccountUpdateRequest ={};
 
     return onAccountUpdateRequest;
     },
-frameRowsForCopyOnAcc:function(originalRows,data,quarters){
+frameRowsForCopyOnAcc:function(originalRows,data,quarters,period){
 var onAccountDetails = data.onAccount.onAccountDetails;
     if(onAccountDetails != null && onAccountDetails.length>0){
         var licensorName="";
         for(var i=0; i<originalRows.length;i++){
            if(originalRows[i].__isChild){
                 var periodMap = {};
+                var value = this.getPeriodValue(licensorName,originalRows[i].entityId,originalRows[i].currency,onAccountDetails,period);
                 for(var k=0;k<quarters.length;k++)
                 {
-                    originalRows[i][quarters[k]]=this.getPeriodValue(licensorName,originalRows[i].entityId,originalRows[i].currency,onAccountDetails,quarters[k]);
+                    originalRows[i][quarters[k]]=value;
                 }
            }else{
             licensorName=originalRows[i].licensor;
@@ -255,12 +256,14 @@ var onAccountDetails = data.onAccount.onAccountDetails;
 },
 getPeriodValue:function(licensorName,entityId,currency,onAccountDetails,quarter){
     var fiscalPeriod=this.getPeriodForQuarter(quarter);
+    var value =0;
     for(var i=0;i<onAccountDetails.length;i++){
         if(licensorName == onAccountDetails[i].entityName && entityId==onAccountDetails[i].entityId 
             && currency==onAccountDetails[i].currencyCode && fiscalPeriod == onAccountDetails[i].fiscalPeriod){
             return onAccountDetails[i].onAccountAmt+'';
         }
     }
+    return value;
 },
 getRow:function(rows,id){
     for(var i=0;i<rows.length;i++){

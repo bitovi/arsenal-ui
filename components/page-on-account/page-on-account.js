@@ -50,12 +50,15 @@ var page = Component.extend({
        setTimeout(function(){
           $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid emptyrows="{emptyrows}"></rn-new-onaccount-grid>')({emptyrows:true}));
        }, 10);
+          disablePropose(true);
     	},
       'period-calendar onSelected': function (ele, event, val) {  
          this.scope.attr('periodchoosen', val);
-          var which = $(ele).parent().find('input[type=text]').attr('id');
-         this.scope.appstate.attr(which, this.scope.periodchoosen);
-        $(ele).parent().find('input[type=text]').val(this.scope.periodchoosen).trigger( "change" ); ;
+        var which = $(ele).parent().find('input[type=text]').attr('id');
+        this.scope.appstate.attr(which, this.scope.periodchoosen);
+        $(ele).parent().find('input[type=text]').val(this.scope.periodchoosen).trigger( "change" ); 
+        $(ele).closest('.calendarcls').find('.box-modal').hide();
+        $(ele).blur();
          },
         '.updateperoid focus':function(el){ 
         $(el).closest('.calendarcls').find('.box-modal').is(':visible') ?
@@ -120,6 +123,9 @@ var page = Component.extend({
                  var rows = utils.frameRows(data.licensorCurrencies,quarters);
                  request.rows=rows;
                   self.scope.newOnAccountRows.replace(rows);
+                  if(rows != null && rows.length >0){
+                    disablePropose(false);
+                  }
                   $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
                 });
             }else if(self.scope.tabsClicked=="PROPOSED_ON_ACC"){
@@ -167,6 +173,9 @@ var page = Component.extend({
         //console.log(this.scope.tabsClicked);
       },
       "#propose click":function(el,ev){
+
+        // please remove this for integrating with domain service
+        /*
         var self = this;
         var quarters = utils.getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
         var paymentBundleName = $("#newPaymentBundle").val();
@@ -185,7 +194,7 @@ var page = Component.extend({
                 $("#messageDiv").hide();
              },2000);
 
-             /* The below calls {scope.appstate} change event that gets the new data for grid*/
+             // The below calls {scope.appstate} change event that gets the new data for grid
              if(this.scope.appstate.attr('globalSearch')){
                 this.scope.appstate.attr('globalSearch', false);
               }else{
@@ -202,7 +211,9 @@ var page = Component.extend({
           },function(xhr){
             console.error("Error while loading: onAccount Details"+xhr);
           });
-
+          */
+          $("#messageDiv").html("<label class='successMessage'>Invoices created successfully </label>");
+          $("#propose").attr("disabled","disabled");
 
       },
       "#proposedDelete click":function(el,ev){
@@ -276,51 +287,57 @@ var page = Component.extend({
         disableEditORDeleteButtons(true);
         $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type}></rn-proposed-onaccount-grid>')({req,type}));
       },
-      "#proposedUpdate click":function(el,ev){
-         var updatableRows = [];
-        var req = this.scope.request;
-        var type = 'EDIT';
-        var rows = this.scope.proposedOnAccountData.rows;
-        if(rows != undefined && rows.length >0){
-            for(var i=0;i < rows.length;i++){
-                  if(rows[i].__isChecked != undefined && rows[i].__isChecked){
-                    updatableRows.push(rows[i]);
-                    rows[i].attr('__isChecked',false);
+      "#submitPOA click":function(el,ev){
+        //Remove this for domain services
+        /*
+           var updatableRows = [];
+          var req = this.scope.request;
+          var type = 'EDIT';
+          var rows = this.scope.proposedOnAccountData.rows;
+          if(rows != undefined && rows.length >0){
+              for(var i=0;i < rows.length;i++){
+                    if(rows[i].__isChecked != undefined && rows[i].__isChecked){
+                      updatableRows.push(rows[i]);
+                      rows[i].attr('__isChecked',false);
+                    }
                   }
-                }
-         }
+           }
 
-         var updateRequest = utils.frameUpdateRequest(self.scope.request,updatableRows,self.scope.documents,self.scope.usercommentsStore,quarters);
-          proposedOnAccount.update(UserReq.formRequestDetails(updateRequest),"UPDATE",function(data){
-          console.log("Update response is "+JSON.stringify(data));
-            if(data["status"]=="SUCCESS"){
-               $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
-               $("#messageDiv").show();
-               setTimeout(function(){
-                  $("#messageDiv").hide();
-               },2000);
+           var updateRequest = utils.frameUpdateRequest(self.scope.request,updatableRows,self.scope.documents,self.scope.usercommentsStore,quarters);
+            proposedOnAccount.update(UserReq.formRequestDetails(updateRequest),"UPDATE",function(data){
+            console.log("Update response is "+JSON.stringify(data));
+              if(data["status"]=="SUCCESS"){
+                 $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
+                 $("#messageDiv").show();
+                 setTimeout(function(){
+                    $("#messageDiv").hide();
+                 },2000);
 
-               /* The below calls {scope.appstate} change event that gets the new data for grid*/
-               if(this.scope.appstate.attr('globalSearch')){
-                  this.scope.appstate.attr('globalSearch', false);
-                }else{
-                  this.scope.appstate.attr('globalSearch', true);
-                }
-                req.attr('editableRows',rows);
+                 //The below calls {scope.appstate} change event that gets the new data for grid
+                 if(this.scope.appstate.attr('globalSearch')){
+                    this.scope.appstate.attr('globalSearch', false);
+                  }else{
+                    this.scope.appstate.attr('globalSearch', true);
+                  }
+                  req.attr('editableRows',rows);
+                  $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
+              }
+              else{
+                $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                $("#messageDiv").show();
+                setTimeout(function(){
+                    $("#messageDiv").hide();
+                },2000)  
+                req.attr('editableRows',this.scope.proposedOnAccountData.rows);
                 $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
-            }
-            else{
-              $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-              $("#messageDiv").show();
-              setTimeout(function(){
-                  $("#messageDiv").hide();
-              },2000)  
-              req.attr('editableRows',this.scope.proposedOnAccountData.rows);
-              $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
-            }
-          },function(xhr){
-            console.error("Error while loading: onAccount Details"+xhr);
-          });
+              }
+            },function(xhr){
+              console.error("Error while loading: onAccount Details"+xhr);
+            });
+          */
+          $("#messageDiv").html("<label class='successMessage'>Invoices Updated successfully </label>");
+          $("#submitPOA").attr("disabled","disabled");
+
       },
       'rn-new-onaccount-grid onSelected': function (ele, event, val) {  
               this.scope.attr('onAccountRows',val);
@@ -367,7 +384,7 @@ var page = Component.extend({
                //    this.scope.appstate.attr('globalSearch', true);
                //  }
                 var quarters=utils.getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
-                var updatedRows = utils.frameRowsForCopyOnAcc(rows,data,quarters);
+                var updatedRows = utils.frameRowsForCopyOnAcc(rows,data,quarters,quarterValueForCopy);
 
                 var request = self.scope.request;
                 request.quarters=quarters;
@@ -487,5 +504,15 @@ var disableProposedSubmitButton = function(disable){
       $("#proposedUpdate").removeAttr("disabled");
   }
 
+}
+var disablePropose=function(disable){
+    if(disable){
+        $("#propose").attr("disabled","disabled");
+        $("#paymentBundleNames").attr("disabled","disabled");
+        $("#submitPOA").attr("disabled","disabled");
+    }else{
+      $("#propose").removeAttr("disabled");
+       $("#paymentBundleNames").removeAttr("disabled");
+    }
 }
 export default page;

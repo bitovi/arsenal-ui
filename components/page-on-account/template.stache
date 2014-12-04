@@ -9,7 +9,7 @@
 					    	
 					    	<span class="pull-inline">Previous Quarter: </span>
 					    	<div id="calendarclsdiv" class="calendarcls pull-inline">
-					            <input type='text' id="copyQuarter" class="form-control  updateperoid pull-inline"/>
+					            <input type='text' id="copyQuarter" class="form-control  updateperoid "/>
 					            <period-calendar  appstate="{appstate}"></period-calendar>
 					         </div>
 					         <button type="button" id="copyOnAccount" class="marginLeft-5 pull-inline btn btn-primary buttonSubmit btn-custom-small">Copy on Accounts</button>
