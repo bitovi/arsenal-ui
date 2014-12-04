@@ -243,5 +243,46 @@ console.log('Footer rows are :'+JSON.stringify(footerRows));
 return footerRows;
 }
 
+var prepareFooterRows=function(regionalCurrencyTotal,localCurrencyTotal,quarters){
+  var footerRows=[];
+  var row ={};
+  var currencies= Object.keys(regionalCurrencyTotal);
+
+//Framing Regional Currency Total Row
+  row["Licensor"]= "Total";
+  row["Currency"]= currencies[0];
+  row["ContentType"]= "";
+  var periodMap = regionalCurrencyTotal[currencies[0]];
+  for(var i=0;i<quarters.length;i++){
+    row[quarters[i]]=periodMap[quarters[i]];
+  }
+  row["onAccountBalance"]=totalMap["ON_ACC_BALANCE"];
+  row["cashAdjust"]=totalMap["CASH_ADJUSTMENTS"];
+  row["__isChild"]=false;
+  row["tfooter"]=true;
+  footerRows.push(row);
+
+//Framing local currency total Row
+
+  var localCurrencies = Object.keys(localCurrencyTotal);
+  for(var k=0; k<localCurrencies.length;k++){
+    periodMap = regionalCurrencyTotal[currencies[k]];
+    var childRow ={};
+    childRow["Licensor"]= "";
+    childRow["Currency"]=localCurrencies[k];
+    childRow["ContentType"]= "";
+      for(var i=0;i<quarters.length;i++){
+        childRow[quarters[i]]=periodMap[quarters[i]];
+      }
+    childRow["onAccountBalance"]=periodMap["ON_ACC_BALANCE"];
+    childRow["cashAdjust"]=periodMap["CASH_ADJUSTMENTS"];
+    childRow["__isChild"]=true;
+    childRow["tfooter"]=true;
+    footerRows.push(childRow);
+  }
+
+console.log('Footer rows are :'+JSON.stringify(footerRows));
+return footerRows;
+}
 
 export default OnAccountBalance;
