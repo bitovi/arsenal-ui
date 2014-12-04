@@ -18,15 +18,69 @@
   & > table {
     width: 100%;
     border-spacing: 0;
-
+    border-radius:0;
     color: @font-color;
   }
 
+  thead:first-child, tbody:first-child {
+      & > tr:first-of-type {
+        td:first-child, th:first-child {
+          border-top-left-radius: 0px;
+        }
+        td:last-child, th:last-child {
+          border-top-right-radius: 0px;
+        }
+      }
+  
+  }
+  tbody:last-child, tfoot:last-child {
+      & > tr:last-of-type {
+        td, th {
+          height : 1.5625em;
+          backgorund: !important;
+
+        }
+
+        td:first-child, th:first-child {
+          border-bottom-left-radius: 0px;
+          border-bottom: 1px solid #ffffff !important;
+        }
+
+        td:last-child, th:last-child {
+          border-bottom-right-radius: 0px;
+        }
+      }
+    }
+
+
+ thead {
+
+      tr {
+        th {
+            text-align: right;
+            padding-right: 0.625em;
+            height: 1.5em;
+            padding-top: .3em;
+            padding-bottom: .3em;
+        }
+        .currency {
+            text-align: right;
+            height: 1.5em;
+            width: 1.5em !important;
+            padding-right: 0.625em !important;
+            padding-left: 0.625em !important;
+        }
+      }
+
+    
+
+
+    }
+
+
   thead, tfoot {
     background: @header-background;
-
     color: white;
-
     th, td {
       text-align: left;
       font-weight: normal;
@@ -49,48 +103,61 @@
 
   tbody {
 
-    tr {
+    background: #F6F6F6+ !important;
 
-      background-color: @parent-background;
+      tr {
 
-      &.child {
-        background-color: @child-background;
-      }
+        height : 1.5625em;
 
-      &.selected {
-        background-color: @selected-background;
-      }
 
-      &:hover {
-        outline: @row-hover-outline;
-      }
+        td {
 
-      td {
-        padding: .33em .5em;
-        height: 1.5em;
+          padding-right: 0.5625em;
+      padding-left : 0.5625em;
+      padding-top  : 0em;
+      padding-bottom : 0em;
 
-        border-bottom: @light-border;
+          border-right: 1px solid hsl(0, 0%, 75%);
 
-        &:first-child {
-          border-left: @light-border;
+          /* border-bottom: 1px solid #ffffff !important; */
+
+          border-bottom: 1px solid #FFFFFF !important;
+
+          /*&:first-child {
+            border-left: 1px solid hsl(0, 0%, 75%);
+          }
+          &:last-child {
+            border-right: 1px solid hsl(0, 0%, 75%);
+          }*/
+
+          text-align:right;
+
         }
+
+        /*&:first-child td {
+          border-top: none;
+        }
+
         &:last-child {
-          border-right: @light-border;
+            border-bottom : none;
+        }*/
+
+        .currency  {
+
+          text-align:left;
+          width: 1.5em !important;
+
+        }
+
+      }
+
+      tr.child {
+        display: none;
+
+        &.visible {
+          display: table-row;
         }
       }
-
-      &:first-child td {
-        border-top: none;
-      }
-    }
-
-    tr.child {
-      display: none;
-
-      &.visible {
-        display: table-row;
-      }
-    }
   }
 
   span.open-toggle,
@@ -107,6 +174,10 @@
     transform: rotate(90deg);
   }
 
+}
+.child.visible{
+  background:#fff;
+  border:1px solid #bfbfbf;
 }
 
 /* Mix them under the appropriate tag like this: */
