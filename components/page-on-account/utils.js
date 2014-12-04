@@ -37,7 +37,7 @@ var onAccountCreateRequest ={};
 
     onAccountCreateRequest.searchRequest = {};
     onAccountCreateRequest.searchRequest.regionId=request.searchRequest.regionId;
-    onAccountCreateRequest.searchRequest.serviceTypeId="1";
+    onAccountCreateRequest.searchRequest.serviceTypeId=request.searchRequest.serviceTypeId;
 
     onAccountCreateRequest.onAccount={};
     onAccountCreateRequest.onAccount.bundleName=paymentBundleNameText;
@@ -72,7 +72,7 @@ var onAccountCreateRequest ={};
                     onAccountDetails.entityName=licensorName;
                     onAccountDetails.contentGroupId=request.searchRequest.contentGrpId[0];
                     onAccountDetails.currencyCode=rows[i].currency;
-                    onAccountDetails.periodType="Q";
+                    onAccountDetails.periodType=this.getOnAccountPeriodType();
                     var period = this.getPeriodForQuarter(quarters[k]);
                     onAccountDetails.fiscalPeriod=period+'';
                     onAccountDetails.onAccountAmt=rows[i][quarters[k]];
@@ -152,7 +152,7 @@ frameDeleteRequest:function(rowsToBedeleted,comments){
             onAccountDetails.entityName=rowsToBedeleted[i].Licensor;
             onAccountDetails.entityId=rowsToBedeleted[i].entityId;
             onAccountDetails.contentGroupId=rowsToBedeleted[i].contentGroupId;
-            onAccountDetails.periodType="Q";
+            onAccountDetails.periodType=this.getOnAccountPeriodType();
             onAccountDetails.createdBy=rowsToBedeleted[i].createdBy;
             onAccountDetails.createdDate=rowsToBedeleted[i].createdDate;
             onAccountDetails.modifiedBy=rowsToBedeleted[i].createdBy;
@@ -200,7 +200,7 @@ var onAccountUpdateRequest ={};
                     onAccountDetails.entityId=rows[i].entityId;
                     onAccountDetails.entityName=rows[i].Licensor;
                     onAccountDetails.contentGroupId=rows[i].contentGroupId;
-                    onAccountDetails.periodType="Q";
+                    onAccountDetails.periodType=this.getOnAccountPeriodType();
                     onAccountDetails.createdBy=rows[i].createdBy;
                     onAccountDetails.createdDate=rows[i].createdDate;
                     onAccountDetails.modifiedBy=rows[i].createdBy;
@@ -258,7 +258,7 @@ getPeriodValue:function(licensorName,entityId,currency,onAccountDetails,quarter)
     for(var i=0;i<onAccountDetails.length;i++){
         if(licensorName == onAccountDetails[i].entityName && entityId==onAccountDetails[i].entityId 
             && currency==onAccountDetails[i].currencyCode && fiscalPeriod == onAccountDetails[i].fiscalPeriod){
-            return onAccountDetails[i].onAccountAmt;
+            return onAccountDetails[i].onAccountAmt+'';
         }
     }
 },
@@ -301,6 +301,9 @@ frameRows:function(data,quarters){
     }
   }
   return rows;
+},
+getOnAccountPeriodType:function(){
+    return "Q";
 }
 
     

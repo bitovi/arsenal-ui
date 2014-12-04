@@ -7,14 +7,14 @@ import _less from './page-on-account.less!';
 
 import stache from 'can/view/stache/';
 
-import OnAccountGrid from 'components/grid-onaccount-balance/';
+import OnAccountGrid from './grid-onaccount-balance/';
 import Grid from 'components/grid/';
-import newOnAccountGrid from 'components/grid-new-onaccount/';
+import newOnAccountGrid from './grid-new-onaccount/';
 import fileUpload from 'components/file-uploader/';
 
 import createpb from 'components/create-pb/';
 import utils from 'components/page-on-account/utils';
-import proposedOnAccountGrid from 'components/grid-proposed-onaccount/';
+import proposedOnAccountGrid from './grid-proposed-onaccount/';
 import proposedOnAccount from 'models/onAccount/proposedOnAccount/';
 import UserReq from 'utils/request/';
 import newOnAccountModel from 'models/onAccount/newOnAccount/'
@@ -32,6 +32,7 @@ var page = Component.extend({
     tabsClicked:"@",
     paymentBundleName:"@",
     usercommentsStore:"",
+    proposedOnAccountUserCommentsStore:"",
     paymentBundleNameText:"",
     proposedOnAccountData:{},
     bundleNamesForDisplay:"",
@@ -39,14 +40,16 @@ var page = Component.extend({
 
   },
   init: function(){
-	 //console.log('inside Claim Review');
    $("#searchDiv").hide();
    this.scope.tabsClicked="NEW_ON_ACC";
-	 
+	  
     },
     events: {
     	"inserted": function(){ 
        $("#searchDiv").hide();
+       setTimeout(function(){
+          $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid emptyrows="{emptyrows}"></rn-new-onaccount-grid>')({emptyrows:true}));
+       }, 10);
     	},
       'period-calendar onSelected': function (ele, event, val) {  
          this.scope.attr('periodchoosen', val);
@@ -69,11 +72,17 @@ var page = Component.extend({
               var newBundleNameRequest = {"paymentBundle":{}};
               var bundleRequest = {};
 
-              bundleRequest["region"] = regId['value'];
-              bundleRequest["periodFrom"] = "201303";
-              bundleRequest["periodTo"] = "201304";
-              //bundleRequest["bundleType"] =lineType;
-              bundleRequest["bundleType"] ="ON_ACCOUNT";
+              var periodFrom = self.scope.appstate.attr('periodFrom');
+              var periodTo = self.scope.appstate.attr('periodTo');
+              
+
+              // bundleRequest["regionId"] = regId['id'];
+              // bundleRequest["periodFrom"] = "201303";
+              // bundleRequest["periodTo"] = "201304";
+                bundleRequest.regionId = regId['id'];
+                bundleRequest.periodFrom = utils.getPeriodForQuarter(periodFrom);
+                bundleRequest.periodTo=utils.getPeriodForQuarter(periodTo);
+                bundleRequest.bundleType ="ON_ACCOUNT";
 
               newBundleNameRequest["paymentBundle"] = bundleRequest;
               //console.log("New Bundle name request is "+JSON.stringify(newBundleNameRequest));
@@ -116,6 +125,7 @@ var page = Component.extend({
             }else if(self.scope.tabsClicked=="PROPOSED_ON_ACC"){
               disableProposedSubmitButton(true);
               disableEditORDeleteButtons(true);
+              $("#submitPOA").attr("disabled","disabled");
               $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={request}></rn-proposed-onaccount-grid>')({request}));
             }
 
@@ -127,10 +137,14 @@ var page = Component.extend({
       "#onAccountBalance click":function(el, ev){
         ev.preventDefault();
         this.scope.tabsClicked="ON_ACC_BALANCE";
-        $('#newonAccountGrid, #newonAccountGridComps, #proposedonAccountDiv, #forminlineElements,#searchDiv').hide();
+        $('#newonAccountGrid, #newonAccountGridComps, #proposedonAccountDiv,#proposeOnAccountGridComps, #forminlineElements,#searchDiv').hide();
         $('#onAccountBalanceDiv').show();
         //$("#forminlineElements").hide();
         $('rn-onaccount-balance-grid tbody tr').css("outline","0px solid #f1c8c8");
+        setTimeout(function(){
+          //$('#onAccountBalanceDiv').html(stache('<rn-onaccount-balance-grid emptyrows="{emptyrows}"></rn-onaccount-balance-grid>')({emptyrows:true}));
+          $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid emptyrows={emptyrows}></rn-onaccount-balance-grid>')({emptyrows:true}));
+       }, 10);
 
         //console.log(this.scope.tabsClicked);
       },
@@ -138,16 +152,17 @@ var page = Component.extend({
         ev.preventDefault();
         this.scope.tabsClicked="NEW_ON_ACC";
         $('#newonAccountGrid, #newonAccountGridComps, #forminlineElements').show();
-        $('#onAccountBalanceDiv, #proposedonAccountDiv,#searchDiv').hide();
+        $('#onAccountBalanceDiv, #proposedonAccountDiv,#proposeOnAccountGridComps,#searchDiv').hide();
         //console.log(this.scope.tabsClicked);
       },
       "#proposedonAccount click":function(el, ev){
         ev.preventDefault();
         this.scope.tabsClicked="PROPOSED_ON_ACC";
         $('#newonAccountGrid, #onAccountBalanceDiv, #forminlineElements,#searchDiv').hide();
-        $('#proposedonAccountDiv').show();
+        $('#proposedonAccountDiv,#proposeOnAccountGridComps').show();
         disableProposedSubmitButton(true);
        disableEditORDeleteButtons(true);
+       $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
 
         //console.log(this.scope.tabsClicked);
       },
@@ -252,6 +267,7 @@ var page = Component.extend({
 
       },
       "#proposedEdit click":function(el,ev){
+          $('#submitPOA').removeAttr("disabled");
           var req = this.scope.request;
         console.log(this.scope.proposedOnAccountData.rows);
         req.attr('editableRows',this.scope.proposedOnAccountData.rows);
@@ -328,7 +344,7 @@ var page = Component.extend({
           this.scope.attr('proposedOnAccountData',val); 
       },
       'rn-proposed-onaccount-grid bundNameChange':function(ele,event,val){
-        alert(val);
+        //alert(val);
       },
        "#copyOnAccount click":function(el,ev){
         var self=this;
@@ -382,9 +398,9 @@ var page = Component.extend({
             bundleNamesRequest.bundleSearch["serviceTypeId"] = serTypeId['id'];
 
           if(typeof(regId)=="undefined")
-            bundleNamesRequest.bundleSearch["region"] = "2";
+            bundleNamesRequest.bundleSearch["regionId"] = "";
           else
-            bundleNamesRequest.bundleSearch["region"] = regId['id'];
+            bundleNamesRequest.bundleSearch["regionId"] = regId['id'];
             
           bundleNamesRequest.bundleSearch["type"] = "ON_ACCOUNT";
           
