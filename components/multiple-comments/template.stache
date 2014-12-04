@@ -1,0 +1,6 @@
+<div id="multipleCommentsContainer">
+<div id="{{divid}}" class="form-group multiple-comments-parent">
+</div>
+
+<img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "{{textareaid}}-err" style="display:none;"> 
+</div>
