@@ -1,0 +1,24 @@
+{
+"status": "SUCCESS",
+"responseCode": "0000",
+"responseText": "OnAccounts found",
+"onAccount": {
+"onAccountDetails": [ {
+"id": 3,
+"entityId": 10,
+"entityName": "AEPI",
+"currencyCode": "EUR",
+"contentGroupId": 1,
+"contentGroupName": "Music",
+"periodType": "Q",
+"fiscalPeriod": 201403,
+"onAccountAmt": 6000,
+"userCAAmt": 0,
+"entityCAAmt": 100,
+"serviceTypeId": 1,
+"createdDate": 1415916927000,
+"modifiedDate": 1416360405000
+}
+]
+}
+}
