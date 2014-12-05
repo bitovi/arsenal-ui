@@ -9,7 +9,6 @@
 
         tag: 'rn-file-uploader',
         template: template,
-
         scope: {
                   fileList : new can.List(),
                   displayMessage:"display:none",
@@ -17,27 +16,20 @@
                   isAnyFileLoaded : can.compute(function() { return this.fileList.attr('length') > 0; })
 
               },
-        init: function() {
-
-        },
         helpers: {
                 convertToKB: function (size) {
                   return (Math.max(size/1024, 0.1).toFixed(1)  + 'KB');
                 }
         },
         events: {
-
-                 '.uploadFiles  click': function() {
+                 '.uploadFiles click': function() {
                     this.element.find('input[type=file]').click();
                     this.scope.attr("fileUpload" , true);
-
                   },
-
                  '.fileSelect change' : function(el, ev) {
                     var files = el[0].files;
                     this.scope.fileList.push.apply(this.scope.fileList, files);
                   },
-
                  '.submitFiles click': function() {
                     var self = this.scope;
                     var size = this.scope.attr("fileList").length;
@@ -45,33 +37,18 @@
                     self.attr("fileUpload" , true);
                     self.attr("displayMessage","display:block");
                     self.attr("fileList").splice(0,size);
-
                     },function(xhr) {
                       console.error("Error while loading:"+xhr);
                     });
                   },
-
                 '.cancelUpload click': function() {
                     var size = this.scope.attr("fileList").length;
                     this.scope.attr("fileList").splice(0,size);
                 },
-
                 '.filelist li click': function(el, ev) {
-                    var liText = el.text();
-                    var index = liText.indexOf("(");
-                    var name = '';
-                    var selectedIndex = '';
-                    if(index != -1) {
-                      name = liText.substring(0,index);
-                      this.scope.attr("fileList").forEach(function(file, index) {
-                          if(file.name == name.trim()) {
-                            selectedIndex = index;
-                          }
-                      });
-                      this.scope.attr("fileList").splice(selectedIndex,1);
-                    }
-                  }
-
+                    var selectedIndex = this.scope.attr('fileList').indexOf(el.data('file'));
+                    this.scope.attr("fileList").splice(selectedIndex,1);
+                }
             }
       })
 
