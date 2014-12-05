@@ -25,9 +25,11 @@
     "bootstrap": "~3.2.0",
     "funcunit": "~2.0.4",
     "qunit": "~1.15.0",
-    "lodash": "~2.4.1"
-  },
-  "resolutions": {
-    "jquery": "~2.1.1"
+    "lodash": "~2.4.1",
+    "highcharts.com": "~4.0.4",
+    "highcharts-release": "~4.0.4",
+    "draggable-legend": "https://rawgithub.com/highslide-software/draggable-legend/master/draggable-legend.js",
+    "jquery-tokeninput": "~1.7.0",
+    "bootstrap-multiselect": "~0.9.10"
   }
 }

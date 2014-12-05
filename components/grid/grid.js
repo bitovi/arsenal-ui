@@ -77,8 +77,44 @@ var Grid = Component.extend({
           childRowsAreVisible = false;
       can.__reading(this.rows, 'change'); // TODO: figure out if there's a better way to do this.
                                           // Note for others - don't use can.__reading yourself!
-
       return _.map(this.rows, function(row) {
+        var isChild = isRowAChild(row);
+
+        // if the row is a parent and isn't open, its children shouldn't be visible -
+        // this flag is only true for the children of an open parent row
+        if(!isChild) {
+          childRowsAreVisible = isRowOpen(row);
+        }
+
+        return options.fn({
+          row: row,
+          isOpen: isChild ? false : isRowOpen(row), // child rows are never open
+          isChild: isChild,
+          isVisible: isChild ? childRowsAreVisible : true // parent rows are always visible
+        });
+      });
+    },
+    footerRows: function(options) {
+      // By default, rows are a bit more complex.
+      // We have to account for child rows being invisible when their parents aren't open.
+      //console.log("Footer Rows are "+JSON.stringify(this.footerrows.attr()));
+      //console.log("Footer Rows are "+JSON.stringify(this.footerrows));
+      var isRowAChild = function(row) {
+        // by default, just looking for __isChild = true
+        return !!row.attr('__isChild');
+      };
+
+      var isRowOpen = function(row) {
+        // by default, just looking for __isOpen = true
+        return !!row.attr('__isOpen');
+      };
+
+      var out = [],
+          childRowsAreVisible = false,
+          scope = this;
+
+      this.footerrows.attr('length');
+      return _.map(this.footerrows, function(row) {
         var isChild = isRowAChild(row);
 
         // if the row is a parent and isn't open, its children shouldn't be visible -
@@ -108,7 +144,12 @@ var Grid = Component.extend({
       // By default, if column has a value function, run the row through that.
       // Otherwise, return the value of the property on the row named for the column ID.
       return _.isFunction(column.contents) ? column.contents.call(this, row) : row.attr(column.attr('id')).toString();
+    },
+    getColumnLength: function(options){
+      //console.log("column length is "+ JSON.stringify(this.attr("columns").length));
+      return this.attr("columns").length;
     }
+    
   },
 
   events: {
@@ -117,6 +158,7 @@ var Grid = Component.extend({
       row.attr('__isOpen', !row.attr('__isOpen'));
     },
     '.open-toggle-all click': function(el, ev) {
+      ev.stopPropagation();
       var allOpen = _.every(this.scope.rows, row => row.__isChild ? true : row.__isOpen);
       can.batch.start();
       // open parent rows if they are closed; close them if they are open

@@ -1,34 +1,99 @@
-<ul class="parameters">
-  <li id="store-type">
-    <span class="parameter-name">Store Type:</span>
-    <select>
-      {{#each storeTypes}}
-      <option {{isSelected 'storeType' id}} {{data 'storeType'}}>{{name}}</option>
-      {{/each}}
-    </select>
-  </li>
-  <li id="region">
-    <span class="parameter-name">Region:</span>
-    <select>
-      {{#each regions}}
-      <option {{isSelected 'region' id}} {{data 'region'}}>{{name}}</option>
-      {{/each}}
-    </select>
-  </li>
-  <li id="country">
-    <span class="parameter-name">Country:</span>
-    <select>
-      {{#each countries}}
-      <option {{isSelected 'country' id}} {{data 'country'}}>{{name}}</option>
-      {{/each}}
-    </select>
-  </li>
-  <li id="licensor">
-    <span class="parameter-name">Licensor:</span>
-    <select>
-      {{#each licensors}}
-      <option {{isSelected 'licensor' id}} {{data 'licensor'}}>{{name}}</option>
-      {{/each}}
-    </select>
-  </li>
-</ul>
+<div class="form-inline globalFilterContainer">
+  <ul class="parameters">
+   <li id="periodFrom">
+      <div class="box">
+        <span class="parameter-name">Period From:</span>
+        <select id="periodFromFilter" class="form-control resizeBox ">
+              <option value="">Select</option>
+              <option value="201301">P1FY13</option>
+              <option value="201302">P2FY13</option>
+              <option value="201303">P3FY13</option>
+              <option value="201304">P4FY13</option>
+              <option value="201305">P5FY13</option>
+              <option value="201306">P6FY13</option>
+               
+         </select>
+       </div>
+    </li>
+
+     <li id="periodTo">
+        <div class="box">
+          <span class="parameter-name">Period To:</span>
+          <select id="periodToFilter" class="form-control resizeBox">
+                <option value="">Select</option>
+                <option value="201301">P1FY13</option>
+                <option value="201302">P2FY13</option>
+                <option value="201303">P3FY13</option>
+                <option value="201304">P4FY13</option>
+                <option value="201305">P5FY13</option>
+                <option value="201306">P6FY13</option>
+           </select>
+         </div>
+      </li>
+
+    <li id="store-type">
+      <div class="box">
+        <span class="parameter-name">Store Type:</span>
+        <select id="storeTypesFilter" class="form-control resizeBox">
+                <option>Select</option>
+               {{#each storetypes}}
+                  <option {{isSelected 'storetype' id}} {{data 'storetype'}}>{{value}}</option>
+                {{/each}}
+         </select>
+       </div>
+    </li>
+
+    <li id="region">
+      <div class="box">
+        <span class="parameter-name">Region:</span>
+        <select id="regionsFilter" class="form-control resizeBox">
+                <option>Select</option>
+               {{#each regions}}
+                  <option {{isSelected 'region' id}} {{data 'region'}}>{{value}}</option>
+                {{/each}}
+         </select>
+       </div>
+    </li>
+    <li id="country">
+      <div class="box">
+        <span class="parameter-name">Country:</span>
+        <select id="countriesFilter" class="form-control resizeBox" multiple="multiple">
+          {{#each countries}}
+            <!--<option {{isSelected 'country' id}} {{data 'country'}}>{{value}}</option>-->
+            <option value="{{id}}">{{value}}</option>
+
+          {{/each}}
+        </select>
+      </div>
+    </li>
+
+    <li id="licensor">
+      <div class="box">
+        <span class="parameter-name">Licensor:</span>
+         <select id="licensorsFilter" class="form-control resizeBox" multiple="multiple">
+               {{#each licensors}}
+                  <!--<option {{isSelected 'licensor' id}} {{data 'licensor'}}>{{value}}</option>-->
+                  <option value="{{id}}">{{value}}</option>
+                {{/each}}
+         </select>
+       </div>
+
+    </li>
+    <li id="contentType">
+      <div class="box">
+        <span class="parameter-name">Content Type:</span>
+        <select id="contentTypesFilter" class="form-control resizeBox" multiple="multiple">
+               {{#each contenttypes}}
+                  <!--<option {{isSelected 'contenttype' id}} {{data 'contenttype'}}>{{value}}</option>-->
+                  <option value="{{contentGroupId}}" data-servicetypeid={{serviceTypeId}}>{{contentGroupName}}</option>
+                {{/each}}
+         </select>
+      </div>
+    </li>
+
+    <li id="btnFetch">
+      <button type="button" id="globalSearch" class="btn btn-primary buttonSubmit btn-custom-small" style="margin-left:10px;">Fetch</button>
+    </li>
+
+  </ul>
+</div>
