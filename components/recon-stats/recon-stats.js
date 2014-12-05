@@ -208,23 +208,29 @@ var page = Component.extend({
             
           }
 
-          data.reconStatsDetails[0].summaryStats.noOfReconRecords = (CurrencyFormat(data.reconStatsDetails[0].summaryStats.noOfReconRecords)).toString();
+          var tempSummaryStats = {};
+
+          tempSummaryStats.reconRecordsPercentage = data.reconStatsDetails[0].summaryStats.reconRecordsPercentage;
+          tempSummaryStats.reconAmountPercentage = data.reconStatsDetails[0].summaryStats.reconAmountPercentage;
           
-          data.reconStatsDetails[0].summaryStats.reconAmount = CurrencyFormat(data.reconStatsDetails[0].summaryStats.reconAmount);
+          tempSummaryStats.overRepDispute = data.reconStatsDetails[0].summaryStats.overRepDispute;
+          
 
-          data.reconStatsDetails[0].summaryStats.lineItemDispute = CurrencyFormat(data.reconStatsDetails[0].summaryStats.lineItemDispute );
+          tempSummaryStats.noOfReconRecords = (CurrencyFormat(data.reconStatsDetails[0].summaryStats.noOfReconRecords)).toString();
+          
+          tempSummaryStats.reconAmount = CurrencyFormat(data.reconStatsDetails[0].summaryStats.reconAmount);
 
-          data.reconStatsDetails[0].summaryStats.totalPubFee = CurrencyFormat(data.reconStatsDetails[0].summaryStats.totalPubFee );
+          tempSummaryStats.lineItemDispute = CurrencyFormat(data.reconStatsDetails[0].summaryStats.lineItemDispute );
 
-          data.reconStatsDetails[0].summaryStats.recommendedPayment = CurrencyFormat(data.reconStatsDetails[0].summaryStats.recommendedPayment );
+          tempSummaryStats.totalPubFee = CurrencyFormat(data.reconStatsDetails[0].summaryStats.totalPubFee );
 
-          data.reconStatsDetails[0].summaryStats.actualPayment = CurrencyFormat(data.reconStatsDetails[0].summaryStats.actualPayment );
+          tempSummaryStats.recommendedPayment = CurrencyFormat(data.reconStatsDetails[0].summaryStats.recommendedPayment );
+
+          tempSummaryStats.actualPayment = CurrencyFormat(data.reconStatsDetails[0].summaryStats.actualPayment );
 
           var summaryData = [];
 
-          summaryData = data.reconStatsDetails[0].summaryStats;
-
-          self.summaryStatsData.push(summaryData);
+          self.summaryStatsData.push(tempSummaryStats);
           
           var rows = new can.List(grid.data);
 
