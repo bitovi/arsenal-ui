@@ -1,0 +1,17 @@
+<div class="outer">
+  {{#if isAnyFileLoaded}}
+  <ul class="filelist">
+    {{#fileList}}
+    <li {{data 'file'}}>
+      {{name}} ({{convertToKB size}})
+      <a class="action-link">X</a>
+    </li>
+    {{/files}}
+  </ul>
+  <input type="submit" class="submitFiles uploadFiles" value="Upload"/>
+  <input type="submit" class="cancelUpload uploadFiles" value="Cancel">
+  {{else}}
+  <input type="file" class="fileSelect"  name ="UploadFile"  style="display: none;" multiple />
+  <input type="submit" class="uploadFiles" value="Select Files" />
+  {{/if}}
+</div>
