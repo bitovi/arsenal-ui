@@ -1,0 +1,45 @@
+<div class="col-lg-12 pageTitle">
+    <h3>Claim Review </h3>
+</div>
+<div id="chartContainer" class="col-lg-12">
+	<div id="messageDiv" class="col-md-12" style="position: absolute;text-align:center;padding-top:5px;"></div>
+	<div id="highChartDetails" class="overlay hide"></div>
+</div>
+
+<div class="col-lg-12 claimReviewContainer">
+    
+    <div class="col-sm-8 form-inline" style="text-align:right;">
+    	<!--Currency: <select id="currencyType" class="form-control resizeBox">
+    		<option value="invoice">Invoice</option>
+    		<option value="accural">Accural</option>
+    	</select>-->
+    </div>
+
+    <div class="col-sm-4" id="searchDiv" style="">
+        <input type="text" class="form-control" id="tokenSearch">
+        <img src="resources/images/charticon.png" class="" id="highChart">
+        <img src="resources/images/exportExcelIcon.png" class="" id="exportExcel">
+        <img src="resources/images/copyToClipboardIcon.png" class="" id="copyToClipboard">
+    </div>
+    <div class="col-lg-12">
+	    <ul id="myTabs" class="nav nav-tabs">
+		   <li class="active">
+		      <a id="licView" href="#licensorView" data-toggle="tab">
+		         Licensor
+		      </a>
+		   </li>
+		   <li><a id="couView" href="#countryView" data-toggle="tab">Country</a></li>
+		   <!--<li id="aggregate" class="hide" style="padding:10px;"><input id="chkAggregate" type="checkbox"> Aggregate period</li>-->
+		   <span id="aggregate" class="hide"><input id="chkAggregate" type="checkbox"> Aggregate period</span>
+		</ul>
+
+		<div id="myTabContent" class="tab-content">
+		   <div class="tab-pane fade in active" id="licensorView">
+		      <div id="claimLicencorGrid" class="claimReview"><div style="text-align:center">Loading...</div></div>
+		   </div>
+		   <div class="tab-pane fade" id="countryView" style="padding:10px;border:1px solid #ddd; border-top:0px;">
+		      <div id="claimCountryGrid" class="claimReview"><div style="text-align:center"> Data not Available</div></div></div>
+		   </div>
+		</div>
+	</div>
+</div>
