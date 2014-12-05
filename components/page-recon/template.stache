@@ -1,31 +1,55 @@
 <div class="recon-container">
 
+  <div class="col-lg-12 pageTitle">
+    <div class="col-md-3 marginLeft-0" >
+        <h3>Recon Stats </h3>
+      </div>
+  </div>
+
+  <div class="col-lg-12">
+
+    <div class="col-md-12">
+      <div class="form-inline row" id="forminlineElements">
+        <div class="col-md-3"></div>
+          <div {{isTabSelectedAs 'Ingested'}}>
+            <div class="col-md-1">
+              <button  class="btn btn-primary buttonSubmit btn-custom-small" type="button"  id="btnReject" {{isIngestCcidsSelected 0}}>Reject</button>
+            </div>
+            <div class="col-md-1"  >
+              <button type="button" class="btn btn-primary buttonSubmit btn-custom-small " id="btnHolesReport" >Holes Report</button>
+            </div>
+            <div class="col-md-1" >
+              <button type="button" class="btn btn-primary buttonSubmit btn-custom-small marginLeft-10" id="btnOverrepConfig" >Overrep Config</button>
+            </div>
+          </div>
+
+          <div {{isTabSelectedAs 'Incoming Details'}}>
+            <div class="col-md-1">
+              <button  class="btn btn-primary buttonSubmit btn-custom-small" type="button"  id="btnReject" {{isIncomingCcidsSelected 0}}>Reject</button>
+            </div>
+            <div class="col-md-1" >
+              <button type="button" class="btn btn-primary buttonSubmit btn-custom-small btnIngest" {{isIncomingCcidsSelected 0}} >Ingest</button>
+            </div>
+          </div>
+
+         <span class="pull-right">
+            <input type="text" class="form-control" id="tokenSearch" >
+            <img src="resources/images/exportExcelIcon.png" class="" id="exportExcel">
+            <img src="resources/images/copyToClipboardIcon.png" class="" id="copyToClipboard">
+          </span>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
     <div id="content"><!-- Tabs - Start-->
-        <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-            <li class="active"><a href="#ingested" data-toggle="tab"  >Ingested {{siz}}</a></li>
-            <li><a href="#incomingDetails" data-toggle="tab"  >Incoming Details</a></li>
-
-
-						<div class="row">
-							<div class="col-xs-1">
-								<button  class="btn btn-primary buttonSubmit btn-custom-small" type="button"  id="btnReject" {{isRejectBtn 0}}>Reject</button>&nbsp;
-							</div>
-							<div class="col-xs-1">
-								<button type="button" class="btn btn-primary buttonSubmit btn-custom-small" id="btnHolesReport">Holes Report</button>&nbsp;
-							</div>
-							<div class="col-xs-1">
-								<button type="button" class="btn btn-primary buttonSubmit btn-custom-small" style="margin-left:10px;" id="btnOverrepConfig">Overrep Config</button>
-							</div>
-							<div class="col-xs-1"  style="float: right;">
-										<img src="resources/images/exportExcelIcon.png" class="img-rounded" id="exportExcel">
-										<img src="resources/images/copyToClipboardIcon.png" class="img-rounded" id="copyToClipboard">
-							</div>
-							<div class="col-xs-2"  style="float: right;">
-										<input type="text" class="form-control" id="tokenSearch" >
-							</div>
-
-						</div>
-
+        <ul id="myTabs" class="nav nav-tabs" data-tabs="tabs">
+            <li class="active"><a href="#ingested" data-toggle="tab"  >{{tabName.ingest}}</a></li>
+            <li><a href="#incomingDetails" data-toggle="tab"  >{{tabName.incoming}}</a></li>
         </ul>
 
         <div id="my-tab-content" class="tab-content">
@@ -39,5 +63,5 @@
     </div> <!-- Tabs - End-->
 
 		<!-- Recon Stats -->
-		<recon-stats loadRefresh="true" refreshStatsReq="{refreshStatsReq}"></recon-stats>
+		<recon-stats loadRefresh="true" refreshStatsReq="{refreshStatsReq}"  {{isTabSelectedAs 'Ingested'}}></recon-stats>
 </div>

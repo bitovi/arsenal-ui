@@ -3,14 +3,16 @@ import Model from 'can/model/';
 var Recon = Model.extend({
 
   findOne: function(params){
-      return $.ajax({
-        url: 'detailInvoice/fetch',
-        type: 'POST',
-        //data: JSON.stringify(params),
-        dataType: 'json',
-        contentType: 'application/json'
-      })
-    }
+      console.log("Type is "+params.searchRequest.type);
+
+       return $.ajax({
+         url: 'detailInvoice/fetch',
+         type: 'POST',
+         //data: JSON.stringify(params),
+         dataType: 'json',
+         contentType: 'application/json'
+       })
+   }
 
 }, {});
 

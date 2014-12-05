@@ -57,7 +57,7 @@ export default [
   sortable: true
 },
 {
-  id: '',
+  id: 'fiscalPeriod',
   title: 'Periods',
   sortable: true
 },

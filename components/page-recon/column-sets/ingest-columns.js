@@ -75,7 +75,7 @@ export default [
     sortable: true
   },
   {
-    id: 'rcvdDate',
+    id: 'ingstdDate',
     title: 'Ingestion Date',
     sortable: true
   },
