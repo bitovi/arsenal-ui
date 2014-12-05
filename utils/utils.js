@@ -8,9 +8,7 @@ import Map from 'can/map/';
 
 var rinsCommonObject = {
         //DOMAIN_SERVICE_URL:"http://localhost:8090/",
-       // UI_SERVICE_URL:"http://ma-rinsd-lapp01.corp.apple.com:10645/api/v1/rinsui/",
-       // UPLOAD_SERVICE_URL:"http://ma-rinsd-lapp01.corp.apple.com:10645/api/v1/rinsui/uploadFiles",
-        UPLOAD_SERVICE_URL:"http://localhost:10645/api/v1/rinsui/uploadFiles"
+       UI_SERVICE_URL:"http://ma-rinsd-lapp01.corp.apple.com:10645/api/v1/rinsui/"
     },
 
     RinsCommon = new Map(rinsCommonObject);
