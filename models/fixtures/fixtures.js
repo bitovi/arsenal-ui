@@ -66,7 +66,7 @@ var BUNDLES_WITH_DETAILS = {};
 fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'paymentBundle/getAll', function(req, res, headers) {
   res(200, {
     responseCode: '0000',
-    responseTest: 'SUCCESS',
+    responseText: 'SUCCESS',
     paymentBundles: BUNDLES
   });
 });

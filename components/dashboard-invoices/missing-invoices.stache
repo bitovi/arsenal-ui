@@ -1,0 +1,20 @@
+<table class="missing-invoices">
+  <thead>
+    <tr>
+      <th>Country</th>
+      <th>Licensor</th>
+      <th>Period</th>
+      <th>Missing</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#missingInvoices}}
+    <tr>
+      <td>{{countryId}}</td>
+      <td>{{entityName}}</td>
+      <td>{{fiscalPeriod}}</td>
+      <td>{{missingParts pdfCount ccidCount}}</td>
+    </tr>
+    {{/missingInvoices}}
+  </tbody>
+</tabel>
