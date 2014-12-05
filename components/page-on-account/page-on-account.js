@@ -41,8 +41,7 @@ var page = Component.extend({
   },
   init: function(){
    $("#searchDiv").hide();
-   this.scope.tabsClicked="NEW_ON_ACC";
-	  
+      this.scope.tabsClicked="NEW_ON_ACC";
     },
     events: {
     	"inserted": function(){ 
@@ -342,6 +341,10 @@ var page = Component.extend({
       'rn-new-onaccount-grid onSelected': function (ele, event, val) {  
               this.scope.attr('onAccountRows',val);
       },
+      'rn-onaccount-balance-grid .open-toggle click': function(ele, event, val){
+        ele.closest('tr').toggleClass("open");
+        ele.parents('tr').next('tr.child').toggleClass("visible");
+      },
       'rn-new-onaccount-grid rowsForCopyOnAccount': function (ele, event, val) {  
              //alert('hi');
              console.log(val);
