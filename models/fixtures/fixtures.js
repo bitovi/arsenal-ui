@@ -1,6 +1,9 @@
 import fixture from 'can/util/fixture/';
 
-import fixture_allInvoices from './recon_ingest_fetch';
+import recon_ingest_fetch from './recon_ingest_fetch';
+import recon_ingest_reject from './recon_ingest_reject';
+import recon_ingest_reject from './recon_ingest_ingest';
+
 
 fixture('GET /licensors', '/models/fixtures/licensor.json');
 
