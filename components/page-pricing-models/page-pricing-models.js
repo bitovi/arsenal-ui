@@ -55,7 +55,8 @@ var page = Component.extend({
     multipleComments : [],
     usercommentsStore:"",
     addEditUIProperty:{},
-    showbottomSection:false
+    showbottomSection:false,
+    isCommentData:false
   },
   init:function(){
       var self = this;
@@ -99,13 +100,14 @@ var page = Component.extend({
         PricingModels.findOne(UserReq.formRequestDetails(genObj),function(data){
                   var pricingmodels = data.pricingModels;
                    for(var i =0; i < pricingmodels.length; i++){
-                      var tempObj = {};
-                      tempObj.model= pricingmodels[i].modelDescription;
-                      tempObj.modeltype= pricingmodels[i].modelName;  
-                      tempObj.version= pricingmodels[i].version;  
-                      tempObj.modelid= pricingmodels[i].modelId;  
-                      self.scope.pricingModelList.push(tempObj);
-                  }
+                     
+                      self.scope.pricingModelList.push({
+                          model:pricingmodels[i].modelDescription,
+                          modeltype:pricingmodels[i].modelName,  
+                          version:pricingmodels[i].version,
+                          modelid:pricingmodels[i].modelId
+                        });
+                    }
                 },function(xhr){
                 /*Error condition*/
               }).then(function(){
@@ -144,27 +146,18 @@ var page = Component.extend({
 
               for(var i=0; i < basemodelCount; i++){
                   
-                  var tempgrid = {};
-                  tempgrid["contentGroup"] = basemodelData[i].contentGroup;
-                  tempgrid["baseRate"] = basemodelData[i].baseRate;
-                  tempgrid["minima"] = basemodelData[i].minima;
-                  tempgrid["listenerMinima"] = basemodelData[i].listenerMinima;
-                  tempgrid["discount"] = basemodelData[i].discount;
-                  tempgrid["isDefault"] = basemodelData[i].isDefault.toString();
-                  tempgrid["baseId"] = basemodelData[i].baseId;
-                  tempgrid["modelId"] = basemodelData[i].modelId;
-
                   self.scope.attr("modelId", basemodelData[i].modelId);
+                  self.scope.baseModelParamList.push({contentGroup:basemodelData[i].contentGroup, baseRate:basemodelData[i].baseRate, 
+                                                      minima:basemodelData[i].minima, listenerMinima:basemodelData[i].listenerMinima,
+                                                      discount:basemodelData[i].discount, isDefault:basemodelData[i].isDefault.toString(),
+                                                      baseId:basemodelData[i].baseId, modelId:basemodelData[i].modelId
+                                                    });
 
-                 $.when(self.scope.attr("baseModelParamList").push(tempgrid)).then(function(){
-
-                        var $option   = $("#baseModelTable").find('[name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
+                  var $option   = $("#baseModelTable").find('[name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
                             $option.each(function(index){
                               $('#pmform').bootstrapValidator('addField', $(this));
                             });
-                    });
-                 
-                }
+                  }
 
               /** Track count minima Grid*/
 
@@ -177,95 +170,66 @@ var page = Component.extend({
                   var trackData = self.scope.trackContainer.attr();
 
                   for(var i=0; i < trackCount; i++){
-                  
-                        var tempgrid = {};
-                        tempgrid["description"] = trackData[i].description;
-                        tempgrid["from"] = trackData[i].from;
-                        tempgrid["to"] = trackData[i].to;
-                        tempgrid["modelId"] = trackData[i].modelId;
-                        tempgrid["minima"] = trackData[i].minima;
-                        tempgrid["tierId"] = trackData[i].tierId;
-                        tempgrid["paramId"] = trackData[i].paramId;
+                        self.scope.attr("trackCountMinimaList").push({description:trackData[i].description, from:trackData[i].from,
+                                                                      to:trackData[i].to, modelId:trackData[i].modelId,
+                                                                      minima:trackData[i].minima, tierId:trackData[i].tierId,
+                                                                      paramId:trackData[i].paramId});
+                                                              
 
-                        $.when(self.scope.attr("trackCountMinimaList").push(tempgrid)).then(function(){
-                          var $option = $("#trackCount").find('[name="description[]"], [name="from[]"], [name="to[]"], [name="minimatrack[]"]');
+                        var $option = $("#trackCount").find('[name="description[]"], [name="from[]"], [name="to[]"], [name="minimatrack[]"]');
                             $option.each(function(index){
                               $('#pmform').bootstrapValidator('addField', $(this));
                             });
-                        });
-                      }
+                        }
                     },function(xhr){
                 /*Error condition*/
               }).then(function(){
-                  var tempcommentObj = self.scope.multipleComments;
-                  $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
+                  self.scope.attr("isCommentData", true);
                   $('#pmform').bootstrapValidator('addField', 'usercommentsdiv');
-              });
+               });
           },
         "#addbasemodel click":function(){
         var self = this;
+        self.scope.baseModelParamList.push({contentGroup:"", baseRate:"", 
+                                                      minima:"", listenerMinima:"",
+                                                      discount:"", isDefault:"",
+                                                      modelId:self.scope.attr("modelId")
+                                                    });
 
-        var lastIndex = self.scope.baseModelParamList.attr("length");
-        
-        var tempgrid = {};
-        tempgrid["contentGroup"] = "";
-        tempgrid["baseRate"] = "";
-        tempgrid["minima"] = "";
-        tempgrid["listenerMinima"] = "";
-        tempgrid["discount"] = "";
-        tempgrid["isDefault"] = "";
-        tempgrid["modelId"] = self.scope.attr("modelId");
-        $.when(self.scope.attr("baseModelParamList").push(tempgrid)).then(function(){
-
-                        var $option   = $("#baseModelTable").find('[name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
+        var $option   = $("#baseModelTable").find('[name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
                             $option.each(function(index){
                               $('#pmform').bootstrapValidator('addField', $(this));
                             });
-                    });
-    },
-    "#addbasemodeldel click":function(el){
+      },
+    "#basemodeldel click":function(el){
         var self = this;
         var selrow = el.closest('tr')[0].rowIndex;
 
-        $.when(selrow).then(function(){
-                    var $option   = $("#baseModelTable tbody tr:nth-child("+selrow+")").find('[name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
+        var $option   = $("#baseModelTable tbody tr:nth-child("+selrow+")").find('[name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
                             $option.each(function(index){
                               $('#pmform').bootstrapValidator('removeField', $(this));
                             });
-                    }).then(function(){
-                      self.scope.attr("baseModelParamList").removeAttr(selrow-1);
-                    });
+          self.scope.attr("baseModelParamList").removeAttr(selrow-1);                  
     },
     "#addtrack click":function(){
         var self = this;
+        self.scope.attr("trackCountMinimaList").push({description:"", from:"",
+                                                      to:"", minima:"", 
+                                                      modelId:self.scope.attr("modelId")});
 
-         var lastIndex = self.scope.trackCountMinimaList.attr("length");
-        
-        var tempgrid = {};
-        tempgrid["description"] = "";
-        tempgrid["from"] = "";
-        tempgrid["to"] = "";
-        tempgrid["minima"] = "";
-        tempgrid["modelId"] = self.scope.attr("modelId");
-        $.when(self.scope.attr("trackCountMinimaList").push(tempgrid)).then(function(){
-          var $option = $("#trackCount").find('[name="description[]"], [name="from[]"], [name="to[]"], [name="minimatrack[]"]');
+         var $option = $("#trackCount").find('[name="description[]"], [name="from[]"], [name="to[]"], [name="minimatrack[]"]');
               $option.each(function(index){
                 $('#pmform').bootstrapValidator('addField', $(this));
               });
-          });
-       
     },
     "#trackdel click":function(el){
         var self = this;
         var selrow = el.closest('tr')[0].rowIndex;
-         $.when(selrow).then(function(){
-                    var $option = $("#trackCount tbody tr:nth-child("+selrow+")").find('[name="description[]"], [name="from[]"], [name="to[]"], [name="minimatrack[]"]');
+        var $option = $("#trackCount tbody tr:nth-child("+selrow+")").find('[name="description[]"], [name="from[]"], [name="to[]"], [name="minimatrack[]"]');
                             $option.each(function(index){
                               $('#pmform').bootstrapValidator('removeField', $(this));
                             });
-                    }).then(function(){
-                       self.scope.attr("trackCountMinimaList").removeAttr(selrow-1);
-                    });
+         self.scope.attr("trackCountMinimaList").removeAttr(selrow-1);                   
     },
     "#regions change":function(el){
       if(el[0].value != ""){
@@ -357,30 +321,8 @@ var page = Component.extend({
                 /*Error condition*/
               });
             }
-    },
-    helpers:{
-          controlVisSummary: function(){
-              if(this.attr("editstate")){
-                  return "modelsummaryVisible col-sm-4"
-              }else{
-                  return "modelsummaryInVisible col-sm-0"
-              }
-            },
-          controlVisDetails: function(){
-               if(this.attr("editstate")){
-                  return "col-sm-8"
-              }else{
-                  return "col-sm-12"
-              }
-            },
-          showBottomPart: function(){
-              if(this.attr("showbottomSection")){
-                return "bottompartshow"
-              }else{
-                return "bottomparthide"
-              }
-            }
-        }    
+    }
+   
 });
 
 export default page;

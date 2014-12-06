@@ -39,8 +39,8 @@
 	 </div>
 
 	<div class="col-sm-12" style="height: 10px;">&nbsp;</div>
-	<div id="bottomsection" class={{showBottomPart}}>
-		<div class={{controlVisSummary}} id="modelSummaryCont">
+	<div id="bottomsection" class="{{#if showbottomSection}}bottompartshow{{else}}bottomparthide{{/if}}">
+		<div class="{{#if editstate}}modelsummaryVisible col-sm-4{{else}}modelsummaryInVisible col-sm-0{{/if}}" id="modelSummaryCont">
 				<div class="modelsummary">
 					<table id="pricingmodelGrid" class="table table-condensed  pricingmodelGrid">
 							    <thead>
@@ -63,7 +63,7 @@
 				</div>
 		</div>
 	
-		<div class="{{controlVisDetails}}" id="modelDetailCont">
+		<div class="{{#if editstate}}col-sm-8{{else}}col-sm-12{{/if}}" id="modelDetailCont">
 		
 			<div class="right-pb-container">
 				<legend class="scheduler-border">View/Add/Edit Pricing Model</legend>
@@ -193,7 +193,7 @@
 														</td>
 												       <td>
 											           		<div>	
-																<img id="addbasemodeldel" class="breakDownIconSize" src="resources/images/button_minus_red.png">
+																<img id="basemodeldel" class="breakDownIconSize" src="resources/images/button_minus_red.png">
 															</div>
 											           </td>
 											       </tr>
@@ -258,7 +258,9 @@
 						<legend class="scheduler-border">Comments</legend>
 						
 							{{#if editstate}}
-								<div class="col-sm-8" id="multipleComments" class="requiredBar"></div>
+								<div class="col-sm-8" id="multipleComments" class="requiredBar">
+									{{#if isCommentData}}<multiple-comments divid="usercommentsdiv" options="{multipleComments}" divheight="100" isreadOnly="n"></multiple-comments>{{/if}}
+								</div>
 							{{else}}
 								<div id="multipleComments" class="requiredBar">
 								<textarea class="form-control" id="usercomments" name="usercommentsdiv"  can-value="usercommentsStore"></textarea>

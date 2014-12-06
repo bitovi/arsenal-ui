@@ -2,23 +2,10 @@ page-pricing-models {
 
 
 	table#pricingmodelGrid {
-		thead {
-			background: -webkit-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
-			tr {
-		    	th {
-		    			text-align: left;
-			    		padding-right: 0.625em;
-						height: 1.5em;
-		      			padding-top: .3em;
-		      			padding-bottom: .3em;
-		      			border: 1px solid hsl(0, 0%, 75%);
-					}
-				}
-			}
 		tbody {
 			background: #F6F6F6;
 		tr {
-			height : 1.5625em;
+			height : 1.6em;
 			td { 
 
 		      		&:first-child {
@@ -56,7 +43,6 @@ page-pricing-models {
     	border: 1px groove #ddd;
     	padding: 0 1.4em 1.4em 1.4em;
     	margin: 0 0 1.5em 0;
-        -webkit-box-shadow:  0px 0px 0px 0px #000;
         box-shadow:  0px 0px 0px 0px #000;
 	}
 
@@ -114,18 +100,14 @@ page-pricing-models {
 		top:4px;
 	}
 
-	table.breakdown thead {
-		background-color: linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
-		background: -moz-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
-		background: -webkit-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
-		background: -o-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+	table.breakdown thead, table#pricingmodelGrid thead{
+		background: linear-gradient(to bottom, #7e7e83, #afafb4 100%, #b0b0b5);
 		font-size: small;
 		color: white;
-	}
-
-	table.breakdown thead th{
-		border: 1px solid #848484;
-		font-weight:normal;
+		th {
+			border: 1px solid #848484;
+			font-weight:normal;
+		}
 	}
 
 	.breakdown-div{
