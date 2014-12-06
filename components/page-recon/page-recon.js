@@ -37,8 +37,14 @@ var page = Component.extend({
     tabName:tabNameObj,
     ingestGridColumns: ingestedColumns,
     detailGridColumns: detailsColumns,
-    ingestList: new can.List(),
-    incomingDetails: new can.List(),
+    ingestList:{
+      headerRows: new can.List(),
+      footerRows: new can.List()
+    },
+    incomingDetails: {
+      headerRows: new can.List(),
+      footerRows: new can.List()
+    },
     ingestCcidSelected:[],
     incomingCcidSelected:[],
     size_ingestCcidSelected:0,
@@ -213,7 +219,50 @@ var fetchReconIngest = function(scope){
 //  scope.attr("refreshStatsReq",searchRequestObj);
 
   Recon.findOne(UserReq.formRequestDetails(searchRequestObj),function(data){
-    scope.ingestList.replace(data.reconStatsDetails);
+    scope.ingestList.headerRows.replace(data.reconStatsDetails);
+    var list = {
+      "__isChild": true,
+      "ccy":"EUR",
+      "pubfee":"24",
+      "reconAmt":"24",
+      "liDispAmt":"24",
+      "copConAmt":"24",
+      "unMatchedAmt":"324",
+      "badLines":"324",
+      "ccidId":"",
+      "entityName":"",
+      "countryId":"",
+      "contType":"",
+      "fiscalPeriod":"",
+      "ingstdDate":"",
+      "invFileName":"",
+      "status":"",
+      "toggleCheck":"N"
+    };
+
+    var aList =[];
+    aList.push(list);
+    aList.push(list);
+
+    scope.ingestList.footerRows.replace([]);
+    var first = true;
+
+    can.each(aList,
+      function( value, index ) {
+        if(first){
+          console.log(" Im "+first);
+          value.__isChild = false;
+          value.ccidId="Total in Rows";
+          first = false;
+        }else{
+          value.__isChild = true;
+          value.ccidId="";
+        }
+        scope.ingestList.footerRows.push(value);
+      }
+    );
+
+
   },function(xhr){
     console.error("Error while loading: fetchReconIngest"+xhr);
   });
@@ -237,7 +286,49 @@ var fetchReconDetails = function(scope){
   //console.log('The request is :'+JSON.stringify(onAccountrequest));
 
   Recon.findOne(UserReq.formRequestDetails(searchRequestObj),function(data){
-    scope.incomingDetails.replace(data.reconStatsDetails);
+    scope.incomingDetails.headerRows.replace(data.reconStatsDetails);
+    var list = {
+      "__isChild": true,
+      "ccy":"EUR",
+      "pubfee":"24",
+      "reconAmt":"24",
+      "liDispAmt":"24",
+      "copConAmt":"24",
+      "unMatchedAmt":"324",
+      "badLines":"324",
+      "ccidId":"",
+      "entityName":"",
+      "countryId":"",
+      "contType":"",
+      "fiscalPeriod":"",
+      "ingstdDate":"",
+      "invFileName":"",
+      "status":"",
+      "rcvdDate":"",
+      "toggleCheck":"N"
+    };
+
+    var aList =[];
+    aList.push(list);
+    aList.push(list);
+
+    scope.incomingDetails.footerRows.replace([]);
+    var first = true;
+
+    can.each(aList,
+      function( value, index ) {
+        if(first){
+          value.__isChild = false;
+          value.ccidId="Total in Rows";
+          first = false;
+        }else{
+          value.__isChild = true;
+          value.ccidId="";
+        }
+        scope.incomingDetails.footerRows.push(value);
+      }
+    );
+
   },function(xhr){
     console.error("Error while loading: fetchReconDetails"+xhr);
   });

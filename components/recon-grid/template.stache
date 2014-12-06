@@ -20,4 +20,16 @@
     </tr>
     {{/filteredRows}}
   </tbody>
+  <tfoot>
+    {{#footerRows}}
+    <tr class="{{rowClass row}} {{#if isOpen}}open{{/if}} {{#if isChild}}child{{/if}} {{#if isVisible}}visible{{/if}}" {{data 'row'}}>
+      {{#filteredColumns}}
+      <td class="{{columnClass column}} {{cellClass row column}}" {{data 'column'}}>{{cellContents row column}}</td>
+      {{/filteredColumns}}
+    </tr>
+    {{/footerRows}}
+    {{#if emptyrows}}
+    <tr><td colspan="{{#getColumnLength}}">No Records Found</td</tr>
+      {{/if}}
+    </tfoot>
 </table>

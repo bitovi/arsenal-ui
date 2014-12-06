@@ -5,7 +5,11 @@ export default [
     id: 'toggle',
     title: '',
     contents: function(row) {
-      return can.stache('<input type="checkbox"/>')();
+      if(row.toggleCheck =="N"){
+        return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}}')({isChild: row.__isChild});
+      }else{
+        return can.stache('<input type="checkbox"/>')();
+      }
     }
   },
   {
