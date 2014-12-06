@@ -3,24 +3,22 @@ page-pricing-models {
 
 	table#pricingmodelGrid {
 		tbody {
-			background: #F6F6F6;
-		tr {
-			height : 1.6em;
-			td { 
+				background: #F6F6F6;
+				tr {
+					height : 1.6em;
+					td { 
+							&:first-child {
+				        		border-left: 1px solid hsl(0, 0%, 75%);
+				      		}
 
-		      		&:first-child {
-		        		border-left: 1px solid hsl(0, 0%, 75%);
-		      		}
-
-		      		&:last-child {
-		          		border-right: 1px solid hsl(0, 0%, 75%);
-		      		}
-
-		      		border-right: 1px solid #FFFFFF;
+				      		&:last-child {
+				          		border-right: 1px solid hsl(0, 0%, 75%);
+				      		}
+							border-right: 1px solid #FFFFFF;
+						}
+			   		}
 				}
-	   		}
-		}
-	}
+			}
 	
 	.pageHead {
 		margin-top: 0px;
@@ -124,8 +122,6 @@ page-pricing-models {
 	    box-sizing: none;
 	}
 
-	
-
 	.requiredBarNone{
 		border-left: 2px solid transparent;
 	    padding-left: 2px;
@@ -139,6 +135,7 @@ page-pricing-models {
 		margin:0px;
 		top:5px;
 		}
+	
 	.valid-rnotes{
 		width:1px;
 		height:1px;
@@ -146,7 +143,6 @@ page-pricing-models {
 		margin:0px;
 		}
 	
-
 	.alert-dimension{
 		padding: 15px;
 		margin-bottom: 20px;
@@ -154,7 +150,6 @@ page-pricing-models {
 		margin-top:10px;
 		text-align:center;
 	}
-
 
 	.has-success .form-control{
 		border-color:#CCCCCC;
@@ -174,10 +169,10 @@ page-pricing-models {
 	}
 
 	@-moz-document url-prefix() {
-	  .form-control{
-		padding-top:0px;
-		padding-bottom:0px;
-	}
+	  	.form-control{
+			padding-top:0px;
+			padding-bottom:0px;
+		}
 	}
 
 	.input-group-addon{
@@ -189,6 +184,7 @@ page-pricing-models {
 		background-color: #eee;
 		border-color: #ccc;
 	}
+	
 	.has-success .control-label{
 		color: #848484;
 	}
@@ -210,9 +206,6 @@ page-pricing-models {
 		color:#848484;
 	}
 
-	
-
-	
 	.large-value{
 		font-family:HelveticaNeue-Medium, "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif; ;
 		font-size:21px;
@@ -230,8 +223,6 @@ page-pricing-models {
 		color:#3D3D3D;
 	}
 
-	
-
 	.singleField{
 		padding-left:5px;
 	}
@@ -242,7 +233,7 @@ page-pricing-models {
 		margin-bottom:10px;
 	}
 
-	 select#regions, select#country, select#entity{
+	select#regions, select#country, select#entity{
 		min-width:140px;
 	}
 
@@ -250,11 +241,10 @@ page-pricing-models {
 		max-width:500px;
 		width:250px;
 	}
+
 	.popover.top{
 		top:-20px;
 	}
-
-
 
 	.modelsummaryVisible{
 		display:block;

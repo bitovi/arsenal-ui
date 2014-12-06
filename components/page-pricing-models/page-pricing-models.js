@@ -57,6 +57,7 @@ var page = Component.extend({
     addEditUIProperty:{},
     showbottomSection:false,
     isCommentData:false
+  
   },
   init:function(){
       var self = this;
@@ -80,13 +81,8 @@ var page = Component.extend({
   events:{
   	"inserted":function(){
   		var self = this;
-          $('#pmform').on('init.form.bv', function(e, data) {
-              }).on('init.field.bv', function(e, data) {
-              }).bootstrapValidator(PricingModelsValidation).on('error.field.bv', function(e, data) {
-              $('*[data-bv-icon-for="'+data.field +'"]').popover('show');
-          }).on('success.field.bv', function(e, data) {
-          }).on('success.form.bv', function(e) {
-              e.preventDefault();
+          $('#pmform').bootstrapValidator(PricingModelsValidation).on('error.field.bv', function(e, data) {
+              $('[data-bv-icon-for="'+data.field +'"]').popover('show');
           });
   	 },
     "#fetch click":function(){
@@ -154,10 +150,9 @@ var page = Component.extend({
                                                     });
 
                   var $option   = $("#baseModelTable").find('[name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
-                            $option.each(function(index){
-                              $('#pmform').bootstrapValidator('addField', $(this));
-                            });
-                  }
+                  DynamicFieldValidation($option, 'addField');
+                 
+                 }
 
               /** Track count minima Grid*/
 
@@ -177,9 +172,8 @@ var page = Component.extend({
                                                               
 
                         var $option = $("#trackCount").find('[name="description[]"], [name="from[]"], [name="to[]"], [name="minimatrack[]"]');
-                            $option.each(function(index){
-                              $('#pmform').bootstrapValidator('addField', $(this));
-                            });
+                        DynamicFieldValidation($option, 'addField');
+                            
                         }
                     },function(xhr){
                 /*Error condition*/
@@ -197,19 +191,16 @@ var page = Component.extend({
                                                     });
 
         var $option   = $("#baseModelTable").find('[name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
-                            $option.each(function(index){
-                              $('#pmform').bootstrapValidator('addField', $(this));
-                            });
+        DynamicFieldValidation($option, 'addField');
+                          
       },
     "#basemodeldel click":function(el){
         var self = this;
         var selrow = el.closest('tr')[0].rowIndex;
 
         var $option   = $("#baseModelTable tbody tr:nth-child("+selrow+")").find('[name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
-                            $option.each(function(index){
-                              $('#pmform').bootstrapValidator('removeField', $(this));
-                            });
-          self.scope.attr("baseModelParamList").removeAttr(selrow-1);                  
+        DynamicFieldValidation($option, 'removeField');                  
+        self.scope.attr("baseModelParamList").removeAttr(selrow-1);                  
     },
     "#addtrack click":function(){
         var self = this;
@@ -218,18 +209,15 @@ var page = Component.extend({
                                                       modelId:self.scope.attr("modelId")});
 
          var $option = $("#trackCount").find('[name="description[]"], [name="from[]"], [name="to[]"], [name="minimatrack[]"]');
-              $option.each(function(index){
-                $('#pmform').bootstrapValidator('addField', $(this));
-              });
+         DynamicFieldValidation($option, 'addField');
+            
     },
     "#trackdel click":function(el){
         var self = this;
         var selrow = el.closest('tr')[0].rowIndex;
         var $option = $("#trackCount tbody tr:nth-child("+selrow+")").find('[name="description[]"], [name="from[]"], [name="to[]"], [name="minimatrack[]"]');
-                            $option.each(function(index){
-                              $('#pmform').bootstrapValidator('removeField', $(this));
-                            });
-         self.scope.attr("trackCountMinimaList").removeAttr(selrow-1);                   
+        DynamicFieldValidation($option, 'removeField');
+        self.scope.attr("trackCountMinimaList").removeAttr(selrow-1);                   
     },
     "#regions change":function(el){
       if(el[0].value != ""){
@@ -324,5 +312,12 @@ var page = Component.extend({
     }
    
 });
+
+
+function DynamicFieldValidation($option, type){
+     $option.each(function(index){
+            $('#pmform').bootstrapValidator(type, $(this));
+      });
+}
 
 export default page;
