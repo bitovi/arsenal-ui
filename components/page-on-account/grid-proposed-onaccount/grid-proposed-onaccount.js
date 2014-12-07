@@ -7,7 +7,7 @@ import stache from 'can/view/stache/';
 import utils from 'components/page-on-account/utils';
 import UserReq from 'utils/request/';
 
-import GridWithCheckboxes from './grid-with-checkboxes';
+//import GridWithCheckboxes from './grid-with-checkboxes';
 
 
 var proposedonAccountGrid = Grid.extend({
@@ -101,23 +101,23 @@ var proposedonAccountGrid = Grid.extend({
 
             genObj.searchRequest={};
             genObj.searchRequest["type"]="PROPOSED";
-            genObj.searchRequest["serviceTypeId"]="1";
+            genObj.searchRequest["serviceTypeId"]=self.scope.request.searchRequest.serviceTypeId;
 
 
-            // genObj.searchRequest["entityId"]=self.scope.request.searchRequest.entityId.attr();
-            // genObj.searchRequest["contentGrpId"]=self.scope.request.searchRequest.contentGrpId.attr();
-            // genObj.searchRequest["regionId"]=self.scope.request.searchRequest.regionId;
+            genObj.searchRequest["entityId"]=self.scope.request.searchRequest.entityId.attr();
+            genObj.searchRequest["contentGrpId"]=self.scope.request.searchRequest.contentGrpId.attr();
+            genObj.searchRequest["regionId"]=self.scope.request.searchRequest.regionId;
 
-            genObj.searchRequest["entityId"]=[17];
-            genObj.searchRequest["contentGrpId"]=[1,2];
-            genObj.searchRequest["regionId"]=2;
+            // genObj.searchRequest["entityId"]=[17];
+            // genObj.searchRequest["contentGrpId"]=[1,2];
+            // genObj.searchRequest["regionId"]=2;
 
             genObj.searchRequest["periodType"]="Q";
-            genObj.searchRequest["periodFrom"]=201403;
-            genObj.searchRequest["periodTo"]=201403;
+            genObj.searchRequest["periodFrom"]=utils.getPeriodForQuarter(self.scope.request.searchRequest.periodFrom);
+            genObj.searchRequest["periodTo"]=utils.getPeriodForQuarter(self.scope.request.searchRequest.periodTo);
 
       //uncomment below for Domain
-            /*
+            
             proposedOnAccount.findOne(UserReq.formRequestDetails(genObj)).then(function(data) {
               //alert('hi');
               //console.log(JSON.stringify(rows).attr());
@@ -133,21 +133,21 @@ var proposedonAccountGrid = Grid.extend({
               self.scope.rows.replace(returnValue['ROWS']);
              //  self.scope.footerrows.replace(footerRows);
             }); 
-      */
+      
         
               
-            proposedOnAccount.findAll().then(function(data) {
-              //var returnValue = getUiRowsFromResponse(quarters,data);
-              //var arr = $.unique(returnValue['BUNDLE_NAMES']);
-              //self.scope.attr('bundleNames',arr.toString());
+            // proposedOnAccount.findAll().then(function(data) {
+            //   //var returnValue = getUiRowsFromResponse(quarters,data);
+            //   //var arr = $.unique(returnValue['BUNDLE_NAMES']);
+            //   //self.scope.attr('bundleNames',arr.toString());
 
-              //alert(self.scope.attr('bundleNames'));
+            //   //alert(self.scope.attr('bundleNames'));
 
-              //$(self).trigger('change', arr.toString());
-             // var footerRows = getFooterRows(quarters,rows);
-              self.scope.rows.replace(data);
-             //  self.scope.footerrows.replace(footerRows);
-            }); 
+            //   //$(self).trigger('change', arr.toString());
+            //  // var footerRows = getFooterRows(quarters,rows);
+            //   self.scope.rows.replace(data);
+            //  //  self.scope.footerrows.replace(footerRows);
+            // }); 
           
          }
    
@@ -256,8 +256,8 @@ var getUiRowsFromResponse=function(quarters,data){
     row['entityId']=onAccountDetails[i].entityId;
     row['Licensor']=onAccountDetails[i].entityName;
     row['Currency']=onAccountDetails[i].currencyCode;
-    //row['ContentType']=onAccountDetails[i].contentGroupName;
-    row['ContentType']="";
+    row['ContentType']=onAccountDetails[i].contentGroupName;
+    //row['ContentType']="";
     row['contentGroupId']=onAccountDetails[i].contentGroupId;
     row['serviceTypeId']=onAccountDetails[i].serviceTypeId;
     row['bundleId']=onAccountDetails[i].bundleId;
@@ -394,4 +394,4 @@ var deleterowfunction=function(ind)
     {
       //console.log("index is :::",ind);
     }
-export default GridWithCheckboxes;
+export default proposedonAccountGrid;

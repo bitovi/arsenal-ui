@@ -89,14 +89,14 @@ var OnAccountBalance = Grid.extend({
           genObj.searchRequest["periodTo"]=utils.getPeriodForQuarter(self.scope.request.searchRequest.periodTo);
      
      
-         //onAccountBalance.findOne(UserReq.formRequestDetails(genObj)).then(function(rows) {
-          onAccountBalance.findAll().then(function(rows) {
+         onAccountBalance.findOne(UserReq.formRequestDetails(genObj)).then(function(rows) {
+          //onAccountBalance.findAll().then(function(rows) {
             
-            //self.scope.rows.replace(getUiRowsFromResponse(quarters,rows));
+            self.scope.rows.replace(getUiRowsFromResponse(quarters,rows));
       
-           var footerRows = getFooterRows(quarters,rows);
-            self.scope.rows.replace(rows);
-            self.scope.footerrows.replace(footerRows);
+           // var footerRows = getFooterRows(quarters,rows);
+           //  self.scope.rows.replace(rows);
+           //  self.scope.footerrows.replace(footerRows);
           });
        }
     },
