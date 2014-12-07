@@ -13,7 +13,7 @@
 				<span class="refreshButton">
 					<button type="button" id="refreshReconStats"  name="refreshReconStatsName"
 						class="btn buttonSubmit btn-custom-small"
-						style="margin-left:10px;" disabled>
+						style="margin-left:10px;" {{isIngestCcidsSelected 0}}>
 						Refresh</button>
 				</span>
 			</div>

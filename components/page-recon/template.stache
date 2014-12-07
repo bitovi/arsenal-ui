@@ -67,7 +67,7 @@
     </div> <!-- Tabs - End-->
 
 		<!-- Recon Stats -->
-		<recon-stats loadRefresh="true" refreshStatsReq="{refreshStatsReq}"  {{isTabSelectedAs 'Ingested'}}></recon-stats>
+		<recon-stats loadrefresh="true" refreshstatsreq="{{refreshstatsreq}}"  {{isTabSelectedAs 'Ingested'}}></recon-stats>
 </div>
 
 <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="rejectModal" aria-hidden="true">
