@@ -294,14 +294,17 @@ var page = Component.extend({
       "#proposedEdit click":function(el,ev){
           $('#submitPOA').removeAttr("disabled");
           var req = this.scope.request;
-        console.log(this.scope.proposedOnAccountData.rows);
-        req.attr('editableRows',this.scope.proposedOnAccountData.rows);
-        var type = 'EDIT';
-        disableProposedSubmitButton(false);
-        disableEditORDeleteButtons(true);
-        $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type}></rn-proposed-onaccount-grid>')({req,type}));
+          var quarters = utils.getQuarter(this.scope.appstate.attr('periodFrom'),this.scope.appstate.attr('periodTo'));
+          req.quarters=quarters;
+          //console.log(this.scope.proposedOnAccountData.rows);
+          req.attr('editableRows',this.scope.proposedOnAccountData.rows);
+          var type = 'EDIT';
+          disableProposedSubmitButton(false);
+          disableEditORDeleteButtons(true);
+          $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type}></rn-proposed-onaccount-grid>')({req,type}));
       },
       "#submitPOA click":function(el,ev){
+        var comments = $(".new-comments").val(); 
         //Remove this for domain services
         /*
            var updatableRows = [];
@@ -317,7 +320,7 @@ var page = Component.extend({
                   }
            }
 
-           var updateRequest = utils.frameUpdateRequest(self.scope.request,updatableRows,self.scope.documents,self.scope.usercommentsStore,quarters);
+           var updateRequest = utils.frameUpdateRequest(self.scope.request,updatableRows,self.scope.documents,comments,quarters);
             proposedOnAccount.update(UserReq.formRequestDetails(updateRequest),"UPDATE",function(data){
             console.log("Update response is "+JSON.stringify(data));
               if(data["status"]=="SUCCESS"){

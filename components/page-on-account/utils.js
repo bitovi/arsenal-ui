@@ -213,7 +213,7 @@ var onAccountUpdateRequest ={};
         }
     }
 
-    console.log(JSON.stringify(onAccountUpdateRequest));
+    //console.log(JSON.stringify(onAccountUpdateRequest));
 
     return onAccountUpdateRequest;
     },
@@ -331,7 +331,7 @@ getProposedOnAccRows:function(quarters,data){
 
         rows.push(row);
       }
-      console.log(rows);
+      //console.log(rows);
       var returnValue = new Array();
       returnValue['ROWS']=rows;
       returnValue['BUNDLE_NAMES']=bundleNames;
