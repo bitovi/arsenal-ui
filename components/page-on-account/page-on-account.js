@@ -71,11 +71,9 @@ var page = Component.extend({
               var regId = self.scope.appstate.attr('region');
               var newBundleNameRequest = {"paymentBundle":{}};
               var bundleRequest = {};
-              var periodFrom = self.scope.appstate.attr('periodFrom');
-              var periodTo = self.scope.appstate.attr('periodTo');
               bundleRequest.regionId = regId['id'];
-              bundleRequest.periodFrom = utils.getPeriodForQuarter(periodFrom);
-              bundleRequest.periodTo=utils.getPeriodForQuarter(periodTo);
+              bundleRequest.periodFrom = utils.getPeriodForQuarter(self.scope.appstate.attr('periodFrom'));
+              bundleRequest.periodTo=utils.getPeriodForQuarter(self.scope.appstate.attr('periodTo'));
               bundleRequest.bundleType ="ON_ACCOUNT";
               newBundleNameRequest["paymentBundle"] = bundleRequest;
               self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
@@ -119,38 +117,38 @@ var page = Component.extend({
                   request.searchRequest["entityId"]=self.scope.request.searchRequest.entityId.attr();
                   request.searchRequest["contentGrpId"]=self.scope.request.searchRequest.contentGrpId.attr();
                   proposedOnAccount.findOne(UserReq.formRequestDetails(request),function(data){
-                          if(data["status"]=="SUCCESS"){
-                             /* The below calls {scope.appstate} change event that gets the new data for grid*/
-                              var returnValue = utils.getProposedOnAccRows(quarters,data);
-                              var arr = $.unique(returnValue['BUNDLE_NAMES']);
-                              self.scope.attr('bundleNamesForDisplay',arr.toString());
-                              //console.log(self.scope.attr('bundleNamesForDisplay'));
-                              proposedRequest.rows=returnValue['ROWS'];
-                              proposedRequest.quarters=quarters;
-                              disableProposedSubmitButton(true);
-                              disableEditORDeleteButtons(true);
-                              $("#submitPOA").attr("disabled","disabled");
-                              $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={proposedRequest}></rn-proposed-onaccount-grid>')({proposedRequest}));
+                    if(data["status"]=="SUCCESS"){
+                       /* The below calls {scope.appstate} change event that gets the new data for grid*/
+                        var returnValue = utils.getProposedOnAccRows(quarters,data);
+                        var arr = $.unique(returnValue['BUNDLE_NAMES']);
+                        self.scope.attr('bundleNamesForDisplay',arr.toString());
+                        //console.log(self.scope.attr('bundleNamesForDisplay'));
+                        proposedRequest.rows=returnValue['ROWS'];
+                        proposedRequest.quarters=quarters;
+                        disableProposedSubmitButton(true);
+                        disableEditORDeleteButtons(true);
+                        $("#submitPOA").attr("disabled","disabled");
+                        $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={proposedRequest}></rn-proposed-onaccount-grid>')({proposedRequest}));
 
-                              var tempcommentObj = data.onAccount.comments;
-                              //console.log("multi comments "+JSON.stringify(tempcommentObj));
-                              if(tempcommentObj!=null)
-                                $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
-                              else 
-                                $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>');
+                        var tempcommentObj = data.onAccount.comments;
+                        //console.log("multi comments "+JSON.stringify(tempcommentObj));
+                        if(tempcommentObj!=null)
+                          $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
+                        else 
+                          $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>');
 
-                          } else{
-                            $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-                            $("#messageDiv").show();
-                            setTimeout(function(){
-                                $("#messageDiv").hide();
-                            },2000)
-                            $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
-                          }
-                      }, function(xhr) {
-                            console.error("Error while loading: proposed onAccount Details"+xhr);
-                            $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
-                      } ); 
+                    } else{
+                      $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                      $("#messageDiv").show();
+                      setTimeout(function(){
+                          $("#messageDiv").hide();
+                      },2000)
+                      $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
+                    }
+                }, function(xhr) {
+                      console.error("Error while loading: proposed onAccount Details"+xhr);
+                      $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
+                } ); 
               
             }
 
@@ -180,7 +178,7 @@ var page = Component.extend({
         $('#newonAccountGrid, #onAccountBalanceDiv, #forminlineElements,#searchDiv').hide();
         $('#proposedonAccountDiv,#proposeOnAccountGridComps').show();
         disableProposedSubmitButton(true);
-       disableEditORDeleteButtons(true);
+        disableEditORDeleteButtons(true);
        if (!$("rn-proposed-onaccount-grid").find("tbody>tr").length) {
          $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
        }
