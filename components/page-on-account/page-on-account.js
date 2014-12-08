@@ -67,27 +67,16 @@ var page = Component.extend({
           var self = this;
           var pbval = $("#paymentBundleNames").val();
           if(pbval=="createB"){
-              
               var regId = self.scope.appstate.attr('region');
-
-
               var newBundleNameRequest = {"paymentBundle":{}};
               var bundleRequest = {};
-
               var periodFrom = self.scope.appstate.attr('periodFrom');
               var periodTo = self.scope.appstate.attr('periodTo');
-              
-
-              // bundleRequest["regionId"] = regId['id'];
-              // bundleRequest["periodFrom"] = "201303";
-              // bundleRequest["periodTo"] = "201304";
-                bundleRequest.regionId = regId['id'];
-                bundleRequest.periodFrom = utils.getPeriodForQuarter(periodFrom);
-                bundleRequest.periodTo=utils.getPeriodForQuarter(periodTo);
-                bundleRequest.bundleType ="ON_ACCOUNT";
-
+              bundleRequest.regionId = regId['id'];
+              bundleRequest.periodFrom = utils.getPeriodForQuarter(periodFrom);
+              bundleRequest.periodTo=utils.getPeriodForQuarter(periodTo);
+              bundleRequest.bundleType ="ON_ACCOUNT";
               newBundleNameRequest["paymentBundle"] = bundleRequest;
-              //console.log("New Bundle name request is "+JSON.stringify(newBundleNameRequest));
               self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
           } else {
             self.scope.attr('paymentBundleName',pbval);
@@ -97,25 +86,18 @@ var page = Component.extend({
       },
       '{scope.appstate} change': function() {
         var self = this;
-
         self.scope.attr("localGlobalSearch",self.scope.appstate.attr('globalSearch'));
-
         var request = frameRequest(self.scope.appstate); 
-
         self.scope.attr('request',request);
         var quarters = utils.getQuarter(request.searchRequest.periodFrom,request.searchRequest.periodTo);
-
         if(self.scope.appstate.attr('globalSearch')){
-
             if(self.scope.tabsClicked=="ON_ACC_BALANCE"){
                //var request = frameRequest(this.scope.appstate);   
                $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={request}></rn-onaccount-balance-grid>')({request}));
             }else if(self.scope.tabsClicked=="NEW_ON_ACC"){
               //console.log("inside NEW_ON_ACC");
               $('#newonAccountGrid, #newonAccountGridComps').show();
-                
                  var genObj = {};
-                 //alert(request.searchRequest.entityId.toString());
                 genObj["licensorId"]=request.searchRequest.entityId.toString();
                  Currency.findAll(UserReq.formRequestDetails(genObj)).then(function(data) {
                   request.quarters=quarters;
@@ -135,30 +117,23 @@ var page = Component.extend({
             }
 
         }
-
         this.scope.appstate.attr('globalSearch',false);
-        
       },
       "#onAccountBalance click":function(el, ev){
         ev.preventDefault();
         this.scope.tabsClicked="ON_ACC_BALANCE";
         $('#newonAccountGrid, #newonAccountGridComps, #proposedonAccountDiv,#proposeOnAccountGridComps, #forminlineElements,#searchDiv').hide();
         $('#onAccountBalanceDiv').show();
-        //$("#forminlineElements").hide();
         $('rn-onaccount-balance-grid tbody tr').css("outline","0px solid #f1c8c8");
         setTimeout(function(){
-          //$('#onAccountBalanceDiv').html(stache('<rn-onaccount-balance-grid emptyrows="{emptyrows}"></rn-onaccount-balance-grid>')({emptyrows:true}));
           $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid emptyrows={emptyrows}></rn-onaccount-balance-grid>')({emptyrows:true}));
        }, 10);
-
-        //console.log(this.scope.tabsClicked);
       },
       "#newonAccount click":function(el, ev){
         ev.preventDefault();
         this.scope.tabsClicked="NEW_ON_ACC";
         $('#newonAccountGrid, #newonAccountGridComps, #forminlineElements').show();
         $('#onAccountBalanceDiv, #proposedonAccountDiv,#proposeOnAccountGridComps,#searchDiv').hide();
-        //console.log(this.scope.tabsClicked);
       },
       "#proposedonAccount click":function(el, ev){
         ev.preventDefault();
@@ -168,8 +143,6 @@ var page = Component.extend({
         disableProposedSubmitButton(true);
        disableEditORDeleteButtons(true);
        $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
-
-        //console.log(this.scope.tabsClicked);
       },
       "#propose click":function(el,ev){
 
@@ -379,13 +352,6 @@ var page = Component.extend({
                setTimeout(function(){
                   $("#messageDiv").hide();
                },2000);
-
-               /* The below calls {scope.appstate} change event that gets the new data for grid*/
-               // if(this.scope.appstate.attr('globalSearch')){
-               //    this.scope.appstate.attr('globalSearch', false);
-               //  }else{
-               //    this.scope.appstate.attr('globalSearch', true);
-               //  }
                 var quarters=utils.getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
                 var updatedRows = utils.frameRowsForCopyOnAcc(rows,data,quarters,quarterValueForCopy);
 
@@ -423,8 +389,6 @@ var page = Component.extend({
             bundleNamesRequest.bundleSearch["regionId"] = regId['id'];
             
           bundleNamesRequest.bundleSearch["type"] = "ON_ACCOUNT";
-          
-
           //console.log("GetBundleNamesRequest is "+JSON.stringify(bundleNamesRequest));
 
           return JSON.stringify(bundleNamesRequest);
@@ -440,9 +404,7 @@ var frameRequest = function(appstate){
       var regId = appstate.attr('region');
       var countryId = appstate.attr()['country'];
       var licId = appstate.attr()['licensor'];
-      var contGrpId = appstate.attr()['contentType'];
-
-      
+      var contGrpId = appstate.attr()['contentType'];    
       onAccountrequest.searchRequest = {};
       onAccountrequest.searchRequest["periodFrom"] = "";
       onAccountrequest.searchRequest["periodTo"] = "";
@@ -470,17 +432,14 @@ var frameRequest = function(appstate){
         onAccountrequest.searchRequest["regionId"] = regId['id'];
       }
       
-      
       if(typeof(countryId)!="undefined"){
         onAccountrequest.searchRequest["country"]=countryId;
       }
 
-      
       if(typeof(licId)!="undefined"){
         onAccountrequest.searchRequest["entityId"]=licId;
       }
 
-      
       if(typeof(contGrpId)!="undefined"){
         onAccountrequest.searchRequest["contentGrpId"]=contGrpId;
       }

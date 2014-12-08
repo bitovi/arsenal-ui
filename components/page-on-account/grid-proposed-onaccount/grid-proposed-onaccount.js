@@ -7,9 +7,6 @@ import stache from 'can/view/stache/';
 import utils from 'components/page-on-account/utils';
 import UserReq from 'utils/request/';
 
-//import GridWithCheckboxes from './grid-with-checkboxes';
-
-
 var proposedonAccountGrid = Grid.extend({
   tag: 'rn-proposed-onaccount-grid',
   template: template,
@@ -30,13 +27,10 @@ var proposedonAccountGrid = Grid.extend({
       {
         id: 'Licensor',
         title: 'Licensor',
-        //contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{Licensor}}')({Licensor: row.Licensor, isChild: row.__isChild}); }
         contents: function(row) { 
             if(row.attr('tfooter')){
             return  stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{Licensor}}')({Licensor: row.Licensor, isChild: row.__isChild});;
           }
-            //return  stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{Licensor}}')({Licensor: row.Licensor, isChild: row.__isChild});
-
           return row.attr('Licensor');
          }
       },
@@ -97,42 +91,47 @@ var proposedonAccountGrid = Grid.extend({
                 self.scope.rows.replace(editableRows);
          }else{
             var genObj = {};
-            //genObj["licensorId"]="18";
-
             genObj.searchRequest={};
             genObj.searchRequest["type"]="PROPOSED";
             genObj.searchRequest["serviceTypeId"]=self.scope.request.searchRequest.serviceTypeId;
-
-
             genObj.searchRequest["entityId"]=self.scope.request.searchRequest.entityId.attr();
             genObj.searchRequest["contentGrpId"]=self.scope.request.searchRequest.contentGrpId.attr();
             genObj.searchRequest["regionId"]=self.scope.request.searchRequest.regionId;
-
-            // genObj.searchRequest["entityId"]=[17];
-            // genObj.searchRequest["contentGrpId"]=[1,2];
-            // genObj.searchRequest["regionId"]=2;
-
             genObj.searchRequest["periodType"]="Q";
             genObj.searchRequest["periodFrom"]=utils.getPeriodForQuarter(self.scope.request.searchRequest.periodFrom);
             genObj.searchRequest["periodTo"]=utils.getPeriodForQuarter(self.scope.request.searchRequest.periodTo);
 
-      //uncomment below for Domain
-            
-            proposedOnAccount.findOne(UserReq.formRequestDetails(genObj)).then(function(data) {
-              //alert('hi');
-              //console.log(JSON.stringify(rows).attr());
+          //uncomment below for Domain    
+            proposedOnAccount.findOne(UserReq.formRequestDetails(genObj),function(data){
+                      if(data["status"]=="SUCCESS"){
+                         $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
+                         $("#messageDiv").show();
+                         setTimeout(function(){
+                            $("#messageDiv").hide();
+                         },2000);
 
-              var returnValue = getUiRowsFromResponse(quarters,data);
-              var arr = $.unique(returnValue['BUNDLE_NAMES']);
-              self.scope.attr('bundleNames',arr.toString());
-
-              //alert(self.scope.attr('bundleNames'));
-
-              //$(self).trigger('change', arr.toString());
-             // var footerRows = getFooterRows(quarters,rows);
-              self.scope.rows.replace(returnValue['ROWS']);
-             //  self.scope.footerrows.replace(footerRows);
-            }); 
+                         /* The below calls {scope.appstate} change event that gets the new data for grid*/
+                         if(this.scope.appstate.attr('globalSearch')){
+                            this.scope.appstate.attr('globalSearch', false);
+                          }else{
+                            this.scope.appstate.attr('globalSearch', true);
+                          }
+                       
+                          var returnValue = getUiRowsFromResponse(quarters,data);
+                          var arr = $.unique(returnValue['BUNDLE_NAMES']);
+                          self.scope.attr('bundleNames',arr.toString());
+                          //self.scope.rows.replace(returnValue['ROWS']);
+                      }
+                      else{
+                        $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                        $("#messageDiv").show();
+                        setTimeout(function(){
+                            $("#messageDiv").hide();
+                        },2000)
+                      }
+                }, function(xhr) {
+                      console.error("Error while loading: proposed onAccount Details"+xhr);
+                } ); 
       
         
               
@@ -211,34 +210,16 @@ var proposedonAccountGrid = Grid.extend({
       var element = el.closest('td').find('.editing');
       var column = el.closest('td').data('column').column;
 
-
-      // var row = el.closest('tr').data('row').row;
-      // row.attr(column.title,value);
-
-
-      // var quarters=this.scope.quarters;
-      // var total = 0;
-      // for(var i=0; i<quarters.length;i++){
-      //       total = Number(total)+Number(row.attr(quarters[i]));
-   
-      //     }
-      
-
-      //  row.attr('total',total);
-
-
       //putting the rows to the page from grid component
       var proposedOnAccountData={};
       proposedOnAccountData.rows=this.scope.rows;
       proposedOnAccountData.checkedRows=this.scope.checkedRows;
     
       $(this.element).trigger('save', proposedOnAccountData);
-      //Row got updated to the page to the grid component
-     
+      //Row got updated to the page to the grid component    
     },
     "inserted": function(){ 
-      //alert(this.scope.attr('bundleNames'));
-        //$(this.element).trigger('bundNameChange', this.scope.attr('bundleNames'));
+      
       }
         
   }
@@ -296,9 +277,6 @@ var getFooterRows=function(quarters,rows){
   var periodMap = new Array();
   var totalMap = new Array();
   var currencies=[];
- // console.log(quarters);
-  //console.log(rows);
-  //console.log(currencies[rows[1]["Currency"]]);
   for(var i=0;i<rows.length;i++){
     if(currencies[rows[i]["Currency"]] != undefined && currencies[rows[i]["Currency"]] != null){
       periodMap = currencies[rows[i]["Currency"]];
@@ -339,13 +317,8 @@ var getFooterRows=function(quarters,rows){
 
     totalMap["ON_ACC_BALANCE"]=Number(totalMap["ON_ACC_BALANCE"])+Number(rows[i]["onAccountBalance"]);
     totalMap["CASH_ADJUSTMENTS"]=Number(totalMap["CASH_ADJUSTMENTS"])+Number(rows[i]["cashAdjust"]);
-
     currencies[rows[i]["Currency"]] = periodMap;
-    //console.log(currencies[rows[1]["Currency"]]);
   }
-//console.log(currencies);
-//console.log(totalMap);
-
   return frameFooter(currencies,totalMap,quarters);
 
 }
@@ -355,8 +328,6 @@ var frameFooter=function(currencyPeriodArray,totalMap,quarters){
   var footerRows=[];
   var row ={};
   var currencies= Object.keys(currencyPeriodArray);
-  //console.log('Currencies are :'+currencies);
-  //console.log(quarters);
 
   row["Licensor"]= "Total";
   row["Currency"]= "EUR";
@@ -390,8 +361,4 @@ var frameFooter=function(currencyPeriodArray,totalMap,quarters){
 return footerRows;
 }
 
-var deleterowfunction=function(ind)
-    {
-      //console.log("index is :::",ind);
-    }
 export default proposedonAccountGrid;

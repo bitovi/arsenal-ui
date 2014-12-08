@@ -19,13 +19,10 @@ var OnAccountBalance = Grid.extend({
       {
         id: 'Licensor',
         title: 'Licensor',
-        //contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{Licensor}}')({Licensor: row.Licensor, isChild: row.__isChild}); }
         contents: function(row) { 
             if(row.attr('tfooter')){
             return  stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{Licensor}}')({Licensor: row.Licensor, isChild: row.__isChild});;
           }
-            //return  stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{Licensor}}')({Licensor: row.Licensor, isChild: row.__isChild});
-
           return row.attr('Licensor');
          }
       },
@@ -39,7 +36,6 @@ var OnAccountBalance = Grid.extend({
       }
     ],
     request:{}
-    //sample:"@"
   },
   init: function(){
 
@@ -89,15 +85,41 @@ var OnAccountBalance = Grid.extend({
           genObj.searchRequest["periodTo"]=utils.getPeriodForQuarter(self.scope.request.searchRequest.periodTo);
      
      
-         onAccountBalance.findOne(UserReq.formRequestDetails(genObj)).then(function(rows) {
-          //onAccountBalance.findAll().then(function(rows) {
+         // onAccountBalance.findOne(UserReq.formRequestDetails(genObj)).then(function(rows) {
+         //  //onAccountBalance.findAll().then(function(rows) {
             
-            self.scope.rows.replace(getUiRowsFromResponse(quarters,rows));
+         //    self.scope.rows.replace(getUiRowsFromResponse(quarters,rows));
       
-           // var footerRows = getFooterRows(quarters,rows);
-           //  self.scope.rows.replace(rows);
-           //  self.scope.footerrows.replace(footerRows);
-          });
+         //   // var footerRows = getFooterRows(quarters,rows);
+         //   //  self.scope.rows.replace(rows);
+         //   //  self.scope.footerrows.replace(footerRows);
+         //  });
+            onAccountBalance.findOne(UserReq.formRequestDetails(genObj),function(data){
+                      if(data["status"]=="SUCCESS"){
+                         $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
+                         $("#messageDiv").show();
+                         setTimeout(function(){
+                            $("#messageDiv").hide();
+                         },2000);
+
+                         /* The below calls {scope.appstate} change event that gets the new data for grid*/
+                         if(this.scope.appstate.attr('globalSearch')){
+                            this.scope.appstate.attr('globalSearch', false);
+                          }else{
+                            this.scope.appstate.attr('globalSearch', true);
+                          }
+                        self.scope.rows.replace(getUiRowsFromResponse(quarters,rows));  
+                      }else{
+                        $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                        $("#messageDiv").show();
+                        setTimeout(function(){
+                            $("#messageDiv").hide();
+                        },2000)
+                      }
+                }, function(xhr) {
+                      console.error("Error while loading: onAccount balance Details"+xhr);
+                } ); 
+      
        }
     },
     '{scope} request change':function(){
@@ -125,9 +147,9 @@ var getUiRowsFromResponse=function(quarters,data){
     for(var k=0;k<quarters.length;k++){
       var period = utils.getPeriodForQuarter(quarters[k]);
       var amtObject = periodData[period];
-      console.log('FiscalPeriod-----'+period);
-      console.log(periodData);
-      console.log(amtObject);
+      //console.log('FiscalPeriod-----'+period);
+      //console.log(periodData);
+      //console.log(amtObject);
       row[quarters[k]]=0;
       if(amtObject != undefined){
         var value = amtObject[onAccountDetails[i].id];
@@ -208,8 +230,8 @@ var frameFooter=function(currencyPeriodArray,totalMap,quarters){
   var footerRows=[];
   var row ={};
   var currencies= Object.keys(currencyPeriodArray);
-  console.log('Currencies are :'+currencies);
-  console.log(quarters);
+  //console.log('Currencies are :'+currencies);
+  //console.log(quarters);
 
   row["Licensor"]= "Total";
   row["Currency"]= "EUR";
@@ -222,7 +244,7 @@ var frameFooter=function(currencyPeriodArray,totalMap,quarters){
   row["__isChild"]=false;
   row["tfooter"]=true;
   footerRows.push(row);
-  console.log("Total Parent Row created !");
+  //console.log("Total Parent Row created !");
   for(var k=0; k<currencies.length;k++){
 
     var childRow ={};
@@ -239,7 +261,7 @@ var frameFooter=function(currencyPeriodArray,totalMap,quarters){
     footerRows.push(childRow);
   }
 
-console.log('Footer rows are :'+JSON.stringify(footerRows));
+//console.log('Footer rows are :'+JSON.stringify(footerRows));
 return footerRows;
 }
 
@@ -281,7 +303,7 @@ var prepareFooterRows=function(regionalCurrencyTotal,localCurrencyTotal,quarters
     footerRows.push(childRow);
   }
 
-console.log('Footer rows are :'+JSON.stringify(footerRows));
+//console.log('Footer rows are :'+JSON.stringify(footerRows));
 return footerRows;
 }
 
