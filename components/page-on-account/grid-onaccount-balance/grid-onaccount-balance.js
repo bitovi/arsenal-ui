@@ -121,8 +121,6 @@ var OnAccountBalance = Grid.extend({
                 } ); 
       
        }
-    },
-    '{scope} request change':function(){
     }
   }
 });

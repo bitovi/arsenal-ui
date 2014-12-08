@@ -48,109 +48,13 @@ var proposedonAccountGrid = Grid.extend({
      checkedRows: [],
      type:"",
      bundleNames:[],
-     quarters:[]
+     quarters:[],
+     test:[]
     
   },
   init :function()
   {
-        var self = this;
-        if(self.scope.request != null && self.scope.request != undefined && self.scope.request.searchRequest != null){
-           var rows = self.scope.request.rows;
-           var deletableRows = self.scope.request.deletableRows;
-           var editableRows = self.scope.request.editableRows;
-           var type =self.scope.type;
-           //console.log(self.scope.request.rows);
-           var quarters = utils.getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
-          for(var i=0;i<quarters.length;i++){
-            var column={
-              id:quarters[i],
-              title:quarters[i],
-              editable:true,
-                getEditingValue: function(row,title) {
-                  return row.attr(title);
-                },
-                setValue: function(row, newValue,title) {
-                  row.attr(title,newValue);
-                }
-            };
-            self.scope.columns.push(column);
-           }
 
-              self.scope.quarters.replace(quarters);
-           
-         if(type == 'DELETE'&& deletableRows != undefined && deletableRows.length >0){
-            self.scope.rows.replace(deletableRows);
-         }else if(type == 'EDIT' && editableRows != undefined && editableRows.length>0){
-              for(var i=0;i<editableRows.length;i++){
-                if(editableRows[i].__isChecked != undefined && editableRows[i].__isChecked){
-                    editableRows[i].attr('__isEditable',true);
-                  }
-                }
-                console.log('Editable Rows')
-                console.log(editableRows);
-                self.scope.rows.replace(editableRows);
-         }else{
-            var genObj = {};
-            genObj.searchRequest={};
-            genObj.searchRequest["type"]="PROPOSED";
-            genObj.searchRequest["serviceTypeId"]=self.scope.request.searchRequest.serviceTypeId;
-            genObj.searchRequest["entityId"]=self.scope.request.searchRequest.entityId.attr();
-            genObj.searchRequest["contentGrpId"]=self.scope.request.searchRequest.contentGrpId.attr();
-            genObj.searchRequest["regionId"]=self.scope.request.searchRequest.regionId;
-            genObj.searchRequest["periodType"]="Q";
-            genObj.searchRequest["periodFrom"]=utils.getPeriodForQuarter(self.scope.request.searchRequest.periodFrom);
-            genObj.searchRequest["periodTo"]=utils.getPeriodForQuarter(self.scope.request.searchRequest.periodTo);
-
-          //uncomment below for Domain    
-            proposedOnAccount.findOne(UserReq.formRequestDetails(genObj),function(data){
-                      if(data["status"]=="SUCCESS"){
-                         $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
-                         $("#messageDiv").show();
-                         setTimeout(function(){
-                            $("#messageDiv").hide();
-                         },2000);
-
-                         /* The below calls {scope.appstate} change event that gets the new data for grid*/
-                         if(this.scope.appstate.attr('globalSearch')){
-                            this.scope.appstate.attr('globalSearch', false);
-                          }else{
-                            this.scope.appstate.attr('globalSearch', true);
-                          }
-                       
-                          var returnValue = getUiRowsFromResponse(quarters,data);
-                          var arr = $.unique(returnValue['BUNDLE_NAMES']);
-                          self.scope.attr('bundleNames',arr.toString());
-                          //self.scope.rows.replace(returnValue['ROWS']);
-                      }
-                      else{
-                        $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-                        $("#messageDiv").show();
-                        setTimeout(function(){
-                            $("#messageDiv").hide();
-                        },2000)
-                      }
-                }, function(xhr) {
-                      console.error("Error while loading: proposed onAccount Details"+xhr);
-                } ); 
-      
-        
-              
-            // proposedOnAccount.findAll().then(function(data) {
-            //   //var returnValue = getUiRowsFromResponse(quarters,data);
-            //   //var arr = $.unique(returnValue['BUNDLE_NAMES']);
-            //   //self.scope.attr('bundleNames',arr.toString());
-
-            //   //alert(self.scope.attr('bundleNames'));
-
-            //   //$(self).trigger('change', arr.toString());
-            //  // var footerRows = getFooterRows(quarters,rows);
-            //   self.scope.rows.replace(data);
-            //  //  self.scope.footerrows.replace(footerRows);
-            // }); 
-          
-         }
-   
-     }
 
   },
 
@@ -193,7 +97,7 @@ var proposedonAccountGrid = Grid.extend({
           this.scope.checkedRows.splice(indexToBeDeleted,1);
       }
 
-      console.log(row);
+      //console.log(row);
 
       var proposedOnAccountData={};
       proposedOnAccountData.rows=this.scope.rows;
@@ -219,59 +123,66 @@ var proposedonAccountGrid = Grid.extend({
       //Row got updated to the page to the grid component    
     },
     "inserted": function(){ 
-      
+              var self = this;
+              if(self.scope.request != null && self.scope.request != undefined && self.scope.request.quarters != null){
+                 var rows = self.scope.request.rows;
+                 var deletableRows = self.scope.request.deletableRows;
+                 var editableRows = self.scope.request.editableRows;
+                 var type =self.scope.type;
+                 //console.log(self.scope.request.rows);
+                 var quarters = self.scope.request.quarters;
+                for(var i=0;i<quarters.length;i++){
+                  var column={
+                    id:quarters[i],
+                    title:quarters[i],
+                    editable:true,
+                      getEditingValue: function(row,title) {
+                        return row.attr(title);
+                      },
+                      setValue: function(row, newValue,title) {
+                        row.attr(title,newValue);
+                      }
+                  };
+                  self.scope.columns.push(column);
+                 }
+
+                    self.scope.quarters.replace(quarters);
+                 
+               if(type == 'DELETE'&& deletableRows != undefined && deletableRows.length >0){
+                  self.scope.rows.replace(deletableRows);
+               }else if(type == 'EDIT' && editableRows != undefined && editableRows.length>0){
+                    for(var i=0;i<editableRows.length;i++){
+                      if(editableRows[i].__isChecked != undefined && editableRows[i].__isChecked){
+                          editableRows[i].attr('__isEditable',true);
+                        }
+                      }
+                      //console.log('Editable Rows')
+                     // console.log(editableRows);
+                      self.scope.rows.replace(editableRows);
+               }else{
+                    self.scope.rows.replace(self.scope.request.rows);
+   
+                  // proposedOnAccount.findAll().then(function(data) {
+                  //   //var returnValue = getUiRowsFromResponse(quarters,data);
+                  //   //var arr = $.unique(returnValue['BUNDLE_NAMES']);
+                  //   //self.scope.attr('bundleNames',arr.toString());
+
+                  //   //alert(self.scope.attr('bundleNames'));
+
+                  //   //$(self).trigger('change', arr.toString());
+                  //  // var footerRows = getFooterRows(quarters,rows);
+                  //   self.scope.rows.replace(data);
+                  //  //  self.scope.footerrows.replace(footerRows);
+                  // }); 
+                
+               }
+         
+           }
       }
         
   }
 });
 
-
-var getUiRowsFromResponse=function(quarters,data){
-  var onAccountDetails = data.onAccount.onAccountDetails
-  var periodData = data.onAccount.fiscalPeriodAmtMap;
-  var bundleNames=[];
-  var rows=[];
-  for (var i=0;i<onAccountDetails.length;i++){
-    var row = {};
-    row['id']= onAccountDetails[i].id;
-    row['entityId']=onAccountDetails[i].entityId;
-    row['Licensor']=onAccountDetails[i].entityName;
-    row['Currency']=onAccountDetails[i].currencyCode;
-    row['ContentType']=onAccountDetails[i].contentGroupName;
-    //row['ContentType']="";
-    row['contentGroupId']=onAccountDetails[i].contentGroupId;
-    row['serviceTypeId']=onAccountDetails[i].serviceTypeId;
-    row['bundleId']=onAccountDetails[i].bundleId;
-    row['bundleName']=onAccountDetails[i].bundleName;
-    row['docId']=onAccountDetails[i].docId;
-    row['commentId']=onAccountDetails[i].commentId;
-    row['createdBy']=onAccountDetails[i].createdBy;
-    row['createdDate']=onAccountDetails[i].createdDate;
-
-    for(var k=0;k<quarters.length;k++){
-      var period = utils.getPeriodForQuarter(quarters[k]);
-      var amtObject = periodData[period];
-      row[quarters[k]]=0;
-      if(amtObject != undefined){
-        var value = amtObject[onAccountDetails[i].id];
-        if(value == undefined){
-          value =0;
-        }
-        row[quarters[k]]=value;
-      }
-    }
-    row['total']=onAccountDetails[i].totalAmt;
-
-    bundleNames.push(onAccountDetails[i].bundleName);
-
-    rows.push(row);
-  }
-  console.log(rows);
-  var returnValue = new Array();
-  returnValue['ROWS']=rows;
-  returnValue['BUNDLE_NAMES']=bundleNames;
-  return returnValue;
-}
 
 var getFooterRows=function(quarters,rows){
   var periodMap = new Array();
