@@ -25,12 +25,12 @@ var GlobalParameterBar = Component.extend({
     appstate: undefined, // this gets passed in
     periodFrom: [],
     periodTo : [],
-    storetypes: [],
+    storeTypes: [],
     regions: [],
     countries: [],
     licensors: [],
-    contenttypes:[],
-    periodchoosen:"@"
+    contentTypes:[],
+    selectedperiod:[]
   },
   helpers: {
     isSelected: function(parameterName, modelID) {
@@ -42,31 +42,22 @@ var GlobalParameterBar = Component.extend({
     }
   },
   events: {
-    'period-calendar onSelected': function (ele, event, val) {  
-        this.scope.attr('periodchoosen', val);
-        var which = $(ele).parent().find('input[type=text]').attr('id');
-        this.scope.appstate.attr(which, this.scope.periodchoosen);
-        $(ele).parent().find('input[type=text]').val(this.scope.periodchoosen).trigger( "change" ); 
-        $(ele).closest('.calendarcls').find('.box-modal').hide();
-        $(ele).blur();
-     },
-     '.updateperoid focus':function(el){ 
+     '.updatePeroid focus':function(el){ 
        $(el).closest('.calendarcls').find('.box-modal').show().trigger( "focus" ); 
      },
+      '{selectedperiod} change':function(val){ 
+          val[0].which=='periodFrom' ? this.scope.periodFrom.replace(val[0].value):this.scope.periodTo.replace(val[0].value);
+       },
      'inserted': function(){
           document.getElementById("regionsFilter").selectedIndex = 2;
       },
-     '#periodFrom  change': function(el, ev) {  
-         var selected = $(el[0]).val(); 
-         this.scope.appstate.attr('periodFrom', selected); 
+     '{periodFrom} change': function(el, ev) {   
          var comp ='from';
-         showErrorMsg(this.scope.appstate.attr('periodFrom'),this.scope.appstate.attr('periodTo'),comp);
+         showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0],comp);
      },
-     '#periodTo change': function(el, ev) {
-         var selected = $(el[0]).val();
-         this.scope.appstate.attr('periodTo', selected);
+     '{periodTo} change': function(el, ev) { 
           var comp ='to';
-         showErrorMsg(this.scope.appstate.attr('periodFrom'),this.scope.appstate.attr('periodTo'),comp);
+          showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0],comp);
      },
     '#store-type select change': function(el, ev) {
        var selected = $(el[0].selectedOptions).data('storetype');
@@ -124,16 +115,10 @@ var GlobalParameterBar = Component.extend({
 
 
       if(this.scope.appstate.attr('globalSearch')){
-        this.scope.appstate.attr('globalSearch', false);
+         this.scope.appstate.attr('globalSearch', !this.scope.appstate.attr('globalSearch'));
       }else{
-        this.scope.appstate.attr('globalSearch', true);
-      }
-
-
-      
-
-     
-      
+        this.scope.appstate.attr('globalSearch', this.scope.appstate.attr('globalSearch'));
+      }  
     }
   },
   init: function() {
@@ -145,15 +130,12 @@ var GlobalParameterBar = Component.extend({
       Country.findAll(UserReq.formRequestDetails(genObj)),
       Licensor.findAll(UserReq.formRequestDetails(genObj)),
       ContentType.findAll(UserReq.formRequestDetails(genObj))
-      //PeriodFrom.findAll(),
-      //PeriodTo.findAll()
-    ]).then(function(values) {
-
-      self.scope.storetypes.replace(values[0]);
+     ]).then(function(values) {
+      self.scope.storeTypes.replace(values[0]);
       self.scope.regions.replace(values[1]);
       self.scope.countries.replace(values[2]);
       self.scope.licensors.replace(values[3]["entities"][0]);
-      self.scope.contenttypes.replace(values[4]["contentTypes"]);
+      self.scope.contentTypes.replace(values[4]["contentTypes"]);
       //self.scope.periodFrom.replace(values[5]);
       //self.scope.periodTo.replace(values[6]);
       var regionInfo = {"id":"2","value":"Europe"};
@@ -198,34 +180,14 @@ var GlobalParameterBar = Component.extend({
   }
 });
 
-var showErrorMsg = function(periodFrom,periodTo,whichcomp){
-
-        if(whichcomp=='from'){
-          var _root = $('#periodTocontainer');
-          //_root.find('#periodTo').val('');
-          _root.find('.period-calendar .period li a').removeClass('disabled period-active');
-          if(periodFrom.charAt(0)=='Q'){
-              _root.find('.period-calendar .q1 li').not(":first").find('a').addClass('disabled');
-              _root.find('.period-calendar .q2 li').not(":first").find('a').addClass('disabled');
-              _root.find('.period-calendar .q3 li').not(":first").find('a').addClass('disabled');
-              _root.find('.period-calendar .q4 li').not(":first").find('a').addClass('disabled');
-           }else{
-             _root.find('.period-calendar .q1 li').first().find('a').addClass('disabled');
-             _root.find('.period-calendar .q2 li').first().find('a').addClass('disabled');
-             _root.find('.period-calendar .q3 li').first().find('a').addClass('disabled');
-             _root.find('.period-calendar .q4 li').first().find('a').addClass('disabled');
-           }
-       }
-
-    var showFlg=false;
-          var from = periodFrom,to =  periodTo;
-        if(from!=undefined &&  to!=undefined){
-            from = from.split('FY');
-            to = to.split('FY');   //console.log(from[1].slice(-2)+'--------'+ to[1].slice(-2));
-               if(from[1].slice(-2) > to[1].slice(-2)) showFlg=true;
-               if(from[1].slice(-2) >= to[1].slice(-2) && from[0].charAt(0)!=to[0].charAt(0) )showFlg=true;
-               if(from[1].slice(-2) >= to[1].slice(-2) && parseInt(from[0].substring(1,3)) > parseInt(to[0].substring(1,3)))showFlg=true;
-           
+var showErrorMsg = function(periodFrom,periodTo,whichcomp){ 
+       var showFlg=false;
+       var from = periodFrom,to =  periodTo;
+       if(from!=undefined &&  to!=undefined){ 
+            from = from.slice(-2);
+            to = to.slice(-2);
+           if(parseInt(periodFrom.substr(0,4)) >  parseInt(periodTo.substr(0,4)))showFlg=true;
+           if(parseInt(from) > parseInt(to)) showFlg=true;
         }
         if(showFlg==true){ $('.period-invalid').show(); return false;}else {showFlg=false; $('.period-invalid').hide();}
 }
