@@ -59,9 +59,6 @@ var proposedonAccountGrid = Grid.extend({
   },
 
   helpers: {
-    listCheckedRowIndexes: function() {
-      //return this.checkedRows.attr('length') ? _.map(this.checkedRows, row => row.index).join(', ') : 'None checked.';
-    },
     cellContents:function(row, column){
       //console.log(type);
       //console.log(row.__isEditable);
@@ -78,10 +75,7 @@ var proposedonAccountGrid = Grid.extend({
       var row = el.closest('tr').data('row').row;
 
       if(el[0].checked) {
-        console.log('checked:'+row.checkbox);
-        //console.log(row);
-        //row.attr('Licensor', 'Naveen');
-        
+        //console.log('checked:'+row.checkbox);
         row.attr('__isChecked', true); 
         this.scope.checkedRows.push(row);
       } else {
@@ -91,14 +85,10 @@ var proposedonAccountGrid = Grid.extend({
             if(row == value){
               indexToBeDeleted=key;
             }
-             
           });
-
           this.scope.checkedRows.splice(indexToBeDeleted,1);
       }
-
-      //console.log(row);
-
+      
       var proposedOnAccountData={};
       proposedOnAccountData.rows=this.scope.rows;
       proposedOnAccountData.checkedRows=this.scope.checkedRows;

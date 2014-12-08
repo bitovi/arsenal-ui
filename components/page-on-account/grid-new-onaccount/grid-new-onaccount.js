@@ -103,7 +103,6 @@ var newOnAccountGrid = Grid.extend({
         },
       "{rows} change": function(){
         $(this.element).trigger('rowsForCopyOnAccount', this.scope.rows);
-        //alert($(this.element)))
       },
       'td input.editing blur':function(el, ev){
         var value = el.closest('td').find('.editing').val();

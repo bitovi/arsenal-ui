@@ -8,7 +8,6 @@ import _less from './page-on-account.less!';
 import stache from 'can/view/stache/';
 
 import OnAccountGrid from './grid-onaccount-balance/';
-import Grid from 'components/grid/';
 import newOnAccountGrid from './grid-new-onaccount/';
 import fileUpload from 'components/file-uploader/';
 
@@ -185,8 +184,8 @@ var page = Component.extend({
             paymentBundleName = self.scope.paymentBundleName;
         }
 
-        console.log('onAccountRows');
-        console.log(self.scope.onAccountRows);
+        //console.log('onAccountRows');
+        //console.log(self.scope.onAccountRows);
 
         var createrequest = utils.frameCreateRequest(self.scope.request,self.scope.onAccountRows,self.scope.documents,self.scope.usercommentsStore,quarters,paymentBundleName);
         var request = UserReq.formRequestDetails(createrequest);
