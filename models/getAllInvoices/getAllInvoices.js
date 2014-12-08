@@ -1,7 +1,7 @@
 import Model from 'can/model/';
 import RinsCommon from 'utils/';
 
-var GetAllInvoices = Model.extend({
+var Invoices = Model.extend({
   // using findAll instead of resource because I don't want to be able to save.
   findOne: function(params){
     return $.ajax({
@@ -14,4 +14,4 @@ var GetAllInvoices = Model.extend({
   }
 }, {});
 
-export default GetAllInvoices;
+export default Invoices;

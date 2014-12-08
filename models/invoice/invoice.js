@@ -2,8 +2,7 @@ import Model from 'can/model/';
 import RinsCommon from 'utils/';
 
 var Invoice = Model.extend({
- //findOne: 'GET /getInvoiceById/1024',
- create: function(params){
+  create: function(params){
  	return $.ajax({
   		url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/create',
   		type: 'POST',
@@ -14,7 +13,7 @@ var Invoice = Model.extend({
   },
   findOne: function(params){
  	return $.ajax({
-  		url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/get',
+  		url: RinsCommon.DOMAIN_SERVICE_URL+'invoice/getDtls',
   		type: 'POST',
       datatype:'json',
       contentType: 'application/json; charset=utf-8',

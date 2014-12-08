@@ -51,16 +51,13 @@ var page = Component.extend({
     "bundleSearch":{}
   },
   init: function(){
-
         var self = this;
-
-
         var requestObj = JSON.parse(self.scope.attr("request"));
-        //console.log("requestObj is "+JSON.stringify(requestObj));
+        
 
         if(requestObj!="undefined"){
             BundleNamesModel.findOne(UserReq.formRequestDetails(requestObj),function(data){
-                  //console.log(" BundleNamesModel response is "+JSON.stringify(data.attr()));
+                  
                   self.scope.bundleNames.replace(data["paymentBundles"]);
             },function(xhr){
                 console.error("Error while loading: bundleNames"+xhr);
@@ -81,13 +78,10 @@ var page = Component.extend({
       "#paymentBundleNames change":function(){
         var self = this;
         var requestObj = JSON.parse(self.scope.attr("request"));
-        
-
-        //console.log("requestObj "+JSON.stringify(UserReq.formRequestDetails(requestObj["newNameRequest"])));
-          if( this.scope.attr("paymentBundleId") == 'createB'){
+        if( this.scope.attr("paymentBundleId") == 'createB'){
               self.scope.attr("createPBFlag",{input:true});
               NewBundleNameModel.findOne(UserReq.formRequestDetails(requestObj["newNameRequest"]),function(data){
-                      //console.log("NewBundleNameModel response is "+JSON.stringify(data));
+                     
                       self.scope.attr("paymentBundleName" , data.paymentBundle.bundleName);
               },function(xhr){
                     console.error("Error while loading: bundleNames"+xhr);
@@ -96,8 +90,6 @@ var page = Component.extend({
           }else{
 
           }
-
-
       },
       "#btnCancel click":function(){
         this.scope.attr("createPBFlag",{select:true});
@@ -105,14 +97,10 @@ var page = Component.extend({
       },
       "{newbundlenamereq} change":function(){
         var self = this;
-        console.log("here");
         var requestObj = self.scope.attr("newbundlenamereq");
-        
-        console.log("requestObj "+JSON.stringify(requestObj));
         self.scope.attr("createPBFlag",{input:true});
         NewBundleNameModel.findOne(UserReq.formRequestDetails(requestObj),function(data){
-                console.log("NewBundleNameModel response is "+JSON.stringify(data));
-                self.scope.attr("paymentBundleName" , data.paymentBundle.bundleName);
+               self.scope.attr("paymentBundleName" , data.paymentBundle.bundleName);
         },function(xhr){
               console.error("Error while loading: bundleNames"+xhr);
         });

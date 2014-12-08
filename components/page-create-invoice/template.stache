@@ -169,7 +169,7 @@
 				   <div class="col-sm-12 singleField">
 					    <label for="inputEmail3" class="col-sm-3 control-label">User Comments: </label>
 					    <div class="col-sm-9 requiredBarNone usercomments">
-					    {{#if editpage}}
+						{{#if isCommentData}}
 					      	<multiple-comments textareaid="usercomments" divid="usercommentsdiv" options="{editcommentArr}" divheight="100" isreadOnly="n"></multiple-comments>
 					    {{else}}	
 						      <textarea class="form-control" name="usercomments" id="usercomments"  can-value="usercommentsStore"></textarea>

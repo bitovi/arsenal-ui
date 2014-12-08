@@ -12,9 +12,9 @@ fixture('GET /invoiceType', '/models/fixtures/invoiceType.json');
 
 fixture('GET /contentType', '/models/fixtures/contentType.json');
 
-fixture('GET /getInvoiceById/1024', '/models/fixtures/getInvoiceById.json');
+fixture('GET /getInvoiceById/{id}', '/models/fixtures/getInvoiceById.json');
 
-fixture('GET /fxrate', '/models/fixtures/fxrate.json');
+fixture('GET /getFXRate', '/models/fixtures/fxrate.json');
 fixture('GET /global-licensors', '/models/fixtures/global-licensor.json');
 
 fixture('GET /global-regions', '/models/fixtures/global-region.json');

@@ -24,7 +24,6 @@ import Currency from 'models/common/currency/';
 import Country from 'models/common/country/';
 import Invoice from 'models/invoice/';
 import Fxrate from 'models/common/fxrate/';
-import icsvmap from 'models/sharedMap/icsv';
 import AdhocTypes from 'models/common/adhoc-types/';
 import GLaccounts from 'models/glaccounts/';
 import Region from 'models/common/region/';
@@ -88,6 +87,7 @@ var page = Component.extend({
     //invoiceid:"",
   	editpage:false,
   	formSuccessCount:1,
+  	isCommentData:false,
     isRequired: function(){
   	 		if(this.attr("invoicetypeSelect") != "2"){  /*Adhoc*/
   	 				$(".breakdownCountry").addClass("requiredBar");
@@ -136,10 +136,7 @@ var page = Component.extend({
 						            $("#addInvSubmit").attr("disabled", true);
 						        });
 
-                               //console.log($clone.find('[name="amount[]"]'));
-
-
-		},
+         },
 		changeTextOnInvType:function(){
 			if(this.attr("invoicetypeSelect") == "2"){  /*Adhoc*/
 				this.isAdhocStrore.attr("ccidGL", "GL Account");
@@ -425,8 +422,7 @@ var page = Component.extend({
 						if(!self.scope.editpage){
 							self.scope.attr("invoiceduedate", getCurrentDate());
 						}
-						/*	if(!self.scope.attr("invoiceid") && self.scope.attr("allModelReady"))
-								self.scope.createBreakline(0);*/
+						
 
 				},
 			".form-control keyup": function(event){
@@ -486,37 +482,14 @@ var page = Component.extend({
 		 		self.scope.attr("invoicedate", dateFormatter(invoiceData.invoiceDate,"yyyy-mm-dd"));
 		 		self.scope.attr("invoiceduedate", dateFormatter(invoiceData.invoiceDueDate,"yyyy-mm-dd"));
 		 		self.scope.attr("calduedate", dateFormatter(invoiceData.invoiceCalcDueDate,"yyyy-mm-dd"));
+				self.scope.attr("tax", invoiceData.tax);
 
-
-		 		self.scope.attr("tax", invoiceData.tax);
-		 		//self.scope.attr("calduedate", invoiceData.invoiceCalculatedDueDate);
-		 		//self.scope.attr("calduedate", invoiceData.invoiceCalculatedDueDate);
-
-		 		/* Comments */
-		 		//var comment = "";
-
-		 		var tempcommentObj = {};
-
-		 		for(var i=0;i<invoiceData.comments.length;i++){
-		 			tempcommentObj.modifiedTime=invoiceData.comments[i].createdDate;
-		 			tempcommentObj.modifiedUser=invoiceData.comments[i].createdBy;
-		 			tempcommentObj.Comments=invoiceData.comments[i].comments;
-		 			tempcommentObj.isEditable='n';
-
-
-		 			// comment += invoiceData.comments[i].comments+"   Commented By:"+invoiceData.comments[i].createdBy+" On "+invoiceData.comments[i].createdDate+"                                     ";
+				if(invoiceData.comments.length){
+					self.scope.attr("isCommentData", true);
+					self.scope.editcommentArr.push(invoiceData.comments);
 				}
-				//self.scope.attr("usercommentsStore", comment);
-				self.scope.editcommentArr.push(tempcommentObj);
-		 		//console.log(self.scope.editcommentArr);
-
-
-
-		 		/*Comment end*/
-
-		 		/*Breakdown start*/
-		 		//var self = this;
-
+		 		
+				
 		 		self.scope.changeTextOnInvType();
 
          		var $template = $('#breakrowTemplate');
@@ -889,12 +862,12 @@ var page = Component.extend({
 														 
 												});
 
-
+								/*Add invoice end*/	
 
 
 								}else{
 
-								/* Add invoice end*/
+							
 
 								/*Edit invoice onject creation start*/
 

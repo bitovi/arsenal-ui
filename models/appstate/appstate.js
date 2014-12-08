@@ -34,7 +34,7 @@ var stateDefaults = {
   region: undefined,
   storeType: undefined,
   renderGlobalSearch:false,
-  globalSearch:undefined//Used caputures global filter Button ( Fetch)
+  globalSearch:undefined
 };
 
 

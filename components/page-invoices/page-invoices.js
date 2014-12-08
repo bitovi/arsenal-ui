@@ -17,7 +17,7 @@ import invoicemap from 'models/sharedMap/invoice';
 import bootstrapmultiselect from 'bootstrap-multiselect';
 import css_bootstrapmultiselect from 'bootstrap-multiselect.css!';
 
-import dataTables from 'components/data-tables/';
+
 import treetables from 'treetables';
 import css_treetables from 'treetables.css!';
 
