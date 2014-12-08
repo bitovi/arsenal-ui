@@ -13,7 +13,23 @@
       <ul class="nav navbar-nav">
         <li {{isActive 'dashboard'}}><a href="/dashboard">Dashboard</a></li>
         <li {{isActive 'payment-bundles'}}><a href="/payment-bundles">Payment Bundles</a></li>
+        <li {{isActive 'claimreview'}}><a href="/claimreview">Claim Review</a></li>
         <li {{isActive 'invalid-page'}}><a href="/invalid-page">Invalid page</a></li>
+
+        <li class="dropdown">
+                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Invoices<span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a class="dropDwn" href="#">Invoice Entry</a></li>
+                    <li class="divider dropDwn"></li>
+                    <li><a class="dropDwn" href="#">iCSV Entry</a></li>
+                    <li class="divider dropDwn"></li>
+                    <li><a class="dropDwn" href="/invoices">Search Invoice</a></li>
+                    <li class="divider dropDwn"></li>
+                    <li><a class="dropDwn" href="/on-account">On Account</a></li>
+                </ul>
+         </li>
+
+
       </ul>
     </div><!--/.nav-collapse -->
   </div>
