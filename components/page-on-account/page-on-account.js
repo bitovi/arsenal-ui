@@ -123,7 +123,8 @@ var page = Component.extend({
                              /* The below calls {scope.appstate} change event that gets the new data for grid*/
                               var returnValue = utils.getProposedOnAccRows(quarters,data);
                               var arr = $.unique(returnValue['BUNDLE_NAMES']);
-                              self.scope.attr('bundleNames',arr.toString());
+                              self.scope.attr('bundleNamesForDisplay',arr.toString());
+                              console.log(self.scope.attr('bundleNamesForDisplay'));
                               proposedRequest.rows=returnValue['ROWS'];
                               proposedRequest.quarters=quarters;
                               disableProposedSubmitButton(true);
