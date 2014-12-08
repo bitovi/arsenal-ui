@@ -168,14 +168,11 @@ var page = Component.extend({
   events: {
     	"inserted": function(){
           	var self = this;
-          	
-			this.scope.isRequired(); /*For breakdown required field*/
 
-				$('#invoiceform').on('init.form.bv', function(e, data) {
-					$('#invoiceform').on('init.form.bv', function(e, data) {
+
+			this.scope.isRequired(); /*For breakdown required field*/
+			$('#invoiceform').on('init.form.bv', function(e, data) {
 			           	data.bv.disableSubmitButtons(true);
-						 $("#uploadFiles").attr("disabled", false);
-					     $("#cancelUpload").attr("disabled", false);
 
 			        }).on('init.field.bv', function(e, data) {
 
@@ -432,7 +429,7 @@ var page = Component.extend({
 								self.scope.createBreakline(0);*/
 
 				},
-				".form-control keyup": function(event){
+			".form-control keyup": function(event){
 
 					var self = this;
 
@@ -670,6 +667,7 @@ var page = Component.extend({
 				    self.scope.attr("licensor").replace(values[0].entities.Licensor);
 			   });
 		},
+
 		"#invoiceType change": function(){
 			this.scope.isRequired();
 			var self = this;
@@ -679,8 +677,6 @@ var page = Component.extend({
 
 					}
 			  });
-			
-			
 			$("#breakrow0 .amountText").attr("id","amountText0").val(" ");
 
 			self.scope.attr("AmountStore").each(function(val, key){
@@ -1085,9 +1081,6 @@ var page = Component.extend({
    	 	var self = this;
    	 	var i = 1;
       this.scope.appstate.attr("renderGlobalSearch",false);
-      
-      $("#uploadFiles").attr("disabled", false);
-      $("#cancelUpload").attr("disabled", false);
 
    	 	var genObj = {};
    	 	Promise.all([

@@ -20,11 +20,10 @@ var datePicker = Component.extend({
   events: {
       "inserted": function(){
         var self = this.scope;
-          $(document).ready(function() {
-              $("#"+self.attr().name).datetimepicker({
+        $("#"+self.attr().name).datetimepicker({
               pickTime: false
-            })
-          }); 
+        })
+         
         }
       } 
 });
