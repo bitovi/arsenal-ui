@@ -19,6 +19,7 @@ import UserReq from 'utils/request/';
 import newOnAccountModel from 'models/onAccount/newOnAccount/'
 import Currency from 'models/common/currency/';
 import proposedOnAccount from 'models/onAccount/proposedOnAccount/';
+import Comments from 'components/multiple-comments/';
 
 var page = Component.extend({
   tag: 'page-on-account',
@@ -123,13 +124,21 @@ var page = Component.extend({
                               var returnValue = utils.getProposedOnAccRows(quarters,data);
                               var arr = $.unique(returnValue['BUNDLE_NAMES']);
                               self.scope.attr('bundleNamesForDisplay',arr.toString());
-                              console.log(self.scope.attr('bundleNamesForDisplay'));
+                              //console.log(self.scope.attr('bundleNamesForDisplay'));
                               proposedRequest.rows=returnValue['ROWS'];
                               proposedRequest.quarters=quarters;
                               disableProposedSubmitButton(true);
                               disableEditORDeleteButtons(true);
                               $("#submitPOA").attr("disabled","disabled");
                               $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={proposedRequest}></rn-proposed-onaccount-grid>')({proposedRequest}));
+
+                              var tempcommentObj = data.onAccount.comments;
+                              //console.log("multi comments "+JSON.stringify(tempcommentObj));
+                              if(tempcommentObj!=null)
+                                $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
+                              else 
+                                $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>');
+
                           } else{
                             $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
                             $("#messageDiv").show();

@@ -112,12 +112,14 @@
 		       		</div>
 
 		       		<div class="col-lg-7 marginTop-10">
-		       			<span class="col-sm-2">User Comments: 
-		       				<!-- <label for="inputEmail3" class="control-label text-right">User Comments: </label> -->
+		       			<span class="col-sm-2">
+		       				<label for="forStatus" class="col-sm-5 control-label">User Comments: </label>
 		       			</span>
 		       			
 		       		 	<span class="col-sm-9 pull-inline">
-		       		 		<textarea class="form-control" name="usercomments" id="usercommentsPOA" maxlength="1024"  can-value="proposedOnAccountUserCommentsStore" style="resize:none;"></textarea>
+		       		 		<div id="multipleComments" class="col-sm-7 normalBar">
+			                    <textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>
+			                 </div>
 							
 		       		 	</span>
 		       		 	<span class="col-sm-1 pull-inline">
