@@ -147,18 +147,22 @@ var page = Component.extend({
       "#propose click":function(el,ev){
 
         // please remove this for integrating with domain service
-        /*
+    
         var self = this;
         var quarters = utils.getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
         var paymentBundleName = $("#newPaymentBundle").val();
         if(paymentBundleName==undefined  ||  paymentBundleName==null || paymentBundleName ==""){
             paymentBundleName = self.scope.paymentBundleName;
         }
+
+        console.log('onAccountRows');
+        console.log(self.scope.onAccountRows);
+
         var createrequest = utils.frameCreateRequest(self.scope.request,self.scope.onAccountRows,self.scope.documents,self.scope.usercommentsStore,quarters,paymentBundleName);
         var request = UserReq.formRequestDetails(createrequest);
         console.log('Request:'+JSON.stringify(request));
-        newOnAccount.create(request,function(data){
-          console.log("Delete response is "+JSON.stringify(data));
+        newOnAccountModel.create(request,function(data){
+          console.log("Create response is "+JSON.stringify(data));
           if(data["status"]=="SUCCESS"){
              $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
              $("#messageDiv").show();
@@ -172,21 +176,18 @@ var page = Component.extend({
               }else{
                 this.scope.appstate.attr('globalSearch', true);
               }
-          }
-          else{
-            $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-            $("#messageDiv").show();
-            setTimeout(function(){
-                $("#messageDiv").hide();
-            },2000)
-          }
+            $("#messageDiv").html("<label class='successMessage'>Invoices created successfully </label>");
+            $("#propose").attr("disabled","disabled");
+          }else{
+                $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                $("#messageDiv").show();
+                setTimeout(function(){
+                    $("#messageDiv").hide();
+                },2000)
+              }
           },function(xhr){
-            console.error("Error while loading: onAccount Details"+xhr);
+            console.error("Error while Creating: onAccount Details"+xhr);
           });
-          */
-          $("#messageDiv").html("<label class='successMessage'>Invoices created successfully </label>");
-          $("#propose").attr("disabled","disabled");
-
       },
       "#proposedDelete click":function(el,ev){
         disableEditORDeleteButtons(true);

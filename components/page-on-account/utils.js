@@ -34,17 +34,11 @@ getQuarter:function(periodFrom,periodTO){
 },
 frameCreateRequest:function(request,onAccountRows,documents,comments,quarters,paymentBundleNameText){
 var onAccountCreateRequest ={};
-
     onAccountCreateRequest.searchRequest = {};
     onAccountCreateRequest.searchRequest.regionId=request.searchRequest.regionId;
     onAccountCreateRequest.searchRequest.serviceTypeId=request.searchRequest.serviceTypeId;
-
     onAccountCreateRequest.onAccount={};
     onAccountCreateRequest.onAccount.bundleName=paymentBundleNameText;
-
-    //console.log('documents');
-    //console.log(documents);
-
     onAccountCreateRequest.onAccount.onAccountDetails=[];
     onAccountCreateRequest.onAccount.comments=[];
     onAccountCreateRequest.onAccount.documents=[];
@@ -57,13 +51,6 @@ var onAccountCreateRequest ={};
         var licensorName="";
         for(var i=0; i < rows.length;i++){
            if(rows[i].__isChild){
-                // var onAccountDetails={};
-                // onAccountDetails.entityId=rows[i].entityId;
-                // onAccountDetails.entityName=licensorName;
-                // onAccountDetails.contentGroupId=request.searchRequest.contentGrpId[0];
-                // onAccountDetails.currencyCode=rows[i].currency;
-                // onAccountDetails.periodType="Q";
-
                 var periodMap = {};
                 for(var k=0;k<quarters.length;k++)
                 {
@@ -78,11 +65,7 @@ var onAccountCreateRequest ={};
                     onAccountDetails.onAccountAmt=rows[i][quarters[k]];
                     onAccountCreateRequest.onAccount.onAccountDetails.push(onAccountDetails);
                 }
-
-                //onAccountDetails.periodMap=periodMap;
-                //onAccountCreateRequest.onAccount.onAccountDetails.push(onAccountDetails);
            }else{
-            // console.log(rows[i]['licensor']);
             licensorName=rows[i].licensor;
            }
            
@@ -108,7 +91,7 @@ var onAccountCreateRequest ={};
     }
 
     //console.log('onAccountCreateRequest');
-    console.log(JSON.stringify(onAccountCreateRequest));
+    //console.log(JSON.stringify(onAccountCreateRequest));
 
     return onAccountCreateRequest;
     },
