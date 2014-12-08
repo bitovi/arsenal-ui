@@ -98,16 +98,24 @@
 						    {{#if addEditUIProperty.entity}}
 						      	<select id="entity" class="form-control" name="entity" can-value="entity" readonly>
 							       <option value="">Select</option>
-							       {{#each licensorStore}}
-							       		<option value="{{id}}">{{value}}</option>
-							       	{{/each}}
+							     		{{#each licensorStore}}
+						              		<optgroup label="{{entityType}}">
+								                {{#each entities}}
+								                 <option value="{{id}}">{{value}}</option>
+								                {{/each}}
+						              		</optgroup>
+						            	{{/each}}
 						   		</select>
 						   	{{else}}	
 						   		<select id="entity" class="form-control" name="entity" can-value="entity">
 							       <option value="">Select</option>
 							       {{#each licensorStore}}
-							       		<option value="{{id}}">{{value}}</option>
-							       	{{/each}}
+						              		<optgroup label="{{entityType}}">
+								                {{#each entities}}
+								                 <option value="{{id}}">{{value}}</option>
+								                {{/each}}
+						              		</optgroup>
+						            	{{/each}}
 						   		</select>
 							{{/if}}	
 						    </div>

@@ -74,7 +74,7 @@ var page = Component.extend({
             self.scope.regionStore.replace(values[0]);
             self.scope.contentType.replace(values[1].contentTypes);
             self.scope.countryStore.replace(values[2]);
-            self.scope.licensorStore.replace(values[3].entities[0].entities);
+            self.scope.licensorStore.replace(values[3]["entities"][0]);
             self.scope.pricingmodeltypeStore.replace(values[4].modelTypes);
       });       
   },
