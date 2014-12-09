@@ -26,7 +26,6 @@ var State = Map.extend({
 });
 
 var stateDefaults = {
-
   page: 'dashboard',
   periodFrom: undefined,
   periodTo: undefined,
@@ -42,7 +41,6 @@ var stateDefaults = {
 
 
 var appState = new State({
-
   startRouting: function() {
     // Create a route and pass in initial values.
     route(':page', stateDefaults);

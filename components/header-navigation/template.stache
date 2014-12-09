@@ -32,15 +32,15 @@
         <li class="dropdown">
                 <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Invoices<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a class="dropDwn" href="/create-invoice"">Invoice Entry</a></li>
+                    <li><a class="dropDwn" href="/create-invoice">Invoice Entry</a></li>
                     <li class="divider dropDwn"></li>
-                    <li><a class="dropDwn" href="#">iCSV Entry</a></li>
+                    <li><a class="dropDwn" href="/icsv">iCSV Entry</a></li>
                     <li class="divider dropDwn"></li>
                     <li><a class="dropDwn" href="/invoices">Search Invoice</a></li>
                     <li class="divider dropDwn"></li>
                     <li><a class="dropDwn" href="#">Recon Stats</a></li>
                     <li class="divider dropDwn"></li>
-                    <li><a class="dropDwn" href="#">On Account</a></li>
+                    <li><a class="dropDwn" href="/on-account">On Account</a></li>
                 </ul>
          </li>
 
@@ -104,9 +104,10 @@
 
                        </ul>
         </li>
+
       </ul>
     </div>
   </div>
 </div>
-<global-parameter-bar appstate="{appstate}" {{renderGlobalSearch}} ></global-parameter-bar>
 
+<global-parameter-bar appstate="{appstate}" {{renderGlobalSearch}} ></global-parameter-bar>

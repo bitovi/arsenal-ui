@@ -32,6 +32,9 @@
     "bootstrapValidator": "~0.5.2",
     "DataTables": "~1.10.3",
     "jquery-treetable": "~3.2.0",
+    "highcharts.com": "~4.0.4",
+    "highcharts-release": "~4.0.4",
+    "draggable-legend": "https://rawgithub.com/highslide-software/draggable-legend/master/draggable-legend.js",
     "jquery-tokeninput": "~1.7.0"
   },
   "resolutions": {

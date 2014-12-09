@@ -1,24 +1,26 @@
-<div class="outer">
+<!-- Commented the success message.
+ <div style="{{displayMessage}}" class="alert-success alert-dimension" role="alert">
+              <a href="#" class="close" data-dismiss="alert">&times;</a>
+              Files uploaded successfully!
+ </div>-->
 
-    {{#if isAnyFileLoaded}}
+<div class="outer">
+     {{#if isAnyFileLoaded}}
           <ul class="filelist">
               {{#fileList}}
-                <li>
+                <li {{data ‘listView’}}>
                      {{name}} ({{convertToKB size}})
-                     <a  class="action-link" can-click="removeSelectedFile">X</a>
+                     <a  class="action-link">X</a>
                 </li>
               {{/files}}
            </ul>
       {{/if}}
 
-
-
         {{#if isAnyFileLoaded}}
-          <input type="button" id="submitFiles" value="Submit"/>
+          <input type="submit" class="submitFiles uploadFiles" value="Upload"/>
+          <input type="submit"  class="cancelUpload uploadFiles" value="Cancel">
         {{else}}
-          <input type="file" id="fileSelect"  name ="Upload File"  style="display: none;" multiple />
-          <input type="button" id="uploadFiles" value="UpLoad" />
+          <input type="file" class="fileSelect"  name ="UploadFile"  style="display: none;" multiple />
+          <input type="submit" class="uploadFiles" value="Select Files" />
         {{/if}}
-        <input type="button" id="cancelUpload" value="Cancel">
-
 </div>

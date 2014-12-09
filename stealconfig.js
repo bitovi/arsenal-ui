@@ -39,7 +39,6 @@
 			"bootstrap.css": "bower_components/bootstrap/dist/css/bootstrap.csscss",
 			"qunit": "bower_components/qunit/qunit/qunit.js",
 			"qunit.css": "bower_components/qunit/qunit/qunit.csscss",
-
 			"bootstrap-datetimepicker": "bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js",
 			"bootstrap-datetimepicker.css": "bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.csscss",
 			"moment": "bower_components/moment/min/moment.min.js",
@@ -53,7 +52,8 @@
 			"tokeninput": "bower_components/jquery-tokeninput/src/jquery.tokeninput.js",
 			"tokeninput.css": "bower_components/jquery-tokeninput/styles/token-input.csscss",
 			"tokeninput_theme.css": "bower_components/jquery-tokeninput/styles/token-input-facebook.csscss",
-
+			"highcharts": "bower_components/highcharts-release/highcharts.js",
+			"exporting": "bower_components/highcharts-release/modules/exporting.js",
 			"bootstrap-multiselect": "bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect.js",
 			"bootstrap-multiselect.css": "bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.csscss",
 		},

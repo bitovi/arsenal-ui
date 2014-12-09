@@ -51,13 +51,16 @@ var page = Component.extend({
     "bundleSearch":{}
   },
   init: function(){
+
         var self = this;
+
+
         var requestObj = JSON.parse(self.scope.attr("request"));
-        
+        //console.log("requestObj is "+JSON.stringify(requestObj));
 
         if(requestObj!="undefined"){
             BundleNamesModel.findOne(UserReq.formRequestDetails(requestObj),function(data){
-                  
+                  //console.log(" BundleNamesModel response is "+JSON.stringify(data.attr()));
                   self.scope.bundleNames.replace(data["paymentBundles"]);
             },function(xhr){
                 console.error("Error while loading: bundleNames"+xhr);
@@ -75,37 +78,26 @@ var page = Component.extend({
     },
     events:{
 
-      "#paymentBundleNames change":function(){
-        var self = this;
-        var requestObj = JSON.parse(self.scope.attr("request"));
-        if( this.scope.attr("paymentBundleId") == 'createB'){
-              self.scope.attr("createPBFlag",{input:true});
-              NewBundleNameModel.findOne(UserReq.formRequestDetails(requestObj["newNameRequest"]),function(data){
-                     
-                      self.scope.attr("paymentBundleName" , data.paymentBundle.bundleName);
-              },function(xhr){
-                    console.error("Error while loading: bundleNames"+xhr);
-              });
-
-          }else{
-
-          }
-      },
       "#btnCancel click":function(){
         this.scope.attr("createPBFlag",{select:true});
         this.scope.attr("paymentBundleId", '');
       },
-      "{newbundlenamereq} change":function(){
-        var self = this;
-        var requestObj = self.scope.attr("newbundlenamereq");
-        self.scope.attr("createPBFlag",{input:true});
-        NewBundleNameModel.findOne(UserReq.formRequestDetails(requestObj),function(data){
-               self.scope.attr("paymentBundleName" , data.paymentBundle.bundleName);
-        },function(xhr){
-              console.error("Error while loading: bundleNames"+xhr);
-        });
-        
+      "{scope} newbundlenamereq": function(){
+        var self= this;
 
+        var requestObj = self.scope.attr("newbundlenamereq");
+        if(requestObj!="undefined"){
+          requestObj = JSON.parse(requestObj);
+          
+          //console.log("requestObj "+JSON.stringify(UserReq.formRequestDetails(requestObj)));
+          self.scope.attr("createPBFlag",{input:true});
+          NewBundleNameModel.findOne(UserReq.formRequestDetails(requestObj),function(data){
+                  //console.log("NewBundleNameModel response is "+JSON.stringify(data));
+                  self.scope.attr("paymentBundleName" , data.paymentBundle.bundleName);
+          },function(xhr){
+                console.error("Error while loading: bundleNames"+xhr);
+          });
+        }
       }
     }
 });

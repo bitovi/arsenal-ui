@@ -1,4 +1,6 @@
 import Map from 'can/map/';
+import Model from 'can/model/';
+
 
 /**
  * rinsCommon object is used to maintain for the common Properties which can be used across.
@@ -12,6 +14,6 @@ var rinsCommonObject = {
        BOUNDARY : "XXXXX"
     },
 
-    RinsCommon = new Map(rinsCommonObject);
+    RinsCommon = new can.Map(rinsCommonObject);
 
 export default RinsCommon;

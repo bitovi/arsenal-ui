@@ -23,7 +23,6 @@ import _fixtures from 'models/fixtures/';
 
 
 appstate.bind('page', function(ev, newVal, oldVal) {
-
   newVal = newVal || appstate.constuctor.prototype.defaults.page;
 
   System.import('components/page-' + newVal + '/').then(function(pageComponent) {
@@ -32,9 +31,9 @@ appstate.bind('page', function(ev, newVal, oldVal) {
   }).catch(function(ex) {
     // TODO: Do something more intelligent with miss cases, like defaulting to the Dashboard.
     $('#page').html('<p class="error">Invalid page!</p>');
-    console.error(ex);
+    console.log(ex);
+    console.error('Invalid page linked!');
   });
-
 });
 
 $(document.body).append(index_template({appstate: appstate}));
