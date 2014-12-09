@@ -1,49 +1,51 @@
 rn-file-uploader {
+    .outer {
+        margin: 1em auto;
+        background: #EFEFEF;
+        border: 2px dashed #aaa;
+        padding: 1em;
+        width:400px;
+        min-height: 200px;
+        max-height: 200px;
+        margin-left:10px;
+        overflow:hidden;
+        text-align:center;
+        overflow-y: scroll;
+        border-radius: 0.5em;
+     }
+     .filelist {
+        list-style: none;
+        margin-left: 0;
+        padding-left: 1em;
+      }
 
-  .outer {
-    margin: 1em auto;
-    background: #EFEFEF;
-    border: 2px dashed #aaa;
-    padding: 1em;
-    width:400px;
-    min-height: 200px;
-    max-height: 200px;
-    margin-left:10px;
-    overflow:hidden;
-    text-align:center;
-    overflow-y: scroll;
-    border-radius: 0.5em;
-  }
-  .filelist {
-    list-style: none;
-    margin-left: 0;
-    padding-left: 1em;
-  }
+     .filelist li {
+         padding: .2em 0 .2em 1em;
+         text-align: left;
+       background-color: white;
+       border-radius: 0.25em;
+       margin-bottom: 0.5em;
+       font-weight: 300;
+       font-size: 0.9em;
+      }
 
-  .filelist li {
-    padding: .2em 0 .2em 1em;
-    text-align: left;
-    background-color: white;
-    border-radius: 0.25em;
-    margin-bottom: 0.5em;
-    font-weight: 300;
-    font-size: 0.9em;
-  }
+      .action-link {
+        float: right;
+        margin-right: 1em;
+      }
 
-  .action-link {
-    float: right;
-    margin-right: 1em;
-  }
-
-  .uploadFiles {
-    border-radius: 0.25em;
-    background-color: #ccc;
-    color: white;
-    border: none;
-    font-size: 0.85em;
-    padding: 0.3em 0.75em 0.2em;
-    background: linear-gradient(#aaa, #999);
-  }
+      .uploadFiles {
+        border-radius: 0.25em;
+        background-color: #ccc;
+        color: white;
+        border: none;
+        font-size: 0.85em;
+        padding: 0.3em 0.75em 0.2em;
+        background: -webkit-linear-gradient(#aaa, #999); /* For Safari 5.1 to 6.0 */
+        background: -o-linear-gradient(#aaa, #999); /* For Opera 11.1 to 12.0 */
+        background: -moz-linear-gradient(#aaa, #999); /* For Firefox 3.6 to 15 */
+        background: linear-gradient(#aaa, #999); /* Standard syntax  */
+      }
 
   .fade {
     opacity: 0;

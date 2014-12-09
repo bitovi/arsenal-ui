@@ -1,0 +1,42 @@
+[
+  {
+    "Licensor": "AUT",
+    "Currency": "EUR",
+    "ContentType": "Music",
+    "Q1FY13":"12,000",
+    "Q2FY13":"120",
+    "total":"12120"
+  },
+  {
+   "Licensor": "BGR",
+    "Currency": "EUR",
+    "ContentType": "Music",
+    "Q1FY13":"0",
+    "Q2FY13":"0",
+    "total":"0"
+  },
+  {
+   "Licensor": "GBR",
+    "Currency": "GBP",
+    "ContentType": "Music",
+    "Q1FY13":"0",
+    "Q2FY13":"0",
+    "total":"0"
+  },
+  {
+   "Licensor": "CYP",
+    "Currency": "EUR",
+    "ContentType": "Music",
+    "Q1FY13":"12,000",
+    "Q2FY13":"120",
+    "total":"12,120"
+  },
+  {
+   "Licensor": "AUT",
+    "Currency": "EUR",
+    "ContentType": "Music",
+    "Q1FY13":"12,000",
+    "Q2FY13":"120",
+    "total":"12120"
+  }
+]

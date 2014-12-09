@@ -22,16 +22,16 @@ var PeriodCalendar = Component.extend({
       li.closest('.periods').find('.period li a').removeClass('period-active');
       li.addClass('period-active');
       if(li.find('span:first').text()==''){
-         var addZ = li.text().slice(1)!=4 ? '0':'' 
-         var value = this.scope.year.replace('FY ','')+addZ+parseInt(li.text().slice(1))*3; 
+         //var addZ = li.text().slice(1)!=4 ? '0':'' 
+         var value = li.text()+'FY'+this.scope.year.slice(-2);
          var which = li.closest('.calendarcls').find('input[type=text]').attr('id');
-         if(which=='periodFrom' || which=='periodTo')
-           which=='periodFrom' ? this.scope.periodFrom.replace(value):this.scope.periodTo.replace(value);
+        // if(which=='periodFrom' || which=='periodTo')
+          which=='periodFrom' ? this.scope.periodFrom.replace(value):this.scope.periodTo.replace(value);
          this.scope.attr('selectedperiod').replace({value,which});
         }else{
-          var value = this.scope.year.replace('FY ','')+li.find('span:last').text().slice(1);
+          var value = li.find('span:last').text()+'FY'+this.scope.year.slice(-2);
           var which = li.closest('.calendarcls').find('input[type=text]').attr('id');
-          if(which=='periodFrom' || which=='periodTo')
+          //if(which=='periodFrom' || which=='periodTo')
             which=='periodFrom' ? this.scope.periodFrom.replace(value):this.scope.periodTo.replace(value);
           this.scope.attr('selectedperiod').replace({value,which});
        }

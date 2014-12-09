@@ -20,7 +20,7 @@ var headerNavigation = Component.extend({
         },
         renderGlobalSearch: function(){
             //Used for appear/di-appear of the Global search, whic is based appstate.renderGlobalSearch
-            return 'style="' + (this.appstate.attr('renderGlobalSearch') ? '' : 'display:none') + '"'
+            //return 'style="' + (this.appstate.attr('renderGlobalSearch') ? '' : 'display:none') + '"'
         }
     },
     events:{

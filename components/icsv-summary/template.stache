@@ -1,0 +1,80 @@
+	<div class="col-sm-5">
+			<div class="col-sm-6">
+				Number of files
+			</div>
+			<div class="col-sm-6">
+				{{fileCount}}
+			</div>
+			
+			<div class="col-sm-6">
+				Number of invoices
+			</div>
+			<div class="col-sm-6">
+				{{invoiceCount}}
+			</div>
+			
+			<div class="col-sm-6">
+				Number of PDFs
+			</div>
+			<div class="col-sm-6">
+				{{noOfPdf}}
+			</div>
+			
+			<div class="col-sm-6">
+				Number of licensors
+			</div>
+			<div class="col-sm-6">
+				{{licensorsCount}}
+			</div>
+			
+			<div class="col-sm-6">
+				Number of rows
+			</div>
+			<div class="col-sm-6">
+				{{rowCount}}
+			</div>
+			
+			<div class="col-sm-6">
+				Number of errors
+			</div>
+			<div class="col-sm-6">
+				{{errorCount}}
+			</div>
+	</div>
+	<div class="col-sm-2">
+			Invoice Total:
+	</div>
+	<div class="col-sm-5">
+			{{#each invoiceTotal}}
+       			 <div class="col-sm-4">
+					{{amount}}
+				</div>
+				<div class="col-sm-2">
+					{{currency}}
+				</div>
+				<div class="col-sm-6">
+				&nbsp;
+				</div>
+       		{{/each}}		
+	</div>
+
+	
+	<div class="col-sm-6">
+	</div>
+	<div class="col-sm-6">
+		<div class="col-sm-12">
+			<hr>
+		</div>
+		<div class="col-sm-4">
+			GrandTotal:
+		</div>
+		<div class="col-sm-5">
+			{{totalAmount}}
+		</div>
+		<div class="col-sm-3">
+			USD
+		</div>
+	</div>
+
+
+

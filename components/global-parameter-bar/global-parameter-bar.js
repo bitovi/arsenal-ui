@@ -53,10 +53,12 @@ var GlobalParameterBar = Component.extend({
       },
      '{periodFrom} change': function(el, ev) {   
          var comp ='from';
+         this.scope.appstate.attr('periodFrom', this.scope.attr('periodFrom')[0]);
          showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0],comp);
      },
      '{periodTo} change': function(el, ev) { 
           var comp ='to';
+          this.scope.appstate.attr('periodTo', this.scope.attr('periodTo')[0]);
           showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0],comp);
      },
     '#store-type select change': function(el, ev) {
@@ -111,13 +113,11 @@ var GlobalParameterBar = Component.extend({
     } ,
     '#globalSearch click':function(){
       //To idntify, user has clicked the button
-          var self = this;
-
-
+      var self = this;
       if(this.scope.appstate.attr('globalSearch')){
-         this.scope.appstate.attr('globalSearch', !this.scope.appstate.attr('globalSearch'));
+         this.scope.appstate.attr('globalSearch', false);
       }else{
-        this.scope.appstate.attr('globalSearch', this.scope.appstate.attr('globalSearch'));
+        this.scope.appstate.attr('globalSearch', true);
       }  
     }
   },

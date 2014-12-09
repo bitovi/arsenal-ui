@@ -24,6 +24,7 @@ var Grid = Component.extend({
       }, ...
     */],
     rows: [],
+    footerrows:[],
     allOpen: false,
     sortedColumn: null,
     sortedDirection: null, // should be 'asc' or 'desc'
@@ -35,6 +36,7 @@ var Grid = Component.extend({
     },
     filteredColumns: function(options) {
       // By default, use all the columns.
+      this.columns.attr('length'); // also re-render when the column length changes
       return _.map(this.attr('columns'), column => options.fn({column}));
     },
     columnClass: function(column) {
@@ -97,6 +99,43 @@ var Grid = Component.extend({
         });
       });
     },
+    footerRows: function(options) {
+      // By default, rows are a bit more complex.
+      // We have to account for child rows being invisible when their parents aren't open.
+      //console.log("Footer Rows are "+JSON.stringify(this.footerrows.attr()));
+      //console.log("Footer Rows are "+JSON.stringify(this.footerrows));
+      var isRowAChild = function(row) {
+        // by default, just looking for __isChild = true
+        return !!row.attr('__isChild');
+      };
+
+      var isRowOpen = function(row) {
+        // by default, just looking for __isOpen = true
+        return !!row.attr('__isOpen');
+      };
+
+      var out = [],
+          childRowsAreVisible = false,
+          scope = this;
+
+      this.footerrows.attr('length');
+      return _.map(this.footerrows, function(row) {
+        var isChild = isRowAChild(row);
+
+        // if the row is a parent and isn't open, its children shouldn't be visible -
+        // this flag is only true for the children of an open parent row
+        if(!isChild) {
+          childRowsAreVisible = isRowOpen(row);
+        }
+
+        return options.fn({
+          row: row,
+          isOpen: isChild ? false : isRowOpen(row), // child rows are never open
+          isChild: isChild,
+          isVisible: isChild ? childRowsAreVisible : true // parent rows are always visible
+        });
+      });
+    },
     rowClass: function(row) {
       // By default, just return nothing.
       return '';
@@ -118,7 +157,15 @@ var Grid = Component.extend({
         }
         return value.toString();
       }
+      // By default, if column has a value function, run the row through that.
+      // Otherwise, return the value of the property on the row named for the column ID.
+      return _.isFunction(column.contents) ? column.contents.call(this, row) : row.attr(column.attr('id')).toString();
+    },
+    getColumnLength: function(options){
+      //console.log("column length is "+ JSON.stringify(this.attr("columns").length));
+      return this.attr("columns").length;
     }
+
   },
 
   events: {

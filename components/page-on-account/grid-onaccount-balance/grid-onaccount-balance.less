@@ -1,0 +1,14 @@
+@import 'components/grid/grid.less';
+
+rn-onaccount-balance-grid {
+  .grid-mixin();
+  tfoot {
+  	tr.child {
+      display: none;
+
+      &.visible {
+        display: table-row;
+      }
+    }
+  }
+}

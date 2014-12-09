@@ -1,0 +1,141 @@
+@import 'components/grid/grid.less';
+@white-border: 1px solid #fff;
+
+rn-claim-licensor-grid, rn-claim-country-grid{
+  .grid-mixin();
+  th, td {
+  	white-space: nowrap;
+  }
+  th.checbox, td.checkbox {
+    width: 30px;
+  }
+  tbody {
+
+    tr {
+
+      td {
+      	border-right: @light-border;
+      	border-bottom: @white-border;
+      }
+    }
+    tr.child{
+		td {
+			background: hsl(0, 0%, 100%)
+		}
+    }
+  }
+
+}
+
+.claimContainer{
+	border: 0px !important;
+	padding:10px;
+
+	.pageTitle{
+	  padding-left: 75px;
+	  padding-right:5px;
+	  padding-bottom:25px;
+	}
+	#searchDiv > *{
+		float:left;
+		margin:0px 5px 0px 0px;
+	}
+	ul.token-input-list-facebook{
+		width:70% !important;
+		height: 20px !important;
+		border-radius: 4px;
+		border-color: #C6C6C6;
+	}
+	#licensorView {
+		padding:10px;
+		padding-bottom: 1px;
+		border:1px solid #ddd; 
+		border-top:0px;
+	}
+	#claimLicencorGrid, #claimCountryGrid {
+		background: #f4f4f4;
+		max-height: 400px;
+		overflow: auto;
+		clear: both;
+		
+		.dataTables_scrollBody {
+			height: 300px !important;
+		}
+		.dataTables_wrapper{
+			overflow: auto;
+		}
+		.dataTables_scroll{
+			border:1px solid #ddd;
+			margin-top:10px;
+			min-width: 1200px;
+		}
+		.selected td{
+			background: #D1F0FF;
+		}
+	}
+
+	.dataTables_scrollHead table {
+		/*background-color: #848484;*/
+		background: -moz-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+		background: -webkit-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+		background: -o-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+		font-size: small;
+		color: white;
+	}
+	.dataTables_scrollFoot table {
+		background: -moz-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+		background: -webkit-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+		background: -o-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+		font-size: small;
+		color: white;
+	}
+
+	table.dataTable thead th, table.dataTable thead td {
+		border: 1px solid #848484;
+	}
+	table.dataTable tfoot th, table.dataTable tfoot td {
+		border: 1px solid #848484;
+	}
+	table.dataTable tbody tr.country{
+		background-color: #E4E4E4;
+	}
+	table.dataTable tbody tr.licensor{
+		background-color: #F6F6F6;
+	}
+	table.dataTable.cell-border tbody td {
+		border-top: 1px solid #ffffff;
+		border-right: 1px solid #bdbdbd;
+	}
+	.buttonSubmit{
+		margin-left:10px;
+	}
+}
+
+.overlay{
+  position: absolute;
+  top: 5;
+  left: 5;
+  width: 50%;
+  height: 50%;
+  z-index: 10;
+  background-color: rgba(0,0,0,0.5); /*dim the background*/
+}
+
+.hide {
+	display: none;
+}
+
+.close{
+	display: block;
+	outline: none;
+	text-indent: -9999px;
+	position: absolute;
+	top: -10px;
+	left: -13px;
+	width: 28px;
+	height: 28px;
+	background-image: url("/rinsresources/images/close.png");
+	background-repeat: no-repeat;
+	z-index: 100000;
+	cursor: pointer;
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "Licensor": "CELAS",
+    "Currency": "EUR",
+    "ContentType": "Music",
+    "Q1FY13":"120",
+    "onAccountBalance":"420",
+    "cashAdjust":"150"
+  },
+  {
+   "Licensor": "CELAS",
+    "Currency": "EUR",
+    "ContentType": "Music",
+    "Q1FY13":"120",
+    "onAccountBalance":"420",
+    "cashAdjust":"150.28"
+  },
+  {
+    "Licensor": "CELAS",
+    "Currency": "EUR",
+    "ContentType": "Music",
+    "Q1FY13":"120",
+    "onAccountBalance":"420",
+    "cashAdjust":"150"
+  },
+  {
+    "Licensor": "CELAS",
+    "Currency": "EUR",
+    "ContentType": "Music",
+    "Q1FY13":"120",
+    "onAccountBalance":"420",
+    "cashAdjust":"150.48"
+  },
+  {
+    "Licensor": "CELAS",
+    "Currency": "EUR",
+    "ContentType": "Music",
+    "Q1FY13":"120",
+    "onAccountBalance":"420",
+    "cashAdjust":"150"
+  }
+]
