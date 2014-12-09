@@ -53,7 +53,7 @@
                            <li class="divider dropDwn"></li>
                            <li><a class="dropDwn" href="#">Licensor Entity</a></li>
                            <li class="divider dropDwn"></li>
-                           <li><a class="dropDwn" href="#">Pricing Model</a></li>
+                           <li><a class="dropDwn" href="/pricing-models">Pricing Model</a></li>
                        </ul>
         </li>
         <li class="dropdown">

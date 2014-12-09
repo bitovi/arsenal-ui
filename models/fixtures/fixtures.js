@@ -35,4 +35,12 @@ fixture('GET /onAccountBalance', '/models/fixtures/onAccountBalance.json');
 
 fixture('GET /proposedOnAccount', '/models/fixtures/proposedOnAccount.json');
 
+
 fixture('GET /copyOnAccount', '/models/fixtures/newOnAccount.json');
+
+fixture('GET /storeTypes', '/models/fixtures/store-type.json');
+
+fixture('GET /pricingModels', '/models/fixtures/pricing-models.json');
+
+fixture('GET /pricingModelsFindOne', '/models/fixtures/pricing-model-findone.json');
+

@@ -1,0 +1,262 @@
+page-pricing-models {
+
+
+	table#pricingmodelGrid {
+		tbody {
+				background: #F6F6F6;
+				tr {
+					height : 1.6em;
+					td { 
+							&:first-child {
+				        		border-left: 1px solid hsl(0, 0%, 75%);
+				      		}
+
+				      		&:last-child {
+				          		border-right: 1px solid hsl(0, 0%, 75%);
+				      		}
+							border-right: 1px solid #FFFFFF;
+						}
+			   		}
+				}
+			}
+	
+	.pageHead {
+		margin-top: 0px;
+		padding-top: 0px;
+		margin-bottom: 20px;
+		color: #1e2025;
+		font-size: 24px;
+	}
+
+	.topsection{
+		border-bottom:1px solid black;
+	}
+
+	.right-pb-container{
+		border:1px solid #DAD7D7;
+		height: 780px; 
+	}
+
+	fieldset.scheduler-border {
+    	border: 1px groove #ddd;
+    	padding: 0 1.4em 1.4em 1.4em;
+    	margin: 0 0 1.5em 0;
+        box-shadow:  0px 0px 0px 0px #000;
+	}
+
+	legend.scheduler-border {
+    	width:inherit; /* Or auto */
+    	padding:0 10px; /* To give a bit of padding on the left and right */
+    	border-bottom:none;
+	}
+
+
+	.modelsummary{
+		height: 780px;
+		overflow-y:auto;
+	}
+
+	.bottomparthide{
+	  	display:none;
+	}
+
+	.bottompartshow{
+	  display:block;
+	}
+
+	#pricingmodelGrid tr:hover, #pricingmodelGrid tr.selected {
+    	background-color: #D3F0FE;
+	}
+
+	table#pricingmodelGrid thead tr > th{
+	 	color:#000000;
+	}
+
+	.breakDown{
+		margin-left:5px;
+		text-align:left;
+		margin-bottom:8px;
+	}
+
+	.breakDownBorder{
+	 	border:1px solid #000000;
+	}
+
+	.breakDownIconSize{
+		width:16px;
+		height:16px;
+	}
+
+	.buttonCancel{
+		margin-left:11px;
+	}
+
+	.field-invalid{
+		right:-10px;
+		height:20px;
+		width:20px;
+		top:4px;
+	}
+
+	table.breakdown thead, table#pricingmodelGrid thead{
+		background: linear-gradient(to bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+		font-size: small;
+		color: white;
+		th {
+			border: 1px solid #848484;
+			font-weight:normal;
+		}
+	}
+
+	.breakdown-div{
+		border: 1px solid #B0B0B5;
+		border-radius:4px;
+
+	}
+	.hide {
+		display:none;
+	}
+	.requiredBar{
+		border-left: 2px solid #d24849;
+	    padding-left: 2px;
+	    box-sizing: none;
+	}
+
+	.requiredBarNone{
+		border-left: 2px solid transparent;
+	    padding-left: 2px;
+	    box-sizing: none;
+	}
+
+	.alert-rnotes{
+		width:1px;
+		height:1px;
+		padding:0px;
+		margin:0px;
+		top:5px;
+		}
+	
+	.valid-rnotes{
+		width:1px;
+		height:1px;
+		padding:0px;
+		margin:0px;
+		}
+	
+	.alert-dimension{
+		padding: 15px;
+		margin-bottom: 20px;
+		border-radius: 4px;
+		margin-top:10px;
+		text-align:center;
+	}
+
+	.has-success .form-control{
+		border-color:#CCCCCC;
+	}
+
+	.has-success .form-control:focus{
+		border-color:#CCCCCC;
+		box-shadow:none;
+	}
+
+	.has-feedback .form-control {
+		padding-right: 10px;
+	}
+
+	.form-control{
+		height:20px;
+	}
+
+	@-moz-document url-prefix() {
+	  	.form-control{
+			padding-top:0px;
+			padding-bottom:0px;
+		}
+	}
+
+	.input-group-addon{
+		padding:0px;
+	}
+
+	.has-success .input-group-addon {
+		color: #555;
+		background-color: #eee;
+		border-color: #ccc;
+	}
+	
+	.has-success .control-label{
+		color: #848484;
+	}
+
+	.has-error .control-label{
+		color: #848484;
+	}
+	
+	label{
+		font-family:HelveticaNeue, "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif; ;
+		font-size:12px;
+		color:#848484;
+		font-weight:normal;
+	}
+
+	.mid-header{
+		font-family:HelveticaNeue-Medium, "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif; ;
+		font-size:16px;
+		color:#848484;
+	}
+
+	.large-value{
+		font-family:HelveticaNeue-Medium, "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif; ;
+		font-size:21px;
+		color:#3D3D3D;
+
+	}
+
+	.control-label{
+		padding-top:0px;
+	}
+
+	.smaller-value{
+		font-family:HelveticaNeue-Medium, "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif; ;
+		font-size:12;
+		color:#3D3D3D;
+	}
+
+	.singleField{
+		padding-left:5px;
+	}
+
+	textarea#usercomments{
+		height:100% !important;
+		resize: none;
+		margin-bottom:10px;
+	}
+
+	select#regions, select#country, select#entity{
+		min-width:140px;
+	}
+
+	.popover{
+		max-width:500px;
+		width:250px;
+	}
+
+	.popover.top{
+		top:-20px;
+	}
+
+	.modelsummaryVisible{
+		display:block;
+	}
+
+	.modelsummaryInVisible{
+		display:none;
+	}
+
+}
+
+
+
+
+
