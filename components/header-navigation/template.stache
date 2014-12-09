@@ -61,7 +61,7 @@
                        <ul class="dropdown-menu" role="menu">
                            <li><a class="dropDwn" href="#">Payment Bundle Review</a></li>
                            <li class="divider dropDwn"></li>
-                           <li><a class="dropDwn" href="#">Claim Review</a></li>
+                           <li><a class="dropDwn" href="/claimreview">Claim Review</a></li>
                            <li class="divider dropDwn"></li>
                            <li><a class="dropDwn" href="#">Global Revenue</a></li>
                            <li class="divider dropDwn"></li>
@@ -104,7 +104,6 @@
 
                        </ul>
         </li>
-
       </ul>
     </div>
   </div>

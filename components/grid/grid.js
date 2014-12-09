@@ -81,7 +81,6 @@ var Grid = Component.extend({
           childRowsAreVisible = false;
       can.__reading(this.rows, 'change'); // TODO: figure out if there's a better way to do this.
                                           // Note for others - don't use can.__reading yourself!
-
       return _.map(this.rows, function(row) {
         var isChild = isRowAChild(row);
 
@@ -165,7 +164,6 @@ var Grid = Component.extend({
       //console.log("column length is "+ JSON.stringify(this.attr("columns").length));
       return this.attr("columns").length;
     }
-
   },
 
   events: {
@@ -174,6 +172,7 @@ var Grid = Component.extend({
       row.attr('__isOpen', !row.attr('__isOpen'));
     },
     '.open-toggle-all click': function(el, ev) {
+      ev.stopPropagation();
       var allOpen = _.every(this.scope.rows, row => row.__isChild ? true : row.__isOpen);
       can.batch.start();
       // open parent rows if they are closed; close them if they are open

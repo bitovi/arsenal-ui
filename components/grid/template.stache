@@ -1,9 +1,4 @@
 <table class="rn-grid {{tableClass}}">
-  <colgroup>
-    {{#filteredColumns}}
-    <col class="{{columnClass column}}">
-    {{/filteredColumns}}
-  </colgroup>
   <thead>
     <tr class="{{#if allOpen}}open{{/if}}">
       {{#filteredColumns}}

@@ -150,29 +150,35 @@ var GlobalParameterBar = Component.extend({
               includeSelectAllOption: true,
               selectAllText: 'Select All',
               maxHeight: 200,
-              onChange: function(option, checked, select) {
-                  //alert('Changed option ' + $(option).val() + '.');
-                  //console.log(checked);
-                  //$(option).attr("selected","selected");
-                  var selVal = $(option).val();
-
-                  //$("#countriesFilter").val(selVal);
-                  //document.getElementById("countriesFilter").value = selVal;
-              }
+              onChange: function(option, checked, select) { 
+                 // $("#country .multiselect-all .checkbox").find("input[type='checkbox']").is(':checked')?
+                 //   $("#country .dropdown-menu li").addClass("active"):$("#country .dropdown-menu li").removeClass("active");
+                 $("#countriesFilter").multiselect("refresh");
+             }
               
          });
           $("#licensorsFilter").multiselect({
               numberDisplayed: 1,
               includeSelectAllOption: true,
               selectAllText: 'Select All',
-              maxHeight: 200
+              maxHeight: 200,
+              onChange: function(option, checked, select) { 
+               //  $("#licensor .multiselect-all .checkbox").find("input[type='checkbox']").is(':checked')?
+               //    $("#licensor .dropdown-menu li").addClass("active"):$("#licensor .dropdown-menu li").removeClass("active");
+               $("#licensorsFilter").multiselect("refresh");
+             }
               
          });
           $("#contentTypesFilter").multiselect({
               numberDisplayed: 1,
               includeSelectAllOption: true,
               selectAllText: 'Select All',
-              maxHeight: 200
+              maxHeight: 200,
+              onChange: function(option, checked, select) { 
+                 //$("#contentType .multiselect-all .checkbox").find("input[type='checkbox']").is(':checked')?
+                 //  $("#contentType .dropdown-menu li").addClass("active"):$("#contentType .dropdown-menu li").removeClass("active");
+                 $("#contentTypesFilter").multiselect("refresh");
+             }
               
          });
         },2000);

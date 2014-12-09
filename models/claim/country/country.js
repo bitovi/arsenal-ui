@@ -1,16 +1,20 @@
 import Model from 'can/model/';
 import RinsCommon from 'models/rinsCommon/';
+//mport RinsCommon from 'utils/';
 
-var claimCountryInvoices = Model.extend({
+var claimLicensorInvoices = Model.extend({
   // using findAll instead of resource because I don't want to be able to save.
   //findAll: 'GET /claimLicensorInvoices'
-  findAll: function(params){
+  findOne: function(params){
     return $.ajax({
-      url: RinsCommon.DOMAIN_SERVICE_URL+'claims/get/entity',
-      type: 'POST'
+      url: RinsCommon.DOMAIN_SERVICE_URL+'claims/get/country',
+      //url: RinsCommon.DOMAIN_SERVICE_URL+'rinsui/getClaimReviews',
+      type: 'POST',
+      datatype:'json',
+      //contentType: 'application/json; charset=utf-8',
       //data: JSON.stringify(params)
     })
   }
 }, {});
 
-export default claimCountryInvoices;
+export default claimLicensorInvoices;
