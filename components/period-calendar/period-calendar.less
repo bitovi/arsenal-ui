@@ -1,0 +1,164 @@
+period-calendar{
+	.box-modal{
+		display:none;
+		position:absolute;
+		width: 200px;
+		height: 278px;
+		margin-left: 0px;
+		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+		font-size: 14px;
+		font-weight: 400;
+		line-height: 1.42857143;
+		text-align: left;
+		white-space: normal;
+		background-color: #f7f7f7;
+		-webkit-background-clip: padding-box;
+		background-clip: padding-box;
+		border: 1px solid #ccc;
+		border: 1px solid rgba(0,0,0,.2);
+		border-radius: 6px;
+		-webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+		box-shadow: 0 5px 10px rgba(0,0,0,.2);
+		z-index:1000;
+		overflow:visible;
+		margin-top:14px;
+	}
+	.arrow_box {
+		position: relative;
+		background: transparent;
+	}
+	.arrow_box:after, .arrow_box:before {
+		bottom: 100%;
+		left: 50%;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+	}
+	.arrow_box:after {
+		border-color: rgba(136, 183, 213, 0);
+		border-bottom-color: #f7f7f7;
+		border-width: 12px;
+		margin-left: -88px;
+	}
+	.arrow_box:before {
+		border-color: rgba(194, 225, 245, 0);
+		border-bottom-color: #ccc;
+		border-width: 14px;
+		margin-left: -90px;
+	}
+	.period-title{
+		font-size:12px;
+		padding: 6px 12px;
+		border-bottom: 1px solid #ddd;
+	}
+	.period-calendar-leftbtn{
+		height: 25px;
+		padding-top: 0px;
+		margin-top: 7px;
+	}
+	.period-calendar-rightbtn{
+		height: 25px;
+		padding-top: 0px;
+		margin-top: 7px;
+	}
+	.topmenucontainer .fl{
+		float:left;
+		width:60%;
+		text-align:center;
+		margin-top:10px;
+	}
+	.topmenucontainer .flbtn{
+		float:left;
+		width:20%;
+		text-align:center;
+		margin-top:10px;
+	}
+	.midbtn{
+		font-size: 12px;
+		width: 100px;
+		height: 25px;
+		margin-top: 7px;
+		padding-top: 4px;
+	}
+	.periods {
+		clear:both;
+		padding: 10px 5px;
+		ul{
+			padding:0px;
+		}
+		
+	}
+	.periods ul li{
+		list-style:none;
+		float:left;
+		width:46px;
+	}
+	.periods a.btn-default{
+		border-radius:0px;
+		line-height: 18px;
+		padding: 10px;
+		height: 46px;
+		width: 100%;
+		overflow: hidden !important;
+	}
+	.q1, .q2, .q3, .q4{
+		clear:both;
+	}
+	.q2 li a, .q3 li a, .q4 li a{
+		width:48px;
+	}
+	.q1 a, .q2 a, .q3 a, .q4 a{
+		border-right:0px;
+		border-bottom:0px;
+	}
+	.q1 li:first-child a, .q2 li:first-child a, .q3 li:first-child a, .q4 li:first-child a{
+		border-bottom:1px solid #ddd;
+		border-right:1px solid #ddd;
+	}
+	.q1 li:last-child a, .q2 li:last-child a, .q3 li:last-child a, .q4 li:last-child a{
+		border-right:1px solid #ddd;
+	}
+	.q4 a{
+		border-bottom:1px solid #ddd;
+	}
+	.withbdr{
+		border-top:1px solid #ccc!important;
+	}
+	.period-active{
+		background: #2282fd;
+		color:#fff;
+		text-shadow:0 1px 0 rgba(0,0,0,.1);
+		border: 1px groove #0a66cb !important;
+	
+	}
+	.periods a.btn-default:hover{
+			background: #D3F0FE;
+			border: 1px groove #0a66cb !important;
+	}
+	.period-active:hover{
+		background: #2282fd !important;
+	}
+	.periods ul li:first-child{
+		margin-right: 4px;
+		a{
+			border-radius: 5px;
+			width: 41px;
+			height: 23px;
+			font-size: 12px;
+			padding-top: 3px;
+			margin-top: 10px;
+			padding-left: 8px;
+		}
+
+	}
+	.smalltxt{
+		display:block;
+		font-size:10px;
+		line-height:8px;
+		height: 20px;
+		color: #ccc;
+	}
+}

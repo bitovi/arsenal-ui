@@ -1,16 +1,88 @@
 global-parameter-bar {
 
+  .globalFilterContainer {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #C6C6C6;
+  }
   ul {
     list-style: none;
+    padding-top: 15px;
 
     li {
       display: inline;
-      padding: 4px 8px;
+      padding: 10px 0px;
 
-      .parameter-name {
-        margin-right: 8px;
+      .box{
+        display:inline-block;
+        min-width: 150px;
+        margin-bottom:5px;
+
+        .parameter-name {
+          margin-right: 0px;
+          display:block;
+          padding: 0px 0px 3px 2px;
+        }
+
+        select.resizeBox {
+          
+          margin-top: 2px;
+          width: 125px;
+        }
+
+        button.multiselect{
+          height: 20px !important;
+          padding: 1px 12px;
+          width: 125px;
+          text-align: left;
+          b.caret {
+            float: right;
+            position:relative;
+            top: 6px;
+          }
+        }
+        .dropdown-menu {
+          min-width: 125px;
+          li > a{
+            padding: 1px;
+          } 
+        }
       }
     }
-  }
 
+  }
+  #periodFrom, #periodTo{
+      width:125px;
+      height:20px;
+      font-size:12px;
+  }
+  .multiselect-container>li.multiselect-group label{
+    padding-left:5px;
+    font-weight:normal;
+    color:#ccc;
+  }
+  
+
+}
+
+#contentTypesFilter {
+  width: 100px;
+}
+.period-calendar{
+    .periods ul li{
+      padding:0px;
+    }
+
+}
+.period-invalid{
+    display:none;
+    font-size:12px;
+    color:red;
+    padding-left:46px;
+}
+:focus{
+  border:1px solid red;
+}
+
+.form-control{
+  height: 20px !important;
 }
