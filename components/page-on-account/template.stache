@@ -1,10 +1,10 @@
 	<div class="col-lg-12 pageTitle">
 	   
-	   <div class="col-md-3"><h3>On Account </h3></div> 
 
 	   <div id="onAccountContainer" class="col-lg-12">
 			<div id="messageDiv" class="col-md-12" style="position: absolute;text-align:center;padding-top:5px;"></div>
 		</div>
+	   <div class="col-md-3"><h3>On Account </h3></div> 
 	   
 	   <div class="col-md-9">
 	   		<div class="form-inline row" id="forminlineElements">
@@ -55,7 +55,7 @@
 		   
 		   	<!-- New On Account -->
 		   	<div class="tab-pane fade in active" id="NewonAccountDiv">
-		   		<div id="newonAccountGrid"></div>
+		   		<div id="newonAccountGrid"><div id="loading_img">123123123123</div></div>
 		   		
 			       	<div class="col-lg-12 marginTop-10 lightestGrey" id='newonAccountGridComps'>
 			       		
@@ -92,7 +92,7 @@
 		  
 		  	<!-- On Account Balance -->
 		   	<div class="tab-pane fade" id = "onAccountBalanceDiv">
-		   		<div id="onAccountBalanceGrid"></div>
+		   		<div id="onAccountBalanceGrid"><div id="loading_img"></div></div>
 			</div>
 
 			<!-- Propose On Account -->
@@ -101,7 +101,9 @@
 				<button type="button" id="proposedDelete" class="btn btn-primary buttonSubmit btn-custom-small pull-right marginLeft-5">Delete</button>
 				<button type="button" id="proposedEdit" class="btn btn-primary buttonSubmit btn-custom-small pull-right">Edit</button>
 		   		
-		   		<div id="proposedOnAccountGrid"></div>
+		   		<div id="proposedOnAccountGrid">
+					<div id="loading_img"></div>
+		   		</div>
 
 		   		<div class="col-lg-12 marginTop-10 lightestGrey" id='proposeOnAccountGridComps'>
 			       		
