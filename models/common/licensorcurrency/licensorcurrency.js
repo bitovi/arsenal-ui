@@ -1,10 +1,10 @@
 import Model from 'can/model/';
 import RinsCommon from 'utils/';
 
-var Currency = Model.extend({
+var LicensorCurrency = Model.extend({
    findAll: function(params){
  	return $.ajax({
- 		url: RinsCommon.UI_SERVICE_URL +'getCurrencies',
+ 		url: RinsCommon.UI_SERVICE_URL +'getLicensorCurrencies',
   		type: 'POST',
   		data: JSON.stringify(params),
   		dataType:'json',
@@ -14,4 +14,4 @@ var Currency = Model.extend({
 }, {});
 
 
-export default Currency;
+export default LicensorCurrency;

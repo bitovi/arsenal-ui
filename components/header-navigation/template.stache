@@ -10,12 +10,12 @@
      <a class="navbar-brand" href="#"><img src='../../resources/images/apple-chrome.png' class='applelogo'/>RightNotes</a>
     </div>
     <div class="collapse navbar-collapse">
-      <ul class="nav navbar-nav">
-        <li {{isActive 'dashboard'}}><a href="/dashboard">Dashboard</a></li>
-        <li><a href="#">Approvals</a></li>
+      <ul class="nav navbar-nav" id='homemenu'>
+        <li name='Dashboard' {{isActive 'dashboard'}}><a href="/dashboard" id='dashboard'>Dashboard</a></li>
+        <li name='Approvals'> <a href="#">Approvals</a></li>
 
-        <li class="dropdown">
-                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Accruals<span class="caret"></span></a>
+        <!--li class="dropdown">
+                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Accruals<!--span class="caret"></span--></a>
                 <ul class="dropdown-menu" role="menu">
                     <li><a class="dropDwn" href="#">Accrual Journal Voucher</a></li>
                     <li class="divider dropDwn"></li>
@@ -27,11 +27,11 @@
                     <li class="divider dropDwn"></li>
                     <li><a class="dropDwn" href="#">Accrual Analysis</a></li>
                 </ul>
-         </li>
+         </li-->
 
-        <li class="dropdown">
-                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Invoices<span class="caret"></span></a>
-                <ul class="dropdown-menu" role="menu">
+        <li name='Invoices' class="dropdown">
+                <a>Invoices<!--span class="caret"></span--></a>
+                <!--ul class="dropdown-menu" role="menu">
                     <li><a class="dropDwn" href="#">Invoice Entry</a></li>
                     <li class="divider dropDwn"></li>
                     <li><a class="dropDwn" href="#">iCSV Entry</a></li>
@@ -40,13 +40,13 @@
                     <li class="divider dropDwn"></li>
                     <li><a class="dropDwn" href="#">Recon Stats</a></li>
                     <li class="divider dropDwn"></li>
-                    <li><a class="dropDwn" href="/on-account">On Account</a></li>
-                </ul>
+                    <li><a class="dropDwn" href="#">On Account</a></li>
+                </ul-->
          </li>
 
-        <li class="dropdown">
-                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference<span class="caret"></span></a>
-                       <ul class="dropdown-menu" role="menu">
+        <li name='Reference' class="dropdown">
+                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference<!--span class="caret"></span--></a>
+                       <!--ul class="dropdown-menu" role="menu">
                            <li><a class="dropDwn" href="#">Licensor</a></li>
                            <li class="divider dropDwn"></li>
                            <li><a class="dropDwn" href="#">Entity</a></li>
@@ -54,11 +54,11 @@
                            <li><a class="dropDwn" href="#">Licensor Entity</a></li>
                            <li class="divider dropDwn"></li>
                            <li><a class="dropDwn" href="#">Pricing Model</a></li>
-                       </ul>
+                       </ul-->
         </li>
-        <li class="dropdown">
-                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Analytics<span class="caret"></span></a>
-                       <ul class="dropdown-menu" role="menu">
+        <li name='Analytics' class="dropdown">
+                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Analytics<!--span class="caret"></span--></a>
+                       <!--ul class="dropdown-menu" role="menu">
                            <li><a class="dropDwn" href="#">Payment Bundle Review</a></li>
                            <li class="divider dropDwn"></li>
                            <li><a class="dropDwn" href="#">Claim Review</a></li>
@@ -70,20 +70,20 @@
                            <li><a class="dropDwn" href="#">Unclaimed Stats Config</a></li>
                            <li class="divider dropDwn"></li>
                            <li><a class="dropDwn" href="#">Unclaimed Summary</a></li>
-                        </ul>
+                        </ul-->
          </li>
-         <li class="dropdown">
-                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">System<span class="caret"></span></a>
-                       <ul class="dropdown-menu" role="menu">
+         <li name='System' class="dropdown">
+                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">System<!--span class="caret"></span--></a>
+                       <!--ul class="dropdown-menu" role="menu">
                            <li><a class="dropDwn" href="#">Job Statistics</a></li>
                            <li class="divider dropDwn"></li>
                            <li><a class="dropDwn" href="#">Report Downloads</a></li>
-                       </ul>
+                       </ul-->
          </li>
 
-        <li class="dropdown">
-                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Approval History<span class="caret"></span></a>
-                       <ul class="dropdown-menu" role="menu">
+        <li name='Approval History' class="dropdown">
+                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Approval History<!--span class="caret"></span--></a>
+                       <!--ul class="dropdown-menu" role="menu">
                            <li><a class="dropDwn" href="#">Accrual</a></li>
                            <li class="divider dropDwn"></li>
                            <li><a class="dropDwn" href="#">Ref Data</a></li>
@@ -102,9 +102,16 @@
                            <li class="divider dropDwn"></li>
                            <li><a class="dropDwn" href="#">Accrual Rerun</a></li>
 
-                       </ul>
+                       </ul-->
         </li>
 
+
+
+
+      </ul>
+
+      <ul class="nav navbar-nav" id='dynamicmenu'>
+         
       </ul>
     </div>
   </div>

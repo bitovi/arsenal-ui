@@ -17,7 +17,7 @@ import proposedOnAccountGrid from './grid-proposed-onaccount/';
 import proposedOnAccount from 'models/onAccount/proposedOnAccount/';
 import UserReq from 'utils/request/';
 import newOnAccountModel from 'models/onAccount/newOnAccount/'
-import Currency from 'models/common/currency/';
+import LicensorCurrency from 'models/common/licensorcurrency/';
 import proposedOnAccount from 'models/onAccount/proposedOnAccount/';
 import Comments from 'components/multiple-comments/';
 
@@ -99,7 +99,7 @@ var page = Component.extend({
               //console.log("inside NEW_ON_ACC");
               $('#newonAccountGrid, #newonAccountGridComps').show();
                 genObj["licensorId"]=request.searchRequest.entityId.toString();
-                 Currency.findAll(UserReq.formRequestDetails(genObj)).then(function(data) {
+                 LicensorCurrency.findAll(UserReq.formRequestDetails(genObj)).then(function(data) {
                  var rows = utils.frameRows(data.licensorCurrencies,quarters);
                  request.rows=rows;
                  request.quarters=quarters;

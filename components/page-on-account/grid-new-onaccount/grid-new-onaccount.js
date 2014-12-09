@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import stache from 'can/view/stache/';
 import _ from 'lodash';
-import Currency from 'models/common/currency/';
+//import Currency from 'models/common/currency/';
 import UserReq from 'utils/request/';
 import utils from 'components/page-on-account/utils';
 
