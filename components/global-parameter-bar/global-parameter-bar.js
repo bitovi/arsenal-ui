@@ -75,6 +75,11 @@ var GlobalParameterBar = Component.extend({
         Licensor.findAll(UserReq.formRequestDetails({"regionId":selected.id}))
       ]).then(function(values) {
         //console.log(JSON.stringify(values[0][0]["data"].attr()));
+        if (values[0].length === 0 && values[1].length === 0) {
+           $('.no-data').show()
+         } else {
+           $('.no-data').hide();
+         }
         self.scope.countries.replace(values[0]);
         self.scope.licensors.replace(values[1]);
 

@@ -1,0 +1,304 @@
+<div class="form-horizontal" id="refcountryform" role="form">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-4 pageTitle">
+          <h3>Country Details</h3>
+      </div>
+      <div class="col-sm-4">
+        <!-- TODO - Keep the message outside -->
+        <div style="{{displayMessage}}" class="alert-success alert-dimension" role="alert">
+          <a href="#" class="close" data-dismiss="alert">&times;</a>
+          New Country Details Changes Saved Successfully.
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row">
+         <div class="form-group col-sm-12">
+              <div class="col-sm-5">
+                 <label for="forCountry" class="col-sm-3 control-label">Country: </label>
+                 <div class="col-sm-4">
+                   <select class="form-control" can-value='pageState.countryDetails.country.countryId'>
+                       {{#each countries}}
+                         <option value="{{id}}">{{value}}</option>
+                        {{/each}}
+                     </select>
+                 </div>
+                 <div class="col-sm-2 ">
+                   <button id="fetchDetailsBtn" class="btn btn-primary btn-custom-small">Fetch</button>
+                 </div>
+               </div>
+               <div class="col-sm-7"></div>
+        </div>
+
+
+  <div class="col-sm-12 lineDividerInvoice main-layout"><!-- Main Layout START-->
+    <form id="countryForm" >
+      <div class="col-sm-5 left-layout"><!-- LEFT Layout START-->
+          <!--<div class="form-group">
+             <div class="col-sm-10">
+                <label for="forId" class="col-sm-5 control-label">ID: </label>
+                <div class="col-sm-7" style="text-align:left;padding-left:0px">
+                  <span>{{pageState.countryDetails.country.id}}</span>
+                </div>
+              </div>
+               <div class="col-sm-2"></div>
+            </div>-->
+            <div class="form-group">
+               <div class="col-sm-10">
+                  <label for="forStatus" class="col-sm-5 control-label">Status: </label>
+                  <div class="col-sm-7" style="text-align:left;padding-left:0px">
+                    <span>{{pageState.countryDetails.country.status}}</span>
+                  </div>
+                </div>
+                 <div class="col-sm-2"></div>
+            </div>
+            <div class="form-group">
+               <div class="col-sm-10" id="periodFromcontainer">
+                  <label for="forValidFrom" class="col-sm-5 control-label">Valid From: </label>
+                  <div class="col-sm-7 requiredBar calendarcls">
+                    <input type='text' id="validFrom" class="validFrom form-control updatePeroid" name="validFrom" place-holder="Select Period" can-value='pageState.countryDetails.country.validFrom'/>
+                    <period-calendar appstate="{appstate}"></period-calendar>
+                  </div>
+                </div>
+                 <div class="col-sm-2"></div>
+            </div>
+            <div class="form-group">
+               <div class="col-sm-10 " id="periodTocontainer">
+                  <label for="forValidTo" class="col-sm-5 control-label">Valid To: </label>
+                  <div class="col-sm-7 normalBar calendarcls">
+                    <input type='text' id="validTo" class="validTo form-control updatePeroid" place-holder="Select Period" can-value='pageState.countryDetails.country.validTo'/>
+                    <period-calendar appstate="{appstate}"></period-calendar>
+                  </div>
+                </div>
+                 <div class="col-sm-2"></div>
+            </div>
+            <div class="form-group">
+               <div class="col-sm-10 ">
+                  <label for="forEntity" class="col-sm-5 control-label">Local Society: </label>
+                  <div class="col-sm-7 requiredBar">
+                    <select class="form-control" id="localSocietysel" name="localSociety" can-value='pageState.countryDetails.country.localSocietyId'>
+                      <option value="">Select</option>
+                      {{#each localSocietyNames}}
+                        <option value="{{id}}">{{value}}</option>
+                       {{/each}}
+                  </div>
+                </div>
+                 <div class="col-sm-2"></div>
+            </div>
+            
+            <div class="form-group">
+               <div class="col-sm-10 ">
+                  <label for="" class="col-sm-5 control-label">Main Pricing Method: </label>
+                  <div class="col-sm-7 requiredBar">
+                    <select  class="form-control inputMonth" name="mainPricingMethod" can-value='pageState.countryDetails.country.mainPricingMethod'>
+                    <option value="">Select</option>
+                      {{#each pricingMethods}}
+                          <option value="{{id}}">{{value}}</option>
+                      {{/each}}
+                    </select>
+                  </div>
+                </div>
+                 <div class="col-sm-2"></div>
+            </div>
+            <div class="form-group">
+               <div class="col-sm-10 ">
+                  <label for="" class="col-sm-5 control-label">Alternate Pricing Method: </label>
+                  <div class="col-sm-7 normalBar">
+                    <select  class="form-control inputMonth" can-value='pageState.countryDetails.country.altPricingMethod'>
+                      -<option value="">Select</option>
+                      {{#each pricingMethods}}
+                          <option value="{{id}}">{{value}}</option>
+                      {{/each}}
+                    </select>
+                  </div>
+                </div>
+                 <div class="col-sm-2"></div>
+            </div>
+            <div class="form-group">
+               <div class="col-sm-10">
+                  <label for="forStatus" class="col-sm-5 control-label">Mechanical Share: </label>
+                  <div class="col-sm-7" style="text-align:left;padding-left:0px">
+                    <span>{{pageState.countryDetails.country.mechShare}}</span>
+                  </div>
+                </div>
+                 <div class="col-sm-2"></div>
+            </div>
+            <div class="form-group">
+               <div class="col-sm-10">
+                  <label for="forStatus" class="col-sm-5 control-label">Performance Share: </label>
+                  <div class="col-sm-7" style="text-align:left;padding-left:0px">
+                    <span>{{pageState.countryDetails.country.performShare}}</span>
+                  </div>
+                </div>
+                 <div class="col-sm-2"></div>
+            </div>
+            <div class="form-group">
+               <div class="col-sm-10">
+                  <label for="" class="col-sm-5 control-label">Transaction Currency: </label>
+                  <div class="col-sm-7 requiredBar">
+                    <select class="form-control" id="transCurrSel" can-value='pageState.countryDetails.country.transactionCurrency' name="transCurr" >
+                      {{#each transcurrencies}}
+                        <option value="{{.}}">{{.}}</option>
+                       {{/each}}
+                    </select>
+                  </div>
+                </div>
+                 <div class="col-sm-2"></div>
+            </div>
+            <div class="form-group">
+               <div class="col-sm-10">
+                  <label for="" class="col-sm-5 control-label">Alternate Currency: </label>
+                  <div class="col-sm-7 normalBar">
+                    <select class="form-control" id="altCurrSel" can-value='pageState.countryDetails.country.altCurrency' name="invoiceCurr" >
+                      {{#each altcurrencies}}
+                        <option value="{{.}}">{{.}}</option>
+                       {{/each}}
+                    </select>
+                  </div>
+                </div>
+                 <div class="col-sm-2"></div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-10">
+                 <label for="" class="col-sm-5 control-label">Accural Model:</label>
+                 <div class="col-sm-7 requiredBar">
+                    <div class="col-sm-7 normalBar">
+                      <select class="form-control" id="accModelSel" name="accuralModelName" style="max-width:120px;" can-value="{pageState.countryDetails.country.modelId}">
+                        {{#each accuralModels}}
+                          <option {{isSelected 'accModel' accName}} {{data 'accModel'}}>{{accName}}</option>
+                         {{/each}}
+                      </select>
+                    </div>
+                    <div class="col-sm-3 normalBar">
+                      <select class="form-control" id="accModelVerSel" name="accuralModelVersion">
+                          {{#each accuralModelVersions}}
+                            <option {{isSelected 'accModelVer' modelId}} {{data 'accModelVer'}}>{{version}}</option>
+                           {{/each}}
+                      </select>
+                    </div>
+                    <div class="col-sm-2 normalBar">
+                      <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="pricingModelBtn">...</button>
+                    </div>
+                 </div>
+              </div>
+              <div class="col-sm-2"></div>
+            </div>
+
+            <div class="form-group">
+               <div class="col-sm-10">
+                  <label for="forStatus" class="col-sm-5 control-label">Comments: </label>
+                  <div id="multipleComments" class="col-sm-7 normalBar">
+                    <textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>
+                  </div>
+                </div>
+                 <div class="col-sm-2"></div>
+            </div>
+
+            <div class="col-sm-12" style="text-align:center;padding:15px;">
+              <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
+              <button id="submitBtn" {{disableSubmit}} type="submit"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>
+            </div>
+        </div>
+        <!-- LEFT Layout END-->
+
+        <div class="col-sm-7 right-layout"> <!-- RIGHT Layout START-->
+          <div class="form-group">
+            <div class="col-sm-1"></div>
+             <div class="col-sm-11">
+              <div class="panel panel-default panel-sm">
+                <div class="panel-heading clearfix">
+                    <h4 class="panel-title">
+                      Report Configuration
+                    </h4>
+                </div>
+                <div id="grid-society-model" style="max-height: 200px; overflow-y:scroll;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-1"></div>
+             <div class="col-sm-11">
+              <div class="panel panel-default panel-sm">
+                <div class="panel-heading clickable">
+                    <h4 class="panel-title">
+                       <a data-toggle="collapse" data-parent="#accordion" href="#grid-collapse">
+                        <i class="icon-large icon-circle-arrow-right"></i> Revision History
+                      </a></h4>
+                </div>
+                <div id="grid-collapse" class="panel-collapse collapse in">
+                  <div id="grid-revision-history" style="max-height: 200px; overflow-y:scroll;"></div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div><!-- RIGHT Layout END-->
+        <div id="viewPricingModelDiv"> <!-- View Pricing Model start --->
+            <div class="col-sm-12" style="border-bottom: 1px solid #ddd;padding: 0px;">
+              <div class="col-sm-11" >
+                <h4> View Pricing Model</h4>
+              </div>
+              <div class="col-sm-1" style="padding-top: 10px;text-align: right;" id="priModelClose">
+                <a href="javascript:void(0)">X</a> 
+              </div>
+            </div>
+            <div class="col-sm-12" style="padding-top: 10px;">
+              <div class="col-sm-5 form-group">
+                <div class="singleField">
+                    <label for="" class="col-sm-6 control-label">Country:</label>
+                    <div class="col-sm-6">
+                      <span>{{getPricingModelDetails.country}}</span>
+                    </div>
+                  </div>
+               </div>
+              <div class="col-sm-7 form-group">
+                <div class="singleField">
+                    <label for="" class="col-sm-6 control-label">Entity:</label>
+                    <div class="col-sm-6">
+                        <span>{{getPricingModelDetails.entity}}</span>
+                    </div>
+                  </div>
+              </div>
+              <div class="col-sm-5 form-group">
+                <div class="singleField">
+                    <label for="inputEmail3" class="col-sm-6 control-label">Pricing Model:</label>
+                    <div class="col-sm-6">
+                      <span>{{getPricingModelDetails.pricingModel.modelName}}</span>     
+                    </select>
+                    </div>
+                  </div>
+               </div>
+              <div class="col-sm-7 form-group">
+                <div class="singleField">
+                    <label for="inputEmail3" class="col-sm-6 control-label">Model Name:</label>
+                    <div class="col-sm-6">
+                        <span>{{getPricingModelDetails.pricingModel.modelDescription}}</span> 
+                    </div>
+                  </div>
+              </div>
+              <div class="col-sm-12">
+                <fieldset class="scheduler-border">
+                  <legend class="scheduler-border">Base Model parameter</legend>
+                  <div id="baseModelParameterDiv"></div>
+                </fieldset>
+                <fieldset class="scheduler-border">
+                  <legend class="scheduler-border">Track Counts</legend>
+                  <div id="trackCountsDiv"></div>
+                </fieldset>
+              </div>
+              <div class="col-sm-12">
+                <label for="" class="col-sm-2 control-label">Comments: </label>
+                <div id="priceModelmultipleComments" class="col-sm-10 normalBar">
+                  <textarea class="form-control" maxlength="1024" style="height:125px;   min-height:100px;    max-height:100px;"></textarea>
+                </div>
+              </div>
+            </div>
+        </div><!-- View Pricing Model ends --->
+      </div> <!-- Main Layout END-->
+    </form> 
+  </div>
+</div>

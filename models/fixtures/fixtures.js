@@ -46,3 +46,8 @@ fixture('GET /pricingModelsFindOne', '/models/fixtures/pricing-model-findone.jso
 
 fixture('GET /highchart', '/models/fixtures/highchart.json');
 
+fixture('GET /getPricingModels', '/models/fixtures/pricingmodel.json');
+
+fixture('GET /getPricingModelVersion', '/models/fixtures/pricingModelVersion.json');
+
+fixture('GET /getPricingMethods', '/models/fixtures/pricingMethods.json');
