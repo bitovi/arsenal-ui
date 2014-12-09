@@ -96,7 +96,7 @@
       <div class="box">
         <span class="parameter-name">Content Type:</span>
         <select id="contentTypesFilter" class="form-control resizeBox" multiple="multiple">
-               {{#each contenttypes}}
+               {{#each contentTypes}}
                   <!--<option {{isSelected 'contenttype' id}} {{data 'contenttype'}}>{{value}}</option>-->
                   <option value="{{contentGroupId}}" data-servicetypeid={{serviceTypeId}}>{{contentGroupName}}</option>
                 {{/each}}

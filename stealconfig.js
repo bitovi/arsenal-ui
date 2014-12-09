@@ -37,7 +37,9 @@
 			"bootstrap": "bower_components/bootstrap/dist/js/bootstrap.js",
 			"bootstrap.css": "bower_components/bootstrap/dist/css/bootstrap.csscss",
 			"qunit": "bower_components/qunit/qunit/qunit.js",
-			"qunit.css": "bower_components/qunit/qunit/qunit.csscss"
+			"qunit.css": "bower_components/qunit/qunit/qunit.csscss",
+			"bootstrap-multiselect": "bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect.js",
+			"bootstrap-multiselect.css": "bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.csscss",
 		},
 		meta: {
 			jquery: {
