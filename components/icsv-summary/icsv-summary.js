@@ -3,11 +3,11 @@ import Component from 'can/component/';
 import template from './template.stache!';
 import styles from './icsv-summary.less!';
 
-import ICSVInvoices from 'models/invoice/icsv/';
 import utils from 'components/icsv-summary/utils'
+import icsvmap from 'models/sharedMap/icsv';
 
 
-var page = Component.extend({
+var icsvsummary = Component.extend({
   tag: 'icsv-summary',
   template: template,
   scope: {
@@ -20,19 +20,25 @@ var page = Component.extend({
     "totalAmount":"",
     invoiceTotal:[]
   },
-  init: function(){
+  events:{
+  inserted: function(){
 	  var self = this;
-      Promise.all([
-         ICSVInvoices.findAll()
-      ]).then(function(values) {
+      console.log(icsvmap.invoiceData);
+      // Promise.all([
+      //    ICSVInvoices.findAll()
+      // ]).then(function(values) {
     	  //console.log(JSON.stringify(values[0][0]["statusCode"]));
     	  //console.log(JSON.stringify(values[0][0]["summary"][0]["invoiceTotalMap"]));
     	  //console.log(JSON.stringify(values[0][0]["summary"].attr()));
     	  //console.log(JSON.stringify(values[0][0].summary.invoiceTotalMap));
     	 // var sample = values[0][0]["summary"][0];
-    	  var summaryDetails = values[0][0]["summary"].attr();
+
+           icsvmap.delegate("invoiceData","set", function(ev, newVal){
+            //console.log('Inside delegate');
+    	  var summaryDetails = icsvmap.invoiceData.summary.attr();
+          icsvmap.invoiceData.summary.attr();
     	  
-    	  console.log("Value---"+JSON.stringify(summaryDetails));
+    	  //console.log("Value---"+JSON.stringify(summaryDetails));
     	  
     	  self.scope.attr("fileCount",summaryDetails.fileCount);
     	  self.scope.attr("invoiceCount",summaryDetails.invoiceCount);
@@ -47,37 +53,32 @@ var page = Component.extend({
     	  //self.scope.invoiceTotal.replace(convertMapToObject(Object.keys(summaryDetails[0].invoiceTotalMap[0]),summaryDetails[0].invoiceTotalMap[0]));
     	  
     	  //console.log("Utils---------log"+utils.convertMapToCanListObject(Object.keys(summaryDetails[0].invoiceTotalMap[0]),summaryDetails[0].invoiceTotalMap[0]));
-    	  var canList=utils.convertMapToCanListObject(Object.keys(summaryDetails.invoiceTotalMap),summaryDetails.invoiceTotalMap);
-    	  self.scope.invoiceTotal.replace(canList);
+    	  //var canList=utils.convertMapToCanListObject(Object.keys(summaryDetails.invoiceTotal),summaryDetails.invoiceTotal);
+    	  //console.log('Details--'+JSON.stringify(utils.convertMapToCanListObject(summaryDetails.invoiceTotal)));
+    	  self.scope.invoiceTotal.replace(utils.convertMapToCanListObject(summaryDetails.invoiceTotal));
     	  
     	  
-    	  self.scope.attr("totalAmount",utils.calculateInvoiceTotal(canList));
+    	  self.scope.attr("totalAmount",utils.calculateInvoiceTotal(summaryDetails.invoiceTotal));
     	  //console.log("invoice Map:"+values[0][0].summary[0].invoiceTotalMap);
     	 // console.log("Returned value:"+convertMapToObject(Object.keys(summaryDetails[0].invoiceTotalMap[0]),summaryDetails[0].invoiceTotalMap[0]));
     	  //alert(Object.keys(summaryDetails[0].invoiceTotalMap[0]));
     	  //self.scope.currencies.replace(summaryDetails[0]);
   
-      });
+      // });
+    });
+    } 
     },
-    events: {
-    	"{invoiceTotal} change": function(){
-    		//console.log("value changed "+JSON.stringify(this.scope.attr().invoiceTotal));
-    		//console.log("---"+{{invoiceTotal}});
-   		var cm = this.scope.attr().invoiceTotal;
-    		console.log("changed---"+Object.keys(cm[0]));
-    		//alert('hi')
-    	}
-    },
-    helpers:{
-    	getTotalAmount:function(invoicetotal){
-    		//alert('hi');
-    		//console.log("value in helper "+alert(JSON.stringify(invoicetotal)));
-    		//console.log("Hi------------------"+JSON.stringify(invoiceTotal));
-    		//console.log(invoiceTotal.attr(key));
-    		//console.log(invoiceTotal);
-    		//return 
-    	}
+    helpers: {
+        formatNumbers: function(number) {
+        console.log('Inside helper'+number);
+          // if($.isNumeric(number)){
+          //   return number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+          // }else{
+          //   return 0;
+          // }
+      }
     }
 });
 
-export default page;
+
+export default icsvsummary;

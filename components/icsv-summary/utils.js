@@ -1,22 +1,24 @@
 var utils={
-convertMapToCanListObject:function(currencies,invoiceMap){
-	var totalAmount = 0;
+convertMapToCanListObject:function(summaryObjs){
+   console.log(summaryObjs);
 	var invoiceCurrency = new can.List();
-	for(var i in currencies){
-		var invoiceAmount = invoiceMap[currencies[i]];
-		var invCurr={currency:currencies[i],amount:this.CurrencyFormat(invoiceAmount),amountInUSD:''};
+	for(var i=0 ;i < summaryObjs.length; i++){
+     // console.log(summaryObjs[i].localAmt);
+     //  console.log(summaryObjs[i].altAmt);
+		var invCurr={localAmt:this.CurrencyFormat(summaryObjs[i].localAmt),localCcy:summaryObjs[i].localCcy,altAmt:this.CurrencyFormat(summaryObjs[i].altAmt),altCcy:summaryObjs[i].altCcy};
 		invoiceCurrency.push(invCurr);
-		totalAmount = totalAmount+parseFloat(invoiceAmount);
 	}
 return invoiceCurrency;
 },
-calculateInvoiceTotal:function(canList){
+calculateInvoiceTotal:function(object){
+	//console.log("Amount---"+object);
  var totalAmount = 0;
-var canLists = canList.attr();
-for(var i=0;i<canLists.length;i++){
-	var obj = canLists[i];
-	var invoiceAmount = obj.amount.replace(/\,/g,'');
-	totalAmount = totalAmount+parseFloat(invoiceAmount);
+//var canLists = canList.attr();
+for(var i=0;i<object.length;i++){
+	//var obj = canLists[i];
+	//console.log("Amount"+object[i].altAmt);
+	//var invoiceAmount = object.altAmt;
+	totalAmount = totalAmount+parseFloat(object[i].altAmt);
 	}
 	return this.CurrencyFormat(totalAmount);
 },
@@ -50,6 +52,18 @@ CurrencyFormat:function(number)
    temparray.unshift(integer);
    integer = temparray.join(thousandseparater);
    return sign + integer + decimalcharacter + fraction;
+
+},
+
+ numFormat:function(number)
+{
+  if($.isNumeric(number)){
+    var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+    return n;
+  }else{
+    return 0;
+  }
+  
 }
 
 };

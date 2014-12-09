@@ -1,80 +1,113 @@
-	<div class="col-sm-5">
-			<div class="col-sm-6">
-				Number of files
-			</div>
-			<div class="col-sm-6">
-				{{fileCount}}
-			</div>
-			
-			<div class="col-sm-6">
-				Number of invoices
-			</div>
-			<div class="col-sm-6">
-				{{invoiceCount}}
-			</div>
-			
-			<div class="col-sm-6">
-				Number of PDFs
-			</div>
-			<div class="col-sm-6">
-				{{noOfPdf}}
-			</div>
-			
-			<div class="col-sm-6">
-				Number of licensors
-			</div>
-			<div class="col-sm-6">
-				{{licensorsCount}}
-			</div>
-			
-			<div class="col-sm-6">
-				Number of rows
-			</div>
-			<div class="col-sm-6">
-				{{rowCount}}
-			</div>
-			
-			<div class="col-sm-6">
-				Number of errors
-			</div>
-			<div class="col-sm-6">
-				{{errorCount}}
-			</div>
-	</div>
-	<div class="col-sm-2">
-			Invoice Total:
-	</div>
-	<div class="col-sm-5">
-			{{#each invoiceTotal}}
-       			 <div class="col-sm-4">
-					{{amount}}
+<div class="">
+	<div class="col-sm-5 fontSize">
+	<label class="fontSize14" style='margin-left:-160px;'>iCSV Add Summary</label>
+				<div class="addSummaryClass">
+				
+	
+						<label class="addSummaryClassLabel">
+							Number of files
+						</label>
+						<label class="addSummaryClassLabel">
+							Number of invoices
+						</label>
+						<label class="addSummaryClassLabel">
+							Number of PDFs
+						</label>
+						<label class="addSummaryClassLabel">
+							Number of licensors
+						</label>
+						<label class="addSummaryClassLabel">
+							Number of errors
+						</label>
+						<label class="addSummaryClassLabel">
+							Number of rows
+						</label>
 				</div>
-				<div class="col-sm-2">
-					{{currency}}
-				</div>
-				<div class="col-sm-6">
+				
+				<div class="addSummaryNumber">
+						<label class="addSummaryClassNumber">{{fileCount}}</label>
+						
+			            <label class="addSummaryClassNumber">{{invoiceCount}}</label>
+						
+					    <label class="addSummaryClassNumber">{{noOfPdf}}</label>
+			
+			            <label class="addSummaryClassNumber">{{licensorsCount}}</label>
+						
+				        <label class="addSummaryClassNumber">{{rowCount}}</label>
+						
+				        <label class="addSummaryClassNumber">{{errorCount}}</label>
+		       </div>
+      </div>
+      
+    <div class="col-sm-7 fontSize alignR">
+		
+	<div class="fontSize">
+			<div class="addSummaryClassLabel">
 				&nbsp;
-				</div>
-       		{{/each}}		
+			</div>
+             <label class="fontSize invoiceTotal">
+				<label class="col-sm-1">
+					&nbsp;
+				</label>
+				Invoice Total:
+		     </label>
+			{{#each invoiceTotal}}
+       			 <label class="addSummaryClassLabel fontBlk">
+					{{localAmt}}
+				</label>
+				<label class="addSummaryClassLabel">
+					{{localCcy}}
+				</label>
+				<label class="addSummaryClassLabel">
+				&nbsp;
+				</label>
+<div class="linebrk">&nbsp;</div>
+				<label class="addSummaryClassLabel silvercolor" style='font-size:10px;'>
+					{{altAmt}}
+				</label>
+				<label class="addSummaryClassLabel silvercolor" style='font-size:10px;'>
+					{{altCcy}}
+				</label>
+				<label class="addSummaryClassLabel">
+				&nbsp;
+				</label>
+<div class="linebrk">&nbsp;</div>
+				<label class="addSummaryClassLabel">
+					&nbsp;
+				</label>
+				<label class="addSummaryClassLabel">
+					&nbsp;
+				</label>
+				<label class="addSummaryClassLabel">
+					&nbsp;
+				</label>
+				
+
+       		{{/each}}
+
 	</div>
 
 	
-	<div class="col-sm-6">
+	
 	</div>
-	<div class="col-sm-6">
-		<div class="col-sm-12">
-			<hr>
-		</div>
-		<div class="col-sm-4">
-			GrandTotal:
-		</div>
-		<div class="col-sm-5">
-			{{totalAmount}}
-		</div>
-		<div class="col-sm-3">
-			USD
-		</div>
+	<hr class="hrbdr">
+	<div class="col-sm-12 GrandTotal">
+			<div class="">
+			
+			</div>
+			<label class="silvercolor" style="align:left;font-size:18px;">
+				GrandTotal:
+			</label>
+			<label class="silvercolor" style="color:#000;font-size:21px;">
+				{{totalAmount}}
+			</label>
+			<label class="silvercolor" style="font-size:12px;">
+				USD
+			</label>
 	</div>
+
+	
+
 
 
 

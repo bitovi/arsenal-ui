@@ -1,0 +1,516 @@
+@import 'components/grid/grid.less';
+
+#icsvinvoiceGrid {
+	max-height: 200px;
+	overflow: auto;
+	padding: 10px;
+}
+
+
+icsv-grid {
+  .grid-mixin();
+
+  th.checbox, td.checkbox {
+    width: 30px;
+  }
+  & > table {
+    /*width: 100%; */
+    border-radius: 0px;
+    /*border-spacing: 0;*/
+
+    /*color: hsl(0, 0%, 50%);*/
+
+    /* getting border radius to work right */
+    thead:first-child, tbody:first-child {
+      & > tr:first-of-type {
+        td:first-child, th:first-child {
+          border-top-left-radius: 0px;
+        }
+
+        td:last-child, th:last-child {
+          border-top-right-radius: 0px;
+        }
+      }
+
+      
+    }
+
+    thead {
+
+    	tr {
+	    	th {
+	    			text-align: right;
+		    		padding-right: 0.625em;
+					height: 1.5em;
+	      			padding-top: .3em;
+	      			padding-bottom: .3em;
+
+				
+			}
+
+			.currency {
+						text-align: right;
+						height: 1.5em;
+						width: 1.5em !important;
+						padding-right: 0.625em !important;
+						padding-left: 0.625em !important;
+
+			}
+		}
+
+		
+
+
+    }
+
+    tbody:last-child, tfoot:last-child {
+      & > tr:last-of-type {
+        td, th {
+          height : 1.5625em;
+          backgorund: !important;
+
+        }
+
+        td:first-child, th:first-child {
+          border-bottom-left-radius: 0px;
+          border-bottom: 1px solid #ffffff !important;
+        }
+
+        td:last-child, th:last-child {
+          border-bottom-right-radius: 0px;
+        }
+      }
+    }
+
+	tbody {
+
+		background: #F6F6F6+ !important;
+
+	    tr {
+
+	    	height : 1.5625em;
+
+
+	      td {
+
+	        padding-right: 0.5625em;
+			padding-left : 0.5625em;
+			padding-top  : 0em;
+			padding-bottom : 0em;
+
+	        border-right: 1px solid hsl(0, 0%, 75%);
+
+	        /* border-bottom: 1px solid #ffffff !important; */
+
+	        border-bottom: 1px solid #FFFFFF !important;
+
+	        /*&:first-child {
+	          border-left: 1px solid hsl(0, 0%, 75%);
+	        }
+	        &:last-child {
+	          border-right: 1px solid hsl(0, 0%, 75%);
+	        }*/
+
+	        text-align:right;
+
+	      }
+
+	      /*&:first-child td {
+	        border-top: none;
+	      }
+
+	      &:last-child {
+	          border-bottom : none;
+	      }*/
+
+	      .currency  {
+
+	      	text-align:left;
+	      	width: 1.5em !important;
+
+	      }
+
+	    }
+
+	    tr.child {
+	      display: none;
+
+	      &.visible {
+	        display: table-row;
+	      }
+	    }
+	  }
+  }
+}
+
+
+.icsv-invoice{
+
+	.invoiceContainer{
+		border:2px solid #DAD7D7;
+		padding:10px;
+	}
+
+	/*Add invoice start*/
+			.pageTitle{
+			  padding-left:75px;padding-bottom:25px;
+			}
+			
+			.lineDividerInvoice{
+			
+				border-top:1px solid #c6c6c6;
+				padding-right: 0em;
+
+				.lineDividerInvoiceDivOne {
+
+					padding-top:15px;padding-right:0px;
+				
+					.lineDividerInvoiceDivTwo {
+						
+						padding-right:0px;
+
+						.bundleLabel {
+							padding-right:10px
+						}
+
+						.lineDividerInvoiceDivButtons {
+
+							padding-right:2.185em;
+							padding-left: 0px;
+							width: 20%;
+							margin-left: -43px;					}
+					}
+				}
+
+			}
+
+
+
+			.verticallineDivider{
+			
+				border-left:1px solid #c6c6c6;
+				border-top:1px solid #c6c6c6;
+			}
+			
+			.textLeftAlign{
+			text-align:left;
+			}
+			
+			.fileUploadContainer{
+				height:150px;
+				background-color:#D6D6D6;
+			}
+			
+			.fileUploadButtonPosition{
+				position:absolute;
+				right:5px;
+				top:5px;
+			}
+			
+			.breakDown{
+				margin-left:5px;
+				text-align:left;
+				margin-bottom:8px;
+			}
+			
+			.breakDownBorder{
+			 border:1px solid #000000;
+			}
+			
+			.breakDownIconSize{
+				width:16px;
+				height:16px;
+			}
+			
+			.buttonCancel{
+				 margin-left:20px;
+			}
+			
+			.buttonSubmit{
+				margin-left:15px;
+			}
+	/*Add invoice end*/
+
+
+	/*invoice list based on new UX */
+
+	.topFilterContainer{
+		margin: 15px 0px 15px 0px;
+	}
+
+	.gridControlsContainer{
+		 margin: 15px 35px 15px 35px;
+	}
+
+	.bottomContainer{
+		margin: 15px 35px 15px 35px;
+	}
+
+
+	.btn-custom-small.active {
+	  color: rgba(255, 255, 255, 0.75);
+	}
+	.btn-custom-small {
+	  color: #ffffff;
+	  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	  background-color: #1581F4;
+	  background-image: -moz-linear-gradient(top, #1581F4, #63ADF1);
+	  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#1581F4), to(#63ADF1));
+	  background-image: -webkit-linear-gradient(top, #1581F4, #63ADF1);
+	  background-image: -o-linear-gradient(top, #1581F4, #63ADF1);
+	  background-image: linear-gradient(to bottom, #1581F4, #63ADF1);
+	  background-repeat: repeat-x;
+	  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff00aaff', GradientType=0);
+	  border-color: #0A66CB #0A66CB #0A66CB;
+	  //border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	  *background-color: #1581F4;
+	  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+	  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+	  border-radius:6px !important;
+	  padding: 3px 22px !important;
+	  /*font-family: "Times New Roman", Georgia, Serif;*/
+	}
+	.btn-custom-small:hover,
+	.btn-custom-small:focus,
+	.btn-custom-small:active,
+	.btn-custom-small.active,
+	.btn-custom-small.disabled,
+	.btn-custom-small[disabled] {
+	  color: #ffffff;
+	  background-color: #00aaff;
+	  *background-color: #0099e6;
+	}
+	.btn-custom-small:active,
+	.btn-custom-small.active {
+	  background-color: #0088cc ;
+	}
+
+
+	.btn-custom-big {
+	  color: #ffffff;
+	  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	  background-color: #1581F4;
+	  background-image: -moz-linear-gradient(top, #1581F4, #63ADF1);
+	  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#1581F4), to(#63ADF1));
+	  background-image: -webkit-linear-gradient(top, #1581F4, #63ADF1);
+	  background-image: -o-linear-gradient(top, #1581F4, #63ADF1);
+	  background-image: linear-gradient(to bottom, #1581F4, #63ADF1);
+	  background-repeat: repeat-x;
+	  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff00aaff', GradientType=0);
+	  border-color: #0A66CB #0A66CB #0A66CB;
+	  //border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	  *background-color: #1581F4;
+	  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+	  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+	  border-radius:6px !important;
+	  padding: 6px 22px !important;
+
+	}
+	.btn-custom-big:hover,
+	.btn-custom-big:focus,
+	.btn-custom-big:active,
+	.btn-custom-big.active,
+	.btn-custom-big.disabled,
+	.btn-custom-big[disabled] {
+	  color: #ffffff;
+	  background-color: #00aaff;
+	  *background-color: #0099e6;
+	}
+	.btn-custom-big:active,
+	.btn-custom-big.active {
+	  background-color: #0088cc ;
+	}
+
+
+	.btn-custom-big-disabled {
+	  color: #ffffff;
+	  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	  background-color: #1581F4;
+	  background-image: -moz-linear-gradient(top, #7e7e83, #afafb4);
+	  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#7e7e83), to(#afafb4));
+	  background-image: -webkit-linear-gradient(top, #7e7e83, #afafb4);
+	  background-image: -o-linear-gradient(top, #7e7e83, #afafb4);
+	  background-image: linear-gradient(to bottom, #7e7e83, #afafb4);
+	  background-repeat: repeat-x;
+	  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff00aaff', GradientType=0);
+	  border-color: #848484 #848484 #848484;
+	  //border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	  *background-color: #7e7e83;
+	  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+	  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+	  border-radius:6px !important;
+	  padding: 6px 22px !important;
+	}
+	.btn-custom-big:hover,
+	.btn-custom-big:focus,
+	.btn-custom-big:active,
+	.btn-custom-big.active,
+	.btn-custom-big.disabled,
+	.btn-custom-big[disabled] {
+	  color: #ffffff;
+	  background-color: #7e7e83;
+	  *background-color: #7e7e83;
+	}
+	.btn-custom-big:active,
+	.btn-custom-big.active {
+	  background-color: #7e7e83 ;
+	}
+
+
+
+
+
+	.field-invalid{
+		right:-10px !important;
+		height:20px;
+		width:20px;
+	}
+
+	.field-invalid-date{
+		right:-30px !important;
+		height:20px;
+		width:20px;
+	}
+
+	table.breakdown thead {
+		background-color: linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+		background: -moz-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+		background: -webkit-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+		background: -o-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+		font-size: small;
+		color: white;
+	}
+
+	table.breakdown thead th{
+		border: 1px solid #848484;
+	}
+
+	.breakdown-div{
+		border: 1px solid #B0B0B5;
+		border-radius:4px;
+		
+	}
+	.hide {
+		display:none;
+	}
+	.requiredBar{
+		border-left: 2px solid red;
+	    padding-left: 2px;
+	    box-sizing: none;
+	    padding-right: 0px;
+	}
+	.alert-rnotes{
+		width:1px;
+		height:1px;
+		padding:0px;
+		margin:0px;
+		}
+	.valid-rnotes{
+		width:1px;
+		height:1px;
+		padding:0px;
+		margin:0px;
+		}	
+	.taxAmount, .classAmtTotal{
+		text-align:right;
+	}
+	.taxAmount {
+		padding-right:0px !important;
+	}
+
+	.alert-dimension{
+		padding: 15px;
+		margin-bottom: 20px;
+		border-radius: 4px;
+		margin-top:10px;
+		text-align:center;
+	}
+
+	/*UX CHANGES*/
+	.form-control{
+		height:20px;
+	}
+
+	@-moz-document url-prefix() { 
+	  .form-control{
+		padding-top:0px;
+		padding-bottom:0px;
+	}
+	}
+
+	.input-group-addon{
+		padding:0px;
+	}
+	.right-border{
+		border-right:1px solid #C6C6C6;
+		padding-top:20px;
+		background-color:#f6f6f6;
+	}
+
+	.left-border{
+		border-right:1px solid #C6C6C6;
+		padding-top:20px;
+		background-color:#E4E4E4;
+	}
+	label{
+		font-family:HelveticaNeue, "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif; ;
+		font-size:12px;
+		color:#848484;
+	}
+
+	.mid-header{
+		font-family:HelveticaNeue-Medium, "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif; ;
+		font-size:16px;
+		color:#848484;
+	}
+
+	.total-amount{
+		padding-right:32px;
+	}
+
+	.invoiceGrid-total-container{
+		border-top: 2px solid #B0B0B5;
+		border-bottom:2px solid #B0B0B5;
+		padding: 10px;
+	}
+	.large-value{
+		font-family:HelveticaNeue-Medium, "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif; ;
+		font-size:21px;
+		color:#3D3D3D;
+
+	}
+
+	.control-label{
+		padding-top:0px !important;
+	}
+
+	smaller-value{
+		font-family:HelveticaNeue-Medium, "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif; ;
+		font-size:12;
+		color:#3D3D3D;
+	}
+
+	.taxpercent{
+		padding-right:32px !important;
+	}
+
+	.errorlabel{
+		color:#D24849;
+		font-weight:bold;
+	}
+	.removeH{
+		min-height: 0px;
+	}
+	.padL10{
+		padding-left:10px;
+	}
+	.jQfunhide{
+		display:none;
+	}
+	#paymentBundleNames{
+		width:170px;
+	}
+}
