@@ -41,6 +41,7 @@ var page = Component.extend({
 
   },
   init: function(){
+    this.scope.appstate.attr("renderGlobalSearch",true);
    $("#searchDiv").hide();
       this.scope.tabsClicked="NEW_ON_ACC";
     },

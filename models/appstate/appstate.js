@@ -35,7 +35,6 @@ var stateDefaults = {
   storeType: undefined,
   renderGlobalSearch:false,
   globalSearch:undefined
-
 };
 
 

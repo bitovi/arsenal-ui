@@ -13,5 +13,4 @@ var Currency = Model.extend({
 }
 }, {});
 
-
 export default Currency;

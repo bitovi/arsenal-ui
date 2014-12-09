@@ -3,16 +3,6 @@
    <li id="periodFromcontainer">
       <div class="box">
         <span class="parameter-name">Period From:</span>
-        <!--<select id="periodFromFilter" class="form-control resizeBox ">
-              <option value="">Select</option>
-              <option value="Q1FY13">Q1FY13</option>
-              <option value="Q2FY13">Q2FY13</option>
-              <option value="Q3FY13">Q3FY13</option>
-              <option value="Q4FY13">Q4FY13</option>
-              <option value="Q5FY13">Q5FY13</option>
-              <option value="Q6FY13">Q6FY13</option>
-               
-         </select>-->
          <div class="calendarcls">
             <input type='text' id="periodFrom" class="form-control  updatePeroid"/>
             <period-calendar selectedperiod="{selectedperiod}"  appstate="{appstate}"></period-calendar>
@@ -23,15 +13,6 @@
      <li id="periodTocontainer">
         <div class="box">
           <span class="parameter-name">Period To:</span>
-          <!--select id="periodToFilter" class="form-control resizeBox">
-                <option value="">Select</option>
-                <option value="Q1FY13">Q1FY13</option>
-                <option value="Q2FY13">Q2FY13</option>
-                <option value="Q3FY13">Q3FY13</option>
-                <option value="Q4FY13">Q4FY13</option>
-                <option value="Q5FY13">Q5FY13</option>
-                <option value="Q6FY13">Q6FY13</option>
-           </select-->
           <div class="calendarcls">
             <input type='text' id="periodTo" class="form-control  updatePeroid"/>
             <period-calendar selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
@@ -68,7 +49,6 @@
         <span class="parameter-name">Country:</span>
         <select id="countriesFilter" class="form-control resizeBox" multiple="multiple">
           {{#each countries}}
-            <!--<option {{isSelected 'country' id}} {{data 'country'}}>{{value}}</option>-->
             <option value="{{id}}">{{value}}</option>
 
           {{/each}}
@@ -97,7 +77,6 @@
         <span class="parameter-name">Content Type:</span>
         <select id="contentTypesFilter" class="form-control resizeBox" multiple="multiple">
                {{#each contentTypes}}
-                  <!--<option {{isSelected 'contenttype' id}} {{data 'contenttype'}}>{{value}}</option>-->
                   <option value="{{contentGroupId}}" data-servicetypeid={{serviceTypeId}}>{{contentGroupName}}</option>
                 {{/each}}
          </select>

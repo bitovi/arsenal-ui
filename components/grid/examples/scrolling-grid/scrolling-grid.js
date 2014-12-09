@@ -1,5 +1,4 @@
 import _ from 'lodash';
-
 import _less from './scrolling-grid.less!';
 import Grid from '../../grid';
 

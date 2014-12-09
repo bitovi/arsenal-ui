@@ -1,5 +1,4 @@
 import Model from 'can/model/';
-
 import RinsCommon from 'models/rinsCommon/';
 
 var InvoiceType = Model.extend({
