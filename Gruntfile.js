@@ -18,7 +18,7 @@ module.exports = function (grunt) {
   var buildDir = __dirname + '/dist/bundles';
   var proxyConfig = {
     localhost: 'localhost:8090',
-    proxyhost: 'ma-rinsd-lapp01.corp.apple.com:8090'
+    proxyhost: 'ma-rinst-lap01.corp.apple.com:8090'
   };
 
   // Configure the tasks we loaded.
