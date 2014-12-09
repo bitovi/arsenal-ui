@@ -1,0 +1,135 @@
+@import 'components/grid/grid.less';
+
+@white-border: 1px solid #fff;
+rn-grid-invoice {
+  .grid-mixin();
+  th, td {
+  	white-space: nowrap;
+  }
+  th.checbox, td.checkbox {
+    width: 30px;
+  }
+  tbody {
+
+    tr {
+
+      td {
+      	border-right: @light-border;
+      	border-bottom: @white-border;
+      }
+    }
+    tr.child{
+		td {
+			background: hsl(0, 0%, 100%)
+		}
+    }
+  }
+  tfoot {
+
+    tr {
+
+      td {
+        padding: 0.5em 1em 0.5em 1em;
+
+        border-top: @light-border;
+
+        &:first-child {
+          border-left: @light-border;
+        }
+        &:last-child {
+          border-right: @light-border;
+        }
+      }
+
+      &:first-child td {
+        border-top: none;
+      }
+    }
+
+    tr.child {
+      display: none;
+
+      &.visible {
+        display: table-row;
+      }
+    }
+  }
+}
+
+.invoiceContainer{
+	border: 0px !important;
+	padding:10px;
+
+	.pageTitle{
+	  padding-left: 75px;
+	  padding-right:5px;
+	  padding-bottom:25px;
+	}
+	#searchDiv > *{
+		float:left;
+		margin:0px 5px 0px 0px;
+	}
+	ul.token-input-list-facebook{
+		width:80% !important;
+		height: 20px !important;
+		border-radius: 4px;
+		border-color: #C6C6C6;
+	}
+	#invoiceGrid {
+		background: #f4f4f4;
+		clear: both;
+		height: 400px;
+		overflow: auto;
+		.invoiceAmt {
+			text-align: right;
+		}
+		
+		.dataTables_scrollBody {
+			height: 300px !important;
+		}
+		.dataTables_wrapper{
+			overflow: auto;
+		}
+		.dataTables_scroll{
+			border:1px solid #ddd;
+			margin-top:10px;
+			min-width: 1200px;
+		}
+	}
+
+	.dataTables_scrollHead table {
+		/*background-color: #848484;*/
+		background: -moz-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+		background: -webkit-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+		background: -o-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+		font-size: small;
+		color: white;
+	}
+	.dataTables_scrollFoot table {
+		background: -moz-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+		background: -webkit-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+		background: -o-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+		font-size: small;
+		color: white;
+	}
+
+	table.dataTable thead th, table.dataTable thead td {
+		border: 1px solid #848484;
+	}
+	table.dataTable tfoot th, table.dataTable tfoot td {
+		border: 1px solid #848484;
+	}
+	table.dataTable tbody tr.country{
+		background-color: #E4E4E4;
+	}
+	table.dataTable tbody tr.licensor{
+		background-color: #F6F6F6;
+	}
+	table.dataTable.cell-border tbody td {
+		border-top: 1px solid #ffffff;
+		border-right: 1px solid #bdbdbd;
+	}
+	.buttonSubmit{
+		margin-left:10px;
+	}
+}

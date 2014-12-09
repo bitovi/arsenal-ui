@@ -1,22 +1,13 @@
 [
-  {
-    "id": 1,
-    "name": "Licensor Corp. 1"
-  },
-  {
-    "id": 2,
-    "name": "Licensor Corp. 2"
-  },
-  {
-    "id": 3,
-    "name": "Licensor Corp. 3"
-  },
-  {
-    "id": 4,
-    "name": "Licensor Corp. 4"
-  },
-  {
-    "id": 5,
-    "name": "Licensor Corp. 5"
-  }
+  {"data":
+				[
+					{"value":"WCM","id":"191"},
+					{"value":"SGAE","id":"73"},
+					{"value":"ASCAP","id":"3065"},
+					{"value":"BMI","id":"3378"}],
+	"responseHeader":
+					{"statusCode":"200","exceptionID":"000","exceptionMessage":"SUCCESS"}
+
+				}
 ]
+

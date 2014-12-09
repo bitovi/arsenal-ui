@@ -1,17 +1,24 @@
 <div class="outer">
-  {{#if isAnyFileLoaded}}
-  <ul class="filelist">
-    {{#fileList}}
-    <li {{data 'file'}}>
-      {{name}} ({{convertToKB size}})
-      <a class="action-link">X</a>
-    </li>
-    {{/files}}
-  </ul>
-  <input type="submit" class="submitFiles uploadFiles" value="Upload"/>
-  <input type="submit" class="cancelUpload uploadFiles" value="Cancel">
-  {{else}}
-  <input type="file" class="fileSelect"  name ="UploadFile"  style="display: none;" multiple />
-  <input type="submit" class="uploadFiles" value="Select Files" />
-  {{/if}}
+
+    {{#if isAnyFileLoaded}}
+          <ul class="filelist">
+              {{#fileList}}
+                <li>
+                     {{name}} ({{convertToKB size}})
+                     <a  class="action-link" can-click="removeSelectedFile">X</a>
+                </li>
+              {{/files}}
+           </ul>
+      {{/if}}
+
+
+
+        {{#if isAnyFileLoaded}}
+          <input type="button" id="submitFiles" value="Submit"/>
+        {{else}}
+          <input type="file" id="fileSelect"  name ="Upload File"  style="display: none;" multiple />
+          <input type="button" id="uploadFiles" value="UpLoad" />
+        {{/if}}
+        <input type="button" id="cancelUpload" value="Cancel">
+
 </div>

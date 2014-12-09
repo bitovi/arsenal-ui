@@ -1,18 +1,18 @@
 import Model from 'can/model/';
 
-var Country = Model.extend({
-  // using finaAll instead of resource because I don't want to be able to save.
- /* findAll: function(){
-  	return $.ajax({
-  		url: 'http://127.0.0.1:8090/rins/common/getInvoiceTypes',
-  		type: 'GET',
-  		dataType: 'json'
-  	})
-  }*/
-findAll: 'GET /fxrate'
+import RinsCommon from 'utils/';
 
+var FXRate = Model.extend({
+findAll: function(params){
+ 	return $.ajax({
+ 		url: RinsCommon.UI_SERVICE_URL +'getFXRate',
+  		type: 'POST',
+  		data: JSON.stringify(params),
+  		dataType:'json',
+  		contentType: 'application/json'
+  	});
+}
 }, {});
 
-/* able to get data in ajax done function*/
+export default FXRate;
 
-export default Country;

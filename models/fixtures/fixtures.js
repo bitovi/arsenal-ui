@@ -1,10 +1,27 @@
 import fixture from 'can/util/fixture/';
 
-fixture('GET /licensors', '/models/fixtures/licensor.json');
+import fixture_allInvoices from './allInvoices';
 
-fixture('GET /regions', '/models/fixtures/region.json');
+fixture('GET /licensor', '/models/fixtures/licensor.json');
 
-import fixture_country from './country';
+fixture('GET /country', '/models/fixtures/country.json');
 
-fixture('GET /storeTypes', '/models/fixtures/store-type.json');
+fixture('GET /currency', '/models/fixtures/currency.json');
+
+fixture('GET /invoiceType', '/models/fixtures/invoiceType.json');
+
+fixture('GET /contentType', '/models/fixtures/contentType.json');
+
+fixture('GET /getInvoiceById/{id}', '/models/fixtures/getInvoiceById.json');
+
+fixture('GET /getFXRate', '/models/fixtures/fxrate.json');
+fixture('GET /global-licensors', '/models/fixtures/global-licensor.json');
+
+fixture('GET /global-regions', '/models/fixtures/global-region.json');
+
+import fixture_country from './global-country';
+
+fixture('GET /global-storeTypes', '/models/fixtures/global-store-type.json');
+
+fixture('GET /invoiceicsv', '/models/fixtures/icsv.json');
 

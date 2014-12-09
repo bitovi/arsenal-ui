@@ -26,27 +26,31 @@ var State = Map.extend({
 });
 
 var stateDefaults = {
-    page: 'dashboard',
-    periodFrom: undefined,
-    periodTo: undefined,
-    licensor: undefined,
-    country: undefined,
-    region: undefined,
-    storeType: undefined,
-    renderGlobalSearch:false,
-    globalSearch:undefined
+
+  page: 'dashboard',
+  periodFrom: undefined,
+  periodTo: undefined,
+  licensor: undefined,
+  country: undefined,
+  region: undefined,
+  storeType: undefined,
+  renderGlobalSearch:false,
+  globalSearch:undefined
+
 };
 
 
 
 var appState = new State({
-    startRouting: function() {
-        // Create a route and pass in initial values.
-        route(':page', stateDefaults);
 
-        // start routing!
-        route.ready();
-    }
+  startRouting: function() {
+    // Create a route and pass in initial values.
+    route(':page', stateDefaults);
+
+    // start routing!
+    route.ready();
+  }
+
 });
 
 // Make `appState` the Map that can.route uses to keep its data in.
