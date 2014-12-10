@@ -12,7 +12,7 @@ var headerNavigation = Component.extend({
     scope: {
         appstate: undefined,// this gets passed in
         show:true
-    }, 
+    },
     events:{
      '#homemenu li a click':function(btn){
         var mainmenu_txt = btn.text();
@@ -23,18 +23,18 @@ var headerNavigation = Component.extend({
         }
         changeMenu(mainmenu_txt);
       },
-      '#show click':function(btn){ 
+      '#show click':function(btn){
          $('#dropdown').slideToggle('slow');
       },
       '#dropdown li click':function(btn){
-           var mainmenu_txt = $.trim(btn.text());  
+           var mainmenu_txt = $.trim(btn.text());
            if(mainmenu_txt=='Dashboard'){
              $('#dynamicmenu').hide();
              $('#homemenu').show();
            }
            else changeMenu(mainmenu_txt);
       },
-      '#dynamicmenu li a click':function(btn){  
+      '#dynamicmenu li a click':function(btn){
             if(btn.attr('id')!='show' && btn.attr('id')==undefined){
                $('#dynamicmenu li a').removeClass('submenuactive');
                 btn.addClass('submenuactive');
@@ -57,7 +57,7 @@ var changeMenu = function(mainmenu_txt){
     var temp ='<li class="show active"><a id="show">'+mainmenu_txt+'</a></li>'+$(test).html();
         $.each(menu,function(i,el){
             if(el.value==mainmenu_txt){
-             if(el.submenu!=undefined && el.submenu.length>0){  
+             if(el.submenu!=undefined && el.submenu.length>0){
                 $('#dynamicmenu, #dynhide').show();
                 $('#homemenu').hide();
                 $.each(el.submenu,function(i,el){
@@ -71,7 +71,7 @@ var changeMenu = function(mainmenu_txt){
        $('#dynamicmenu').empty().append(temp);
        $('#dropdown').empty().append($('#homemenu').html());
        $( "#dropdown li[name*='"+mainmenu_txt+"']").hide()
-            
+
 };
 var  menu =[{
     "id": "dashboard",
@@ -94,6 +94,7 @@ var  menu =[{
       {"value": "iCSV Entry", "id": "icsv"},
       {"value": "Search Invoice", "id": "invoices"},
       {"value": "Recon Stats", "id": "reconstats"},
+      {"value": "Recon Stats Other", "id": "reconOther"},
       {"value": "On Account", "id": "on-account"}
    ]
 },{

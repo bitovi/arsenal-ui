@@ -17,6 +17,7 @@ import template from './template.stache!';
 import styles from './global-parameter-bar.less!';
 
 import periodCalendar from 'components/period-calendar/';
+import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 var GlobalParameterBar = Component.extend({
   tag: 'global-parameter-bar',
@@ -42,23 +43,24 @@ var GlobalParameterBar = Component.extend({
     }
   },
   events: {
-     '.updatePeroid focus':function(el){ 
-       $(el).closest('.calendarcls').find('.box-modal').show().trigger( "focus" ); 
+     '.updatePeroid focus':function(el){
+       $(el).closest('.calendarcls').find('.box-modal').show().trigger( "focus" );
      },
-      '{selectedperiod} change':function(val){ 
+      '{selectedperiod} change':function(val){
           val[0].which=='periodFrom' ? this.scope.periodFrom.replace(val[0].value):this.scope.periodTo.replace(val[0].value);
        },
      'inserted': function(){
           document.getElementById("regionsFilter").selectedIndex = 2;
       },
-     '{periodFrom} change': function(el, ev) {   
+     '{periodFrom} change': function(el, ev) {
          var comp ='from';
-         this.scope.appstate.attr('periodFrom', this.scope.attr('periodFrom')[0]);
+         this.scope.appstate.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(this.scope.attr('periodFrom')[0]));
+         this.scope.appstate.attr('periodType',periodWidgetHelper.getPeriodType(this.scope.attr('periodFrom')[0]));
          showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0],comp);
      },
-     '{periodTo} change': function(el, ev) { 
+     '{periodTo} change': function(el, ev) {
           var comp ='to';
-          this.scope.appstate.attr('periodTo', this.scope.attr('periodTo')[0]);
+          this.scope.appstate.attr('periodTo', periodWidgetHelper.getFiscalPeriod(this.scope.attr('periodTo')[0]));
           showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0],comp);
      },
     '#store-type select change': function(el, ev) {
@@ -97,7 +99,7 @@ var GlobalParameterBar = Component.extend({
       var selected = $(el[0]).val();
       if(selected != null)
         this.scope.appstate.attr('country', selected);
-      else 
+      else
         this.scope.appstate.removeAttr('country');
     },
     '#licensor select change': function(el, ev) {
@@ -105,7 +107,7 @@ var GlobalParameterBar = Component.extend({
       var selected = $(el[0]).val();
       if(selected != null)
         this.scope.appstate.attr('licensor', selected);
-      else 
+      else
         this.scope.appstate.removeAttr('licensor');
     },
     '#contentType select change': function(el, ev) {
@@ -113,7 +115,7 @@ var GlobalParameterBar = Component.extend({
       var selected = $(el[0]).val();
       if(selected != null)
         this.scope.appstate.attr('contentType', selected);
-      else 
+      else
         this.scope.appstate.removeAttr('contentType');
     } ,
     '#globalSearch click':function(){
@@ -123,7 +125,7 @@ var GlobalParameterBar = Component.extend({
          this.scope.appstate.attr('globalSearch', false);
       }else{
         this.scope.appstate.attr('globalSearch', true);
-      }  
+      }
     }
   },
   init: function() {
@@ -145,56 +147,56 @@ var GlobalParameterBar = Component.extend({
       //self.scope.periodTo.replace(values[6]);
       var regionInfo = {"id":"2","value":"Europe"};
       self.scope.appstate.attr('region', regionInfo);
-      
+
         setTimeout(function(){
           document.getElementById("regionsFilter").selectedIndex = 2;
-          
-              
+
+
           $("#countriesFilter").multiselect({
               numberDisplayed: 1,
               includeSelectAllOption: true,
               selectAllText: 'Select All',
               maxHeight: 200,
-              onChange: function(option, checked, select) { 
+              onChange: function(option, checked, select) {
                  // $("#country .multiselect-all .checkbox").find("input[type='checkbox']").is(':checked')?
                  //   $("#country .dropdown-menu li").addClass("active"):$("#country .dropdown-menu li").removeClass("active");
                  $("#countriesFilter").multiselect("refresh");
              }
-              
+
          });
           $("#licensorsFilter").multiselect({
               numberDisplayed: 1,
               includeSelectAllOption: true,
               selectAllText: 'Select All',
               maxHeight: 200,
-              onChange: function(option, checked, select) { 
+              onChange: function(option, checked, select) {
                //  $("#licensor .multiselect-all .checkbox").find("input[type='checkbox']").is(':checked')?
                //    $("#licensor .dropdown-menu li").addClass("active"):$("#licensor .dropdown-menu li").removeClass("active");
                $("#licensorsFilter").multiselect("refresh");
              }
-              
+
          });
           $("#contentTypesFilter").multiselect({
               numberDisplayed: 1,
               includeSelectAllOption: true,
               selectAllText: 'Select All',
               maxHeight: 200,
-              onChange: function(option, checked, select) { 
+              onChange: function(option, checked, select) {
                  //$("#contentType .multiselect-all .checkbox").find("input[type='checkbox']").is(':checked')?
                  //  $("#contentType .dropdown-menu li").addClass("active"):$("#contentType .dropdown-menu li").removeClass("active");
                  $("#contentTypesFilter").multiselect("refresh");
              }
-              
+
          });
         },2000);
     });
   }
 });
 
-var showErrorMsg = function(periodFrom,periodTo,whichcomp){ 
+var showErrorMsg = function(periodFrom,periodTo,whichcomp){
        var showFlg=false;
        var from = periodFrom,to =  periodTo;
-       if(from!=undefined &&  to!=undefined){ 
+       if(from!=undefined &&  to!=undefined){
             from = from.slice(-2);
             to = to.slice(-2);
            if(parseInt(periodFrom.substr(0,4)) >  parseInt(periodTo.substr(0,4)))showFlg=true;

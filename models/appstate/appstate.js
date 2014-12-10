@@ -27,8 +27,9 @@ var State = Map.extend({
 
 var stateDefaults = {
   page: 'dashboard',
-  periodFrom: undefined,
-  periodTo: undefined,
+  periodFrom: "",
+  periodTo: "",
+  periodType:"",
   licensor: undefined,
   country: undefined,
   region: undefined,

@@ -46,7 +46,7 @@ var page = Component.extend({
       this.scope.tabsClicked="NEW_ON_ACC";
     },
     events: {
-      "inserted": function(){ 
+      "inserted": function(){
        $("#searchDiv").hide();
        setTimeout(function(){
           $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid emptyrows="{emptyrows}"></rn-new-onaccount-grid>')({emptyrows:true}));
@@ -57,11 +57,11 @@ var page = Component.extend({
          this.scope.attr('periodchoosen', val);
         var which = $(ele).parent().find('input[type=text]').attr('id');
         this.scope.appstate.attr(which, this.scope.periodchoosen);
-        $(ele).parent().find('input[type=text]').val(this.scope.periodchoosen).trigger( "change" ); 
+        $(ele).parent().find('input[type=text]').val(this.scope.periodchoosen).trigger( "change" );
         $(ele).closest('.calendarcls').find('.box-modal').hide();
         $(ele).blur();
          },
-        '.updateperoid focus':function(el){ 
+        '.updateperoid focus':function(el){
         $(el).closest('.calendarcls').find('.box-modal').is(':visible') ?
         $(el).closest('.calendarcls').find('.box-modal').hide():$(el).closest('.calendarcls').find('.box-modal').show();
         },
@@ -88,7 +88,7 @@ var page = Component.extend({
         var genObj = {};
         var self = this;
         self.scope.attr("localGlobalSearch",self.scope.appstate.attr('globalSearch'));
-        var request = frameRequest(self.scope.appstate); 
+        var request = frameRequest(self.scope.appstate);
         self.scope.attr('request',request);
         var quarters = utils.getQuarter(request.searchRequest.periodFrom,request.searchRequest.periodTo);
         if(self.scope.appstate.attr('globalSearch')){
@@ -135,7 +135,7 @@ var page = Component.extend({
                         //console.log("multi comments "+JSON.stringify(tempcommentObj));
                         if(tempcommentObj!=null)
                           $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
-                        else 
+                        else
                           $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>');
 
                     } else{
@@ -149,8 +149,8 @@ var page = Component.extend({
                 }, function(xhr) {
                       console.error("Error while loading: proposed onAccount Details"+xhr);
                       $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
-                } ); 
-              
+                } );
+
             }
 
         }
@@ -187,7 +187,7 @@ var page = Component.extend({
       "#propose click":function(el,ev){
 
         // please remove this for integrating with domain service
-    
+
         var self = this;
         var quarters = utils.getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
         var paymentBundleName = $("#newPaymentBundle").val();
@@ -247,7 +247,7 @@ var page = Component.extend({
                     i=i-1;
                   }
                 }
-            
+
          }
           var request = utils.frameDeleteRequest(deletableRows,null);
           proposedOnAccount.update(UserReq.formRequestDetails(request),"invoiceDelete",function(data){
@@ -260,12 +260,12 @@ var page = Component.extend({
              },2000);
 
              /* The below calls {scope.appstate} change event that gets the new data for grid*/
-          
-              req.attr('deletableRows',rows); 
+
+              req.attr('deletableRows',rows);
              $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
           }
           else{
-       
+
             var details = data.onAccount.onAccountDetails;
             for(var i=0;i<details.length;i++){
                var toBeAdded = utils.getRow(deletableRows,details[i].id);
@@ -273,7 +273,7 @@ var page = Component.extend({
                 rows.push(toBeAdded);
                }
             }
-            req.attr('deletableRows',rows); 
+            req.attr('deletableRows',rows);
             $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
 
               $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
@@ -303,7 +303,7 @@ var page = Component.extend({
           $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type}></rn-proposed-onaccount-grid>')({req,type}));
       },
       "#submitPOA click":function(el,ev){
-        var comments = $(".new-comments").val(); 
+        var comments = $(".new-comments").val();
         //Remove this for domain services
         /*
            var updatableRows = [];
@@ -343,7 +343,7 @@ var page = Component.extend({
                 $("#messageDiv").show();
                 setTimeout(function(){
                     $("#messageDiv").hide();
-                },2000)  
+                },2000)
                 req.attr('editableRows',this.scope.proposedOnAccountData.rows);
                 $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
               }
@@ -374,7 +374,7 @@ var page = Component.extend({
             }
       },
       'rn-proposed-onaccount-grid save':function(ele, event, val){
-          this.scope.attr('proposedOnAccountData',val); 
+          this.scope.attr('proposedOnAccountData',val);
       },
        "#copyOnAccount click":function(el,ev){
         var self=this;
@@ -407,7 +407,7 @@ var page = Component.extend({
             }
           },function(xhr){
             console.error("Error while loading: onAccount Details"+xhr);
-          });  
+          });
       }
     },
     helpers: {
@@ -424,7 +424,7 @@ var page = Component.extend({
             bundleNamesRequest.bundleSearch["regionId"] = "";
           else
             bundleNamesRequest.bundleSearch["regionId"] = regId['id'];
-            
+
           bundleNamesRequest.bundleSearch["type"] = "ON_ACCOUNT";
           //console.log("GetBundleNamesRequest is "+JSON.stringify(bundleNamesRequest));
 
@@ -441,7 +441,7 @@ var frameRequest = function(appstate){
       var regId = appstate.attr('region');
       var countryId = appstate.attr()['country'];
       var licId = appstate.attr()['licensor'];
-      var contGrpId = appstate.attr()['contentType'];    
+      var contGrpId = appstate.attr()['contentType'];
       onAccountrequest.searchRequest = {};
       onAccountrequest.searchRequest["periodFrom"] = "";
       onAccountrequest.searchRequest["periodTo"] = "";
@@ -468,7 +468,7 @@ var frameRequest = function(appstate){
       if(typeof(regId)!="undefined"){
         onAccountrequest.searchRequest["regionId"] = regId['id'];
       }
-      
+
       if(typeof(countryId)!="undefined"){
         onAccountrequest.searchRequest["country"]=countryId;
       }
@@ -483,7 +483,7 @@ var frameRequest = function(appstate){
 
       //console.log('The request is :'+JSON.stringify(onAccountrequest));
   return onAccountrequest;
-} 
+}
 
 var disableEditORDeleteButtons = function(disable){
   if(disable){

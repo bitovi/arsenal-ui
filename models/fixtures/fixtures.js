@@ -3,6 +3,7 @@ import fixture from 'can/util/fixture/';
 import fixture_allInvoices from './allInvoices';
 
 import fixture_claimLicensorInvoices from './claimLicensorInvoices';
+import recon_ingest_fetch from './recon_ingest_fetch';
 
 fixture('GET /licensors', '/models/fixtures/licensor.json');
 
