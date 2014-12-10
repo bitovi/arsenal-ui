@@ -38,7 +38,8 @@ var page = Component.extend({
     paymentBundleNameText:"",
     proposedOnAccountData:{},
     bundleNamesForDisplay:"",
-    newOnAccountRows:[]
+    newOnAccountRows:[],
+    errorMessage:""
 
   },
   init: function(){
@@ -48,6 +49,7 @@ var page = Component.extend({
     },
     events: {
       "inserted": function(){
+        //this.scope.attr('errorMessage','');
        $("#searchDiv").hide();
        setTimeout(function(){
           $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid emptyrows="{emptyrows}"></rn-new-onaccount-grid>')({emptyrows:true}));
@@ -86,13 +88,21 @@ var page = Component.extend({
           }
       },
       '{scope.appstate} change': function() {
-        var genObj = {};
         var self = this;
-        self.scope.attr("localGlobalSearch",self.scope.appstate.attr('globalSearch'));
-        var request = frameRequest(self.scope.appstate);
+        self.scope.attr('errorMessage','');
+        var message = '';
+        if(self.scope.appstate.attr('globalSearch') != undefined){
+          message = validateFilters(self.scope.appstate);
+        }
+        self.scope.attr('errorMessage',message);
         self.scope.attr('request',request);
-        var quarters = utils.getQuarter(request.searchRequest.periodFrom,request.searchRequest.periodTo);
-        if(self.scope.appstate.attr('globalSearch')){
+       
+        self.scope.attr("localGlobalSearch",self.scope.appstate.attr('globalSearch'));
+        if(self.scope.appstate.attr('globalSearch') && message.length == 0){
+          var genObj = {};
+          var request = frameRequest(self.scope.appstate);
+          var quarters = utils.getQuarter(request.searchRequest.periodFrom,request.searchRequest.periodTo);
+
             if(self.scope.tabsClicked=="ON_ACC_BALANCE"){
               request.searchRequest["type"] = "BALANCE";
               request.quarters=quarters;
@@ -153,9 +163,9 @@ var page = Component.extend({
                 } );
 
             }
-
+          this.scope.appstate.attr('globalSearch',false);
         }
-        this.scope.appstate.attr('globalSearch',false);
+        
       },
       "#onAccountBalance click":function(el, ev){
         ev.preventDefault();
@@ -514,5 +524,41 @@ var disablePropose=function(disable){
       $("#propose").removeAttr("disabled");
        $("#paymentBundleNames").removeAttr("disabled");
     }
+}
+
+var validateFilters=function(appstate){
+  if(appstate != null && appstate != undefined){
+      var serTypeId = appstate.attr('storeType');
+      var regId = appstate.attr('region');
+      var countryId = appstate['country'];
+      var licId = appstate['licensor'];
+      var contGrpId = appstate['contentType'];
+      
+      if(serTypeId == null || serTypeId == ""){
+        return 'Invalid Store Type !';
+      }
+
+      if(regId == null || regId == undefined){
+        return 'Invalid Region !';
+      }
+
+
+      if(licId == null || licId == undefined || licId == ""){
+        return "Invalid Licensor";
+      }else if(licId == undefined && (licId.attr() == null || licId.attr() =="")){
+        return "Invalid Licensor";
+      }
+
+      if(contGrpId == null || contGrpId == undefined || contGrpId == ""){
+        return "Invalid contentType";
+      }else if(contGrpId == undefined && contGrpId.attr() == null || contGrpId.attr() ==""){
+        return "Invalid contentType";
+      }else if(contGrpId.attr().length >1 ){
+        return "Please select single contentType";
+      }
+     
+     return "";
+  }
+   
 }
 export default page;

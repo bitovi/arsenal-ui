@@ -8,7 +8,7 @@ import Grid from 'components/grid/';
 import gridtemplate from './gridtemplate.stache!';
 import stache from 'can/view/stache/';
 
-import UserReq from 'models/rinsCommon/request/';
+import UserReq from 'utils/request/';
 import claimLicensorInvoices from 'models/claim/licensor/';
 import claimCountryInvoices from 'models/claim/country/';
 
@@ -293,32 +293,13 @@ var page = Component.extend({
                   }
               },
               onAdd: function (item) {
-                //alert(JSON.stringify(item));
-                  //doSearch(item,"add");
-                  //self.scope.tokenInputData.replace(item);
                   self.scope.refreshTokenInput(item,"Add");
-                  //var $subComp = $('data-grid', self.element);
-                  //$subComp.scope().refreshTokenInput(item,"Add");
 
               },
               onDelete: function (item) {
-                  //doSearch(item,"delete");
-                   //self.scope.tokenInputData.replace(item);
                    self.scope.refreshTokenInput(item,"Delete");
-                  //var $subComp = $('data-grid', self.element);
-                  //$subComp.scope().refreshTokenInput(item,"Delete");
               }
         });
-
-        /*Promise.all([
-            claimLicensorInvoices.findAll(),
-            claimCountryInvoices.findAll()
-        ]).then(function(values) {
-          //console.log("Licensor values are "+JSON.stringify(values[0].attr()));
-          //console.log("Country values are "+JSON.stringify(values[1].attr()));
-          self.scope.allClaimLicensorMap.replace(values[0]);
-          self.scope.allClaimCountryMap.replace(values[1]);
-        });*/
 
         /* The below code calls {scope.appstate} change event that gets the new data for grid*/
           /* All the neccessary parameters will be set in that event */
@@ -458,8 +439,8 @@ var page = Component.extend({
       },
       "{allClaimLicensorMap} change": function() {
         var self = this;
-        var invoiceData = self.scope.attr().allClaimLicensorMap[0].claimReviewLicensor;
-        var footerData = self.scope.attr().allClaimLicensorMap[0].clmReviewFooter;
+        var invoiceData = self.scope.attr().allClaimLicensorMap[0].reviews;
+        var footerData = self.scope.attr().allClaimLicensorMap[0].footer;
         //var currencyType = $("#currencyType").val();
         //console.log("invoice data is sss  "+JSON.stringify(invoiceData));
         if(invoiceData!="null"){
@@ -476,8 +457,8 @@ var page = Component.extend({
       "{allClaimCountryMap} change": function() {
         var self = this;
         //var invoiceData = self.scope.attr().allClaimCountryMap[0].claimReviewLicensor;
-        var invoiceData = self.scope.attr().allClaimCountryMap[0].claimReviewLicensor;
-        var footerData = self.scope.attr().allClaimCountryMap[0].clmReviewFooter;
+        var invoiceData = self.scope.attr().allClaimCountryMap[0].reviews;
+        var footerData = self.scope.attr().allClaimCountryMap[0].footer;
         //var currencyType = $("#currencyType").val();
         //console.log("invoice data is sss  "+JSON.stringify(invoiceData));
         if(invoiceData!=null){
@@ -605,35 +586,32 @@ var generateTableData = function(invoiceData,footerData){
             var invTemp = {};
             invTemp["entityId"] = invoiceData[i]["entityId"];
             invTemp["__isChild"] = false;
-            invTemp["entity"] = invoiceData[i]["entityName"];
-            invTemp["invoiceNum"] = invoiceData[i]["invoiceNumber"];
+            invTemp["entity"] = (invoiceData[i]["entityName"]==null)?"":invoiceData[i]["entityName"];
+            invTemp["invoiceNum"] = "";
             invTemp["currency"] = invoiceData[i]["currency"];
             
             invTemp["period"] = "";
             invTemp["country"] = "";
             invTemp["contentType"] = "";
-            invTemp["invoiceAmt"] = 0;
-            invTemp["orDispAmt"] = 0;
-            invTemp["liDispAmt"] = 0;
-            invTemp["reconDispAmt"] = 0;
-            invTemp["qaAlloc"] = 0;
-            invTemp["cnAlloc"] = 0;
-            invTemp["balance"] = 0;
-            invTemp["priorPaid"] = 0;
-            invTemp["invPaySat"] = 0;
-            invTemp["paySat"] = 0;
-            invTemp["orDispPerc"] = 0;
-            invTemp["liDispPerc"] = 0;
+            invTemp["invoiceAmt"] = CurrencyFormat(invoiceData[i]["invoiceAmount"]);
+            invTemp["orDispAmt"] = (invoiceData[i]["overrepAmount"])==null?0:invoiceData[i]["overrepAmount"];
+            invTemp["liDispAmt"] = (invoiceData[i]["lineDisputeAmount"])==null?0:invoiceData[i]["lineDisputeAmount"];
+            invTemp["reconDispAmt"] = CurrencyFormat(invoiceData[i]["reconAmount"]);
+            invTemp["qaAlloc"] = CurrencyFormat(invoiceData[i]["oaAllocated"]);
+            invTemp["cnAlloc"] = CurrencyFormat(invoiceData[i]["caAllocated"]);
+            invTemp["balance"] = "";
+            invTemp["priorPaid"] = CurrencyFormat(invoiceData[i]["priorPaid"]);
+            invTemp["invPaySat"] = CurrencyFormat(invoiceData[i]["invPmtSaturation"]);
+            invTemp["paySat"] = CurrencyFormat(invoiceData[i]["pmtSaturation"]);
+            invTemp["orDispPerc"] = CurrencyFormat(invoiceData[i]["invoiceAmount"]);
+            invTemp["liDispPerc"] = CurrencyFormat(invoiceData[i]["invoiceAmount"]);
             invTemp["status"] = "";
 
             gridData.data.push(invTemp);
 
             var insertedId = gridData.data.length-1;
             //console.log("jfsdhfjshj is "+invoiceData[i]["claimReviewLicDetails"]);
-            if(typeof(invoiceData[i]["claimReviewLicDetails"])!="undefined")
-              var invoiceLineItems = invoiceData[i]["claimReviewLicDetails"];
-            else 
-              var invoiceLineItems = invoiceData[i]["claimReviewDetails"];
+            var invoiceLineItems = invoiceData[i]["reviewDetails"];
 
             var contentTypeArr = [], countryArr = [];
             if(invoiceLineItems.length > 0){
@@ -643,58 +621,38 @@ var generateTableData = function(invoiceData,footerData){
                 invLITemp["entityId"] = invTemp["entityId"]+","+  invTemp["entity"] ;
                 invLITemp["__isChild"] = true;
                 invLITemp["entity"] = "";
-                invLITemp["invoiceNum"] = "";
+                invLITemp["invoiceNum"] = invoiceLineItems[j]["invoiceNumber"];
                 invLITemp["currency"] = invTemp["currency"];
 
                 invLITemp["period"] = invoiceLineItems[j]["period"];
                 invTemp["period"] = invoiceLineItems[j]["period"];
 
-                invLITemp["country"] = invoiceLineItems[j]["country_id"];
+                invLITemp["country"] = invoiceLineItems[j]["countryId"];
                 invLITemp["contentType"] = invoiceLineItems[j]["contentTypeName"];
 
-                invLITemp["invoiceAmt"] = invoiceLineItems[j]["invoiceLineItemAmount"];
-                invTemp["invoiceAmt"] = parseInt(invTemp["invoiceAmt"])+parseInt(invoiceLineItems[j]["invoiceLineItemAmount"]);
-                invTemp["invoiceAmt"] = CurrencyFormat(invTemp["invoiceAmt"]);
+                invLITemp["invoiceAmt"] = invoiceLineItems[j]["invoiceAmount"];
 
-                invLITemp["orDispAmt"] = invoiceLineItems[j]["overrepAmount"];
-                invTemp["orDispAmt"] = parseInt(invTemp["orDispAmt"])+parseInt(invoiceLineItems[j]["overrepAmount"]);
-                invTemp["orDispAmt"] = CurrencyFormat(invTemp["orDispAmt"]);
+                invLITemp["orDispAmt"] = (invoiceLineItems[j]["overrepAmount"])==null?0:invoiceLineItems[j]["overrepAmount"];
               
-                invLITemp["liDispAmt"] = invoiceLineItems[j]["liDispAmount"];
-                invTemp["liDispAmt"] = parseInt(invTemp["liDispAmt"])+parseInt(invoiceLineItems[j]["liDispAmount"]); 
-                invTemp["liDispAmt"] = CurrencyFormat(invTemp["liDispAmt"]);
+                invLITemp["liDispAmt"] = (invoiceLineItems[j]["lineDisputeAmount"])==null?0:invoiceLineItems[j]["lineDisputeAmount"];
 
                 invLITemp["reconDispAmt"] = invoiceLineItems[j]["reconAmount"];
-                invTemp["reconDispAmt"] = parseInt(invTemp["reconDispAmt"])+parseInt(invoiceLineItems[j]["reconAmount"]);
-                invTemp["reconDispAmt"] = CurrencyFormat(invTemp["reconDispAmt"]);
 
                 invLITemp["qaAlloc"] = invoiceLineItems[j]["oaAllocated"];
-                invTemp["qaAlloc"] = parseInt(invTemp["qaAlloc"])+parseInt(invoiceLineItems[j]["oaAllocated"]);
-                invTemp["qaAlloc"] = CurrencyFormat(invTemp["qaAlloc"]);
 
                 invLITemp["cnAlloc"] = invoiceLineItems[j]["caAllocated"];
-                invTemp["cnAlloc"] = parseInt(invTemp["cnAlloc"])+parseInt(invoiceLineItems[j]["caAllocated"]);
-                invTemp["cnAlloc"] = CurrencyFormat(invTemp["cnAlloc"]);
 
-                invLITemp["balance"] = invoiceLineItems[j]["balance"];
-                invTemp["balance"] = parseInt(invTemp["balance"])+parseInt(invoiceLineItems[j]["balance"]);
-                invTemp["balance"] = CurrencyFormat(invTemp["balance"]);
+                invLITemp["balance"] = (invoiceLineItems[j]["balance"]==null)?0:invoiceLineItems[j]["balance"];
 
                 invLITemp["priorPaid"] = invoiceLineItems[j]["priorPaid"];
-                invTemp["priorPaid"] = parseInt(invTemp["priorPaid"])+parseInt(invoiceLineItems[j]["priorPaid"]);
-                invTemp["priorPaid"] = CurrencyFormat(invTemp["priorPaid"]);
 
                 invLITemp["invPaySat"] = invoiceLineItems[j]["invPmtSaturation"];
-                invTemp["invPaySat"] = (invTemp["invPaySat"]+parseInt(invoiceLineItems[j]["invPmtSaturation"]));
                 
                 invLITemp["paySat"] = invoiceLineItems[j]["pmtSaturation"];
-                invTemp["paySat"] = (invTemp["paySat"]+parseInt(invoiceLineItems[j]["pmtSaturation"]));
                 
-                invLITemp["orDispPerc"] = invoiceLineItems[j]["overrepDispPer"];
-                invTemp["orDispPerc"] = (invTemp["orDispPerc"]+parseInt(invoiceLineItems[j]["overrepDispPer"]));
+                invLITemp["orDispPerc"] = (invoiceLineItems[j]["overrepDispPer"]==null)?0:invoiceLineItems[j]["overrepDispPer"];
                 
-                invLITemp["liDispPerc"] = invoiceLineItems[j]["liDispPer"];
-                invTemp["liDispPerc"] = (invTemp["liDispPerc"]+parseInt(invoiceLineItems[j]["liDispPer"]));
+                invLITemp["liDispPerc"] = (invoiceLineItems[j]["liDispPer"]==null)?0:invoiceLineItems[j]["liDispPer"];;
                 
                 invLITemp["status"] = (invoiceLineItems[j]["status"] ==null)?"":invoiceLineItems[j]["status"];
                 invTemp["status"] = invLITemp["status"];
@@ -734,33 +692,32 @@ var generateTableData = function(invoiceData,footerData){
          
           //console.log("footerData is "+JSON.stringify(footerData));
           var formatFooterData = generateFooterData(footerData);
-          //console.log("gridData is "+JSON.stringify(gridData));
           gridData.footer = formatFooterData;
-          
+          console.log("gridData is "+JSON.stringify(gridData));
           return gridData;
 }
 
 /* generateFooterData - This function is used to convert the reponse json in to a format accepted by Grid */
 /* One parameter "footerData" - holds the footer data */
 var generateFooterData = function(footerData){
-    //console.log("footerData is "+JSON.stringify(footerData));
+    console.log("footerData is "+JSON.stringify(footerData));
     var formatFooterData = []; 
     var footTemp ={};
     footTemp["entityId"] = "";
     footTemp["__isChild"] = false;
     footTemp["entity"] = "Total in Regional Currency";
     footTemp["invoiceNum"] = "";
-    footTemp["currency"] = footerData["regionalCurrency"];
+    footTemp["currency"] = footerData["currency"];
     footTemp["period"] = "";
     footTemp["country"] = "";
     footTemp["contentType"] = "";
-    footTemp["invoiceAmt"] = CurrencyFormat(parseInt(footerData["invoiceAmt"]));
+    footTemp["invoiceAmt"] = CurrencyFormat(parseInt(footerData["invoiceAmount"]));
     footTemp["orDispAmt"] = CurrencyFormat(parseInt(footerData["overrepAmount"]));
-    footTemp["liDispAmt"] = CurrencyFormat(parseInt(footerData["liDispAmount"]));
+    footTemp["liDispAmt"] = CurrencyFormat(parseInt(footerData["lineDisputeAmount"]));
     footTemp["reconDispAmt"] = CurrencyFormat(parseInt(footerData["reconAmount"]));
     footTemp["qaAlloc"] = CurrencyFormat(parseInt(footerData["oaAllocated"]));
     footTemp["cnAlloc"] = CurrencyFormat(parseInt(footerData["caAllocated"]));
-    footTemp["balance"] = CurrencyFormat(parseInt(footerData["balance"]));
+    footTemp["balance"] = 0;
     footTemp["priorPaid"] = CurrencyFormat(parseInt(footerData["priorPaid"]));
     footTemp["invPaySat"] = 0;
     footTemp["paySat"] = 0;
@@ -770,7 +727,7 @@ var generateFooterData = function(footerData){
 
     formatFooterData.push(footTemp);
 
-    var footerLineItems = footerData["clmReviewFooterDetails"];
+    var footerLineItems = footerData["footerDetails"];
     for(var i=0;i<footerLineItems.length;i++){
       var footLITemp={};
       footLITemp["entityId"] = "";
@@ -781,13 +738,13 @@ var generateFooterData = function(footerData){
       footLITemp["period"] = "";
       footLITemp["country"] = "";
       footLITemp["contentType"] = "";
-      footLITemp["invoiceAmt"] = CurrencyFormat(parseInt(footerLineItems[i]["invoiceAmt"]));
+      footLITemp["invoiceAmt"] = CurrencyFormat(parseInt(footerLineItems[i]["invoiceAmount"]));
       footLITemp["orDispAmt"] = CurrencyFormat(parseInt(footerLineItems[i]["overrepAmount"]));
-      footLITemp["liDispAmt"] = CurrencyFormat(parseInt(footerLineItems[i]["liDispAmount"]));
+      footLITemp["liDispAmt"] = CurrencyFormat(parseInt(footerLineItems[i]["lineDisputeAmount"]));
       footLITemp["reconDispAmt"] = CurrencyFormat(parseInt(footerLineItems[i]["reconAmount"]));
       footLITemp["qaAlloc"] = CurrencyFormat(parseInt(footerLineItems[i]["oaAllocated"]));
       footLITemp["cnAlloc"] = CurrencyFormat(parseInt(footerLineItems[i]["caAllocated"]));
-      footLITemp["balance"] = CurrencyFormat(parseInt(footerLineItems[i]["balance"]));
+      footLITemp["balance"] = 0;
       footLITemp["priorPaid"] = CurrencyFormat(parseInt(footerLineItems[i]["priorPaid"]));
       footLITemp["invPaySat"] = 0;
       footLITemp["paySat"] = 0;

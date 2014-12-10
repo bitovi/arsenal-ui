@@ -35,7 +35,8 @@ var OnAccountBalance = Grid.extend({
         title: 'Content Type'
       }
     ],
-    request:{}
+    request:{},
+    emptyrows:"@"
   },
   init: function(){
 
@@ -102,6 +103,7 @@ var OnAccountBalance = Grid.extend({
                         setTimeout(function(){
                             $("#messageDiv").hide();
                         },2000)
+                        self.scope.attr('emptyrows',true);
                       }
                 }, function(xhr) {
                       console.error("Error while loading: onAccount balance Details"+xhr);
