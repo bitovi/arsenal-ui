@@ -120,22 +120,21 @@ var GlobalParameterBar = Component.extend({
       else
         this.scope.appstate.removeAttr('contentType');
     } ,
-    '#globalSearch click':function(){
-      this.scope.appstate.attr('periodFrom', $('#periodFrom').val());
-      this.scope.appstate.attr('periodTo', $('#periodTo').val());
+    '#globalSearch click':function(){       
+      var self = this;
+      self.scope.appstate.attr('periodFrom', $('#periodFrom').val());
+      self.scope.appstate.attr('periodTo', $('#periodTo').val());
       var message = validateFilters(this.scope.appstate)
-      this.scope.attr('errorMessage',message);
-     
-      //alert(message);
-      //this.scope.attr('error',true);
+      self.scope.attr('errorMessage',message);
 
-      //alert(this.scope.appstate.attr('periodTo'));
-        var self = this;
+      if(message.length==0){
         if(this.scope.appstate.attr('globalSearch')){
            this.scope.appstate.attr('globalSearch', false);
         }else{
           this.scope.appstate.attr('globalSearch', true);
         }
+      }
+        
     }
   },
   init: function() {
