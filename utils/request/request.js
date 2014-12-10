@@ -24,8 +24,8 @@ var requestHelper = {
 
     var searchRequestObj = {
       "searchRequest":{
-        periodFrom:periodWidgetHelper.getFiscalPeriod(appstate.periodFrom),
-        periodTo:periodWidgetHelper.getFiscalPeriod(appstate.periodTo),
+        periodFrom:appstate.periodFrom,
+        periodTo:appstate.periodTo,
         periodType:appstate.periodType
       }
     };
