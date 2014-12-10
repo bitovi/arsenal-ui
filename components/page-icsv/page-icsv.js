@@ -204,7 +204,7 @@ var page = Component.extend({
        '{uploadedfileinfo} change':function(){
           var self = this;
           /* Below is request for validateicsv*/
-          /*
+       
           var icsvReq = {
             "documents": [
               {
@@ -221,11 +221,11 @@ var page = Component.extend({
           /* Commenting above line due to unavailability of validateicsv service*/
 
 
-        Promise.all([
+     /*   Promise.all([
               ValidateIcsv.findAll()
           ]).then(function(values) {
               icsvmap.attr("invoiceData", values[0][0]);
-          });
+          }); */
   
 
 

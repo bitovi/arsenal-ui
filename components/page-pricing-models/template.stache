@@ -277,7 +277,7 @@
 						
 						<div class="col-sm-3 col-sm-offset-9" style="padding-right: 0px;">
 		  					<div class="col-sm-11" style="float: right;padding-right: 0px;">
-							<button id="save" type="submit" class="btn btn-primary btn-custom-big">Save</button>
+							<button id="save" type="button" class="btn btn-primary btn-custom-big">Save</button>
 							
 							{{#if editstate}}
 							<button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="editCancel">Cancel</button>

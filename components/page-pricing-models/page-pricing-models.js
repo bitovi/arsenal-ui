@@ -262,7 +262,7 @@ var page = Component.extend({
     "#save click":function(){
       var self = this;
 
-      var usercomments = (self.scope.editstate === true)?self.scope.usercommentsStore:$(".new-comments").val();
+      var usercomments = (self.scope.editstate === false)?self.scope.usercommentsStore:$(".new-comments").val();
 
       var saveRecord = {
         "details":{  
@@ -276,8 +276,8 @@ var page = Component.extend({
           "pricingModel":{  
              "region":self.scope.attr("regions"),
              "modelId":self.scope.attr("modelid"),
-             "commentId":9685,
-             "comments":null,
+            // "commentId":9685,
+            // "comments":null,
              "createdBy":299221510,
              "modelDescription":self.scope.attr("modelname"),
              "modelName":self.scope.attr("pricingmodeltype"),

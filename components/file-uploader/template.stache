@@ -17,10 +17,10 @@
       {{/if}}
 
         {{#if isAnyFileLoaded}}
-          <input type="submit" class="submitFiles uploadFiles" value="Upload"/>
-          <input type="submit"  class="cancelUpload uploadFiles" value="Cancel">
+          <input type="button" class="submitFiles uploadFiles" value="Upload"/>
+          <input type="button"  class="cancelUpload uploadFiles" value="Cancel">
         {{else}}
           <input type="file" class="fileSelect"  name ="UploadFile"  style="display: none;" multiple />
-          <input type="submit" class="uploadFiles" value="Select Files" />
+          <input type="button" class="uploadFiles" value="Select Files" />
         {{/if}}
 </div>
