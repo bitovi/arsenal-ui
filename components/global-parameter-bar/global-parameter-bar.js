@@ -17,7 +17,7 @@ import template from './template.stache!';
 import styles from './global-parameter-bar.less!';
 
 import periodCalendar from 'components/period-calendar/';
-import periodWidgetHelper from 'utils/periodWidgetHelpers';
+//import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 var GlobalParameterBar = Component.extend({
   tag: 'global-parameter-bar',
@@ -54,13 +54,13 @@ var GlobalParameterBar = Component.extend({
       },
      '{periodFrom} change': function(el, ev) {
          var comp ='from';
-         this.scope.appstate.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(this.scope.attr('periodFrom')[0]));
-         this.scope.appstate.attr('periodType',periodWidgetHelper.getPeriodType(this.scope.attr('periodFrom')[0]));
+         this.scope.appstate.attr('periodFrom', this.scope.attr('periodFrom')[0]);
+         this.scope.appstate.attr('periodType',this.scope.attr('periodFrom')[0]);
          showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0],comp);
      },
      '{periodTo} change': function(el, ev) {
           var comp ='to';
-          this.scope.appstate.attr('periodTo', periodWidgetHelper.getFiscalPeriod(this.scope.attr('periodTo')[0]));
+          this.scope.appstate.attr('periodTo', this.scope.attr('periodTo')[0]);
           showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0],comp);
      },
     '#store-type select change': function(el, ev) {

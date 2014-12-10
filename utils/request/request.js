@@ -1,4 +1,5 @@
 import Model from 'can/model/';
+import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 var requestHelper = {
   formRequestDetails:function(params){
@@ -10,6 +11,7 @@ var requestHelper = {
     userRequest["secretKey"] = "f4166789-30bb-4e12-9973-a76376745096";
     userRequest["roleIds"] = [""];
     userRequest["requestTimeStamp"]=date.getTime();
+    console.log('Request:'+ JSON.stringify(userRequest));
     return userRequest;
   },
   formGlobalRequest: function(appstate){
@@ -22,8 +24,8 @@ var requestHelper = {
 
     var searchRequestObj = {
       "searchRequest":{
-        periodFrom:appstate.periodFrom,
-        periodTo:appstate.periodTo,
+        periodFrom:periodWidgetHelper.getFiscalPeriod(appstate.periodFrom),
+        periodTo:periodWidgetHelper.getFiscalPeriod(appstate.periodTo),
         periodType:appstate.periodType
       }
     };

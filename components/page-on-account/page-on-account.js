@@ -25,6 +25,7 @@ var page = Component.extend({
   tag: 'page-on-account',
   template: template,
   scope: {
+    appstate:undefined,
     localGlobalSearch:undefined,
     request:{},
     onAccountRows:{},
