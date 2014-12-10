@@ -17,7 +17,6 @@ import template from './template.stache!';
 import styles from './global-parameter-bar.less!';
 
 import periodCalendar from 'components/period-calendar/';
-//import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 var GlobalParameterBar = Component.extend({
   tag: 'global-parameter-bar',
@@ -31,7 +30,8 @@ var GlobalParameterBar = Component.extend({
     countries: [],
     licensors: [],
     contentTypes:[],
-    selectedperiod:[]
+    selectedperiod:[],
+    errorMessage:"@",
   },
   helpers: {
     isSelected: function(parameterName, modelID) {
@@ -54,12 +54,14 @@ var GlobalParameterBar = Component.extend({
       },
      '{periodFrom} change': function(el, ev) {
          var comp ='from';
+         this.scope.attr('errorMessage','');
          this.scope.appstate.attr('periodFrom', this.scope.attr('periodFrom')[0]);
          this.scope.appstate.attr('periodType',this.scope.attr('periodFrom')[0]);
          showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0],comp);
      },
      '{periodTo} change': function(el, ev) {
           var comp ='to';
+          this.scope.attr('errorMessage','');
           this.scope.appstate.attr('periodTo', this.scope.attr('periodTo')[0]);
           showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0],comp);
      },
@@ -119,13 +121,21 @@ var GlobalParameterBar = Component.extend({
         this.scope.appstate.removeAttr('contentType');
     } ,
     '#globalSearch click':function(){
-      //To idntify, user has clicked the button
-      var self = this;
-      if(this.scope.appstate.attr('globalSearch')){
-         this.scope.appstate.attr('globalSearch', false);
-      }else{
-        this.scope.appstate.attr('globalSearch', true);
-      }
+      this.scope.appstate.attr('periodFrom', $('#periodFrom').val());
+      this.scope.appstate.attr('periodTo', $('#periodTo').val());
+      var message = validateFilters(this.scope.appstate)
+      this.scope.attr('errorMessage',message);
+     
+      //alert(message);
+      //this.scope.attr('error',true);
+
+      //alert(this.scope.appstate.attr('periodTo'));
+        var self = this;
+        if(this.scope.appstate.attr('globalSearch')){
+           this.scope.appstate.attr('globalSearch', false);
+        }else{
+          this.scope.appstate.attr('globalSearch', true);
+        }
     }
   },
   init: function() {
@@ -192,6 +202,18 @@ var GlobalParameterBar = Component.extend({
     });
   }
 });
+
+var validateFilters = function(appstate){
+    var periodFrom = appstate.attr('periodFrom');
+    var periodTo = appstate.attr('periodTo');
+    if(periodFrom.length == 0 || periodFrom.trim().length == 0){
+      return 'Invalid PeriodFrom !';
+    }else if(periodTo.length == 0 || periodTo.trim().length == 0){
+      return 'Invalid PeriodTo !';
+    }else {
+      return '';
+    }
+}
 
 var showErrorMsg = function(periodFrom,periodTo,whichcomp){
        var showFlg=false;
