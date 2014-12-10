@@ -104,14 +104,10 @@
 
                        </ul-->
         </li>
-
-
-
-
       </ul>
 
       <ul class="nav navbar-nav" id='dynamicmenu'>
-         
+
       </ul>
     </div>
   </div>
