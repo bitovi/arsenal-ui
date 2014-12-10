@@ -53,6 +53,7 @@ var fetchReconIncoming = function(scope){
 
     searchRequestObj.searchRequest["type"] = "OTHER";
 
+   // console.log("Search Req:"+searchRequestObj);
 
 
     Recon.findOne(UserReq.formRequestDetails(searchRequestObj),function(data){

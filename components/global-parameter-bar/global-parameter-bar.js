@@ -17,6 +17,7 @@ import template from './template.stache!';
 import styles from './global-parameter-bar.less!';
 
 import periodCalendar from 'components/period-calendar/';
+import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 var GlobalParameterBar = Component.extend({
   tag: 'global-parameter-bar',
@@ -55,14 +56,16 @@ var GlobalParameterBar = Component.extend({
      '{periodFrom} change': function(el, ev) {
          var comp ='from';
          this.scope.attr('errorMessage','');
-         this.scope.appstate.attr('periodFrom', this.scope.attr('periodFrom')[0]);
-         this.scope.appstate.attr('periodType',this.scope.attr('periodFrom')[0]);
+         console.log("Period: "+periodWidgetHelper.getFiscalPeriod(this.scope.attr('periodFrom')[0]));
+         this.scope.appstate.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(this.scope.attr('periodFrom')[0]));
+         this.scope.appstate.attr('periodType',periodWidgetHelper.getPeriodType(this.scope.attr('periodFrom')[0]));
+         //console.log("Perio hggd: "+this.scope.appstate.attr('periodFrom'));
          showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0],comp);
      },
      '{periodTo} change': function(el, ev) {
           var comp ='to';
           this.scope.attr('errorMessage','');
-          this.scope.appstate.attr('periodTo', this.scope.attr('periodTo')[0]);
+          this.scope.appstate.attr('periodTo', periodWidgetHelper.getFiscalPeriod(this.scope.attr('periodTo')[0]));
           showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0],comp);
      },
     '#store-type select change': function(el, ev) {
@@ -122,8 +125,8 @@ var GlobalParameterBar = Component.extend({
     } ,
     '#globalSearch click':function(){       
       var self = this;
-      self.scope.appstate.attr('periodFrom', $('#periodFrom').val());
-      self.scope.appstate.attr('periodTo', $('#periodTo').val());
+//      self.scope.appstate.attr('periodFrom', $('#periodFrom').val());
+//      self.scope.appstate.attr('periodTo', $('#periodTo').val());
       var message = validateFilters(this.scope.appstate)
       self.scope.attr('errorMessage',message);
 
