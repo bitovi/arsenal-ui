@@ -12,7 +12,6 @@ var reconGrid = Grid.extend({
     footerrows: []
   },
   helpers: {
-
     getColumnLength: function(options){
       //console.log("column length is "+ JSON.stringify(this.attr("columns").length));
       return this.attr("columns").length;

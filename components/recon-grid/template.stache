@@ -27,5 +27,6 @@
       <td class="{{columnClass column}} {{cellClass row column}}" {{data 'column'}}>{{cellContents row column}}</td>
       {{/filteredColumns}}
     </tr>
-    {{/footerRows}}    
+    {{/footerRows}}
+    </tfoot>
 </table>

@@ -1,0 +1,209 @@
+@import 'components/grid/grid.less';
+
+  table {
+        width: 80%;
+        border-radius: 0px;
+
+        /*border-spacing: 0;*/
+
+        /*color: hsl(0, 0%, 50%);*/
+
+        /* getting border radius to work right */
+        thead:first-child, tbody:first-child {
+          & > tr:first-of-type {
+            td:first-child, th:first-child {
+              border-top-left-radius: 0px;
+            }
+
+            td:last-child, th:last-child {
+              border-top-right-radius: 0px;
+            }
+          }
+
+          
+        }
+
+        thead {
+              
+          tr {
+              vertical-align: top;
+            th {
+
+                text-align: left;
+                padding-left: 0.625em;
+                height: 1.5em;
+                padding-top: .3em;
+                padding-bottom: .3em;
+                color: #ffffff;
+                font-size: 12px;
+                background: linear-gradient(to bottom, #bfbfbf, #808080);
+                border-right: 1px solid #666666 !important;
+                border-left: 1px solid #666666 !important;
+                border-top: 1px solid #666666 !important;
+                border-bottom: 1px solid #666666 !important;
+            
+          }
+          
+        }
+
+        }
+
+        tbody:last-child, tfoot:last-child {
+          & > tr:last-of-type {
+            td, th {
+              height : 1.5625em;
+              backgorund: !important;
+
+            }
+
+            td:first-child, th:first-child {
+              border-bottom-left-radius: 0px;
+             }
+
+            td:last-child, th:last-child {
+              border-bottom-right-radius: 0px;
+            }
+          }
+        }
+
+      tbody {
+
+        background: #F6F6F6 !important;
+
+          tr {
+
+            height : 1.5625em;
+
+
+            td {
+
+              padding-right: 0.5625em;
+              padding-left : 0.5625em;
+              padding-top  : 0em;
+              padding-bottom : 0em;
+              font-size: 12px;
+
+              border-right: 1px solid hsl(0, 0%, 75%);
+
+              border-bottom: 1px solid #FFFFFF !important;
+
+              &:first-child {
+                border-left: 1px solid hsl(0, 0%, 75%);
+              }
+              &:last-child {
+                border-right: 1px solid hsl(0, 0%, 75%);
+              }
+
+              text-align:left;
+
+            }
+
+            &:first-child {
+              border-top: none;
+            }
+
+            &:last-child td{
+                border-bottom: 1px solid hsl(0, 0%, 75%) !important;
+            }
+
+          }
+
+          tr.child {
+            display: none;
+
+            &.visible {
+              display: table-row;
+            }
+          }
+        }
+      }
+
+.summaryTopTable {
+    width:80%;
+}
+
+.buttonSubmit {
+  color: #ffffff;
+  /*background-image: -moz-linear-gradient(top, #1581f4, #63adf1);
+  background-image: -webkit-linear-gradient(top, #1581f4, #63adf1) important!;
+  background-image: -o-linear-gradient(top, #1581f4, #63adf1);*/
+  background-image: linear-gradient(to bottom, #1581f4, #63adf1);
+  background-repeat: repeat-x;
+}
+
+
+
+.refreshButton {
+
+  padding-left:90%;
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  
+}
+
+.ingestionStatsTab {
+  
+    width:80%;
+
+}
+
+
+.refreshTab {
+  
+  width: 100%;
+  padding-left:10px;
+  padding-right:10px;
+
+
+}
+
+
+.statsTable {
+  
+  width: 100%;
+  border: 1px solid #C6C6C6;
+
+}
+
+.spaceDiv {
+  
+  width:100%;
+  height:5%;
+  display:block;
+}
+
+.ssStatus {
+  
+  width:70%;
+
+}
+
+.currency {
+    font-size: 12px;
+    width: 120px;
+}
+
+.ssvalue {
+  
+  width:30%;
+}
+
+.textFont {
+  
+  font-family: "HelveticaNeue-medium";
+  font-size: 12px;
+  color: #3d3d3d;
+}
+
+.selectCurrency {
+  
+    width: 80%;
+
+}
+
+.requiredBar {
+  border-left: 2px solid #d24849;
+  padding-left: 2px;
+  box-sizing: none;
+  height:20px;
+}

@@ -93,7 +93,7 @@ var  menu =[{
       {"value": "Invoice Entry", "id": "create-invoice"},
       {"value": "iCSV Entry", "id": "icsv"},
       {"value": "Search Invoice", "id": "invoices"},
-      {"value": "Recon Stats", "id": "reconstats"},
+      {"value": "Recon Stats", "id": "recon"},
       {"value": "Recon Stats Other", "id": "reconOther"},
       {"value": "On Account", "id": "on-account"}
    ]
