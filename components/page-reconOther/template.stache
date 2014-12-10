@@ -1,0 +1,27 @@
+<div class="col-lg-12 pageTitle">
+  <div class="col-lg-4">
+    <h3>Recon Other</h3>
+  </div>
+  <div class="col-lg-4">
+    <div id="messageDiv" class="col-md-12" style="text-align:center;padding-top:5px;"></div>
+  </div>
+</div>
+
+<div class="col-lg-12 reconContainer">
+  <div class="col-md-12">
+    <div class="col-sm-8"></div>
+    <div class="col-sm-4 form-inline row">
+      <span class="pull-right searchDiv">
+        <input type="text" class="form-control" id="tokenSearch">
+        <img src="resources/images/exportExcelIcon.png" class="" id="exportExcel">
+        <img src="resources/images/copyToClipboardIcon.png" class="" id="copyToClipboard">
+      </span>
+    </div>
+  </div>
+
+  <div class="col-lg-12 " style="max-height: 200px; overflow-y:scroll;">
+      <rn-recon-grid columns="{incomingOtherGridColumns}" rows="{incomingOtherList}" ></rn-recon-grid>
+  </div>
+
+
+</div>
