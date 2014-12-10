@@ -69,7 +69,7 @@ var page = Component.extend({
     }
   },
   init: function(){
-    console.log("Appstat: "+JSON.stringify(this.scope.attr("appstate")));
+    this.scope.appstate.attr("renderGlobalSearch",true);
     fetchReconIngest(this.scope);
     fetchReconDetails(this.scope);
   },
