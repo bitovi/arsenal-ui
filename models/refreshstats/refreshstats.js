@@ -8,21 +8,17 @@ var Stats = Model.extend({
 
   findOne: function(params){
     return $.ajax({
-      //url: RinsCommon.DOMAIN_SERVICE_URL+'/recon/refresh',
-      url: 'http://ma-rinsd-lapp01.corp.apple.com:10649/recon/refresh',
+      url: RinsCommon.DOMAIN_SERVICE_URL+'/recon/refresh',
       type: 'POST',
-      //datatype:'json',
-      //contentType: 'application/json; charset=utf-8',
-      //data: JSON.stringify(params)
+      datatype:'json',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify(params)
     })
   }
 
 }
 
-
-
-
-, {});
+,{});
 
 
 export default Stats;

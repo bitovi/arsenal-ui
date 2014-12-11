@@ -1,5 +1,4 @@
 import Model from 'can/model/';
-import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 var requestHelper = {
   formRequestDetails:function(params){
@@ -15,12 +14,35 @@ var requestHelper = {
     return userRequest;
   },
   formGlobalRequest: function(appstate){
-    //TODO few more request s
+    /*
+      forms the common global request, which further
+        neds to be extended on on each page.
+
+      Ex: {
+      "searchRequest" : {
+        "entityId" : [ 1 ],
+        "contentGrpId" : [ "1" ],
+        "periodFrom" : 201404,
+        "periodTo" : 201406,
+        "regionId" : 1,
+        "serviceTypeId" : 1,
+        "country" : [ "FRA" ]
+      }
+    }
+
+    */
     var serTypeId = appstate.attr('storeType');
-    var regId = appstate.attr('region');
     var countryId = appstate.attr()['country'];
     var licId = appstate.attr()['licensor'];
     var contGrpId = appstate.attr()['contentType'];
+    var region = appstate.attr('region');
+
+    var regId = "";
+    if(typeof(region )=="undefined"){
+      regId = "";
+    }else{
+      regId = region['id'];
+    }
 
     var searchRequestObj = {
       "searchRequest":{
@@ -28,6 +50,7 @@ var requestHelper = {
         periodTo:appstate.periodTo,
         periodType:appstate.periodType,
         entityId:licId,
+        regionId:regId,
         contentGrpId:contGrpId,
         countryId:countryId,
         serviceTypeId:serTypeId

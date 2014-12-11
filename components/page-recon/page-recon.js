@@ -11,6 +11,12 @@ import ingestedColumns from './column-sets/ingest-columns';
 import detailsColumns from './column-sets/details-columns';
 import Recon from 'models/recon/';
 
+import tokeninput from 'tokeninput';
+import css_tokeninput from 'tokeninput.css!';
+import css_tokeninput_theme from 'tokeninput_theme.css!';
+
+import commonUtils from 'utils/commonUtils';
+
 
 //Navigation bar definitions
 var tabNameObj = {
@@ -49,7 +55,21 @@ var page = Component.extend({
     //bottomgrid
     refreshStatsReq:undefined,
     isBottomGridRefresh:true,
-    isGlobalSearch:undefined
+    isGlobalSearch:undefined,
+    tokenInput: [],
+    refreshTokenInput: function(val, type){
+      var self = this;
+      if(type=="Add")
+        self.attr('tokenInput').push(val);
+        else if(type=="Delete"){
+          var flag=true;
+          this.attr('tokenInput').each(function(value, key) {
+            if(val.id == value.id){
+              self.attr('tokenInput').splice(key,1);
+            }
+          });
+        }
+      }
 
   },
   helpers: {
@@ -69,14 +89,46 @@ var page = Component.extend({
     this.scope.appstate.attr("renderGlobalSearch",true);
     this.scope.attr("isGlobalSearch",this.scope.appstate.attr("globalSearch"));
     fetchReconIngest(this.scope);
-    fetchReconDetails(this.scope);
-
   },
   events:{
     'shown.bs.tab': function(el, ev) {
       this.scope.attr("tabSelected", $('.nav-tabs .active').text());
       this.scope.appstate.attr("renderGlobalSearch",true);
+      //Load when the list is empty
+      if(_.size(this.scope.ingestList.headerRows) == 0 || _.size(this.scope.incomingDetails.headerRows) == 0 ){
+        commonUtils.triggerGlobalSearch();
+      }
     },
+    "inserted": function(){
+      var self = this;
+
+      $("#tokenSearch").tokenInput([
+        {id: 1, name: "Search"} //This is needed
+        ],
+        {
+          theme: "facebook",
+          preventDuplicates: true,
+          onResult: function (item) {
+            if($.isEmptyObject(item)){
+              return [{id:$("#token-input-tokenSearch").val(),name: $("#token-input-tokenSearch").val()}];
+            }else{
+              return item;
+            }
+          },
+          onAdd: function (item) {
+            self.scope.refreshTokenInput(item,"Add");
+          },
+          onDelete: function (item) {
+            self.scope.refreshTokenInput(item,"Delete");
+          }
+        });
+      },
+      "{tokenInput} change": function(){
+        var self= this;
+        /* The below code calls {scope.appstate} change event that gets the new data for grid*/
+        /* All the neccessary parameters will be set in that event */
+        commonUtils.triggerGlobalSearch();
+      },
     ".downloadLink.badLines click": function(item, el, ev){
       var self=this.scope;
       var row = item.closest('tr').data('row').row;
@@ -129,7 +181,11 @@ var page = Component.extend({
     '{scope.appstate} change': function() {
       if(this.scope.isGlobalSearch != this.scope.appstate.attr('globalSearch')){
         this.scope.attr("isGlobalSearch",this.scope.appstate.attr("globalSearch"));
-        fetchReconIngest(this.scope);
+        if(this.scope.tabSelected == this.scope.tabName.ingest.attr("name")){
+          fetchReconIngest(this.scope);
+        }else{
+          fetchReconDetails(this.scope);
+        }
       }
     }
   }
@@ -163,7 +219,7 @@ var processRejectIngestRequest = function(scope,requestType){
           "ids" : ccidSelected
           }
         }
-        console.log(JSON.stringify(UserReq.formRequestDetails(rejectSearchRequestObj)));
+        //console.log(JSON.stringify(UserReq.formRequestDetails(rejectSearchRequestObj)));
 
         Recon.reject(UserReq.formRequestDetails(rejectSearchRequestObj)).done(function(data){
           if(data.responseCode == "0000"){
@@ -173,8 +229,10 @@ var processRejectIngestRequest = function(scope,requestType){
               $("#messageDiv").hide();
             },3000);
           }else{
-            //error text has to be shared. TODO - not sure how service responds to it
-            console.log("Error") ;
+
+              //error text has to be shared. TODO - not sure how service responds to it
+              displayErrorMessage(data.responseText,"Failed to Ingest:");
+
           }
         });
 
@@ -186,7 +244,8 @@ var processRejectIngestRequest = function(scope,requestType){
           "ids" : ccidSelected
         }
       }
-      console.log(JSON.stringify(UserReq.formRequestDetails(rejectSearchRequestObj)));
+
+      //console.log(JSON.stringify(UserReq.formRequestDetails(rejectSearchRequestObj)));
 
       Recon.ingest(UserReq.formRequestDetails(rejectSearchRequestObj)).done(function(data){
         if(data.responseCode == "0000"){
@@ -194,10 +253,10 @@ var processRejectIngestRequest = function(scope,requestType){
           $("#messageDiv").show();
           setTimeout(function(){
             $("#messageDiv").hide();
-          },3000);
+          },4000);
         }else{
           //error text has to be shared. TODO - not sure how service responds to it
-          console.log("Error") ;
+          displayErrorMessage(data.responseText,"Failed to Ingest:");
         }
       });
 
@@ -205,76 +264,103 @@ var processRejectIngestRequest = function(scope,requestType){
 }
 
 
+var displayErrorMessage = function(message,log){
+
+  $("#messageDiv").html("<label class='errorMessage'>"+message+"</label>");
+  $("#messageDiv").show();
+  setTimeout(function(){
+    $("#messageDiv").hide();
+  },4000);
+  console.error(log+message);
+
+}
+
 /**/
 var fetchReconIngest = function(scope){
 
-  var searchRequestObj = {
-    "searchRequest":{
-      type:"INGESTED"
-    }
-  };
+  var searchRequestObj = UserReq.formGlobalRequest(scope.appstate);
+  searchRequestObj.searchRequest["type"] = "INGESTED";
+  //TODO During pagination / scrolling, the below values has tobe chnaged.
+  searchRequestObj.searchRequest["limit"] = "10";
+  searchRequestObj.searchRequest["offset"] = "0";
+  searchRequestObj.searchRequest["sortBy"] = "COUNTRY";
+  searchRequestObj.searchRequest["sortOrder"] = "ASC";
+
 
   Recon.findOne(UserReq.formRequestDetails(searchRequestObj),function(data){
-    scope.ingestList.headerRows.replace(data.reconStatsDetails);
+    if(data.status = "FAILURE"){
+      displayErrorMessage(data.responseText,"Failed to load the Recon Ingest Tab:");
+    }else  {
+      scope.ingestList.headerRows.replace(data.reconStatsDetails);
 
-    var footerLine= {
-      "__isChild": true,
-      "ccy":"EUR",
-      "pubfee":data.summary.totalPubFee,
-      "reconAmt":data.summary.totalRecon,
-      "liDispAmt":data.summary.totalLi,
-      "copConAmt":data.summary.totalUnMatched,
-      "unMatchedAmt":data.summary.totalUnMatched,
-      "badLines":data.summary.totalBadLines,
-      "ccidId":"",
-      "entityName":"",
-      "countryId":"",
-      "contType":"",
-      "fiscalPeriod":"",
-      "ingstdDate":"",
-      "invFileName":"",
-      "status":"",
-      "isFooterRow":true
-    };
+      var footerLine= {
+        "__isChild": true,
+        "ccy":"EUR",
+        "pubfee":data.summary.totalPubFee,
+        "reconAmt":data.summary.totalRecon,
+        "liDispAmt":data.summary.totalLi,
+        "copConAmt":data.summary.totalUnMatched,
+        "unMatchedAmt":data.summary.totalUnMatched,
+        "badLines":data.summary.totalBadLines,
+        "ccidId":"",
+        "entityName":"",
+        "countryId":"",
+        "contType":"",
+        "fiscalPeriod":"",
+        "ingstdDate":"",
+        "invFileName":"",
+        "status":"",
+        "isFooterRow":true
+      };
 
-    scope.ingestList.footerRows.replace(footerLine);
-
+      scope.ingestList.footerRows.replace(footerLine);
+    }
 
   },function(xhr){
     console.error("Error while loading: fetchReconIngest"+xhr);
   });
 }
 
+
+
 var fetchReconDetails = function(scope){
 
-  var searchRequestObj = {
-    "searchRequest":{
-      type:"INCOMING"
-    }
-  };
+  var searchRequestObj = UserReq.formGlobalRequest(scope.appstate);
+  searchRequestObj.searchRequest["type"] = "INCOMING";
+  //TODO During pagination / scrolling, the below values has tobe chnaged.
+  searchRequestObj.searchRequest["limit"] = "10";
+  searchRequestObj.searchRequest["offset"] = "0";
+  searchRequestObj.searchRequest["sortBy"] = "COUNTRY";
+  searchRequestObj.searchRequest["sortOrder"] = "ASC";
+
 
   Recon.findOne(UserReq.formRequestDetails(searchRequestObj),function(data){
-    scope.incomingDetails.headerRows.replace(data.reconStatsDetails);
-    var footerLine= {
-      "__isChild": true,
-      "ccy":"EUR",
-      "pubfee":data.summary.totalPubFee,
-      "reconAmt":data.summary.totalRecon,
-      "liDispAmt":data.summary.totalLi,
-      "copConAmt":data.summary.totalUnMatched,
-      "unMatchedAmt":data.summary.totalUnMatched,
-      "badLines":data.summary.totalBadLines,
-      "ccidId":"",
-      "entityName":"",
-      "countryId":"",
-      "contType":"",
-      "fiscalPeriod":"",
-      "rcvdDate":"",
-      "invFileName":"",
-      "status":"",
-      "isFooterRow":true
-    };
-    scope.incomingDetails.footerRows.replace(footerLine);
+    if(data.status = "FAILURE"){
+      displayErrorMessage(data.responseText,"Failed to load the Recondetails:");
+    }else  {
+      scope.incomingDetails.headerRows.replace(data.reconStatsDetails);
+
+      var footerLine= {
+        "__isChild": true,
+        "ccy":"EUR",
+        "pubfee":data.summary.totalPubFee,
+        "reconAmt":data.summary.totalRecon,
+        "liDispAmt":data.summary.totalLi,
+        "copConAmt":data.summary.totalUnMatched,
+        "unMatchedAmt":data.summary.totalUnMatched,
+        "badLines":data.summary.totalBadLines,
+        "ccidId":"",
+        "entityName":"",
+        "countryId":"",
+        "contType":"",
+        "fiscalPeriod":"",
+        "rcvdDate":"",
+        "invFileName":"",
+        "status":"",
+        "isFooterRow":true
+      };
+      scope.incomingDetails.footerRows.replace(footerLine);
+    }
   },function(xhr){
     console.error("Error while loading: fetchReconDetails"+xhr);
   });

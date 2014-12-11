@@ -11,7 +11,7 @@ import Recon from 'models/recon/';
 import tokeninput from 'tokeninput';
 import css_tokeninput from 'tokeninput.css!';
 import css_tokeninput_theme from 'tokeninput_theme.css!';
-
+import commonUtils from 'utils/commonUtils';
 
 
 
@@ -49,7 +49,7 @@ var page = Component.extend({
   events:{
     "inserted": function(){
         var self = this;
-        console.log("test ");
+
         $("#tokenSearch").tokenInput([
           {id: 1, name: "Search"} //This is needed
           ],
@@ -75,16 +75,12 @@ var page = Component.extend({
       var self= this;
       /* The below code calls {scope.appstate} change event that gets the new data for grid*/
       /* All the neccessary parameters will be set in that event */
-      if(self.scope.appstate.attr('globalSearch')){
-        self.scope.appstate.attr('globalSearch', false);
-      }else{
-        self.scope.appstate.attr('globalSearch', true);
-      }
+      commonUtils.triggerGlobalSearch();
     },
     ".downloadLink.fileName click": function(item, el, ev){
       var self=this.scope;
       var row = item.closest('tr').data('row').row;
-
+      //Download needs testing
     },
     '{scope.appstate} change': function() {
       if(this.scope.isGlobalSearch != this.scope.appstate.attr('globalSearch')){
@@ -98,21 +94,28 @@ var page = Component.extend({
 
 var fetchReconIncoming = function(scope){
 
-
-
     var searchRequestObj = UserReq.formGlobalRequest(scope.appstate);
 
-    console.log(UserReq.formGlobalRequest(scope.appstate));
-
-
     searchRequestObj.searchRequest["type"] = "OTHER";
-
-   // console.log("Search Req:"+searchRequestObj);
-
+    //TODO During pagination / scrolling, the below values has tobe chnaged.
+    searchRequestObj.searchRequest["limit"] = "10";
+    searchRequestObj.searchRequest["offset"] = "0";
+    searchRequestObj.searchRequest["sortBy"] = "COUNTRY";
+    searchRequestObj.searchRequest["sortOrder"] = "ASC";
 
     Recon.findOne(UserReq.formRequestDetails(searchRequestObj),function(data){
+      if(data.status = "FAILURE"){
+        $("#messageDiv").html("<label class='errorMessage'>"+data.responseText+"</label>");
+        $("#messageDiv").show();
+        setTimeout(function(){
+          $("#messageDiv").hide();
+        },4000);
+        console.error("Failed to load the Recon incoming other :"+data.responseText);
 
-      scope.incomingOtherList.replace(data.reconStatsDetails);
+
+      }else  {
+        scope.incomingOtherList.replace(data.reconStatsDetails);
+      }
 
     },function(xhr){
 
