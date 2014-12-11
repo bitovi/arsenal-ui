@@ -26,7 +26,11 @@ var requestHelper = {
       "searchRequest":{
         periodFrom:appstate.periodFrom,
         periodTo:appstate.periodTo,
-        periodType:appstate.periodType
+        periodType:appstate.periodType,
+        entityId:licId,
+        contentGrpId:contGrpId,
+        countryId:countryId,
+        serviceTypeId:serTypeId
       }
     };
 

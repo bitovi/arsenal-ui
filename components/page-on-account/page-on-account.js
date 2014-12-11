@@ -15,11 +15,12 @@ import createpb from 'components/create-pb/';
 import utils from 'components/page-on-account/utils';
 import proposedOnAccountGrid from './grid-proposed-onaccount/';
 import proposedOnAccount from 'models/onAccount/proposedOnAccount/';
-import UserReq from 'utils/request/';
+import requestHelper from 'utils/request/';
 import newOnAccountModel from 'models/onAccount/newOnAccount/'
 import LicensorCurrency from 'models/common/licensorcurrency/';
 import proposedOnAccount from 'models/onAccount/proposedOnAccount/';
 import Comments from 'components/multiple-comments/';
+import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 var page = Component.extend({
   tag: 'page-on-account',
@@ -39,7 +40,8 @@ var page = Component.extend({
     proposedOnAccountData:{},
     bundleNamesForDisplay:"",
     newOnAccountRows:[],
-    errorMessage:""
+    errorMessage:"",
+    quarters:[]
 
   },
   init: function(){
@@ -55,6 +57,7 @@ var page = Component.extend({
           $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid emptyrows="{emptyrows}"></rn-new-onaccount-grid>')({emptyrows:true}));
        }, 10);
           disablePropose(true);
+
       },
       'period-calendar onSelected': function (ele, event, val) {  
          this.scope.attr('periodchoosen', val);
@@ -93,16 +96,19 @@ var page = Component.extend({
         var message = '';
         if(self.scope.appstate.attr('globalSearch') != undefined){
           message = validateFilters(self.scope.appstate);
-        }
-        self.scope.attr('errorMessage',message);
-        self.scope.attr('request',request);
+        }   
+        self.scope.attr('errorMessage',message);  
        
         self.scope.attr("localGlobalSearch",self.scope.appstate.attr('globalSearch'));
         if(self.scope.appstate.attr('globalSearch') && message.length == 0){
           var genObj = {};
           var request = frameRequest(self.scope.appstate);
-          var quarters = utils.getQuarter(request.searchRequest.periodFrom,request.searchRequest.periodTo);
-
+           self.scope.attr('request',request);
+            var periodType=this.scope.appstate.attr('periodType');
+            var quarterFrom = periodWidgetHelper.getDisplayPeriod(this.scope.appstate.attr('periodFrom'),periodType);
+            var quarterTo=periodWidgetHelper.getDisplayPeriod(this.scope.appstate.attr('periodTo'),periodType);
+            var quarters = utils.getQuarter(quarterFrom,quarterTo);
+            self.scope.attr('quarters',quarters);
             if(self.scope.tabsClicked=="ON_ACC_BALANCE"){
               request.searchRequest["type"] = "BALANCE";
               request.quarters=quarters;
@@ -111,7 +117,7 @@ var page = Component.extend({
               //console.log("inside NEW_ON_ACC");
               $('#newonAccountGrid, #newonAccountGridComps').show();
                 genObj["licensorId"]=request.searchRequest.entityId.toString();
-                 LicensorCurrency.findAll(UserReq.formRequestDetails(genObj)).then(function(data) {
+                 LicensorCurrency.findAll(requestHelper.formRequestDetails(genObj)).then(function(data) {
                  var rows = utils.frameRows(data.licensorCurrencies,quarters);
                  request.rows=rows;
                  request.quarters=quarters;
@@ -124,11 +130,11 @@ var page = Component.extend({
             }else if(self.scope.tabsClicked=="PROPOSED_ON_ACC"){
                   var proposedRequest = {};
                   request.searchRequest["type"]="PROPOSED";
-                  request.searchRequest["periodFrom"]=utils.getPeriodForQuarter(request.searchRequest.periodFrom);
-                  request.searchRequest["periodTo"]=utils.getPeriodForQuarter(request.searchRequest.periodTo);
+                  request.searchRequest["periodFrom"]=request.searchRequest.periodFrom;
+                  request.searchRequest["periodTo"]=request.searchRequest.periodTo;
                   request.searchRequest["entityId"]=self.scope.request.searchRequest.entityId.attr();
                   request.searchRequest["contentGrpId"]=self.scope.request.searchRequest.contentGrpId.attr();
-                  proposedOnAccount.findOne(UserReq.formRequestDetails(request),function(data){
+                  proposedOnAccount.findOne(requestHelper.formRequestDetails(request),function(data){
                     if(data["status"]=="SUCCESS"){
                        /* The below calls {scope.appstate} change event that gets the new data for grid*/
                         var returnValue = utils.getProposedOnAccRows(quarters,data);
@@ -200,33 +206,22 @@ var page = Component.extend({
         // please remove this for integrating with domain service
 
         var self = this;
-        var quarters = utils.getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
         var paymentBundleName = $("#newPaymentBundle").val();
         if(paymentBundleName==undefined  ||  paymentBundleName==null || paymentBundleName ==""){
             paymentBundleName = self.scope.paymentBundleName;
         }
 
-        //console.log('onAccountRows');
-        //console.log(self.scope.onAccountRows);
-
-        var createrequest = utils.frameCreateRequest(self.scope.request,self.scope.onAccountRows,self.scope.documents,self.scope.usercommentsStore,quarters,paymentBundleName);
-        var request = UserReq.formRequestDetails(createrequest);
-        console.log('Request:'+JSON.stringify(request));
+        var createrequest = utils.frameCreateRequest(self.scope.request,self.scope.onAccountRows,self.scope.documents,self.scope.usercommentsStore,self.scope.quarters,paymentBundleName);
+        var request = requestHelper.formRequestDetails(createrequest);
+        //console.log('Request:'+JSON.stringify(request));
         newOnAccountModel.create(request,function(data){
-          console.log("Create response is "+JSON.stringify(data));
+          //console.log("Create response is "+JSON.stringify(data));
           if(data["status"]=="SUCCESS"){
              $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
              $("#messageDiv").show();
              setTimeout(function(){
                 $("#messageDiv").hide();
              },2000);
-
-             // The below calls {scope.appstate} change event that gets the new data for grid
-             if(this.scope.appstate.attr('globalSearch')){
-                this.scope.appstate.attr('globalSearch', false);
-              }else{
-                this.scope.appstate.attr('globalSearch', true);
-              }
             $("#messageDiv").html("<label class='successMessage'>Invoices created successfully </label>");
             $("#propose").attr("disabled","disabled");
           }else{
@@ -239,6 +234,12 @@ var page = Component.extend({
           },function(xhr){
             console.error("Error while Creating: onAccount Details"+xhr);
           });
+        // The below calls {scope.appstate} change event that gets the new data for grid
+             if(this.scope.appstate.attr('globalSearch')){
+                this.scope.appstate.attr('globalSearch', false);
+              }else{
+                this.scope.appstate.attr('globalSearch', true);
+              }
       },
       "#proposedDelete click":function(el,ev){
         disableEditORDeleteButtons(true);
@@ -261,7 +262,7 @@ var page = Component.extend({
 
          }
           var request = utils.frameDeleteRequest(deletableRows,null);
-          proposedOnAccount.update(UserReq.formRequestDetails(request),"invoiceDelete",function(data){
+          proposedOnAccount.update(requestHelper.formRequestDetails(request),"invoiceDelete",function(data){
           console.log("Delete response is "+JSON.stringify(data));
           if(data["status"]=="SUCCESS"){
              $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
@@ -316,7 +317,7 @@ var page = Component.extend({
       "#submitPOA click":function(el,ev){
         var comments = $(".new-comments").val();
         //Remove this for domain services
-        /*
+     
            var updatableRows = [];
           var req = this.scope.request;
           var type = 'EDIT';
@@ -331,7 +332,7 @@ var page = Component.extend({
            }
 
            var updateRequest = utils.frameUpdateRequest(self.scope.request,updatableRows,self.scope.documents,comments,quarters);
-            proposedOnAccount.update(UserReq.formRequestDetails(updateRequest),"UPDATE",function(data){
+            proposedOnAccount.update(requestHelper.formRequestDetails(updateRequest),"UPDATE",function(data){
             console.log("Update response is "+JSON.stringify(data));
               if(data["status"]=="SUCCESS"){
                  $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
@@ -361,9 +362,6 @@ var page = Component.extend({
             },function(xhr){
               console.error("Error while loading: onAccount Details"+xhr);
             });
-          */
-          $("#messageDiv").html("<label class='successMessage'>Invoices Updated successfully </label>");
-          $("#submitPOA").attr("disabled","disabled");
 
       },
       'rn-new-onaccount-grid onSelected': function (ele, event, val) {  
