@@ -46,18 +46,16 @@ var page = Component.extend({
   },
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
-   $("#searchDiv").hide();
-      this.scope.tabsClicked="NEW_ON_ACC";
+    this.scope.tabsClicked="NEW_ON_ACC";
     },
     events: {
       "inserted": function(){
-        //this.scope.attr('errorMessage','');
-       $("#searchDiv").hide();
+       $("#searchDiv").show();
        setTimeout(function(){
           $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid emptyrows="{emptyrows}"></rn-new-onaccount-grid>')({emptyrows:true}));
        }, 10);
           disablePropose(true);
-
+          disableCopyOnAccount(true);
       },
       'period-calendar onSelected': function (ele, event, val) {  
          this.scope.attr('periodchoosen', val);
@@ -68,8 +66,12 @@ var page = Component.extend({
         $(ele).blur();
          },
         '.updateperoid focus':function(el){
-        $(el).closest('.calendarcls').find('.box-modal').is(':visible') ?
-        $(el).closest('.calendarcls').find('.box-modal').hide():$(el).closest('.calendarcls').find('.box-modal').show();
+            el.closest('.calendarcls').find('.box-modal').is(':visible') ?
+            el.closest('.calendarcls').find('.box-modal').hide():$(el).closest('.calendarcls').find('.box-modal').show();
+
+            if(el.attr('id')=='copyQuarter'){
+                hidethePeriods();
+            }
         },
       "#paymentBundleNames change": function(){
           var self = this;
@@ -102,6 +104,7 @@ var page = Component.extend({
             var quarterFrom = periodWidgetHelper.getDisplayPeriod(this.scope.appstate.attr('periodFrom'),periodType);
             var quarterTo=periodWidgetHelper.getDisplayPeriod(this.scope.appstate.attr('periodTo'),periodType);
             var quarters = utils.getQuarter(quarterFrom,quarterTo);
+            self.scope.attr('quarters',quarters);
             if(self.scope.tabsClicked=="NEW_ON_ACC"){
                   message = validateFilters(self.scope.appstate,true,true,true,true,true);
                   self.scope.attr('errorMessage',message); 
@@ -116,6 +119,7 @@ var page = Component.extend({
                     self.scope.newOnAccountRows.replace(rows);
                     if(rows != null && rows.length >0){
                       disablePropose(false);
+                      disableCopyOnAccount(false);
                     }
                     $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
                   });
@@ -188,8 +192,8 @@ var page = Component.extend({
       "#newonAccount click":function(el, ev){
         ev.preventDefault();
         this.scope.tabsClicked="NEW_ON_ACC";
-        $('#newonAccountGrid, #newonAccountGridComps, #forminlineElements').show();
-        $('#onAccountBalanceDiv, #proposedonAccountDiv,#proposeOnAccountGridComps,#searchDiv').hide();
+        $('#newonAccountGrid, #newonAccountGridComps, #forminlineElements,#searchDiv').show();
+        $('#onAccountBalanceDiv, #proposedonAccountDiv,#proposeOnAccountGridComps').hide();
       },
       "#proposedonAccount click":function(el, ev){
         ev.preventDefault();
@@ -206,7 +210,7 @@ var page = Component.extend({
         var self = this;
         var paymentBundleName = $("#newPaymentBundle").val();
         if(paymentBundleName==undefined  ||  paymentBundleName==null || paymentBundleName ==""){
-            paymentBundleName = self.scope.paymentBundleName;
+            paymentBundleName = self.scope.paymentBundleNameText;
         }
         var createrequest = utils.frameCreateRequest(self.scope.request,self.scope.onAccountRows,self.scope.documents,self.scope.usercommentsStore,self.scope.quarters,paymentBundleName);
         var request = requestHelper.formRequestDetails(createrequest);
@@ -340,8 +344,8 @@ var page = Component.extend({
         var self=this;
         var quarterValueForCopy = $("#copyQuarter").val();
        var rows=this.scope.newOnAccountRows;
-       //console.log(rows);
-       newOnAccountModel.findOne("",function(data){
+       var request = requestHelper.formRequestDetails();
+       newOnAccountModel.findOne(request,function(data){
           console.log("Update response is "+JSON.stringify(data));
             if(data["status"]=="SUCCESS"){
                 displayMessage(data["responseText"],true);
@@ -477,7 +481,20 @@ var displayMessage=function(message,isSuccess){
       $("#messageDiv").hide();
   },2000)
 }
-
+var hidethePeriods = function(){
+              var _root = $('#calendarclsdiv')
+              _root.find('.q1 li').not(":first").find('a').addClass('disabled');
+              _root.find('.q2 li').not(":first").find('a').addClass('disabled');
+              _root.find('.q3 li').not(":first").find('a').addClass('disabled');
+              _root.find('.q4 li').not(":first").find('a').addClass('disabled');
+};
+var disableCopyOnAccount=function(disable){
+  if(disable){
+        $("#copyOnAccount").attr("disabled","disabled");
+    }else{
+      $("#copyOnAccount").removeAttr("disabled");
+    }
+}
 var validateFilters=function(appstate,validateQuarter,validateStoreType,validateRegion,validateLicensor,validateContentType){
   if(appstate != null && appstate != undefined){
       var serTypeId = appstate.attr('storeType');
