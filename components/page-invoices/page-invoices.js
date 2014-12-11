@@ -149,9 +149,9 @@ var page = Component.extend({
             bundleNamesRequest.bundleSearch["region"] = "";
           else
             bundleNamesRequest.bundleSearch["region"] = regId['value'];
-            
+
           bundleNamesRequest.bundleSearch["type"] = "invoice";
-          
+
 
           //console.log("GetBundleNamesRequest is "+JSON.stringify(bundleNamesRequest));
 
@@ -188,7 +188,7 @@ var page = Component.extend({
             }
         });
 
-        /* Bundle Names is selectable only when any row is selected */ 
+        /* Bundle Names is selectable only when any row is selected */
         $('#paymentBundleNames').prop('disabled', 'disabled');
 
          /* The below code calls {scope.appstate} change event that gets the new data for grid*/
@@ -337,7 +337,7 @@ var page = Component.extend({
     ".rn-grid>tbody>tr td dblclick": function(item, el, ev){
           //var invoiceid = el.closest('tr').data('row').row.id;
           var self=this;
-          var row = item.closest('tr').data('row').row; 
+          var row = item.closest('tr').data('row').row;
           var invoiceid = row.invId;
           var status = row.status;
           var invoiceno = row.invoiceNum;
@@ -366,16 +366,16 @@ var page = Component.extend({
               self.scope.appstate.attr('globalSearch', false);
             }else{
               self.scope.appstate.attr('globalSearch', true);
-            }  
-    
+            }
+
     },
     '.invId :checkbox change': function(item, el, ev) {
       var self = this;
       var val = parseInt($(item[0]).attr("value"));
-      var row = item.closest('tr').data('row').row;       
+      var row = item.closest('tr').data('row').row;
 
       if($(item[0]).is(":checked")){
-          row.attr('__isChecked', true);   
+          row.attr('__isChecked', true);
           self.scope.attr('checkedRows').push(val);
 
       } else {
@@ -397,18 +397,18 @@ var page = Component.extend({
               $("#btnAttach").removeAttr("disabled");
               $("#btnSubmit").removeAttr("disabled");
               $("#paymentBundleNames").removeAttr("disabled");
-            
-              //self.scope.attr('disableBundleName', "no");  
+
+              //self.scope.attr('disableBundleName', "no");
           }
           else{
-            
+
               $("#btnDelete").attr("disabled","disabled");
               $("#btnAttach").attr("disabled","disabled");
               $("#btnSubmit").attr("disabled","disabled");
               $("#paymentBundleNames").attr("disabled","disabled");
-              
+
               //self.scope.attr('disableBundleName', "yes");
-              
+
           }
 
           var flag=true;
@@ -495,7 +495,7 @@ var page = Component.extend({
           var self = this;
           var pbval = $("#paymentBundleNames").val();
           if(pbval=="createB"){
-              
+
               var regId = self.scope.appstate.attr('region');
               var invoiceData = self.scope.attr().allInvoicesMap[0].invoices;
               //console.log(JSON.stringify(invoiceData));
@@ -635,7 +635,7 @@ var page = Component.extend({
                 invSearchRequest.searchRequest["regionId"] = "";
               else
                 invSearchRequest.searchRequest["regionId"] = regId['id'];
-              
+
               invSearchRequest.searchRequest["country"] = [];
               if(typeof(countryId)!="undefined")
                 //invSearchRequest.searchRequest["country"].push(countryId['value']);
@@ -654,7 +654,7 @@ var page = Component.extend({
               invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
               invSearchRequest.searchRequest["offset"] = "0";
               invSearchRequest.searchRequest["limit"] = "10";
-              
+
               var filterData = self.scope.tokenInput.attr();
               var newFilterData = [];
               if(filterData.length>0){
