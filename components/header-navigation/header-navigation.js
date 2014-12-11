@@ -2,7 +2,7 @@ import Component from 'can/component/';
 
 import template from './template.stache!';
 import styles from './header-navigation.less!';
-
+import roles from 'models/roles/';
 import GlobalParameterBar from 'components/global-parameter-bar/';
 
 
@@ -11,8 +11,35 @@ var headerNavigation = Component.extend({
     template: template,
     scope: {
         appstate: undefined,// this gets passed in
-        show:true
+        show:true,
+        roles: [],
+        allowedScreenId : []
     },
+    init: function() {
+      var self = this;
+
+      Promise.all([
+        roles.findAll()
+
+        ]).then(function(values) {
+
+          var role = {permissions:values[0]};
+
+          self.scope.appstate.userInfo = role;
+
+          console.log("role="+ role);
+
+          self.scope.roles.replace(values[0]);
+          var screenId= [] ;
+          for(var i = 0, size = role.permissions.length; i < size ; i++)
+            {
+
+              screenId.push(role.permissions[i].screenId) ;
+
+            }
+            self.scope.attr("allowedScreenId",screenId );
+          });
+        },
     events:{
      '#homemenu li a click':function(btn){
         var mainmenu_txt = btn.text();
@@ -49,6 +76,13 @@ var headerNavigation = Component.extend({
         renderGlobalSearch: function(){
             //Used for appear/di-appear of the Global search, whic is based appstate.renderGlobalSearch
             return 'style="' + (this.appstate.attr('renderGlobalSearch') ? '' : 'display:none') + '"'
+        },
+        isScreenEnabled:function(screenId){
+          var index = _.indexOf(this.attr("allowedScreenId"), screenId);
+          var isEnable = 'style="display:' + ( index == -1 ? 'none' : 'block') + '"';
+
+          return isEnable
+
         }
     }
 });
