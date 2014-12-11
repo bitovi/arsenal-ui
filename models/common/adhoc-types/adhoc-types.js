@@ -1,5 +1,5 @@
 import Model from 'can/model/';
-import RinsCommon from 'utils/';
+import RinsCommon from 'utils/urls';
 
 var AdhocType = Model.extend({
 	findAll: function(params){

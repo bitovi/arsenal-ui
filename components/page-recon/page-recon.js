@@ -4,7 +4,7 @@ import template from './template.stache!';
 import styles from './page-recon.less!';
 import Stats from 'models/refreshstats/refreshstats';
 import ReconStats from 'components/recon-stats/';
-import RinsCommon from 'utils/';
+import RinsCommon from 'utils/urls';
 import UserReq from 'utils/request/';
 import reconGrid from  'components/recon-grid/';
 import ingestedColumns from './column-sets/ingest-columns';

@@ -1,6 +1,6 @@
 import Model from 'can/model/';
 
-import RinsCommon from 'utils/';
+import RinsCommon from 'utils/urls';
 
 var NewPBName = Model.extend({
 

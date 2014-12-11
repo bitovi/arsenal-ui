@@ -1,7 +1,7 @@
   import Component from 'can/component/';
   import template from './template.stache!';
   import FileUpLoader from 'models/fileuploader/';
-  import RinsCommon from 'utils/';
+  import RinsCommon from 'utils/urls';
   import compute from 'can/compute/';
   import _less from './file-uploader.less!';
 
