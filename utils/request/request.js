@@ -52,7 +52,7 @@ var requestHelper = {
         entityId:licId,
         regionId:regId,
         contentGrpId:contGrpId,
-        countryId:countryId,
+        country:countryId,
         serviceTypeId:serTypeId
       }
     };
