@@ -343,9 +343,18 @@ var page = Component.extend({
       self.licDetails.attr("data", values[0].licensorDetails);
 
 
+
       self.invoiceType = values[0].licensorDetails.invoiceDetailType;
 
-      $("#invoiceType").val(self.invoiceType);
+      if(self.invoiceType != null) {
+
+        $("#invoiceType").val(self.invoiceType);
+      
+      } else {
+
+        $("#invoiceType").val("Select");
+
+      }
 
       self.periodToVal = self.licDetails.data.validTo;
 
