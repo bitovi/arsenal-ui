@@ -464,7 +464,7 @@ var page = Component.extend({
               }
           }
           else{
-            $("#messageDiv").html("<label class='errorMessage'>Failed to delete invoice</label>");
+            $("#messageDiv").html("<label class='errorMessage'>"+data[0]["responseText"]+"</label>");
             $("#messageDiv").show();
             setTimeout(function(){
                 $("#messageDiv").hide();
@@ -570,14 +570,19 @@ var page = Component.extend({
         BundleNamesModel.create(UserReq.formRequestDetails(overAllBundleRequest),function(data){
             console.log("passing params is "+JSON.stringify(data));
             if(data["responseText"]=="SUCCESS"){
-             $("#messageDiv").html("<label class='successMessage'>Invoices added to payment bundle successfully</label>")
+             $("#messageDiv").html("<label class='successMessage'>"+data[0]["responseText"]+"</label>")
              $("#messageDiv").show();
              setTimeout(function(){
                 $("#messageDiv").hide();
              },2000);
             }
-            else
-              $("#messageDiv").html("<label class='errorMessage'>Failed to add invoices</label>")
+            else{
+              $("#messageDiv").html("<label class='errorMessage'>"+data[0]["responseText"]+"</label>")
+              $("#messageDiv").show();
+               setTimeout(function(){
+                  $("#messageDiv").hide();
+               },2000);
+            }
         },function(xhr){
           console.error("Error while loading: bundleNames"+xhr);
         });
