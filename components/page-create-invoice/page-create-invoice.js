@@ -157,17 +157,17 @@ var page = Component.extend({
 			}
 		},
 		createPBRequest: function(){
-	          	var bundleNamesRequest = {"paymentBundle":{}};
+	          	var bundleNamesRequest = {"bundleSearch":{}};
 	          	var serTypeId = $("#invoiceType option:selected").attr("name");
 	          	var regId = this.regionStore;
 	          
 			  	if(typeof(serTypeId)!="undefined")
-	            	bundleNamesRequest.paymentBundle["bundleType"] = serTypeId;
+	            	bundleNamesRequest.bundleSearch["type"] = serTypeId;
 				
 				if(typeof(regId)=="undefined")
-	            	bundleNamesRequest.paymentBundle["regionId"] = "";
+	            	bundleNamesRequest.bundleSearch["regionId"] = "";
 	          	else
-	            	bundleNamesRequest.paymentBundle["regionId"] = regId;
+	            	bundleNamesRequest.bundleSearch["regionId"] = regId;
 	            
 	           // bundleNamesRequest.bundleSearch["type"] = "invoice";
 	          console.log(bundleNamesRequest);
@@ -792,7 +792,7 @@ var page = Component.extend({
 						createInvoiceData.invoices.push(tempInvoiceData);
 						Promise.all([Invoice.create(UserReq.formRequestDetails(createInvoiceData))]).then(function(values) {
 									if(values[0]["status"]=="SUCCESS"){
-		                              		 	var msg = "Invoice number "+self.scope.invoicenumberStore+" was saved successfully."
+												var msg = "Invoice number "+self.scope.invoicenumberStore+" was saved successfully."
 									            $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
 									            $("#invmessageDiv").show();
 									            setTimeout(function(){
@@ -811,12 +811,17 @@ var page = Component.extend({
 											}
 								          else
 								           {
-									          	var msg = "Invoice number "+self.scope.invoicenumberStore+" was not saved successfully."
+									          	var errorMap = values[0].invoices[0].errors.errorMap;
+									          	var errorStr = "";
+									          	for(var key in errorMap){
+									          		errorStr += errorMap[key]+", ";
+									          		console.log(key);	
+									          	}
+									          	errorStr = errorStr.replace(/,\s*$/, "");  
+									          	
+									          	var msg = "Error: "+ errorStr;
 									          	$("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
 									          	$("#invmessageDiv").show();
-									          	setTimeout(function(){
-									                $("#invmessageDiv").hide();
-									             },5000)
 									          	$("#addInvSubmit").attr("disabled", false);
 								            }
 								     	});
