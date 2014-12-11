@@ -29,6 +29,7 @@ var comments = Component.extend({
             
             if(val.isEditable ==  undefined || val.isEditable == 'n'){        
               var textAreactrl=getTextArea();
+              $(editableTextarea).attr('id', 'editableText');
               $(textAreactrl).addClass("multiple-comments-editable").addClass("form-control-comments old-comments");
               $(textAreactrl).attr('readonly', 'readonly');
               $(textAreactrl).val(val.comments + "\n-" + val.createdBy + " on " + val.createdDate);
@@ -42,6 +43,7 @@ var comments = Component.extend({
           
           if(self.scope.isreadonly === 'n'){
             var editableTextarea=getTextArea();
+            $(editableTextarea).attr('id', 'editableText');
             $(editableTextarea).attr('name',self.scope.divid);
             $(editableTextarea).addClass("multiple-comments-editable").addClass("form-control-comments new-comments multiple-comments-editable-height");
             $(editableTextarea).text(editableRecComment);
