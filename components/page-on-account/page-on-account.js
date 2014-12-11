@@ -79,8 +79,8 @@ var page = Component.extend({
               var newBundleNameRequest = {"paymentBundle":{}};
               var bundleRequest = {};
               bundleRequest.regionId = regId['id'];
-              bundleRequest.periodFrom = utils.getPeriodForQuarter(self.scope.appstate.attr('periodFrom'));
-              bundleRequest.periodTo=utils.getPeriodForQuarter(self.scope.appstate.attr('periodTo'));
+              bundleRequest.periodFrom = self.scope.appstate.attr('periodFrom');
+              bundleRequest.periodTo=self.scope.appstate.attr('periodTo');
               bundleRequest.bundleType ="ON_ACCOUNT";
               newBundleNameRequest["paymentBundle"] = bundleRequest;
               self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
@@ -91,87 +91,88 @@ var page = Component.extend({
           }
       },
       '{scope.appstate} change': function() {
-        var self = this;
-        self.scope.attr('errorMessage','');
-        var message = '';
-        if(self.scope.appstate.attr('globalSearch') != undefined){
-          message = validateFilters(self.scope.appstate);
-        }   
-        self.scope.attr('errorMessage',message);  
-       
-        self.scope.attr("localGlobalSearch",self.scope.appstate.attr('globalSearch'));
-        if(self.scope.appstate.attr('globalSearch') && message.length == 0){
-          var genObj = {};
-          var request = frameRequest(self.scope.appstate);
-           self.scope.attr('request',request);
+         var self = this;
+         if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch')){
+            this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
+            var genObj = {};
+            var message="";
+            var request = frameRequest(self.scope.appstate);
+            self.scope.attr('request',request);
             var periodType=this.scope.appstate.attr('periodType');
             var quarterFrom = periodWidgetHelper.getDisplayPeriod(this.scope.appstate.attr('periodFrom'),periodType);
             var quarterTo=periodWidgetHelper.getDisplayPeriod(this.scope.appstate.attr('periodTo'),periodType);
             var quarters = utils.getQuarter(quarterFrom,quarterTo);
-            self.scope.attr('quarters',quarters);
-            if(self.scope.tabsClicked=="ON_ACC_BALANCE"){
-              request.searchRequest["type"] = "BALANCE";
-              request.quarters=quarters;
-               $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={request}></rn-onaccount-balance-grid>')({request}));
-            }else if(self.scope.tabsClicked=="NEW_ON_ACC"){
-              //console.log("inside NEW_ON_ACC");
-              $('#newonAccountGrid, #newonAccountGridComps').show();
-                genObj["licensorId"]=request.searchRequest.entityId.toString();
-                 LicensorCurrency.findAll(requestHelper.formRequestDetails(genObj)).then(function(data) {
-                 var rows = utils.frameRows(data.licensorCurrencies,quarters);
-                 request.rows=rows;
-                 request.quarters=quarters;
-                  self.scope.newOnAccountRows.replace(rows);
-                  if(rows != null && rows.length >0){
-                    disablePropose(false);
-                  }
-                  $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
-                });
-            }else if(self.scope.tabsClicked=="PROPOSED_ON_ACC"){
-                  var proposedRequest = {};
-                  request.searchRequest["type"]="PROPOSED";
-                  request.searchRequest["periodFrom"]=request.searchRequest.periodFrom;
-                  request.searchRequest["periodTo"]=request.searchRequest.periodTo;
-                  request.searchRequest["entityId"]=self.scope.request.searchRequest.entityId.attr();
-                  request.searchRequest["contentGrpId"]=self.scope.request.searchRequest.contentGrpId.attr();
-                  proposedOnAccount.findOne(requestHelper.formRequestDetails(request),function(data){
-                    if(data["status"]=="SUCCESS"){
-                       /* The below calls {scope.appstate} change event that gets the new data for grid*/
-                        var returnValue = utils.getProposedOnAccRows(quarters,data);
-                        var arr = $.unique(returnValue['BUNDLE_NAMES']);
-                        self.scope.attr('bundleNamesForDisplay',arr.toString());
-                        //console.log(self.scope.attr('bundleNamesForDisplay'));
-                        proposedRequest.rows=returnValue['ROWS'];
-                        proposedRequest.quarters=quarters;
-                        disableProposedSubmitButton(true);
-                        disableEditORDeleteButtons(true);
-                        $("#submitPOA").attr("disabled","disabled");
-                        $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={proposedRequest}></rn-proposed-onaccount-grid>')({proposedRequest}));
-
-                        var tempcommentObj = data.onAccount.comments;
-                        //console.log("multi comments "+JSON.stringify(tempcommentObj));
-                        if(tempcommentObj!=null)
-                          $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
-                        else
-                          $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>');
-
-                    } else{
-                      $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-                      $("#messageDiv").show();
-                      setTimeout(function(){
-                          $("#messageDiv").hide();
-                      },2000)
-                      $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
+            if(self.scope.tabsClicked=="NEW_ON_ACC"){
+                  message = validateFilters(self.scope.appstate,true,true,true,true,true);
+                  self.scope.attr('errorMessage',message); 
+                  if(message.length == 0){
+                    //console.log("inside NEW_ON_ACC");
+                    $('#newonAccountGrid, #newonAccountGridComps').show();
+                    genObj["licensorId"]=request.searchRequest.entityId.toString();
+                    LicensorCurrency.findAll(requestHelper.formRequestDetails(genObj)).then(function(data) {
+                    var rows = utils.frameRows(data.licensorCurrencies,quarters);
+                    request.rows=rows;
+                    request.quarters=quarters;
+                    self.scope.newOnAccountRows.replace(rows);
+                    if(rows != null && rows.length >0){
+                      disablePropose(false);
                     }
-                }, function(xhr) {
-                      console.error("Error while loading: proposed onAccount Details"+xhr);
-                      $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
-                } );
+                    $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
+                  });
+                }
+            } else if(self.scope.tabsClicked=="ON_ACC_BALANCE"){
+              message = validateFilters(self.scope.appstate,true,false,false,false,false);
+              self.scope.attr('errorMessage',message); 
+              if(message.length == 0){
+                request.searchRequest["type"] = "BALANCE";
+                request.quarters=quarters;
+                 $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={request}></rn-onaccount-balance-grid>')({request})); 
+                }    
+              } else if(self.scope.tabsClicked=="PROPOSED_ON_ACC"){
+                  message = validateFilters(self.scope.appstate,true,false,false,false,false);
+                  self.scope.attr('errorMessage',message); 
+                  if(message.length == 0){
+                      var proposedRequest = {};
+                      request.searchRequest["type"]="PROPOSED";
+                      request.searchRequest["periodFrom"]=request.searchRequest.periodFrom;
+                      request.searchRequest["periodTo"]=request.searchRequest.periodTo;
+                      request.searchRequest["entityId"]=self.scope.request.searchRequest.entityId.attr();
+                      request.searchRequest["contentGrpId"]=self.scope.request.searchRequest.contentGrpId.attr();
+                      proposedOnAccount.findOne(requestHelper.formRequestDetails(request),function(data){
+                        if(data["status"]=="SUCCESS"){
+                           /* The below calls {scope.appstate} change event that gets the new data for grid*/
+                            var returnValue = utils.getProposedOnAccRows(quarters,data);
+                            var arr = $.unique(returnValue['BUNDLE_NAMES']);
+                            self.scope.attr('bundleNamesForDisplay',arr.toString());
+                            //console.log(self.scope.attr('bundleNamesForDisplay'));
+                            proposedRequest.rows=returnValue['ROWS'];
+                            proposedRequest.quarters=quarters;
+                            disableProposedSubmitButton(true);
+                            disableEditORDeleteButtons(true);
+                            $("#submitPOA").attr("disabled","disabled");
+                            $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={proposedRequest}></rn-proposed-onaccount-grid>')({proposedRequest}));
 
-            }
-          this.scope.appstate.attr('globalSearch',false);
-        }
-        
+                            var tempcommentObj = data.onAccount.comments;
+                            //console.log("multi comments "+JSON.stringify(tempcommentObj));
+                            if(tempcommentObj!=null)
+                              $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
+                            else
+                              $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>');
+
+                        } else{
+                            displayMessage(data["responseText"],false);
+                            $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
+                        }
+                    }, function(xhr) {
+                          console.error("Error while loading: proposed onAccount Details"+xhr);
+                          $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
+                    } );
+                  }
+                }
+          }else{
+            self.scope.attr('errorMessage',''); 
+          }
+          
       },
       "#onAccountBalance click":function(el, ev){
         ev.preventDefault();
@@ -202,44 +203,25 @@ var page = Component.extend({
        }
       },
       "#propose click":function(el,ev){
-
-        // please remove this for integrating with domain service
-
         var self = this;
         var paymentBundleName = $("#newPaymentBundle").val();
         if(paymentBundleName==undefined  ||  paymentBundleName==null || paymentBundleName ==""){
             paymentBundleName = self.scope.paymentBundleName;
         }
-
         var createrequest = utils.frameCreateRequest(self.scope.request,self.scope.onAccountRows,self.scope.documents,self.scope.usercommentsStore,self.scope.quarters,paymentBundleName);
         var request = requestHelper.formRequestDetails(createrequest);
         //console.log('Request:'+JSON.stringify(request));
         newOnAccountModel.create(request,function(data){
           //console.log("Create response is "+JSON.stringify(data));
           if(data["status"]=="SUCCESS"){
-             $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
-             $("#messageDiv").show();
-             setTimeout(function(){
-                $("#messageDiv").hide();
-             },2000);
-            $("#messageDiv").html("<label class='successMessage'>Invoices created successfully </label>");
+              displayMessage(data["responseText"],true);
             $("#propose").attr("disabled","disabled");
           }else{
-                $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-                $("#messageDiv").show();
-                setTimeout(function(){
-                    $("#messageDiv").hide();
-                },2000)
+                displayMessage(data["responseText"],false);
               }
           },function(xhr){
             console.error("Error while Creating: onAccount Details"+xhr);
           });
-        // The below calls {scope.appstate} change event that gets the new data for grid
-             if(this.scope.appstate.attr('globalSearch')){
-                this.scope.appstate.attr('globalSearch', false);
-              }else{
-                this.scope.appstate.attr('globalSearch', true);
-              }
       },
       "#proposedDelete click":function(el,ev){
         disableEditORDeleteButtons(true);
@@ -263,21 +245,13 @@ var page = Component.extend({
          }
           var request = utils.frameDeleteRequest(deletableRows,null);
           proposedOnAccount.update(requestHelper.formRequestDetails(request),"invoiceDelete",function(data){
-          console.log("Delete response is "+JSON.stringify(data));
+          //console.log("Delete response is "+JSON.stringify(data));
           if(data["status"]=="SUCCESS"){
-             $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
-             $("#messageDiv").show();
-             setTimeout(function(){
-                $("#messageDiv").hide();
-             },2000);
-
-             /* The below calls {scope.appstate} change event that gets the new data for grid*/
-
+              displayMessage(data["responseText"],true);
               req.attr('deletableRows',rows);
-             $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
+              $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
           }
           else{
-
             var details = data.onAccount.onAccountDetails;
             for(var i=0;i<details.length;i++){
                var toBeAdded = utils.getRow(deletableRows,details[i].id);
@@ -287,20 +261,12 @@ var page = Component.extend({
             }
             req.attr('deletableRows',rows);
             $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
-
-              $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-              $("#messageDiv").show();
-            setTimeout(function(){
-              $("#messageDiv").hide();
-            },2000)
-
+            displayMessage(data["responseText"],false);
           }
 
           },function(xhr){
             console.error("Error while loading: onAccount Details"+xhr);
           });
-
-        this.scope.appstate.attr('globalSearch', false);
       },
       "#proposedEdit click":function(el,ev){
           $('#submitPOA').removeAttr("disabled");
@@ -333,29 +299,14 @@ var page = Component.extend({
 
            var updateRequest = utils.frameUpdateRequest(self.scope.request,updatableRows,self.scope.documents,comments,quarters);
             proposedOnAccount.update(requestHelper.formRequestDetails(updateRequest),"UPDATE",function(data){
-            console.log("Update response is "+JSON.stringify(data));
+            //console.log("Update response is "+JSON.stringify(data));
               if(data["status"]=="SUCCESS"){
-                 $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
-                 $("#messageDiv").show();
-                 setTimeout(function(){
-                    $("#messageDiv").hide();
-                 },2000);
-
-                 //The below calls {scope.appstate} change event that gets the new data for grid
-                 if(this.scope.appstate.attr('globalSearch')){
-                    this.scope.appstate.attr('globalSearch', false);
-                  }else{
-                    this.scope.appstate.attr('globalSearch', true);
-                  }
+                 displayMessage(data["responseText"],true);
                   req.attr('editableRows',rows);
                   $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
               }
               else{
-                $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-                $("#messageDiv").show();
-                setTimeout(function(){
-                    $("#messageDiv").hide();
-                },2000)
+               displayMessage(data["responseText"],false);
                 req.attr('editableRows',this.scope.proposedOnAccountData.rows);
                 $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
               }
@@ -393,26 +344,17 @@ var page = Component.extend({
        newOnAccountModel.findOne("",function(data){
           console.log("Update response is "+JSON.stringify(data));
             if(data["status"]=="SUCCESS"){
-               $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
-               $("#messageDiv").show();
-               setTimeout(function(){
-                  $("#messageDiv").hide();
-               },2000);
+                displayMessage(data["responseText"],true);
                 var quarters=utils.getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
                 var updatedRows = utils.frameRowsForCopyOnAcc(rows,data,quarters,quarterValueForCopy);
-
                 var request = self.scope.request;
                 request.quarters=quarters;
-                 request.rows=updatedRows;
-                  self.scope.newOnAccountRows.replace(updatedRows);
-                  $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
+                request.rows=updatedRows;
+                self.scope.newOnAccountRows.replace(updatedRows);
+                $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
             }
             else{
-              $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-              $("#messageDiv").show();
-              setTimeout(function(){
-                  $("#messageDiv").hide();
-              },2000)
+              displayMessage(data["responseText"],false);
             }
           },function(xhr){
             console.error("Error while loading: onAccount Details"+xhr);
@@ -524,35 +466,52 @@ var disablePropose=function(disable){
     }
 }
 
-var validateFilters=function(appstate){
+var displayMessage=function(message,isSuccess){
+  if(isSuccess){
+    $("#messageDiv").html("<label class='successMessage'>"+message+"</label>");
+  }else{
+      $("#messageDiv").html("<label class='errorMessage'>"+message+"</label>");
+  } 
+  $("#messageDiv").show();
+  setTimeout(function(){
+      $("#messageDiv").hide();
+  },2000)
+}
+
+var validateFilters=function(appstate,validateQuarter,validateStoreType,validateRegion,validateLicensor,validateContentType){
   if(appstate != null && appstate != undefined){
       var serTypeId = appstate.attr('storeType');
       var regId = appstate.attr('region');
       var countryId = appstate['country'];
       var licId = appstate['licensor'];
       var contGrpId = appstate['contentType'];
-      
-      if(serTypeId == null || serTypeId == ""){
+      var periodType = appstate['periodType'];
+
+      if(validateQuarter && periodType!="Q"){
+        return 'Please select Quarter !'
+      }
+
+      if(validateStoreType && (serTypeId == null || serTypeId == "")){
         return 'Invalid Store Type !';
       }
 
-      if(regId == null || regId == undefined){
+      if(validateRegion && (regId == null || regId == undefined)){
         return 'Invalid Region !';
       }
 
 
-      if(licId == null || licId == undefined || licId == ""){
-        return "Invalid Licensor";
-      }else if(licId == undefined && (licId.attr() == null || licId.attr() =="")){
-        return "Invalid Licensor";
+      if(validateLicensor && (licId == null || licId == undefined || licId == "")){
+        return "Invalid Licensor !";
+      }else if(validateLicensor && (licId == undefined && (licId.attr() == null || licId.attr() ==""))){
+        return "Invalid Licensor !";
       }
 
-      if(contGrpId == null || contGrpId == undefined || contGrpId == ""){
-        return "Invalid contentType";
-      }else if(contGrpId == undefined && contGrpId.attr() == null || contGrpId.attr() ==""){
-        return "Invalid contentType";
-      }else if(contGrpId.attr().length >1 ){
-        return "Please select single contentType";
+      if(validateContentType && (contGrpId == null || contGrpId == undefined || contGrpId == "")){
+        return "Invalid contentType !";
+      }else if(validateContentType && (contGrpId == undefined && contGrpId.attr() == null || contGrpId.attr() =="")){
+        return "Invalid contentType !";
+      }else if(validateContentType && (contGrpId.attr().length >1 )){
+        return "Please select single contentType !";
       }
      
      return "";
