@@ -60,13 +60,29 @@ var headerNavigation = Component.extend({
              $('#homemenu').show();
            }
            else changeMenu(mainmenu_txt);
+
+
       },
       '#dynamicmenu li a click':function(btn){
             if(btn.attr('id')!='show' && btn.attr('id')==undefined){
                $('#dynamicmenu li a').removeClass('submenuactive');
                 btn.addClass('submenuactive');
+                if($("#dropdown").is(':visible')){
+                  $("#dropdown").hide();
+                }
             }
-      }
+            
+      },
+      '{document}  click':function(el,e){ 
+        if ($(e.target).closest("#dynamicmenu").length === 0) {
+          $("#dropdown").hide();
+        }
+      },
+      '{document} keydown':function(el, ev){
+        if(ev.which==27 && $('#dropdown').is(':visible')){
+            $("#dropdown").hide();
+        }
+      },
   },
     helpers: {
         isActive: function(pageName) { console.log(pageName);
@@ -95,7 +111,7 @@ var changeMenu = function(mainmenu_txt){
                 $('#dynamicmenu, #dynhide').show();
                 $('#homemenu').hide();
                 $.each(el.submenu,function(i,el){
-                    if(i==0) addcls ='submenuactive';
+                    if(i==0) addcls ='';//submenuactive
                     else addcls ='';
                     temp+='<li {{isActive '+el.id+'}}><a  class="'+addcls+'" href="/'+el.id+'">'+el.value+'</a></li>';
                });
@@ -142,14 +158,14 @@ var  menu =[{
       {"value": "Pricing Model", "id": "pricing-models"}
    ]
 },{
-  "id": "analytics",
+  "id": "analytic",
   "value": "Analytics",
    "submenu": [
+      {"value": "Analytics", "id": "analytics"},
       {"value": "Payment Bundle Review", "id": "paymentbundlereview"},
       {"value": "Claim Review", "id": "claimreview"},
       {"value": "Global Revenue", "id": "globalrevenue"},
       /*{"value": "Monthly Billings Reconciliation", "id": "monthlybillingsreconciliation"},*/
-      {"value": "Unclaimed Stats Config", "id": "unclaimedstatsconfig"},
       {"value": "Unclaimed Summary", "id": "unclaimedsummary"},
    ]
 },{

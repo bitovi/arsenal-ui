@@ -55,3 +55,5 @@ fixture('GET /getPricingModels', '/models/fixtures/pricingmodel.json');
 fixture('GET /getPricingModelVersion', '/models/fixtures/pricingModelVersion.json');
 
 fixture('GET /getPricingMethods', '/models/fixtures/pricingMethods.json');
+
+fixture('GET /validateicsv', '/models/fixtures/validateicsv.json');

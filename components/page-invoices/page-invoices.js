@@ -8,6 +8,7 @@ import gridtemplate from './gridtemplate.stache!';
 import stache from 'can/view/stache/';
 
 import UserReq from 'utils/request/';
+import periodWidgetHelper from 'utils/periodWidgetHelpers';
 import StatusCodes from 'models/common/statuscodes/';
 import GetAllInvoices from 'models/getAllInvoices/';
 import Invoice from 'models/invoice/';
@@ -70,12 +71,12 @@ Grid.extend({
         title: 'Invoice Amount'
       },
       {
-        id: 'dueDate',
-        title: 'Due date'
-      },
-      {
         id: 'currency',
         title: 'Currency'
+      },
+      {
+        id: 'dueDate',
+        title: 'Due date'
       },
       {
         id: 'status',
@@ -213,6 +214,7 @@ var page = Component.extend({
     "{allInvoicesMap} change": function() {
         this.scope.appstate.attr("renderGlobalSearch",true);
         var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
+        var footerData = this.scope.attr().allInvoicesMap[0].footer;
         //console.log("dsada "+JSON.stringify(invoiceData));
         var gridData = {"data":[],"footer":[]};
         var currencyList = {};
@@ -291,33 +293,15 @@ var page = Component.extend({
             }
 
             var first = "true";
-            var ccyTemp;
-            for(var obj in currencyList){
-              ccyTemp = {};
-              ccyTemp["invId"] = "";
-              if(first == "true"){
-                ccyTemp["__isChild"] = false;
-                ccyTemp["entity"] = "Total in Regional Currency";
-                first = "false";
-              }
-              else {
-                ccyTemp["__isChild"] = true;
-                ccyTemp["entity"] = "";
-              }
-
-              ccyTemp["invoiceType"] = "";
-              ccyTemp["contentType"] = "";
-              ccyTemp["country"] = "";
-              ccyTemp["invoiceNum"] = "";
-              ccyTemp["invoiceAmt"] = CurrencyFormat(currencyList[obj]);
-              ccyTemp["dueDate"] = "";
+            var regCcyTemp = {"invId":"", "__isChild":false, "entity":"Total in Regional Currency", "invoiceType":"", "contentType":"", "country":"", "invoiceNum":"","invoiceAmt":"", "dueDate":"", "currency":"", "status":"", "bundleName":"", "comments":""}; 
+            regCcyTemp["invoiceAmt"] = CurrencyFormat(footerData["regAmtTot"]);
+            regCcyTemp["currency"] = footerData["regCcy"];
+            gridData["footer"].push(regCcyTemp);
+            for(var obj in footerData["amtCcyMap"]){
+              var ccyTemp = {"invId":"", "__isChild":true, "entity":"", "invoiceType":"", "contentType":"", "country":"", "invoiceNum":"","invoiceAmt":"", "dueDate":"", "currency":"", "status":"", "bundleName":"", "comments":""};
+              ccyTemp["invoiceAmt"] = CurrencyFormat(footerData["amtCcyMap"][obj]);
               ccyTemp["currency"] = obj;
-              ccyTemp["status"] = "";
-              ccyTemp["bundleName"] = "";
-              ccyTemp["comments"] = "";
-
               gridData["footer"].push(ccyTemp);
-
             }
 
           //console.log("gridData is "+JSON.stringify(gridData));
@@ -463,29 +447,30 @@ var page = Component.extend({
           var invoiceDelete = {"searchRequest":{}};
           invoiceDelete.searchRequest.ids = self.scope.checkedRows.attr();
           console.log("Delete request params are "+JSON.stringify(UserReq.formRequestDetails(invoiceDelete)));
-          Invoice.update(UserReq.formRequestDetails(invoiceDelete),"invoiceDelete",function(data){
-                  console.log("Delete response is "+JSON.stringify(data));
-          if(data["status"]=="SUCCESS"){
-             $("#messageDiv").html("<label class='successMessage'>"+data[0]["responseText"]+"</label>")
-             $("#messageDiv").show();
-             setTimeout(function(){
-                $("#messageDiv").hide();
-             },2000);
 
-             /* The below calls {scope.appstate} change event that gets the new data for grid*/
-             if(this.scope.appstate.attr('globalSearch')){
-                this.scope.appstate.attr('globalSearch', false);
-              }else{
-                this.scope.appstate.attr('globalSearch', true);
-              }
-          }
-          else{
-            $("#messageDiv").html("<label class='errorMessage'>Failed to delete invoice</label>");
-            $("#messageDiv").show();
-            setTimeout(function(){
-                $("#messageDiv").hide();
-            },2000)
-          }
+          Invoice.update(UserReq.formRequestDetails(invoiceDelete),"invoiceDelete",function(data){
+            console.log("Delete response is "+JSON.stringify(data));
+            if(data["status"]=="SUCCESS"){
+               $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
+               $("#messageDiv").show();
+               setTimeout(function(){
+                  $("#messageDiv").hide();
+                  self.scope.checkedRows.replace([]);
+                   /* The below calls {scope.appstate} change event that gets the new data for grid*/
+                   if(self.scope.appstate.attr('globalSearch')){
+                      self.scope.appstate.attr('globalSearch', false);
+                    }else{
+                      self.scope.appstate.attr('globalSearch', true);
+                    }
+                },2000);
+            }
+            else{
+              $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+              $("#messageDiv").show();
+              setTimeout(function(){
+                  $("#messageDiv").hide();
+              },2000)
+            }
 
           },function(xhr){
             console.error("Error while loading: bundleNames"+xhr);
@@ -586,14 +571,19 @@ var page = Component.extend({
         BundleNamesModel.create(UserReq.formRequestDetails(overAllBundleRequest),function(data){
             console.log("passing params is "+JSON.stringify(data));
             if(data["responseText"]=="SUCCESS"){
-             $("#messageDiv").html("<label class='successMessage'>Invoices added to payment bundle successfully</label>")
+             $("#messageDiv").html("<label class='successMessage'>"+data[0]["responseText"]+"</label>")
              $("#messageDiv").show();
              setTimeout(function(){
                 $("#messageDiv").hide();
              },2000);
             }
-            else
-              $("#messageDiv").html("<label class='errorMessage'>Failed to add invoices</label>")
+            else{
+              $("#messageDiv").html("<label class='errorMessage'>"+data[0]["responseText"]+"</label>")
+              $("#messageDiv").show();
+               setTimeout(function(){
+                  $("#messageDiv").hide();
+               },2000);
+            }
         },function(xhr){
           console.error("Error while loading: bundleNames"+xhr);
         });
@@ -619,12 +609,12 @@ var page = Component.extend({
               if(typeof(periodFrom)=="undefined")
                 invSearchRequest.searchRequest["periodFrom"] = "";
               else
-                invSearchRequest.searchRequest["periodFrom"] = periodFrom;
+                invSearchRequest.searchRequest["periodFrom"] = periodWidgetHelper.getFiscalPeriod(periodFrom);
 
               if(typeof(periodTo)=="undefined")
                 invSearchRequest.searchRequest["periodTo"] = "";
               else
-                invSearchRequest.searchRequest["periodTo"] = periodTo;
+                invSearchRequest.searchRequest["periodTo"] = periodWidgetHelper.getFiscalPeriod(periodTo);
 
               if(typeof(serTypeId)=="undefined")
                 invSearchRequest.searchRequest["serviceTypeId"] = "";

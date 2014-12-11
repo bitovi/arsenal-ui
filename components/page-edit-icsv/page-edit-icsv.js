@@ -11,7 +11,7 @@ import css_bootstrapValidator from 'bootstrapValidator.css!';
 import bootstrapValidator from 'bootstrapValidator';
 
 import template from './template.stache!';
-import styles from 'components/page-create-invoice/page-create-invoice.less!';
+import styles from './page-edit-icsv.less!';
 
 import UserReq from 'utils/request/';
 

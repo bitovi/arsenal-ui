@@ -57,7 +57,7 @@
 					    <label for="inputEmail3" class="col-sm-6 control-label">Licensor: </label>
 					    <div class="col-sm-4 requiredBar licensor">
 					      <select id="invoicelicensor" class="form-control" name="licensor" can-value="licensorStore">
-							       <option value="">Select</option>
+							       <option value="" selected>Select</option>
 							   		{{#each licensor}}
 						              <optgroup label="{{entityType}}">
 						                {{#each entities}}
@@ -135,7 +135,7 @@
 							 <div class="col-sm-6 ">
 						    	<label for="inputPassword3" class="col-sm-6 control-label">Received Date:</label>
 								    <div class="col-sm-6 recdate requiredBar">
-								      <date-picker name="receiveddate" placeholder=""></date-picker>
+								      <date-picker name="receiveddate" placeholder="{{currentDate}}"></date-picker>
 								     </div>
 							  </div>
 
@@ -151,7 +151,7 @@
 						    <div class="col-sm-6 invduedate">
 							     <label for="inputPassword3" class="col-sm-6 control-label">Invoice Due Date:</label>
 							    <div class="col-sm-6 invduedate requiredBarNone">
-							     <date-picker name="invoiceduedate" placeholder="{{currentDate}}"></date-picker>
+							     <date-picker name="invoiceduedate" placeholder=""></date-picker>
 							    </div>
 						    </div>
 				  		</div>
@@ -371,12 +371,14 @@
 					    <div class="col-sm-12" style="text-align:right;padding:15px;">
 
 						 {{#if showPBR}}
-							<label class="col-sm-3" for="inputCountry">Bundle Name:</label>
-					        <div class="col-sm-3 requiredBar">
-
-                <create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}"></create-pb>
-
-					        </div>
+						 		{{#if regionStore}}	
+									<label class="col-sm-3" for="inputCountry">Bundle Name:</label>
+					        			<div class="col-sm-3">
+						        			<create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}"></create-pb>
+										</div>
+				            	{{else}}
+				            		<div class="col-sm-6"></div>	
+				            	{{/if}}	
 					       {{else}}
 					        <label class="col-sm-2" for="inputCountry"></label>
 					        <div class="col-sm-4 ">
