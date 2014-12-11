@@ -2,15 +2,15 @@ import Model from 'can/model/';
 import RinsCommon from 'utils/';
 
 
-var ValidateIcsv = Model.extend({
+/*var ValidateIcsv = Model.extend({
 	findAll: 'GET /validateicsv'
-}, {});
+}, {});*/
 
-/* Below is service call. Commenting due to unavailability of service
+/* Below is service call. Commenting due to unavailability of service*/
  var ValidateIcsv = Model.extend({
  findOne: function(params){
 	  	return $.ajax({
-	  		url: RinsCommon.DOMAIN_SERVICE_URL +'icsv/validate',
+	  		url: RinsCommon.DOMAIN_SERVICE_URL +'invoice/icsv/validate',
 	   		type: 'POST',
 	   		data: JSON.stringify(params),
 	   		dataType:'json',
@@ -18,6 +18,6 @@ var ValidateIcsv = Model.extend({
 	   	});
  	}
 }, {});
-*/
+
 
 export default ValidateIcsv;

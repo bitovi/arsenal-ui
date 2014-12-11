@@ -35,7 +35,8 @@ var stateDefaults = {
   region: undefined,
   storeType: undefined,
   renderGlobalSearch:false,
-  globalSearch:undefined
+  globalSearch:undefined,
+  userInfo:undefined
 };
 
 

@@ -1,0 +1,311 @@
+import _ from 'lodash';
+import Component from 'can/component/';
+import template from './template.stache!';
+import styles from './page-recon.less!';
+import Stats from 'models/refreshstats/refreshstats';
+import ReconStats from 'components/recon-stats/';
+import RinsCommon from 'utils/';
+import UserReq from 'utils/request/';
+import reconGrid from  'components/recon-grid/';
+import ingestedColumns from './column-sets/ingest-columns';
+import detailsColumns from './column-sets/details-columns';
+import Recon from 'models/recon/';
+
+
+//Navigation bar definitions
+var tabNameObj = {
+    ingest:{
+      name:"Ingested",
+      type: "INGESTED"
+    },
+    incoming:{
+      name:"Incoming Details",
+      type: "INCOMING"
+    }
+}
+
+var page = Component.extend({
+  tag: 'page-recon',
+  template: template,
+  scope: {
+    appstate:undefined,
+    tabSelected :tabNameObj.ingest.name,
+    tabName:tabNameObj,
+    ingestGridColumns: ingestedColumns,
+    detailGridColumns: detailsColumns,
+    ingestList:{
+      headerRows: new can.List(),
+      footerRows: new can.List()
+    },
+    incomingDetails: {
+      headerRows: new can.List(),
+      footerRows: new can.List()
+    },
+    ingestCcidSelected:[],
+    incomingCcidSelected:[],
+    size_ingestCcidSelected:0,
+    size_incomingCcidSelected:0,
+
+    //bottomgrid
+    refreshStatsReq:undefined,
+    isBottomGridRefresh:true,
+    isGlobalSearch:undefined
+
+  },
+  helpers: {
+    isIngestCcidsSelected:function(ref){
+      //if the size of the list is greater than 0, enables the Reject button
+      return ( this.attr("size_ingestCcidSelected") == ref ? 'disabled' : '' ) ;
+    },
+    isIncomingCcidsSelected:function(ref){
+      //if the size of the list is greater than 0, enables the Reject button
+      return ( this.attr("size_incomingCcidSelected") == ref ? 'disabled' : '' ) ;
+    },
+    isTabSelectedAs:function(tabName){
+      return 'style="display:' + ( this.attr("tabSelected") == tabName  ? 'block' : 'none') + '"';
+    }
+  },
+  init: function(){
+    this.scope.appstate.attr("renderGlobalSearch",true);
+    this.scope.attr("isGlobalSearch",this.scope.appstate.attr("globalSearch"));
+    fetchReconIngest(this.scope);
+    fetchReconDetails(this.scope);
+
+  },
+  events:{
+    'shown.bs.tab': function(el, ev) {
+      this.scope.attr("tabSelected", $('.nav-tabs .active').text());
+      this.scope.appstate.attr("renderGlobalSearch",true);
+    },
+    ".downloadLink.badLines click": function(item, el, ev){
+      var self=this.scope;
+      var row = item.closest('tr').data('row').row;
+      //TODO - Call Download
+    },
+    ".downloadLink.fileName click": function(item, el, ev){
+      var self=this.scope;
+      var row = item.closest('tr').data('row').row;
+
+      //TODO - Call Download
+    },
+    ".downloadLink.liDispAmt click": function(item, el, ev){
+      var self=this.scope;
+      var row = item.closest('tr').data('row').row;
+      //TODO - Call Download
+    },
+    '.toggle :checkbox change': function(el, ev) {
+        refreshChekboxSelection(el,this.scope);
+    },
+    '.btn-Ingest click': function() {
+      processRejectIngestRequest(this.scope,"ingest");
+    },
+    '.btn-ingested-reject click': function() {
+
+      $('#rejectModal').modal({
+        "backdrop" : "static"
+      });
+
+    },
+    '.btn-incoming-reject click': function() {
+
+      $('#rejectModal').modal({
+        "backdrop" : "static"
+      });
+
+    },
+    '.btn-holesReport click': function() {
+      this.scope.appstate.attr('page','dashboard');
+    },
+    '.btn-OverRep click': function() {
+        window.open(RinsCommon.RINS_OLD_URL);
+    },
+    '.btn-confirm-cancel click': function(){
+      //nothing to do
+    },
+    '.btn-confirm-ok click': function(){
+      $('#rejectModal').modal('hide');
+      processRejectIngestRequest(this.scope,"reject");
+    },
+    '{scope.appstate} change': function() {
+      if(this.scope.isGlobalSearch != this.scope.appstate.attr('globalSearch')){
+        this.scope.attr("isGlobalSearch",this.scope.appstate.attr("globalSearch"));
+        fetchReconIngest(this.scope);
+      }
+    }
+  }
+});
+
+
+var processRejectIngestRequest = function(scope,requestType){
+    var ccidList ;
+    var type ;
+    var ccidSelected = [];
+
+    if(scope.tabSelected == scope.tabName.ingest.attr("name")){
+      ccidList = scope.attr("ingestCcidSelected");
+      type =  scope.tabName.ingest.attr("type");
+    }else{
+      ccidList = scope.attr("incomingCcidSelected");
+      type =  scope.tabName.incoming.attr("type");
+    }
+
+    can.each(ccidList,
+      function( value, index ) {
+        ccidSelected.push(value);
+      }
+    );
+
+    if(requestType == "reject"){
+
+        var rejectSearchRequestObj =   {
+          "searchRequest": {
+          "type" : type,
+          "ids" : ccidSelected
+          }
+        }
+        console.log(JSON.stringify(UserReq.formRequestDetails(rejectSearchRequestObj)));
+
+        Recon.reject(UserReq.formRequestDetails(rejectSearchRequestObj)).done(function(data){
+          if(data.responseCode == "0000"){
+            $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
+            $("#messageDiv").show();
+            setTimeout(function(){
+              $("#messageDiv").hide();
+            },3000);
+          }else{
+            //error text has to be shared. TODO - not sure how service responds to it
+            console.log("Error") ;
+          }
+        });
+
+    }else if(requestType == "ingest"){
+
+
+      var rejectSearchRequestObj =   {
+        "searchRequest": {
+          "ids" : ccidSelected
+        }
+      }
+      console.log(JSON.stringify(UserReq.formRequestDetails(rejectSearchRequestObj)));
+
+      Recon.ingest(UserReq.formRequestDetails(rejectSearchRequestObj)).done(function(data){
+        if(data.responseCode == "0000"){
+          $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
+          $("#messageDiv").show();
+          setTimeout(function(){
+            $("#messageDiv").hide();
+          },3000);
+        }else{
+          //error text has to be shared. TODO - not sure how service responds to it
+          console.log("Error") ;
+        }
+      });
+
+    }
+}
+
+
+/**/
+var fetchReconIngest = function(scope){
+
+  var searchRequestObj = {
+    "searchRequest":{
+      type:"INGESTED"
+    }
+  };
+
+  Recon.findOne(UserReq.formRequestDetails(searchRequestObj),function(data){
+    scope.ingestList.headerRows.replace(data.reconStatsDetails);
+
+    var footerLine= {
+      "__isChild": true,
+      "ccy":"EUR",
+      "pubfee":data.summary.totalPubFee,
+      "reconAmt":data.summary.totalRecon,
+      "liDispAmt":data.summary.totalLi,
+      "copConAmt":data.summary.totalUnMatched,
+      "unMatchedAmt":data.summary.totalUnMatched,
+      "badLines":data.summary.totalBadLines,
+      "ccidId":"",
+      "entityName":"",
+      "countryId":"",
+      "contType":"",
+      "fiscalPeriod":"",
+      "ingstdDate":"",
+      "invFileName":"",
+      "status":"",
+      "isFooterRow":true
+    };
+
+    scope.ingestList.footerRows.replace(footerLine);
+
+
+  },function(xhr){
+    console.error("Error while loading: fetchReconIngest"+xhr);
+  });
+}
+
+var fetchReconDetails = function(scope){
+
+  var searchRequestObj = {
+    "searchRequest":{
+      type:"INCOMING"
+    }
+  };
+
+  Recon.findOne(UserReq.formRequestDetails(searchRequestObj),function(data){
+    scope.incomingDetails.headerRows.replace(data.reconStatsDetails);
+    var footerLine= {
+      "__isChild": true,
+      "ccy":"EUR",
+      "pubfee":data.summary.totalPubFee,
+      "reconAmt":data.summary.totalRecon,
+      "liDispAmt":data.summary.totalLi,
+      "copConAmt":data.summary.totalUnMatched,
+      "unMatchedAmt":data.summary.totalUnMatched,
+      "badLines":data.summary.totalBadLines,
+      "ccidId":"",
+      "entityName":"",
+      "countryId":"",
+      "contType":"",
+      "fiscalPeriod":"",
+      "rcvdDate":"",
+      "invFileName":"",
+      "status":"",
+      "isFooterRow":true
+    };
+    scope.incomingDetails.footerRows.replace(footerLine);
+  },function(xhr){
+    console.error("Error while loading: fetchReconDetails"+xhr);
+  });
+}
+
+
+
+
+
+var refreshChekboxSelection = function(el,scope){
+  var row = el.closest('tr').data('row').row;
+
+  if(scope.tabSelected == scope.tabName.ingest.attr("name")){
+    if(el[0].checked) {
+      scope.ingestCcidSelected.push(row.ccidId);
+    } else {
+      var index = _.indexOf(scope.ingestCcidSelected, row.ccidId);
+      (index > -1) && scope.ingestCcidSelected.splice(index, 1);
+    }
+    scope.attr("size_ingestCcidSelected" ,_.size(scope.attr("ingestCcidSelected")));
+  }else{
+
+    if(el[0].checked) {
+      scope.incomingCcidSelected.push(row.ccidId);
+    } else {
+      var index = _.indexOf(scope.incomingCcidSelected, row.ccidId);
+      (index > -1) && scope.incomingCcidSelected.splice(index, 1);
+     }
+    scope.attr("size_incomingCcidSelected" ,_.size(scope.attr("incomingCcidSelected")));
+
+  }
+}
+
+export default page;

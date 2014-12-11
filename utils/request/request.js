@@ -24,9 +24,13 @@ var requestHelper = {
 
     var searchRequestObj = {
       "searchRequest":{
-        periodFrom:periodWidgetHelper.getFiscalPeriod(appstate.periodFrom),
-        periodTo:periodWidgetHelper.getFiscalPeriod(appstate.periodTo),
-        periodType:appstate.periodType
+        periodFrom:appstate.periodFrom,
+        periodTo:appstate.periodTo,
+        periodType:appstate.periodType,
+        entityId:licId,
+        contentGrpId:contGrpId,
+        countryId:countryId,
+        serviceTypeId:serTypeId
       }
     };
 

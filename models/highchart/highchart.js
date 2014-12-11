@@ -1,5 +1,5 @@
 import Model from 'can/model/';
-import RinsCommon from 'models/rinsCommon/';
+import RinsCommon from 'utils/';
 
 var highchart = Model.extend({
 findOne: function(params){

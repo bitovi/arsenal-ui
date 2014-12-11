@@ -22,10 +22,11 @@
   </tbody>
   <tfoot>
     {{#footerRows}}
-    <tr class="{{rowClass row}} {{#if isOpen}}open{{/if}} {{#if isChild}}child{{/if}} {{#if isVisible}}visible{{/if}}" {{data 'row'}}>
+    <tr class="open" {{data 'row'}}>
       {{#filteredColumns}}
       <td class="{{columnClass column}} {{cellClass row column}}" {{data 'column'}}>{{cellContents row column}}</td>
       {{/filteredColumns}}
     </tr>
-    {{/footerRows}}    
+    {{/footerRows}}
+    </tfoot>
 </table>

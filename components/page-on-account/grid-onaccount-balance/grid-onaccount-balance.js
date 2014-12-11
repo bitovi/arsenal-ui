@@ -35,7 +35,8 @@ var OnAccountBalance = Grid.extend({
         title: 'Content Type'
       }
     ],
-    request:{}
+    request:{},
+    emptyrows:"@"
   },
   init: function(){
 
@@ -80,8 +81,8 @@ var OnAccountBalance = Grid.extend({
           genObj.searchRequest["contentGrpId"]=self.scope.request.searchRequest.contentGrpId.attr();
           genObj.searchRequest["regionId"]=self.scope.request.searchRequest.regionId;
           genObj.searchRequest["periodType"]="Q";
-          genObj.searchRequest["periodFrom"]=utils.getPeriodForQuarter(self.scope.request.searchRequest.periodFrom);
-          genObj.searchRequest["periodTo"]=utils.getPeriodForQuarter(self.scope.request.searchRequest.periodTo);
+          genObj.searchRequest["periodFrom"]=self.scope.request.searchRequest.periodFrom;
+          genObj.searchRequest["periodTo"]=self.scope.request.searchRequest.periodTo;
      
      
          // onAccountBalance.findOne(UserReq.formRequestDetails(genObj)).then(function(rows) {
@@ -102,6 +103,7 @@ var OnAccountBalance = Grid.extend({
                         setTimeout(function(){
                             $("#messageDiv").hide();
                         },2000)
+                        self.scope.attr('emptyrows',true);
                       }
                 }, function(xhr) {
                       console.error("Error while loading: onAccount balance Details"+xhr);

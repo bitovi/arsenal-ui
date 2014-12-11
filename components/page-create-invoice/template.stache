@@ -76,8 +76,9 @@
 						 <div class="col-sm-6">
 							    <label for="inputPassword3" class="col-sm-6 control-label">Currency:</label>
 							    <div class="col-sm-4 requiredBar currency">
+							     
 							      <select id="currency" class="form-control" name="currency" can-value="currencyStore">
-									        
+									        <option value="">Select</option>
 									       {{#each currency}}
 									       		<option value="{{id}}">{{value}}</option>
 									        {{/each}}
@@ -217,9 +218,8 @@
 							       					{{/each}}
 						       					{{else}}
 							       					{{#each contentType}}
-								        				<option serviceTypeId="{{serviceTypeId}}" value="{{contentGroupId}}">{{contentGroupName}}
-								        				</option>
-							       					{{/each}}
+								        				<option serviceTypeId="{{serviceTypeId}}" value="{{contentGroupId}}">{{contentGroupName}}</option>
+								        			{{/each}}
 						       					{{/if}}
 						        		</select>
 						        		
@@ -228,7 +228,7 @@
 						            <td class="form-group">
 						            	<div class="breakdownPeriod calendarcls">
 						            		<input type='text' id="inputMonth0" name="inputMonth[]" class="updateperoid form-control inputMonth"/> 
-						            		<period-calendar appstate="{appstate}"></period-calendar>
+						            		<period-calendar selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
 							        	</div>
 
 
