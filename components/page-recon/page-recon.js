@@ -16,6 +16,7 @@ import css_tokeninput from 'tokeninput.css!';
 import css_tokeninput_theme from 'tokeninput_theme.css!';
 
 import commonUtils from 'utils/commonUtils';
+import FileManager from 'models/common/fileManager/';
 
 
 //Navigation bar definitions
@@ -137,6 +138,18 @@ var page = Component.extend({
     ".downloadLink.fileName click": function(item, el, ev){
       var self=this.scope;
       var row = item.closest('tr').data('row').row;
+
+      var request = {
+        "files":[
+          {
+            "fileName":row.invFileName,
+            "fileId":row.invFileId,
+            "boundType":row.invFileType
+          }
+        ]
+      }
+      console.log(JSON.stringify(request));
+      FileManager.downloadFile(request);
 
       //TODO - Call Download
     },
