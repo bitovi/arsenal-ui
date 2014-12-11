@@ -279,7 +279,7 @@ var displayErrorMessage = function(message,log){
 var fetchReconIngest = function(scope){
 
   var searchRequestObj = UserReq.formGlobalRequest(scope.appstate);
-  searchRequestObj.searchRequest["type"] = "INGESTED";
+  searchRequestObj.searchRequest["type"] =  scope.tabName.ingest.attr("type");
   //TODO During pagination / scrolling, the below values has tobe chnaged.
   searchRequestObj.searchRequest["limit"] = "10";
   searchRequestObj.searchRequest["offset"] = "0";
@@ -288,7 +288,7 @@ var fetchReconIngest = function(scope){
 
 
   Recon.findOne(UserReq.formRequestDetails(searchRequestObj),function(data){
-    if(data.status = "FAILURE"){
+    if(data.status == "FAILURE"){
       displayErrorMessage(data.responseText,"Failed to load the Recon Ingest Tab:");
     }else  {
       scope.ingestList.headerRows.replace(data.reconStatsDetails);
@@ -326,7 +326,7 @@ var fetchReconIngest = function(scope){
 var fetchReconDetails = function(scope){
 
   var searchRequestObj = UserReq.formGlobalRequest(scope.appstate);
-  searchRequestObj.searchRequest["type"] = "INCOMING";
+  searchRequestObj.searchRequest["type"] = scope.tabName.incoming.attr("type");;
   //TODO During pagination / scrolling, the below values has tobe chnaged.
   searchRequestObj.searchRequest["limit"] = "10";
   searchRequestObj.searchRequest["offset"] = "0";
@@ -335,7 +335,7 @@ var fetchReconDetails = function(scope){
 
 
   Recon.findOne(UserReq.formRequestDetails(searchRequestObj),function(data){
-    if(data.status = "FAILURE"){
+    if(data.status == "FAILURE"){
       displayErrorMessage(data.responseText,"Failed to load the Recondetails:");
     }else  {
       scope.incomingDetails.headerRows.replace(data.reconStatsDetails);
