@@ -8,7 +8,6 @@ import gridtemplate from './gridtemplate.stache!';
 import stache from 'can/view/stache/';
 
 import UserReq from 'utils/request/';
-import periodWidgetHelper from 'utils/periodWidgetHelpers';
 import StatusCodes from 'models/common/statuscodes/';
 import GetAllInvoices from 'models/getAllInvoices/';
 import Invoice from 'models/invoice/';
@@ -293,7 +292,7 @@ var page = Component.extend({
             }
 
             var first = "true";
-            var regCcyTemp = {"invId":"", "__isChild":false, "entity":"Total in Regional Currency", "invoiceType":"", "contentType":"", "country":"", "invoiceNum":"","invoiceAmt":"", "dueDate":"", "currency":"", "status":"", "bundleName":"", "comments":""}; 
+            var regCcyTemp = {"invId":"", "__isChild":false, "entity":"Total in Regional Currency", "invoiceType":"", "contentType":"", "country":"", "invoiceNum":"","invoiceAmt":"", "dueDate":"", "currency":"", "status":"", "bundleName":"", "comments":""};
             regCcyTemp["invoiceAmt"] = CurrencyFormat(footerData["regAmtTot"]);
             regCcyTemp["currency"] = footerData["regCcy"];
             gridData["footer"].push(regCcyTemp);
@@ -609,12 +608,12 @@ var page = Component.extend({
               if(typeof(periodFrom)=="undefined")
                 invSearchRequest.searchRequest["periodFrom"] = "";
               else
-                invSearchRequest.searchRequest["periodFrom"] = periodWidgetHelper.getFiscalPeriod(periodFrom);
+                invSearchRequest.searchRequest["periodFrom"] = periodFrom;
 
               if(typeof(periodTo)=="undefined")
                 invSearchRequest.searchRequest["periodTo"] = "";
               else
-                invSearchRequest.searchRequest["periodTo"] = periodWidgetHelper.getFiscalPeriod(periodTo);
+                invSearchRequest.searchRequest["periodTo"] = periodTo;
 
               if(typeof(serTypeId)=="undefined")
                 invSearchRequest.searchRequest["serviceTypeId"] = "";
