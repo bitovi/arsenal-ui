@@ -78,9 +78,9 @@ var GlobalParameterBar = Component.extend({
       ]).then(function(values) {
         //console.log(JSON.stringify(values[0][0]["data"].attr()));
         if (values[0].length === 0 && values[1].length === 0) {
-           $('.no-data').show()
+           $('.no-data').css("visibility","visible");
          } else {
-           $('.no-data').hide();
+           $('.no-data').css("visibility","hidden");
          }
         self.scope.countries.replace(values[0]);
         self.scope.licensors.replace(values[1]);
@@ -197,12 +197,62 @@ var showErrorMsg = function(periodFrom,periodTo,whichcomp){
        var showFlg=false;
        var from = periodFrom,to =  periodTo;
        if(from!=undefined &&  to!=undefined){
-            from = from.slice(-2);
-            to = to.slice(-2);
-           if(parseInt(periodFrom.substr(0,4)) >  parseInt(periodTo.substr(0,4)))showFlg=true;
-           if(parseInt(from) > parseInt(to)) showFlg=true;
+            
+          var periodObj = { "P01":"09", "P02":"10", "P03":"11", "P04":"00", "P05":"01", "P06":"02", "P07":"03", "P08":"04", "P09":"05", "P10":"06", "P11":"07", "P12":"08" };
+         
+          var fromYear = parseInt(from.slice(-2));
+          var toYear = parseInt(to.slice(-2));
+
+          var yearFrom = "20" + fromYear;
+          var yearTo = "20" + toYear;
+
+          var monthFrom = periodFrom.substr(0, 3);
+          var monthTo = periodTo.substr(0, 3);
+
+          var fromDate = "", toDate = "";
+
+          if (periodObj.hasOwnProperty(monthFrom)) {
+            fromDate = yearFrom + ", " + periodObj[monthFrom] + ", 01";
+          }
+
+          if (periodObj.hasOwnProperty(monthTo)) {
+            toDate = yearTo + ", " + periodObj[monthTo] + ", 01";
+          }
+
+          var mnthDiff = monthDiff(new Date(fromDate), new Date(toDate));
+   
+          //Condition to check the year
+          if ( toYear < fromYear) showFlg = true;
+
+          //Condition to check the month (to be in range of 12 )
+          if (mnthDiff > 11) showFlg = true;
+
+          //Condition to check the quaters(to be in range of 12 )
+          var quarterFrom = periodFrom.substr(0,2); //Q1, Q2, Q3, Q4
+          var quarterTo = periodTo.substr(0,2); //Q1, Q2, Q3, Q4
+
+          if( (quarterFrom === quarterTo) && (fromYear !== toYear) ) showFlg = true; //condition: Q1-2014 != Q1-2015
+
+          if (quarterFrom === "Q1" && (fromYear !== toYear)) showFlg = true; //condition: from: Q1 && 2014 != 2015
+
+          var qFrom = parseInt(quarterFrom.slice(-1));
+          var qTo = parseInt(quarterTo.slice(-1));
+
+          var qArray = [2,3,4];
+          
+          if ( $.inArray(qFrom, qArray) && ((toYear - fromYear) == 1) && (qTo === (qFrom - 1)) ) showFlg = true;//condition: fromQ (2,3,4) && 2015 - 2014 === 1 && toQ === (fromQ - 1)
+
         }
-        if(showFlg==true){ $('.period-invalid').show(); return false;}else {showFlg=false; $('.period-invalid').hide();}
+          if(showFlg==true){ $('.period-invalid').css("visibility","visible"); return false;}else {showFlg=false; $('.period-invalid').css("visibility","hidden");}
 }
+
+function monthDiff(d1, d2) {
+    var months;
+    months = (d2.getFullYear() - d1.getFullYear()) * 12;
+    months -= d1.getMonth() + 1;
+    months += d2.getMonth();
+    return months <= 0 ? 0 : months;
+}
+
 
 export default GlobalParameterBar;
