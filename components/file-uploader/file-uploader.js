@@ -87,9 +87,12 @@
                            var fileObj = {};
                             FileUpLoader.create(dataToSend,function(data) {
                                fileObj = {filepath:data.filePropeties[0].filePath, filename:data.filePropeties[0].fileName};
-                               
+
                                var response = data.filePropeties[0].status; 
                                  successeve(response);
+                                 if(data.responseText!=''){ 
+                                    $('#showSuccess').empty().html(data.responseText);
+                                 }
                                  },function(xhr) {
                                 console.error("Error while loading:"+xhr);
                                 }).then(function(values){

@@ -8,6 +8,7 @@ import gridtemplate from './gridtemplate.stache!';
 import stache from 'can/view/stache/';
 
 import UserReq from 'utils/request/';
+import periodWidgetHelper from 'utils/periodWidgetHelpers';
 import StatusCodes from 'models/common/statuscodes/';
 import GetAllInvoices from 'models/getAllInvoices/';
 import Invoice from 'models/invoice/';
@@ -70,12 +71,12 @@ Grid.extend({
         title: 'Invoice Amount'
       },
       {
-        id: 'dueDate',
-        title: 'Due date'
-      },
-      {
         id: 'currency',
         title: 'Currency'
+      },
+      {
+        id: 'dueDate',
+        title: 'Due date'
       },
       {
         id: 'status',
@@ -149,9 +150,9 @@ var page = Component.extend({
             bundleNamesRequest.bundleSearch["region"] = "";
           else
             bundleNamesRequest.bundleSearch["region"] = regId['value'];
-            
+
           bundleNamesRequest.bundleSearch["type"] = "invoice";
-          
+
 
           //console.log("GetBundleNamesRequest is "+JSON.stringify(bundleNamesRequest));
 
@@ -188,7 +189,7 @@ var page = Component.extend({
             }
         });
 
-        /* Bundle Names is selectable only when any row is selected */ 
+        /* Bundle Names is selectable only when any row is selected */
         $('#paymentBundleNames').prop('disabled', 'disabled');
 
          /* The below code calls {scope.appstate} change event that gets the new data for grid*/
@@ -213,6 +214,7 @@ var page = Component.extend({
     "{allInvoicesMap} change": function() {
         this.scope.appstate.attr("renderGlobalSearch",true);
         var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
+        var footerData = this.scope.attr().allInvoicesMap[0].footer;
         //console.log("dsada "+JSON.stringify(invoiceData));
         var gridData = {"data":[],"footer":[]};
         var currencyList = {};
@@ -291,33 +293,15 @@ var page = Component.extend({
             }
 
             var first = "true";
-            var ccyTemp;
-            for(var obj in currencyList){
-              ccyTemp = {};
-              ccyTemp["invId"] = "";
-              if(first == "true"){
-                ccyTemp["__isChild"] = false;
-                ccyTemp["entity"] = "Total in Regional Currency";
-                first = "false";
-              }
-              else {
-                ccyTemp["__isChild"] = true;
-                ccyTemp["entity"] = "";
-              }
-
-              ccyTemp["invoiceType"] = "";
-              ccyTemp["contentType"] = "";
-              ccyTemp["country"] = "";
-              ccyTemp["invoiceNum"] = "";
-              ccyTemp["invoiceAmt"] = CurrencyFormat(currencyList[obj]);
-              ccyTemp["dueDate"] = "";
+            var regCcyTemp = {"invId":"", "__isChild":false, "entity":"Total in Regional Currency", "invoiceType":"", "contentType":"", "country":"", "invoiceNum":"","invoiceAmt":"", "dueDate":"", "currency":"", "status":"", "bundleName":"", "comments":""}; 
+            regCcyTemp["invoiceAmt"] = CurrencyFormat(footerData["regAmtTot"]);
+            regCcyTemp["currency"] = footerData["regCcy"];
+            gridData["footer"].push(regCcyTemp);
+            for(var obj in footerData["amtCcyMap"]){
+              var ccyTemp = {"invId":"", "__isChild":true, "entity":"", "invoiceType":"", "contentType":"", "country":"", "invoiceNum":"","invoiceAmt":"", "dueDate":"", "currency":"", "status":"", "bundleName":"", "comments":""};
+              ccyTemp["invoiceAmt"] = CurrencyFormat(footerData["amtCcyMap"][obj]);
               ccyTemp["currency"] = obj;
-              ccyTemp["status"] = "";
-              ccyTemp["bundleName"] = "";
-              ccyTemp["comments"] = "";
-
               gridData["footer"].push(ccyTemp);
-
             }
 
           //console.log("gridData is "+JSON.stringify(gridData));
@@ -337,7 +321,7 @@ var page = Component.extend({
     ".rn-grid>tbody>tr td dblclick": function(item, el, ev){
           //var invoiceid = el.closest('tr').data('row').row.id;
           var self=this;
-          var row = item.closest('tr').data('row').row; 
+          var row = item.closest('tr').data('row').row;
           var invoiceid = row.invId;
           var status = row.status;
           var invoiceno = row.invoiceNum;
@@ -366,16 +350,16 @@ var page = Component.extend({
               self.scope.appstate.attr('globalSearch', false);
             }else{
               self.scope.appstate.attr('globalSearch', true);
-            }  
-    
+            }
+
     },
     '.invId :checkbox change': function(item, el, ev) {
       var self = this;
       var val = parseInt($(item[0]).attr("value"));
-      var row = item.closest('tr').data('row').row;       
+      var row = item.closest('tr').data('row').row;
 
       if($(item[0]).is(":checked")){
-          row.attr('__isChecked', true);   
+          row.attr('__isChecked', true);
           self.scope.attr('checkedRows').push(val);
 
       } else {
@@ -397,18 +381,18 @@ var page = Component.extend({
               $("#btnAttach").removeAttr("disabled");
               $("#btnSubmit").removeAttr("disabled");
               $("#paymentBundleNames").removeAttr("disabled");
-            
-              //self.scope.attr('disableBundleName', "no");  
+
+              //self.scope.attr('disableBundleName', "no");
           }
           else{
-            
+
               $("#btnDelete").attr("disabled","disabled");
               $("#btnAttach").attr("disabled","disabled");
               $("#btnSubmit").attr("disabled","disabled");
               $("#paymentBundleNames").attr("disabled","disabled");
-              
+
               //self.scope.attr('disableBundleName', "yes");
-              
+
           }
 
           var flag=true;
@@ -495,7 +479,7 @@ var page = Component.extend({
           var self = this;
           var pbval = $("#paymentBundleNames").val();
           if(pbval=="createB"){
-              
+
               var regId = self.scope.appstate.attr('region');
               var invoiceData = self.scope.attr().allInvoicesMap[0].invoices;
               //console.log(JSON.stringify(invoiceData));
@@ -619,12 +603,12 @@ var page = Component.extend({
               if(typeof(periodFrom)=="undefined")
                 invSearchRequest.searchRequest["periodFrom"] = "";
               else
-                invSearchRequest.searchRequest["periodFrom"] = periodFrom;
+                invSearchRequest.searchRequest["periodFrom"] = periodWidgetHelper.getFiscalPeriod(periodFrom);
 
               if(typeof(periodTo)=="undefined")
                 invSearchRequest.searchRequest["periodTo"] = "";
               else
-                invSearchRequest.searchRequest["periodTo"] = periodTo;
+                invSearchRequest.searchRequest["periodTo"] = periodWidgetHelper.getFiscalPeriod(periodTo);
 
               if(typeof(serTypeId)=="undefined")
                 invSearchRequest.searchRequest["serviceTypeId"] = "";
@@ -635,7 +619,7 @@ var page = Component.extend({
                 invSearchRequest.searchRequest["regionId"] = "";
               else
                 invSearchRequest.searchRequest["regionId"] = regId['id'];
-              
+
               invSearchRequest.searchRequest["country"] = [];
               if(typeof(countryId)!="undefined")
                 //invSearchRequest.searchRequest["country"].push(countryId['value']);
@@ -654,7 +638,7 @@ var page = Component.extend({
               invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
               invSearchRequest.searchRequest["offset"] = "0";
               invSearchRequest.searchRequest["limit"] = "10";
-              
+
               var filterData = self.scope.tokenInput.attr();
               var newFilterData = [];
               if(filterData.length>0){

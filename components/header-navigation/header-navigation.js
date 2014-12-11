@@ -2,7 +2,7 @@ import Component from 'can/component/';
 
 import template from './template.stache!';
 import styles from './header-navigation.less!';
-
+import roles from 'models/roles/';
 import GlobalParameterBar from 'components/global-parameter-bar/';
 
 
@@ -11,8 +11,35 @@ var headerNavigation = Component.extend({
     template: template,
     scope: {
         appstate: undefined,// this gets passed in
-        show:true
+        show:true,
+        roles: [],
+        allowedScreenId : []
     },
+    init: function() {
+      var self = this;
+
+      Promise.all([
+        roles.findAll()
+
+        ]).then(function(values) {
+
+          var role = {permissions:values[0]};
+
+          self.scope.appstate.userInfo = role;
+
+          console.log("role="+ role);
+
+          self.scope.roles.replace(values[0]);
+          var screenId= [] ;
+          for(var i = 0, size = role.permissions.length; i < size ; i++)
+            {
+
+              screenId.push(role.permissions[i].screenId) ;
+
+            }
+            self.scope.attr("allowedScreenId",screenId );
+          });
+        },
     events:{
      '#homemenu li a click':function(btn){
         var mainmenu_txt = btn.text();
@@ -33,13 +60,29 @@ var headerNavigation = Component.extend({
              $('#homemenu').show();
            }
            else changeMenu(mainmenu_txt);
+
+
       },
       '#dynamicmenu li a click':function(btn){
             if(btn.attr('id')!='show' && btn.attr('id')==undefined){
                $('#dynamicmenu li a').removeClass('submenuactive');
                 btn.addClass('submenuactive');
+                if($("#dropdown").is(':visible')){
+                  $("#dropdown").hide();
+                }
             }
-      }
+            
+      },
+      '{document}  click':function(el,e){ 
+        if ($(e.target).closest("#dynamicmenu").length === 0) {
+          $("#dropdown").hide();
+        }
+      },
+      '{document} keydown':function(el, ev){
+        if(ev.which==27 && $('#dropdown').is(':visible')){
+            $("#dropdown").hide();
+        }
+      },
   },
     helpers: {
         isActive: function(pageName) { console.log(pageName);
@@ -49,6 +92,13 @@ var headerNavigation = Component.extend({
         renderGlobalSearch: function(){
             //Used for appear/di-appear of the Global search, whic is based appstate.renderGlobalSearch
             return 'style="' + (this.appstate.attr('renderGlobalSearch') ? '' : 'display:none') + '"'
+        },
+        isScreenEnabled:function(screenId){
+          var index = _.indexOf(this.attr("allowedScreenId"), screenId);
+          var isEnable = 'style="display:' + ( index == -1 ? 'none' : 'block') + '"';
+
+          return isEnable
+
         }
     }
 });
@@ -61,7 +111,7 @@ var changeMenu = function(mainmenu_txt){
                 $('#dynamicmenu, #dynhide').show();
                 $('#homemenu').hide();
                 $.each(el.submenu,function(i,el){
-                    if(i==0) addcls ='submenuactive';
+                    if(i==0) addcls ='';//submenuactive
                     else addcls ='';
                     temp+='<li {{isActive '+el.id+'}}><a  class="'+addcls+'" href="/'+el.id+'">'+el.value+'</a></li>';
                });
@@ -93,7 +143,7 @@ var  menu =[{
       {"value": "Invoice Entry", "id": "create-invoice"},
       {"value": "iCSV Entry", "id": "icsv"},
       {"value": "Search Invoice", "id": "invoices"},
-      {"value": "Recon Stats", "id": "reconstats"},
+      {"value": "Recon Stats", "id": "recon"},
       {"value": "Recon Stats Other", "id": "reconOther"},
       {"value": "On Account", "id": "on-account"}
    ]

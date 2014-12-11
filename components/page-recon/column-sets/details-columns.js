@@ -1,0 +1,75 @@
+import stache from 'can/view/stache/';
+import formats from 'utils/formats';
+
+export default [
+{
+  id: 'toggle',
+  title: '',
+  contents: function(row) {
+    if(!row.isFooterRow){
+      return row.ccidId == "Not Ingested" ? "" : can.stache('<input type="checkbox"/>')();
+    }
+  }
+},
+{
+  id: 'entityName',
+  title: 'Licensor',
+  sortable: true
+},
+{
+  id: 'countryId',
+  title: 'Country',
+  sortable: true
+},
+{
+  id: 'ccy',
+  title: 'CCY',
+  sortable: true
+},
+{
+  id: 'contType',
+  title: 'Content Type',
+  sortable: true
+},
+{
+  id: 'pubfee',
+  title: 'PUB Fee',
+  format: formats.currency,
+  sortable: true
+},
+{
+  id: 'rcvdDate',
+  title: 'Received Date',
+  sortable: true
+},
+{
+  id: 'invFileName',
+  title: 'File Name',
+  contents: function(row) {
+    return can.stache('<a class="downloadLink fileName" href="#download">'+row.invFileName+'</a>')();
+  },
+  sortable: true
+},
+{
+  id: 'copConAmt',
+  title: 'Cop Con',
+  format: formats.currency,
+  sortable: true
+},
+{
+  id: 'unMatchedAmt',
+  title: 'Unmatched',
+  format: formats.currency,
+  sortable: true
+},
+{
+  id: 'fiscalPeriod',
+  title: 'Periods',
+  sortable: true
+},
+{
+  id: 'status',
+  title: 'State',
+  sortable: true
+}
+];

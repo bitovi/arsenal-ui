@@ -88,12 +88,13 @@ var page = Component.extend({
         var requestObj = self.scope.attr("newbundlenamereq");
         if(requestObj!="undefined"){
           requestObj = JSON.parse(requestObj);
-          
-          //console.log("requestObj "+JSON.stringify(UserReq.formRequestDetails(requestObj)));
           self.scope.attr("createPBFlag",{input:true});
           NewBundleNameModel.findOne(UserReq.formRequestDetails(requestObj),function(data){
-                  //console.log("NewBundleNameModel response is "+JSON.stringify(data));
-                  self.scope.attr("paymentBundleName" , data.paymentBundle.bundleName);
+            if(data.status == "FAILURE"){
+                 console.error("Failed to load the bundleName: "+data.responseText);
+               }else{
+                  self.scope.attr("paymentBundleName", data.paymentBundle.bundleName);
+              }
           },function(xhr){
                 console.error("Error while loading: bundleNames"+xhr);
           });

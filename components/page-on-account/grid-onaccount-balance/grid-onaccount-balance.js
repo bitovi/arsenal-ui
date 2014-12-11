@@ -81,8 +81,8 @@ var OnAccountBalance = Grid.extend({
           genObj.searchRequest["contentGrpId"]=self.scope.request.searchRequest.contentGrpId.attr();
           genObj.searchRequest["regionId"]=self.scope.request.searchRequest.regionId;
           genObj.searchRequest["periodType"]="Q";
-          genObj.searchRequest["periodFrom"]=utils.getPeriodForQuarter(self.scope.request.searchRequest.periodFrom);
-          genObj.searchRequest["periodTo"]=utils.getPeriodForQuarter(self.scope.request.searchRequest.periodTo);
+          genObj.searchRequest["periodFrom"]=self.scope.request.searchRequest.periodFrom;
+          genObj.searchRequest["periodTo"]=self.scope.request.searchRequest.periodTo;
      
      
          // onAccountBalance.findOne(UserReq.formRequestDetails(genObj)).then(function(rows) {
