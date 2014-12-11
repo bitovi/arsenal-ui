@@ -87,14 +87,11 @@
                            var fileObj = {};
                             FileUpLoader.create(dataToSend,function(data) {
                                fileObj = {filepath:data.filePropeties[0].filePath, filename:data.filePropeties[0].fileName};
-
-                               var response = data.filePropeties[0].status; 
-                                 successeve(response);
-                                 if(data.responseText!=''){ 
-                                    $('#showSuccess').empty().html(data.responseText);
-                                 }
+                               var response = data.filePropeties[0];
+                                  successeve(response);
                                  },function(xhr) {
                                 console.error("Error while loading:"+xhr);
+                                $('.fileError').empty().html('File uploading failed');
                                 }).then(function(values){
                                 fileArr.push(fileObj);
                                 if(fileArr.length == totalfile){
@@ -105,9 +102,12 @@
                           }
                         
                         function successeve(response){
-                          if(response=='SUCCESS'){
+                          if(response.status=='SUCCESS'){
                             /*passing file length here to parent component*/
+                             $('.success').empty().html(data.responseText);
                             $(self.element).trigger('onSelected', response);
+                          }else{
+                             $('.fileError').empty().html(data.responseText);
                           }
                         }
                         textReader.readAsDataURL(file);

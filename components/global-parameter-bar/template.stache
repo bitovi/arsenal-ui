@@ -88,7 +88,5 @@
     </li>
 
   </ul>
-  <div class='period-invalid'> Invalid Period !</div>
-  <div class='no-data'> No data available for search criteria !</div>
   <div class='error'> {{errorMessage}}</div>
 </div>

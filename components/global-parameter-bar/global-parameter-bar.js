@@ -59,14 +59,13 @@ var GlobalParameterBar = Component.extend({
          console.log("Period: "+periodWidgetHelper.getFiscalPeriod(this.scope.attr('periodFrom')[0]));
          this.scope.appstate.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(this.scope.attr('periodFrom')[0]));
          this.scope.appstate.attr('periodType',periodWidgetHelper.getPeriodType(this.scope.attr('periodFrom')[0]));
-         //console.log("Perio hggd: "+this.scope.appstate.attr('periodFrom'));
-         showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0],comp);
+          this.scope.attr('errorMessage',showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0]));
      },
      '{periodTo} change': function(el, ev) {
           var comp ='to';
           this.scope.attr('errorMessage','');
           this.scope.appstate.attr('periodTo', periodWidgetHelper.getFiscalPeriod(this.scope.attr('periodTo')[0]));
-          showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0],comp);
+          this.scope.attr('errorMessage',showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0]));
      },
     '#store-type select change': function(el, ev) {
        var selected = $(el[0].selectedOptions).data('storetype');
@@ -74,22 +73,19 @@ var GlobalParameterBar = Component.extend({
     },
     '#region select change': function(el, ev) {
       var self = this;
+      self.scope.attr('errorMessage','');
       var selected = $(el[0].selectedOptions).data('region');
-      this.scope.appstate.attr('region', selected);
+      self.scope.appstate.attr('region', selected);
       //console.log("region id is "+JSON.stringify(selected.id));
       Promise.all([
         Country.findAll(UserReq.formRequestDetails({"regionId":selected.id})),
         Licensor.findAll(UserReq.formRequestDetails({"regionId":selected.id}))
       ]).then(function(values) {
-        //console.log(JSON.stringify(values[0][0]["data"].attr()));
-        if (values[0].length === 0 && values[1].length === 0) {
-           $('.no-data').css("visibility","visible");
-         } else {
-           $('.no-data').css("visibility","hidden");
-         }
+        if(values[0].length == 0 && values[1].length==0){
+          self.scope.attr('errorMessage',' No data available for search criteria !');
+        }
         self.scope.countries.replace(values[0]);
         self.scope.licensors.replace(values[1]);
-
         setTimeout(function(){
               $("#countriesFilter").multiselect('rebuild');
               $("#licensorsFilter").multiselect('rebuild');
@@ -208,18 +204,19 @@ var GlobalParameterBar = Component.extend({
 var validateFilters = function(appstate){
     var periodFrom = appstate.attr('periodFrom');
     var periodTo = appstate.attr('periodTo');
+   //var message = showErrorMsg(periodFrom,periodTo,appstate.attr('periodType'));
     if(periodFrom.length == 0 || periodFrom.trim().length == 0){
       return 'Invalid PeriodFrom !';
     }else if(periodTo.length == 0 || periodTo.trim().length == 0){
       return 'Invalid PeriodTo !';
-    }else {
+    }else{
       return '';
     }
 }
 
-var showErrorMsg = function(periodFrom,periodTo,whichcomp){
+var showErrorMsg = function(periodFrom,periodTo){
        var showFlg=false;
-       var from = periodFrom,to =  periodTo;
+       var from = periodFrom,to = periodTo; 
        if(from!=undefined &&  to!=undefined){
             
           var periodObj = { "P01":"09", "P02":"10", "P03":"11", "P04":"00", "P05":"01", "P06":"02", "P07":"03", "P08":"04", "P09":"05", "P10":"06", "P11":"07", "P12":"08" };
@@ -267,7 +264,12 @@ var showErrorMsg = function(periodFrom,periodTo,whichcomp){
           if ( $.inArray(qFrom, qArray) && ((toYear - fromYear) == 1) && (qTo === (qFrom - 1)) ) showFlg = true;//condition: fromQ (2,3,4) && 2015 - 2014 === 1 && toQ === (fromQ - 1)
 
         }
-          if(showFlg==true){ $('.period-invalid').css("visibility","visible"); return false;}else {showFlg=false; $('.period-invalid').css("visibility","hidden");}
+        if(showFlg){
+          return 'Invalid Period !';
+        }else{
+          return "";
+        }
+          
 }
 
 function monthDiff(d1, d2) {
