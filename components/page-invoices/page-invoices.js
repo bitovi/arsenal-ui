@@ -447,29 +447,30 @@ var page = Component.extend({
           var invoiceDelete = {"searchRequest":{}};
           invoiceDelete.searchRequest.ids = self.scope.checkedRows.attr();
           console.log("Delete request params are "+JSON.stringify(UserReq.formRequestDetails(invoiceDelete)));
-          Invoice.update(UserReq.formRequestDetails(invoiceDelete),"invoiceDelete",function(data){
-                  console.log("Delete response is "+JSON.stringify(data));
-          if(data["status"]=="SUCCESS"){
-             $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
-             $("#messageDiv").show();
-             setTimeout(function(){
-                $("#messageDiv").hide();
-             },2000);
 
-             /* The below calls {scope.appstate} change event that gets the new data for grid*/
-             if(self.scope.appstate.attr('globalSearch')){
-                self.scope.appstate.attr('globalSearch', false);
-              }else{
-                self.scope.appstate.attr('globalSearch', true);
-              }
-          }
-          else{
-            $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-            $("#messageDiv").show();
-            setTimeout(function(){
-                $("#messageDiv").hide();
-            },2000)
-          }
+          Invoice.update(UserReq.formRequestDetails(invoiceDelete),"invoiceDelete",function(data){
+            console.log("Delete response is "+JSON.stringify(data));
+            if(data["status"]=="SUCCESS"){
+               $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
+               $("#messageDiv").show();
+               setTimeout(function(){
+                  $("#messageDiv").hide();
+                  self.scope.checkedRows.replace([]);
+                   /* The below calls {scope.appstate} change event that gets the new data for grid*/
+                   if(self.scope.appstate.attr('globalSearch')){
+                      self.scope.appstate.attr('globalSearch', false);
+                    }else{
+                      self.scope.appstate.attr('globalSearch', true);
+                    }
+                },2000);
+            }
+            else{
+              $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+              $("#messageDiv").show();
+              setTimeout(function(){
+                  $("#messageDiv").hide();
+              },2000)
+            }
 
           },function(xhr){
             console.error("Error while loading: bundleNames"+xhr);
