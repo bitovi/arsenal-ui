@@ -5,6 +5,11 @@ var formats = {
     return function(value) {
       return formats.number(value).toFixed(numberOfDigits);
     };
+  },
+  currencyFormat: function (number)
+  {
+    var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+    return n;
   }
 };
 

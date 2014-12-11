@@ -1,14 +1,13 @@
 import stache from 'can/view/stache/';
+import formats from 'utils/formats';
 
 export default [
 {
   id: 'toggle',
   title: '',
   contents: function(row) {
-    if(row.toggleCheck =="N"){
-      return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}}')({isChild: row.__isChild});
-    }else{
-      return can.stache('<input type="checkbox"/>')();
+    if(!row.isFooterRow){
+      return row.ccidId == "Not Ingested" ? "" : can.stache('<input type="checkbox"/>')();
     }
   }
 },
@@ -35,6 +34,7 @@ export default [
 {
   id: 'pubfee',
   title: 'PUB Fee',
+  format: formats.currency,
   sortable: true
 },
 {
@@ -53,11 +53,13 @@ export default [
 {
   id: 'copConAmt',
   title: 'Cop Con',
+  format: formats.currency,
   sortable: true
 },
 {
   id: 'unMatchedAmt',
   title: 'Unmatched',
+  format: formats.currency,
   sortable: true
 },
 {

@@ -1,14 +1,13 @@
 import stache from 'can/view/stache/';
+import formats from 'utils/formats';
 
 export default [
   {
     id: 'toggle',
     title: '',
     contents: function(row) {
-      if(row.toggleCheck =="N"){
-        return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}}')({isChild: row.__isChild});
-      }else{
-        return can.stache('<input type="checkbox"/>')();
+      if(!row.isFooterRow){
+        return row.ccidId == "" ? "" : can.stache('<input type="checkbox"/>')();
       }
     }
   },
@@ -45,37 +44,51 @@ export default [
   {
     id: 'pubfee',
     title: 'PUB Fee',
+    format: formats.currency,
     sortable: true
   },
   {
     id: 'reconAmt',
     title: 'Recon',
+    format: formats.currency,
     sortable: true
   },
   {
     id: 'liDispAmt',
     title: 'Line Item Dispute',
+    format: formats.currency,
     contents: function(row) {
-      return can.stache('<a class="downloadLink liDispAmt" href="#download">'+row.liDispAmt+'</a>')();
+      if(row.isFooterRow){
+        return formats.currencyFormat(row.liDispAmt);
+      }else{
+        return can.stache('<a class="downloadLink liDispAmt" href="#download">'+formats.currencyFormat(row.liDispAmt)+'</a>')();
+      }
     },
     sortable: true
   },
   {
     id: 'copConAmt',
     title: 'Cop Con',
+    format: formats.currency,
     sortable: true
   },
   {
     id: 'unMatchedAmt',
     title: 'Unmatched',
+    format: formats.currency,
     sortable: true
   },
   {
     id: 'badLines',
     title: 'Bad Lines',
     contents: function(row) {
-      return can.stache('<a class="downloadLink badLines" href="#download">'+row.badLines+'</a>')();
+      if(row.isFooterRow){
+        return formats.currencyFormat(row.badLines);
+      }else{
+        return can.stache('<a class="downloadLink badLines" href="#download">'+row.badLines+'</a>')();
+      }
     },
+    format: formats.currency,
     sortable: true
   },
   {
