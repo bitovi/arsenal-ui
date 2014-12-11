@@ -7,7 +7,7 @@
 </div>
 
 <div class="col-lg-12 claimReviewContainer">
-    
+
     <div class="col-sm-8 form-inline" style="text-align:right;">
     	<!--Currency: <select id="currencyType" class="form-control resizeBox">
     		<option value="invoice">Invoice</option>
