@@ -65,6 +65,7 @@ var page = Component.extend({
   	invoicetypeSelect:"",
   	licensorStore:{},
   	currencyStore:"",
+  	regionStore:"",
   	fxrateStore:"",
   	invoicenumberStore:"",
   	licnotesStore:"",
@@ -82,6 +83,7 @@ var page = Component.extend({
   	paymentBundleId:"",
 	/*Form value*/
 	newpaymentbundlenamereq:undefined,
+	//bundleNamesRequest:{"bundleSearch":{}},
   	errorMsg:{},
   	errorStatus:{},
   	invoiceContainer:[],
@@ -93,7 +95,7 @@ var page = Component.extend({
   	formSuccessCount:1,
   	uploadedfileinfo:[],
   	periodType:"",
-    isRequired: function(){
+	isRequired: function(){
   	 		if(this.attr("invoicetypeSelect") != "2"){  /*Adhoc*/
  				$(".breakdownCountry").addClass("requiredBar");
  				$(".breakdownPeriod").addClass("requiredBar");
@@ -153,7 +155,26 @@ var page = Component.extend({
 			  	 this.isAdhocStrore.attr("adhoc", false);
 			  	 this.attr("showPBR", true);
 			}
-		}
+		},
+		createPBRequest: function(){
+	          	var bundleNamesRequest = {"bundleSearch":{}};
+	          	var serTypeId = $("#invoiceType option:selected").attr("name");
+	          	var regId = this.regionStore;
+	          
+			  	if(typeof(serTypeId)!="undefined")
+	            	bundleNamesRequest.bundleSearch["serviceTypeId"] = serTypeId;
+				
+				if(typeof(regId)=="undefined")
+	            	bundleNamesRequest.bundleSearch["region"] = "";
+	          	else
+	            	bundleNamesRequest.bundleSearch["region"] = regId;
+	            
+	            bundleNamesRequest.bundleSearch["type"] = "invoice";
+	          console.log(bundleNamesRequest);
+	          this.attr("bundleNamesRequest", JSON.stringify(bundleNamesRequest));
+
+				return JSON.stringify(bundleNamesRequest);
+       		}
  },
   events: {
     	"inserted": function(){
@@ -372,8 +393,12 @@ var page = Component.extend({
 		        				for(var i= 0; i < requireField.length; i++){
 		        					if(!data.bv.isValidField(mandatoryField[i])){
 		        						 data.bv.disableSubmitButtons(true);
+		        						 if(mandatoryField[i] == "receiveddate"){
+		        						 	$('#invoiceform').bootstrapValidator('revalidateField', 'receiveddate'); /*revalidating this field. It initialized with currentdate*/
+		        						 }
 		        						 break;
 		        					}
+		        					
 		        				}
 	        				}
 	        				if(self.scope.editpage){
@@ -556,6 +581,9 @@ var page = Component.extend({
          	this.scope.monthStore.attr(event[0].id, event[0].value);
          	
 		},
+		".inputMonth blur": function(event){
+         	$('#invoiceform').bootstrapValidator('revalidateField', 'inputMonth[]');
+        },
 	    ".inputCountry change": function(event){
          	this.scope.countryStore.attr(event[0].id, event[0].value)
          	console.log(this.scope.countryStore.attr());
@@ -574,7 +602,6 @@ var page = Component.extend({
 		"{scope} regionStore": function(){
 		  	var self = this;
 			var genObj = {regionId:self.scope.attr("regionStore")};
-			
 			Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))
 			     ]).then(function(values) {
 		     			console.log(values[0]);
@@ -584,6 +611,8 @@ var page = Component.extend({
 				    		self.scope.attr("licensorStore", invoiceData.entityId);
 			    		}
 			    });
+			self.scope.createPBRequest();     
+			   
 		},
 		"{scope} licensorStore": function(event){
 			var self = this;
@@ -649,23 +678,17 @@ var page = Component.extend({
 		"#invoiceform #paymentBundleNames change": function(){
 	          var self = this;
 	          var pbval = $("#invoiceform #paymentBundleNames").val();
-	          console.log("val djsi is "+ pbval);
 	          if(pbval=="createB"){
 	              
-	              var regId = self.scope.appstate.attr('region');
-
-
-	              var newBundleNameRequest = {"paymentBundle":{}};
+	              var regId = self.scope.regionStore;
+				  var newBundleNameRequest = {"paymentBundle":{}};
 	              var bundleRequest = {};
 
-	              bundleRequest["region"] = regId['value'];
-	              bundleRequest["periodFrom"] = "201303";
-	              bundleRequest["periodTo"] = "201304";
-	             
-	              bundleRequest["bundleType"] ="REGULAR_INV";
+	              bundleRequest["region"] = regId;
+
+	              bundleRequest["bundleType"] = $("#invoiceType option:selected").attr("name");
 
 	              newBundleNameRequest["paymentBundle"] = bundleRequest;
-	              console.log("New Bundle name request is "+JSON.stringify(newBundleNameRequest));
 	              self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
 	          } else {
 	            self.scope.attr('newpaymentbundlenamereq', "undefined");
@@ -955,7 +978,7 @@ var page = Component.extend({
 											
 									}	
 						  		});
-						  	},
+							},
 						   '#inputMonth0 change':function(el){ /*validation for period*/
 						  		var self = this;
 						  		self.scope.attr("periodType", $(el).val().charAt(0));
@@ -964,7 +987,6 @@ var page = Component.extend({
 											$("#"+this.id+' .inputMonth').val("");
 											showErrorMsg($("#"+this.id+' .inputMonth').attr("id"), "delete");
 										//	self.scope.attr("periodType", 
-											
 									}	
 						  		});
 						  	} 
@@ -990,6 +1012,8 @@ var page = Component.extend({
 							     		 	self.scope.attr("glaccounts").replace(values[4]);
 							     		 	self.scope.attr("regions").replace(values[5]);
 
+							     		 	console.log(self.scope.attr("contentType"));
+
 							    			if(invoicemap.attr("invoiceid")){
 												var getByIDReq = {"searchRequest":{}};
 								     			getByIDReq.searchRequest.ids = [invoicemap.attr("invoiceid")];
@@ -1007,27 +1031,11 @@ var page = Component.extend({
 											});
 						},
 					  	helpers: {
-					         	 createPBRequest: function(){
-							          	var bundleNamesRequest = {"bundleSearch":{}};
-							          	var serTypeId = this.appstate.attr('storeType');
-							          	var regId = this.appstate.attr('region');
-									  	
-									  	if(typeof(serTypeId)!="undefined")
-							            	bundleNamesRequest.bundleSearch["serviceTypeId"] = serTypeId['id'];
-										
-										if(typeof(regId)=="undefined")
-							            	bundleNamesRequest.bundleSearch["region"] = "";
-							          	else
-							            	bundleNamesRequest.bundleSearch["region"] = regId['value'];
-							            
-							            bundleNamesRequest.bundleSearch["type"] = "invoice";
-							          
-										return JSON.stringify(bundleNamesRequest);
-						       		},
-								  	currentDate: function(){
+					         		currentDate: function(){
 								  	 	var date = new Date();
 								  	 	this.attr("currentdate", (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear());
 										return this.attr("currentdate");
+
 								  	},
 								  	calculatedDueDate: function(){
 							  			var date = new Date();

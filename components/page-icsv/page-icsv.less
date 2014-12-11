@@ -6,142 +6,21 @@
 	padding: 10px;
 }
 
-
+@white-border: 1px solid #fff;
 icsv-grid {
   .grid-mixin();
-
+  th, td {
+  	white-space: nowrap;
+  }
   th.checbox, td.checkbox {
     width: 30px;
   }
-  & > table {
-    /*width: 100%; */
-    border-radius: 0px;
-    /*border-spacing: 0;*/
-
-    /*color: hsl(0, 0%, 50%);*/
-
-    /* getting border radius to work right */
-    thead:first-child, tbody:first-child {
-      & > tr:first-of-type {
-        td:first-child, th:first-child {
-          border-top-left-radius: 0px;
-        }
-
-        td:last-child, th:last-child {
-          border-top-right-radius: 0px;
-        }
-      }
-
-      
-    }
-
-    thead {
-
-    	tr {
-	    	th {
-	    			text-align: right;
-		    		padding-right: 0.625em;
-					height: 1.5em;
-	      			padding-top: .3em;
-	      			padding-bottom: .3em;
-
-				
-			}
-
-			.currency {
-						text-align: right;
-						height: 1.5em;
-						width: 1.5em !important;
-						padding-right: 0.625em !important;
-						padding-left: 0.625em !important;
-
-			}
-		}
-
-		
-
-
-    }
-
-    tbody:last-child, tfoot:last-child {
-      & > tr:last-of-type {
-        td, th {
-          height : 1.5625em;
-          backgorund: !important;
-
-        }
-
-        td:first-child, th:first-child {
-          border-bottom-left-radius: 0px;
-          border-bottom: 1px solid #ffffff !important;
-        }
-
-        td:last-child, th:last-child {
-          border-bottom-right-radius: 0px;
-        }
-      }
-    }
-
-	tbody {
-
-		background: #F6F6F6+ !important;
-
-	    tr {
-
-	    	height : 1.5625em;
-
-
-	      td {
-
-	        padding-right: 0.5625em;
-			padding-left : 0.5625em;
-			padding-top  : 0em;
-			padding-bottom : 0em;
-
-	        border-right: 1px solid hsl(0, 0%, 75%);
-
-	        /* border-bottom: 1px solid #ffffff !important; */
-
-	        border-bottom: 1px solid #FFFFFF !important;
-
-	        /*&:first-child {
-	          border-left: 1px solid hsl(0, 0%, 75%);
-	        }
-	        &:last-child {
-	          border-right: 1px solid hsl(0, 0%, 75%);
-	        }*/
-
-	        text-align:right;
-
-	      }
-
-	      /*&:first-child td {
-	        border-top: none;
-	      }
-
-	      &:last-child {
-	          border-bottom : none;
-	      }*/
-
-	      .currency  {
-
-	      	text-align:left;
-	      	width: 1.5em !important;
-
-	      }
-
-	    }
-
-	    tr.child {
-	      display: none;
-
-	      &.visible {
-	        display: table-row;
-	      }
-	    }
-	  }
-  }
+ /* .entity, .invoiceType, .contentType, .country, .invoiceNum, .dueDate, .currency, .status, .bundleName, .comments{
+  	text-align: left !important;
+  }*/
 }
+
+
 
 
 .icsv-invoice{
