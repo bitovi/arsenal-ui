@@ -1,0 +1,448 @@
+
+<form id="entityLicensor">
+<div class="recon-container">
+
+
+	<div class="col-sm-12" id="entityDetailsTab">
+
+
+		<div class="col-sm-6">
+			
+			    <div id="entityDetails">
+
+					<div class="col-sm-12" id="spaceBar"></div>
+			    	<div id="entityDetailsHeading">Entity Details</div>
+			    	<div class="col-sm-12"></div>
+
+			    		<div class="col-sm-8 col-sm-offset-1">
+
+				    		<div class="col-sm-12">
+
+				    			<div class="col-sm-2">
+				    				<label>Entity:</label>
+								</div>
+				    			<div class="col-sm-4">
+				    			
+				    			{{getselectedEntity selectedEntity}}
+					    			<select id="licensorsFilter" can-value="selectedEntity" class="form-control resizeBox licensors">
+					    				<optgroup>
+							               
+							                <option id="selectId">Select</option>
+							              
+							             </optgroup>
+							           	{{#each licensors}}
+							             <optgroup label="{{entityType}}">
+							               {{#each entities}}
+							                <option id="{{id}}">{{value}}</option>
+							               {{/each}}
+							             </optgroup>
+							           	{{/each}}
+									</select>
+
+								</div>
+
+								<div class="col-sm-3">
+
+									<button type="button" id="analyticsAdd"  name="analyticsAdd"
+										class="btn buttonSubmit btn-custom-small" style="margin-left:15px;">Add</button>
+									
+
+				    			</div>
+
+				    			<div class="col-sm-2">
+
+				    					<button type="button" id="analyticsFetch"  name="analyticsFetch"
+											class="btn buttonSubmit btn-custom-small" style="margin-left:-12px;">Fetch</button>
+									
+				    			</div>
+
+
+			    			</div>
+
+			    		</div>
+
+			    		
+
+
+			    		
+
+			    	</div>
+
+
+			    <!--div class="col-sm-12" id="spaceBar"></div>
+
+			    <div class="col-sm-12" id="spaceBar"></div-->
+
+			    <div class="col-sm-12" style="height: 10px;"></div>
+			    
+		</div>
+	</div>
+
+	<div class="col-sm-12" id="entityGrid">
+
+    	<div class="col-sm-6" id="entityGridFD">
+    	
+    				<div class="col-sm-12" id="spaceBar"></div>
+    		
+	    			<div class="col-sm-11 col-sm-offset-1">
+	    				<div class="col-sm-3 textalignright">
+		    				<label>Licensor:</label>
+						</div>
+		    			<div class="col-sm-4 form-group">
+		    				<input type="text" name="licensorName" id="licensorName" class="form-control licensorName" can-value="licDetails.data.entityType" value='{{licDetails.data.entityType}}' />
+						</div>
+	    			</div>
+
+				
+
+	    			<div class="col-sm-11 col-sm-offset-1 status">
+	    				<div class="col-sm-3 textalignright">
+		    				<label>Status:</label>
+						</div>
+		    			<div class="col-sm-4" can-value="licDetails.data.status">
+		    				<div class="col-sm-12">
+		    					{{licDetails.data.status}}
+		    				</div>
+						</div>
+	    			</div>
+
+				
+
+	    			<div class="col-sm-11 col-sm-offset-1">
+	    				<div class="col-sm-3 textalignright">
+		    				<label>Valid From:</label>
+						</div>
+		    			<div class="col-sm-4 form-group" id="periodFromcontainer">
+
+		    				
+							 <div class="calendarcls">
+					            <input type='text' name="periodFrom" id="periodFrom" class="form-control  updatePeroid periodFromInput" can-value='periodFromVal' value="{{periodFromInput}}"/>
+					            <period-calendar selectedperiod="{selectedperiod}"  appstate="{appstate}"></period-calendar>
+					         </div>
+          
+
+						</div>
+	    			</div>
+
+				
+
+					<div class="col-sm-11 col-sm-offset-1">
+	    				<div class="col-sm-3 textalignright">
+		    				<label>Valid To:</label>
+						</div>
+		    			<div class="col-sm-4 form-group" id="periodTocontainer">
+
+		    				
+		    				<div class="calendarcls" >
+					           <input type='text' name="periodTo" id="periodTo" class="form-control  updatePeroid periodToInput" can-value='periodToVal' value="{{periodToInput}}"/>
+					           <period-calendar selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
+					          </div>
+
+						</div>
+	    			</div>
+	    			 <div class='period-invalid'> Invalid Period !</div>
+	    			<div class="col-sm-12" id="spaceBar"></div>
+
+
+				<div class="col-sm-12" style="margin-left: -8px;">
+
+					<div class="col-sm-11 col-sm-offset-1 form-group">
+	    				<div class="col-sm-3 textalignright">
+		    				<label>Account Name:</label>
+						</div>
+		    			<div class="col-sm-4">
+		    				<input type="text" name="accountName" can-value="licDetails.data.accountName" value="{{licDetails.data.accountName}}" class="form-control"/>
+						</div>
+
+					</div>
+
+					<div class="col-sm-11 col-sm-offset-1 form-group">
+	    				<div class="col-sm-3 textalignright">
+		    				<label>Invoice Type:</label>
+						</div>
+		    			<div class="col-sm-4">
+	    						{{getselectedInvoiceType invoiceType}}
+	    						<div class="col-sm-12 invoiceTypeerr"> Select an Invoice Type !</div>
+
+				    			<select id="invoiceType" can-value="invoiceType" class="form-control resizeBox invoiceType">
+				    				 
+						            <option id="selectId">Select</option>
+						            
+						           	{{#each invoiceTypes}}
+						              <option id="{{id}}">{{value}}</option>
+						            {{/each}}
+						             
+								</select>
+						</div>
+
+					</div>
+
+
+	    			
+
+	    			<div class="col-sm-12" id="spaceBar5px"></div>
+
+	    			<!-- <div class="col-sm-11 col-sm-offset-1 form-group">
+
+	    				<div class="col-sm-3 textalignright">
+		    				<label>Invoice Name:</label>
+						</div>
+		    			<div class="col-sm-4">
+		    				<input type="text" name="invoiceName" can-value="licDetails.data.invoiceDetailType" value="{{licDetails.data.invoiceDetailType}}" class="form-control"/>
+						</div>
+
+	    			</div> -->
+
+					<div class="col-sm-12" id="spaceBar5px"></div>
+
+	    			<div class="col-sm-11 col-sm-offset-1 form-group RepSplit">
+
+	    				<div class="col-sm-3 textalignright">
+		    				<label>Representation Split:</label>
+						</div>
+		    			<div class="col-sm-4">
+		    				<input type="text" name="repSplit" id="repSplit" can-value="licDetails.data.repSplit" value="{{licDetails.data.repSplit}}" class="form-control repSplit"/>
+						</div>
+
+	    			</div>
+
+					<div class="col-sm-12" id="spaceBar5px"></div>
+
+	    			<div class="col-sm-11 col-sm-offset-1 form-group">
+
+	    				<div class="col-sm-3 textalignright">
+		    				<label>SAP vendor#:</label>
+						</div>
+		    			<div class="col-sm-4">
+		    				<input type="text" name="sapVendor" id="sapVendor" can-value="licDetails.data.sapVendorNo" value="{{licDetails.data.sapVendorNo}}" class="form-control sapVendor"/>
+						</div>
+
+	    			</div>
+
+					<div class="col-sm-12" id="spaceBar5px"></div>
+
+	    			<div class="col-sm-11 col-sm-offset-1 form-group paymentTerms">
+
+	    				<div class="col-sm-3 textalignright">
+		    				<label>Payment Terms(Days):</label>
+						</div>
+		    			<div class="col-sm-4">
+		    				<input type="text" name="paymentTerms" id="paymentTerms" can-value="licDetails.data.paymentTerms" value="{{licDetails.data.paymentTerms}}" class="form-control paymentTerms"/>
+						</div>
+
+	    			</div>
+
+	    			<div class="col-sm-12" id="spaceBar5px"></div>
+
+	    			<div class="col-sm-11 col-sm-offset-1 uploadedFTP">
+
+	    				<div class="col-sm-3 textalignright">
+		    				<label>Uploaded Files to sFTP: </label>
+						</div>
+		    			<div class="col-sm-4">
+		    			<input type="checkbox" id="uploadedFTP" can-value="licDetails.data.uploadedFilesToSFTP" checked="{{licDetails.data.loadedFilesToSFTP}}" class="form-control"/>
+						</div>
+
+	    			</div>
+
+	    			<div class="col-sm-12" id="spaceBar5px"></div>
+
+	    			<div class="col-sm-11 col-sm-offset-1 form-group">
+	    				<div class="col-sm-12 multicomments-required"> Enter comments !</div>
+
+	    				<div class="col-sm-3 textalignright">
+		    				<label>Comments:</label>
+						</div>
+		    			<div class="col-sm-7" id="multipleComments">
+					
+						</div>
+
+					</div>
+
+					<div class="col-sm-12" style="padding-top: 50px;"></div>
+
+					<div class="col-sm-12 countryModelLabel">
+	 		
+			 			<div class="col-sm-12" id="countryModelLabelId">
+							<label class="tableLabel">Country Model Mapping:</label>
+						</div>
+
+						<div class="col-sm-12" id="countryModelMapping">
+
+						</div>
+
+						<div class="col-sm-12" id="spaceBar"></div>
+
+		 			</div>
+
+				</div>
+
+
+		</div>
+		
+		
+ 
+		<div class="col-sm-6">
+
+			<div class="col-sm-12" id="entityGridSD">
+
+					<div class="repConfigurationTab">
+						<div class="col-sm-12" >
+							<label class="tableLabel">Report Configuration:</label>
+						</div>
+
+		    			<div id="repConfiguration" class="col-sm-12 repConfiguration">
+		    				<table class="repConfiguration">
+		    					<thead>
+		    						<tr>
+		    							<th>
+		    								<input type="checkbox" class="selectAllChkBox" value="false"/>
+		    							</th>
+		    							<th>
+		    								Country
+		    							</th>
+		    							<th>
+		    								Reports
+		    							</th>
+		    						</tr>
+		    					</thead>
+		    					<tbody>
+		    						<tr colspan="3">
+		    							
+		    							<td can-value="countries">
+				    						{{#each countries}}
+				    							<div  style="height:1.5em"><input type="checkbox" value="{{name}}" class="countryBox" val="false"/></div>
+				    						{{/each}}
+				    					</td>
+				    					<td can-value="countries">
+				    						{{#each countries}}
+				    							<div style="height:1.5em">{{name}}</div>
+				    						{{/each}}
+				    					</td>
+				    					<td can-value="reportTypes">
+				    						{{#each reportTypes}}
+				    							<div  style="height:1.5em"><input type="checkbox" value="{{actualName}}"  class="reportBox"  val="false"/> {{name}}</div>
+				    						{{/each}}
+				    					</td>
+				    					
+
+				    				</tr>
+			    				 
+			    				</tbody>
+
+		    				</table>
+
+		    			</div>
+		    			<div class="col-sm-12 repConf">
+		    				<div class="col-sm-12 repConfFooter">
+			    				<div class="col-sm-6 col-sm-offset-8">
+			    					<button type="button" id="applyAll" name="applyAll" class="btn buttonSubmit btn-custom-small3px  applyAll" style="margin-left:10px;">Apply All</button>
+									<button type="button" id="remove" name="remove" class="btn buttonSubmit btn-custom-small3px 	 remove" style="margin-left:10px;">Remove</button>
+			    				</div>
+			    			</div>
+			    		</div>
+			    	</div>
+	    		
+
+	    			<div class="societyContactsTab">
+		    			<div class="col-sm-12">
+							<label class="tableLabel">Society Contacts:</label>
+						</div>
+		    		
+		    			<div class="col-sm-12 societyContacts">
+	    					<table class="societyContacts">
+		    					<thead>
+		    						<tr>
+		    							<th>
+		    								Delete
+		    							</th>
+		    							<th>
+		    								Name
+		    							</th>
+		    							<th>
+		    								E-Mail <img src="resources/images/button_plus_blue.png" class="addSocContactsAdd addRow"  style="float:right;"></img>
+		    							</th>
+		    						</tr>
+		    					</thead>
+		    					<tbody>
+		    					{{#each contactDetails}}
+			    					<tr class="contactDetails">
+			    						<td class="deleteCheckBox">
+			    							<img src="resources/images/button_minus_red.png" class="addSocContactsRemove deleteCheckBoxCD" val="{{id}}"></img>	
+			    							
+			    						</td>
+			    						<td class="contactName">
+			    							{{contactName}}
+			    						</td>
+			    						<td class="contactEmail">
+			    							{{contactEmail}}
+			    						</td>
+			    					</tr>
+			    				 {{/each}}
+			    				 {{#each newContactDetails.data}}
+			    					<tr class="newcontactDetails{{newCountryCounter}}">
+			    						<td class="deleteCheckBox">
+			    							<img src="resources/images/button_minus_red.png" class="addSocContactsRemove deleteCheckBoxNCD" val="{{name}}"></img>
+			    							
+			    						</td>
+			    						<td class="contactName">
+			    							<input type="text" id="name" value="{{contactName}}" can-value="{{canvalueName}}" class="form-control"/>
+			    						</td>
+			    						<td class="contactEmail">
+			    							<input type="text" id="email" value="{{contactEmail}}" can-value="{{canvalueEmail}}" class="form-control"/>
+			    						</td>
+			    					</tr>
+			    				 {{/each}}
+			    				</tbody>
+			    			</table>
+				    		
+		    			</div>
+		    			
+			    	</div>
+
+			    	<div class="col-sm-12" id="spaceBar"></div>
+
+
+		    	<div class="col-sm-12 revHistCollapser">
+
+		 			<div class="col-sm-12 revHistCollapserId">
+		 				<div class="col-sm-12">
+							<img src="resources/images/collapse.png" class="revHistCollapse"  style="float:left"></img>
+							<label class="tableLabel">Revision History</label>
+						</div>
+					</div>
+
+		    		<div class="col-sm-12" id="revisionHistory">
+		    			
+		    		</div>
+
+	 			</div>
+    			
+
+    		</div>
+
+	    </div>
+
+	</div>
+
+	<div class="col-sm-12" id="spaceBar"></div>
+
+	</div>
+	
+
+	 	<div class="col-sm-12 col-sm-offset-10 buttonsBottom">
+	 		<button type="button" id="buttonsubmit" name="Submit" class="btn submitButton btn-custom-small" style="margin-left:10px;">Submit</button>
+	 		<button type="button" id="buttonreset" name="Reset" class="btn submitButton btn-custom-small" style="margin-left:10px;">Reset</button>
+	 	</div>
+
+	 	<div class="col-sm-12" id="spaceBar"></div>
+
+
+  	</div>
+	
+
+</div>
+
+</form>
+
+

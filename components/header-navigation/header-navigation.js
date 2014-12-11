@@ -158,14 +158,14 @@ var  menu =[{
       {"value": "Pricing Model", "id": "pricing-models"}
    ]
 },{
-  "id": "analytics",
+  "id": "analytic",
   "value": "Analytics",
    "submenu": [
+      {"value": "Analytics", "id": "analytics"},
       {"value": "Payment Bundle Review", "id": "paymentbundlereview"},
       {"value": "Claim Review", "id": "claimreview"},
       {"value": "Global Revenue", "id": "globalrevenue"},
       /*{"value": "Monthly Billings Reconciliation", "id": "monthlybillingsreconciliation"},*/
-      {"value": "Unclaimed Stats Config", "id": "unclaimedstatsconfig"},
       {"value": "Unclaimed Summary", "id": "unclaimedsummary"},
    ]
 },{
