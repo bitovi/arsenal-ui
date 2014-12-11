@@ -450,7 +450,7 @@ var page = Component.extend({
           Invoice.update(UserReq.formRequestDetails(invoiceDelete),"invoiceDelete",function(data){
                   console.log("Delete response is "+JSON.stringify(data));
           if(data["status"]=="SUCCESS"){
-             $("#messageDiv").html("<label class='successMessage'>"+data[0]["responseText"]+"</label>")
+             $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
              $("#messageDiv").show();
              setTimeout(function(){
                 $("#messageDiv").hide();
@@ -464,7 +464,7 @@ var page = Component.extend({
               }
           }
           else{
-            $("#messageDiv").html("<label class='errorMessage'>"+data[0]["responseText"]+"</label>");
+            $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
             $("#messageDiv").show();
             setTimeout(function(){
                 $("#messageDiv").hide();
