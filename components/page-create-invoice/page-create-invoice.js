@@ -157,19 +157,19 @@ var page = Component.extend({
 			}
 		},
 		createPBRequest: function(){
-	          	var bundleNamesRequest = {"bundleSearch":{}};
+	          	var bundleNamesRequest = {"paymentBundle":{}};
 	          	var serTypeId = $("#invoiceType option:selected").attr("name");
 	          	var regId = this.regionStore;
 	          
 			  	if(typeof(serTypeId)!="undefined")
-	            	bundleNamesRequest.bundleSearch["serviceTypeId"] = serTypeId;
+	            	bundleNamesRequest.paymentBundle["bundleType"] = serTypeId;
 				
 				if(typeof(regId)=="undefined")
-	            	bundleNamesRequest.bundleSearch["region"] = "";
+	            	bundleNamesRequest.paymentBundle["regionId"] = "";
 	          	else
-	            	bundleNamesRequest.bundleSearch["region"] = regId;
+	            	bundleNamesRequest.paymentBundle["regionId"] = regId;
 	            
-	            bundleNamesRequest.bundleSearch["type"] = "invoice";
+	           // bundleNamesRequest.bundleSearch["type"] = "invoice";
 	          console.log(bundleNamesRequest);
 	          this.attr("bundleNamesRequest", JSON.stringify(bundleNamesRequest));
 
@@ -684,7 +684,7 @@ var page = Component.extend({
 				  var newBundleNameRequest = {"paymentBundle":{}};
 	              var bundleRequest = {};
 
-	              bundleRequest["region"] = regId;
+	              bundleRequest["regionId"] = regId;
 
 	              bundleRequest["bundleType"] = $("#invoiceType option:selected").attr("name");
 
@@ -712,7 +712,7 @@ var page = Component.extend({
 					   tempInvoiceData["serviceTypeId"] = $("#inputContent0 option:selected").attr("servicetypeid");
 					   tempInvoiceData["invoiceType"] = $("#invoiceType option:selected").attr("name");
 					   tempInvoiceData["entityId"] = self.scope.licensorStore;
-					   tempInvoiceData["regionId"] = 2;
+					   tempInvoiceData["regionId"] = self.scope.regionStore;
 					   tempInvoiceData["entityName"] = $("#invoicelicensor option:selected").text();
 					   tempInvoiceData["invoiceCcy"] = self.scope.currencyStore;
 					   tempInvoiceData["fxRate"] = self.scope.fxrateStore;
