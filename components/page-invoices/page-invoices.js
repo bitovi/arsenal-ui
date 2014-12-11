@@ -457,10 +457,10 @@ var page = Component.extend({
              },2000);
 
              /* The below calls {scope.appstate} change event that gets the new data for grid*/
-             if(this.scope.appstate.attr('globalSearch')){
-                this.scope.appstate.attr('globalSearch', false);
+             if(self.scope.appstate.attr('globalSearch')){
+                self.scope.appstate.attr('globalSearch', false);
               }else{
-                this.scope.appstate.attr('globalSearch', true);
+                self.scope.appstate.attr('globalSearch', true);
               }
           }
           else{
