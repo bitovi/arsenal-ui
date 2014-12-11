@@ -1,8 +1,8 @@
-	<div class="col-lg-12 pageTitle">
-	<div class='error'> {{errorMessage}}</div>
+	<div class='errorOnAccount'> {{errorMessage}}</div>
 	<div id="messageDiv" class="col-md-12" style="position: absolute;text-align:center;padding-top:5px;"></div>
-	   <div class="col-md-3"><h3>On Account </h3></div> 
-	   
+	<div class="col-lg-12 pageTitle">
+		   <div class="col-md-3"><h3>On Account </h3></div> 
+	
 	   <div class="col-md-9">
 	   		<div class="form-inline row" id="forminlineElements">
 		    	<div class="col-md-10 marginTop-10">

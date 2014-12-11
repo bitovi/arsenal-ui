@@ -1,0 +1,807 @@
+[
+    {
+        "responseCode": "SUCCESS",
+	"responseText": "Records returned successfully.",
+        "summary": {
+            "fileCount": "5",
+            "invoiceCount": "8",
+            "pdfCount": "4",
+            "licensorCount": "2",
+            "rowCount": "10",
+            "errorCount": "20",
+            "invoiceTotal": [{
+            	"localCcy" : "EUR",
+            	"localAmt" : "20000",
+            	"altCcy": "USD",
+            	"altAmt":"19879.58"
+            },
+            {
+            	"localCcy" : "EUR",
+            	"localAmt" : "10000",
+            	"altCcy": "USD",
+            	"altAmt":"9567.7"
+            }
+            ]
+        },
+        "invoices": [
+            {
+                "serviceTypeId": "1",
+                "invoiceNumber": "inv2509",
+                "invoiceTypeId": "1",
+                "entityId": "17",
+                "regionId": "2",
+                "entityName": "NCB",
+                "invoiceCcy": "EUR",
+                "fxRate": 1,
+                "notes": "Notes from licensors",
+                "invoiceAmount": "",
+                "tax": "56",
+                "grossTotal": "",
+                "receivedDate": "06/19/2014",
+                "invoiceDate": "",
+                "invoiceCalcDueDate": "06/19/2014",
+                "invoiceDueDate": "09/19/2014",
+                "comments": [
+                    {
+                        "comments": "This is a Regular Invoice comment",
+                        "createdBy": "",
+                        "createdDate": ""
+                    }
+                ],
+                "invoiceDocuments": [
+                    {
+                        "fileName": "file.csv",
+                        "location": "/path"
+                    }
+                ],
+                "invoiceLines": [
+                    {
+                        "country": "DNK",
+                        "fiscalPeriod": "201306",
+                        "periodType": "Q",
+                        "contentGrpId": "1",
+                        "contentGrpName": "Music",
+                        "lineAmount": "",
+                        "ccidFileName": "detailFileNameFromIcsv.DAT",
+                        "lineType": "",
+                         "errors": [
+                            {
+                                "status": "",
+                                "errorMap": [
+                                    {
+                                        "amount":"Amount is mandatory"
+                                        
+                                    }   
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "errors": [
+                    {
+                        "status": "",
+                        "errorMap": [
+                            {
+                               "invoicedateId":"Invoice date is mandatory"
+                                
+                            }
+                        ]
+                    }
+                ]
+            },
+         {
+          "serviceTypeId": "1",
+                "invoiceNumber": "inv2510",
+                "invoiceTypeId": "1",
+                "entityId": "17",
+                "regionId": "2",
+                "entityName": "NCB",
+                "invoiceCcy": "EUR",
+                "fxRate": 1,
+                "notes": "Notes from licensors",
+                "invoiceAmount": "2000",
+                "tax": "56",
+                "grossTotal": "",
+                "receivedDate": "06/19/2014",
+                "invoiceDate": "06/19/2014",
+                "invoiceCalcDueDate": "06/19/2014",
+                "invoiceDueDate": "09/19/2014",
+                "comments": [
+                    {
+                        "comments": "This is a Regular Invoice comment",
+                        "createdBy": "",
+                        "createdDate": ""
+                    }
+                ],
+                "invoiceDocuments": [
+                    {
+                        "fileName": "file.csv",
+                        "location": "/path"
+                    }
+                ],
+                "invoiceLines": [
+                    {
+                        "country": "DNK",
+                        "fiscalPeriod": "201306",
+                        "periodType": "Q",
+                        "contentGrpId": "1",
+                        "contentGrpName": "Music",
+                        "lineAmount": "2000",
+                        "ccidFileName": "detailFileNameFromIcsv.DAT",
+                        "lineType": "",
+                         "errors": [
+                            {
+                                "status": "",
+                                "errorMap": [
+                                    {
+                                        
+                                    }   
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "country": "ESP",
+                        "fiscalPeriod": "201306",
+                        "periodType": "Q",
+                        "contentGrpId": "1",
+                        "contentGrpName": "Music",
+                        "lineAmount": "2000",
+                        "ccidFileName": "detailFileNameFromIcsv.DAT",
+                        "lineType": "",
+                         "errors": [
+                            {
+                                "status": "",
+                                "errorMap": [
+                                    {
+                                        
+                                    }   
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "errors": [
+                    {
+                        "status": "",
+                        "errorMap": [
+                            {
+                               
+                            }
+                        ]
+                    }
+                ]
+            },
+           {
+        "serviceTypeId": "1",
+                "invoiceNumber": "inv2503",
+                "invoiceTypeId": "1",
+                "entityId": "17",
+                "regionId": "2",
+                "entityName": "NCB",
+                "invoiceCcy": "EUR",
+                "fxRate": 1,
+                "notes": "Notes from licensors",
+                "invoiceAmount": "2000",
+                "tax": "56",
+                "grossTotal": "",
+                "receivedDate": "06/19/2014",
+                "invoiceDate": "06/19/2014",
+                "invoiceCalcDueDate": "06/19/2014",
+                "invoiceDueDate": "08/19/2014", 
+                "comments": [
+                    {
+                        "comments": "This is a Regular Invoice comment",
+                        "createdBy": "",
+                        "createdDate": ""
+                    }
+                ],
+                "invoiceDocuments": [
+                    {
+                        "fileName": "file.csv",
+                        "location": "/path"
+                    }
+                ],
+                "invoiceLines": [
+                    {
+                        "country": "DNK",
+                        "fiscalPeriod": "201306",
+                        "periodType": "Q",
+                        "contentGrpId": "1",
+                        "contentGrpName": "Music",
+                        "lineAmount": "2000",
+                        "ccidFileName": "detailFileNameFromIcsv.DAT",
+                        "lineType": "",
+                         "errors": [
+                            {
+                                "status": "",
+                                "errorMap": [
+                                    {
+                                        
+                                    }   
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "errors": [
+                    {
+                        "status": "",
+                        "errorMap": [
+                            {
+                                
+                            }
+                        ]
+                    }
+                ]
+            },
+                {
+        "serviceTypeId": "1",
+                "invoiceNumber": "inv2503",
+                "invoiceTypeId": "1",
+                "entityId": "17",
+                "regionId": "2",
+                "entityName": "NCB",
+                "invoiceCcy": "EUR",
+                "fxRate": 1,
+                "notes": "Notes from licensors",
+                "invoiceAmount": "2000",
+                "tax": "56",
+                "grossTotal": "",
+                "receivedDate": "06/19/2014",
+                "invoiceDate": "06/19/2014",
+                "invoiceCalcDueDate": "06/19/2014",
+                "invoiceDueDate": "08/19/2014", 
+                "comments": [
+                    {
+                        "comments": "This is a Regular Invoice comment",
+                        "createdBy": "",
+                        "createdDate": ""
+                    }
+                ],
+                "invoiceDocuments": [
+                    {
+                        "fileName": "file.csv",
+                        "location": "/path"
+                    }
+                ],
+                "invoiceLines": [
+                    {
+                        "country": "DNK",
+                        "fiscalPeriod": "201306",
+                        "periodType": "Q",
+                        "contentGrpId": "1",
+                        "contentGrpName": "Music",
+                        "lineAmount": "2000",
+                        "ccidFileName": "detailFileNameFromIcsv.DAT",
+                        "lineType": "",
+                         "errors": [
+                            {
+                                "status": "",
+                                "errorMap": [
+                                    {
+                                        
+                                    }   
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "errors": [
+                    {
+                        "status": "",
+                        "errorMap": [
+                            {
+                                
+                            }
+                        ]
+                    }
+                ]
+            },
+                {
+        "serviceTypeId": "1",
+                "invoiceNumber": "inv2503",
+                "invoiceTypeId": "1",
+                "entityId": "17",
+                "regionId": "2",
+                "entityName": "NCB",
+                "invoiceCcy": "EUR",
+                "fxRate": 1,
+                "notes": "Notes from licensors",
+                "invoiceAmount": "2000",
+                "tax": "56",
+                "grossTotal": "",
+                "receivedDate": "06/19/2014",
+                "invoiceDate": "06/19/2014",
+                "invoiceCalcDueDate": "06/19/2014",
+                "invoiceDueDate": "08/19/2014", 
+                "comments": [
+                    {
+                        "comments": "This is a Regular Invoice comment",
+                        "createdBy": "",
+                        "createdDate": ""
+                    }
+                ],
+                "invoiceDocuments": [
+                    {
+                        "fileName": "file.csv",
+                        "location": "/path"
+                    }
+                ],
+                "invoiceLines": [
+                    {
+                        "country": "DNK",
+                        "fiscalPeriod": "201306",
+                        "periodType": "Q",
+                        "contentGrpId": "1",
+                        "contentGrpName": "Music",
+                        "lineAmount": "2000",
+                        "ccidFileName": "detailFileNameFromIcsv.DAT",
+                        "lineType": "",
+                         "errors": [
+                            {
+                                "status": "",
+                                "errorMap": [
+                                    {
+                                        
+                                    }   
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "errors": [
+                    {
+                        "status": "",
+                        "errorMap": [
+                            {
+                                
+                            }
+                        ]
+                    }
+                ]
+            },
+                {
+        "serviceTypeId": "1",
+                "invoiceNumber": "inv2503",
+                "invoiceTypeId": "1",
+                "entityId": "17",
+                "regionId": "2",
+                "entityName": "NCB",
+                "invoiceCcy": "EUR",
+                "fxRate": 1,
+                "notes": "Notes from licensors",
+                "invoiceAmount": "2000",
+                "tax": "56",
+                "grossTotal": "",
+                "receivedDate": "06/19/2014",
+                "invoiceDate": "06/19/2014",
+                "invoiceCalcDueDate": "06/19/2014",
+                "invoiceDueDate": "08/19/2014", 
+                "comments": [
+                    {
+                        "comments": "This is a Regular Invoice comment",
+                        "createdBy": "",
+                        "createdDate": ""
+                    }
+                ],
+                "invoiceDocuments": [
+                    {
+                        "fileName": "file.csv",
+                        "location": "/path"
+                    }
+                ],
+                "invoiceLines": [
+                    {
+                        "country": "DNK",
+                        "fiscalPeriod": "201306",
+                        "periodType": "Q",
+                        "contentGrpId": "1",
+                        "contentGrpName": "Music",
+                        "lineAmount": "2000",
+                        "ccidFileName": "detailFileNameFromIcsv.DAT",
+                        "lineType": "",
+                         "errors": [
+                            {
+                                "status": "",
+                                "errorMap": [
+                                    {
+                                        
+                                    }   
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "errors": [
+                    {
+                        "status": "",
+                        "errorMap": [
+                            {
+                                
+                            }
+                        ]
+                    }
+                ]
+            },
+                {
+        "serviceTypeId": "1",
+                "invoiceNumber": "inv2503",
+                "invoiceTypeId": "1",
+                "entityId": "17",
+                "regionId": "2",
+                "entityName": "NCB",
+                "invoiceCcy": "EUR",
+                "fxRate": 1,
+                "notes": "Notes from licensors",
+                "invoiceAmount": "2000",
+                "tax": "56",
+                "grossTotal": "",
+                "receivedDate": "06/19/2014",
+                "invoiceDate": "06/19/2014",
+                "invoiceCalcDueDate": "06/19/2014",
+                "invoiceDueDate": "08/19/2014", 
+                "comments": [
+                    {
+                        "comments": "This is a Regular Invoice comment",
+                        "createdBy": "",
+                        "createdDate": ""
+                    }
+                ],
+                "invoiceDocuments": [
+                    {
+                        "fileName": "file.csv",
+                        "location": "/path"
+                    }
+                ],
+                "invoiceLines": [
+                    {
+                        "country": "DNK",
+                        "fiscalPeriod": "201306",
+                        "periodType": "Q",
+                        "contentGrpId": "1",
+                        "contentGrpName": "Music",
+                        "lineAmount": "2000",
+                        "ccidFileName": "detailFileNameFromIcsv.DAT",
+                        "lineType": "",
+                         "errors": [
+                            {
+                                "status": "",
+                                "errorMap": [
+                                    {
+                                        
+                                    }   
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "errors": [
+                    {
+                        "status": "",
+                        "errorMap": [
+                            {
+                                
+                            }
+                        ]
+                    }
+                ]
+            },
+                {
+        "serviceTypeId": "1",
+                "invoiceNumber": "inv2503",
+                "invoiceTypeId": "1",
+                "entityId": "17",
+                "regionId": "2",
+                "entityName": "NCB",
+                "invoiceCcy": "EUR",
+                "fxRate": 1,
+                "notes": "Notes from licensors",
+                "invoiceAmount": "2000",
+                "tax": "56",
+                "grossTotal": "",
+                "receivedDate": "06/19/2014",
+                "invoiceDate": "06/19/2014",
+                "invoiceCalcDueDate": "06/19/2014",
+                "invoiceDueDate": "08/19/2014", 
+                "comments": [
+                    {
+                        "comments": "This is a Regular Invoice comment",
+                        "createdBy": "",
+                        "createdDate": ""
+                    }
+                ],
+                "invoiceDocuments": [
+                    {
+                        "fileName": "file.csv",
+                        "location": "/path"
+                    }
+                ],
+                "invoiceLines": [
+                    {
+                        "country": "DNK",
+                        "fiscalPeriod": "201306",
+                        "periodType": "Q",
+                        "contentGrpId": "1",
+                        "contentGrpName": "Music",
+                        "lineAmount": "2000",
+                        "ccidFileName": "detailFileNameFromIcsv.DAT",
+                        "lineType": "",
+                         "errors": [
+                            {
+                                "status": "",
+                                "errorMap": [
+                                    {
+                                        
+                                    }   
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "errors": [
+                    {
+                        "status": "",
+                        "errorMap": [
+                            {
+                                
+                            }
+                        ]
+                    }
+                ]
+            },
+                {
+        "serviceTypeId": "1",
+                "invoiceNumber": "inv2503",
+                "invoiceTypeId": "1",
+                "entityId": "2",
+                "regionId": "2",
+                "entityName": "NCB",
+                "invoiceCcy": "EUR",
+                "fxRate": 1,
+                "notes": "Notes from licensors",
+                "invoiceAmount": "2000",
+                "tax": "56",
+                "grossTotal": "",
+                "receivedDate": "06/19/2014",
+                "invoiceDate": "06/19/2014",
+                "invoiceCalcDueDate": "06/19/2014",
+                "invoiceDueDate": "08/19/2014", 
+                "comments": [
+                    {
+                        "comments": "This is a Regular Invoice comment",
+                        "createdBy": "",
+                        "createdDate": ""
+                    }
+                ],
+                "invoiceDocuments": [
+                    {
+                        "fileName": "file.csv",
+                        "location": "/path"
+                    }
+                ],
+                "invoiceLines": [
+                    {
+                        "country": "DNK",
+                        "fiscalPeriod": "201306",
+                        "periodType": "Q",
+                        "contentGrpId": "1",
+                        "contentGrpName": "Music",
+                        "lineAmount": "2000",
+                        "ccidFileName": "detailFileNameFromIcsv.DAT",
+                        "lineType": "",
+                         "errors": [
+                            {
+                                "status": "",
+                                "errorMap": [
+                                    {
+                                        
+                                    }   
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "errors": [
+                    {
+                        "status": "",
+                        "errorMap": [
+                            {
+                                
+                            }
+                        ]
+                    }
+                ]
+            },
+                {
+        "serviceTypeId": "1",
+                "invoiceNumber": "inv2503",
+                "invoiceTypeId": "1",
+                "entityId": "2",
+                "regionId": "2",
+                "entityName": "NCB",
+                "invoiceCcy": "EUR",
+                "fxRate": 1,
+                "notes": "Notes from licensors",
+                "invoiceAmount": "2000",
+                "tax": "56",
+                "grossTotal": "",
+                "receivedDate": "06/19/2014",
+                "invoiceDate": "06/19/2014",
+                "invoiceCalcDueDate": "06/19/2014",
+                "invoiceDueDate": "08/19/2014", 
+                "comments": [
+                    {
+                        "comments": "This is a Regular Invoice comment",
+                        "createdBy": "",
+                        "createdDate": ""
+                    }
+                ],
+                "invoiceDocuments": [
+                    {
+                        "fileName": "file.csv",
+                        "location": "/path"
+                    }
+                ],
+                "invoiceLines": [
+                    {
+                        "country": "DNK",
+                        "fiscalPeriod": "201306",
+                        "periodType": "Q",
+                        "contentGrpId": "1",
+                        "contentGrpName": "Music",
+                        "lineAmount": "2000",
+                        "ccidFileName": "detailFileNameFromIcsv.DAT",
+                        "lineType": "",
+                         "errors": [
+                            {
+                                "status": "",
+                                "errorMap": [
+                                    {
+                                        
+                                    }   
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "errors": [
+                    {
+                        "status": "",
+                        "errorMap": [
+                            {
+                                
+                            }
+                        ]
+                    }
+                ]
+            },
+                {
+        "serviceTypeId": "1",
+                "invoiceNumber": "inv2503",
+                "invoiceTypeId": "1",
+                "entityId": "2",
+                "regionId": "2",
+                "entityName": "NCB",
+                "invoiceCcy": "EUR",
+                "fxRate": 1,
+                "notes": "Notes from licensors",
+                "invoiceAmount": "2000",
+                "tax": "56",
+                "grossTotal": "",
+                "receivedDate": "06/19/2014",
+                "invoiceDate": "06/19/2014",
+                "invoiceCalcDueDate": "06/19/2014",
+                "invoiceDueDate": "08/19/2014", 
+                "comments": [
+                    {
+                        "comments": "This is a Regular Invoice comment",
+                        "createdBy": "",
+                        "createdDate": ""
+                    }
+                ],
+                "invoiceDocuments": [
+                    {
+                        "fileName": "file.csv",
+                        "location": "/path"
+                    }
+                ],
+                "invoiceLines": [
+                    {
+                        "country": "DNK",
+                        "fiscalPeriod": "201306",
+                        "periodType": "Q",
+                        "contentGrpId": "1",
+                        "contentGrpName": "Music",
+                        "lineAmount": "2000",
+                        "ccidFileName": "detailFileNameFromIcsv.DAT",
+                        "lineType": "",
+                         "errors": [
+                            {
+                                "status": "",
+                                "errorMap": [
+                                    {
+                                        
+                                    }   
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "errors": [
+                    {
+                        "status": "",
+                        "errorMap": [
+                            {
+                                
+                            }
+                        ]
+                    }
+                ]
+            },
+                {
+        "serviceTypeId": "1",
+                "invoiceNumber": "inv2503",
+                "invoiceTypeId": "1",
+                "entityId": "2",
+                "regionId": "2",
+                "entityName": "NCB",
+                "invoiceCcy": "EUR",
+                "fxRate": 1,
+                "notes": "Notes from licensors",
+                "invoiceAmount": "2000",
+                "tax": "56",
+                "grossTotal": "",
+                "receivedDate": "06/19/2014",
+                "invoiceDate": "06/19/2014",
+                "invoiceCalcDueDate": "06/19/2014",
+                "invoiceDueDate": "08/19/2014", 
+                "comments": [
+                    {
+                        "comments": "This is a Regular Invoice comment",
+                        "createdBy": "",
+                        "createdDate": ""
+                    }
+                ],
+                "invoiceDocuments": [
+                    {
+                        "fileName": "file.csv",
+                        "location": "/path"
+                    }
+                ],
+                "invoiceLines": [
+                    {
+                        "country": "DNK",
+                        "fiscalPeriod": "201306",
+                        "periodType": "Q",
+                        "contentGrpId": "1",
+                        "contentGrpName": "Music",
+                        "lineAmount": "2000",
+                        "ccidFileName": "detailFileNameFromIcsv.DAT",
+                        "lineType": "",
+                         "errors": [
+                            {
+                                "status": "",
+                                "errorMap": [
+                                    {
+                                        
+                                    }   
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "errors": [
+                    {
+                        "status": "",
+                        "errorMap": [
+                            {
+                                
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]
