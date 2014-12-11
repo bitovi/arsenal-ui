@@ -8,6 +8,7 @@ import gridtemplate from './gridtemplate.stache!';
 import stache from 'can/view/stache/';
 
 import UserReq from 'utils/request/';
+import periodWidgetHelper from 'utils/periodWidgetHelpers';
 import StatusCodes from 'models/common/statuscodes/';
 import GetAllInvoices from 'models/getAllInvoices/';
 import Invoice from 'models/invoice/';
@@ -304,7 +305,7 @@ var page = Component.extend({
             }
 
           //console.log("gridData is "+JSON.stringify(gridData));
-          console.log("Footer is "+JSON.stringify(gridData.footer));
+          //console.log("Footer is "+JSON.stringify(gridData.footer));
           var rows = new can.List(gridData.data);
           var footerrows = new can.List(gridData.footer);
           $('#invoiceGrid').html(stache('<rn-grid-invoice rows="{rows}" footerrows="{footerrows}" emptyrows="{emptyrows}"></rn-grid-invoice>')({rows, footerrows, emptyrows:false}));
@@ -602,12 +603,12 @@ var page = Component.extend({
               if(typeof(periodFrom)=="undefined")
                 invSearchRequest.searchRequest["periodFrom"] = "";
               else
-                invSearchRequest.searchRequest["periodFrom"] = periodFrom;
+                invSearchRequest.searchRequest["periodFrom"] = periodWidgetHelper.getFiscalPeriod(periodFrom);
 
               if(typeof(periodTo)=="undefined")
                 invSearchRequest.searchRequest["periodTo"] = "";
               else
-                invSearchRequest.searchRequest["periodTo"] = periodTo;
+                invSearchRequest.searchRequest["periodTo"] = periodWidgetHelper.getFiscalPeriod(periodTo);
 
               if(typeof(serTypeId)=="undefined")
                 invSearchRequest.searchRequest["serviceTypeId"] = "";
