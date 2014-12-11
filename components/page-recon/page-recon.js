@@ -6,17 +6,13 @@ import Stats from 'models/refreshstats/refreshstats';
 import ReconStats from 'components/recon-stats/';
 import RinsCommon from 'utils/';
 import UserReq from 'utils/request/';
-
 import reconGrid from  'components/recon-grid/';
 import ingestedColumns from './column-sets/ingest-columns';
 import detailsColumns from './column-sets/details-columns';
-
-import route from 'can/route/';
-
 import Recon from 'models/recon/';
 
 
-
+//Navigation bar definitions
 var tabNameObj = {
     ingest:{
       name:"Ingested",
@@ -52,7 +48,8 @@ var page = Component.extend({
 
     //bottomgrid
     refreshStatsReq:undefined,
-    isBottomGridRefresh:true
+    isBottomGridRefresh:true,
+    isGlobalSearch:undefined
 
   },
   helpers: {
@@ -70,12 +67,15 @@ var page = Component.extend({
   },
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
+    this.scope.attr("isGlobalSearch",this.scope.appstate.attr("globalSearch"));
     fetchReconIngest(this.scope);
     fetchReconDetails(this.scope);
+
   },
   events:{
     'shown.bs.tab': function(el, ev) {
       this.scope.attr("tabSelected", $('.nav-tabs .active').text());
+      this.scope.appstate.attr("renderGlobalSearch",true);
     },
     ".downloadLink.badLines click": function(item, el, ev){
       var self=this.scope;
@@ -123,10 +123,14 @@ var page = Component.extend({
       //nothing to do
     },
     '.btn-confirm-ok click': function(){
-
       $('#rejectModal').modal('hide');
       processRejectIngestRequest(this.scope,"reject");
-
+    },
+    '{scope.appstate} change': function() {
+      if(this.scope.isGlobalSearch != this.scope.appstate.attr('globalSearch')){
+        this.scope.attr("isGlobalSearch",this.scope.appstate.attr("globalSearch"));
+        fetchReconIngest(this.scope);
+      }
     }
   }
 });
@@ -200,6 +204,8 @@ var processRejectIngestRequest = function(scope,requestType){
     }
 }
 
+
+/**/
 var fetchReconIngest = function(scope){
 
   var searchRequestObj = {
@@ -208,27 +214,18 @@ var fetchReconIngest = function(scope){
     }
   };
 
-  // var periodFrom = appstate.attr('periodFrom');
-  // var periodTo = appstate.attr('periodTo');
-  // var serTypeId = appstate.attr('storeType');
-  // var regId = appstate.attr('region');
-  // var countryId = appstate.attr()['country'];
-  // var licId = appstate.attr()['licensor'];
-  // var contGrpId = appstate.attr()['contentType'];
-
-//  scope.attr("refreshStatsReq",searchRequestObj);
-
   Recon.findOne(UserReq.formRequestDetails(searchRequestObj),function(data){
     scope.ingestList.headerRows.replace(data.reconStatsDetails);
-    var list = {
+
+    var footerLine= {
       "__isChild": true,
       "ccy":"EUR",
-      "pubfee":"24",
-      "reconAmt":"24",
-      "liDispAmt":"24",
-      "copConAmt":"24",
-      "unMatchedAmt":"324",
-      "badLines":"324",
+      "pubfee":data.summary.totalPubFee,
+      "reconAmt":data.summary.totalRecon,
+      "liDispAmt":data.summary.totalLi,
+      "copConAmt":data.summary.totalUnMatched,
+      "unMatchedAmt":data.summary.totalUnMatched,
+      "badLines":data.summary.totalBadLines,
       "ccidId":"",
       "entityName":"",
       "countryId":"",
@@ -237,30 +234,10 @@ var fetchReconIngest = function(scope){
       "ingstdDate":"",
       "invFileName":"",
       "status":"",
-      "toggleCheck":"N"
+      "isFooterRow":true
     };
 
-    var aList =[];
-    aList.push(list);
-    aList.push(list);
-
-    scope.ingestList.footerRows.replace([]);
-    var first = true;
-
-    can.each(aList,
-      function( value, index ) {
-        if(first){
-          console.log(" Im "+first);
-          value.__isChild = false;
-          value.ccidId="Total in Rows";
-          first = false;
-        }else{
-          value.__isChild = true;
-          value.ccidId="";
-        }
-        scope.ingestList.footerRows.push(value);
-      }
-    );
+    scope.ingestList.footerRows.replace(footerLine);
 
 
   },function(xhr){
@@ -275,64 +252,37 @@ var fetchReconDetails = function(scope){
       type:"INCOMING"
     }
   };
-  // var periodFrom = appstate.attr('periodFrom');
-  // var periodTo = appstate.attr('periodTo');
-  // var serTypeId = appstate.attr('storeType');
-  // var regId = appstate.attr('region');
-  // var countryId = appstate.attr()['country'];
-  // var licId = appstate.attr()['licensor'];
-  // var contGrpId = appstate.attr()['contentType'];
-  //
-  //console.log('The request is :'+JSON.stringify(onAccountrequest));
 
   Recon.findOne(UserReq.formRequestDetails(searchRequestObj),function(data){
     scope.incomingDetails.headerRows.replace(data.reconStatsDetails);
-    var list = {
+    var footerLine= {
       "__isChild": true,
       "ccy":"EUR",
-      "pubfee":"24",
-      "reconAmt":"24",
-      "liDispAmt":"24",
-      "copConAmt":"24",
-      "unMatchedAmt":"324",
-      "badLines":"324",
+      "pubfee":data.summary.totalPubFee,
+      "reconAmt":data.summary.totalRecon,
+      "liDispAmt":data.summary.totalLi,
+      "copConAmt":data.summary.totalUnMatched,
+      "unMatchedAmt":data.summary.totalUnMatched,
+      "badLines":data.summary.totalBadLines,
       "ccidId":"",
       "entityName":"",
       "countryId":"",
       "contType":"",
       "fiscalPeriod":"",
-      "ingstdDate":"",
+      "rcvdDate":"",
       "invFileName":"",
       "status":"",
-      "rcvdDate":"",
-      "toggleCheck":"N"
+      "isFooterRow":true
     };
-
-    var aList =[];
-    aList.push(list);
-    aList.push(list);
-
-    scope.incomingDetails.footerRows.replace([]);
-    var first = true;
-
-    can.each(aList,
-      function( value, index ) {
-        if(first){
-          value.__isChild = false;
-          value.ccidId="Total in Rows";
-          first = false;
-        }else{
-          value.__isChild = true;
-          value.ccidId="";
-        }
-        scope.incomingDetails.footerRows.push(value);
-      }
-    );
-
+    scope.incomingDetails.footerRows.replace(footerLine);
   },function(xhr){
     console.error("Error while loading: fetchReconDetails"+xhr);
   });
 }
+
+
+
+
 
 var refreshChekboxSelection = function(el,scope){
   var row = el.closest('tr').data('row').row;
