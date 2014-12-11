@@ -1051,7 +1051,7 @@ var page = Component.extend({
 								  	 	if(!isFinite(percent))
 								  	 	return ""
 								  	 	else
-								  	 	return percent.toFixed(2); //Round to Two decimal only
+								  	 	return percent.toFixed(2)+"%"; //Round to Two decimal only
 								  	},
 								  	isAdhoc: function(){
 								  	 	if(this.attr("invoicetypeSelect") == "2"){  /*Adhoc*/
