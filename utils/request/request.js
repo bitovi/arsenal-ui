@@ -4,7 +4,9 @@ var requestHelper = {
   formRequestDetails:function(params){
     var userRequest = {};
     var date = new Date();
-    userRequest = params ;
+    if(params != null || params != undefined){
+      userRequest = params ;
+    }
     userRequest["prsId"] = "2002005722";
     userRequest["appId"] = "1179";
     userRequest["secretKey"] = "f4166789-30bb-4e12-9973-a76376745096";

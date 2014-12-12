@@ -35,8 +35,8 @@ var icsvsummary = Component.extend({
 
            icsvmap.delegate("invoiceData","set", function(ev, newVal){
             //console.log('Inside delegate');
-    	  var summaryDetails = icsvmap.invoiceData.summary.attr();
-          icsvmap.invoiceData.summary.attr();
+    	  var summaryDetails = icsvmap.invoiceData.iCSVSummary.attr();
+          //icsvmap.invoiceData.summary.attr();
     	  
     	  //console.log("Value---"+JSON.stringify(summaryDetails));
     	  
