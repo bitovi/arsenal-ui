@@ -21,7 +21,7 @@
         <div class="col-sm-4">
           <label for="forEntity" class="col-sm-4 control-label">Licensor: </label>
           <div class="col-sm-6">
-            <select class="form-control"   can-value='pageState.entityCountryDetails.entityCountry.entityId'>
+            <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.entityId'>
               {{#each entities}}
               <optgroup label="{{entityType}}">
                 {{#each entities}}
@@ -42,7 +42,7 @@
               </select>
             </div>
             <div class="col-sm-2 ">
-              <button id="fetchDetailsBtn" class="btn btn-primary btn-custom-small">Fetch</button>
+              <button class="btn btn-primary btn-custom-small" id="fetchDetailsBtn">Fetch</button>
             </div>
           </div>
 
@@ -112,7 +112,7 @@
                 <div class="col-sm-6 requiredBar">
                   <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelVersionNo' name="entityPricingModelId">
                     {{#each pricingModels}}
-                    <option value="{{id}}">{{value}}</option>
+                    <option value="{{modelName}}">{{modelName}}</option>     
                     {{/each}}
                   </select>
                 </div>
@@ -200,13 +200,13 @@
               <div class="col-sm-1"></div>
               <div class="col-sm-11">
                 <div class="panel panel-default panel-sm">
-                  <div class="panel-heading clickable">
+                  <div class="panel-heading">
                     <h4 class="panel-title">
-                      <a data-toggle="collapse" data-parent="#accordion" href="#grid-collapse">
-                        <i class="icon-large icon-circle-arrow-right"></i> Revision History
+                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                        <span class="glyphicon glyphicon-minus"></span> Revision History
                       </a></h4>
                     </div>
-                    <div id="grid-collapse" class="panel-collapse collapse in">
+                    <div id="collapseOne" class="panel-collapse collapse in">
                       <div id="grid-revision-history" style="max-height: 200px; overflow-y:scroll;"></div>
                     </div>
 

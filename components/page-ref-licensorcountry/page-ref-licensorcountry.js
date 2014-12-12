@@ -16,7 +16,7 @@ import Licensor from 'models/common/licensor/';
 import Country from 'models/common/country/';
 import Currency from 'models/common/currency/';
 import CountryLicensor from 'models/refdata/countryLicensor/';
-import PricingModels from 'models/common/pricingmodels/';
+import PricingModels from 'models/pricing-models/';
 import PricingModelVersions from 'models/common/pricingModelVersions/';
 import PricingMethods from 'models/common/pricingMethods/';
 import periodCalendar from 'components/period-calendar/';
@@ -62,21 +62,21 @@ var page = Component.extend({
     var self = this;
     var requestObj = {};
 
-
+    var licId ="";
 
     Promise.all([
       Licensor.findAll(UserReq.formRequestDetails(requestObj)),
-      PricingModels.findAll(UserReq.formRequestDetails(requestObj)),
+      PricingModels.findOne(UserReq.formRequestDetails( {reqType:'modeltype'})),
       PricingMethods.findAll(UserReq.formRequestDetails(requestObj))
       ]).then(function(values) {
         self.scope.attr("entities").replace(values[0]["entities"][0]);
-        self.scope.attr("pricingModels").replace(values[1]);
+        licId = self.scope.attr("entities")[0].entities[0].id;
+        self.scope.attr("pricingModels").replace(values[1].modelTypes);
         self.scope.attr("pricingMethods").replace(values[2]);
       }).then(function(values) {
 
-        var licId = self.scope.attr("entities")[0].id;
         requestObj = {licensorId:licId};
-
+        self.scope.currencies.replace(Currency.findAll(UserReq.formRequestDetails(requestObj)));
 
         Promise.all([
           Country.findAll(UserReq.formRequestDetails(requestObj))
@@ -93,7 +93,6 @@ var page = Component.extend({
 
       },
       helpers:{
-
         setHeight: function(){
           var vph = $(window).height()-180;
           return 'Style="height:'+vph+'px"';
@@ -104,9 +103,7 @@ var page = Component.extend({
           }else{
             return '';
           }
-
         }
-
       },
       events: {
 
@@ -223,7 +220,7 @@ var page = Component.extend({
           this.scope.currencies.replace(Currency.findAll(UserReq.formRequestDetails(requestObj)));
 
           // this.scope.pageState.entityCountryDetails.attr("entityId",4);
-          // console.log(this.scope.pageState.entityCountsryDetails.attr("entityId"));
+          //console.log(self.scope.pageState.entityCountryDetails.entityCountry.entityId);
 
         },
         '{scope} pageState.entityCountryDetails.pricingModelVersionNo': function() {
@@ -249,20 +246,19 @@ var page = Component.extend({
           '#fetchDetailsBtn click':function(){
 
             //console.log(this.scope.pageState.entityCountryDetails.entityCountry.attr("entityId"));
+
             // console.log(this.scope.pageState.entityCountryDetails.entityCountry.attr("countryId"));
 
             var requestObj  = {
               entityCountryDetails:{
                 entityCountry:{
-                  entityId:this.scope.pageState.entityCountryDetails.entityCountry.attr("entityId"),
+                  entityId:this.scope.pageState.entityCountryDetails.entityCountry.entityId,
                   countryId:this.scope.pageState.entityCountryDetails.entityCountry.attr("countryId")
                 }
               }
             }
             var self = this.scope;
             CountryLicensor.findOne(UserReq.formRequestDetails(requestObj),function(data){
-
-
               reportConfigurationList.replace(data.entityCountryDetails.reportConfigurationList);
 
 
@@ -307,16 +303,13 @@ var page = Component.extend({
           '#submitBtn click': function(){
             var entityCountry_data  = this.scope.pageState.entityCountryDetails.attr("entityCountry")._data;
 
-
             if(entityCountry_data.laEnabled){
               entityCountry_data.laEnabled = "Y";
             }else{
               entityCountry_data.laEnabled = "N";
             }
+
             entityCountry_data.status = "N";// New state
-
-
-
             var reportConfigurationListObj =  [];
 
             can.each(reportConfigurationList,
@@ -324,9 +317,6 @@ var page = Component.extend({
                 reportConfigurationListObj.push(value._data);
               }
             );
-
-
-            // reportConfigurationList =
 
             var requestObj  = {
               entityCountryDetails  :{
@@ -360,13 +350,18 @@ var page = Component.extend({
           },
           '{selectedperiod} change':function(val){
             var period = periodWidgetHelper.getFiscalPeriod(val[0].value);
-            console.log(period);
             if(val[0].which=='periodFrom'){
               this.scope.pageState.entityCountryDetails.entityCountry.validFrom = period;
             }else{
               this.scope.pageState.entityCountryDetails.entityCountry.validTo = period;
             }
 
+          },
+          'shown.bs.collapse':function(ele, event){
+            $(ele).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+          },
+          'hidden.bs.collapse':function(ele, event){
+            $(ele).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
           }
         }
       });
@@ -398,10 +393,9 @@ var page = Component.extend({
           if(from[1].slice(-2) > to[1].slice(-2)) showFlg=true;
           if(from[1].slice(-2) >= to[1].slice(-2) && from[0].charAt(0)!=to[0].charAt(0) )showFlg=true;
           if(from[1].slice(-2) >= to[1].slice(-2) && parseInt(from[0].substring(1,3)) > parseInt(to[0].substring(1,3)))showFlg=true;
-
         }
         if(showFlg==true){ $('.period-invalid').show(); return false;}else {showFlg=false; $('.period-invalid').hide();}
-      }
+    }
 
 
-      export default page;
+export default page;
