@@ -153,11 +153,9 @@ var GlobalParameterBar = Component.extend({
       self.scope.contentTypes.replace(values[4]["contentTypes"]);
       //self.scope.periodFrom.replace(values[5]);
       //self.scope.periodTo.replace(values[6]);
-      var regionInfo = {"id":"2","value":"Europe"};
-      self.scope.appstate.attr('region', regionInfo);
+      
 
         setTimeout(function(){
-          document.getElementById("regionsFilter").selectedIndex = 2;
 
 
           $("#countriesFilter").multiselect({

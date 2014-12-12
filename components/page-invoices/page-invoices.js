@@ -100,9 +100,11 @@ var page = Component.extend({
     localGlobalSearch:undefined,
     allInvoicesMap:[],
     checkedRows: [],
+    unDeletedInvoices: [],
     sortColumns:[],
     tokenInput: [],
     disableBundleName:undefined,
+    getPaymentBundlesNames: undefined,
     newpaymentbundlenamereq:undefined,
     refreshTokenInput: function(val, type){
       //console.log("val is "+JSON.stringify(val));
@@ -130,32 +132,25 @@ var page = Component.extend({
   },
   init: function(){
     //console.log("inside init");
-    this.scope.appstate.attr("renderGlobalSearch",true);
+      this.scope.appstate.attr("renderGlobalSearch",true);
 
   },
   helpers: {
         createPBRequest: function(){
-          var bundleNamesRequest = {"bundleSearch":{}};
-          console.log("appstate "+JSON.stringify(this.appstate));
-          var serTypeId = this.appstate.attr('storeType');
-          var regId = this.appstate.attr('region');
+          var self = this;
+          /* Load the new Payment Bundle Names based on 'Invoice Type' */
+          if(this.attr("getPaymentBundlesNames")==undefined){
+            var bundleNamesRequest = {"bundleSearch":{}};
 
-          //bundleNamesRequest["mode"] = "Get"
+              bundleNamesRequest.bundleSearch["regionId"] = "";
 
-          if(typeof(serTypeId)!="undefined")
-            bundleNamesRequest.bundleSearch["serviceTypeId"] = serTypeId['id'];
+              bundleNamesRequest.bundleSearch["type"] = "REGULAR_INV";
 
-          if(typeof(regId)=="undefined")
-            bundleNamesRequest.bundleSearch["region"] = "";
-          else
-            bundleNamesRequest.bundleSearch["region"] = regId['value'];
-
-          bundleNamesRequest.bundleSearch["type"] = "invoice";
-
-
-          //console.log("GetBundleNamesRequest is "+JSON.stringify(bundleNamesRequest));
-
-          return JSON.stringify(bundleNamesRequest);
+              //console.log("GetBundleNamesRequest is "+JSON.stringify(bundleNamesRequest));
+              self.attr('getPaymentBundlesNames', JSON.stringify(bundleNamesRequest)); 
+              /*Ends Here */
+            }
+          return self.attr("getPaymentBundlesNames");
         },
         newPBnameRequest: function(){
           return this.attr("newpaymentbundlenamereq");
@@ -191,13 +186,7 @@ var page = Component.extend({
         /* Bundle Names is selectable only when any row is selected */
         $('#paymentBundleNames').prop('disabled', 'disabled');
 
-         /* The below code calls {scope.appstate} change event that gets the new data for grid*/
-          /* All the neccessary parameters will be set in that event */
-         if(self.scope.appstate.attr('globalSearch')){
-            self.scope.appstate.attr('globalSearch', false);
-          }else{
-            self.scope.appstate.attr('globalSearch', true);
-          }
+        $('#invoiceGrid').html(stache('<rn-grid-invoice emptyrows="{emptyrows}"></rn-grid-invoice>')({emptyrows:true}));
     },
     "{tokenInput} change": function(){
           var self= this;
@@ -211,10 +200,11 @@ var page = Component.extend({
           }
     },
     "{allInvoicesMap} change": function() {
-        this.scope.appstate.attr("renderGlobalSearch",true);
+        
         var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
         var footerData = this.scope.attr().allInvoicesMap[0].footer;
-        console.log("dsada "+JSON.stringify(invoiceData));
+        //console.log("Status code "+JSON.stringify(StatusCodes));
+        //console.log("dsada "+JSON.stringify(invoiceData));
         var gridData = {"data":[],"footer":[]};
         var currencyList = {};
         if(invoiceData!=null && invoiceData.length!=0){
@@ -232,9 +222,11 @@ var page = Component.extend({
               invTemp["invoiceAmt"] = (invoiceData[i]["invoiceAmount"]==null)?0:parseFloat(invoiceData[i]["invoiceAmount"]);
               invTemp["dueDate"] = (invoiceData[i]["invoiceDueDate"]==null)?"":invoiceData[i]["invoiceDueDate"];
               invTemp["currency"] = (invoiceData[i]["invoiceCcy"]==null)?"":invoiceData[i]["invoiceCcy"];
-              invTemp["status"] = (invoiceData[i]["status"]==null)?"":StatusCodes[invoiceData[i]["status"]];
+              invTemp["statusId"] = (invoiceData[i]["status"]==null || invoiceData[i]["status"]==-1)?"":invoiceData[i]["status"];
+              invTemp["status"] = (invoiceData[i]["status"]==null || invoiceData[i]["status"]==-1)?"":StatusCodes[invoiceData[i]["status"]];
+              invTemp["paymentState"] = (invoiceData[i]["paymentState"]==null || invoiceData[i]["paymentState"]==-1)?"":invoiceData[i]["paymentState"];
               invTemp["bundleName"] = (invoiceData[i]["bundleName"]==null || invoiceData[i]["bundleName"]=="--Select--")?"":invoiceData[i]["bundleName"];
-              invTemp["comments"] = (invoiceData[i]["comments"]==null || invoiceData[i]["comments"].length==0)?"":invoiceData[i]["comments"][0]["comments"];
+              invTemp["comments"] = (invoiceData[i]["notes"]==null || invoiceData[i]["notes"].length==0)?"":invoiceData[i]["notes"];
 
               if(currencyList[invTemp["currency"]]!=undefined){
                 currencyList[invTemp["currency"]] = parseFloat(currencyList[invTemp["currency"]])+parseFloat(invTemp["invoiceAmt"]);
@@ -262,7 +254,9 @@ var page = Component.extend({
                   invLITemp["invoiceAmt"] = (invoiceLineItems[j]["lineAmount"]==null)?0:invoiceLineItems[j]["lineAmount"];
                   invLITemp["dueDate"] = "";
                   invLITemp["currency"] = invTemp["currency"];
+                  invLITemp["statusId"] = "";
                   invLITemp["status"] = "";
+                  invLITemp["paymentState"] = "";
                   invLITemp["bundleName"] = "";
                   invLITemp["comments"] = "";
                   contentTypeArr.push(invLITemp["contentType"]);
@@ -323,16 +317,24 @@ var page = Component.extend({
     ".rn-grid>tbody>tr td dblclick": function(item, el, ev){
           //var invoiceid = el.closest('tr').data('row').row.id;
           var self=this;
+          var flag=false;
           var row = item.closest('tr').data('row').row;
           var invoiceid = row.invId;
-          var status = row.status;
+          var statusId = row.statusId;
+          var paymentState = row.paymentState;
           var invoiceno = row.invoiceNum;
-          //console.log("invoice id is "+JSON.stringify(invoiceid));
-          if(status=="UNBUNDLED" || status=="PENDING_WITH_BM (Bundled)" || status=="BM_REJECTED"){
-            invoicemap.attr('invoiceid',invoiceid);
-            self.scope.appstate.attr('page','create-invoice');
-            
-          } else {
+          //console.log("row is "+JSON.stringify(row));
+
+          /* An invoice can be Edited only if it satisfies the below criteria */
+          if(statusId==0){
+            if(paymentState==0 || paymentState==1 || paymentState==9){
+              invoicemap.attr('invoiceid',invoiceid);
+              flag=true;
+              self.scope.appstate.attr('page','create-invoice');
+            } 
+          } 
+
+          if(flag==false) {
             $("#messageDiv").html("<label class='errorMessage'>"+invoiceno+" : Cannot edit the invoice </label>");
             $("#messageDiv").show();
             setTimeout(function(){
@@ -359,11 +361,46 @@ var page = Component.extend({
       var self = this;
       var val = parseInt($(item[0]).attr("value"));
       var row = item.closest('tr').data('row').row;
+      var invoiceType = row.invoiceType;
 
+      /* An invoice can be deleted only if it satisfies the below criteria */
+      var flag=false;
+      var statusId = row.statusId;
+      var paymentState = row.paymentState;
+      var invoiceno = row.invoiceNum;
+      //console.log("row is "+JSON.stringify(row));
+      if(statusId==0){
+        if(paymentState==0 || paymentState==9){
+          flag=true; // Allow deleteing the invoice
+        } 
+      } 
+ 
       if($(item[0]).is(":checked")){
           row.attr('__isChecked', true);
           self.scope.attr('checkedRows').push(val);
+          if(flag==false){
+            self.scope.attr('unDeletedInvoices').push(invoiceno);
+          }
 
+          /* Load the new Payment Bundle Names based on 'Invoice Type' */
+           var bundleNamesRequest = {"bundleSearch":{}};
+            //console.log("appstate "+JSON.stringify(this.appstate));
+            var serTypeId = self.scope.appstate.attr('storeType');
+            var regId = self.scope.appstate.attr('region');
+
+            if(typeof(serTypeId)!="undefined")
+              bundleNamesRequest.bundleSearch["serviceTypeId"] = serTypeId['id'];
+
+            if(typeof(regId)=="undefined")
+              bundleNamesRequest.bundleSearch["regionId"] = "";
+            else
+              bundleNamesRequest.bundleSearch["regionId"] = regId['id'];
+
+              bundleNamesRequest.bundleSearch["type"] = invoiceType;
+
+              console.log("GetBundleNamesRequest is "+JSON.stringify(bundleNamesRequest));
+              self.scope.attr('getPaymentBundlesNames', JSON.stringify(bundleNamesRequest)); 
+              /*Ends Here */
       } else {
           self.scope.attr('checkedRows').each(function(value, key) {
               row.attr('__isChecked', false);
@@ -372,8 +409,16 @@ var page = Component.extend({
                   self.scope.attr('checkedRows').splice(i,1);
               }
           });
+
+          self.scope.attr('unDeletedInvoices').each(function(value, key) {
+              if(invoiceno == value){
+                  var j = self.scope.attr('unDeletedInvoices').indexOf(value);
+                  self.scope.attr('unDeletedInvoices').splice(j,1);
+              }
+          });
       }
       //console.log("Checked rows: "+JSON.stringify(self.scope.attr('checkedRows')));
+      //console.log("unDeleted Invoices: "+JSON.stringify(self.scope.attr('unDeletedInvoices')));
     },
     "{checkedRows} change": function(item,el,ev){
           var self = this;
@@ -445,38 +490,46 @@ var page = Component.extend({
       },
       "#btnDelete click": function(){
           var self=this;
+
           //console.log("selected Invoices are "+ self.scope.checkedRows.attr());
-          var invoiceDelete = {"searchRequest":{}};
-          invoiceDelete.searchRequest.ids = self.scope.checkedRows.attr();
-          console.log("Delete request params are "+JSON.stringify(UserReq.formRequestDetails(invoiceDelete)));
+          var unDeletedInvoices = self.scope.unDeletedInvoices.attr();
+          if(unDeletedInvoices.length > 0){
+            $("#messageDiv").html("<label class='errorMessage'>Invoice Numbers"+unDeletedInvoices.toString()+" : Cannot Delete the invoice </label>");
+            $("#messageDiv").show();
+          } else {
+            $("#messageDiv").hide();
+            var invoiceDelete = {"searchRequest":{}};
+            invoiceDelete.searchRequest.ids = self.scope.checkedRows.attr();
+            console.log("Delete request params are "+JSON.stringify(UserReq.formRequestDetails(invoiceDelete)));
 
-          Invoice.update(UserReq.formRequestDetails(invoiceDelete),"invoiceDelete",function(data){
-            console.log("Delete response is "+JSON.stringify(data));
-            if(data["status"]=="SUCCESS"){
-               $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
-               $("#messageDiv").show();
-               setTimeout(function(){
-                  $("#messageDiv").hide();
-                  self.scope.checkedRows.replace([]);
-                   /* The below calls {scope.appstate} change event that gets the new data for grid*/
-                   if(self.scope.appstate.attr('globalSearch')){
-                      self.scope.appstate.attr('globalSearch', false);
-                    }else{
-                      self.scope.appstate.attr('globalSearch', true);
-                    }
-                },2000);
-            }
-            else{
-              $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-              $("#messageDiv").show();
-              setTimeout(function(){
-                  $("#messageDiv").hide();
-              },2000)
-            }
+            Invoice.update(UserReq.formRequestDetails(invoiceDelete),"invoiceDelete",function(data){
+              console.log("Delete response is "+JSON.stringify(data));
+              if(data["status"]=="SUCCESS"){
+                 $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
+                 $("#messageDiv").show();
+                 setTimeout(function(){
+                    $("#messageDiv").hide();
+                    self.scope.checkedRows.replace([]);
+                     /* The below calls {scope.appstate} change event that gets the new data for grid*/
+                     if(self.scope.appstate.attr('globalSearch')){
+                        self.scope.appstate.attr('globalSearch', false);
+                      }else{
+                        self.scope.appstate.attr('globalSearch', true);
+                      }
+                  },2000);
+              }
+              else{
+                $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                $("#messageDiv").show();
+                setTimeout(function(){
+                    $("#messageDiv").hide();
+                },2000)
+              }
 
-          },function(xhr){
-            console.error("Error while loading: bundleNames"+xhr);
-          });
+            },function(xhr){
+              console.error("Error while loading: bundleNames"+xhr);
+            });
+          }
       },
       "#paymentBundleNames change": function(){
           var self = this;
@@ -484,8 +537,10 @@ var page = Component.extend({
           if(pbval=="createB"){
 
               var regId = self.scope.appstate.attr('region');
+              var periodFrom = self.scope.appstate.attr('periodFrom');
+              var periodTo = self.scope.appstate.attr('periodTo');
               var invoiceData = self.scope.attr().allInvoicesMap[0].invoices;
-              //console.log(JSON.stringify(invoiceData));
+              console.log("dasddddddd"+JSON.stringify(invoiceData));
               //console.log(JSON.stringify(self.scope.checkedRows.attr()));
 
 
@@ -517,12 +572,14 @@ var page = Component.extend({
               var newBundleNameRequest = {"paymentBundle":{}};
               var bundleRequest = {};
 
-              bundleRequest["region"] = regId['value'];
+              bundleRequest["regionId"] = regId['id'];
+              //bundleRequest["periodFrom"] = periodFrom;
+              //bundleRequest["periodTo"] = periodTo;
               bundleRequest["bundleType"] =lineType;
               bundleRequest["bundleDetailsGroup"] =bundleLines;
               newBundleNameRequest["paymentBundle"] = bundleRequest;
               console.log("New Bundle name request is "+JSON.stringify(newBundleNameRequest));
-              self.scope.attr('newpaymentbundlenamereq', newBundleNameRequest);
+              self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
           }
       },
       "#btnSubmit click":function(){
@@ -660,7 +717,7 @@ var page = Component.extend({
 
               console.log("Request are "+JSON.stringify(UserReq.formRequestDetails(invSearchRequest)));
               GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){
-                  console.log("response is "+JSON.stringify(data.attr()));
+                  //console.log("response is "+JSON.stringify(data.attr()));
                   self.scope.allInvoicesMap.replace(data);
 
 
