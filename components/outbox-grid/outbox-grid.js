@@ -3,6 +3,8 @@ import stache from 'can/view/stache/';
 import formats from 'utils/formats';
 import _less from './outbox-grid.less!';
 
+import EmailConfirmModal from 'components/email-confirm-modal/';
+
 var OutboxGrid = Grid.extend({
   tag: 'rn-outbox-grid',
   scope: {
@@ -47,7 +49,11 @@ var OutboxGrid = Grid.extend({
 
   },
   events: {
+    '.remind click': function(el, ev) {
+      var approval = el.closest('tr').data('row').row;
 
+      $(document.body).append(stache('<rn-email-confirm-modal approval="{approval}"></rn-email-confirm-modal>')({approval}));
+    }
   }
 });
 
