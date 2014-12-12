@@ -84,7 +84,7 @@ var GlobalParameterBar = Component.extend({
           self.scope.attr('errorMessage',' No data available for search criteria !');
         }
         self.scope.countries.replace(values[0]);
-        self.scope.licensors.replace(values[1]);
+        self.scope.licensors.replace(values[1]["entities"]);
         setTimeout(function(){
               $("#countriesFilter").multiselect('rebuild');
               $("#licensorsFilter").multiselect('rebuild');
@@ -152,11 +152,9 @@ var GlobalParameterBar = Component.extend({
       self.scope.contentTypes.replace(values[4]["contentTypes"]);
       //self.scope.periodFrom.replace(values[5]);
       //self.scope.periodTo.replace(values[6]);
-      var regionInfo = {"id":"2","value":"Europe"};
-      self.scope.appstate.attr('region', regionInfo);
+      
 
         setTimeout(function(){
-          document.getElementById("regionsFilter").selectedIndex = 2;
 
 
           $("#countriesFilter").multiselect({

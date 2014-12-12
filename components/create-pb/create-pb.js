@@ -82,6 +82,28 @@ var page = Component.extend({
         this.scope.attr("createPBFlag",{select:true});
         this.scope.attr("paymentBundleId", '');
       },
+      "{scope} getPaymentBundlesNames": function(){
+        var self= this;
+
+        var requestObj = JSON.parse(self.scope.attr("request"));
+        if(requestObj!="undefined"){
+            BundleNamesModel.findOne(UserReq.formRequestDetails(requestObj),function(data){
+                  //console.log(" BundleNamesModel response is "+JSON.stringify(data.attr()));
+                  self.scope.bundleNames.replace(data["paymentBundles"]);
+            },function(xhr){
+                console.error("Error while loading: bundleNames"+xhr);
+            });
+
+        }else if (requestObj.mode == "Read"){
+
+          self.scope.attr("createPBFlag",{read:true});
+          self.scope.attr("paymentBundleName",requestObj.paymentBundleName);
+          self.scope.attr("paymentBundleId",requestObj.paymentBundleId);
+
+        }else{
+          console.error("Craete Payment Bundle: Invalid Mode!!");
+        }
+      },
       "{scope} newbundlenamereq": function(){
         var self= this;
 
