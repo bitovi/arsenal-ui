@@ -10,7 +10,7 @@ import RinsCommon from 'utils/urls';
 var ValidateIcsv = Model.extend({
  findOne: function(params){
 	  	return $.ajax({
-	  		url: RinsCommon.DOMAIN_SERVICE_URL +'icsv/validate',
+	  		url: RinsCommon.DOMAIN_SERVICE_URL +'invoice/icsv/validate',
 	   		type: 'POST',
 	   		data: JSON.stringify(params),
 	   		dataType:'json',

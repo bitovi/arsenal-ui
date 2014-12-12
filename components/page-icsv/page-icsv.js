@@ -198,7 +198,7 @@ var page = Component.extend({
       'rn-file-uploader onSelected': function (ele, event, val) {
             var self = this;
             self.scope.attr('uploadedFileInfo',val.filePropeties);
-            console.log(JSON.stringify(self.scope.attr('uploadedFileInfo')));
+            //console.log(JSON.stringify(self.scope.attr('uploadedFileInfo')));
             //val == 'SUCCESS' ?  $('.jQfunhide').show():$('.jQfunhide').hide();
        },
        "#buttonCancelicsv click":function(){
@@ -209,7 +209,9 @@ var page = Component.extend({
           /* Below is request for validateicsv*/
           var icsvReq =getICSVRequest(this.scope.uploadedFileInfo);
 
-          ValidateIcsv.findOne(UserReq.formRequestDetails(icsvReq),function(data){
+          console.log('Request:'+ JSON.stringify(icsvReq));
+
+          ValidateIcsv.findOne(icsvReq,function(data){
                   console.log(data);
                  icsvmap.attr("invoiceData", data); 
                 },function(xhr){
