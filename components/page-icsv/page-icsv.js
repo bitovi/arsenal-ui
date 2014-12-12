@@ -207,7 +207,7 @@ var page = Component.extend({
        '{scope} uploadedFileInfo':function(){
           var self = this;
           /* Below is request for validateicsv*/
-          var request =getICSVRequest(this.scope.uploadedFileInfo);
+          var icsvReq =getICSVRequest(this.scope.uploadedFileInfo);
 
           ValidateIcsv.findOne(UserReq.formRequestDetails(icsvReq),function(data){
                   console.log(data);
