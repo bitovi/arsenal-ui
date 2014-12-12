@@ -71,9 +71,9 @@ var headerNavigation = Component.extend({
                   $("#dropdown").hide();
                 }
             }
-            
+
       },
-      '{document}  click':function(el,e){ 
+      '{document}  click':function(el,e){
         if ($(e.target).closest("#dynamicmenu").length === 0) {
           $("#dropdown").hide();
         }
@@ -154,7 +154,7 @@ var  menu =[{
       {"value": "Licensor", "id": "licensor"},
       {"value": "Entity", "id": "entity"},
       {"value": "Country", "id": "ref-country"},
-      {"value": "Licensor Entity", "id": "licensorentity"},
+      {"value": "Licensor Entity", "id": "ref-licensorcountry"},
       {"value": "Pricing Model", "id": "pricing-models"}
    ]
 },{
