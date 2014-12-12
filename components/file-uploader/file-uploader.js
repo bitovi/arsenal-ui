@@ -88,7 +88,7 @@
                             FileUpLoader.create(dataToSend,function(data) {
                                fileObj = {filepath:data.filePropeties[0].filePath, filename:data.filePropeties[0].fileName};
                                var response = data.filePropeties[0];
-                                  successeve(response);
+                                  successeve(data);
                                  },function(xhr) {
                                 console.error("Error while loading:"+xhr);
                                 $('.fileError').empty().html('File uploading failed');
