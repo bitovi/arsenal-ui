@@ -276,9 +276,13 @@
 								        				<option value="{{id}}">{{value}}</option>
 							       					{{/each}}
 						       					{{else}}
-							       					{{#each contentType}}
-								        				<option serviceTypeId="{{serviceTypeId}}" value="{{contentGroupId}}">{{contentGroupName}}
-								        				</option>
+							       				<!--	{{#each contentType}}
+								        				<option serviceTypeId="{{serviceTypeId}}" value="{{contentGroupId}}">{{contentGroupName}}</option>
+								        				
+							       					{{/each}} -->
+							       					{{#each contentTypeFilter}}
+								        				<option serviceTypeId="{{serviceTypeId}}" value="{{contentGroupId}}">{{contentGroupName}}</option>
+								        				
 							       					{{/each}}
 						       					{{/if}}
 
