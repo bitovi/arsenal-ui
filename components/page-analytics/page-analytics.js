@@ -129,6 +129,7 @@ var page = Component.extend({
     periodToInput : "",
     revisionHistory : [],
     invoiceTypes : [],
+    periodFromVal : "",
 
     invoiceType : "",
 
@@ -356,13 +357,13 @@ var page = Component.extend({
 
       }
 
-      self.periodToVal = self.licDetails.data.validTo;
+      self.attr("periodToVal",self.licDetails.data.validTo);
 
-      self.periodFromVal = self.licDetails.data.validFrom;
+      self.attr("periodFromVal", self.licDetails.data.validFrom);
 
       if (self.periodToVal != undefined && self.periodToVal != "0" && self.periodToVal != null && self.periodToVal.toString().length >= 6) {
 
-          self.periodFromInput = PeriodWidgetHelper.getDisplayPeriod(self.periodToVal.toString(), "P");
+          self.attr("periodToVal",PeriodWidgetHelper.getDisplayPeriod(self.periodToVal.toString(), "P"));
 
       } else {
 
@@ -372,7 +373,7 @@ var page = Component.extend({
 
       if (self.periodFromVal != undefined && self.periodFromVal != "0" && self.periodFromVal != null && self.periodFromVal.toString().length >= 6) {
 
-          self.periodToInput = PeriodWidgetHelper.getDisplayPeriod(self.periodFromVal.toString(), "P");
+          self.attr("periodFromVal",PeriodWidgetHelper.getDisplayPeriod(self.periodFromVal.toString(), "P"));
 
 
       } else {
@@ -381,16 +382,20 @@ var page = Component.extend({
 
       }
 
-      $(".periodFromInput").val(self.periodFromInput);
-      $(".periodToInput").val(self.periodToInput);
+      //$(".periodFromInput").val(self.periodFromInput);
+      //$(".periodToInput").val(self.periodToInput);
 
       if(self.licDetails.data.status == "A") {
 
-        self.licDetails.data.status =  "Active";
+        self.licDetails.data.attr("status","Active");
 
       } else if (self.licDetails.data.status == "I") {
 
-        self.licDetails.data.status =  "IN Active";
+        self.licDetails.data.attr("status","Inactive");
+
+      } else if (self.licDetails.data.status == "N") {
+
+        self.licDetails.data.attr("status","Rejected");
 
       }
 
@@ -446,7 +451,7 @@ var page = Component.extend({
       
       } else {
 
-          $('#countryModelMapping').html(stache('<rn-grid-countrymodelmapping rows="{rows}"></rn-grid-countrymodelmapping>')({}));
+          $('#countryModelMapping').html(stache('<rn-grid-countrymodelmapping emptyrows="{emptyrows}"></rn-grid-countrymodelmapping>')({emptyrows:true}));
       }
 
       if(from != undefined && from != null) {
@@ -464,15 +469,15 @@ var page = Component.extend({
         
       }
 
+      $(".revHistCollapser").show();
+
       if(rows != null && rows.length > 0) {
          
-          $(".revHistCollapser").show();
           $('#revisionHistory').html(stache('<rn-grid-revisionhistory rows="{rows}"></rn-grid-revisionhistory>')({rows}));
         
         } else {
 
-          $(".revHistCollapser").hide();
-          $("rn-grid-revisionhistory").remove();
+          $('#revisionHistory').html(stache('<rn-grid-revisionhistory emptyrows="{emptyrows}"></rn-grid-revisionhistory>')({emptyrows:true}));
 
         }
 
@@ -640,6 +645,21 @@ var page = Component.extend({
       var entity = this.attr("invoiceType");
 
       $(".invoiceTypeerr").hide();
+
+    },
+
+    //entityType : function() {
+
+        //var entity = this.attr("licDetails").data.entityType;
+
+        //return entity;
+    //},
+
+    getPeriodFromVal : function() {
+
+      var entity = this.attr("periodFromVal");
+
+      return entity;
 
     }
 
@@ -1081,23 +1101,25 @@ var page = Component.extend({
 
         var comments = self.scope.getEditableComments();
 
-        var invoiceType = self.scope.attr("invoiceType");
+        var invoiceType = self.scope.invoiceType;
 
-        var periodFrom = $(".periodFromInput").val();
+        //Todays changes
 
-        var periodTo = $(".periodFromTo").val();
-        
+        var periodFrom = self.scope.periodFromVal;  
+
+        var periodTo = self.scope.periodToVal; //$(".periodFromTo").val();
+
         if (periodFrom != 0 || periodFrom != undefined || periodFrom!= null) {
 
-          periodFrom = PeriodWidgetHelper.getFiscalPeriod(periodFrom);
+          periodFrom = PeriodWidgetHelper.getFiscalPeriod(periodFrom.toString());
 
-        };
+        }
 
         if (periodTo != 0 || periodTo != undefined || periodTo!= null) {
 
-          periodTo = PeriodWidgetHelper.getFiscalPeriod(periodTo);
+          periodTo = PeriodWidgetHelper.getFiscalPeriod(periodTo.toString());
 
-        };
+        }
         
 
         if (comments == "") {

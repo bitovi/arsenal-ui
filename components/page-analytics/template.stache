@@ -116,7 +116,7 @@
 
 		    				
 							 <div class="calendarcls form-group">
-					            <input type='text' name="periodFromInp" id="periodFrom" class="form-control  updatePeroid periodFromInput" can-value='periodFromVal'/>
+					            <input type='text' name="periodFromInp" id="periodFrom" class="form-control  updatePeroid periodFromInput" can-value='periodFromVal' value="{{periodFromVal}}"/>
 					            <period-calendar selectedperiod="{selectedperiod}"  appstate="{appstate}"></period-calendar>
 					         </div>
           
@@ -144,7 +144,7 @@
 	    			<div class="col-sm-12" id="spaceBar"></div>
 
 
-				<div class="col-sm-12" style="margin-left: -8px;">
+				
 
 					<div class="col-sm-11 col-sm-offset-1 form-group">
 	    				<div class="col-sm-3 textalignright">
@@ -275,7 +275,7 @@
 
 		 			</div>
 
-				</div>
+			
 
 
 		</div>
