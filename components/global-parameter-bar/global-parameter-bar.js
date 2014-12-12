@@ -214,71 +214,95 @@ var validateFilters = function(appstate){
     }
 }
 
-var showErrorMsg = function(periodFrom,periodTo){
-       var showFlg=false;
-       var from = periodFrom,to = periodTo; 
-       if(from!=undefined &&  to!=undefined){
-            
-          var periodObj = { "P01":"09", "P02":"10", "P03":"11", "P04":"00", "P05":"01", "P06":"02", "P07":"03", "P08":"04", "P09":"05", "P10":"06", "P11":"07", "P12":"08" };
-         
-          var fromYear = parseInt(from.slice(-2));
-          var toYear = parseInt(to.slice(-2));
+var showErrorMsg = function(periodFrom, periodTo) {
+  //console.group("Show Error Period Calendar");
+  
+  var showFlg = false;
+  var from = periodFrom, to = periodTo;
+  
+  if (from != undefined && to != undefined) {
 
-          var yearFrom = "20" + fromYear;
-          var yearTo = "20" + toYear;
+    var fromYear = parseInt(from.slice(-2));
+    var toYear = parseInt(to.slice(-2));
 
-          var monthFrom = periodFrom.substr(0, 3);
-          var monthTo = periodTo.substr(0, 3);
+    var yearFrom = "20" + fromYear;
+    var yearTo = "20" + toYear;
 
-          var fromDate = "", toDate = "";
+    if (from.charAt(0) === "P" && to.charAt(0) ===  "P") {
 
-          if (periodObj.hasOwnProperty(monthFrom)) {
-            fromDate = yearFrom + ", " + periodObj[monthFrom] + ", 01";
-          }
+      //var periodObj = { "P01": "09", "P02": "10", "P03": "11", "P04": "00", "P05": "01", "P06": "02", "P07": "03", "P08": "04", "P09": "05", "P10": "06",  "P11": "07", "P12": "08" };
+      var periodObj = { "P01": "10", "P02": "11", "P03": "12", "P04": "01", "P05": "02", "P06": "03", "P07": "04", "P08": "05", "P09": "06", "P10": "07", "P11": "08", "P12": "09" };
 
-          if (periodObj.hasOwnProperty(monthTo)) {
-            toDate = yearTo + ", " + periodObj[monthTo] + ", 01";
-          }
+      var monthFrom = periodFrom.substr(0, 3);
+      var monthTo = periodTo.substr(0, 3);
 
-          var mnthDiff = monthDiff(new Date(fromDate), new Date(toDate));
-   
-          //Condition to check the year
-          if ( toYear < fromYear) showFlg = true;
+      //console.log("monthFrom");      console.log(monthFrom); console.log("monthTo");      console.log(monthTo);
 
-          //Condition to check the month (to be in range of 12 )
-          if (mnthDiff > 11) showFlg = true;
+      var fromDate = "", toDate = "";
 
-          //Condition to check the quaters(to be in range of 12 )
-          var quarterFrom = periodFrom.substr(0,2); //Q1, Q2, Q3, Q4
-          var quarterTo = periodTo.substr(0,2); //Q1, Q2, Q3, Q4
+      if (periodObj.hasOwnProperty(monthFrom)) {
+        fromDate = yearFrom + ", " + periodObj[monthFrom] + ", 01";
+      }
 
-          if( (quarterFrom === quarterTo) && (fromYear !== toYear) ) showFlg = true; //condition: Q1-2014 != Q1-2015
+      if (periodObj.hasOwnProperty(monthTo)) {
+        toDate = yearTo + ", " + periodObj[monthTo] + ", 01";
+      }
 
-          if (quarterFrom === "Q1" && (fromYear !== toYear)) showFlg = true; //condition: from: Q1 && 2014 != 2015
+      //console.log("fromDate");      console.log(fromDate); console.log("toDate");      console.log(toDate);
+      var yearDiff =  datediff(fromDate, toDate, "years");
+      //console.log("yearDiff");console.log(yearDiff);
+      if (yearDiff > 1) showFlg = true;
 
-          var qFrom = parseInt(quarterFrom.slice(-1));
-          var qTo = parseInt(quarterTo.slice(-1));
+      var monthDiff = datediff(fromDate, toDate, "months");
+      //console.log("monthDiff");console.log(monthDiff);
+      if (monthDiff > 12) showFlg = true;
 
-          var qArray = [2,3,4];
-          
-          if ( $.inArray(qFrom, qArray) && ((toYear - fromYear) == 1) && (qTo === (qFrom - 1)) ) showFlg = true;//condition: fromQ (2,3,4) && 2015 - 2014 === 1 && toQ === (fromQ - 1)
+    } else if (from.charAt(0) === "Q" && to.charAt(0) ===  "Q") {
 
-        }
-        if(showFlg){
-          return 'Invalid Period !';
-        }else{
-          return "";
-        }
-          
+      //Condition to check the quaters(to be in range of 12 )
+      var quarterFrom = periodFrom.substr(0, 2); //Q1, Q2, Q3, Q4
+      var quarterTo = periodTo.substr(0, 2); //Q1, Q2, Q3, Q4
+
+      //console.log("quarterFrom");console.log(quarterFrom); console.log("quarterTo");console.log(quarterTo);
+      
+      if ((toYear - fromYear) > 1) showFlg = true;
+
+      if ((quarterFrom === quarterTo) && (fromYear !== toYear)) showFlg = true; //condition: Q1-2014 != Q1-2015
+
+      if (quarterFrom === "Q1" && (fromYear !== toYear)) showFlg = true; //condition: from: Q1 && 2014 != 2015
+
+      var qFrom = parseInt(quarterFrom.slice(-1));
+      var qTo = parseInt(quarterTo.slice(-1));
+
+      var qArray = [2, 3, 4];
+
+      if ($.inArray(qFrom, qArray) && ((toYear - fromYear) == 1) && (qTo === (qFrom - 1))) showFlg = true; //condition: fromQ (2,3,4) && 2015 - 2014 === 1 && toQ === (fromQ - 1)
+
+    }
+
+  }
+  if (showFlg) {
+    return 'Invalid Period !';
+  } else {
+    return "";
+  }
+
 }
 
-function monthDiff(d1, d2) {
-    var months;
-    months = (d2.getFullYear() - d1.getFullYear()) * 12;
-    months -= d1.getMonth() + 1;
-    months += d2.getMonth();
-    return months <= 0 ? 0 : months;
+function datediff(fromDate, toDate, interval) {
+  fromDate = new Date(fromDate);
+  toDate = new Date(toDate);
+  switch (interval) {
+    case "years":
+      return toDate.getFullYear() - fromDate.getFullYear();
+    case "months":
+      return (
+        (toDate.getFullYear() * 12 + toDate.getMonth()) -
+        (fromDate.getFullYear() * 12 + fromDate.getMonth())
+      );
+  }
 }
+
 
 
 export default GlobalParameterBar;
