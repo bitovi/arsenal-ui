@@ -21,10 +21,10 @@
 				    			<div class="col-sm-2">
 				    				<label>Entity:</label>
 								</div>
-				    			<div class="col-sm-4">
+				    			<div class="col-sm-4 form-group">
 				    			
 				    			{{getselectedEntity selectedEntity}}
-					    			<select id="licensorsFilter" can-value="selectedEntity" class="form-control resizeBox licensors">
+					    			<select id="licensorsFilter" name="licensorsFilter" can-value="selectedEntity" class="form-control resizeBox licensors">
 					    				<optgroup>
 							               
 							                <option id="selectId">Select</option>
@@ -151,7 +151,7 @@
 		    				<label>Account Name:</label>
 						</div>
 		    			<div class="col-sm-4">
-		    				<input type="text" name="accountName" can-value="licDetails.data.accountName" value="{{licDetails.data.accountName}}" class="form-control"/>
+		    				<input type="text" name="accountName" can-value="licDetails.data.accountName" value="{{licDetails.data.accountName}}" class="form-control accountName"/>
 						</div>
 
 					</div>
@@ -164,9 +164,9 @@
 	    						{{getselectedInvoiceType invoiceType}}
 	    						<div class="col-sm-12 invoiceTypeerr"> Select an Invoice Type !</div>
 
-				    			<select id="invoiceType" can-value="invoiceType" class="form-control resizeInvoice invoiceType">
+				    			<select id="invoiceType" name="invoiceType" can-value="invoiceType" class="form-control resizeInvoice invoiceType">
 				    				 
-						            <option id="selectId">Select</option>
+						            <option value="">Select</option>
 						            
 						           	{{#each invoiceTypes}}
 						              <option id="{{id}}">{{value}}</option>
@@ -259,7 +259,7 @@
 
 					</div>
 
-					<div class="col-sm-12" style="padding-top: 50px;"></div>
+					<div class="col-sm-12" style="padding-top: 25px;"></div>
 
 					<div class="col-sm-12 countryModelLabel">
 	 		

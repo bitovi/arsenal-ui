@@ -707,10 +707,7 @@ var page = Component.extend({
 
       $(".invoiceTypeerr").hide();
 
-      $('#entityLicensor').on('init.form.bv', function(e, data) {
-            //data.bv.disableSubmitButtons(true);
-
-        }).on('init.field.bv', function(e, data) {
+      $('#entityLicensor').on('init.field.bv', function(e, data) {
 
 
       })
@@ -723,6 +720,7 @@ var page = Component.extend({
         },
         fields: {
           licensorName: {
+              //group:'.licensorName',
               validators: {
                   notEmpty: {
                       message: 'Licensor Name is mandatory'
@@ -734,6 +732,7 @@ var page = Component.extend({
               }
           },
           accountName: {
+              //group:'.accountName',
               validators: {
                   notEmpty: {
                       message: 'Account Name is mandatory'
@@ -741,10 +740,11 @@ var page = Component.extend({
                   regexp: {
                       regexp: /^[a-zA-Z0-9_\- ]*$/i,
                       message: 'Please provide valid characters'
-                  }
+                  }                  
               }
           },
           invoiceName: {
+              group:'.licensors',
               validators: {
                   notEmpty: {
                       message: 'Invoice Name is mandatory'
@@ -767,6 +767,7 @@ var page = Component.extend({
               }
           },
           paymentTerms: {
+              //group:'.licensors',
               validators: {
                   notEmpty: {
                       message: 'Payment Terms is mandatory'
@@ -776,13 +777,76 @@ var page = Component.extend({
                       message: 'Please provide valid characters'
                   }
               }
+          },
+          licensorsFilter: {
+              //group:'.licensors',
+              validators: {
+                  notEmpty: {
+                      message: 'Payment Terms is mandatory'
+                  },
+                  regexp: {
+                      regexp: /^[a-zA-Z0-9_\- ]*$/i,
+                      message: 'Please provide valid characters'
+                  },
+                  callback: {
+                      message: 'Licensor is mandatory',
+                      callback: function (value, validator, $field) {
+                        if(value == "Select"){
+                             return false;
+                        }
+                        return true;
+                      }
+                  }
+              }
+          },
+          invoiceType: {
+              //group:'.licensors',
+              validators: {
+                  notEmpty: {
+                      message: 'Invoice Type is mandatory'
+                  },
+                  regexp: {
+                      regexp: /^[a-zA-Z0-9_\- ]*$/i,
+                      message: 'Please provide valid characters'
+                  },
+                  callback: {
+                      message: 'Licensor is mandatory',
+                      callback: function (value, validator, $field) {
+                        if(value == "Select" || value == ""){
+                             return false;
+                        }
+                        return true;
+                      }
+                  }
+              }
+          },
+          usercommentsdiv: {
+              //group:'.licensors',
+              validators: {
+                  notEmpty: {
+                      message: 'User comments is mandatory'
+                  },
+                  regexp: {
+                      regexp: /^[a-zA-Z0-9_\- ]*$/i,
+                      message: 'Please provide valid characters'
+                  },
+                  callback: {
+                      message: 'User comments is mandatory',
+                      callback: function (value, validator, $field) {
+                        if(value == ""){
+                             return false;
+                        }
+                        return true;
+                      }
+                  }
+              }
           }
         }
       }).on('error.field.bv', function(e, data) {       
         
           $('*[data-bv-icon-for="'+data.field +'"]').popover('show');
 
-      });;
+      });
 
     },
 
@@ -1029,6 +1093,14 @@ var page = Component.extend({
         self.scope.mode = "fetch";
         
         //clear elements
+        var entityName = self.scope.attr("selectedEntity");
+
+        $('#entityLicensor').bootstrapValidator('validate');
+
+        if(entityName == "Select" || entityName == "") {
+
+            return;
+        }
 
         if(self.scope.licDetails.attr("data") != null) {
 
@@ -1036,12 +1108,12 @@ var page = Component.extend({
 
         }
 
+
         self.scope.clearContactDetails();
 
         self.scope.disableTabs();
       
-        var entityName = self.scope.attr("selectedEntity");
-
+        
         var genObj = {"licensorName" : entityName};
 
             
@@ -1089,7 +1161,7 @@ var page = Component.extend({
 
         var self = this;
 
-        $('#entityLicensor').bootstrapValidator('validate')
+        $('#entityLicensor').bootstrapValidator('validate');
 
         var societyContactDetails = self.scope.getSocietyContactDetails();
 
