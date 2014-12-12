@@ -53,7 +53,7 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
   ) {
     var data = options.data;
     can.extend(data, requestHelper.formRequestDetails({}));
-    options.data = JSON.stringify(data);
+    options.data = data;
     options.contentType = 'application/json';
   }
 });
