@@ -70,8 +70,37 @@ var BundleDetailTabs = Component.extend({
         this.paymentType
       ).then(function(bundle) {
         scope.attr('gettingDetails', false);
+
+        scope.getNewValidations(bundle);
         return bundle;
       });
+    },
+    getNewValidations: function(bundle) {
+      console.log('validations!');
+      var scope = this;
+
+      var view;
+      if(bundle.bundleType === 'REGULAR_INV') {
+        view = this.attr('selectedTab').value;
+        if(view === 'country' && this.attr('aggregatePeriod')) {
+          view = 'aggregate';
+        }
+      } else {
+        view = 'licensor';
+      }
+
+      if(scope.pageState.selectedBundle === bundle) {
+        console.log('same!');
+        return bundle.getValidations(view).then(function(bundle) {
+          if(bundle.validationStatus !== 5) {
+            setTimeout(function() {
+              scope.getNewValidations(bundle);
+            }, 3000);
+          }
+
+          return bundle;
+        });
+      }
     }
   },
   helpers: {

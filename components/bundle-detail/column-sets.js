@@ -45,48 +45,48 @@ var columns = {
   'invoiceAmt': {
     id: 'invoiceAmt',
     title: 'Invoice',
-    format: formats.currency
+    format: formats.currencyFormat
   },
   'orDispAmt': {
     id: 'orDispAmt',
     title: 'OverRep',
     verboseOnly: true,
-    format: formats.currency
+    format: formats.currencyFormat
   },
   'liDispAmt': {
     id: 'liDispAmt',
     title: 'Line Item',
     verboseOnly: true,
-    format: formats.currency
+    format: formats.currencyFormat
   },
   'reconAmt': {
     id: 'reconAmt',
     title: 'Recon',
     verboseOnly: true,
-    format: formats.currency
+    format: formats.currencyFormat
   },
   'onaccountAllocatedAmt': {
     id: 'onaccountAllocatedAmt',
     title: 'OA Allocated',
     verboseOnly: true,
-    format: formats.currency
+    format: formats.currencyFormat
   },
   'cashadjAllocatedAmt': {
     id: 'cashadjAllocatedAmt',
     title: 'CA Allocated',
     verboseOnly: true,
-    format: formats.currency
+    format: formats.currencyFormat
   },
   'priorPaid': {
     id: 'priorPaid',
     title: 'Prior Paid',
     verboseOnly: true,
-    format: formats.currency
+    format: formats.currencyFormat
   },
   'paymentAmt': {
     id: 'paymentAmt',
     title: 'Net Payment',
-    format: formats.currency
+    format: formats.currencyFormat
   },
   'invoiceSaturation': {
     id: 'invoiceSaturation',

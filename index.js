@@ -16,6 +16,7 @@ import appstate from 'models/appstate/';
 
 // Util
 import URLs from 'utils/urls';
+import requestHelper from 'utils/request/';
 
 // App
 import index_template from 'index.stache!';
@@ -23,7 +24,7 @@ import less_common from 'common.less!';
 import less_index from 'index.less!';
 
 // Fixtures?
-import _fixtures from 'models/fixtures/';
+//import _fixtures from 'models/fixtures/';
 
 
 appstate.bind('page', function(ev, newVal, oldVal) {
@@ -51,11 +52,7 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
       options.url.indexOf(URLs.UI_SERVICE_URL) === 0
   ) {
     var data = options.data;
-    can.extend(data, {
-      authToken: (appstate.userinfo && appstate.userinfo.token) || '',
-      prsId: 2059
-      // there's probably more that goes here.
-    });
+    can.extend(data, requestHelper.formRequestDetails({}));
     options.data = JSON.stringify(data);
     options.contentType = 'application/json';
   }

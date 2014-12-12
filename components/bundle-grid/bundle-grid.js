@@ -20,7 +20,8 @@ var BundleGrid = Grid.extend({
       },
       {
         id: 'paymentCcy',
-        title: 'Currency'
+        title: 'Currency',
+        format: formats.currencyFormat
       },
       {
         id: 'paymentAmt',
@@ -64,7 +65,8 @@ var BundleGrid = Grid.extend({
       },
       {
         id: 'pendingDays',
-        title: 'Pending'
+        title: 'Pending',
+        format: formats.int
       }
     ]
   },

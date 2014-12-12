@@ -2,6 +2,7 @@ import _ from 'lodash';
 import Model from 'can/model/';
 import can_define from 'can/map/define/'
 import URLs from 'utils/urls';
+import requestHelper from 'utils/request/';
 
 import PaymentBundleDetailGroup from './payment-bundle-detail-group';
 
@@ -49,18 +50,9 @@ var PaymentBundle = Model.extend({
    */
   findAll: function(params) {
     var appstate = params.appstate;
-    // TODO: when infrastructure gets set up, fix this.
+    
     var data = {
-      "bundleSearch": {
-        "serviceTypeId": +appstate.storeType.id, // store type
-        "entityId": [+appstate.licensor.id], // selected licensors
-        "regionId": +appstate.region.id,
-        "contentGrpId": [+appstate.contentType.id],
-        "country": [appstate.country.abbr],
-        "periodType": "P",
-        "periodFrom": 201401,
-        "periodTo": 201403,
-      }
+      bundleSearch: requestHelper.formGlobalRequest(appstate).searchRequest
     };
 
     return $.ajax({
@@ -133,7 +125,6 @@ var PaymentBundle = Model.extend({
       self.attr('bundleFooter', transformFooter(bundle.bdlFooter));
       can.batch.stop();
 
-      bundle.getValidations();
       return self;
     });
   },
@@ -158,14 +149,20 @@ var PaymentBundle = Model.extend({
 
       can.batch.start();
       validationResponse.paymentBundle.bundleDetailsGroup.forEach(function(group) {
-        var target = _.find(bundle.bundleDetailsGroup, {invoiceId: group.invoiceId});
-        target.attr('validationMessages', group.vldtnMessage);
-        target.attr('validationColor', group.vldtnBatchResultColor);
+        // only update these if validation is done
+        if(validationResponse.paymentBundle.vldtnStatus === 5) {
+          var target = _.find(bundle.bundleDetailsGroup, {invoiceId: group.invoiceId});
+          target.attr('validationMessages', group.vldtnMessage);
+          target.attr('validationColor', group.vldtnBatchResultColor);
+        }
 
         group.bundleDetails.forEach(function(detail) {
-          var lineTarget = _.find(target.bundleDetails, {bndlLineId: detail.bndlLineId});
-          lineTarget.attr('validationMessages', detail.vldtnMessage);
-          lineTarget.attr('validationColor', detail.vldtnBatchResultColor);
+          // only update these if validation is done
+          if(validationResponse.paymentBundle.vldtnStatus === 5) {
+            var lineTarget = _.find(target.bundleDetails, {bndlLineId: detail.bndlLineId});
+            lineTarget.attr('validationMessages', detail.vldtnMessage);
+            lineTarget.attr('validationColor', detail.vldtnBatchResultColor);
+          }
 
           rulesCompleted += detail.vldtnRulesCompletedCnt;
           rulesTotal += detail.vldtnRulesTotalCnt;
@@ -173,13 +170,14 @@ var PaymentBundle = Model.extend({
       });
 
       bundle.attr({
+        validationStatus: validationResponse.paymentBundle.vldtnStatus,
         validationRulesCompleted: rulesCompleted,
         validationRulesTotal: rulesTotal
       });
 
       can.batch.stop();
 
-      return validationResponse;
+      return bundle;
     });
   },
   moveInWorkflow: function(params) {

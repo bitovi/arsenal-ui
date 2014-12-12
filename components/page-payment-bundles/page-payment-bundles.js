@@ -57,6 +57,7 @@ var page = Component.extend({
   },
   events: {
     'inserted': function(ev, el) {
+      this.scope.appstate.attr('renderGlobalSearch', true);
       this.scope.refreshBundles.apply(this);
     },
     '{scope} change': function(scope, ev, attr) {
