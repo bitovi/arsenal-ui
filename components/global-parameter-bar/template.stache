@@ -17,7 +17,7 @@
             <input type='text' id="periodTo" class="form-control  updatePeroid"/>
             <period-calendar selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
           </div>
-          
+
          </div>
       </li>
 
@@ -68,7 +68,7 @@
               </optgroup>
             {{/each}}
          </select>
-         
+
        </div>
 
     </li>

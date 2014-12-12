@@ -119,7 +119,7 @@ var GlobalParameterBar = Component.extend({
       else
         this.scope.appstate.removeAttr('contentType');
     } ,
-    '#globalSearch click':function(){       
+    '#globalSearch click':function(){
       var self = this;
 //      self.scope.appstate.attr('periodFrom', $('#periodFrom').val());
 //      self.scope.appstate.attr('periodTo', $('#periodTo').val());
@@ -133,7 +133,6 @@ var GlobalParameterBar = Component.extend({
           this.scope.appstate.attr('globalSearch', true);
         }
       }
-        
     }
   },
   init: function() {
@@ -153,7 +152,7 @@ var GlobalParameterBar = Component.extend({
       self.scope.contentTypes.replace(values[4]["contentTypes"]);
       //self.scope.periodFrom.replace(values[5]);
       //self.scope.periodTo.replace(values[6]);
-      
+
 
         setTimeout(function(){
 

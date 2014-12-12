@@ -1,0 +1,61 @@
+{{#if pageState.selectedBundle}}
+<div class="top-controls">
+  {{#if tabs.length}}
+  <rn-switcher options="{tabs}" selected-option="{selectedTab}"></rn-switcher>
+  {{#showAggregateControl}}
+  <div class="aggregate-control">
+    <input type="checkbox" can-value="{aggregatePeriod}"><label>Aggregate Period</label>
+  </div>
+  {{/showAggregateControl}}
+  {{#validationStatus}}
+  <div class="validation-status">{{validationRulesCompleted}} out of {{validationRulesTotal}} rules complete.</div>
+  {{/validationStatus}}
+  {{/if}}
+  <div class="bundle-detail-actions">
+    {{#canRemoveInvoice}}
+    <button class="remove-invoice">Remove Invoice From Bundle</button>
+    {{/canRemoveInvoice}}
+    {{#canShowChart}}
+    <img class="show-chart" src="/resources/images/rn_BundleActive@2x.png"/>
+    {{/canShowChart}}
+    <img class="excel" src="/resources/images/rn_ExcelActive@2x.png"/>
+    <img class="clipboard" src="/resources/images/rn_CopyActive@2x.png"/>
+    {{#showVerboseToggle}}
+    <img class="verbose-toggle" src="/resources/images/approval_arrow_{{#if pageState.verboseGrid}}left{{else}}right{{/if}}.png"/>
+    {{/showVerboseToggle}}
+  </div>
+</div>
+<div class="grid-container">
+  {{#if pageState.selectedBundle.bundleDetailsGroup.length}}
+  <rn-bundle-detail-grid columns="{gridColumns}" page-state="{pageState}" selected-rows="{selectedRows}" {{#if gettingDetails}}style="display: none;"{{/if}}></rn-bundle-detail-grid>
+  {{/if}}
+</div>
+{{#if pageState.selectedBundle.bundleDetailsGroup.length}}
+<div class="bottom-controls">
+  <rn-workflow-display steps="{workflowSteps}" class="progress-display"></rn-workflow-display>
+  <div class="payment-option">
+    <label>Payment Option:</label>
+    <select can-value="{paymentType}">
+      <option value="1">Payment - In Full</option>
+      <option value="2">Payment LI Disputes</option>
+      <option value="3">Payment Recon Amount</option>
+      <option value="4">Payment Over Rep Disputes</option>
+    </select>
+  </div>
+  <div class="approval-comment">
+    <label>Approval Comment</label>
+    <textarea can-value="{approvalComment}"></textarea>
+    <div class="buttons">
+    {{#if appstate.userInfo.isBM}}
+      <button class="action" data-action="delete">Delete</button>
+      <button class="action" data-action="recall">Recall</button>
+      <button class="action" data-action="approve">Propose</button>
+    {{else}}
+      <button class="action" data-action="reject">Reject</button>
+      <button class="action" data-action="approve">Approve</button>
+    {{/if}}
+    </div>
+  </div>
+</div>
+{{/if}}
+{{/if}}

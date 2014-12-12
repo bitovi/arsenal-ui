@@ -1,0 +1,20 @@
+@import 'components/grid/grid.less';
+
+rn-bundle-detail-grid {
+  .grid-mixin();
+
+  th.validations, td.validations {
+    text-align: center;
+
+    img {
+      height: 14px;
+      margin-top: -4px;
+    }
+  }
+
+  td.invoiceAmt, td.orDispAmt, td.liDispAmt, td.reconAmt,
+  td.onaccountAllocatedAmt, td.cashadjAllocatedAmt, td.priorPaid,
+  td.paymentAmt, td.invoiceSaturation, td.paymentSaturation {
+    text-align: right;
+  }
+}

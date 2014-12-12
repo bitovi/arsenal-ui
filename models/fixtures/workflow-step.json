@@ -1,0 +1,37 @@
+{
+  "responseHeader":{
+    "status":"SUCCESS",
+    "exceptionID":null,
+    "exceptionMessage":null
+  },
+  "workflowInstanceId":5555,
+  "nodes":[
+    {
+      "stepId":1,
+      "stepName":"BM-Approval",
+      "actorId":123,
+      "actorName":"User1",
+      "actorGroup":"RINS-BM",
+      "modified": "2014-05-03",
+      "state": "APPROVE"
+    },
+    {
+      "stepId":2,
+      "stepName":"FA-Approval",
+      "actorId":223,
+      "actorName":"User2",
+      "actorGroup":"RINS-FA",
+      "modified": "2014-05-03",
+      "state": ""
+    },
+    {
+      "stepId":3,
+      "stepName":"FM-Approval",
+      "actorId":323,
+      "actorName":"User3",
+      "actorGroup":"RINS-FM",
+      "modified": "2014-05-03",
+      "state": ""
+    }
+   ]
+}

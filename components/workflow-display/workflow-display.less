@@ -1,0 +1,95 @@
+rn-workflow-display {
+  display: block;
+  padding: .5em;
+
+  color: #3d3d3d;
+
+  h3 {
+    font-size: 13px;
+    margin-top: 0;
+    margin-bottom: 1em;
+  }
+
+  ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    & > li.step {
+      display: block;
+      position: relative;
+      width: 190px;
+
+      background: white;
+      border: 1px solid black;
+      border-radius: .5em;
+      padding: .5em;
+
+      .person-icon {
+        position: absolute;
+        height: 20px;
+        width: 20px;
+        top: .5em;
+        right: .5em;
+      }
+
+      .actor {
+      }
+
+      .step-name {
+        font-weight: bold;
+        font-size: 18px;
+        margin-top: .5em;
+        margin-bottom: .5em;
+      }
+
+      .recieved, .sent {
+        margin-top: .33em;
+
+        img {
+          height: 14px;
+          width: 14px;
+        }
+
+        span {
+          margin-left: .5em;
+          position: relative;
+          top: 2px;
+        }
+      }
+
+      &.approved {
+        color: #848484;
+        background:  #e4e4e4;
+      }
+
+      &.not-approved {
+        border-color: blue;
+      }
+
+      &.not-approved ~ .not-approved {
+        border-color: black;
+        color: #848484;
+      }
+    }
+
+    & > li.arrow {
+      display: block;
+      position: relative;
+      flex: 0;
+      min-width: 2em;
+      text-align: center;
+
+      span {
+        display: block;
+        height: 100%;
+        width: 100%;
+        margin-top: ~"calc(-50% + .5em)";
+        position: absolute;
+        top: 50%;
+      }
+    }
+  }
+
+}
