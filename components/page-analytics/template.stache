@@ -1,5 +1,4 @@
 
-<form id="entityLicensor">
 <div class="recon-container">
 
 
@@ -10,8 +9,15 @@
 			
 			    <div id="entityDetails">
 
+			    <form id="entityLicensorTop">
+
 					<div class="col-sm-12" id="spaceBar"></div>
-			    	<div id="entityDetailsHeading">Entity Details</div>
+			    	<div class="col-sm-4" id="entityDetailsHeading">Entity Details</div>
+
+			    	<div class="cols-sm-6">
+						<div id="invmessageDiv" role="alert"></div>
+					</div>
+
 			    	<div class="col-sm-12"></div>
 
 			    		<div class="col-sm-8 col-sm-offset-1">
@@ -64,7 +70,7 @@
 			    		
 
 
-			    		
+			    </form>		
 
 			    	</div>
 
@@ -80,6 +86,7 @@
 
 	<div class="col-sm-12" id="entityGrid">
 
+	<form id="entityLicensorBottom">
     	<div class="col-sm-6" id="entityGridFD">
     	
     				<div class="col-sm-12" id="spaceBar"></div>
@@ -279,6 +286,7 @@
 
 
 		</div>
+	</form>
 		
 		
  

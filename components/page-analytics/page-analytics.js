@@ -16,7 +16,6 @@ import css_bootstrapValidator from 'bootstrapValidator.css!';
 import PeriodWidgetHelper from 'utils/periodWidgetHelpers';
 
 
-
 var lDetails = new can.Map({
   data: null,
 
@@ -152,6 +151,8 @@ var page = Component.extend({
     socListToSave : [],
 
     invoiceDetailTypesArr: [],
+
+    errorMessage : "",
 
     
     getReportConf : function() {
@@ -707,7 +708,7 @@ var page = Component.extend({
 
       $(".invoiceTypeerr").hide();
 
-      $('#entityLicensor').on('init.field.bv', function(e, data) {
+      $('#entityLicensorBottom').on('init.field.bv', function(e, data) {
 
 
       })
@@ -848,6 +849,46 @@ var page = Component.extend({
 
       });
 
+      $('#entityLicensorTop').on('init.field.bv', function(e, data) {
+
+
+      })
+      .bootstrapValidator({
+      container: 'popover',
+        feedbackIcons: {
+            valid: 'valid-rnotes',
+            invalid: 'alert-rnotes',
+            validating: 'glyphicon glyphicon-refreshas'
+        },
+        fields: {
+          licensorsFilter: {
+              //group:'.licensors',
+              validators: {
+                  notEmpty: {
+                      message: 'Payment Terms is mandatory'
+                  },
+                  regexp: {
+                      regexp: /^[a-zA-Z0-9_\- ]*$/i,
+                      message: 'Please provide valid characters'
+                  },
+                  callback: {
+                      message: 'Licensor is mandatory',
+                      callback: function (value, validator, $field) {
+                        if(value == "Select"){
+                             return false;
+                        }
+                        return true;
+                      }
+                  }
+              }
+          }
+        }
+
+      }).on('error.field.bv', function(e, data) {       
+          
+            $('*[data-bv-icon-for="'+data.field +'"]').popover('show');
+
+      });
     },
 
     '.updatePeroid focus':function(el){ 
@@ -1095,7 +1136,7 @@ var page = Component.extend({
         //clear elements
         var entityName = self.scope.attr("selectedEntity");
 
-        $('#entityLicensor').bootstrapValidator('validate');
+        $('#entityLicensorTop').bootstrapValidator('validate');
 
         if(entityName == "Select" || entityName == "") {
 
@@ -1161,7 +1202,8 @@ var page = Component.extend({
 
         var self = this;
 
-        $('#entityLicensor').bootstrapValidator('validate');
+        $('#entityLicensorTop').bootstrapValidator('validate');
+        $('#entityLicensorBottom').bootstrapValidator('validate');
 
         var societyContactDetails = self.scope.getSocietyContactDetails();
 
@@ -1267,9 +1309,25 @@ var page = Component.extend({
 
           Promise.all([Analytics.create(UserReq.formRequestDetails(genObj))]).then(function(data) {
 
+
+
             if(data[0].responseText == "SUCCESS") {
 
+                var msg = "Entity Detials saved successfully";
 
+                $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
+                $("#invmessageDiv").show();
+                setTimeout(function(){
+                  $("#invmessageDiv").hide();
+                },5000);
+            } else {
+
+                var msg = "Entity Detials was not saved successfully";
+                $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+                $("#invmessageDiv").show();
+                setTimeout(function(){
+                  $("#invmessageDiv").hide();
+                },5000);
             }
           
           });
