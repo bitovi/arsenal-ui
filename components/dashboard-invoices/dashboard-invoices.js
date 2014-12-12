@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import $ from 'jquery';
 import Component from 'can/component/';
 import Map from 'can/map/';

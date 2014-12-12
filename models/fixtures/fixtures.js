@@ -87,3 +87,16 @@ fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'paymentBundle/validationResult', fu
 
 // Workflow Steps
 fixture('POST ' + URLs.UI_SERVICE_URL + 'rinsworkflow/view', '/models/fixtures/workflow-step.json');
+
+// Hole Reports
+import fixture_holesreport from './holes-report';
+fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'dashboard/holesreport', function(req, res, headers) {
+  res(200, {
+    responseCode: 'SUCCESS',
+    responseText: 'Records returned successfully',
+    holesReport: fixture_holesreport.makeHolesReport()
+  });
+});
+
+fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'workflow/analytics/inbox', '/models/fixtures/inbox.json');
+fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'workflow/analytics/outbox', '/models/fixtures/outbox.json');

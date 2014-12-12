@@ -1,7 +1,7 @@
 <rn-switcher options="{tabs}" selected-option="{selectedTab}" value-property="text" class="tabs"></rn-switcher>
 <div class="dashboard-container">
   {{#ifSelectedTab 'Approvals'}}
-  <div>Approvals</div>
+  <rn-dashboard-approvals appstate="{appstate}"></rn-dashboard-approvals>
   {{/ifSelectedTab}}
   {{#ifSelectedTab 'Invoices Received'}}
   <rn-dashboard-invoices appstate="{appstate}"></rn-dashboard-invoices>

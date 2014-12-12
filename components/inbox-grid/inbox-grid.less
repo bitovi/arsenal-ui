@@ -1,0 +1,43 @@
+@import 'components/grid/grid.less';
+
+@step-border-color: #c6c6c6;
+@approved-color: #d0e3c3;
+@light-border: 1px solid hsl(0, 0%, 75%);
+
+rn-inbox-grid, rn-outbox-grid {
+  .grid-mixin();
+
+  tbody td {
+    padding: .5em 1em;
+    border-bottom: @light-border;
+
+    &.approvalStage {
+      padding-top: 1em;
+    }
+  }
+
+  .step {
+    display: inline-block;
+    border: 1px solid @step-border-color;
+    height: 1em;
+    width: 1em;
+    border-radius: 1em;
+
+    &.approved {
+      background-color: @approved-color;
+    }
+  }
+
+  .step-connector {
+    color: @step-border-color;
+    display: inline-block;
+    position: relative;
+    top: -3px;
+    margin-left: -3px;
+    margin-right: -3px;
+  }
+
+  button.remind {
+    float: right;
+  }
+}
