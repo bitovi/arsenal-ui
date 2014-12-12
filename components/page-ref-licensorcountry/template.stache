@@ -112,7 +112,7 @@
                 <div class="col-sm-6 requiredBar">
                   <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelVersionNo' name="entityPricingModelId">
                     {{#each pricingModels}}
-                    <option value="{{modelName}}">{{modelName}}</option>     
+                    <option value="{{modelName}}">{{modelName}}</option>
                     {{/each}}
                   </select>
                 </div>
@@ -160,6 +160,7 @@
               <div class="col-sm-12">
                 <label for="forStatus" class="col-sm-3 control-label">Comments: </label>
                 <div class="col-sm-6 requiredBar">
+                  <div id="multipleCommentsInv"></div>
                   <textarea class="form-control" maxlength="1024" name="comments" can-value="pageState.entityCountryDetails.comment" style="height:100px;   min-height:100px;    max-height:100px;"></textarea>
                 </div>
               </div>

@@ -10,7 +10,7 @@ import css_bootstrapValidator from 'bootstrapValidator.css!';
 
 import bootstrapValidator from 'bootstrapValidator';
 
-
+import multiComments from 'components/multiple-comments/';
 import UserReq from 'utils/request/';
 import Licensor from 'models/common/licensor/';
 import Country from 'models/common/country/';
@@ -66,20 +66,24 @@ var page = Component.extend({
 
     Promise.all([
       Licensor.findAll(UserReq.formRequestDetails(requestObj)),
-      PricingModels.findOne(UserReq.formRequestDetails( {reqType:'modeltype'})),
+      PricingModels.findOne(UserReq.formRequestDetails( {reqType:'modeltype'})) ,
       PricingMethods.findAll(UserReq.formRequestDetails(requestObj))
       ]).then(function(values) {
         self.scope.attr("entities").replace(values[0]["entities"][0]);
         licId = self.scope.attr("entities")[0].entities[0].id;
         self.scope.attr("pricingModels").replace(values[1].modelTypes);
-        self.scope.attr("pricingMethods").replace(values[2]);
+        //self.scope.attr("pricingMethods").replace(values[2]);
       }).then(function(values) {
 
         requestObj = {licensorId:licId};
         self.scope.currencies.replace(Currency.findAll(UserReq.formRequestDetails(requestObj)));
+        var pricingReq  = {
+          pricingModelId:self.scope.attr("pricingModels")[0].modelName
+        }
 
         Promise.all([
-          Country.findAll(UserReq.formRequestDetails(requestObj))
+          Country.findAll(UserReq.formRequestDetails(requestObj)),
+          PricingModelVersions.findAll(UserReq.formRequestDetails({}))
           ]).then(function(values) {
             self.scope.attr("countries").replace(values[0]);
           }).then(function(){
@@ -215,22 +219,14 @@ var page = Component.extend({
           var self = this;
 
           var requestObj = {licensorId:self.scope.pageState.entityCountryDetails.entityCountry.entityId};
-
           this.scope.countries.replace(Country.findAll(UserReq.formRequestDetails(requestObj)));
-          this.scope.currencies.replace(Currency.findAll(UserReq.formRequestDetails(requestObj)));
-
-          // this.scope.pageState.entityCountryDetails.attr("entityId",4);
-          //console.log(self.scope.pageState.entityCountryDetails.entityCountry.entityId);
-
+          //this.scope.currencies.replace(Currency.findAll(UserReq.formRequestDetails(requestObj)));
         },
         '{scope} pageState.entityCountryDetails.pricingModelVersionNo': function() {
-
-
           var self = this;
           var requestObj  = {
             pricingModelId:this.scope.pageState.entityCountryDetails.attr("pricingModelVersionNo")
           }
-
 
           Promise.all([
             PricingModelVersions.findAll(UserReq.formRequestDetails(requestObj))
@@ -267,6 +263,10 @@ var page = Component.extend({
               self.pageState.entityCountryDetails.attr("entityCountry",data.entityCountryDetails.entityCountry);
 
               self.pageState.entityCountryDetails.attr("comment",data.entityCountryDetails.comment);
+
+              var   tempcommentObj = data.entityCountryDetails.comment;
+
+              $('#multipleCommentsInv').html(stache('<multiple-comments divid="usercommentsdivinv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')(tempcommentObj));
 
               if(data.entityCountryDetails.entityCountry.status == "A") {
                 self.attr("state","Edit");
