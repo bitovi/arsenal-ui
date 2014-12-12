@@ -104,14 +104,13 @@ var fetchReconIncoming = function(scope){
     searchRequestObj.searchRequest["sortOrder"] = "ASC";
 
     Recon.findOne(UserReq.formRequestDetails(searchRequestObj),function(data){
-      if(data.status = "FAILURE"){
+      if(data.status == "FAILURE"){
         $("#messageDiv").html("<label class='errorMessage'>"+data.responseText+"</label>");
         $("#messageDiv").show();
         setTimeout(function(){
           $("#messageDiv").hide();
         },4000);
         console.error("Failed to load the Recon incoming other :"+data.responseText);
-
 
       }else  {
         scope.incomingOtherList.replace(data.reconStatsDetails);
