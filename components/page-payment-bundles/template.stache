@@ -1,2 +1,17 @@
-<h1>Payment Bundle Placeholder</h1>
-<p>The rest of /{{appstate.page}} should go here.</p>
+<header>
+  <h1>Payment Bundle Review</h1>
+  <div class="bundle-list-actions">
+    {{#if pageState.selectedBundle}}
+    <button class="delete-bundle">Delete Bundle</button>
+    <button class="add-invoice">Add Invoices To Bundle</button>
+    {{/if}}
+    {{#if pageState.bundles.length}}
+    <img class="excel" src="/resources/images/rn_ExcelActive@2x.png"/>
+    <img class="clipboard" src="/resources/images/rn_CopyActive@2x.png"/>
+    {{/if}}
+  </div>
+</header>
+{{#showPage}}
+<rn-bundle-grid rows="{pageState.bundles}" page-state="{pageState}"></rn-bundle-grid>
+<rn-bundle-detail page-state="{pageState}" appstate="{appstate}"></rn-bundle-detail>
+{{/showPage}}

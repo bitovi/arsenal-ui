@@ -26,6 +26,8 @@ import Currency from 'models/common/currency/';
 import Country from 'models/common/country/';
 import Invoice from 'models/invoice/';
 import Fxrate from 'models/common/fxrate/';
+
+import CalDueDate from 'models/common/calinvoiceduedate/';
 import AdhocTypes from 'models/common/adhoc-types/';
 import GLaccounts from 'models/glaccounts/';
 import Region from 'models/common/region/';
@@ -37,6 +39,13 @@ import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate",  "receiveddate", "amount[]", "licensor", "currency"];
 var mandatoryField = ["invoicenumber",  "invoicedate",  "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency"];
+
+fileUpload.extend({
+  tag: 'rn-file-uploader',
+  scope: {
+           fileList : new can.List()
+         }
+ });
 
 var page = Component.extend({
   tag: 'page-create-invoice',
@@ -50,6 +59,7 @@ var page = Component.extend({
   	currency:[],
   	country:[],
   	contentType:[],
+  	contentTypeFilter:[],
   	adhocType:[],
   	fxrate:[],
   	glaccounts:[],
@@ -413,7 +423,7 @@ var page = Component.extend({
 
 					$('#invoicedate').on('dp.change dp.show', function (e) {
 		            	$('#invoiceform').bootstrapValidator('revalidateField', 'invoicedate');
-		        	});
+		            });
 
 			        $('#receiveddate').on('dp.change dp.show', function (e) {
 			           	$('#invoiceform').bootstrapValidator('revalidateField', 'receiveddate');
@@ -423,6 +433,13 @@ var page = Component.extend({
 					$('#invoiceduedate').on('dp.change dp.show', function (e) {
 			            $('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
 			        });
+
+				/*	$('#invoicedate').on('dp.change dp.show', function (e) {
+		            	$('#invoiceform').bootstrapValidator('revalidateField', 'invoicedate');
+		            	alert("yes");
+
+		        	});*/
+
 
 					if(!self.scope.editpage){
 						self.scope.attr("invoiceduedate", getCurrentDate());
@@ -459,7 +476,33 @@ var page = Component.extend({
 						}
 				   }
 				},
-				 "{invoiceContainer} change": function() {
+				".form-control change":function(event){
+					var self = this;
+					if(($("#invoicedate input[type=text]").val() != "") &&  (!$.isEmptyObject(self.scope.licensorStore)) && ($("#inputCountry0").val() != "")){
+					var genObj = {entityId:self.scope.licensorStore, invoiceDate:moment($("#invoicedate input[type=text]").val()).unix(), countryId:$("#inputCountry0").val()};
+					CalDueDate.findOne(UserReq.formRequestDetails(genObj),function(data){
+                  		console.log(data.calInvoiceDueDate);
+                  		self.scope.attr("calduedate", moment.unix(data.calInvoiceDueDate).format("MM/DD/YYYY"));
+		                },function(xhr){
+		                /*Error condition*/
+		           		 });  
+					}
+				},
+				"#invoicedate dp.change":function(event){ /*need to repeat service call, as no way to capture date change event together with form control event*/
+					var self = this;
+					if(($("#invoicedate input[type=text]").val() != "") &&  (!$.isEmptyObject(self.scope.licensorStore)) && ($("#inputCountry0").val() != "")){
+					var genObj = {entityId:self.scope.licensorStore, invoiceDate:moment($("#invoicedate input[type=text]").val()).unix(), countryId:$("#inputCountry0").val()};
+					CalDueDate.findOne(UserReq.formRequestDetails(genObj),function(data){
+                  		console.log(data.calInvoiceDueDate);
+                  		self.scope.attr("calduedate", moment.unix(data.calInvoiceDueDate).format("MM/DD/YYYY"));
+		                },function(xhr){
+		                /*Error condition*/
+		           		 });  
+					}
+				},
+
+
+				"{invoiceContainer} change": function() {
 				 		var self = this;  /*This block is used to update data in view */
 						var invoiceData = self.scope.attr().invoiceContainer[0];
 				 		self.scope.attr("invoicenumberStore", invoiceData.invoiceNumber);
@@ -675,6 +718,7 @@ var page = Component.extend({
          	self.scope.attr("rowindex", rowindex + 1);
 			self.scope.createBreakline(self.scope.attr("rowindex"));
 		},
+
 		"#invoiceform #paymentBundleNames change": function(){
 	          var self = this;
 	          var pbval = $("#invoiceform #paymentBundleNames").val();
@@ -724,15 +768,16 @@ var page = Component.extend({
 					   tempInvoiceData["netTotal"] = self.scope.totalAmountVal;
 					   tempInvoiceData["tax"] = self.scope.tax;
 					  
-					   tempInvoiceData["bundleId"] = $("#paymentBundleNames").val();
-					   tempInvoiceData["bundleName"] = $("#paymentBundleNames").text();
-
+					  
 					   if(typeof $("#paymentBundleNames").val() == "undefined"){
-					   	 tempInvoiceData["bundleId"] = "";
-					   	 tempInvoiceData["bundleName"] = $("#newPaymentBundle").val();
+					   	// tempInvoiceData["bundleId"] = "";
+					   	 		tempInvoiceData["bundleName"] = $("#newPaymentBundle").val();
 					   }else{
-					   	 tempInvoiceData["bundleId"] = $("#paymentBundleNames").val();
-					   	 tempInvoiceData["bundleName"] = $("#paymentBundleNames option:selected").text();
+						   	
+						   	if($("#paymentBundleNames").val() != ""){
+						   	 	tempInvoiceData["bundleId"] = $("#paymentBundleNames").val();
+						   	 	tempInvoiceData["bundleName"] = $("#paymentBundleNames option:selected").text();
+						   	}
 					   }
 
 
@@ -740,7 +785,7 @@ var page = Component.extend({
 					   tempInvoiceData["invoiceDate"] = dateFormatter($("#invoicedate input[type=text]").val(),"mm/dd/yyyy");
 					   tempInvoiceData["invoiceCalcDueDate"] = dateFormatter(self.scope.calduedate, "mm/dd/yyyy");
 					   tempInvoiceData["invoiceDueDate"] = dateFormatter($("#invoiceduedate input[type=text]").val(),"mm/dd/yyyy"); 
-					   tempInvoiceData["createdBy"] = "1000";  
+					   tempInvoiceData["createdBy"] = UserReq.formRequestDetails().prsId;  
 					   
 					   tempInvoiceData["comments"] = [];
 					   var tempComment = {};
@@ -845,16 +890,24 @@ var page = Component.extend({
 								    tempEditInvoiceData["invoiceAmount"] = self.scope.totalAmountVal;
 								    tempEditInvoiceData["tax"] = self.scope.tax;
 								    tempEditInvoiceData["grossTotal"] = self.scope.grossTotalStore;
-								    tempEditInvoiceData["userAdjAmt"] = "0"; 
+								   // tempEditInvoiceData["userAdjAmt"] = "0"; 
 								   
-								    tempEditInvoiceData["bundleId"] = $("#paymentBundleNames").val(); 
+								   // tempEditInvoiceData["bundleId"] = $("#paymentBundleNames").val(); 
 								    if(typeof $("#paymentBundleNames").val() == "undefined"){
 								   	    tempEditInvoiceData["bundleId"] = "";
 								   	    tempEditInvoiceData["bundleName"] = $("#newPaymentBundle").val();
 									}else{
-									 	tempEditInvoiceData["bundleId"] = $("#paymentBundleNames").val();
-									   	tempEditInvoiceData["bundleName"] = $("#paymentBundleNames option:selected").text();
+									 	
+									 	if($("#paymentBundleNames").val() != ""){
+										 	tempEditInvoiceData["bundleId"] = $("#paymentBundleNames").val();
+										   	tempEditInvoiceData["bundleName"] = $("#paymentBundleNames option:selected").text();
+										}
 									}
+
+								    
+
+
+
 
 								    tempEditInvoiceData["receivedDate"] = dateFormatter(self.scope.receiveddate, "mm/dd/yyyy"); 
 								    tempEditInvoiceData["invoiceDate"] = dateFormatter(self.scope.invoicedate, "mm/dd/yyyy");
@@ -874,7 +927,7 @@ var page = Component.extend({
 									var tempComments = {};  /*new comments*/
 									tempComments.comments = $("#usercomments").val();//self.scope.usercommentsStore;
 								   	tempComments.id = "";
-								   	tempComments.createdBy = "";
+								   	tempComments.createdBy = UserReq.formRequestDetails().prsId;
 								   	tempComments.createdDate = dateFormatter(self.scope.currentdate, "mm/dd/yyyy");
 								   	tempEditInvoiceData["comments"].push(tempComments);
 								    /*comment end*/
@@ -983,6 +1036,8 @@ var page = Component.extend({
 											
 									}	
 						  		});
+
+						  		this.scope.contentTypeFilter.replace(this.scope.contentType);
 							},
 						   '#inputMonth0 change':function(el){ /*validation for period*/
 						  		var self = this;
@@ -1043,10 +1098,11 @@ var page = Component.extend({
 
 								  	},
 								  	calculatedDueDate: function(){
-							  			var date = new Date();
+							  			/*var date = new Date();
 								  	 	date.setMonth(date.getMonth() + 1);
-								  	 	var calduedate = ((date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear());
-								  	 	this.attr("calduedate", calduedate);
+								  	 	var calduedate = ((date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear());*/
+								  	 	var calduedate = this.attr("calduedate");
+								  	 	//this.attr("calduedate", calduedate);
 										return calduedate;
 
 								  	},

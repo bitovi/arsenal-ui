@@ -1,0 +1,28 @@
+<h3>Progress</h3>
+<ul>
+  {{#each steps}}
+  <li class="step {{approvedClass .}}" {{data 'step'}}>
+    <img
+      class="person-icon"
+      {{#past}}src="/resources/images/rn_WorkflowTypePerson_completed@2x.png"{{/past}}
+      {{#current}}src="/resources/images/rn_WorkflowTypePerson_current@2x.png"{{/current}}
+      {{#future}}src="/resources/images/rn_WorkflowTypePerson_future@2x.png"{{/future}}
+    />
+    <div class="actor">{{actorName}}</div>
+    <div class="step-name">{{stepName}}</div>
+    <div class="recieved">
+      <img src="/resources/images/rn_InboxActive@2x.png"/>
+      {{#unless state}}<span>{{modified}}</span>{{/unless}}
+    </div>
+    <div class="sent">
+      <img src="/resources/images/rn_SentActive@2x.png"/>
+      {{#if state}}<span>{{modified}}</span>{{/if}}
+    </div>
+  </li>
+  {{#notLastArrow .}}
+  <li class="arrow">
+    <span>&gt;</span>
+  </li>
+  {{/notLastArrow}}
+  {{/each}}
+</ul>

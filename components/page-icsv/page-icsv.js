@@ -12,7 +12,7 @@ import ValidateIcsv from 'models/invoice/validateIcsv/';
 import createpb from 'components/create-pb/';
 import pegeediticsv from 'components/page-edit-icsv/';
 import icsvsummary from 'components/icsv-summary/';
-import fileupload from 'components/file-uploader/';
+import fileUpload from 'components/file-uploader/';
 import UserReq from 'utils/request/';
 import Invoice from 'models/invoice/';
 
@@ -70,6 +70,14 @@ Grid.extend({
 });
 
 
+fileUpload.extend({
+  tag: 'rn-file-uploader',
+  scope: {
+           fileList : new can.List()
+         }
+ });
+
+
 var page = Component.extend({
   tag: 'page-icsv',
   template: template,
@@ -82,7 +90,7 @@ var page = Component.extend({
       newpaymentbundlenamereq:undefined,
       errorMsg:{},
       errorStatus:{},
-      fileupload:'',
+      fileUpload:'',
       uploadedFileInfo:[]
     
     },

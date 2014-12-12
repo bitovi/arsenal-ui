@@ -792,7 +792,7 @@ var page = Component.extend({
 							 
 									var tempComments = {};
 							   		  tempComments.comments = self.scope.usercommentsStore;
-							   		  tempComments.createdBy = "";
+							   		  tempComments.createdBy = UserReq.formRequestDetails().prsId;
 							   		  tempComments.createdDate = getCurrentDate();
 							   		  editInvoiceCSVData.comments.push(tempComments);
 								
