@@ -42,10 +42,6 @@ var InboxGrid = Grid.extend({
         var connectedSteps = steps.join('<div class="step-connector">&mdash;</div>');
         return stache(connectedSteps)({});
       }
-      //contents: row => (row.approvedLevels + ' / ' + row.totalLevels)
-    }, {
-      id: 'approvalId',
-      title: 'Approval ID'
     }]
   },
   helpers: {

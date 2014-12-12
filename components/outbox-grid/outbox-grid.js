@@ -40,9 +40,6 @@ var OutboxGrid = Grid.extend({
         var connectedSteps = steps.join('<div class="step-connector">&mdash;</div>');
         return stache(connectedSteps)({});
       }
-    }, {
-      id: 'approvalId',
-      title: 'Approval ID'
     }]
   },
   helpers: {
