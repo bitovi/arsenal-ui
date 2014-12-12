@@ -19,9 +19,8 @@ import CountryLicensor from 'models/refdata/countryLicensor/';
 import PricingModels from 'models/common/pricingmodels/';
 import PricingModelVersions from 'models/common/pricingModelVersions/';
 import PricingMethods from 'models/common/pricingMethods/';
-import PeriodFrom from 'models/common/periodFrom/';
-import PeriodTo from 'models/common/periodTo/';
-
+import periodCalendar from 'components/period-calendar/';
+import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 
 var reportConfigurationList = new can.List();
@@ -51,139 +50,137 @@ var page = Component.extend({
     pricingModels:[],
     pricingModelVersions:[],
     pricingMethods:[],
-    periodFromList:[],
-    periodToList:[],
+    periodFrom: [],
+    periodTo : [],
+    selectedperiod:[],
     displayMessage:"display:none",
     state:"Edit"
   },
 
   init: function(){
 
-        var self = this;
-        var requestObj = {};
+    var self = this;
+    var requestObj = {};
 
+
+
+    Promise.all([
+      Licensor.findAll(UserReq.formRequestDetails(requestObj)),
+      PricingModels.findAll(UserReq.formRequestDetails(requestObj)),
+      PricingMethods.findAll(UserReq.formRequestDetails(requestObj))
+      ]).then(function(values) {
+        self.scope.attr("entities").replace(values[0]["entities"][0]);
+        self.scope.attr("pricingModels").replace(values[1]);
+        self.scope.attr("pricingMethods").replace(values[2]);
+      }).then(function(values) {
+
+        var licId = self.scope.attr("entities")[0].id;
+        requestObj = {licensorId:licId};
 
 
         Promise.all([
-            Licensor.findAll(UserReq.formRequestDetails(requestObj)),
-            PricingModels.findAll(UserReq.formRequestDetails(requestObj)),
-            PricingMethods.findAll(UserReq.formRequestDetails(requestObj)),
-            PeriodFrom.findAll(UserReq.formRequestDetails(requestObj)),
-            PeriodTo.findAll(UserReq.formRequestDetails(requestObj))
-        ]).then(function(values) {
-              self.scope.attr("entities").replace(values[0]);
-              self.scope.attr("pricingModels").replace(values[1]);
-              self.scope.attr("pricingMethods").replace(values[2]);
-              self.scope.attr("periodFromList").replace(values[3]);
-              self.scope.attr("periodToList").replace(values[4]);
-        }).then(function(values) {
+          Country.findAll(UserReq.formRequestDetails(requestObj))
+          ]).then(function(values) {
+            self.scope.attr("countries").replace(values[0]);
+          }).then(function(){
 
-              var licId = self.scope.attr("entities")[0].id;
-              requestObj = {licensorId:licId};
+            self.scope.pageState.entityCountryDetails.entityCountry.attr("entityId",self.scope.attr("entities")[0].id);
+            self.scope.pageState.entityCountryDetails.entityCountry.attr("countryId",self.scope.attr("countries")[0].id);
 
-
-              Promise.all([
-                Country.findAll(UserReq.formRequestDetails(requestObj))
-              ]).then(function(values) {
-                    self.scope.attr("countries").replace(values[0]);
-              }).then(function(){
-                self.scope.pageState.entityCountryDetails.entityCountry.attr("entityId",self.scope.attr("entities")[0].id);
-                self.scope.pageState.entityCountryDetails.entityCountry.attr("countryId",self.scope.attr("countries")[0].id);
-
-              });
+          });
         })
 
 
-    },
-  helpers:{
+      },
+      helpers:{
 
-    setHeight: function(){
-       var vph = $(window).height()-180;
-       return 'Style="height:'+vph+'px"';
-     },
-    disableSubmit:function(){
-       if(this.attr("state") == "Read"){
-         return 'disabled';
-       }else{
-         return '';
-       }
-
-     }
-
-  },
-  events: {
-
-    "inserted": function(){
-      var self = this;
-
-
-      reportConfigurationList = new can.List();
-      revisionHistory = new can.List();
-
-
-
-      $('#grid-report-config').append(stache('<rn-grid rows="{reportConfigurationList}"></rn-grid>')({reportConfigurationList}));
-      $('#grid-revision-history').append(stache('<rn-grid-revision-history rows="{revisionHistory}"></rn-grid-revision-history>')({revisionHistory}));
-
-
-      $('#invoiceform').on('init.form.bv', function(e, data) {
-                 data.bv.disableSubmitButtons(true);
-
-            }).on('init.field.bv', function(e, data) {
-
-
-            })
-
-      $('#invoiceform').bootstrapValidator({
-        container: 'popover',
-        feedbackIcons: {
-            valid: 'valid-rnotes',
-            invalid: 'alert-rnotes',
-            validating: 'glyphicon glyphicon-refreshas'
+        setHeight: function(){
+          var vph = $(window).height()-180;
+          return 'Style="height:'+vph+'px"';
         },
-        fields: {
-            validFrom: {
-                validators: {
-                    notEmpty: {
-                        message: 'The ValidFrom is required'
-                    }
-                }
-            },
-            entityPricingModelId :{
-                validators: {
-                  group:'.comments',
-                    notEmpty: {
-                        message: 'The Pricingmodel is required'
-                    }
-                }
-            },
-            invoiceCurr :{
-                validators: {
-                  group:'.comments',
-                    notEmpty: {
-                        message: 'The Currency is required'
-                    }
-                }
-            },
-            comments :{
-                validators: {
-                  group:'.comments',
-                    notEmpty: {
-                        message: 'The comments is required'
-                    }
-                }
-            }
+        disableSubmit:function(){
+          if(this.attr("state") == "Read"){
+            return 'disabled';
+          }else{
+            return '';
+          }
+
         }
-      }).on('error.field.bv', function(e, data) {
-          $('*[data-bv-icon-for="'+data.field +'"]').popover('show');
 
-      }).on('success.field.bv', function(e, data) {
+      },
+      events: {
+
+        "inserted": function(){
+          var self = this;
 
 
-      });
+          reportConfigurationList = new can.List();
+          revisionHistory = new can.List();
 
-    },
-    ".rn-grid>tbody>tr td dblclick": function(item, el, ev){
+
+
+          $('#grid-report-config').append(stache('<rn-grid rows="{reportConfigurationList}"></rn-grid>')({reportConfigurationList}));
+          $('#grid-revision-history').append(stache('<rn-grid-revision-history rows="{revisionHistory}"></rn-grid-revision-history>')({revisionHistory}));
+
+
+          $('#invoiceform').on('init.form.bv', function(e, data) {
+            data.bv.disableSubmitButtons(true);
+
+          }).on('init.field.bv', function(e, data) {
+
+
+          })
+
+          $('#invoiceform').bootstrapValidator({
+            container: 'popover',
+            feedbackIcons: {
+              valid: 'valid-rnotes',
+              invalid: 'alert-rnotes',
+              validating: 'glyphicon glyphicon-refreshas'
+            },
+            fields: {
+              validFrom: {
+                validators: {
+                  notEmpty: {
+                    message: 'The ValidFrom is required'
+                  }
+                }
+              },
+              entityPricingModelId :{
+                validators: {
+                  group:'.comments',
+                  notEmpty: {
+                    message: 'The Pricingmodel is required'
+                  }
+                }
+              },
+              invoiceCurr :{
+                validators: {
+                  group:'.comments',
+                  notEmpty: {
+                    message: 'The Currency is required'
+                  }
+                }
+              },
+              comments :{
+                validators: {
+                  group:'.comments',
+                  notEmpty: {
+                    message: 'The comments is required'
+                  }
+                }
+              }
+            }
+          }).on('error.field.bv', function(e, data) {
+            $('*[data-bv-icon-for="'+data.field +'"]').popover('show');
+
+          }).on('success.field.bv', function(e, data) {
+
+
+          });
+
+        },
+        ".rn-grid>tbody>tr td dblclick": function(item, el, ev){
           //var invoiceid = el.closest('tr').data('row').row.id;
           var self=this.scope;
           var row = item.closest('tr').data('row').row;
@@ -199,7 +196,75 @@ var page = Component.extend({
 
           CountryLicensor.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
+            reportConfigurationList.replace(data.entityCountryDetails.reportConfigurationList);
+
+            revisionHistory.replace(data.revisionHistory);
+
+            self.pageState.entityCountryDetails.attr("entityCountry",data.entityCountryDetails.entityCountry);
+
+            self.pageState.entityCountryDetails.attr("comment",data.entityCountryDetails.comment);
+
+            // self.pageState.entityCountryDetails.entityCountry.attr("id",data.entityCountryDetails.entityCountry.id);
+
+
+          },function(xhr){
+            console.error("Error while loading: country-Entity Details"+xhr);
+          });
+
+
+        },
+
+        '{scope} pageState.entityCountryDetails.entityCountry.entityId': function() {
+          var self = this;
+
+          var requestObj = {licensorId:self.scope.pageState.entityCountryDetails.entityCountry.entityId};
+
+          this.scope.countries.replace(Country.findAll(UserReq.formRequestDetails(requestObj)));
+          this.scope.currencies.replace(Currency.findAll(UserReq.formRequestDetails(requestObj)));
+
+          // this.scope.pageState.entityCountryDetails.attr("entityId",4);
+          // console.log(this.scope.pageState.entityCountsryDetails.attr("entityId"));
+
+        },
+        '{scope} pageState.entityCountryDetails.pricingModelVersionNo': function() {
+
+
+          var self = this;
+          var requestObj  = {
+            pricingModelId:this.scope.pageState.entityCountryDetails.attr("pricingModelVersionNo")
+          }
+
+
+          Promise.all([
+            PricingModelVersions.findAll(UserReq.formRequestDetails(requestObj))
+            ]).then(function(values) {
+              //var aa = values[0];
+              // console.log(" test "+aa[0].value);
+              // console.log(" test 1:"+aa[1].value);
+              self.scope.attr("pricingModelVersions").replace(values[0]);
+              //console.log("lebgth: "+self.scope.pricingModelVersions.attr("length"));
+            });
+
+          },
+          '#fetchDetailsBtn click':function(){
+
+            //console.log(this.scope.pageState.entityCountryDetails.entityCountry.attr("entityId"));
+            // console.log(this.scope.pageState.entityCountryDetails.entityCountry.attr("countryId"));
+
+            var requestObj  = {
+              entityCountryDetails:{
+                entityCountry:{
+                  entityId:this.scope.pageState.entityCountryDetails.entityCountry.attr("entityId"),
+                  countryId:this.scope.pageState.entityCountryDetails.entityCountry.attr("countryId")
+                }
+              }
+            }
+            var self = this.scope;
+            CountryLicensor.findOne(UserReq.formRequestDetails(requestObj),function(data){
+
+
               reportConfigurationList.replace(data.entityCountryDetails.reportConfigurationList);
+
 
               revisionHistory.replace(data.revisionHistory);
 
@@ -207,138 +272,136 @@ var page = Component.extend({
 
               self.pageState.entityCountryDetails.attr("comment",data.entityCountryDetails.comment);
 
+              if(data.entityCountryDetails.entityCountry.status == "A") {
+                self.attr("state","Edit");
+              }else{
+                self.attr("state","Read");
+              }
+
+              // self.pageState.entityCountryDetails.entityCountry.attr("id",data.entityCountryDetails.entityCountry.id);
 
 
-          },function(xhr){
+            },function(xhr){
               console.error("Error while loading: country-Entity Details"+xhr);
-          });
+            });
 
 
-    },
+          },
+          '#buttonCancel  click': function(){
 
-    '{scope} pageState.entityCountryDetails.entityCountry.entityId': function() {
-      var self = this;
+            //form Reset
+            var self = this.scope;
+            reportConfigurationList.replace([]);
+            revisionHistory.replace([]);
 
-      var requestObj = {licensorId:self.scope.pageState.entityCountryDetails.entityCountry.entityId};
+            var resetObject = {
+              entityId:this.scope.pageState.entityCountryDetails.entityCountry.attr("entityId"),
+              countryId:this.scope.pageState.entityCountryDetails.entityCountry.attr("countryId")
+            };
 
-      this.scope.countries.replace(Country.findAll(UserReq.formRequestDetails(requestObj)));
-      this.scope.currencies.replace(Currency.findAll(UserReq.formRequestDetails(requestObj)));
+            self.pageState.entityCountryDetails.attr("entityCountry",resetObject);
+            self.pageState.entityCountryDetails.attr("comment","");
+            self.attr("state","Read");
 
-    },
-    '{scope} pageState.entityCountryDetails.pricingModelVersionNo': function() {
-
-
-        var self = this;
-        var requestObj  = {
-          pricingModelId:this.scope.pageState.entityCountryDetails.attr("pricingModelVersionNo")
-        }
+          },
+          '#submitBtn click': function(){
+            var entityCountry_data  = this.scope.pageState.entityCountryDetails.attr("entityCountry")._data;
 
 
-        Promise.all([
-            PricingModelVersions.findAll(UserReq.formRequestDetails(requestObj))
-            ]).then(function(values) {
-              self.scope.attr("pricingModelVersions").replace(values[0]);
-        });
+            if(entityCountry_data.laEnabled){
+              entityCountry_data.laEnabled = "Y";
+            }else{
+              entityCountry_data.laEnabled = "N";
+            }
+            entityCountry_data.status = "N";// New state
 
-    },
-    '.btn-fetchDetails click':function(){
 
-      //console.log(this.scope.pageState.entityCountryDetails.entityCountry.attr("entityId"));
-      // console.log(this.scope.pageState.entityCountryDetails.entityCountry.attr("countryId"));
 
-      var requestObj  = {
-        entityCountryDetails:{
-          entityCountry:{
-            entityId:this.scope.pageState.entityCountryDetails.entityCountry.attr("entityId"),
-            countryId:this.scope.pageState.entityCountryDetails.entityCountry.attr("countryId")
+            var reportConfigurationListObj =  [];
+
+            can.each(reportConfigurationList,
+              function( value, index ) {
+                reportConfigurationListObj.push(value._data);
+              }
+            );
+
+
+            // reportConfigurationList =
+
+            var requestObj  = {
+              entityCountryDetails  :{
+                entityCountry:entityCountry_data,
+                reportConfigurationList:reportConfigurationListObj,
+                pricingModelVersionNo: this.scope.pageState.entityCountryDetails.pricingModelVersionNo,
+                pricingModelId:this.scope.pageState.entityCountryDetails.pricingModelId,
+                comment: this.scope.pageState.entityCountryDetails.comment,
+                commentType:"ENTITY_COUNTRY"//TODO: Should be handled at server side. Not required to pass it.
+              },
+
+            };
+
+
+
+
+            CountryLicensor.create(UserReq.formRequestDetails(requestObj));
+
+            this.scope.attr("displayMessage","display:block");
+          },
+          'period-calendar onSelected': function (ele, event, val) {  
+            this.scope.attr('periodchoosen', val);
+            var which = $(ele).parent().find('input[type=text]').attr('id');
+            this.scope.appstate.attr(which, this.scope.periodchoosen);
+            $(ele).parent().find('input[type=text]').val(this.scope.periodchoosen).trigger( "change" );
+            $(ele).closest('.calendarcls').find('.box-modal').hide();
+            $(ele).blur();
+          },
+          '.updateperoid focus':function(el){
+            $(el).closest('.calendarcls').find('.box-modal').show().trigger( "focus" );
+          },
+          '{selectedperiod} change':function(val){
+            var period = periodWidgetHelper.getFiscalPeriod(val[0].value);
+            console.log(period);
+            if(val[0].which=='periodFrom'){
+              this.scope.pageState.entityCountryDetails.entityCountry.validFrom = period;
+            }else{
+              this.scope.pageState.entityCountryDetails.entityCountry.validTo = period;
+            }
+
           }
         }
-      }
-      var self = this.scope;
-      CountryLicensor.findOne(UserReq.formRequestDetails(requestObj),function(data){
-
-
-        reportConfigurationList.replace(data.entityCountryDetails.reportConfigurationList);
-
-
-        revisionHistory.replace(data.revisionHistory);
-
-        self.pageState.entityCountryDetails.attr("entityCountry",data.entityCountryDetails.entityCountry);
-
-        self.pageState.entityCountryDetails.attr("comment",data.entityCountryDetails.comment);
-
-        if(data.entityCountryDetails.entityCountry.status == "A") {
-          self.attr("state","Edit");
-        }else{
-          self.attr("state","Read");
-        }
-
-        // self.pageState.entityCountryDetails.entityCountry.attr("id",data.entityCountryDetails.entityCountry.id);
-
-
-      },function(xhr){
-          console.error("Error while loading: country-Entity Details"+xhr);
       });
 
+      var showErrorMsg = function(periodFrom,periodTo,whichcomp){
 
-    },
-    '.buttonCancel  click': function(){
-
-      //form Reset
-      var self = this.scope;
-      reportConfigurationList.replace([]);
-      revisionHistory.replace([]);
-
-      var resetObject = {
-            entityId:this.scope.pageState.entityCountryDetails.entityCountry.attr("entityId"),
-            countryId:this.scope.pageState.entityCountryDetails.entityCountry.attr("countryId")
-          };
-
-      self.pageState.entityCountryDetails.attr("entityCountry",resetObject);
-      self.pageState.entityCountryDetails.attr("comment","");
-      self.attr("state","Read");
-
-    },
-    '.buttonSubmit click': function(){
-      var entityCountry_data  = this.scope.pageState.entityCountryDetails.attr("entityCountry")._data;
-
-
-      if(entityCountry_data.laEnabled){
-          entityCountry_data.laEnabled = "Y";
-      }else{
-        entityCountry_data.laEnabled = "N";
-      }
-      entityCountry_data.status = "N";// New state
-
-
-
-      var reportConfigurationListObj =  [];
-
-      can.each(reportConfigurationList,
-          function( value, index ) {
-              reportConfigurationListObj.push(value._data);
+        if(whichcomp=='from'){
+          var _root = $('#ref-period-container');
+          //_root.find('#periodTo').val('');
+          _root.find('.period-calendar .period li a').removeClass('disabled period-active');
+          if(periodFrom.charAt(0)=='Q'){
+            _root.find('.period-calendar .q1 li').not(":first").find('a').addClass('disabled');
+            _root.find('.period-calendar .q2 li').not(":first").find('a').addClass('disabled');
+            _root.find('.period-calendar .q3 li').not(":first").find('a').addClass('disabled');
+            _root.find('.period-calendar .q4 li').not(":first").find('a').addClass('disabled');
+          }else{
+            _root.find('.period-calendar .q1 li').first().find('a').addClass('disabled');
+            _root.find('.period-calendar .q2 li').first().find('a').addClass('disabled');
+            _root.find('.period-calendar .q3 li').first().find('a').addClass('disabled');
+            _root.find('.period-calendar .q4 li').first().find('a').addClass('disabled');
           }
-      );
+        }
 
-      var requestObj  = {
-          entityCountryDetails  :{
-            entityCountry:entityCountry_data,
-            reportConfigurationList:reportConfigurationListObj,
-            pricingModelVersionNo: this.scope.pageState.entityCountryDetails.pricingModelVersionNo,
-            pricingModelId:this.scope.pageState.entityCountryDetails.pricingModelId,
-            comment: this.scope.pageState.entityCountryDetails.comment,
-            commentType:"ENTITY_COUNTRY"//TODO: Should be handled at server side. Not required to pass it.
-          },
+        var showFlg=false;
+        var from = periodFrom,to =  periodTo;
+        if(from!=undefined &&  to!=undefined){
+          from = from.split('FY');
+          to = to.split('FY');   //console.log(from[1].slice(-2)+'--------'+ to[1].slice(-2));
+          if(from[1].slice(-2) > to[1].slice(-2)) showFlg=true;
+          if(from[1].slice(-2) >= to[1].slice(-2) && from[0].charAt(0)!=to[0].charAt(0) )showFlg=true;
+          if(from[1].slice(-2) >= to[1].slice(-2) && parseInt(from[0].substring(1,3)) > parseInt(to[0].substring(1,3)))showFlg=true;
 
-        };
-      CountryLicensor.create(UserReq.formRequestDetails(requestObj));
-
-      this.scope.attr("displayMessage","display:block");
+        }
+        if(showFlg==true){ $('.period-invalid').show(); return false;}else {showFlg=false; $('.period-invalid').hide();}
+      }
 
 
-    }
-  }
-});
-
-
-export default page;
+      export default page;

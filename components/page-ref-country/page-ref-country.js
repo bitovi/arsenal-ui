@@ -20,7 +20,7 @@ import Licensor from 'models/common/licensor/';
 import Country from 'models/common/country/';
 import Currency from 'models/common/currency/';
 import RefCountry from 'models/refdata/country/';
-import PricingModels from 'models/common/pricingmodels/';
+import PricingModels from 'models/pricing-models/';
 import PricingMethods from 'models/common/pricingMethods/';
 
 
@@ -200,8 +200,8 @@ var page = Component.extend({
       });
 
     },
-    '.updatePeroid focus':function(el){ 
-       $(el).closest('.calendarcls').find('.box-modal').show().trigger( "focus" ); 
+    '.updatePeroid focus':function(el){
+       $(el).closest('.calendarcls').find('.box-modal').show().trigger( "focus" );
      },
     "#grid-revision-history table>tbody>tr click": function(item, el, ev){
         //var invoiceid = el.closest('tr').data('row').row.id;
@@ -229,7 +229,7 @@ var page = Component.extend({
             var formatValidFrom = "P"+validFrom[4]+""+validFrom[5]+" FY "+validFrom[2]+""+validFrom[3];
             self.pageState.countryDetails.country.attr("validFrom",formatValidFrom);
           }
-          
+
           var validTo = self.pageState.countryDetails.country.attr("validTo").toString();
           if(validTo == "0")
             self.pageState.countryDetails.country.attr("validTo","");
@@ -237,11 +237,11 @@ var page = Component.extend({
             var formatValidTo = "P"+validTo[4]+""+validTo[5]+" FY "+validTo[2]+""+validTo[3];
             self.pageState.countryDetails.country.attr("validTo",formatValidTo);
           }
-          
+
           self.attr("localSocietyNames").replace(data.countryDetails.localSocietyNames);
           self.pageState.countryDetails.country.attr("localSocietyId",data.countryDetails.localSocietyId);
           $("#localSocietysel").val(data.countryDetails.localSocietyId);
-          
+
           self.pageState.countryDetails.country.attr("mainPricingMethod",data.countryDetails.mainPricingMethod);
           self.pageState.countryDetails.country.attr("altPricingMethod",data.countryDetails.altPricingMethod);
 
@@ -269,7 +269,7 @@ var page = Component.extend({
               pricingModelVersions[accModelName].push({"version":accModelVersion,"modelId":accModelId});
             }
           }
-          
+
           var accModels = [];
           for(var key in pricingModelVersions){
             var temp = {};
@@ -285,7 +285,7 @@ var page = Component.extend({
           //console.log("multi comments "+JSON.stringify(tempcommentObj));
           if(tempcommentObj!=null)
             $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
-          else 
+          else
             $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>');
         },function(xhr){
             console.error("Error while loading: country-Entity Details"+xhr);
@@ -303,22 +303,22 @@ var page = Component.extend({
     },
     '#fetchDetailsBtn click':function(){
       var self = this.scope;
-      
+
       //console.log(this.scope.pageState.attr("countryId"));
       var countryId;
       if(self.pageState.countryDetails.country.attr("countryId")=="")
         countryId = self.pageState.attr("countryId")
-      else 
+      else
         countryId = self.pageState.countryDetails.country.attr("countryId");
-      
+
       var requestObj  = {
           "id":"",
           "countryId":countryId
       };
-      
+
       console.log("Request passed is "+ JSON.stringify(UserReq.formRequestDetails(requestObj)));
       RefCountry.findOne(UserReq.formRequestDetails(requestObj),function(data){
-        
+
         self.pageState.countryDetails.attr("country",data.countryDetails);
 
         var validFrom = self.pageState.countryDetails.country.attr("validFrom").toString();
@@ -328,7 +328,7 @@ var page = Component.extend({
           var formatValidFrom = "P"+validFrom[4]+""+validFrom[5]+" FY "+validFrom[2]+""+validFrom[3];
           self.pageState.countryDetails.country.attr("validFrom",formatValidFrom);
         }
-        
+
         var validTo = self.pageState.countryDetails.country.attr("validTo").toString();
         if(validTo == "0")
           self.pageState.countryDetails.country.attr("validTo","");
@@ -336,11 +336,11 @@ var page = Component.extend({
           var formatValidTo = "P"+validTo[4]+""+validTo[5]+" FY "+validTo[2]+""+validTo[3];
           self.pageState.countryDetails.country.attr("validTo",formatValidTo);
         }
-        
+
         self.attr("localSocietyNames").replace(data.countryDetails.localSocietyNames);
         self.pageState.countryDetails.country.attr("localSocietyId",data.countryDetails.localSocietyId);
         $("#localSocietysel").val(data.countryDetails.localSocietyId);
-        
+
         self.pageState.countryDetails.country.attr("mainPricingMethod",data.countryDetails.mainPricingMethod);
         self.pageState.countryDetails.country.attr("altPricingMethod",data.countryDetails.altPricingMethod);
 
@@ -370,7 +370,7 @@ var page = Component.extend({
             pricingModelVersions[accModelName].push({"version":accModelVersion,"modelId":accModelId});
           }
         }
-        
+
         var accModels = [];
         for(var key in pricingModelVersions){
           var temp = {};
@@ -397,7 +397,7 @@ var page = Component.extend({
         //console.log("multi comments "+JSON.stringify(tempcommentObj.attr()));
         if(tempcommentObj !=null)
           $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
-        
+
         var revHistories = data.countryDetails.revisionHistories.attr();
         var formatRevHistories = [];
         for(var i=0;i<revHistories.length;i++){
@@ -411,7 +411,7 @@ var page = Component.extend({
         }
         //console.log("revision history "+JSON.stringify(formatRevHistories));
         self.revisionHistory.replace(formatRevHistories);
-        
+
         self.societyModelMapping.replace(data.countryDetails.modelMappings);
 
         if(data.countryDetails.status == "A") {
@@ -437,12 +437,12 @@ var page = Component.extend({
       var selModelId = ver[0]["modelId"];
       //console.log("sel model id "+selModelId)
       self.attr("selectedModelId",selModelId);
-      
+
     },
     '#accModelVerSel change': function(el, ev) {
       var self=this.scope;
       var selected = $(el[0].selectedOptions).data('accModelVer');
-      //console.log("selected accmodelvers "+JSON.stringify(selected.attr())); 
+      //console.log("selected accmodelvers "+JSON.stringify(selected.attr()));
       var selModelId = selected["modelId"];
       //console.log("sel model id "+selModelId)
       self.attr("selectedModelId",selModelId);
@@ -450,7 +450,7 @@ var page = Component.extend({
     '#pricingModelBtn click': function(){
       var self = this.scope;
       $("#viewPricingModelDiv").show();
-      var selmodelid = self.attr("selectedModelId").toString();    
+      var selmodelid = self.attr("selectedModelId").toString();
       var genObj = {modelId:selmodelid,reqType:'details'};
 
       console.log("Request is " +JSON.stringify(UserReq.formRequestDetails(genObj)));
@@ -500,7 +500,7 @@ var page = Component.extend({
     },
     '#submitBtn click': function(el, ev){
       ev.preventDefault();
-      var self = this.scope;  
+      var self = this.scope;
       var validFrom = $("#validFrom").val();
       var formatValidFrom = "20"+validFrom[7]+""+validFrom[8]+""+validFrom[1]+""+validFrom[2];
       var validTo = $("#validTo").val();
@@ -508,13 +508,13 @@ var page = Component.extend({
         var formatValidTo = "20"+validFrom[7]+""+validFrom[8]+""+validFrom[1]+""+validFrom[2];
       else
         var formatValidTo = "";
-      var comments = $(".new-comments").val();    
+      var comments = $(".new-comments").val();
 
       var requestObj  = {
           countryDetails  :{
             id: self.pageState.countryDetails.country.id,
-            status: self.pageState.countryDetails.country.status, 
-            modelId: self.selectedModelId, 
+            status: self.pageState.countryDetails.country.status,
+            modelId: self.selectedModelId,
             countryId: self.pageState.countryDetails.country.countryId,
             currencies: null,
             countryName: self.pageState.countryDetails.country.countryName,

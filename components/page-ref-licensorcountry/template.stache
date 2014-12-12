@@ -1,220 +1,223 @@
 <div class="form-horizontal" id="invoiceform" role="form">
-<div class="container-fluid create-invoice">
-  <div class="row">
-    <div class="col-sm-5 pageTitle">
+  <div class="container-fluid create-invoice">
+    <div class="row">
+      <div class="col-sm-5 pageTitle">
         <h3>Country-Licensor Details</h3>
-    </div>
-    <div class="col-sm-4">
-      <!-- TODO - Keep the message outside -->
-      <div style="{{displayMessage}}" class="alert-success alert-dimension" role="alert">
-        <a href="#" class="close" data-dismiss="alert">&times;</a>
-        New Country-Society Details Changes Saved Successfully.
       </div>
+      <div class="col-sm-4">
+        <!-- TODO - Keep the message outside -->
+        <div style="{{displayMessage}}" class="alert-success alert-dimension" role="alert">
+          <a href="#" class="close" data-dismiss="alert">&times;</a>
+          New Country-Society Details Changes Saved Successfully.
+        </div>
 
+      </div>
     </div>
-  </div>
 
-  <div class="row">
+    <div class="row">
 
-         <div class="form-group col-sm-12">
+      <div class="form-group col-sm-12">
 
-             <div class="col-sm-4">
-               <label for="forEntity" class="col-sm-4 control-label">Licensor: </label>
-                <div class="col-sm-6">
-                  <select class="form-control"   can-value='pageState.entityCountryDetails.entityCountry.entityId'>
-                    {{#each entities}}
-                      <option value="{{id}}">{{value}}</option>
-                     {{/each}}
-                </div>
-              </div>
-              <div class="col-sm-6">
-                 <label for="forCountry" class="col-sm-4 control-label">Country: </label>
-                 <div class="col-sm-4">
-                   <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.countryId'>
-                       {{#each countries}}
-                         <option value="{{id}}">{{value}}</option>
-                        {{/each}}
-                     </select>
-                 </div>
-                 <div class="col-sm-2 ">
-                   <button class="btn btn-primary btn-custom-small btn-fetchDetails">Fetch</button>
-                 </div>
-               </div>
+        <div class="col-sm-4">
+          <label for="forEntity" class="col-sm-4 control-label">Licensor: </label>
+          <div class="col-sm-6">
+            <select class="form-control"   can-value='pageState.entityCountryDetails.entityCountry.entityId'>
+              {{#each entities}}
+              <optgroup label="{{entityType}}">
+                {{#each entities}}
+                <option value="{{id}}">{{value}}</option>
+                {{/each}}
+              </optgroup>
+              {{/each}}
+
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <label for="forCountry" class="col-sm-4 control-label">Country: </label>
+            <div class="col-sm-4">
+              <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.countryId'>
+                {{#each countries}}
+                <option value="{{id}}">{{value}}</option>
+                {{/each}}
+              </select>
+            </div>
+            <div class="col-sm-2 ">
+              <button id="fetchDetailsBtn" class="btn btn-primary btn-custom-small">Fetch</button>
+            </div>
+          </div>
 
         </div>
 
-<div id="countryLicForm" >
-      <div class="col-sm-12 lineDividerInvoice"></div><!-- Main Layout START-->
+        <form id="countryLicForm" >
+          <div class="col-sm-12 lineDividerInvoice"></div><!-- Main Layout START-->
 
 
-      <div class="col-sm-6 right-border" {{setHeight}}><!-- LEFT Layout START-->
-        <div class="form-group">
-           <div class="col-sm-6">
-              <label for="forId" class="col-sm-6 control-label">ID: </label>
-              <div class="col-sm-4" style="text-align:left;padding-left:0px">{{pageState.entityCountryDetails.entityCountry.id}}</div>
+          <div class="col-sm-6 right-border" {{setHeight}}><!-- LEFT Layout START-->
+            <div class="form-group">
+              <div class="col-sm-6">
+                <label for="forId" class="col-sm-6 control-label">ID: </label>
+                <div class="col-sm-4" style="text-align:left;padding-left:0px">{{pageState.entityCountryDetails.entityCountry.id}}</div>
+              </div>
+              <div class="col-sm-6"></div>
             </div>
-             <div class="col-sm-6"></div>
-          </div>
-          <div class="form-group">
-             <div class="col-sm-6">
+            <div class="form-group">
+              <div class="col-sm-6">
                 <label for="forStatus" class="col-sm-6 control-label">Status: </label>
                 <div class="col-sm-4" style="text-align:left;padding-left:0px">{{pageState.entityCountryDetails.entityCountry.status}}</div>
               </div>
-               <div class="col-sm-6"></div>
-          </div>
-          <div class="form-group">
-             <div class="col-sm-6">
-                <label for="forValidFrom" class="col-sm-6 control-label">Valid From: </label>
-                <div class="col-sm-4 requiredBar">
-                  <select  class="form-control inputMonth" name="validFrom" can-value='pageState.entityCountryDetails.entityCountry.validFrom'>
-                      <option value="">Select</option>
-                      {{#each periodFromList}}
-                        <option value="{{id}}">{{value}}</option>
-                       {{/each}}
-                  </select>
+              <div class="col-sm-6"></div>
+            </div>
+            <div id="ref-period-container">
+              <div class="form-group">
+                <div class="col-sm-6">
+                  <label for="forValidFrom" class="col-sm-6 control-label">Valid From: </label>
+                  <div class="col-sm-4 requiredBar">
+                    <div class="calendarcls">
+                      <input type='text' id="periodFrom" class="form-control inputMonth updateperoid"  can-value='pageState.entityCountryDetails.entityCountry.validFrom'/>
+                      <period-calendar  selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
+                    </div>
+                  </div>
                 </div>
+                <div class="col-sm-6"></div>
               </div>
-               <div class="col-sm-6"></div>
-          </div>
-          <div class="form-group">
-             <div class="col-sm-6 ">
-                <label for="forValidTo" class="col-sm-6 control-label">Valid To: </label>
-                <div class="col-sm-4 normalBar">
-                  <select  class="form-control inputMonth" can-value='pageState.entityCountryDetails.entityCountry.validTo'>
-                      <option value=""></option>
-                      {{#each periodToList}}
-                        <option value="{{id}}">{{value}}</option>
-                       {{/each}}
-                  </select>
+              <div class="form-group">
+                <div class="col-sm-6 ">
+                  <label for="forValidTo" class="col-sm-6 control-label">Valid To: </label>
+                  <div class="col-sm-4 normalBar">
+                    <div class="calendarcls">
+                      <input type='text' id="periodTo" class="form-control updateperoid inputMonth"  can-value='pageState.entityCountryDetails.entityCountry.validTo'/>
+                      <period-calendar selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
+                    </div>
+                  </div>
                 </div>
+                <div class="col-sm-6"></div>
               </div>
-               <div class="col-sm-6"></div>
-          </div>
-          <div class="form-group">
-             <div class="col-sm-6">
+            </div>
+            <div class="form-group">
+              <div class="col-sm-6">
                 <label for="forInvoiceCurr" class="col-sm-6 control-label">Invoice Currency: </label>
                 <div class="col-sm-4 requiredBar">
                   <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.invoiceCurr' name="invoiceCurr" >
                     {{#each currencies}}
-                      <option value="{{id}}">{{value}}</option>
-                     {{/each}}
-                  </select>
-                </div>
-              </div>
-               <div class="col-sm-6"></div>
-          </div>
-          <div class="form-group">
-            <div class="col-sm-6">
-               <label for="forEntityPricingModelId" class="col-sm-6 control-label"  >Pricing Model:</label>
-               <div class="col-sm-6 requiredBar">
-                  <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelVersionNo' name="entityPricingModelId">
-                    {{#each pricingModels}}
-                      <option value="{{id}}">{{value}}</option>
-                     {{/each}}
-                  </select>
-               </div>
-            </div>
-            <div class="col-sm-6">
-                  <div class="col-sm-2" style="padding-right:0px;padding-left:0px;">
-                    <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelId'  >
-                      {{#each pricingModelVersions}}
-                        <option value="{{id}}">{{value}}</option>
-                       {{/each}}
-                    </select>
-                  </div>
-                  <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="pricingMOdelBtn">...</button>
-              </div>
-             </div>
-
-
-
-          <div class="form-group">
-             <div class="col-sm-6 ">
-                <label for="forValidTo" class="col-sm-6 control-label">Pricing Method: </label>
-                <div class="col-sm-6 normalBar">
-                  <select  class="form-control inputMonth" can-value='pageState.entityCountryDetails.entityCountry.pricingMethod'>
-                    {{#each pricingMethods}}
-                        <option value="{{id}}">{{value}}</option>
+                    <option value="{{id}}">{{value}}</option>
                     {{/each}}
                   </select>
                 </div>
               </div>
-               <div class="col-sm-6"></div>
-          </div>
-
-
-        <div class="form-group">
-          <div class="col-sm-12">
-          <div class="col-sm-3"></div>
-            <div class="col-sm-4">
-                 <label class="checkbox"><input type="checkbox" can-value="pageState.entityCountryDetails.entityCountry.laEnabled">London Agreement</label>
+              <div class="col-sm-6"></div>
             </div>
-            <div class="col-sm-6"></div>
-          </div>
-        </div>
+            <div class="form-group">
+              <div class="col-sm-6">
+                <label for="forEntityPricingModelId" class="col-sm-6 control-label"  >Pricing Model:</label>
+                <div class="col-sm-6 requiredBar">
+                  <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelVersionNo' name="entityPricingModelId">
+                    {{#each pricingModels}}
+                    <option value="{{id}}">{{value}}</option>
+                    {{/each}}
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="col-sm-2" style="padding-right:0px;padding-left:0px;">
+                  <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelId'  >
+                    {{#each pricingModelVersions}}
+                    <option value="{{id}}">{{value}}</option>
+                    {{/each}}
+                  </select>
+                </div>
+                <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="pricingMOdelBtn">...</button>
+              </div>
+            </div>
 
-          <div class="form-group">
-             <div class="col-sm-12">
+
+
+            <div class="form-group">
+              <div class="col-sm-6 ">
+                <label for="forValidTo" class="col-sm-6 control-label">Pricing Method: </label>
+                <div class="col-sm-6 normalBar">
+                  <select  class="form-control inputMonth" can-value='pageState.entityCountryDetails.entityCountry.pricingMethod'>
+                    {{#each pricingMethods}}
+                    <option value="{{id}}">{{value}}</option>
+                    {{/each}}
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-6"></div>
+            </div>
+
+
+            <div class="form-group">
+              <div class="col-sm-12">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-4">
+                  <label class="checkbox"><input type="checkbox" can-value="pageState.entityCountryDetails.entityCountry.laEnabled">London Agreement</label>
+                </div>
+                <div class="col-sm-6"></div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-12">
                 <label for="forStatus" class="col-sm-3 control-label">Comments: </label>
                 <div class="col-sm-6 requiredBar">
                   <textarea class="form-control" maxlength="1024" name="comments" can-value="pageState.entityCountryDetails.comment" style="height:100px;   min-height:100px;    max-height:100px;"></textarea>
                 </div>
               </div>
-               <div class="col-sm-6"></div>
-          </div>
+              <div class="col-sm-6"></div>
+            </div>
 
-          <div class="col-sm-12">
-            <div class="col-sm8" style="text-align:right;padding:15px;">
+            <div class="col-sm-12">
+              <div class="col-sm8" style="text-align:right;padding:15px;">
                 <div class="col-sm-6 ">
-                  <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" >Cancel</button>
-                  <button {{disableSubmit}} type="submit"  class="btn btn-primary buttonSubmit btn-custom-big">Submit</button>
+                  <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
+                  <button id="submitBtn" {{disableSubmit}} type="submit"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>
                 </div>
-            </div>
-         </div>
-
-      </div>
-      <!-- LEFT Layout END-->
-
-
-
-
-    <div class="col-sm-6 left-border" {{setHeight}}> <!-- RIGHT Layout START-->
-      <div class="form-group">
-        <div class="col-sm-1"></div>
-         <div class="col-sm-6">
-          <div class="panel panel-default panel-sm">
-            <div class="panel-heading clearfix">
-                <h4 class="panel-title">
-                  Report Configuration
-                </h4>
-            </div>
-            <div id="grid-report-config grid-overFlow" ></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="col-sm-1"></div>
-         <div class="col-sm-11">
-          <div class="panel panel-default panel-sm">
-            <div class="panel-heading clickable">
-                <h4 class="panel-title">
-                   <a data-toggle="collapse" data-parent="#accordion" href="#grid-collapse">
-                    <i class="icon-large icon-circle-arrow-right"></i> Revision History
-                  </a></h4>
-            </div>
-            <div id="grid-collapse" class="panel-collapse collapse in">
-              <div id="grid-revision-history grid-overFlow"></div>
+              </div>
             </div>
 
           </div>
-        </div>
+          <!-- LEFT Layout END-->
+
+
+
+
+          <div class="col-sm-6 left-border" {{setHeight}}> <!-- RIGHT Layout START-->
+            <div class="form-group">
+              <div class="col-sm-1"></div>
+              <div class="col-sm-6">
+                <div class="panel panel-default panel-sm">
+                  <div class="panel-heading clearfix">
+                    <h4 class="panel-title">
+                      Report Configuration
+                    </h4>
+                  </div>
+                  <div id="grid-report-config" style="max-height: 200px; overflow-y:scroll;"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-1"></div>
+              <div class="col-sm-11">
+                <div class="panel panel-default panel-sm">
+                  <div class="panel-heading clickable">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#grid-collapse">
+                        <i class="icon-large icon-circle-arrow-right"></i> Revision History
+                      </a></h4>
+                    </div>
+                    <div id="grid-collapse" class="panel-collapse collapse in">
+                      <div id="grid-revision-history" style="max-height: 200px; overflow-y:scroll;"></div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+
+
+            </div><!-- RIGHT Layout END-->
+
+          </div><!-- Main Layout END-->
+        </form>
       </div>
-
-
-
-  </div><!-- RIGHT Layout END-->
-
-  </div><!-- Main Layout END-->
-</div>
-</div>

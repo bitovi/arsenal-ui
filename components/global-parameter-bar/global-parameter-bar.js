@@ -56,10 +56,9 @@ var GlobalParameterBar = Component.extend({
      '{periodFrom} change': function(el, ev) {
          var comp ='from';
          this.scope.attr('errorMessage','');
-         console.log("Period: "+periodWidgetHelper.getFiscalPeriod(this.scope.attr('periodFrom')[0]));
          this.scope.appstate.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(this.scope.attr('periodFrom')[0]));
          this.scope.appstate.attr('periodType',periodWidgetHelper.getPeriodType(this.scope.attr('periodFrom')[0]));
-          this.scope.attr('errorMessage',showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0]));
+         this.scope.attr('errorMessage',showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0]));
      },
      '{periodTo} change': function(el, ev) {
           var comp ='to';
@@ -119,7 +118,7 @@ var GlobalParameterBar = Component.extend({
       else
         this.scope.appstate.removeAttr('contentType');
     } ,
-    '#globalSearch click':function(){       
+    '#globalSearch click':function(){
       var self = this;
 //      self.scope.appstate.attr('periodFrom', $('#periodFrom').val());
 //      self.scope.appstate.attr('periodTo', $('#periodTo').val());
@@ -133,7 +132,7 @@ var GlobalParameterBar = Component.extend({
           this.scope.appstate.attr('globalSearch', true);
         }
       }
-        
+
     }
   },
   init: function() {
