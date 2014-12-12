@@ -83,7 +83,7 @@ var page = Component.extend({
       errorMsg:{},
       errorStatus:{},
       fileupload:'',
-      uploadedfileinfo:[]
+      uploadedFileInfo:[]
     
     },
     init:function(){
@@ -196,36 +196,34 @@ var page = Component.extend({
 
       
       'rn-file-uploader onSelected': function (ele, event, val) {
-            val == 'SUCCESS' ?  $('.jQfunhide').show():$('.jQfunhide').hide();
+            var self = this;
+            self.scope.attr('uploadedFileInfo',val.filePropeties);
+            //console.log(JSON.stringify(self.scope.attr('uploadedFileInfo')));
+            //val == 'SUCCESS' ?  $('.jQfunhide').show():$('.jQfunhide').hide();
        },
        "#buttonCancelicsv click":function(){
           this.scope.appstate.attr('page','invoices');
        },
-       '{uploadedfileinfo} change':function(){
+       '{scope} uploadedFileInfo':function(){
           var self = this;
           /* Below is request for validateicsv*/
-       
-       /*   var icsvReq = {
-            "documents": [
-              {
-                "fileName": self.scope.uploadedfileinfo[0].attr("filename"),
-                "location": self.scope.uploadedfileinfo[0].attr("filepath")
-              }
-            ]
-          };
-            
-          ValidateIcsv.findOne(UserReq.formRequestDetails(icsvReq),function(data){
+          var icsvReq =getICSVRequest(this.scope.uploadedFileInfo);
+
+          console.log('Request:'+ JSON.stringify(icsvReq));
+
+          ValidateIcsv.findOne(icsvReq,function(data){
                   console.log(data);
+                 icsvmap.attr("invoiceData", data); 
                 },function(xhr){
           });
           /* Commenting above line due to unavailability of validateicsv service*/
 
 
-          Promise.all([
-              ValidateIcsv.findAll()
-          ]).then(function(values) {
-              icsvmap.attr("invoiceData", values[0][0]);
-          }); 
+          // Promise.all([
+          //     ValidateIcsv.findAll()
+          // ]).then(function(values) {
+          //     icsvmap.attr("invoiceData", values[0][0]);
+          // }); 
   
 
 
@@ -472,6 +470,22 @@ function CurrencyFormat(number)
   
 }
 
+function getICSVRequest(fileInfo)
+{
+  var request ={};
+  request.requestHeader=UserReq.formRequestDetails();
+  request.documents=[];
+  if(fileInfo != null && fileInfo != undefined && fileInfo.length >0){
+    for(var i=0;i<fileInfo.length;i++){
+      var fileDocument ={};
+      fileDocument.fileName = fileInfo[i].fileName;
+      fileDocument['location'] = fileInfo[i].filePath;
+      request.documents.push(fileDocument);
+    }
+    
+  }
+  return request;
+}
 
 
 

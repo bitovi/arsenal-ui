@@ -32,13 +32,16 @@ getQuarter:function(periodFrom,periodTO){
     }
     return obj;
 },
-frameCreateRequest:function(request,onAccountRows,documents,comments,quarters,paymentBundleNameText){
+frameCreateRequest:function(request,onAccountRows,documents,comments,quarters,paymentBundleNameText,bundleId){
 var onAccountCreateRequest ={};
     onAccountCreateRequest.searchRequest = {};
     onAccountCreateRequest.searchRequest.regionId=request.searchRequest.regionId;
     onAccountCreateRequest.searchRequest.serviceTypeId=request.searchRequest.serviceTypeId;
     onAccountCreateRequest.onAccount={};
     onAccountCreateRequest.onAccount.bundleName=paymentBundleNameText;
+    if(bundleId !=null && bundleId != undefined){
+      onAccountCreateRequest.onAccount.bundleId=bundleId;
+    }
     onAccountCreateRequest.onAccount.onAccountDetails=[];
     onAccountCreateRequest.onAccount.comments=[];
     onAccountCreateRequest.onAccount.documents=[];

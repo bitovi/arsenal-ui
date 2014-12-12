@@ -2,7 +2,6 @@ import Model from 'can/model/';
 
 import RinsCommon from 'utils/urls';
 
-
 var Analytics = Model.extend({
 
   findOne: function(params){
@@ -47,8 +46,5 @@ var Analytics = Model.extend({
    }
 
 }, {});
-
-
-/* able to get data in ajax done function*/
 
 export default Analytics;
