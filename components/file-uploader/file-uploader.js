@@ -1,7 +1,7 @@
   import Component from 'can/component/';
   import template from './template.stache!';
   import FileUpLoader from 'models/fileuploader/';
-  import RinsCommon from 'utils/';
+  import RinsCommon from 'utils/urls';
   import compute from 'can/compute/';
   import _less from './file-uploader.less!';
 
@@ -104,10 +104,10 @@
                         function successeve(response){
                           if(response.status=='SUCCESS'){
                             /*passing file length here to parent component*/
-                             $('.success').empty().html(data.responseText);
+                             $('.success').empty().html(response.responseText);
                             $(self.element).trigger('onSelected', response);
                           }else{
-                             $('.fileError').empty().html(data.responseText);
+                             $('.fileError').empty().html(response.responseText);
                           }
                         }
                         textReader.readAsDataURL(file);

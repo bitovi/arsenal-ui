@@ -204,81 +204,52 @@ var GlobalParameterBar = Component.extend({
 var validateFilters = function(appstate){
     var periodFrom = appstate.attr('periodFrom');
     var periodTo = appstate.attr('periodTo');
-   //var message = showErrorMsg(periodFrom,periodTo,appstate.attr('periodType'));
+    var periodType = appstate.attr('periodType');
+    var message = showErrorMsg(periodWidgetHelper.getDisplayPeriod(periodFrom,periodType),periodWidgetHelper.getDisplayPeriod(periodTo,periodType));
     if(periodFrom.length == 0 || periodFrom.trim().length == 0){
       return 'Invalid PeriodFrom !';
     }else if(periodTo.length == 0 || periodTo.trim().length == 0){
       return 'Invalid PeriodTo !';
+    }else if(message != 0){
+      return message;
     }else{
       return '';
     }
 }
+var showErrorMsg = function(periodFrom, periodTo) {
 
-var showErrorMsg = function(periodFrom,periodTo){
-       var showFlg=false;
-       var from = periodFrom,to = periodTo; 
-       if(from!=undefined &&  to!=undefined){
-            
-          var periodObj = { "P01":"09", "P02":"10", "P03":"11", "P04":"00", "P05":"01", "P06":"02", "P07":"03", "P08":"04", "P09":"05", "P10":"06", "P11":"07", "P12":"08" };
-         
-          var fromYear = parseInt(from.slice(-2));
-          var toYear = parseInt(to.slice(-2));
+ var flag = false;
+ var from = periodFrom || false;
+ var to = periodTo || false;
 
-          var yearFrom = "20" + fromYear;
-          var yearTo = "20" + toYear;
+ if (from && to) {
+   var fromYear = parseInt(from.slice(-2));
+   var toYear = parseInt(to.slice(-2));
 
-          var monthFrom = periodFrom.substr(0, 3);
-          var monthTo = periodTo.substr(0, 3);
+   var yearDiff = parseInt(toYear - fromYear);
 
-          var fromDate = "", toDate = "";
+   if (yearDiff > 1 || yearDiff < 0) flag = true;
 
-          if (periodObj.hasOwnProperty(monthFrom)) {
-            fromDate = yearFrom + ", " + periodObj[monthFrom] + ", 01";
-          }
+   if (!flag && from.charAt(0) === "P" && to.charAt(0) === "P") {
 
-          if (periodObj.hasOwnProperty(monthTo)) {
-            toDate = yearTo + ", " + periodObj[monthTo] + ", 01";
-          }
+     var periodFromValue = periodFrom.substr(1, 2);
+     var periodToValue = periodTo.substr(1, 2);
 
-          var mnthDiff = monthDiff(new Date(fromDate), new Date(toDate));
-   
-          //Condition to check the year
-          if ( toYear < fromYear) showFlg = true;
+     flag = (yearDiff) ? (periodFromValue <= periodToValue) : (periodFromValue > periodToValue);
 
-          //Condition to check the month (to be in range of 12 )
-          if (mnthDiff > 11) showFlg = true;
+   } else if (!flag && from.charAt(0) === "Q" && to.charAt(0) === "Q") {
 
-          //Condition to check the quaters(to be in range of 12 )
-          var quarterFrom = periodFrom.substr(0,2); //Q1, Q2, Q3, Q4
-          var quarterTo = periodTo.substr(0,2); //Q1, Q2, Q3, Q4
+     var quarterFromValue = periodFrom.substr(1, 1);
+     var quarterToValue = periodTo.substr(1, 1);
 
-          if( (quarterFrom === quarterTo) && (fromYear !== toYear) ) showFlg = true; //condition: Q1-2014 != Q1-2015
+     flag = (yearDiff) ? (quarterFromValue <= quarterToValue) : (quarterFromValue > quarterToValue);
 
-          if (quarterFrom === "Q1" && (fromYear !== toYear)) showFlg = true; //condition: from: Q1 && 2014 != 2015
+   }
 
-          var qFrom = parseInt(quarterFrom.slice(-1));
-          var qTo = parseInt(quarterTo.slice(-1));
-
-          var qArray = [2,3,4];
-          
-          if ( $.inArray(qFrom, qArray) && ((toYear - fromYear) == 1) && (qTo === (qFrom - 1)) ) showFlg = true;//condition: fromQ (2,3,4) && 2015 - 2014 === 1 && toQ === (fromQ - 1)
-
-        }
-        if(showFlg){
-          return 'Invalid Period !';
-        }else{
-          return "";
-        }
-          
+ }
+ return (flag) ? 'Invalid Period !' : " ";
 }
 
-function monthDiff(d1, d2) {
-    var months;
-    months = (d2.getFullYear() - d1.getFullYear()) * 12;
-    months -= d1.getMonth() + 1;
-    months += d2.getMonth();
-    return months <= 0 ? 0 : months;
-}
 
 
 export default GlobalParameterBar;

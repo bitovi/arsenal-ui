@@ -8,7 +8,6 @@ import gridtemplate from './gridtemplate.stache!';
 import stache from 'can/view/stache/';
 
 import UserReq from 'utils/request/';
-import periodWidgetHelper from 'utils/periodWidgetHelpers';
 import StatusCodes from 'models/common/statuscodes/';
 import GetAllInvoices from 'models/getAllInvoices/';
 import Invoice from 'models/invoice/';
@@ -51,7 +50,7 @@ Grid.extend({
         contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{entity}}')({entity: row.entity, isChild: row.__isChild}); }
       },
       {
-        id: 'invoiceType',
+        id: 'invoiceTypeDisp',
         title: 'Invoice Type'
       },
       {
@@ -137,7 +136,7 @@ var page = Component.extend({
   helpers: {
         createPBRequest: function(){
           var bundleNamesRequest = {"bundleSearch":{}};
-
+          console.log("appstate "+JSON.stringify(this.appstate));
           var serTypeId = this.appstate.attr('storeType');
           var regId = this.appstate.attr('region');
 
@@ -215,16 +214,18 @@ var page = Component.extend({
         this.scope.appstate.attr("renderGlobalSearch",true);
         var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
         var footerData = this.scope.attr().allInvoicesMap[0].footer;
-        //console.log("dsada "+JSON.stringify(invoiceData));
+        console.log("dsada "+JSON.stringify(invoiceData));
         var gridData = {"data":[],"footer":[]};
         var currencyList = {};
-        if(invoiceData!=null){
+        if(invoiceData!=null && invoiceData.length!=0){
+          console.log("here");
           for(var i=0;i<invoiceData.length;i++){
               var invTemp = {};
               invTemp["invId"] = invoiceData[i]["invId"];
               invTemp["__isChild"] = false;
               invTemp["entity"] = (invoiceData[i]["entityName"]==null)?"":invoiceData[i]["entityName"];
               invTemp["invoiceType"] = (invoiceData[i]["invoiceType"]==null)?"":invoiceData[i]["invoiceType"];
+              invTemp["invoiceTypeDisp"] = (invoiceData[i]["invTypeDisp"]==null)?"":invoiceData[i]["invTypeDisp"];
               invTemp["contentType"] = "";
               invTemp["country"] = "";
               invTemp["invoiceNum"] = (invoiceData[i]["invoiceNumber"]==null)?"":invoiceData[i]["invoiceNumber"];
@@ -254,6 +255,7 @@ var page = Component.extend({
                   invLITemp["__isChild"] = true;
                   invLITemp["entity"] = "";
                   invLITemp["invoiceType"] = "";
+                  invLITemp["invoiceTypeDisp"] = "";
                   invLITemp["contentType"] = (invoiceLineItems[j]["contentGrpName"]==null)?"":invoiceLineItems[j]["contentGrpName"];
                   invLITemp["country"] = (invoiceLineItems[j]["country"]==null)?"":invoiceLineItems[j]["country"];
                   invLITemp["invoiceNum"] = "";
@@ -293,12 +295,12 @@ var page = Component.extend({
             }
 
             var first = "true";
-            var regCcyTemp = {"invId":"", "__isChild":false, "entity":"Total in Regional Currency", "invoiceType":"", "contentType":"", "country":"", "invoiceNum":"","invoiceAmt":"", "dueDate":"", "currency":"", "status":"", "bundleName":"", "comments":""}; 
+            var regCcyTemp = {"invId":"", "__isChild":false, "entity":"Total in Regional Currency", "invoiceType":"", "invoiceTypeDisp":"", "contentType":"", "country":"", "invoiceNum":"","invoiceAmt":"", "dueDate":"", "currency":"", "status":"", "bundleName":"", "comments":""}; 
             regCcyTemp["invoiceAmt"] = CurrencyFormat(footerData["regAmtTot"]);
             regCcyTemp["currency"] = footerData["regCcy"];
             gridData["footer"].push(regCcyTemp);
             for(var obj in footerData["amtCcyMap"]){
-              var ccyTemp = {"invId":"", "__isChild":true, "entity":"", "invoiceType":"", "contentType":"", "country":"", "invoiceNum":"","invoiceAmt":"", "dueDate":"", "currency":"", "status":"", "bundleName":"", "comments":""};
+              var ccyTemp = {"invId":"", "__isChild":true, "entity":"", "invoiceType":"", "invoiceTypeDisp":"", "contentType":"", "country":"", "invoiceNum":"","invoiceAmt":"", "dueDate":"", "currency":"", "status":"", "bundleName":"", "comments":""};
               ccyTemp["invoiceAmt"] = CurrencyFormat(footerData["amtCcyMap"][obj]);
               ccyTemp["currency"] = obj;
               gridData["footer"].push(ccyTemp);
@@ -609,12 +611,12 @@ var page = Component.extend({
               if(typeof(periodFrom)=="undefined")
                 invSearchRequest.searchRequest["periodFrom"] = "";
               else
-                invSearchRequest.searchRequest["periodFrom"] = periodWidgetHelper.getFiscalPeriod(periodFrom);
+                invSearchRequest.searchRequest["periodFrom"] = periodFrom;
 
               if(typeof(periodTo)=="undefined")
                 invSearchRequest.searchRequest["periodTo"] = "";
               else
-                invSearchRequest.searchRequest["periodTo"] = periodWidgetHelper.getFiscalPeriod(periodTo);
+                invSearchRequest.searchRequest["periodTo"] = periodTo;
 
               if(typeof(serTypeId)=="undefined")
                 invSearchRequest.searchRequest["serviceTypeId"] = "";
@@ -658,7 +660,7 @@ var page = Component.extend({
 
               console.log("Request are "+JSON.stringify(UserReq.formRequestDetails(invSearchRequest)));
               GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){
-                  //console.log("response is "+JSON.stringify(data.attr()));
+                  console.log("response is "+JSON.stringify(data.attr()));
                   self.scope.allInvoicesMap.replace(data);
 
 

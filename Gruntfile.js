@@ -126,7 +126,7 @@ module.exports = function (grunt) {
                 { prefix: '/models', sub: false },
                 { prefix: '/resources', sub: false },
                 { prefix: '/test', sub: false },
-                { prefix: '/dist/bundles', sub: '/dist/bundles.html' },
+                { prefix: '/dist/bundles', sub: '/dist/bundles/index.html' },
                 { prefix: '/', sub: '/index.html' }
               ];
               var sub;

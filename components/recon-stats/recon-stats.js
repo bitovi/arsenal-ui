@@ -16,7 +16,7 @@ Grid.extend({
   scope: {
     appstate:undefined,
     columns: [
-      
+
       {
         id: 'disputeType',
         title: 'Dispute'
@@ -48,7 +48,7 @@ Grid.extend({
 var page = Component.extend({
   tag: 'recon-stats',
   template: template,
-  
+
   scope: {
 
       refreshstatsreq : {},
@@ -61,52 +61,6 @@ var page = Component.extend({
 			   }
 			},
 
-
-  		defaultStatsData : {
-			"status" : "SUCCESS",
-			"responseCode": "0000",
-			"responseText": "Data retrieved successfully",					
-
-			"reconStatsDetails": [
-				{
-					
-					"ingestionStats": [
-						{
-							"disputeType": "SR Matched",
-							"noOfRecords": "1040",
-							"recordsPercentage": "0.03",
-							"noOfAdamIds": "876",
-							"totalPubFee": "24",
-							"pubFeePercentage": "0"
-						},
-						{
-							"disputeType": "UnitPubFee Violation",
-							"noOfRecords": "18083",
-							"recordsPercentage": "0.46",
-							"noOfAdamIds": "16937",
-							"totalPubFee": "7003",
-							"pubFeePercentage": "1"
-						}
-					],
-					"summaryStats": {
-						"currency": "EUR",
-						"noOfReconRecords": "2850248",
-						"reconRecordsPercentage": "0",
-						"reconAmount": "864376",
-						"reconAmountPercentage": "75.38",
-						"lineItemDispute": "282171",
-						"overRepDispute": "0",
-						"totalPubFee": "1146674",
-						"recommendedPayment": "57856",
-						"actualPayment": "67307"
-					}
-						
-				}
-
-			]
-			
-		},
-
 		summaryStatsData : [],
 
     currencyScope: [],
@@ -116,7 +70,7 @@ var page = Component.extend({
       var id = [];
 
       $('.rn-grid-ingestionstats1').each(function (i, row) {
-    
+
             // reference all the stuff you need first
             var $row = $(row);
             var $disputeTypeCheck = $row.find('input[id*="disputeCheckBox"]');
@@ -126,14 +80,14 @@ var page = Component.extend({
             var $noOfAdamIds = $row.find('td[class*="noOfAdamIds"]');
             var $pubFeePercentage = $row.find('td[class*="pubFeePercentage"]');
 
-            
+
 
             for(var j=0;j<$disputeTypeCheck.length;j++) {
 
                 if ($disputeTypeCheck[j].checked === true) {
 
                     id[j] = $disputeType[j].innerHTML;
-                    
+
                 }
 
             }
@@ -162,17 +116,17 @@ var page = Component.extend({
             Stats.findOne(self.refreshParam, function(data){
 
               self.summaryStatsData.splice(0,1);
-              
+
               var ingestionStats = data.reconStatsDetails[0].ingestionStats;
 
               var genObj = {};
 
               Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
                  ]).then(function(values) {
-                  
+
 
                   self.attr("currencyScope").replace(values[0]);
-                  
+
                });
 
               // Grid data
@@ -190,7 +144,7 @@ var page = Component.extend({
                 tempArr["pubFeePercentage"] = ingestionStats[i]["pubFeePercentage"];
 
                 grid.data.push(tempArr);
-                
+
               }
 
               var tempSummaryStats = {};
@@ -198,10 +152,10 @@ var page = Component.extend({
               tempSummaryStats.reconRecordsPercentage = data.reconStatsDetails[0].summaryStats.reconRecordsPercentage;
               tempSummaryStats.reconAmountPercentage = data.reconStatsDetails[0].summaryStats.reconAmountPercentage;
               tempSummaryStats.overRepDispute = data.reconStatsDetails[0].summaryStats.overRepDispute;
-              
+
 
               tempSummaryStats.noOfReconRecords = (CurrencyFormat(data.reconStatsDetails[0].summaryStats.noOfReconRecords)).toString();
-              
+
               tempSummaryStats.reconAmount = CurrencyFormat(data.reconStatsDetails[0].summaryStats.reconAmount);
 
               tempSummaryStats.lineItemDispute = CurrencyFormat(data.reconStatsDetails[0].summaryStats.lineItemDispute );
@@ -215,21 +169,21 @@ var page = Component.extend({
               var summaryData = [];
 
               self.summaryStatsData.push(tempSummaryStats);
-              
+
               var rows = new can.List(grid.data);
 
               $('#ingestionReconStats').html(stache('<rn-grid-ingestionstats rows="{rows}"></rn-grid-ingestionstats>')({rows}));
 
               $('#ingestionStatsDiv').show();
               $('#summaryStatsDiv').show();
-                
+
             },function(xhr){
 
-               console.error("Error while loading: bundleNames"+xhr);      
+               console.error("Error while loading: bundleNames"+xhr);
             });
 
           }
-        
+
       }
 
   },
@@ -238,7 +192,7 @@ var page = Component.extend({
 	events: {
 
     'inserted' : function() {
-      
+
       $('.statsTable').hide();
 
     },
@@ -256,7 +210,7 @@ var page = Component.extend({
 	}
 
 
-  
+
 });
 
 function CurrencyFormat(number)
@@ -267,4 +221,3 @@ function CurrencyFormat(number)
 }
 
 export default page;
-

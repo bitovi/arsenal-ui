@@ -1,5 +1,5 @@
 import Model from 'can/model/';
-import RinsCommon from 'utils/';
+import RinsCommon from 'utils/urls';
 
 var pricingModels = Model.extend({
  findOne: function(params){
@@ -43,10 +43,8 @@ var pricingModels = Model.extend({
 	  		data: JSON.stringify(params)
 	  	});
    }
-	
- 
+
+
 }, {});
 
 export default pricingModels;
-
-

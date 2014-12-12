@@ -1,5 +1,5 @@
 import Model from 'can/model/';
-import RinsCommon from 'utils/';
+import RinsCommon from 'utils/urls';
 
 // var proposedOnAccount = Model.extend({
 //   // using finaAll instead of resource because I don't want to be able to save.
