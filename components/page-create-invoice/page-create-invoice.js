@@ -488,6 +488,20 @@ var page = Component.extend({
 		           		 });  
 					}
 				},
+				"#invoicedate dp.change":function(event){ /*need to repeat service call, as no way to capture date change event together with form control event*/
+					var self = this;
+					if(($("#invoicedate input[type=text]").val() != "") &&  (!$.isEmptyObject(self.scope.licensorStore)) && ($("#inputCountry0").val() != "")){
+					var genObj = {entityId:self.scope.licensorStore, invoiceDate:moment($("#invoicedate input[type=text]").val()).unix(), countryId:$("#inputCountry0").val()};
+					CalDueDate.findOne(UserReq.formRequestDetails(genObj),function(data){
+                  		console.log(data.calInvoiceDueDate);
+                  		self.scope.attr("calduedate", moment.unix(data.calInvoiceDueDate).format("MM/DD/YYYY"));
+		                },function(xhr){
+		                /*Error condition*/
+		           		 });  
+					}
+				},
+
+
 				"{invoiceContainer} change": function() {
 				 		var self = this;  /*This block is used to update data in view */
 						var invoiceData = self.scope.attr().invoiceContainer[0];

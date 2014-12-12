@@ -6,57 +6,68 @@ var countries = [
   {
     "id": 1,
     "region": 1,
-    "name": "United States of America"
+    "name": "United States of America",
+    "abbr": "AUT"
   },
   {
     "id": 2,
     "region": 1,
-    "name": "Canada"
+    "name": "Canada",
+    "abbr": "AUT"
   },
   {
     "id": 3,
     "region": 2,
-    "name": "Belgium"
+    "name": "Belgium",
+    "abbr": "AUT"
   },
   {
     "id": 4,
     "region": 2,
-    "name": "France"
+    "name": "France",
+    "abbr": "AUT"
   },
   {
     "id": 5,
     "region": 2,
-    "name": "Switzerland"
+    "name": "Switzerland",
+    "abbr": "AUT"
   },
   {
     "id": 6,
     "region": 3,
-    "name": "India"
+    "name": "India",
+    "abbr": "AUT"
   },
   {
     "id": 7,
     "region": 3,
-    "name": "China"
+    "name": "China",
+    "abbr": "AUT"
   },
   {
     "id": 8,
     "region": 3,
-    "name": "Japan"
+    "name": "Japan",
+    "abbr": "AUT"
   },
   {
     "id": 9,
     "region": 4,
-    "name": "Mexico"
+    "name": "Mexico",
+    "abbr": "AUT"
   },
   {
     "id": 10,
     "region": 4,
-    "name": "Brazil"
+    "name": "Brazil",
+    "abbr": "AUT"
   },
   {
     "id": 11,
     "region": 4,
-    "name": "Argentina"
+    "name": "Argentina",
+    "abbr": "AUT"
   }
 ];
 

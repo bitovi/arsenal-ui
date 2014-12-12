@@ -162,7 +162,7 @@ var  menu =[{
   "value": "Analytics",
    "submenu": [
       {"value": "Analytics", "id": "analytics"},
-      {"value": "Payment Bundle Review", "id": "paymentbundlereview"},
+      {"value": "Payment Bundle Review", "id": "payment-bundles"},
       {"value": "Claim Review", "id": "claimreview"},
       {"value": "Global Revenue", "id": "globalrevenue"},
       /*{"value": "Monthly Billings Reconciliation", "id": "monthlybillingsreconciliation"},*/

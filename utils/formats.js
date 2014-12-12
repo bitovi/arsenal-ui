@@ -10,10 +10,13 @@ var formats = {
   {
     var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
     return n;
+  },
+  formatIf: function(test, format, elseValue) {
+    return value => test.call(null, value) ? format(value) : elseValue
   }
 };
 
 formats.currency = formats.fixed(2);
-formats.percent = (value => formats.fixed(2) + '%');
+formats.percent = (value => formats.fixed(0)(value) + '%');
 
 export default formats;
