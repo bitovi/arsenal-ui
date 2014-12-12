@@ -17,7 +17,7 @@
       {{/if}}
 
         {{#if isAnyFileLoaded}}
-          <div id='showSuccess'></div>
+          <div class='success fileError'></div>
           <input type="button" class="submitFiles uploadFiles" value="Upload"/>
           <input type="button"  class="cancelUpload uploadFiles" value="Cancel">
         {{else}}

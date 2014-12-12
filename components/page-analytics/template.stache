@@ -115,8 +115,8 @@
 		    			<div class="col-sm-4 form-group" id="periodFromcontainer">
 
 		    				
-							 <div class="calendarcls">
-					            <input type='text' name="periodFrom" id="periodFrom" class="form-control  updatePeroid periodFromInput" can-value='periodFromVal' value="{{periodFromInput}}"/>
+							 <div class="calendarcls form-group">
+					            <input type='text' name="periodFromInp" id="periodFrom" class="form-control  updatePeroid periodFromInput" can-value='periodFromVal'/>
 					            <period-calendar selectedperiod="{selectedperiod}"  appstate="{appstate}"></period-calendar>
 					         </div>
           
@@ -130,11 +130,11 @@
 	    				<div class="col-sm-3 textalignright">
 		    				<label>Valid To:</label>
 						</div>
-		    			<div class="col-sm-4 form-group" id="periodTocontainer">
+		    			<div class="col-sm-4" id="periodTocontainer">
 
 		    				
-		    				<div class="calendarcls" >
-					           <input type='text' name="periodTo" id="periodTo" class="form-control  updatePeroid periodToInput" can-value='periodToVal' value="{{periodToInput}}"/>
+		    				<div class="calendarcls form-group" >
+					           <input type='text' name="periodToInp" id="periodTo" class="form-control  updatePeroid periodToInput" can-value='periodToVal'/>
 					           <period-calendar selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
 					          </div>
 
@@ -164,7 +164,7 @@
 	    						{{getselectedInvoiceType invoiceType}}
 	    						<div class="col-sm-12 invoiceTypeerr"> Select an Invoice Type !</div>
 
-				    			<select id="invoiceType" can-value="invoiceType" class="form-control resizeBox invoiceType">
+				    			<select id="invoiceType" can-value="invoiceType" class="form-control resizeInvoice invoiceType">
 				    				 
 						            <option id="selectId">Select</option>
 						            
@@ -286,6 +286,8 @@
 
 			<div class="col-sm-12" id="entityGridSD">
 
+					<div class="col-sm-12" style="padding-top: 15px;"></div>
+					
 					<div class="repConfigurationTab">
 						<div class="col-sm-12" >
 							<label class="tableLabel">Report Configuration:</label>

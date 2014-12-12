@@ -376,6 +376,8 @@
 					        			<div class="col-sm-3">
 						        			<create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}"></create-pb>
 										</div>
+				            	{{else}}
+				            		<div class="col-sm-6"></div>	
 				            	{{/if}}	
 					       {{else}}
 					        <label class="col-sm-2" for="inputCountry"></label>

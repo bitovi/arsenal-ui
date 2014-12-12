@@ -344,25 +344,26 @@ var page = Component.extend({
         var self=this;
         var quarterValueForCopy = $("#copyQuarter").val();
        var rows=this.scope.newOnAccountRows;
-       var request = requestHelper.formRequestDetails();
-       newOnAccountModel.findOne(request,function(data){
-          console.log("Update response is "+JSON.stringify(data));
-            if(data["status"]=="SUCCESS"){
-                displayMessage(data["responseText"],true);
-                var quarters=utils.getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
-                var updatedRows = utils.frameRowsForCopyOnAcc(rows,data,quarters,quarterValueForCopy);
-                var request = self.scope.request;
-                request.quarters=quarters;
-                request.rows=updatedRows;
-                self.scope.newOnAccountRows.replace(updatedRows);
-                $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
-            }
-            else{
-              displayMessage(data["responseText"],false);
-            }
-          },function(xhr){
-            console.error("Error while loading: onAccount Details"+xhr);
-          });
+       var copyOnAccountRequest=createCopyOnAccountRequest(this.scope.appstate);
+       //var request = requestHelper.formGlobalRequest(this.scope.appstate);
+       // newOnAccountModel.findOne(request,function(data){
+       //    console.log("Update response is "+JSON.stringify(data));
+       //      if(data["status"]=="SUCCESS"){
+       //          displayMessage(data["responseText"],true);
+       //          var quarters=utils.getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
+       //          var updatedRows = utils.frameRowsForCopyOnAcc(rows,data,quarters,quarterValueForCopy);
+       //          var request = self.scope.request;
+       //          request.quarters=quarters;
+       //          request.rows=updatedRows;
+       //          self.scope.newOnAccountRows.replace(updatedRows);
+       //          $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
+       //      }
+       //      else{
+       //        displayMessage(data["responseText"],false);
+       //      }
+       //    },function(xhr){
+       //      console.error("Error while loading: onAccount Details"+xhr);
+       //    });
       }
     },
     helpers: {
@@ -494,6 +495,12 @@ var disableCopyOnAccount=function(disable){
     }else{
       $("#copyOnAccount").removeAttr("disabled");
     }
+};
+var createCopyOnAccountRequest=function(appstate,period){
+  var copyOnAccountRequest={};
+  copyOnAccountRequest.searchRequest=requestHelper.formGlobalRequest(appstate).searchRequest;
+  copyOnAccountRequest.searchRequest.type='COPY';
+  return copyOnAccountRequest;
 }
 var validateFilters=function(appstate,validateQuarter,validateStoreType,validateRegion,validateLicensor,validateContentType){
   if(appstate != null && appstate != undefined){
