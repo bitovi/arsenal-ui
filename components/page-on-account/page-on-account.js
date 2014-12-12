@@ -41,6 +41,7 @@ var page = Component.extend({
     bundleNamesForDisplay:"",
     newOnAccountRows:[],
     errorMessage:"",
+    showLoadingImage:"",
     quarters:[]
 
   },
@@ -112,7 +113,9 @@ var page = Component.extend({
                     //console.log("inside NEW_ON_ACC");
                     $('#newonAccountGrid, #newonAccountGridComps').show();
                     genObj["licensorId"]=request.searchRequest.entityId.toString();
+                    self.scope.attr('showLoadingImage',true);
                     LicensorCurrency.findAll(requestHelper.formRequestDetails(genObj)).then(function(data) {
+                    self.scope.attr('showLoadingImage',false);
                     var rows = utils.frameRows(data.licensorCurrencies,quarters);
                     request.rows=rows;
                     request.quarters=quarters;
@@ -142,7 +145,9 @@ var page = Component.extend({
                       request.searchRequest["periodTo"]=request.searchRequest.periodTo;
                       request.searchRequest["entityId"]=self.scope.request.searchRequest.entityId.attr();
                       request.searchRequest["contentGrpId"]=self.scope.request.searchRequest.contentGrpId.attr();
+                       self.scope.attr('showLoadingImage',true);
                       proposedOnAccount.findOne(requestHelper.formRequestDetails(request),function(data){
+                         self.scope.attr('showLoadingImage',false);
                         if(data["status"]=="SUCCESS"){
                            /* The below calls {scope.appstate} change event that gets the new data for grid*/
                             var returnValue = utils.getProposedOnAccRows(quarters,data);
@@ -212,7 +217,7 @@ var page = Component.extend({
         if(paymentBundleName==undefined  ||  paymentBundleName==null || paymentBundleName ==""){
             paymentBundleName = self.scope.paymentBundleNameText;
         }
-        var createrequest = utils.frameCreateRequest(self.scope.request,self.scope.onAccountRows,self.scope.documents,self.scope.usercommentsStore,self.scope.quarters,paymentBundleName);
+        var createrequest = utils.frameCreateRequest(self.scope.request,self.scope.onAccountRows,self.scope.documents,self.scope.usercommentsStore,self.scope.quarters,paymentBundleName,self.scope.paymentBundleName);
         var request = requestHelper.formRequestDetails(createrequest);
         //console.log('Request:'+JSON.stringify(request));
         newOnAccountModel.create(request,function(data){
