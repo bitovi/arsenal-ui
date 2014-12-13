@@ -51,9 +51,9 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
   if( options.url.indexOf(URLs.DOMAIN_SERVICE_URL) === 0 ||
       options.url.indexOf(URLs.UI_SERVICE_URL) === 0
   ) {
-    var data = options.data;
+    var data = (options.data.constructor === String ? JSON.parse(options.data) : options.data);
     can.extend(data, requestHelper.formRequestDetails({}));
-    options.data = data;
+    options.data = JSON.stringify(data);
     options.contentType = 'application/json';
   }
 });
