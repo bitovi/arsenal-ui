@@ -540,7 +540,7 @@ var page = Component.extend({
               var periodFrom = self.scope.appstate.attr('periodFrom');
               var periodTo = self.scope.appstate.attr('periodTo');
               var invoiceData = self.scope.attr().allInvoicesMap[0].invoices;
-              console.log("dasddddddd"+JSON.stringify(invoiceData));
+              console.log(" "+JSON.stringify(invoiceData));
               //console.log(JSON.stringify(self.scope.checkedRows.attr()));
 
 
@@ -614,18 +614,22 @@ var page = Component.extend({
 
 
         var bundleType = lineType;
-        var overAllBundleRequest = {"paymentBundle":[]};
+
         var bundleRequest = {};
         bundleRequest["bundleId"] = $("#paymentBundleNames :selected").val();
         bundleRequest["bundleName"] = $("#paymentBundleNames :selected").text();
         if($("#newPaymentBundle").val())
-          bundleRequest["bundleName"] = $("#newPaymentBundle").val();
+        bundleRequest["bundleName"] = $("#newPaymentBundle").val();
 
+        console.log('bundleRequest1 '+JSON.stringify(bundleRequest));
         bundleRequest["bundleType"] =lineType;
         bundleRequest["mode"] ="ADD";
-        bundleRequest["bundleLines"] =bundleLines;
-
-        overAllBundleRequest["paymentBundle"].push(bundleRequest);
+        bundleRequest["bundleDetailsGroup"] =bundleLines;
+        console.log('bundleRequest2 '+JSON.stringify(bundleRequest));
+         var overAllBundleRequest =  {
+              "paymentBundle":bundleRequest
+          };
+//        overAllBundleRequest["paymentBundle"].push(bundleRequest);
         console.log("Add to bundle request is "+JSON.stringify(UserReq.formRequestDetails(overAllBundleRequest)));
         BundleNamesModel.create(UserReq.formRequestDetails(overAllBundleRequest),function(data){
             console.log("passing params is "+JSON.stringify(data));
