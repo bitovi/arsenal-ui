@@ -43,7 +43,7 @@ export default [
   },
   {
     id: 'pubfee',
-    title: 'PUB Fee',
+    title: 'Pub Fee',
     format: formats.currency,
     sortable: true
   },
@@ -106,7 +106,7 @@ export default [
   },
   {
     id: 'status',
-    title: 'State',
+    title: 'Status',
     sortable: true
   }
 ];
