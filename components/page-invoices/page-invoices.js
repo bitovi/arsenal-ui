@@ -540,34 +540,27 @@ var page = Component.extend({
               var periodFrom = self.scope.appstate.attr('periodFrom');
               var periodTo = self.scope.appstate.attr('periodTo');
               var invoiceData = self.scope.attr().allInvoicesMap[0].invoices;
-              console.log(" "+JSON.stringify(invoiceData));
               //console.log(JSON.stringify(self.scope.checkedRows.attr()));
 
-
               var selInvoices = self.scope.checkedRows.attr();
-              //console.log("selInvoices "+JSON.stringify(selInvoices));
+
+              console.log(JSON.stringify(self.scope.checkedRows.attr()));
               var bundleLines = [];
               for(var i=0;i<invoiceData.length;i++){
-                var invId = invoiceData[i]["invId"];
-                var lineType = invoiceData[i]["invoiceType"];
-                var periodType = invoiceData[i]["periodType"];
-                var invoiceLineItems = invoiceData[i]["invoiceLines"];
-                  //console.log("here is "+invoiceLineItems.length+","+selInvoices.indexOf(invId.toString()));
+                  var invId = invoiceData[i]["invId"];
+               if(invoiceData.length > 0 && selInvoices.indexOf(invId)>-1) {
 
-                if(invoiceLineItems.length > 0 && selInvoices.indexOf(invId)>-1){
-                  for(var j=0;j<invoiceLineItems.length;j++){
-                    var temp = {};
-                      temp["refLineId"]= invoiceLineItems[j]["invLineId"];
+                      var lineType = invoiceData[i]["invoiceType"];
+                      var periodType = invoiceData[i]["periodType"];
+
+                      var temp = {};
+                      temp["refLineId"] = invId;
                       temp["refLineType"] = lineType;
-                      temp["periodType"] = (periodType==null)?"P":periodType;
+                      temp["periodType"] = (periodType == null) ? "P" : periodType;
                       bundleLines.push(temp);
                   }
-                }
-
               }
-              //console.log("bundleLines "+JSON.stringify(bundleLines));
-
-
+              console.log("create bundle bundleLines "+JSON.stringify(bundleLines));
               var bundleType = lineType;
               var newBundleNameRequest = {"paymentBundle":{}};
               var bundleRequest = {};
@@ -585,43 +578,30 @@ var page = Component.extend({
       "#btnSubmit click":function(){
         var self = this;
         var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
-        //console.log(JSON.stringify(invoiceData));
-        //console.log(JSON.stringify(self.scope.checkedRows.attr()));
-
 
         var selInvoices = self.scope.checkedRows.attr();
-        //console.log("selInvoices "+JSON.stringify(selInvoices));
         var bundleLines = [];
         for(var i=0;i<invoiceData.length;i++){
-          var invId = invoiceData[i]["invId"];
-          var lineType = invoiceData[i]["invoiceType"];
-          var periodType = invoiceData[i]["periodType"];
-          var invoiceLineItems = invoiceData[i]["invoiceLines"];
-            //console.log("here is "+invoiceLineItems.length+","+selInvoices.indexOf(invId.toString()));
+            var invId = invoiceData[i]["invId"];
+            if(invoiceData.length > 0 && selInvoices.indexOf(invId)>-1) {
+                var lineType = invoiceData[i]["invoiceType"];
+                var periodType = invoiceData[i]["periodType"];
 
-          if(invoiceLineItems.length > 0 && selInvoices.indexOf(invId)>-1){
-            for(var j=0;j<invoiceLineItems.length;j++){
-              var temp = {};
-                temp["refLineId"]= invoiceLineItems[j]["invLineId"];
+                var temp = {};
+                temp["refLineId"] = invId;
                 temp["refLineType"] = lineType;
-                temp["periodType"] = (periodType==null)?"P":periodType;
+                temp["periodType"] = (periodType == null) ? "P" : periodType;
                 bundleLines.push(temp);
+
             }
-          }
-
         }
-        //console.log("bundleLines "+JSON.stringify(bundleLines));
-
-
+//        console.log("bundleLines "+JSON.stringify(bundleLines));
         var bundleType = lineType;
-
         var bundleRequest = {};
         bundleRequest["bundleId"] = $("#paymentBundleNames :selected").val();
         bundleRequest["bundleName"] = $("#paymentBundleNames :selected").text();
         if($("#newPaymentBundle").val())
         bundleRequest["bundleName"] = $("#newPaymentBundle").val();
-
-        console.log('bundleRequest1 '+JSON.stringify(bundleRequest));
         bundleRequest["bundleType"] =lineType;
         bundleRequest["mode"] ="ADD";
         bundleRequest["bundleDetailsGroup"] =bundleLines;
@@ -650,12 +630,9 @@ var page = Component.extend({
         },function(xhr){
           console.error("Error while loading: bundleNames"+xhr);
         });
-
-
       },
       '{scope.appstate} change': function() {
           var self=this;
-          //console.log("appState set to "+JSON.stringify(this.scope.appstate.attr()));
           if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch')){
               this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
 

@@ -8,7 +8,7 @@ var Stats = Model.extend({
 
   findOne: function(params){
     return $.ajax({
-      url: RinsCommon.DOMAIN_SERVICE_URL+'/recon/refresh',
+      url: RinsCommon.DOMAIN_SERVICE_URL+'recon/refresh',
       type: 'POST',
       datatype:'json',
       contentType: 'application/json; charset=utf-8',
