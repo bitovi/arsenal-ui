@@ -121,13 +121,13 @@ var page = Component.extend({
 
               var genObj = {};
 
-              Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
-                 ]).then(function(values) {
-
-
-                  self.attr("currencyScope").replace(values[0]);
-
-               });
+              // Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
+              //    ]).then(function(values) {
+              //
+              //
+              //     self.attr("currencyScope").replace(values[0]);
+              //
+              //  });
 
               // Grid data
               var grid = {"data" : []};

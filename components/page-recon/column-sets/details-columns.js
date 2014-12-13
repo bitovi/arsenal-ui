@@ -7,7 +7,7 @@ export default [
   title: '',
   contents: function(row) {
     if(!row.isFooterRow){
-      return row.ccidId == "Not Ingested" ? "" : can.stache('<input type="checkbox"/>')();
+      return row.status == "Not Ingested" ? "" : can.stache('<input type="checkbox"/>')();
     }
   }
 },
@@ -69,7 +69,7 @@ export default [
 },
 {
   id: 'status',
-  title: 'State',
+  title: 'Status',
   sortable: true
 }
 ];

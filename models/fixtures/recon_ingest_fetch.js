@@ -15,7 +15,7 @@ var reconIngest = {
       "rejectable": false,
       "invFileName": "INVOICE_FILE.dat",
       "countryId": "AUT",
-      "invFileType": "INBOUND",
+      "invFileType": "OUTBOUND",
       "dtlHdrId": 1,
       "dtlHdrType": "PDF",
       "ccy": "EUR",
@@ -30,7 +30,7 @@ var reconIngest = {
       "badLines": "0",
       "ingstdDate":"2014-11-12",
       "rcvdDate": "2014-11-12",
-      "invFileId": 1002,
+      "invFileId": 605115,
       "liDispFileId": 1003,
       "liDispFileType": "OUTBOUND",
       "badFileId": 1001,
@@ -291,7 +291,7 @@ var reconIngest = {
 }
 
 
-fixture('POST detailInvoice/fetch', function(req, res, headers) {
+fixture('GET detailInvoice/fetch', function(req, res, headers) {
   /*  res(
   200,
   _.filter(invoices, {region: req.data.region})

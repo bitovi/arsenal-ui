@@ -52,6 +52,7 @@ var page = Component.extend({
     incomingCcidSelected:[],
     size_ingestCcidSelected:0,
     size_incomingCcidSelected:0,
+    currencyScope:[],
 
     //bottomgrid
     refreshStatsReq:undefined,
@@ -134,7 +135,15 @@ var page = Component.extend({
     ".downloadLink.badLines click": function(item, el, ev){
       var self=this.scope;
       var row = item.closest('tr').data('row').row;
-      //TODO - Call Download
+      var request = {
+        "files":[
+        {
+          "fileId":row.invFileId,
+          "boundType":row.invFileType
+        }
+        ]
+      }
+      FileManager.downloadFile(request);
     },
     ".downloadLink.fileName click": function(item, el, ev){
       var self=this.scope;
@@ -143,13 +152,11 @@ var page = Component.extend({
       var request = {
         "files":[
           {
-            "fileName":row.invFileName,
             "fileId":row.invFileId,
             "boundType":row.invFileType
           }
         ]
       }
-      console.log(JSON.stringify(request));
       FileManager.downloadFile(request);
 
       //TODO - Call Download
@@ -157,7 +164,16 @@ var page = Component.extend({
     ".downloadLink.liDispAmt click": function(item, el, ev){
       var self=this.scope;
       var row = item.closest('tr').data('row').row;
-      //TODO - Call Download
+      var request = {
+        "files":[
+        {
+          "fileId":row.invFileId,
+          "boundType":row.invFileType
+        }
+        ]
+      }
+      console.log(JSON.stringify(request));
+      FileManager.downloadFile(request);
     },
     '.toggle :checkbox change': function(el, ev) {
         refreshChekboxSelection(el,this.scope);
@@ -305,6 +321,12 @@ var fetchReconIngest = function(scope){
       displayErrorMessage(data.responseText,"Failed to load the Recon Ingest Tab:");
     }else  {
       scope.ingestList.headerRows.replace(data.reconStatsDetails);
+
+      scope.currencyScope.replace(data.currency);
+
+      if(data.summary == undefined){
+        console.error("Footer rows doesn't exists");
+      }
 
       var footerLine= {
         "__isChild": true,

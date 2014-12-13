@@ -6,8 +6,9 @@ export default [
     id: 'toggle',
     title: '',
     contents: function(row) {
-      if(!row.isFooterRow){
-        return row.ccidId == "" ? "" : can.stache('<input type="checkbox"/>')();
+      if(row.isFooterRow == undefined){
+        console.log(row.ccidId);
+        return (row.ccidId == "" || row.ccidId == "0" ) ? "": can.stache('<input type="checkbox"/>' )() ;
       }
     }
   },
