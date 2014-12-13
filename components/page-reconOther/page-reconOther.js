@@ -43,8 +43,6 @@ var page = Component.extend({
   },
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
-    this.scope.attr("isGlobalSearch",this.scope.appstate.attr("globalSearch"));
-
   },
   events:{
     "inserted": function(){
@@ -83,8 +81,10 @@ var page = Component.extend({
       //Download needs testing
     },
     '{scope.appstate} change': function() {
+      //console.log( " 111  ");
       if(this.scope.isGlobalSearch != this.scope.appstate.attr('globalSearch')){
         this.scope.attr("isGlobalSearch",this.scope.appstate.attr("globalSearch"));
+        //console.log( " Recon Other ");
         fetchReconIncoming(this.scope);
       }
     }

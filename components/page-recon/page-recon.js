@@ -56,7 +56,7 @@ var page = Component.extend({
     //bottomgrid
     refreshStatsReq:undefined,
     isBottomGridRefresh:true,
-    isGlobalSearch:undefined,
+    isGlobalSearchIngested:undefined,
     tokenInput: [],
     refreshTokenInput: function(val, type){
       var self = this;
@@ -88,8 +88,9 @@ var page = Component.extend({
   },
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
-    this.scope.attr("isGlobalSearch",this.scope.appstate.attr("globalSearch"));
-    fetchReconIngest(this.scope);
+    // this.scope.attr("isGlobalSearchIngested",this.scope.appstate.attr("globalSearch"));
+    // console.log(" ")
+    // fetchReconIngest(this.scope);
   },
   events:{
     'shown.bs.tab': function(el, ev) {
@@ -192,8 +193,8 @@ var page = Component.extend({
       processRejectIngestRequest(this.scope,"reject");
     },
     '{scope.appstate} change': function() {
-      if(this.scope.isGlobalSearch != this.scope.appstate.attr('globalSearch')){
-        this.scope.attr("isGlobalSearch",this.scope.appstate.attr("globalSearch"));
+      if(this.scope.isGlobalSearchIngested != this.scope.appstate.attr('globalSearch')){
+        this.scope.attr("isGlobalSearchIngested",this.scope.appstate.attr("globalSearch"));
         if(this.scope.tabSelected == this.scope.tabName.ingest.attr("name")){
           fetchReconIngest(this.scope);
         }else{
@@ -290,7 +291,6 @@ var displayErrorMessage = function(message,log){
 
 /**/
 var fetchReconIngest = function(scope){
-
   var searchRequestObj = UserReq.formGlobalRequest(scope.appstate);
   searchRequestObj.searchRequest["type"] =  scope.tabName.ingest.attr("type");
   //TODO During pagination / scrolling, the below values has tobe chnaged.
