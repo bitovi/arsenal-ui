@@ -23,7 +23,7 @@ var icsvsummary = Component.extend({
   events:{
   inserted: function(){
 	  var self = this;
-      console.log(icsvmap.invoiceData);
+      //console.log(icsvmap.invoiceData);
       // Promise.all([
       //    ICSVInvoices.findAll()
       // ]).then(function(values) {
@@ -33,9 +33,9 @@ var icsvsummary = Component.extend({
     	  //console.log(JSON.stringify(values[0][0].summary.invoiceTotalMap));
     	 // var sample = values[0][0]["summary"][0];
 
-           icsvmap.delegate("invoiceData","set", function(ev, newVal){
+        icsvmap.delegate("invoiceData","set", function(ev, newVal){
             //console.log('Inside delegate');
-    	  var summaryDetails = icsvmap.invoiceData.iCSVSummary.attr();
+    	  var summaryDetails = icsvmap.invoiceData.summary.attr();
           //icsvmap.invoiceData.summary.attr();
     	  
     	  //console.log("Value---"+JSON.stringify(summaryDetails));
@@ -55,10 +55,16 @@ var icsvsummary = Component.extend({
     	  //console.log("Utils---------log"+utils.convertMapToCanListObject(Object.keys(summaryDetails[0].invoiceTotalMap[0]),summaryDetails[0].invoiceTotalMap[0]));
     	  //var canList=utils.convertMapToCanListObject(Object.keys(summaryDetails.invoiceTotal),summaryDetails.invoiceTotal);
     	  //console.log('Details--'+JSON.stringify(utils.convertMapToCanListObject(summaryDetails.invoiceTotal)));
-    	  self.scope.invoiceTotal.replace(utils.convertMapToCanListObject(summaryDetails.invoiceTotal));
+        var invoiceTotal = summaryDetails.invoiceTotal;
+
+        if(invoiceTotal != null && invoiceTotal != undefined){
+          self.scope.invoiceTotal.replace(utils.convertMapToCanListObject(invoiceTotal));
+          self.scope.attr("totalAmount",utils.calculateInvoiceTotal(invoiceTotal));
+        }else{
+          self.scope.invoiceTotal.replace(Number(0));
+          self.scope.attr("totalAmount",Number(0));
+        }
     	  
-    	  
-    	  self.scope.attr("totalAmount",utils.calculateInvoiceTotal(summaryDetails.invoiceTotal));
     	  //console.log("invoice Map:"+values[0][0].summary[0].invoiceTotalMap);
     	 // console.log("Returned value:"+convertMapToObject(Object.keys(summaryDetails[0].invoiceTotalMap[0]),summaryDetails[0].invoiceTotalMap[0]));
     	  //alert(Object.keys(summaryDetails[0].invoiceTotalMap[0]));

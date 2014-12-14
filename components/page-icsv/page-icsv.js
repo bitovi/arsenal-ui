@@ -91,7 +91,8 @@ var page = Component.extend({
       errorMsg:{},
       errorStatus:{},
       fileUpload:'',
-      uploadedFileInfo:[]
+      uploadedFileInfo:[],
+      errorMessage:"@"
     
     },
     init:function(){
@@ -217,11 +218,25 @@ var page = Component.extend({
           /* Below is request for validateicsv*/
           var icsvReq =getICSVRequest(this.scope.uploadedFileInfo);
 
-          console.log('Request:'+ JSON.stringify(icsvReq));
+          //console.log('Request:'+ JSON.stringify(icsvReq));
 
           ValidateIcsv.findOne(icsvReq,function(data){
-                  console.log(data);
-                 icsvmap.attr("invoiceData", data); 
+                  //console.log(data);
+                 if(data.errorStatus == 'FAILURE'){
+                  var fatalErrorList = data.fatalErrorList;
+                  var errorMess = data.errorDesc;
+                  if(fatalErrorList.length>0){
+                    var messages = fatalErrorList[0].errorMessages;
+                    if(messages.length >0){
+                      errorMess = errorMess+" : "+fatalErrorList[0].errorMessages[0]+" "+fatalErrorList[0].csvFileName+" at lineNumber "+fatalErrorList[0].lineNumber;
+                      self.scope.attr('errorMessage',errorMess);
+                    }  
+                  }else{
+                    self.scope.attr('errorMessage',data.errorDesc);
+                  }
+                 }else{
+                  icsvmap.attr("invoiceData", data); 
+                 }
                 },function(xhr){
           });
           /* Commenting above line due to unavailability of validateicsv service*/
@@ -240,7 +255,7 @@ var page = Component.extend({
       "#addIcsvSubmit click":function(){
             var tempArr = icsvmap.invoiceData.invoices.attr();
             
-            console.log(tempArr);
+           // console.log(tempArr);
            var createInvoiceData = {};
              createInvoiceData.invoices = [];
 
@@ -295,7 +310,7 @@ var page = Component.extend({
                    tempDocument.location = tempArr[i].invoiceDocuments.location;
 
                    tempInvoiceData["invoiceDocuments"].push(tempDocument);
-                   console.log(tempArr[i].invoiceLines.length);
+                  // console.log(tempArr[i].invoiceLines.length);
             
                
                    tempInvoiceData["invoiceLines"] = [];
@@ -373,7 +388,7 @@ var page = Component.extend({
       "#paymentBundleNames change": function(){
           var self = this;
           var pbval = $("#paymentBundleNames").val();
-          console.log("val djsi is "+ pbval);
+          //console.log("val djsi is "+ pbval);
           if(pbval=="createB"){
               
               var regId = self.scope.appstate.attr('region');
@@ -389,7 +404,7 @@ var page = Component.extend({
               bundleRequest["bundleType"] ="REGULAR_INV";
 
               newBundleNameRequest["paymentBundle"] = bundleRequest;
-              console.log("New Bundle name request is "+JSON.stringify(newBundleNameRequest));
+              //console.log("New Bundle name request is "+JSON.stringify(newBundleNameRequest));
               self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
           } else {
             self.scope.attr('newpaymentbundlenamereq', "undefined");
@@ -430,7 +445,7 @@ var page = Component.extend({
        },
        createPBRequest: function(){
           var bundleNamesRequest = {"bundleSearch":{}};
-          console.log("fsdfsdfsdf "+JSON.stringify(this.attr('appstate')));
+          //console.log("fsdfsdfsdf "+JSON.stringify(this.attr('appstate')));
           var serTypeId = this.appstate.attr('storeType');
           var regId = this.appstate.attr('region');
 
@@ -481,7 +496,7 @@ function CurrencyFormat(number)
 function getICSVRequest(fileInfo)
 {
   var request ={};
-  request.requestHeader=UserReq.formRequestDetails();
+  //request.requestHeader=UserReq.formRequestDetails();
   request.documents=[];
   if(fileInfo != null && fileInfo != undefined && fileInfo.length >0){
     for(var i=0;i<fileInfo.length;i++){
@@ -492,7 +507,7 @@ function getICSVRequest(fileInfo)
     }
     
   }
-  return request;
+  return UserReq.formRequestDetails(request);
 }
 
 

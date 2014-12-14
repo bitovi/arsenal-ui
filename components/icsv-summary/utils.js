@@ -1,14 +1,19 @@
 var utils={
 convertMapToCanListObject:function(summaryObjs){
-   console.log(summaryObjs);
-	var invoiceCurrency = new can.List();
-	for(var i=0 ;i < summaryObjs.length; i++){
-     // console.log(summaryObjs[i].localAmt);
-     //  console.log(summaryObjs[i].altAmt);
-		var invCurr={localAmt:this.CurrencyFormat(summaryObjs[i].localAmt),localCcy:summaryObjs[i].localCcy,altAmt:this.CurrencyFormat(summaryObjs[i].altAmt),altCcy:summaryObjs[i].altCcy};
-		invoiceCurrency.push(invCurr);
-	}
-return invoiceCurrency;
+  if(summaryObjs != null && summaryObjs != undefined){
+    //console.log(summaryObjs);
+    var invoiceCurrency = new can.List();
+    for(var i=0 ;i < summaryObjs.length; i++){
+       // console.log(summaryObjs[i].localAmt);
+       //  console.log(summaryObjs[i].altAmt);
+      var invCurr={localAmt:this.CurrencyFormat(summaryObjs[i].localAmt),localCcy:summaryObjs[i].localCcy,altAmt:this.CurrencyFormat(summaryObjs[i].altAmt),altCcy:summaryObjs[i].altCcy};
+      invoiceCurrency.push(invCurr);
+      }
+    return invoiceCurrency;
+  }else{
+    return Number(0);
+  }
+   
 },
 calculateInvoiceTotal:function(object){
 	//console.log("Amount---"+object);

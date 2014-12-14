@@ -28,6 +28,7 @@
 					<icsv-summary appstate="{appstate}"></icsv-summary>
         		</div>
 			</div>
+			<div class="col-sm-12 icsv-error">{{errorMessage}}</div>
 			
 		
         
