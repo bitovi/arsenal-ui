@@ -213,38 +213,71 @@ var validateFilters = function(appstate){
       return '';
     }
 }
+
+var validateFiscalPeriod = function(periodFrom, periodTo){
+    var qFrom = periodFrom.substring(1, 2);
+    var qTo = periodTO.substring(1, 2);
+    var yearFrom = periodFrom.substring(periodFrom.length, periodFrom.length-2);
+    var yearTo = periodTO.substring(periodTO.length, periodTO.length-2); 
+}
 var showErrorMsg = function(periodFrom, periodTo) {
 
  var flag = false;
  var from = periodFrom || false;
  var to = periodTo || false;
+ var message1 = 'Period from is greater than period to !';
+ var message2 = 'Please select one year of data !';
 
  if (from && to) {
    var fromYear = parseInt(from.slice(-2));
    var toYear = parseInt(to.slice(-2));
-
    var yearDiff = parseInt(toYear - fromYear);
+    if(fromYear > toYear){
+      return message1;
+    }
 
-   if (yearDiff > 1 || yearDiff < 0) flag = true;
-
-   if (!flag && from.charAt(0) === "P" && to.charAt(0) === "P") {
-
-     var periodFromValue = periodFrom.substr(1, 2);
-     var periodToValue = periodTo.substr(1, 2);
-
-     flag = (yearDiff) ? (periodFromValue <= periodToValue) : (periodFromValue > periodToValue);
-
-   } else if (!flag && from.charAt(0) === "Q" && to.charAt(0) === "Q") {
-
-     var quarterFromValue = periodFrom.substr(1, 1);
-     var quarterToValue = periodTo.substr(1, 1);
-
-     flag = (yearDiff) ? (quarterFromValue <= quarterToValue) : (quarterFromValue > quarterToValue);
-
+    if(from.charAt(0) === "P" && to.charAt(0) === "P"){
+      var periodFromValue = periodFrom.substr(1, 2);
+      var periodToValue = periodTo.substr(1, 2);
+      if(yearDiff >= 1 && periodFromValue == periodToValue){
+        return message2; 
+      }else if(yearDiff == 0  && periodFromValue > periodToValue){
+        return message1; 
+      }    
+   } else if (from.charAt(0) === "Q" && to.charAt(0) === "Q"){
+      var quarterFromValue = periodFrom.substr(1, 1);
+      var quarterToValue = periodTo.substr(1, 1);
+      if(yearDiff >= 1 && quarterFromValue == quarterToValue){
+        //if(quarterFromValue >= quarterToValue ){
+          return message2;
+        //}
+      }else if( yearDiff == 0 && quarterFromValue > quarterToValue){
+        return message1;
+      }
    }
 
+   // var yearDiff = parseInt(toYear - fromYear);
+
+   // if (yearDiff > 1 || yearDiff < 0) flag = true;
+
+   // if (!flag && from.charAt(0) === "P" && to.charAt(0) === "P") {
+
+   //   var periodFromValue = periodFrom.substr(1, 2);
+   //   var periodToValue = periodTo.substr(1, 2);
+
+   //   flag = (yearDiff) ? (periodFromValue <= periodToValue) : (periodFromValue > periodToValue);
+
+   // } else if (!flag && from.charAt(0) === "Q" && to.charAt(0) === "Q") {
+
+   //   var quarterFromValue = periodFrom.substr(1, 1);
+   //   var quarterToValue = periodTo.substr(1, 1);
+
+   //   flag = (yearDiff) ? (quarterFromValue <= quarterToValue) : (quarterFromValue > quarterToValue);
+
+   // }
+
  }
- return (flag) ? 'Invalid Period !' : " ";
+ return "";
 }
 
 
