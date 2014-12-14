@@ -299,41 +299,43 @@ getProposedOnAccRows:function(quarters,data){
       var periodData = data.onAccount.fiscalPeriodAmtMap;
       var bundleNames=[];
       var rows=[];
+      if(onAccountDetails != undefined){
       for (var i=0;i<onAccountDetails.length;i++){
-        var row = {};
-        row['id']= onAccountDetails[i].id;
-        row['entityId']=onAccountDetails[i].entityId;
-        row['Licensor']=onAccountDetails[i].entityName;
-        row['Currency']=onAccountDetails[i].currencyCode;
-        row['ContentType']=onAccountDetails[i].contentGroupName;
-        //row['ContentType']="";
-        row['contentGroupId']=onAccountDetails[i].contentGroupId;
-        row['serviceTypeId']=onAccountDetails[i].serviceTypeId;
-        row['bundleId']=onAccountDetails[i].bundleId;
-        row['bundleName']=onAccountDetails[i].bundleName;
-        row['docId']=onAccountDetails[i].docId;
-        row['commentId']=onAccountDetails[i].commentId;
-        row['createdBy']=onAccountDetails[i].createdBy;
-        row['createdDate']=onAccountDetails[i].createdDate;
+          var row = {};
+          row['id']= onAccountDetails[i].id;
+          row['entityId']=onAccountDetails[i].entityId;
+          row['Licensor']=onAccountDetails[i].entityName;
+          row['Currency']=onAccountDetails[i].currencyCode;
+          row['ContentType']=onAccountDetails[i].contentGroupName;
+          //row['ContentType']="";
+          row['contentGroupId']=onAccountDetails[i].contentGroupId;
+          row['serviceTypeId']=onAccountDetails[i].serviceTypeId;
+          row['bundleId']=onAccountDetails[i].bundleId;
+          row['bundleName']=onAccountDetails[i].bundleName;
+          row['docId']=onAccountDetails[i].docId;
+          row['commentId']=onAccountDetails[i].commentId;
+          row['createdBy']=onAccountDetails[i].createdBy;
+          row['createdDate']=onAccountDetails[i].createdDate;
 
-        for(var k=0;k<quarters.length;k++){
-          var period = utils.getPeriodForQuarter(quarters[k]);
-          var amtObject = periodData[period];
-          row[quarters[k]]=0;
-          if(amtObject != undefined){
-            var value = amtObject[onAccountDetails[i].id];
-            if(value == undefined){
-              value =0;
+          for(var k=0;k<quarters.length;k++){
+            var period = utils.getPeriodForQuarter(quarters[k]);
+            var amtObject = periodData[period];
+            row[quarters[k]]=0;
+            if(amtObject != undefined){
+              var value = amtObject[onAccountDetails[i].id];
+              if(value == undefined){
+                value =0;
+              }
+              row[quarters[k]]=value;
             }
-            row[quarters[k]]=value;
           }
+          row['total']=onAccountDetails[i].totalAmt;
+
+          bundleNames.push(onAccountDetails[i].bundleName);
+
+          rows.push(row);
         }
-        row['total']=onAccountDetails[i].totalAmt;
-
-        bundleNames.push(onAccountDetails[i].bundleName);
-
-        rows.push(row);
-      }
+     }
       //console.log(rows);
       var returnValue = new Array();
       returnValue['ROWS']=rows;

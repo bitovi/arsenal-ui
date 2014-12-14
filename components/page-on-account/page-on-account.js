@@ -106,6 +106,7 @@ var page = Component.extend({
             var quarterTo=periodWidgetHelper.getDisplayPeriod(this.scope.appstate.attr('periodTo'),periodType);
             var quarters = utils.getQuarter(quarterFrom,quarterTo);
             self.scope.attr('quarters',quarters);
+            request.quarters=quarters;
             if(self.scope.tabsClicked=="NEW_ON_ACC"){
                   message = validateFilters(self.scope.appstate,true,true,true,true,true);
                   self.scope.attr('errorMessage',message); 
@@ -118,7 +119,7 @@ var page = Component.extend({
                     self.scope.attr('showLoadingImage',false);
                     var rows = utils.frameRows(data.licensorCurrencies,quarters);
                     request.rows=rows;
-                    request.quarters=quarters;
+                    //request.quarters=quarters;
                     self.scope.newOnAccountRows.replace(rows);
                     if(rows != null && rows.length >0){
                       disablePropose(false);
@@ -131,22 +132,16 @@ var page = Component.extend({
               message = validateFilters(self.scope.appstate,true,false,false,false,false);
               self.scope.attr('errorMessage',message); 
               if(message.length == 0){
-                request.searchRequest["type"] = "BALANCE";
-                request.quarters=quarters;
+                //request.searchRequest["type"] = "BALANCE";
+                  request.appstate=this.scope.appstate;
                  $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={request}></rn-onaccount-balance-grid>')({request})); 
                 }    
               } else if(self.scope.tabsClicked=="PROPOSED_ON_ACC"){
                   message = validateFilters(self.scope.appstate,true,false,false,false,false);
                   self.scope.attr('errorMessage',message); 
                   if(message.length == 0){
-                      var proposedRequest = {};
-                      request.searchRequest["type"]="PROPOSED";
-                      request.searchRequest["periodFrom"]=request.searchRequest.periodFrom;
-                      request.searchRequest["periodTo"]=request.searchRequest.periodTo;
-                      request.searchRequest["entityId"]=self.scope.request.searchRequest.entityId.attr();
-                      request.searchRequest["contentGrpId"]=self.scope.request.searchRequest.contentGrpId.attr();
                        self.scope.attr('showLoadingImage',true);
-                      proposedOnAccount.findOne(requestHelper.formRequestDetails(request),function(data){
+                      proposedOnAccount.findOne(createProposedOnAccountRequest(self.scope.appstate),function(data){
                          self.scope.attr('showLoadingImage',false);
                         if(data["status"]=="SUCCESS"){
                            /* The below calls {scope.appstate} change event that gets the new data for grid*/
@@ -154,20 +149,24 @@ var page = Component.extend({
                             var arr = $.unique(returnValue['BUNDLE_NAMES']);
                             self.scope.attr('bundleNamesForDisplay',arr.toString());
                             //console.log(self.scope.attr('bundleNamesForDisplay'));
+                            var proposedRequest = {};
                             proposedRequest.rows=returnValue['ROWS'];
-                            proposedRequest.quarters=quarters;
-                            disableProposedSubmitButton(true);
-                            disableEditORDeleteButtons(true);
-                            $("#submitPOA").attr("disabled","disabled");
-                            $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={proposedRequest}></rn-proposed-onaccount-grid>')({proposedRequest}));
+                            if(proposedRequest.rows != null && proposedRequest.rows.length>0){
+                                proposedRequest.quarters=quarters;
+                                disableProposedSubmitButton(true);
+                                disableEditORDeleteButtons(true);
+                                $("#submitPOA").attr("disabled","disabled");
+                                $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={proposedRequest}></rn-proposed-onaccount-grid>')({proposedRequest}));
 
-                            var tempcommentObj = data.onAccount.comments;
-                            //console.log("multi comments "+JSON.stringify(tempcommentObj));
-                            if(tempcommentObj!=null)
-                              $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
-                            else
-                              $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>');
-
+                                var tempcommentObj = data.onAccount.comments;
+                                //console.log("multi comments "+JSON.stringify(tempcommentObj));
+                                if(tempcommentObj!=null)
+                                  $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
+                                else
+                                  $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>');
+                            }else{
+                                $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
+                            }
                         } else{
                             displayMessage(data["responseText"],false);
                             $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
@@ -349,26 +348,26 @@ var page = Component.extend({
         var self=this;
         var quarterValueForCopy = $("#copyQuarter").val();
        var rows=this.scope.newOnAccountRows;
-       var copyOnAccountRequest=createCopyOnAccountRequest(this.scope.appstate);
+       var copyOnAccountRequest=createCopyOnAccountRequest(this.scope.appstate,quarterValueForCopy);
        //var request = requestHelper.formGlobalRequest(this.scope.appstate);
-       // newOnAccountModel.findOne(request,function(data){
-       //    console.log("Update response is "+JSON.stringify(data));
-       //      if(data["status"]=="SUCCESS"){
-       //          displayMessage(data["responseText"],true);
-       //          var quarters=utils.getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
-       //          var updatedRows = utils.frameRowsForCopyOnAcc(rows,data,quarters,quarterValueForCopy);
-       //          var request = self.scope.request;
-       //          request.quarters=quarters;
-       //          request.rows=updatedRows;
-       //          self.scope.newOnAccountRows.replace(updatedRows);
-       //          $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
-       //      }
-       //      else{
-       //        displayMessage(data["responseText"],false);
-       //      }
-       //    },function(xhr){
-       //      console.error("Error while loading: onAccount Details"+xhr);
-       //    });
+       newOnAccountModel.findOne(copyOnAccountRequest,function(data){
+          //console.log("Update copy onAccount is "+JSON.stringify(data));
+            if(data["status"]=="SUCCESS"){
+                //displayMessage(data["responseText"],true);
+                var quarters=utils.getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
+                var updatedRows = utils.frameRowsForCopyOnAcc(rows,data,quarters,quarterValueForCopy);
+                var request = self.scope.request;
+                request.quarters=quarters;
+                request.rows=updatedRows;
+                self.scope.newOnAccountRows.replace(updatedRows);
+                $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
+            }
+            else{
+              displayMessage(data["responseText"],false);
+            }
+          },function(xhr){
+            console.error("Error while executing Copy onAccount domain service "+xhr);
+          });
       }
     },
     helpers: {
@@ -505,8 +504,17 @@ var createCopyOnAccountRequest=function(appstate,period){
   var copyOnAccountRequest={};
   copyOnAccountRequest.searchRequest=requestHelper.formGlobalRequest(appstate).searchRequest;
   copyOnAccountRequest.searchRequest.type='COPY';
-  return copyOnAccountRequest;
-}
+  copyOnAccountRequest.searchRequest.periodFrom=periodWidgetHelper.getFiscalPeriod(period);
+  copyOnAccountRequest.searchRequest.periodTo=copyOnAccountRequest.searchRequest.periodFrom;
+  copyOnAccountRequest.searchRequest.periodType='Q';
+  return requestHelper.formRequestDetails(copyOnAccountRequest);
+};
+var createProposedOnAccountRequest=function(appstate){
+  var proposedOnAccountRequest={};
+  proposedOnAccountRequest.searchRequest=requestHelper.formGlobalRequest(appstate).searchRequest;
+  proposedOnAccountRequest.searchRequest.type="PROPOSED";
+  return requestHelper.formRequestDetails(proposedOnAccountRequest);
+};
 var validateFilters=function(appstate,validateQuarter,validateStoreType,validateRegion,validateLicensor,validateContentType){
   if(appstate != null && appstate != undefined){
       var serTypeId = appstate.attr('storeType');

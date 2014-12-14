@@ -33,41 +33,73 @@ var requestHelper = {
     }
 
     */
-    var serTypeId = +appstate.attr('storeType').id;
+    var serTypeId = appstate.attr('storeType').id;
     var countryId = appstate.attr()['country'];
     var licId = appstate.attr()['licensor'].map(id => +id);
     var contGrpId = appstate.attr()['contentType'].map(id => +id);
     var region = appstate.attr('region');
     var serviceType = appstate.attr('storeType');
-    var serTypeId = "";
-    if(typeof(serviceType)=="undefined"){
-      serTypeId= "";
-    }
-      else
-        {
-          serTypeId = serviceType['id'];
-        }
+    // var serTypeId = "";
+    // if(typeof(serviceType)=="undefined"){
+    //   serTypeId= "";
+    // }
+    //   else
+    //     {
+    //       serTypeId = serviceType['id'];
+    //     }
 
 
-    var regId = "";
-    if(typeof(region )=="undefined"){
-      regId = "";
-    }else{
-      regId = region['id'];
-    }
+    // var regId = "";
+    // if(typeof(region )=="undefined"){
+    //   regId = "";
+    // }else{
+    //   regId = region['id'];
+    // }
 
-    var searchRequestObj = {
-      "searchRequest":{
-        periodFrom:appstate.periodFrom,
-        periodTo:appstate.periodTo,
-        periodType:appstate.periodType,
-        entityId:licId,
-        regionId:regId,
-        contentGrpId:contGrpId,
-        country:countryId,
-        serviceTypeId:serTypeId
+    var searchRequestObj={};
+    searchRequestObj.searchRequest = {};
+    searchRequestObj.searchRequest["periodFrom"] = appstate.periodFrom;
+    searchRequestObj.searchRequest["periodTo"] = appstate.periodTo;
+    searchRequestObj.searchRequest["periodType"] = appstate.periodType;
+    searchRequestObj.searchRequest["serviceTypeId"] = "";
+    searchRequestObj.searchRequest["regionId"] = "";
+    searchRequestObj.searchRequest["country"] = [];
+    searchRequestObj.searchRequest["entityId"] = [];
+    searchRequestObj.searchRequest["contentGrpId"] = [];
+    
+      if(typeof(serTypeId)!="undefined"){
+        searchRequestObj.searchRequest["serviceTypeId"] = serTypeId['id'];
       }
-    };
+
+      if(typeof(regId)!="undefined"){
+        searchRequestObj.searchRequest["regionId"] = regId['id'];
+      }
+
+      if(typeof(countryId)!="undefined"){
+        searchRequestObj.searchRequest["country"]=countryId;
+      }
+
+      if(typeof(licId)!="undefined"){
+        searchRequestObj.searchRequest["entityId"]=licId;
+      }
+
+      if(typeof(contGrpId)!="undefined"){
+        searchRequestObj.searchRequest["contentGrpId"]=contGrpId;
+      }
+
+
+    // var searchRequestObj = {
+    //   "searchRequest":{
+    //     periodFrom:appstate.periodFrom,
+    //     periodTo:appstate.periodTo,
+    //     periodType:appstate.periodType,
+    //     entityId:licId,
+    //     regionId:regId,
+    //     contentGrpId:contGrpId,
+    //     country:countryId,
+    //     serviceTypeId:serTypeId
+    //   }
+    // };
 
     return searchRequestObj;
 

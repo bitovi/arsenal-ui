@@ -9,7 +9,7 @@ import template from './template.stache!';
 import Grid from 'components/grid/';
 import stache from 'can/view/stache/';
 import utils from 'components/page-on-account/utils';
-import UserReq from 'utils/request/';
+import requestHelper from 'utils/request/';
 
 var OnAccountBalance = Grid.extend({
   tag: 'rn-onaccount-balance-grid',
@@ -36,7 +36,8 @@ var OnAccountBalance = Grid.extend({
       }
     ],
     request:{},
-    emptyrows:"@"
+    emptyrows:"@",
+    appstate:undefined
   },
   init: function(){
 
@@ -47,8 +48,8 @@ var OnAccountBalance = Grid.extend({
     'inserted': function(ev) {
         var self = this;
        //console.log(JSON.stringify(self.scope.request.searchRequest.attr()));
-       if(self.scope.request != null && self.scope.request != undefined && self.scope.request.searchRequest != null){
-          var quarters = utils.getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
+       if(self.scope.request != null && self.scope.request != undefined && self.scope.request.quarters != null && self.scope.request.quarters != undefined){
+          var quarters = self.scope.request.quarters;
 
          for(var i=0;i<quarters.length;i++){
           var column={
@@ -73,17 +74,16 @@ var OnAccountBalance = Grid.extend({
           //console.log('EntityId');
           //console.log(self.scope.request.searchRequest.entityId.attr());
 
-          var genObj = {};
-          genObj.searchRequest={};
-          genObj.searchRequest["type"]="BALANCE";
-          genObj.searchRequest["serviceTypeId"]="1";
-          genObj.searchRequest["entityId"]=self.scope.request.searchRequest.entityId.attr();
-          genObj.searchRequest["contentGrpId"]=self.scope.request.searchRequest.contentGrpId.attr();
-          genObj.searchRequest["regionId"]=self.scope.request.searchRequest.regionId;
-          genObj.searchRequest["periodType"]="Q";
-          genObj.searchRequest["periodFrom"]=self.scope.request.searchRequest.periodFrom;
-          genObj.searchRequest["periodTo"]=self.scope.request.searchRequest.periodTo;
-     
+          // var genObj = {};
+          // genObj.searchRequest={};
+          // genObj.searchRequest["type"]="BALANCE";
+          // genObj.searchRequest["serviceTypeId"]="1";
+          // genObj.searchRequest["entityId"]=self.scope.request.searchRequest.entityId.attr();
+          // genObj.searchRequest["contentGrpId"]=self.scope.request.searchRequest.contentGrpId.attr();
+          // genObj.searchRequest["regionId"]=self.scope.request.searchRequest.regionId;
+          // genObj.searchRequest["periodType"]="Q";
+          // genObj.searchRequest["periodFrom"]=self.scope.request.searchRequest.periodFrom;
+          // genObj.searchRequest["periodTo"]=self.scope.request.searchRequest.periodTo;
      
          // onAccountBalance.findOne(UserReq.formRequestDetails(genObj)).then(function(rows) {
          //  //onAccountBalance.findAll().then(function(rows) {
@@ -94,7 +94,7 @@ var OnAccountBalance = Grid.extend({
          //   //  self.scope.rows.replace(rows);
          //   //  self.scope.footerrows.replace(footerRows);
          //  });
-            onAccountBalance.findOne(UserReq.formRequestDetails(genObj),function(data){
+            onAccountBalance.findOne(createBalanceOnAccountRequest(this.scope.request.appstate),function(data){
                       if(data["status"]=="SUCCESS"){
                         self.scope.rows.replace(getUiRowsFromResponse(quarters,data));  
                       }else{
@@ -153,6 +153,13 @@ var getUiRowsFromResponse=function(quarters,data){
   //console.log(rows);
   return rows;
 }
+
+var createBalanceOnAccountRequest=function(appstate){
+  var balancedOnAccountRequest={};
+  balancedOnAccountRequest.searchRequest=requestHelper.formGlobalRequest(appstate).searchRequest;
+  balancedOnAccountRequest.searchRequest.type="BALANCE";
+  return requestHelper.formRequestDetails(balancedOnAccountRequest);
+};
 
 var getFooterRows=function(quarters,rows){
   var periodMap = new Array();
