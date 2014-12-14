@@ -120,18 +120,13 @@
 
 				   <div class="form-group">
 
-				   			<div class="col-sm-6">
-							    <label for="inputPassword3" class="col-sm-6 control-label">Calculated Due Date:</label>
-							    <div class="col-sm-4 textDate">
-							 		{{#if editpage}}
-									    {{calduedate}}
-									{{else}}
-									    {{calculatedDueDate}}
-								  	{{/if}}
+				   			<div class="col-sm-6 ">
+							    <label for="inputPassword3" class="col-sm-6 control-label">Invoice Date:</label>
+							    <div class="col-sm-6 invdate requiredBar">
+							     <date-picker name="invoicedate" placeholder=""></date-picker>
+							    </div>
+						    </div>
 
-
-							    </div> 
-							 </div>
 							 <div class="col-sm-6 ">
 						    	<label for="inputPassword3" class="col-sm-6 control-label">Received Date:</label>
 								    <div class="col-sm-6 recdate requiredBar">
@@ -142,18 +137,24 @@
 				  </div>
 
 				   <div class="form-group">
-				    	   <div class="col-sm-6 ">
-							    <label for="inputPassword3" class="col-sm-6 control-label">Invoice Date:</label>
-							    <div class="col-sm-6 invdate requiredBar">
-							     <date-picker name="invoicedate" placeholder=""></date-picker>
-							    </div>
-						    </div>
 						    <div class="col-sm-6 invduedate">
 							     <label for="inputPassword3" class="col-sm-6 control-label">Invoice Due Date:</label>
 							    <div class="col-sm-6 invduedate requiredBarNone">
 							     <date-picker name="invoiceduedate" placeholder=""></date-picker>
 							    </div>
 						    </div>
+
+						    <div class="col-sm-6">
+							    <label for="inputPassword3" class="col-sm-6 control-label">Calculated Due Date:</label>
+							    <div class="col-sm-4 textDate">
+							 		{{#if editpage}}
+									    {{calduedate}}
+									{{else}}
+									    {{calculatedDueDate}}
+								  	{{/if}}
+							    </div> 
+							 </div>
+
 				  		</div>
 
 				  

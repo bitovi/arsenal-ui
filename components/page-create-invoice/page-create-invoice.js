@@ -479,10 +479,14 @@ var page = Component.extend({
 				".form-control change":function(event){
 					var self = this;
 					if(($("#invoicedate input[type=text]").val() != "") &&  (!$.isEmptyObject(self.scope.licensorStore)) && ($("#inputCountry0").val() != "")){
-					var genObj = {entityId:self.scope.licensorStore, invoiceDate:moment($("#invoicedate input[type=text]").val()).unix(), countryId:$("#inputCountry0").val()};
+					var genObj = {entityId:self.scope.licensorStore, invoiceDate:Date.parse($("#invoicedate input[type=text]").val()), countryId:$("#inputCountry0").val()};
 					CalDueDate.findOne(UserReq.formRequestDetails(genObj),function(data){
-                  		console.log(data.calInvoiceDueDate);
-                  		self.scope.attr("calduedate", moment.unix(data.calInvoiceDueDate).format("MM/DD/YYYY"));
+                  		//console.log(data.calInvoiceDueDate);
+                  		if(data.status == 'SUCCESS'){
+                  			if(data.calInvoiceDueDate != null && data.calInvoiceDueDate != undefined){
+                  				self.scope.attr("calduedate", getDateToDisplay(data.calInvoiceDueDate));
+                  			}
+                  		}
 		                },function(xhr){
 		                /*Error condition*/
 		           		 });  
@@ -491,10 +495,15 @@ var page = Component.extend({
 				"#invoicedate dp.change":function(event){ /*need to repeat service call, as no way to capture date change event together with form control event*/
 					var self = this;
 					if(($("#invoicedate input[type=text]").val() != "") &&  (!$.isEmptyObject(self.scope.licensorStore)) && ($("#inputCountry0").val() != "")){
-					var genObj = {entityId:self.scope.licensorStore, invoiceDate:moment($("#invoicedate input[type=text]").val()).unix(), countryId:$("#inputCountry0").val()};
+					var genObj = {entityId:self.scope.licensorStore, invoiceDate:Date.parse($("#invoicedate input[type=text]").val()), countryId:$("#inputCountry0").val()};
 					CalDueDate.findOne(UserReq.formRequestDetails(genObj),function(data){
-                  		console.log(data.calInvoiceDueDate);
-                  		self.scope.attr("calduedate", moment.unix(data.calInvoiceDueDate).format("MM/DD/YYYY"));
+						//console.log("Date 1---"+moment($("#invoicedate input[type=text]").val()).unix());
+						//console.log("Date 2----"+Date.parse($("#invoicedate input[type=text]").val()));
+                  		if(data.status == 'SUCCESS'){
+                  			if(data.calInvoiceDueDate != null && data.calInvoiceDueDate != undefined){
+                  				self.scope.attr("calduedate", getDateToDisplay(data.calInvoiceDueDate));
+                  			}
+                  		}
 		                },function(xhr){
 		                /*Error condition*/
 		           		 });  
@@ -1237,6 +1246,11 @@ var page = Component.extend({
 					         _root.find('.period-calendar .q3 li').first().find('a').addClass('disabled');
 					         _root.find('.period-calendar .q4 li').first().find('a').addClass('disabled');
 					       }
-					}  
+					} 
+
+					var getDateToDisplay=function(longDate){
+						var calculateDueDate = new Date(longDate);
+						return calculateDueDate.getMonth()+1 + "/" + calculateDueDate.getDate() + "/" + calculateDueDate.getFullYear();
+					}
 
 export default page;
