@@ -302,13 +302,7 @@ var page = Component.extend({
               }
         });
 
-        /* The below code calls {scope.appstate} change event that gets the new data for grid*/
-          /* All the neccessary parameters will be set in that event */
-         if(self.scope.appstate.attr('globalSearch')){
-            self.scope.appstate.attr('globalSearch', false);
-          }else{
-            self.scope.appstate.attr('globalSearch', true);
-          }
+        $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid emptyrows="{emptyrows}"></rn-claim-licensor-grid>')({emptyrows:true}));
         
     	},
     	"#highChart click":function(){
