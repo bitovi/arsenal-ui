@@ -251,7 +251,7 @@
 						            </td>
 						           <td>
 						            	 {{#if isAdhocStrore.invtype}}
-								            	<select id="ccidGL0" name="ccidGL" class="form-control inputMonth">
+								            	<select id="ccidGL0" name="ccidGL" class="form-control ccidGL">
 								            			<option value="">Select</option>
 												        {{#each glaccounts}}
 									        				<option value="{{id}}">{{value}}</option>
@@ -311,7 +311,7 @@
 						            </td>
 						           <td>
 						            	{{#if isAdhocStrore.invtype}}
-								            	<select id="ccidGL" name="ccidGL" class="form-control inputMonth">
+								            	<select id="ccidGL" name="ccidGL" class="form-control ccidGL">
 								            			<option value="">Select</option>
 												        {{#each glaccounts}}
 									        				<option value="{{id}}">{{value}}</option>

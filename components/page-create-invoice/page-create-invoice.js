@@ -654,6 +654,7 @@ var page = Component.extend({
 		},
 		".ccidGL change": function(event){
          	this.scope.ccidGLStore.attr(event[0].id, event[0].value)
+         	console.log(this.scope.ccidGLStore);
 		},
 		"#invoicelicensor change": function(event){
 			var genObj = {licensorId:event[0].value};
@@ -839,7 +840,8 @@ var page = Component.extend({
 						   		tempArry["lineAmount"] = self.scope.AmountStore.attr("amountText"+index);
 						   		
 						   		if(self.scope.attr("invoicetypeSelect") == "2"){
-									tempArry["glAccRefId"] = self.scope.ccidGLStore.attr(inputContent);
+						   			var ccidGL = "ccidGL"+index;
+									tempArry["glAccRefId"] = self.scope.ccidGLStore.attr(ccidGL);
 						  	 		tempArry["adhocTypeId"] = self.scope.contentTypeStore.attr("inputContent"+index);
 						  	 	}
 						  	 	else{
@@ -997,7 +999,8 @@ var page = Component.extend({
 									   		tempArry["status"] = "";
 									   		tempArry["lineType"] = "";
 									   		if(self.scope.attr("invoicetypeSelect") == "2"){
-												tempArry["glAccRefId"] = self.scope.ccidGLStore.attr(inputContent);
+									   			var ccidGL = "ccidGL"+index;
+												tempArry["glAccRefId"] = self.scope.ccidGLStore.attr(ccidGL);
 									  	 		tempArry["ccidFileName"] = "";
 									  	 	}
 									  	 	else{
