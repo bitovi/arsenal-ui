@@ -18,6 +18,7 @@ import styles from './global-parameter-bar.less!';
 
 import periodCalendar from 'components/period-calendar/';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
+import moment from 'moment';
 
 var GlobalParameterBar = Component.extend({
   tag: 'global-parameter-bar',
@@ -52,6 +53,8 @@ var GlobalParameterBar = Component.extend({
        },
      'inserted': function(){
           document.getElementById("regionsFilter").selectedIndex = 2;
+          $('#periodFrom').val(getDefaultPeriodFrom(''));
+         $('#periodTo').val(getDefaultPeriodTo());
       },
      '{periodFrom} change': function(el, ev) {
          var comp ='from';
@@ -133,6 +136,13 @@ var GlobalParameterBar = Component.extend({
         }
       }
 
+    },
+    '{scope.appstate} page': function() {
+      if(this.scope.appstate.attr('page') == 'on-account'){
+        var quart = getDefaultPeriodFrom('ONACCOUNT');
+         $('#periodFrom').val(quart);
+         $('#periodTo').val(quart);
+      }
     }
   },
   init: function() {
@@ -213,7 +223,21 @@ var validateFilters = function(appstate){
       return '';
     }
 }
-
+var getDefaultPeriodFrom = function(from){
+    var defaultDate = moment().month(moment().month()-3);
+    var year = defaultDate.year()+'';
+    if(from == 'ONACCOUNT'){
+      return 'Q'+defaultDate.quarter()+'FY'+year.substring(2,year.length);
+    }
+    var periodFrom = Number(periodWidgetHelper.quarterToPeriod('Q'+defaultDate.quarter()));
+   return 'P'+periodFrom+'FY'+year.substring(2,year.length);
+}
+var getDefaultPeriodTo = function(){
+   var defaultDate = moment().month(moment().month()-3);
+    var year = defaultDate.year()+'';
+    var periodFrom = Number(periodWidgetHelper.quarterToPeriod('Q'+defaultDate.quarter()))+2;
+   return 'P'+periodFrom+'FY'+year.substring(2,year.length);
+}
 var validateFiscalPeriod = function(periodFrom, periodTo){
     var qFrom = periodFrom.substring(1, 2);
     var qTo = periodTO.substring(1, 2);

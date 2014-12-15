@@ -119,7 +119,7 @@ var newOnAccountGrid = Grid.extend({
         for(var i=0; i<quarters.length;i++){
             total = Number(total)+Number(row.attr(quarters[i]));
           }
-         row.attr('total',total);
+         row.attr('total',utils.currencyFormat(total));
         //putting the rows to the page from grid component
         var mainRows={};
         mainRows.rows=this.scope.rows;
