@@ -479,9 +479,7 @@ var page = Component.extend({
 				".form-control change":function(event){
 					var self = this;
 					if(($("#invoicedate input[type=text]").val() != "") &&  (!$.isEmptyObject(self.scope.licensorStore)) && ($("#inputCountry0").val() != "")){
-						var date = new Date($("#invoicedate input[type=text]").val());
-						alert(date);
-					var genObj = {entityId:self.scope.licensorStore, invoiceDate:date, countryId:$("#inputCountry0").val()};
+					var genObj = {entityId:self.scope.licensorStore, invoiceDate:Date.parse($("#invoicedate input[type=text]").val()), countryId:$("#inputCountry0").val()};
 					CalDueDate.findOne(UserReq.formRequestDetails(genObj),function(data){
                   		//console.log(data.calInvoiceDueDate);
                   		if(data.status == 'SUCCESS'){
@@ -503,9 +501,7 @@ var page = Component.extend({
 				"#invoicedate dp.change":function(event){ /*need to repeat service call, as no way to capture date change event together with form control event*/
 					var self = this;
 					if(($("#invoicedate input[type=text]").val() != "") &&  (!$.isEmptyObject(self.scope.licensorStore)) && ($("#inputCountry0").val() != "")){
-						var date = new Date($("#invoicedate input[type=text]").val());
-						alert(date);
-					var genObj = {entityId:self.scope.licensorStore, invoiceDate:date, countryId:$("#inputCountry0").val()};
+					var genObj = {entityId:self.scope.licensorStore, invoiceDate:Date.parse($("#invoicedate input[type=text]").val()), countryId:$("#inputCountry0").val()};
 					CalDueDate.findOne(UserReq.formRequestDetails(genObj),function(data){
 						//console.log("Date 1---"+moment($("#invoicedate input[type=text]").val()).unix());
 						//console.log("Date 2----"+Date.parse($("#invoicedate input[type=text]").val()));

@@ -46,18 +46,18 @@ $(document.body).append(index_template({appstate: appstate}));
 
 appstate.startRouting();
 
-// $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
-//   // Every domain service call requires some common params, so we do them here to save effort.
-//   if( options.url.indexOf(URLs.DOMAIN_SERVICE_URL) === 0 ||
-//       options.url.indexOf(URLs.UI_SERVICE_URL) === 0
-//   ) {
-//     var data = (options.data.constructor === String ? JSON.parse(options.data) : options.data);
-//     can.extend(data, requestHelper.formRequestDetails({}));
-//     options.data = JSON.stringify(data);
-//     options.contentType = 'application/json';
-//   }
-// });
+$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
+  // Every domain service call requires some common params, so we do them here to save effort.
+  if( options.url.indexOf(URLs.DOMAIN_SERVICE_URL) === 0 ||
+      options.url.indexOf(URLs.UI_SERVICE_URL) === 0
+  ) {
+    var data = (options.data.constructor === String ? JSON.parse(options.data) : options.data);
+    can.extend(data, requestHelper.formRequestDetails({}));
+    options.data = JSON.stringify(data);
+    options.contentType = 'application/json';
+  }
+});
 
-// // TODO: REMOVE BEFORE DEPLOYING
-// // FOR DEV ONLY
-// window.AppState = appstate;
+// TODO: REMOVE BEFORE DEPLOYING
+// FOR DEV ONLY
+window.AppState = appstate;
