@@ -613,15 +613,22 @@ var page = Component.extend({
         console.log("Add to bundle request is "+JSON.stringify(UserReq.formRequestDetails(overAllBundleRequest)));
         BundleNamesModel.create(UserReq.formRequestDetails(overAllBundleRequest),function(data){
             console.log("passing params is "+JSON.stringify(data));
-            if(data["responseText"]=="SUCCESS"){
-             $("#messageDiv").html("<label class='successMessage'>"+data[0]["responseText"]+"</label>")
+            if(data["status"]=="SUCCESS"){
+             $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
              $("#messageDiv").show();
              setTimeout(function(){
                 $("#messageDiv").hide();
+                self.scope.checkedRows.replace([]);
+                 /* The below calls {scope.appstate} change event that gets the new data for grid*/
+                 if(self.scope.appstate.attr('globalSearch')){
+                    self.scope.appstate.attr('globalSearch', false);
+                  }else{
+                    self.scope.appstate.attr('globalSearch', true);
+                  }
              },2000);
             }
             else{
-              $("#messageDiv").html("<label class='errorMessage'>"+data[0]["responseText"]+"</label>")
+              $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>")
               $("#messageDiv").show();
                setTimeout(function(){
                   $("#messageDiv").hide();
