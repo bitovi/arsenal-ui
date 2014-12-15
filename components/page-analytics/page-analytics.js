@@ -779,27 +779,6 @@ var page = Component.extend({
                   }
               }
           },
-          licensorsFilter: {
-              //group:'.licensors',
-              validators: {
-                  notEmpty: {
-                      message: 'Payment Terms is mandatory'
-                  },
-                  regexp: {
-                      regexp: /^[a-zA-Z0-9_\- ]*$/i,
-                      message: 'Please provide valid characters'
-                  },
-                  callback: {
-                      message: 'Licensor is mandatory',
-                      callback: function (value, validator, $field) {
-                        if(value == "Select"){
-                             return false;
-                        }
-                        return true;
-                      }
-                  }
-              }
-          },
           invoiceType: {
               //group:'.licensors',
               validators: {
@@ -865,14 +844,14 @@ var page = Component.extend({
               //group:'.licensors',
               validators: {
                   notEmpty: {
-                      message: 'Payment Terms is mandatory'
+                      message: 'Entity is mandatory'
                   },
                   regexp: {
                       regexp: /^[a-zA-Z0-9_\- ]*$/i,
                       message: 'Please provide valid characters'
                   },
                   callback: {
-                      message: 'Licensor is mandatory',
+                      message: 'Entity is mandatory',
                       callback: function (value, validator, $field) {
                         if(value == "Select"){
                              return false;
@@ -1127,6 +1106,21 @@ var page = Component.extend({
           });
     },
 
+    "#buttonreset click": function(event){
+
+        var self = this;
+        if(self.scope.licDetails.attr("data") != null) {
+
+          self.scope.licDetails.attr("data", null);
+
+        }
+
+        self.scope.clearContactDetails();
+
+        self.scope.disableTabs();
+
+    },
+
     "#analyticsFetch click": function(event){
 
         var self = this;
@@ -1203,6 +1197,12 @@ var page = Component.extend({
         var self = this;
 
         $('#entityLicensorBottom').bootstrapValidator('validate');
+
+        if($('#entityLicensorBottom').data('bootstrapValidator').isValid() == false) {
+
+          return;
+
+        }
 
         var societyContactDetails = self.scope.getSocietyContactDetails();
 
