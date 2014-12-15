@@ -271,6 +271,10 @@ var page = Component.extend({
 
                 self.newContactDetails.data.splice(j,1);
 
+                var $option  = $(".societyContacts tbody tr:nth-child("+j+")").find('[name="contactName[]"], [name="contactEmail[]"]');
+
+                DynamicFieldValidation($option, 'removeField', $('#entityLicensorBottom'));
+
             }
 
           }
@@ -628,6 +632,13 @@ var page = Component.extend({
 
       self.newContactDetails.data.push(element);
 
+      ($("input#name")[$("input#name").length -1]).setAttribute("name", "contactName[]");
+      ($("input#email")[$("input#email").length -1]).setAttribute("name", "contactEmail[]");
+
+      var $options = $(".societyContacts").find('[name="contactName[]"], [name="contactEmail[]"]');
+      
+      DynamicFieldValidation($options, 'addField', $('#entityLicensorBottom'));
+      
     }
     
 
@@ -820,12 +831,67 @@ var page = Component.extend({
                       }
                   }
               }
+          },
+
+          'contactName[]': {
+
+            validators: {
+                  notEmpty: {
+                      message: 'Contact Name is mandatory'
+                  },
+                  regexp: {
+                      regexp: /^[a-zA-Z0-9_\- ]*$/i,
+                      message: 'Please provide valid characters'
+                  },
+                  callback: {
+                        message: 'Contact Name is mandatory',
+                        callback: function (value, validator, $field) {
+                            if(value == ""){
+                              return {
+                                    valid: false,
+                                    message: 'Contact Name is mandatory'
+                                }
+                            }
+                            return true;
+                          }
+                      }
+              }
+
+          },
+          'contactEmail[]': {
+
+            validators: {
+                  notEmpty: {
+                      message: 'Contact Email is mandatory'
+                  },
+                  regexp: {
+                      regexp: /^[a-zA-Z0-9_\- ]*@[a-zA-Z0-9_\- ]*.[a-zA-Z0-9_\- ]*$/i,
+                      message: 'Please provide valid characters'
+                  },
+                  callback: {
+                        message: 'Contact Name is mandatory',
+                        callback: function (value, validator, $field) {
+                            if(value == ""){
+                              return {
+                                    valid: false,
+                                    message: 'Contact Email is mandatory'
+                                }
+                            }
+                            return true;
+                          }
+                      }
+              }
+
           }
+
         }
       }).on('error.field.bv', function(e, data) {       
         
           $('*[data-bv-icon-for="'+data.field +'"]').popover('show');
 
+      }).on('added.field.bv', function(e, data) {
+
+            alert('HERE');
       });
 
       $('#entityLicensorTop').on('init.field.bv', function(e, data) {
@@ -1418,7 +1484,11 @@ var showErrorMsg = function(periodFrom,periodTo,whichcomp){
 }
 
 
-
+var DynamicFieldValidation = function(option, type, form){
+   option.each(function(index){
+        form.bootstrapValidator(type, $(this));
+    });
+}
 
 
 export default page;
