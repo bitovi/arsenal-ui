@@ -1202,7 +1202,6 @@ var page = Component.extend({
 
         var self = this;
 
-        $('#entityLicensorTop').bootstrapValidator('validate');
         $('#entityLicensorBottom').bootstrapValidator('validate');
 
         var societyContactDetails = self.scope.getSocietyContactDetails();
