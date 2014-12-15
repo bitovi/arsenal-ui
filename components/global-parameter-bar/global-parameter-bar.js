@@ -52,11 +52,18 @@ var GlobalParameterBar = Component.extend({
           val[0].which=='periodFrom' ? this.scope.periodFrom.replace(val[0].value):this.scope.periodTo.replace(val[0].value);
        },
      'inserted': function(){
+      var self = this;
           document.getElementById("regionsFilter").selectedIndex = 2;
-          $('#periodFrom').val(getDefaultPeriodFrom(''));
-         $('#periodTo').val(getDefaultPeriodTo());
+          var periodFrom =getDefaultPeriodFrom('');
+          var periodTo = getDefaultPeriodTo();
+          $('#periodFrom').val(periodFrom);
+         $('#periodTo').val(periodTo);
+          self.scope.appstate.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(periodFrom));
+          self.scope.appstate.attr('periodTo', periodWidgetHelper.getFiscalPeriod(periodTo));
+          this.scope.appstate.attr('periodType','P');
       },
      '{periodFrom} change': function(el, ev) {
+      //console.log("period from change "+ this.scope.appstate.attr('periodFrom'));
          var comp ='from';
          this.scope.attr('errorMessage','');
          this.scope.appstate.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(this.scope.attr('periodFrom')[0]));
@@ -125,7 +132,7 @@ var GlobalParameterBar = Component.extend({
       var self = this;
 //      self.scope.appstate.attr('periodFrom', $('#periodFrom').val());
 //      self.scope.appstate.attr('periodTo', $('#periodTo').val());
-      var message = validateFilters(this.scope.appstate)
+      var message = validateFilters(self.scope.appstate)
       self.scope.attr('errorMessage',message);
 
       if(message.length==0){
@@ -142,6 +149,9 @@ var GlobalParameterBar = Component.extend({
         var quart = getDefaultPeriodFrom('ONACCOUNT');
          $('#periodFrom').val(quart);
          $('#periodTo').val(quart);
+         this.scope.appstate.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(quart));
+        this.scope.appstate.attr('periodTo', periodWidgetHelper.getFiscalPeriod(quart));
+        this.scope.appstate.attr('periodType','Q');
       }
     }
   },
@@ -229,14 +239,20 @@ var getDefaultPeriodFrom = function(from){
     if(from == 'ONACCOUNT'){
       return 'Q'+defaultDate.quarter()+'FY'+year.substring(2,year.length);
     }
-    var periodFrom = Number(periodWidgetHelper.quarterToPeriod('Q'+defaultDate.quarter()));
+    var periodFrom = periodWidgetHelper.quarterToPeriod('Q'+defaultDate.quarter());
    return 'P'+periodFrom+'FY'+year.substring(2,year.length);
 }
 var getDefaultPeriodTo = function(){
+     var toPeriods={
+    "Q1":"03",
+    "Q2":"06",
+    "Q3":"09",
+    "Q4":"12"
+  };
    var defaultDate = moment().month(moment().month()-3);
     var year = defaultDate.year()+'';
-    var periodFrom = Number(periodWidgetHelper.quarterToPeriod('Q'+defaultDate.quarter()))+2;
-   return 'P'+periodFrom+'FY'+year.substring(2,year.length);
+    var periodTo = toPeriods['Q'+defaultDate.quarter()];
+   return 'P'+periodTo+'FY'+year.substring(2,year.length);
 }
 var validateFiscalPeriod = function(periodFrom, periodTo){
     var qFrom = periodFrom.substring(1, 2);
