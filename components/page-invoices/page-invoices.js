@@ -308,8 +308,10 @@ var page = Component.extend({
           var footerrows = new can.List(gridData.footer);
           var sortedColumns = self.scope.sortColumns.attr();
           var sortDir = self.scope.attr('sortDirection');
+          $("#loading_img").hide();
           $('#invoiceGrid').html(stache('<rn-grid-invoice rows="{rows}" footerrows="{footerrows}" sortcolumnnames="{sortcolumnnames}" sortdir="{sortdir}" emptyrows="{emptyrows}"></rn-grid-invoice>')({rows, footerrows, sortcolumnnames:sortedColumns, sortdir:sortDir, emptyrows:false}));
         } else {
+          $("#loading_img").hide();
           $('#invoiceGrid').html(stache('<rn-grid-invoice emptyrows="{emptyrows}"></rn-grid-invoice>')({emptyrows:true}));
         }
 
@@ -667,6 +669,7 @@ var page = Component.extend({
           var self=this;
           if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch')){
               this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
+              $("#loading_img").show();
 
               var periodFrom = this.scope.appstate.attr('periodFrom');
               var periodTo = this.scope.appstate.attr('periodTo');
