@@ -243,6 +243,7 @@ var page = Component.extend({
     allClaimLicensorMap: [],
     allClaimCountryMap: [],
     sortColumns:[],
+    sortDirection: "asc",
     details:{},
     view:"licensor",
 	  tokenInput: [],
@@ -301,13 +302,7 @@ var page = Component.extend({
               }
         });
 
-        /* The below code calls {scope.appstate} change event that gets the new data for grid*/
-          /* All the neccessary parameters will be set in that event */
-         if(self.scope.appstate.attr('globalSearch')){
-            self.scope.appstate.attr('globalSearch', false);
-          }else{
-            self.scope.appstate.attr('globalSearch', true);
-          }
+        $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid emptyrows="{emptyrows}"></rn-claim-licensor-grid>')({emptyrows:true}));
         
     	},
     	"#highChart click":function(){
@@ -360,7 +355,7 @@ var page = Component.extend({
         var self = this;    
         //console.log("here");
         if($("#chkAggregate").is(":checked")){
-            self.scope.attr("view","period");
+            self.scope.attr("view","country-aggregate");
 
         } else {
             self.scope.attr('view',"country");
@@ -394,20 +389,39 @@ var page = Component.extend({
            this.scope.details["isChild"]=className;
       },
       "#claimLicencorGrid .rn-grid>thead>tr>th click": function(item, el, ev){
-          /*var self=this;
+          var self=this;
            //console.log($(item[0]).attr("class"));
-          var val = $(item[0]).attr("class");
-           self.scope.attr('sortColumns').push(val);
-        */
+          var val = $(item[0]).attr("class").split(" ");
+          var existingSortColumns =self.scope.sortColumns.attr();
+          var existingSortColumnsLen = existingSortColumns.length;
+          var existFlag = false;
+          if(existingSortColumnsLen==0){
+            self.scope.attr('sortColumns').push(val[0]);
+          } else {
+            for(var i=0;i<existingSortColumnsLen;i++){
+              /* The below condition is to selected column to be sorted in asc & dec way */ 
+              console.log(val[0]+","+existingSortColumns[i] )
+              if(existingSortColumns[i] == val[0]){
+                existFlag = true;
+              } 
+            } 
+            if(existFlag==false)
+              self.scope.attr('sortColumns').push(val[0]);
+            else {
+              var sortDirection = (self.scope.attr('sortDirection') == 'asc') ? 'desc' : 'asc';
+              self.scope.attr('sortDirection', sortDirection);
+            }
+              
+          }
+           
+          console.log("aaa "+self.scope.sortColumns.attr());
            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
            /* All the neccessary parameters will be set in that event */
-          /* if(self.scope.appstate.attr('globalSearch')){
+           if(self.scope.appstate.attr('globalSearch')){
               self.scope.appstate.attr('globalSearch', false);
             }else{
               self.scope.appstate.attr('globalSearch', true);
             }   
-          */
-
       },
       "{tokenInput} change": function(){
         var self = this;
@@ -448,8 +462,10 @@ var page = Component.extend({
           //console.log("grid data for "+currencyType+" currency is "+JSON.stringify(gridData));
           var rows = new can.List(gridData.data);
           var footerrows = new can.List(gridData.footer);
+          var sortedColumns = self.scope.sortColumns.attr();
+          var sortDir = self.scope.attr('sortDirection');
 
-          $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid rows="{rows}" footerrows="{footerrows}" emptyrows="{emptyrows}"></rn-claim-licensor-grid>')({rows, footerrows, emptyrows:false}));
+          $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid rows="{rows}" footerrows="{footerrows}" sortcolumnnames="{sortcolumnnames}" sortdir="{sortdir}" emptyrows="{emptyrows}"></rn-claim-licensor-grid>')({rows, footerrows, sortcolumnnames:sortedColumns, sortdir:sortDir, emptyrows:false}));
         } else {
           $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid emptyrows="{emptyrows}"></rn-claim-licensor-grid>')({emptyrows:true}));
         }
@@ -459,6 +475,8 @@ var page = Component.extend({
         //var invoiceData = self.scope.attr().allClaimCountryMap[0].claimReviewLicensor;
         var invoiceData = self.scope.attr().allClaimCountryMap[0].reviews;
         var footerData = self.scope.attr().allClaimCountryMap[0].footer;
+        var sortedColumns = self.scope.sortColumns.attr();
+        var sortDir = self.scope.attr('sortDirection');
         //var currencyType = $("#currencyType").val();
         //console.log("invoice data is sss  "+JSON.stringify(invoiceData));
         if(invoiceData!=null){
@@ -466,7 +484,7 @@ var page = Component.extend({
           //console.log("grid data for "+currencyType+" currency is "+JSON.stringify(gridData));
           var rows = new can.List(gridData.data); 
           var footerrows = new can.List(gridData.footer);
-          $('#claimCountryGrid').html(stache('<rn-claim-country-grid rows="{rows}" footerrows="{footerrows}" emptyrows="{emptyrows}"></rn-claim-country-grid>')({rows, footerrows, emptyrows:false}));
+          $('#claimCountryGrid').html(stache('<rn-claim-country-grid rows="{rows}" footerrows="{footerrows}" sortcolumnnames="{sortcolumnnames}" sortdir="{sortdir}" emptyrows="{emptyrows}"></rn-claim-country-grid>')({rows, footerrows, sortcolumnnames:sortedColumns, sortdir:sortDir, emptyrows:false}));
         } else {
           $('#claimCountryGrid').html(stache('<rn-claim-country-grid emptyrows="{emptyrows}"></rn-claim-country-grid>')({emptyrows:true}));
         }
@@ -557,7 +575,7 @@ var page = Component.extend({
                 },function(xhr){
                   console.error("Error while loading: "+xhr);
                 });
-              } else if(tabView=="country" || tabView=="period"){
+              } else if(tabView=="country" || tabView=="country-aggregate"){
                 claimCountryInvoices.findOne(UserReq.formRequestDetails(claimLicSearchRequest),function(values){
                     //console.log("datafsdf is "+JSON.stringify(values.attr()));
                     self.scope.allClaimCountryMap.replace(values);

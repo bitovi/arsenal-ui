@@ -51,7 +51,16 @@ var periodWidgetHelper = {
     }else{
       return null;
     }  
-  }
+  },
+   quarterToPeriod:function(quarter){
+      var quarterToPeriod={
+        "Q1":"01",
+        "Q2":"04",
+        "Q3":"07",
+        "Q4":"10"
+      }
+      return quarterToPeriod[quarter];
+  },
 };
 
 

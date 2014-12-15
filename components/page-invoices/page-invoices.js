@@ -102,6 +102,7 @@ var page = Component.extend({
     checkedRows: [],
     unDeletedInvoices: [],
     sortColumns:[],
+    sortDirection: "asc",
     tokenInput: [],
     disableBundleName:undefined,
     getPaymentBundlesNames: undefined,
@@ -200,7 +201,8 @@ var page = Component.extend({
           }
     },
     "{allInvoicesMap} change": function() {
-        
+
+        var self = this;
         var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
         var footerData = this.scope.attr().allInvoicesMap[0].footer;
         //console.log("Status code "+JSON.stringify(StatusCodes));
@@ -304,8 +306,12 @@ var page = Component.extend({
           //console.log("Footer is "+JSON.stringify(gridData.footer));
           var rows = new can.List(gridData.data);
           var footerrows = new can.List(gridData.footer);
-          $('#invoiceGrid').html(stache('<rn-grid-invoice rows="{rows}" footerrows="{footerrows}" emptyrows="{emptyrows}"></rn-grid-invoice>')({rows, footerrows, emptyrows:false}));
+          var sortedColumns = self.scope.sortColumns.attr();
+          var sortDir = self.scope.attr('sortDirection');
+          $("#loading_img").hide();
+          $('#invoiceGrid').html(stache('<rn-grid-invoice rows="{rows}" footerrows="{footerrows}" sortcolumnnames="{sortcolumnnames}" sortdir="{sortdir}" emptyrows="{emptyrows}"></rn-grid-invoice>')({rows, footerrows, sortcolumnnames:sortedColumns, sortdir:sortDir, emptyrows:false}));
         } else {
+          $("#loading_img").hide();
           $('#invoiceGrid').html(stache('<rn-grid-invoice emptyrows="{emptyrows}"></rn-grid-invoice>')({emptyrows:true}));
         }
 
@@ -345,16 +351,37 @@ var page = Component.extend({
     ".rn-grid>thead>tr>th click": function(item, el, ev){
           var self=this;
            //console.log($(item[0]).attr("class"));
-          var val = $(item[0]).attr("class");
-           self.scope.attr('sortColumns').push(val);
-
+          var val = $(item[0]).attr("class").split(" ");
+          var existingSortColumns =self.scope.sortColumns.attr();
+          var existingSortColumnsLen = existingSortColumns.length;
+          var existFlag = false;
+          if(existingSortColumnsLen==0){
+            self.scope.attr('sortColumns').push(val[0]);
+          } else {
+            for(var i=0;i<existingSortColumnsLen;i++){
+              /* The below condition is to selected column to be sorted in asc & dec way */ 
+              console.log(val[0]+","+existingSortColumns[i] )
+              if(existingSortColumns[i] == val[0]){
+                existFlag = true;
+              } 
+            } 
+            if(existFlag==false)
+              self.scope.attr('sortColumns').push(val[0]);
+            else {
+              var sortDirection = (self.scope.attr('sortDirection') == 'asc') ? 'desc' : 'asc';
+              self.scope.attr('sortDirection', sortDirection);
+            }
+              
+          }
+           
+          console.log("aaa "+self.scope.sortColumns.attr());
            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
            /* All the neccessary parameters will be set in that event */
            if(self.scope.appstate.attr('globalSearch')){
               self.scope.appstate.attr('globalSearch', false);
             }else{
               self.scope.appstate.attr('globalSearch', true);
-            }
+            }   
 
     },
     '.invId :checkbox change': function(item, el, ev) {
@@ -642,6 +669,7 @@ var page = Component.extend({
           var self=this;
           if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch')){
               this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
+              $("#loading_img").show();
 
               var periodFrom = this.scope.appstate.attr('periodFrom');
               var periodTo = this.scope.appstate.attr('periodTo');

@@ -341,7 +341,12 @@ getProposedOnAccRows:function(quarters,data){
       returnValue['ROWS']=rows;
       returnValue['BUNDLE_NAMES']=bundleNames;
       return returnValue;
-    }
+    },
+currencyFormat : function (number)
+  {
+    var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+    return n;
+  }
 
     
 };
