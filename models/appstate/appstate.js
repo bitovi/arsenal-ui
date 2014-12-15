@@ -32,9 +32,9 @@ var stateDefaults = {
     token: 'FAKE TOKEN'
   },
   page: 'dashboard',
-  periodFrom: "",
-  periodTo: "",
-  periodType:"",
+  periodFrom: undefined,
+  periodTo: undefined,
+  periodType: undefined,
   licensor: undefined,
   country: undefined,
   region: undefined,

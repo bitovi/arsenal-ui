@@ -33,7 +33,7 @@
 					    			<select id="licensorsFilter" name="licensorsFilter" can-value="selectedEntity" class="form-control resizeBox licensors">
 					    				<optgroup>
 							               
-							                <option id="selectId">Select</option>
+							                <option value="">Select</option>
 							              
 							             </optgroup>
 							           	{{#each licensors}}
@@ -266,7 +266,7 @@
 
 					</div>
 
-					<div class="col-sm-12" style="padding-top: 25px;"></div>
+					<div class="col-sm-12" style="padding-top: 50px;"></div>
 
 					<div class="col-sm-12 countryModelLabel">
 	 		
@@ -391,14 +391,14 @@
 			    				 {{/each}}
 			    				 {{#each newContactDetails.data}}
 			    					<tr class="newcontactDetails{{newCountryCounter}}">
-			    						<td class="deleteCheckBox">
+			    						<td class="deleteCheckBox ">
 			    							<img src="resources/images/button_minus_red.png" class="addSocContactsRemove deleteCheckBoxNCD" val="{{name}}"></img>
 			    							
 			    						</td>
-			    						<td class="contactName">
+			    						<td class="contactName form-group">
 			    							<input type="text" id="name" value="{{contactName}}" can-value="{{canvalueName}}" class="form-control"/>
 			    						</td>
-			    						<td class="contactEmail">
+			    						<td class="contactEmail form-group">
 			    							<input type="text" id="email" value="{{contactEmail}}" can-value="{{canvalueEmail}}" class="form-control"/>
 			    						</td>
 			    					</tr>
@@ -442,7 +442,7 @@
 
 	 	<div class="col-sm-12 col-sm-offset-10 buttonsBottom">
 	 		<button type="button" id="buttonsubmit" name="Submit" class="btn submitButton btn-custom-small" style="margin-left:10px;">Submit</button>
-	 		<button type="button" id="buttonreset" name="Reset" class="btn submitButton btn-custom-small" style="margin-left:10px;">Reset</button>
+	 		<button type="button" id="buttonreset" name="Reset" class="btn cancelButton btn-custom-small" style="margin-left:10px;">Cancel</button>
 	 	</div>
 
 	 	<div class="col-sm-12" id="spaceBar"></div>

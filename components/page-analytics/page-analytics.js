@@ -271,6 +271,10 @@ var page = Component.extend({
 
                 self.newContactDetails.data.splice(j,1);
 
+                var $option  = $(".societyContacts tbody tr:nth-child("+j+")").find('[name="contactName[]"], [name="contactEmail[]"]');
+
+                DynamicFieldValidation($option, 'removeField', $('#entityLicensorBottom'));
+
             }
 
           }
@@ -586,6 +590,24 @@ var page = Component.extend({
 
     },
 
+    clearRepConfDetails : function() {
+
+        var self = this;
+
+        self.reqCountries.splice(0,self.reqCountries.length);
+        
+        self.reqReportTypes.splice(0,self.reqReportTypes.length);
+        
+
+        $("input.countryBox").prop('checked', false);
+        $("input.reportBox").prop('checked', false);
+        $("input.selectAllChkBox").prop('checked', false);
+
+        self.submitAllCountires = false;
+        self.submitAllReports = false;
+
+    },
+
     addRemoveElement: function(obj, val, addRemove) {
 
         for(var i=0; i<obj.length; i++) {
@@ -628,6 +650,13 @@ var page = Component.extend({
 
       self.newContactDetails.data.push(element);
 
+      ($("input#name")[$("input#name").length -1]).setAttribute("name", "contactName[]");
+      ($("input#email")[$("input#email").length -1]).setAttribute("name", "contactEmail[]");
+
+      var $options = $(".societyContacts").find('[name="contactName[]"], [name="contactEmail[]"]');
+      
+      DynamicFieldValidation($options, 'addField', $('#entityLicensorBottom'));
+      
     }
     
 
@@ -635,7 +664,7 @@ var page = Component.extend({
 
   helpers:  {
 
-    getselectedEntity : function() {
+    getselectedEntity : function(sEntity) {
 
         var entity = this.attr("selectedEntity");
 
@@ -779,27 +808,6 @@ var page = Component.extend({
                   }
               }
           },
-          licensorsFilter: {
-              //group:'.licensors',
-              validators: {
-                  notEmpty: {
-                      message: 'Payment Terms is mandatory'
-                  },
-                  regexp: {
-                      regexp: /^[a-zA-Z0-9_\- ]*$/i,
-                      message: 'Please provide valid characters'
-                  },
-                  callback: {
-                      message: 'Licensor is mandatory',
-                      callback: function (value, validator, $field) {
-                        if(value == "Select"){
-                             return false;
-                        }
-                        return true;
-                      }
-                  }
-              }
-          },
           invoiceType: {
               //group:'.licensors',
               validators: {
@@ -841,12 +849,65 @@ var page = Component.extend({
                       }
                   }
               }
+          },
+
+          'contactName[]': {
+
+            validators: {
+                  notEmpty: {
+                      message: 'Contact Name is mandatory'
+                  },
+                  regexp: {
+                      regexp: /^[a-zA-Z0-9_\- ]*$/i,
+                      message: 'Please provide valid characters'
+                  },
+                  callback: {
+                        message: 'Contact Name is mandatory',
+                        callback: function (value, validator, $field) {
+                            if(value == ""){
+                              return {
+                                    valid: false,
+                                    message: 'Contact Name is mandatory'
+                                }
+                            }
+                            return true;
+                          }
+                      }
+              }
+
+          },
+          'contactEmail[]': {
+
+            validators: {
+                  notEmpty: {
+                      message: 'Contact Email is mandatory'
+                  },
+                  regexp: {
+                      regexp: /^[a-zA-Z0-9_\- ]*@[a-zA-Z0-9_\- ]*.[a-zA-Z0-9_\- ]*$/i,
+                      message: 'Please provide valid characters'
+                  },
+                  callback: {
+                        message: 'Contact Name is mandatory',
+                        callback: function (value, validator, $field) {
+                            if(value == ""){
+                              return {
+                                    valid: false,
+                                    message: 'Contact Email is mandatory'
+                                }
+                            }
+                            return true;
+                          }
+                      }
+              }
+
           }
+
         }
       }).on('error.field.bv', function(e, data) {       
         
           $('*[data-bv-icon-for="'+data.field +'"]').popover('show');
 
+      }).on('added.field.bv', function(e, data) {
       });
 
       $('#entityLicensorTop').on('init.field.bv', function(e, data) {
@@ -865,14 +926,14 @@ var page = Component.extend({
               //group:'.licensors',
               validators: {
                   notEmpty: {
-                      message: 'Payment Terms is mandatory'
+                      message: 'Entity is mandatory'
                   },
                   regexp: {
                       regexp: /^[a-zA-Z0-9_\- ]*$/i,
                       message: 'Please provide valid characters'
                   },
                   callback: {
-                      message: 'Licensor is mandatory',
+                      message: 'Entity is mandatory',
                       callback: function (value, validator, $field) {
                         if(value == "Select"){
                              return false;
@@ -1023,19 +1084,7 @@ var page = Component.extend({
 
     ".remove click" : function(el, ev){
 
-        var self = this;
-
-        self.scope.reqCountries.splice(0,self.scope.reqCountries.length);
-        
-        self.scope.reqReportTypes.splice(0,self.scope.reqReportTypes.length);
-        
-
-        $("input.countryBox").prop('checked', false);
-        $("input.reportBox").prop('checked', false);
-        $("input.selectAllChkBox").prop('checked', false);
-
-        self.scope.submitAllCountires = false;
-        self.scope.submitAllReports = false;
+        self.scope.clearRepConfDetails();
 
     },
 
@@ -1118,6 +1167,8 @@ var page = Component.extend({
 
           self.scope.clearContactDetails();
 
+          self.scope.clearRepConfDetails();
+
           self.scope.disableTabs();
 
           Promise.all([Analytics.findById(UserReq.formRequestDetails(genObj))]).then(function(values) {
@@ -1125,6 +1176,23 @@ var page = Component.extend({
             self.scope.populateAnalyticsPage(values, "getHistroy");
             
           });
+    },
+
+    "#buttonreset click": function(event){
+
+        var self = this;
+        if(self.scope.licDetails.attr("data") != null) {
+
+          self.scope.licDetails.attr("data", null);
+
+        }
+
+        self.scope.clearContactDetails();
+
+        self.scope.clearRepConfDetails();
+
+        self.scope.disableTabs();
+
     },
 
     "#analyticsFetch click": function(event){
@@ -1152,6 +1220,8 @@ var page = Component.extend({
 
         self.scope.clearContactDetails();
 
+        self.scope.clearRepConfDetails();
+
         self.scope.disableTabs();
       
         
@@ -1170,6 +1240,8 @@ var page = Component.extend({
         var self = this;
 
         self.scope.clearContactDetails();
+
+        self.scope.clearRepConfDetails();
 
         self.scope.licDetails.attr("data", {});
 
@@ -1202,8 +1274,13 @@ var page = Component.extend({
 
         var self = this;
 
-        $('#entityLicensorTop').bootstrapValidator('validate');
         $('#entityLicensorBottom').bootstrapValidator('validate');
+
+        if($('#entityLicensorBottom').data('bootstrapValidator').isValid() == false) {
+
+          return;
+
+        }
 
         var societyContactDetails = self.scope.getSocietyContactDetails();
 
@@ -1419,7 +1496,11 @@ var showErrorMsg = function(periodFrom,periodTo,whichcomp){
 }
 
 
-
+var DynamicFieldValidation = function(option, type, form){
+   option.each(function(index){
+        form.bootstrapValidator(type, $(this));
+    });
+}
 
 
 export default page;

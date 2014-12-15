@@ -21,9 +21,8 @@
         <img src="resources/images/copyToClipboardIcon.png" class="" id="copyToClipboard">
     </div>
 
-
-    <div id="invoiceGrid">
-    </div>
+    <div id="loading_img"></div> 
+    <div id="invoiceGrid"></div>
 </div>
 
   <div  class="form-inline" >
