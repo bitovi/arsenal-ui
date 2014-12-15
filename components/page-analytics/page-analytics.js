@@ -890,8 +890,6 @@ var page = Component.extend({
           $('*[data-bv-icon-for="'+data.field +'"]').popover('show');
 
       }).on('added.field.bv', function(e, data) {
-
-            alert('HERE');
       });
 
       $('#entityLicensorTop').on('init.field.bv', function(e, data) {
