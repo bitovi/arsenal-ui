@@ -57,10 +57,31 @@ var Grid = Component.extend({
     },
     sortArrow: function(column) {
       this.attr();
-      if(column.attr('sortable') && this.attr('sortedColumn') && this.sortedColumn.id === column.attr('id')) {
-        return this.sortedDirection === 'desc' ? '▽' : '△';
+      //console.log("fsdfsdasd "+ JSON.stringify(this.attr('sortcolumnnames')));
+      //console.log("fsdfsdasd "+ JSON.stringify(this.attr('sortdir')));
+
+      /* This 'sortcolumnnames' holds all the sorting column information in array format */
+      /* The following condition identify each column and set it in 'sortedColumn' scope in teh 
+      accepted format {id: columnName} */
+      if(this.attr('sortcolumnnames')!=undefined){
+        var sortedCols = this.sortcolumnnames.attr();
+        var sortedDir = this.attr('sortdir');
+        var sortedColsLength = sortedCols.length;
+        var temp = {};
+        for(var i=0; i<sortedColsLength;i++){
+          if(sortedCols[i] === column.attr('id')){
+            temp.id = sortedCols[i];
+            //this.attr("sortedColumn",temp);
+            //this.attr("sortedDirection",sortedDir);
+            return this.sortdir === 'desc' ? '▽' : '△';
+          }
+        }
       } else {
-        return '';
+        if(column.attr('sortable') && this.attr('sortedColumn') && this.sortedColumn.id === column.attr('id')) {
+          return this.sortedDirection === 'desc' ? '▽' : '△';
+        } else {
+          return '';
+        }
       }
     },
     filteredRows: function(options) {
@@ -183,7 +204,7 @@ var Grid = Component.extend({
       this.scope.attr('allOpen', !allOpen);
       can.batch.stop();
     },
-    'tbody th, tfoot th click': function(el, ev) {
+    /*'tbody th, tfoot th click': function(el, ev) {
       var column = el.data('column').column;
 
       if(this.scope.attr('sortedColumn') && this.scope.attr('sortedColumn').id === column.id) {
@@ -194,7 +215,7 @@ var Grid = Component.extend({
         this.scope.attr('sortedDirection', column.defaultSortDirection || 'asc');
         can.batch.stop();
       }
-    },
+    },*/
     // these are what you override if you need to reload rows for sorting or something
     '{scope} sortedColumn': function() {
       return resort.apply(this, arguments);
