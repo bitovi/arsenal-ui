@@ -82,7 +82,7 @@ var page = Component.extend({
         this.scope.attr("createPBFlag",{select:true});
         this.scope.attr("paymentBundleId", '');
       },
-      "{scope} getPaymentBundlesNames": function(){
+      "{scope} request": function(){
         var self= this;
 
         var requestObj = JSON.parse(self.scope.attr("request"));
