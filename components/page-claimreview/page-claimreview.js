@@ -551,16 +551,14 @@ var page = Component.extend({
               //console.log("Request are "+JSON.stringify(UserReq.formRequestDetails(claimLicSearchRequest)));
               console.log("Request are "+JSON.stringify(claimLicSearchRequest));
               if(tabView=="licensor"){
-                //claimLicensorInvoices.findOne(UserReq.formRequestDetails(claimLicSearchRequest),function(values){
-                claimLicensorInvoices.findOne(claimLicSearchRequest,function(values){
+                claimLicensorInvoices.findOne(UserReq.formRequestDetails(claimLicSearchRequest),function(values){
                     //console.log("data is "+JSON.stringify(values.attr()));
                     self.scope.allClaimLicensorMap.replace(values);
                 },function(xhr){
                   console.error("Error while loading: "+xhr);
                 });
               } else if(tabView=="country" || tabView=="period"){
-                //claimCountryInvoices.findOne(UserReq.formRequestDetails(claimLicSearchRequest),function(values){
-                claimCountryInvoices.findOne(claimLicSearchRequest,function(values){
+                claimCountryInvoices.findOne(UserReq.formRequestDetails(claimLicSearchRequest),function(values){
                     //console.log("datafsdf is "+JSON.stringify(values.attr()));
                     self.scope.allClaimCountryMap.replace(values);
                 },function(xhr){
