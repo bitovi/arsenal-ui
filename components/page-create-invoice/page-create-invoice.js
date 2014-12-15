@@ -486,7 +486,13 @@ var page = Component.extend({
                   			if(data.calInvoiceDueDate != null && data.calInvoiceDueDate != undefined){
                   				self.scope.attr("calduedate", getDateToDisplay(data.calInvoiceDueDate));
                   			}
-                  		}
+                  		}else if(data.status == 'FAILURE'){
+                  			$("#invmessageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>")
+							$("#invmessageDiv").show();
+				            setTimeout(function(){
+				                $("#invmessageDiv").hide();
+				             },5000)
+                  			}
 		                },function(xhr){
 		                /*Error condition*/
 		           		 });  
@@ -503,7 +509,13 @@ var page = Component.extend({
                   			if(data.calInvoiceDueDate != null && data.calInvoiceDueDate != undefined){
                   				self.scope.attr("calduedate", getDateToDisplay(data.calInvoiceDueDate));
                   			}
-                  		}
+                  		}else if(data.status == 'FAILURE'){
+                  			$("#invmessageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>")
+							$("#invmessageDiv").show();
+				            setTimeout(function(){
+				                $("#invmessageDiv").hide();
+				             },5000)
+                  			}
 		                },function(xhr){
 		                /*Error condition*/
 		           		 });  
