@@ -39,22 +39,6 @@ var requestHelper = {
     var contGrpId = appstate.attr()['contentType'].map(id => +id);
     var region = appstate.attr('region');
     var serviceType = appstate.attr('storeType');
-    // var serTypeId = "";
-    // if(typeof(serviceType)=="undefined"){
-    //   serTypeId= "";
-    // }
-    //   else
-    //     {
-    //       serTypeId = serviceType['id'];
-    //     }
-
-
-    // var regId = "";
-    // if(typeof(region )=="undefined"){
-    //   regId = "";
-    // }else{
-    //   regId = region['id'];
-    // }
 
     var searchRequestObj={};
     searchRequestObj.searchRequest = {};
@@ -66,9 +50,9 @@ var requestHelper = {
     searchRequestObj.searchRequest["country"] = [];
     searchRequestObj.searchRequest["entityId"] = [];
     searchRequestObj.searchRequest["contentGrpId"] = [];
-    
+
       if(typeof(serTypeId)!="undefined"){
-        searchRequestObj.searchRequest["serviceTypeId"] = serTypeId['id'];
+        searchRequestObj.searchRequest["serviceTypeId"] = serTypeId;
       }
 
       if(typeof(regId)!="undefined"){
@@ -100,7 +84,6 @@ var requestHelper = {
     //     serviceTypeId:serTypeId
     //   }
     // };
-
     return searchRequestObj;
 
   }
