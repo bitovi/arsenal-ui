@@ -13,7 +13,7 @@ var reconIngest = {
       "periodType": "P",
       "status": "Not Ingested",
       "rejectable": false,
-      "invFileName": "INVOICE_FILE.dat",
+      "invFileName": "TestFile.pdf",
       "countryId": "AUT",
       "invFileType": "OUTBOUND",
       "dtlHdrId": 1,
@@ -30,7 +30,7 @@ var reconIngest = {
       "badLines": "0",
       "ingstdDate":"2014-11-12",
       "rcvdDate": "2014-11-12",
-      "invFileId": 605115,
+      "invFileId": 607225,
       "liDispFileId": 1003,
       "liDispFileType": "OUTBOUND",
       "badFileId": 1001,
@@ -46,7 +46,7 @@ var reconIngest = {
       "invFileName": "INVOICE_FILE.dat",
       "countryId": "AUT",
       "invFileType": "INBOUND",
-      "dtlHdrId": 1,
+      "dtlHdrId": 21,
       "dtlHdrType": "PDF",
       "ccy": "EUR",
       "contType": "Music",
@@ -76,7 +76,7 @@ var reconIngest = {
       "invFileName": "INVOICE_FILE.dat",
       "countryId": "AUT",
       "invFileType": "INBOUND",
-      "dtlHdrId": 1,
+      "dtlHdrId": 34,
       "dtlHdrType": "PDF",
       "ccy": "EUR",
       "contType": "Music",
@@ -106,7 +106,7 @@ var reconIngest = {
       "invFileName": "INVOICE_FILE.dat",
       "countryId": "AUT",
       "invFileType": "INBOUND",
-      "dtlHdrId": 1,
+      "dtlHdrId": 133,
       "dtlHdrType": "PDF",
       "ccy": "EUR",
       "contType": "Music",
@@ -136,7 +136,7 @@ var reconIngest = {
       "invFileName": "INVOICE_FILE.dat",
       "countryId": "AUT",
       "invFileType": "INBOUND",
-      "dtlHdrId": 1,
+      "dtlHdrId": 345,
       "dtlHdrType": "PDF",
       "ccy": "EUR",
       "contType": "Music",
@@ -280,13 +280,17 @@ var reconIngest = {
 
 
   ],
+  "currency": [
+  "EUR",
+  "USD"
+  ],
   "summary": {
-    "totalPubFee": 0,
-    "totalRecon": 0,
-    "totalLi": 0,
-    "totalCopCon": 0,
-    "totalUnMatched": 0,
-    "totalBadLines": 0
+    "totalPubFee": 122,
+    "totalRecon": 32,
+    "totalLi": 23,
+    "totalCopCon": 324,
+    "totalUnMatched": 234,
+    "totalBadLines": 33
   }
 }
 

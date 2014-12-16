@@ -1,5 +1,6 @@
 import stache from 'can/view/stache/';
 import formats from 'utils/formats';
+import periodHelper from 'utils/periodWidgetHelpers';
 
 export default [
 {
@@ -53,18 +54,27 @@ export default [
 {
   id: 'copConAmt',
   title: 'Cop Con',
+  className: "amountColumn",
   format: formats.currency,
   sortable: true
 },
 {
   id: 'unMatchedAmt',
   title: 'Unmatched',
+  className: "amountColumn",
   format: formats.currency,
   sortable: true
 },
 {
   id: 'fiscalPeriod',
   title: 'Periods',
+  contents: function(row) {
+    if(row.fiscalPeriod == undefined || row.fiscalPeriod == ""){
+      //nothing
+    }else{
+      return periodHelper.getDisplayPeriod(row.fiscalPeriod.toString(),"P");
+    }
+  },
   sortable: true
 },
 {

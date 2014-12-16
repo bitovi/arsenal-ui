@@ -1,5 +1,6 @@
 import stache from 'can/view/stache/';
 import formats from 'utils/formats';
+import periodHelper from 'utils/periodWidgetHelpers';
 
 export default [
   {
@@ -14,7 +15,10 @@ export default [
   {
     id: 'ccidId',
     title: 'CCID ID',
-    sortable: true
+    sortable: true,
+    contents: function(row) {
+        return (row.ccidId == "" || row.ccidId == "0" ) ? "": row.ccidId ;
+    }
   },
   {
     id: 'entityName',
@@ -39,17 +43,26 @@ export default [
   {
     id: 'fiscalPeriod',
     title: 'Period',
+    contents: function(row) {
+      if(row.fiscalPeriod == undefined || row.fiscalPeriod == ""){
+        //nothing
+      }else{
+        return periodHelper.getDisplayPeriod(row.fiscalPeriod.toString(),"P");
+      }
+    },
     sortable: true
   },
   {
     id: 'pubfee',
     title: 'Pub Fee',
+    className: "amountColumn",
     format: formats.currency,
     sortable: true
   },
   {
     id: 'reconAmt',
     title: 'Recon',
+    className: "amountColumn",
     format: formats.currency,
     sortable: true
   },
@@ -57,6 +70,7 @@ export default [
     id: 'liDispAmt',
     title: 'Line Item Dispute',
     format: formats.currency,
+    className: "amountColumn",
     contents: function(row) {
       if(row.isFooterRow){
         return formats.currencyFormat(row.liDispAmt);
@@ -69,23 +83,27 @@ export default [
   {
     id: 'copConAmt',
     title: 'Cop Con',
+    className: "amountColumn",
     format: formats.currency,
     sortable: true
   },
   {
     id: 'unMatchedAmt',
     title: 'Unmatched',
+    className: "amountColumn",
     format: formats.currency,
     sortable: true
   },
   {
     id: 'badLines',
     title: 'Bad Lines',
+    className: "amountColumn",
     contents: function(row) {
       if(row.isFooterRow){
         return formats.currencyFormat(row.badLines);
       }else{
-        return can.stache('<a class="downloadLink badLines" href="#download">'+row.badLines+'</a>')();
+        return formats.currencyFormat(row.badLines);
+        // return can.stache('<a class="downloadLink badLines" href="#download">'+formats.currencyFormat(row.badLines)+'</a>')();
       }
     },
     format: formats.currency,
