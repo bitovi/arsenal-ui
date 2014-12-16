@@ -138,8 +138,8 @@ var page = Component.extend({
       var request = {
         "files":[
         {
-          "fileId":row.invFileId,
-          "boundType":row.invFileType
+          "fileId":row.badFileId,
+          "boundType":row.badFileType
         }
         ]
       }
@@ -167,12 +167,12 @@ var page = Component.extend({
       var request = {
         "files":[
         {
-          "fileId":row.invFileId,
-          "boundType":row.invFileType
+          "fileId":row.liDispFileId,
+          "boundType":row.liDispFileType
         }
         ]
       }
-      console.log(JSON.stringify(request));
+
       FileManager.downloadFile(request);
     },
     '.toggle :checkbox change': function(el, ev) {
