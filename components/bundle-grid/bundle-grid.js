@@ -1,3 +1,4 @@
+import Period from 'models/common/periodFrom/';
 import Grid from '../grid/';
 import formats from 'utils/formats';
 import _less from './bundle-grid.less!';
@@ -25,7 +26,7 @@ var BundleGrid = Grid.extend({
       {
         id: 'paymentAmt',
         title: 'Amount',
-        format: formats.fixed(2)
+        format: formats.currency
       },
       {
         id: 'bundleType',
@@ -41,12 +42,11 @@ var BundleGrid = Grid.extend({
       {
         id: 'periodRange',
         title: 'Period Range',
-        // TODO: will need to convert to period names
         contents: function(row) {
           if(row.periodFrom === row.periodTo) {
-            return row.periodFrom;
+            return Period.format(row.periodFrom);
           } else {
-            return row.periodFrom + ' - ' + row.periodTo;
+            return Period.format(row.periodFrom) + ' - ' + Period.format(row.periodTo);
           }
         }
       },
@@ -64,7 +64,7 @@ var BundleGrid = Grid.extend({
       },
       {
         id: 'pendingDays',
-        title: 'Pending',
+        title: 'Pending Days',
         format: formats.int
       }
     ]

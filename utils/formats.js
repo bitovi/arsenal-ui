@@ -6,17 +6,12 @@ var formats = {
       return formats.number(value).toFixed(numberOfDigits);
     };
   },
-  currencyFormat: function (number)
-  {
-    var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
-    return n;
-  },
   formatIf: function(test, format, elseValue) {
     return value => test.call(null, value) ? format(value) : elseValue
   }
 };
 
-formats.currency = formats.fixed(2);
+formats.currency = formats.currencyFormat = (value => formats.fixed(2)(value).replace(/(\d)(?=(\d{3})+\.)/g, "$1,"));
 formats.percent = (value => formats.fixed(0)(value) + '%');
 
 export default formats;
