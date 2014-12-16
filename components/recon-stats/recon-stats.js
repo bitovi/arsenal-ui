@@ -113,21 +113,38 @@ var page = Component.extend({
 
             var value = {};
 
-            Stats.findOne(self.refreshParam, function(data){
+            var reqArr = {};
+
+            reqArr = {};
+
+            var ids = [];
+
+            for(var i=0; i<ccids.length; i++) {
+
+              ids[i] = ccids[i].toString();
+
+            }
+
+            reqArr.invoices = [];
+            reqArr.searchRequest = {"ids" : []};
+            reqArr.searchRequest.ids = ids;
+
+            var genObj = reqArr;
+
+            Promise.all([Stats.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
               self.summaryStatsData.splice(0,1);
 
+              data = values[0];
+
               var ingestionStats = data.reconStatsDetails[0].ingestionStats;
 
-              var genObj = {};
-
-              // Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
-              //    ]).then(function(values) {
-              //
-              //
+              //Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
+              //   ]).then(function(values) {
+               
               //     self.attr("currencyScope").replace(values[0]);
-              //
-              //  });
+           
+              //});
 
               // Grid data
               var grid = {"data" : []};
