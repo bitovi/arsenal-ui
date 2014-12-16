@@ -325,10 +325,10 @@ getProposedOnAccRows:function(quarters,data){
               if(value == undefined){
                 value =0;
               }
-              row[quarters[k]]=value;
+              row[quarters[k]]=this.currencyFormat(value);
             }
           }
-          row['total']=onAccountDetails[i].totalAmt;
+          row['total']=this.currencyFormat(onAccountDetails[i].totalAmt);
 
           bundleNames.push(onAccountDetails[i].bundleName);
 

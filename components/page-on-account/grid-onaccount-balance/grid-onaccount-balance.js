@@ -47,7 +47,7 @@ var OnAccountBalance = Grid.extend({
   events: {
     'inserted': function(ev) {
        var self = this;
-       console.log("inserted "+JSON.stringify(self.scope.request.searchRequest.attr()));
+       //console.log("inserted "+JSON.stringify(self.scope.request.searchRequest.attr()));
        if(self.scope.request != null && self.scope.request != undefined && self.scope.request.quarters != null && self.scope.request.quarters != undefined){
          var quarters = self.scope.request.quarters;
 
@@ -61,7 +61,7 @@ var OnAccountBalance = Grid.extend({
 
           var balanceColumn={
             id:'onAccountBalance',
-            title:'onAccount Bal'
+            title:'onAccount Balance'
           };
           self.scope.columns.push(balanceColumn);
 
@@ -140,11 +140,11 @@ var getUiRowsFromResponse=function(quarters,data){
         if(value == undefined){
           value =0;
         }
-        row[quarters[k]]=value;
+        row[quarters[k]]=utils.currencyFormat(value);
       }
     }
-    row['onAccountBalance']= onAccountDetails[i].onAccountAmt;
-    row['cashAdjust']= onAccountDetails[i].entityCAAmt;
+    row['onAccountBalance']= utils.currencyFormat(onAccountDetails[i].onAccountAmt);
+    row['cashAdjust']= utils.currencyFormat(onAccountDetails[i].entityCAAmt);
     rows.push(row);
   }
   //console.log(rows);
