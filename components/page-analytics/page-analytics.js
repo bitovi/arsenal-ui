@@ -372,7 +372,7 @@ var page = Component.extend({
 
       } else {
 
-        self.periodFromInput = "0";
+        self.attr("periodToVal", "");
 
       }
 
@@ -383,7 +383,7 @@ var page = Component.extend({
 
       } else {
 
-        self.periodFromInput= "0";
+        self.attr("periodfromVal", "");
 
       }
 
@@ -433,8 +433,8 @@ var page = Component.extend({
 
           
           if(self.licDetails.data.revisionHistories[i].validTo == null) {
-            self.licDetails.data.revisionHistories[i].validTo = "-";
-            self.licDetails.data.revisionHistories[i]._data.validTo = "-";
+            self.licDetails.data.revisionHistories[i].validTo = "";
+            self.licDetails.data.revisionHistories[i]._data.validTo = "";
           }
 
           if(self.licDetails.data.revisionHistories[i].commentText == null) {
@@ -456,7 +456,7 @@ var page = Component.extend({
       
       } else {
 
-          $('#countryModelMapping').html(stache('<rn-grid-countrymodelmapping emptyrows="{emptyrows}"></rn-grid-countrymodelmapping>')({emptyrows:true}));
+        $('#countryModelMapping').html(stache('<rn-grid-countrymodelmapping emptyrows="{emptyrows}"></rn-grid-countrymodelmapping>')({emptyrows:true}));
       }
 
       if(from != undefined && from != null) {
@@ -687,9 +687,11 @@ var page = Component.extend({
 
     getPeriodFromVal : function() {
 
-      var entity = this.attr("periodFromVal");
+      var peroidFrom = this.attr("periodFromVal");
 
-      return entity;
+      var peroidTo = this.attr("periodToVal");
+
+      //return entity;
 
     }
 
@@ -1206,6 +1208,14 @@ var page = Component.extend({
 
         $('#entityLicensorTop').bootstrapValidator('validate');
 
+        if($('#entityLicensorTop').data('bootstrapValidator').isValid() == false) {
+
+          return;
+
+        }
+
+        $('#entityLicensorTop').bootstrapValidator('validate');
+
         if(entityName == "Select" || entityName == "") {
 
             return;
@@ -1296,9 +1306,9 @@ var page = Component.extend({
 
         //Todays changes
 
-        var periodFrom = self.scope.periodFromVal;  
+        var periodFrom = $(".periodFromInput").val();;  
 
-        var periodTo = self.scope.periodToVal; //$(".periodFromTo").val();
+        var periodTo = $(".periodToInput").val();
 
         if (periodFrom != 0 || periodFrom != undefined || periodFrom!= null) {
 
@@ -1327,14 +1337,6 @@ var page = Component.extend({
 
             return;
 
-        }
-
-        if(periodFrom == "") {
-              periodFrom = 0;
-        }
-
-        if(periodTo == "") {
-            periodTo = 0;
         }
 
         for(var i=0; i<reports.length; i++) {
@@ -1366,8 +1368,6 @@ var page = Component.extend({
           reLicencorDetails.licensorDetails.licensorName = self.scope.licDetails.data.licensorName;
           reLicencorDetails.licensorDetails.licensorId = self.scope.licDetails.data.licensorId;
           reLicencorDetails.licensorDetails.createdBy = self.scope.licDetails.data.createdBy;
-          reLicencorDetails.licensorDetails.validFrom = self.scope.licDetails.data.validFrom;
-          reLicencorDetails.licensorDetails.validTo = self.scope.licDetails.data.validTo;
           reLicencorDetails.licensorDetails.commentTxt = comments;
           reLicencorDetails.licensorDetails.accountName = self.scope.licDetails.data.accountName;
           reLicencorDetails.licensorDetails.invoiceDetailType = self.scope.licDetails.data.invoiceDetailType;
@@ -1418,15 +1418,13 @@ var page = Component.extend({
           reLicencorDetails.licensorDetails.id = "0";
           reLicencorDetails.licensorDetails.commentId  = "0";
           reLicencorDetails.licensorDetails.entityTypeId  = "1";
-          
+
           reLicencorDetails.licensorDetails.contactDetails = societyContactDetails;
-          reLicencorDetails.licensorDetails.licensorName = self.scope.licDetails.data.entityType;
+          reLicencorDetails.licensorDetails.licensorName = self.scope.licDetails.data.licensorName;
           reLicencorDetails.licensorDetails.uploadedFilesToSFTP = self.scope.licDetails.data.uploadedFilesToSFTP;
 
           reLicencorDetails.licensorDetails.licensorId = "0";
           
-          reLicencorDetails.licensorDetails.validFrom = self.scope.licDetails.data.validFrom;
-          reLicencorDetails.licensorDetails.validTo = self.scope.licDetails.data.validTo;
           reLicencorDetails.licensorDetails.commentTxt = comments;
           reLicencorDetails.licensorDetails.accountName = self.scope.licDetails.data.accountName;
           reLicencorDetails.licensorDetails.invoiceDetailType = invoiceType;
@@ -1446,12 +1444,29 @@ var page = Component.extend({
 
                 var genObj = {};
 
+                var msg = "Entity Detials added successfully";
+
+                $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
+                $("#invmessageDiv").show();
+                setTimeout(function(){
+                  $("#invmessageDiv").hide();
+                },5000);
+
                 Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
                   self.scope.licensors.replace(values[0].entities[0]);
 
       
                 });
+
+            } else {
+
+                var msg = "Entity Detials was not added successfully";
+                $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+                $("#invmessageDiv").show();
+                setTimeout(function(){
+                  $("#invmessageDiv").hide();
+                },5000);
 
             }
           
