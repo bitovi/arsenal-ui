@@ -590,6 +590,24 @@ var page = Component.extend({
 
     },
 
+    clearRepConfDetails : function() {
+
+        var self = this;
+
+        self.reqCountries.splice(0,self.reqCountries.length);
+        
+        self.reqReportTypes.splice(0,self.reqReportTypes.length);
+        
+
+        $("input.countryBox").prop('checked', false);
+        $("input.reportBox").prop('checked', false);
+        $("input.selectAllChkBox").prop('checked', false);
+
+        self.submitAllCountires = false;
+        self.submitAllReports = false;
+
+    },
+
     addRemoveElement: function(obj, val, addRemove) {
 
         for(var i=0; i<obj.length; i++) {
@@ -646,7 +664,7 @@ var page = Component.extend({
 
   helpers:  {
 
-    getselectedEntity : function() {
+    getselectedEntity : function(sEntity) {
 
         var entity = this.attr("selectedEntity");
 
@@ -1066,19 +1084,7 @@ var page = Component.extend({
 
     ".remove click" : function(el, ev){
 
-        var self = this;
-
-        self.scope.reqCountries.splice(0,self.scope.reqCountries.length);
-        
-        self.scope.reqReportTypes.splice(0,self.scope.reqReportTypes.length);
-        
-
-        $("input.countryBox").prop('checked', false);
-        $("input.reportBox").prop('checked', false);
-        $("input.selectAllChkBox").prop('checked', false);
-
-        self.scope.submitAllCountires = false;
-        self.scope.submitAllReports = false;
+        self.scope.clearRepConfDetails();
 
     },
 
@@ -1161,6 +1167,8 @@ var page = Component.extend({
 
           self.scope.clearContactDetails();
 
+          self.scope.clearRepConfDetails();
+
           self.scope.disableTabs();
 
           Promise.all([Analytics.findById(UserReq.formRequestDetails(genObj))]).then(function(values) {
@@ -1180,6 +1188,8 @@ var page = Component.extend({
         }
 
         self.scope.clearContactDetails();
+
+        self.scope.clearRepConfDetails();
 
         self.scope.disableTabs();
 
@@ -1210,6 +1220,8 @@ var page = Component.extend({
 
         self.scope.clearContactDetails();
 
+        self.scope.clearRepConfDetails();
+
         self.scope.disableTabs();
       
         
@@ -1228,6 +1240,8 @@ var page = Component.extend({
         var self = this;
 
         self.scope.clearContactDetails();
+
+        self.scope.clearRepConfDetails();
 
         self.scope.licDetails.attr("data", {});
 

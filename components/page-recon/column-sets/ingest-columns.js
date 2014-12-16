@@ -7,7 +7,6 @@ export default [
     title: '',
     contents: function(row) {
       if(row.isFooterRow == undefined){
-        console.log(row.ccidId);
         return (row.ccidId == "" || row.ccidId == "0" ) ? "": can.stache('<input type="checkbox"/>' )() ;
       }
     }

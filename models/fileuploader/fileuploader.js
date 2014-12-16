@@ -1,18 +1,26 @@
-import Model from 'can/model/';
-import RinsCommon from 'utils/urls';
+    import Model from 'can/model/';
+    import RinsCommon from 'utils/urls';
 
-var FileUpLoader = Model.extend({
-    create: function(params) {
+    var FileUpLoader = Model.extend({
 
-		return $.ajax({
-	        url: RinsCommon.UI_SERVICE_URL+'uploadFiles',
-				type: 'POST',
-				contentType: 'multipart/form-data;boundary=' + RinsCommon.BOUNDARY +';' ,
-				processData: false,
-				data: params
-		});
+        create: function(params) {
+            var count = params.length;
+            var noofItems = 0;
+            var dataToSend = '';
+            var form_data = new FormData();
 
-	}
+            params.forEach(function(file, index) {
+                form_data.append(file.name, file);
+            });
 
- } ,{});
-	export default FileUpLoader;
+            return $.ajax({
+                url:RinsCommon.UI_SERVICE_URL+'uploadFiles',
+                contentType:false,
+                processData: false,
+                type: 'POST',
+                data: form_data
+            });
+
+        }
+    },{});
+    export default FileUpLoader;

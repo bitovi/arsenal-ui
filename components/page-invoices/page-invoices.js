@@ -336,7 +336,7 @@ var page = Component.extend({
             if(paymentState==0 || paymentState==1 || paymentState==9){
               invoicemap.attr('invoiceid',invoiceid);
               flag=true;
-              self.scope.appstate.attr('page','create-invoice');
+              self.scope.appstate.attr('page','edit-invoice');
             } 
           } 
 

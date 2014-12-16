@@ -11,7 +11,7 @@ import css_bootstrapValidator from 'bootstrapValidator.css!';
 import bootstrapValidator from 'bootstrapValidator';
 
 import template from './template.stache!';
-import styles from './page-create-invoice.less!';
+import styles from './page-edit-invoice.less!';
 
 import UserReq from 'utils/request/';
 
@@ -48,7 +48,7 @@ fileUpload.extend({
  });
 
 var page = Component.extend({
-  tag: 'page-create-invoice',
+  tag: 'page-edit-invoice',
   template: template,
   scope: {
     appstate:undefined,
@@ -73,7 +73,7 @@ var page = Component.extend({
   	editcommentArr:[],
   	/*Form value*/
   	invoicetypeSelect:"",
-  	licensorStore:{},
+  	licensorStore:"",
   	currencyStore:"",
   	regionStore:"",
   	fxrateStore:"",
@@ -105,6 +105,7 @@ var page = Component.extend({
   	formSuccessCount:1,
   	uploadedfileinfo:[],
   	periodType:"",
+  	ajaxRequestStatus:{},
 	isRequired: function(){
   	 		if(this.attr("invoicetypeSelect") != "2"){  /*Adhoc*/
  				$(".breakdownCountry").addClass("requiredBar");
@@ -444,6 +445,9 @@ var page = Component.extend({
 					if(!self.scope.editpage){
 						self.scope.attr("invoiceduedate", getCurrentDate());
 					}
+
+
+					
 			},
 			".form-control keyup": function(event){
 					var self = this;
@@ -478,7 +482,7 @@ var page = Component.extend({
 				},
 				".form-control change":function(event){
 					var self = this;
-					if(($("#invoicedate input[type=text]").val() != "") &&  (!$.isEmptyObject(self.scope.licensorStore)) && ($("#inputCountry0").val() != "")){
+					if(($("#invoicedate input[type=text]").val() != "") &&  (self.scope.licensorStore != "") && ($("#inputCountry0").val() != "")){
 					var genObj = {entityId:self.scope.licensorStore, invoiceDate:Date.parse($("#invoicedate input[type=text]").val()), countryId:$("#inputCountry0").val()};
 					CalDueDate.findOne(UserReq.formRequestDetails(genObj),function(data){
                   		//console.log(data.calInvoiceDueDate);
@@ -500,7 +504,7 @@ var page = Component.extend({
 				},
 				"#invoicedate dp.change":function(event){ /*need to repeat service call, as no way to capture date change event together with form control event*/
 					var self = this;
-					if(($("#invoicedate input[type=text]").val() != "") &&  (!$.isEmptyObject(self.scope.licensorStore)) && ($("#inputCountry0").val() != "")){
+					if(($("#invoicedate input[type=text]").val() != "") &&  (self.scope.licensorStore != "") && ($("#inputCountry0").val() != "")){
 					var genObj = {entityId:self.scope.licensorStore, invoiceDate:Date.parse($("#invoicedate input[type=text]").val()), countryId:$("#inputCountry0").val()};
 					CalDueDate.findOne(UserReq.formRequestDetails(genObj),function(data){
 						//console.log("Date 1---"+moment($("#invoicedate input[type=text]").val()).unix());
@@ -529,7 +533,7 @@ var page = Component.extend({
 				 		self.scope.attr("invoicenumberStore", invoiceData.invoiceNumber);
 				 		self.scope.attr("invoicetypeSelect", invoiceData.invoiceTypeId);
 				 		self.scope.attr("regionStore", invoiceData.regionId);
-				 		self.scope.attr("fxrateStore", invoiceData.fxRate);
+						self.scope.attr("fxrateStore", invoiceData.fxRate);
 				 		self.scope.attr("licnotesStore", invoiceData.notes);
 				 		self.scope.attr("createDateStore", invoiceData.invoiceDate);
 				 		self.scope.attr("receiveddate", moment.unix(invoiceData.receivedDate).format("MM/DD/YYYY"));
@@ -624,12 +628,7 @@ var page = Component.extend({
 							});
 
 				               /*Breakdown end*/
-				               var invoicevalid = $("#invoiceform").data('bootstrapValidator').isValid();
-
-				               if(!invoicevalid){
-									$("#invoiceform").data('bootstrapValidator').validate();
-									$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
-				               	}
+				               
 		},
  		".classAmtTotal blur": function(event){
  			var amountStr = event[0].value;
@@ -674,6 +673,7 @@ var page = Component.extend({
 			    		if(self.scope.editpage){
 				    		var invoiceData = self.scope.attr().invoiceContainer[0];
 				    		self.scope.attr("licensorStore", invoiceData.entityId);
+				    		self.scope.ajaxRequestStatus.attr("licensorLoaded", true);
 			    		}
 			    });
 			self.scope.createPBRequest();     
@@ -688,9 +688,21 @@ var page = Component.extend({
 				    if(self.scope.editpage){
 					    var invoiceData = self.scope.attr().invoiceContainer[0];
 					    self.scope.attr("currencyStore", invoiceData.invoiceCcy);
+					    self.scope.ajaxRequestStatus.attr("currencyStore", true);
 					}
 			});
 		},
+		"{ajaxRequestStatus} change":function(event){
+				var self = this;
+				if((self.scope.ajaxRequestStatus.currencyStore == true) && (self.scope.ajaxRequestStatus.licensorLoaded == true)){
+						var invoicevalid = $("#invoiceform").data('bootstrapValidator').isValid();
+						if(!invoicevalid){
+							$("#invoiceform").data('bootstrapValidator').validate();
+							$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
+						}
+				}
+		},
+
 		"#invoiceType change": function(){
 			this.scope.isRequired();
 			var self = this;
@@ -946,7 +958,8 @@ var page = Component.extend({
 							   		  	tempComments.comments = self.scope.attr().invoiceContainer[0].comments[j].comments;
 							   		  	tempComments.id = self.scope.attr().invoiceContainer[0].comments[j].id;
 							   		  	tempComments.createdBy = self.scope.attr().invoiceContainer[0].comments[j].createdBy;
-							   		  	tempComments.createdDate = dateFormatter(self.scope.attr().invoiceContainer[0].comments[j].createdDate, "mm/dd/yyyy");
+							   		  	if(self.scope.attr().invoiceContainer[0].comments[j].createdDate)
+							   		  	tempComments.createdDate = getDateToDisplay(self.scope.attr().invoiceContainer[0].comments[j].createdDate);
 							   		  	tempEditInvoiceData["comments"].push(tempComments);
 									}
 									var tempComments = {};  /*new comments*/
@@ -1027,15 +1040,20 @@ var page = Component.extend({
 														}
 											          	else
 											          	{
-												          	// $("#invoiceform").data('bootstrapValidator').resetForm();
-												          	var msg = "Invoice number "+self.scope.invoicenumberStore+" was not saved successfully."
+												          	var errorMap = values[0].invoices[0].errors.errorMap;
+												          	var errorStr = "";
+												          	for(var key in errorMap){
+												          		errorStr += errorMap[key]+", ";
+												          		console.log(key);	
+												          	}
+												          	errorStr = errorStr.replace(/,\s*$/, "");  
+												          	
+												          	var msg = "Error: "+ errorStr;
 												          	$("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
 												          	$("#invmessageDiv").show();
-												          	setTimeout(function(){
-												                $("#invmessageDiv").hide();
-												             },5000)
-											          	
-											            }
+												          	$("#addInvSubmit").attr("disabled", false);
+														          	
+														}
 													});
 												}
 								/*Edit invoice end*/
@@ -1075,7 +1093,8 @@ var page = Component.extend({
 										//	self.scope.attr("periodType", 
 									}	
 						  		});
-						  	} 
+						  	}
+						  	
 						},
 					  	init: function(){
 					   	 	var self = this;
@@ -1098,9 +1117,23 @@ var page = Component.extend({
 							     		 	self.scope.attr("glaccounts").replace(values[4]);
 							     		 	self.scope.attr("regions").replace(values[5]);
 
-							     		 	//console.log(self.scope.attr("contentType"));
+							     		 	console.log(self.scope.attr("contentType"));
+							     		 	
 
-							    			
+							    			if(invoicemap.attr("invoiceid")){
+												var getByIDReq = {"searchRequest":{}};
+								     			getByIDReq.searchRequest.ids = [invoicemap.attr("invoiceid")];
+
+								     			console.log(JSON.stringify(UserReq.formRequestDetails(getByIDReq)));
+
+												self.scope.attr("editpage", true);
+												Promise.all([
+										      				Invoice.findOne(UserReq.formRequestDetails(getByIDReq))
+										    			]).then(function(values) {
+										    				//console.log(values);
+												     		 self.scope.attr("invoiceContainer").replace(values[0]["invoices"]);
+												    	});
+												}
 											});
 						},
 					  	helpers: {

@@ -37,24 +37,8 @@ var requestHelper = {
     var countryId = appstate.attr()['country'];
     var licId = appstate.attr()['licensor'].map(id => +id);
     var contGrpId = appstate.attr()['contentType'].map(id => +id);
-    var region = appstate.attr('region');
+    var region = appstate.attr('region').id;
     var serviceType = appstate.attr('storeType');
-    // var serTypeId = "";
-    // if(typeof(serviceType)=="undefined"){
-    //   serTypeId= "";
-    // }
-    //   else
-    //     {
-    //       serTypeId = serviceType['id'];
-    //     }
-
-
-    // var regId = "";
-    // if(typeof(region )=="undefined"){
-    //   regId = "";
-    // }else{
-    //   regId = region['id'];
-    // }
 
     var searchRequestObj={};
     searchRequestObj.searchRequest = {};
@@ -66,13 +50,13 @@ var requestHelper = {
     searchRequestObj.searchRequest["country"] = [];
     searchRequestObj.searchRequest["entityId"] = [];
     searchRequestObj.searchRequest["contentGrpId"] = [];
-    
+
       if(typeof(serTypeId)!="undefined"){
-        searchRequestObj.searchRequest["serviceTypeId"] = serTypeId['id'];
+        searchRequestObj.searchRequest["serviceTypeId"] = serTypeId;
       }
 
-      if(typeof(regId)!="undefined"){
-        searchRequestObj.searchRequest["regionId"] = regId['id'];
+      if(typeof(region)!="undefined"){
+        searchRequestObj.searchRequest["regionId"] = region;
       }
 
       if(typeof(countryId)!="undefined"){
@@ -100,7 +84,7 @@ var requestHelper = {
     //     serviceTypeId:serTypeId
     //   }
     // };
-
+    console.log("searchRequestObj "+JSON.stringify(searchRequestObj));
     return searchRequestObj;
 
   }

@@ -4,7 +4,7 @@ import RinsCommon from 'utils/urls';
 
 
 var pricingMethods = Model.extend({
-  findAll: function(params){
+  findOne: function(params){
     return $.ajax({
       url: RinsCommon.UI_SERVICE_URL +'getPricingMethodList',
       type: 'POST',

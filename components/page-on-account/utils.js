@@ -46,9 +46,8 @@ var onAccountCreateRequest ={};
     onAccountCreateRequest.onAccount.comments=[];
     onAccountCreateRequest.onAccount.documents=[];
 
-    //console.log(onAccountRows.rows);
+ //   console.log("rows "+onAccountRows.rows);
     var rows = onAccountRows.rows;
-
     //framing the onAccountDetails--start
     if(rows != null && rows.length >0){
         var licensorName="";
@@ -78,7 +77,7 @@ var onAccountCreateRequest ={};
     if(comments != null && comments.length>0 ){
         var commentobj={};
         commentobj.comments=comments;
-        commentobj.createdBy="";
+        commentobj.createdBy="2002005722";
         commentobj.createdDate=Date.now();
         onAccountCreateRequest.onAccount.comments.push(commentobj);    
     }
@@ -326,10 +325,10 @@ getProposedOnAccRows:function(quarters,data){
               if(value == undefined){
                 value =0;
               }
-              row[quarters[k]]=value;
+              row[quarters[k]]=this.currencyFormat(value);
             }
           }
-          row['total']=onAccountDetails[i].totalAmt;
+          row['total']=this.currencyFormat(onAccountDetails[i].totalAmt);
 
           bundleNames.push(onAccountDetails[i].bundleName);
 
