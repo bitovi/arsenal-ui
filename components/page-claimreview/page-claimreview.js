@@ -488,7 +488,7 @@ var page = Component.extend({
         } else {
           $('#claimCountryGrid').html(stache('<rn-claim-country-grid emptyrows="{emptyrows}"></rn-claim-country-grid>')({emptyrows:true}));
         }
-        if(self.scope.attr("view") == "period"){
+        if(self.scope.attr("view") == "country-aggregate"){
           $(".period").hide();
           $(".entity").hide();
         } else {

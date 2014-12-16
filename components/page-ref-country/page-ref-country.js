@@ -16,6 +16,7 @@ import bootstrapValidator from 'bootstrapValidator';
 
 
 import UserReq from 'utils/request/';
+import PeriodHelper from 'utils/periodWidgetHelpers'
 import Licensor from 'models/common/licensor/';
 import Country from 'models/common/country/';
 import Currency from 'models/common/currency/';
@@ -62,7 +63,6 @@ var page = Component.extend({
   },
 
   init: function(){
-
         var self = this;
         self.scope.appstate.attr("renderGlobalSearch",false);
         var requestObj = {};
@@ -72,13 +72,12 @@ var page = Component.extend({
             Licensor.findAll(UserReq.formRequestDetails(requestObj)),
             PricingModels.findOne(UserReq.formRequestDetails(modelObj)),
             Country.findAll(UserReq.formRequestDetails(requestObj)),
-            /* Loading pricing method from fixure as there is no data available as of now in LIVE DB*/
-            PricingMethods.findAll(UserReq.formRequestDetails(requestObj))
+            PricingMethods.findOne(UserReq.formRequestDetails(requestObj))
         ]).then(function(values) {
-              self.scope.attr("entities").replace(values[0].entities[0].entities);
+              self.scope.attr("entities").replace(values[0]["entities"][0]);
               self.scope.attr("pricingModelTypes").replace(values[1].modelTypes);
               self.scope.attr("countries").replace(values[2]);
-              self.scope.attr("pricingMethods").replace(values[3]);
+              self.scope.attr("pricingMethods").replace(values[3].pricingMethodList);
         }).then(function(values) {
               //self.scope.pageState.entityCountryDetails.entityCountry.attr("countryId",self.scope.attr("countries")[0].id);
               self.scope.pageState.attr("countryId",self.scope.attr("countries")[0].id);
@@ -220,38 +219,56 @@ var page = Component.extend({
         RefCountry.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
           console.log("Response data is "+JSON.stringify(data.attr()));
-          self.pageState.countryDetails.attr("country",data.countryDetails);
+          if(data.countryDetails.countryId!=null)
+            self.pageState.countryDetails.attr("country",data.countryDetails);
 
-          var validFrom = self.pageState.countryDetails.country.attr("validFrom").toString();
+          if(data.countryDetails.attr("validFrom")!=0)
+            var validFrom = data.countryDetails.attr("validFrom").toString();
+          else 
+            var validFrom = "0";
+
           if(validFrom == "0")
             self.pageState.countryDetails.country.attr("validFrom","");
           else {
-            var formatValidFrom = "P"+validFrom[4]+""+validFrom[5]+" FY "+validFrom[2]+""+validFrom[3];
+            var formatValidFrom = PeriodHelper.getDisplayPeriod(validFrom);
             self.pageState.countryDetails.country.attr("validFrom",formatValidFrom);
           }
 
-          var validTo = self.pageState.countryDetails.country.attr("validTo").toString();
+          if(data.countryDetails.attr("validTo")!=0)
+            var validTo = data.countryDetails.attr("validTo").toString();
+          else 
+            var validTo = "0";
+
           if(validTo == "0")
             self.pageState.countryDetails.country.attr("validTo","");
           else {
-            var formatValidTo = "P"+validTo[4]+""+validTo[5]+" FY "+validTo[2]+""+validTo[3];
+            var formatValidTo = PeriodHelper.getDisplayPeriod(validTo);
             self.pageState.countryDetails.country.attr("validTo",formatValidTo);
           }
 
           self.attr("localSocietyNames").replace(data.countryDetails.localSocietyNames);
-          self.pageState.countryDetails.country.attr("localSocietyId",data.countryDetails.localSocietyId);
-          $("#localSocietysel").val(data.countryDetails.localSocietyId);
+          if(data.countryDetails.localSocietyId !=0){
+            self.pageState.countryDetails.country.attr("localSocietyId",data.countryDetails.localSocietyId);
+            $("#localSocietysel").val(data.countryDetails.localSocietyId);
+          }
 
-          self.pageState.countryDetails.country.attr("mainPricingMethod",data.countryDetails.mainPricingMethod);
-          self.pageState.countryDetails.country.attr("altPricingMethod",data.countryDetails.altPricingMethod);
+          if(data.countryDetails.mainPricingMethod!=null)
+            self.pageState.countryDetails.country.attr("mainPricingMethod",data.countryDetails.mainPricingMethod);
+          if(data.countryDetails.altPricingMethod!=null)
+            self.pageState.countryDetails.country.attr("altPricingMethod",data.countryDetails.altPricingMethod);
 
           self.attr("transcurrencies").replace(data.countryDetails.transactionCurrencies);
-          self.pageState.countryDetails.country.attr("transactionCurrency",data.countryDetails.transactionCurrency);
-          $("#transCurrSel").val(data.countryDetails.transactionCurrency);
+          if(data.countryDetails.transactionCurrency!=null){
+            self.pageState.countryDetails.country.attr("transactionCurrency",data.countryDetails.transactionCurrency);
+            $("#transCurrSel").val(data.countryDetails.transactionCurrency);
+          }
 
           self.attr("altcurrencies").replace(data.countryDetails.altCurrencies);
-          self.pageState.countryDetails.country.attr("altCurrency",data.countryDetails.altCurrency);
-          $("#altCurrSel").val(data.countryDetails.altCurrency);
+          if(data.countryDetails.altCurrency!=null){
+            self.pageState.countryDetails.country.attr("altCurrency",data.countryDetails.altCurrency);
+            $("#altCurrSel").val(data.countryDetails.altCurrency);
+          }
+
 
           var pricingModelNames = [];
           var pricingModelVersions = {};
@@ -280,13 +297,16 @@ var page = Component.extend({
           //console.log("accural Models "+JSON.stringify(accModels));
           self.attr("accuralModels").replace(accModels);
 
-          self.pageState.countryDetails.attr("commentList",data.countryDetails.commentList);
+          
           var tempcommentObj = data.countryDetails.commentList;
           //console.log("multi comments "+JSON.stringify(tempcommentObj));
-          if(tempcommentObj!=null)
+          if(tempcommentObj!=null){
+            self.pageState.countryDetails.attr("commentList",data.countryDetails.commentList);
             $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
-          else
-            $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>');
+          } else {
+              self.pageState.countryDetails.attr("commentList",[]);
+              $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>');
+          }
         },function(xhr){
             console.error("Error while loading: country-Entity Details"+xhr);
         });
@@ -319,38 +339,57 @@ var page = Component.extend({
       console.log("Request passed is "+ JSON.stringify(UserReq.formRequestDetails(requestObj)));
       RefCountry.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
-        self.pageState.countryDetails.attr("country",data.countryDetails);
+        console.log("Response data is "+JSON.stringify(data.attr()));
+        /* Set the Response data only if the countryId is not null*/
+        if(data.countryDetails.countryId!=null)
+          self.pageState.countryDetails.attr("country",data.countryDetails);
 
-        var validFrom = self.pageState.countryDetails.country.attr("validFrom").toString();
-        if(validTo == "0")
+        if(data.countryDetails.attr("validFrom")!=0)
+          var validFrom = data.countryDetails.attr("validFrom").toString();
+        else 
+          var validFrom = "0";
+
+        if(validFrom == "0")
           self.pageState.countryDetails.country.attr("validFrom","");
         else {
-          var formatValidFrom = "P"+validFrom[4]+""+validFrom[5]+" FY "+validFrom[2]+""+validFrom[3];
+          var formatValidFrom = PeriodHelper.getDisplayPeriod(validFrom);
           self.pageState.countryDetails.country.attr("validFrom",formatValidFrom);
         }
 
-        var validTo = self.pageState.countryDetails.country.attr("validTo").toString();
+        if(data.countryDetails.attr("validTo")!=0)
+          var validTo = data.countryDetails.attr("validTo").toString();
+        else 
+          var validTo = "0";
+
         if(validTo == "0")
           self.pageState.countryDetails.country.attr("validTo","");
         else {
-          var formatValidTo = "P"+validTo[4]+""+validTo[5]+" FY "+validTo[2]+""+validTo[3];
+          var formatValidTo = PeriodHelper.getDisplayPeriod(validTo);
           self.pageState.countryDetails.country.attr("validTo",formatValidTo);
         }
 
         self.attr("localSocietyNames").replace(data.countryDetails.localSocietyNames);
-        self.pageState.countryDetails.country.attr("localSocietyId",data.countryDetails.localSocietyId);
-        $("#localSocietysel").val(data.countryDetails.localSocietyId);
+        if(data.countryDetails.localSocietyId !=0){
+          self.pageState.countryDetails.country.attr("localSocietyId",data.countryDetails.localSocietyId);
+          $("#localSocietysel").val(data.countryDetails.localSocietyId);
+        }
 
-        self.pageState.countryDetails.country.attr("mainPricingMethod",data.countryDetails.mainPricingMethod);
-        self.pageState.countryDetails.country.attr("altPricingMethod",data.countryDetails.altPricingMethod);
+        if(data.countryDetails.mainPricingMethod!=null)
+          self.pageState.countryDetails.country.attr("mainPricingMethod",data.countryDetails.mainPricingMethod);
+        if(data.countryDetails.altPricingMethod!=null)
+          self.pageState.countryDetails.country.attr("altPricingMethod",data.countryDetails.altPricingMethod);
 
         self.attr("transcurrencies").replace(data.countryDetails.transactionCurrencies);
-        self.pageState.countryDetails.country.attr("transactionCurrency",data.countryDetails.transactionCurrency);
-        $("#transCurrSel").val(data.countryDetails.transactionCurrency);
+        if(data.countryDetails.transactionCurrency!=null){
+          self.pageState.countryDetails.country.attr("transactionCurrency",data.countryDetails.transactionCurrency);
+          $("#transCurrSel").val(data.countryDetails.transactionCurrency);
+        }
 
         self.attr("altcurrencies").replace(data.countryDetails.altCurrencies);
-        self.pageState.countryDetails.country.attr("altCurrency",data.countryDetails.altCurrency);
-        $("#altCurrSel").val(data.countryDetails.altCurrency);
+        if(data.countryDetails.altCurrency!=null){
+          self.pageState.countryDetails.country.attr("altCurrency",data.countryDetails.altCurrency);
+          $("#altCurrSel").val(data.countryDetails.altCurrency);
+        }
 
         var pricingModelNames = [];
         var pricingModelVersions = {};
@@ -372,14 +411,21 @@ var page = Component.extend({
         }
 
         var accModels = [];
+        var flag= false;
         for(var key in pricingModelVersions){
           var temp = {};
           temp["accName"] = key;
           temp["versions"] = pricingModelVersions[key];
           accModels.push(temp);
+          /* this in the case of selectedAccModel is null to set the first value in Pricing model*/
+          if(selectedAccModel==null && flag==false){
+            selectedAccModelVersions =  pricingModelVersions[key];
+            selModelId = selectedAccModelVersions[0]["modelId"];
+            flag = true;
+          }
           if(key==selectedAccModel){
             selectedAccModelVersions =  pricingModelVersions[key];
-            selModelId = selectedAccModelVersions[0]["modelId"]
+            selModelId = selectedAccModelVersions[0]["modelId"];
           }
         }
         //console.log("accural Models "+JSON.stringify(accModels));
@@ -389,14 +435,21 @@ var page = Component.extend({
         self.attr("accuralModelVersions").replace(selectedAccModelVersions);
         self.attr("selectedModelId",selModelId);
         setTimeout(function(){
-          $("#accModelSel").val(selectedAccModel);
+          if(selectedAccModel !=null)
+            $("#accModelSel").val(selectedAccModel);
         },1000);
 
-        self.pageState.countryDetails.attr("commentList",data.countryDetails.commentList);
+        if(data.countryDetails.commentList!=null)
+          
         var tempcommentObj = data.countryDetails.commentList;
         //console.log("multi comments "+JSON.stringify(tempcommentObj.attr()));
         if(tempcommentObj !=null)
+        {
+          self.pageState.countryDetails.attr("commentList",data.countryDetails.commentList);
           $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
+        } else {
+          self.pageState.countryDetails.attr("commentList","");
+        }
 
         var revHistories = data.countryDetails.revisionHistories.attr();
         var formatRevHistories = [];
@@ -405,7 +458,7 @@ var page = Component.extend({
           revHisTemp["id"] = revHistories[i]["id"];
           revHisTemp["validFrom"] = (revHistories[i]["validFrom"]==null)?"":revHistories[i]["validFrom"];
           revHisTemp["validTo"] = (revHistories[i]["validTo"]==null)?"":revHistories[i]["validTo"];
-          revHisTemp["comment"] = (revHistories[i]["commentList"][0]["comments"]==null)?"":revHistories[i]["commentList"][0]["comments"];
+          revHisTemp["comment"] = (revHistories[i]["commentList"].length==0 || revHistories[i]["commentList"][0]["comments"]==null)?"":revHistories[i]["commentList"][0]["comments"];
           revHisTemp["status"] = revHistories[i]["status"];
           formatRevHistories.push(revHisTemp);
         }
@@ -502,10 +555,10 @@ var page = Component.extend({
       ev.preventDefault();
       var self = this.scope;
       var validFrom = $("#validFrom").val();
-      var formatValidFrom = "20"+validFrom[7]+""+validFrom[8]+""+validFrom[1]+""+validFrom[2];
+      var formatValidFrom = PeriodHelper.getFiscalPeriod(validFrom);
       var validTo = $("#validTo").val();
       if(validTo!="")
-        var formatValidTo = "20"+validFrom[7]+""+validFrom[8]+""+validFrom[1]+""+validFrom[2];
+        var formatValidTo = PeriodHelper.getFiscalPeriod(validTo);
       else
         var formatValidTo = "";
       var comments = $(".new-comments").val();

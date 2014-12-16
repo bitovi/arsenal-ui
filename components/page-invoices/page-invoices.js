@@ -320,6 +320,9 @@ var page = Component.extend({
             this.scope.appstate.attr('page','create-invoice');
             invoicemap.attr('invoiceid','');
     },
+    "#btnAddFromiCSV click": function(){
+            this.scope.appstate.attr('page','icsv');
+    },
     ".rn-grid>tbody>tr td dblclick": function(item, el, ev){
           //var invoiceid = el.closest('tr').data('row').row.id;
           var self=this;

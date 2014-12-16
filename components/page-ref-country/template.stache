@@ -18,7 +18,7 @@
          <div class="form-group col-sm-12">
               <div class="col-sm-5">
                  <label for="forCountry" class="col-sm-3 control-label">Country: </label>
-                 <div class="col-sm-4">
+                 <div class="col-sm-5">
                    <select class="form-control" can-value='pageState.countryDetails.country.countryId'>
                        {{#each countries}}
                          <option value="{{id}}">{{value}}</option>
@@ -95,7 +95,7 @@
                     <select  class="form-control inputMonth" name="mainPricingMethod" can-value='pageState.countryDetails.country.mainPricingMethod'>
                     <option value="">Select</option>
                       {{#each pricingMethods}}
-                          <option value="{{id}}">{{value}}</option>
+                          <option value="{{exp_method}}">{{exp_method}}</option>
                       {{/each}}
                     </select>
                   </div>
@@ -109,7 +109,7 @@
                     <select  class="form-control inputMonth" can-value='pageState.countryDetails.country.altPricingMethod'>
                       -<option value="">Select</option>
                       {{#each pricingMethods}}
-                          <option value="{{id}}">{{value}}</option>
+                          <option value="{{exp_method}}">{{exp_method}}</option>
                       {{/each}}
                     </select>
                   </div>
