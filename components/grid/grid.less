@@ -14,8 +14,6 @@
 
   @font-color: hsl(0, 0%, 0%);
 
-  @selected-background: #d3f0fe;
-
   @disclosure-symbol: '▶︎';
 
   & > table {
@@ -129,7 +127,18 @@
       }
   }
 
+  tbody {
+    tr.selected {
+      background: @selected-background;
+    }
+
+    tr:hover {
+      outline: @row-hover-outline;
+    }
+  }
+
   tbody, tfoot {
+
     tr.child {
       display: none;
       background-color: @child-background;
