@@ -5,7 +5,7 @@ import URLs from 'utils/urls';
 var ReminderEmail = Model.extend({
   create: function(params) {
     return $.ajax({
-      url: URLs.DOMAIN_SERVICE_URL + 'rinsemail/sendEmail',
+      url: URLs.EMAIL_SERVICE_URL + 'rinsemail/sendEmail',
       type: 'POST',
       data: {
         "emailType": "reminder",
