@@ -267,7 +267,7 @@ var page = Component.extend({
 
               var   tempcommentObj = data.entityCountryDetails.comment;
 
-              $('#multipleCommentsInv').html(stache('<multiple-comments divid="usercommentsdivinv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')(tempcommentObj));
+              
 
               if(data.entityCountryDetails.entityCountry.status == "A") {
                 self.attr("state","Edit");
