@@ -137,7 +137,7 @@
                 <div class="col-sm-6 normalBar">
                   <select  class="form-control inputMonth" can-value='pageState.entityCountryDetails.entityCountry.pricingMethod'>
                     {{#each pricingMethods}}
-                    <option value="{{id}}">{{value}}</option>
+                    <option value="{{exp_method}}">{{exp_method}}</option>
                     {{/each}}
                   </select>
                 </div>
@@ -157,15 +157,15 @@
             </div>
 
             <div class="form-group">
-              <div class="col-sm-12">
+              <div class="col-sm-12 singleField">
                 <label for="forStatus" class="col-sm-3 control-label">Comments: </label>
-                <div class="col-sm-6 requiredBar">
-                  <div id="multipleCommentsInv"></div>
-                  <textarea class="form-control" maxlength="1024" name="comments" can-value="pageState.entityCountryDetails.comment" style="height:100px;   min-height:100px;    max-height:100px;"></textarea>
+                <div class="col-sm-9 requiredBarNone">
+                  <textarea id="editableText" name="usercommentsdivinv" class="form-control multiple-comments-editable form-control-comments new-comments multiple-comments-editable-height" readonly=true></textarea>
+                  <textarea class="form-control comments" maxlength="1024" name="usercommentsdiv" can-value="pageState.entityCountryDetails.comment"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>
                 </div>
               </div>
-              <div class="col-sm-6"></div>
             </div>
+
 
             <div class="col-sm-12">
               <div class="col-sm8" style="text-align:right;padding:15px;">

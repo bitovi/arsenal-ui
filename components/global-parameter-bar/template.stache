@@ -77,7 +77,7 @@
         <span class="parameter-name">Content Type:</span>
         <select id="contentTypesFilter" class="form-control resizeBox" multiple="multiple">
                {{#each contentTypes}}
-                  <option value="{{contentGroupId}}" data-servicetypeid={{serviceTypeId}}>{{contentGroupName}}</option>
+                  <option value="{{contentGroupId}}:{{serviceTypeId}}" data-servicetypeid={{serviceTypeId}}>{{contentGroupName}}</option>
                 {{/each}}
          </select>
       </div>

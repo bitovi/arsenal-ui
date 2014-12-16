@@ -176,7 +176,7 @@ module.exports = function (grunt) {
       }
     },
 
-    concurrent: {
+    concurrent:
       servers: ['server', 'proxy'],
       options: {
         logConcurrentOutput: true

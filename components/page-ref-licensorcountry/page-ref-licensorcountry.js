@@ -67,12 +67,12 @@ var page = Component.extend({
     Promise.all([
       Licensor.findAll(UserReq.formRequestDetails(requestObj)),
       PricingModels.findOne(UserReq.formRequestDetails( {reqType:'modeltype'})) ,
-      PricingMethods.findAll(UserReq.formRequestDetails(requestObj))
+      PricingMethods.findOne(UserReq.formRequestDetails(requestObj))
       ]).then(function(values) {
         self.scope.attr("entities").replace(values[0]["entities"][0]);
         licId = self.scope.attr("entities")[0].entities[0].id;
         self.scope.attr("pricingModels").replace(values[1].modelTypes);
-        //self.scope.attr("pricingMethods").replace(values[2]);
+        self.scope.attr("pricingMethods").replace(values[2]);
       }).then(function(values) {
 
         requestObj = {licensorId:licId};
@@ -82,8 +82,9 @@ var page = Component.extend({
         }
 
         Promise.all([
-          Country.findAll(UserReq.formRequestDetails(requestObj)),
-          PricingModelVersions.findAll(UserReq.formRequestDetails({}))
+          Country.findAll(UserReq.formRequestDetails(requestObj))
+          // ,
+          // PricingModelVersions.findAll(UserReq.formRequestDetails({}))
           ]).then(function(values) {
             self.scope.attr("countries").replace(values[0]);
           }).then(function(){
@@ -228,15 +229,15 @@ var page = Component.extend({
             pricingModelId:this.scope.pageState.entityCountryDetails.attr("pricingModelVersionNo")
           }
 
-          Promise.all([
-            PricingModelVersions.findAll(UserReq.formRequestDetails(requestObj))
-            ]).then(function(values) {
-              //var aa = values[0];
-              // console.log(" test "+aa[0].value);
-              // console.log(" test 1:"+aa[1].value);
-              self.scope.attr("pricingModelVersions").replace(values[0]);
-              //console.log("lebgth: "+self.scope.pricingModelVersions.attr("length"));
-            });
+          // Promise.all([
+          //   PricingModelVersions.findAll(UserReq.formRequestDetails(requestObj))
+          //   ]).then(function(values) {
+          //     //var aa = values[0];
+          //     // console.log(" test "+aa[0].value);
+          //     // console.log(" test 1:"+aa[1].value);
+          //     self.scope.attr("pricingModelVersions").replace(values[0]);
+          //     //console.log("lebgth: "+self.scope.pricingModelVersions.attr("length"));
+          //   });
 
           },
           '#fetchDetailsBtn click':function(){
@@ -266,7 +267,7 @@ var page = Component.extend({
 
               var   tempcommentObj = data.entityCountryDetails.comment;
 
-              $('#multipleCommentsInv').html(stache('<multiple-comments divid="usercommentsdivinv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')(tempcommentObj));
+              
 
               if(data.entityCountryDetails.entityCountry.status == "A") {
                 self.attr("state","Edit");
