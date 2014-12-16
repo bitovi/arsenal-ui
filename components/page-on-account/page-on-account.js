@@ -240,7 +240,7 @@ var page = Component.extend({
       "#proposedDelete click":function(el,ev){
         disableEditORDeleteButtons(true);
         var req = this.scope.request;
-        var quarters = utils.getQuarter(this.scope.appstate.attr('periodFrom'),this.scope.appstate.attr('periodTo'));
+        var quarters = this.scope.attr('quarters');
         req.quarters=quarters;
         var deletableRows = [];
         var rows = this.scope.proposedOnAccountData.rows;
@@ -285,7 +285,7 @@ var page = Component.extend({
       "#proposedEdit click":function(el,ev){
           $('#submitPOA').removeAttr("disabled");
           var req = this.scope.request;
-          var quarters = utils.getQuarter(this.scope.appstate.attr('periodFrom'),this.scope.appstate.attr('periodTo'));
+          var quarters = this.scope.attr('quarters');
           req.quarters=quarters;
           //console.log(this.scope.proposedOnAccountData.rows);
           req.attr('editableRows',this.scope.proposedOnAccountData.rows);
