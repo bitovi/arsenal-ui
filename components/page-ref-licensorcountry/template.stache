@@ -137,7 +137,7 @@
                 <div class="col-sm-6 normalBar">
                   <select  class="form-control inputMonth" can-value='pageState.entityCountryDetails.entityCountry.pricingMethod'>
                     {{#each pricingMethods}}
-                    <option value="{{id}}">{{value}}</option>
+                    <option value="{{exp_method}}">{{exp_method}}</option>
                     {{/each}}
                   </select>
                 </div>
