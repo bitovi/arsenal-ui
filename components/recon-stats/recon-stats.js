@@ -113,69 +113,91 @@ var page = Component.extend({
 
             var value = {};
 
-            Stats.findOne(self.refreshParam, function(data){
+            var reqArr = {};
+
+            reqArr = {};
+
+            var ids = [];
+
+            for(var i=0; i<ccids.length; i++) {
+
+              ids[i] = ccids[i].toString();
+
+            }
+
+            reqArr.invoices = [];
+            reqArr.searchRequest = {"ids" : []};
+            reqArr.searchRequest.ids = ids;
+
+            var genObj = reqArr;
+
+            Promise.all([Stats.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
               self.summaryStatsData.splice(0,1);
 
-              var ingestionStats = data.reconStatsDetails[0].ingestionStats;
+              data = values[0];
 
-              var genObj = {};
+              if( data.reconStatsDetails[0].ingestionStats != null && data.reconStatsDetails[0].ingestionStats.length > 0 && data.reconStatsDetails[0].summaryStats!= null)
+              {
 
-              // Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
-              //    ]).then(function(values) {
-              //
-              //
-              //     self.attr("currencyScope").replace(values[0]);
-              //
-              //  });
+                  var ingestionStats = data.reconStatsDetails[0].ingestionStats;
 
-              // Grid data
-              var grid = {"data" : []};
+                  //Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
+                  //   ]).then(function(values) {
+                   
+                  //     self.attr("currencyScope").replace(values[0]);
+               
+                  //});
 
-              for(var i=0;i<ingestionStats.length;i++) {
+                  // Grid data
+                  var grid = {"data" : []};
 
-                var tempArr = {};
+                  for(var i=0;i<ingestionStats.length;i++) {
 
-                tempArr["disputeType"] = ingestionStats[i]["disputeType"];
-                tempArr["noOfRecords"] = CurrencyFormat(ingestionStats[i]["noOfRecords"]);
-                tempArr["recordsPercentage"] = ingestionStats[i]["recordsPercentage"];
-                tempArr["noOfAdamIds"] = CurrencyFormat(ingestionStats[i]["noOfAdamIds"]);
-                tempArr["totalPubFee"] = CurrencyFormat(ingestionStats[i]["totalPubFee"]);
-                tempArr["pubFeePercentage"] = ingestionStats[i]["pubFeePercentage"];
+                    var tempArr = {};
 
-                grid.data.push(tempArr);
+                    tempArr["disputeType"] = ingestionStats[i]["disputeType"];
+                    tempArr["noOfRecords"] = CurrencyFormat(ingestionStats[i]["noOfRecords"]);
+                    tempArr["recordsPercentage"] = ingestionStats[i]["recordsPercentage"];
+                    tempArr["noOfAdamIds"] = CurrencyFormat(ingestionStats[i]["noOfAdamIds"]);
+                    tempArr["totalPubFee"] = CurrencyFormat(ingestionStats[i]["totalPubFee"]);
+                    tempArr["pubFeePercentage"] = ingestionStats[i]["pubFeePercentage"];
+
+                    grid.data.push(tempArr);
+
+                  }
+
+                  var tempSummaryStats = {};
+
+                  tempSummaryStats.reconRecordsPercentage = data.reconStatsDetails[0].summaryStats.reconRecordsPercentage;
+                  tempSummaryStats.reconAmountPercentage = data.reconStatsDetails[0].summaryStats.reconAmountPercentage;
+                  tempSummaryStats.overRepDispute = data.reconStatsDetails[0].summaryStats.overRepDispute;
+
+
+                  tempSummaryStats.noOfReconRecords = (CurrencyFormat(data.reconStatsDetails[0].summaryStats.noOfReconRecords)).toString();
+
+                  tempSummaryStats.reconAmount = CurrencyFormat(data.reconStatsDetails[0].summaryStats.reconAmount);
+
+                  tempSummaryStats.lineItemDispute = CurrencyFormat(data.reconStatsDetails[0].summaryStats.lineItemDispute );
+
+                  tempSummaryStats.totalPubFee = CurrencyFormat(data.reconStatsDetails[0].summaryStats.totalPubFee );
+
+                  tempSummaryStats.recommendedPayment = CurrencyFormat(data.reconStatsDetails[0].summaryStats.recommendedPayment );
+
+                  tempSummaryStats.actualPayment = CurrencyFormat(data.reconStatsDetails[0].summaryStats.actualPayment );
+
+                  var summaryData = [];
+
+                  self.summaryStatsData.push(tempSummaryStats);
+
+                  var rows = new can.List(grid.data);
+
+                  $('#ingestionReconStats').html(stache('<rn-grid-ingestionstats rows="{rows}"></rn-grid-ingestionstats>')({rows}));
+
+                  $('#ingestionStatsDiv').show();
+                  $('#summaryStatsDiv').show();
 
               }
-
-              var tempSummaryStats = {};
-
-              tempSummaryStats.reconRecordsPercentage = data.reconStatsDetails[0].summaryStats.reconRecordsPercentage;
-              tempSummaryStats.reconAmountPercentage = data.reconStatsDetails[0].summaryStats.reconAmountPercentage;
-              tempSummaryStats.overRepDispute = data.reconStatsDetails[0].summaryStats.overRepDispute;
-
-
-              tempSummaryStats.noOfReconRecords = (CurrencyFormat(data.reconStatsDetails[0].summaryStats.noOfReconRecords)).toString();
-
-              tempSummaryStats.reconAmount = CurrencyFormat(data.reconStatsDetails[0].summaryStats.reconAmount);
-
-              tempSummaryStats.lineItemDispute = CurrencyFormat(data.reconStatsDetails[0].summaryStats.lineItemDispute );
-
-              tempSummaryStats.totalPubFee = CurrencyFormat(data.reconStatsDetails[0].summaryStats.totalPubFee );
-
-              tempSummaryStats.recommendedPayment = CurrencyFormat(data.reconStatsDetails[0].summaryStats.recommendedPayment );
-
-              tempSummaryStats.actualPayment = CurrencyFormat(data.reconStatsDetails[0].summaryStats.actualPayment );
-
-              var summaryData = [];
-
-              self.summaryStatsData.push(tempSummaryStats);
-
-              var rows = new can.List(grid.data);
-
-              $('#ingestionReconStats').html(stache('<rn-grid-ingestionstats rows="{rows}"></rn-grid-ingestionstats>')({rows}));
-
-              $('#ingestionStatsDiv').show();
-              $('#summaryStatsDiv').show();
 
             },function(xhr){
 

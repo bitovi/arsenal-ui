@@ -98,7 +98,7 @@ var proposedonAccountGrid = Grid.extend({
      'td input.editing blur':function(el, ev){
       var value = el.closest('td').find('.editing').val();
         if(isNaN(value) || value==""){
-          el.addClass('error');
+          el.addClass('invalid');
           return;
         }
       var element = el.closest('td').find('.editing');

@@ -343,8 +343,12 @@ getProposedOnAccRows:function(quarters,data){
     },
 currencyFormat : function (number)
   {
-    var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
-    return n;
+    if($.isNumeric(number)){
+      var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+      return n;
+    }else{
+      return 0;
+    }
   }
 
     

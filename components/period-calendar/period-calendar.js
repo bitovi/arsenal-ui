@@ -12,6 +12,8 @@ var PeriodCalendar = Component.extend({
     which:'@',
     periodFrom: [],
     periodTo : [],
+    inputMonth : [],
+    inputDynamicMonth : []
   },
   init:function(){
         
@@ -21,20 +23,39 @@ var PeriodCalendar = Component.extend({
       var parent=li.closest('.calendarcls').find('input[type=text]');
       li.closest('.periods').find('.period li a').removeClass('period-active');
       li.addClass('period-active');
-      if(li.find('span:first').text()==''){
-         //var addZ = li.text().slice(1)!=4 ? '0':'' 
-         var value = li.text()+'FY'+this.scope.year.slice(-2);
-         var which = li.closest('.calendarcls').find('input[type=text]').attr('id');
-        // if(which=='periodFrom' || which=='periodTo')
-          which=='periodFrom' ? this.scope.periodFrom.replace(value):this.scope.periodTo.replace(value);
-         this.scope.attr('selectedperiod').replace({value,which});
-        }else{
-          var value = li.find('span:last').text()+'FY'+this.scope.year.slice(-2);
-          var which = li.closest('.calendarcls').find('input[type=text]').attr('id');
-          //if(which=='periodFrom' || which=='periodTo')
-            which=='periodFrom' ? this.scope.periodFrom.replace(value):this.scope.periodTo.replace(value);
-          this.scope.attr('selectedperiod').replace({value,which});
-       }
+      if (li.find('span:first').text() == '') {
+        //var addZ = li.text().slice(1)!=4 ? '0':'' 
+        var value = li.text() + 'FY' + this.scope.year.slice(-2);
+        var which = li.closest('.calendarcls').find('input[type=text]').attr('id');
+        
+        if (which == 'periodFrom' || which == 'periodTo') {
+          which == 'periodFrom' ? this.scope.periodFrom.replace(value) : this.scope.periodTo.replace(value);
+        } else{
+          which == 'inputMonth0' ? this.scope.inputMonth.replace(value) : this.scope.inputDynamicMonth.replace(value);
+        }
+
+        console.log(which + "  Quaters click event ");
+
+        this.scope.attr('selectedperiod').replace({
+          value, which
+        });
+
+      } else {
+        var value = li.find('span:last').text() + 'FY' + this.scope.year.slice(-2);
+        var which = li.closest('.calendarcls').find('input[type=text]').attr('id');
+       
+        if (which == 'periodFrom' || which == 'periodTo') {
+          which == 'periodFrom' ? this.scope.periodFrom.replace(value) : this.scope.periodTo.replace(value);
+        } else{
+          which == 'inputMonth0' ? this.scope.inputMonth.replace(value) : this.scope.inputDynamicMonth.replace(value);
+        }
+
+        this.scope.attr('selectedperiod').replace({
+          value, which
+        });
+
+        console.log(which + "  Period click event");
+      }
       li.closest('.calendarcls').find('input[type=text]').val(this.scope.attr('selectedperiod')[0].value).blur();
       li.closest('.calendarcls').find('.box-modal').hide();
     },
@@ -74,6 +95,18 @@ var PeriodCalendar = Component.extend({
       if ($(e.target).closest(".calendarcls").length === 0) {
         $(".box-modal").hide();
       }
+    },
+    '{inputMonth} change': function(el, ev) {
+      var comp = 'inputMonth0';
+      var _root = $("input[id^='inputMonth']").not("input[id='inputMonth0']").not(':hidden').parent();
+      if (_root.length > 0) {
+        $("input[id^='inputMonth']").not("input[id='inputMonth0']").not(':hidden').val(" ");
+      }
+      showErrorMsg(this.scope.attr('inputMonth0'),this.scope.attr('inputDynamicMonth'),comp);
+    },
+    '{inputDynamicMonth} click': function(el, ev) {
+      var comp = 'inputMonth0';
+      showErrorMsg(this.scope.attr('inputMonth0'),this.scope.attr('inputDynamicMonth'),comp);
     }
   },
   helpers:function(){

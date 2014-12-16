@@ -6,6 +6,7 @@ import Grid from 'components/grid/';
 import stache from 'can/view/stache/';
 
 import template from './template.stache!';
+import gridtemplate from './gridtemplate.stache!';
 import styles from './page-icsv.less!';
 import icsvmap from 'models/sharedMap/icsv';
 import ValidateIcsv from 'models/invoice/validateIcsv/';
@@ -19,6 +20,7 @@ import Invoice from 'models/invoice/';
 
 Grid.extend({
   tag: 'icsv-grid',
+  template: gridtemplate,
   scope: {
     appstate:undefined,
     columns: [
@@ -115,18 +117,18 @@ var page = Component.extend({
             var tempObj = {};
             var errString = "";
         
-            for(var key in tempArr[i].errors[0].errorMap[0]){  /*Invoice error*/
-                   if(tempArr[i].errors[0].errorMap[0][key].trim())
-                   errString += tempArr[i].errors[0].errorMap[0][key]+", ";
-            }
+            // for(var key in tempArr[i].errors[0].errorMap[0]){  /*Invoice error*/
+            //        if(tempArr[i].errors[0].errorMap[0][key].trim())
+            //        errString += tempArr[i].errors[0].errorMap[0][key]+", ";
+            // }
 
-            for(var j =0; j < tempArr[i].invoiceLines.length; j++){
-                  for(var key in tempArr[i].invoiceLines[j].errors[0].errorMap[0]){  /*Invoiceline error*/
-                       if(tempArr[i].invoiceLines[j].errors[0].errorMap[0][key].trim())
-                       errString += tempArr[i].invoiceLines[j].errors[0].errorMap[0][key]+", ";
-                   }
-            }
-            errString = errString.replace(/,\s*$/, "");  
+            // for(var j =0; j < tempArr[i].invoiceLines.length; j++){
+            //       for(var key in tempArr[i].invoiceLines[j].errors[0].errorMap[0]){  /*Invoiceline error*/
+            //            if(tempArr[i].invoiceLines[j].errors[0].errorMap[0][key].trim())
+            //            errString += tempArr[i].invoiceLines[j].errors[0].errorMap[0][key]+", ";
+            //        }
+            // }
+            // errString = errString.replace(/,\s*$/, "");  
             
             var errlabel = "<span class='errorlabel'>Error: </span>";
 
@@ -136,11 +138,11 @@ var page = Component.extend({
             tempObj.licensor= tempArr[i].entityName;
             tempObj.invoiceCategory= "invoiceCategory";  
             tempObj.invoiceNum= tempArr[i].invoiceNumber;
-            tempObj.dueDate= tempArr[i].invoiceDueDate;
+            // tempObj.dueDate= tempArr[i].invoiceDueDate;
             tempObj.invoiceAmt= CurrencyFormat(tempArr[i].invoiceAmount);
             tempObj.currency= tempArr[i].invoiceCcy;
             var maxcommentlength = 50;
-            tempObj.comments= (tempArr[i].comments[0].comments.length > maxcommentlength)?tempArr[i].comments[0].comments.substring(0, maxcommentlength)+"..":tempArr[i].comments[0].comments;
+            //tempObj.comments= (tempArr[i].comments[0].comments.length > maxcommentlength)?tempArr[i].comments[0].comments.substring(0, maxcommentlength)+"..":tempArr[i].comments[0].comments;
         
 
             var contentTypeArr = [], countryArr = [];
@@ -179,7 +181,14 @@ var page = Component.extend({
           }
         
             var rows = new can.List(gridData);
-            $('#icsvinvoiceGrid').html(stache('<icsv-grid rows="{rows}"></icsv-grid>')({rows}));
+            if(rows.length>0){
+              $('#icsvinvoiceGrid').html(stache('<icsv-grid rows="{rows}"></icsv-grid>')({rows}));  
+            }else{
+                disableBundle(true);
+                self.scope.attr("activesubmitbutton", false);
+               $('#icsvinvoiceGrid').html(stache('<icsv-grid emptyrows="{emptyrows}"></icsv-grid>')({emptyrows:true}));
+            }
+            
 
             $('.rn-grid>tbody>tr').find("td.error").each(function(i){
             if($(this).html() != ""){
@@ -208,6 +217,7 @@ var page = Component.extend({
             var self = this;
             self.scope.attr('uploadedFileInfo',val.filePropeties);
             //console.log(JSON.stringify(self.scope.attr('uploadedFileInfo')));
+            $('.jQfunhide').show();
             //val == 'SUCCESS' ?  $('.jQfunhide').show():$('.jQfunhide').hide();
        },
        "#buttonCancelicsv click":function(){
@@ -510,6 +520,14 @@ function getICSVRequest(fileInfo)
   return UserReq.formRequestDetails(request);
 }
 
+function disableBundle(disable){
+  if(disable){
+    $("#paymentBundleNames").attr("disabled","disabled");
+  }else{
+    $("#paymentBundleNames").removeAttr("disabled");
+  }
+  
+}
 
 
 export default page;
