@@ -77,6 +77,7 @@ var page = Component.extend({
       "#paymentBundleNames change": function(){
           var self = this;
           var pbval = $("#paymentBundleNames").val();
+          var paymentBundleNameText;
           if(pbval=="createB"){
               var regId = self.scope.appstate.attr('region');
               var newBundleNameRequest = {"paymentBundle":{}};
@@ -88,9 +89,14 @@ var page = Component.extend({
               newBundleNameRequest["paymentBundle"] = bundleRequest;
               self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
           } else {
+            paymentBundleNameText=$("#paymentBundleNames option:selected").text();
             self.scope.attr('paymentBundleName',pbval);
-            self.scope.attr('paymentBundleNameText',$("#paymentBundleNames option:selected").text());
+            self.scope.attr('paymentBundleNameText',paymentBundleNameText);
             self.scope.attr('newpaymentbundlenamereq', "undefined");
+          }
+
+          if(pbval != undefined || paymentBundleNameText != undefined){
+            $("#propose").removeAttr("disabled");
           }
       },
       '{scope.appstate} change': function() {
@@ -470,7 +476,6 @@ var disablePropose=function(disable){
         $("#paymentBundleNames").attr("disabled","disabled");
         $("#submitPOA").attr("disabled","disabled");
     }else{
-      $("#propose").removeAttr("disabled");
        $("#paymentBundleNames").removeAttr("disabled");
     }
 }
