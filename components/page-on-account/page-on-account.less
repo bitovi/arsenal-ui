@@ -33,6 +33,7 @@ rn-onaccount-balance-grid, rn-new-onaccount-grid{
           height: 1.5em;
           padding-top: .3em;
           padding-bottom: .3em;
+          padding-left: .5em;
         }
       }
       tr.child {
@@ -92,8 +93,14 @@ rn-onaccount-balance-grid, rn-new-onaccount-grid{
           display: table-row;
         }
       }
-    }
-    .toggle, .licensor, .currency{
+
+      tr.child:last-child{
+        td{
+          border-bottom: 1px solid #bfbfbf !important;
+        }
+      }
+    } 
+    .toggle, .licensor, .Licensor , .currency, .Currency, .ContentType{
       text-align: left;
     }
   }

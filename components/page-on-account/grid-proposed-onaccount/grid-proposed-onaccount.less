@@ -3,7 +3,7 @@
 rn-proposed-onaccount-grid {
   .grid-mixin();
 
-  input.error {
+  input.invalid {
     background: red;
     color: white;
   }
@@ -11,20 +11,27 @@ rn-proposed-onaccount-grid {
 }
 
 /*#proposedonAccountGrid .rn-grid td input[type="checkbox"]{
-  	margin-left:0px;
-  	display:inherit;
+    margin-left:0px;
+    display:inherit;
 }
  #proposedonAccountGrid .rn-grid .radio, .checkbox {
-	position: relative;
-	display: inherit;
-	min-height: 20px;
-	margin-top: 10px;
-	margin-bottom: 10px;
-}*/
+  position: relative;
+  display: inherit;
+  min-height: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+*/
+
+.toggle, .Licensor, .Currency, .ContentType{
+      text-align: left;
+}
+
 
 #proposedTblGrid td.checkbox input[type="checkbox"]{
-    margin-left:0px !important;
+    margin-left:-30px !important;
 }
+
 #proposedTblGrid .checkbox {
   position: relative;
   display: block;
@@ -34,5 +41,8 @@ rn-proposed-onaccount-grid {
 }
 rn-proposed-onaccount-grid thead th:first-child{
   margin-top:0px;
+}
+rn-proposed-onaccount-grid thead th{
+   padding: .3em .5em .3em .5em;
 }
 
