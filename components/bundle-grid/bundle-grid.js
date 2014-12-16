@@ -20,8 +20,7 @@ var BundleGrid = Grid.extend({
       },
       {
         id: 'paymentCcy',
-        title: 'Currency',
-        format: formats.currencyFormat
+        title: 'Currency'
       },
       {
         id: 'paymentAmt',
