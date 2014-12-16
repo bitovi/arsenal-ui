@@ -540,6 +540,9 @@ var page = Component.extend({
          	this.scope.monthStore.attr(event[0].id, event[0].value);
          	
 		},
+		".inputMonth click": function(event){
+         	updatePeriodCalender(event[0].id);
+		},
 		".inputMonth blur": function(event){
          	$('#invoiceform').bootstrapValidator('revalidateField', 'inputMonth[]');
         },
@@ -791,7 +794,7 @@ var page = Component.extend({
 											}
 								          else
 								           {
-								           		if(typeof values[0].invoices[0].errors.errorMap != "undefined")
+								           		if(typeof values[0].invoices[0].errors != "undefined")
 								           		{
 								           			var errorMap = values[0].invoices[0].errors.errorMap;
 								           		}
@@ -831,7 +834,7 @@ var page = Component.extend({
 						   '.updateperoid focus':function(el){ 
 						      $(el).closest('.calendarcls').find('.box-modal').show();
 						      if(el.attr("id") != "inputMonth0"){
-						      	showErrorMsg(el.attr("id"))
+						      	//showErrorMsg(el.attr("id"))
 								}
 							},
 						   '#inputContent0 change':function(el){  /*validation for servicetypeid*/
@@ -847,13 +850,13 @@ var page = Component.extend({
 						   '#inputMonth0 change':function(el){ /*validation for period*/
 						  		var self = this;
 						  		self.scope.attr("periodType", $(el).val().charAt(0));
-						  		$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
-									if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
-											$("#"+this.id+' .inputMonth').val("");
-											showErrorMsg($("#"+this.id+' .inputMonth').attr("id"), "delete");
-										//	self.scope.attr("periodType", 
-									}	
-						  		});
+						  	// 	$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
+									// if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
+									// 		$("#"+this.id+' .inputMonth').val("");
+									// 		showErrorMsg($("#"+this.id+' .inputMonth').attr("id"), "delete");
+									// 	//	self.scope.attr("periodType", 
+									// }	
+						  	// 	});
 						  	} 
 						},
 					  	init: function(){
@@ -1006,31 +1009,39 @@ var page = Component.extend({
 						return (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear();
 					}
 
+					var updatePeriodCalender = function(elementID){
+
+						var _root = $("input[id^='inputMonth']").not("input[id='inputMonth0']").not(':hidden').parent();
 
 
-					var showErrorMsg = function(elid, status){
-						var _root = $('#'+ elid).parent();
-					    var preiodFrom = $("#inputMonth0").val();
-					    if(status != "undefined"){
-					    	 _root.find('.period-calendar .period li a').removeClass('disabled');
-					    }
-					    else{
-					    	 _root.find('.period-calendar .period li a').removeClass('disabled period-active');
-					    }
-					    
-					      if(preiodFrom.charAt(0)=='Q'){
-					          _root.find('.period-calendar .q1 li').not(":first").find('a').addClass('disabled');
-					          _root.find('.period-calendar .q2 li').not(":first").find('a').addClass('disabled');
-					          _root.find('.period-calendar .q3 li').not(":first").find('a').addClass('disabled');
-					          _root.find('.period-calendar .q4 li').not(":first").find('a').addClass('disabled');
-					       }else{
-					         _root.find('.period-calendar .q1 li').first().find('a').addClass('disabled');
-					         _root.find('.period-calendar .q2 li').first().find('a').addClass('disabled');
-					         _root.find('.period-calendar .q3 li').first().find('a').addClass('disabled');
-					         _root.find('.period-calendar .q4 li').first().find('a').addClass('disabled');
-					       }
-					} 
+					    if (_root.length == 1) {
+							disablePeriodQuarterCalendar(_root);
+						}else if (_root.length > 1){
+							console.log("_root updatePeriodCalender");console.log(_root);
+							for (var i = _root.length - 1; i >= 0; i--) {
+								disablePeriodQuarterCalendar(_root[i]);								
+							}
+						}
+					}
 
+					var disablePeriodQuarterCalendar = function(_root){
+
+						console.log("_root disablePeriodQuarterCalendar");console.log(_root);
+						var _root = $(_root);
+						_root.find('.period li a').removeClass('disabled period-active');
+
+						if ($('#inputMonth0').parent().find('.period li:first-child').find('a').hasClass('period-active')) {
+					        _root.find('.q1 li').not(":first").find('a').addClass('disabled');
+					        _root.find('.q2 li').not(":first").find('a').addClass('disabled');
+					        _root.find('.q3 li').not(":first").find('a').addClass('disabled');
+					        _root.find('.q4 li').not(":first").find('a').addClass('disabled');
+					      } else {
+					        _root.find('.period li:first-child').find('a').addClass('disabled');
+					      }
+					}
+
+		
+					
 					var getDateToDisplay=function(longDate){
 						var calculateDueDate = new Date(longDate);
 						return calculateDueDate.getMonth()+1 + "/" + calculateDueDate.getDate() + "/" + calculateDueDate.getFullYear();
