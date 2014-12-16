@@ -50,7 +50,7 @@ var PaymentBundle = Model.extend({
    */
   findAll: function(params) {
     var appstate = params.appstate;
-    
+
     var data = {
       bundleSearch: requestHelper.formGlobalRequest(appstate).searchRequest
     };
@@ -132,7 +132,7 @@ var PaymentBundle = Model.extend({
     var bundle = this;
 
     return $.ajax({
-      url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/validationResult',
+      url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/getPaymentValidationResult,
       type: 'POST',
       data: {
         paymentBundle: {
