@@ -132,7 +132,7 @@ var PaymentBundle = Model.extend({
     var bundle = this;
 
     return $.ajax({
-      url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/getPaymentValidationResult,
+      url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/getPaymentValidationResult',
       type: 'POST',
       data: {
         paymentBundle: {
