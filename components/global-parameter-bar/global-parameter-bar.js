@@ -31,6 +31,7 @@ var GlobalParameterBar = Component.extend({
     regions: [],
     countries: [],
     licensors: [],
+    allContentTypes: [],
     contentTypes:[],
     selectedperiod:[],
     errorMessage:"@",
@@ -70,8 +71,28 @@ var GlobalParameterBar = Component.extend({
           this.scope.attr('errorMessage',showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0]));
      },
     '#store-type select change': function(el, ev) {
-       var selected = $(el[0].selectedOptions).data('storetype');
+      var selected = $(el[0].selectedOptions).data('storetype');
       this.scope.appstate.attr('storeType', selected);
+
+      /* Change the Content types based on Store Type */
+      var allContentTypes = this.scope.allContentTypes.attr();
+      if(selected!=undefined){
+        var newContentTypes = [];
+        for(var i=0;i<allContentTypes.length;i++){
+          if(allContentTypes[i]["serviceTypeId"]==selected.id){
+            newContentTypes.push(allContentTypes[i]);
+          }
+        }
+        this.scope.contentTypes.replace(newContentTypes);
+      } else {
+        this.scope.contentTypes.replace(allContentTypes);
+      }
+      setTimeout(function(){
+            $("#contentTypesFilter").multiselect('rebuild');
+      },1000);
+
+      /* This is to reset the contentType attr in 'appstate' variable  */
+      this.scope.appstate.removeAttr('contentType');
     },
     '#region select change': function(el, ev) {
       var self = this;
@@ -116,9 +137,14 @@ var GlobalParameterBar = Component.extend({
     '#contentType select change': function(el, ev) {
       //var selected = $(el[0].selectedOptions).data('contenttype');
       var selected = $(el[0]).val();
-      if(selected != null)
-        this.scope.appstate.attr('contentType', selected);
-      else
+      var formatSelected = [];
+
+      if(selected != null){
+        for(var i=0;i<selected.length;i++){
+            formatSelected.push(selected[i].split(":")[0]);
+        }
+        this.scope.appstate.attr('contentType', formatSelected);
+      } else
         this.scope.appstate.removeAttr('contentType');
     } ,
     '#globalSearch click':function(){
@@ -159,6 +185,9 @@ var GlobalParameterBar = Component.extend({
       self.scope.regions.replace(values[1]);
       self.scope.countries.replace(values[2]);
       self.scope.licensors.replace(values[3]["entities"][0]);
+      /* allContentTypes - Holds all content types, this is used for "On change store type, load respective Content types"
+         contentTypes - holds the values to be displayed in drop down box */
+      self.scope.allContentTypes.replace(values[4]["contentTypes"]); 
       self.scope.contentTypes.replace(values[4]["contentTypes"]);
       //self.scope.periodFrom.replace(values[5]);
       //self.scope.periodTo.replace(values[6]);
