@@ -56,20 +56,20 @@ export default [
     id: 'pubfee',
     title: 'Pub Fee',
     className: "amountColumn",
-    format: formats.currency,
+    format: formats.currencyFormat,
     sortable: true
   },
   {
     id: 'reconAmt',
     title: 'Recon',
     className: "amountColumn",
-    format: formats.currency,
+    format: formats.currencyFormat,
     sortable: true
   },
   {
     id: 'liDispAmt',
     title: 'Line Item Dispute',
-    format: formats.currency,
+    format: formats.currencyFormat,
     className: "amountColumn",
     contents: function(row) {
       if(row.isFooterRow){
@@ -84,14 +84,14 @@ export default [
     id: 'copConAmt',
     title: 'Cop Con',
     className: "amountColumn",
-    format: formats.currency,
+    format: formats.currencyFormat,
     sortable: true
   },
   {
     id: 'unMatchedAmt',
     title: 'Unmatched',
     className: "amountColumn",
-    format: formats.currency,
+    format: formats.currencyFormat,
     sortable: true
   },
   {
@@ -105,7 +105,7 @@ export default [
         return can.stache('<a class="downloadLink badLines" href="#download">'+formats.currencyFormat(row.badLines)+'</a>')();
       }
     },
-    format: formats.currency,
+    format: formats.currencyFormat,
     sortable: true
   },
   {

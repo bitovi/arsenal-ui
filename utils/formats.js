@@ -15,12 +15,12 @@ var formats = {
     if(numberVal == "" || numberVal == null){
       return "";
     }else  {
-      return formats.number(numberVal).toFixed(2);
+      var n =  formats.number(numberVal).toFixed(2);
+      return n.replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
     }
     //var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
     //return n;
   },
-
   numberFormat: function (numberVal)
   {
     if(numberVal == "" || numberVal == null){
@@ -29,7 +29,7 @@ var formats = {
       var n = numberVal.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
     return n;
     }
-    
+
   },
 
   formatIf: function(test, format, elseValue) {
