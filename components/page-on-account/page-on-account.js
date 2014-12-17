@@ -40,6 +40,7 @@ var page = Component.extend({
     proposedOnAccountData:{},
     bundleNamesForDisplay:"",
     newOnAccountRows:[],
+    licensorCurrencies:'@',
     errorMessage:"",
     showLoadingImage:"",
     quarters:[]
@@ -129,6 +130,7 @@ var page = Component.extend({
                     request.rows=rows;
                     //request.quarters=quarters;
                     self.scope.newOnAccountRows.replace(rows);
+                    self.scope.attr('licensorCurrencies',data.licensorCurrencies);
                     if(rows != null && rows.length >0){
                       disablePropose(false);
                       disableCopyOnAccount(false);
@@ -225,19 +227,29 @@ var page = Component.extend({
             paymentBundleName = self.scope.paymentBundleNameText;
         }
         var createrequest = utils.frameCreateRequest(self.scope.request,self.scope.onAccountRows,self.scope.documents,self.scope.usercommentsStore,self.scope.quarters,paymentBundleName,self.scope.paymentBundleName);
-        var request = requestHelper.formRequestDetails(createrequest);
-        //console.log('Request:'+JSON.stringify(request));
-        newOnAccountModel.create(request,function(data){
-          //console.log("Create response is "+JSON.stringify(data));
-          if(data["status"]=="SUCCESS"){
-              displayMessage(data["responseText"],true);
-            $("#propose").attr("disabled","disabled");
-          }else{
-                displayMessage(data["responseText"],false);
-              }
-          },function(xhr){
-            console.error("Error while Creating: onAccount Details"+xhr);
-          });
+        if(createrequest.onAccount.onAccountDetails.length>0){
+          var request = requestHelper.formRequestDetails(createrequest);
+          //console.log('Request:'+JSON.stringify(request));
+          newOnAccountModel.create(request,function(data){
+            if(data["status"]=="SUCCESS"){
+                displayMessage(data["responseText"],true);
+              $("#propose").attr("disabled","disabled");
+              var request = {};
+              var rows = utils.frameRows(self.scope.attr('licensorCurrencies'),self.scope.quarters);
+              request.rows=rows;
+              request.quarters=self.scope.quarters;   
+              $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
+              $('#usercomments').val("");
+              self.scope.attr('onAccountRows',rows);
+            }else{
+                  displayMessage(data["responseText"],false);
+                }
+            },function(xhr){
+              console.error("Error while Creating: onAccount Details"+xhr);
+            });
+        }else{
+          displayMessage('Empty Invoice Amounts',true);
+        }
       },
       "#proposedDelete click":function(el,ev){
         disableEditORDeleteButtons(true);
