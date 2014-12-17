@@ -23,9 +23,12 @@ var headerNavigation = Component.extend({
 
         ]).then(function(values) {
 
-          self.scope.appstate.userInfo.attr('permissions', values[0]);
+          var role = {
+            permissions: values[0]
+          };
+          self.scope.appstate.userInfo.attr(role);
 
-          console.log("role="+ {permissions: values[0]});
+          console.log("role="+ role);
 
           self.scope.roles.replace(values[0]);
           var screenId= [] ;
