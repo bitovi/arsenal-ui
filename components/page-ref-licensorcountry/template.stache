@@ -48,9 +48,9 @@
 
         </div>
 
-        <form id="countryLicForm" >
-          <div class="col-sm-12 lineDividerInvoice"></div><!-- Main Layout START-->
-
+   <form id="countryLicForm" >
+      <div class="col-sm-12 lineDividerLiceCountry"></div><!-- Main Layout START-->
+      <div class="mainLayoutId" >
 
           <div class="col-sm-6 right-border" {{setHeight}}><!-- LEFT Layout START-->
             <div class="form-group">
@@ -218,7 +218,7 @@
 
 
             </div><!-- RIGHT Layout END-->
-
+          </div>
           </div><!-- Main Layout END-->
         </form>
       </div>

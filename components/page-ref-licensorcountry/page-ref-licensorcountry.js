@@ -113,6 +113,9 @@ var page = Component.extend({
       events: {
 
         "inserted": function(){
+
+          $(".mainLayoutId").hide();
+
           var self = this;
 
 
@@ -246,6 +249,9 @@ var page = Component.extend({
 
             // console.log(this.scope.pageState.entityCountryDetails.entityCountry.attr("countryId"));
 
+            $(".mainLayoutId").show();
+
+
             var requestObj  = {
               entityCountryDetails:{
                 entityCountry:{
@@ -267,7 +273,7 @@ var page = Component.extend({
 
               var   tempcommentObj = data.entityCountryDetails.comment;
 
-              
+
 
               if(data.entityCountryDetails.entityCountry.status == "A") {
                 self.attr("state","Edit");
@@ -397,6 +403,14 @@ var page = Component.extend({
         }
         if(showFlg==true){ $('.period-invalid').show(); return false;}else {showFlg=false; $('.period-invalid').hide();}
     }
+
+
+
+var loadPage = function(scope){
+
+}
+
+
 
 
 export default page;
