@@ -125,6 +125,9 @@ var GlobalParameterBar = Component.extend({
           $("#licensorsFilter").multiselect('rebuild');
         }, 2000);
       });
+      /* This is to reset the country & licensor attr in 'appstate' variable  */
+      this.scope.appstate.removeAttr('country');
+      this.scope.appstate.removeAttr('licensor');
 
     },
     '#country select change': function(el, ev) {
