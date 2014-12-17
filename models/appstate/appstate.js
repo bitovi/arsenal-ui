@@ -29,7 +29,11 @@ var stateDefaults = {
   // TODO: instead of this, go get the current user and replace this info
   // for right now, this is just a mock-up
   userInfo: {
-    token: 'FAKE TOKEN'
+    token: 'FAKE TOKEN',
+    prsId: '2002005722',
+    roleIds: [2],
+    appId: '1179',
+    secretKey: 'f4166789-30bb-4e12-9973-a76376745096'
   },
   page: 'dashboard',
   periodFrom: undefined,
@@ -53,8 +57,9 @@ var appState = new State({
     // start routing!
     route.ready();
   }
-
 });
+
+appState.attr(stateDefaults);
 
 // Make `appState` the Map that can.route uses to keep its data in.
 route.map(appState);
