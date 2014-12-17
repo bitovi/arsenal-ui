@@ -26,11 +26,13 @@ var page = Component.extend({
     pageState: pageState,
     appstateFilled: function(scope) {
       var filled =  scope.appstate &&
-                    scope.appstate.attr('storeType') &&
-                    scope.appstate.attr('region') &&
-                    scope.appstate.attr('country') &&
-                    scope.appstate.attr('licensor') &&
-                    scope.appstate.attr('contentType');
+                    scope.appstate.storeType &&
+                    scope.appstate.contentType.length &&
+                    scope.appstate.region &&
+                    scope.appstate.country.length &&
+                    scope.appstate.licensor.length &&
+                    scope.appstate.periodFrom &&
+                    scope.appstate.periodTo;
 
       return !!filled;
     },

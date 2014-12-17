@@ -180,6 +180,9 @@ var PaymentBundle = Model.extend({
       return bundle;
     });
   },
+  getPreview: function(params) {
+    
+  },
   moveInWorkflow: function(params) {
     if(['approve', 'reject', 'recall', 'delete'].indexOf(params.action) < 0) {
       throw new Error('Invalid action for payment bundle move. Only "approve", "reject", "recall", and "delete" are valid.');
