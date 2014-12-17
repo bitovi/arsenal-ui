@@ -1,7 +1,7 @@
-
 import Component from 'can/component/';
 
-
+import view from 'can/view/';
+import stache from 'can/view/stache/';
 import datePicker from 'components/date-picker/';
 import comments from 'components/multiple-comments/';
 import createpb from 'components/create-pb/';
@@ -15,7 +15,8 @@ import styles from './page-edit-icsv.less!';
 
 import UserReq from 'utils/request/';
 
-import fileUpload from 'components/file-uploader/'
+import fileUpload from 'components/file-uploader/';
+import periodCalendar from 'components/period-calendar/';
 
 import invoicemap from 'models/sharedMap/invoice';
 import InvoiceType from 'models/common/invoice-type/';
@@ -26,18 +27,21 @@ import Country from 'models/common/country/';
 import Invoice from 'models/invoice/';
 import Fxrate from 'models/common/fxrate/';
 import icsvmap from 'models/sharedMap/icsv';
+import CalDueDate from 'models/common/calinvoiceduedate/';
 import AdhocTypes from 'models/common/adhoc-types/';
 import GLaccounts from 'models/glaccounts/';
 import Region from 'models/common/region/';
 import stache from 'can/view/stache/';
+import moment from 'moment';
+import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 //import Invoice from 'models/invoice/';
 
-var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate",  "receiveddate", "amount[]", "licensor", "currency"];
-var mandatoryField = ["invoicenumber",  "invoicedate",  "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency"];
+var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "licensor", "currency"];
+var mandatoryField = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency"];
 
 fileUpload.extend({
-  tag: 'editicsv-upload',
+  tag: 'rn-file-uploader-icsv',
   scope: {
            fileList : new can.List()
          }
@@ -56,6 +60,7 @@ var page = Component.extend({
   	country:[],
   	contentType:[],
   	adhocType:[],
+  	contentTypeFilter:[],
   	fxrate:[],
   	glaccounts:[],
   	regions:[],
@@ -69,7 +74,7 @@ var page = Component.extend({
   	/*Form value*/
   	invoicetypeSelect:"",
   	licensorStore:{},
-  	regionStore:{},
+  	regionStore:"",
   	currencyStore:"",
   	fxrateStore:"",
   	invoicenumberStore:"",
@@ -99,6 +104,8 @@ var page = Component.extend({
   	editpage:false,
   	formSuccessCount:1,
   	uploadedfileinfo:[],
+  	periodType:"",
+  	ajaxRequestStatus:{},
     isRequired: function(){
   	 		if(this.attr("invoicetypeSelect") != "2"){  /*Adhoc*/
   	 				$(".breakdownCountry").addClass("requiredBar");
@@ -110,46 +117,32 @@ var page = Component.extend({
   	 		} 
 		},
 	createBreakline: function(rowindex){
+			var self = this;
+			var $template = $('#breakrowTemplate'),
+            $clone  = $template.clone().removeClass('hide').removeAttr('id').attr("id","breakrow"+rowindex).attr("rowid", rowindex).insertBefore($template);
+            $("#breakrow"+rowindex+" .amountText").attr("id","amountText"+rowindex).val(" ");
+            $("#breakrow"+rowindex+" #inputContent").attr("id","inputContent"+rowindex);
+            $("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).parent().append(stache('<period-calendar></period-calendar>'));
+            $("#breakrow"+rowindex+" #inputCountry").attr("id","inputCountry"+rowindex);
+           	$("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val("");
+           	if(rowindex != 0)
+           	$("#breakrow"+rowindex+" .removeRow").css("display", "block");
+			
+			var $option   = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"]');
+            $option.each(function(index){
+            	$('#invoiceform').bootstrapValidator('addField', $(this));
+            });
+            
+            $("#addInvSubmit").attr("disabled", true);
+			$(".removeRow").click(function(event){
+				$option.each(function(index){
+                	$('#invoiceform').bootstrapValidator('removeField', $(this));
+                });
 
-				var self = this;
-				var $template = $('#breakrowTemplate'),
-                $clone    = $template
-                                .clone()
-                                .removeClass('hide')
-                                .removeAttr('id')
-                                .attr("id","breakrow"+rowindex).attr("rowid", rowindex)
-								.insertBefore($template);
-                               $("#breakrow"+rowindex+" .amountText").attr("id","amountText"+rowindex).val(" ");
-                               $("#breakrow"+rowindex+" #inputContent").attr("id","inputContent"+rowindex);
-                               $("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex);
-                              // $("#breakrow"+rowindex+" #inputYear").attr("id","inputYear"+rowindex);
-                               $("#breakrow"+rowindex+" #inputCountry").attr("id","inputCountry"+rowindex);
-                               $("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val("");
-                               if(rowindex != 0)
-                               $("#breakrow"+rowindex+" .removeRow").css("display", "block");
-
-                                var $option   = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"]');
-                                
-                                $option.each(function(index){
-                                	$('#invoiceform').bootstrapValidator('addField', $(this));
-                                });
-                                
-                               $("#addInvSubmit").attr("disabled", true);
-
-                               	$(".removeRow").click(function(event){
-
-	                               	$option.each(function(index){
-	                                	$('#invoiceform').bootstrapValidator('removeField', $(this));
-	                                });
-
-                               		$(this).closest("tr").remove();
-						            self.AmountStore.removeAttr("amountText"+rowindex);
-						            $("#addInvSubmit").attr("disabled", true);
-						        });
-
-                               //console.log($clone.find('[name="amount[]"]'));
-
-
+           		$(this).closest("tr").remove();
+	            self.AmountStore.removeAttr("amountText"+rowindex);
+	            $("#addInvSubmit").attr("disabled", true);
+	        });
 		},
 		changeTextOnInvType:function(){
 			if(this.attr("invoicetypeSelect") == "2"){  /*Adhoc*/
@@ -173,8 +166,27 @@ var page = Component.extend({
 			  	 this.isAdhocStrore.attr("invtype", "");
 			  	 this.isAdhocStrore.attr("adhoc", false);
 			  	 this.attr("showPBR", true);
-			 }
-		}
+			}
+		},
+		createPBRequest: function(){
+	          	var bundleNamesRequest = {"bundleSearch":{}};
+	          	var serTypeId = $("#invoiceType option:selected").attr("name");
+	          	var regId = this.regionStore;
+	          
+			  	if(typeof(serTypeId)!="undefined")
+	            	bundleNamesRequest.bundleSearch["type"] = serTypeId;
+				
+				if(typeof(regId)=="undefined")
+	            	bundleNamesRequest.bundleSearch["regionId"] = "";
+	          	else
+	            	bundleNamesRequest.bundleSearch["regionId"] = regId;
+	            
+	           // bundleNamesRequest.bundleSearch["type"] = "invoice";
+	          console.log(bundleNamesRequest);
+	          this.attr("bundleNamesRequest", JSON.stringify(bundleNamesRequest));
+
+				return JSON.stringify(bundleNamesRequest);
+       		}
  },
   events: {
     	"inserted": function(){
@@ -419,6 +431,9 @@ var page = Component.extend({
 	        				for(var i= 0; i < requireField.length; i++){
 	        					if(!data.bv.isValidField(mandatoryField[i])){
 	        						 data.bv.disableSubmitButtons(true);
+	        						 if(mandatoryField[i] == "receiveddate"){
+		        						 	$('#invoiceform').bootstrapValidator('revalidateField', 'receiveddate'); /*revalidating this field. It initialized with currentdate*/
+		        						 }
 	        						 break;
 	        					}
 	        				}
@@ -470,6 +485,7 @@ var page = Component.extend({
 							showError(event[0].id, "Please provide positive value for tax");
 						}
 						else{
+							
 							removeError(event[0].id);
 						}
 					}
@@ -482,6 +498,7 @@ var page = Component.extend({
 								showError(event[0].id, "Maximum 1024 characters allowed");
 							}
 							else{
+								
 								removeError(event[0].id);
 							}
 						}
@@ -490,6 +507,52 @@ var page = Component.extend({
 
 
 				},
+				".form-control change":function(event){
+					var self = this;
+					if(($("#invoicedate input[type=text]").val() != "") &&  (self.scope.licensorStore != "") && ($("#inputCountry0").val() != "")){
+					var genObj = {entityId:self.scope.licensorStore, invoiceDate:Date.parse($("#invoicedate input[type=text]").val()), countryId:$("#inputCountry0").val()};
+					CalDueDate.findOne(UserReq.formRequestDetails(genObj),function(data){
+                  		//console.log(data.calInvoiceDueDate);
+                  		if(data.status == 'SUCCESS'){
+                  			if(data.calInvoiceDueDate != null && data.calInvoiceDueDate != undefined){
+                  				self.scope.attr("calduedate", getDateToDisplay(data.calInvoiceDueDate));
+                  			}
+                  		}else if(data.status == 'FAILURE'){
+                  			$("#invmessageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>")
+							$("#invmessageDiv").show();
+				            setTimeout(function(){
+				                $("#invmessageDiv").hide();
+				             },5000)
+                  			}
+		                },function(xhr){
+		                /*Error condition*/
+		           		 });  
+					}
+				},
+				"#invoicedate dp.change":function(event){ /*need to repeat service call, as no way to capture date change event together with form control event*/
+					var self = this;
+					if(($("#invoicedate input[type=text]").val() != "") &&  (self.scope.licensorStore != "") && ($("#inputCountry0").val() != "")){
+					var genObj = {entityId:self.scope.licensorStore, invoiceDate:Date.parse($("#invoicedate input[type=text]").val()), countryId:$("#inputCountry0").val()};
+					CalDueDate.findOne(UserReq.formRequestDetails(genObj),function(data){
+						//console.log("Date 1---"+moment($("#invoicedate input[type=text]").val()).unix());
+						//console.log("Date 2----"+Date.parse($("#invoicedate input[type=text]").val()));
+                  		if(data.status == 'SUCCESS'){
+                  			if(data.calInvoiceDueDate != null && data.calInvoiceDueDate != undefined){
+                  				self.scope.attr("calduedate", getDateToDisplay(data.calInvoiceDueDate));
+                  			}
+                  		}else if(data.status == 'FAILURE'){
+                  			$("#invmessageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>")
+							$("#invmessageDiv").show();
+				            setTimeout(function(){
+				                $("#invmessageDiv").hide();
+				             },5000)
+                  			}
+		                },function(xhr){
+		                /*Error condition*/
+		           		 });  
+					}
+				},
+				
 				 "{scope} regionStore": function(){
 					  	var self = this;
 						var genObj = {regionId:self.scope.attr("regionStore")};
@@ -515,6 +578,7 @@ var page = Component.extend({
 							    self.scope.attr("currency").replace(values[0]);
 							    var invoiceData = self.scope.attr().invoiceContainer[0];
 							    self.scope.attr("currencyStore", invoiceData.invoiceCcy);
+							    $('#invoiceform').bootstrapValidator('revalidateField', 'currency');
 
 							    var invoicevalid = $("#invoiceform").data('bootstrapValidator').isValid();
 							   
@@ -531,6 +595,7 @@ var page = Component.extend({
 				 		var self = this;  
 
 		 		var invoiceData = self.scope.attr().invoiceContainer[0];
+		 		console.log(invoiceData);
 		 		self.scope.attr("invoicenumberStore", invoiceData.invoiceNumber);
 		 		self.scope.attr("invoicetypeSelect", invoiceData.invoiceTypeId);
 		 		
@@ -673,6 +738,9 @@ var page = Component.extend({
 		".inputMonth change": function(event){
          	this.scope.monthStore.attr(event[0].id, event[0].value)
 		},
+		".inputMonth click": function(event){
+         	updatePeriodCalender(event[0].id);
+		},
 	
 		".inputCountry change": function(event){
          	this.scope.countryStore.attr(event[0].id, event[0].value)
@@ -718,30 +786,30 @@ var page = Component.extend({
   	 			}
   	 			var genObj = {fromCurrency:'USD',
   	 					toCurrency:this.scope.currencyStore,fiscalPeriod:'201401',periodType:'P'};
-  	 		
+  	 			//Fxrate.findAll(UserReq.formRequestDetails(genObj)),
+  	 		/*	Fxrate.findAll(UserReq.formRequestDetails(genObj),function(data){
+                  //console.log("passing params is "+JSON.stringify(data[0].attr()));
+  	 			 self.scope.attr("fxrate").replace(data);
+            },function(xhr){
+                console.error("Error while loading: FXRATE"+xhr);
+            }); */
 
          },
          
   	     "#icsv-edit-invoice #paymentBundleNames change": function(){
 	          var self = this;
-	          var pbval = $("#icsv-edit-invoice #paymentBundleNames").val();
-	          console.log("val djsi is "+ pbval);
+	          var pbval = $("#invoiceform #paymentBundleNames").val();
 	          if(pbval=="createB"){
 	              
-	              var regId = self.scope.appstate.attr('region');
-
-
-	              var newBundleNameRequest = {"paymentBundle":{}};
+	              var regId = self.scope.regionStore;
+				  var newBundleNameRequest = {"paymentBundle":{}};
 	              var bundleRequest = {};
 
-	              bundleRequest["region"] = regId['value'];
-	              bundleRequest["periodFrom"] = "201303";
-	              bundleRequest["periodTo"] = "201304";
-	             
-	              bundleRequest["bundleType"] ="REGULAR_INV";
+	              bundleRequest["regionId"] = regId;
+
+	              bundleRequest["bundleType"] = $("#invoiceType option:selected").attr("name");
 
 	              newBundleNameRequest["paymentBundle"] = bundleRequest;
-	              console.log("New Bundle name request is "+JSON.stringify(newBundleNameRequest));
 	              self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
 	          } else {
 	            self.scope.attr('newpaymentbundlenamereq', "undefined");
@@ -897,19 +965,20 @@ var page = Component.extend({
 
 								  var tempInvMap = icsvmap.invoiceData.invoices[selIndex].attr();
 
-								  for(var key in tempInvMap.errors[0].errorMap[0]){  /*Invoice error*/
-			     							console.log(tempInvMap.errors[0].errorMap[0][key]);
-			     							icsvmap.invoiceData.invoices[selIndex].errors[0].errorMap[0].attr(key, " ");
+								  for(var key in tempInvMap.errors.errorMap){  /*Invoice error*/
+			     							console.log(tempInvMap.errors.errorMap[key]);
+			     							icsvmap.invoiceData.invoices[selIndex].errors.errorMap.attr(key, " ");
 										}
 
 						          for(var j =0; j < tempInvMap.invoiceLines.length; j++){
-						                for(var key in tempInvMap.invoiceLines[j].errors[0].errorMap[0]){  /*Invoiceline error*/
-						                      console.log(tempInvMap.invoiceLines[j].errors[0].errorMap[0][key]);
-						                      icsvmap.invoiceData.invoices[selIndex].invoiceLines[j].errors[0].errorMap[0].attr(key, " ");
+						                for(var key in tempInvMap.invoiceLines[j].errors.errorMap){  /*Invoiceline error*/
+						                      console.log(tempInvMap.invoiceLines[j].errors.errorMap[key]);
+						                      icsvmap.invoiceData.invoices[selIndex].invoiceLines[j].errors.errorMap.attr(key, " ");
 						                 }
 						          }
 
-
+						          	console.log(icsvmap.invoiceData);
+					 				
 					 				icsvmap.attr("showediticsv", false);
 							}
 					 return false;
@@ -921,7 +990,34 @@ var page = Component.extend({
                       },500);
 					 
 					 
-				}
+				},
+				'period-calendar onSelected': function (ele, event, val) {  
+   					this.scope.attr('periodchoosen', val);
+   					$(ele).parent().find('input[type=text]').val(this.scope.periodchoosen).trigger('change');
+   					$(ele).closest('.calendarcls').find('.box-modal').hide();
+       				$(ele).blur();
+   				},
+			   '.updateperoid focus':function(el){ 
+			      $(el).closest('.calendarcls').find('.box-modal').show();
+			      if(el.attr("id") != "inputMonth0"){
+			      		showErrorMsg(el.attr("id"))
+					}
+				},
+			   '#inputContent0 change':function(el){  /*validation for servicetypeid*/
+			   		$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
+						if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
+								$("#"+this.id+' .inputContent').val("");
+								
+						}	
+			  		});
+
+			  		this.scope.contentTypeFilter.replace(this.scope.contentType);
+				},
+			   '#inputMonth0 change':function(el){ /*validation for period*/
+			  		var self = this;
+			  		self.scope.attr("periodType", $(el).val().charAt(0));
+			  		
+			  	}
 
 
    },
@@ -934,8 +1030,8 @@ var page = Component.extend({
    	 	var genObj = {};
    	 	Promise.all([
 			      	InvoiceType.findAll(UserReq.formRequestDetails(genObj)),
-			     	Licensor.findAll(UserReq.formRequestDetails(genObj)),
-			     	Currency.findAll(UserReq.formRequestDetails(genObj)),
+			     	//Licensor.findAll(UserReq.formRequestDetails(genObj)),
+			     	//Currency.findAll(UserReq.formRequestDetails(genObj)),
 			        ContentType.findAll(UserReq.formRequestDetails(genObj)),
 			      	Country.findAll(UserReq.formRequestDetails(genObj)),
 					AdhocTypes.findAll(UserReq.formRequestDetails(genObj)),
@@ -944,15 +1040,15 @@ var page = Component.extend({
 
 			      	
 				]).then(function(values) {
-		     		 self.scope.attr("invoiceTypes").replace(values[0][0]["invoiceTypes"]);
+		     		 self.scope.attr("invoiceTypes").replace(values[0]["invoiceTypes"]);
 		     		
-		     		 self.scope.attr("contentType").replace(values[3].contentTypes);
+		     		 self.scope.attr("contentType").replace(values[1].contentTypes);
 		     		 console.log(self.scope.attr("contentType"));
-		     		 self.scope.attr("country").replace(values[4]);
+		     		 self.scope.attr("country").replace(values[2]);
 
-		     		 self.scope.attr("adhocType").replace(values[5]);
-		     		 self.scope.attr("glaccounts").replace(values[6]);
-		     		 self.scope.attr("regions").replace(values[7]);
+		     		 self.scope.attr("adhocType").replace(values[3]);
+		     		 self.scope.attr("glaccounts").replace(values[4]);
+		     		 self.scope.attr("regions").replace(values[5]);
 
 		     		
 		     	     /*Getting data from icsv map*/
@@ -973,23 +1069,7 @@ var page = Component.extend({
 
 	},
   	helpers: {
-          createPBRequest: function(){
-	          var bundleNamesRequest = {"bundleSearch":{}};
-	          console.log("fsdfsdfsdf "+JSON.stringify(this.attr('appstate')));
-	          var serTypeId = this.appstate.attr('storeType');
-	          var regId = this.appstate.attr('region');
-			  if(typeof(serTypeId)!="undefined")
-	            bundleNamesRequest.bundleSearch["serviceTypeId"] = serTypeId['id'];
-
-	          if(typeof(regId)=="undefined")
-	            bundleNamesRequest.bundleSearch["region"] = "";
-	          else
-	            bundleNamesRequest.bundleSearch["region"] = regId['value'];
-	            
-	            bundleNamesRequest.bundleSearch["type"] = "invoice";
-	          
-				return JSON.stringify(bundleNamesRequest);
-	       },
+          
 			  	currentDate: function(){
 			  	 	var date = new Date();
 			  	 	this.attr("currentdate", (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear());
@@ -1121,6 +1201,40 @@ function dateFormatter(datestring, currentformat){
 function getCurrentDate(){
 	var date = new Date();
 	return (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear();
+}
+
+var updatePeriodCalender = function(elementID){
+
+var _root = $("input[id^='inputMonth']").not("input[id='inputMonth0']").not(':hidden').parent();
+if (_root.length == 1) {
+		disablePeriodQuarterCalendar(_root);
+	}else if (_root.length > 1){
+		console.log("_root updatePeriodCalender");console.log(_root);
+		for (var i = _root.length - 1; i >= 0; i--) {
+			disablePeriodQuarterCalendar(_root[i]);								
+		}
+	}
+}
+
+var disablePeriodQuarterCalendar = function(_root){
+
+console.log("_root disablePeriodQuarterCalendar");console.log(_root);
+var _root = $(_root);
+_root.find('.period li a').removeClass('disabled period-active');
+
+if($('#inputMonth0').parent().find('.period li:first-child').find('a').hasClass('period-active')) {
+	    _root.find('.q1 li').not(":first").find('a').addClass('disabled');
+	    _root.find('.q2 li').not(":first").find('a').addClass('disabled');
+	    _root.find('.q3 li').not(":first").find('a').addClass('disabled');
+	    _root.find('.q4 li').not(":first").find('a').addClass('disabled');
+	 } else {
+	    _root.find('.period li:first-child').find('a').addClass('disabled');
+	 }
+}
+
+var getDateToDisplay=function(longDate){
+	var calculateDueDate = new Date(longDate);
+	return calculateDueDate.getMonth()+1 + "/" + calculateDueDate.getDate() + "/" + calculateDueDate.getFullYear();
 }
 
 export default page;

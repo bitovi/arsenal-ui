@@ -10,7 +10,12 @@
            </ul>
       {{/if}}
         {{#if isAnyFileLoaded}}
-          <div id='showSuccess'></div>
+           {{#if isSuccess}} 
+              <div class="success"></div>
+            {{else}}
+              <div class="fileError"></div>
+            {{/if}}
+            
         	<input type="button" class="submitFiles uploadFiles" value="Upload"/>
         	<input type="button"  class="cancelUpload uploadFiles" value="Cancel">
         {{else}}
