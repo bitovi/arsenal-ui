@@ -93,20 +93,17 @@ var page = Component.extend({
       errorMessage:"@",
       createPBRequest: function(){
         var bundleNamesRequest = {"bundleSearch":{}};
-        var serTypeId = $("#invoiceType option:selected").attr("name");
-        var regId = this.regionStore;
-        if(typeof(serTypeId)!="undefined")
-            bundleNamesRequest.bundleSearch["type"] = serTypeId;
-        
-        if(typeof(regId)=="undefined")
-            bundleNamesRequest.bundleSearch["regionId"] = "";
-        else
-            bundleNamesRequest.bundleSearch["regionId"] = regId;
-            // bundleNamesRequest.bundleSearch["type"] = "invoice";
-            console.log(bundleNamesRequest);
-            this.attr("bundleNamesRequest", JSON.stringify(bundleNamesRequest));
+          //console.log("fsdfsdfsdf "+JSON.stringify(this.attr('appstate')));
+            
+         
+            bundleNamesRequest.bundleSearch["serviceTypeId"] = '1';
 
-            return JSON.stringify(bundleNamesRequest);
+            bundleNamesRequest.bundleSearch["regionId"] = '2';
+            
+          bundleNamesRequest.bundleSearch["type"] = "REGULAR_INV";
+          
+
+          return JSON.stringify(bundleNamesRequest);
         }
     
     },
@@ -434,7 +431,7 @@ var page = Component.extend({
               var newBundleNameRequest = {"paymentBundle":{}};
               var bundleRequest = {};
 
-              bundleRequest["region"] = regId['value'];
+              bundleRequest["regionId"] = '2';
               bundleRequest["periodFrom"] = "201303";
               bundleRequest["periodTo"] = "201304";
               //bundleRequest["bundleType"] =lineType;
@@ -479,26 +476,7 @@ var page = Component.extend({
                       $("#icsvMessageDiv").hide();
                 },2000);
            } 
-       },
-       createPBRequest: function(){
-          var bundleNamesRequest = {"bundleSearch":{}};
-          //console.log("fsdfsdfsdf "+JSON.stringify(this.attr('appstate')));
-          var serTypeId = this.appstate.attr('storeType');
-          var regId = this.appstate.attr('region');
-
-          if(typeof(serTypeId)!="undefined")
-            bundleNamesRequest.bundleSearch["serviceTypeId"] = serTypeId['id'];
-
-          if(typeof(regId)=="undefined")
-            bundleNamesRequest.bundleSearch["region"] = "";
-          else
-            bundleNamesRequest.bundleSearch["region"] = regId['value'];
-            
-          bundleNamesRequest.bundleSearch["type"] = "invoice";
-          
-
-          return JSON.stringify(bundleNamesRequest);
-        }
+       }
 
     }   
 });
