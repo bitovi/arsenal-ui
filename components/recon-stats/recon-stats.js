@@ -8,6 +8,8 @@ import stache from 'can/view/stache/';
 import Currency from 'models/common/currency/';
 import UserReq from 'utils/request/';
 import formats from 'utils/formats';
+import bootstrapValidator from 'bootstrapValidator';
+import css_bootstrapValidator from 'bootstrapValidator.css!';
 
 /* Extend grid with the columns */
 Grid.extend({
@@ -53,7 +55,7 @@ var page = Component.extend({
 
       refreshstatsreq : {},
 
-      loadrefresh : "false",
+      loadrefresh : false,
 
       refreshParam : {
         "searchRequest": {
@@ -63,8 +65,6 @@ var page = Component.extend({
 
 		summaryStatsData : [],
     currency:"",
-
-
 
     fn_RefreshReconStatsRequest : function() {
 
@@ -102,7 +102,7 @@ var page = Component.extend({
 
     fn_refreshReconStats : function(dtlHDRIds,currency) {
 
-        self = this;
+        var self = this;
 
         if(dtlHDRIds.length > 0)  {
 
@@ -131,10 +131,7 @@ var page = Component.extend({
               }
             };
 
-            //
-            // reqArr.searchRequest = {};
-            // reqArr.searchRequest.ids = ids;
-
+            
             var genObj = reqArr;
 
             Promise.all([Stats.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
@@ -154,41 +151,41 @@ var page = Component.extend({
 
                   for(var i=0;i<ingestionStats.length;i++) {
 
-                    var tempArr = {};
+                    var ingestionArr = {};
 
-                    tempArr["disputeType"] = ingestionStats[i]["disputeType"];
-                    tempArr["noOfRecords"] = formats.currencyFormat(ingestionStats[i]["noOfRecords"]);
-                    tempArr["recordsPercentage"] = ingestionStats[i]["recordsPercentage"];
-                    tempArr["noOfAdamIds"] = formats.currencyFormat(ingestionStats[i]["noOfAdamIds"]);
-                    tempArr["totalPubFee"] = formats.currencyFormat(ingestionStats[i]["totalPubFee"]);
-                    tempArr["pubFeePercentage"] = ingestionStats[i]["pubFeePercentage"];
+                    ingestionArr["disputeType"] = ingestionStats[i]["disputeType"];
+                    ingestionArr["noOfRecords"] = (formats.numberFormat(ingestionStats[i]["noOfRecords"])).toString().split(".")[0];
+                    ingestionArr["recordsPercentage"] = ingestionStats[i]["recordsPercentage"];
+                    ingestionArr["noOfAdamIds"] = (formats.numberFormat(ingestionStats[i]["noOfAdamIds"])).toString().split(".")[0];
+                    ingestionArr["totalPubFee"] = formats.currencyFormat(ingestionStats[i]["totalPubFee"]);
+                    ingestionArr["pubFeePercentage"] = ingestionStats[i]["pubFeePercentage"];
 
-                    grid.data.push(tempArr);
+                    grid.data.push(ingestionArr);
 
                   }
 
-                  var tempSummaryStats = {};
+                  var ingestionSummaryStats = {};
 
-                  tempSummaryStats.reconRecordsPercentage = data.summaryStats.reconRecordsPercentage;
-                  tempSummaryStats.reconAmountPercentage = data.summaryStats.reconAmountPercentage;
-                  tempSummaryStats.overRepDispute = data.summaryStats.overRepDispute;
+                  ingestionSummaryStats.reconRecordsPercentage = data.summaryStats.reconRecordsPercentage;
+                  ingestionSummaryStats.reconAmountPercentage = data.summaryStats.reconAmountPercentage;
+                  ingestionSummaryStats.overRepDispute = data.summaryStats.overRepDispute;
 
 
-                  tempSummaryStats.noOfReconRecords = (formats.currencyFormat(data.summaryStats.noOfReconRecords)).toString();
+                  ingestionSummaryStats.noOfReconRecords = (formats.numberFormat(data.summaryStats.noOfReconRecords).toString()).split(".")[0];
 
-                  tempSummaryStats.reconAmount = formats.currencyFormat(data.summaryStats.reconAmount);
+                  ingestionSummaryStats.reconAmount = formats.currencyFormat(data.summaryStats.reconAmount);
 
-                  tempSummaryStats.lineItemDispute = formats.currencyFormat(data.summaryStats.lineItemDispute );
+                  ingestionSummaryStats.lineItemDispute = formats.currencyFormat(data.summaryStats.lineItemDispute);
 
-                  tempSummaryStats.totalPubFee = formats.currencyFormat(data.summaryStats.totalPubFee );
+                  ingestionSummaryStats.totalPubFee = formats.currencyFormat(data.summaryStats.totalPubFee);
 
-                  tempSummaryStats.recommendedPayment = formats.currencyFormat(data.summaryStats.recommendedPayment );
+                  ingestionSummaryStats.recommendedPayment = formats.currencyFormat(data.summaryStats.recommendedPayment);
 
-                  tempSummaryStats.actualPayment = formats.currencyFormat(data.summaryStats.actualPayment );
+                  ingestionSummaryStats.actualPayment = formats.currencyFormat(data.summaryStats.actualPayment);
 
                   var summaryData = [];
 
-                  self.summaryStatsData.push(tempSummaryStats);
+                  self.summaryStatsData.push(ingestionSummaryStats);
 
                   var rows = new can.List(grid.data);
 
@@ -209,13 +206,44 @@ var page = Component.extend({
       }
 
   },
+  
 	events: {
+
     'inserted' : function() {
       $('.statsTable').hide();
+      this.element.parent().scope().addRefresh(this.scope);
+
+      $('#reconform').on('init.field.bv', function(e, data) {
+      })
+      .bootstrapValidator({
+      container: 'popover',
+        feedbackIcons: {
+            valid: 'valid-rnotes',
+            invalid: 'alert-rnotes',
+            validating: 'glyphicon glyphicon-refreshas'
+        },
+        fields: {
+          currency: {
+              //group:'.licensorName',
+              validators: {
+                  notEmpty: {
+                      message: 'Currency is mandatory'
+                  }
+              }
+          },
+        }
+
+      });
     },
+
 		".refreshReconStats click": function(item,el,ev) {
       self = this;
       var ccids = this.element.parent().scope().ingestCcidSelected;
+
+      $('#reconform').bootstrapValidator('validate');
+      if($('#reconform').data('bootstrapValidator').isValid() == false) {
+        return;
+      }
       //console.log(JSON.stringify(ccids));
       self.scope.fn_refreshReconStats(ccids,this.scope.currency);
 		}

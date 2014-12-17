@@ -54,6 +54,7 @@ var page = Component.extend({
     size_incomingCcidSelected:0,
     currencyScope:[],
     currencyList:[],
+    reconRefresh : [],
 
     //bottomgrid
     refreshStatsReq:undefined,
@@ -64,18 +65,23 @@ var page = Component.extend({
       var self = this;
       if(type=="Add")
         self.attr('tokenInput').push(val);
-        else if(type=="Delete"){
-          var flag=true;
-          this.attr('tokenInput').each(function(value, key) {
-            if(val.id == value.id){
-              self.attr('tokenInput').splice(key,1);
-            }
-          });
-        }
+      else if(type=="Delete"){
+        var flag=true;
+        this.attr('tokenInput').each(function(value, key) {
+          if(val.id == value.id){
+            self.attr('tokenInput').splice(key,1);
+          }
+        });
       }
+    },
+
+    addRefresh : function(refresh){
+      this.attr("reconRefresh").push(refresh);
+    }
 
   },
   helpers: {
+
     isIngestCcidsSelected:function(ref){
       //if the size of the list is greater than 0, enables the Reject button
       return ( this.attr("size_ingestCcidSelected") == ref ? 'disabled' : '' ) ;
@@ -261,6 +267,8 @@ var processRejectIngestRequest = function(scope,requestType){
           if(data.responseCode == "0000"){
             $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
             $("#messageDiv").show();
+            this.scope.reconRefresh[0].summaryStatsData.splice(0,1);
+            $('.statsTable').hide();
             setTimeout(function(){
               $("#messageDiv").hide();
             },3000);
