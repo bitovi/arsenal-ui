@@ -44,6 +44,10 @@ var BundleDetailTabs = Component.extend({
     paymentType: 1,
     approvalComment: '',
 
+    havePaymentTypeAndComment: function(scope) {
+      return scope.paymentType && scope.approvalComment.trim().length;
+    },
+
     gridColumns: [],
     selectedRows: [],
 
@@ -135,6 +139,10 @@ var BundleDetailTabs = Component.extend({
         '';
       }
     },
+    canProceed: function() {
+      this.attr('paymentType'); this.attr('approvalComment');
+      return this.havePaymentTypeAndComment(this) ? 'action' : '';
+    }
   },
   events: {
     '.remove-invoice click': function(el, ev) {
@@ -156,6 +164,10 @@ var BundleDetailTabs = Component.extend({
       var action = el.data('action'),
           selectedBundle = this.scope.pageState.selectedBundle,
           pageState = this.scope.pageState;
+
+      if(!this.scope.havePaymentTypeAndComment(this.scope)) {
+        return;
+      }
 
       selectedBundle.moveInWorkflow({
         action: action,
