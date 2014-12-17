@@ -406,7 +406,7 @@ var page = Component.extend({
 
 		        				for(var i= 0; i < requireField.length; i++){
 		        					if(!data.bv.isValidField(mandatoryField[i])){
-		        						 data.bv.disableSubmitButtons(true);
+		        						 
 		        						 if(mandatoryField[i] == "receiveddate"){
 		        						 	$('#invoiceform').bootstrapValidator('revalidateField', 'receiveddate'); /*revalidating this field. It initialized with currentdate*/
 		        						 }
@@ -419,6 +419,26 @@ var page = Component.extend({
 		        				if(!data.bv.isValid()){
 		        					data.bv.disableSubmitButtons(true);
 								}
+
+								
+							 // if(mandatoryField == "invoicedate"){
+    				// 		 	$('#invoiceform').bootstrapValidator('revalidateField', 'invoicedate');
+    				// 		 }
+    				// 		 if(mandatoryField == "invoiceduedate"){
+    				// 		 	$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate'); /*revalidating this field. It initialized with currentdate*/
+    				// 		 }
+    				// 		 var fieldsToBeValidated =['invoicedate','invoiceduedate'];
+    				// 		 // if(data.bv.isValidField('invoicedate')){
+    				// 		 // 	alert('valid');
+    				// 		 // }
+    				// 		 for(var i =0; i<=fieldsToBeValidated.length ; i++){
+								// 	if(!data.bv.isValidField(fieldsToBeValidated[i])){
+								// 		data.bv.disableSubmitButtons(true);
+								// 	}else{
+								// 		data.bv.disableSubmitButtons(false);
+								// 	}
+								// }
+								
 	        			   }
 						}).on('success.form.bv', function(e) {
 							e.preventDefault();
@@ -435,7 +455,7 @@ var page = Component.extend({
 
 
 					$('#invoiceduedate').on('dp.change dp.show', function (e) {
-			            $('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
+			            $('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');	
 			        });
 
 				/*	$('#invoicedate').on('dp.change dp.show', function (e) {
@@ -663,11 +683,10 @@ var page = Component.extend({
 				 		self.scope.attr("regionStore", invoiceData.regionId);
 						self.scope.attr("fxrateStore", invoiceData.fxRate);
 				 		self.scope.attr("licnotesStore", invoiceData.notes);
-				 		self.scope.attr("createDateStore", invoiceData.invoiceDate);
-				 		self.scope.attr("receiveddate", moment.unix(invoiceData.receivedDate).format("MM/DD/YYYY"));
-				 		self.scope.attr("invoicedate", moment.unix(invoiceData.invoiceDate).format("MM/DD/YYYY"));
-				 		self.scope.attr("invoiceduedate", moment.unix(invoiceData.invoiceDueDate).format("MM/DD/YYYY"));
-				 		self.scope.attr("calduedate", moment.unix(invoiceData.invoiceCalcDueDate).format("MM/DD/YYYY"));
+				 		self.scope.attr("invoicedate", moment(invoiceData.invoiceDate).format("MM/DD/YYYY"));
+				 		self.scope.attr("receiveddate", moment(invoiceData.receivedDate).format("MM/DD/YYYY"));
+				 		self.scope.attr("invoiceduedate", moment(invoiceData.invoiceDueDate).format("MM/DD/YYYY"));
+				 		self.scope.attr("calduedate",moment(invoiceData.invoiceCalcDueDate).format("MM/DD/YYYY"));
 						self.scope.attr("tax", invoiceData.tax);
 				 	
 						var tempcommentObj = invoiceData.comments;
@@ -847,16 +866,21 @@ var page = Component.extend({
 			   		  	tempComments.comments = self.scope.attr().invoiceContainer[0].comments[j].comments;
 			   		  	tempComments.id = self.scope.attr().invoiceContainer[0].comments[j].id;
 			   		  	tempComments.createdBy = self.scope.attr().invoiceContainer[0].comments[j].createdBy;
-			   		  	if(self.scope.attr().invoiceContainer[0].comments[j].createdDate)
-			   		  	tempComments.createdDate = getDateToDisplay(self.scope.attr().invoiceContainer[0].comments[j].createdDate);
+			   		  	var tempComDate = self.scope.attr().invoiceContainer[0].comments[j].createdDate
+			   		  	if(tempComDate != null && tempComDate != undefined){
+			   		  		tempComments.createdDate = dateFormatter(getDateToDisplay(tempComDate),"mm/dd/yyyy");
+			   		  	}
 			   		  	tempEditInvoiceData["comments"].push(tempComments);
 					}
 					var tempComments = {};  /*new comments*/
-					tempComments.comments = $("#usercomments").val();//self.scope.usercommentsStore;
-				   	tempComments.id = "";
-				   	tempComments.createdBy = UserReq.formRequestDetails().prsId;
-				   	tempComments.createdDate = dateFormatter(self.scope.currentdate, "mm/dd/yyyy");
-				   	tempEditInvoiceData["comments"].push(tempComments);
+					if($("#usercomments").val() != null && $("#usercomments").val() != undefined){
+						tempComments.comments = $("#usercomments").val();//self.scope.usercommentsStore;
+					   	tempComments.id = "";
+					   	tempComments.createdBy = UserReq.formRequestDetails().prsId;
+					   	tempComments.createdDate = dateFormatter(self.scope.currentdate, "mm/dd/yyyy");
+					   	tempEditInvoiceData["comments"].push(tempComments);
+					}
+					
 				    /*comment end*/
 
 				   /*document start*/
