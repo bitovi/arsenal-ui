@@ -13,7 +13,8 @@
                   displayMessage:"display:none",
                   fileUpload:false,
                   uploadedfileinfo:[],
-                  isAnyFileLoaded : can.compute(function() { return this.fileList.attr('length') > 0; })
+                  isAnyFileLoaded : can.compute(function() { return this.fileList.attr('length') > 0; }),
+                  isSuccess: false
 
               },
         helpers: {
@@ -34,14 +35,17 @@
                     var self = this;
                     var size = this.scope.attr("fileList").length;
                     FileUpLoader.create(this.scope.attr("fileList"),function(data) {
+                   
                     self.scope.attr("fileUpload" , true);
                     var response = data.filePropeties[0];
                     if(response.status=='SUCCESS'){
                       /*passing file length here to parent component*/
-                       $('.success').empty().html(response.responseText);
-                      $(self.element).trigger('onSelected', data);
+                       self.scope.attr("isSuccess", true);
+                       $('.success').empty().html(data.responseText);
+                       $(self.element).trigger('onSelected', data);
                     }else{
-                       $('.fileError').empty().html(response.responseText);
+                      self.scope.attr("isSuccess", false);
+                       $('.fileError').empty().html(data.responseText);
                     }
                     //console.log("Success")
                     },function(xhr) {

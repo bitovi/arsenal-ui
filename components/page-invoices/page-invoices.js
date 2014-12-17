@@ -98,6 +98,7 @@ var page = Component.extend({
   template: template,
   scope: {
     localGlobalSearch:undefined,
+    allowSearch: false,
     allInvoicesMap:[],
     checkedRows: [],
     unDeletedInvoices: [],
@@ -670,80 +671,90 @@ var page = Component.extend({
       },
       '{scope.appstate} change': function() {
           var self=this;
-          if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch')){
-              this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
-              $("#loading_img").show();
+          console.log("hhshshhs");
+          /* Page is not allowed to do search by default when page is loaded */
+          /* This can be checked using 'localGlobalSearch' parameter, it will be undefined when page loaded */
+          if(this.scope.attr("localGlobalSearch") != undefined){
+              if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch')) {
+                this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
+                $("#loading_img").show();
 
-              var periodFrom = this.scope.appstate.attr('periodFrom');
-              var periodTo = this.scope.appstate.attr('periodTo');
-              var serTypeId = this.scope.appstate.attr('storeType');
-              var regId = this.scope.appstate.attr('region');
-              var countryId = this.scope.appstate.attr()['country'];
-              var licId = this.scope.appstate.attr()['licensor'];
-              var contGrpId = this.scope.appstate.attr()['contentType'];
+                var periodFrom = this.scope.appstate.attr('periodFrom');
+                var periodTo = this.scope.appstate.attr('periodTo');
+                var serTypeId = this.scope.appstate.attr('storeType');
+                var regId = this.scope.appstate.attr('region');
+                var countryId = this.scope.appstate.attr()['country'];
+                var licId = this.scope.appstate.attr()['licensor'];
+                var contGrpId = this.scope.appstate.attr()['contentType'];
 
-              var invSearchRequest = {};
-              invSearchRequest.searchRequest = {};
-              if(typeof(periodFrom)=="undefined")
-                invSearchRequest.searchRequest["periodFrom"] = "";
-              else
-                invSearchRequest.searchRequest["periodFrom"] = periodFrom;
+                var invSearchRequest = {};
+                invSearchRequest.searchRequest = {};
+                if(typeof(periodFrom)=="undefined")
+                  invSearchRequest.searchRequest["periodFrom"] = "";
+                else
+                  invSearchRequest.searchRequest["periodFrom"] = periodFrom;
 
-              if(typeof(periodTo)=="undefined")
-                invSearchRequest.searchRequest["periodTo"] = "";
-              else
-                invSearchRequest.searchRequest["periodTo"] = periodTo;
+                if(typeof(periodTo)=="undefined")
+                  invSearchRequest.searchRequest["periodTo"] = "";
+                else
+                  invSearchRequest.searchRequest["periodTo"] = periodTo;
 
-              if(typeof(serTypeId)=="undefined")
-                invSearchRequest.searchRequest["serviceTypeId"] = "";
-              else
-                invSearchRequest.searchRequest["serviceTypeId"] = serTypeId['id'];
+                if(typeof(serTypeId)=="undefined")
+                  invSearchRequest.searchRequest["serviceTypeId"] = "";
+                else
+                  invSearchRequest.searchRequest["serviceTypeId"] = serTypeId['id'];
 
-              if(typeof(regId)=="undefined")
-                invSearchRequest.searchRequest["regionId"] = "";
-              else
-                invSearchRequest.searchRequest["regionId"] = regId['id'];
+                if(typeof(regId)=="undefined")
+                  invSearchRequest.searchRequest["regionId"] = "";
+                else
+                  invSearchRequest.searchRequest["regionId"] = regId['id'];
 
-              invSearchRequest.searchRequest["country"] = [];
-              if(typeof(countryId)!="undefined")
-                //invSearchRequest.searchRequest["country"].push(countryId['value']);
-                invSearchRequest.searchRequest["country"]=countryId;
+                invSearchRequest.searchRequest["country"] = [];
+                if(typeof(countryId)!="undefined")
+                  //invSearchRequest.searchRequest["country"].push(countryId['value']);
+                  invSearchRequest.searchRequest["country"]=countryId;
 
-              invSearchRequest.searchRequest["entityId"] = [];
-              if(typeof(licId)!="undefined")
-                invSearchRequest.searchRequest["entityId"] = licId;
+                invSearchRequest.searchRequest["entityId"] = [];
+                if(typeof(licId)!="undefined")
+                  invSearchRequest.searchRequest["entityId"] = licId;
 
-              invSearchRequest.searchRequest["contentGrpId"] = [];
-              if(typeof(contGrpId)!="undefined")
-                invSearchRequest.searchRequest["contentGrpId"] = contGrpId;
+                invSearchRequest.searchRequest["contentGrpId"] = [];
+                if(typeof(contGrpId)!="undefined")
+                  invSearchRequest.searchRequest["contentGrpId"] = contGrpId;
 
-              invSearchRequest.searchRequest["periodType"] = "P";
+                invSearchRequest.searchRequest["periodType"] = "P";
 
-              invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
-              invSearchRequest.searchRequest["offset"] = "0";
-              invSearchRequest.searchRequest["limit"] = "10";
+                invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
+                invSearchRequest.searchRequest["offset"] = "0";
+                invSearchRequest.searchRequest["limit"] = "10";
 
-              var filterData = self.scope.tokenInput.attr();
-              var newFilterData = [];
-              if(filterData.length>0){
-                for(var p=0;p<filterData.length;p++)
-                  newFilterData.push(filterData[p]["name"]);
+                var filterData = self.scope.tokenInput.attr();
+                var newFilterData = [];
+                if(filterData.length>0){
+                  for(var p=0;p<filterData.length;p++)
+                    newFilterData.push(filterData[p]["name"]);
+                }
+                invSearchRequest.searchRequest["filter"] = newFilterData;
+
+                invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr().toString();
+                invSearchRequest.searchRequest["sortOrder"] = "ASC";
+
+                console.log("Request are "+JSON.stringify(UserReq.formRequestDetails(invSearchRequest)));
+                GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){
+                    //console.log("response is "+JSON.stringify(data.attr()));
+                    self.scope.allInvoicesMap.replace(data);
+
+
+                },function(xhr){
+                  console.error("Error while loading: bundleNames"+xhr);
+                });
               }
-              invSearchRequest.searchRequest["filter"] = newFilterData;
 
-              invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr().toString();
-              invSearchRequest.searchRequest["sortOrder"] = "ASC";
-
-              console.log("Request are "+JSON.stringify(UserReq.formRequestDetails(invSearchRequest)));
-              GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){
-                  //console.log("response is "+JSON.stringify(data.attr()));
-                  self.scope.allInvoicesMap.replace(data);
-
-
-              },function(xhr){
-                console.error("Error while loading: bundleNames"+xhr);
-              });
-
+          } else {
+            console.log(this.scope.appstate.attr('globalSearch'));
+            if(this.scope.appstate.attr('globalSearch')==undefined)
+              this.scope.appstate.attr('globalSearch',true);
+            this.scope.attr("localGlobalSearch", this.scope.appstate.attr('globalSearch'));
           }
       }
   }

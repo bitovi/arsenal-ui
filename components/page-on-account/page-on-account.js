@@ -40,6 +40,7 @@ var page = Component.extend({
     proposedOnAccountData:{},
     bundleNamesForDisplay:"",
     newOnAccountRows:[],
+    licensorCurrencies:'@',
     errorMessage:"",
     showLoadingImage:"",
     quarters:[]
@@ -52,11 +53,13 @@ var page = Component.extend({
     events: {
       "inserted": function(){
        $("#searchDiv").show();
+
        setTimeout(function(){
           $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid emptyrows="{emptyrows}"></rn-new-onaccount-grid>')({emptyrows:true}));
        }, 10);
           disablePropose(true);
           disableCopyOnAccount(true);
+          $("#onAccountEditDeleteDiv").hide();
       },
       'period-calendar onSelected': function (ele, event, val) {  
          this.scope.attr('periodchoosen', val);
@@ -127,6 +130,7 @@ var page = Component.extend({
                     request.rows=rows;
                     //request.quarters=quarters;
                     self.scope.newOnAccountRows.replace(rows);
+                    self.scope.attr('licensorCurrencies',data.licensorCurrencies);
                     if(rows != null && rows.length >0){
                       disablePropose(false);
                       disableCopyOnAccount(false);
@@ -191,7 +195,7 @@ var page = Component.extend({
       "#onAccountBalance click":function(el, ev){
         ev.preventDefault();
         this.scope.tabsClicked="ON_ACC_BALANCE";
-        $('#newonAccountGrid, #newonAccountGridComps, #proposedonAccountDiv,#proposeOnAccountGridComps, #forminlineElements,#searchDiv').hide();
+        $('#newonAccountGrid, #newonAccountGridComps, #proposedonAccountDiv,#proposeOnAccountGridComps, #forminlineElements,#searchDiv, #onAccountEditDeleteDiv').hide();
         $('#onAccountBalanceDiv').show();
        if ($("rn-onaccount-balance-grid").find("tbody>tr").length) {
            $('rn-onaccount-balance-grid tbody tr').css("outline","0px solid #f1c8c8");
@@ -203,13 +207,13 @@ var page = Component.extend({
         ev.preventDefault();
         this.scope.tabsClicked="NEW_ON_ACC";
         $('#newonAccountGrid, #newonAccountGridComps, #forminlineElements,#searchDiv').show();
-        $('#onAccountBalanceDiv, #proposedonAccountDiv,#proposeOnAccountGridComps').hide();
+        $('#onAccountBalanceDiv, #proposedonAccountDiv,#proposeOnAccountGridComps, #onAccountEditDeleteDiv').hide();
       },
       "#proposedonAccount click":function(el, ev){
         ev.preventDefault();
         this.scope.tabsClicked="PROPOSED_ON_ACC";
         $('#newonAccountGrid, #onAccountBalanceDiv, #forminlineElements,#searchDiv').hide();
-        $('#proposedonAccountDiv,#proposeOnAccountGridComps').show();
+        $('#proposedonAccountDiv,#proposeOnAccountGridComps, #onAccountEditDeleteDiv').show();
         disableProposedSubmitButton(true);
         disableEditORDeleteButtons(true);
        if (!$("rn-proposed-onaccount-grid").find("tbody>tr").length) {
@@ -223,19 +227,29 @@ var page = Component.extend({
             paymentBundleName = self.scope.paymentBundleNameText;
         }
         var createrequest = utils.frameCreateRequest(self.scope.request,self.scope.onAccountRows,self.scope.documents,self.scope.usercommentsStore,self.scope.quarters,paymentBundleName,self.scope.paymentBundleName);
-        var request = requestHelper.formRequestDetails(createrequest);
-        //console.log('Request:'+JSON.stringify(request));
-        newOnAccountModel.create(request,function(data){
-          //console.log("Create response is "+JSON.stringify(data));
-          if(data["status"]=="SUCCESS"){
-              displayMessage(data["responseText"],true);
-            $("#propose").attr("disabled","disabled");
-          }else{
-                displayMessage(data["responseText"],false);
-              }
-          },function(xhr){
-            console.error("Error while Creating: onAccount Details"+xhr);
-          });
+        if(createrequest.onAccount.onAccountDetails.length>0){
+          var request = requestHelper.formRequestDetails(createrequest);
+          //console.log('Request:'+JSON.stringify(request));
+          newOnAccountModel.create(request,function(data){
+            if(data["status"]=="SUCCESS"){
+                displayMessage(data["responseText"],true);
+              $("#propose").attr("disabled","disabled");
+              var request = {};
+              var rows = utils.frameRows(self.scope.attr('licensorCurrencies'),self.scope.quarters);
+              request.rows=rows;
+              request.quarters=self.scope.quarters;   
+              $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
+              $('#usercomments').val("");
+              self.scope.attr('onAccountRows',rows);
+            }else{
+                  displayMessage(data["responseText"],false);
+                }
+            },function(xhr){
+              console.error("Error while Creating: onAccount Details"+xhr);
+            });
+        }else{
+          displayMessage('Empty Invoice Amounts',true);
+        }
       },
       "#proposedDelete click":function(el,ev){
         disableEditORDeleteButtons(true);

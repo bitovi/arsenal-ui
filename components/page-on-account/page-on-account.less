@@ -1,7 +1,11 @@
 @import 'components/grid/grid.less';
+@import 'components/file-uploader/file-uploader.less';
 @white-border: 1px solid #fff;
 
 
+rn-file-uploader{
+.fileupload-mixin();
+}
 rn-onaccount-balance-grid, rn-new-onaccount-grid{
   .grid-mixin();
     th, td {
@@ -224,3 +228,24 @@ rn-onaccount-balance-grid, rn-new-onaccount-grid{
    width: 30px;
    color: transparent;
 }
+
+.customLI{
+  background-color: transparent
+   !important;
+  border: none !important;
+}
+
+period-calendar{
+  ul li{
+    margin-left:0px !important;
+  }
+  li a{
+    color: #000 !important; 
+    background-color: transparent !important;
+  }
+  li a:hover{
+    color: #000 !important;  
+    background-color: transparent !important; 
+  }
+}
+

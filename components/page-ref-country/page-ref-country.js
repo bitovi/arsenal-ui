@@ -219,8 +219,12 @@ var page = Component.extend({
         RefCountry.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
           console.log("Response data is "+JSON.stringify(data.attr()));
-          if(data.countryDetails.countryId!=null)
-            self.pageState.countryDetails.attr("country",data.countryDetails);
+          self.pageState.countryDetails.attr("country",data.countryDetails);
+          
+          /* if the data.countryDetails.countryId is null then set the country dropdown using requestObj*/
+          if(data.countryDetails.countryId==null){
+            self.pageState.countryDetails.country.attr("countryId",requestObj.countryId);
+          }
 
           if(data.countryDetails.attr("validFrom")!=0)
             var validFrom = data.countryDetails.attr("validFrom").toString();
@@ -339,10 +343,13 @@ var page = Component.extend({
       console.log("Request passed is "+ JSON.stringify(UserReq.formRequestDetails(requestObj)));
       RefCountry.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
-        console.log("Response data is "+JSON.stringify(data.attr()));
-        /* Set the Response data only if the countryId is not null*/
-        if(data.countryDetails.countryId!=null)
-          self.pageState.countryDetails.attr("country",data.countryDetails);
+        //console.log("Response data is "+JSON.stringify(data.attr()));
+        self.pageState.countryDetails.attr("country",data.countryDetails);
+        
+        /* if the data.countryDetails.countryId is null then set the country dropdown using requestObj*/
+        if(data.countryDetails.countryId==null){
+          self.pageState.countryDetails.country.attr("countryId",requestObj.countryId);
+        }
 
         if(data.countryDetails.attr("validFrom")!=0)
           var validFrom = data.countryDetails.attr("validFrom").toString();

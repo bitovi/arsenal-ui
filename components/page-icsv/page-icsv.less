@@ -18,6 +18,15 @@ icsv-grid {
  /* .entity, .invoiceType, .contentType, .country, .invoiceNum, .dueDate, .currency, .status, .bundleName, .comments{
   	text-align: left !important;
   }*/
+  .invoiceAmt{
+  	text-align: right !important;
+  }
+}
+
+@import 'components/file-uploader/file-uploader.less';
+
+rn-file-uploader{
+	.fileupload-mixin();
 }
 
 
@@ -393,11 +402,22 @@ icsv-grid {
 		width:170px;
 	}
 	.icsv-error{
-     position: relative;
-	font-size: 20px;
-	color: red;
-	padding-left: 500px;
-	float: left;
-	margin-top: -210px;
+	    position: relative;
+		font-size: 20px;
+		color: red;
+		padding-left: 500px;
+		float: left;
+		margin-top: -210px;
     }
+
+    .errorhead{
+	    width:20px;
+	    height:20px;
+    }
+
+   .loading_img
+	  {
+	     background:url('/resources/images/spinner.gif') no-repeat center center;
+	     padding:10%;
+	  }
 }
