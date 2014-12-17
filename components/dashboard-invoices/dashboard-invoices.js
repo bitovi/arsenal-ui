@@ -93,7 +93,7 @@ var DashboardInvoices = Component.extend({
           title: 'Missing Invoices',
           content: popoverContent,
           html: true,
-          trigger: 'hover'
+          trigger: 'click'
         });
       };
     },
