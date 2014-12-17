@@ -1,5 +1,5 @@
 <div class="form-horizontal" id="invoiceform" role="form">
-  <div class="container-fluid create-invoice">
+  <div class="container-fluid">
     <div class="row">
       <div class="col-sm-5 pageTitle">
         <h3>Country-Licensor Details</h3>
