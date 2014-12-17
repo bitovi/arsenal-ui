@@ -49,7 +49,8 @@ appstate.startRouting();
 $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
  // Every domain service call requires some common params, so we do them here to save effort.
  if( options.url.indexOf(URLs.DOMAIN_SERVICE_URL) === 0 ||
-     options.url.indexOf(URLs.UI_SERVICE_URL) === 0
+     options.url.indexOf(URLs.UI_SERVICE_URL) === 0 ||
+     options.url.indexOf(URLs.INTEGRATION_SERVICE_URL) === 0
  ) {
    var data = (options.data.constructor === String ? JSON.parse(options.data) : options.data);
    can.extend(data, requestHelper.formRequestDetails({}));
