@@ -4,9 +4,9 @@
   <li class="step {{approvedClass .}}" {{data 'step'}}>
     <img
       class="person-icon"
-      {{#past}}src="/resources/images/rn_WorkflowTypePerson_completed@2x.png"{{/past}}
-      {{#current}}src="/resources/images/rn_WorkflowTypePerson_current@2x.png"{{/current}}
-      {{#future}}src="/resources/images/rn_WorkflowTypePerson_future@2x.png"{{/future}}
+      {{#past .}}src="/resources/images/rn_WorkflowTypePerson_completed@2x.png"{{/past}}
+      {{#current .}}src="/resources/images/rn_WorkflowTypePerson_current@2x.png"{{/current}}
+      {{#future .}}src="/resources/images/rn_WorkflowTypePerson_future@2x.png"{{/future}}
     />
     <div class="actor">{{actorName}}</div>
     <div class="step-name">{{stepName}}</div>
