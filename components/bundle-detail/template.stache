@@ -33,6 +33,7 @@
 {{#if pageState.selectedBundle.bundleDetailsGroup.length}}
 <div class="bottom-controls">
   <rn-workflow-display steps="{workflowSteps}" class="progress-display"></rn-workflow-display>
+  <div class="flex-spacer"></div>
   <div class="payment-option">
     <label>Payment Option:</label>
     <select can-value="{paymentType}">

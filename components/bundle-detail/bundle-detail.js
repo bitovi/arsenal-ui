@@ -176,6 +176,9 @@ var BundleDetailTabs = Component.extend({
     },
     '{scope} pageState.selectedBundle': function(scope) {
       var selectedBundle = scope.pageState.selectedBundle;
+      if(!selectedBundle) {
+        return;
+      }
 
       can.batch.start();
       // clear out selectedRows
