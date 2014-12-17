@@ -1,12 +1,11 @@
-
 <div>
 
-
+	<form id="reconform">
 			<div  class="form-inline" >
-				<div class="col-md-12" style="text-align:right;padding:10px;">
+				<div class="col-md-12 form-group" style="text-align:right;padding:10px;">
 					<label  for="inputAnalyze">Convert to Currency </label>
 
-					<select id="currency" class="currency" name="currency" {{isIngestCcidsSelected 0}} can-value="currency">
+					<select id="currency" class="currency form-control" name="currency" {{isIngestCcidsSelected 0}} can-value="currency">
 						<option value="">Select</option>
 						{{#each currencyList}}
 						<option value="{{id}}">{{id}}</option>
@@ -18,11 +17,12 @@
 					style="margin-left:10px;" {{isIngestCcidsSelected 0}}>
 					Refresh</button>
 				</div>
-
+				
 			</div>
+	</form>
 
 
-				<table class="statsTable" >
+				<table class="statsTable">
 					<tr>
 						<td>
 
@@ -30,6 +30,8 @@
 
 								<!-- todo export buttons -->
 
+								<div class="spaceDiv">&nbsp;</div>
+								<div class="spaceDiv">&nbsp;</div>
 
 								<table style="width:100%">
 									<tr width="100%" style="vertical-align: top;" colspan="3">
@@ -43,12 +45,10 @@
 												<table id="summaryTopTable">
 													<tr>
 														<td width="50%">
-															<div class="spaceDiv">&nbsp;</div>
 															<div>Ingestion Stats</div>
 														</td>
 
 														<td style="width:20%;">
-															<div class="spaceDiv">&nbsp;</div>
 															<div style="float: right;">
 																<img src="resources/images/exportExcelIcon.png" class="" id="exportExcelSum">
 				        										<img src="resources/images/copyToClipboardIcon.png" class="" id="copyToClipboardSum">
@@ -79,18 +79,16 @@
 
 														</td>
 
-														<td style="width:7%;">
-															<div style="display:none"><!--TODO Need to do allignment-->
-																 <img src="resources/images/exportExcelIcon.png" class="" id="exportExcel">
-				        								 <img src="resources/images/copyToClipboardIcon.png" class="" id="copyToClipboard">
+														<td style="float: right;">
+															<div style="display:block">
+																<img src="resources/images/exportExcelIcon.png" class="" id="exportExcel">
+				        								 		<img src="resources/images/copyToClipboardIcon.png" class="" id="copyToClipboard">
 															</div>
 
 														</td>
 													</tr>
 												</table>
 
-
-												<div class="spaceDiv">&nbsp;</div>
 
 												<table id="summaryStatsTab">
 													<thead>

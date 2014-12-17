@@ -176,6 +176,9 @@ var BundleDetailTabs = Component.extend({
     },
     '{scope} pageState.selectedBundle': function(scope) {
       var selectedBundle = scope.pageState.selectedBundle;
+      if(!selectedBundle) {
+        return;
+      }
 
       can.batch.start();
       // clear out selectedRows
@@ -202,7 +205,7 @@ var BundleDetailTabs = Component.extend({
 
       scope.getNewDetails(selectedBundle).then(function(bundle) {
         return WorkflowStep.findAll({
-          workflowInstanceId: bundle.workflowInstanceId
+          workflowInstanceId: bundle.approvalId
         });
       }).then(function(steps) {
         scope.workflowSteps.replace(steps);

@@ -1,9 +1,9 @@
 import Period from 'models/common/periodFrom/';
-import Grid from '../grid/';
+import ScrollingGrid from 'components/grid/examples/scrolling-grid/';
 import formats from 'utils/formats';
 import _less from './bundle-grid.less!';
 
-var BundleGrid = Grid.extend({
+var BundleGrid = ScrollingGrid.extend({
   tag: 'rn-bundle-grid',
   scope: {
     pageState: null, // passed in

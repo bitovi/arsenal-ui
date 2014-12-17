@@ -19,7 +19,7 @@
               <div class="col-sm-5">
                  <label for="forCountry" class="col-sm-3 control-label">Country: </label>
                  <div class="col-sm-5">
-                   <select class="form-control" can-value='pageState.countryDetails.country.countryId'>
+                   <select class="form-control" id="selCountry" can-value='pageState.countryDetails.country.countryId'>
                        {{#each countries}}
                          <option value="{{id}}">{{value}}</option>
                         {{/each}}
@@ -79,7 +79,6 @@
                   <label for="forEntity" class="col-sm-5 control-label">Local Society: </label>
                   <div class="col-sm-7 requiredBar">
                     <select class="form-control" id="localSocietysel" name="localSociety" can-value='pageState.countryDetails.country.localSocietyId'>
-                      <option value="">Select</option>
                       {{#each localSocietyNames}}
                         <option value="{{id}}">{{value}}</option>
                        {{/each}}

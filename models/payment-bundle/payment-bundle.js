@@ -185,6 +185,13 @@ var PaymentBundle = Model.extend({
       throw new Error('Invalid action for payment bundle move. Only "approve", "reject", "recall", and "delete" are valid.');
     }
 
+    var bundleDetailsGroup = this.bundleDetailsGroup.attr();
+    bundleDetailsGroup.forEach(function(group) {
+      group.bundleDetails.forEach(function(detail) {
+        delete detail.__isChild;
+      });
+    });
+
     var requestData = {
       paymentBundle: {
         comments: params.approvalComment,
@@ -195,7 +202,7 @@ var PaymentBundle = Model.extend({
         paymentAmt: this.paymentAmt,
         paymentCcy: this.paymentCcy,
         status: this.status,
-        bundleDetailsGroup: this.bundleDetailsGroup
+        bundleDetailsGroup: bundleDetailsGroup
       }
     };
 

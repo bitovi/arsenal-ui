@@ -23,8 +23,13 @@
     display: block;
 
     tr {
-      display: block;
+      display: flex;
       width: 100%;
+      height: auto;
+
+      th, td {
+        height: auto;
+      }
     }
   }
 
@@ -86,4 +91,3 @@
 rn-scrolling-grid-example {
   .scrolling-grid-mixin();
 }
-

@@ -54,6 +54,7 @@ var page = Component.extend({
     size_incomingCcidSelected:0,
     currencyScope:[],
     currencyList:[],
+    reconRefresh : [],
 
     //bottomgrid
     refreshStatsReq:undefined,
@@ -64,18 +65,23 @@ var page = Component.extend({
       var self = this;
       if(type=="Add")
         self.attr('tokenInput').push(val);
-        else if(type=="Delete"){
-          var flag=true;
-          this.attr('tokenInput').each(function(value, key) {
-            if(val.id == value.id){
-              self.attr('tokenInput').splice(key,1);
-            }
-          });
-        }
+      else if(type=="Delete"){
+        var flag=true;
+        this.attr('tokenInput').each(function(value, key) {
+          if(val.id == value.id){
+            self.attr('tokenInput').splice(key,1);
+          }
+        });
       }
+    },
+
+    addRefresh : function(refresh){
+      this.attr("reconRefresh").push(refresh);
+    }
 
   },
   helpers: {
+
     isIngestCcidsSelected:function(ref){
       //if the size of the list is greater than 0, enables the Reject button
       return ( this.attr("size_ingestCcidSelected") == ref ? 'disabled' : '' ) ;
@@ -111,6 +117,7 @@ var page = Component.extend({
         ],
         {
           theme: "facebook",
+          placeholder:"Search...",
           preventDuplicates: true,
           onResult: function (item) {
             if($.isEmptyObject(item)){
@@ -129,6 +136,7 @@ var page = Component.extend({
       },
       "{tokenInput} change": function(){
         var self= this;
+        //console.log(this.scope.tokenInput);
         /* The below code calls {scope.appstate} change event that gets the new data for grid*/
         /* All the neccessary parameters will be set in that event */
         commonUtils.triggerGlobalSearch();
@@ -259,6 +267,8 @@ var processRejectIngestRequest = function(scope,requestType){
           if(data.responseCode == "0000"){
             $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
             $("#messageDiv").show();
+            this.scope.reconRefresh[0].summaryStatsData.splice(0,1);
+            $('.statsTable').hide();
             setTimeout(function(){
               $("#messageDiv").hide();
             },3000);
@@ -318,6 +328,16 @@ var fetchReconIngest = function(scope){
   searchRequestObj.searchRequest["offset"] = "0";
   searchRequestObj.searchRequest["sortBy"] = "COUNTRY";
   searchRequestObj.searchRequest["sortOrder"] = "ASC";
+  searchRequestObj.searchRequest["sortOrder"] = "ASC";
+
+  var filterData = scope.tokenInput.attr();
+  var newFilterData = [];
+  if(filterData.length>0){
+    for(var p=0;p<filterData.length;p++)
+      newFilterData.push(filterData[p]["name"]);
+    }
+
+  searchRequestObj.searchRequest["filter"] = newFilterData;
 
 
   Recon.findOne(UserReq.formRequestDetails(searchRequestObj),function(data){
@@ -374,6 +394,14 @@ var fetchReconDetails = function(scope){
   searchRequestObj.searchRequest["sortBy"] = "COUNTRY";
   searchRequestObj.searchRequest["sortOrder"] = "ASC";
 
+  var filterData = scope.tokenInput.attr();
+  var newFilterData = [];
+  if(filterData.length>0){
+    for(var p=0;p<filterData.length;p++)
+      newFilterData.push(filterData[p]["name"]);
+    }
+
+  searchRequestObj.searchRequest["filter"] = newFilterData;
 
   Recon.findOne(UserReq.formRequestDetails(searchRequestObj),function(data){
     if(data.status == "FAILURE"){

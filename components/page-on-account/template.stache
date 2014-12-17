@@ -6,7 +6,8 @@
 	<div class="col-lg-12 pageTitle">
 		   <div class="col-md-3"><h3>On Account </h3></div> 
 	
-	   <div class="col-md-9">
+		<!--
+	   	<div class="col-md-9">
 	   		<div class="form-inline row" id="forminlineElements">
 		    	<div class="col-md-10 marginTop-10">
 		    		   	<div class="pull-right">
@@ -27,7 +28,8 @@
 		        	</span>
 		    	</div>
 		    </div>
-	   </div>
+	   	</div>
+	   -->
 
 	</div>
 
@@ -41,13 +43,39 @@
 	   
 	    <!-- Tab Details -->
 	    <ul id="myTabs" class="nav nav-tabs">
-		   <li class="active">
-		      <a id = "newonAccount" href="#NewonAccountDiv" data-toggle="tab">
-		         New On Account
-		      </a>
-		   </li>
-		   <li><a id = "onAccountBalance" href="#onAccountBalanceDiv" data-toggle="tab">On Account Balance</a></li>
-		   <li><a id = "proposedonAccount" href="#proposedonAccountDiv" data-toggle="tab">Proposed On Account</a></li>
+		   	<li class="active">
+		      	<a id = "newonAccount" href="#NewonAccountDiv" data-toggle="tab">
+		        	New On Account
+		      	</a>
+		   	</li>
+		   	<li><a id = "onAccountBalance" href="#onAccountBalanceDiv" data-toggle="tab">On Account Balance</a></li>
+		   	<li><a id = "proposedonAccount" href="#proposedonAccountDiv" data-toggle="tab">Proposed On Account</a></li>
+
+		   	<li class="pull-right marginLeft-5 marginTop-10">
+		   		<img src="resources/images/exportExcelIcon.png" class="" id="exportToExcel">
+			    <img src="resources/images/copyToClipboardIcon.png" class="" id="copyToClipboard">
+		   	</li>
+
+		   	<li class="pull-right marginTop-10 customLI">
+		   		<div id="onAccountEditDeleteDiv">
+			   		<button type="button" id="proposedEdit" class="btn btn-primary buttonSubmit btn-custom-small">Edit</button>
+			   		<button type="button" id="proposedDelete" class="btn btn-primary buttonSubmit btn-custom-small ">Delete</button>
+			   	</div>
+		   	</li>
+
+		   	<li class="pull-right marginTop-10 customLI">
+		   		<div id="forminlineElements">
+			    		    	
+			    	<span class="pull-inline">Previous Quarter: </span>
+			    	<div id="calendarclsdiv" class="calendarcls pull-inline">
+			            <input type='text' id="copyQuarter" class="form-control  updateperoid "/>
+			            <period-calendar  appstate="{appstate}"></period-calendar>
+			        </div>
+        			<button type="button" id="copyOnAccount" class="marginLeft-5 pull-inline btn btn-primary buttonSubmit btn-custom-small">Copy on Accounts</button>
+
+		    	</div>
+		   	</li>
+
 		</ul>
 
 		<!-- Tab Contents -->
@@ -98,9 +126,7 @@
 			<!-- Propose On Account -->
 			<div class="tab-pane fade" id="proposedonAccountDiv">
 				
-				<button type="button" id="proposedDelete" class="btn btn-primary buttonSubmit btn-custom-small pull-right marginLeft-5">Delete</button>
-				<button type="button" id="proposedEdit" class="btn btn-primary buttonSubmit btn-custom-small pull-right">Edit</button>
-		   		
+				
 		   		<div id="proposedOnAccountGrid">
 					<div id="loading_img"></div>
 		   		</div>
@@ -115,7 +141,7 @@
 
 		       		<div class="col-lg-7 marginTop-10">
 		       			<span class="col-sm-2">
-		       				<label for="forStatus" class="col-sm-5 control-label">User Comments: </label>
+		       				User Comments: 
 		       			</span>
 		       			
 		       		 	<span class="col-sm-9 pull-inline">

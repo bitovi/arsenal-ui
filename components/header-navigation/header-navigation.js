@@ -51,7 +51,7 @@ var headerNavigation = Component.extend({
         changeMenu(mainmenu_txt);
       },
       '#show click':function(btn){
-         $('#dropdown').slideToggle('slow');
+         $('#dropdown').slideToggle('fast');
       },
       '#dropdown li click':function(btn){
            var mainmenu_txt = $.trim(btn.text());
@@ -104,7 +104,7 @@ var headerNavigation = Component.extend({
 });
 var changeMenu = function(mainmenu_txt){
     var test = '<li><ul id="dropdown"></ul></li>',addcls;
-    var temp ='<li class="show active"><a id="show">'+mainmenu_txt+'</a></li>'+$(test).html();
+    var temp ='<li class="show active"><a id="show">'+mainmenu_txt+'<span class="activemenu">></span>'+'</a></li>'+$(test).html();
         $.each(menu,function(i,el){
             if(el.value==mainmenu_txt){
              if(el.submenu!=undefined && el.submenu.length>0){
