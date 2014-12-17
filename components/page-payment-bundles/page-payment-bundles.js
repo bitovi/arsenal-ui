@@ -15,7 +15,7 @@ import styles from './page-payment-bundles.less!';
 var pageState = new Map({
   bundles: new PaymentBundle.List([]),
   selectedBundle: null,
-  verboseGrid: !false
+  verboseGrid: true
 });
 
 var page = Component.extend({
@@ -44,6 +44,11 @@ var page = Component.extend({
           pageState.bundles.replace(bundles);
           can.batch.stop();
         });
+      } else {
+        can.batch.start();
+        pageState.bundles.splice(0, pageState.bundles.length);
+        pageState.attr('selectedBundle', null);
+        can.batch.stop();
       }
     }
   },
