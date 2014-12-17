@@ -9,13 +9,23 @@
 <div>
 
 
-			<div>
-				<span class="refreshButton">
-					<button type="button" id="refreshReconStats"  name="refreshReconStatsName"
-						class="btn buttonSubmit btn-custom-small"
-						style="margin-left:10px;" {{isIngestCcidsSelected 0}}>
-						Refresh</button>
-				</span>
+			<div  class="form-inline" >
+				<div class="col-md-12" style="text-align:right;padding:10px;">
+					<label  for="inputAnalyze">Convert to Currency </label>
+
+					<select id="currency" class="currency" name="currency" {{isIngestCcidsSelected 0}} can-value="currency">
+						<option value="">Select</option>
+						{{#each currencyList}}
+						<option value="{{id}}">{{id}}</option>
+						{{/each}}
+					</select>
+
+					<button type="button"   name="refreshReconStatsName"
+					class="btn buttonSubmit btn-custom-small refreshReconStats"
+					style="margin-left:10px;" {{isIngestCcidsSelected 0}}>
+					Refresh</button>
+				</div>
+
 			</div>
 
 			<div class="spaceDiv">&nbsp;</div>
@@ -78,17 +88,7 @@
 															<div>Summary Stats</div>
 														</td>
 														<td width="35%">
-															<div style="font-size:12px">
-																Convert to Currency
-															</div>
-															<div>
-																<select id="currency" class="currency" name="currency">
-																        <option value="">Select</option>
-																       {{#each currencyScope}}
-																       		<option value="{{id}}">{{value}}</option>
-																        {{/each}}
-															   </select>
-															</div>
+
 														</td>
 
 														<td style="width:7%;">

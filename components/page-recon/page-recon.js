@@ -53,6 +53,7 @@ var page = Component.extend({
     size_ingestCcidSelected:0,
     size_incomingCcidSelected:0,
     currencyScope:[],
+    currencyList:[],
 
     //bottomgrid
     refreshStatsReq:undefined,
@@ -138,6 +139,7 @@ var page = Component.extend({
       var request = {
         "files":[
         {
+
           "fileId":row.badFileId,
           "boundType":row.badFileType
         }
@@ -217,8 +219,19 @@ var page = Component.extend({
           fetchReconDetails(this.scope);
         }
       }
+    },
+    '{scope.currencyScope} change': function() {
+      var list = [];
+      can.each(this.scope.currencyScope,
+        function( value, index ) {
+          list.push( {
+            "id":value
+          });
+        }
+      );
+      this.scope.currencyList.replace(list);
     }
-  }
+   }
 });
 
 
@@ -324,8 +337,10 @@ var fetchReconIngest = function(scope){
 
       scope.currencyScope.replace(data.currency);
 
+
+
       if(data.summary == undefined){
-        console.error("Footer rows doesn't exists");
+        console.error("Footer rows doesn't exists in the response");
       }
 
       var footerLine= {
@@ -410,18 +425,18 @@ var refreshChekboxSelection = function(el,scope){
 
   if(scope.tabSelected == scope.tabName.ingest.attr("name")){
     if(el[0].checked) {
-      scope.ingestCcidSelected.push(row.ccidId);
+      scope.ingestCcidSelected.push(row.dtlHdrId);
     } else {
-      var index = _.indexOf(scope.ingestCcidSelected, row.ccidId);
+      var index = _.indexOf(scope.ingestCcidSelected, row.dtlHdrId);
       (index > -1) && scope.ingestCcidSelected.splice(index, 1);
     }
     scope.attr("size_ingestCcidSelected" ,_.size(scope.attr("ingestCcidSelected")));
   }else{
 
     if(el[0].checked) {
-      scope.incomingCcidSelected.push(row.ccidId);
+      scope.incomingCcidSelected.push(row.dtlHdrId);
     } else {
-      var index = _.indexOf(scope.incomingCcidSelected, row.ccidId);
+      var index = _.indexOf(scope.incomingCcidSelected, row.dtlHdrId);
       (index > -1) && scope.incomingCcidSelected.splice(index, 1);
      }
     scope.attr("size_incomingCcidSelected" ,_.size(scope.attr("incomingCcidSelected")));

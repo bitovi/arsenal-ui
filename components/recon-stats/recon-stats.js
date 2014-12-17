@@ -62,8 +62,9 @@ var page = Component.extend({
 			},
 
 		summaryStatsData : [],
+    currency:"",
 
-    currencyScope: [],
+
 
     fn_RefreshReconStatsRequest : function() {
 
@@ -99,13 +100,13 @@ var page = Component.extend({
 
     },
 
-    fn_refreshReconStats : function(ccids) {
+    fn_refreshReconStats : function(dtlHDRIds,currency) {
 
         self = this;
 
-        if(ccids.length > 0)  {
+        if(dtlHDRIds.length > 0)  {
 
-            self.refreshParam.searchRequest.ids = ccids;
+            self.refreshParam.searchRequest.ids = dtlHDRIds;
 
             $('.statsTable').show();
             $('#summaryStatsDiv').hide();
@@ -113,21 +114,26 @@ var page = Component.extend({
 
             var value = {};
 
-            var reqArr = {};
 
-            reqArr = {};
 
-            var ids = [];
+            var selectedIds = [];
 
-            for(var i=0; i<ccids.length; i++) {
+            for(var i=0; i<dtlHDRIds.length; i++) {
 
-              ids[i] = ccids[i].toString();
+              selectedIds[i] = dtlHDRIds[i].toString();
 
             }
 
-            reqArr.invoices = [];
-            reqArr.searchRequest = {"ids" : []};
-            reqArr.searchRequest.ids = ids;
+            var reqArr = {
+              searchRequest:{
+              "ids" : selectedIds,
+              "currency": currency
+              }
+            };
+
+            //
+            // reqArr.searchRequest = {};
+            // reqArr.searchRequest.ids = ids;
 
             var genObj = reqArr;
 
@@ -144,9 +150,9 @@ var page = Component.extend({
 
                   //Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
                   //   ]).then(function(values) {
-                   
+
                   //     self.attr("currencyScope").replace(values[0]);
-               
+
                   //});
 
                   // Grid data
@@ -209,26 +215,15 @@ var page = Component.extend({
       }
 
   },
-
-
 	events: {
-
     'inserted' : function() {
-
       $('.statsTable').hide();
-
     },
-
-		"#refreshReconStats click": function(item,el,ev) {
-
+		".refreshReconStats click": function(item,el,ev) {
       self = this;
-
       var ccids = this.element.parent().scope().ingestCcidSelected;
-
-      self.scope.fn_refreshReconStats(ccids);
-
+      self.scope.fn_refreshReconStats(ccids,this.scope.currency);
 		}
-
 	}
 
 
