@@ -84,209 +84,210 @@
 		</div>
 	</div>
 
+	<div id="loading_img"></div>
 	<div class="col-sm-12" id="entityGrid">
 
-	<form id="entityLicensorBottom">
-    	<div class="col-sm-6" id="entityGridFD">
-    	
-    				<div class="col-sm-12" id="spaceBar"></div>
-    		
-	    			<div class="col-sm-11 col-sm-offset-1">
-	    				<div class="col-sm-3 textalignright">
-		    				<label>Licensor:</label>
-						</div>
-		    			<div class="col-sm-4 form-group">
-		    				<input type="text" name="licensorName" id="licensorName" class="form-control licensorName formInputs" can-value="licDetails.data.licensorName" value='{{licDetails.data.licensorName}}' />
-						</div>
-	    			</div>
+		<form id="entityLicensorBottom">
+	    	<div class="col-sm-6" id="entityGridFD">
+	    	
+	    				<div class="col-sm-12" id="spaceBar"></div>
+	    		
+		    			<div class="col-sm-11 col-sm-offset-1">
+		    				<div class="col-sm-3 textalignright">
+			    				<label>Licensor:</label>
+							</div>
+			    			<div class="col-sm-4 form-group">
+			    				<input type="text" name="licensorName" id="licensorName" class="form-control licensorName formInputs" can-value="licDetails.data.licensorName" value='{{licDetails.data.licensorName}}' />
+							</div>
+		    			</div>
 
-				
-
-	    			<div class="col-sm-11 col-sm-offset-1 status">
-	    				<div class="col-sm-3 textalignright">
-		    				<label>Status:</label>
-						</div>
-		    			<div class="col-sm-4" can-value="licDetails.data.status">
-		    				<div class="col-sm-12 status">
-		    					{{licDetails.data.status}}
-		    				</div>
-						</div>
-	    			</div>
-
-				
-	    			{{getPeriodFromVal}}
-	    			<div class="col-sm-11 col-sm-offset-1">
-	    				<div class="col-sm-3 textalignright">
-		    				<label>Valid From:</label>
-						</div>
-		    			<div class="col-sm-4 form-group" id="periodFromcontainer">
-
-		    				
-							 <div class="calendarcls form-group">
-					            <input type='text' name="periodFromInp" id="periodFrom" class="form-control  updatePeroid periodFromInput formInputs" can-value='periodFromVal' value="{{periodFromVal}}"/>
-					            <period-calendar selectedperiod="{selectedperiod}"  appstate="{appstate}"></period-calendar>
-					         </div>
-          
-
-						</div>
-	    			</div>
-
-				
-
-					<div class="col-sm-11 col-sm-offset-1">
-	    				<div class="col-sm-3 textalignright">
-		    				<label>Valid To:</label>
-						</div>
-		    			<div class="col-sm-4" id="periodTocontainer">
-
-		    				
-		    				<div class="calendarcls form-group" >
-					           <input type='text' name="periodToInp" id="periodTo" class="form-control  updatePeroid periodToInput formInputs" can-value='periodToVal'/>
-					           <period-calendar selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
-					          </div>
-
-						</div>
-	    			</div>
-	    			 <div class='period-invalid'> Invalid Period !</div>
-	    			<div class="col-sm-12" id="spaceBar"></div>
-
-
-				
-
-					<div class="col-sm-11 col-sm-offset-1 form-group">
-	    				<div class="col-sm-3 textalignright">
-		    				<label>Account Name:</label>
-						</div>
-		    			<div class="col-sm-4">
-		    				<input type="text" name="accountName" can-value="licDetails.data.accountName" value="{{licDetails.data.accountName}}" class="form-control accountName formInputs"/>
-						</div>
-
-					</div>
-
-					<div class="col-sm-11 col-sm-offset-1 form-group">
-	    				<div class="col-sm-3 textalignright">
-		    				<label>Invoice Type:</label>
-						</div>
-		    			<div class="col-sm-4">
-	    						{{getselectedInvoiceType invoiceType}}
-	    						<div class="col-sm-12 invoiceTypeerr"> Select an Invoice Type !</div>
-
-				    			<select id="invoiceType" name="invoiceType" can-value="invoiceType" class="form-control resizeInvoice invoiceType formInputs">
-				    				 
-						            <option value="">Select</option>
-						            
-						           	{{#each invoiceTypes}}
-						              <option id="{{id}}">{{value}}</option>
-						            {{/each}}
-						             
-								</select>
-						</div>
-
-					</div>
-
-
-	    			
-
-	    			<div class="col-sm-12" id="spaceBar5px"></div>
-
-	    			<!-- <div class="col-sm-11 col-sm-offset-1 form-group">
-
-	    				<div class="col-sm-3 textalignright">
-		    				<label>Invoice Name:</label>
-						</div>
-		    			<div class="col-sm-4">
-		    				<input type="text" name="invoiceName" can-value="licDetails.data.invoiceDetailType" value="{{licDetails.data.invoiceDetailType}}" class="form-control formInputs"/>
-						</div>
-
-	    			</div> -->
-
-					<div class="col-sm-12" id="spaceBar5px"></div>
-
-	    			<div class="col-sm-11 col-sm-offset-1 form-group RepSplit">
-
-	    				<div class="col-sm-3 textalignright">
-		    				<label>Representation Split:</label>
-						</div>
-		    			<div class="col-sm-4">
-		    				<input type="text" name="repSplit" id="repSplit" can-value="licDetails.data.repSplit" value="{{licDetails.data.repSplit}}" class="form-control repSplit formInputs"/>
-						</div>
-
-	    			</div>
-
-					<div class="col-sm-12" id="spaceBar5px"></div>
-
-	    			<div class="col-sm-11 col-sm-offset-1 form-group">
-
-	    				<div class="col-sm-3 textalignright">
-		    				<label>SAP vendor#:</label>
-						</div>
-		    			<div class="col-sm-4">
-		    				<input type="text" name="sapVendor" id="sapVendor" can-value="licDetails.data.sapVendorNo" value="{{licDetails.data.sapVendorNo}}" class="form-control sapVendor formInputs"/>
-						</div>
-
-	    			</div>
-
-					<div class="col-sm-12" id="spaceBar5px"></div>
-
-	    			<div class="col-sm-11 col-sm-offset-1 form-group paymentTerms">
-
-	    				<div class="col-sm-3 textalignright">
-		    				<label>Payment Terms(Days):</label>
-						</div>
-		    			<div class="col-sm-4">
-		    				<input type="text" name="paymentTerms" id="paymentTerms" can-value="licDetails.data.paymentTerms" value="{{licDetails.data.paymentTerms}}" class="form-control paymentTerms formInputs"/>
-						</div>
-
-	    			</div>
-
-	    			<div class="col-sm-12" id="spaceBar5px"></div>
-
-	    			<div class="col-sm-11 col-sm-offset-1 uploadedFTP">
-
-	    				<div class="col-sm-3 textalignright">
-		    				<label>Uploaded Files to sFTP: </label>
-						</div>
-		    			<div class="col-sm-4">
-		    			<input type="checkbox" id="uploadedFTP" can-value="licDetails.data.uploadedFilesToSFTP" checked="{{licDetails.data.loadedFilesToSFTP}}" class="form-control formInputs"/>
-						</div>
-
-	    			</div>
-
-	    			<div class="col-sm-12" id="spaceBar5px"></div>
-
-	    			<div class="col-sm-11 col-sm-offset-1 form-group">
-	    				<div class="col-sm-12 multicomments-required"> Enter comments !</div>
-
-	    				<div class="col-sm-3 textalignright">
-		    				<label>Comments:</label>
-						</div>
-		    			<div class="col-sm-7" id="multipleComments">
 					
+
+		    			<div class="col-sm-11 col-sm-offset-1 status">
+		    				<div class="col-sm-3 textalignright">
+			    				<label>Status:</label>
+							</div>
+			    			<div class="col-sm-4" can-value="licDetails.data.status">
+			    				<div class="col-sm-12 status">
+			    					{{licDetails.data.status}}
+			    				</div>
+							</div>
+		    			</div>
+
+					
+		    			{{getPeriodFromVal}}
+		    			<div class="col-sm-11 col-sm-offset-1">
+		    				<div class="col-sm-3 textalignright">
+			    				<label>Valid From:</label>
+							</div>
+			    			<div class="col-sm-4 form-group" id="periodFromcontainer">
+
+			    				
+								 <div class="calendarcls form-group">
+						            <input type='text' name="periodFromInp" id="periodFrom" class="form-control  updatePeroid periodFromInput formInputs" can-value='periodFromVal' value="{{periodFromVal}}"/>
+						            <period-calendar selectedperiod="{selectedperiod}"  appstate="{appstate}"></period-calendar>
+						         </div>
+	          
+
+							</div>
+		    			</div>
+
+					
+
+						<div class="col-sm-11 col-sm-offset-1">
+		    				<div class="col-sm-3 textalignright">
+			    				<label>Valid To:</label>
+							</div>
+			    			<div class="col-sm-4" id="periodTocontainer">
+
+			    				
+			    				<div class="calendarcls form-group" >
+						           <input type='text' name="periodToInp" id="periodTo" class="form-control  updatePeroid periodToInput formInputs" can-value='periodToVal'/>
+						           <period-calendar selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
+						          </div>
+
+							</div>
+		    			</div>
+		    			 <div class='period-invalid'> Invalid Period !</div>
+		    			<div class="col-sm-12" id="spaceBar"></div>
+
+
+					
+
+						<div class="col-sm-11 col-sm-offset-1 form-group">
+		    				<div class="col-sm-3 textalignright">
+			    				<label>Account Name:</label>
+							</div>
+			    			<div class="col-sm-4">
+			    				<input type="text" name="accountName" can-value="licDetails.data.accountName" value="{{licDetails.data.accountName}}" class="form-control accountName formInputs"/>
+							</div>
+
 						</div>
 
-					</div>
+						<div class="col-sm-11 col-sm-offset-1 form-group">
+		    				<div class="col-sm-3 textalignright">
+			    				<label>Invoice Type:</label>
+							</div>
+			    			<div class="col-sm-4">
+		    						{{getselectedInvoiceType invoiceType}}
+		    						<div class="col-sm-12 invoiceTypeerr"> Select an Invoice Type !</div>
 
-					<div class="col-sm-12" style="padding-top: 50px;"></div>
+					    			<select id="invoiceType" name="invoiceType" can-value="invoiceType" class="form-control resizeInvoice invoiceType formInputs">
+					    				 
+							            <option value="">Select</option>
+							            
+							           	{{#each invoiceTypes}}
+							              <option id="{{id}}">{{value}}</option>
+							            {{/each}}
+							             
+									</select>
+							</div>
 
-					<div class="col-sm-12 countryModelLabel">
-	 		
-			 			<div class="col-sm-12" id="countryModelLabelId">
-							<label class="tableLabel">Country Model Mapping:</label>
 						</div>
 
-						<div class="col-sm-12" id="countryModelMapping">
+
+		    			
+
+		    			<div class="col-sm-12" id="spaceBar5px"></div>
+
+		    			<!-- <div class="col-sm-11 col-sm-offset-1 form-group">
+
+		    				<div class="col-sm-3 textalignright">
+			    				<label>Invoice Name:</label>
+							</div>
+			    			<div class="col-sm-4">
+			    				<input type="text" name="invoiceName" can-value="licDetails.data.invoiceDetailType" value="{{licDetails.data.invoiceDetailType}}" class="form-control formInputs"/>
+							</div>
+
+		    			</div> -->
+
+						<div class="col-sm-12" id="spaceBar5px"></div>
+
+		    			<div class="col-sm-11 col-sm-offset-1 form-group RepSplit">
+
+		    				<div class="col-sm-3 textalignright">
+			    				<label>Representation Split:</label>
+							</div>
+			    			<div class="col-sm-4">
+			    				<input type="text" name="repSplit" id="repSplit" can-value="licDetails.data.repSplit" value="{{licDetails.data.repSplit}}" class="form-control repSplit formInputs"/>
+							</div>
+
+		    			</div>
+
+						<div class="col-sm-12" id="spaceBar5px"></div>
+
+		    			<div class="col-sm-11 col-sm-offset-1 form-group">
+
+		    				<div class="col-sm-3 textalignright">
+			    				<label>SAP vendor#:</label>
+							</div>
+			    			<div class="col-sm-4">
+			    				<input type="text" name="sapVendor" id="sapVendor" can-value="licDetails.data.sapVendorNo" value="{{licDetails.data.sapVendorNo}}" class="form-control sapVendor formInputs"/>
+							</div>
+
+		    			</div>
+
+						<div class="col-sm-12" id="spaceBar5px"></div>
+
+		    			<div class="col-sm-11 col-sm-offset-1 form-group paymentTerms">
+
+		    				<div class="col-sm-3 textalignright">
+			    				<label>Payment Terms(Days):</label>
+							</div>
+			    			<div class="col-sm-4">
+			    				<input type="text" name="paymentTerms" id="paymentTerms" can-value="licDetails.data.paymentTerms" value="{{licDetails.data.paymentTerms}}" class="form-control paymentTerms formInputs"/>
+							</div>
+
+		    			</div>
+
+		    			<div class="col-sm-12" id="spaceBar5px"></div>
+
+		    			<div class="col-sm-11 col-sm-offset-1 uploadedFTP">
+
+		    				<div class="col-sm-3 textalignright">
+			    				<label>Uploaded Files to sFTP: </label>
+							</div>
+			    			<div class="col-sm-4">
+			    			<input type="checkbox" id="uploadedFTP" can-value="licDetails.data.uploadedFilesToSFTP" checked="{{licDetails.data.loadedFilesToSFTP}}" class="form-control formInputs"/>
+							</div>
+
+		    			</div>
+
+		    			<div class="col-sm-12" id="spaceBar5px"></div>
+
+		    			<div class="col-sm-11 col-sm-offset-1 form-group">
+		    				<div class="col-sm-12 multicomments-required"> Enter comments !</div>
+
+		    				<div class="col-sm-3 textalignright">
+			    				<label>Comments:</label>
+							</div>
+			    			<div class="col-sm-7" id="multipleComments">
+						
+							</div>
 
 						</div>
 
-						<div class="col-sm-12" id="spaceBar"></div>
+						<div class="col-sm-12" style="padding-top: 50px;"></div>
 
-		 			</div>
+						<div class="col-sm-12 countryModelLabel">
+		 		
+				 			<div class="col-sm-12" id="countryModelLabelId">
+								<label class="tableLabel">Country Model Mapping:</label>
+							</div>
 
-			
+							<div class="col-sm-12" id="countryModelMapping">
+
+							</div>
+
+							<div class="col-sm-12" id="spaceBar"></div>
+
+			 			</div>
+
+				
 
 
-		</div>
-	</form>
+			</div>
+		</form>
 		
 		
  

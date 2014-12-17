@@ -739,6 +739,8 @@ var page = Component.extend({
 
       $(".invoiceTypeerr").hide();
 
+      $("#loading_img").hide();
+
       $('#entityLicensorBottom').on('init.field.bv', function(e, data) {
 
 
@@ -1204,6 +1206,9 @@ var page = Component.extend({
         self.scope.mode = "fetch";
         
         //clear elements
+
+        $("#loading_img").show();
+
         var entityName = self.scope.attr("selectedEntity");
 
         $('#entityLicensorTop').bootstrapValidator('validate');
@@ -1241,6 +1246,8 @@ var page = Component.extend({
         Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
           self.scope.populateAnalyticsPage(values);
+
+          $("#loading_img").hide();
             
         });
     },
