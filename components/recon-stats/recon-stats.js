@@ -7,7 +7,7 @@ import injestiontemplate from './stat-injestion.stache!';
 import stache from 'can/view/stache/';
 import Currency from 'models/common/currency/';
 import UserReq from 'utils/request/';
-
+import formats from 'utils/formats';
 
 /* Extend grid with the columns */
 Grid.extend({
@@ -141,19 +141,13 @@ var page = Component.extend({
 
               self.summaryStatsData.splice(0,1);
 
-              data = values[0];
+              var data = values[0];
 
-              if( data.reconStatsDetails[0].ingestionStats != null && data.reconStatsDetails[0].ingestionStats.length > 0 && data.reconStatsDetails[0].summaryStats!= null)
+
+              if( data.ingestionStats != null && data.ingestionStats.length > 0 && data.summaryStats!= null)
               {
 
-                  var ingestionStats = data.reconStatsDetails[0].ingestionStats;
-
-                  //Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
-                  //   ]).then(function(values) {
-
-                  //     self.attr("currencyScope").replace(values[0]);
-
-                  //});
+                  var ingestionStats = data.ingestionStats;
 
                   // Grid data
                   var grid = {"data" : []};
@@ -163,10 +157,10 @@ var page = Component.extend({
                     var tempArr = {};
 
                     tempArr["disputeType"] = ingestionStats[i]["disputeType"];
-                    tempArr["noOfRecords"] = CurrencyFormat(ingestionStats[i]["noOfRecords"]);
+                    tempArr["noOfRecords"] = formats.currencyFormat(ingestionStats[i]["noOfRecords"]);
                     tempArr["recordsPercentage"] = ingestionStats[i]["recordsPercentage"];
-                    tempArr["noOfAdamIds"] = CurrencyFormat(ingestionStats[i]["noOfAdamIds"]);
-                    tempArr["totalPubFee"] = CurrencyFormat(ingestionStats[i]["totalPubFee"]);
+                    tempArr["noOfAdamIds"] = formats.currencyFormat(ingestionStats[i]["noOfAdamIds"]);
+                    tempArr["totalPubFee"] = formats.currencyFormat(ingestionStats[i]["totalPubFee"]);
                     tempArr["pubFeePercentage"] = ingestionStats[i]["pubFeePercentage"];
 
                     grid.data.push(tempArr);
@@ -175,22 +169,22 @@ var page = Component.extend({
 
                   var tempSummaryStats = {};
 
-                  tempSummaryStats.reconRecordsPercentage = data.reconStatsDetails[0].summaryStats.reconRecordsPercentage;
-                  tempSummaryStats.reconAmountPercentage = data.reconStatsDetails[0].summaryStats.reconAmountPercentage;
-                  tempSummaryStats.overRepDispute = data.reconStatsDetails[0].summaryStats.overRepDispute;
+                  tempSummaryStats.reconRecordsPercentage = data.summaryStats.reconRecordsPercentage;
+                  tempSummaryStats.reconAmountPercentage = data.summaryStats.reconAmountPercentage;
+                  tempSummaryStats.overRepDispute = data.summaryStats.overRepDispute;
 
 
-                  tempSummaryStats.noOfReconRecords = (CurrencyFormat(data.reconStatsDetails[0].summaryStats.noOfReconRecords)).toString();
+                  tempSummaryStats.noOfReconRecords = (formats.currencyFormat(data.summaryStats.noOfReconRecords)).toString();
 
-                  tempSummaryStats.reconAmount = CurrencyFormat(data.reconStatsDetails[0].summaryStats.reconAmount);
+                  tempSummaryStats.reconAmount = formats.currencyFormat(data.summaryStats.reconAmount);
 
-                  tempSummaryStats.lineItemDispute = CurrencyFormat(data.reconStatsDetails[0].summaryStats.lineItemDispute );
+                  tempSummaryStats.lineItemDispute = formats.currencyFormat(data.summaryStats.lineItemDispute );
 
-                  tempSummaryStats.totalPubFee = CurrencyFormat(data.reconStatsDetails[0].summaryStats.totalPubFee );
+                  tempSummaryStats.totalPubFee = formats.currencyFormat(data.summaryStats.totalPubFee );
 
-                  tempSummaryStats.recommendedPayment = CurrencyFormat(data.reconStatsDetails[0].summaryStats.recommendedPayment );
+                  tempSummaryStats.recommendedPayment = formats.currencyFormat(data.summaryStats.recommendedPayment );
 
-                  tempSummaryStats.actualPayment = CurrencyFormat(data.reconStatsDetails[0].summaryStats.actualPayment );
+                  tempSummaryStats.actualPayment = formats.currencyFormat(data.summaryStats.actualPayment );
 
                   var summaryData = [];
 
@@ -222,6 +216,7 @@ var page = Component.extend({
 		".refreshReconStats click": function(item,el,ev) {
       self = this;
       var ccids = this.element.parent().scope().ingestCcidSelected;
+      //console.log(JSON.stringify(ccids));
       self.scope.fn_refreshReconStats(ccids,this.scope.currency);
 		}
 	}
@@ -230,11 +225,5 @@ var page = Component.extend({
 
 });
 
-function CurrencyFormat(number)
-{
-  var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
-  var splitNum = n.split('.');
-  return splitNum[0];
-}
 
 export default page;

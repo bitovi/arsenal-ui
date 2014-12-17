@@ -16,7 +16,7 @@ import css_tokeninput from 'tokeninput.css!';
 import css_tokeninput_theme from 'tokeninput_theme.css!';
 
 import commonUtils from 'utils/commonUtils';
-import FileManager from 'models/common/fileManager/';
+import FileManager from 'utils/fileManager/';
 
 
 //Navigation bar definitions
@@ -137,13 +137,10 @@ var page = Component.extend({
       var self=this.scope;
       var row = item.closest('tr').data('row').row;
       var request = {
-        "files":[
-        {
 
           "fileId":row.badFileId,
           "boundType":row.badFileType
-        }
-        ]
+
       }
       FileManager.downloadFile(request);
     },
@@ -152,27 +149,21 @@ var page = Component.extend({
       var row = item.closest('tr').data('row').row;
 
       var request = {
-        "files":[
-          {
             "fileId":row.invFileId,
             "boundType":row.invFileType
-          }
-        ]
       }
+
       FileManager.downloadFile(request);
 
-      //TODO - Call Download
     },
     ".downloadLink.liDispAmt click": function(item, el, ev){
       var self=this.scope;
       var row = item.closest('tr').data('row').row;
       var request = {
-        "files":[
-        {
+
           "fileId":row.liDispFileId,
           "boundType":row.liDispFileType
-        }
-        ]
+
       }
 
       FileManager.downloadFile(request);
@@ -422,7 +413,6 @@ var fetchReconDetails = function(scope){
 
 var refreshChekboxSelection = function(el,scope){
   var row = el.closest('tr').data('row').row;
-
   if(scope.tabSelected == scope.tabName.ingest.attr("name")){
     if(el[0].checked) {
       scope.ingestCcidSelected.push(row.dtlHdrId);

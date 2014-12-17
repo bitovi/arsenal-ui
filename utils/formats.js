@@ -2,13 +2,17 @@ var formats = {
   number: value => parseFloat(value),
   int: value => parseInt(value, 10),
   fixed: function(numberOfDigits) {
-    return function(value) {
-      return formats.number(value).toFixed(numberOfDigits);
-    };
+      return function(value) {
+        if(value == ""){
+          return "";
+        }else{
+          return formats.number(value).toFixed(numberOfDigits);
+        }
+      };
   },
   currencyFormat: function (numberVal)
   {
-    if(numberVal == ""){
+    if(numberVal == "" || numberVal == null){
       return "";
     }else  {
       return formats.number(numberVal).toFixed(2);

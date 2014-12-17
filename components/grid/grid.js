@@ -61,7 +61,7 @@ var Grid = Component.extend({
       //console.log("fsdfsdasd "+ JSON.stringify(this.attr('sortdir')));
 
       /* This 'sortcolumnnames' holds all the sorting column information in array format */
-      /* The following condition identify each column and set it in 'sortedColumn' scope in teh 
+      /* The following condition identify each column and set it in 'sortedColumn' scope in teh
       accepted format {id: columnName} */
       if(this.attr('sortcolumnnames')!=undefined){
         var sortedCols = this.sortcolumnnames.attr();
@@ -172,7 +172,7 @@ var Grid = Component.extend({
         return column.contents.call(this, row);
       } else {
         var value = row.attr(column.attr('valueProperty') || column.attr('id'));
-        if(value === undefined) {
+        if(value === undefined || value == null) {
           value = '';
         }
         if(_.isFunction(column.format)) {

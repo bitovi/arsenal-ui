@@ -8,7 +8,7 @@ export default [
     title: '',
     contents: function(row) {
       if(row.isFooterRow == undefined){
-        return (row.ccidId == "" || row.ccidId == "0" ) ? "": can.stache('<input type="checkbox"/>' )() ;
+        return (row.ccidId == null || row.ccidId == "0" ) ? "": can.stache('<input type="checkbox"/>' )() ;
       }
     }
   },
@@ -17,7 +17,7 @@ export default [
     title: 'CCID ID',
     sortable: true,
     contents: function(row) {
-        return (row.ccidId == "" || row.ccidId == "0" ) ? "": row.ccidId ;
+        return (row.ccidId == null || row.ccidId == "0" ) ? "": row.ccidId ;
     }
   },
   {

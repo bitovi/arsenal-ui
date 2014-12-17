@@ -1,11 +1,4 @@
 
-<div style="width:100%;height:50%">
-	<div class="spaceDiv">&nbsp;</div>
-
-	<div class="spaceDiv">&nbsp;</div>
-
-</div>
-
 <div>
 
 
@@ -28,12 +21,10 @@
 
 			</div>
 
-			<div class="spaceDiv">&nbsp;</div>
 
 				<table class="statsTable" >
 					<tr>
 						<td>
-							<div class="spaceDiv">&nbsp;</div>
 
 							<div width="100%>
 
@@ -68,8 +59,6 @@
 												</table>
 
 
-												<div class="spaceDiv">&nbsp;</div>
-
 												<div id="ingestionReconStats"><div>
 											</div>
 
@@ -84,7 +73,6 @@
 												<table id="summaryTopTable">
 													<tr>
 														<td width="55%">
-															<div class="spaceDiv">&nbsp;</div>
 															<div>Summary Stats</div>
 														</td>
 														<td width="35%">
@@ -92,10 +80,9 @@
 														</td>
 
 														<td style="width:7%;">
-															<div class="spaceDiv">&nbsp;</div>
-															<div>
-																<img src="resources/images/exportExcelIcon.png" class="" id="exportExcel">
-				        										<img src="resources/images/copyToClipboardIcon.png" class="" id="copyToClipboard">
+															<div style="display:none"><!--TODO Need to do allignment-->
+																 <img src="resources/images/exportExcelIcon.png" class="" id="exportExcel">
+				        								 <img src="resources/images/copyToClipboardIcon.png" class="" id="copyToClipboard">
 															</div>
 
 														</td>
