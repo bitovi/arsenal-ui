@@ -35,6 +35,7 @@
   <rn-workflow-display steps="{workflowSteps}" class="progress-display"></rn-workflow-display>
   <div class="flex-spacer"></div>
   <div class="payment-option">
+    {{#isBM}}
     <label>Payment Option</label>
     <select can-value="{paymentType}">
       <option value="1">Payment - In Full</option>
@@ -42,19 +43,20 @@
       <option value="3">Payment Recon Amount</option>
       <option value="4">Payment Over Rep Disputes</option>
     </select>
+    {{/isBM}}
   </div>
   <div class="approval-comment">
     <label>Approval Comment</label>
     <textarea can-value="{approvalComment}"></textarea>
     <div class="buttons">
-    {{#if appstate.userInfo.isBM}}
+    {{#isBM}}
       <button class="{{canProceed}}" data-action="delete">Delete</button>
       <button class="{{canProceed}}" data-action="recall">Recall</button>
       <button class="{{canProceed}}" data-action="approve">Propose</button>
     {{else}}
       <button class="{{canProceed}}" data-action="reject">Reject</button>
       <button class="{{canProceed}}" data-action="approve">Approve</button>
-    {{/if}}
+    {{/isBM}}
     </div>
   </div>
 </div>

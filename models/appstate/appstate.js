@@ -28,7 +28,7 @@ var State = Map.extend({
 var stateDefaults = {
   // TODO: instead of this, go get the current user and replace this info
   // for right now, this is just a mock-up
-  userinfo: {
+  userInfo: {
     token: 'FAKE TOKEN'
   },
   page: 'dashboard',
@@ -40,8 +40,7 @@ var stateDefaults = {
   region: undefined,
   storeType: undefined,
   renderGlobalSearch:false,
-  globalSearch:undefined,
-  userInfo:undefined
+  globalSearch:undefined
 };
 
 

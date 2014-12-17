@@ -11,9 +11,12 @@ import Switcher from 'components/switcher/';
 import WorkflowDisplay from 'components/workflow-display/';
 
 import columnSets from './column-sets';
+import constants from 'utils/constants';
 
 import template from './template.stache!';
 import _less from './bundle-detail.less!';
+
+var VALIDATION_CHECK_INTERVAL = 3000;
 
 var bundleTypeColumnSets = {
   'REGULAR_INV': [
@@ -45,7 +48,8 @@ var BundleDetailTabs = Component.extend({
     approvalComment: '',
 
     havePaymentTypeAndComment: function(scope) {
-      return scope.paymentType && scope.approvalComment.trim().length;
+      return  (this.appstate.userInfo.role === constants.ROLES.BM ? scope.paymentType : true) &&
+              scope.approvalComment.trim().length;
     },
 
     gridColumns: [],
@@ -97,7 +101,7 @@ var BundleDetailTabs = Component.extend({
           if(bundle.validationStatus !== 5) {
             setTimeout(function() {
               scope.getNewValidations(bundle);
-            }, 3000);
+            }, VALIDATION_CHECK_INTERVAL);
           }
 
           return bundle;
@@ -133,11 +137,15 @@ var BundleDetailTabs = Component.extend({
       }
     },
     showVerboseToggle: function(options) {
-      if(_.some(this.attr('columns'), column => column.verboseOnly)) {
+      this.gridColumns.attr('length');
+      if(_.some(this.attr('gridColumns'), column => column.verboseOnly)) {
         return options.fn(this);
       } else {
-        '';
+        return '';
       }
+    },
+    isBM: function(options) {
+      return (this.appstate.userInfo.role === constants.ROLES.BM) ? options.fn(this) : options.inverse(this);
     },
     canProceed: function() {
       this.attr('paymentType'); this.attr('approvalComment');

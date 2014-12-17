@@ -154,7 +154,7 @@ var BundleDetailGrid = Grid.extend({
     ' inserted': function() {
       this.scope.prefilteredColumns.splice(0, this.scope.prefilteredColumns.length, ...this.scope.filterColumns.apply(this));
     },
-    '{scope.pageState.verboseGrid} change': function() {
+    '{scope.pageState} verboseGrid': function() {
       this.scope.prefilteredColumns.splice(0, this.scope.prefilteredColumns.length, ...this.scope.filterColumns.apply(this));
     },
     '{scope} columns': function() {
