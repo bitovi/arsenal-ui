@@ -53,7 +53,7 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
      options.url.indexOf(URLs.INTEGRATION_SERVICE_URL) === 0
  ) {
    var data = (options.data.constructor === String ? JSON.parse(options.data) : options.data);
-   can.extend(data, requestHelper.formRequestDetails({}));
+   can.extend(data, requestHelper.formRequestDetails({}, appstate));
    options.data = JSON.stringify(data);
    options.contentType = 'application/json';
  }

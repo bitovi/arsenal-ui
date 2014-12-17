@@ -1,17 +1,20 @@
+import can from 'can/';
 import Model from 'can/model/';
 
 var requestHelper = {
-  formRequestDetails:function(params){
-    var userRequest = {};
-    var date = new Date();
-    if(params != null || params != undefined){
-      userRequest = params ;
-    }
-    userRequest["prsId"] = "2002005722";
-    userRequest["appId"] = "1179";
-    userRequest["secretKey"] = "f4166789-30bb-4e12-9973-a76376745096";
-    userRequest["roleIds"] = [""];
-    userRequest["requestTimeStamp"]=date.getTime();
+  formRequestDetails: function(params){
+    var appstate = can.route.data;
+    var userRequest = params || {};
+    var userInfo = appstate.userInfo.attr() || {};
+
+    can.extend(userRequest, {
+      prsId: userInfo.prsId,
+      appId: userInfo.appId,
+      secretKey: userInfo.secretKey,
+      roleIds: userInfo.roleIds,
+      requestTimeStamp: (new Date()).getTime()
+    });
+
     console.log('Request:'+ JSON.stringify(userRequest));
     return userRequest;
   },

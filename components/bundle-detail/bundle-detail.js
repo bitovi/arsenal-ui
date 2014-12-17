@@ -48,7 +48,7 @@ var BundleDetailTabs = Component.extend({
     approvalComment: '',
 
     havePaymentTypeAndComment: function(scope) {
-      return  (this.appstate.userInfo.role === constants.ROLES.BM ? scope.paymentType : true) &&
+      return  (this.appstate.userInfo.roleIds.indexOf(constants.ROLES.BM) > -1 ? scope.paymentType : true) &&
               scope.approvalComment.trim().length;
     },
 
@@ -145,7 +145,7 @@ var BundleDetailTabs = Component.extend({
       }
     },
     isBM: function(options) {
-      return (this.appstate.userInfo.role === constants.ROLES.BM) ? options.fn(this) : options.inverse(this);
+      return this.appstate.userInfo.roleIds.indexOf(constants.ROLES.BM) > -1 ? options.fn(this) : options.inverse(this);
     },
     canProceed: function() {
       this.attr('paymentType'); this.attr('approvalComment');

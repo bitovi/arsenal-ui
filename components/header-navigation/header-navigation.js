@@ -23,9 +23,10 @@ var headerNavigation = Component.extend({
 
         ]).then(function(values) {
 
-          var role = {permissions:values[0]};
-
-          self.scope.appstate.userInfo = role;
+          var role = {
+            permissions: values[0]
+          };
+          self.scope.appstate.userInfo.attr(role);
 
           console.log("role="+ role);
 
