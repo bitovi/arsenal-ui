@@ -35,7 +35,7 @@ export default [
 {
   id: 'pubfee',
   title: 'PUB Fee',
-  format: formats.currency,
+  format: formats.currencyFormat,
   sortable: true
 },
 {
