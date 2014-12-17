@@ -32,10 +32,6 @@ Grid.extend({
         title: '% Records'
       },
       {
-        id: 'noOfAdamIds',
-        title: '# Adam ID'
-      },
-      {
         id: 'totalPubFee',
         title: 'Total Pub Fee'
       },
@@ -78,7 +74,7 @@ var page = Component.extend({
             var $disputeType = $row.find('td[class*="disputeType"]');
             var $noOfRecords = $row.find('td[class*="noOfRecords"]');
             var $recordsPercentage = $row.find('td[class*="recordsPercentage"]');
-            var $noOfAdamIds = $row.find('td[class*="noOfAdamIds"]');
+            //var $noOfAdamIds = $row.find('td[class*="noOfAdamIds"]');
             var $pubFeePercentage = $row.find('td[class*="pubFeePercentage"]');
 
 
@@ -131,7 +127,7 @@ var page = Component.extend({
               }
             };
 
-            
+
             var genObj = reqArr;
 
             Promise.all([Stats.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
@@ -206,7 +202,7 @@ var page = Component.extend({
       }
 
   },
-  
+
 	events: {
 
     'inserted' : function() {

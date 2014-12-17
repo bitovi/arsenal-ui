@@ -55,14 +55,14 @@ export default [
   id: 'copConAmt',
   title: 'Cop Con',
   className: "amountColumn",
-  format: formats.currency,
+  format: formats.currencyFormat,
   sortable: true
 },
 {
   id: 'unMatchedAmt',
   title: 'Unmatched',
   className: "amountColumn",
-  format: formats.currency,
+  format: formats.currencyFormat,
   sortable: true
 },
 {
