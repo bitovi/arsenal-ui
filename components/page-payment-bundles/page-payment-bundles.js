@@ -15,7 +15,7 @@ import styles from './page-payment-bundles.less!';
 var pageState = new Map({
   bundles: new PaymentBundle.List([]),
   selectedBundle: null,
-  verboseGrid: !false
+  verboseGrid: true
 });
 
 var page = Component.extend({
@@ -26,11 +26,13 @@ var page = Component.extend({
     pageState: pageState,
     appstateFilled: function(scope) {
       var filled =  scope.appstate &&
-                    scope.appstate.attr('storeType') &&
-                    scope.appstate.attr('region') &&
-                    scope.appstate.attr('country') &&
-                    scope.appstate.attr('licensor') &&
-                    scope.appstate.attr('contentType');
+                    scope.appstate.storeType &&
+                    scope.appstate.contentType.length &&
+                    scope.appstate.region &&
+                    scope.appstate.country.length &&
+                    scope.appstate.licensor.length &&
+                    scope.appstate.periodFrom &&
+                    scope.appstate.periodTo;
 
       return !!filled;
     },
@@ -42,6 +44,11 @@ var page = Component.extend({
           pageState.bundles.replace(bundles);
           can.batch.stop();
         });
+      } else {
+        can.batch.start();
+        pageState.bundles.splice(0, pageState.bundles.length);
+        pageState.attr('selectedBundle', null);
+        can.batch.stop();
       }
     }
   },

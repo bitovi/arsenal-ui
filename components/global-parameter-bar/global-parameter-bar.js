@@ -1,3 +1,4 @@
+import can from 'can/';
 import Component from 'can/component/';
 
 // Models
@@ -35,10 +36,33 @@ var GlobalParameterBar = Component.extend({
     contentTypes: [],
     selectedperiod: [],
     errorMessage: "@",
+
+    changesToApply: {},
+    applyChanges: function(changes, appstate) {
+      can.batch.start();
+      appstate.attr({
+        periodFrom: changes.periodFrom,
+        periodTo: changes.periodTo,
+        periodType: changes.periodType,
+        storeType: changes.storeType,
+        region: changes.region
+      });
+
+      ['contentType', 'country', 'licensor'].forEach(function(prop) {
+        if(! appstate[prop]) {
+          appstate.attr(prop, []);
+        }
+        if(! changes[prop]) {
+          changes.attr(prop, []);
+        }
+        appstate[prop].replace(changes[prop]);
+      });
+      can.batch.stop();
+    }
   },
   helpers: {
     isSelected: function(parameterName, modelID) {
-      if (this.appstate.attr(parameterName) && this.appstate.attr(parameterName).id === modelID()) {
+      if (this.changesToApply.attr(parameterName) && this.changesToApply.attr(parameterName).id === modelID()) {
         return 'selected="selected"';
       } else {
         return '';
@@ -46,7 +70,7 @@ var GlobalParameterBar = Component.extend({
     }
   },
   events: { 
-    '.updatePeroid focus': function(el) {
+    '.updatePeriod focus': function(el) {
       $(el).closest('.calendarcls').find('.box-modal').show().trigger("focus");     
     },
     '{selectedperiod} change': function(val) {
@@ -54,32 +78,35 @@ var GlobalParameterBar = Component.extend({
     },
     'inserted': function() {
       var self = this;
+      this.scope.applyChanges(this.scope.appstate, this.scope.changesToApply); // this looks backwards but it's right, I promise.
+                                                                    // We need to set up changesToApply for the template to key off of
+
       document.getElementById("regionsFilter").selectedIndex = 2;
       var periodFrom = getDefaultPeriodFrom('');
       var periodTo = getDefaultPeriodTo();
       $('#periodFrom').val(periodFrom);
       $('#periodTo').val(periodTo);
-      self.scope.appstate.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(periodFrom));
-      self.scope.appstate.attr('periodTo', periodWidgetHelper.getFiscalPeriod(periodTo));
-      this.scope.appstate.attr('periodType', 'P');
+      self.scope.changesToApply.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(periodFrom));
+      self.scope.changesToApply.attr('periodTo', periodWidgetHelper.getFiscalPeriod(periodTo));
+      this.scope.changesToApply.attr('periodType', 'P');
     },
     '{periodFrom} change': function(el, ev) {
       //console.log("period from change "+ this.scope.appstate.attr('periodFrom'));
       var comp = 'from';
       this.scope.attr('errorMessage', '');
-      this.scope.appstate.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(this.scope.attr('periodFrom')[0]));
-      this.scope.appstate.attr('periodType', periodWidgetHelper.getPeriodType(this.scope.attr('periodFrom')[0]));
+      this.scope.changesToApply.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(this.scope.attr('periodFrom')[0]));
+      this.scope.changesToApply.attr('periodType', periodWidgetHelper.getPeriodType(this.scope.attr('periodFrom')[0]));
       this.scope.attr('errorMessage', showErrorMsg(this.scope.attr('periodFrom')[0], this.scope.attr('periodTo')[0]));
     },
     '{periodTo} change': function(el, ev) {
       var comp = 'to';
       this.scope.attr('errorMessage', '');
-      this.scope.appstate.attr('periodTo', periodWidgetHelper.getFiscalPeriod(this.scope.attr('periodTo')[0]));
+      this.scope.changesToApply.attr('periodTo', periodWidgetHelper.getFiscalPeriod(this.scope.attr('periodTo')[0]));
       this.scope.attr('errorMessage', showErrorMsg(this.scope.attr('periodFrom')[0], this.scope.attr('periodTo')[0]));
     },
     '#store-type select change': function(el, ev) {
       var selected = $(el[0].selectedOptions).data('storetype');
-      this.scope.appstate.attr('storeType', selected);
+      this.scope.changesToApply.attr('storeType', selected);
 
       /* Change the Content types based on Store Type */
       var allContentTypes = this.scope.allContentTypes.attr();
@@ -99,13 +126,13 @@ var GlobalParameterBar = Component.extend({
       }, 1000);
 
       /* This is to reset the contentType attr in 'appstate' variable  */
-      this.scope.appstate.removeAttr('contentType');
+      this.scope.changesToApply.removeAttr('contentType');
     },
     '#region select change': function(el, ev) {
       var self = this;
       self.scope.attr('errorMessage', '');
       var selected = $(el[0].selectedOptions).data('region');
-      self.scope.appstate.attr('region', selected);
+      self.scope.changesToApply.attr('region', selected);
       //console.log("region id is "+JSON.stringify(selected.id));
       Promise.all([
         Country.findAll(UserReq.formRequestDetails({
@@ -126,8 +153,8 @@ var GlobalParameterBar = Component.extend({
         }, 2000);
       });
       /* This is to reset the country & licensor attr in 'appstate' variable  */
-      this.scope.appstate.removeAttr('country');
-      this.scope.appstate.removeAttr('licensor');
+      this.scope.changesToApply.removeAttr('country');
+      this.scope.changesToApply.removeAttr('licensor');
 
     },
     '#country select change': function(el, ev) {
@@ -135,18 +162,19 @@ var GlobalParameterBar = Component.extend({
       //var selected = $(el[0].selectedOptions).data('country');
       //console.log("Country sel id is "+$(el[0]).val());
       var selected = $(el[0]).val();
-      if (selected != null)
-        this.scope.appstate.attr('country', selected);
-      else
-        this.scope.appstate.removeAttr('country');
+      if (selected != null) {
+        this.scope.changesToApply.attr('country', selected);
+      } else {
+        this.scope.changesToApply.removeAttr('country');
+      }
     },
     '#licensor select change': function(el, ev) {
       //var selected = $(el[0].selectedOptions).data('licensor');
       var selected = $(el[0]).val();
       if (selected != null)
-        this.scope.appstate.attr('licensor', selected);
+        this.scope.changesToApply.attr('licensor', selected);
       else
-        this.scope.appstate.removeAttr('licensor');
+        this.scope.changesToApply.removeAttr('licensor');
     },
     '#contentType select change': function(el, ev) {
       //var selected = $(el[0].selectedOptions).data('contenttype');
@@ -157,23 +185,20 @@ var GlobalParameterBar = Component.extend({
         for (var i = 0; i < selected.length; i++) {
           formatSelected.push(selected[i].split(":")[0]);
         }
-        this.scope.appstate.attr('contentType', formatSelected);
+        this.scope.changesToApply.attr('contentType', formatSelected);
       } else
-        this.scope.appstate.removeAttr('contentType');
+        this.scope.changesToApply.removeAttr('contentType');
     },
     '#globalSearch click': function() {
       var self = this;
       //      self.scope.appstate.attr('periodFrom', $('#periodFrom').val());
       //      self.scope.appstate.attr('periodTo', $('#periodTo').val());
-      var message = validateFilters(self.scope.appstate, false, true, false, false, false)
+      var message = validateFilters(self.scope.changesToApply, false, true, false, false, false)
       self.scope.attr('errorMessage', message);
 
       if (message.length == 0) {
-        if (this.scope.appstate.attr('globalSearch')) {
-          this.scope.appstate.attr('globalSearch', false);
-        } else {
-          this.scope.appstate.attr('globalSearch', true);
-        }
+        this.scope.applyChanges(this.scope.changesToApply, this.scope.appstate);
+        this.scope.appstate.attr('globalSearch', !!this.scope.appstate.globalSearch);
       }
 
     },
@@ -298,7 +323,7 @@ var validateFilters = function(appstate, validateStoreType, validateRegion, vali
       return "Invalid contentType !";
     } else if (validateContentType && (contGrpId == undefined && contGrpId.attr() == null || contGrpId.attr() == "")) {
       return "Invalid contentType !";
-    } 
+    }
 
     return "";
   }

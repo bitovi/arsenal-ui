@@ -152,10 +152,10 @@ var  menu =[{
   "id": "reference",
   "value": "Reference",
    "submenu": [
-      {"value": "Licensor", "id": "licensor"},
-      {"value": "Entity", "id": "analytics"},
+  //    {"value": "Licensor", "id": "licensor"},
+      {"value": "Licensor", "id": "analytics"},
       {"value": "Country", "id": "ref-country"},
-      {"value": "Licensor Entity", "id": "ref-licensorcountry"},
+      {"value": "Country Licensor", "id": "ref-licensorcountry"},
       {"value": "Pricing Model", "id": "pricing-models"}
    ]
 },{

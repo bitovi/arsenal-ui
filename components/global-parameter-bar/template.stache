@@ -4,7 +4,7 @@
       <div class="box">
         <span class="parameter-name">Period From:</span>
          <div class="calendarcls">
-            <input type='text' id="periodFrom" class="form-control  updatePeroid"/>
+            <input type='text' id="periodFrom" class="form-control updatePeriod"/>
             <period-calendar selectedperiod="{selectedperiod}"  appstate="{appstate}"></period-calendar>
          </div>
           </div>
@@ -14,7 +14,7 @@
         <div class="box">
           <span class="parameter-name">Period To:</span>
           <div class="calendarcls">
-            <input type='text' id="periodTo" class="form-control  updatePeroid"/>
+            <input type='text' id="periodTo" class="form-control updatePeriod"/>
             <period-calendar selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
           </div>
 
