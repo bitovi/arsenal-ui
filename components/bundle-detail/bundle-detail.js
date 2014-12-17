@@ -202,7 +202,7 @@ var BundleDetailTabs = Component.extend({
 
       scope.getNewDetails(selectedBundle).then(function(bundle) {
         return WorkflowStep.findAll({
-          workflowInstanceId: bundle.workflowInstanceId
+          workflowInstanceId: bundle.approvalId
         });
       }).then(function(steps) {
         scope.workflowSteps.replace(steps);
