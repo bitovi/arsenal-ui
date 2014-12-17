@@ -413,7 +413,6 @@ var fetchReconDetails = function(scope){
 
 var refreshChekboxSelection = function(el,scope){
   var row = el.closest('tr').data('row').row;
-
   if(scope.tabSelected == scope.tabName.ingest.attr("name")){
     if(el[0].checked) {
       scope.ingestCcidSelected.push(row.dtlHdrId);
