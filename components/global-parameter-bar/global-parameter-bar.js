@@ -162,7 +162,7 @@ var GlobalParameterBar = Component.extend({
       var self = this;
       //      self.scope.appstate.attr('periodFrom', $('#periodFrom').val());
       //      self.scope.appstate.attr('periodTo', $('#periodTo').val());
-      var message = validateFilters(self.scope.appstate, true, true, false, true, true)
+      var message = validateFilters(self.scope.appstate, false, true, false, false, false)
       self.scope.attr('errorMessage', message);
 
       if (message.length == 0) {
@@ -295,9 +295,7 @@ var validateFilters = function(appstate, validateStoreType, validateRegion, vali
       return "Invalid contentType !";
     } else if (validateContentType && (contGrpId == undefined && contGrpId.attr() == null || contGrpId.attr() == "")) {
       return "Invalid contentType !";
-    } else if (validateContentType && (contGrpId.attr().length > 1)) {
-      return "Please select single contentType !";
-    }
+    } 
 
     return "";
   }
