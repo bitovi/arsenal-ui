@@ -1,3 +1,4 @@
+{{#showPage}}
 <table class="holes-report">
   <thead>
     <tr>
@@ -30,3 +31,6 @@
     {{/eachCountry}}
   </tbody>
 </table>
+{{else}}
+<div class="select-message">Please select parameters above for the Invoices Received report.</div>
+{{/showPage}}

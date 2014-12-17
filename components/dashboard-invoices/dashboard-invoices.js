@@ -33,9 +33,51 @@ var DashboardInvoices = Component.extend({
           }
         }
       })
+    },
+
+    appstateFilled: function(scope) {
+      var filled =  scope.appstate &&
+      scope.appstate.attr('storeType') &&
+      scope.appstate.attr('region') &&
+      scope.appstate.attr('country') &&
+      scope.appstate.attr('licensor') &&
+      scope.appstate.attr('contentType');
+
+      return !!filled;
+    },
+    refreshReport: function(scope) {
+      return HolesReport.findAll({appstate: scope.appstate}).then(function(holes) {
+        // TODO: I think I may need a holesByEntity as well
+        var entities = [];
+        var holesByCountry = {};
+        _.each(holes, function(hole) {
+          if(entities.indexOf(hole.entityName) < 0) {
+            entities.push(hole.entityName);
+          }
+
+          if(! holesByCountry[hole.countryId]) {
+            holesByCountry[hole.countryId] = [];
+          }
+
+          holesByCountry[hole.countryId].push(hole);
+        });
+
+        can.batch.start();
+        scope.attr('entities', entities);
+        scope.attr('holesByCountry', holesByCountry);
+        can.batch.stop();
+      });
     }
   },
   helpers: {
+    showPage: function(options) {
+      can.__reading(this.appstate, 'change');
+      if(this.appstateFilled(this)) {
+        return options.fn(this);
+      } else {
+        return options.inverse(this);
+      }
+    },
     eachCountry: function(options) {
       var countries = Map.keys(this.attr('holesByCountry'));
       return _.map(countries, c => options.fn({
@@ -51,7 +93,7 @@ var DashboardInvoices = Component.extend({
           title: 'Missing Invoices',
           content: popoverContent,
           html: true,
-          trigger: 'hover'
+          trigger: 'click'
         });
       };
     },
@@ -73,30 +115,20 @@ var DashboardInvoices = Component.extend({
     }
   },
   events: {
-    inserted: function() {
+    'inserted': function() {
+      if(this.scope.appstateFilled(this.scope)) {
+        this.scope.refreshReport(this.scope);
+      }
+    },
+    '{scope.appstate} change': function() {
       var self = this;
 
-      HolesReport.findAll({appstate: this.scope.appstate}).then(function(holes) {
-        // TODO: I think I may need a holesByEntity as well
-        var entities = [];
-        var holesByCountry = {};
-        _.each(holes, function(hole) {
-          if(entities.indexOf(hole.entityName) < 0) {
-            entities.push(hole.entityName);
-          }
-
-          if(! holesByCountry[hole.countryId]) {
-            holesByCountry[hole.countryId] = [];
-          }
-
-          holesByCountry[hole.countryId].push(hole);
-        });
-
-        can.batch.start();
-        self.scope.attr('entities', entities);
-        self.scope.attr('holesByCountry', holesByCountry);
-        can.batch.stop();
-      });
+      if(this.scope.appstateFilled(this.scope)) {
+        this.scope.refreshReport(this.scope);
+      } else {
+        this.scope.attr('entities', []);
+        this.scope.attr('holesByCountry', {});
+      }
     }
   }
 });
