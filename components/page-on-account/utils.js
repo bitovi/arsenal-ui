@@ -64,8 +64,10 @@ var onAccountCreateRequest ={};
                     onAccountDetails.periodType=this.getOnAccountPeriodType();
                     var period = this.getPeriodForQuarter(quarters[k]);
                     onAccountDetails.fiscalPeriod=period+'';
-                    onAccountDetails.onAccountAmt=rows[i][quarters[k]];
-                    onAccountCreateRequest.onAccount.onAccountDetails.push(onAccountDetails);
+                    if(Number(rows[i][quarters[k]]) != 0){
+                      onAccountDetails.onAccountAmt=rows[i][quarters[k]];
+                      onAccountCreateRequest.onAccount.onAccountDetails.push(onAccountDetails);  
+                    }    
                 }
            }else{
             licensorName=rows[i].licensor;

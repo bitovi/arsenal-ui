@@ -35,7 +35,7 @@ var requestHelper = {
     */
     var serTypeId = appstate.attr('storeType').id;
     var countryId = appstate.attr()['country'];
-    var licId = appstate.attr()['licensor'].map(id => +id);
+    var licId = appstate.attr()['licensor'] != undefined ? appstate.attr()['licensor'].map(id => +id) : [];
     var contGrpId = appstate.attr()['contentType'].map(id => +id);
     var region = appstate.attr('region').id;
     var serviceType = appstate.attr('storeType');
