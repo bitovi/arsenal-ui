@@ -102,8 +102,7 @@ export default [
       if(row.isFooterRow){
         return formats.currencyFormat(row.badLines);
       }else{
-        return formats.currencyFormat(row.badLines);
-        // return can.stache('<a class="downloadLink badLines" href="#download">'+formats.currencyFormat(row.badLines)+'</a>')();
+        return can.stache('<a class="downloadLink badLines" href="#download">'+formats.currencyFormat(row.badLines)+'</a>')();
       }
     },
     format: formats.currency,

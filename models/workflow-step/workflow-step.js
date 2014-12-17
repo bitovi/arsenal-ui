@@ -7,7 +7,7 @@ var WorkflowStep = Model.extend({
   parseModels: 'nodes',
   findAll: function(params) {
     return $.ajax({
-      url: URLs.UI_SERVICE_URL + 'rinsworkflow/view',
+      url: URLs.INTEGRATION_SERVICE_URL + 'rinsworkflow/view',
       type: 'POST',
       data: {
         workflowInstanceId: params.workflowInstanceId

@@ -62,6 +62,7 @@ var BundleDetailGrid = Grid.extend({
   },
   helpers: {
     filteredColumns: function(options) {
+      this.prefilteredColumns.attr('length');
       return _.map(this.attr('prefilteredColumns'), column => options.fn({column}));
     },
     filteredRows: function fdR(options) {
@@ -156,7 +157,7 @@ var BundleDetailGrid = Grid.extend({
     '{scope.pageState.verboseGrid} change': function() {
       this.scope.prefilteredColumns.splice(0, this.scope.prefilteredColumns.length, ...this.scope.filterColumns.apply(this));
     },
-    '{scope.columns} change': function() {
+    '{scope} columns': function() {
       this.scope.prefilteredColumns.splice(0, this.scope.prefilteredColumns.length, ...this.scope.filterColumns.apply(this));
     }
   }
