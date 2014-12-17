@@ -13,6 +13,7 @@ import UserReq from 'utils/request/';
 
 import bootstrapmultiselect from 'bootstrap-multiselect';
 import css_bootstrapmultiselect from 'bootstrap-multiselect.css!';
+import commonUtils from 'utils/commonUtils';
 
 import template from './template.stache!';
 import styles from './global-parameter-bar.less!';
@@ -198,7 +199,8 @@ var GlobalParameterBar = Component.extend({
 
       if (message.length == 0) {
         this.scope.applyChanges(this.scope.changesToApply, this.scope.appstate);
-        this.scope.appstate.attr('globalSearch', !!this.scope.appstate.globalSearch);
+        //this.scope.appstate.attr('globalSearch', !!this.scope.appstate.globalSearch);
+        commonUtils.triggerGlobalSearch();
       }
 
     },

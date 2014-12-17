@@ -200,7 +200,7 @@ var page = Component.extend({
       this.scope.appstate.attr('page','dashboard');
     },
     '.btn-OverRep click': function() {
-        window.open(RinsCommon.RINS_OLD_URL);
+        window.open(RinsCommon.RINS_OLD_URL+'overRepConfig');
     },
     '.btn-confirm-cancel click': function(){
       //nothing to do
