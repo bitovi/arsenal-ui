@@ -1,14 +1,8 @@
-<<<<<<< HEAD
 import _ from 'lodash';
 import $ from 'jquery';
 import stache from 'can/view/stache/';
 import ScrollingGrid from './scrolling-grid';
 import _less from './sandbox.less!';
-=======
-import $ from 'jquery';
-import stache from 'can/view/stache/';
-import ScrollingGrid from './scrolling-grid';
->>>>>>> dev/claim-country-more
 
 /* Extend grid with the columns */
 ScrollingGrid.extend({
