@@ -240,6 +240,7 @@ var page = Component.extend({
   template: template,
   scope: {
     localGlobalSearch:undefined,
+    allowSearch: false,
     allClaimLicensorMap: [],
     allClaimCountryMap: [],
     sortColumns:[],
@@ -499,90 +500,96 @@ var page = Component.extend({
       '{scope.appstate} change': function() {
           var self=this;
           console.log("appState set to "+JSON.stringify(this.scope.appstate.attr()));
-          if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch') ){
-              this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
-              console.log("User clicked on  search");
+          /* Page is not allowed to do search by default when page is loaded */
+          /* This can be checked using 'localGlobalSearch' parameter, it will be undefined when page loaded */
+          if(this.scope.attr("localGlobalSearch") != undefined){
+            if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch') ){
+                this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
+                console.log("User clicked on  search");
 
-              var periodFrom = this.scope.appstate.attr('periodFrom');
-              var periodTo = this.scope.appstate.attr('periodTo');
-              var serTypeId = this.scope.appstate.attr('storeType');
-              var regId = this.scope.appstate.attr('region');
-              var countryId = this.scope.appstate.attr()['country'];
-              var licId = this.scope.appstate.attr()['licensor'];
-              var contGrpId = this.scope.appstate.attr()['contentType'];
+                var periodFrom = this.scope.appstate.attr('periodFrom');
+                var periodTo = this.scope.appstate.attr('periodTo');
+                var serTypeId = this.scope.appstate.attr('storeType');
+                var regId = this.scope.appstate.attr('region');
+                var countryId = this.scope.appstate.attr()['country'];
+                var licId = this.scope.appstate.attr()['licensor'];
+                var contGrpId = this.scope.appstate.attr()['contentType'];
 
-              var claimLicSearchRequest = {};
-              //claimLicSearchRequest.searchRequest = {};
-              if(typeof(periodFrom)=="undefined")
-                claimLicSearchRequest["periodFrom"] = "";
-              else
-                claimLicSearchRequest["periodFrom"] = periodFrom;
+                var claimLicSearchRequest = {};
+                //claimLicSearchRequest.searchRequest = {};
+                if(typeof(periodFrom)=="undefined")
+                  claimLicSearchRequest["periodFrom"] = "";
+                else
+                  claimLicSearchRequest["periodFrom"] = periodFrom;
 
-              if(typeof(periodTo)=="undefined")
-                claimLicSearchRequest["periodTo"] = "";
-              else
-                claimLicSearchRequest["periodTo"] = periodTo;
+                if(typeof(periodTo)=="undefined")
+                  claimLicSearchRequest["periodTo"] = "";
+                else
+                  claimLicSearchRequest["periodTo"] = periodTo;
 
-              if(typeof(serTypeId)=="undefined")
-                claimLicSearchRequest["serviceTypeId"] = "";
-              else
-                claimLicSearchRequest["serviceTypeId"] = serTypeId['id'];
+                if(typeof(serTypeId)=="undefined")
+                  claimLicSearchRequest["serviceTypeId"] = "";
+                else
+                  claimLicSearchRequest["serviceTypeId"] = serTypeId['id'];
 
-              if(typeof(regId)=="undefined")
-                claimLicSearchRequest["regionId"] = "";
-              else
-                claimLicSearchRequest["regionId"] = regId['id'];
-              
-              claimLicSearchRequest["country"] = [];
-              if(typeof(countryId)!="undefined")
-                //claimLicSearchRequest.searchRequest["country"].push(countryId['value']);
-                claimLicSearchRequest["country"]=countryId;
+                if(typeof(regId)=="undefined")
+                  claimLicSearchRequest["regionId"] = "";
+                else
+                  claimLicSearchRequest["regionId"] = regId['id'];
+                
+                claimLicSearchRequest["country"] = [];
+                if(typeof(countryId)!="undefined")
+                  //claimLicSearchRequest.searchRequest["country"].push(countryId['value']);
+                  claimLicSearchRequest["country"]=countryId;
 
-              claimLicSearchRequest["entityId"] = [];
-              if(typeof(licId)!="undefined")
-                claimLicSearchRequest["entityId"] = licId;
+                claimLicSearchRequest["entityId"] = [];
+                if(typeof(licId)!="undefined")
+                  claimLicSearchRequest["entityId"] = licId;
 
-              claimLicSearchRequest["contentGrpId"] = [];
-              if(typeof(contGrpId)!="undefined")
-                claimLicSearchRequest["contentGrpId"] = contGrpId;
+                claimLicSearchRequest["contentGrpId"] = [];
+                if(typeof(contGrpId)!="undefined")
+                  claimLicSearchRequest["contentGrpId"] = contGrpId;
 
-              claimLicSearchRequest["periodType"] = "P";
+                claimLicSearchRequest["periodType"] = "P";
 
-              claimLicSearchRequest["status"] = "";
-              claimLicSearchRequest["offset"] = "0";
-              claimLicSearchRequest["limit"] = "10";
-              
-              var tabView =  self.scope.attr('view');
-              claimLicSearchRequest["view"] = self.scope.attr('view');
-              
-              var filterData = self.scope.tokenInput.attr();
-              var newFilterData = [];
-              if(filterData.length>0){
-                for(var p=0;p<filterData.length;p++)
-                  newFilterData.push(filterData[p]["name"]);
-              }
-              claimLicSearchRequest["filter"] = newFilterData;
+                claimLicSearchRequest["status"] = "";
+                claimLicSearchRequest["offset"] = "0";
+                claimLicSearchRequest["limit"] = "10";
+                
+                var tabView =  self.scope.attr('view');
+                claimLicSearchRequest["view"] = self.scope.attr('view');
+                
+                var filterData = self.scope.tokenInput.attr();
+                var newFilterData = [];
+                if(filterData.length>0){
+                  for(var p=0;p<filterData.length;p++)
+                    newFilterData.push(filterData[p]["name"]);
+                }
+                claimLicSearchRequest["filter"] = newFilterData;
 
-              claimLicSearchRequest["sortBy"] = self.scope.sortColumns.attr().toString();
-              claimLicSearchRequest["sortOrder"] = "ASC";
+                claimLicSearchRequest["sortBy"] = self.scope.sortColumns.attr().toString();
+                claimLicSearchRequest["sortOrder"] = "ASC";
 
-              //console.log("Request are "+JSON.stringify(UserReq.formRequestDetails(claimLicSearchRequest)));
-              console.log("Request are "+JSON.stringify(claimLicSearchRequest));
-              if(tabView=="licensor"){
-                claimLicensorInvoices.findOne(UserReq.formRequestDetails(claimLicSearchRequest),function(values){
-                    //console.log("data is "+JSON.stringify(values.attr()));
-                    self.scope.allClaimLicensorMap.replace(values);
-                },function(xhr){
-                  console.error("Error while loading: "+xhr);
-                });
-              } else if(tabView=="country" || tabView=="country-aggregate"){
-                claimCountryInvoices.findOne(UserReq.formRequestDetails(claimLicSearchRequest),function(values){
-                    //console.log("datafsdf is "+JSON.stringify(values.attr()));
-                    self.scope.allClaimCountryMap.replace(values);
-                },function(xhr){
-                  console.error("Error while loading: "+xhr);
-                });
-              }
+                //console.log("Request are "+JSON.stringify(UserReq.formRequestDetails(claimLicSearchRequest)));
+                console.log("Request are "+JSON.stringify(claimLicSearchRequest));
+                if(tabView=="licensor"){
+                  claimLicensorInvoices.findOne(UserReq.formRequestDetails(claimLicSearchRequest),function(values){
+                      //console.log("data is "+JSON.stringify(values.attr()));
+                      self.scope.allClaimLicensorMap.replace(values);
+                  },function(xhr){
+                    console.error("Error while loading: "+xhr);
+                  });
+                } else if(tabView=="country" || tabView=="country-aggregate"){
+                  claimCountryInvoices.findOne(UserReq.formRequestDetails(claimLicSearchRequest),function(values){
+                      //console.log("datafsdf is "+JSON.stringify(values.attr()));
+                      self.scope.allClaimCountryMap.replace(values);
+                  },function(xhr){
+                    console.error("Error while loading: "+xhr);
+                  });
+                }
+            }
+          } else {
+            this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
           }
       }
     }
