@@ -31,6 +31,9 @@
   {{/if}}
 </div>
 {{#if pageState.selectedBundle.bundleDetailsGroup.length}}
+<div class="grand-total">
+  <h3>Grand Total: {{pageState.selectedBundle.paymentAmt}} {{pageState.selectedBundle.paymentCcy}}<h3>
+</div>
 <div class="bottom-controls">
   <rn-workflow-display steps="{workflowSteps}" class="progress-display"></rn-workflow-display>
   <div class="flex-spacer"></div>
