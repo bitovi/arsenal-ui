@@ -671,6 +671,7 @@ var page = Component.extend({
       },
       '{scope.appstate} change': function() {
           var self=this;
+          console.log("hhshshhs");
           /* Page is not allowed to do search by default when page is loaded */
           /* This can be checked using 'localGlobalSearch' parameter, it will be undefined when page loaded */
           if(this.scope.attr("localGlobalSearch") != undefined){
@@ -750,7 +751,9 @@ var page = Component.extend({
               }
 
           } else {
-            
+            console.log(this.scope.appstate.attr('globalSearch'));
+            if(this.scope.appstate.attr('globalSearch')==undefined)
+              this.scope.appstate.attr('globalSearch',true);
             this.scope.attr("localGlobalSearch", this.scope.appstate.attr('globalSearch'));
           }
       }

@@ -589,7 +589,10 @@ var page = Component.extend({
                 }
             }
           } else {
-            this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
+            if(this.scope.appstate.attr('globalSearch')==undefined)
+              this.scope.appstate.attr('globalSearch',true);
+            
+            this.scope.attr("localGlobalSearch", this.scope.appstate.attr('globalSearch'));
           }
       }
     }
