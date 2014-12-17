@@ -4,6 +4,8 @@ import Urls from 'utils/urls';
 var Recon = Model.extend({
   findOne: function(params){
        return $.ajax({
+        //  url: 'detailInvoice/fetch',
+        //   type: 'GET'
          url: Urls.DOMAIN_SERVICE_URL+'detailInvoice/fetch',
          type: 'POST',
          data: JSON.stringify(params),

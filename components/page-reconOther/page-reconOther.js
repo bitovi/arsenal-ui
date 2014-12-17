@@ -12,7 +12,7 @@ import tokeninput from 'tokeninput';
 import css_tokeninput from 'tokeninput.css!';
 import css_tokeninput_theme from 'tokeninput_theme.css!';
 import commonUtils from 'utils/commonUtils';
-
+import FileManager from 'utils/fileManager/';
 
 
 var page = Component.extend({
@@ -78,7 +78,15 @@ var page = Component.extend({
     ".downloadLink.fileName click": function(item, el, ev){
       var self=this.scope;
       var row = item.closest('tr').data('row').row;
-      //Download needs testing
+
+
+      var request = {
+        "fileId":row.invFileId,
+        "boundType":row.invFileType
+      }
+
+      FileManager.downloadFile(request);
+
     },
     '{scope.appstate} change': function() {
       if(this.scope.isGlobalSearch != this.scope.appstate.attr('globalSearch')){
