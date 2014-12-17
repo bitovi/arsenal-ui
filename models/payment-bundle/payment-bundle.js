@@ -187,14 +187,15 @@ var PaymentBundle = Model.extend({
 
     var requestData = {
       paymentBundle: {
-        action: params.action.toUpperCase(), // APPROVE, REJECT, RECALL, DELETE
-        bundleType: this.bundleType,
-        bundleLines: _.map(this.bundleDetailsGroup, (group) => ({
-          refLineId: group.refLineId,
-          refLineType: group.refLineType,
-          periodType: group.periodType
-        })),
-        comments: params.approvalComment
+        comments: params.approvalComment,
+        bundleId: this.bundleId,
+        approvalId: this.approvalId,
+        periodFrom: this.periodFrom,
+        periodTo: this.periodTo,
+        paymentAmt: this.paymentAmt,
+        paymentCcy: this.paymentCcy,
+        status: this.status,
+        bundleDetailsGroup: this.bundleDetailsGroup
       }
     };
 
