@@ -52,11 +52,13 @@ var page = Component.extend({
     events: {
       "inserted": function(){
        $("#searchDiv").show();
+
        setTimeout(function(){
           $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid emptyrows="{emptyrows}"></rn-new-onaccount-grid>')({emptyrows:true}));
        }, 10);
           disablePropose(true);
           disableCopyOnAccount(true);
+          $("#onAccountEditDeleteDiv").hide();
       },
       'period-calendar onSelected': function (ele, event, val) {  
          this.scope.attr('periodchoosen', val);
@@ -191,7 +193,7 @@ var page = Component.extend({
       "#onAccountBalance click":function(el, ev){
         ev.preventDefault();
         this.scope.tabsClicked="ON_ACC_BALANCE";
-        $('#newonAccountGrid, #newonAccountGridComps, #proposedonAccountDiv,#proposeOnAccountGridComps, #forminlineElements,#searchDiv').hide();
+        $('#newonAccountGrid, #newonAccountGridComps, #proposedonAccountDiv,#proposeOnAccountGridComps, #forminlineElements,#searchDiv, #onAccountEditDeleteDiv').hide();
         $('#onAccountBalanceDiv').show();
        if ($("rn-onaccount-balance-grid").find("tbody>tr").length) {
            $('rn-onaccount-balance-grid tbody tr').css("outline","0px solid #f1c8c8");
@@ -203,13 +205,13 @@ var page = Component.extend({
         ev.preventDefault();
         this.scope.tabsClicked="NEW_ON_ACC";
         $('#newonAccountGrid, #newonAccountGridComps, #forminlineElements,#searchDiv').show();
-        $('#onAccountBalanceDiv, #proposedonAccountDiv,#proposeOnAccountGridComps').hide();
+        $('#onAccountBalanceDiv, #proposedonAccountDiv,#proposeOnAccountGridComps, #onAccountEditDeleteDiv').hide();
       },
       "#proposedonAccount click":function(el, ev){
         ev.preventDefault();
         this.scope.tabsClicked="PROPOSED_ON_ACC";
         $('#newonAccountGrid, #onAccountBalanceDiv, #forminlineElements,#searchDiv').hide();
-        $('#proposedonAccountDiv,#proposeOnAccountGridComps').show();
+        $('#proposedonAccountDiv,#proposeOnAccountGridComps, #onAccountEditDeleteDiv').show();
         disableProposedSubmitButton(true);
         disableEditORDeleteButtons(true);
        if (!$("rn-proposed-onaccount-grid").find("tbody>tr").length) {
