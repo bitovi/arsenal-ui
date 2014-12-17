@@ -25,8 +25,8 @@ Grid.extend({
     appstate:undefined,
     columns: [
       {
-        id: 'error',
-        title: '',
+        id: 'errormsg',
+        title: '<img src="resources/images/rn_WarningActive@2x.png" class="errorhead">',
         contents: function(row) {
           return stache('{{#error}}<img src="resources/images/alert.png" class="erroricon" data-container="body" data-toggle="popover" data-placement="right" data-content="{{error}}">{{/error}}')({error: row.error});
         }
@@ -34,10 +34,6 @@ Grid.extend({
       {
         id: 'licensor',
         title: 'Licensor'
-      },
-      {
-        id: 'invoiceCategory',
-        title: 'Invoice Category'
       },
       {
         id: 'contentType',
@@ -94,7 +90,24 @@ var page = Component.extend({
       errorStatus:{},
       fileUpload:'',
       uploadedFileInfo:[],
-      errorMessage:"@"
+      errorMessage:"@",
+      createPBRequest: function(){
+        var bundleNamesRequest = {"bundleSearch":{}};
+        var serTypeId = $("#invoiceType option:selected").attr("name");
+        var regId = this.regionStore;
+        if(typeof(serTypeId)!="undefined")
+            bundleNamesRequest.bundleSearch["type"] = serTypeId;
+        
+        if(typeof(regId)=="undefined")
+            bundleNamesRequest.bundleSearch["regionId"] = "";
+        else
+            bundleNamesRequest.bundleSearch["regionId"] = regId;
+            // bundleNamesRequest.bundleSearch["type"] = "invoice";
+            console.log(bundleNamesRequest);
+            this.attr("bundleNamesRequest", JSON.stringify(bundleNamesRequest));
+
+            return JSON.stringify(bundleNamesRequest);
+        }
     
     },
     init:function(){
@@ -115,20 +128,22 @@ var page = Component.extend({
 
             for(var i=0; i< tempArr.length; i++){
             var tempObj = {};
+
+           console.log(JSON.stringify(tempArr[i].errors));
             var errString = "";
         
-            // for(var key in tempArr[i].errors[0].errorMap[0]){  /*Invoice error*/
-            //        if(tempArr[i].errors[0].errorMap[0][key].trim())
-            //        errString += tempArr[i].errors[0].errorMap[0][key]+", ";
-            // }
+            for(var key in tempArr[i].errors.errorMap){  /*Invoice error*/
+                   if(tempArr[i].errors.errorMap[key].trim())
+                   errString += tempArr[i].errors.errorMap[key]+", ";
+            }
 
-            // for(var j =0; j < tempArr[i].invoiceLines.length; j++){
-            //       for(var key in tempArr[i].invoiceLines[j].errors[0].errorMap[0]){  /*Invoiceline error*/
-            //            if(tempArr[i].invoiceLines[j].errors[0].errorMap[0][key].trim())
-            //            errString += tempArr[i].invoiceLines[j].errors[0].errorMap[0][key]+", ";
-            //        }
-            // }
-            // errString = errString.replace(/,\s*$/, "");  
+            for(var j =0; j < tempArr[i].invoiceLines.length; j++){
+                  for(var key in tempArr[i].invoiceLines[j].errors.errorMap){  /*Invoiceline error*/
+                       if(tempArr[i].invoiceLines[j].errors.errorMap[key].trim())
+                       errString += tempArr[i].invoiceLines[j].errors.errorMap[key]+", ";
+                   }
+            }
+            errString = errString.replace(/,\s*$/, "");  
             
             var errlabel = "<span class='errorlabel'>Error: </span>";
 
@@ -136,13 +151,12 @@ var page = Component.extend({
          
 
             tempObj.licensor= tempArr[i].entityName;
-            tempObj.invoiceCategory= "invoiceCategory";  
             tempObj.invoiceNum= tempArr[i].invoiceNumber;
-            // tempObj.dueDate= tempArr[i].invoiceDueDate;
+            tempObj.dueDate= tempArr[i].invoiceDueDate;
             tempObj.invoiceAmt= CurrencyFormat(tempArr[i].invoiceAmount);
             tempObj.currency= tempArr[i].invoiceCcy;
             var maxcommentlength = 50;
-            //tempObj.comments= (tempArr[i].comments[0].comments.length > maxcommentlength)?tempArr[i].comments[0].comments.substring(0, maxcommentlength)+"..":tempArr[i].comments[0].comments;
+            tempObj.comments= (tempArr[i].comments[0].comments.length > maxcommentlength)?tempArr[i].comments[0].comments.substring(0, maxcommentlength)+"..":tempArr[i].comments[0].comments;
         
 
             var contentTypeArr = [], countryArr = [];
@@ -190,7 +204,7 @@ var page = Component.extend({
             }
             
 
-            $('.rn-grid>tbody>tr').find("td.error").each(function(i){
+            $('.rn-grid>tbody>tr').find("td.errormsg").each(function(i){
             if($(this).html() != ""){
             
                  self.scope.attr("activesubmitbutton", false);
@@ -360,28 +374,41 @@ var page = Component.extend({
                             Invoice.create(UserReq.formRequestDetails(createInvoiceData))
                          ]).then(function(values) {
                             
+                                if(values[0]["status"]=="SUCCESS"){
+                                       var msg = "Invoice number "+self.scope.invoicenumberStore+" was saved successfully."
+                                       $("#invcsvmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
+                                       $("#invcsvmessageDiv").show();
+                                       setTimeout(function(){
+                                          $("#invcsvmessageDiv").hide();
+                                       },5000)
+                                    }
+                                    else
+                                    {
+                                      if(typeof values[0].invoices[0].errors != "undefined")
+                                        {
+                                          var errorMap = values[0].invoices[0].errors.errorMap;
+                                        }
+                                        
+                                        
+                                      if(errorMap){
+                                          var errorStr = "";
+                                          for(var key in errorMap){
+                                            errorStr += errorMap[key]+", ";
+                                            console.log(key); 
+                                          }
+                                          errorStr = errorStr.replace(/,\s*$/, "");  
+                                          
+                                          var msg = "Error: "+ errorStr;
+                                        }
+                                        else{
+                                            var msg = values[0].responseText;
+                                        }
 
-                          if(values[0]["status"]=="SUCCESS"){
-                                  var msg = "Invoice saved successfully."
-                                   $("#invcsvmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
-                                   $("#invcsvmessageDiv").show();
-                                   setTimeout(function(){
-                                      $("#invcsvmessageDiv").hide();
-                                   },5000)
-
-                                }
-                                else
-                                {
-                                  // $("#invoiceform").data('bootstrapValidator').resetForm();
-                                  var msg = "Invoices not saved successfully."
-                                  $("#invcsvmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
-                                  $("#invcsvmessageDiv").show();
-                                  setTimeout(function(){
-                                      $("#invcsvmessageDiv").hide();
-                                   },5000)
-                                  $("#addInvSubmit").attr("disabled", false);
-                                  }
-                             });  
+                                      $("#invcsvmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+                                      $("#invcsvmessageDiv").show();
+                                      $("#addInvSubmit").attr("disabled", false);
+                                    }   
+                                });  
       },
       ".rn-grid>tbody>tr td dblclick": function(el, ev){
           var invoiceid = el.closest('tr').data('row').row.invoiceNum;

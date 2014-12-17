@@ -134,7 +134,7 @@
 							 <div class="col-sm-6 ">
 						    	<label for="inputPassword3" class="col-sm-6 control-label">Received Date:</label>
 								    <div class="col-sm-6 recdate requiredBar">
-								      <date-picker name="receiveddate" placeholder=""></date-picker>
+								      <date-picker name="receiveddate" placeholder="{{currentDate}}"></date-picker>
 								     </div>
 							  </div>
 
@@ -161,7 +161,8 @@
 				   <div class="form-group">
 				    <div class="col-sm-12 singleField">
 				    <label for="inputEmail3" class="col-sm-3 control-label">Supporting Documents: </label>
-	    				<editicsv-upload uploadedfileinfo="{uploadedfileinfo}"></editicsv-upload>
+	    				<!--<editicsv-upload uploadedfileinfo="{uploadedfileinfo}"></editicsv-upload>-->
+	    				 <rn-file-uploader-icsv uploadedfileinfo="{uploadedfileinfo}"></rn-file-uploader-icsv>
 				  	</div>
 
 				  </div>
@@ -217,25 +218,17 @@
 							       					{{/each}}
 						       					{{else}}
 							       					{{#each contentType}}
-								        				<option serviceTypeId="{{serviceTypeId}}" value="{{contentGroupId}}">{{contentGroupName}}
-								        				</option>
-							       					{{/each}}
+								        				<option serviceTypeId="{{serviceTypeId}}" value="{{contentGroupId}}">{{contentGroupName}}</option>
+								        			{{/each}}
 						       					{{/if}}
 						        		</select>
 						        		
 
 						        	</td>
 						            <td class="form-group">
-						            	<div class="breakdownPeriod">
-						            	<select id="inputMonth0" name="inputMonth[]" class="form-control inputMonth">
-						            			<option value="">Select</option>
-										        <option value="201301">P1FY13</option>
-										        <option value="201302">P2FY13</option>
-										        <option value="201303">P3FY13</option>
-										        <option value="201304">P4FY13</option>
-										        <option value="201305">P5FY13</option>
-										        <option value="201306">P6FY13</option>
-							        	</select>
+						            	<div class="breakdownPeriod calendarcls">
+						            	<input type='text' id="inputMonth0" name="inputMonth[]" class="updateperoid form-control inputMonth"/> 
+						            		<period-calendar selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
 							        	</div>
 
 							        </td>
@@ -256,7 +249,7 @@
 						            </td>
 						           <td>
 						            	 {{#if isAdhocStrore.invtype}}
-								            	<select id="ccidGL0" name="ccidGL" class="form-control inputMonth">
+								            	<select id="ccidGL0" name="ccidGL" class="form-control ccidGL">
 								            			<option value="">Select</option>
 												        {{#each glaccounts}}
 									        				<option value="{{id}}">{{value}}</option>
@@ -284,23 +277,14 @@
 							       					{{/each}}
 						       					{{else}}
 							       					{{#each contentType}}
-								        				<option serviceTypeId="{{serviceTypeId}}" value="{{contentGroupId}}">{{contentGroupName}}
-								        				</option>
-							       					{{/each}}
+								        				<option serviceTypeId="{{serviceTypeId}}" value="{{contentGroupId}}">{{contentGroupName}}</option>
+								        			{{/each}}
 						       					{{/if}}
 						        		</select>
 						        	</td>
 						            <td class="form-group">
-						            	<div class="breakdownPeriod">
-						            	<select id="inputMonth" name="inputMonth[]" class="form-control inputMonth">
-						            			<option value="">Select</option>
-										        <option value="201301">P1FY13</option>
-										        <option value="201302">P2FY13</option>
-										        <option value="201303">P3FY13</option>
-										        <option value="201304">P4FY13</option>
-										        <option value="201305">P5FY13</option>
-										        <option value="201306">P6FY13</option>
-							        	</select>
+						            	<div class="breakdownPeriod calendarcls">
+						            		<input type='text' id="inputMonth" name="inputMonth[]" class="updateperoid form-control inputMonth"/> 
 							        	</div>
 							        </td>
 							        <td class="form-group">
@@ -320,7 +304,7 @@
 						            </td>
 						           <td>
 						            	{{#if isAdhocStrore.invtype}}
-								            	<select id="ccidGL" name="ccidGL" class="form-control inputMonth">
+								            	<select id="ccidGL" name="ccidGL" class="form-control ccidGL">
 								            			<option value="">Select</option>
 												        {{#each glaccounts}}
 									        				<option value="{{id}}">{{value}}</option>
