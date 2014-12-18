@@ -1,6 +1,6 @@
-page-analytics{
   .formInputs {
     width:80%;
+    padding-left:5px;
   }
 
   .col-sm-12.status {
@@ -8,6 +8,7 @@ page-analytics{
     font-size: 12px !important;
     color: #1e2025;
     padding: 0px;
+    padding-left:5px;
   }
 
   .recon-container {
@@ -40,21 +41,21 @@ page-analytics{
   }
 
   div#entityGridFD {
-    height: 550px;
+    height: 570px;
     border-right: 1px solid #bfbfbf;
-
+    
   }
 
   select.resizeBox {
-
+          
     	margin-top: 2px;
       width: 140px;
   }
 
   select.resizeInvoice {
-
+          
       margin-top: 2px;
-
+     
   }
 
   img.addSocContactsAdd {
@@ -71,14 +72,14 @@ page-analytics{
   }
 
   div.repConf {
-
+    
     padding-left: 15px;
     vertical-align: top;
 
   }
 
   .col-sm-12.societyContacts {
-    height: 110px;
+    height: 100px;
     width: 100%;
     overflow: auto;
     padding-right: 0px;
@@ -185,7 +186,7 @@ page-analytics{
   div#countryModelMapping {
 
       width:100%;
-      height:6.250em;
+      max-height:6.250em;
       overflow: auto;
       padding: 0px;
       padding-left: 5%;
@@ -195,7 +196,7 @@ page-analytics{
   div#revisionHistory {
 
       width: 100%;
-      height: 6.250em;
+      max-height: 6.250em;
       overflow-y: scroll;
       padding: 0px;
       overflow-x: hidden;
@@ -210,7 +211,7 @@ page-analytics{
       padding: 0px;
       padding-left:15px;
       vertical-align : top;
-
+     
   }
 
   tbody.repConfiguration {
@@ -329,11 +330,11 @@ page-analytics{
             }
           }
 
-
+          
         }
 
         thead {
-
+              
           tr {
               vertical-align: top;
             th {
@@ -350,16 +351,17 @@ page-analytics{
                 border-left: 1px solid #666666 !important;
                 border-top: 1px solid #666666 !important;
                 border-bottom: 1px solid #666666 !important;
-
+            
           }
-
+          
         }
 
         }
 
-
+        
         tbody:last-child, tfoot:last-child {
           & > tr:last-of-type {
+
             td, th {
               height : 1.5625em;
               backgorund: !important;
@@ -393,7 +395,7 @@ page-analytics{
               padding-bottom : 0em;
               font-size: 12px;
               vertical-align: top;
-
+              
               border-right: 1px solid hsl(0, 0%, 75%);
 
               border-bottom: 1px solid #FFFFFF !important;
@@ -414,7 +416,7 @@ page-analytics{
             }
 
             &:last-child td{
-                border-bottom: 1px solid hsl(0, 0%, 75%) !important;
+                border-bottom: 2px solid hsl(0, 0%, 75%) !important;
             }
 
           }
@@ -428,7 +430,7 @@ page-analytics{
           }
         }
 
-        tfoot {
+        tfoot { 
 
           tr {
 
@@ -513,4 +515,8 @@ page-analytics{
         background:url('../../resources/images/spinner.gif') no-repeat center center;
         padding:10%;
       }
-}
+      
+      .reportConfErr {
+        font-size:12px;
+        color:red;
+      }

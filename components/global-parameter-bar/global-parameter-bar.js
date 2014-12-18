@@ -209,9 +209,12 @@ var GlobalParameterBar = Component.extend({
         var quart = getDefaultPeriodFrom('ONACCOUNT');
         $('#periodFrom').val(quart);
         $('#periodTo').val(quart);
-        this.scope.appstate.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(quart));
-        this.scope.appstate.attr('periodTo', periodWidgetHelper.getFiscalPeriod(quart));
-        this.scope.appstate.attr('periodType', 'Q');
+        // this.scope.appstate.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(quart));
+        // this.scope.appstate.attr('periodTo', periodWidgetHelper.getFiscalPeriod(quart));
+        // this.scope.appstate.attr('periodType', 'Q');
+        this.scope.changesToApply.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(quart));
+        this.scope.changesToApply.attr('periodTo', periodWidgetHelper.getFiscalPeriod(quart));
+        this.scope.changesToApply.attr('periodType', 'Q');
       }
     }
   },

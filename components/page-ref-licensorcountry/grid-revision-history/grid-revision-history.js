@@ -3,7 +3,7 @@ import styles from './grid-revision-history.less!';
 import _ from 'lodash';
 import Grid from 'components/grid/';
 import stache from 'can/view/stache/';
-
+import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 var GridRevisionHistory =
 /* Extend grid with the columns */
@@ -28,14 +28,14 @@ Grid.extend({
         id: 'validFrom',
         title: 'Valid From',
         contents: function(row) {
-          return row.validFrom == null ? "" : row.validFrom ;
+          return row.validFrom == null  ? "" : periodWidgetHelper.getDisplayPeriod(row.validFrom,"P");
         }
       },
       {
         id: 'validTo',
         title: 'Valid To',
         contents: function(row) {
-          return row.validTo == null ? "" : row.validTo ;
+          return row.validTo == null ? "" : periodWidgetHelper.getDisplayPeriod(row.validTo,"P");
         }
       },
       {

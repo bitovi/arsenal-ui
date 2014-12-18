@@ -215,7 +215,7 @@
 						            			<option value="">Select</option>
 							        			{{#if isAdhocStrore.adhoc}}
 								        			{{#each adhocType}}
-								        				<option value="{{id}}">{{value}}</option>
+								        				<option serviceTypeId="{{serviceTypeId}}" value="{{adhocTypeId}}">{{adhocName}}</option>
 							       					{{/each}}
 						       					{{else}}
 							       					{{#each contentType}}
