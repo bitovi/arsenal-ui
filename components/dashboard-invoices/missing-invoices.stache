@@ -12,7 +12,6 @@
     <tr>
       <td>{{countryId}}</td>
       <td>{{entityName}}</td>
-      <td>{{fiscalPeriod}}</td>
       <td>{{missingParts pdfCount ccidCount}}</td>
     </tr>
     {{/missingInvoices}}

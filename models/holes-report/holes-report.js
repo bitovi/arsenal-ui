@@ -7,7 +7,6 @@ var HolesReport = Model.extend({
   findAll: function(params) {
     var appstate = params.appstate;
 
-    // TODO: when infrastructure gets set up, fix this.
     var data = {
       searchRequest: requestHelper.formGlobalRequest(appstate).searchRequest
     };
