@@ -295,11 +295,13 @@
 
 			<div class="col-sm-12" id="entityGridSD">
 
-					<div class="col-sm-12" style="padding-top: 15px;"></div>
+					<div class="col-sm-12" style="padding-top: 15px; padding-left:0px">
+						<div class="col-sm-12 reportConfErr" can-value="repConfMessage"> {{getRepConfmessage}} </div>
+					</div>
 					
 					<div class="repConfigurationTab">
 						<div class="col-sm-12" >
-							<label class="tableLabel">Report Configuration:</label>
+							<label class="tableLabel">Report Configuration:</label> 
 						</div>
 
 		    			<div id="repConfiguration" class="col-sm-12 repConfiguration">
