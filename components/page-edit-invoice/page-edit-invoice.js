@@ -103,7 +103,7 @@ var page = Component.extend({
     //invoiceid:"",
   	editpage:false,
   	formSuccessCount:1,
-  	uploadedfileinfo:[],
+  	uploadedFileInfo:[],
   	periodType:"",
   	ajaxRequestStatus:{},
 	isRequired: function(){
@@ -955,7 +955,7 @@ var page = Component.extend({
 										}
 							          	else
 							          	{
-								          	if(typeof values[0].invoices[0].errors != "undefined")
+								          		if(values[0].invoices[0].errors)
 								           		{
 								           			var errorMap = values[0].invoices[0].errors.errorMap;
 								           		}
