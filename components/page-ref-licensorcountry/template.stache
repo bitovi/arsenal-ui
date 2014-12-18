@@ -122,11 +122,11 @@
                 <div class="col-sm-2" style="padding-right:0px;padding-left:0px;">
                   <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelId'  >
                     {{#each pricingModelVersions}}
-                    <option value="{{id}}">{{value}}</option>
+                    <option value="{{id}}">{{id}}</option>
                     {{/each}}
                   </select>
                 </div>
-                <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="pricingMOdelBtn">...</button>
+                <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="pricingModelBtn">...</button>
               </div>
             </div>
 
@@ -162,7 +162,7 @@
                 <label for="forStatus" class="col-sm-3 control-label">Comments: </label>
                 <div class="col-sm-9 requiredBarNone">
                   <textarea id="historyComments"  class="form-control multiple-comments-editable form-control-comments new-comments multiple-comments-editable-height" style="min-height:120px;    max-height:200px;"  can-value="pageState.historyComments" readonly=true></textarea>
-                  <textarea class="form-control multiple-comments-editable form-control-comments new-comments multiple-comments-editable-height" maxlength="1024" name="usercommentsdiv" can-value="pageState.entityCountryDetails.comment"  style="height:100px;   min-height:100px;    max-height:100px;"></textarea>
+                  <textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:50px;   min-height:50px;    max-height:50px;" can-value="pageState.entityCountryDetails.comment"></textarea>
                 </div>
               </div>
             </div>
@@ -220,6 +220,68 @@
 
             </div><!-- RIGHT Layout END-->
           </div>
+
+          <div id="viewPricingModelDiv"> <!-- View Pricing Model start --->
+            <div class="col-sm-12" style="border-bottom: 1px solid #ddd;padding: 0px;">
+            <div class="col-sm-11" >
+            <h4> View Pricing Model</h4>
+          </div>
+          <div class="col-sm-1" style="padding-top: 10px;text-align: right;" id="priModelClose">
+          <a href="javascript:void(0)">X</a>
+        </div>
+      </div>
+      <div class="col-sm-12" style="padding-top: 10px;">
+      <div class="col-sm-5 form-group">
+      <div class="singleField">
+      <label for="" class="col-sm-6 control-label">Country:</label>
+      <div class="col-sm-6">
+      <span>{{getPricingModelDetails.country}}</span>
+    </div>
+  </div>
+</div>
+<div class="col-sm-7 form-group">
+<div class="singleField">
+<label for="" class="col-sm-6 control-label">Entity:</label>
+<div class="col-sm-6">
+<span>{{getPricingModelDetails.entity}}</span>
+</div>
+</div>
+</div>
+<div class="col-sm-5 form-group">
+<div class="singleField">
+<label for="inputEmail3" class="col-sm-6 control-label">Pricing Model:</label>
+<div class="col-sm-6">
+<span>{{getPricingModelDetails.pricingModel.modelName}}</span>
+</select>
+</div>
+</div>
+</div>
+<div class="col-sm-7 form-group">
+<div class="singleField">
+<label for="inputEmail3" class="col-sm-6 control-label">Model Name:</label>
+<div class="col-sm-6">
+<span>{{getPricingModelDetails.pricingModel.modelDescription}}</span>
+</div>
+</div>
+</div>
+<div class="col-sm-12">
+<fieldset class="scheduler-border">
+<legend class="scheduler-border">Base Model parameter</legend>
+<div id="baseModelParameterDiv"></div>
+</fieldset>
+<fieldset class="scheduler-border">
+<legend class="scheduler-border">Track Counts</legend>
+<div id="trackCountsDiv"></div>
+</fieldset>
+</div>
+<div class="col-sm-12">
+<label for="" class="col-sm-2 control-label">Comments: </label>
+<div id="priceModelmultipleComments" class="col-sm-10 normalBar">
+<textarea class="form-control" maxlength="1024" style="height:125px;   min-height:100px;    max-height:100px;"></textarea>
+</div>
+</div>
+</div>
+</div><!-- View Pricing Model ends --->
           </div><!-- Main Layout END-->
       </div>
     </form>

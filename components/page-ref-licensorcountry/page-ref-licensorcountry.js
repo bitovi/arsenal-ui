@@ -76,15 +76,23 @@ var page = Component.extend({
         requestObj = {licensorId:licId};
         self.scope.currencies.replace(Currency.findAll(UserReq.formRequestDetails(requestObj)));
         var pricingReq  = {
-          pricingModelId:self.scope.attr("pricingModels")[0].modelName
+          modelName:self.scope.attr("pricingModels")[0].modelName
         }
 
         Promise.all([
-          Country.findAll(UserReq.formRequestDetails(requestObj))
-          // ,
-          // PricingModelVersions.findAll(UserReq.formRequestDetails({}))
+          Country.findAll(UserReq.formRequestDetails(requestObj)),
+          PricingModelVersions.findOne(UserReq.formRequestDetails(pricingReq))
           ]).then(function(values) {
             self.scope.attr("countries").replace(values[0]);
+            var list = [];
+            can.each(values[1].version,
+              function( value, index ) {
+                list.push( {
+                  "id":value
+                });
+              }
+            );
+            self.scope.attr("pricingModelVersions").replace(list);
           }).then(function(){
 
             self.scope.pageState.entityCountryDetails.entityCountry.attr("entityId",self.scope.attr("entities")[0].id);
@@ -220,18 +228,22 @@ var page = Component.extend({
         '{scope} pageState.entityCountryDetails.pricingModelVersionNo': function() {
           var self = this;
           var requestObj  = {
-            pricingModelId:this.scope.pageState.entityCountryDetails.attr("pricingModelVersionNo")
+            modelName:this.scope.pageState.entityCountryDetails.attr("pricingModelVersionNo")
           }
 
-          // Promise.all([
-          //   PricingModelVersions.findAll(UserReq.formRequestDetails(requestObj))
-          //   ]).then(function(values) {
-          //     //var aa = values[0];
-          //     // console.log(" test "+aa[0].value);
-          //     // console.log(" test 1:"+aa[1].value);
-          //     self.scope.attr("pricingModelVersions").replace(values[0]);
-          //     //console.log("lebgth: "+self.scope.pricingModelVersions.attr("length"));
-          //   });
+          Promise.all([
+            PricingModelVersions.findOne(UserReq.formRequestDetails(requestObj))
+            ]).then(function(values) {
+              var list = [];
+              can.each(values[0].version,
+                function( value, index ) {
+                  list.push( {
+                    "id":value
+                  });
+                }
+              );
+              self.scope.attr("pricingModelVersions").replace(list);
+            });
 
           },
           '#fetchDetailsBtn click':function(){
@@ -318,10 +330,10 @@ var page = Component.extend({
 
             };
 
-            console.log("requestObj: "+JSON.stringify(requestObj));
+            //console.log("requestObj: "+JSON.stringify(requestObj));
             CountryLicensor.create(UserReq.formRequestDetails(requestObj), function(data){
               if(data["status"]=="SUCCESS"){
-                console.log("Success :");
+              //  console.log("Success :");
                 this.scope.attr("displayMessage","display:block");
               }
             },function(xhr){
@@ -330,6 +342,28 @@ var page = Component.extend({
 
 
           },
+          '#priModelClose click': function(){
+            $("#viewPricingModelDiv").hide();
+          },
+          '#pricingModelBtn click': function(){
+            var self = this.scope;
+            $("#viewPricingModelDiv").show();
+            var selmodelid =  self.pageState.entityCountryDetails.attr("pricingModelVersionNo");
+            var genObj = {modelId:selmodelid,reqType:'details'};
+
+            console.log("Request is " +JSON.stringify(UserReq.formRequestDetails(genObj)));
+            PricingModels.findOne(UserReq.formRequestDetails(genObj),function(data){
+              //console.log("Pricing model details "+ JSON.stringify(data.pricingModel.attr()));
+              self.attr("getPricingModelDetails",data.pricingModel);
+              self.attr("baseModelParameter").replace(data.pricingModel.baseModelParameters);
+              self.attr("trackCounts").replace(data.pricingModel.trackCounts);
+
+              var tempcommentObj = data.pricingModel.pricingModel.comments;
+              if(tempcommentObj!=null)
+                $('#priceModelmultipleComments').html(stache('<multiple-comments divid="priceModelmultipleComments" options="{tempcommentObj}" divheight="100" isreadOnly="y"></multiple-comments>')({tempcommentObj}));
+              }).then(function(){
+              });
+            },
           'period-calendar onSelected': function (ele, event, val) {  
             this.scope.attr('periodchoosen', val);
             $(ele).parent().find('input[type=text]').val(this.scope.periodchoosen).trigger('change');

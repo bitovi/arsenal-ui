@@ -5,17 +5,17 @@ import RinsCommon from 'utils/urls';
 
 var PricingModelVersion = Model.extend({
 
-    findAll: 'GET /getPricingModelVersion'
+    // findAll: 'GET /getPricingModelVersion'
 
-    // findAll: function(params){
-    //  	return $.ajax({
-    //  		contentType: 'application/json; charset=utf-8',
-    //   		url: RinsCommon.UI_SERVICE_URL +'getModelList',
-    //   		type: 'POST',
-    //   		data: JSON.stringify(params),
-    //   		dataType:'json'
-    //   	});
-    // }
+    findOne: function(params){
+     	return $.ajax({
+     		  contentType: 'application/json; charset=utf-8',
+      		url: RinsCommon.UI_SERVICE_URL +'getPricingModelVersions',
+      		type: 'POST',
+      		data: JSON.stringify(params),
+      		dataType:'json'
+      	});
+    }
 }, {});
 
 export default PricingModelVersion;
