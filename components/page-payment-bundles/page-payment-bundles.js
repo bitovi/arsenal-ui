@@ -24,20 +24,8 @@ var page = Component.extend({
   scope: {
     appstate: null, // will be passed in
     pageState: pageState,
-    appstateFilled: function(scope) {
-      var filled =  scope.appstate &&
-                    scope.appstate.storeType &&
-                    scope.appstate.contentType.length &&
-                    scope.appstate.region &&
-                    scope.appstate.country.length &&
-                    scope.appstate.licensor.length &&
-                    scope.appstate.periodFrom &&
-                    scope.appstate.periodTo;
-
-      return !!filled;
-    },
     refreshBundles: function() {
-      if(this.scope.appstateFilled(this.scope)) {
+      if(this.scope.appstate.filled) {
         PaymentBundle.findAll({appstate: this.scope.appstate}).then(function(bundles) {
           can.batch.start();
           pageState.bundles.splice(0, pageState.bundles.length)
@@ -54,8 +42,7 @@ var page = Component.extend({
   },
   helpers: {
     showPage: function(options) {
-      can.__reading(this.appstate, 'change');
-      if(this.appstateFilled(this)) {
+      if(this.appstate.attr('filled')) {
         return options.fn(this);
       } else {
         return '';

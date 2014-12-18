@@ -1,4 +1,7 @@
 {{#showPage}}
+{{#if fetching}}
+<div class="select-message">Fetching report...</div>
+{{else}}
 <table class="holes-report">
   <thead>
     <tr>
@@ -16,13 +19,13 @@
       {{#entities}}
       {{#renderCell holes country .}}
       {{#if holeExists}}
-      <td {{#if isCCIDExpect}}class="invoice-expected"{{/if}}>
+      <td class="hole {{#if isCCIDExpect}}invoice-expected{{/if}}">
         {{#if pdfExists}}<div class="top circle"></div>{{/if}}
         {{#if ccidExists}}<div class="bottom circle"></div>{{/if}}
         {{#if la}}<img class="la" src="resources/images/rn_LegendLondonAgreement@2x.png"/>{{/if}}
       </td>
       {{else}}
-      <td></td>
+      <td class="hole no-hole"></td>
       {{/if}}
       {{/renderCell}}
       {{/entities}}
@@ -31,6 +34,7 @@
     {{/eachCountry}}
   </tbody>
 </table>
+{{/if}}
 {{else}}
 <div class="select-message">Please select parameters above for the Invoices Received report.</div>
 {{/showPage}}

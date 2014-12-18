@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import $ from 'jquery';
+import compute from 'can/compute/';
 import Component from 'can/component/';
 import Map from 'can/map/';
 
@@ -9,6 +10,8 @@ import template from './template.stache!';
 import missingInvoicesTemplate from './missing-invoices.stache!';
 import styles from './dashboard-invoices.less!';
 
+var refreshTimeoutID;
+
 var DashboardInvoices = Component.extend({
   tag: 'rn-dashboard-invoices',
   template: template,
@@ -17,6 +20,7 @@ var DashboardInvoices = Component.extend({
     holesByCountry: {/*
       AUT: [hole, hole, hole],
     */},
+    fetching: false,
 
     renderMissingInvoices: function(holes) {
       var missingInvoices = _.filter(holes, hole => hole.pdfCount < 1 || hole.ccidCount < 1);
@@ -35,18 +39,19 @@ var DashboardInvoices = Component.extend({
       })
     },
 
-    appstateFilled: function(scope) {
-      var filled =  scope.appstate &&
-      scope.appstate.attr('storeType') &&
-      scope.appstate.attr('region') &&
-      scope.appstate.attr('country') &&
-      scope.appstate.attr('licensor') &&
-      scope.appstate.attr('contentType');
-
-      return !!filled;
+    debouncedRefreshReport: function() {
+      var self = this;
+      if(refreshTimeoutID) {
+        window.clearTimeout(refreshTimeoutID);
+      }
+      refreshTimeoutID = window.setTimeout(function() {
+        self.refreshReport.apply(self);
+      }, 500);
     },
-    refreshReport: function(scope) {
-      return HolesReport.findAll({appstate: scope.appstate}).then(function(holes) {
+    refreshReport: function() {
+      var self = this;
+      this.attr('fetching', true);
+      return HolesReport.findAll({appstate: self.appstate}).then(function(holes) {
         // TODO: I think I may need a holesByEntity as well
         var entities = [];
         var holesByCountry = {};
@@ -62,24 +67,28 @@ var DashboardInvoices = Component.extend({
           holesByCountry[hole.countryId].push(hole);
         });
 
+        entities = _.sortBy(entities, e => e.toUpperCase());
+
         can.batch.start();
-        scope.attr('entities', entities);
-        scope.attr('holesByCountry', holesByCountry);
+        self.attr('entities', entities);
+        self.attr('holesByCountry', holesByCountry);
         can.batch.stop();
+
+        self.attr('fetching', false);
       });
     }
   },
   helpers: {
     showPage: function(options) {
-      can.__reading(this.appstate, 'change');
-      if(this.appstateFilled(this)) {
+      //can.__reading(this.appstate, 'change');
+      if(this.appstate.attr('filled')) {
         return options.fn(this);
       } else {
         return options.inverse(this);
       }
     },
     eachCountry: function(options) {
-      var countries = Map.keys(this.attr('holesByCountry'));
+      var countries = _.sortBy(Map.keys(this.attr('holesByCountry')), c => c.toUpperCase());
       return _.map(countries, c => options.fn({
         country: c,
         holes: this.holesByCountry[c],
@@ -93,7 +102,7 @@ var DashboardInvoices = Component.extend({
           title: 'Missing Invoices',
           content: popoverContent,
           html: true,
-          trigger: 'click'
+          trigger: 'hover'
         });
       };
     },
@@ -116,15 +125,15 @@ var DashboardInvoices = Component.extend({
   },
   events: {
     'inserted': function() {
-      if(this.scope.appstateFilled(this.scope)) {
-        this.scope.refreshReport(this.scope);
+      if(this.scope.appstate.filled) {
+        this.scope.debouncedRefreshReport(this.scope);
       }
     },
     '{scope.appstate} change': function() {
       var self = this;
 
-      if(this.scope.appstateFilled(this.scope)) {
-        this.scope.refreshReport(this.scope);
+      if(this.scope.appstate.filled) {
+        this.scope.debouncedRefreshReport(this.scope);
       } else {
         this.scope.attr('entities', []);
         this.scope.attr('holesByCountry', {});
