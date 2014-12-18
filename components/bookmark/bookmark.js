@@ -21,10 +21,10 @@ var bookmark = Component.extend({
  },
   init:function(){
     var self = this;
-    //setTimeout(function(){$('.page_loader').show();},2000);
+    //setTimeout(function(){$('.bookmark_loader').show();},2000);
     Promise.all([Bookmark.findOne(UserReq.formRequestDetails())]).then(function(data) { console.log(data[0].bookmarkList.length);
          if(data[0].responseCode=='0000'){ 
-            $('.page_loader').hide();
+            $('.bookmark_loader').hide();
             self.scope.bookMarkList.replace(data[0].bookmarkList);
             if(data[0].bookmarkList.length>0){
               for(var i=0;i<self.scope.bookMarkList.length;i++){
@@ -37,7 +37,7 @@ var bookmark = Component.extend({
     Promise.all([Bookmarkusers.findOne(UserReq.formRequestDetails())]).then(function(data) {  
       if(data[0].responseCode=='0000'){
            self.scope.userList.replace(data[0].userList);
-           $('.page_loader').hide();
+           $('.bookmark_loader').hide();
         }
     });
    },
@@ -80,7 +80,7 @@ var bookmark = Component.extend({
            gearid["bookmarkId"] = el.attr('data-id');
            $('.listofbookmark').slideUp('fast');
            $('.bookmark_sharing_settings').slideDown('fast').attr('data-gear',el.attr('data-id'));
-           $('.page_loader').show(); 
+           $('.bookmark_loader').show(); 
            for(var i=0;i<self.scope.settingsList.length;i++){ 
                 self.scope.settingsList[i].removeAttr("flag");
            }
@@ -97,7 +97,7 @@ var bookmark = Component.extend({
                       }
                     }
                }
-               $('.page_loader').hide();
+               $('.bookmark_loader').hide();
                self.scope.shareList.replace('');
                self.scope.shareList.replace(self.scope.settingsList);
               }
@@ -122,10 +122,10 @@ var bookmark = Component.extend({
                 }
             });
           root["sharedForIds"] = temp;
-          $('.page_loader').show();
+          $('.bookmark_loader').show();
           Bookmarkusers.update(UserReq.formRequestDetails(root),"UPDATE",function(data){
               if(data.responseCode=='0000'){
-                 $('.page_loader').hide();
+                 $('.bookmark_loader').hide();
                   $('.bookmark_sharing_settings').slideUp('fast');
                   $('.listofbookmark').slideDown('fast');
               }
@@ -148,9 +148,11 @@ var bookmark = Component.extend({
                 }
             });
           root["idsToBeDeleted"] =deleteId;
-          $('.page_loader').show();
+          $('.bookmark_loader').show();
           Bookmark.update(UserReq.formRequestDetails(root),"DELETE",function(data){
-            $('.page_loader').hide();
+            if(data[0].responseCode=='0000'){ 
+              $('.bookmark_loader').hide();
+            }
           });
        },
         '#new_bookmark_save click':function(){
@@ -180,13 +182,13 @@ var bookmark = Component.extend({
                       };
                   var filterData=[filters];
                   var passtoSave = {"screenId": 1,"bookmarkName": $('.newbookmark_name_txtbx').val(),sharedForIds,filterData}
-                  $('.page_loader').show();
+                  $('.bookmark_loader').show();
                   Bookmark.update(UserReq.formRequestDetails(passtoSave),"SAVE",function(data){
                       if(data.responseText=="SUCCESS"){
                          Promise.all([Bookmark.findOne(UserReq.formRequestDetails())]).then(function(data) {
                            if(data[0].responseCode=='0000'){
                               self.scope.bookMarkList.replace(data[0].bookmarkList);
-                              $('.page_loader').hide();
+                              $('.bookmark_loader').hide();
 
                               $('.newbookmark_name_txtbx').val('');
                               $('.newbookmark :checkbox').prop('checked', false);
