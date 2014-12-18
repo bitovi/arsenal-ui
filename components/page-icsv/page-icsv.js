@@ -128,26 +128,31 @@ var page = Component.extend({
 
                   for(var i=0; i< tempArr.length; i++){
                         var tempObj = {};
-
-                       console.log(JSON.stringify(tempArr[i].errors));
-                        var errString = "";
-                    
-                        for(var key in tempArr[i].errors.errorMap){  /*Invoice error*/
-                               if(tempArr[i].errors.errorMap[key].trim())
-                               errString += tempArr[i].errors.errorMap[key]+", ";
-                        }
-
-                        for(var j =0; j < tempArr[i].invoiceLines.length; j++){
-                              for(var key in tempArr[i].invoiceLines[j].errors.errorMap){  /*Invoiceline error*/
-                                   if(tempArr[i].invoiceLines[j].errors.errorMap[key].trim())
-                                   errString += tempArr[i].invoiceLines[j].errors.errorMap[key]+", ";
-                               }
-                        }
-                        errString = errString.replace(/,\s*$/, "");  
                         
-                        var errlabel = "<span class='errorlabel'>Error: </span>";
+                        console.log(JSON.stringify(tempArr[i].errors));
+                        if(tempArr[i].errors){
 
-                        tempObj.error = (errString)?errlabel+errString:"";
+                              var errString = "";
+                        
+                              for(var key in tempArr[i].errors.errorMap){  /*Invoice error*/
+                                     if(tempArr[i].errors.errorMap[key].trim())
+                                     errString += tempArr[i].errors.errorMap[key]+", ";
+                              }
+
+                              for(var j =0; j < tempArr[i].invoiceLines.length; j++){
+                                    for(var key in tempArr[i].invoiceLines[j].errors.errorMap){  /*Invoiceline error*/
+                                         if(tempArr[i].invoiceLines[j].errors.errorMap[key].trim())
+                                         errString += tempArr[i].invoiceLines[j].errors.errorMap[key]+", ";
+                                     }
+                              }
+                              errString = errString.replace(/,\s*$/, "");  
+                            
+                              var errlabel = "<span class='errorlabel'>Error: </span>";
+
+                              tempObj.error = (errString)?errlabel+errString:"";
+                          }
+
+                        
                      
 
                         tempObj.licensor= tempArr[i].entityName;
@@ -291,21 +296,21 @@ var page = Component.extend({
                 {
                     var tempInvoiceData = {};
              
-              tempInvoiceData["invoiceNumber"] = tempArr[i].invoiceNumber;
+                   tempInvoiceData["invoiceNumber"] = tempArr[i].invoiceNumber;
                    tempInvoiceData["invoiceTypeId"] = tempArr[i].invoiceTypeId;
                    tempInvoiceData["serviceTypeId"] = tempArr[i].serviceTypeId;
-                   tempInvoiceData["invoiceType"] = "";
+                   tempInvoiceData["invoiceType"] = tempArr[i].invoiceType;
                    tempInvoiceData["entityId"] = tempArr[i].entityId;
-                   tempInvoiceData["regionId"] = "";
-                   tempInvoiceData["entityName"] = "";
+                   tempInvoiceData["regionId"] = tempArr[i].regionId;
+                   tempInvoiceData["entityName"] = tempArr[i].entityName;
                    tempInvoiceData["invoiceCcy"] = tempArr[i].invoiceCcy;
                    tempInvoiceData["fxRate"] = tempArr[i].fxRate;
                    tempInvoiceData["notes"] = tempArr[i].notes;
                    tempInvoiceData["invoiceAmount"] = tempArr[i].invoiceAmount;
                    tempInvoiceData["grossTotal"] = tempArr[i].grossTotal;
-                   tempInvoiceData["finalInvoiceAmount"] = "";
-                   tempInvoiceData["periodType"] = "P";
-                   tempInvoiceData["netTotal"] = "";
+                   tempInvoiceData["finalInvoiceAmount"] = tempArr[i].grossTotal;
+                   tempInvoiceData["periodType"] = tempArr[i].periodType;
+                   tempInvoiceData["netTotal"] = tempArr[i].netTotal;
                    tempInvoiceData["tax"] = tempArr[i].tax;
             
              
@@ -401,6 +406,12 @@ var page = Component.extend({
                                     {
                                         var responseInvoiceArr = values[0].invoices;
                                         icsvmap.invoiceData.attr("invoices", responseInvoiceArr);  /*updating icsv map with invoice response*/
+                                        
+                                        if(values[0].responseCode == "IN1022"){  /* Contact support team error*/
+                                          var msg = values[0].responseText;
+                                          $("#invcsvmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+                                          $("#invcsvmessageDiv").show();
+                                        }
                                     }   
                                 });  
       },
