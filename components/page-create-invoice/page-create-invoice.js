@@ -856,8 +856,7 @@ var page = Component.extend({
 				  	 			});
 
 				  	 			self.scope.attr("calduedate", "");
-
-							},
+				  	 		},
 							'period-calendar onSelected': function (ele, event, val) {  
 			       					this.scope.attr('periodchoosen', val);
 			       					$(ele).parent().find('input[type=text]').val(this.scope.periodchoosen).trigger('change');

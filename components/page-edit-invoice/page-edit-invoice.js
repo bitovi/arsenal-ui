@@ -100,7 +100,7 @@ var page = Component.extend({
   	showPBR:true,
   	DelInvoiceline:[],
   	currentdate:"",
-    //invoiceid:"",
+    invoiceId:"",
   	editpage:false,
   	formSuccessCount:1,
   	uploadedFileInfo:[],
@@ -688,6 +688,7 @@ var page = Component.extend({
 				 		self.scope.attr("invoiceduedate", moment(invoiceData.invoiceDueDate).format("MM/DD/YYYY"));
 				 		self.scope.attr("calduedate",moment(invoiceData.invoiceCalcDueDate).format("MM/DD/YYYY"));
 						self.scope.attr("tax", invoiceData.tax);
+						self.scope.attr("invoiceId",invoiceData.invId);
 				 	
 						var tempcommentObj = invoiceData.comments;
 		                $('#multipleCommentsInv').html(stache('<multiple-comments divid="usercommentsdivinv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
@@ -709,6 +710,11 @@ var page = Component.extend({
 								var rowindex = self.scope.attr("rowindex");
 
 			                	var $clone = $template.clone().removeClass('hide').removeAttr('id').attr("id","breakrow"+rowindex).attr("rowid", rowindex).insertBefore($template);
+
+			                	$("#breakrow"+rowindex).attr("data-invLineId",invoiceData.invoiceLines[i].invLineId);
+
+			                	$("#breakrow"+rowindex).attr("data-lineStatus",invoiceData.invoiceLines[i].lineStatus);
+			                	
 			                                
 								$("#breakrow"+rowindex+" .amountText").attr("id","amountText"+rowindex).val(invoiceData.invoiceLines[i].lineAmount);
 		                       	self.scope.AmountStore.attr("amountText"+rowindex, invoiceData.invoiceLines[i].lineAmount);
@@ -899,13 +905,13 @@ var page = Component.extend({
 						}
 					 }	
 
-						var tempDocuments = {};  /*new documents*/
-						tempDocuments.fileName="";  /*Data populate from upload plugin*/
-						tempDocuments.location = "";
-						tempDocuments.inboundFileId= "";
-						tempDocuments.status = "";
-						tempDocuments.id = "";
-						tempEditInvoiceData["invoiceDocuments"].push(tempDocuments);
+						// var tempDocuments = {};  /*new documents*/
+						// tempDocuments.fileName="";  /*Data populate from upload plugin*/
+						// tempDocuments.location = "";
+						// tempDocuments.inboundFileId= "";
+						// tempDocuments.status = "";
+						// tempDocuments.id = "";
+						// tempEditInvoiceData["invoiceDocuments"].push(tempDocuments);
 
 				   /*document end*/
 				    
@@ -916,8 +922,15 @@ var page = Component.extend({
 							var inputContent = "inputContent"+index;
 
 							var tempArry = {};
-							tempArry["invLineId"] = "";
-							tempArry["invoiceId"] = "";
+							tempArry["invLineId"] = '';
+							if($(this).attr('data-invLineId') != undefined){
+								tempArry["invLineId"] = $(this).attr('data-invLineId');	
+							}
+							tempArry["lineStatus"]='';
+							if($(this).attr('data-lineStatus') != undefined){
+								tempArry["lineStatus"] = $(this).attr('data-lineStatus');	
+							}
+							tempArry["invoiceId"] = self.scope.invoiceId;
 						//	tempArry["country"] = self.scope.countryStore.attr("inputCountry"+index);
 					   		tempArry["fiscalPeriod"] = periodWidgetHelper.getFiscalPeriod($("#inputMonth"+index).val()); //"201304"; /*Data populate from period selector plugin*/
 					   		tempArry["periodType"] = periodWidgetHelper.getPeriodType($("#inputMonth"+index).val());
@@ -925,8 +938,6 @@ var page = Component.extend({
 					   		tempArry["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent"+index);
 					   		tempArry["contentGrpName"] = $("#inputContent"+index+" option:selected").text();
 							tempArry["lineAmount"] = self.scope.AmountStore.attr("amountText"+index);
-					   		tempArry["lineStatus"] = "";
-					   		tempArry["status"] = "";
 					   		tempArry["lineType"] = "";
 					   		if(self.scope.attr("invoicetypeSelect") == "2"){
 					   			var ccidGL = "ccidGL"+index;
@@ -955,14 +966,10 @@ var page = Component.extend({
 										}
 							          	else
 							          	{
-								          		if(values[0].invoices[0].errors)
+								          	if(values[0].invoices[0].errors != "undefined" && values[0].invoices[0].errors != null)
 								           		{
 								           			var errorMap = values[0].invoices[0].errors.errorMap;
-								           		}
-								           		
-								           		
-									       		if(errorMap){
-										          	var errorStr = "";
+								           			var errorStr = "";
 										          	for(var key in errorMap){
 										          		errorStr += errorMap[key]+", ";
 										          		console.log(key);	
@@ -970,9 +977,8 @@ var page = Component.extend({
 										          	errorStr = errorStr.replace(/,\s*$/, "");  
 										          	
 										          	var msg = "Error: "+ errorStr;
-									          	}
-									          	else{
-									          			var msg = values[0].responseText;
+								           		} else {
+									          		var msg = values[0].responseText;
 									          	}
 
 												$("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
