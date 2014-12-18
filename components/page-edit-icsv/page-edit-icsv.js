@@ -839,9 +839,10 @@ var page = Component.extend({
 							  var self = this;
 						
 							  var editInvoiceCSVData = {};
-							   editInvoiceCSVData.serviceTypeId = "";
+							   editInvoiceCSVData.serviceTypeId = $("#invoiceType option:selected").val();
 							   editInvoiceCSVData.invoiceNumber = self.scope.invoicenumberStore;
 							   editInvoiceCSVData.invoiceTypeId = self.scope.invoicetypeSelect;
+							   editInvoiceCSVData.invoiceType = $("#invoiceType option:selected").attr("name");
 							   editInvoiceCSVData.regionId = self.scope.regionStore;
 							   editInvoiceCSVData.entityId = self.scope.licensorStore;
 							   editInvoiceCSVData.entityName = $("#invoicelicensor option:selected").text();
@@ -851,10 +852,13 @@ var page = Component.extend({
 							   editInvoiceCSVData.invoiceAmount = self.scope.totalAmountVal;
 							   editInvoiceCSVData.tax = self.scope.tax;
 							   editInvoiceCSVData.grossTotal = self.scope.grossTotalStore;
+							   editInvoiceCSVData.netTotal = self.scope.totalAmountVal;
 							   editInvoiceCSVData.receivedDate = $("#receiveddate input[type=text]").val();
 							   editInvoiceCSVData.invoiceDate = $("#invoicedate input[type=text]").val();
 							   editInvoiceCSVData.invoiceCalculatedDueDate = self.scope.calduedate;
 							   editInvoiceCSVData.invoiceDueDate = $("#invoiceduedate input[type=text]").val();
+							   editInvoiceCSVData.createdBy = UserReq.formRequestDetails().prsId;
+							   editInvoiceCSVData.periodType = periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0));  
 							   console.log(self.scope.invoiceduedate);
 							   editInvoiceCSVData.comments = [];
 							 
@@ -907,7 +911,7 @@ var page = Component.extend({
 										tempArry["country"] = self.scope.countryStore.attr("inputCountry"+index);
 										console.log(self.scope.countryStore.attr("inputCountry"+index));
 								   		tempArry["fiscalPeriod"] = self.scope.monthStore.attr("inputMonth"+index);
-								   		tempArry["periodType"] = "P";
+								   		tempArry["periodType"] = periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0));  
 								   		tempArry["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent"+index);
 								   		tempArry["contentGrpName"] = $("#inputContent"+index+" option:selected").text();
 								   		tempArry["lineAmount"] = self.scope.AmountStore.attr("amountText"+index);
@@ -946,7 +950,7 @@ var page = Component.extend({
 								  editInvoiceCSVData.errors = [];
 								  
 								  var tempErr = {};
-								  tempErr["status"] = "rwerqr";
+								  tempErr["status"] = "rsfsd";
 								  tempErr["errorMap"] = [];
 								  var tempErrMap = {};
 								 
@@ -1076,11 +1080,8 @@ var page = Component.extend({
 					return this.attr("currentdate");
 			  	},
 			  	calculatedDueDate: function(){
-			  			var date = new Date();
-				  	 	date.setMonth(date.getMonth() + 1);
-				  	 	var calduedate = ((date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear());
-				  	 	this.attr("calduedate", calduedate);
-						return calduedate;
+		  			var calduedate = this.attr("calduedate");
+					return calduedate;
 
 			  	},
 			  	calculateTaxPercent: function(){
