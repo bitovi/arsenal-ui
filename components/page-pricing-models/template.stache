@@ -266,9 +266,11 @@
 						<legend class="scheduler-border">Comments</legend>
 						
 							{{#if editstate}}
+							<div class="col-sm-12">
 								<div class="col-sm-8" id="multipleComments" class="requiredBar">
 									{{#if isCommentData}}<multiple-comments divid="usercommentsdiv" options="{multipleComments}" divheight="100" isreadOnly="n"></multiple-comments>{{/if}}
 								</div>
+							</div>
 							{{else}}
 								<div id="multipleComments" class="requiredBar">
 								<textarea class="form-control" id="usercomments" name="usercommentsdiv"  can-value="usercommentsStore"></textarea>
