@@ -117,102 +117,109 @@ var page = Component.extend({
       "inserted":function(){
        var self = this;
        
-       icsvmap.delegate("invoiceData","set", function(ev, newVal){
-            var gridData = [];
-            var tempArr = icsvmap.invoiceData.invoices.attr();
+       icsvmap.delegate("invoiceData","change", function(ev, newVal){
+            console.log(icsvmap.attr("invoiceData"));
+            if(icsvmap.attr("invoiceData"))
+            {
+                  var gridData = [];
+                  var tempArr = icsvmap.invoiceData.invoices.attr();
+         
            
-           
 
-            for(var i=0; i< tempArr.length; i++){
-            var tempObj = {};
+                  for(var i=0; i< tempArr.length; i++){
+                        var tempObj = {};
 
-           console.log(JSON.stringify(tempArr[i].errors));
-            var errString = "";
-        
-            for(var key in tempArr[i].errors.errorMap){  /*Invoice error*/
-                   if(tempArr[i].errors.errorMap[key].trim())
-                   errString += tempArr[i].errors.errorMap[key]+", ";
-            }
+                       console.log(JSON.stringify(tempArr[i].errors));
+                        var errString = "";
+                    
+                        for(var key in tempArr[i].errors.errorMap){  /*Invoice error*/
+                               if(tempArr[i].errors.errorMap[key].trim())
+                               errString += tempArr[i].errors.errorMap[key]+", ";
+                        }
 
-            for(var j =0; j < tempArr[i].invoiceLines.length; j++){
-                  for(var key in tempArr[i].invoiceLines[j].errors.errorMap){  /*Invoiceline error*/
-                       if(tempArr[i].invoiceLines[j].errors.errorMap[key].trim())
-                       errString += tempArr[i].invoiceLines[j].errors.errorMap[key]+", ";
+                        for(var j =0; j < tempArr[i].invoiceLines.length; j++){
+                              for(var key in tempArr[i].invoiceLines[j].errors.errorMap){  /*Invoiceline error*/
+                                   if(tempArr[i].invoiceLines[j].errors.errorMap[key].trim())
+                                   errString += tempArr[i].invoiceLines[j].errors.errorMap[key]+", ";
+                               }
+                        }
+                        errString = errString.replace(/,\s*$/, "");  
+                        
+                        var errlabel = "<span class='errorlabel'>Error: </span>";
+
+                        tempObj.error = (errString)?errlabel+errString:"";
+                     
+
+                        tempObj.licensor= tempArr[i].entityName;
+                        tempObj.invoiceNum= tempArr[i].invoiceNumber;
+                        tempObj.dueDate= tempArr[i].invoiceDueDate;
+                        tempObj.invoiceAmt= CurrencyFormat(tempArr[i].invoiceAmount);
+                        tempObj.currency= tempArr[i].invoiceCcy;
+                        var maxcommentlength = 50;
+                        if(typeof tempArr[i].comments[0].comments !== "undefined"){
+                            tempObj.comments= (tempArr[i].comments[0].comments.length > maxcommentlength)?tempArr[i].comments[0].comments.substring(0, maxcommentlength)+"..":tempArr[i].comments[0].comments;
+                        }
+
+                        var contentTypeArr = [], countryArr = [];
+                        if(typeof tempArr[i].invoiceLines !== "undefined"){
+                             var invLineCount = tempArr[i].invoiceLines.length;
+                            for(var j =0; j < invLineCount; j++){
+                                  countryArr.push(tempArr[i].invoiceLines[j].country);
+                                  contentTypeArr.push(tempArr[i].invoiceLines[j].contentGrpName);
+                            }
+                        }
+                       
+
+                         /*Below function is to remove the duplicate content type and find the count */
+                          contentTypeArr = contentTypeArr.filter( function( item, index, inputArray ) {
+                                 return inputArray.indexOf(item) == index;
+                          });
+                          if(contentTypeArr.length>1){
+                            tempObj.contentType = contentTypeArr.length+" types of Content";
+                          }
+                          else if(contentTypeArr.length==1)
+                            tempObj.contentType = contentTypeArr[0];
+
+                          /*Below function is to remove the duplicate country and find the count */
+                          countryArr = countryArr.filter( function( item, index, inputArray ) {
+                            return inputArray.indexOf(item) == index;
+                          });
+                          if(countryArr.length>1){
+                            tempObj.country = countryArr.length+ " Countries";
+                          }
+                          else if(countryArr.length==1)
+                            tempObj.country = countryArr[0];
+
+
+                        
+                        gridData.push(tempObj);
                    }
-            }
-            errString = errString.replace(/,\s*$/, "");  
-            
-            var errlabel = "<span class='errorlabel'>Error: </span>";
+                }
+                else{
+                  var gridData = [];
+                }
+                    var rows = new can.List(gridData);
+                    if(rows.length>0){
+                      $('#icsvinvoiceGrid').html(stache('<icsv-grid rows="{rows}"></icsv-grid>')({rows}));  
+                    }else{
+                        disableBundle(true);
+                        self.scope.attr("activesubmitbutton", false);
+                       $('#icsvinvoiceGrid').html(stache('<icsv-grid emptyrows="{emptyrows}"></icsv-grid>')({emptyrows:true}));
+                    }
+                    
 
-            tempObj.error = (errString)?errlabel+errString:"";
-         
+                    $('.rn-grid>tbody>tr').find("td.errormsg").each(function(i){
+                    if($(this).html() != ""){
+                    
+                         self.scope.attr("activesubmitbutton", false);
+                   
+                          return false;
+                      } 
+                 
+                     self.scope.attr("activesubmitbutton", true);                
+                   });
 
-            tempObj.licensor= tempArr[i].entityName;
-            tempObj.invoiceNum= tempArr[i].invoiceNumber;
-            tempObj.dueDate= tempArr[i].invoiceDueDate;
-            tempObj.invoiceAmt= CurrencyFormat(tempArr[i].invoiceAmount);
-            tempObj.currency= tempArr[i].invoiceCcy;
-            var maxcommentlength = 50;
-            tempObj.comments= (tempArr[i].comments[0].comments.length > maxcommentlength)?tempArr[i].comments[0].comments.substring(0, maxcommentlength)+"..":tempArr[i].comments[0].comments;
-        
-
-            var contentTypeArr = [], countryArr = [];
-            var invLineCount = tempArr[i].invoiceLines.length;
-            for(var j =0; j < invLineCount; j++){
-             
-
-              countryArr.push(tempArr[i].invoiceLines[j].country);
-              contentTypeArr.push(tempArr[i].invoiceLines[j].contentGrpName);
-             
-            }
-
-             /*Below function is to remove the duplicate content type and find the count */
-              contentTypeArr = contentTypeArr.filter( function( item, index, inputArray ) {
-                     return inputArray.indexOf(item) == index;
-              });
-              if(contentTypeArr.length>1){
-                tempObj.contentType = contentTypeArr.length+" types of Content";
-              }
-              else if(contentTypeArr.length==1)
-                tempObj.contentType = contentTypeArr[0];
-
-              /*Below function is to remove the duplicate country and find the count */
-              countryArr = countryArr.filter( function( item, index, inputArray ) {
-                return inputArray.indexOf(item) == index;
-              });
-              if(countryArr.length>1){
-                tempObj.country = countryArr.length+ " Countries";
-              }
-              else if(countryArr.length==1)
-                tempObj.country = countryArr[0];
-
-
-            
-            gridData.push(tempObj);
-          }
-        
-            var rows = new can.List(gridData);
-            if(rows.length>0){
-              $('#icsvinvoiceGrid').html(stache('<icsv-grid rows="{rows}"></icsv-grid>')({rows}));  
-            }else{
-                disableBundle(true);
-                self.scope.attr("activesubmitbutton", false);
-               $('#icsvinvoiceGrid').html(stache('<icsv-grid emptyrows="{emptyrows}"></icsv-grid>')({emptyrows:true}));
-            }
-            
-
-            $('.rn-grid>tbody>tr').find("td.errormsg").each(function(i){
-            if($(this).html() != ""){
-            
-                 self.scope.attr("activesubmitbutton", false);
-           
-                  return false;
-              } 
-         
-             self.scope.attr("activesubmitbutton", true);                
-           });
-
-
+              
  
         }); 
 
@@ -378,32 +385,22 @@ var page = Component.extend({
                                        setTimeout(function(){
                                           $("#invcsvmessageDiv").hide();
                                        },5000)
+
+                                       icsvmap.removeAttr("invoiceData"); 
+
+                                        fileUpload.extend({
+                                              tag: 'rn-file-uploader',
+                                              scope: {
+                                                       fileList : new can.List()
+                                                     }
+                                        });
+
+                                         $('.jQfunhide').hide();
                                     }
                                     else
                                     {
-                                      if(typeof values[0].invoices[0].errors != "undefined")
-                                        {
-                                          var errorMap = values[0].invoices[0].errors.errorMap;
-                                        }
-                                        
-                                        
-                                      if(errorMap){
-                                          var errorStr = "";
-                                          for(var key in errorMap){
-                                            errorStr += errorMap[key]+", ";
-                                            console.log(key); 
-                                          }
-                                          errorStr = errorStr.replace(/,\s*$/, "");  
-                                          
-                                          var msg = "Error: "+ errorStr;
-                                        }
-                                        else{
-                                            var msg = values[0].responseText;
-                                        }
-
-                                      $("#invcsvmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
-                                      $("#invcsvmessageDiv").show();
-                                      $("#addInvSubmit").attr("disabled", false);
+                                        var responseInvoiceArr = values[0].invoices;
+                                        icsvmap.invoiceData.attr("invoices", responseInvoiceArr);  /*updating icsv map with invoice response*/
                                     }   
                                 });  
       },
