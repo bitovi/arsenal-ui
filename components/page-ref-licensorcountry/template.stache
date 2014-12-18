@@ -1,4 +1,5 @@
-<div class="form-horizontal" id="invoiceform" role="form">
+<form class="form-horizontal" id="countryLicForm" role="form">
+
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-5 pageTitle">
@@ -48,7 +49,7 @@
 
         </div>
 
-   <form id="countryLicForm" >
+
       <div class="col-sm-12 lineDividerLiceCountry"></div><!-- Main Layout START-->
       <div class="mainLayoutId" >
 
@@ -69,11 +70,11 @@
             </div>
             <div id="ref-period-container">
               <div class="form-group">
-                <div class="col-sm-6">
+                <div class="col-sm-6 validFrom">
                   <label for="forValidFrom" class="col-sm-6 control-label">Valid From: </label>
                   <div class="col-sm-4 requiredBar">
                     <div class="calendarcls">
-                      <input type='text' id="periodFrom" class="form-control inputMonth updateperoid"  can-value='pageState.entityCountryDetails.entityCountry.validFrom'/>
+                      <input type='text' id="validFrom" name="validFrom" class="form-control inputMonth updateperoid"  can-value='pageState.entityCountryDetails.entityCountry.validFrom'/>
                       <period-calendar  selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
                     </div>
                   </div>
@@ -85,7 +86,7 @@
                   <label for="forValidTo" class="col-sm-6 control-label">Valid To: </label>
                   <div class="col-sm-4 normalBar">
                     <div class="calendarcls">
-                      <input type='text' id="periodTo" class="form-control updateperoid inputMonth"  can-value='pageState.entityCountryDetails.entityCountry.validTo'/>
+                      <input type='text' id="validTo" name="validTo" class="form-control updateperoid inputMonth"  can-value='pageState.entityCountryDetails.entityCountry.validTo'/>
                       <period-calendar selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
                     </div>
                   </div>
@@ -96,7 +97,7 @@
             <div class="form-group">
               <div class="col-sm-6">
                 <label for="forInvoiceCurr" class="col-sm-6 control-label">Invoice Currency: </label>
-                <div class="col-sm-4 requiredBar">
+                <div class="col-sm-4 requiredBarNone">
                   <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.invoiceCurr' name="invoiceCurr" >
                     {{#each currencies}}
                     <option value="{{id}}">{{value}}</option>
@@ -109,7 +110,7 @@
             <div class="form-group">
               <div class="col-sm-6">
                 <label for="forEntityPricingModelId" class="col-sm-6 control-label"  >Pricing Model:</label>
-                <div class="col-sm-6 requiredBar">
+                <div class="col-sm-6 requiredBarNone">
                   <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelVersionNo' name="entityPricingModelId">
                     {{#each pricingModels}}
                     <option value="{{modelName}}">{{modelName}}</option>
@@ -160,8 +161,8 @@
               <div class="col-sm-12 singleField">
                 <label for="forStatus" class="col-sm-3 control-label">Comments: </label>
                 <div class="col-sm-9 requiredBarNone">
-                  <textarea id="editableText" name="usercommentsdivinv" class="form-control multiple-comments-editable form-control-comments new-comments multiple-comments-editable-height" readonly=true></textarea>
-                  <textarea class="form-control comments" maxlength="1024" name="usercommentsdiv" can-value="pageState.entityCountryDetails.comment"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>
+                  <textarea id="historyComments"  class="form-control multiple-comments-editable form-control-comments new-comments multiple-comments-editable-height" style="min-height:120px;    max-height:200px;"  can-value="pageState.historyComments" readonly=true></textarea>
+                  <textarea class="form-control multiple-comments-editable form-control-comments new-comments multiple-comments-editable-height" maxlength="1024" name="usercommentsdiv" can-value="pageState.entityCountryDetails.comment"  style="height:100px;   min-height:100px;    max-height:100px;"></textarea>
                 </div>
               </div>
             </div>
@@ -220,5 +221,5 @@
             </div><!-- RIGHT Layout END-->
           </div>
           </div><!-- Main Layout END-->
-        </form>
       </div>
+    </form>

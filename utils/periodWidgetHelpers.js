@@ -22,6 +22,7 @@ var periodWidgetHelper = {
     }
   },
    getDisplayPeriod: function(quarter,periodType){
+     quarter  = quarter.toString();
     var quarters={
     "03":"Q1",
     "06":"Q2",
@@ -50,7 +51,7 @@ var periodWidgetHelper = {
       return (quarters[period]+'FY'+year.substring(year.length, year.length-2));
     }else{
       return null;
-    }  
+    }
   },
    quarterToPeriod:function(quarter){
       var quarterToPeriod={

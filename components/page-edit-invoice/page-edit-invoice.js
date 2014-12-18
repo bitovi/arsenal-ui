@@ -720,11 +720,12 @@ var page = Component.extend({
 						 		{
 									self.scope.contentTypeStore.attr("inputContent"+rowindex, invoiceData.invoiceLines[i].contentGrpId);
 						 		}
+						 		var displayPeriod = periodWidgetHelper.getDisplayPeriod(invoiceData.invoiceLines[i].fiscalPeriod+'',invoiceData.invoiceLines[i].periodType);
 
-		                 		$("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).val(invoiceData.invoiceLines[i].fiscalPeriod).parent().append(stache('<period-calendar></period-calendar>'));
+		                 		$("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).val(displayPeriod).parent().append(stache('<period-calendar></period-calendar>'));
 		                       	//$("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).parent().append(stache('<period-calendar></period-calendar>'));
-		                        console.log($("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).parent());
-		                       	self.scope.monthStore.attr("inputMonth"+rowindex, invoiceData.invoiceLines[i].fiscalPeriod);
+		                        //console.log($("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).parent());
+		                       	self.scope.monthStore.attr("inputMonth"+rowindex, displayPeriod);
 		                      // $("#breakrow"+rowindex+" #inputYear").attr("id","inputYear"+rowindex);
 		                       	$("#breakrow"+rowindex+" #inputCountry").attr("id","inputCountry"+rowindex).val(invoiceData.invoiceLines[i].country);
 		                         self.scope.countryStore.attr("inputCountry"+rowindex, invoiceData.invoiceLines[i].country);
@@ -919,7 +920,8 @@ var page = Component.extend({
 							tempArry["invoiceId"] = "";
 						//	tempArry["country"] = self.scope.countryStore.attr("inputCountry"+index);
 					   		tempArry["fiscalPeriod"] = periodWidgetHelper.getFiscalPeriod($("#inputMonth"+index).val()); //"201304"; /*Data populate from period selector plugin*/
-					   		tempArry["periodType"] = periodWidgetHelper.getPeriodType(self.scope.attr("periodType"));
+					   		tempArry["periodType"] = periodWidgetHelper.getPeriodType($("#inputMonth"+index).val());
+					   		tempArry["country"] = $("#inputCountry"+index).val();
 					   		tempArry["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent"+index);
 					   		tempArry["contentGrpName"] = $("#inputContent"+index+" option:selected").text();
 							tempArry["lineAmount"] = self.scope.AmountStore.attr("amountText"+index);
