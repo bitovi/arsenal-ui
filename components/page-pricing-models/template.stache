@@ -263,7 +263,7 @@
 								</div>
 							</fieldset>
 						</div>
-						<legend class="scheduler-border">Comments</legend>
+						<legend class="scheduler-border" style="margin-left: 10px;">Comments</legend>
 						
 							{{#if editstate}}
 							<div class="col-sm-12">
@@ -272,9 +272,11 @@
 								</div>
 							</div>
 							{{else}}
+							<div class="col-sm-12">
 								<div id="multipleComments" class="requiredBar">
 								<textarea class="form-control" id="usercomments" name="usercommentsdiv"  can-value="usercommentsStore"></textarea>
 								</div>
+							</div>
 							{{/if}}
 						
 						{{#if editstate}}
