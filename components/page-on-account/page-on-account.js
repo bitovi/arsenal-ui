@@ -272,7 +272,7 @@ var page = Component.extend({
 
          }
           var request = utils.frameDeleteRequest(deletableRows,null);
-          proposedOnAccount.update(requestHelper.formRequestDetails(request),"invoiceDelete",function(data){
+          proposedOnAccount.update(requestHelper.formRequestDetails(request),"DELETE",function(data){
           //console.log("Delete response is "+JSON.stringify(data));
           if(data["status"]=="SUCCESS"){
               displayMessage(data["responseText"],true);
@@ -281,14 +281,16 @@ var page = Component.extend({
           }
           else{
             var details = data.onAccount.onAccountDetails;
-            for(var i=0;i<details.length;i++){
+            if(data.onAccount.onAccountDetails != undefined && data.onAccount.onAccountDetails.length >0){
+               for(var i=0;i<details.length;i++){
                var toBeAdded = utils.getRow(deletableRows,details[i].id);
                if(toBeAdded !=null){
                 rows.push(toBeAdded);
                }
+              }
+              req.attr('deletableRows',rows);
+              $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
             }
-            req.attr('deletableRows',rows);
-            $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
             displayMessage(data["responseText"],false);
           }
 
@@ -309,13 +311,14 @@ var page = Component.extend({
           $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type}></rn-proposed-onaccount-grid>')({req,type}));
       },
       "#submitPOA click":function(el,ev){
+        var self = this;
         var comments = $(".new-comments").val();
         //Remove this for domain services
      
            var updatableRows = [];
-          var req = this.scope.request;
+          var req = self.scope.request;
           var type = 'EDIT';
-          var rows = this.scope.proposedOnAccountData.rows;
+          var rows = self.scope.proposedOnAccountData.rows;
           if(rows != undefined && rows.length >0){
               for(var i=0;i < rows.length;i++){
                     if(rows[i].__isChecked != undefined && rows[i].__isChecked){
@@ -325,7 +328,7 @@ var page = Component.extend({
                   }
            }
 
-           var updateRequest = utils.frameUpdateRequest(self.scope.request,updatableRows,self.scope.documents,comments,quarters);
+           var updateRequest = utils.frameUpdateRequest(self.scope.request,updatableRows,self.scope.documents,comments,self.scope.quarters);
             proposedOnAccount.update(requestHelper.formRequestDetails(updateRequest),"UPDATE",function(data){
             //console.log("Update response is "+JSON.stringify(data));
               if(data["status"]=="SUCCESS"){
@@ -335,7 +338,7 @@ var page = Component.extend({
               }
               else{
                displayMessage(data["responseText"],false);
-                req.attr('editableRows',this.scope.proposedOnAccountData.rows);
+                req.attr('editableRows',self.scope.proposedOnAccountData.rows);
                 $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
               }
             },function(xhr){
