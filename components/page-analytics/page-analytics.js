@@ -571,6 +571,10 @@ var page = Component.extend({
 
       $('.status').show();
 
+      $('.uploadedFTP').show();
+
+      $('.paymentTerms').show();
+
 
     },
 
@@ -611,6 +615,10 @@ var page = Component.extend({
         self.reqCountries.splice(0,self.reqCountries.length);
         
         self.reqReportTypes.splice(0,self.reqReportTypes.length);
+
+        self.countries.splice(0,self.countries.length);
+
+        self.reportTypes.splice(0,self.reportTypes.length);
         
 
         $("input.countryBox").prop('checked', false);
@@ -729,20 +737,6 @@ var page = Component.extend({
 
       var genObj = {};
 
-      Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
-
-          self.scope.licensors.replace(values[0].entities[0]);
-        
-      });
-
-      Promise.all([Analytics.getInvoiceDetails(UserReq.formRequestDetails(genObj))]).then(function(values) {
-
-          self.scope.invoiceTypeList.replace(values[0].invoiceDetailTypes);
-          self.scope.populateInvoiceTypes();
-        
-      });
-     
-
       $('#multipleComments').hide();
 
       $('.countryModelLabel').hide();
@@ -765,6 +759,37 @@ var page = Component.extend({
 
       $("#loading_img").hide();
 
+      var defaultEntity = [];
+
+      Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
+
+          self.scope.licensors.replace(values[0].entities[0]);
+
+          defaultEntity = values[0].entities[0].entities[0];
+
+          var genObj = {"id" : "" , "licensorName":""};
+
+          genObj.id = defaultEntity.id;
+          genObj.licensorName =  defaultEntity.value;
+
+          self.scope.attr("selectedEntity", genObj.licensorName);
+
+          Promise.all([Analytics.findById(UserReq.formRequestDetails(genObj))]).then(function(values) {
+
+            self.scope.populateAnalyticsPage(values, "");
+            
+          });
+
+      });
+
+ 
+      Promise.all([Analytics.getInvoiceDetails(UserReq.formRequestDetails(genObj))]).then(function(values) {
+
+          self.scope.invoiceTypeList.replace(values[0].invoiceDetailTypes);
+          self.scope.populateInvoiceTypes();
+          
+      });
+     
       $('#entityLicensorBottom').on('init.field.bv', function(e, data) {
 
 
@@ -977,6 +1002,8 @@ var page = Component.extend({
             $('*[data-bv-icon-for="'+data.field +'"]').popover('show');
 
       });
+
+
     },
 
     '.updatePeroid focus':function(el){ 

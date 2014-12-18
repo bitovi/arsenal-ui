@@ -149,10 +149,7 @@
 							</div>
 		    			</div>
 		    			 <div class='period-invalid'> Invalid Period !</div>
-		    			<div class="col-sm-12" id="spaceBar"></div>
-
-
-					
+		    							
 
 						<div class="col-sm-11 col-sm-offset-1 form-group">
 		    				<div class="col-sm-3 textalignright">
@@ -248,7 +245,7 @@
 			    				<label>Uploaded Files to sFTP: </label>
 							</div>
 			    			<div class="col-sm-4">
-			    			<input type="checkbox" id="uploadedFTP" can-value="licDetails.data.uploadedFilesToSFTP" checked="{{licDetails.data.loadedFilesToSFTP}}" class="form-control formInputs"/>
+			    			<input type="checkbox" id="uploadedFTP" can-value="licDetails.data.uploadedFilesToSFTP" checked="{{licDetails.data.loadedFilesToSFTP}}" class="formInputs"/>
 							</div>
 
 		    			</div>
@@ -267,7 +264,7 @@
 
 						</div>
 
-						<div class="col-sm-12" style="padding-top: 50px;"></div>
+						<div class="col-sm-12" style="padding-top: 25px;"></div>
 
 						<div class="col-sm-12 countryModelLabel">
 		 		
