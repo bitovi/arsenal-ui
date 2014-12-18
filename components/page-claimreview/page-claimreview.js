@@ -458,7 +458,7 @@ var page = Component.extend({
         var footerData = self.scope.attr().allClaimLicensorMap[0].footer;
         //var currencyType = $("#currencyType").val();
         //console.log("invoice data is sss  "+JSON.stringify(invoiceData));
-        if(invoiceData!="null"){
+        if(invoiceData!="null" && invoiceData.length!=0){
           var  gridData = generateTableData(invoiceData,footerData);
           //console.log("grid data for "+currencyType+" currency is "+JSON.stringify(gridData));
           var rows = new can.List(gridData.data);
@@ -466,8 +466,10 @@ var page = Component.extend({
           var sortedColumns = self.scope.sortColumns.attr();
           var sortDir = self.scope.attr('sortDirection');
 
+          $("#loading_img").hide();
           $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid rows="{rows}" footerrows="{footerrows}" sortcolumnnames="{sortcolumnnames}" sortdir="{sortdir}" emptyrows="{emptyrows}"></rn-claim-licensor-grid>')({rows, footerrows, sortcolumnnames:sortedColumns, sortdir:sortDir, emptyrows:false}));
         } else {
+          $("#loading_img").hide();
           $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid emptyrows="{emptyrows}"></rn-claim-licensor-grid>')({emptyrows:true}));
         }
       },
@@ -480,13 +482,16 @@ var page = Component.extend({
         var sortDir = self.scope.attr('sortDirection');
         //var currencyType = $("#currencyType").val();
         //console.log("invoice data is sss  "+JSON.stringify(invoiceData));
-        if(invoiceData!=null){
+        if(invoiceData!=null && invoiceData.length!=0){
           var  gridData = generateTableData(invoiceData,footerData);
           //console.log("grid data for "+currencyType+" currency is "+JSON.stringify(gridData));
           var rows = new can.List(gridData.data); 
           var footerrows = new can.List(gridData.footer);
+          
+          $("#loading_img").hide();
           $('#claimCountryGrid').html(stache('<rn-claim-country-grid rows="{rows}" footerrows="{footerrows}" sortcolumnnames="{sortcolumnnames}" sortdir="{sortdir}" emptyrows="{emptyrows}"></rn-claim-country-grid>')({rows, footerrows, sortcolumnnames:sortedColumns, sortdir:sortDir, emptyrows:false}));
         } else {
+          $("#loading_img").hide();
           $('#claimCountryGrid').html(stache('<rn-claim-country-grid emptyrows="{emptyrows}"></rn-claim-country-grid>')({emptyrows:true}));
         }
         if(self.scope.attr("view") == "country-aggregate"){
@@ -506,6 +511,7 @@ var page = Component.extend({
             if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch') ){
                 this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
                 console.log("User clicked on  search");
+                $("#loading_img").show();
 
                 var periodFrom = this.scope.appstate.attr('periodFrom');
                 var periodTo = this.scope.appstate.attr('periodTo');
@@ -574,7 +580,7 @@ var page = Component.extend({
                 console.log("Request are "+JSON.stringify(claimLicSearchRequest));
                 if(tabView=="licensor"){
                   claimLicensorInvoices.findOne(UserReq.formRequestDetails(claimLicSearchRequest),function(values){
-                      //console.log("data is "+JSON.stringify(values.attr()));
+                      console.log("data is "+JSON.stringify(values.attr()));
                       self.scope.allClaimLicensorMap.replace(values);
                   },function(xhr){
                     console.error("Error while loading: "+xhr);

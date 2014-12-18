@@ -610,7 +610,6 @@ var page = Component.extend({
       "#btnSubmit click":function(){
         var self = this;
         var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
-
         var selInvoices = self.scope.checkedRows.attr();
         var bundleLines = [];
         for(var i=0;i<invoiceData.length;i++){
@@ -632,8 +631,10 @@ var page = Component.extend({
         var bundleRequest = {};
         bundleRequest["bundleId"] = $("#paymentBundleNames :selected").val();
         bundleRequest["bundleName"] = $("#paymentBundleNames :selected").text();
+        /*This is for getting the value from Text box*/
         if($("#newPaymentBundle").val())
-        bundleRequest["bundleName"] = $("#newPaymentBundle").val();
+          bundleRequest["bundleName"] = $("#newPaymentBundle").val();
+
         bundleRequest["bundleType"] =lineType;
         bundleRequest["mode"] ="ADD";
         bundleRequest["bundleDetailsGroup"] =bundleLines;
@@ -641,34 +642,42 @@ var page = Component.extend({
          var overAllBundleRequest =  {
               "paymentBundle":bundleRequest
           };
-//        overAllBundleRequest["paymentBundle"].push(bundleRequest);
-        console.log("Add to bundle request is "+JSON.stringify(UserReq.formRequestDetails(overAllBundleRequest)));
-        BundleNamesModel.create(UserReq.formRequestDetails(overAllBundleRequest),function(data){
-            console.log("passing params is "+JSON.stringify(data));
-            if(data["status"]=="SUCCESS"){
-             $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
-             $("#messageDiv").show();
-             setTimeout(function(){
-                $("#messageDiv").hide();
-                self.scope.checkedRows.replace([]);
-                 /* The below calls {scope.appstate} change event that gets the new data for grid*/
-                 if(self.scope.appstate.attr('globalSearch')){
-                    self.scope.appstate.attr('globalSearch', false);
-                  }else{
-                    self.scope.appstate.attr('globalSearch', true);
-                  }
-             },2000);
-            }
-            else{
-              $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>")
-              $("#messageDiv").show();
+
+        if(bundleRequest["bundleName"]!="" && bundleRequest["bundleName"]!="--Select--"){
+          console.log("Add to bundle request is "+JSON.stringify(UserReq.formRequestDetails(overAllBundleRequest)));
+          BundleNamesModel.create(UserReq.formRequestDetails(overAllBundleRequest),function(data){
+              console.log("passing params is "+JSON.stringify(data));
+              if(data["status"]=="SUCCESS"){
+               $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
+               $("#messageDiv").show();
                setTimeout(function(){
                   $("#messageDiv").hide();
+                  self.scope.checkedRows.replace([]);
+                   /* The below calls {scope.appstate} change event that gets the new data for grid*/
+                   if(self.scope.appstate.attr('globalSearch')){
+                      self.scope.appstate.attr('globalSearch', false);
+                    }else{
+                      self.scope.appstate.attr('globalSearch', true);
+                    }
                },2000);
-            }
-        },function(xhr){
-          console.error("Error while loading: bundleNames"+xhr);
-        });
+              }
+              else{
+                $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>")
+                $("#messageDiv").show();
+                 setTimeout(function(){
+                    $("#messageDiv").hide();
+                 },2000);
+              }
+          },function(xhr){
+            console.error("Error while loading: bundleNames"+xhr);
+          });
+        } else {
+          $("#messageDiv").html("<label class='errorMessage'>Please select Bundle Name</label>")
+          $("#messageDiv").show();
+           setTimeout(function(){
+              $("#messageDiv").hide();
+           },2000);
+        }
       },
       '{scope.appstate} change': function() {
           var self=this;

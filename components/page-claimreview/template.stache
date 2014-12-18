@@ -34,11 +34,12 @@
 		</ul>
 
 		<div id="myTabContent" class="tab-content">
+		   <div id="loading_img"></div> 
 		   <div class="tab-pane fade in active" id="licensorView">
-		      <div id="claimLicencorGrid" class="claimReview"><div style="text-align:center">Loading...</div></div>
+		      <div id="claimLicencorGrid" class="claimReview"></div>
 		   </div>
-		   <div class="tab-pane fade" id="countryView" style="padding:10px;border:1px solid #ddd; border-top:0px;">
-		      <div id="claimCountryGrid" class="claimReview"><div style="text-align:center"> Data not Available</div></div></div>
+		   <div class="tab-pane fade" id="countryView">
+		      <div id="claimCountryGrid" class="claimReview"></div>
 		   </div>
 		</div>
 	</div>
