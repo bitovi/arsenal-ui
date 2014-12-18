@@ -104,6 +104,9 @@ var proposedonAccountGrid = Grid.extend({
       var element = el.closest('td').find('.editing');
       var column = el.closest('td').data('column').column;
 
+      var row = el.closest('tr').data('row').row;
+      row.attr(column.title,value);
+
       //putting the rows to the page from grid component
       var proposedOnAccountData={};
       proposedOnAccountData.rows=this.scope.rows;

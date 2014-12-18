@@ -166,33 +166,33 @@ var onAccountUpdateRequest ={};
     onAccountUpdateRequest.onAccount.comments=[];
     onAccountUpdateRequest.onAccount.documents=[];
 
-    //console.log(onAccountRows.rows);
-    var rows = onAccountRows.rows;
-
     //framing the onAccountDetails--start
-    if(rows != null && rows.length >0){
-        for(var i=0; i < rows.length;i++){
+    if(onAccountRows != null && onAccountRows.length >0){
+        for(var i=0; i < onAccountRows.length;i++){
                 for(var k=0;k<quarters.length;k++)
                 {
                     var onAccountDetails={};
-                    onAccountDetails.id=rows[i].id;
-                    onAccountDetails.bundleId=rows[i].bundleId;
-                    onAccountDetails.bundleName=rows[i].bundleName;
-                    onAccountDetails.currencyCode=rows[i].Currency;
+                    onAccountDetails.id=onAccountRows[i].id;
+                    onAccountDetails.bundleId=onAccountRows[i].bundleId;
+                    onAccountDetails.bundleName=onAccountRows[i].bundleName;
+                    onAccountDetails.currencyCode=onAccountRows[i].Currency;
                     var period = this.getPeriodForQuarter(quarters[k]);
                     onAccountDetails.fiscalPeriod=period+'';
-                    onAccountDetails.onAccountAmt=rows[i][quarters[k]];
-                    onAccountDetails.commentId=rows[i].commentId;
-                    onAccountDetails.countryId=rows[i].countryId;
-                    onAccountDetails.entityId=rows[i].entityId;
-                    onAccountDetails.entityName=rows[i].Licensor;
-                    onAccountDetails.contentGroupId=rows[i].contentGroupId;
+                    onAccountDetails.onAccountAmt=onAccountRows[i][quarters[k]];
+                    onAccountDetails.commentId=onAccountRows[i].commentId;
+                    onAccountDetails.countryId=''; 
+                    if(onAccountRows[i].countryId != undefined){
+                      onAccountDetails.countryId=onAccountRows[i].countryId;  
+                    }
+                    onAccountDetails.entityId=onAccountRows[i].entityId;
+                    onAccountDetails.entityName=onAccountRows[i].Licensor;
+                    onAccountDetails.contentGroupId=onAccountRows[i].contentGroupId;
                     onAccountDetails.periodType=this.getOnAccountPeriodType();
-                    onAccountDetails.createdBy=rows[i].createdBy;
-                    onAccountDetails.createdDate=rows[i].createdDate;
-                    onAccountDetails.modifiedBy=rows[i].createdBy;
+                    onAccountDetails.createdBy=onAccountRows[i].createdBy;
+                    onAccountDetails.createdDate=onAccountRows[i].createdDate;
+                    onAccountDetails.modifiedBy=onAccountRows[i].createdBy;
                     onAccountDetails.modifiedDate=Date.now();
-                    onAccountDetails.serviceTypeId=rows[i].serviceTypeId;
+                    onAccountDetails.serviceTypeId=onAccountRows[i].serviceTypeId;
                     onAccountUpdateRequest.onAccount.onAccountDetails.push(onAccountDetails);
                 }
         }
