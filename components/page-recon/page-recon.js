@@ -210,6 +210,7 @@ var page = Component.extend({
       processRejectIngestRequest(this.scope,"reject");
     },
     '{scope.appstate} change': function() {
+      this.scope.appstate.attr("renderGlobalSearch",true);
       if(this.scope.isGlobalSearchIngested != this.scope.appstate.attr('globalSearch')){
         this.scope.attr("isGlobalSearchIngested",this.scope.appstate.attr("globalSearch"));
         if(this.scope.tabSelected == this.scope.tabName.ingest.attr("name")){
