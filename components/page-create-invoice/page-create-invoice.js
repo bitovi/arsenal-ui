@@ -180,7 +180,7 @@ var page = Component.extend({
 	            	bundleNamesRequest.bundleSearch["regionId"] = regId;
 	            
 	           // bundleNamesRequest.bundleSearch["type"] = "invoice";
-	          console.log(bundleNamesRequest);
+	          //console.log(bundleNamesRequest);
 	          this.attr("bundleNamesRequest", JSON.stringify(bundleNamesRequest));
 
 				return JSON.stringify(bundleNamesRequest);
@@ -533,7 +533,7 @@ var page = Component.extend({
 		},
 		".inputContent change": function(event){
          	this.scope.contentTypeStore.attr(event[0].id, event[0].value)
-         	console.log(this.scope.contentTypeStore.attr());
+         	//console.log(this.scope.contentTypeStore.attr());
 
 		},
 		".inputMonth change": function(event){
@@ -548,11 +548,11 @@ var page = Component.extend({
         },
 	    ".inputCountry change": function(event){
          	this.scope.countryStore.attr(event[0].id, event[0].value)
-         	console.log(this.scope.countryStore.attr());
+         	//console.log(this.scope.countryStore.attr());
 		},
 		".ccidGL change": function(event){
          	this.scope.ccidGLStore.attr(event[0].id, event[0].value)
-         	console.log(this.scope.ccidGLStore);
+         	//console.log(this.scope.ccidGLStore);
 		},
 		"#invoicelicensor change": function(event){
 			var genObj = {licensorId:event[0].value};
@@ -567,7 +567,7 @@ var page = Component.extend({
 			var genObj = {regionId:self.scope.attr("regionStore")};
 			Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))
 			     ]).then(function(values) {
-		     			console.log(values[0]);
+		     			//console.log(values[0]);
 			    		self.scope.attr("licensor").replace(values[0]["entities"][0]);
 			    		if(self.scope.editpage){
 				    		var invoiceData = self.scope.attr().invoiceContainer[0];
@@ -676,11 +676,11 @@ var page = Component.extend({
 					   createInvoiceData.invoices = [];
 					  
 					   var tempInvoiceData = {};
-					   console.log(self.scope.attr("invoicetypeSelect"));
+					   //console.log(self.scope.attr("invoicetypeSelect"));
 					   
 					   tempInvoiceData["invoiceNumber"] = self.scope.invoicenumberStore;
 					   tempInvoiceData["invoiceTypeId"] = $("#invoiceType option:selected").val();
-					   if(isAdhocStrore.adhoc){
+					   if(self.scope.isAdhocStrore != undefined && self.scope.isAdhocStrore.adhoc){
 					   	tempInvoiceData["serviceTypeId"] = $("#inputContent0 option:selected").attr("servicetypeid");
 					   }
 					   tempInvoiceData["invoiceType"] = $("#invoiceType option:selected").attr("name");
@@ -737,7 +737,7 @@ var page = Component.extend({
 					   	$("[id^=breakrow]").each(function(i){
 							if(this.id !="breakrowTemplate"){
 								var index = $(this).attr("rowid");
-							 	console.log(index);
+							 	//console.log(index);
 					   			var inputContent = "inputContent"+index;
 
 								var tempArry = {};
@@ -754,7 +754,7 @@ var page = Component.extend({
 						  	 	}
 						  	 	else{
 						  	 		tempArry["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent"+index);
-						  	 		console.log(tempArry["contentGrpName"]);
+						  	 		//console.log(tempArry["contentGrpName"]);
 						  	 		var tempContentGrpName = $("#inputContent"+index+" option:selected").text();
 						  	 		tempArry["contentGrpName"] = tempContentGrpName;
 						  	 	}
@@ -806,7 +806,7 @@ var page = Component.extend({
 										          	var errorStr = "";
 										          	for(var key in errorMap){
 										          		errorStr += errorMap[key]+", ";
-										          		console.log(key);	
+										          		//console.log(key);	
 										          	}
 										          	errorStr = errorStr.replace(/,\s*$/, "");  
 										          	
@@ -1019,7 +1019,7 @@ var page = Component.extend({
 					    if (_root.length == 1) {
 							disablePeriodQuarterCalendar(_root);
 						}else if (_root.length > 1){
-							console.log("_root updatePeriodCalender");console.log(_root);
+							//console.log("_root updatePeriodCalender");console.log(_root);
 							for (var i = _root.length - 1; i >= 0; i--) {
 								disablePeriodQuarterCalendar(_root[i]);								
 							}
@@ -1028,7 +1028,7 @@ var page = Component.extend({
 
 					var disablePeriodQuarterCalendar = function(_root){
 
-						console.log("_root disablePeriodQuarterCalendar");console.log(_root);
+						//console.log("_root disablePeriodQuarterCalendar");console.log(_root);
 						var _root = $(_root);
 						_root.find('.period li a').removeClass('disabled period-active');
 
