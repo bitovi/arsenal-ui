@@ -18,7 +18,8 @@ var Approval = can.Model.extend({
 
         limit: params.limit || 10,
         offset: params.offset || 0
-      }
+      },
+      processData: false
     });
   }
 
