@@ -2,11 +2,18 @@
 
 rn-proposed-onaccount-grid {
   .grid-mixin();
-
+    th, td {
+      white-space: nowrap;
+      text-align: right;
+    }
   input.invalid {
     background: red;
     color: white;
   }
+  .toggle, .licensor, .Licensor , .currency, .Currency, .ContentType{
+      text-align: left;
+      width: auto;
+    }
   
 }
 
@@ -23,18 +30,11 @@ rn-proposed-onaccount-grid {
 }
 */
 
-.toggle, .Licensor, .Currency, .ContentType{
-      text-align: left;
-}
-
-.Q1FY14, .Q2FY14, .Q3FY14, .Q4FY14{
-  text-align: right;
-  width:150px;  
-}
 
 
 #proposedTblGrid td.checkbox input[type="checkbox"]{
-    margin-left: 30px !important;
+    margin-left: -30px !important;
+    margin-top: 5px;
 }
 
 #proposedTblGrid .checkbox {

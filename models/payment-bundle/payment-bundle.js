@@ -181,7 +181,7 @@ var PaymentBundle = Model.extend({
     });
   },
   getPreview: function(params) {
-    
+
   },
   moveInWorkflow: function(params) {
     if(['approve', 'reject', 'recall', 'delete'].indexOf(params.action) < 0) {
@@ -192,6 +192,7 @@ var PaymentBundle = Model.extend({
     bundleDetailsGroup.forEach(function(group) {
       group.bundleDetails.forEach(function(detail) {
         delete detail.__isChild;
+        delete detail.__isOpen;
       });
     });
 
