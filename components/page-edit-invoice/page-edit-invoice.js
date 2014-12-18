@@ -103,7 +103,7 @@ var page = Component.extend({
     invoiceId:"",
   	editpage:false,
   	formSuccessCount:1,
-  	uploadedfileinfo:[],
+  	uploadedFileInfo:[],
   	periodType:"",
   	ajaxRequestStatus:{},
 	isRequired: function(){

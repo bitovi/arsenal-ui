@@ -313,14 +313,15 @@ var page = Component.extend({
                    tempInvoiceData["netTotal"] = tempArr[i].netTotal;
                    tempInvoiceData["tax"] = tempArr[i].tax;
             
-             
-
-                   if(typeof $("#paymentBundleNames").val() == "undefined"){
-                     tempInvoiceData["bundleId"] = "";
-                     tempInvoiceData["bundleName"] = $("#newPaymentBundle").val();
+                  if(typeof $("#paymentBundleNames").val() == "undefined"){
+                    // tempInvoiceData["bundleId"] = "";
+                        tempInvoiceData["bundleName"] = $("#newPaymentBundle").val();
                    }else{
-                     tempInvoiceData["bundleId"] = $("#paymentBundleNames").val();
-                     tempInvoiceData["bundleName"] = $("#paymentBundleNames option:selected").text();
+                      
+                      if($("#paymentBundleNames").val() != ""){
+                        tempInvoiceData["bundleId"] = $("#paymentBundleNames").val();
+                        tempInvoiceData["bundleName"] = $("#paymentBundleNames option:selected").text();
+                      }
                    }
 
            

@@ -103,7 +103,7 @@ var page = Component.extend({
     //invoiceid:"",
   	editpage:false,
   	formSuccessCount:1,
-  	uploadedfileinfo:[],
+  	uploadedFileInfo:[],
   	periodType:"",
 	isRequired: function(){
   	 		if(this.attr("invoicetypeSelect") != "2"){  /*Adhoc*/
@@ -647,6 +647,11 @@ var page = Component.extend({
 			self.scope.createBreakline(self.scope.attr("rowindex"));
 		},
 
+		'rn-file-uploader onSelected': function (ele, event, val) {
+            var self = this;
+            self.scope.attr('uploadedFileInfo',val.filePropeties);
+         },
+
 		"#invoiceform #paymentBundleNames change": function(){
 	          var self = this;
 	          var pbval = $("#invoiceform #paymentBundleNames").val();
@@ -724,12 +729,15 @@ var page = Component.extend({
 
 					   
 					   tempInvoiceData["invoiceDocuments"] = [];
-					   	for(var i =0; i < self.scope.uploadedfileinfo.length; i++){
-	      						var tempDocument = {};
-					   			tempDocument.fileName = self.scope.uploadedfileinfo[i].attr("filename"); 
-					   			tempDocument.location = self.scope.uploadedfileinfo[i].attr("filepath");
-					   			tempInvoiceData["invoiceDocuments"].push(tempDocument);
-					   	}
+
+					  
+
+					 	for(var i =0; i < self.scope.uploadedFileInfo.length; i++){
+      						var tempDocument = {};
+				   			tempDocument.fileName = self.scope.uploadedFileInfo[i].attr("fileName"); 
+				   			tempDocument.location = self.scope.uploadedFileInfo[i].attr("filePath");
+				   			tempInvoiceData["invoiceDocuments"].push(tempDocument);
+				   		} 
 
 					  tempInvoiceData["invoiceLines"] = [];
 
@@ -796,7 +804,7 @@ var page = Component.extend({
 											}
 								          else
 								           {
-								           		if(typeof values[0].invoices[0].errors != "undefined")
+								           		if(values[0].invoices[0].errors)
 								           		{
 								           			var errorMap = values[0].invoices[0].errors.errorMap;
 								           		}
@@ -825,8 +833,30 @@ var page = Component.extend({
 								
 							},
 							"#buttonCancel click":function(){
-								this.scope.appstate.attr('page','invoices');
-							},
+								//this.scope.appstate.attr('page','invoices');
+
+								var self = this;
+
+								$("#invoiceform")[0].reset();
+								$("#invoiceform").data('bootstrapValidator').resetForm();
+								$("#addInvSubmit").attr("disabled", true);
+
+								self.scope.attr("totalAmountVal", 0);
+								self.scope.attr("tax", 0);
+
+								$("[id^=breakrow]").each(function(index){  /*removing added row in break down.*/
+								if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
+									$(this).remove();
+									}
+							  	});
+								//$("#breakrow0 .amountText").attr("id","amountText0").val(" ");
+
+								self.scope.attr("AmountStore").each(function(val, key){
+				  	 				self.scope.AmountStore.removeAttr(key);
+				  	 			});
+
+				  	 			self.scope.attr("calduedate", "");
+				  	 		},
 							'period-calendar onSelected': function (ele, event, val) {  
 			       					this.scope.attr('periodchoosen', val);
 			       					$(ele).parent().find('input[type=text]').val(this.scope.periodchoosen).trigger('change');

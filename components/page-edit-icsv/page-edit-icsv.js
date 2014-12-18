@@ -103,7 +103,7 @@ var page = Component.extend({
     //invoiceid:"",
   	editpage:false,
   	formSuccessCount:1,
-  	uploadedfileinfo:[],
+  	uploadedFileInfo:[],
   	periodType:"",
   	ajaxRequestStatus:{},
     isRequired: function(){
@@ -822,6 +822,10 @@ var page = Component.extend({
          	self.scope.attr("rowindex", rowindex + 1);
 			self.scope.createBreakline(self.scope.attr("rowindex"));
 		},
+		'rn-file-uploader-icsv onSelected': function (ele, event, val) {
+            var self = this;
+            self.scope.attr('uploadedFileInfo',val.filePropeties);
+         },
 		
 		"#addInvSubmit click":function(){
 
@@ -875,22 +879,24 @@ var page = Component.extend({
 
 							    
 							    editInvoiceCSVData.invoiceDocuments = [];
-								for(var j=0;j<self.scope.attr().invoiceContainer[0].invoiceDocuments.length;j++){   /*old documents*/
-									var tempDocuments = {};
+							/*	for(var j=0;j<self.scope.attr().invoiceContainer[0].invoiceDocuments.length;j++){   /*old documents*/
+							/*		var tempDocuments = {};
 									tempDocuments.fileName=self.scope.attr().invoiceContainer[0].invoiceDocuments[j].fileName;
 									tempDocuments.location = self.scope.attr().invoiceContainer[0].invoiceDocuments[j].location;
 									
 									editInvoiceCSVData.invoiceDocuments.push(tempDocuments);
-								}
+								}*/
 
 									
 
-									for(var i =0; i < self.scope.uploadedfileinfo.length; i++){
-          								var tempDocuments = {};
-					   						tempDocuments.fileName = self.scope.uploadedfileinfo[i].attr("filename"); 
-					   						tempDocuments.location = self.scope.uploadedfileinfo[i].attr("filepath");
-					   						editInvoiceCSVData.invoiceDocuments.push(tempDocuments);
-					   				}
+									
+
+					   				for(var i =0; i < self.scope.uploadedFileInfo.length; i++){
+			      						var tempDocument = {};
+							   			tempDocument.fileName = self.scope.uploadedFileInfo[i].attr("fileName"); 
+							   			tempDocument.location = self.scope.uploadedFileInfo[i].attr("filePath");
+							   			editInvoiceCSVData.invoiceDocuments.push(tempDocument);
+							   		} 
 									
 									//if(tempDocuments.filename)
 									
