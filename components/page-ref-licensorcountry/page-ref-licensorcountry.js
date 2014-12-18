@@ -5,11 +5,8 @@ import template from './template.stache!';
 import styles from './page-ref-licensorcountry.less!';
 import GridReportConfig from 'components/page-ref-licensorcountry/grid-report-configuration/';
 import GridRivision from 'components/page-ref-licensorcountry/grid-revision-history/';
-
 import css_bootstrapValidator from 'bootstrapValidator.css!';
-
 import bootstrapValidator from 'bootstrapValidator';
-
 import multiComments from 'components/multiple-comments/';
 import UserReq from 'utils/request/';
 import Licensor from 'models/common/licensor/';
@@ -54,7 +51,8 @@ var page = Component.extend({
     periodTo : [],
     selectedperiod:[],
     displayMessage:"display:none",
-    state:"Edit"
+    state:"Edit",
+    periodValidationMsg:""
   },
 
   init: function(){
@@ -72,7 +70,7 @@ var page = Component.extend({
         self.scope.attr("entities").replace(values[0]["entities"][0]);
         licId = self.scope.attr("entities")[0].entities[0].id;
         self.scope.attr("pricingModels").replace(values[1].modelTypes);
-        self.scope.attr("pricingMethods").replace(values[2]);
+        self.scope.attr("pricingMethods").replace(values[2].pricingMethodList);
       }).then(function(values) {
 
         requestObj = {licensorId:licId};
@@ -118,7 +116,6 @@ var page = Component.extend({
 
           var self = this;
 
-
           reportConfigurationList = new can.List();
           revisionHistory = new can.List();
 
@@ -128,7 +125,7 @@ var page = Component.extend({
           $('#grid-revision-history').append(stache('<rn-grid-revision-history rows="{revisionHistory}"></rn-grid-revision-history>')({revisionHistory}));
 
 
-          $('#invoiceform').on('init.form.bv', function(e, data) {
+          $('#countryLicForm').on('init.form.bv', function(e, data) {
             data.bv.disableSubmitButtons(true);
 
           }).on('init.field.bv', function(e, data) {
@@ -136,7 +133,7 @@ var page = Component.extend({
 
           })
 
-          $('#invoiceform').bootstrapValidator({
+          $('#countryLicForm').bootstrapValidator({
             container: 'popover',
             feedbackIcons: {
               valid: 'valid-rnotes',
@@ -145,33 +142,30 @@ var page = Component.extend({
             },
             fields: {
               validFrom: {
+                trigger: 'change',
                 validators: {
-                  notEmpty: {
-                    message: 'The ValidFrom is required'
+                      notEmpty: {
+                        message: 'The ValidFrom is required'
+                      },
+                      callback: {
+                      message: 'Valid from is greater than Valid to!',
+                      callback: function (value, validator, $field) {
+
+                        if(validatePeriods(self.scope) == ""){
+                          return true;
+                        }else
+                          return false;
+                      }
+                    }
                   }
-                }
               },
-              entityPricingModelId :{
+              comments: {
+                group:'.comments',
                 validators: {
-                  group:'.comments',
-                  notEmpty: {
-                    message: 'The Pricingmodel is required'
-                  }
-                }
-              },
-              invoiceCurr :{
-                validators: {
-                  group:'.comments',
-                  notEmpty: {
-                    message: 'The Currency is required'
-                  }
-                }
-              },
-              comments :{
-                validators: {
-                  group:'.comments',
-                  notEmpty: {
-                    message: 'The comments is required'
+                  stringLength: {
+                    max:1024,
+                    message: 'Maximum 1024 characters allowed',
+                    utf8Bytes: true
                   }
                 }
               }
@@ -181,8 +175,14 @@ var page = Component.extend({
 
           }).on('success.field.bv', function(e, data) {
 
+            $('*[data-bv-icon-for="'+data.field +'"]').popover('destroy');
 
+          }).on('success.form.bv', function(e) {
+            e.preventDefault();
           });
+
+
+
 
         },
         ".rn-grid>tbody>tr td dblclick": function(item, el, ev){
@@ -201,16 +201,7 @@ var page = Component.extend({
 
           CountryLicensor.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
-            reportConfigurationList.replace(data.entityCountryDetails.reportConfigurationList);
-
-            revisionHistory.replace(data.revisionHistory);
-
-            self.pageState.entityCountryDetails.attr("entityCountry",data.entityCountryDetails.entityCountry);
-
-            self.pageState.entityCountryDetails.attr("comment",data.entityCountryDetails.comment);
-
-            // self.pageState.entityCountryDetails.entityCountry.attr("id",data.entityCountryDetails.entityCountry.id);
-
+            loadPage(self, data);
 
           },function(xhr){
             console.error("Error while loading: country-Entity Details"+xhr);
@@ -224,7 +215,7 @@ var page = Component.extend({
 
           var requestObj = {licensorId:self.scope.pageState.entityCountryDetails.entityCountry.entityId};
           this.scope.countries.replace(Country.findAll(UserReq.formRequestDetails(requestObj)));
-          //this.scope.currencies.replace(Currency.findAll(UserReq.formRequestDetails(requestObj)));
+          this.scope.currencies.replace(Currency.findAll(UserReq.formRequestDetails(requestObj)));
         },
         '{scope} pageState.entityCountryDetails.pricingModelVersionNo': function() {
           var self = this;
@@ -245,10 +236,6 @@ var page = Component.extend({
           },
           '#fetchDetailsBtn click':function(){
 
-            //console.log(this.scope.pageState.entityCountryDetails.entityCountry.attr("entityId"));
-
-            // console.log(this.scope.pageState.entityCountryDetails.entityCountry.attr("countryId"));
-
             $(".mainLayoutId").show();
 
 
@@ -262,27 +249,7 @@ var page = Component.extend({
             }
             var self = this.scope;
             CountryLicensor.findOne(UserReq.formRequestDetails(requestObj),function(data){
-              reportConfigurationList.replace(data.entityCountryDetails.reportConfigurationList);
-
-
-              revisionHistory.replace(data.revisionHistory);
-
-              self.pageState.entityCountryDetails.attr("entityCountry",data.entityCountryDetails.entityCountry);
-
-              self.pageState.entityCountryDetails.attr("comment",data.entityCountryDetails.comment);
-
-              var   tempcommentObj = data.entityCountryDetails.comment;
-
-
-
-              if(data.entityCountryDetails.entityCountry.status == "A") {
-                self.attr("state","Edit");
-              }else{
-                self.attr("state","Read");
-              }
-
-              // self.pageState.entityCountryDetails.entityCountry.attr("id",data.entityCountryDetails.entityCountry.id);
-
+              loadPage(self, data);
 
             },function(xhr){
               console.error("Error while loading: country-Entity Details"+xhr);
@@ -293,6 +260,7 @@ var page = Component.extend({
           '#buttonCancel  click': function(){
 
             //form Reset
+            $(".mainLayoutId").hide();
             var self = this.scope;
             reportConfigurationList.replace([]);
             revisionHistory.replace([]);
@@ -316,6 +284,17 @@ var page = Component.extend({
               entityCountry_data.laEnabled = "N";
             }
 
+             var periodFP = periodWidgetHelper.getFiscalPeriod(entityCountry_data.validFrom);
+
+
+             entityCountry_data.validFrom = periodFP;
+
+             periodFP = periodWidgetHelper.getFiscalPeriod(entityCountry_data.validTo);
+
+             entityCountry_data.validTo = periodFP;
+
+
+
             entityCountry_data.status = "N";// New state
             var reportConfigurationListObj =  [];
 
@@ -324,6 +303,8 @@ var page = Component.extend({
                 reportConfigurationListObj.push(value._data);
               }
             );
+
+
 
             var requestObj  = {
               entityCountryDetails  :{
@@ -337,18 +318,21 @@ var page = Component.extend({
 
             };
 
+            console.log("requestObj: "+JSON.stringify(requestObj));
+            CountryLicensor.create(UserReq.formRequestDetails(requestObj), function(data){
+              if(data["status"]=="SUCCESS"){
+                console.log("Success :");
+                this.scope.attr("displayMessage","display:block");
+              }
+            },function(xhr){
+              console.error("Failed :"+xhr);
+            });
 
 
-
-            CountryLicensor.create(UserReq.formRequestDetails(requestObj));
-
-            this.scope.attr("displayMessage","display:block");
           },
           'period-calendar onSelected': function (ele, event, val) {  
             this.scope.attr('periodchoosen', val);
-            var which = $(ele).parent().find('input[type=text]').attr('id');
-            this.scope.appstate.attr(which, this.scope.periodchoosen);
-            $(ele).parent().find('input[type=text]').val(this.scope.periodchoosen).trigger( "change" );
+            $(ele).parent().find('input[type=text]').val(this.scope.periodchoosen).trigger('change');
             $(ele).closest('.calendarcls').find('.box-modal').hide();
             $(ele).blur();
           },
@@ -356,12 +340,17 @@ var page = Component.extend({
             $(el).closest('.calendarcls').find('.box-modal').show().trigger( "focus" );
           },
           '{selectedperiod} change':function(val){
-            var period = periodWidgetHelper.getFiscalPeriod(val[0].value);
-            if(val[0].which=='periodFrom'){
-              this.scope.pageState.entityCountryDetails.entityCountry.validFrom = period;
+            //var period = periodWidgetHelper.getFiscalPeriod();
+
+            if(val[0].which=='validFrom'){
+              $("#validFrom").val(val[0].value);
             }else{
-              this.scope.pageState.entityCountryDetails.entityCountry.validTo = period;
+              $("#validTo").val(val[0].value) ;
             }
+
+            $('#validFrom').trigger("change");
+
+            //console.log(" I am here "+$("#validFrom").val());
 
           },
           'shown.bs.collapse':function(ele, event){
@@ -406,10 +395,94 @@ var page = Component.extend({
 
 
 
-var loadPage = function(scope){
+var loadPage = function(scope,data){
+
+
+
+  reportConfigurationList.replace(data.entityCountryDetails.reportConfigurationList);
+
+  revisionHistory.replace(data.revisionHistory);
+
+  var displayDate = data.entityCountryDetails.entityCountry.attr("validFrom");
+  if(displayDate == 0){
+    data.entityCountryDetails.entityCountry.attr("validFrom","");
+  }else
+  {data.entityCountryDetails.entityCountry.attr("validFrom",periodWidgetHelper.getDisplayPeriod(displayDate,"P"));}
+
+  displayDate = data.entityCountryDetails.entityCountry.attr("validTo");
+  if(displayDate == 0){
+    data.entityCountryDetails.entityCountry.attr("validTo","");
+  }else{
+      data.entityCountryDetails.entityCountry.attr("validTo",periodWidgetHelper.getDisplayPeriod(displayDate,"P"));
+  }
+
+  var status = data.entityCountryDetails.entityCountry.attr("status");
+  if(status == "A"){
+    data.entityCountryDetails.entityCountry.attr("status","Active");
+  }else{
+    data.entityCountryDetails.entityCountry.attr("status","InActive");
+  }
+
+
+
+
+  scope.pageState.entityCountryDetails.attr("entityCountry",data.entityCountryDetails.entityCountry);
+
+  $('#validFrom').trigger("change");
+
+  scope.pageState.attr("historyComments",data.entityCountryDetails.historyComments);
+  scope.pageState.entityCountryDetails.attr("comment",data.entityCountryDetails.comment);
+
+  if(data.entityCountryDetails.entityCountry.status == "A") {
+    scope.attr("state","Edit");
+  }else{
+    scope.attr("state","Read");
+  }
+
 
 }
 
+var validatePeriods = function(scope) {
+
+  var periodFrom = $("#validFrom").val();
+  var periodTo = $("#validTo").val();
+
+
+  var flag = false;
+  var from = periodFrom || false;
+  var to = periodTo || false;
+  var message1 = 'Period from is greater than period to !';
+
+
+  if (from && to) {
+    var fromYear = parseInt(from.slice(-2));
+    var toYear = parseInt(to.slice(-2));
+    var yearDiff = parseInt(toYear - fromYear);
+    if (fromYear > toYear) {
+      return message1;
+    }
+
+    if (from.charAt(0) === "P" && to.charAt(0) === "P") {
+      var periodFromValue = periodFrom.substr(1, 2);
+      var periodToValue = periodTo.substr(1, 2);
+      if (yearDiff == 0 && periodFromValue > periodToValue) {
+        return message1;
+      }
+    }
+    // else if (from.charAt(0) === "Q" && to.charAt(0) === "Q") {
+    //   var quarterFromValue = periodFrom.substr(1, 1);
+    //   var quarterToValue = periodTo.substr(1, 1);
+    //   if (yearDiff >= 1 && quarterFromValue == quarterToValue) {
+    //     //if(quarterFromValue >= quarterToValue ){
+    //     return message2;
+    //     //}
+    //   } else if (yearDiff == 0 && quarterFromValue > quarterToValue) {
+    //     return message1;
+    //   }
+    // }
+  }
+  return "";
+}
 
 
 
