@@ -4,6 +4,7 @@ import template from './template.stache!';
 import styles from './header-navigation.less!';
 import roles from 'models/roles/';
 import GlobalParameterBar from 'components/global-parameter-bar/';
+import Bookmark from 'components/bookmark/';
 
 
 var headerNavigation = Component.extend({
@@ -42,6 +43,9 @@ var headerNavigation = Component.extend({
           });
         },
     events:{
+      '.bookmark click':function(){ 
+          $('book-mark').slideToggle('fast');
+      },
      '#homemenu li a click':function(btn){
         var mainmenu_txt = btn.text();
         if(btn.attr('id')){

@@ -1,0 +1,76 @@
+<div class='bookmarkContainer'>
+    <div class="arrow_box"></div>
+      <div class='bookmarklist'>
+        <div class='listofbookmark'>
+          <div class='listtitle'>Bookmarks</div>
+          <div class='btns'>
+              <button type="button" class="btn btn-primary bookmark_custombtns" id='add_new'>Add new</button> 
+              <button type="button" class="btn btn-primary bookmark_custombtns" id='bookmarkitem_remove' disabled='disabled'>Remove</button> 
+          </div>
+          <div class='autoscroll'>
+            {{#each bookMarkList}}
+               <div class='bookmark_list' data-pageId={{pageId}}>
+                    <div class='checkbox_list'><input type="checkbox" name='bookmark' id={{bookMarkId}} class='bookmarkchkbox'/></div>
+                    <div class='bookmark_subject'> {{bookMarkName}}</div>
+                    <div class='bookmark_settings' data-id={{bookMarkId}}>&nbsp;</div>
+                    <div class='clr'></div>
+                    <div>
+                        <div class='flL'>createdBy : {{createdBy}}</div>
+                        <div class='flR'>
+                            <div>Owner:{{lastName}}</div>
+                            <div><b>Shared</b></div>
+                        </div>
+                   </div>
+                </div>
+              {{/each}}
+             </div>  
+    </div><!--list of bookmark end-->
+
+    <div class='newbookmark'>
+         <div class='listtitle'>New Bookmark</div>
+         <div class='bookmarkinput'>
+              <div><label>Name</label></div>
+              <input type='text' name='bookmarkname' class='newbookmark_name_txtbx'/>
+               <div class="shareerror">Please Enter valid Bookmark Name</div>
+         </div>
+          <div class='autoscrollforuser'>
+              <div class='bookmark_sharing'>
+                <div class='checkboxlbl' id=''><input type="checkbox" class='setshareall' /> <span class='checkboxtxt'>All</span></div>
+                {{#each userList}}
+                    <div class='checkboxlbl'><input type="checkbox" id='{{id}}' class='bookmarkchkbox' name="bookmarkforshare"/> <span class='checkboxtxt'>{{name}}</span></div>
+                {{/each}}
+               </div>
+           </div>
+        
+
+         <div class='btnsfor_new'>
+              <button type="button" class="btn btn-primary custombtns" id='bookmark_cancel'>Cancel</button> 
+              <button type="button" class="btn btn-primary custombtns" id='new_bookmark_save'>Save</button> 
+          </div>
+
+    </div><!--new bookmark end-->
+
+    <div class='bookmark_sharing_settings'>
+        <div class='listtitle'>Bookmark Sharging Options</div>
+       <div class='autoscrollfornew'>
+              <div class='bookmark_sharing'>
+                <div class='checkboxlbl' id=''><input type="checkbox" {{#if setFlag.flag}} disabled="disabled"{{/if}}  class='setshareall'/> <span class='checkboxtxt'>All</span></div>
+               
+                  {{#each shareList}}
+                      <div class='checkboxlbl'>
+                          <input type="checkbox" id='{{id}}' {{#if flag}} disabled="disabled" checked="checked" {{/if}}class='bookmarkchkbox' name='bookmarkforsettings'/> 
+                          <span data-id={{id}} class='checkboxtxt'>{{name}}</span></div>
+                  {{/each}}
+              
+               </div>
+           </div>
+         <div></div>
+
+         <div class='btnsfor_new'>
+              <button type="button" class="btn btn-primary custombtns" id='sharebk_cancel'>Cancel</button> 
+              <button type="button" class="btn btn-primary custombtns togglebtns" id='sharebk_save' disabled='disabled'>Save</button> 
+          </div>
+
+    </div>
+     <div class='page_loader'><div class='loader'>&nbsp;</div></div>
+</div>
