@@ -234,7 +234,7 @@ var page = Component.extend({
           if(validFrom == "0")
             self.pageState.countryDetails.country.attr("validFrom","");
           else {
-            var formatValidFrom = PeriodHelper.getDisplayPeriod(validFrom);
+            var formatValidFrom = PeriodHelper.getDisplayPeriod(validFrom, "P");
             self.pageState.countryDetails.country.attr("validFrom",formatValidFrom);
           }
 
@@ -246,7 +246,7 @@ var page = Component.extend({
           if(validTo == "0")
             self.pageState.countryDetails.country.attr("validTo","");
           else {
-            var formatValidTo = PeriodHelper.getDisplayPeriod(validTo);
+            var formatValidTo = PeriodHelper.getDisplayPeriod(validTo,"P");
             self.pageState.countryDetails.country.attr("validTo",formatValidTo);
           }
 
@@ -343,7 +343,7 @@ var page = Component.extend({
       console.log("Request passed is "+ JSON.stringify(UserReq.formRequestDetails(requestObj)));
       RefCountry.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
-        //console.log("Response data is "+JSON.stringify(data.attr()));
+        console.log("Response data is "+JSON.stringify(data.attr()));
         self.pageState.countryDetails.attr("country",data.countryDetails);
         
         /* if the data.countryDetails.countryId is null then set the country dropdown using requestObj*/
@@ -359,7 +359,7 @@ var page = Component.extend({
         if(validFrom == "0")
           self.pageState.countryDetails.country.attr("validFrom","");
         else {
-          var formatValidFrom = PeriodHelper.getDisplayPeriod(validFrom);
+          var formatValidFrom = PeriodHelper.getDisplayPeriod(validFrom,"P");
           self.pageState.countryDetails.country.attr("validFrom",formatValidFrom);
         }
 
@@ -371,7 +371,7 @@ var page = Component.extend({
         if(validTo == "0")
           self.pageState.countryDetails.country.attr("validTo","");
         else {
-          var formatValidTo = PeriodHelper.getDisplayPeriod(validTo);
+          var formatValidTo = PeriodHelper.getDisplayPeriod(validTo,"P");
           self.pageState.countryDetails.country.attr("validTo",formatValidTo);
         }
 

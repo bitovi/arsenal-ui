@@ -134,8 +134,10 @@ var page = Component.extend({
   },
   init: function(){
     //console.log("inside init");
-      this.scope.appstate.attr("renderGlobalSearch",true);
-
+    var self = this;
+    setTimeout(function(){
+      self.scope.appstate.attr("renderGlobalSearch",true);
+    },1000);
   },
   helpers: {
         createPBRequest: function(){
@@ -163,6 +165,7 @@ var page = Component.extend({
     "inserted": function(){
 
         var self = this;
+
         $("#tokenSearch").tokenInput([
             {id: 1, name: "Search"} //This is needed
         ],
@@ -187,7 +190,6 @@ var page = Component.extend({
 
         /* Bundle Names is selectable only when any row is selected */
         $('#paymentBundleNames').prop('disabled', 'disabled');
-
         $('#invoiceGrid').html(stache('<rn-grid-invoice emptyrows="{emptyrows}"></rn-grid-invoice>')({emptyrows:true}));
     },
     "{tokenInput} change": function(){
@@ -202,8 +204,7 @@ var page = Component.extend({
           }
     },
     "{allInvoicesMap} change": function() {
-
-        var self = this;
+        var self = this; 
         var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
         var footerData = this.scope.attr().allInvoicesMap[0].footer;
         //console.log("Status code "+JSON.stringify(StatusCodes));
@@ -671,7 +672,6 @@ var page = Component.extend({
       },
       '{scope.appstate} change': function() {
           var self=this;
-          console.log("hhshshhs");
           /* Page is not allowed to do search by default when page is loaded */
           /* This can be checked using 'localGlobalSearch' parameter, it will be undefined when page loaded */
           if(this.scope.attr("localGlobalSearch") != undefined){
@@ -751,7 +751,6 @@ var page = Component.extend({
               }
 
           } else {
-            console.log(this.scope.appstate.attr('globalSearch'));
             if(this.scope.appstate.attr('globalSearch')==undefined)
               this.scope.appstate.attr('globalSearch',true);
             this.scope.attr("localGlobalSearch", this.scope.appstate.attr('globalSearch'));
