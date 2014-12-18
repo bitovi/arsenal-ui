@@ -680,7 +680,9 @@ var page = Component.extend({
 					   
 					   tempInvoiceData["invoiceNumber"] = self.scope.invoicenumberStore;
 					   tempInvoiceData["invoiceTypeId"] = $("#invoiceType option:selected").val();
-					   tempInvoiceData["serviceTypeId"] = $("#inputContent0 option:selected").attr("servicetypeid");
+					   if(isAdhocStrore.adhoc){
+					   	tempInvoiceData["serviceTypeId"] = $("#inputContent0 option:selected").attr("servicetypeid");
+					   }
 					   tempInvoiceData["invoiceType"] = $("#invoiceType option:selected").attr("name");
 					   tempInvoiceData["entityId"] = self.scope.licensorStore;
 					   tempInvoiceData["regionId"] = self.scope.regionStore;
@@ -876,7 +878,7 @@ var page = Component.extend({
 							     		 	self.scope.attr("invoiceTypes").replace(values[0]["invoiceTypes"]);
 							     			self.scope.attr("contentType").replace(values[1].contentTypes);
 							     		 	//self.scope.attr("country").replace(values[2]);
-											self.scope.attr("adhocType").replace(values[2]);
+											self.scope.attr("adhocType").replace(values[2].adhocTypes);
 							     		 	self.scope.attr("glaccounts").replace(values[3]);
 							     		 	self.scope.attr("regions").replace(values[4]);
 
