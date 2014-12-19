@@ -109,6 +109,7 @@ var page = Component.extend({
     },
     init:function(){
       var self = this;
+      icsvmap.removeAttr("invoiceData"); 
       $('.popover').popover('destroy');
       this.scope.appstate.attr("renderGlobalSearch",false);
       
@@ -385,7 +386,7 @@ var page = Component.extend({
                          ]).then(function(values) {
                             
                                 if(values[0]["status"]=="SUCCESS"){
-                                       var msg = "Invoice number "+self.scope.invoicenumberStore+" was saved successfully."
+                                       var msg = "Invoices  saved successfully."
                                        $("#invcsvmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
                                        $("#invcsvmessageDiv").show();
                                        setTimeout(function(){
