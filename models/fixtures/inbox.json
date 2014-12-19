@@ -1,0 +1,48 @@
+{
+  "workflowView":null,
+  "workflowInstanceId":0,
+  "approvals":[
+    {
+      "description":"payment bundle-Europe",
+      "comments":"created new",
+      "pendingDays":10,
+      "pendingGroup":null,
+      "totalLevels":5,
+      "approvedLevels":3,
+      "approvalId":123,
+      "createdBy":null,
+      "previousApprover":null,
+      "type":"Payment",
+      "region":"Europe"
+    },
+    {
+      "description":"payment bundle-Europe",
+      "comments":"created new",
+      "pendingDays":10,
+      "pendingGroup":null,
+      "totalLevels":3,
+      "approvedLevels":1,
+      "approvalId":123,
+      "createdBy":null,
+      "previousApprover":null,
+      "type":"Payment",
+      "region":"Europe"
+    },
+    {
+      "description":"payment bundle-Europe",
+      "comments":"created new",
+      "pendingDays":10,
+      "pendingGroup":null,
+      "totalLevels":4,
+      "approvedLevels":2,
+      "approvalId":123,
+      "createdBy":null,
+      "previousApprover":null,
+      "type":"Payment",
+      "region":"Europe"
+    }
+  ],
+  "status":"SUCCESS",
+  "responseText":null,
+  "responseCode":null
+}

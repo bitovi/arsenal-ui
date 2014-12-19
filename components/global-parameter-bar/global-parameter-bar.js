@@ -122,9 +122,7 @@ var GlobalParameterBar = Component.extend({
       } else {
         this.scope.contentTypes.replace(allContentTypes);
       }
-      setTimeout(function() {
-        $("#contentTypesFilter").multiselect('rebuild');
-      }, 1000);
+      $("#contentTypesFilter").multiselect('rebuild');
 
       /* This is to reset the contentType attr in 'appstate' variable  */
       this.scope.changesToApply.removeAttr('contentType');
@@ -148,10 +146,8 @@ var GlobalParameterBar = Component.extend({
         }
         self.scope.countries.replace(values[0]);
         self.scope.licensors.replace(values[1]["entities"]);
-        setTimeout(function() {
-          $("#countriesFilter").multiselect('rebuild');
-          $("#licensorsFilter").multiselect('rebuild');
-        }, 2000);
+        $("#countriesFilter").multiselect('rebuild');
+        $("#licensorsFilter").multiselect('rebuild');
       });
       /* This is to reset the country & licensor attr in 'appstate' variable  */
       this.scope.changesToApply.removeAttr('country');
@@ -240,46 +236,42 @@ var GlobalParameterBar = Component.extend({
       //self.scope.periodTo.replace(values[6]);
 
 
-      setTimeout(function() {
+      $("#countriesFilter").multiselect({
+        numberDisplayed: 1,
+        includeSelectAllOption: true,
+        selectAllText: 'Select All',
+        maxHeight: 200,
+        onChange: function(option, checked, select) {
+          // $("#country .multiselect-all .checkbox").find("input[type='checkbox']").is(':checked')?
+          //   $("#country .dropdown-menu li").addClass("active"):$("#country .dropdown-menu li").removeClass("active");
+          $("#countriesFilter").multiselect("refresh");
+        }
 
+      });
+      $("#licensorsFilter").multiselect({
+        numberDisplayed: 1,
+        includeSelectAllOption: true,
+        selectAllText: 'Select All',
+        maxHeight: 200,
+        onChange: function(option, checked, select) {
+          //  $("#licensor .multiselect-all .checkbox").find("input[type='checkbox']").is(':checked')?
+          //    $("#licensor .dropdown-menu li").addClass("active"):$("#licensor .dropdown-menu li").removeClass("active");
+          $("#licensorsFilter").multiselect("refresh");
+        }
 
-        $("#countriesFilter").multiselect({
-          numberDisplayed: 1,
-          includeSelectAllOption: true,
-          selectAllText: 'Select All',
-          maxHeight: 200,
-          onChange: function(option, checked, select) {
-            // $("#country .multiselect-all .checkbox").find("input[type='checkbox']").is(':checked')?
-            //   $("#country .dropdown-menu li").addClass("active"):$("#country .dropdown-menu li").removeClass("active");
-            $("#countriesFilter").multiselect("refresh");
-          }
+      });
+      $("#contentTypesFilter").multiselect({
+        numberDisplayed: 1,
+        includeSelectAllOption: true,
+        selectAllText: 'Select All',
+        maxHeight: 200,
+        onChange: function(option, checked, select) {
+          //$("#contentType .multiselect-all .checkbox").find("input[type='checkbox']").is(':checked')?
+          //  $("#contentType .dropdown-menu li").addClass("active"):$("#contentType .dropdown-menu li").removeClass("active");
+          $("#contentTypesFilter").multiselect("refresh");
+        }
 
-        });
-        $("#licensorsFilter").multiselect({
-          numberDisplayed: 1,
-          includeSelectAllOption: true,
-          selectAllText: 'Select All',
-          maxHeight: 200,
-          onChange: function(option, checked, select) {
-            //  $("#licensor .multiselect-all .checkbox").find("input[type='checkbox']").is(':checked')?
-            //    $("#licensor .dropdown-menu li").addClass("active"):$("#licensor .dropdown-menu li").removeClass("active");
-            $("#licensorsFilter").multiselect("refresh");
-          }
-
-        });
-        $("#contentTypesFilter").multiselect({
-          numberDisplayed: 1,
-          includeSelectAllOption: true,
-          selectAllText: 'Select All',
-          maxHeight: 200,
-          onChange: function(option, checked, select) {
-            //$("#contentType .multiselect-all .checkbox").find("input[type='checkbox']").is(':checked')?
-            //  $("#contentType .dropdown-menu li").addClass("active"):$("#contentType .dropdown-menu li").removeClass("active");
-            $("#contentTypesFilter").multiselect("refresh");
-          }
-
-        });
-      }, 2000);
+      });
     });
   }
 });

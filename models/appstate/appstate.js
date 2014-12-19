@@ -35,7 +35,7 @@ var stateDefaults = {
     appId: '1179',
     secretKey: 'f4166789-30bb-4e12-9973-a76376745096'
   },
-  page: 'dashboard',
+  page: null,
   periodFrom: undefined,
   periodTo: undefined,
   periodType: undefined,
@@ -43,16 +43,19 @@ var stateDefaults = {
   country: undefined,
   region: undefined,
   storeType: undefined,
-  renderGlobalSearch:false,
+
+  filled: false,
+
+  renderGlobalSearch:true,
   globalSearch:undefined
 };
 
-
+var firstPage = 'dashboard';
 
 var appState = new State({
   startRouting: function() {
     // Create a route and pass in initial values.
-    route(':page', stateDefaults);
+    route(':page', {page: firstPage});
 
     // start routing!
     route.ready();
@@ -60,6 +63,17 @@ var appState = new State({
 });
 
 appState.attr(stateDefaults);
+appState.bind('change', function() {
+  var filled =  this.storeType &&
+                this.contentType.length &&
+                this.region &&
+                this.country.length &&
+                this.licensor.length &&
+                this.periodFrom &&
+                this.periodTo;
+
+  this.attr('filled', !!filled);
+});
 
 // Make `appState` the Map that can.route uses to keep its data in.
 route.map(appState);

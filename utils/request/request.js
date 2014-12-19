@@ -15,7 +15,6 @@ var requestHelper = {
       requestTimeStamp: (new Date()).getTime()
     });
 
-    console.log('Request:'+ JSON.stringify(userRequest));
     return userRequest;
   },
   formGlobalRequest: function(appstate){
@@ -87,7 +86,6 @@ var requestHelper = {
     //     serviceTypeId:serTypeId
     //   }
     // };
-    console.log("searchRequestObj "+JSON.stringify(searchRequestObj));
     return searchRequestObj;
 
   }

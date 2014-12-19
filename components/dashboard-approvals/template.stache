@@ -1,0 +1,4 @@
+<h2>Inbox {{inboxItemCount}}</h2>
+<rn-inbox-grid rows="{inboxRows}"></rn-inbox-grid>
+<h2>Outbox</h2>
+<rn-outbox-grid rows="{outboxRows}"></rn-outbox-grid>

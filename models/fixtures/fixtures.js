@@ -1,7 +1,6 @@
 import fixture from 'can/util/fixture/';
 import URLs from 'utils/urls';
 
-
 import fixture_allInvoices from './allInvoices';
 
 import fixture_claimLicensorInvoices from './claimLicensorInvoices';
@@ -59,7 +58,6 @@ fixture('GET /getPricingMethods', '/models/fixtures/pricingMethods.json');
 
 fixture('GET /validateicsv', '/models/fixtures/validateicsv.json');
 
-/*
 // Payment Bundles
 import fixture_paymentBundle from './payment-bundle';
 var BUNDLES = _.times(6, fixture_paymentBundle.makeBundle);
@@ -68,7 +66,7 @@ var BUNDLES_WITH_DETAILS = {};
 fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'paymentBundle/getAll', function(req, res, headers) {
   res(200, {
     responseCode: '0000',
-    responseTest: 'SUCCESS',
+    responseText: 'SUCCESS',
     paymentBundles: BUNDLES
   });
 });
@@ -89,4 +87,16 @@ fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'paymentBundle/validationResult', fu
 
 // Workflow Steps
 fixture('POST ' + URLs.UI_SERVICE_URL + 'rinsworkflow/view', '/models/fixtures/workflow-step.json');
-*/
+
+// Hole Reports
+import fixture_holesreport from './holes-report';
+fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'dashboard/holesreport', function(req, res, headers) {
+  res(200, {
+    responseCode: 'SUCCESS',
+    responseText: 'Records returned successfully',
+    holesReport: fixture_holesreport.makeHolesReport()
+  });
+});
+
+fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'workflow/analytics/inbox', '/models/fixtures/inbox.json');
+fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'workflow/analytics/outbox', '/models/fixtures/outbox.json');

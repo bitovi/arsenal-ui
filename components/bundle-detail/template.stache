@@ -1,7 +1,7 @@
 {{#if pageState.selectedBundle}}
 <div class="top-controls">
   {{#if tabs.length}}
-  <rn-switcher options="{tabs}" selected-option="{selectedTab}"></rn-switcher>
+  <rn-switcher options="{tabs}" selected-option="{selectedTab}" class="tabs"></rn-switcher>
   {{#showAggregateControl}}
   <div class="aggregate-control">
     <input type="checkbox" can-value="{aggregatePeriod}"><label>Aggregate Period</label>
