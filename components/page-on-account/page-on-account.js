@@ -562,18 +562,18 @@ var validateFilters=function(appstate,validateQuarter,validateStoreType,validate
       }
 
       if(validateStoreType && (serTypeId == null || serTypeId == "")){
-        return 'Please select Store Type';
+        return 'Please select Store Type !';
       }
 
       if(validateRegion && (regId == null || regId == undefined)){
-        return 'Invalid Region !';
+        return 'Please select Region !';
       }
 
 
       if(validateLicensor && (licId == null || licId == undefined || licId == "")){
-        return "Invalid Licensor !";
-      }else if(validateLicensor && (licId == undefined && (licId.attr() == null || licId.attr() ==""))){
-        return "Invalid Licensor !";
+        return "Please select Licensor !";
+      }else if(validateLicensor && (licId == undefined || (licId.attr() == null || licId.attr() =="")) || licId.length==0){
+        return "Please select Licensor !";
       }
 
       if(validateContentType && (contGrpId == null || contGrpId == undefined || contGrpId == "")){
