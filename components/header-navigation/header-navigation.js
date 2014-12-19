@@ -157,7 +157,7 @@ var  menu =[{
   "value": "Reference",
    "submenu": [
   //    {"value": "Licensor", "id": "licensor"},
-      {"value": "Licensor", "id": "analytics"},
+      {"value": "Licensor", "id": "licensor"},
       {"value": "Country", "id": "ref-country"},
       {"value": "Country Licensor", "id": "ref-licensorcountry"},
       {"value": "Pricing Model", "id": "pricing-models"}
@@ -166,7 +166,7 @@ var  menu =[{
   "id": "analytic",
   "value": "Analytics",
    "submenu": [
-      {"value": "Analytics", "id": "anal"},
+      {"value": "Analytics", "id": "analytics"},
       {"value": "Payment Bundle Review", "id": "payment-bundles"},
       {"value": "Claim Review", "id": "claimreview"},
       {"value": "Global Revenue", "id": "globalrevenue"},
