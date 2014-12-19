@@ -179,7 +179,8 @@ var BundleDetailTabs = Component.extend({
 
       selectedBundle.moveInWorkflow({
         action: action,
-        approvalComment: this.scope.approvalComment
+        approvalComment: this.scope.approvalComment,
+        paymentOption: this.scope.paymentType
       }).then(function() {
         // un-select the selected bundle (we're done here)
         pageState.attr('selectedBundle', null);
