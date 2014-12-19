@@ -22,7 +22,7 @@ var bookmark = Component.extend({
   init:function(){
     var self = this;
     //setTimeout(function(){$('.bookmark_loader').show();},2000);
-    Promise.all([Bookmark.findOne(UserReq.formRequestDetails())]).then(function(data) { console.log(data[0].bookmarkList.length);
+    Promise.all([Bookmark.findOne(UserReq.formRequestDetails())]).then(function(data) { console.log(data);
          if(data[0].responseCode=='0000'){ 
             $('.bookmark_loader').hide();
             self.scope.bookMarkList.replace(data[0].bookmarkList);
@@ -48,8 +48,8 @@ var bookmark = Component.extend({
         }
       },
       '{document}  click':function(el,e){   
-        if($(e.target).closest(".bookmark").length === 0) {
-          //$('.bookmarkContainer').hide('fast');
+        if($(e.target).closest(".bookmark").length === 0 && $('book-mark').is(':visible')) {
+          //$('book-mark').hide('fast');
         }
       },
       '.bookmark_list dblclick':function(el){ 
@@ -149,8 +149,8 @@ var bookmark = Component.extend({
             });
           root["idsToBeDeleted"] =deleteId;
           $('.bookmark_loader').show();
-          Bookmark.update(UserReq.formRequestDetails(root),"DELETE",function(data){
-            if(data[0].responseCode=='0000'){ 
+          Bookmark.update(UserReq.formRequestDetails(root),"DELETE",function(data){ console.log(data);
+            if(data.responseCode=='0000'){ 
               $('.bookmark_loader').hide();
             }
           });
