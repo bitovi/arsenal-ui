@@ -335,6 +335,7 @@ var page = Component.extend({
                  displayMessage(data["responseText"],true);
                   req.attr('editableRows',rows);
                   $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
+                  $("#submitPOA").attr("disabled","disabled");
               }
               else{
                displayMessage(data["responseText"],false);
@@ -377,10 +378,10 @@ var page = Component.extend({
           //console.log("Update copy onAccount is "+JSON.stringify(data));
             if(data["status"]=="SUCCESS"){
                 //displayMessage(data["responseText"],true);
-                var quarters=utils.getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
-                var updatedRows = utils.frameRowsForCopyOnAcc(rows,data,quarters,quarterValueForCopy);
+                //var quarters=utils.getQuarter(self.scope.request.searchRequest.periodFrom,self.scope.request.searchRequest.periodTo);
+                var updatedRows = utils.frameRowsForCopyOnAcc(rows,data,self.scope.quarters,quarterValueForCopy);
                 var request = self.scope.request;
-                request.quarters=quarters;
+                request.quarters=self.scope.quarters;
                 request.rows=updatedRows;
                 self.scope.newOnAccountRows.replace(updatedRows);
                 $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
