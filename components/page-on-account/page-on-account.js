@@ -21,6 +21,16 @@ import LicensorCurrency from 'models/common/licensorcurrency/';
 import proposedOnAccount from 'models/onAccount/proposedOnAccount/';
 import Comments from 'components/multiple-comments/';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
+import fileUpload from 'components/file-uploader/';
+
+fileUpload.extend({
+  tag: 'rn-file-uploader',
+  events: {
+    '{uploadedfileinfo} change': function(){
+        this.scope.attr('documents').replace(this.scope.attr('uploadedfileinfo'));
+    }
+  }
+ });
 
 var page = Component.extend({
   tag: 'page-on-account',
@@ -552,7 +562,7 @@ var validateFilters=function(appstate,validateQuarter,validateStoreType,validate
       }
 
       if(validateStoreType && (serTypeId == null || serTypeId == "")){
-        return 'Invalid Store Type !';
+        return 'Please select Store Type';
       }
 
       if(validateRegion && (regId == null || regId == undefined)){
