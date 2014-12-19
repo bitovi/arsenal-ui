@@ -205,6 +205,8 @@ var page = Component.extend({
     "#grid-revision-history table>tbody>tr click": function(item, el, ev){
         //var invoiceid = el.closest('tr').data('row').row.id;
         var self=this.scope;
+        $("#loading_img").show();
+
         var alreadySelRow = item.closest("tbody").find("tr.selected");
         alreadySelRow.toggleClass("selected");
 
@@ -218,7 +220,7 @@ var page = Component.extend({
         console.log("Request passed is "+ JSON.stringify(UserReq.formRequestDetails(requestObj)));
         RefCountry.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
-          console.log("Response data is "+JSON.stringify(data.attr()));
+          //console.log("Response data is "+JSON.stringify(data.attr()));
           self.pageState.countryDetails.attr("country",data.countryDetails);
           
           /* if the data.countryDetails.countryId is null then set the country dropdown using requestObj*/
@@ -311,6 +313,7 @@ var page = Component.extend({
               self.pageState.countryDetails.attr("commentList",[]);
               $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>');
           }
+          $("#loading_img").hide();
         },function(xhr){
             console.error("Error while loading: country-Entity Details"+xhr);
         });
@@ -327,7 +330,7 @@ var page = Component.extend({
     },
     '#fetchDetailsBtn click':function(){
       var self = this.scope;
-
+      $("#loading_img").show();
       //console.log(this.scope.pageState.attr("countryId"));
       var countryId;
       if(self.pageState.countryDetails.country.attr("countryId")=="")
@@ -343,7 +346,7 @@ var page = Component.extend({
       console.log("Request passed is "+ JSON.stringify(UserReq.formRequestDetails(requestObj)));
       RefCountry.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
-        console.log("Response data is "+JSON.stringify(data.attr()));
+        //console.log("Response data is "+JSON.stringify(data.attr()));
         self.pageState.countryDetails.attr("country",data.countryDetails);
         
         /* if the data.countryDetails.countryId is null then set the country dropdown using requestObj*/
@@ -474,6 +477,7 @@ var page = Component.extend({
 
         self.societyModelMapping.replace(data.countryDetails.modelMappings);
 
+        $("#loading_img").hide();
         if(data.countryDetails.status == "A") {
           self.attr("state","Edit");
         }else{
