@@ -573,6 +573,7 @@ var page = Component.extend({
          	//console.log(this.scope.countryStore.attr());
 		},
 		".ccidGL change": function(event){
+			if(event.find('option:selected')[0]!=undefined)event.next('.ccidGLtxt').val(event.find('option:selected')[0].text);
          	this.scope.ccidGLStore.attr(event[0].id, event[0].value)
          	//console.log(this.scope.ccidGLStore);
 		},

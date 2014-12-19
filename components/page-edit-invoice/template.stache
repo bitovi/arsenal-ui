@@ -251,12 +251,22 @@
 						            </td>
 						           <td>
 						            	 {{#if isAdhocStrore.invtype}}
-								            	<select id="ccidGL0" name="ccidGL" class="form-control ccidGL">
+								            	<!--select id="ccidGL0" name="ccidGL" class="form-control ccidGL">
 								            			<option value="">Select</option>
 												        {{#each glaccounts}}
 									        				<option value="{{id}}">{{value}}</option>
 						       							{{/each}}
-									        	</select>
+									        	</select-->
+									        	<div class="select-editable">
+												    <select  id="ccidGL" name="ccidGL" class="form-control ccidGL">
+												        <option value="">Select</option>
+												        {{#each glaccounts}}
+									        				<option value="{{id}}">{{value}}</option>
+									        				
+						       							{{/each}}
+												    </select>
+												    <input type="text" name="format" value="" class="ccidGL ccidGLtxt"/>
+												</div>
 						            	  {{else}}
 						            	 		<input type="text" class="form-control ccidGL" id="ccidGL0" name="ccidGL" placeholder="" readonly="true">
 						            	 {{/if}}
@@ -309,12 +319,22 @@
 						            </td>
 						           <td>
 						            	{{#if isAdhocStrore.invtype}}
-								            	<select id="ccidGL" name="ccidGL" class="form-control ccidGL">
+								            	<!--select id="ccidGL" name="ccidGL" class="form-control ccidGL">
 								            			<option value="">Select</option>
 												        {{#each glaccounts}}
 									        				<option value="{{id}}">{{value}}</option>
 						       							{{/each}}
-									        	</select>
+									        	</select-->
+									        	<div class="select-editable">
+												    <select  id="ccidGL" name="ccidGL" class="form-control ccidGL">
+												        <option value="">Select</option>
+												        {{#each glaccounts}}
+									        				<option value="{{id}}">{{value}}</option>
+									        				
+						       							{{/each}}
+												    </select>
+												    <input type="text" name="format" value="" class="ccidGL ccidGLtxt"/>
+												</div>
 						            	  {{else}}
 						            	 		<input type="text" class="form-control ccidGL" id="ccidGL" name="ccidGL" placeholder="" readonly="true">
 						            	 {{/if}}
