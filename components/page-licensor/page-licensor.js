@@ -156,7 +156,7 @@ var page = Component.extend({
 
     repConfMessage : "",
 
-    bootstrapValidParams : ["licensorName", "accountName", "invoiceType", "sapVendor"],
+    bootstrapValidParams : ["licensorName", "accountName", "invoiceType", "sapVendor", "periodFromInp"],
 
     
     getReportConf : function() {
@@ -577,6 +577,14 @@ var page = Component.extend({
 
       $('.paymentTerms').show();
 
+
+    },
+
+    clearPeriods : function() {
+
+      var self = this;
+      self.attr("periodFromVal", "");
+      self.attr("periodToVal", "");
 
     },
 
@@ -1363,6 +1371,8 @@ var page = Component.extend({
     "#analyticsAdd click": function(event){
 
         var self = this;
+
+        self.scope.clearPeriods();
 
         self.scope.clearContactDetails();
 
