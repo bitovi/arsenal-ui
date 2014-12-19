@@ -52,10 +52,15 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
      options.url.indexOf(URLs.UI_SERVICE_URL) === 0 ||
      options.url.indexOf(URLs.INTEGRATION_SERVICE_URL) === 0
  ) {
-   var data = (options.data.constructor === String ? JSON.parse(options.data) : options.data);
-   can.extend(data, requestHelper.formRequestDetails({}, appstate));
-   options.data = JSON.stringify(data);
-   options.contentType = 'application/json';
+   if(options.data.constructor === FormData){
+     //FIX: <rdar://problem/19231697> Wave M2 : Invoice Entry/iCSV Entr
+     //skip for multipart/form-data
+   }else{
+     var data = (options.data.constructor === String ? JSON.parse(options.data) : options.data);
+     can.extend(data, requestHelper.formRequestDetails({}, appstate));
+     options.data = JSON.stringify(data);
+     options.contentType = 'application/json';
+   }
  }
 });
 

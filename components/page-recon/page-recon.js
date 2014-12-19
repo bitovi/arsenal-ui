@@ -262,9 +262,9 @@ var processRejectIngestRequest = function(scope,requestType){
           "ids" : ccidSelected
           }
         }
-        //console.log(JSON.stringify(UserReq.formRequestDetails(rejectSearchRequestObj)));
+        //console.log(JSON.stringify((rejectSearchRequestObj)));
 
-        Recon.reject(UserReq.formRequestDetails(rejectSearchRequestObj)).done(function(data){
+        Recon.reject((rejectSearchRequestObj)).done(function(data){
           if(data.responseCode == "0000"){
             $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
             $("#messageDiv").show();
@@ -290,9 +290,9 @@ var processRejectIngestRequest = function(scope,requestType){
         }
       }
 
-      //console.log(JSON.stringify(UserReq.formRequestDetails(rejectSearchRequestObj)));
+      //console.log(JSON.stringify((rejectSearchRequestObj)));
 
-      Recon.ingest(UserReq.formRequestDetails(rejectSearchRequestObj)).done(function(data){
+      Recon.ingest((rejectSearchRequestObj)).done(function(data){
         if(data.responseCode == "0000"){
           $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
           $("#messageDiv").show();
@@ -341,7 +341,7 @@ var fetchReconIngest = function(scope){
   searchRequestObj.searchRequest["filter"] = newFilterData;
 
 
-  Recon.findOne(UserReq.formRequestDetails(searchRequestObj),function(data){
+  Recon.findOne((searchRequestObj),function(data){
     if(data.status == "FAILURE"){
       displayErrorMessage(data.responseText,"Failed to load the Recon Ingest Tab:");
     }else  {
@@ -404,7 +404,7 @@ var fetchReconDetails = function(scope){
 
   searchRequestObj.searchRequest["filter"] = newFilterData;
 
-  Recon.findOne(UserReq.formRequestDetails(searchRequestObj),function(data){
+  Recon.findOne((searchRequestObj),function(data){
     if(data.status == "FAILURE"){
       displayErrorMessage(data.responseText,"Failed to load the Recondetails:");
     }else  {

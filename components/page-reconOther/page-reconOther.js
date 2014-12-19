@@ -109,7 +109,7 @@ var fetchReconIncoming = function(scope){
     searchRequestObj.searchRequest["sortBy"] = "COUNTRY";
     searchRequestObj.searchRequest["sortOrder"] = "ASC";
 
-    Recon.findOne(UserReq.formRequestDetails(searchRequestObj),function(data){
+    Recon.findOne((searchRequestObj),function(data){
       if(data.status == "FAILURE"){
         $("#messageDiv").html("<label class='errorMessage'>"+data.responseText+"</label>");
         $("#messageDiv").show();
