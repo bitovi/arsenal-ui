@@ -43,7 +43,7 @@
                        self.scope.attr("isSuccess", true);
                        $('.success').empty().html(data.responseText);
                        self.scope.attr('uploadedfileinfo',data.filePropeties);
-                       //$(self.element).trigger('onSelected', data);
+                       $(self.element).trigger('onSelected', data);
                     }else{
                       self.scope.attr("isSuccess", false);
                        $('.fileError').empty().html(data.responseText);
