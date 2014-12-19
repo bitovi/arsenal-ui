@@ -201,7 +201,7 @@ var onAccountUpdateRequest ={};
     if(comments != null && comments.length>0 ){
         var commentobj={};
         commentobj.comments=comments;
-        commentobj.createdBy="";
+        commentobj.createdBy="2002005722";
         commentobj.createdDate=Date.now();
         onAccountUpdateRequest.onAccount.comments.push(commentobj);    
     }
@@ -227,8 +227,7 @@ var onAccountDetails = data.onAccount.onAccountDetails;
         var licensorName="";
         for(var i=0; i<originalRows.length;i++){
            if(originalRows[i].__isChild){
-                var periodMap = {};
-                var value = this.getPeriodValue(licensorName,originalRows[i].entityId,originalRows[i].currency,onAccountDetails,period);
+                var value = this.getPeriodValue(onAccountDetails,period);
                 for(var k=0;k<quarters.length;k++)
                 {
                     originalRows[i][quarters[k]]=value;
@@ -241,12 +240,11 @@ var onAccountDetails = data.onAccount.onAccountDetails;
     }
     return originalRows;
 },
-getPeriodValue:function(licensorName,entityId,currency,onAccountDetails,quarter){
+getPeriodValue:function(onAccountDetails,quarter){
     var fiscalPeriod=this.getPeriodForQuarter(quarter);
     var value =0;
     for(var i=0;i<onAccountDetails.length;i++){
-        if(licensorName == onAccountDetails[i].entityName && entityId==onAccountDetails[i].entityId 
-            && currency==onAccountDetails[i].currencyCode && fiscalPeriod == onAccountDetails[i].fiscalPeriod){
+        if(fiscalPeriod == onAccountDetails[i].fiscalPeriod){
             return onAccountDetails[i].onAccountAmt+'';
         }
     }
