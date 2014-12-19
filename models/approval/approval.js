@@ -6,7 +6,7 @@ var Approval = can.Model.extend({
 
   findAll: function(params) {
     return $.ajax({
-      url: URLs.DOMAIN_SERVICE_URL + 'workflow/analytics/' + (params.mailbox || 'inbox'),
+      url: URLs.INTEGRATION_SERVICE_URL + 'rinsworkflow/' + (params.mailbox || 'inbox'),
       type: 'POST',
       data: {
         comment: params.comment || null,
