@@ -1,0 +1,6 @@
+Payments
+{{#if appstate.isPopulated}}
+Populated!
+{{else}}
+Not!
+{{/if}}

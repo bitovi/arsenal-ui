@@ -27,7 +27,6 @@ import less_index from 'index.less!';
 // Fixtures?
 //import _fixtures from 'models/fixtures/';
 
-
 appstate.bind('page', function(ev, newVal, oldVal) {
   newVal = newVal || appstate.constuctor.prototype.defaults.page;
 
