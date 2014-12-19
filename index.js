@@ -46,7 +46,7 @@ appstate.bind('page', function(ev, newVal, oldVal) {
 $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
  //FIX: <rdar://problem/19231697> Wave M2 : Invoice Entry/iCSV Entr
  //skip for multipart/form-data
- if(!options.data || options.data.constructor === FormData) {
+ if(!options.data || options.contentType === "multipart/form-data" || options.data.constructor == FormData ) {
    return;
  }
 
