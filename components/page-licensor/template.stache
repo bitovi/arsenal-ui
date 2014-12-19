@@ -192,7 +192,7 @@
 			    				<label>Representation Split:</label>
 							</div>
 			    			<div class="col-sm-4">
-			    				<input type="text" name="repSplit" id="repSplit" can-value="licDetails.data.repSplit" value="{{licDetails.data.repSplit}}" class="form-control repSplit formInputs"/>
+			    				<input type="text" name="repSplit" id="repSplit" can-value="licDetails.data.repSplit" value="{{licDetails.data.repSplit}}" class="form-control repSplit formInputs" readOnly/>
 							</div>
 
 		    			</div>
