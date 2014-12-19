@@ -156,6 +156,8 @@ var page = Component.extend({
 
     repConfMessage : "",
 
+    bootstrapValidParams : ["licensorName", "accountName", "invoiceType", "sapVendor"],
+
     
     getReportConf : function() {
 
@@ -679,123 +681,27 @@ var page = Component.extend({
       
       DynamicFieldValidation($options, 'addField', $('#entityLicensorBottom'));
       
-    }
-    
+    },
 
-  },
+    reValidateFiledsonLoad : function() {
 
-  helpers:  {
+      for(var i=0; i< this.bootstrapValidParams.length; i++) {
 
-    getselectedEntity : function(sEntity) {
+        $("#entityLicensorBottom").data("bootstrapValidator").revalidateField(this.bootstrapValidParams[i]);
 
-        var entity = this.attr("selectedEntity");
+      }
 
     },
 
-    getselectedInvoiceType : function() {
+    destroyBootStrapPlugin : function() {
 
-      var entity = this.attr("invoiceType");
-
-      $(".invoiceTypeerr").hide();
-
-    },
-
-    getRepConfmessage : function() {
-
-      var entity = this.attr("repConfMessage");
-
-      return entity;
+      $('#entityLicensorBottom').data("bootstrapValidator").destroy();
+      //$('#entityLicensorBottom').data("bootstrapValidator").destroy()
 
     },
 
-    getUpdatedPeriodTo : function() {
+    loadBootStrapPlugin : function() {
 
-      var entity = this.attr("periodToVal");
-      $('#entityLicensorBottom').data("bootstrapValidator").updateStatus('periodToInp', 'VALIDATED').validateField('periodToInp');
-    },
-
-    //entityType : function() {
-
-        //var entity = this.attr("licDetails").data.entityType;
-
-        //return entity;
-    //},
-
-    getPeriodFromVal : function() {
-
-      var peroidFrom = this.attr("periodFromVal");
-
-      var peroidTo = this.attr("periodToVal");
-
-      //return entity;
-
-    }
-
-  },
-
-  events: {
-
-
-
-    'inserted': function() {
-
-      var self = this;
-
-      var genObj = {};
-
-      $('#multipleComments').hide();
-
-      $('.countryModelLabel').hide();
-
-      $('.revHistCollapser').hide();
-
-      $('#entityGrid').hide();
-
-      $('.repConfigurationTab').hide();
-
-      $('.societyContactsTab').hide();
-
-      $('.buttonsBottom').hide();
-
-      $(".multicomments-required").hide();
-
-      $(".invoiceTypeerr").hide();
-
-      $(".reportConfErr").hide();
-
-      $("#loading_img").hide();
-
-      var defaultEntity = [];
-
-      Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
-
-          self.scope.licensors.replace(values[0].entities[0]);
-
-          defaultEntity = values[0].entities[0].entities[0];
-
-          var genObj = {"id" : "" , "licensorName":""};
-
-          genObj.id = defaultEntity.id;
-          genObj.licensorName =  defaultEntity.value;
-
-          self.scope.attr("selectedEntity", genObj.licensorName);
-
-          Promise.all([Analytics.findById(UserReq.formRequestDetails(genObj))]).then(function(values) {
-
-            self.scope.populateAnalyticsPage(values, "");
-            
-          });
-
-      });
-
- 
-      Promise.all([Analytics.getInvoiceDetails(UserReq.formRequestDetails(genObj))]).then(function(values) {
-
-          self.scope.invoiceTypeList.replace(values[0].invoiceDetailTypes);
-          self.scope.populateInvoiceTypes();
-          
-      });
-     
       $('#entityLicensorBottom').on('init.field.bv', function(e, data) {
 
 
@@ -883,6 +789,7 @@ var page = Component.extend({
                         if(value == "Select" || value == ""){
                              return false;
                         }
+                        validator.updateStatus($field, 'VALID');
                         return true;
                       }
                   }
@@ -959,38 +866,16 @@ var page = Component.extend({
                       }
               }
 
-          },
-          periodToInp : {
-
-            validators: {
-
-                  notEmpty: {
-                      message: 'Contact Email is mandatory'
-                  },
-                  callback: {
-                        message: 'Contact Name is mandatory',
-                        callback: function (value, validator, $field) {
-                            if(value == ""){
-                              return {
-                                    valid: false,
-                                    message: 'Contact Email is mandatory'
-                                }
-                            } else {
-                              return {
-                                  valid: true,
-                              }
-                            }
-                            return true;
-                          }
-                      }
-              }
-
           }
 
         }
       }).on('error.field.bv', function(e, data) {       
         
           $('*[data-bv-icon-for="'+data.field +'"]').popover('show');
+
+          setTimeout(function(){
+            $('*[data-bv-icon-for="'+data.field +'"]').popover('hide');
+          },1000);
 
       }).on('added.field.bv', function(e, data) {
       });
@@ -1035,6 +920,112 @@ var page = Component.extend({
 
       });
 
+     }
+    
+
+  },
+
+  helpers:  {
+
+    getselectedEntity : function(sEntity) {
+
+        var entity = this.attr("selectedEntity");
+
+    },
+
+    getselectedInvoiceType : function() {
+
+      var entity = this.attr("invoiceType");
+
+      $(".invoiceTypeerr").hide();
+
+    },
+
+    getRepConfmessage : function() {
+
+      var entity = this.attr("repConfMessage");
+
+      return entity;
+
+    },
+
+    getPeriodFromVal : function() {
+
+      var peroidFrom = this.attr("periodFromVal");
+
+      var peroidTo = this.attr("periodToVal");
+
+      //return entity;
+
+    }
+
+  },
+
+  events: {
+
+
+
+    'inserted': function() {
+
+      var self = this;
+
+      var genObj = {};
+
+      $('#multipleComments').hide();
+
+      $('.countryModelLabel').hide();
+
+      $('.revHistCollapser').hide();
+
+      $('#entityGrid').hide();
+
+      $('.repConfigurationTab').hide();
+
+      $('.societyContactsTab').hide();
+
+      $('.buttonsBottom').hide();
+
+      $(".multicomments-required").hide();
+
+      $(".invoiceTypeerr").hide();
+
+      $(".reportConfErr").hide();
+
+      $("#loading_img").hide();
+
+      var defaultEntity = [];
+
+      Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
+
+          self.scope.licensors.replace(values[0].entities[0]);
+
+          defaultEntity = values[0].entities[0].entities[0];
+
+          var genObj = {"id" : "" , "licensorName":""};
+
+          genObj.id = defaultEntity.id;
+          genObj.licensorName =  defaultEntity.value;
+
+          self.scope.attr("selectedEntity", genObj.licensorName);
+
+          Promise.all([Analytics.findById(UserReq.formRequestDetails(genObj))]).then(function(values) {
+
+            self.scope.populateAnalyticsPage(values, "");
+            
+          });
+
+      });
+
+ 
+      Promise.all([Analytics.getInvoiceDetails(UserReq.formRequestDetails(genObj))]).then(function(values) {
+
+          self.scope.invoiceTypeList.replace(values[0].invoiceDetailTypes);
+          self.scope.populateInvoiceTypes();
+          
+      });
+     
+      self.scope.loadBootStrapPlugin();
+
 
     },
 
@@ -1053,8 +1044,7 @@ var page = Component.extend({
      '{periodTo} change': function(el, ev) { 
           var comp ='to';
           showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0],comp);
-          $('#entityLicensorBottom').data("bootstrapValidator").updateStatus('periodToInp', 'VALIDATED').validateField('periodToInp');
-
+          
      },
 
     ".applyAll click" : function(el, ev){
@@ -1293,8 +1283,6 @@ var page = Component.extend({
 
         }
 
-        $('#entityLicensorTop').bootstrapValidator('validate');
-
         if(entityName == "Select" || entityName == "") {
 
             return;
@@ -1305,7 +1293,6 @@ var page = Component.extend({
           self.scope.licDetails.attr("data", null);
 
         }
-
 
         self.scope.clearContactDetails();
 
@@ -1322,6 +1309,8 @@ var page = Component.extend({
           self.scope.populateAnalyticsPage(values);
 
           $("#loading_img").hide();
+
+          //$('#entityLicensorBottom').bootstrapValidator('validate');
             
         });
     },
@@ -1588,6 +1577,8 @@ var page = Component.extend({
       var value = el.attr("val");
 
       this.scope.removeRows("exists", value);
+
+      $('#entityLicensorTop').bootstrapValidator('validate');
 
     }
 
