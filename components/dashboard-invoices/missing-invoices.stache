@@ -3,7 +3,6 @@
     <tr>
       <th>Country</th>
       <th>Licensor</th>
-      <th>Period</th>
       <th>Missing</th>
     </tr>
   </thead>
