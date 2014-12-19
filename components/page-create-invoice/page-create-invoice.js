@@ -73,7 +73,7 @@ var page = Component.extend({
   	editcommentArr:[],
   	/*Form value*/
   	invoicetypeSelect:"",
-  	licensorStore:{},
+  	licensorStore:"",
   	currencyStore:"",
   	regionStore:"",
   	fxrateStore:"",
@@ -445,6 +445,7 @@ var page = Component.extend({
 							e.preventDefault();
 					});
 
+					
 
 					$('#invoicedate').on('dp.change dp.show', function (e) {
 		            	$('#invoiceform').bootstrapValidator('revalidateField', 'invoicedate');
@@ -469,6 +470,7 @@ var page = Component.extend({
 					if(!self.scope.editpage){
 						self.scope.attr("invoiceduedate", getCurrentDate());
 					}
+					
 			},
 			".form-control keyup": function(event){
 					var self = this;
@@ -503,7 +505,7 @@ var page = Component.extend({
 				},
 				".form-control change":function(event){
 					var self = this;
-					if(($("#invoicedate input[type=text]").val() != "") &&  (!$.isEmptyObject(self.scope.licensorStore)) && ($("#inputCountry0").val() != "")){
+					if(($("#invoicedate input[type=text]").val() != "") &&  (self.scope.licensorStore) && ($("#inputCountry0").val() != "")){
 					var genObj = {entityId:self.scope.licensorStore, invoiceDate:Date.parse($("#invoicedate input[type=text]").val()), countryId:$("#inputCountry0").val()};
 					CalDueDate.findOne(UserReq.formRequestDetails(genObj),function(data){
                   		//console.log(data.calInvoiceDueDate);
@@ -526,7 +528,7 @@ var page = Component.extend({
 				},
 				"#invoicedate dp.change":function(event){ /*need to repeat service call, as no way to capture date change event together with form control event*/
 					var self = this;
-					if(($("#invoicedate input[type=text]").val() != "") &&  (!$.isEmptyObject(self.scope.licensorStore)) && ($("#inputCountry0").val() != "")){
+					if(($("#invoicedate input[type=text]").val() != "") &&  (self.scope.licensorStore) && ($("#inputCountry0").val() != "")){
 					var genObj = {entityId:self.scope.licensorStore, invoiceDate:Date.parse($("#invoicedate input[type=text]").val()), countryId:$("#inputCountry0").val()};
 					CalDueDate.findOne(UserReq.formRequestDetails(genObj),function(data){
 						//console.log("Date 1---"+moment($("#invoicedate input[type=text]").val()).unix());
