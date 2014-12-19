@@ -10,6 +10,7 @@ import can_stache from 'can/view/stache/';
 
 // Components
 import headerNavigation from 'components/header-navigation/';
+import Alert from 'components/alert/';
 
 // Models
 import appstate from 'models/appstate/';
@@ -59,6 +60,27 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
    options.data = JSON.stringify(data);
    options.contentType = 'application/json';
  }
+});
+
+// Every time a service fails, display an error with the error text.
+$(document).ajaxComplete(function(ev, xhr, options) {
+  // ony do this for regular requests
+  if(options.contentType !== 'application/json') {
+    return;
+  }
+  var response = xhr.status === 200 ? JSON.parse(xhr.responseText) : null,
+      error;
+
+  if(xhr.status !== 200) {
+    error = xhr.status + ' ' + xhr.statusText;
+  } else if(response.status !== 'SUCCESS') {
+    error = response.responseText;
+  }
+
+  if(error) {
+    var url = options.url.substr(options.url.indexOf('/', 8)); // the "8" offset avoids https://
+    Alert.displayAlert(url + ': ' + error, 'warning');
+  }
 });
 
 $(document.body).append(index_template({appstate: appstate}));
