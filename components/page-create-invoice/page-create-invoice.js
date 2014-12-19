@@ -188,7 +188,7 @@ var page = Component.extend({
  },
   events: {
     	"inserted": function(){
-          	var self = this;
+    		var self = this;
 			this.scope.isRequired(); /*For breakdown required field*/
 			$('#invoiceform').on('init.form.bv', function(e, data) {
 			    data.bv.disableSubmitButtons(true);
@@ -882,6 +882,8 @@ var page = Component.extend({
 				  	 			});
 
 				  	 			self.scope.attr("calduedate", "");
+
+				  	 			window.history.back(); /*Going back to referrer page*/
 				  	 		},
 							'period-calendar onSelected': function (ele, event, val) {
 			       					this.scope.attr('periodchoosen', val);

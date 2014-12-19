@@ -156,7 +156,7 @@ var page = Component.extend({
 
     repConfMessage : "",
 
-    bootstrapValidParams : ["licensorName", "accountName", "invoiceType", "sapVendor"],
+    bootstrapValidParams : ["licensorName", "accountName", "invoiceType", "sapVendor", "periodFromInp"],
 
     
     getReportConf : function() {
@@ -580,6 +580,14 @@ var page = Component.extend({
 
     },
 
+    clearPeriods : function() {
+
+      var self = this;
+      self.attr("periodFromVal", "");
+      self.attr("periodToVal", "");
+
+    },
+
     clearContactDetails : function() {
 
       var self = this;
@@ -789,7 +797,6 @@ var page = Component.extend({
                         if(value == "Select" || value == ""){
                              return false;
                         }
-                        validator.updateStatus($field, 'VALID');
                         return true;
                       }
                   }
@@ -866,7 +873,26 @@ var page = Component.extend({
                       }
               }
 
-          }
+          },
+          periodFromInp: {
+             validators: {
+                 notEmpty: {
+                     message: 'Valid from is mandatory'
+                 },
+                 callback: {
+                    message: 'Valid From is mandatory',
+                    callback: function (value, validator, $field) {
+                        if(value == "" || value == "0"){
+                          return {
+                                valid: false,
+                                message: 'Valid From is mandatory'
+                            }
+                        }
+                        return true;
+                      }
+                  }                 
+             }
+         }
 
         }
       }).on('error.field.bv', function(e, data) {       
@@ -1008,7 +1034,7 @@ var page = Component.extend({
 
           self.scope.attr("selectedEntity", genObj.licensorName);
 
-          Promise.all([Analytics.findById(UserReq.formRequestDetails(genObj))]).then(function(values) {
+          Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
             self.scope.populateAnalyticsPage(values, "");
             
@@ -1032,10 +1058,35 @@ var page = Component.extend({
     '.updatePeroid focus':function(el){ 
        $(el).closest('.calendarcls').find('.box-modal').show().trigger( "focus" ); 
     },
-      '{selectedperiod} change':function(val){ 
-        
-          val[0].which=='periodFrom' ? this.scope.periodFrom.replace(val[0].value):this.scope.periodTo.replace(val[0].value);
-       },
+
+    '{selectedperiod} change':function(val){ 
+
+       var periodValue = val[0].value;
+
+       if(val[0].which == "periodFrom"){ 
+
+         $("input[name='periodFromInp']").val(periodValue);
+
+         $("input[name='periodFromInp']").on('change', function(e) {
+           // Revalidate the date when user change it
+           $('#entityLicensorBottom').bootstrapValidator('revalidateField', 'periodFromInp');
+         });
+
+       }
+       $('input[name=periodFromInp]').change();
+
+       if(val[0].which == "periodTo") {
+         $("input[name='periodToInp']").val(periodValue);
+         $("input[name='periodToInp']").on('change', function(e) {
+             // Revalidate the date when user change it
+           $('#entityLicensorBottom').bootstrapValidator('revalidateField', 'periodToInp');
+         });
+       }
+       $('input[name=periodToInp]').change();
+
+       val[0].which=='periodFrom' ? this.scope.periodFrom.replace(val[0].value):this.scope.periodTo.replace(val[0].value);
+    },
+
      
      '{periodFrom} change': function(el, ev) {   
          var comp ='from';
@@ -1310,6 +1361,8 @@ var page = Component.extend({
 
           $("#loading_img").hide();
 
+          self.scope.reValidateFiledsonLoad();
+
           //$('#entityLicensorBottom').bootstrapValidator('validate');
             
         });
@@ -1318,6 +1371,8 @@ var page = Component.extend({
     "#analyticsAdd click": function(event){
 
         var self = this;
+
+        self.scope.clearPeriods();
 
         self.scope.clearContactDetails();
 
@@ -1347,6 +1402,7 @@ var page = Component.extend({
 
         $("#invoiceType").val("Select");
 
+        self.scope.reValidateFiledsonLoad();
     },
 
 

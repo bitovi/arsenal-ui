@@ -108,7 +108,9 @@ var page = Component.extend({
                 /*Error condition*/
               }).then(function(){
                 self.scope.attr("showbottomSection", true);
-                $('#pricingmodelGrid tbody tr:nth-child(1)').trigger('click').addClass("selected");
+                self.scope.attr('isCommentData',true);
+                $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:100px; margin-bottom:10px; min-height:100px; max-height:100px;"></textarea>');
+                //$('#pricingmodelGrid tbody tr:nth-child(1)').trigger('click').addClass("selected");
               });
 
             $("#pmform").data('bootstrapValidator').resetForm();
@@ -126,6 +128,8 @@ var page = Component.extend({
         PricingModels.findOne(UserReq.formRequestDetails(genObj),function(data){
                   
               self.scope.attr("multipleComments", data.pricingModel.pricingModel.comments);
+              var tempcommentObj = data.pricingModel.pricingModel.comments;
+              $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
               self.scope.attr("modelname", data.pricingModel.pricingModel.modelDescription);
               self.scope.attr("pricingmodeltype", data.pricingModel.pricingModel.modelName);
 
