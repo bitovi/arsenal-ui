@@ -109,7 +109,7 @@ var page = Component.extend({
   	 		if(this.attr("invoicetypeSelect") != "2"){  /*Adhoc*/
  				$(".breakdownCountry").addClass("requiredBar");
  				$(".breakdownPeriod").addClass("requiredBar");
-			}else{
+ 			}else{
   	 			$(".breakdownCountry").removeClass("requiredBar");
   	 			$(".breakdownPeriod").removeClass("requiredBar");
   	 		}
@@ -375,6 +375,28 @@ var page = Component.extend({
 		                    		}
 				                }
 			            	},
+			            	'inputContent[]': {
+				                validators: {
+				                    callback: {
+				                           
+				                            callback: function (value, validator, $field) {
+				                              if((value == "") && (self.scope.attr("invoicetypeSelect") != "2")){
+				                              	   return {
+												            valid: false,    // or false
+												            message: 'Content type is mandatory'
+												    }
+				                              }
+				                              else if((value == "") && (self.scope.attr("invoicetypeSelect") == "2")){
+				                              	   return {
+												            valid: false,    // or false
+												            message: 'Adhoc type is mandatory'
+												    }
+				                              }
+				                              return true;
+				                            }
+		                    		}
+				                }
+			            	},
 			            	'inputCountry[]': {
 				                validators: {
 				                    callback: {
@@ -390,14 +412,14 @@ var page = Component.extend({
 			            	}
 						}
 				    }).on('error.field.bv', function(e, data) {
-					    	if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]")){
+					    	if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]")){
 					    		$("#"+data.field+"-err").css("display", "block");
 					    	}
 					    	$('*[data-bv-icon-for="'+data.field +'"]').popover('show');
 
 					}).on('success.field.bv', function(e, data) {
 	        				$('*[data-bv-icon-for="'+data.field +'"]').popover('destroy');
-	        				if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]")){
+	        				if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]")){
 					    		$("#"+data.field+"-err").css("display", "none");
 					    	}
 							if(!self.scope.editpage){

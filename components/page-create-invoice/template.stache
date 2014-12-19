@@ -208,8 +208,8 @@
 						    <tbody>
 						     {{#unless editpage}}
 						         <tr id="breakrow0" rowid="0">
-						            <td>
-						            	
+						            <td class="form-group">
+						            	<div class="breakdownContent requiredBar">
 						            	<select id="inputContent0" name="inputContent[]" class="form-control inputContent">
 
 						            			<option value="">Select</option>
@@ -223,7 +223,7 @@
 								        			{{/each}}
 						       					{{/if}}
 						        		</select>
-						        		
+						        		</div>
 
 						        	</td>
 						            <td class="form-group">
@@ -268,8 +268,8 @@
 						         </tr>
 						         {{/unless}}
 						         <tr class="hide" id="breakrowTemplate">
-						            <td>
-
+						            <td class="form-group">
+						            	<div class="breakdownContent requiredBar">
 						            	<select id="inputContent" name="inputContent[]"  class="form-control inputContent">
 							        				<option value="">Select</option>
 							        			{{#if isAdhocStrore.adhoc}}
@@ -285,6 +285,7 @@
 						       					{{/if}}
 
 						        		</select>
+						        		</div>
 						        	</td>
 						            <td class="form-group">
 						            	<div class="breakdownPeriod calendarcls">
