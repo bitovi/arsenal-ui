@@ -42,27 +42,28 @@ appstate.bind('page', function(ev, newVal, oldVal) {
   });
 });
 
-$(document.body).append(index_template({appstate: appstate}));
-
-appstate.startRouting();
-
 $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
- // Every domain service call requires some common params, so we do them here to save effort.
+ //FIX: <rdar://problem/19231697> Wave M2 : Invoice Entry/iCSV Entr
+ //skip for multipart/form-data
+ if(!options.data || options.data.constructor === FormData) {
+   return;
+ }
+
+ // Otherwise, every domain service call requires some common params, so we do them here to save effort.
  if( options.url.indexOf(URLs.DOMAIN_SERVICE_URL) === 0 ||
      options.url.indexOf(URLs.UI_SERVICE_URL) === 0 ||
      options.url.indexOf(URLs.INTEGRATION_SERVICE_URL) === 0
  ) {
-   if(options.data.constructor === FormData){
-     //FIX: <rdar://problem/19231697> Wave M2 : Invoice Entry/iCSV Entr
-     //skip for multipart/form-data
-   }else{
-     var data = (options.data.constructor === String ? JSON.parse(options.data) : options.data);
-     can.extend(data, requestHelper.formRequestDetails({}, appstate));
-     options.data = JSON.stringify(data);
-     options.contentType = 'application/json';
-   }
+   var data = (options.data.constructor === String ? JSON.parse(options.data) : options.data);
+   can.extend(data, requestHelper.formRequestDetails({}, appstate));
+   options.data = JSON.stringify(data);
+   options.contentType = 'application/json';
  }
 });
+
+$(document.body).append(index_template({appstate: appstate}));
+
+appstate.startRouting();
 
 // TODO: REMOVE BEFORE DEPLOYING
 // FOR DEV ONLY
