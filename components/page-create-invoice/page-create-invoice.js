@@ -112,7 +112,7 @@ var page = Component.extend({
 			}else{
   	 			$(".breakdownCountry").removeClass("requiredBar");
   	 			$(".breakdownPeriod").removeClass("requiredBar");
-  	 		} 
+  	 		}
 		},
 	createBreakline: function(rowindex){
 			var self = this;
@@ -125,12 +125,12 @@ var page = Component.extend({
            	$("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val("");
            	if(rowindex != 0)
            	$("#breakrow"+rowindex+" .removeRow").css("display", "block");
-			
+
 			var $option   = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"]');
             $option.each(function(index){
             	$('#invoiceform').bootstrapValidator('addField', $(this));
             });
-            
+
             $("#addInvSubmit").attr("disabled", true);
 			$(".removeRow").click(function(event){
 				$option.each(function(index){
@@ -170,15 +170,15 @@ var page = Component.extend({
 	          	var bundleNamesRequest = {"bundleSearch":{}};
 	          	var serTypeId = $("#invoiceType option:selected").attr("name");
 	          	var regId = this.regionStore;
-	          
+
 			  	if(typeof(serTypeId)!="undefined")
 	            	bundleNamesRequest.bundleSearch["type"] = serTypeId;
-				
+
 				if(typeof(regId)=="undefined")
 	            	bundleNamesRequest.bundleSearch["regionId"] = "";
 	          	else
 	            	bundleNamesRequest.bundleSearch["regionId"] = regId;
-	            
+
 	           // bundleNamesRequest.bundleSearch["type"] = "invoice";
 	          //console.log(bundleNamesRequest);
 	          this.attr("bundleNamesRequest", JSON.stringify(bundleNamesRequest));
@@ -254,7 +254,7 @@ var page = Component.extend({
 	                			callback: {
 			                            message: 'Invoice Due date must be less than calculated due date',
 			                            callback: function (value, validator, $field) {
-			                         /*     if(value != ""){  
+			                         /*     if(value != ""){
 			                              	var invduedate = new Date(value);
 			                              	var calduedate = new Date(self.scope.attr("calduedate"));
 			                              	var timeDiff = Math.abs(invduedate.getTime() - calduedate.getTime());
@@ -411,7 +411,7 @@ var page = Component.extend({
 		        						 }
 		        						 break;
 		        					}
-		        					
+
 		        				}
 	        				}
 	        				if(self.scope.editpage){
@@ -499,7 +499,7 @@ var page = Component.extend({
                   			}
 		                },function(xhr){
 		                /*Error condition*/
-		           		 });  
+		           		 });
 					}
 				},
 				"#invoicedate dp.change":function(event){ /*need to repeat service call, as no way to capture date change event together with form control event*/
@@ -523,7 +523,7 @@ var page = Component.extend({
                   			}
 		                },function(xhr){
 		                /*Error condition*/
-		           		 });  
+		           		 });
 					}
 				},
 		".classAmtTotal blur": function(event){
@@ -538,7 +538,7 @@ var page = Component.extend({
 		},
 		".inputMonth change": function(event){
          	this.scope.monthStore.attr(event[0].id, event[0].value);
-         	
+
 		},
 		".inputMonth click": function(event){
          	updatePeriodCalender(event[0].id);
@@ -579,11 +579,11 @@ var page = Component.extend({
                   		self.scope.attr("country").replace(data);
 		                },function(xhr){
 		                /*Error condition*/
-		        });      
+		        });
 
 
-			self.scope.createPBRequest();     
-			   
+			self.scope.createPBRequest();
+
 		},
 		"{scope} licensorStore": function(event){
 			var self = this;
@@ -656,7 +656,7 @@ var page = Component.extend({
 	          var self = this;
 	          var pbval = $("#invoiceform #paymentBundleNames").val();
 	          if(pbval=="createB"){
-	              
+
 	              var regId = self.scope.regionStore;
 				  var newBundleNameRequest = {"paymentBundle":{}};
 	              var bundleRequest = {};
@@ -671,23 +671,24 @@ var page = Component.extend({
 	            self.scope.attr('newpaymentbundlenamereq', "undefined");
 	          }
 	      },
-		
+
 		"#addInvSubmit click":function(){
 					var self = this;
 					var invoiceValidatorObj = $("#invoiceform").data('bootstrapValidator');
-					
+
 					/*Add invoice object creation start*/
 					var createInvoiceData = {};
 					   createInvoiceData.invoices = [];
-					  
+
 					   var tempInvoiceData = {};
 					   //console.log(self.scope.attr("invoicetypeSelect"));
-					   
+
 					   tempInvoiceData["invoiceNumber"] = self.scope.invoicenumberStore;
 					   tempInvoiceData["invoiceTypeId"] = $("#invoiceType option:selected").val();
-					   if(self.scope.isAdhocStrore != undefined && self.scope.isAdhocStrore.adhoc){
-					   	tempInvoiceData["serviceTypeId"] = $("#inputContent0 option:selected").attr("servicetypeid");
-					   }
+					   //if(self.scope.isAdhocStrore != undefined && self.scope.isAdhocStrore.adhoc){
+					    tempInvoiceData["serviceTypeId"] = $("#inputContent0 option:selected").attr("servicetypeid");
+					   //}
+
 					   tempInvoiceData["invoiceType"] = $("#invoiceType option:selected").attr("name");
 					   tempInvoiceData["entityId"] = self.scope.licensorStore;
 					   tempInvoiceData["regionId"] = self.scope.regionStore;
@@ -701,13 +702,13 @@ var page = Component.extend({
 					   tempInvoiceData["periodType"] = periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0));
 					   tempInvoiceData["netTotal"] = self.scope.totalAmountVal;
 					   tempInvoiceData["tax"] = self.scope.tax;
-					  
-					  
+
+
 					   if(typeof $("#paymentBundleNames").val() == "undefined"){
 					   	// tempInvoiceData["bundleId"] = "";
 					   	 		tempInvoiceData["bundleName"] = $("#newPaymentBundle").val();
 					   }else{
-						   	
+
 						   	if($("#paymentBundleNames").val() != ""){
 						   	 	tempInvoiceData["bundleId"] = $("#paymentBundleNames").val();
 						   	 	tempInvoiceData["bundleName"] = $("#paymentBundleNames option:selected").text();
@@ -719,25 +720,25 @@ var page = Component.extend({
 					   tempInvoiceData["invoiceDate"] = dateFormatter($("#invoicedate input[type=text]").val(),"mm/dd/yyyy");
 					   if(self.scope.calduedate)
 					   tempInvoiceData["invoiceCalcDueDate"] = dateFormatter(self.scope.calduedate, "mm/dd/yyyy");
-					   tempInvoiceData["invoiceDueDate"] = dateFormatter($("#invoiceduedate input[type=text]").val(),"mm/dd/yyyy"); 
-					   tempInvoiceData["createdBy"] = UserReq.formRequestDetails().prsId;  
-					   
+					   tempInvoiceData["invoiceDueDate"] = dateFormatter($("#invoiceduedate input[type=text]").val(),"mm/dd/yyyy");
+					   tempInvoiceData["createdBy"] = UserReq.formRequestDetails().prsId;
+
 					   tempInvoiceData["comments"] = [];
 					   var tempComment = {};
 					   tempComment.comments = self.scope.usercommentsStore;
 					   tempInvoiceData["comments"].push(tempComment);
 
-					   
+
 					   tempInvoiceData["invoiceDocuments"] = [];
 
-					  
+
 
 					 	for(var i =0; i < self.scope.uploadedFileInfo.length; i++){
       						var tempDocument = {};
-				   			tempDocument.fileName = self.scope.uploadedFileInfo[i].attr("fileName"); 
+				   			tempDocument.fileName = self.scope.uploadedFileInfo[i].attr("fileName");
 				   			tempDocument.location = self.scope.uploadedFileInfo[i].attr("filePath");
 				   			tempInvoiceData["invoiceDocuments"].push(tempDocument);
-				   		} 
+				   		}
 
 					  tempInvoiceData["invoiceLines"] = [];
 
@@ -754,7 +755,7 @@ var page = Component.extend({
 						   		tempArry["fiscalPeriod"] = periodWidgetHelper.getFiscalPeriod($("#inputMonth"+index).val());
 						   		tempArry["periodType"] = periodWidgetHelper.getPeriodType($("#inputMonth"+index).val().charAt(0));
 						   		tempArry["lineAmount"] = self.scope.AmountStore.attr("amountText"+index);
-						   		
+
 						   		if(self.scope.attr("invoicetypeSelect") == "2"){
 						   			var ccidGL = "ccidGL"+index;
 									tempArry["glAccRefId"] = self.scope.ccidGLStore.attr(ccidGL);
@@ -808,16 +809,16 @@ var page = Component.extend({
 								           		{
 								           			var errorMap = values[0].invoices[0].errors.errorMap;
 								           		}
-								           		
-								           		
+
+
 									       		if(errorMap){
 										          	var errorStr = "";
 										          	for(var key in errorMap){
 										          		errorStr += errorMap[key]+", ";
-										          		//console.log(key);	
+										          		//console.log(key);
 										          	}
-										          	errorStr = errorStr.replace(/,\s*$/, "");  
-										          	
+										          	errorStr = errorStr.replace(/,\s*$/, "");
+
 										          	var msg = "Error: "+ errorStr;
 									          	}
 									          	else{
@@ -827,10 +828,10 @@ var page = Component.extend({
 												$("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
 										        $("#invmessageDiv").show();
 										        $("#addInvSubmit").attr("disabled", false);
-									          	
+
 								            }
 								     	});
-								
+
 							},
 							"#buttonCancel click":function(){
 								//this.scope.appstate.attr('page','invoices');
@@ -857,13 +858,13 @@ var page = Component.extend({
 
 				  	 			self.scope.attr("calduedate", "");
 				  	 		},
-							'period-calendar onSelected': function (ele, event, val) {  
+							'period-calendar onSelected': function (ele, event, val) {
 			       					this.scope.attr('periodchoosen', val);
 			       					$(ele).parent().find('input[type=text]').val(this.scope.periodchoosen).trigger('change');
 			       					$(ele).closest('.calendarcls').find('.box-modal').hide();
 			       					$(ele).blur();
 			   				},
-						   '.updateperoid focus':function(el){ 
+						   '.updateperoid focus':function(el){
 						      $(el).closest('.calendarcls').find('.box-modal').show();
 						      if(el.attr("id") != "inputMonth0"){
 						      	//showErrorMsg(el.attr("id"))
@@ -873,8 +874,8 @@ var page = Component.extend({
 						   		$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
 									if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
 											$("#"+this.id+' .inputContent').val("");
-											
-									}	
+
+									}
 						  		});
 
 						  		this.scope.contentTypeFilter.replace(this.scope.contentType);
@@ -886,10 +887,10 @@ var page = Component.extend({
 									// if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
 									// 		$("#"+this.id+' .inputMonth').val("");
 									// 		showErrorMsg($("#"+this.id+' .inputMonth').attr("id"), "delete");
-									// 	//	self.scope.attr("periodType", 
-									// }	
+									// 	//	self.scope.attr("periodType",
+									// }
 						  	// 	});
-						  	} 
+						  	}
 						},
 					  	init: function(){
 					   	 	var self = this;
@@ -914,7 +915,7 @@ var page = Component.extend({
 
 							     		 	//console.log(self.scope.attr("contentType"));
 
-							    			
+
 											});
 						},
 					  	helpers: {
@@ -967,7 +968,7 @@ var page = Component.extend({
 								  	 	return 'Style="height:'+vph+'px;overflow-y:auto"';
 									},
 									calculateUSD:function(){
-										var fxrate = 0.75; 
+										var fxrate = 0.75;
 										var calUSD = this.attr("totalAmountVal")*fxrate;
 
 										if(isNaN(calUSD)){
@@ -999,13 +1000,13 @@ var page = Component.extend({
 					function CurrencyFormat(number)
 					{
 					  if($.isNumeric(number)){
-					  	
+
 					  	var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
 					    return n;
 					  }else{
 					  	return 0;
 					  }
-					  
+
 					}
 
 					function showError(id, message){
@@ -1025,7 +1026,7 @@ var page = Component.extend({
 
 					function dateFormatter(datestring, currentformat){
 						if(currentformat == "mm/dd/yyyy")
-						{	
+						{
 							var date = new Date(datestring);
 							return  date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate();
 						}
@@ -1051,7 +1052,7 @@ var page = Component.extend({
 						}else if (_root.length > 1){
 							//console.log("_root updatePeriodCalender");console.log(_root);
 							for (var i = _root.length - 1; i >= 0; i--) {
-								disablePeriodQuarterCalendar(_root[i]);								
+								disablePeriodQuarterCalendar(_root[i]);
 							}
 						}
 					}
@@ -1072,8 +1073,8 @@ var page = Component.extend({
 					      }
 					}
 
-		
-					
+
+
 					var getDateToDisplay=function(longDate){
 						var calculateDueDate = new Date(longDate);
 						return calculateDueDate.getMonth()+1 + "/" + calculateDueDate.getDate() + "/" + calculateDueDate.getFullYear();
