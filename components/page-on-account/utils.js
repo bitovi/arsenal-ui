@@ -228,10 +228,13 @@ var onAccountDetails = data.onAccount.onAccountDetails;
         for(var i=0; i<originalRows.length;i++){
            if(originalRows[i].__isChild){
                 var value = this.getPeriodValue(onAccountDetails,period);
+                var total = 0;
                 for(var k=0;k<quarters.length;k++)
                 {
                     originalRows[i][quarters[k]]=value;
+                    total = total+Number(value);
                 }
+                originalRows[i]['total']=total+'';
            }else{
             licensorName=originalRows[i].licensor;
            }
@@ -343,7 +346,7 @@ getProposedOnAccRows:function(quarters,data){
     },
 currencyFormat : function (number)
   {
-    if($.isNumeric(number)){
+    if(number != undefined && $.isNumeric(number)){
       var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
       return n;
     }else{
