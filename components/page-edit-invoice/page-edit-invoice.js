@@ -1078,11 +1078,11 @@ var page = Component.extend({
 							     		 	self.scope.attr("invoiceTypes").replace(values[0]["invoiceTypes"]);
 							     			self.scope.attr("contentType").replace(values[1].contentTypes);
 							     		 	//self.scope.attr("country").replace(values[2]);
-											self.scope.attr("adhocType").replace(values[2]);
+											self.scope.attr("adhocType").replace(values[2].adhocTypes);
 							     		 	self.scope.attr("glaccounts").replace(values[3]);
 							     		 	self.scope.attr("regions").replace(values[4]);
 
-							     		 	console.log(self.scope.attr("contentType"));
+							     		 	console.log(self.scope.attr("adhocType"));
 							     		 	
 
 							    			if(invoicemap.attr("invoiceid")){

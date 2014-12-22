@@ -1083,7 +1083,7 @@ var page = Component.extend({
 		     		 console.log(self.scope.attr("contentType"));
 		     		 self.scope.attr("country").replace(values[2]);
 
-		     		 self.scope.attr("adhocType").replace(values[3]);
+		     		 self.scope.attr("adhocType").replace(values[3].adhocTypes);
 		     		 self.scope.attr("glaccounts").replace(values[4]);
 		     		 self.scope.attr("regions").replace(values[5]);
 
