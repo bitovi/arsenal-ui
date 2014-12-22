@@ -117,7 +117,6 @@ var GlobalParameterBar = Component.extend({
       setTimeout(function() {
         $("#contentTypesFilter").multiselect('rebuild');
       }, 1000);
-      
       /* This is to reset the contentType attr in 'appstate' variable  */
       this.scope.changesToApply.removeAttr('contentType');
     },
@@ -140,10 +139,8 @@ var GlobalParameterBar = Component.extend({
         }
         self.scope.countries.replace(values[0]);
         self.scope.licensors.replace(values[1]["entities"]);
-        setTimeout(function() {
-          $("#countriesFilter").multiselect('rebuild');
-          $("#licensorsFilter").multiselect('rebuild');
-        }, 2000);
+        $("#countriesFilter").multiselect('rebuild');
+        $("#licensorsFilter").multiselect('rebuild');
       });
       /* This is to reset the country & licensor attr in 'appstate' variable  */
       this.scope.changesToApply.removeAttr('country');

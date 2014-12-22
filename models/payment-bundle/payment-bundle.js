@@ -199,6 +199,8 @@ var PaymentBundle = Model.extend({
     var requestData = {
       paymentBundle: {
         comments: params.approvalComment,
+        paymentOption: params.paymentOption,
+
         bundleId: this.bundleId,
         approvalId: this.approvalId,
         periodFrom: this.periodFrom,

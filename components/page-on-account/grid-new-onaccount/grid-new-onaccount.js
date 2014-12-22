@@ -41,6 +41,10 @@ var newOnAccountGrid = Grid.extend({
       if(column.editable && row.__isChild) {
         return stache('<input class="editing" value="{{value}}"/>')({value: column.getEditingValue(row,column.title)});
       } else {
+        if(column.title == 'Total' && row.__isChild && column.getEditingValue(row,column.id) != null)
+        {
+          return column.getEditingValue(row,column.id);
+        }
         return Grid.prototype.helpers.cellContents.call(this, row, column);
       }
     }

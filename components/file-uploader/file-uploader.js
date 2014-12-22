@@ -42,12 +42,13 @@
                       /*passing file length here to parent component*/
                        self.scope.attr("isSuccess", true);
                        $('.success').empty().html(data.responseText);
+                       self.scope.attr('uploadedfileinfo').replace(data.filePropeties);
                        $(self.element).trigger('onSelected', data);
                     }else{
                       self.scope.attr("isSuccess", false);
                        $('.fileError').empty().html(data.responseText);
                     }
-                    //console.log("Success")
+                    console.log("Success")
                     },function(xhr) {
                       console.error("Error while loading:"+xhr);
                     });

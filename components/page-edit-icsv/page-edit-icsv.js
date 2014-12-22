@@ -106,6 +106,7 @@ var page = Component.extend({
   	uploadedFileInfo:[],
   	periodType:"",
   	ajaxRequestStatus:{},
+  	usdFxrateRatio:{},
     isRequired: function(){
   	 		if(this.attr("invoicetypeSelect") != "2"){  /*Adhoc*/
   	 				$(".breakdownCountry").addClass("requiredBar");
@@ -539,13 +540,7 @@ var page = Component.extend({
                   			if(data.calInvoiceDueDate != null && data.calInvoiceDueDate != undefined){
                   				self.scope.attr("calduedate", getDateToDisplay(data.calInvoiceDueDate));
                   			}
-                  		}else if(data.status == 'FAILURE'){
-                  			$("#invmessageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>")
-							$("#invmessageDiv").show();
-				            setTimeout(function(){
-				                $("#invmessageDiv").hide();
-				             },5000)
-                  			}
+                  		  }
 		                },function(xhr){
 		                /*Error condition*/
 		           		 });  
@@ -562,13 +557,7 @@ var page = Component.extend({
                   			if(data.calInvoiceDueDate != null && data.calInvoiceDueDate != undefined){
                   				self.scope.attr("calduedate", getDateToDisplay(data.calInvoiceDueDate));
                   			}
-                  		}else if(data.status == 'FAILURE'){
-                  			$("#invmessageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>")
-							$("#invmessageDiv").show();
-				            setTimeout(function(){
-				                $("#invmessageDiv").hide();
-				             },5000)
-                  			}
+                  		 }
 		                },function(xhr){
 		                /*Error condition*/
 		           		 });  
@@ -1035,10 +1024,22 @@ var page = Component.extend({
        				$(ele).blur();
    				},
 			   '.updateperoid focus':function(el){ 
+			   	 var self = this;
 			      $(el).closest('.calendarcls').find('.box-modal').show();
 			      if(el.attr("id") != "inputMonth0"){
-			      		showErrorMsg(el.attr("id"))
+			      	//	showErrorMsg(el.attr("id"))
 					}
+
+					if(el[0].id == "inputMonth0"){
+				     		if($("#inputMonth0").val() && self.scope.currencyStore){
+								var genObj = {fromCurrency:self.scope.currencyStore, toCurrency:'USD', fiscalPeriod:periodWidgetHelper.getFiscalPeriod($("#inputMonth0").val()) ,periodType:periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0))};
+									Fxrate.findOne(UserReq.formRequestDetails(genObj),function(data){
+					                self.scope.attr("usdFxrateRatio", data.fxRate);
+					            },function(xhr){
+					               console.log(xhr);
+					            }); 	
+						}
+					}			
 				},
 			   '#inputContent0 change':function(el){  /*validation for servicetypeid*/
 			   		$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
@@ -1083,7 +1084,7 @@ var page = Component.extend({
 		     		 console.log(self.scope.attr("contentType"));
 		     		 self.scope.attr("country").replace(values[2]);
 
-		     		 self.scope.attr("adhocType").replace(values[3]);
+		     		 self.scope.attr("adhocType").replace(values[3].adhocTypes);
 		     		 self.scope.attr("glaccounts").replace(values[4]);
 		     		 self.scope.attr("regions").replace(values[5]);
 
@@ -1158,15 +1159,13 @@ var page = Component.extend({
 				},
 				calculateUSD:function(){
 					
-					var fxrate = 0.75; 
+					var fxrate = this.usdFxrateRatio;
 					var calUSD = this.attr("totalAmountVal")*fxrate;
 
 					if(isNaN(calUSD)){
 						calUSD = 0;
 					}
-					
 					return CurrencyFormat(calUSD);
-					//return fxrate;
 				},
 				disableInvoiceType:function(){
 					if(this.attr("editpage"))

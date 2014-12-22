@@ -21,6 +21,35 @@ import LicensorCurrency from 'models/common/licensorcurrency/';
 import proposedOnAccount from 'models/onAccount/proposedOnAccount/';
 import Comments from 'components/multiple-comments/';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
+import fileUpload from 'components/file-uploader/';
+
+fileUpload.extend({
+  tag: 'rn-file-uploader',
+  events: {
+    '{uploadedfileinfo} change': function(){
+        //console.log('Inside '+JSON.stringify(this.element.closest("page-on-account").scope().documents.attr()));
+        
+
+        //this.scope.attr('documents').replace(this.scope.attr('uploadedfileinfo'));
+        //console.log('Inside '+JSON.stringify(this.scope.documents.attr()));
+         //this.element.parent().scope();
+    }
+  }
+ });
+
+fileUpload.extend({
+  tag: 'propose-rn-file-uploader',
+  events: {
+    '{uploadedfileinfo} change': function(){
+        //console.log('Inside '+JSON.stringify(this.element.closest("page-on-account").scope().documents.attr()));
+        
+
+        //this.scope.attr('documents').replace(this.scope.attr('uploadedfileinfo'));
+        //console.log('Inside '+JSON.stringify(this.scope.documents.attr()));
+         //this.element.parent().scope();
+    }
+  }
+ });
 
 var page = Component.extend({
   tag: 'page-on-account',
@@ -147,6 +176,9 @@ var page = Component.extend({
                  $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={request}></rn-onaccount-balance-grid>')({request})); 
                 }    
               } else if(self.scope.tabsClicked=="PROPOSED_ON_ACC"){
+                //var documents =[];
+                //$('#proposeuploadFile').html(stache('<propose-rn-file-uploader uploadedfileinfo="{documents}"></propose-rn-file-uploader>')({documents}));
+                  //self.scope.attr('documents').replace('');
                   message = validateFilters(self.scope.appstate,true,false,false,false,false);
                   self.scope.attr('errorMessage',message); 
                   if(message.length == 0){
@@ -234,6 +266,7 @@ var page = Component.extend({
             if(data["status"]=="SUCCESS"){
                 displayMessage(data["responseText"],true);
               $("#propose").attr("disabled","disabled");
+              $("#paymentBundleNames").val('');
               var request = {};
               var rows = utils.frameRows(self.scope.attr('licensorCurrencies'),self.scope.quarters);
               request.rows=rows;
@@ -354,9 +387,6 @@ var page = Component.extend({
         ele.closest('tr').toggleClass("open");
         ele.parents('tr').next('tr.child').toggleClass("visible");
       },
-      'rn-file-uploader onSelected':function (ele, event, val){
-            this.scope.attr('documents').replace(val);
-      },
       'rn-proposed-onaccount-grid onSelected':function(ele, event, val){
             this.scope.attr('proposedOnAccountData',val);
             if(val.checkedRows.length >0){
@@ -392,6 +422,12 @@ var page = Component.extend({
           },function(xhr){
             console.error("Error while executing Copy onAccount domain service "+xhr);
           });
+      },
+      '{documents} change': function(){
+        /* documents is binded to uploadedfileinfo in <rn-file-uploader uploadedfileinfo="{documents}"></rn-file-uploader> */
+        /* IF the uploadedfileinfo is changed in rn-file-uploader component, documents gets updated automatically and this change event triggered. */
+         // console.log("docu changed "+JSON.stringify(this.scope.documents.attr()));
+         alert('hi');
       }
     },
     helpers: {
@@ -552,18 +588,18 @@ var validateFilters=function(appstate,validateQuarter,validateStoreType,validate
       }
 
       if(validateStoreType && (serTypeId == null || serTypeId == "")){
-        return 'Invalid Store Type !';
+        return 'Please select Store Type !';
       }
 
       if(validateRegion && (regId == null || regId == undefined)){
-        return 'Invalid Region !';
+        return 'Please select Region !';
       }
 
 
       if(validateLicensor && (licId == null || licId == undefined || licId == "")){
-        return "Invalid Licensor !";
-      }else if(validateLicensor && (licId == undefined && (licId.attr() == null || licId.attr() ==""))){
-        return "Invalid Licensor !";
+        return "Please select Licensor !";
+      }else if(validateLicensor && (licId == undefined || (licId.attr() == null || licId.attr() =="")) || licId.length==0){
+        return "Please select Licensor !";
       }
 
       if(validateContentType && (contGrpId == null || contGrpId == undefined || contGrpId == "")){

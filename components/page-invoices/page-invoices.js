@@ -151,7 +151,7 @@ var page = Component.extend({
               bundleNamesRequest.bundleSearch["type"] = "REGULAR_INV";
 
               //console.log("GetBundleNamesRequest is "+JSON.stringify(bundleNamesRequest));
-              self.attr('getPaymentBundlesNames', JSON.stringify(bundleNamesRequest)); 
+              self.attr('getPaymentBundlesNames', JSON.stringify(bundleNamesRequest));
               /*Ends Here */
             }
           return self.attr("getPaymentBundlesNames");
@@ -204,7 +204,7 @@ var page = Component.extend({
           }
     },
     "{allInvoicesMap} change": function() {
-        var self = this; 
+        var self = this;
         var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
         var footerData = this.scope.attr().allInvoicesMap[0].footer;
         //console.log("Status code "+JSON.stringify(StatusCodes));
@@ -227,7 +227,7 @@ var page = Component.extend({
               invTemp["dueDate"] = (invoiceData[i]["invoiceDueDate"]==null)?"":invoiceData[i]["invoiceDueDate"];
               invTemp["currency"] = (invoiceData[i]["invoiceCcy"]==null)?"":invoiceData[i]["invoiceCcy"];
               invTemp["statusId"] = (invoiceData[i]["status"]==null || invoiceData[i]["status"]==-1)?"":invoiceData[i]["status"];
-              invTemp["status"] = (invoiceData[i]["status"]==null || invoiceData[i]["status"]==-1)?"":StatusCodes[invoiceData[i]["status"]];
+              invTemp["status"] = (invoiceData[i]["status"]==null || invoiceData[i]["status"]==-1)?"":StatusCodes[invoiceData[i]["paymentState"]];
               invTemp["paymentState"] = (invoiceData[i]["paymentState"]==null || invoiceData[i]["paymentState"]==-1)?"":invoiceData[i]["paymentState"];
               invTemp["bundleName"] = (invoiceData[i]["bundleName"]==null || invoiceData[i]["bundleName"]=="--Select--")?"":invoiceData[i]["bundleName"];
               invTemp["comments"] = (invoiceData[i]["notes"]==null || invoiceData[i]["notes"].length==0)?"":invoiceData[i]["notes"];
@@ -293,7 +293,7 @@ var page = Component.extend({
             }
 
             var first = "true";
-            var regCcyTemp = {"invId":"", "__isChild":false, "entity":"Total in Regional Currency", "invoiceType":"", "invoiceTypeDisp":"", "contentType":"", "country":"", "invoiceNum":"","invoiceAmt":"", "dueDate":"", "currency":"", "status":"", "bundleName":"", "comments":""}; 
+            var regCcyTemp = {"invId":"", "__isChild":false, "entity":"Total in Regional Currency", "invoiceType":"", "invoiceTypeDisp":"", "contentType":"", "country":"", "invoiceNum":"","invoiceAmt":"", "dueDate":"", "currency":"", "status":"", "bundleName":"", "comments":""};
             regCcyTemp["invoiceAmt"] = CurrencyFormat(footerData["regAmtTot"]);
             regCcyTemp["currency"] = footerData["regCcy"];
             gridData["footer"].push(regCcyTemp);
@@ -342,8 +342,8 @@ var page = Component.extend({
               invoicemap.attr('invoiceid',invoiceid);
               flag=true;
               self.scope.appstate.attr('page','edit-invoice');
-            } 
-          } 
+            }
+          }
 
           if(flag==false) {
             $("#messageDiv").html("<label class='errorMessage'>"+invoiceno+" : Cannot edit the invoice </label>");
@@ -364,21 +364,21 @@ var page = Component.extend({
             self.scope.attr('sortColumns').push(val[0]);
           } else {
             for(var i=0;i<existingSortColumnsLen;i++){
-              /* The below condition is to selected column to be sorted in asc & dec way */ 
+              /* The below condition is to selected column to be sorted in asc & dec way */
               console.log(val[0]+","+existingSortColumns[i] )
               if(existingSortColumns[i] == val[0]){
                 existFlag = true;
-              } 
-            } 
+              }
+            }
             if(existFlag==false)
               self.scope.attr('sortColumns').push(val[0]);
             else {
               var sortDirection = (self.scope.attr('sortDirection') == 'asc') ? 'desc' : 'asc';
               self.scope.attr('sortDirection', sortDirection);
             }
-              
+
           }
-           
+
           console.log("aaa "+self.scope.sortColumns.attr());
            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
            /* All the neccessary parameters will be set in that event */
@@ -386,7 +386,7 @@ var page = Component.extend({
               self.scope.appstate.attr('globalSearch', false);
             }else{
               self.scope.appstate.attr('globalSearch', true);
-            }   
+            }
 
     },
     '.invId :checkbox change': function(item, el, ev) {
@@ -404,9 +404,9 @@ var page = Component.extend({
       if(statusId==0){
         if(paymentState==0 || paymentState==9){
           flag=true; // Allow deleteing the invoice
-        } 
-      } 
- 
+        }
+      }
+
       if($(item[0]).is(":checked")){
           row.attr('__isChecked', true);
           self.scope.attr('checkedRows').push(val);
@@ -431,7 +431,7 @@ var page = Component.extend({
               bundleNamesRequest.bundleSearch["type"] = invoiceType;
 
               console.log("GetBundleNamesRequest is "+JSON.stringify(bundleNamesRequest));
-              self.scope.attr('getPaymentBundlesNames', JSON.stringify(bundleNamesRequest)); 
+              self.scope.attr('getPaymentBundlesNames', JSON.stringify(bundleNamesRequest));
               /*Ends Here */
       } else {
           self.scope.attr('checkedRows').each(function(value, key) {

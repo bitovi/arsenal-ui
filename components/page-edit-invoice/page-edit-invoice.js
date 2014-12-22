@@ -106,6 +106,7 @@ var page = Component.extend({
   	uploadedFileInfo:[],
   	periodType:"",
   	ajaxRequestStatus:{},
+  	usdFxrateRatio:{},
 	isRequired: function(){
   	 		if(this.attr("invoicetypeSelect") != "2"){  /*Adhoc*/
  				$(".breakdownCountry").addClass("requiredBar");
@@ -126,6 +127,11 @@ var page = Component.extend({
            	$("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val("");
            	if(rowindex != 0)
            	$("#breakrow"+rowindex+" .removeRow").css("display", "block");
+			
+			var servictypeid=$("#inputContent0 option:selected").attr("servicetypeid");
+		   	if (typeof servictypeid !== "undefined" ) {
+		        $('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
+		    }
 			
 			var $option   = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"]');
             $option.each(function(index){
@@ -442,26 +448,7 @@ var page = Component.extend({
 		        					data.bv.disableSubmitButtons(true);
 								}
 
-								
-							 // if(mandatoryField == "invoicedate"){
-    				// 		 	$('#invoiceform').bootstrapValidator('revalidateField', 'invoicedate');
-    				// 		 }
-    				// 		 if(mandatoryField == "invoiceduedate"){
-    				// 		 	$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate'); /*revalidating this field. It initialized with currentdate*/
-    				// 		 }
-    				// 		 var fieldsToBeValidated =['invoicedate','invoiceduedate'];
-    				// 		 // if(data.bv.isValidField('invoicedate')){
-    				// 		 // 	alert('valid');
-    				// 		 // }
-    				// 		 for(var i =0; i<=fieldsToBeValidated.length ; i++){
-								// 	if(!data.bv.isValidField(fieldsToBeValidated[i])){
-								// 		data.bv.disableSubmitButtons(true);
-								// 	}else{
-								// 		data.bv.disableSubmitButtons(false);
-								// 	}
-								// }
-								
-	        			   }
+							}
 						}).on('success.form.bv', function(e) {
 							e.preventDefault();
 					});
@@ -535,13 +522,7 @@ var page = Component.extend({
                   			if(data.calInvoiceDueDate != null && data.calInvoiceDueDate != undefined){
                   				self.scope.attr("calduedate", getDateToDisplay(data.calInvoiceDueDate));
                   			}
-                  		}else if(data.status == 'FAILURE'){
-                  			$("#invmessageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>")
-							$("#invmessageDiv").show();
-				            setTimeout(function(){
-				                $("#invmessageDiv").hide();
-				             },5000)
-                  			}
+                  		 }
 		                },function(xhr){
 		                /*Error condition*/
 		           		 });  
@@ -558,13 +539,7 @@ var page = Component.extend({
                   			if(data.calInvoiceDueDate != null && data.calInvoiceDueDate != undefined){
                   				self.scope.attr("calduedate", getDateToDisplay(data.calInvoiceDueDate));
                   			}
-                  		}else if(data.status == 'FAILURE'){
-                  			$("#invmessageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>")
-							$("#invmessageDiv").show();
-				            setTimeout(function(){
-				                $("#invmessageDiv").hide();
-				             },5000)
-                  			}
+                  		 }
 		                },function(xhr){
 		                /*Error condition*/
 		           		 });  
@@ -598,6 +573,7 @@ var page = Component.extend({
          	console.log(this.scope.countryStore.attr());
 		},
 		".ccidGL change": function(event){
+			if(event.find('option:selected')[0]!=undefined)event.next('.ccidGLtxt').val(event.find('option:selected')[0].text);
          	this.scope.ccidGLStore.attr(event[0].id, event[0].value)
          	console.log(this.scope.ccidGLStore);
 		},
@@ -749,16 +725,20 @@ var page = Component.extend({
 						 		{
 									self.scope.contentTypeStore.attr("inputContent"+rowindex, invoiceData.invoiceLines[i].contentGrpId);
 						 		}
-
+								
+								var servictypeid = $("#inputContent0 option:selected").attr("servicetypeid"); 
+								if (typeof servictypeid !== "undefined" && rowindex > 0) {
+									$('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
+								}
+						 		
 						 		var displayPeriod = "";
 						 		if(invoiceData.invoiceLines[i].fiscalPeriod != null && invoiceData.invoiceLines[i].periodType != null){
 						 			var displayPeriod = periodWidgetHelper.getDisplayPeriod(invoiceData.invoiceLines[i].fiscalPeriod+'',invoiceData.invoiceLines[i].periodType);
-						 		}	
+								}	
 		                 		$("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).val(displayPeriod).parent().append(stache('<period-calendar></period-calendar>'));
-		                       	//$("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).parent().append(stache('<period-calendar></period-calendar>'));
-		                        //console.log($("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).parent());
+		                       	
 		                       	self.scope.monthStore.attr("inputMonth"+rowindex, displayPeriod);
-		                      // $("#breakrow"+rowindex+" #inputYear").attr("id","inputYear"+rowindex);
+		                     
 		                       	$("#breakrow"+rowindex+" #inputCountry").attr("id","inputCountry"+rowindex).val(invoiceData.invoiceLines[i].country);
 		                         self.scope.countryStore.attr("inputCountry"+rowindex, invoiceData.invoiceLines[i].country);
 
@@ -868,6 +848,7 @@ var page = Component.extend({
 				    tempEditInvoiceData["invoiceNumber"] = self.scope.invoicenumberStore;
 				    tempEditInvoiceData["invoiceTypeId"] = self.scope.invoicetypeSelect;
 				    tempEditInvoiceData["invoiceType"] = $("#invoiceType option:selected").attr("name");
+				    tempEditInvoiceData["serviceTypeId"] = $("#inputContent0 option:selected").attr("servicetypeid");
 				    tempEditInvoiceData["entityId"] = self.scope.licensorStore;
 				    tempEditInvoiceData["entityName"] = $("#invoicelicensor option:selected").text();
 				    tempEditInvoiceData["invoiceCcy"] = self.scope.currencyStore;
@@ -1037,20 +1018,34 @@ var page = Component.extend({
 			       					$(ele).blur();
 			   				},
 						   '.updateperoid focus':function(el){ 
+							  
+							  var self = this;
 						      $(el).closest('.calendarcls').find('.box-modal').show();
-						      if(el.attr("id") != "inputMonth0"){
+						     /* if(el.attr("id") != "inputMonth0"){
 						      	showErrorMsg(el.attr("id"))
-								}
+								}*/
+
+							if(el[0].id == "inputMonth0"){
+						     		if($("#inputMonth0").val() && self.scope.currencyStore){
+										var genObj = {fromCurrency:self.scope.currencyStore, toCurrency:'USD', fiscalPeriod:periodWidgetHelper.getFiscalPeriod($("#inputMonth0").val()) ,periodType:periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0))};
+											Fxrate.findOne(UserReq.formRequestDetails(genObj),function(data){
+							                self.scope.attr("usdFxrateRatio", data.fxRate);
+							            },function(xhr){
+							               console.log(xhr);
+							            }); 	
+									}
+							 	}			
 							},
 						   '#inputContent0 change':function(el){  /*validation for servicetypeid*/
-						   		$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
-									if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
-											$("#"+this.id+' .inputContent').val("");
+						   // 		$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
+									// if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
+									// 		$("#"+this.id+' .inputContent').val("");
 											
-									}	
-						  		});
+									// }	
+						  	// 	});
 
-						  		this.scope.contentTypeFilter.replace(this.scope.contentType);
+						  	// 	this.scope.contentTypeFilter.replace(this.scope.contentType);
+						  		updateContentType(el);
 							},
 						   '#inputMonth0 change':function(el){ /*validation for period*/
 						  		var self = this;
@@ -1076,11 +1071,11 @@ var page = Component.extend({
 							     		 	self.scope.attr("invoiceTypes").replace(values[0]["invoiceTypes"]);
 							     			self.scope.attr("contentType").replace(values[1].contentTypes);
 							     		 	//self.scope.attr("country").replace(values[2]);
-											self.scope.attr("adhocType").replace(values[2]);
+											self.scope.attr("adhocType").replace(values[2].adhocTypes);
 							     		 	self.scope.attr("glaccounts").replace(values[3]);
 							     		 	self.scope.attr("regions").replace(values[4]);
 
-							     		 	console.log(self.scope.attr("contentType"));
+							     		 	console.log(self.scope.attr("adhocType"));
 							     		 	
 
 							    			if(invoicemap.attr("invoiceid")){
@@ -1161,7 +1156,7 @@ var page = Component.extend({
 								  	 	return 'Style="height:'+vph+'px;overflow-y:auto"';
 									},
 									calculateUSD:function(){
-										var fxrate = 0.75; 
+										var fxrate = this.usdFxrateRatio;
 										var calUSD = this.attr("totalAmountVal")*fxrate;
 
 										if(isNaN(calUSD)){
@@ -1271,6 +1266,31 @@ var page = Component.extend({
 					var getDateToDisplay=function(longDate){
 						var calculateDueDate = new Date(longDate);
 						return calculateDueDate.getMonth()+1 + "/" + calculateDueDate.getDate() + "/" + calculateDueDate.getFullYear();
+					}
+
+					
+					var updateContentType = function(element) {
+
+						var currentElementID = $(element).attr("id");
+
+						var _elementID = $("#inputContent0");
+						var _listofselect = $("select[id^='inputContent']").not("select[id='inputContent0']").not(':hidden');
+						if ($(_elementID).data('options') == undefined) {
+							$(_elementID).data('options', $('#' + currentElementID + ' option').clone());
+						}
+
+						var serviceID = $("#inputContent0 option:selected").attr("servicetypeid");
+						console.log(serviceID);
+						if (typeof serviceID !== undefined) {
+							var options = $(_elementID).data('options').filter('[servicetypeid=' + serviceID + ']');
+						} else {
+							var options = $(_elementID).data('options').filter('[servicetypeid >' + serviceID + ']');
+						}
+						for (var i = 0; i < _listofselect.length; i++) {
+							var currentID = $(_listofselect)[i].id;
+							$("#" + currentID).html(options.clone());
+						}
+
 					}
 
 export default page;

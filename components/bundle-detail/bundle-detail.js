@@ -116,6 +116,12 @@ var BundleDetailTabs = Component.extend({
     validationStatus: function(options) {
       return this.pageState.selectedBundle && this.pageState.selectedBundle.attr('validationRulesTotal') > 0 ? options.fn(this.pageState.selectedBundle) : '';
     },
+    // validationStatus: function(options) {
+    //   return this.pageState.selectedBundle && this.pageState.selectedBundle.attr('validationRulesTotal') > 0 ? options.fn(this.pageState.selectedBundle) : '';
+    // },
+    // validationStatus: function(options) {
+    //   return this.pageState.selectedBundle && this.pageState.selectedBundle.attr('validationRulesTotal') > 0 ? options.fn(this.pageState.selectedBundle) : '';
+    // },
     canRemoveInvoice: function(options) {
       if(this.pageState.attr('selectedBundle.bundleType') === 'REGULAR_INV' &&
          this.selectedRows.attr('length') > 0
@@ -179,7 +185,8 @@ var BundleDetailTabs = Component.extend({
 
       selectedBundle.moveInWorkflow({
         action: action,
-        approvalComment: this.scope.approvalComment
+        approvalComment: this.scope.approvalComment,
+        paymentOption: this.scope.paymentType
       }).then(function() {
         // un-select the selected bundle (we're done here)
         pageState.attr('selectedBundle', null);

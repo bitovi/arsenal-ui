@@ -1,0 +1,40 @@
+{{#showPage}}
+{{#if fetching}}
+<div class="select-message">Fetching report...</div>
+{{else}}
+<table class="holes-report">
+  <thead>
+    <tr>
+      <th></th>
+      {{#entities}}
+      <th class="entity" {{data 'entity'}}>{{.}}</th>
+      {{/entities}}
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#eachCountry}}
+    <tr {{data 'country'}}>
+      <th class="country"><span {{popover holes}}>{{country}}</span></th>
+      {{#entities}}
+      {{#renderCell holes country .}}
+      {{#if holeExists}}
+      <td class="hole {{#if isCCIDExpect}}invoice-expected{{/if}}">
+        {{#if pdfExists}}<div class="top circle"></div>{{/if}}
+        {{#if ccidExists}}<div class="bottom circle"></div>{{/if}}
+        {{#if la}}<img class="la" src="resources/images/rn_LegendLondonAgreement@2x.png"/>{{/if}}
+      </td>
+      {{else}}
+      <td class="hole no-hole"></td>
+      {{/if}}
+      {{/renderCell}}
+      {{/entities}}
+      <td class="local-society">{{localSociety}}</td>
+    </tr>
+    {{/eachCountry}}
+  </tbody>
+</table>
+{{/if}}
+{{else}}
+<div class="select-message">Please select parameters above for the Invoices Received report.</div>
+{{/showPage}}

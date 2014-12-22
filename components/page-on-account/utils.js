@@ -56,15 +56,15 @@ var onAccountCreateRequest ={};
                 var periodMap = {};
                 for(var k=0;k<quarters.length;k++)
                 {
-                    var onAccountDetails={};
-                    onAccountDetails.entityId=rows[i].entityId;
-                    onAccountDetails.entityName=licensorName;
-                    onAccountDetails.contentGroupId=request.searchRequest.contentGrpId[0];
-                    onAccountDetails.currencyCode=rows[i].currency;
-                    onAccountDetails.periodType=this.getOnAccountPeriodType();
-                    var period = this.getPeriodForQuarter(quarters[k]);
-                    onAccountDetails.fiscalPeriod=period+'';
-                    if(Number(rows[i][quarters[k]]) != 0){
+                  if(Number(rows[i][quarters[k]]) != 0){
+                      var onAccountDetails={};
+                      onAccountDetails.entityId=rows[i].entityId;
+                      onAccountDetails.entityName=licensorName;
+                      onAccountDetails.contentGroupId=request.searchRequest.contentGrpId[0];
+                      onAccountDetails.currencyCode=rows[i].currency;
+                      onAccountDetails.periodType=this.getOnAccountPeriodType();
+                      var period = this.getPeriodForQuarter(quarters[k]);
+                      onAccountDetails.fiscalPeriod=period+'';
                       onAccountDetails.onAccountAmt=rows[i][quarters[k]];
                       onAccountCreateRequest.onAccount.onAccountDetails.push(onAccountDetails);  
                     }    
@@ -87,10 +87,10 @@ var onAccountCreateRequest ={};
     if(documents!= null && documents.length>0){
         for(var i=0;i<documents.length;i++){
             var documentsObj={};
-            documentsObj.fileName=documents[0].fileName;
-            documentsObj.location=documents[0].filePath;
+            documentsObj.fileName=documents[i].fileName;
+            documentsObj.location=documents[i].filePath;
             documentsObj.createdDate=Date.now();
-            onAccountCreateRequest.onAccount.documents.push(documents);
+            onAccountCreateRequest.onAccount.documents.push(documentsObj);
         }
     }
 
@@ -171,29 +171,31 @@ var onAccountUpdateRequest ={};
         for(var i=0; i < onAccountRows.length;i++){
                 for(var k=0;k<quarters.length;k++)
                 {
-                    var onAccountDetails={};
-                    onAccountDetails.id=onAccountRows[i].id;
-                    onAccountDetails.bundleId=onAccountRows[i].bundleId;
-                    onAccountDetails.bundleName=onAccountRows[i].bundleName;
-                    onAccountDetails.currencyCode=onAccountRows[i].Currency;
-                    var period = this.getPeriodForQuarter(quarters[k]);
-                    onAccountDetails.fiscalPeriod=period+'';
-                    onAccountDetails.onAccountAmt=onAccountRows[i][quarters[k]];
-                    onAccountDetails.commentId=onAccountRows[i].commentId;
-                    onAccountDetails.countryId=''; 
-                    if(onAccountRows[i].countryId != undefined){
-                      onAccountDetails.countryId=onAccountRows[i].countryId;  
-                    }
-                    onAccountDetails.entityId=onAccountRows[i].entityId;
-                    onAccountDetails.entityName=onAccountRows[i].Licensor;
-                    onAccountDetails.contentGroupId=onAccountRows[i].contentGroupId;
-                    onAccountDetails.periodType=this.getOnAccountPeriodType();
-                    onAccountDetails.createdBy=onAccountRows[i].createdBy;
-                    onAccountDetails.createdDate=onAccountRows[i].createdDate;
-                    onAccountDetails.modifiedBy=onAccountRows[i].createdBy;
-                    onAccountDetails.modifiedDate=Date.now();
-                    onAccountDetails.serviceTypeId=onAccountRows[i].serviceTypeId;
-                    onAccountUpdateRequest.onAccount.onAccountDetails.push(onAccountDetails);
+                   if(Number(onAccountRows[i][quarters[k]]) != 0){
+                      var onAccountDetails={};
+                      onAccountDetails.id=onAccountRows[i].id;
+                      onAccountDetails.bundleId=onAccountRows[i].bundleId;
+                      onAccountDetails.bundleName=onAccountRows[i].bundleName;
+                      onAccountDetails.currencyCode=onAccountRows[i].Currency;
+                      var period = this.getPeriodForQuarter(quarters[k]);
+                      onAccountDetails.fiscalPeriod=period+'';
+                      onAccountDetails.onAccountAmt=onAccountRows[i][quarters[k]];
+                      onAccountDetails.commentId=onAccountRows[i].commentId;
+                      onAccountDetails.countryId=''; 
+                      if(onAccountRows[i].countryId != undefined){
+                        onAccountDetails.countryId=onAccountRows[i].countryId;  
+                      }
+                      onAccountDetails.entityId=onAccountRows[i].entityId;
+                      onAccountDetails.entityName=onAccountRows[i].Licensor;
+                      onAccountDetails.contentGroupId=onAccountRows[i].contentGroupId;
+                      onAccountDetails.periodType=this.getOnAccountPeriodType();
+                      onAccountDetails.createdBy=onAccountRows[i].createdBy;
+                      onAccountDetails.createdDate=onAccountRows[i].createdDate;
+                      onAccountDetails.modifiedBy=onAccountRows[i].createdBy;
+                      onAccountDetails.modifiedDate=Date.now();
+                      onAccountDetails.serviceTypeId=onAccountRows[i].serviceTypeId;
+                      onAccountUpdateRequest.onAccount.onAccountDetails.push(onAccountDetails);
+                  }
                 }
         }
      }
@@ -213,7 +215,7 @@ var onAccountUpdateRequest ={};
             documentsObj.location=documents[0].filePath;
             documentsObj.createdDate=Date.now();
             //documentsObj.deleteFlag=true;
-            onAccountUpdateRequest.onAccount.documents.push(documents);
+            onAccountUpdateRequest.onAccount.documents.push(documentsObj);
         }
     }
 
@@ -228,10 +230,13 @@ var onAccountDetails = data.onAccount.onAccountDetails;
         for(var i=0; i<originalRows.length;i++){
            if(originalRows[i].__isChild){
                 var value = this.getPeriodValue(onAccountDetails,period);
+                var total = 0;
                 for(var k=0;k<quarters.length;k++)
                 {
                     originalRows[i][quarters[k]]=value;
+                    total = total+Number(value);
                 }
+                originalRows[i]['total']=total+'';
            }else{
             licensorName=originalRows[i].licensor;
            }
@@ -343,7 +348,7 @@ getProposedOnAccRows:function(quarters,data){
     },
 currencyFormat : function (number)
   {
-    if($.isNumeric(number)){
+    if(number != undefined && $.isNumeric(number)){
       var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
       return n;
     }else{

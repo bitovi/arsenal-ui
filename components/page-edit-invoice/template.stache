@@ -24,7 +24,7 @@
 						    <label for="inputEmail3" class="col-sm-6 control-label">Invoice Type: </label>
 						    <div class="col-sm-4 requiredBarNone">
 						      
-						      <select id="invoiceType" class="form-control" can-value="invoicetypeSelect" name="invoiceType">
+						      <select id="invoiceType" class="form-control" can-value="invoicetypeSelect" name="invoiceType" disabled>
 								        
 								        {{#each invoiceTypes}}
 								        	<option name="{{invoiceTypeName}}" value="{{invoiceTypeId}}">{{description}}</option>
@@ -206,81 +206,19 @@
 						        </tr>
 						    </thead>
 						    <tbody>
-						     {{#unless editpage}}
-						         <tr id="breakrow0" rowid="0">
-						            <td class="form-group">
-						            	<div class="breakdownContent requiredBar">
-						            	<select id="inputContent0" name="inputContent[]" class="form-control inputContent">
-
-						            			<option value="">Select</option>
-							        			{{#if isAdhocStrore.adhoc}}
-								        			{{#each adhocType}}
-								        				<option value="{{id}}">{{value}}</option>
-							       					{{/each}}
-						       					{{else}}
-							       					{{#each contentType}}
-								        				<option serviceTypeId="{{serviceTypeId}}" value="{{contentGroupId}}">{{contentGroupName}}</option>
-								        			{{/each}}
-						       					{{/if}}
-						        		</select>
-						        		</div>
-
-						        	</td>
-						            <td class="form-group">
-						            	<div class="breakdownPeriod calendarcls">
-						            		<input type='text' id="inputMonth0" name="inputMonth[]" class="updateperoid form-control inputMonth"/> 
-						            		<period-calendar selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
-							        	</div>
-
-
-							        </td>
-							        <td class="form-group">
-								        <div class="requiredBar">
-							            	<input type="text" class="form-control amountText classAmtTotal" name="amount[]" id="amountText0" placeholder="" can-value="val0" >
-							            </div>	
-						            </td>
-						            <td class="form-group">
-						            	<div class="breakdownCountry">
-						            	<select id="inputCountry0"  name="inputCountry[]" class="form-control inputCountry" >
-									        		<option value="">Select</option>
-									        	{{#each country}}
-									        		<option value="{{id}}">{{value}}</option>
-						       					{{/each}}
-						        		</select>
-						        		</div>
-						            </td>
-						           <td>
-						            	 {{#if isAdhocStrore.invtype}}
-								            	<select id="ccidGL0" name="ccidGL" class="form-control ccidGL">
-								            			<option value="">Select</option>
-												        {{#each glaccounts}}
-									        				<option value="{{id}}">{{value}}</option>
-						       							{{/each}}
-									        	</select>
-						            	  {{else}}
-						            	 		<input type="text" class="form-control ccidGL" id="ccidGL0" name="ccidGL" placeholder="" readonly="true">
-						            	 {{/if}}
-						           </td>
-						           <td>
-
-										<img src="resources/images/button_minus_red.png" class="breakDownIconSize removeRow" id="removeRow" style="display:none;">
-						           </td>
-						         </tr>
-						         {{/unless}}
-						         <tr class="hide" id="breakrowTemplate">
+								<tr class="hide" id="breakrowTemplate">
 						            <td class="form-group">
 						            	<div class="breakdownContent requiredBar">
 											<select id="inputContent" name="inputContent[]"  class="form-control inputContent">
 								        				<option value="">Select</option>
 								        			{{#if isAdhocStrore.adhoc}}
 									        			{{#each adhocType}}
-									        				<option value="{{id}}">{{value}}</option>
-								       					{{/each}}
+								        					<option serviceTypeId="{{serviceTypeId}}" value="{{adhocTypeId}}">{{adhocName}}</option>
+							       						{{/each}}
 							       					{{else}}
 								       					{{#each contentType}}
 									        				<option serviceTypeId="{{serviceTypeId}}" value="{{contentGroupId}}">{{contentGroupName}}</option>
-									        				
-								       					{{/each}}
+									        			{{/each}}
 								       					
 							       					{{/if}}
 
@@ -309,12 +247,22 @@
 						            </td>
 						           <td>
 						            	{{#if isAdhocStrore.invtype}}
-								            	<select id="ccidGL" name="ccidGL" class="form-control ccidGL">
+								            	<!--select id="ccidGL" name="ccidGL" class="form-control ccidGL">
 								            			<option value="">Select</option>
 												        {{#each glaccounts}}
 									        				<option value="{{id}}">{{value}}</option>
 						       							{{/each}}
-									        	</select>
+									        	</select-->
+									        	<div class="select-editable">
+												    <select  id="ccidGL" name="ccidGL" class="form-control ccidGL">
+												        <option value="">Select</option>
+												        {{#each glaccounts}}
+									        				<option value="{{id}}">{{value}}</option>
+									        				
+						       							{{/each}}
+												    </select>
+												    <input type="text" name="format" value="" class="ccidGL ccidGLtxt"/>
+												</div>
 						            	  {{else}}
 						            	 		<input type="text" class="form-control ccidGL" id="ccidGL" name="ccidGL" placeholder="" readonly="true">
 						            	 {{/if}}

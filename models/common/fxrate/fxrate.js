@@ -2,7 +2,7 @@ import Model from 'can/model/';
 import RinsCommon from 'utils/urls';
 
 var FXRate = Model.extend({
-findAll: function(params){
+findOne: function(params){
  	return $.ajax({
  		url: RinsCommon.UI_SERVICE_URL +'getFXRate',
   		type: 'POST',
