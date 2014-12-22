@@ -125,12 +125,13 @@ var page = Component.extend({
             $("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).parent().append(stache('<period-calendar></period-calendar>'));
             $("#breakrow"+rowindex+" #inputCountry").attr("id","inputCountry"+rowindex);
            	$("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val("");
+             $("#breakrow"+rowindex+" #ccidGLtxt").attr("id","ccidGLtxt"+rowindex).val("");
            	if(rowindex != 0)
            	$("#breakrow"+rowindex+" .removeRow").css("display", "block");
 
 	       	var servictypeid=$("#inputContent0 option:selected").attr("servicetypeid");
 	    	if (typeof servictypeid !== "undefined" ) {
-        		$('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();	
+        		$('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
         	}
 
 			var $option = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"]');
@@ -387,7 +388,7 @@ var page = Component.extend({
 			            	'inputContent[]': {
 				                validators: {
 				                    callback: {
-				                           
+
 				                            callback: function (value, validator, $field) {
 				                              if((value == "") && (self.scope.attr("invoicetypeSelect") != "2")){
 				                              	   return {
@@ -454,7 +455,7 @@ var page = Component.extend({
 							e.preventDefault();
 					});
 
-					
+
 
 					$('#invoicedate').on('dp.change dp.show', function (e) {
 		            	$('#invoiceform').bootstrapValidator('revalidateField', 'invoicedate');
@@ -479,7 +480,7 @@ var page = Component.extend({
 					if(!self.scope.editpage){
 						self.scope.attr("invoiceduedate", getCurrentDate());
 					}
-					
+
 			},
 			".form-control keyup": function(event){
 					var self = this;
@@ -572,8 +573,14 @@ var page = Component.extend({
 		},
 		".ccidGL change": function(event){
 			if(event.find('option:selected')[0]!=undefined)event.next('.ccidGLtxt').val(event.find('option:selected')[0].text);
-         	this.scope.ccidGLStore.attr(event[0].id, event[0].value)
-         	//console.log(this.scope.ccidGLStore);
+         var idGL = event[0].id;
+
+          idGL =  idGL.indexOf("ccidGLtxt") > -1 ? idGL.replace("ccidGLtxt","ccidGL") :  idGL;
+
+         this.scope.ccidGLStore.attr(idGL, event[0].value);
+          //
+          // console.log(idGL);
+          // console.log(event[0].value);
 		},
 		"#invoicelicensor change": function(event){
 			var genObj = {licensorId:event[0].value};
@@ -649,7 +656,7 @@ var page = Component.extend({
   	 			else{
   	 				this.scope.attr("totalAmountVal", "");
   	 			}
-  	 			
+
   	 	},
 		".addRow click":function(){
 
@@ -769,8 +776,12 @@ var page = Component.extend({
 						   		tempArry["lineAmount"] = self.scope.AmountStore.attr("amountText"+index);
 
 						   		if(self.scope.attr("invoicetypeSelect") == "2"){
-						   			var ccidGL = "ccidGL"+index;
-									tempArry["glAccRefId"] = self.scope.ccidGLStore.attr(ccidGL);
+
+						   			var ccidGL = "ccidGL";
+
+                    ccidGL = (index == 0 ? ccidGL : ccidGL+index);
+
+									  tempArry["glAccRefId"] = self.scope.ccidGLStore.attr(ccidGL);
 						  	 		tempArry["adhocTypeId"] = self.scope.contentTypeStore.attr("inputContent"+index);
 						  	 	}
 						  	 	else{
@@ -889,9 +900,9 @@ var page = Component.extend({
 							                self.scope.attr("usdFxrateRatio", data.fxRate);
 							            },function(xhr){
 							               console.log(xhr);
-							            }); 	
+							            });
 									}
-							 	}	
+							 	}
 							},
 						   '#inputContent0 change':function(el){  /*validation for servicetypeid*/
 						   // 		$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
@@ -910,7 +921,7 @@ var page = Component.extend({
 
 
 
-						  		
+
 							}
 						},
 					  	init: function(){
@@ -1095,14 +1106,14 @@ var page = Component.extend({
 						var calculateDueDate = new Date(longDate);
 						return calculateDueDate.getMonth()+1 + "/" + calculateDueDate.getDate() + "/" + calculateDueDate.getFullYear();
 					}
-					
-					var updateContentType = function(element){ 
+
+					var updateContentType = function(element){
 
 						var currentElementID = $(element).attr("id");
 
 						var _elementID = $("#inputContent0");
 						var _listofselect = $("select[id^='inputContent']").not("select[id='inputContent0']").not(':hidden');
-						
+
 						if($(_elementID).data('options') == undefined){
 						   $(_elementID).data('options',$('#'+currentElementID+' option').clone());
 						}
