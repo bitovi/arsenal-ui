@@ -190,6 +190,9 @@ var PaymentBundle = Model.extend({
 
     var bundleDetailsGroup = this.bundleDetailsGroup.attr();
     bundleDetailsGroup.forEach(function(group) {
+      delete group.__isChild;
+      delete group.__isOpen;
+
       group.bundleDetails.forEach(function(detail) {
         delete detail.__isChild;
         delete detail.__isOpen;
@@ -213,7 +216,7 @@ var PaymentBundle = Model.extend({
     };
 
     return $.ajax({
-      url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/' + (params.action === 'delete' ? 'manage' : params.action),
+      url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/' + (params.action === 'delete' ? 'abort' : params.action),
       type: 'POST',
       data: requestData,
       processData: false
