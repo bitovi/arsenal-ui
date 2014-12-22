@@ -15,6 +15,7 @@ import bootstrapmultiselect from 'bootstrap-multiselect';
 import css_bootstrapmultiselect from 'bootstrap-multiselect.css!';
 import commonUtils from 'utils/commonUtils';
 
+import DefaultGlobalParameters from './default-global-parameter';
 import template from './template.stache!';
 import styles from './global-parameter-bar.less!';
 
@@ -80,16 +81,7 @@ var GlobalParameterBar = Component.extend({
     'inserted': function() {
       var self = this;
       this.scope.applyChanges(this.scope.appstate, this.scope.changesToApply); // this looks backwards but it's right, I promise.
-                                                                    // We need to set up changesToApply for the template to key off of
-
-      document.getElementById("regionsFilter").selectedIndex = 2;
-      var periodFrom = getDefaultPeriodFrom('');
-      var periodTo = getDefaultPeriodTo();
-      $('#periodFrom').val(periodFrom);
-      $('#periodTo').val(periodTo);
-      self.scope.changesToApply.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(periodFrom));
-      self.scope.changesToApply.attr('periodTo', periodWidgetHelper.getFiscalPeriod(periodTo));
-      this.scope.changesToApply.attr('periodType', 'P');
+                                                                    // We need to set up changesToApply for the template to key off of                                                          
     },
     '{periodFrom} change': function(el, ev) {
       //console.log("period from change "+ this.scope.appstate.attr('periodFrom'));
@@ -125,7 +117,7 @@ var GlobalParameterBar = Component.extend({
       setTimeout(function() {
         $("#contentTypesFilter").multiselect('rebuild');
       }, 1000);
-
+      
       /* This is to reset the contentType attr in 'appstate' variable  */
       this.scope.changesToApply.removeAttr('contentType');
     },
@@ -221,11 +213,15 @@ var GlobalParameterBar = Component.extend({
   init: function() {
     var self = this;
     var genObj = {};
+    var reqObj = {};
+    if(DefaultGlobalParameters.Region!=undefined && DefaultGlobalParameters.Region!=""){
+      reqObj.regionId = DefaultGlobalParameters.Region.id;
+    }
     Promise.all([
       StoreType.findAll(UserReq.formRequestDetails(genObj)),
       Region.findAll(UserReq.formRequestDetails(genObj)),
-      Country.findAll(UserReq.formRequestDetails(genObj)),
-      Licensor.findAll(UserReq.formRequestDetails(genObj)),
+      Country.findAll(UserReq.formRequestDetails(reqObj)),
+      Licensor.findAll(UserReq.formRequestDetails(reqObj)),
       ContentType.findAll(UserReq.formRequestDetails(genObj))
     ]).then(function(values) {
       self.scope.storeTypes.replace(values[0]);
@@ -236,33 +232,29 @@ var GlobalParameterBar = Component.extend({
          contentTypes - holds the values to be displayed in drop down box */
       self.scope.allContentTypes.replace(values[4]["contentTypes"]);
       self.scope.contentTypes.replace(values[4]["contentTypes"]);
-      //self.scope.periodFrom.replace(values[5]);
-      //self.scope.periodTo.replace(values[6]);
-
 
       setTimeout(function() {
-
 
         $("#countriesFilter").multiselect({
           numberDisplayed: 1,
           includeSelectAllOption: true,
           selectAllText: 'Select All',
+          selectAllValue: 'selectAll',
           maxHeight: 200,
           onChange: function(option, checked, select) {
-            // $("#country .multiselect-all .checkbox").find("input[type='checkbox']").is(':checked')?
-            //   $("#country .dropdown-menu li").addClass("active"):$("#country .dropdown-menu li").removeClass("active");
             $("#countriesFilter").multiselect("refresh");
           }
 
         });
+        
+
         $("#licensorsFilter").multiselect({
           numberDisplayed: 1,
           includeSelectAllOption: true,
           selectAllText: 'Select All',
+          selectAllValue: 'selectAll',
           maxHeight: 200,
           onChange: function(option, checked, select) {
-            //  $("#licensor .multiselect-all .checkbox").find("input[type='checkbox']").is(':checked')?
-            //    $("#licensor .dropdown-menu li").addClass("active"):$("#licensor .dropdown-menu li").removeClass("active");
             $("#licensorsFilter").multiselect("refresh");
           }
 
@@ -271,14 +263,82 @@ var GlobalParameterBar = Component.extend({
           numberDisplayed: 1,
           includeSelectAllOption: true,
           selectAllText: 'Select All',
+          selectAllValue: 'selectAll',
           maxHeight: 200,
           onChange: function(option, checked, select) {
-            //$("#contentType .multiselect-all .checkbox").find("input[type='checkbox']").is(':checked')?
-            //  $("#contentType .dropdown-menu li").addClass("active"):$("#contentType .dropdown-menu li").removeClass("active");
             $("#contentTypesFilter").multiselect("refresh");
           }
 
         });
+
+        /* This is to set default global parameter values to appstate scope variable Starts here*/
+          $('#periodFrom').val(DefaultGlobalParameters.PeriodFrom);
+          $('#periodTo').val(DefaultGlobalParameters.PeriodTo);
+          $('#storeTypesFilter').val(DefaultGlobalParameters.StoreType.value);
+          $('#regionsFilter').val(DefaultGlobalParameters.Region.value);
+
+          
+          var defCountry = DefaultGlobalParameters.attr('Country');
+          if(defCountry=="All"){
+            $("#countriesFilter").multiselect('selectAll', false);
+            $('#countriesFilter').multiselect('updateButtonText');
+          } else {
+            $("#countriesFilter").multiselect('select', DefaultGlobalParameters.Country.attr());
+          }
+          $("#countriesFilter").multiselect('rebuild');
+
+          var defLicensor = DefaultGlobalParameters.attr('Licensor');
+          if(defLicensor=="All"){
+            $("#licensorsFilter").multiselect('selectAll', false);
+            $('#licensorsFilter').multiselect('updateButtonText');
+          } else {
+            $("#licensorsFilter").multiselect('select', DefaultGlobalParameters.Licensor.attr());
+          }
+          $("#licensorsFilter").multiselect('rebuild');
+
+          setTimeout(function(){
+            var allContentTypes = self.scope.allContentTypes.attr();
+            if (DefaultGlobalParameters.attr("StoreType").id != "") {
+              var newContentTypes = [];
+              for (var i = 0; i < allContentTypes.length; i++) {
+                if (allContentTypes[i]["serviceTypeId"] == DefaultGlobalParameters.attr("StoreType").id) {
+                  newContentTypes.push(allContentTypes[i]);
+                }
+              }
+              self.scope.contentTypes.replace(newContentTypes);
+            }
+            $("#contentTypesFilter").multiselect('rebuild');
+            var defContentType = DefaultGlobalParameters.attr('ContentType');
+            if(defContentType=="All"){
+              $("#contentTypesFilter").multiselect('selectAll', false);
+              $('#contentTypesFilter').multiselect('updateButtonText');
+            } else {
+              $("#contentTypesFilter").multiselect('select', DefaultGlobalParameters.ContentType.attr());
+            }
+            $("#contentTypesFilter").multiselect('rebuild');
+            var selectedContentType = $("#contentTypesFilter").val();
+            var formatContentType = [];
+            if (selectedContentType != null) {
+              for (var i = 0; i < selectedContentType.length; i++) {
+                formatContentType.push(selectedContentType[i].split(":")[0]);
+              }
+            } 
+             
+            self.scope.changesToApply.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(DefaultGlobalParameters.PeriodFrom).toString());
+            self.scope.changesToApply.attr('periodTo', periodWidgetHelper.getFiscalPeriod(DefaultGlobalParameters.PeriodTo));
+            self.scope.changesToApply.attr('periodType', 'P');
+            self.scope.changesToApply.attr('storeType', DefaultGlobalParameters.StoreType);
+            self.scope.changesToApply.attr('region', DefaultGlobalParameters.Region.id);
+            self.scope.changesToApply.attr('country').replace($("#countriesFilter").val());
+            self.scope.changesToApply.attr('licensor').replace($("#licensorsFilter").val());
+            self.scope.changesToApply.attr('contentType').replace(formatContentType);
+            
+            self.scope.applyChanges(self.scope.changesToApply, self.scope.appstate);
+            //console.log("APpp state & ChangesTOAPPLY is "+JSON.stringify(self.scope.appstate.attr())+","+JSON.stringify(self.scope.changesToApply.attr()));  
+          }, 2000);
+          
+          /* Setting default global parameter values to appstate scope variable Ends here*/
+
       }, 2000);
     });
   }
