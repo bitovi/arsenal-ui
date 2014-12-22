@@ -2,8 +2,8 @@
 	<div class="col-sm-5 fontSize">
 	<label class="fontSize14" style='margin-left:-160px;'>iCSV Add Summary</label>
 				<div class="addSummaryClass">
-				
-	
+
+
 						<label class="addSummaryClassLabel">
 							Number of files
 						</label>
@@ -23,24 +23,24 @@
 							Number of rows
 						</label>
 				</div>
-				
+
 				<div class="addSummaryNumber">
 						<label class="addSummaryClassNumber">{{fileCount}}</label>
-						
+
 			            <label class="addSummaryClassNumber">{{invoiceCount}}</label>
-						
+
 					    <label class="addSummaryClassNumber">{{noOfPdf}}</label>
-			
+
 			            <label class="addSummaryClassNumber">{{licensorsCount}}</label>
-						
-				        <label class="addSummaryClassNumber">{{rowCount}}</label>
-						
+
 				        <label class="addSummaryClassNumber">{{errorCount}}</label>
+
+				        <label class="addSummaryClassNumber">{{rowCount}}</label>
 		       </div>
       </div>
-      
+
     <div class="col-sm-7 fontSize alignR">
-		
+
 	<div class="fontSize">
 			<div class="addSummaryClassLabel">
 				&nbsp;
@@ -81,19 +81,19 @@
 				<label class="addSummaryClassLabel">
 					&nbsp;
 				</label>
-				
+
 
        		{{/each}}
 
 	</div>
 
-	
-	
+
+
 	</div>
 	<hr class="hrbdr">
 	<div class="col-sm-12 GrandTotal">
 			<div class="">
-			
+
 			</div>
 			<label class="silvercolor" style="align:left;font-size:18px;">
 				GrandTotal:
@@ -105,9 +105,3 @@
 				USD
 			</label>
 	</div>
-
-	
-
-
-
-

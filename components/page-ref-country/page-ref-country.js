@@ -205,7 +205,7 @@ var page = Component.extend({
     "#grid-revision-history table>tbody>tr click": function(item, el, ev){
         //var invoiceid = el.closest('tr').data('row').row.id;
         var self=this.scope;
-        $("#loading_img").show();
+        $("#loading_img1").show();
 
         var alreadySelRow = item.closest("tbody").find("tr.selected");
         alreadySelRow.toggleClass("selected");
@@ -313,7 +313,7 @@ var page = Component.extend({
               self.pageState.countryDetails.attr("commentList",[]);
               $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>');
           }
-          $("#loading_img").hide();
+          $("#loading_img1").hide();
         },function(xhr){
             console.error("Error while loading: country-Entity Details"+xhr);
         });
@@ -478,6 +478,7 @@ var page = Component.extend({
         self.societyModelMapping.replace(data.countryDetails.modelMappings);
 
         $("#loading_img").hide();
+        $(".main-layout").show();
         if(data.countryDetails.status == "A") {
           self.attr("state","Edit");
         }else{
