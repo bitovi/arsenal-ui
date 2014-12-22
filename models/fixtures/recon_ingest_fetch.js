@@ -13,7 +13,7 @@ var reconIngest = {
       "periodType": "P",
       "status": "Not Ingested",
       "rejectable": false,
-      "invFileName": "TestFile.pdf",
+      "invFileName": "ubc_CCID_UBC_093_2013000002_BR_20130604.dat",
       "countryId": "AUT",
       "invFileType": "OUTBOUND",
       "dtlHdrId": 1,
@@ -30,12 +30,13 @@ var reconIngest = {
       "badLines": "0",
       "ingstdDate":"2014-11-12",
       "rcvdDate": "2014-11-12",
-      "invFileId": 607225,
+      "invFileId": 0,
       "liDispFileId": 1003,
       "liDispFileType": "OUTBOUND",
       "badFileId": 1001,
       "badFileType": "OUTBOUND",
-      "selfInvoice": "N"
+      "selfInvoice": "N",
+      "filePath":"/ngs/app/rinst/rins_in/invoices/data"
     },
     {
       "entityId": 1,
@@ -193,7 +194,7 @@ var reconIngest = {
       "periodType": "P",
       "status": "Not Ingested",
       "rejectable": false,
-      "invFileName": "INVOICE_FILE.dat",
+      "invFileName": "ubc_CCID_UBC_093_2013000002_BR_20130604.dat",
       "countryId": "AUT",
       "invFileType": "INBOUND",
       "dtlHdrId": 1,
@@ -210,12 +211,13 @@ var reconIngest = {
       "badLines": "0",
       "ingstdDate":"2014-11-12",
       "rcvdDate": "2014-11-12",
-      "invFileId": 1002,
+      "invFileId": 0,
       "liDispFileId": 1003,
       "liDispFileType": "OUTBOUND",
       "badFileId": 1001,
       "badFileType": "OUTBOUND",
-      "selfInvoice": "N"
+      "selfInvoice": "N",
+      "filePath":"/ngs/app/rinst/rins_in/invoices/data"
     },
     {
       "entityId": 1,

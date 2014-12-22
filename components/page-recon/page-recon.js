@@ -145,10 +145,8 @@ var page = Component.extend({
       var self=this.scope;
       var row = item.closest('tr').data('row').row;
       var request = {
-
           "fileId":row.badFileId,
           "boundType":row.badFileType
-
       }
       FileManager.downloadFile(request);
     },
@@ -157,9 +155,22 @@ var page = Component.extend({
       var row = item.closest('tr').data('row').row;
 
       var request = {
-            "fileId":row.invFileId,
-            "boundType":row.invFileType
+            "files":[
+              {
+
+              }
+            ]
       }
+
+      if(row.invFileId == 0 || row.invFileId == "" || row.invFileId == null){
+        request.files[0]["filePath"] = row.filePath;
+        request.files[0]["fileName"] = row.invFileName;
+      }else{
+        request.files[0]["fileId"] = row.invFileId;
+        request.files[0]["boundType"] = row.invFileType;
+      }
+
+      console.log(JSON.stringify(request));
 
       FileManager.downloadFile(request);
 
