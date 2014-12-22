@@ -1,0 +1,47 @@
+@dark-grey: #3d3d3d;
+@medium-grey: #ececec;
+@border-grey: #dddddd;
+
+rn-dashboard-payments {
+  color: @dark-grey;
+
+  display: flex;
+
+  .sidebar {
+    flex: 1 0;
+    background-color: blue;
+    padding: 1em;
+
+    rn-switcher {
+      font-size: 13px;
+      display: block;
+      margin: 0 auto;
+      width: 50%;
+    }
+  }
+
+  .detail {
+    flex: 3 0;
+    background-color: green;
+    padding: 1em;
+
+    h3 {
+      font-size: 1.2em;
+      text-align: center;
+    }
+
+    .column-container {
+      display: flex;
+
+      .column {
+        flex: 1 0;
+      }
+    }
+  }
+
+  .select-message {
+    padding: 1.5em;
+    text-align: center;
+    font-weight: bold;
+  }
+}

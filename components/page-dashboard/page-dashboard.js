@@ -4,6 +4,7 @@ import GlobalParameterBar from 'components/global-parameter-bar/';
 import Switcher from 'components/switcher/';
 import DashboardInvoices from 'components/dashboard-invoices/';
 import DashboardApprovals from 'components/dashboard-approvals/';
+import DashboardApprovals from 'components/dashboard-payments/';
 
 import template from './template.stache!';
 import styles from './page-dashboard.less!';
@@ -30,7 +31,7 @@ var page = Component.extend({
   events: {
     init: function() {
       this.scope.appstate.attr('renderGlobalSearch', true);
-      this.scope.attr('selectedTab', this.scope.tabs[1]);
+      this.scope.attr('selectedTab', this.scope.tabs[2]);
     }
   }
 });
