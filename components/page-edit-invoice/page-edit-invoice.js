@@ -128,6 +128,11 @@ var page = Component.extend({
            	if(rowindex != 0)
            	$("#breakrow"+rowindex+" .removeRow").css("display", "block");
 			
+			var servictypeid=$("#inputContent0 option:selected").attr("servicetypeid");
+		   	if (typeof servictypeid !== "undefined" ) {
+		        $('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
+		    }
+			
 			var $option   = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"]');
             $option.each(function(index){
             	$('#invoiceform').bootstrapValidator('addField', $(this));
@@ -517,13 +522,7 @@ var page = Component.extend({
                   			if(data.calInvoiceDueDate != null && data.calInvoiceDueDate != undefined){
                   				self.scope.attr("calduedate", getDateToDisplay(data.calInvoiceDueDate));
                   			}
-                  		}else if(data.status == 'FAILURE'){
-                  			$("#invmessageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>")
-							$("#invmessageDiv").show();
-				            setTimeout(function(){
-				                $("#invmessageDiv").hide();
-				             },5000)
-                  			}
+                  		 }
 		                },function(xhr){
 		                /*Error condition*/
 		           		 });  
@@ -540,13 +539,7 @@ var page = Component.extend({
                   			if(data.calInvoiceDueDate != null && data.calInvoiceDueDate != undefined){
                   				self.scope.attr("calduedate", getDateToDisplay(data.calInvoiceDueDate));
                   			}
-                  		}else if(data.status == 'FAILURE'){
-                  			$("#invmessageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>")
-							$("#invmessageDiv").show();
-				            setTimeout(function(){
-				                $("#invmessageDiv").hide();
-				             },5000)
-                  			}
+                  		 }
 		                },function(xhr){
 		                /*Error condition*/
 		           		 });  
@@ -732,7 +725,12 @@ var page = Component.extend({
 						 		{
 									self.scope.contentTypeStore.attr("inputContent"+rowindex, invoiceData.invoiceLines[i].contentGrpId);
 						 		}
-
+								
+								var servictypeid = $("#inputContent0 option:selected").attr("servicetypeid"); 
+								if (typeof servictypeid !== "undefined" && rowindex > 0) {
+									$('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
+								}
+						 		
 						 		var displayPeriod = "";
 						 		if(invoiceData.invoiceLines[i].fiscalPeriod != null && invoiceData.invoiceLines[i].periodType != null){
 						 			var displayPeriod = periodWidgetHelper.getDisplayPeriod(invoiceData.invoiceLines[i].fiscalPeriod+'',invoiceData.invoiceLines[i].periodType);
@@ -1039,14 +1037,15 @@ var page = Component.extend({
 							 	}			
 							},
 						   '#inputContent0 change':function(el){  /*validation for servicetypeid*/
-						   		$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
-									if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
-											$("#"+this.id+' .inputContent').val("");
+						   // 		$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
+									// if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
+									// 		$("#"+this.id+' .inputContent').val("");
 											
-									}	
-						  		});
+									// }	
+						  	// 	});
 
-						  		this.scope.contentTypeFilter.replace(this.scope.contentType);
+						  	// 	this.scope.contentTypeFilter.replace(this.scope.contentType);
+						  		updateContentType(el);
 							},
 						   '#inputMonth0 change':function(el){ /*validation for period*/
 						  		var self = this;
@@ -1267,6 +1266,31 @@ var page = Component.extend({
 					var getDateToDisplay=function(longDate){
 						var calculateDueDate = new Date(longDate);
 						return calculateDueDate.getMonth()+1 + "/" + calculateDueDate.getDate() + "/" + calculateDueDate.getFullYear();
+					}
+
+					
+					var updateContentType = function(element) {
+
+						var currentElementID = $(element).attr("id");
+
+						var _elementID = $("#inputContent0");
+						var _listofselect = $("select[id^='inputContent']").not("select[id='inputContent0']").not(':hidden');
+						if ($(_elementID).data('options') == undefined) {
+							$(_elementID).data('options', $('#' + currentElementID + ' option').clone());
+						}
+
+						var serviceID = $("#inputContent0 option:selected").attr("servicetypeid");
+						console.log(serviceID);
+						if (typeof serviceID !== undefined) {
+							var options = $(_elementID).data('options').filter('[servicetypeid=' + serviceID + ']');
+						} else {
+							var options = $(_elementID).data('options').filter('[servicetypeid >' + serviceID + ']');
+						}
+						for (var i = 0; i < _listofselect.length; i++) {
+							var currentID = $(_listofselect)[i].id;
+							$("#" + currentID).html(options.clone());
+						}
+
 					}
 
 export default page;
