@@ -188,8 +188,10 @@ var PaymentBundle = Model.extend({
       throw new Error('Invalid action for payment bundle move. Only "approve", "reject", "recall", and "delete" are valid.');
     }
 
-    var bundleDetailsGroup = this.bundleDetailsGroup.attr();
-    bundleDetailsGroup.forEach(function(group) {
+    var bundleData = this.attr();
+    // now to reverse all the stuff we did in the name of science
+    delete bundleData.bundleFooter;
+    bundleData.bundleDetailsGroup.forEach(function(group) {
       delete group.__isChild;
       delete group.__isOpen;
 
@@ -198,21 +200,19 @@ var PaymentBundle = Model.extend({
         delete detail.__isOpen;
       });
     });
+    delete bundleData.bdlFooter.paymentCcy;
+    bundleData.bdlFooter.bdlFooterDetails.forEach(function(detail) {
+      delete detail.__isChild;
+      delete detail.__isOpen;
+      delete detail.paymentCcy;
+    });
+    bundleData = can.extend(bundleData, {
+      comments: params.approvalComment,
+      paymentOption: params.paymentOption
+    });
 
     var requestData = {
-      paymentBundle: {
-        comments: params.approvalComment,
-        paymentOption: params.paymentOption,
-
-        bundleId: this.bundleId,
-        approvalId: this.approvalId,
-        periodFrom: this.periodFrom,
-        periodTo: this.periodTo,
-        paymentAmt: this.paymentAmt,
-        paymentCcy: this.paymentCcy,
-        status: this.status,
-        bundleDetailsGroup: bundleDetailsGroup
-      }
+      paymentBundle: bundleData
     };
 
     return $.ajax({
@@ -221,7 +221,30 @@ var PaymentBundle = Model.extend({
       data: requestData,
       processData: false
     });
-  }
+  }/*,
+  removeBundleGroups: function(groups, appstate) {
+    var requestData = {
+      prsId: appstate.userInfo.prsId,
+      paymentBundle: {
+        bundleId: this.bundleId,
+        bundleName: this.bundleName,
+        bundleType: this.bundleType,
+        mode: 'REMOVE',
+        bundleDetailsGroup: _.map(groups, function(group) { return {
+          refLineId: group.refLineId,
+          refLineType: group.refLineType,
+          periodType: group.periodType
+        }});
+      }
+    };
+
+    return $.ajax({
+      url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/manage',
+      type: 'POST',
+      data: requestData,
+      processData: false
+    });
+  }*/
 });
 
 var transformFooter = function(bundleFooter) {
