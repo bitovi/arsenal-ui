@@ -2,14 +2,14 @@ import Model from 'can/map/';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 /**
- * Config file for Default Global Parameters 
+ * Config file for Default Global Parameters
  *
  **/
 
 var defaultGlobalParameters = {
 		"PeriodFrom": getDefaultPeriodFrom(),
 		"PeriodTo": getDefaultPeriodTo(),
-		"StoreType":{id:"", value:""}, /* use {id:1, value:"iTunes Downloads"} if u want to select iTunes Downloads by default */
+		"StoreType":{id:1, value:"iTunes Downloads"}, /* use {id:1, value:"iTunes Downloads"} if u want to select iTunes Downloads by default */
 		"Region":{id:2, value:"Europe"},
 		"Country":["AUT"], /* To select all pass "All" as a string not in array, for multi select pass ["AUT","BEL", ...]*/
 		"Licensor":["17"], /* To select all pass "All" as a string not in array, for multi select pass ["17","32", ...], 17 is for CELAS */

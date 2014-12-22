@@ -81,7 +81,7 @@ var GlobalParameterBar = Component.extend({
     'inserted': function() {
       var self = this;
       this.scope.applyChanges(this.scope.appstate, this.scope.changesToApply); // this looks backwards but it's right, I promise.
-                                                                    // We need to set up changesToApply for the template to key off of                                                          
+                                                                    // We need to set up changesToApply for the template to key off of
     },
     '{periodFrom} change': function(el, ev) {
       //console.log("period from change "+ this.scope.appstate.attr('periodFrom'));
@@ -243,7 +243,7 @@ var GlobalParameterBar = Component.extend({
           }
 
         });
-        
+
 
         $("#licensorsFilter").multiselect({
           numberDisplayed: 1,
@@ -274,7 +274,7 @@ var GlobalParameterBar = Component.extend({
           $('#storeTypesFilter').val(DefaultGlobalParameters.StoreType.value);
           $('#regionsFilter').val(DefaultGlobalParameters.Region.value);
 
-          
+
           var defCountry = DefaultGlobalParameters.attr('Country');
           if(defCountry=="All"){
             $("#countriesFilter").multiselect('selectAll', false);
@@ -319,21 +319,21 @@ var GlobalParameterBar = Component.extend({
               for (var i = 0; i < selectedContentType.length; i++) {
                 formatContentType.push(selectedContentType[i].split(":")[0]);
               }
-            } 
-             
+            }
+
             self.scope.changesToApply.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(DefaultGlobalParameters.PeriodFrom).toString());
             self.scope.changesToApply.attr('periodTo', periodWidgetHelper.getFiscalPeriod(DefaultGlobalParameters.PeriodTo));
             self.scope.changesToApply.attr('periodType', 'P');
             self.scope.changesToApply.attr('storeType', DefaultGlobalParameters.StoreType);
-            self.scope.changesToApply.attr('region', DefaultGlobalParameters.Region.id);
+            self.scope.changesToApply.attr('region', DefaultGlobalParameters.Region);
             self.scope.changesToApply.attr('country').replace($("#countriesFilter").val());
             self.scope.changesToApply.attr('licensor').replace($("#licensorsFilter").val());
             self.scope.changesToApply.attr('contentType').replace(formatContentType);
-            
+
             self.scope.applyChanges(self.scope.changesToApply, self.scope.appstate);
-            //console.log("APpp state & ChangesTOAPPLY is "+JSON.stringify(self.scope.appstate.attr())+","+JSON.stringify(self.scope.changesToApply.attr()));  
+            //console.log("APpp state & ChangesTOAPPLY is "+JSON.stringify(self.scope.appstate.attr())+","+JSON.stringify(self.scope.changesToApply.attr()));
           }, 2000);
-          
+
           /* Setting default global parameter values to appstate scope variable Ends here*/
 
       }, 2000);
