@@ -14,7 +14,7 @@ var PaymentBundleDetailGroup = Model.extend({
     };
 
     return $.ajax({
-      url:  URLs.DOMAIN_SERVICE_URL + 'invoice/delete',
+      url:  URLs.DOMAIN_SERVICE_URL + 'paymentBundle/manage',
       type: 'POST',
       data: data,
       processData: false

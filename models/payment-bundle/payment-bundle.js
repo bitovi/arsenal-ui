@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import Model from 'can/model/';
+import can from 'can/';
 import can_define from 'can/map/define/'
 import URLs from 'utils/urls';
 import requestHelper from 'utils/request/';
@@ -84,19 +85,9 @@ var PaymentBundle = Model.extend({
     });
   },
   destroy: function(id, bundle) {
-    // TODO: when infrastructure gets set up, fix this.
-    var data = {
-      searchRequest: {
-        ids: [id]
-      }
-    };
-
-    return $.ajax({
-      url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/delete',
-      type: 'POST',
-      data: data,
-      processData: false
-    });
+    var d = can.Deferred();
+    d.resolve(this);
+    return d;
   }
 }, {
   define: {

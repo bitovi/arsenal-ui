@@ -9,6 +9,7 @@ import WorkflowStep from 'models/workflow-step/';
 import BundleDetailGrid from 'components/bundle-detail-grid/';
 import Switcher from 'components/switcher/';
 import WorkflowDisplay from 'components/workflow-display/';
+import PbrDeleteConfirmModal from 'components/pbr-delete-confirm-modal/';
 
 import columnSets from './column-sets';
 import constants from 'utils/constants';
@@ -123,7 +124,7 @@ var BundleDetailTabs = Component.extend({
       )) {
         return options.fn(this);
       } else {
-        '';
+        return '';
       }
     },
     canShowChart: function(options) {
@@ -177,17 +178,30 @@ var BundleDetailTabs = Component.extend({
         return;
       }
 
-      selectedBundle.moveInWorkflow({
-        action: action,
-        approvalComment: this.scope.approvalComment,
-        paymentOption: this.scope.paymentType
-      }).then(function() {
-        // un-select the selected bundle (we're done here)
-        pageState.attr('selectedBundle', null);
-        // remove it from the list of bundles too, since the user can't act on it anymore
-        var index = pageState.bundles.indexOf(selectedBundle);
-        pageState.bundles.splice(index, 1);
-      });
+      if(action ==='delete') {
+        selectedBundle.bind('destroyed', function() {
+          // un-select the selected bundle (we're done here)
+          pageState.attr('selectedBundle', null);
+        });
+
+        PbrDeleteConfirmModal.displayModal(selectedBundle, {
+          action: action,
+          approvalComment: this.scope.approvalComment,
+          paymentOption: this.scope.paymentType
+        });
+      } else {
+        selectedBundle.moveInWorkflow({
+          action: action,
+          approvalComment: this.scope.approvalComment,
+          paymentOption: this.scope.paymentType
+        }).then(function() {
+          // un-select the selected bundle (we're done here)
+          pageState.attr('selectedBundle', null);
+          // remove it from the list of bundles too, since the user can't act on it anymore
+          var index = pageState.bundles.indexOf(selectedBundle);
+          pageState.bundles.splice(index, 1);
+        });
+      }
     },
     '{scope} selectedTab': function(scope, ev, newTab, oldTab) {
       if(newTab && oldTab) { // only when *changing* tabs
