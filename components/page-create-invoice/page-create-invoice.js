@@ -105,6 +105,7 @@ var page = Component.extend({
   	formSuccessCount:1,
   	uploadedFileInfo:[],
   	periodType:"",
+  	usdFxrateRatio:{},
 	isRequired: function(){
   	 		if(this.attr("invoicetypeSelect") != "2"){  /*Adhoc*/
  				$(".breakdownCountry").addClass("requiredBar");
@@ -653,18 +654,9 @@ var page = Component.extend({
   	 			else{
   	 				this.scope.attr("totalAmountVal", "");
   	 			}
-  	 			var genObj = {fromCurrency:'USD',
-  	 					toCurrency:this.scope.currencyStore,fiscalPeriod:'201401',periodType:'P'};
-  	 			//Fxrate.findAll(UserReq.formRequestDetails(genObj)),
-  	 		/*	Fxrate.findAll(UserReq.formRequestDetails(genObj),function(data){
-                  //console.log("passing params is "+JSON.stringify(data[0].attr()));
-  	 			 self.scope.attr("fxrate").replace(data);
-            },function(xhr){
-                console.error("Error while loading: FXRATE"+xhr);
-            }); */
-
-         },
-       	".addRow click":function(){
+  	 			
+  	 	},
+		".addRow click":function(){
 
          	var self = this;
          	var rowindex = self.scope.attr("rowindex");
@@ -890,12 +882,21 @@ var page = Component.extend({
 			       					$(ele).parent().find('input[type=text]').val(this.scope.periodchoosen).trigger('change');
 			       					$(ele).closest('.calendarcls').find('.box-modal').hide();
 			       					$(ele).blur();
+									console.log("abc");
 			   				},
 						   '.updateperoid focus':function(el){
+						   	 var self = this;
 						      $(el).closest('.calendarcls').find('.box-modal').show();
-						      if(el.attr("id") != "inputMonth0"){
-						      	//showErrorMsg(el.attr("id"))
-								}
+						     	if(el[0].id == "inputMonth0"){
+						     		if($("#inputMonth0").val() && self.scope.currencyStore){
+										var genObj = {fromCurrency:self.scope.currencyStore, toCurrency:'USD', fiscalPeriod:periodWidgetHelper.getFiscalPeriod($("#inputMonth0").val()) ,periodType:periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0))};
+											Fxrate.findOne(UserReq.formRequestDetails(genObj),function(data){
+							                self.scope.attr("usdFxrateRatio", data.fxRate);
+							            },function(xhr){
+							               console.log(xhr);
+							            }); 	
+									}
+							 	}	
 							},
 						   '#inputContent0 change':function(el){  /*validation for servicetypeid*/
 						   		$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
@@ -910,14 +911,11 @@ var page = Component.extend({
 						   '#inputMonth0 change':function(el){ /*validation for period*/
 						  		var self = this;
 						  		self.scope.attr("periodType", $(el).val().charAt(0));
-						  	// 	$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
-									// if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
-									// 		$("#"+this.id+' .inputMonth').val("");
-									// 		showErrorMsg($("#"+this.id+' .inputMonth').attr("id"), "delete");
-									// 	//	self.scope.attr("periodType",
-									// }
-						  	// 	});
-						  	}
+
+
+
+						  		
+							}
 						},
 					  	init: function(){
 					   	 	var self = this;
@@ -995,7 +993,7 @@ var page = Component.extend({
 								  	 	return 'Style="height:'+vph+'px;overflow-y:auto"';
 									},
 									calculateUSD:function(){
-										var fxrate = 0.75;
+										var fxrate = this.usdFxrateRatio;
 										var calUSD = this.attr("totalAmountVal")*fxrate;
 
 										if(isNaN(calUSD)){
