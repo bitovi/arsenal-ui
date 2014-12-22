@@ -53,7 +53,7 @@ export default [
     sortable: true
   },
   {
-    id: 'pubfee',
+    id: 'pubFee',
     title: 'Pub Fee',
     className: "amountColumn",
     format: formats.currencyFormat,
