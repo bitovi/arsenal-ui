@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import Component from 'can/component/';
 import Map from 'can/map/';
 import can from 'can/';
@@ -24,7 +25,7 @@ var page = Component.extend({
   scope: {
     appstate: null, // will be passed in
     pageState: pageState,
-    refreshBundles: function() {
+    refreshBundles: _.debounce(function() {
       if(this.scope.appstate.filled) {
         PaymentBundle.findAll({appstate: this.scope.appstate}).then(function(bundles) {
           can.batch.start();
@@ -38,7 +39,7 @@ var page = Component.extend({
         pageState.attr('selectedBundle', null);
         can.batch.stop();
       }
-    }
+    }, 200)
   },
   helpers: {
     showPage: function(options) {
