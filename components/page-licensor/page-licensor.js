@@ -1938,6 +1938,8 @@ var page = Component.extend({
 
       $('.buttonsBottom').show();
 
+      $(".reportConfErr").hide();
+
       self.scope.addRow();
 
       self.scope.mode = "add";
