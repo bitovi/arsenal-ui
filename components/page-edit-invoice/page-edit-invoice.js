@@ -106,7 +106,7 @@ var page = Component.extend({
   	uploadedFileInfo:[],
   	periodType:"",
   	ajaxRequestStatus:{},
-  	usdFxrateRatio:{},
+  	usdFxrateRatio:"",
 	isRequired: function(){
   	 		if(this.attr("invoicetypeSelect") != "2"){  /*Adhoc*/
  				$(".breakdownCountry").addClass("requiredBar");
@@ -191,7 +191,19 @@ var page = Component.extend({
 	          this.attr("bundleNamesRequest", JSON.stringify(bundleNamesRequest));
 
 				return JSON.stringify(bundleNamesRequest);
-       		}
+       		},
+       		getFxrate:function(){
+	     		var self = this;
+	     		if($("#inputMonth0").val() && self.currencyStore){
+					var genObj = {fromCurrency:self.currencyStore, toCurrency:'USD', fiscalPeriod:periodWidgetHelper.getFiscalPeriod($("#inputMonth0").val()) ,periodType:periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0))};
+						Fxrate.findOne(UserReq.formRequestDetails(genObj),function(data){
+						self.attr("usdFxrateRatio", data.fxRate);
+						console.log(self.attr("usdFxrateRatio"));
+		            },function(xhr){
+		               console.log(xhr);
+		            });
+				}
+			}  	
  },
   events: {
     	"inserted": function(){
@@ -585,6 +597,10 @@ var page = Component.extend({
 				    self.scope.attr("currency").replace(values[0]);
 			   });
 		},
+		"{scope} currencyStore": function(){
+			var self = this;
+			self.scope.getFxrate();
+		},
 		"{scope} regionStore": function(){
 		  	var self = this;
 			var genObj = {regionId:self.scope.attr("regionStore")};
@@ -646,6 +662,7 @@ var page = Component.extend({
 			self.scope.changeTextOnInvType();
 		},
          "{AmountStore} change": function() {
+         		var self = this;
          		var totalAmount = 0;
   	 			this.scope.attr("AmountStore").each(function(val, key){
   	 				if(val == ""){
@@ -660,15 +677,8 @@ var page = Component.extend({
   	 			else{
   	 				this.scope.attr("totalAmountVal", "");
   	 			}
-  	 			var genObj = {fromCurrency:'USD',
-  	 					toCurrency:this.scope.currencyStore,fiscalPeriod:'201401',periodType:'P'};
-  	 			//Fxrate.findAll(UserReq.formRequestDetails(genObj)),
-  	 		/*	Fxrate.findAll(UserReq.formRequestDetails(genObj),function(data){
-                  //console.log("passing params is "+JSON.stringify(data[0].attr()));
-  	 			 self.scope.attr("fxrate").replace(data);
-            },function(xhr){
-                console.error("Error while loading: FXRATE"+xhr);
-            }); */
+  	 			
+  	 			self.scope.getFxrate();
 
          },
          "{invoiceContainer} change": function() {
@@ -1034,14 +1044,7 @@ var page = Component.extend({
 								}*/
 
 							if(el[0].id == "inputMonth0"){
-						     		if($("#inputMonth0").val() && self.scope.currencyStore){
-										var genObj = {fromCurrency:self.scope.currencyStore, toCurrency:'USD', fiscalPeriod:periodWidgetHelper.getFiscalPeriod($("#inputMonth0").val()) ,periodType:periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0))};
-											Fxrate.findOne(UserReq.formRequestDetails(genObj),function(data){
-							                self.scope.attr("usdFxrateRatio", data.fxRate);
-							            },function(xhr){
-							               console.log(xhr);
-							            }); 	
-									}
+						     		self.scope.getFxrate();
 							 	}			
 							},
 						   '#inputContent0 change':function(el){  /*validation for servicetypeid*/
@@ -1164,7 +1167,7 @@ var page = Component.extend({
 								  	 	return 'Style="height:'+vph+'px;overflow-y:auto"';
 									},
 									calculateUSD:function(){
-										var fxrate = this.usdFxrateRatio;
+										var fxrate = this.attr("usdFxrateRatio");
 										var calUSD = this.attr("totalAmountVal")*fxrate;
 
 										if(isNaN(calUSD)){
