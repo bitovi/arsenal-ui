@@ -8,8 +8,6 @@ import stache from 'can/view/stache/';
 import Currency from 'models/common/currency/';
 import UserReq from 'utils/request/';
 import formats from 'utils/formats';
-import bootstrapValidator from 'bootstrapValidator';
-import css_bootstrapValidator from 'bootstrapValidator.css!';
 
 /* Extend grid with the columns */
 Grid.extend({
@@ -209,37 +207,12 @@ var page = Component.extend({
       $('.statsTable').hide();
       this.element.parent().scope().addRefresh(this.scope);
 
-      $('#reconform').on('init.field.bv', function(e, data) {
-      })
-      .bootstrapValidator({
-      container: 'popover',
-        feedbackIcons: {
-            valid: 'valid-rnotes',
-            invalid: 'alert-rnotes',
-            validating: 'glyphicon glyphicon-refreshas'
-        },
-        fields: {
-          currency: {
-              //group:'.licensorName',
-              validators: {
-                  notEmpty: {
-                      message: 'Currency is mandatory'
-                  }
-              }
-          },
-        }
-
-      });
     },
 
 		".refreshReconStats click": function(item,el,ev) {
       self = this;
       var ccids = this.element.parent().scope().ingestCcidSelected;
 
-      $('#reconform').bootstrapValidator('validate');
-      if($('#reconform').data('bootstrapValidator').isValid() == false) {
-        return;
-      }
       //console.log(JSON.stringify(ccids));
       self.scope.fn_refreshReconStats(ccids,this.scope.currency);
 		}
