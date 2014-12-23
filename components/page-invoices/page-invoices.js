@@ -627,39 +627,40 @@ var page = Component.extend({
           var selectedInvoice = self.scope.checkedRows.attr();
           var attachReq = {"searchRequest":{"ids":[], "document":[]}};
           attachReq["searchRequest"]["ids"] = selectedInvoice;
-
-          for(var i=0;i<fileInfo.length;i++){
-            var temp = {};
-            temp["fileName"] = fileInfo[i]["fileName"];
-            temp["location"] = fileInfo[i]["filePath"];
-            attachReq["searchRequest"]["document"].push(temp);
+          if(fileInfo.length >0){
+            for(var i=0;i<fileInfo.length;i++){
+              var temp = {};
+              temp["fileName"] = fileInfo[i]["fileName"];
+              temp["location"] = fileInfo[i]["filePath"];
+              attachReq["searchRequest"]["document"].push(temp);
+            }
+            console.log("Attach request are "+JSON.stringify(UserReq.formRequestDetails(attachReq)));
+            MassFileUpLoader.create(UserReq.formRequestDetails(attachReq),function(data){
+              console.log("Reponse is "+JSON.stringify(data));
+              $("#attachDocumentDiv").hide();
+              if(data["status"]=="SUCCESS"){
+                   $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
+                   $("#messageDiv").show();
+                   setTimeout(function(){
+                      $("#messageDiv").hide();
+                      self.scope.checkedRows.replace([]);
+                       /* The below calls {scope.appstate} change event that gets the new data for grid*/
+                       if(self.scope.appstate.attr('globalSearch')){
+                          self.scope.appstate.attr('globalSearch', false);
+                        }else{
+                          self.scope.appstate.attr('globalSearch', true);
+                        }
+                    },2000);
+                }
+                else{
+                  $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                  $("#messageDiv").show();
+                  setTimeout(function(){
+                      $("#messageDiv").hide();
+                  },2000)
+                }
+            });
           }
-          console.log("Attach request are "+JSON.stringify(UserReq.formRequestDetails(attachReq)));
-          MassFileUpLoader.create(UserReq.formRequestDetails(attachReq),function(data){
-            console.log("Reponse is "+JSON.stringify(data));
-            $("#attachDocumentDiv").hide();
-            if(data["status"]=="SUCCESS"){
-                 $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
-                 $("#messageDiv").show();
-                 setTimeout(function(){
-                    $("#messageDiv").hide();
-                    self.scope.checkedRows.replace([]);
-                     /* The below calls {scope.appstate} change event that gets the new data for grid*/
-                     if(self.scope.appstate.attr('globalSearch')){
-                        self.scope.appstate.attr('globalSearch', false);
-                      }else{
-                        self.scope.appstate.attr('globalSearch', true);
-                      }
-                  },2000);
-              }
-              else{
-                $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-                $("#messageDiv").show();
-                setTimeout(function(){
-                    $("#messageDiv").hide();
-                },2000)
-              }
-          })
       },
       "#btnSubmit click":function(){
         var self = this;
