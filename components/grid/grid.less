@@ -172,9 +172,12 @@
   }
 
 }
-.child.visible{
+.child.visible {
   background:#fff;
   border:1px solid #bfbfbf;
+  &.selected {
+    background-color: @selected-color;
+  }
 }
 
 /* Mix them under the appropriate tag like this: */
