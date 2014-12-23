@@ -16,7 +16,7 @@ var headerNavigation = Component.extend({
         roles: [],
         allowedScreenId : []
     },
-    init: function() {
+    init: function() { 
       var self = this;
 
       Promise.all([
@@ -65,8 +65,6 @@ var headerNavigation = Component.extend({
              $('#homemenu').show();
            }
            else changeMenu(mainmenu_txt);
-
-
       },
       '#dynamicmenu li a click':function(btn){
             if(btn.attr('id')!='show' && btn.attr('id')==undefined){
@@ -76,7 +74,6 @@ var headerNavigation = Component.extend({
                   $("#dropdown").hide();
                 }
             }
-
       },
       '{document}  click':function(el,e){
         if ($(e.target).closest("#dynamicmenu").length === 0) {
@@ -88,6 +85,10 @@ var headerNavigation = Component.extend({
             $("#dropdown").hide();
         }
       },
+      '{appstate} change':function(el){
+        $('#dynamicmenu li a').removeClass('submenuactive');
+        $('#dynamicmenu li a[href*="'+el.page+'"]').addClass('submenuactive');
+      }
   },
     helpers: {
         isActive: function(pageName) { console.log(pageName);
@@ -123,6 +124,9 @@ var changeMenu = function(mainmenu_txt){
               }
             }
         });
+
+     
+
        $('#dynamicmenu').empty().append(temp);
        $('#dropdown').empty().append($('#homemenu').html());
        $( "#dropdown li[name*='"+mainmenu_txt+"']").hide()
