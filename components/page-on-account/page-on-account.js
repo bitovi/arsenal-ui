@@ -424,7 +424,7 @@ var page = Component.extend({
        if(self.scope.tabsClicked=="ON_ACC_BALANCE"){
               onAccountBalance.findOne(createBalanceOnAccountRequestForExportToExcel(self.scope.appstate),function(data){
                       if(data["status"]=="SUCCESS"){
-                        alert(data);
+                        //alert(data);
                         //self.scope.rows.replace(getUiRowsFromResponse(quarters,data));  
                       }else{
                         $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
