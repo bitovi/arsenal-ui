@@ -156,8 +156,193 @@ var page = Component.extend({
 
     repConfMessage : "",
 
+    latestSelectedCountry : "",
+
+    repConfValuesExists : true,
+
     bootstrapValidParams : ["licensorName", "accountName", "invoiceType", "sapVendor", "periodFromInp"],
 
+    displayCoutries : [],
+
+    rptConfigurationPerCountry : {
+
+      repconf : []
+      
+    },
+
+    ReportCofiguration  : {
+
+    repconf : 
+      [
+        {
+    
+        country : "AUS",
+        reports : ["DDEX2_MUSIC@3", "UNCLAIMED_V13@3", "DDEX43_FILM@3", "CSI@3"]
+        }
+        ,
+        {
+      
+        country : "FJI",
+        reports : ["DDEX2_MUSIC@3", "UNCLAIMED_V13@3", "DDEX43_FILM@3", "CSI@3"]
+        },
+      
+        {
+      
+        country : "FSM",
+        reports : ["DDEX2_MUSIC@3", "UNCLAIMED_V13@3", "DDEX43_FILM@3", "CSI@3"]
+        },
+      
+        {
+      
+        country : "NZL",
+        reports : ["DDEX2_MUSIC@3", "UNCLAIMED_V13@3", "DDEX43_FILM@3", "CSI@3"]
+        },
+        {
+      
+        country : "AUT",
+        reports : ["DDEX2_MUSIC@3", "UNCLAIMED_V13@3", "DDEX43_FILM@3", "CSI@3"]
+        }
+
+      ]
+          
+    
+  },
+
+    mapCurrentCountryReportConf : function () {
+
+      var self = this;
+
+
+      self.rptConfigurationPerCountry.repconf.splice(0,self.rptConfigurationPerCountry.repconf.length);
+
+      var inputReportBoxes =  $("input.reportBox");
+
+      var inputCountryBoxes = $("input.countryBox");
+
+      var repArray = [];
+
+      var count = 0;
+
+      var repConfiguration = [];
+
+
+      for(var i=0; i < inputReportBoxes.length ; i++ ) {
+
+        if(inputReportBoxes[i].checked == true) {
+
+            repArray[count++] = inputReportBoxes[i].getAttribute("actualValue");
+
+        }
+
+      }
+
+      for (var i=0; i < inputCountryBoxes.length ; i++ ) {
+
+        if(inputCountryBoxes[i].checked == true) {
+
+          var country = inputCountryBoxes[i].getAttribute("value");
+
+          var element = {"country" : "" , "reports" : []};
+
+          var exists = false;
+
+          element.country = country;
+
+          element.reports = repArray;
+
+          self.rptConfigurationPerCountry.repconf.push(element);
+
+          }
+
+        }
+
+    },
+
+    mapExistCountryReportConf : function() {
+
+      var self = this;
+
+      var data = self.ReportCofiguration.repconf;
+
+      var inputReportBoxes =  $("input.reportBox");
+
+      var inputCountryBoxes = $("input.countryBox");
+
+      var repArray = [];
+
+      var count = 0;
+
+      var repConfiguration = [];
+
+
+      for(var i=0; i < inputReportBoxes.length ; i++ ) {
+
+        if(inputReportBoxes[i].checked == true) {
+
+            repArray[count++] = inputReportBoxes[i].getAttribute("value");
+
+        }
+
+      }
+
+      for (var i=0; i < inputCountryBoxes.length ; i++ ) {
+
+        if(inputCountryBoxes[i].checked == true) {
+
+          var country = inputCountryBoxes[i].getAttribute("value");
+
+          var element = {"country" : "" , "reports" : []};
+
+          var exists = false;
+
+          for (var i=0; i < data.length ; i++) {
+
+            if(data[i].country == country) {
+
+              data[i].reports.replace(repArray);
+
+              exists = true;
+
+            }
+
+          }
+          if (exists == false) {
+
+            element.country = country;
+
+            element.reports = repArray;
+
+            self.ReportCofiguration.repconf.push(element);
+
+          }
+
+        }
+        
+      }
+
+      self.repConfValuesExists = true;        
+    
+    },
+
+    getExistCountryReportConf : function(country) {
+
+      var self = this;
+
+      var data = self.ReportCofiguration.repconf;
+
+      for (var i=0; i < data.length ; i++ ) {
+
+        if(data[i].country == country) {
+
+            return data[i].reports;
+
+        }
+
+      }
+
+      return [];
+
+    },
     
     getReportConf : function() {
 
@@ -634,6 +819,7 @@ var page = Component.extend({
         $("input.countryBox").prop('checked', false);
         $("input.reportBox").prop('checked', false);
         $("input.selectAllChkBox").prop('checked', false);
+        $("input.selectAllRepChkBox").prop('checked', false);
 
         self.submitAllCountires = false;
         self.submitAllReports = false;
@@ -689,6 +875,276 @@ var page = Component.extend({
       
       DynamicFieldValidation($options, 'addField', $('#entityLicensorBottom'));
       
+    },
+
+    submitAnalytics : function() {
+
+      var self = this;
+
+        $('#entityLicensorBottom').bootstrapValidator('validate');
+
+        if($('#entityLicensorBottom').data('bootstrapValidator').isValid() == false) {
+
+          return;
+
+        }
+
+        var societyContactDetails = self.getSocietyContactDetails();
+
+        var reportConf = {"reports":[], "countries": []};
+
+        var reports = self.getReportConf();
+
+        var countries = self.getCountries();
+
+        if(reports.length == 0 && countries.length != 0) {
+
+            self.attr("repConfMessage", "Select both Countries and Reports!");
+
+            $(".reportConfErr").show();
+
+            return;
+
+        } else if(countries.length == 0 && reports.length != 0) {
+
+            self.attr("repConfMessage", "Select both Countries and Reports!");
+
+            $(".reportConfErr").show();
+
+            return;
+
+        }
+      
+
+        var comments = self.getEditableComments();
+
+        var invoiceType = self.invoiceType;
+
+        //Todays changes
+
+        var periodFrom = $(".periodFromInput").val();;  
+
+        var periodTo = $(".periodToInput").val();
+
+        if (periodFrom != 0 || periodFrom != undefined || periodFrom!= null) {
+
+          periodFrom = PeriodWidgetHelper.getFiscalPeriod(periodFrom.toString());
+
+        }
+
+        if (periodTo != 0 || periodTo != undefined || periodTo!= null) {
+
+          periodTo = PeriodWidgetHelper.getFiscalPeriod(periodTo.toString());
+
+        }
+        
+
+        if (comments == "") {
+
+          $(".multicomments-required").show();
+
+          return;
+
+        }
+
+        if($("#invoiceType").val() == "Select") {
+
+            $(".invoiceTypeerr").show();
+
+            return;
+
+        }
+
+        for(var i=0; i<reports.length; i++) {
+
+          reportConf.reports[i] = reports[i].toString();
+
+        }
+
+        for(var i=0; i<countries.length; i++) {
+
+          reportConf.countries[i] = countries[i].toString();
+
+        }
+
+        if(self.mode == 'fetch') {
+
+          var reLicencorDetails = {};
+
+          reLicencorDetails.id = self.licDetails.data.id;
+          reLicencorDetails.licensorDetails = {};
+          reLicencorDetails.licensorDetails.id = self.licDetails.data.id;
+          reLicencorDetails.licensorDetails.commentId  = self.licDetails.data.commentId;
+          reLicencorDetails.licensorDetails.entityTypeId  = self.licDetails.data.entityTypeId;
+          reLicencorDetails.licensorDetails.paymentTerms = self.licDetails.data.paymentTerms;
+          reLicencorDetails.licensorDetails.repSplit = self.licDetails.data.repSplit;
+          reLicencorDetails.licensorDetails.uploadedFilesToSFTP = self.licDetails.data.uploadedFilesToSFTP;
+          reLicencorDetails.licensorDetails.contactDetails = societyContactDetails;
+          reLicencorDetails.licensorDetails.licensorName = self.licDetails.data.licensorName;
+          reLicencorDetails.licensorDetails.licensorId = self.licDetails.data.licensorId;
+          reLicencorDetails.licensorDetails.createdBy = self.licDetails.data.createdBy;
+          reLicencorDetails.licensorDetails.commentTxt = comments;
+          reLicencorDetails.licensorDetails.accountName = self.licDetails.data.accountName;
+          reLicencorDetails.licensorDetails.invoiceDetailType = self.licDetails.data.invoiceDetailType;
+          reLicencorDetails.licensorDetails.prsId = self.licDetails.data.prsId;
+          reLicencorDetails.licensorDetails.invoiceDetailType = invoiceType;
+          //reLicencorDetails.licensorDetails.revisionHistories = [];
+          reLicencorDetails.licensorDetails.reportConf = reportConf;
+            
+          reLicencorDetails.licensorDetails.sapVendorNo = self.licDetails.data.sapVendorNo;
+          reLicencorDetails.licensorDetails.validFrom = periodFrom;
+          reLicencorDetails.licensorDetails.validTo = periodTo;
+          
+          reLicencorDetails.licensorId = 0;
+
+          var genObj = reLicencorDetails;
+
+          Promise.all([Analytics.create(UserReq.formRequestDetails(genObj))]).then(function(data) {
+
+
+
+            if(data[0].responseText == "SUCCESS") {
+
+                var msg = "Entity Detials saved successfully";
+
+                $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
+                $("#invmessageDiv").show();
+                setTimeout(function(){
+                  $("#invmessageDiv").hide();
+                },5000);
+            } else {
+
+                var msg = "Entity Detials was not saved successfully";
+                $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+                $("#invmessageDiv").show();
+                setTimeout(function(){
+                  $("#invmessageDiv").hide();
+                },5000);
+            }
+          
+          });
+ 
+        } else {
+
+          var reLicencorDetails = {};
+
+          reLicencorDetails.id = "0";
+          reLicencorDetails.licensorDetails = {};
+          reLicencorDetails.licensorDetails.id = "0";
+          reLicencorDetails.licensorDetails.commentId  = "0";
+          reLicencorDetails.licensorDetails.entityTypeId  = "1";
+
+          reLicencorDetails.licensorDetails.contactDetails = societyContactDetails;
+          reLicencorDetails.licensorDetails.licensorName = self.licDetails.data.licensorName;
+          reLicencorDetails.licensorDetails.uploadedFilesToSFTP = self.licDetails.data.uploadedFilesToSFTP;
+
+          reLicencorDetails.licensorDetails.licensorId = "0";
+          
+          reLicencorDetails.licensorDetails.commentTxt = comments;
+          reLicencorDetails.licensorDetails.accountName = self.licDetails.data.accountName;
+          reLicencorDetails.licensorDetails.invoiceDetailType = invoiceType;
+          
+          reLicencorDetails.licensorDetails.sapVendorNo = self.licDetails.data.sapVendorNo;
+
+          reLicencorDetails.licensorDetails.validFrom = periodFrom;
+          reLicencorDetails.licensorDetails.validTo = periodTo;
+
+          reLicencorDetails.licensorId = "0";
+
+          var genObj = reLicencorDetails;
+
+          Promise.all([Analytics.create(UserReq.formRequestDetails(genObj))]).then(function(data) {
+
+            if(data[0].responseText == "SUCCESS") {
+
+                var genObj = {};
+
+                var msg = "Entity Detials added successfully";
+
+                $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
+                $("#invmessageDiv").show();
+                setTimeout(function(){
+                  $("#invmessageDiv").hide();
+                },5000);
+
+                Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
+
+                  self.licensors.replace(values[0].entities[0]);
+
+      
+                });
+
+            } else {
+
+                var msg = "Entity Detials was not added successfully";
+                $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+                $("#invmessageDiv").show();
+                setTimeout(function(){
+                  $("#invmessageDiv").hide();
+                },5000);
+
+            }
+          
+          });
+        }
+
+    },
+
+    confirmSubmit : function() {
+
+     var self = this;
+
+      var repConf = self.rptConfigurationPerCountry.repconf;
+
+      var displayCountries = [];
+
+      var displayReport = [];
+
+      for(var i=0; i<repConf.length ; i++) {
+
+          var element = {country : "", reports : ""};
+
+          var dReport = [];
+          
+          dReport =repConf[i].reports;
+
+          for(var j=0; j<dReport.length ; j++) {
+            
+               element.reports += dReport[j] + ", ";
+
+          }
+          element.reports = element.reports.substr(0, element.reports.length-2);
+
+          element.country += repConf[i].country + ", ";
+
+          element.country = element.country.substr(0, element.country.length-2);
+
+          displayCountries.push(element);
+
+      }
+
+      //displayCountries  = displayCountries.substr(0, displayCountries.length-2)
+
+      //displayReport  = displayReport.substr(0, displayReport.length-2)
+
+      self.attr("displayCoutries").splice(0, self.attr("displayCoutries").length);
+
+      self.attr("displayCoutries", displayCountries);
+      //self.attr("displayReport", displayReport);
+
+      if(displayCountries.length >0 && displayCountries[0].country != "" && displayCountries[0].reports != "")  {
+
+        $(".confirmationReportConfig").show();
+        //$("#buttonsubmit").attr("disabled", true);
+
+        $("#entityGrid").addClass("opaqueClass");
+
+        $("#entityDetailsTab").addClass("opaqueClass");
+
+        return;
+
+      }
+
     },
 
     reValidateFiledsonLoad : function() {
@@ -1019,6 +1475,8 @@ var page = Component.extend({
 
       $("#loading_img").hide();
 
+      $(".confirmationReportConfig").hide();
+
       var defaultEntity = [];
 
       Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
@@ -1125,6 +1583,24 @@ var page = Component.extend({
         $("input.reportBox").prop('checked', true);
 
         self.scope.submitAllReports = true;
+
+    },
+
+    ".selectAllRepChkBox click" : function(el, ev){
+
+        var self = this;
+
+        var id = el.closest('input');
+
+        if (el[0].checked) {
+
+          $("input.reportBox").prop('checked', true);
+
+        } else {
+
+          $("input.reportBox").prop('checked', false);
+
+        }
 
     },
 
@@ -1271,7 +1747,78 @@ var page = Component.extend({
   
     },
 
-    
+    ".countryReportColumn div dblclick" : function (el, ev)  {
+
+      var self = this;
+
+      var reportBox = $("input.reportBox");
+
+      for(var i=0; i<reportBox.length; i++) {
+
+        if(reportBox[i].checked) {
+
+          reportBox[i].checked = false;
+
+        }
+
+      }
+
+      var reportConf = self.scope.ReportCofiguration.repconf;
+
+      for(var i=0; i < reportConf.length; i++) {
+
+        for(var j=0; j<reportBox.length; j++) {
+
+            if(reportBox[j].getAttribute("value") == reportConf[i] ) {
+
+              reportBox[j].checked = true;
+
+            }
+
+        }
+
+      }
+
+      var country = el.closest('div')[0].innerHTML;
+      var reportConf = self.scope.getExistCountryReportConf(country);
+
+      if(country.contains("<")) {
+
+        var obj = el.closest('div')[0];
+        country = obj.childNodes[0].getAttribute("value");
+        
+      }
+
+      self.scope.latestSelectedCountry = country;
+
+      var reportBox = $("input.reportBox");
+      
+      for(var i=0; i < reportConf.length; i++) {
+
+        for(var j=0; j<reportBox.length; j++) {
+
+            if(reportBox[j].getAttribute("value") == reportConf[i] ) {
+
+              reportBox[j].checked = true;
+
+            }
+
+        }
+
+      }
+
+    }, 
+
+    ".applyAllSelected click" : function(el, ev){
+      this.scope.mapCurrentCountryReportConf();
+      this.scope.confirmSubmit();
+      
+      $("#entityGrid").addClass("opaqueClass");
+      $("#entityDetailsTab").addClass("opaqueClass");
+
+    },
+
+
     ".rn-grid-revisionhistory>tbody>tr td dblclick" : function(el, ev){
 
           var self = this;
@@ -1370,253 +1917,76 @@ var page = Component.extend({
 
     "#analyticsAdd click": function(event){
 
-        var self = this;
+      var self = this;
 
-        self.scope.clearPeriods();
+      self.scope.clearPeriods();
 
-        self.scope.clearContactDetails();
+      self.scope.clearContactDetails();
 
-        self.scope.clearRepConfDetails();
+      self.scope.clearRepConfDetails();
 
-        self.scope.licDetails.attr("data", {});
+      self.scope.licDetails.attr("data", {});
 
-        self.scope.disableTabs();
+      self.scope.disableTabs();
 
-        $("multiple-comments").remove();
+      $("multiple-comments").remove();
 
-        $('.buttonsBottom').show();
+      $('.buttonsBottom').show();
 
-        $('#multipleComments').show();
+      $('#multipleComments').show();
 
-        $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{commentObj}" divheight="100" isreadOnly="n"></multiple-comments>'));
+      $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{commentObj}" divheight="100" isreadOnly="n"></multiple-comments>'));
 
-        $('#entityGrid').show();
-      
-        $('.societyContactsTab').show();
+      $('#entityGrid').show();
+    
+      $('.societyContactsTab').show();
 
-        $('.buttonsBottom').show();
+      $('.buttonsBottom').show();
 
-        self.scope.addRow();
+      self.scope.addRow();
 
-        self.scope.mode = "add";
+      self.scope.mode = "add";
 
-        $("#invoiceType").val("Select");
+      $("#invoiceType").val("Select");
 
-        self.scope.reValidateFiledsonLoad();
+      self.scope.reValidateFiledsonLoad();
     },
-
 
     '.submitButton click' : function() {
 
-        var self = this;
+        this.scope.submitAnalytics();
 
-        $('#entityLicensorBottom').bootstrapValidator('validate');
+    },
 
-        if($('#entityLicensorBottom').data('bootstrapValidator').isValid() == false) {
+    '#bcsubmit click' : function() {
+      //$("#buttonsubmit").attr("disabled", false);
+      $(".confirmationReportConfig").hide();
+      $("#entityGrid").removeClass("opaqueClass");
 
-          return;
+      $("#entityDetailsTab").removeClass("opaqueClass");
 
-        }
-
-        var societyContactDetails = self.scope.getSocietyContactDetails();
-
-        var reportConf = {"reports":[], "countries": []};
-
-        var reports = self.scope.getReportConf();
-
-        var countries = self.scope.getCountries();
-
-
-        if(reports.length == 0 && countries.length != 0) {
-
-            self.scope.attr("repConfMessage", "Select both Countries and Reports!");
-
-            $(".reportConfErr").show();
-
-            return;
-
-        } else if(countries.length == 0 && reports.length != 0) {
-
-            self.scope.attr("repConfMessage", "Select both Countries and Reports!");
-
-            $(".reportConfErr").show();
-
-            return;
-
-        }
+      this.scope.mapExistCountryReportConf();
       
-
-        var comments = self.scope.getEditableComments();
-
-        var invoiceType = self.scope.invoiceType;
-
-        //Todays changes
-
-        var periodFrom = $(".periodFromInput").val();;  
-
-        var periodTo = $(".periodToInput").val();
-
-        if (periodFrom != 0 || periodFrom != undefined || periodFrom!= null) {
-
-          periodFrom = PeriodWidgetHelper.getFiscalPeriod(periodFrom.toString());
-
-        }
-
-        if (periodTo != 0 || periodTo != undefined || periodTo!= null) {
-
-          periodTo = PeriodWidgetHelper.getFiscalPeriod(periodTo.toString());
-
-        }
         
+    },
 
-        if (comments == "") {
+    '.closeConfirmBox click' : function() {
 
-          $(".multicomments-required").show();
+      //$("#buttonsubmit").attr("disabled", false);
+      $("#entityGrid").removeClass("opaqueClass");
 
-          return;
+      $("#entityDetailsTab").removeClass("opaqueClass");
+      $(".confirmationReportConfig").hide();
+        
+    },
 
-        }
+    '#bccancel click' : function() {
 
-        if($("#invoiceType").val() == "Select") {
+      //$("#buttonsubmit").attr("disabled", false);
+      $("#entityGrid").removeClass("opaqueClass");
 
-            $(".invoiceTypeerr").show();
-
-            return;
-
-        }
-
-        for(var i=0; i<reports.length; i++) {
-
-          reportConf.reports[i] = reports[i].toString();
-
-        }
-
-        for(var i=0; i<countries.length; i++) {
-
-          reportConf.countries[i] = countries[i].toString();
-
-        }
-
-        if(self.scope.mode == 'fetch') {
-
-          var reLicencorDetails = {};
-
-          reLicencorDetails.id = self.scope.licDetails.data.id;
-          reLicencorDetails.licensorDetails = {};
-          reLicencorDetails.licensorDetails.id = self.scope.licDetails.data.id;
-          reLicencorDetails.licensorDetails.commentId  = self.scope.licDetails.data.commentId;
-          reLicencorDetails.licensorDetails.entityTypeId  = self.scope.licDetails.data.entityTypeId;
-          reLicencorDetails.licensorDetails.paymentTerms = self.scope.licDetails.data.paymentTerms;
-          reLicencorDetails.licensorDetails.repSplit = self.scope.licDetails.data.repSplit;
-          reLicencorDetails.licensorDetails.uploadedFilesToSFTP = self.scope.licDetails.data.uploadedFilesToSFTP;
-          reLicencorDetails.licensorDetails.contactDetails = societyContactDetails;
-          reLicencorDetails.licensorDetails.licensorName = self.scope.licDetails.data.licensorName;
-          reLicencorDetails.licensorDetails.licensorId = self.scope.licDetails.data.licensorId;
-          reLicencorDetails.licensorDetails.createdBy = self.scope.licDetails.data.createdBy;
-          reLicencorDetails.licensorDetails.commentTxt = comments;
-          reLicencorDetails.licensorDetails.accountName = self.scope.licDetails.data.accountName;
-          reLicencorDetails.licensorDetails.invoiceDetailType = self.scope.licDetails.data.invoiceDetailType;
-          reLicencorDetails.licensorDetails.prsId = self.scope.licDetails.data.prsId;
-          reLicencorDetails.licensorDetails.invoiceDetailType = invoiceType;
-          //reLicencorDetails.licensorDetails.revisionHistories = [];
-          reLicencorDetails.licensorDetails.reportConf = reportConf;
-            
-          reLicencorDetails.licensorDetails.sapVendorNo = self.scope.licDetails.data.sapVendorNo;
-          reLicencorDetails.licensorDetails.validFrom = periodFrom;
-          reLicencorDetails.licensorDetails.validTo = periodTo;
-          
-          reLicencorDetails.licensorId = 0;
-
-          var genObj = reLicencorDetails;
-
-          Promise.all([Analytics.create(UserReq.formRequestDetails(genObj))]).then(function(data) {
-
-
-
-            if(data[0].responseText == "SUCCESS") {
-
-                var msg = "Entity Detials saved successfully";
-
-                $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
-                $("#invmessageDiv").show();
-                setTimeout(function(){
-                  $("#invmessageDiv").hide();
-                },5000);
-            } else {
-
-                var msg = "Entity Detials was not saved successfully";
-                $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
-                $("#invmessageDiv").show();
-                setTimeout(function(){
-                  $("#invmessageDiv").hide();
-                },5000);
-            }
-          
-          });
- 
-        } else {
-
-          var reLicencorDetails = {};
-
-          reLicencorDetails.id = "0";
-          reLicencorDetails.licensorDetails = {};
-          reLicencorDetails.licensorDetails.id = "0";
-          reLicencorDetails.licensorDetails.commentId  = "0";
-          reLicencorDetails.licensorDetails.entityTypeId  = "1";
-
-          reLicencorDetails.licensorDetails.contactDetails = societyContactDetails;
-          reLicencorDetails.licensorDetails.licensorName = self.scope.licDetails.data.licensorName;
-          reLicencorDetails.licensorDetails.uploadedFilesToSFTP = self.scope.licDetails.data.uploadedFilesToSFTP;
-
-          reLicencorDetails.licensorDetails.licensorId = "0";
-          
-          reLicencorDetails.licensorDetails.commentTxt = comments;
-          reLicencorDetails.licensorDetails.accountName = self.scope.licDetails.data.accountName;
-          reLicencorDetails.licensorDetails.invoiceDetailType = invoiceType;
-          
-          reLicencorDetails.licensorDetails.sapVendorNo = self.scope.licDetails.data.sapVendorNo;
-
-          reLicencorDetails.licensorDetails.validFrom = periodFrom;
-          reLicencorDetails.licensorDetails.validTo = periodTo;
-
-          reLicencorDetails.licensorId = "0";
-
-          var genObj = reLicencorDetails;
-
-          Promise.all([Analytics.create(UserReq.formRequestDetails(genObj))]).then(function(data) {
-
-            if(data[0].responseText == "SUCCESS") {
-
-                var genObj = {};
-
-                var msg = "Entity Detials added successfully";
-
-                $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
-                $("#invmessageDiv").show();
-                setTimeout(function(){
-                  $("#invmessageDiv").hide();
-                },5000);
-
-                Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
-
-                  self.scope.licensors.replace(values[0].entities[0]);
-
-      
-                });
-
-            } else {
-
-                var msg = "Entity Detials was not added successfully";
-                $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
-                $("#invmessageDiv").show();
-                setTimeout(function(){
-                  $("#invmessageDiv").hide();
-                },5000);
-
-            }
-          
-          });
-        }
+      $("#entityDetailsTab").removeClass("opaqueClass");
+      $(".confirmationReportConfig").hide();
         
     },
 

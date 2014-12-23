@@ -297,12 +297,12 @@
 			    								Country
 			    							</th>
 			    							<th>
-			    								Reports
+			    								<input type="checkbox" class="selectAllRepChkBox" value="false"/>&nbsp;Reports
 			    							</th>
 			    						</tr>
 			    					</thead>
 			    					<tbody>
-			    						<tr colspan="3">
+			    						<tr colspan="3" class="countryReportColumn">
 			    							
 			    							<td can-value="countries">
 					    						{{#each countries}}
@@ -316,7 +316,7 @@
 					    					</td>
 					    					<td can-value="reportTypes">
 					    						{{#each reportTypes}}
-					    							<div  style="height:1.5em"><input type="checkbox" value="{{actualName}}"  class="reportBox"  val="false"/> {{name}}</div>
+					    							<div  style="height:1.5em"><input type="checkbox" value="{{actualName}}"  actualValue= "{{name}}" class="reportBox"  val="false"/> {{name}}</div>
 					    						{{/each}}
 					    					</td>
 					    					
@@ -330,9 +330,10 @@
 			    			</div>
 			    			<div class="col-sm-12 repConf">
 			    				<div class="col-sm-12 repConfFooter">
-				    				<div class="col-sm-6 col-sm-offset-6">
-				    					<button type="button" id="applyAll" name="applyAll" class="btn buttonSubmit btn-custom-small3px  applyAll" style="margin-left:10px;">Apply All</button>
-										<button type="button" id="remove" name="remove" class="btn buttonSubmit btn-custom-small3px 	 remove" style="margin-left:10px;">Remove</button>
+				    				<div class="col-sm-6 col-sm-offset-7">
+
+				    					<button type="button" id="applyAllSelected" name="applyAll" class="btn buttonSubmit btn-custom-small3px  applyAllSelected" style="margin-left:10px;">Apply Selected</button>
+										
 				    				</div>
 				    			</div>
 				    		</div>
@@ -434,7 +435,57 @@
 		<div class="col-sm-12" id="spaceBar"></div>
 
 
+		<div class="col-sm-4 col-sm-offset-4" class="confirmationReportConfig" style="display:none">
+			<div style="float:left"><img src="resources/images/close.png" class="closeConfirmBox"  style="float:right;"></img></div>
+			<div class="col-sm-12" id="spaceBar"></div>
+			<div class="col-sm-12 confirmHeading">Confirm your selection</div>
+			<div class="col-sm-12" id="spaceBar"></div>
+			<div class="col-sm-12" style="border: 0px">
+			<div class="repConfTable">
+				<table style="width: 100%;">
+					<thead>
+						<tr>
+							<th>
+								Countries
+							</th>
+							<th>
+								Report Configuration
+							</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+					{{#each displayCoutries}}
+						<tr class="">
+							
+							<td class="">
+								{{country}}
+							</td>
+
+							<td class="">
+								{{reports}}
+							</td>
+
+						</tr>
+					{{/each}}
+				 	
+				 	</tbody>
+				 </table>
+				 </div>
+
+				 <div class="col-sm-12" id="spaceBar"></div>
+
+				 <div class="col-sm-12 col-sm-offset-3 buttonsBottom">
+					<button type="button" id="bcsubmit" class="btn btn-custom-small" style="margin-left:10px;">Ok</button>
+					<button type="button" id="bccancel" class="btn btn-custom-small" style="margin-left:10px;">Cancel</button>
+				</div>
+				<div class="col-sm-12" id="spaceBar"></div>
+		</div>
+
+
 </div>
+
+
 
 
 

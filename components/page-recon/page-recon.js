@@ -360,7 +360,7 @@ var fetchReconIngest = function(scope){
 
       scope.currencyScope.replace(data.currency);
 
-
+      $("#currency").val(data.currency[0]);
 
       if(data.summary == undefined){
         console.error("Footer rows doesn't exists in the response");
