@@ -39,17 +39,7 @@ fileUpload.extend({
  });
 
 fileUpload.extend({
-  tag: 'propose-rn-file-uploader',
-  events: {
-    '{uploadedfileinfo} change': function(){
-        //console.log('Inside '+JSON.stringify(this.element.closest("page-on-account").scope().documents.attr()));
-        
-
-        //this.scope.attr('documents').replace(this.scope.attr('uploadedfileinfo'));
-        //console.log('Inside '+JSON.stringify(this.scope.documents.attr()));
-         //this.element.parent().scope();
-    }
-  }
+  tag: 'propose-rn-file-uploader'
  });
 
 var page = Component.extend({
@@ -432,7 +422,7 @@ var page = Component.extend({
       '.exportToExcel click':function(){
         var self = this;
        if(self.scope.tabsClicked=="ON_ACC_BALANCE"){
-              onAccountBalance.findOne(createBalanceOnAccountRequestForExportToExcel(this.scope.request.appstate),function(data){
+              onAccountBalance.findOne(createBalanceOnAccountRequestForExportToExcel(self.scope.appstate),function(data){
                       if(data["status"]=="SUCCESS"){
                         alert(data);
                         //self.scope.rows.replace(getUiRowsFromResponse(quarters,data));  
