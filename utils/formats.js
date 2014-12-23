@@ -6,7 +6,7 @@ var formats = {
         if(value == ""){
           return "";
         }else{
-          return formats.number(value).toFixed(numberOfDigits);
+          return (formats.number(value)*100).toFixed(numberOfDigits);
         }
       };
   },
@@ -38,6 +38,6 @@ var formats = {
 };
 
 formats.currency = formats.fixed(2);
-formats.percent = (value => formats.fixed(0)(value) + '%');
+formats.percent = (value => formats.fixed(2)(value)+ '%');
 
 export default formats;

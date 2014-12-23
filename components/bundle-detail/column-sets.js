@@ -98,6 +98,11 @@ var columns = {
     title: 'Pymt Sat',
     format: formats.formatIf(_.isNumber, formats.percent, '0%')
   },
+ 'invoicePaymentSaturation': {
+    id: 'invoicePaymentSaturation',
+        title: 'Inv Pymt Sat',
+        format: formats.formatIf(_.isNumber, formats.percent, '0%')
+},
   'adhocTypeId': {
     id: 'adhocTypeId',
     title: 'AdHoc Type',
@@ -106,7 +111,7 @@ var columns = {
 };
 
 var sets = {
-  regularLicensor: _.map(['toggle', 'validations', 'licensor', 'invoiceNumber', 'paymentCcy', 'fiscalPeriod', 'country', 'contentGrpName', 'invoiceAmt', 'orDispAmt', 'liDispAmt', 'reconAmt', 'onaccountAllocatedAmt', 'cashadjAllocatedAmt', 'priorPaid', 'paymentAmt', 'invoiceSaturation', 'paymentSaturation'], colID => columns[colID]),
+  regularLicensor: _.map(['toggle', 'validations', 'licensor', 'invoiceNumber', 'paymentCcy', 'fiscalPeriod', 'country', 'contentGrpName', 'invoiceAmt', 'orDispAmt', 'liDispAmt', 'reconAmt', 'onaccountAllocatedAmt', 'cashadjAllocatedAmt', 'priorPaid', 'paymentAmt', 'invoicePaymentSaturation', 'paymentSaturation'], colID => columns[colID]),
   regularCountry: _.map(['toggle', 'validations', 'country', 'fiscalPeriod', 'licensor', 'paymentCcy','contentGrpName', 'invoiceAmt', 'orDispAmt', 'liDispAmt', 'reconAmt', 'onaccountAllocatedAmt', 'cashadjAllocatedAmt', 'priorPaid', 'paymentAmt', 'invoiceSaturation', 'paymentSaturation'], colID => columns[colID]),
   onAccount: _.map(['toggle', 'validations', 'licensor', 'paymentCcy', 'fiscalPeriod', 'country', 'contentGrpName', 'paymentAmt'], colID => columns[colID]),
   adHoc: _.map(['toggle', 'validations', 'licensor', 'invoiceNumber', 'paymentCcy', 'fiscalPeriod', 'country', 'adhocTypeId', 'invoiceAmt', 'paymentAmt'], colID => columns[colID])
