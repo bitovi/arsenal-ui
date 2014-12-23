@@ -11,6 +11,7 @@ import Switcher from 'components/switcher/';
 import WorkflowDisplay from 'components/workflow-display/';
 import PbrDeleteConfirmModal from 'components/pbr-delete-confirm-modal/';
 import PbrRemoveGroupsModal from 'components/pbr-remove-groups-modal/';
+import Alert from 'components/alert/';
 
 import columnSets from './column-sets';
 import constants from 'utils/constants';
@@ -237,12 +238,16 @@ var BundleDetailTabs = Component.extend({
           action: action,
           approvalComment: this.scope.approvalComment,
           paymentOption: this.scope.paymentType
-        }).then(function() {
-          // un-select the selected bundle (we're done here)
-          pageState.attr('selectedBundle', null);
-          // remove it from the list of bundles too, since the user can't act on it anymore
-          var index = pageState.bundles.indexOf(selectedBundle);
-          pageState.bundles.splice(index, 1);
+        }).then(function(response) {
+          if(response.status === 'SUCCESS') {
+            Alert.displayAlert('success', response.responseText);
+            
+            // un-select the selected bundle (we're done here)
+            pageState.attr('selectedBundle', null);
+            // remove it from the list of bundles too, since the user can't act on it anymore
+            var index = pageState.bundles.indexOf(selectedBundle);
+            pageState.bundles.splice(index, 1);
+          }
         });
       }
     },

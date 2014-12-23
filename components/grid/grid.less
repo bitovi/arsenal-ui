@@ -171,13 +171,15 @@
     -ms-transform: rotate(90deg);
   }
 
-}
-.child.visible {
-  background:#fff;
-  border:1px solid #bfbfbf;
-  &.selected {
-    background-color: @selected-color;
+  .child.visible {
+    background:#fff;
+    border:1px solid #bfbfbf;
+
+    &.selected {
+      background: @selected-background;
+    }
   }
+
 }
 
 /* Mix them under the appropriate tag like this: */
