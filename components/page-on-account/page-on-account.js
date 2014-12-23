@@ -25,7 +25,14 @@ import fileUpload from 'components/file-uploader/';
 import onAccountBalance from 'models/onAccount/onAccountBalance/';
 
 fileUpload.extend({
-  tag: 'rn-file-uploader'
+  tag: 'rn-file-uploader',
+  events:{
+      'inserted': function (){
+        //alert('hi');
+        this.scope.fileList.replace(this.scope.uploadedfileinfo);
+        //console.log(JSON.stringify(this.scope.uploadedfileinfo.attr()));
+      }
+    }
  });
 
 fileUpload.extend({
@@ -38,6 +45,13 @@ fileUpload.extend({
         isAnyFileLoaded : can.compute(function() { return this.fileList.attr('length') > 0; }),
         isSuccess: false
 
+    },
+    events:{
+      'inserted': function (){
+        //alert('hi');
+        this.scope.fileList.replace(this.scope.uploadedfileinfo);
+        //console.log(JSON.stringify(this.scope.uploadedfileinfo.attr()));
+      }
     }
  });
 
@@ -194,8 +208,13 @@ var page = Component.extend({
                                   $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
                                 else
                                   $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>');
+
+                                  
+                                $('#proposeuploadFile').html(stache('<propose-rn-file-uploader uploadedfileinfo={docs}></propose-rn-file-uploader>')({docs:data.documents})); 
+
                             }else{
                                 $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
+                                 $('#proposeuploadFile').html(stache('<propose-rn-file-uploader uploadedfileinfo={docs}></propose-rn-file-uploader>')({docs:[]})); 
                             }
                         } else{
                             displayMessage(data["responseText"],false);
