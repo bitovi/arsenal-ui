@@ -21,7 +21,7 @@ export default [
   },
   {
     id: 'rcvdDate',
-    title: 'Ingestion Date',
+    title: 'Received Date',
     sortable: true
   }
 ];
