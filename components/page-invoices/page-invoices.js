@@ -3,6 +3,7 @@ import View from 'can/view/';
 import _ from 'lodash';
 
 import GlobalParameterBar from 'components/global-parameter-bar/';
+import fileUpload from 'components/file-uploader/';
 import Grid from 'components/grid/';
 import gridtemplate from './gridtemplate.stache!';
 import stache from 'can/view/stache/';
@@ -12,6 +13,7 @@ import StatusCodes from 'models/common/statuscodes/';
 import GetAllInvoices from 'models/getAllInvoices/';
 import Invoice from 'models/invoice/';
 import BundleNamesModel from 'models/payment/bundleNames/';
+import MassFileUpLoader from 'models/mass-file-upload/';
 import invoicemap from 'models/sharedMap/invoice';
 
 import bootstrapmultiselect from 'bootstrap-multiselect';
@@ -108,6 +110,7 @@ var page = Component.extend({
     disableBundleName:undefined,
     getPaymentBundlesNames: undefined,
     newpaymentbundlenamereq:undefined,
+    fileinfo:[],
     refreshTokenInput: function(val, type){
       //console.log("val is "+JSON.stringify(val));
       var self = this;
@@ -449,7 +452,7 @@ var page = Component.extend({
               }
           });
       }
-      //console.log("Checked rows: "+JSON.stringify(self.scope.attr('checkedRows')));
+      //console.log("Checked rows: "+JSON.stringify(self.scope.checkedRows.attr()));
       //console.log("unDeleted Invoices: "+JSON.stringify(self.scope.attr('unDeletedInvoices')));
     },
     "{checkedRows} change": function(item,el,ev){
@@ -606,6 +609,57 @@ var page = Component.extend({
               console.log("New Bundle name request is "+JSON.stringify(newBundleNameRequest));
               self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
           }
+      },
+      "#btnAttach click": function(){
+          //this.scope.attr("fileinfo").replace([]);
+          //$('#fileUploaderDiv').html(stache('<rn-file-uploader uploadedfileinfo="{fileinfo}" fileList="{newFileList}"></rn-file-uploader>')({fileinfo:[], newFileList:[]}));
+          $("#attachDocumentDiv").show();
+      },
+      '#attachDocClose click': function(){
+          $("#attachDocumentDiv").hide();
+      },
+      "{fileinfo} change": function(){
+        /* uploadedfileinfo & fileinfo are two way binded. Refer template.stache <rn-file-uploader uploadedfileinfo="{fileinfo}"></rn-file-uploader>*/
+        /* When the uploadedfileinfo in rn-file-uploader component, fileinfo in this component updated and change event triggered */
+          console.log("updated file info "+JSON.stringify(this.scope.fileinfo.attr()));
+          var self = this;
+          var fileInfo = self.scope.fileinfo.attr();
+          var selectedInvoice = self.scope.checkedRows.attr();
+          var attachReq = {"searchRequest":{"ids":[], "document":[]}};
+          attachReq["searchRequest"]["ids"] = selectedInvoice;
+
+          for(var i=0;i<fileInfo.length;i++){
+            var temp = {};
+            temp["fileName"] = fileInfo[i]["fileName"];
+            temp["location"] = fileInfo[i]["filePath"];
+            attachReq["searchRequest"]["document"].push(temp);
+          }
+          console.log("Attach request are "+JSON.stringify(UserReq.formRequestDetails(attachReq)));
+          MassFileUpLoader.create(UserReq.formRequestDetails(attachReq),function(data){
+            console.log("Reponse is "+JSON.stringify(data));
+            $("#attachDocumentDiv").hide();
+            if(data["status"]=="SUCCESS"){
+                 $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
+                 $("#messageDiv").show();
+                 setTimeout(function(){
+                    $("#messageDiv").hide();
+                    self.scope.checkedRows.replace([]);
+                     /* The below calls {scope.appstate} change event that gets the new data for grid*/
+                     if(self.scope.appstate.attr('globalSearch')){
+                        self.scope.appstate.attr('globalSearch', false);
+                      }else{
+                        self.scope.appstate.attr('globalSearch', true);
+                      }
+                  },2000);
+              }
+              else{
+                $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                $("#messageDiv").show();
+                setTimeout(function(){
+                    $("#messageDiv").hide();
+                },2000)
+              }
+          })
       },
       "#btnSubmit click":function(){
         var self = this;

@@ -17,6 +17,7 @@ rn-grid-invoice {
 .invoiceContainer{
 	border: 0px !important;
 	padding:10px;
+	position: relative;
 
 	.pageTitle{
 	  padding-left: 75px;
@@ -54,6 +55,24 @@ rn-grid-invoice {
 	}
 	.buttonSubmit{
 		margin-left:10px;
+	}
+
+	#attachDocumentDiv{
+		position: absolute;
+		width: 450px;
+		height:auto;
+		border: 1px solid #ddd;
+		margin: 0px auto;
+		left: 350px;
+		top: 50px;
+		background: #fff;
+		display:none;
+		border-radius: 5px;
+		padding:0 0 10px 0;
+
+		.outer {
+			width: 95%;
+		}
 	}
 }
 .paymentBundleDiv #paymentBundleNames{
