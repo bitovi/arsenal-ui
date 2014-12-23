@@ -177,7 +177,8 @@ var PaymentBundle = Model.extend({
     var bundleData = this.attr();
     // now to reverse all the stuff we did in the name of science
     delete bundleData.bundleFooter;
-    bundleData.bundleDetailsGroup.forEach(function(group) {
+    
+    bundleData.bundleDetailsGroup && bundleData.bundleDetailsGroup.forEach(function(group) {
       delete group.__isChild;
       delete group.__isOpen;
 
@@ -186,12 +187,16 @@ var PaymentBundle = Model.extend({
         delete detail.__isOpen;
       });
     });
-    delete bundleData.bdlFooter.paymentCcy;
-    bundleData.bdlFooter.bdlFooterDetails.forEach(function(detail) {
-      delete detail.__isChild;
-      delete detail.__isOpen;
-      delete detail.paymentCcy;
-    });
+
+    if(bundleData.bdlFooter) {
+      delete bundleData.bdlFooter.paymentCcy;
+      bundleData.bdlFooter.bdlFooterDetails.forEach(function(detail) {
+        delete detail.__isChild;
+        delete detail.__isOpen;
+        delete detail.paymentCcy;
+      });
+    }
+
     bundleData = can.extend(bundleData, {
       comments: params.approvalComment,
       paymentOption: params.paymentOption

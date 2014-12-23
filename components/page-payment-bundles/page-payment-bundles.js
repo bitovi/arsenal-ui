@@ -9,6 +9,7 @@ import PaymentBundle from 'models/payment-bundle/';
 // Components
 import PaymentBundleGrid from 'components/bundle-grid/';
 import PaymentBundleDetail from 'components/bundle-detail/';
+import PbrDeleteConfirmModal from 'components/pbr-delete-confirm-modal/';
 
 import template from './template.stache!';
 import styles from './page-payment-bundles.less!';
@@ -61,12 +62,19 @@ var page = Component.extend({
       }
     },
     '.delete-bundle click': function(el, ev) {
-      this.scope.pageState.selectedBundle.destroy({
-        appstate: this.scope.appstate
+      if(!this.scope.pageState.selectedBundle) {
+        return;
+      }
+      
+      PbrDeleteConfirmModal.displayModal(this.scope.pageState.selectedBundle, {
+        action: 'delete',
+        approvalComment: '',
+        paymentOption: 1
       });
+      this.scope.attr('selectedBundle', null);
     },
     '.add-invoice click': function(el, ev) {
-      // go to Add Invoice page
+      can.route.attr('page', 'invoices');
     },
     '.excel click': function(el, ev) {
       // call excel download service (make this a method in the model)
