@@ -10,6 +10,7 @@ import BundleDetailGrid from 'components/bundle-detail-grid/';
 import Switcher from 'components/switcher/';
 import WorkflowDisplay from 'components/workflow-display/';
 import PbrDeleteConfirmModal from 'components/pbr-delete-confirm-modal/';
+import PbrRemoveGroupsModal from 'components/pbr-remove-groups-modal/';
 
 import columnSets from './column-sets';
 import constants from 'utils/constants';
@@ -155,7 +156,7 @@ var BundleDetailTabs = Component.extend({
   },
   events: {
     '.remove-invoice click': function(el, ev) {
-      this.scope.selectedRows.forEach(row => row.destroy());
+      PbrRemoveGroupsModal.displayModal(this.scope.pageState.selectedBundle, this.scope.selectedRows, this.scope.appstate);
     },
     '.show-chart click': function(el, ev) {
       // show the chart

@@ -6,18 +6,19 @@ import Alert from 'components/alert/';
 import PaymentBundle from 'models/payment-bundle/';
 
 import template from './template.stache!';
-import './pbr-delete-confirm-modal.less!';
+import './pbr-remove-groups-modal.less!';
 
-var PbrDeleteConfirmModal = can.Component.extend({
-  tag: 'rn-pbr-delete-confirm-modal',
+var PbrRemoveGroupsModal = can.Component.extend({
+  tag: 'rn-pbr-remove-groups-modal',
   template: template,
   scope: {
     bundle: null,
-    params: {}
+    groups: [],
+    appstate: null
   },
   events: {
     init: function() {
-      $('rn-pbr-delete-confirm-modal').remove();
+      $('rn-pbr-remove-groups-modal').remove();
     },
     inserted: function() {
       this.element.find('.modal').modal({keyboard: false, backdrop: false});
@@ -28,9 +29,8 @@ var PbrDeleteConfirmModal = can.Component.extend({
     },
     '.submit click': function(el, ev) {
       var self = this;
-      this.scope.bundle.moveInWorkflow(this.scope.params).then(function(result) {
-        if(result.status === 'SUCCESS') {
-          self.scope.bundle.destroy();
+      this.scope.bundle.removeBundleGroups(this.scope.groups, this.scope.appstate).then(function(response) {
+        if(response.status === 'SUCCESS') {
           Alert.displayAlert(response.responseText, 'success');
         }
       });
@@ -40,11 +40,12 @@ var PbrDeleteConfirmModal = can.Component.extend({
   }
 });
 
-PbrDeleteConfirmModal.displayModal = function(bundle, params) {
-  $(document.body).append(stache('<rn-pbr-delete-confirm-modal bundle="{bundle}" params="{params}"></rn-pbr-delete-confirm-modal>')({
+PbrRemoveGroupsModal.displayModal = function(bundle, groups, appstate) {
+  $(document.body).append(stache('<rn-pbr-remove-groups-modal bundle="{bundle}" groups="{groups}" appstate="{appstate}"></rn-pbr-remove-groups-modal>')({
     bundle,
-    params
+    groups,
+    appstate
   }));
 };
 
-export default PbrDeleteConfirmModal;
+export default PbrRemoveGroupsModal;

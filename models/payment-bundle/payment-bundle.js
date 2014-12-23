@@ -212,7 +212,7 @@ var PaymentBundle = Model.extend({
       data: requestData,
       processData: false
     });
-  }/*,
+  },
   removeBundleGroups: function(groups, appstate) {
     var requestData = {
       prsId: appstate.userInfo.prsId,
@@ -224,8 +224,8 @@ var PaymentBundle = Model.extend({
         bundleDetailsGroup: _.map(groups, function(group) { return {
           refLineId: group.refLineId,
           refLineType: group.refLineType,
-          periodType: group.periodType
-        }});
+          periodType: appstate.periodType
+        }})
       }
     };
 
@@ -234,8 +234,15 @@ var PaymentBundle = Model.extend({
       type: 'POST',
       data: requestData,
       processData: false
+    }).then(function(response) {
+      if(response.status === 'SUCCESS') {
+        debugger;
+        groups.forEach(group => group.destroy());
+      }
+
+      return response;
     });
-  }*/
+  }
 });
 
 var transformFooter = function(bundleFooter) {

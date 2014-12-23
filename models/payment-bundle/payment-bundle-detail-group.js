@@ -1,4 +1,5 @@
 import Model from 'can/model/';
+import can from 'can/';
 import URLs from 'utils/urls';
 
 import PaymentBundleDetail from './payment-bundle-detail';
@@ -6,19 +7,9 @@ import PaymentBundleDetail from './payment-bundle-detail';
 var PaymentBundleDetailGroup = Model.extend({
   id: "invoiceId", // I think?
   destroy: function(id, invoice) {
-    // TODO: when infrastructure gets set up, fix this.
-    var data = {
-      searchRequest: {
-        ids: [id]
-      }
-    };
-
-    return $.ajax({
-      url:  URLs.DOMAIN_SERVICE_URL + 'paymentBundle/manage',
-      type: 'POST',
-      data: data,
-      processData: false
-    });
+    var d = can.Deferred();
+    d.resolve(this);
+    return d;
   }
 }, {
   define : {
