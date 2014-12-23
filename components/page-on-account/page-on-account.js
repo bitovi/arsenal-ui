@@ -22,33 +22,23 @@ import proposedOnAccount from 'models/onAccount/proposedOnAccount/';
 import Comments from 'components/multiple-comments/';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
 import fileUpload from 'components/file-uploader/';
+import onAccountBalance from 'models/onAccount/onAccountBalance/';
 
 fileUpload.extend({
-  tag: 'rn-file-uploader',
-  events: {
-    '{uploadedfileinfo} change': function(){
-        //console.log('Inside '+JSON.stringify(this.element.closest("page-on-account").scope().documents.attr()));
-        
-
-        //this.scope.attr('documents').replace(this.scope.attr('uploadedfileinfo'));
-        //console.log('Inside '+JSON.stringify(this.scope.documents.attr()));
-         //this.element.parent().scope();
-    }
-  }
+  tag: 'rn-file-uploader'
  });
 
 fileUpload.extend({
   tag: 'propose-rn-file-uploader',
-  events: {
-    '{uploadedfileinfo} change': function(){
-        //console.log('Inside '+JSON.stringify(this.element.closest("page-on-account").scope().documents.attr()));
-        
+  scope: {
+        fileList : new can.List(),
+        displayMessage:"display:none",
+        fileUpload:false,
+        uploadedfileinfo:[],
+        isAnyFileLoaded : can.compute(function() { return this.fileList.attr('length') > 0; }),
+        isSuccess: false
 
-        //this.scope.attr('documents').replace(this.scope.attr('uploadedfileinfo'));
-        //console.log('Inside '+JSON.stringify(this.scope.documents.attr()));
-         //this.element.parent().scope();
     }
-  }
  });
 
 var page = Component.extend({
@@ -60,6 +50,7 @@ var page = Component.extend({
     request:{},
     onAccountRows:{},
     documents:[],
+    proposedOnAccDocuments:[],
     newpaymentbundlenamereq:undefined,
     tabsClicked:"@",
     paymentBundleName:"@",
@@ -176,9 +167,6 @@ var page = Component.extend({
                  $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={request}></rn-onaccount-balance-grid>')({request})); 
                 }    
               } else if(self.scope.tabsClicked=="PROPOSED_ON_ACC"){
-                //var documents =[];
-                //$('#proposeuploadFile').html(stache('<propose-rn-file-uploader uploadedfileinfo="{documents}"></propose-rn-file-uploader>')({documents}));
-                  //self.scope.attr('documents').replace('');
                   message = validateFilters(self.scope.appstate,true,false,false,false,false);
                   self.scope.attr('errorMessage',message); 
                   if(message.length == 0){
@@ -244,6 +232,8 @@ var page = Component.extend({
       "#proposedonAccount click":function(el, ev){
         ev.preventDefault();
         this.scope.tabsClicked="PROPOSED_ON_ACC";
+         //var emptyDocuments =[];
+        //$('#proposeuploadFile').html(stache('<propose-rn-file-uploader isAnyFileLoaded="{isAnyFileLoaded}"></propose-rn-file-uploader>')({isAnyFileLoaded:false}));
         $('#newonAccountGrid, #onAccountBalanceDiv, #forminlineElements,#searchDiv').hide();
         $('#proposedonAccountDiv,#proposeOnAccountGridComps, #onAccountEditDeleteDiv').show();
         disableProposedSubmitButton(true);
@@ -361,7 +351,7 @@ var page = Component.extend({
                   }
            }
 
-           var updateRequest = utils.frameUpdateRequest(self.scope.request,updatableRows,self.scope.documents,comments,self.scope.quarters);
+           var updateRequest = utils.frameUpdateRequest(self.scope.request,updatableRows,self.scope.proposedOnAccDocuments,comments,self.scope.quarters);
             proposedOnAccount.update(requestHelper.formRequestDetails(updateRequest),"UPDATE",function(data){
             //console.log("Update response is "+JSON.stringify(data));
               if(data["status"]=="SUCCESS"){
@@ -427,7 +417,32 @@ var page = Component.extend({
         /* documents is binded to uploadedfileinfo in <rn-file-uploader uploadedfileinfo="{documents}"></rn-file-uploader> */
         /* IF the uploadedfileinfo is changed in rn-file-uploader component, documents gets updated automatically and this change event triggered. */
          // console.log("docu changed "+JSON.stringify(this.scope.documents.attr()));
-         alert('hi');
+         //alert('hi');
+      },
+      '.exportToExcel click':function(){
+        var self = this;
+       if(self.scope.tabsClicked=="ON_ACC_BALANCE"){
+              onAccountBalance.findOne(createBalanceOnAccountRequestForExportToExcel(self.scope.appstate),function(data){
+                      if(data["status"]=="SUCCESS"){
+                        alert(data);
+                        //self.scope.rows.replace(getUiRowsFromResponse(quarters,data));  
+                      }else{
+                        $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                        $("#messageDiv").show();
+                        setTimeout(function(){
+                            $("#messageDiv").hide();
+                        },2000)
+                        self.scope.attr('emptyrows',true);
+                      }
+                }, function(xhr) {
+                      console.error("Error while loading: onAccount balance Details"+xhr);
+                } ); 
+         } else if(self.scope.tabsClicked=="PROPOSED_ON_ACC"){
+
+         }
+      },
+      '.copyToClipboard click':function(){
+        //alert('excel');
       }
     },
     helpers: {
@@ -574,6 +589,15 @@ var createProposedOnAccountRequest=function(appstate){
   proposedOnAccountRequest.searchRequest.type="PROPOSED";
   return requestHelper.formRequestDetails(proposedOnAccountRequest);
 };
+
+var createBalanceOnAccountRequestForExportToExcel=function(appstate){
+    var balancedOnAccountRequest={};
+    balancedOnAccountRequest.searchRequest=requestHelper.formGlobalRequest(appstate).searchRequest;
+    balancedOnAccountRequest.searchRequest.type="BALANCE";
+    balancedOnAccountRequest.excelOutput=true;
+    return requestHelper.formRequestDetails(balancedOnAccountRequest);
+  };
+
 var validateFilters=function(appstate,validateQuarter,validateStoreType,validateRegion,validateLicensor,validateContentType){
   if(appstate != null && appstate != undefined){
       var serTypeId = appstate.attr('storeType');

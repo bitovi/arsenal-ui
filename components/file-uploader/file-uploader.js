@@ -30,6 +30,7 @@
                  '.fileSelect change' : function(el, ev) {
                     var files = el[0].files;
                     this.scope.fileList.push.apply(this.scope.fileList, files);
+                    console.log(this.scope.fileList);
                   },
                  '.submitFiles click': function() {
                     var self = this;
@@ -42,6 +43,9 @@
                       /*passing file length here to parent component*/
                        self.scope.attr("isSuccess", true);
                        $('.success').empty().html(data.responseText);
+                       setTimeout(function(){
+                            $(".success").empty();
+                        },2000)
                        self.scope.attr('uploadedfileinfo').replace(data.filePropeties);
                        $(self.element).trigger('onSelected', data);
                     }else{
@@ -73,6 +77,12 @@
                       });
                     }
                       this.scope.attr("fileList").splice(selectedIndex,1);
+                },
+                '{fileList} change': function(){
+                  
+                },
+                "inserted":function(){
+                  //if(this.scope.clearFiles != undefined)
                 }
             }
       })

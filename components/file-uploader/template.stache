@@ -1,13 +1,15 @@
 <div class="outer">
-     {{#if isAnyFileLoaded}}
-          <ul class="filelist">
-              {{#fileList}}
-                <li {{data 'listView'}}>
-                     {{name}} ({{convertToKB size}})
-                     <a  class="action-link">X</a>
-                </li>
-              {{/files}}
-           </ul>
+     {{#if isAnyFileLoaded}}  
+          {{#if fileList.length}}
+            <ul class="filelist">
+                {{#fileList}}
+                  <li {{data 'listView'}}>
+                       {{name}} ({{convertToKB size}})
+                       <a  class="action-link">X</a>
+                  </li>
+                {{/files}}
+             </ul>
+          {{/if}}
       {{/if}}
         {{#if isAnyFileLoaded}}
            {{#if isSuccess}} 

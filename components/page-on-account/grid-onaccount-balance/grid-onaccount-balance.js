@@ -96,7 +96,11 @@ var OnAccountBalance = Grid.extend({
          //  });
             onAccountBalance.findOne(createBalanceOnAccountRequest(this.scope.request.appstate),function(data){
                       if(data["status"]=="SUCCESS"){
+                        if(data.onAccount != undefined && data.onAccount.onAccountDetails != undefined && data.onAccount.onAccountDetails.length==0){
+                          self.scope.attr('emptyrows',true);
+                        }
                         self.scope.rows.replace(getUiRowsFromResponse(quarters,data));  
+
                       }else{
                         $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
                         $("#messageDiv").show();
