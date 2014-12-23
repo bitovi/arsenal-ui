@@ -91,17 +91,17 @@ var columns = {
   'invoiceSaturation': {
     id: 'invoiceSaturation',
     title: 'Invoice Sat',
-    format: formats.formatIf(_.isNumber, formats.percent, '0%')
+    format: formats.formatIf(_.isNumber, formats.decimalAsPercent, '0%')
   },
   'paymentSaturation': {
     id: 'paymentSaturation',
     title: 'Pymt Sat',
-    format: formats.formatIf(_.isNumber, formats.percent, '0%')
+    format: formats.formatIf(_.isNumber, formats.decimalAsPercent, '0%')
   },
  'invoicePaymentSaturation': {
     id: 'invoicePaymentSaturation',
         title: 'Inv Pymt Sat',
-        format: formats.formatIf(_.isNumber, formats.percent, '0%')
+        format: formats.formatIf(_.isNumber, formats.decimalAsPercent, '0%')
 },
   'adhocTypeId': {
     id: 'adhocTypeId',
