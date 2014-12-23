@@ -13,6 +13,9 @@
 		  <div id="invmessageDiv" role="alert">
 
 		   </div>
+		   <div id="invWarningMsgDiv" role="alert">
+
+		   </div>
 	</div>
   </div>
 
