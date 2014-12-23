@@ -14,6 +14,7 @@ import PbrRemoveGroupsModal from 'components/pbr-remove-groups-modal/';
 
 import columnSets from './column-sets';
 import constants from 'utils/constants';
+import formats from 'utils/formats';
 
 import template from './template.stache!';
 import _less from './bundle-detail.less!';
@@ -150,6 +151,9 @@ var BundleDetailTabs = Component.extend({
     }
   },
   helpers: {
+    currencyFormat: function(val) {
+      return formats.currencyFormat(val());
+    },
     showAggregateControl: function(options) {
       return this.attr('selectedTab') && this.selectedTab.value === 'country' ? options.fn(this) : '';
     },
