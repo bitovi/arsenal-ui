@@ -106,7 +106,7 @@ var page = Component.extend({
   	uploadedFileInfo:[],
   	periodType:"",
   	ajaxRequestStatus:{},
-  	usdFxrateRatio:{},
+  	usdFxrateRatio:"",
     isRequired: function(){
   	 		if(this.attr("invoicetypeSelect") != "2"){  /*Adhoc*/
   	 				$(".breakdownCountry").addClass("requiredBar");
@@ -129,6 +129,12 @@ var page = Component.extend({
            	if(rowindex != 0)
            	$("#breakrow"+rowindex+" .removeRow").css("display", "block");
 			
+			var servictypeid=$("#inputContent0 option:selected").attr("servicetypeid");
+		   	if (typeof servictypeid !== "undefined" ) { console.log("testsssss");
+		        $('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
+		        $('#inputContent'+rowindex).prepend("<option value>Select</option>").val('')
+		    }
+
 			var $option   = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"]');
             $option.each(function(index){
             	$('#invoiceform').bootstrapValidator('addField', $(this));
@@ -187,7 +193,19 @@ var page = Component.extend({
 	          this.attr("bundleNamesRequest", JSON.stringify(bundleNamesRequest));
 
 				return JSON.stringify(bundleNamesRequest);
-       		}
+       		},
+       		getFxrate:function(){
+	     		var self = this;
+	     		if($("#inputMonth0").val() && self.currencyStore){
+					var genObj = {fromCurrency:self.currencyStore, toCurrency:'USD', fiscalPeriod:periodWidgetHelper.getFiscalPeriod($("#inputMonth0").val()) ,periodType:periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0))};
+						Fxrate.findOne(UserReq.formRequestDetails(genObj),function(data){
+						self.attr("usdFxrateRatio", data.fxRate);
+						console.log(self.attr("usdFxrateRatio"));
+		            },function(xhr){
+		               console.log(xhr);
+		            });
+				}
+			}  	
  },
   events: {
     	"inserted": function(){
@@ -601,6 +619,10 @@ var page = Component.extend({
 				               	}
 						   });
 						},
+					"{scope} currencyStore": function(){
+						var self = this;
+						self.scope.getFxrate();
+					},	
 
 					"{invoiceContainer} change": function() {
 						var self = this;	
@@ -656,6 +678,12 @@ var page = Component.extend({
 						 		{
 									self.scope.contentTypeStore.attr("inputContent"+rowindex, invoiceData.invoiceLines[i].contentGrpId);
 						 		}
+						 		
+						 		var servictypeid = $("#inputContent0 option:selected").attr("servicetypeid"); 
+								if (typeof servictypeid !== "undefined" && rowindex > 0) {
+									$('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
+								}
+
 						 		var displayPeriod = "";
 						 		if(invoiceData.invoiceLines[i].fiscalPeriod != null && invoiceData.invoiceLines[i].periodType != null){
 						 			 displayPeriod = periodWidgetHelper.getDisplayPeriod(invoiceData.invoiceLines[i].fiscalPeriod+'',invoiceData.invoiceLines[i].periodType);
@@ -753,6 +781,7 @@ var page = Component.extend({
          	console.log(this.scope.countryStore.attr());
 		},
 		".ccidGL change": function(event){
+			if(event.find('option:selected')[0]!=undefined)event.next('.ccidGLtxt').val(event.find('option:selected')[0].text);
          	this.scope.ccidGLStore.attr(event[0].id, event[0].value)
 		},
 		"#invoiceType change": function(){
@@ -776,6 +805,7 @@ var page = Component.extend({
 
 		},
          "{AmountStore} change": function() {
+         		var self = this;
          		var totalAmount = 0;
   	 			this.scope.attr("AmountStore").each(function(val, key){
   	 				if(val == ""){
@@ -790,15 +820,7 @@ var page = Component.extend({
   	 			else{
   	 				this.scope.attr("totalAmountVal", "");
   	 			}
-  	 			var genObj = {fromCurrency:'USD',
-  	 					toCurrency:this.scope.currencyStore,fiscalPeriod:'201401',periodType:'P'};
-  	 			//Fxrate.findAll(UserReq.formRequestDetails(genObj)),
-  	 		/*	Fxrate.findAll(UserReq.formRequestDetails(genObj),function(data){
-                  //console.log("passing params is "+JSON.stringify(data[0].attr()));
-  	 			 self.scope.attr("fxrate").replace(data);
-            },function(xhr){
-                console.error("Error while loading: FXRATE"+xhr);
-            }); */
+  	 			self.scope.getFxrate();
 
          },
          
@@ -1026,30 +1048,20 @@ var page = Component.extend({
 			   '.updateperoid focus':function(el){ 
 			   	 var self = this;
 			      $(el).closest('.calendarcls').find('.box-modal').show();
-			      if(el.attr("id") != "inputMonth0"){
-			      	//	showErrorMsg(el.attr("id"))
-					}
-
-					if(el[0].id == "inputMonth0"){
-				     		if($("#inputMonth0").val() && self.scope.currencyStore){
-								var genObj = {fromCurrency:self.scope.currencyStore, toCurrency:'USD', fiscalPeriod:periodWidgetHelper.getFiscalPeriod($("#inputMonth0").val()) ,periodType:periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0))};
-									Fxrate.findOne(UserReq.formRequestDetails(genObj),function(data){
-					                self.scope.attr("usdFxrateRatio", data.fxRate);
-					            },function(xhr){
-					               console.log(xhr);
-					            }); 	
-						}
+			    	if(el[0].id == "inputMonth0"){
+				     		self.scope.getFxrate();
 					}			
 				},
 			   '#inputContent0 change':function(el){  /*validation for servicetypeid*/
-			   		$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
-						if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
-								$("#"+this.id+' .inputContent').val("");
+			   // 		$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
+						// if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
+						// 		$("#"+this.id+' .inputContent').val("");
 								
-						}	
-			  		});
+						// }	
+			  	// 	});
 
-			  		this.scope.contentTypeFilter.replace(this.scope.contentType);
+			  	// 	this.scope.contentTypeFilter.replace(this.scope.contentType);
+			  		updateContentType(el);
 				},
 			   '#inputMonth0 change':function(el){ /*validation for period*/
 			  		var self = this;
@@ -1159,7 +1171,7 @@ var page = Component.extend({
 				},
 				calculateUSD:function(){
 					
-					var fxrate = this.usdFxrateRatio;
+					var fxrate = this.attr("usdFxrateRatio");
 					var calUSD = this.attr("totalAmountVal")*fxrate;
 
 					if(isNaN(calUSD)){
@@ -1268,6 +1280,32 @@ if($('#inputMonth0').parent().find('.period li:first-child').find('a').hasClass(
 var getDateToDisplay=function(longDate){
 	var calculateDueDate = new Date(longDate);
 	return calculateDueDate.getMonth()+1 + "/" + calculateDueDate.getDate() + "/" + calculateDueDate.getFullYear();
+}
+
+
+var updateContentType = function(element) {
+
+	var currentElementID = $(element).attr("id");
+
+	var _elementID = $("#inputContent0");
+	var _listofselect = $("select[id^='inputContent']").not("select[id='inputContent0']").not(':hidden');
+	if ($(_elementID).data('options') == undefined) {
+		$(_elementID).data('options', $('#' + currentElementID + ' option').clone());
+	}
+
+	var serviceID = $("#inputContent0 option:selected").attr("servicetypeid");
+	console.log(serviceID);
+	if (typeof serviceID !== undefined) {
+		var options = $(_elementID).data('options').filter('[servicetypeid=' + serviceID + ']');
+	} else {
+		var options = $(_elementID).data('options').filter('[servicetypeid >' + serviceID + ']');
+	}
+	for (var i = 0; i < _listofselect.length; i++) {
+		var currentID = $(_listofselect)[i].id;
+		$("#" + currentID).html(options.clone());
+		$("#"+currentID).prepend("<option value>Select</option>").val('');
+	}
+
 }
 
 export default page;
