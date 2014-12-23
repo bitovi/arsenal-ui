@@ -13,6 +13,9 @@
 		  <div id="invmessageDiv" role="alert">
 
 		   </div>
+		   <div id="invWarningMsgDiv" role="alert">
+
+		   </div>
 	</div>
   </div>
 
@@ -384,7 +387,9 @@
 							</div>
 							<div class="col-sm-3 col-sm-offset-9">
 							   {{#if totalAmountVal}}
-							   <label class="control-label">{{calculateUSD}} USD</label>
+							   		{{#if usdFxrateRatio}}
+							   			<label class="control-label">{{calculateUSD}} USD</label>
+							   		{{/if}}	
 							   {{/if}}
 						    </div>
 						 </div>
