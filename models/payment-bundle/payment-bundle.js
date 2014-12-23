@@ -8,11 +8,6 @@ import requestHelper from 'utils/request/';
 import PaymentBundleDetailGroup from './payment-bundle-detail-group';
 
 var PaymentBundle = Model.extend({
-  VALIDATION_CODES: {
-    RED: 1,
-    YELLOW: 2,
-    GREEN: 3
-  },
   id: 'bundleId',
   parseModels: function(data, xhr) {
     return data.paymentBundles;
