@@ -59,6 +59,44 @@ var BundleDetailTabs = Component.extend({
 
     workflowSteps: new WorkflowStep.List([]),
 
+    selectedBundleChanged: function(scope) {
+      var selectedBundle = scope.pageState.selectedBundle;
+      if(!selectedBundle) {
+        return;
+      }
+
+      can.batch.start();
+      // clear out selectedRows
+      scope.selectedRows.splice(0, scope.selectedRows.length);
+
+      // change the columns to be correct
+      var tabs = [],
+      columns;
+      if(['REGULAR_INV'].indexOf(selectedBundle.bundleType) >= 0) {
+        // tabs ahoy!
+        tabs = bundleTypeColumnSets[selectedBundle.bundleType];
+        columns = bundleTypeColumnSets[selectedBundle.bundleType][0].columns;
+      } else {
+        // no tabs
+        columns = bundleTypeColumnSets[selectedBundle.bundleType];
+      }
+      scope.tabs.splice(0, scope.tabs.length, ...tabs);
+      scope.attr('selectedTab', scope.tabs.length ? scope.tabs[0] : null);
+      scope.gridColumns.splice(0, scope.gridColumns.length, ...columns);
+
+      // clear out the workflow steps
+      scope.workflowSteps.splice(0, scope.workflowSteps.length);
+      can.batch.stop();
+
+      scope.getNewDetails(selectedBundle).then(function(bundle) {
+        return WorkflowStep.findAll({
+          workflowInstanceId: bundle.approvalId
+        });
+      }).then(function(steps) {
+        scope.workflowSteps.replace(steps);
+      });
+    },
+
     gettingDetails: false,
     getNewDetails: function(bundle) {
       var scope = this;
@@ -210,42 +248,11 @@ var BundleDetailTabs = Component.extend({
         scope.pageState.selectedBundle && scope.getNewDetails(scope.pageState.selectedBundle);
       }
     },
+    'inserted': function() {
+      this.scope.selectedBundleChanged(this.scope);
+    },
     '{scope} pageState.selectedBundle': function(scope) {
-      var selectedBundle = scope.pageState.selectedBundle;
-      if(!selectedBundle) {
-        return;
-      }
-
-      can.batch.start();
-      // clear out selectedRows
-      scope.selectedRows.splice(0, scope.selectedRows.length);
-
-      // change the columns to be correct
-      var tabs = [],
-          columns;
-      if(['REGULAR_INV'].indexOf(selectedBundle.bundleType) >= 0) {
-        // tabs ahoy!
-        tabs = bundleTypeColumnSets[selectedBundle.bundleType];
-        columns = bundleTypeColumnSets[selectedBundle.bundleType][0].columns;
-      } else {
-        // no tabs
-        columns = bundleTypeColumnSets[selectedBundle.bundleType];
-      }
-      scope.tabs.splice(0, scope.tabs.length, ...tabs);
-      scope.attr('selectedTab', scope.tabs.length ? scope.tabs[0] : null);
-      scope.gridColumns.splice(0, scope.gridColumns.length, ...columns);
-
-      // clear out the workflow steps
-      scope.workflowSteps.splice(0, scope.workflowSteps.length);
-      can.batch.stop();
-
-      scope.getNewDetails(selectedBundle).then(function(bundle) {
-        return WorkflowStep.findAll({
-          workflowInstanceId: bundle.approvalId
-        });
-      }).then(function(steps) {
-        scope.workflowSteps.replace(steps);
-      });
+      this.scope.selectedBundleChanged(this.scope);
     },
     '{scope} aggregatePeriod': function(scope) {
       scope.getNewDetails(scope.pageState.selectedBundle);
