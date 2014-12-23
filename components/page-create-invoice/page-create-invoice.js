@@ -132,6 +132,7 @@ var page = Component.extend({
 	       	var servictypeid=$("#inputContent0 option:selected").attr("servicetypeid");
 	    	if (typeof servictypeid !== "undefined" ) {
         		$('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
+        		$('#inputContent'+rowindex).prepend("<option value>Select</option>").val('');
         	}
 
 			var $option = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"]');
@@ -1127,6 +1128,7 @@ var page = Component.extend({
 						for (var i = 0; i < _listofselect.length; i++) {
 							var currentID = $(_listofselect)[i].id;
 							$("#"+currentID).html(options.clone());
+							$("#"+currentID).prepend("<option value>Select</option>").val('');
 						}
 
 					}
