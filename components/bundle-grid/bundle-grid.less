@@ -1,6 +1,16 @@
 @import 'components/grid/grid.less';
 @import 'components/grid/examples/scrolling-grid/scrolling-grid.less';
 
+.flex-basis(@basis) {
+  -webkit-flex-basis: @basis;
+  flex-basis: @basis;
+}
+
+.flex-grow(@grow) {
+  -webkit-flex-grow: @grow;
+  flex-grow: @grow;
+}
+
 rn-bundle-grid {
   .grid-mixin();
   .scrolling-grid-mixin();
@@ -18,16 +28,16 @@ rn-bundle-grid {
     }
 
     tr > th, tr > td {
-      &.isHighPriority { flex-basis: 25px; }
-      &.bundleName { flex-grow: 1; flex-basis: 200px; }
-      &.paymentCcy { flex-basis: 100px; }
-      &.paymentAmt { flex-basis: 100px; }
-      &.bundleType { flex-basis: 100px; }
-      &.periodRange { flex-basis: 200px; }
-      &.region { flex-basis: 100px; }
-      &.pendingWith { flex-basis: 200px; }
-      &.status { flex-basis: 75px; }
-      &.pendingDays { flex-basis: 105px; }
+      &.isHighPriority { .flex-basis(25px); }
+      &.bundleName { .flex-grow(1); .flex-basis(200px); }
+      &.paymentCcy { .flex-basis(100px); }
+      &.paymentAmt { .flex-basis(100px); }
+      &.bundleType { .flex-basis(100px); }
+      &.periodRange { .flex-basis(200px); }
+      &.region { .flex-basis(100px); }
+      &.pendingWith { .flex-basis(200px); }
+      &.status { .flex-basis(75px); }
+      &.pendingDays { .flex-basis(105px); }
     }
   }
 }

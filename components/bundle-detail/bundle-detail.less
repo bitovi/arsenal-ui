@@ -2,6 +2,11 @@
 @middle-grey: hsl(0, 0%, 50%);
 @dark-grey: hsl(0, 0%, 25%);
 
+.flex-grow(@grow) {
+  -webkit-flex-grow: @grow;
+  flex-grow: @grow;
+}
+
 rn-bundle-detail {
   display: block;
   margin-top: .5em;
@@ -49,7 +54,7 @@ rn-bundle-detail {
   .grand-total {
     margin: 1em 2em 0 0;
     text-align: right;
-    
+
     h3 {
       font-weight: bold;
       font-size: 1.2em;
@@ -57,6 +62,7 @@ rn-bundle-detail {
   }
 
   .bottom-controls {
+    display: -webkit-flex;
     display: flex;
     background-color: @light-grey;
     padding-top: 1em;
@@ -67,15 +73,16 @@ rn-bundle-detail {
     }
 
     & > .progress-display {
-      flex-grow: 0;
+      .flex-grow(0);
     }
 
     & > .flex-spacer {
-      flex-grow: 1;
+      .flex-grow(1);
     }
 
     & > .payment-option {
-      flex-grow: 0;
+      min-width: 200px;
+      .flex-grow(0);
 
       label {
         display: block;
@@ -89,7 +96,7 @@ rn-bundle-detail {
     & > .approval-comment {
       min-width: 25%;
       max-width: 33%;
-      flex-grow: 1;
+      .flex-grow(1);
 
       label {
         display: block;
