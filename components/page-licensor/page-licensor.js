@@ -225,7 +225,6 @@ var page = Component.extend({
 
       var repConfiguration = [];
 
-
       for(var i=0; i < inputReportBoxes.length ; i++ ) {
 
         if(inputReportBoxes[i].checked == true) {
@@ -1812,10 +1811,6 @@ var page = Component.extend({
     ".applyAllSelected click" : function(el, ev){
       this.scope.mapCurrentCountryReportConf();
       this.scope.confirmSubmit();
-      
-      $("#entityGrid").addClass("opaqueClass");
-      $("#entityDetailsTab").addClass("opaqueClass");
-
     },
 
 
