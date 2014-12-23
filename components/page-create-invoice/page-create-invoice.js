@@ -780,9 +780,9 @@ var page = Component.extend({
 
 						   			var ccidGL = "ccidGL";
 
-                    ccidGL = (index == 0 ? ccidGL : ccidGL+index);
+                    				ccidGL = (index == 0 ? ccidGL : ccidGL+index);
 
-									  tempArry["glAccRefId"] = self.scope.ccidGLStore.attr(ccidGL);
+									tempArry["glAccRefId"] = self.scope.ccidGLStore.attr(ccidGL);
 						  	 		tempArry["adhocTypeId"] = self.scope.contentTypeStore.attr("inputContent"+index);
 						  	 	}
 						  	 	else{
@@ -807,6 +807,25 @@ var page = Component.extend({
 									            setTimeout(function(){
 									                $("#invmessageDiv").hide();
 									             },5000)
+
+									            if(values[0].invoices[0].errors)
+								           		{
+								           			var errorMap = values[0].invoices[0].errors.errorMap;
+								           		}
+
+								           		if(errorMap){
+									       		 var msg =showErrorDetails(errorMap, "Warning");
+									       		 $("#invWarningMsgDiv").html("<label class='errorMessage'>"+msg+"</label>")
+									             $("#invWarningMsgDiv").show();
+									             setTimeout(function(){
+									                $("#invWarningMsgDiv").hide();
+									             },5000)
+
+										        }
+
+
+
+
 												$("#invoiceform")[0].reset();
 												$("#invoiceform").data('bootstrapValidator').resetForm();
 												$("#addInvSubmit").attr("disabled", true);
@@ -836,15 +855,8 @@ var page = Component.extend({
 
 
 									       		if(errorMap){
-										          	var errorStr = "";
-										          	for(var key in errorMap){
-										          		errorStr += errorMap[key]+", ";
-										          		//console.log(key);
-										          	}
-										          	errorStr = errorStr.replace(/,\s*$/, "");
-
-										          	var msg = "Error: "+ errorStr;
-									          	}
+									       			var msg = showErrorDetails(errorMap, "Error");
+										        }
 									          	else{
 									          			var msg = values[0].responseText;
 									          	}
@@ -1132,4 +1144,17 @@ var page = Component.extend({
 						}
 
 					}
+
+					var showErrorDetails = function(errormap, errortype){
+						var errorStr = "";
+			          	for(var key in errormap){
+			          		errorStr += errormap[key]+", ";
+			          		//console.log(key);
+			          	}
+			          	errorStr = errorStr.replace(/,\s*$/, "");
+						var msg = errortype+": "+ errorStr;
+
+			          	return msg;		
+					}
+
 export default page;

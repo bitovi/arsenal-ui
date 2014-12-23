@@ -983,20 +983,28 @@ var page = Component.extend({
 								             setTimeout(function(){
 								                $("#invmessageDiv").hide();
 								             },5000)
+
+								             if(values[0].invoices[0].errors)
+								           		{
+								           			var errorMap = values[0].invoices[0].errors.errorMap;
+								           		}
+
+								           		if(errorMap){
+										       		 var msg =showErrorDetails(errorMap, "Warning");
+										       		 $("#invWarningMsgDiv").html("<label class='errorMessage'>"+msg+"</label>")
+										             $("#invWarningMsgDiv").show();
+										             setTimeout(function(){
+										                $("#invWarningMsgDiv").hide();
+										             },5000)
+												}
+
 										}
 							          	else
 							          	{
 								          	if(values[0].invoices[0].errors != "undefined" && values[0].invoices[0].errors != null)
 								           		{
 								           			var errorMap = values[0].invoices[0].errors.errorMap;
-								           			var errorStr = "";
-										          	for(var key in errorMap){
-										          		errorStr += errorMap[key]+", ";
-										          		console.log(key);	
-										          	}
-										          	errorStr = errorStr.replace(/,\s*$/, "");  
-										          	
-										          	var msg = "Error: "+ errorStr;
+								           			var msg = showErrorDetails(errorMap, "Error");
 								           		} else {
 									          		var msg = values[0].responseText;
 									          	}
@@ -1293,6 +1301,18 @@ var page = Component.extend({
 							$("#"+currentID).prepend("<option value>Select</option>").val('');
 						}
 
+					}
+
+					var showErrorDetails = function(errormap, errortype){
+						var errorStr = "";
+			          	for(var key in errormap){
+			          		errorStr += errormap[key]+", ";
+			          		//console.log(key);
+			          	}
+			          	errorStr = errorStr.replace(/,\s*$/, "");
+						var msg = errortype+": "+ errorStr;
+
+			          	return msg;		
 					}
 
 export default page;
