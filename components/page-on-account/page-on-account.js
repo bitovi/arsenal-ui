@@ -24,6 +24,8 @@ import periodWidgetHelper from 'utils/periodWidgetHelpers';
 import fileUpload from 'components/file-uploader/';
 import onAccountBalance from 'models/onAccount/onAccountBalance/';
 
+import copy from 'components/copy-clipboard/';
+
 fileUpload.extend({
   tag: 'rn-file-uploader',
   events:{
@@ -111,6 +113,10 @@ var page = Component.extend({
                 hidethePeriods();
             }
         },
+      '#proposeCopyToClipboard click':function(){ 
+        $('copy-clipboard').show();
+        $('#clonetable').empty().html($('rn-onaccount-balance-grid').find('table').clone(true))
+      },
       "#paymentBundleNames change": function(){
           var self = this;
           var pbval = $("#paymentBundleNames").val();

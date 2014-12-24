@@ -7,6 +7,9 @@ import onAccountBalance from 'models/onAccount/onAccountBalance/';
 import _less from './grid-onaccount-balance.less!';
 import template from './template.stache!';
 import Grid from 'components/grid/';
+
+
+
 import stache from 'can/view/stache/';
 import utils from 'components/page-on-account/utils';
 import requestHelper from 'utils/request/';
@@ -114,7 +117,11 @@ var OnAccountBalance = Grid.extend({
                 } ); 
       
        }
+    },
+    '#proposeCopyToClipboard click':function(){ alert()
+        $('copy-clipboard').show();
     }
+
   }
 });
 

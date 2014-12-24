@@ -1,0 +1,9 @@
+<div class='copyclipboard'>
+  <div class='title'>
+    <div class='flL'>Press Command-C to copy to clipboard </div>
+    <div class='flL marT'><button type="button" id="copyall" class="btn btn-primary buttonSubmit btn-custom-small pull-right">Select All</button></div>
+    <div class='flR clipboardClose'> X </div>
+  </div>
+
+  <div id='clonetable'>{{table}}</div>
+</div>
