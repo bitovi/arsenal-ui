@@ -1,6 +1,6 @@
 {{log 'popover'}}
 <div class="unpaid-popover">
-  <div class="column-chart" {{columnChart item}}></div>
+  <div class="column-chart"></div>
   <ul class="unpaid-details">
     <li class="total">
       <div class="color"><div class="square">&nbsp;</div></div>

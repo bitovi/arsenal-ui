@@ -65,6 +65,7 @@ var chartDefaults = {
         borderWidth: 0,
         groupPadding: 0,
         pointPadding: 0,
+        animation: false,
         stacking: 'percent',
         dataLabels: {
           enabled: true,

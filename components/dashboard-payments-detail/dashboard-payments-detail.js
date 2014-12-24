@@ -12,25 +12,23 @@ import popoverTemplate from './popover.stache!';
 import _less from './dashboard-payments-detail.less!';
 import _popover_less from './popover.less!';
 
-var columnChartHelper = function(item) {
-  return function(div) {
-    var chartConfig = can.extend({}, chartDefaults.singleStackedColumnChart, {
-      series: [{
-        data: [item.reconPrcnt]
-      }, {
-        data: [item.liPrcnt]
-      }, {
-        data: [item.orPrcnt]
-      }]
-    });
+var columnChartHelper = function(item, div) {
+  var chartConfig = can.extend({}, chartDefaults.singleStackedColumnChart, {
+    series: [{
+      data: [item.reconPrcnt]
+    }, {
+      data: [item.liPrcnt]
+    }, {
+      data: [item.orPrcnt]
+    }]
+  });
 
-    // setImmediate used so that highcharts renders after styling
-    window.setTimeout(function() {
-      $(div).highcharts(chartConfig);
-      // remove 'Highcharts.com'
-      $('svg > text:not([class=highcharts-title])', div).remove();
-    }, 0);
-  };
+  // setImmediate used so that highcharts renders after styling
+  window.setTimeout(function() {
+    $(div).highcharts(chartConfig);
+    // remove 'Highcharts.com'
+    $('svg > text:not([class=highcharts-title])', div).remove();
+  }, 0);
 };
 
 var DashboardPaymentsDetail = Component.extend({
@@ -57,7 +55,6 @@ var DashboardPaymentsDetail = Component.extend({
         globalCurrency: 'XXX',
         item: item
       }, {
-        columnChart: columnChartHelper,
         formatPercent: val => formats.percent(val())
       }))[0].innerHTML;
 
@@ -65,10 +62,18 @@ var DashboardPaymentsDetail = Component.extend({
         $(li).popover({
           content: popoverContent,
           html: true,
-          trigger: 'click'
+          trigger: 'hover'
         });
       };
     },
+  },
+  events: {
+    'li mouseover': function(el, ev) {
+      var popoverID = el.attr('aria-describedby');
+      var chart = $('#' + popoverID).find('.column-chart');
+      chart.empty();
+      columnChartHelper(el.data('item').item, chart[0]);
+    }
   }
 });
 
