@@ -147,7 +147,7 @@ var page = Component.extend({
 
            		$(this).closest("tr").remove();
 	            self.AmountStore.removeAttr("amountText"+rowindex);
-	            $("#addInvSubmit").attr("disabled", true);
+	           // $("#addInvSubmit").attr("disabled", true);
 	        });
 		},
 		changeTextOnInvType:function(){
@@ -688,7 +688,8 @@ var page = Component.extend({
 				 		  /*This block is used to update data in view */
 						
 						var invoiceData = self.scope.attr().invoiceContainer[0];
-				 		self.scope.attr("invoicenumberStore", invoiceData.invoiceNumber);
+
+						self.scope.attr("invoicenumberStore", invoiceData.invoiceNumber);
 				 		self.scope.attr("invoicetypeSelect", invoiceData.invoiceTypeId);
 				 		self.scope.attr("regionStore", invoiceData.regionId);
 						self.scope.attr("fxrateStore", invoiceData.fxRate);
@@ -782,14 +783,14 @@ var page = Component.extend({
 										var inputContent = "inputContent"+rowindex;
 										var tempDelObj = {};
 										tempDelObj["country"] = self.scope.countryStore.attr("inputCountry"+rowindex);
-								   		tempDelObj["fiscalPeriod"] =  periodWidgetHelper.getFiscalPeriod($("#inputMonth"+index).val());
-								   		tempDelObj["periodType"] = periodWidgetHelper.getPeriodType($("#inputMonth"+index).val().charAt(0));
+								   		tempDelObj["fiscalPeriod"] =  periodWidgetHelper.getFiscalPeriod($("#inputMonth"+rowindex).val());
+								   		tempDelObj["periodType"] = periodWidgetHelper.getPeriodType($("#inputMonth"+rowindex).val().charAt(0));
 								   		tempDelObj["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent"+rowindex);
 								   		tempDelObj["contentGrpName"] = $("#inputContent"+rowindex+" option:selected").text();
 								   		tempDelObj["lineAmount"] = self.scope.AmountStore.attr("amountText"+rowindex);
 								   		tempDelObj["lineStatus"] = "";
 								   		tempDelObj["status"] = "DELETE";
-								   		tempDelObj["lineType"] = "";
+								   		tempDelObj["lineType"] = invoiceData.invoiceLines[0].lineType;
 								   		if(self.scope.attr("invoicetypeSelect") == "2"){
 
 								  	 		tempDelObj["glAccRefId"] = self.scope.ccidGLStore.attr(inputContent);
@@ -858,6 +859,7 @@ var page = Component.extend({
 				  	tempEditInvoiceData["invId"] = invoicemap.attr("invoiceid");
 				    tempEditInvoiceData["invoiceNumber"] = self.scope.invoicenumberStore;
 				    tempEditInvoiceData["invoiceTypeId"] = self.scope.invoicetypeSelect;
+				    tempEditInvoiceData["regionId"] = self.scope.regionStore;
 				    tempEditInvoiceData["invoiceType"] = $("#invoiceType option:selected").attr("name");
 				    tempEditInvoiceData["serviceTypeId"] = $("#inputContent0 option:selected").attr("servicetypeid");
 				    tempEditInvoiceData["entityId"] = self.scope.licensorStore;
@@ -968,7 +970,7 @@ var page = Component.extend({
 					   		tempArry["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent"+index);
 					   		tempArry["contentGrpName"] = $("#inputContent"+index+" option:selected").text();
 							tempArry["lineAmount"] = self.scope.AmountStore.attr("amountText"+index);
-					   		tempArry["lineType"] = "";
+					   		tempArry["lineType"] = invoiceData.invoiceLines[0].lineType;
 					   		if(self.scope.attr("invoicetypeSelect") == "2"){
 					   			var ccidGL = "ccidGL"+index;
 								tempArry["glAccRefId"] = self.scope.ccidGLStore.attr(ccidGL);

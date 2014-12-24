@@ -276,7 +276,7 @@ var GlobalParameterBar = Component.extend({
 
 
           var defCountry = DefaultGlobalParameters.attr('Country');
-          if(defCountry=="All"){
+          if(defCountry=="ALL" || defCountry=="-1"){
             $("#countriesFilter").multiselect('selectAll', false);
             $('#countriesFilter').multiselect('updateButtonText');
           } else {
@@ -285,7 +285,7 @@ var GlobalParameterBar = Component.extend({
           $("#countriesFilter").multiselect('rebuild');
 
           var defLicensor = DefaultGlobalParameters.attr('Licensor');
-          if(defLicensor=="All"){
+          if(defLicensor=="ALL" || defLicensor=="-1"){
             $("#licensorsFilter").multiselect('selectAll', false);
             $('#licensorsFilter').multiselect('updateButtonText');
           } else {
@@ -306,7 +306,7 @@ var GlobalParameterBar = Component.extend({
             }
             $("#contentTypesFilter").multiselect('rebuild');
             var defContentType = DefaultGlobalParameters.attr('ContentType');
-            if(defContentType=="All"){
+            if(defContentType=="ALL" || defContentType=="-1"){
               $("#contentTypesFilter").multiselect('selectAll', false);
               $('#contentTypesFilter').multiselect('updateButtonText');
             } else {
@@ -332,7 +332,7 @@ var GlobalParameterBar = Component.extend({
 
             self.scope.applyChanges(self.scope.changesToApply, self.scope.appstate);
             //console.log("APpp state & ChangesTOAPPLY is "+JSON.stringify(self.scope.appstate.attr())+","+JSON.stringify(self.scope.changesToApply.attr()));
-          }, 2000);
+          }, 1000);
 
           /* Setting default global parameter values to appstate scope variable Ends here*/
 
