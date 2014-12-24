@@ -41,11 +41,17 @@ var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "invoiceduedate", "r
 var mandatoryField = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
 
 fileUpload.extend({
-  tag: 'rn-file-uploader-icsv',
-  scope: {
-           fileList : new can.List()
-         }
- });
+	tag: 'rn-file-uploader-icsv',
+	scope: {
+		fileList: new can.List(),
+		isAnyFileLoaded : can.compute(function() { return this.fileList.attr('length') > 0; })
+	},
+	events: {
+		'inserted': function() {
+			this.scope.fileList.replace(this.scope.uploadedfileinfo);
+		}
+	}
+});
 
 var page = Component.extend({
   tag: 'page-edit-icsv',
@@ -682,6 +688,18 @@ var page = Component.extend({
 						var tempcommentObj = invoiceData.comments;
 						$('#multipleCommentsInv').html(stache('<multiple-comments divid="usercommentsdivinv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
 		                self.scope.changeTextOnInvType();
+
+		                /*Pluck only PDF as supporting documents from the invoicedocuments*/
+						var invoicePDFDocuments = $.grep(invoiceData.invoiceDocuments, function(e) {
+							console.log(e.fileName.split('.').pop());
+							return e.fileName.split('.').pop() === "pdf";
+						});
+
+						if (invoicePDFDocuments.length > 0) {
+							$('#icsvFileUploader').html(stache('<rn-file-uploader-icsv uploadedfileinfo={docs}></rn-file-uploader-icsv>')({
+								docs: invoicePDFDocuments
+							}));
+						}
 
 		                var genObj = {regionId:self.scope.attr("regionStore")};
 

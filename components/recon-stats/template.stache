@@ -67,10 +67,10 @@
 
 								 <!-- can js insert -->
 
-										<td width="40%" class="summaryStatsTab">
+										<td width="35%" class="summaryStatsTab">
 
 											<div id="summaryStatsDiv" style="display:none">
-												<table id="summaryTopTable">
+												<table id="summaryTopTable" style="width:100%">
 													<tr>
 														<td width="55%">
 															<div>Summary Stats</div>
@@ -90,7 +90,7 @@
 												</table>
 
 
-												<table id="summaryStatsTab">
+												<table id="summaryStatsTab" style="width:100%">
 													<thead>
 														<tr>
 													 		<th class="ssStatus" style="width:55%">Stats</th>

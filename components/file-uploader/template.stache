@@ -4,7 +4,11 @@
             <ul class="filelist">
                 {{#fileList}}
                   <li {{data 'listView'}}>
-                       {{name}} ({{convertToKB size}})
+                    {{#if fileName}}
+                      {{fileName}} {{#if size}}({{convertToKB size}}){{/if}}
+                    {{#else}}
+                       {{name}} {{#if size}}({{convertToKB size}}){{/if}}
+                      {{/if}}
                        <a  class="action-link">X</a>
                   </li>
                 {{/files}}
@@ -18,10 +22,10 @@
               <div class="fileError"></div>
             {{/if}}
             
-        	<input type="button" class="submitFiles uploadFiles" value="Upload"/>
-        	<input type="button"  class="cancelUpload uploadFiles" value="Cancel">
+        <input type="button" class="submitFiles uploadFiles" value="Upload"/>
+        <input type="button"  class="cancelUpload uploadFiles" value="Cancel">
         {{else}}
-        	<input type="file" class="fileSelect"  name ="UploadFile"  style="display: none;" multiple />
-        	<input type="button" class="uploadFiles" value="Select Files" />
+        <input type="file" class="fileSelect"  name ="UploadFile"  style="display: none;" multiple />
+        <input type="button" class="uploadFiles" value="Select Files" />
         {{/if}}
 </div>
