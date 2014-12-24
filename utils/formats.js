@@ -3,7 +3,8 @@ var formats = {
   int: value => parseInt(value, 10),
   fixed: function(numberOfDigits) {
       return function(value) {
-        if(value == ""){
+        if(value === ""){
+          console.log(value);
           return "";
         }else{
           return formats.number(value).toFixed(numberOfDigits);
@@ -31,9 +32,15 @@ var formats = {
     }
 
   },
-
   formatIf: function(test, format, elseValue) {
     return value => test.call(null, value) ? format(value) : elseValue
+  },
+  formatIfValue: function(valuePassed,test, format, elseValue) {
+    if(valuePassed == undefined){
+      return "";
+    }else{
+      return test.call(null, valuePassed) ? format(valuePassed) : elseValue;
+    }
   }
 };
 

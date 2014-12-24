@@ -32,6 +32,7 @@ var BundleDetailGrid = Grid.extend({
       can.batch.start();
       var rows = [];
       if(bundle.bundleFooter) {
+        bundle.bundleFooter.attr("isFooterRow",true);
         rows.push(bundle.bundleFooter);
         bundle.bundleFooter.bdlFooterDetails.forEach(function(detail) {
           detail.attr('__isChild', true);
