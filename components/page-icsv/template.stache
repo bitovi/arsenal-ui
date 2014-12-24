@@ -1,68 +1,85 @@
-
 <div class="container-fluid icsv-invoice" {{showediticsvmain}}>
-  <div class="row">  
-    <div class="col-sm-5 pageTitle">
-		    <h3>Add New Invoices from iCSV</h3>
+	<div class="row">
+		<div class="col-sm-5 pageTitle">
+			<h3>Add New Invoices from iCSV</h3>
+		</div>
+		
+		<div class="col-sm-7">
+			<div id="invcsvmessageDiv" role="alert">
+				
+			</div>
+		</div>
+		<div class="col-sm-12 lineDividerInvoice removeH"></div>
+	</div>
+	<div class="row">
+		<!--div class="col-sm-12">
+			<div class="col-sm-6"></div>
+			
+	</div-->
+	<div class="col-sm-12" style="padding:0px;min-height:0px;background: #f4f4f4;">
+		<div class="col-sm-6" id="uploadsummary">
+			
+			<label class="fontSize14 padL10"> iCSV Files (CSVs and PDFs)</label>
+			<rn-file-uploader uploadedfileinfo="{uploadedfileinfo}"></rn-file-uploader>
+		</div>
+		<div class=" verticallineDivider col-sm-6 jQfunhide" id="summaryfragment">
+			
+			<icsv-summary appstate="{appstate}"></icsv-summary>
+		</div>
+	</div>
+	<div class="col-sm-12 icsv-error">{{errorMessage}}</div>
+	
+	
+	
+	<div class="col-sm-12 lineDividerInvoice jQfunhide" style="padding:0px;">
+		<div id="icsvinvoiceGrid">
+			<div class="loading_img"></div>
+		</div>
+		
+		
+	</div>
+	<!--
+		<div class="col-sm-12 lineDividerInvoice jQfunhide" >
+				<div class="">
+						<div  id="icsv-edit-invoice" style="text-align:right;padding-top:15px;padding-right:0px;padding-left:0px;">
+								<div class="col-sm-6"></div>
+								<label class="col-sm-2" for="inputCountry">Bundle Name:</label>
+								<div class="col-sm-2 requiredBar">
+										<create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}"></create-pb>
+								</div>
+								<div class="col-sm-1">
+										<button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancelicsv" >Cancel</button>
+								</div>
+								<div class="col-sm-1">
+										<button id="addIcsvSubmit" type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big" {{showactivebutton}} >Submit</button>
+								</div>
+						</div>
+				</div>
+		</div>
+	-->
+	<div class="col-sm-12 lineDividerInvoice jQfunhide marginTop10" >
+		
+		
+		<div id="icsv-edit-invoice" class="pull-right col-sm-12 marginTop10">
+			
+			<div class="pull-right">
+				<button id="addIcsvSubmit" type="button"  class="pull-right btn btn-primary buttonSubmit addInvSubmit btn-custom-big" {{showactivebutton}} >Submit</button>
+				<button type="button" class="pull-right btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancelicsv" >Cancel</button>
+			</div>
+
+			<div class="pull-right">
+				<span class="pull-inline marginRight10">Bundle Name:</span>
+				<span class="requiredBar pull-inline">
+				<create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}"></create-pb>
+				</span>
+			</div>
+
+		</div>
+		
 	</div>
 	
-	<div class="col-sm-7">
-		    <div id="invcsvmessageDiv" role="alert">
-			  
-		   </div>
-	</div>
-	<div class="col-sm-12 lineDividerInvoice removeH"></div>
-  </div>
-  <div class="row">
-			  <!--div class="col-sm-12">
-			  	<div class="col-sm-6"></div>
-			  	
-			  </div-->
-			 <div class="col-sm-12" style="padding:0px;min-height:0px;background: #f4f4f4;">
-			  <div class="col-sm-6" id="uploadsummary">
-		
-			  <label class="fontSize14 padL10"> iCSV Files (CSVs and PDFs)</label>
-					<rn-file-uploader uploadedfileinfo="{uploadedfileinfo}"></rn-file-uploader>
-        		</div>
-				<div class=" verticallineDivider col-sm-6 jQfunhide" id="summaryfragment">
-				
-					<icsv-summary appstate="{appstate}"></icsv-summary>
-        		</div>
-			</div>
-			<div class="col-sm-12 icsv-error">{{errorMessage}}</div>
-			
-		
-        
-			<div class="col-sm-12 lineDividerInvoice jQfunhide" style="padding:0px;">
-				<div id="icsvinvoiceGrid">
-						<div class="loading_img"></div>
-        		</div>
-        		
-        		
-			</div>
-
-			<div class="col-sm-12 lineDividerInvoice jQfunhide" >
-				  <div class="">
-					    <div  id="icsv-edit-invoice" style="text-align:right;padding-top:15px;padding-right:0px;padding-left:0px;">
-					    	<div class="col-sm-6"></div>
-					    	<label class="col-sm-2" for="inputCountry">Bundle Name:</label>
-					         <div class="col-sm-2 requiredBar">
-					        	<create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}"></create-pb>
-					         </div>
-					        <div class="col-sm-1">
-					        <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancelicsv" >Cancel</button>
-					        </div>
-					         <div class="col-sm-1">
-					        <button id="addIcsvSubmit" type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big" {{showactivebutton}} >Submit</button>
-					        </div>
-					    </div>
-					 </div>	
-		   </div>	 
-  </div>
- </div>
-
- {{#if showediticsv}}	
-        		
-   <page-edit-icsv appstate="{appstate}"> </page-edit-icsv>
-        		
-  {{/if}}
-
+</div>
+</div>
+{{#if showediticsv}}
+<page-edit-icsv appstate="{appstate}"> </page-edit-icsv>
+{{/if}}
