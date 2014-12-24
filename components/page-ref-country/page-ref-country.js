@@ -220,7 +220,7 @@ var page = Component.extend({
         console.log("Request passed is "+ JSON.stringify(UserReq.formRequestDetails(requestObj)));
         RefCountry.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
-          //console.log("Response data is "+JSON.stringify(data.attr()));
+          console.log("Response data is "+JSON.stringify(data.attr()));
           self.pageState.countryDetails.attr("country",data.countryDetails);
           
           /* if the data.countryDetails.countryId is null then set the country dropdown using requestObj*/
@@ -279,6 +279,8 @@ var page = Component.extend({
           var pricingModelNames = [];
           var pricingModelVersions = {};
           var getModels = data.countryDetails.models;
+          var selectedAccModel = data.countryDetails.model;
+          var selModelId,selectedAccModelVersions;
 
           for(var i=0;i<getModels.length;i++){
             var accModelName = getModels[i].accrualModelName;
@@ -294,14 +296,33 @@ var page = Component.extend({
           }
 
           var accModels = [];
+          var flag= false;
           for(var key in pricingModelVersions){
             var temp = {};
             temp["accName"] = key;
             temp["versions"] = pricingModelVersions[key];
             accModels.push(temp);
+            /* this in the case of selectedAccModel is null to set the first value in Pricing model*/
+            if(selectedAccModel==null && flag==false){
+              selectedAccModelVersions =  pricingModelVersions[key];
+              selModelId = selectedAccModelVersions[0]["modelId"];
+              flag = true;
+            }
+            if(key==selectedAccModel){
+              selectedAccModelVersions =  pricingModelVersions[key];
+              selModelId = selectedAccModelVersions[0]["modelId"];
+            }
           }
           //console.log("accural Models "+JSON.stringify(accModels));
+          //console.log("sel accural Model vers are "+JSON.stringify(selectedAccModelVersions));
+          //console.log("sel accural Model id is "+JSON.stringify(selModelId));
           self.attr("accuralModels").replace(accModels);
+          self.attr("accuralModelVersions").replace(selectedAccModelVersions);
+          self.attr("selectedModelId",selModelId);
+          setTimeout(function(){
+            if(selectedAccModel !=null)
+              $("#accModelSel").val(selectedAccModel);
+          },1000);
 
           
           var tempcommentObj = data.countryDetails.commentList;
@@ -346,7 +367,7 @@ var page = Component.extend({
       console.log("Request passed is "+ JSON.stringify(UserReq.formRequestDetails(requestObj)));
       RefCountry.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
-        //console.log("Response data is "+JSON.stringify(data.attr()));
+        console.log("Response data is "+JSON.stringify(data.attr()));
         self.pageState.countryDetails.attr("country",data.countryDetails);
         
         /* if the data.countryDetails.countryId is null then set the country dropdown using requestObj*/
@@ -449,7 +470,6 @@ var page = Component.extend({
             $("#accModelSel").val(selectedAccModel);
         },1000);
 
-        if(data.countryDetails.commentList!=null)
           
         var tempcommentObj = data.countryDetails.commentList;
         //console.log("multi comments "+JSON.stringify(tempcommentObj.attr()));
@@ -512,11 +532,40 @@ var page = Component.extend({
       //console.log("sel model id "+selModelId)
       self.attr("selectedModelId",selModelId);
     },
-    '#pricingModelBtn click': function(){
+    '.society click': function(){
+        this.scope.appstate.attr('page','licensor');
+    },
+    '.pricingModel click': function(item, el, ev){
+        var self = this.scope;
+        var row = item.closest('tr').data('row').row;
+        var entity = row.society;
+
+        var selmodelid = self.attr("selectedModelId").toString();
+        var country = self.pageState.countryDetails.country.attr("countryId");
+        var genObj = {modelId:selmodelid,reqType:'details', countryId:country, entityName:entity};
+
+        console.log("Request is " +JSON.stringify(UserReq.formRequestDetails(genObj)));
+        PricingModels.findOne(UserReq.formRequestDetails(genObj),function(data){
+            //console.log("Pricing model details "+ JSON.stringify(data.pricingModel.attr()));
+            self.attr("getPricingModelDetails",data.pricingModel);
+            self.attr("baseModelParameter").replace(data.pricingModel.baseModelParameters);
+            self.attr("trackCounts").replace(data.pricingModel.trackCounts);
+
+            var tempcommentObj = data.pricingModel.pricingModel.comments;
+            if(tempcommentObj!=null)
+              $('#priceModelmultipleComments').html(stache('<multiple-comments divid="priceModelmultipleComments" options="{tempcommentObj}" divheight="100" isreadOnly="y"></multiple-comments>')({tempcommentObj}));
+            
+            $("#viewPricingModelDiv").show();
+        }).then(function(){
+          console.log("ERROR");
+        });
+
+    },
+    '#accuralModelBtn click': function(){
       var self = this.scope;
-      $("#viewPricingModelDiv").show();
       var selmodelid = self.attr("selectedModelId").toString();
-      var genObj = {modelId:selmodelid,reqType:'details'};
+      var country = self.pageState.countryDetails.country.attr("countryId");
+      var genObj = {modelId:selmodelid,reqType:'details', countryId:country};
 
       console.log("Request is " +JSON.stringify(UserReq.formRequestDetails(genObj)));
       PricingModels.findOne(UserReq.formRequestDetails(genObj),function(data){
@@ -528,7 +577,10 @@ var page = Component.extend({
           var tempcommentObj = data.pricingModel.pricingModel.comments;
           if(tempcommentObj!=null)
             $('#priceModelmultipleComments').html(stache('<multiple-comments divid="priceModelmultipleComments" options="{tempcommentObj}" divheight="100" isreadOnly="y"></multiple-comments>')({tempcommentObj}));
+          
+          $("#viewPricingModelDiv").show();
       }).then(function(){
+        console.log("ERROR");
       });
     },
     '#priModelClose click': function(){
