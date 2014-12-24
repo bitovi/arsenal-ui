@@ -78,6 +78,7 @@
 
 		</ul>
 
+		<export-toexcel csv="{csvcontent}"></export-toexcel>
 		<!-- Tab Contents -->
 		<div id="myTabContent" class="tab-content">
 		   

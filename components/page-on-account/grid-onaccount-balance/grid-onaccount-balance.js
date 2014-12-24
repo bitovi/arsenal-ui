@@ -117,11 +117,7 @@ var OnAccountBalance = Grid.extend({
                 } ); 
       
        }
-    },
-    '#proposeCopyToClipboard click':function(){ alert()
-        $('copy-clipboard').show();
     }
-
   }
 });
 
