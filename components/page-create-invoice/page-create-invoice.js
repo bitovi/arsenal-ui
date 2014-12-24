@@ -149,7 +149,7 @@ var page = Component.extend({
 
            		$(this).closest("tr").remove();
 	            self.AmountStore.removeAttr("amountText"+rowindex);
-	            $("#addInvSubmit").attr("disabled", true);
+	            //$("#addInvSubmit").attr("disabled", true);
 	        });
 
 		},
@@ -390,10 +390,11 @@ var page = Component.extend({
 				                    callback: {
 				                            message: 'Period is mandatory',
 				                            callback: function (value, validator, $field) {
-				                              if((value == "") && (self.scope.attr("invoicetypeSelect") != "2")){
-				                              	   return false;
-				                              }
-				                              return true;
+				                            	if((value == "") && (self.scope.attr("invoicetypeSelect") != "2")){
+				                              	   	return false;
+				                              	}
+				                             	
+												return true;
 				                            }
 		                    		}
 				                }
@@ -415,7 +416,43 @@ var page = Component.extend({
 												            message: 'Adhoc type is mandatory'
 												    }
 				                              }
-				                              return true;
+				                              else
+				                              {
+				                              		var duplicateCont = false;
+						                              	$(".inputContent").not(':hidden').each(function(){   /*duplicate Content type validation*/
+															if($(this).attr("id") != $field.attr("id"))
+															{
+																if($(this).val() == $field.val()){
+																	$field.val("");
+																	duplicateCont = true;
+															        	
+																    return false;
+															    }
+															}
+															
+														});
+
+														if(duplicateCont){
+															if(self.scope.attr("invoicetypeSelect") != 2)
+													        {
+													        	return {
+															            valid: false,    // or false
+															            message: 'Two invoicelines can not have same content type.'
+															    }			
+													        }
+														    else
+														    {
+														    	return {
+															            valid: false,    // or false
+															            message: 'Two invoicelines can not have same adhoc type.'
+															    }	
+														    }  
+
+														} 
+														 
+												}	
+
+				                             return true;
 				                            }
 		                    		}
 				                }
@@ -565,11 +602,10 @@ var page = Component.extend({
 
 		},
 		".inputContent change": function(event){
-         	this.scope.contentTypeStore.attr(event[0].id, event[0].value)
-         	//console.log(this.scope.contentTypeStore.attr());
-         	//updateContentType(event[0]);
-
-		},
+			var self = this;
+         	this.scope.contentTypeStore.attr(event[0].id, event[0].value);
+         	
+     	},
 		".inputMonth change": function(event){
          	this.scope.monthStore.attr(event[0].id, event[0].value);
 
@@ -921,14 +957,31 @@ var page = Component.extend({
 			       					$(ele).parent().find('input[type=text]').val(this.scope.periodchoosen).trigger('change');
 			       					$(ele).closest('.calendarcls').find('.box-modal').hide();
 			       					$(ele).blur();
-									console.log("abc");
+								console.log("def");
+									
 			   				},
 						   '.updateperoid focus':function(el){
 						   	 var self = this;
 						      $(el).closest('.calendarcls').find('.box-modal').show();
 						     	if(el[0].id == "inputMonth0"){
 						     		self.scope.getFxrate();
+
 							 	}
+							 },
+							'.updateperoid blur':function(el){
+						   	 	var self = this;
+								$(".updateperoid").not(':hidden').each(function(){
+									if($(this).attr("id") != el[0].id){
+										if($(this).val() == el[0].value){
+						        			$(el).val("");
+						        			showError(el[0].id, "Two invoiceline can not have same period");
+						        			return false;
+						        		}
+						        	}
+						        	else{
+						        		removeError(el[0].id, "no");
+						        	}
+						        });
 							},
 						   '#inputContent0 change':function(el){  /*validation for servicetypeid*/
 						   // 		$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
@@ -1072,11 +1125,14 @@ var page = Component.extend({
 						$("#addInvSubmit").attr("disabled", true);
 					}
 
-					function removeError(id){
+					function removeError(id, buttonState){
 						$('#'+id).popover('destroy');
 						$("#"+id+"-err").css("display", "none");
 						$('#'+id).parent().removeClass("has-error");
-						$("#addInvSubmit").attr("disabled", false);
+						if(buttonState != "no"){
+							$("#addInvSubmit").attr("disabled", false);
+						}
+						
 					}
 
 					function dateFormatter(datestring, currentformat){
