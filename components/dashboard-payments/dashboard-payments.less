@@ -1,0 +1,76 @@
+@dark-grey: #3d3d3d;
+@medium-grey: #ececec;
+@border-grey: #dddddd;
+
+@value-color: #d24849;
+
+rn-dashboard-payments {
+  color: @dark-grey;
+
+  display: flex;
+  padding: 1em 0;
+
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  ul.chart-list li {
+    padding: .5em 0;
+    position: relative;
+    list-style: none;
+
+    &.selected {
+      background-color: @medium-grey;
+
+      &::after {
+        content: '>';
+        position: absolute;
+        top: 0;
+        right: 2px;
+        bottom: 0;
+        padding: 1em 0;
+        line-height: 1em;
+      }
+    }
+
+    rn-payment-chart {
+      .value {
+        color: @value-color;
+      }
+    }
+  }
+
+  .sidebar {
+    flex: 1 0;
+    padding: 1em;
+    border-right: 1px solid @border-grey;
+
+    rn-switcher {
+      font-size: 13px;
+      display: block;
+      margin: 0 auto 2em;
+      width: 50%;
+
+      ul.switcher li {
+        padding: 0 .33em;
+
+        &:not(.selected) {
+          background: white;
+          color: @dark-grey;
+        }
+      }
+    }
+  }
+
+  .detail {
+    flex: 3 0;
+    padding: 1em;
+  }
+
+  .select-message {
+    padding: 1.5em;
+    text-align: center;
+    font-weight: bold;
+  }
+}

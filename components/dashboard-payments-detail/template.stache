@@ -1,0 +1,7 @@
+<ul class="chart-list country-list">
+  {{#detailItemsList}}
+  <li {{popover item}} {{data 'item'}}>
+    <rn-payment-chart text="{text}" value="{item.totBalPrcnt}"></rn-payment-chart>
+  </li>
+  {{/detailItemsList}}
+</ul>

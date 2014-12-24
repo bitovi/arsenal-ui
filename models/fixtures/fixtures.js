@@ -1,6 +1,7 @@
 import fixture from 'can/util/fixture/';
 import URLs from 'utils/urls';
 
+/*
 import fixture_allInvoices from './allInvoices';
 
 import fixture_claimLicensorInvoices from './claimLicensorInvoices';
@@ -100,3 +101,5 @@ fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'dashboard/holesreport', function(re
 
 fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'workflow/analytics/inbox', '/models/fixtures/inbox.json');
 fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'workflow/analytics/outbox', '/models/fixtures/outbox.json');
+*/
+fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'dashboard/payment', '/models/fixtures/payment-summary.json');

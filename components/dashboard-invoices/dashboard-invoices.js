@@ -80,7 +80,6 @@ var DashboardInvoices = Component.extend({
   },
   helpers: {
     showPage: function(options) {
-      //can.__reading(this.appstate, 'change');
       if(this.appstate.attr('filled')) {
         return options.fn(this);
       } else {
