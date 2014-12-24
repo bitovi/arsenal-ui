@@ -525,6 +525,9 @@ var page = Component.extend({
       var self = this;
 
       var commentObj = values[0].licensorDetails.commentList;
+
+      self.clearContactDetails();
+
       
       self.editable = "";
 
@@ -1351,11 +1354,11 @@ var page = Component.extend({
         }
       }).on('error.field.bv', function(e, data) {       
         
-          $('*[data-bv-icon-for="'+data.field +'"]').popover('show');
+          //$('*[data-bv-icon-for="'+data.field +'"]').popover('show');
 
-          setTimeout(function(){
-            $('*[data-bv-icon-for="'+data.field +'"]').popover('hide');
-          },1000);
+          //setTimeout(function(){
+           // $('*[data-bv-icon-for="'+data.field +'"]').popover('hide');
+          //},1000);
 
       }).on('added.field.bv', function(e, data) {
       });
@@ -1825,6 +1828,8 @@ var page = Component.extend({
           genObj.id = id;
           genObj.licensorName =  licensor;
 
+          self.scope.reValidateFiledsonLoad();
+
           self.scope.clearContactDetails();
 
           self.scope.clearRepConfDetails();
@@ -1870,6 +1875,8 @@ var page = Component.extend({
         $('#entityLicensorTop').bootstrapValidator('validate');
 
         if($('#entityLicensorTop').data('bootstrapValidator').isValid() == false) {
+
+          $("#loading_img").hide();
 
           return;
 
