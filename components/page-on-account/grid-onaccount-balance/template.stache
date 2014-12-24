@@ -28,3 +28,4 @@
       {{/if}}
   </tfoot>
 </table>
+<copy-clipboard> {{values}}</copy-clipboard>
