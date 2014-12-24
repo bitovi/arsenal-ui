@@ -243,7 +243,7 @@
 		    				<div class="col-sm-3 textalignright">
 			    				<label>Comments:</label>
 							</div>
-			    			<div class="col-sm-7 requiredBar" id="multipleComments">
+			    			<div class="multipleComments col-sm-7 requiredBar" id="multipleComments">
 						
 							</div>
 
