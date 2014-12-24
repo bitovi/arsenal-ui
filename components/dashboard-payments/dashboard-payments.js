@@ -1,8 +1,11 @@
 import _ from 'lodash';
-import $ from 'jquery';
+import can from 'can/';
 import Component from 'can/component/';
 
 import Switcher from 'components/switcher/';
+import PaymentChart from 'components/payment-chart/';
+import DashboardPaymentsOverview from 'components/dashboard-payments-overview/';
+import DashboardPaymentsDetail from 'components/dashboard-payments-detail/';
 
 import PaymentSummary from 'models/payment-summary/';
 
@@ -17,16 +20,22 @@ var DashboardPayments = Component.extend({
   scope: {
     appstate: null, // passed in
     summary: null,
-    fetching: false,
+    fetching: true,
 
     tabs: [{
       text: 'By Country',
-      value: 'country'
+      value: 'countries',
+      nameProperty: 'ctry',
+      detailNameProperty: 'entyName'
     }, {
       text: 'By Licensor',
-      value: 'licensor'
+      value: 'entities',
+      nameProperty: 'entyName',
+      detailNameProperty: 'ctry'
     }],
     selectedTab: null, // set on insert
+
+    selectedItem: null,
 
     debouncedRefreshReport: function() {
       var self = this;
@@ -54,8 +63,18 @@ var DashboardPayments = Component.extend({
         return options.inverse(this);
       }
     },
-    countryGraphs: function(countryList, options) {
-      
+    selectedItems: function(options) {
+      var scope = this;
+      var items = scope.summary[scope.attr('selectedTab').value];
+      return _.map(items, function(item) {
+        return options.fn({
+          item: item,
+          name: item[scope.selectedTab.nameProperty],
+        });
+      });
+    },
+    isSelected: function(itemInfo) {
+      return itemInfo.item === this.attr('selectedItem') ? 'selected' : '';
     }
   },
   events: {
@@ -74,6 +93,13 @@ var DashboardPayments = Component.extend({
         this.scope.attr('entities', []);
         this.scope.attr('holesByCountry', {});
       }
+    },
+    '{scope} selectedTab': function() {
+      this.scope.attr('selectedItem', null);
+    },
+    '.sidebar .chart-list li click': function(el, ev) {
+      var item = el.data('item').item;
+      this.scope.attr('selectedItem', item);
     }
   }
 });

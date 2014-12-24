@@ -45,7 +45,7 @@ var formats = {
 };
 
 formats.currency = formats.fixed(2);
-formats.percent = (value => formats.fixed(0)(value)*100 + '%');
+formats.percent = (value => formats.fixed(0)(value) + '%');
 formats.decimalAsPercent = (value => formats.fixed(2)(value * 100) + '%');
 
 export default formats;

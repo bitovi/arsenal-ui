@@ -1,51 +1,25 @@
 {{#showPage}}
+{{#if fetching}}
+<div class="select-message">Loading Payments report...</div>
+{{else}}
 <div class="sidebar">
   <rn-switcher options="{tabs}" selected-option="{selectedTab}"></rn-switcher>
-  <ul class="graph-list">
-  {{#countryGraphs selectedItems}}
-  <li>
-    <div class="graph-title">{{title}}</div>
-    <div class="detail-graph"></div>
-    <div class="percentage">{{percentage}}%</div>
+  <ul class="chart-list">
+  {{#selectedItems}}
+  <li class="{{isSelected .}}" {{data 'item'}}>
+    <rn-payment-chart text="{name}" value="{item.totBalPrcnt}"</rn-payment-chart>
   </li>
-  {{/countryGraphs}}
+  {{/selectedItems}}
   </ul>
 </div>
 <div class="detail">
-  {{#if selectedDetail}}
-
-
-
+  {{#if selectedItem}}
+  <rn-dashboard-payments-detail name-property="{selectedTab.detailNameProperty}" detail-items="{selectedItem.payments}"></rn-dashboard-payments-detail>
   {{else}}
-  <div class="big-bar">
-    <h3>Payments in {{appstate.region.value}}</h3>
-    <div class="region-graph"></div>
-    <h3>{{summary.percentPaid}}% paid</h3>
-  </div>
-  <div class="column-container">
-    <div class="column top-not-paid-countries">
-      <h3>Top Not Paid Countries</h3>
-      <ul class="graph-list">
-        {{#countryGraphs summary.topNotPaidCountries}}
-        <li>
-          <div class="graph-title">{{title}}</div>
-          <div class="detail-graph"></div>
-          <div class="percentage">{{percentage}}%</div>
-        </li>
-        {{/countryGraphs}}
-      </ul>
-    </div>
-    <div class="column top-not-paid-licensors">
-      <h3>Top Not Paid Licensors</h3>
-      <ul class="licensor-list">
-        {{#each topNotPaidLicensors}}
-        <li>{{.}}</li>
-        {{/each}}
-      </ul>
-    </div>
-  </div>
+  <rn-dashboard-payments-overview summary="{summary}" appstate="{appstate}"></rn-dashboard-payments-overview>
   {{/if}}
 </div>
+{{/if}}
 {{else}}
-<div class="select-message">Please select parameters above for the Invoices Received report.</div>
+<div class="select-message">Please select parameters above for the Payments report.</div>
 {{/showPage}}
