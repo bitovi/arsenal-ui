@@ -1054,6 +1054,8 @@ var page = Component.extend({
 
           var genObj = reLicencorDetails;
 
+          var sEntity = self.selectedEntity;
+
           Promise.all([Analytics.create(UserReq.formRequestDetails(genObj))]).then(function(data) {
 
             if(data[0].responseText == "SUCCESS") {
@@ -1072,6 +1074,9 @@ var page = Component.extend({
 
                   self.licensors.replace(values[0].entities[0]);
 
+                  self.attr("selectedEntity", sEntity); 
+
+                  $("#licensorsFilter").val(sEntity);
       
                 });
 
