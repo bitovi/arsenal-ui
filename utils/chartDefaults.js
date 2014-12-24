@@ -47,7 +47,7 @@ var chartDefaults = {
       margin: [0, 0, 0, 0],
       spacing: [0, 0, 0, 0]
     },
-    colors: ['#DDAAAA', '#DD4444', '#DD0000'],
+    colors: ['#DD8888', '#DD4444', '#DD0000'],
     yAxis: {
       min: 0,
       gridLineWidth: 0
