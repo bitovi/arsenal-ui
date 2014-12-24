@@ -177,7 +177,7 @@ var PaymentBundle = Model.extend({
     var bundleData = this.attr();
     // now to reverse all the stuff we did in the name of science
     delete bundleData.bundleFooter;
-    
+
     bundleData.bundleDetailsGroup && bundleData.bundleDetailsGroup.forEach(function(group) {
       delete group.__isChild;
       delete group.__isOpen;
@@ -239,7 +239,7 @@ var PaymentBundle = Model.extend({
       processData: false
     }).then(function(response) {
       if(response.status === 'SUCCESS') {
-        debugger;
+        //debugger;
         groups.forEach(group => group.destroy());
       }
 
