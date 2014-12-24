@@ -190,6 +190,7 @@ var PaymentBundle = Model.extend({
 
     if(bundleData.bdlFooter) {
       delete bundleData.bdlFooter.paymentCcy;
+      delete bundleData.bdlFooter.isFooterRow;
       bundleData.bdlFooter.bdlFooterDetails.forEach(function(detail) {
         delete detail.__isChild;
         delete detail.__isOpen;
@@ -205,6 +206,8 @@ var PaymentBundle = Model.extend({
     var requestData = {
       paymentBundle: bundleData
     };
+
+    //console.log(JSON.stringify(requestData));
 
     return $.ajax({
       url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/' + (params.action === 'delete' ? 'abort' : params.action),
