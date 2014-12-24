@@ -26,8 +26,10 @@ var page = Component.extend({
   scope: {
     appstate: null, // will be passed in
     pageState: pageState,
+    isPageSearch: undefined,
     refreshBundles: _.debounce(function() {
-      if(this.scope.appstate.filled) {
+      if(this.scope.isPageSearch != this.scope.appstate.globalSearch ) {
+        this.scope.isPageSearch  = this.scope.appstate.globalSearch;
         PaymentBundle.findAll({appstate: this.scope.appstate}).then(function(bundles) {
           can.batch.start();
           pageState.bundles.splice(0, pageState.bundles.length)
@@ -44,11 +46,12 @@ var page = Component.extend({
   },
   helpers: {
     showPage: function(options) {
-      if(this.appstate.attr('filled')) {
-        return options.fn(this);
-      } else {
-        return '';
-      }
+    //  return options.fn(this);
+      // if(this.appstate.attr('globalSearch')) {
+      //
+      // } else {
+      //   return '';
+      // }
     }
   },
   events: {
@@ -65,7 +68,7 @@ var page = Component.extend({
       if(!this.scope.pageState.selectedBundle) {
         return;
       }
-      
+
       PbrDeleteConfirmModal.displayModal(this.scope.pageState.selectedBundle, {
         action: 'delete',
         approvalComment: '',

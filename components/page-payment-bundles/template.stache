@@ -11,9 +11,9 @@
     {{/if}}
   </div>
 </header>
-{{#showPage}}
+<!-- {{#showPage}} -->
 <rn-bundle-grid rows="{pageState.bundles}" page-state="{pageState}"></rn-bundle-grid>
 {{#if pageState.selectedBundle}}
 <rn-bundle-detail page-state="{pageState}" appstate="{appstate}"></rn-bundle-detail>
 {{/if}}
-{{/showPage}}
+<!-- {{/showPage}} -->
