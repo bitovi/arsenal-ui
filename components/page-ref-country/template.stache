@@ -172,7 +172,7 @@
                       </select>
                     </div>
                     <div class="col-sm-2 normalBar">
-                      <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="pricingModelBtn">...</button>
+                      <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="accuralModelBtn">...</button>
                     </div>
                  </div>
               </div>
