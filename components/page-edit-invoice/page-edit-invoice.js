@@ -134,7 +134,7 @@ var page = Component.extend({
 		        $('#inputContent'+rowindex).prepend("<option value>Select</option>").val('')
 		    }
 			
-			var $option   = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"]');
+			var $option = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"]');
             $option.each(function(index){
             	$('#invoiceform').bootstrapValidator('addField', $(this));
             });
@@ -147,7 +147,7 @@ var page = Component.extend({
 
            		$(this).closest("tr").remove();
 	            self.AmountStore.removeAttr("amountText"+rowindex);
-	            $("#addInvSubmit").attr("disabled", true);
+	           // $("#addInvSubmit").attr("disabled", true);
 	        });
 		},
 		changeTextOnInvType:function(){
@@ -399,6 +399,41 @@ var page = Component.extend({
 												            message: 'Adhoc type is mandatory'
 												    }
 				                              }
+				                              else
+				                              {
+				                              		var duplicateCont = false;
+						                              	$(".inputContent").not(':hidden').each(function(){   /*duplicate Content type validation*/
+															if($(this).attr("id") != $field.attr("id"))
+															{
+																if($(this).val() == $field.val()){
+																	$field.val("");
+																	duplicateCont = true;
+															        	
+																    return false;
+															    }
+															}
+															
+														});
+
+														if(duplicateCont){
+															if(self.scope.attr("invoicetypeSelect") != 2)
+													        {
+													        	return {
+															            valid: false,    // or false
+															            message: 'Two invoicelines can not have same content type.'
+															    }			
+													        }
+														    else
+														    {
+														    	return {
+															            valid: false,    // or false
+															            message: 'Two invoicelines can not have same adhoc type.'
+															    }	
+														    }  
+
+														} 
+														 
+												}
 				                              return true;
 				                            }
 		                    		}
@@ -688,7 +723,8 @@ var page = Component.extend({
 				 		  /*This block is used to update data in view */
 						
 						var invoiceData = self.scope.attr().invoiceContainer[0];
-				 		self.scope.attr("invoicenumberStore", invoiceData.invoiceNumber);
+
+						self.scope.attr("invoicenumberStore", invoiceData.invoiceNumber);
 				 		self.scope.attr("invoicetypeSelect", invoiceData.invoiceTypeId);
 				 		self.scope.attr("regionStore", invoiceData.regionId);
 						self.scope.attr("fxrateStore", invoiceData.fxRate);
@@ -782,14 +818,14 @@ var page = Component.extend({
 										var inputContent = "inputContent"+rowindex;
 										var tempDelObj = {};
 										tempDelObj["country"] = self.scope.countryStore.attr("inputCountry"+rowindex);
-								   		tempDelObj["fiscalPeriod"] =  periodWidgetHelper.getFiscalPeriod($("#inputMonth"+index).val());
-								   		tempDelObj["periodType"] = periodWidgetHelper.getPeriodType($("#inputMonth"+index).val().charAt(0));
+								   		tempDelObj["fiscalPeriod"] =  periodWidgetHelper.getFiscalPeriod($("#inputMonth"+rowindex).val());
+								   		tempDelObj["periodType"] = periodWidgetHelper.getPeriodType($("#inputMonth"+rowindex).val().charAt(0));
 								   		tempDelObj["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent"+rowindex);
 								   		tempDelObj["contentGrpName"] = $("#inputContent"+rowindex+" option:selected").text();
 								   		tempDelObj["lineAmount"] = self.scope.AmountStore.attr("amountText"+rowindex);
 								   		tempDelObj["lineStatus"] = "";
 								   		tempDelObj["status"] = "DELETE";
-								   		tempDelObj["lineType"] = "";
+								   		tempDelObj["lineType"] = invoiceData.invoiceLines[0].lineType;
 								   		if(self.scope.attr("invoicetypeSelect") == "2"){
 
 								  	 		tempDelObj["glAccRefId"] = self.scope.ccidGLStore.attr(inputContent);
@@ -858,6 +894,7 @@ var page = Component.extend({
 				  	tempEditInvoiceData["invId"] = invoicemap.attr("invoiceid");
 				    tempEditInvoiceData["invoiceNumber"] = self.scope.invoicenumberStore;
 				    tempEditInvoiceData["invoiceTypeId"] = self.scope.invoicetypeSelect;
+				    tempEditInvoiceData["regionId"] = self.scope.regionStore;
 				    tempEditInvoiceData["invoiceType"] = $("#invoiceType option:selected").attr("name");
 				    tempEditInvoiceData["serviceTypeId"] = $("#inputContent0 option:selected").attr("servicetypeid");
 				    tempEditInvoiceData["entityId"] = self.scope.licensorStore;
@@ -968,7 +1005,7 @@ var page = Component.extend({
 					   		tempArry["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent"+index);
 					   		tempArry["contentGrpName"] = $("#inputContent"+index+" option:selected").text();
 							tempArry["lineAmount"] = self.scope.AmountStore.attr("amountText"+index);
-					   		tempArry["lineType"] = "";
+					   		tempArry["lineType"] = invoiceData.invoiceLines[0].lineType;
 					   		if(self.scope.attr("invoicetypeSelect") == "2"){
 					   			var ccidGL = "ccidGL"+index;
 								tempArry["glAccRefId"] = self.scope.ccidGLStore.attr(ccidGL);
@@ -1040,13 +1077,24 @@ var page = Component.extend({
 							  
 							  var self = this;
 						      $(el).closest('.calendarcls').find('.box-modal').show();
-						     /* if(el.attr("id") != "inputMonth0"){
-						      	showErrorMsg(el.attr("id"))
-								}*/
-
-							if(el[0].id == "inputMonth0"){
+						      if(el[0].id == "inputMonth0"){
 						     		self.scope.getFxrate();
 							 	}			
+							},
+							'.updateperoid blur':function(el){
+						   	 	var self = this;
+								$(".updateperoid").not(':hidden').each(function(){
+									if($(this).attr("id") != el[0].id){
+										if($(this).val() == el[0].value){
+						        			$(el).val("");
+						        			showError(el[0].id, "Two invoiceline can not have same period");
+						        			return false;
+						        		}
+						        	}
+						        	else{
+						        		removeError(el[0].id, "no");
+						        	}
+						        });
 							},
 						   '#inputContent0 change':function(el){  /*validation for servicetypeid*/
 						   // 		$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
@@ -1217,11 +1265,14 @@ var page = Component.extend({
 						$("#addInvSubmit").attr("disabled", true);
 					}
 
-					function removeError(id){
+					function removeError(id, buttonState){
 						$('#'+id).popover('destroy');
 						$("#"+id+"-err").css("display", "none");
 						$('#'+id).parent().removeClass("has-error");
-						$("#addInvSubmit").attr("disabled", false);
+						if(buttonState != "no"){
+							$("#addInvSubmit").attr("disabled", false);
+						}
+						
 					}
 
 					function dateFormatter(datestring, currentformat){

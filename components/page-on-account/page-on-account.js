@@ -25,8 +25,7 @@ import fileUpload from 'components/file-uploader/';
 import onAccountBalance from 'models/onAccount/onAccountBalance/';
 
 import copy from 'components/copy-clipboard/';
-
-import exportToexcel from 'components/export-toexcel/';
+import exportToExcel from 'components/export-toexcel/';
 
 fileUpload.extend({
   tag: 'rn-file-uploader',
@@ -83,6 +82,7 @@ var page = Component.extend({
     showLoadingImage:"",
     quarters:[],
     csvcontent:[]
+
 
   },
   init: function(){
@@ -450,10 +450,9 @@ var page = Component.extend({
       '.exportToExcel click':function(){
         var self = this;
        if(self.scope.tabsClicked=="ON_ACC_BALANCE"){
-              
               onAccountBalance.findOne(createBalanceOnAccountRequestForExportToExcel(self.scope.appstate),function(data){
                       if(data["status"]=="SUCCESS"){
-                         self.scope.csvcontent.replace(data);
+                        self.scope.csvcontent.replace(data);  
                       }else{
                         $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
                         $("#messageDiv").show();
@@ -666,5 +665,4 @@ var validateFilters=function(appstate,validateQuarter,validateStoreType,validate
   }
    
 }
-
 export default page;

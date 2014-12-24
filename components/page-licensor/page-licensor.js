@@ -525,6 +525,9 @@ var page = Component.extend({
       var self = this;
 
       var commentObj = values[0].licensorDetails.commentList;
+
+      self.clearContactDetails();
+
       
       self.editable = "";
 
@@ -626,8 +629,8 @@ var page = Component.extend({
           }
 
           if(self.licDetails.data.revisionHistories[i].commentText == null) {
-            self.licDetails.data.revisionHistories[i].commentText = "";
-            self.licDetails.data.revisionHistories[i]._data.commentText = "";
+            self.licDetails.data.revisionHistories[i].commentText = self.licDetails.data.revisionHistories[i].commentList.length != null ? self.licDetails.data.revisionHistories[i].commentList[0].comments : "";
+            self.licDetails.data.revisionHistories[i]._data.commentText = self.licDetails.data.revisionHistories[i].commentList.length != null ? self.licDetails.data.revisionHistories[i].commentList[0].comments : "";
           } 
           
         }
@@ -658,7 +661,6 @@ var page = Component.extend({
         self.revisionHistory = self.licDetails.data.revisionHistories;
 
         rows = self.licDetails.data.revisionHistories;
-
         
       }
 
@@ -1052,6 +1054,8 @@ var page = Component.extend({
 
           var genObj = reLicencorDetails;
 
+          var sEntity = self.selectedEntity;
+
           Promise.all([Analytics.create(UserReq.formRequestDetails(genObj))]).then(function(data) {
 
             if(data[0].responseText == "SUCCESS") {
@@ -1070,6 +1074,9 @@ var page = Component.extend({
 
                   self.licensors.replace(values[0].entities[0]);
 
+                  self.attr("selectedEntity", sEntity); 
+
+                  $("#licensorsFilter").val(sEntity);
       
                 });
 
@@ -1352,11 +1359,11 @@ var page = Component.extend({
         }
       }).on('error.field.bv', function(e, data) {       
         
-          $('*[data-bv-icon-for="'+data.field +'"]').popover('show');
+          //$('*[data-bv-icon-for="'+data.field +'"]').popover('show');
 
-          setTimeout(function(){
-            $('*[data-bv-icon-for="'+data.field +'"]').popover('hide');
-          },1000);
+          //setTimeout(function(){
+           // $('*[data-bv-icon-for="'+data.field +'"]').popover('hide');
+          //},1000);
 
       }).on('added.field.bv', function(e, data) {
       });
@@ -1493,7 +1500,7 @@ var page = Component.extend({
 
           Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
-            self.scope.populateAnalyticsPage(values, "");
+            self.scope.populateAnalyticsPage(values);
             
           });
 
@@ -1826,6 +1833,8 @@ var page = Component.extend({
           genObj.id = id;
           genObj.licensorName =  licensor;
 
+          self.scope.reValidateFiledsonLoad();
+
           self.scope.clearContactDetails();
 
           self.scope.clearRepConfDetails();
@@ -1871,6 +1880,8 @@ var page = Component.extend({
         $('#entityLicensorTop').bootstrapValidator('validate');
 
         if($('#entityLicensorTop').data('bootstrapValidator').isValid() == false) {
+
+          $("#loading_img").hide();
 
           return;
 

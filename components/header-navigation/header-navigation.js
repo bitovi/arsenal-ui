@@ -170,7 +170,7 @@ var  menu =[{
   "id": "analytic",
   "value": "Analytics",
    "submenu": [
-      {"value": "Analytics", "id": "analytics"},
+      {"value": "Analytics", "id": "analytic"},
       {"value": "Payment Bundle Review", "id": "payment-bundles"},
       {"value": "Claim Review", "id": "claimreview"},
       {"value": "Global Revenue", "id": "globalrevenue"},

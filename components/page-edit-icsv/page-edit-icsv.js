@@ -41,11 +41,17 @@ var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "invoiceduedate", "r
 var mandatoryField = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
 
 fileUpload.extend({
-  tag: 'rn-file-uploader-icsv',
-  scope: {
-           fileList : new can.List()
-         }
- });
+	tag: 'rn-file-uploader-icsv',
+	scope: {
+		fileList: new can.List(),
+		isAnyFileLoaded : can.compute(function() { return this.fileList.attr('length') > 0; })
+	},
+	events: {
+		'inserted': function() {
+			this.scope.fileList.replace(this.scope.uploadedfileinfo);
+		}
+	}
+});
 
 var page = Component.extend({
   tag: 'page-edit-icsv',
@@ -135,7 +141,9 @@ var page = Component.extend({
 		        $('#inputContent'+rowindex).prepend("<option value>Select</option>").val('')
 		    }
 
-			var $option   = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"]');
+			//var $option   = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"]');
+            var $option = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"]');
+
             $option.each(function(index){
             	$('#invoiceform').bootstrapValidator('addField', $(this));
             });
@@ -148,7 +156,7 @@ var page = Component.extend({
 
            		$(this).closest("tr").remove();
 	            self.AmountStore.removeAttr("amountText"+rowindex);
-	            $("#addInvSubmit").attr("disabled", true);
+	          //  $("#addInvSubmit").attr("disabled", true);
 	        });
 		},
 		changeTextOnInvType:function(){
@@ -419,6 +427,41 @@ var page = Component.extend({
 												            message: 'Adhoc type is mandatory'
 												    }
 				                              }
+				                              else
+				                              {
+				                              		var duplicateCont = false;
+						                              	$(".inputContent").not(':hidden').each(function(){   /*duplicate Content type validation*/
+															if($(this).attr("id") != $field.attr("id"))
+															{
+																if($(this).val() == $field.val()){
+																	$field.val("");
+																	duplicateCont = true;
+															        	
+																    return false;
+															    }
+															}
+															
+														});
+
+														if(duplicateCont){
+															if(self.scope.attr("invoicetypeSelect") != 2)
+													        {
+													        	return {
+															            valid: false,    // or false
+															            message: 'Two invoicelines can not have same content type.'
+															    }			
+													        }
+														    else
+														    {
+														    	return {
+															            valid: false,    // or false
+															            message: 'Two invoicelines can not have same adhoc type.'
+															    }	
+														    }  
+
+														} 
+														 
+												}
 				                              return true;
 				                            }
 		                    		}
@@ -645,6 +688,18 @@ var page = Component.extend({
 						var tempcommentObj = invoiceData.comments;
 						$('#multipleCommentsInv').html(stache('<multiple-comments divid="usercommentsdivinv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
 		                self.scope.changeTextOnInvType();
+
+		                /*Pluck only PDF as supporting documents from the invoicedocuments*/
+						var invoicePDFDocuments = $.grep(invoiceData.invoiceDocuments, function(e) {
+							console.log(e.fileName.split('.').pop());
+							return e.fileName.split('.').pop() === "pdf";
+						});
+
+						if (invoicePDFDocuments.length > 0) {
+							$('#icsvFileUploader').html(stache('<rn-file-uploader-icsv uploadedfileinfo={docs}></rn-file-uploader-icsv>')({
+								docs: invoicePDFDocuments
+							}));
+						}
 
 		                var genObj = {regionId:self.scope.attr("regionStore")};
 
@@ -1052,6 +1107,21 @@ var page = Component.extend({
 				     		self.scope.getFxrate();
 					}			
 				},
+				'.updateperoid blur':function(el){
+						   	 	var self = this;
+								$(".updateperoid").not(':hidden').each(function(){
+									if($(this).attr("id") != el[0].id){
+										if($(this).val() == el[0].value){
+						        			$(el).val("");
+						        			showError(el[0].id, "Two invoiceline can not have same period");
+						        			return false;
+						        		}
+						        	}
+						        	else{
+						        		removeError(el[0].id, "no");
+						        	}
+						        });
+				},
 			   '#inputContent0 change':function(el){  /*validation for servicetypeid*/
 			   // 		$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
 						// if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
@@ -1220,11 +1290,14 @@ function showError(id, message){
 	$("#addInvSubmit").attr("disabled", true);
 }
 
-function removeError(id){
+function removeError(id, buttonState){
 	$('#'+id).popover('destroy');
 	$("#"+id+"-err").css("display", "none");
 	$('#'+id).parent().removeClass("has-error");
-	$("#addInvSubmit").attr("disabled", false);
+	if(buttonState != "no"){
+		$("#addInvSubmit").attr("disabled", false);
+	}
+	
 }
 
 function dateFormatter(datestring, currentformat){

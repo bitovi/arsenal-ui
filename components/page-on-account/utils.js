@@ -343,7 +343,11 @@ getProposedOnAccRows:function(quarters,data){
       //console.log(rows);
       var returnValue = new Array();
       returnValue['ROWS']=rows;
-      returnValue['BUNDLE_NAMES']=bundleNames;
+      if(bundleNames != undefined && bundleNames.length>1){
+        returnValue['BUNDLE_NAMES']='Multiple';
+      }else{
+        returnValue['BUNDLE_NAMES']=bundleNames;
+      } 
       return returnValue;
     },
 currencyFormat : function (number)
