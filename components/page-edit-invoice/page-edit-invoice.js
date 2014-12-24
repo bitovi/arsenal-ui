@@ -859,6 +859,7 @@ var page = Component.extend({
 				  	tempEditInvoiceData["invId"] = invoicemap.attr("invoiceid");
 				    tempEditInvoiceData["invoiceNumber"] = self.scope.invoicenumberStore;
 				    tempEditInvoiceData["invoiceTypeId"] = self.scope.invoicetypeSelect;
+				    tempEditInvoiceData["regionId"] = self.scope.regionStore;
 				    tempEditInvoiceData["invoiceType"] = $("#invoiceType option:selected").attr("name");
 				    tempEditInvoiceData["serviceTypeId"] = $("#inputContent0 option:selected").attr("servicetypeid");
 				    tempEditInvoiceData["entityId"] = self.scope.licensorStore;
