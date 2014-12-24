@@ -58,6 +58,7 @@ var page = Component.extend({
   init: function(){
 
     var self = this;
+    self.scope.appstate.attr("renderGlobalSearch",false);
     var requestObj = {};
 
     var licId ="";
