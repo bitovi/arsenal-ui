@@ -7,6 +7,6 @@
   <rn-dashboard-invoices appstate="{appstate}"></rn-dashboard-invoices>
   {{/ifSelectedTab}}
   {{#ifSelectedTab 'Payments'}}
-  <div>Payments</div>
+  <rn-dashboard-payments appstate="{appstate}"></rn-dashboard-payments>
   {{/ifSelectedTab}}
 </div>
