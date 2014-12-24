@@ -4,7 +4,6 @@ var formats = {
   fixed: function(numberOfDigits) {
       return function(value) {
         if(value === ""){
-          console.log(value);
           return "";
         }else{
           return formats.number(value).toFixed(numberOfDigits);

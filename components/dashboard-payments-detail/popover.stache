@@ -1,4 +1,3 @@
-{{log 'popover'}}
 <div class="unpaid-popover">
   <div class="column-chart"></div>
   <ul class="unpaid-details">
