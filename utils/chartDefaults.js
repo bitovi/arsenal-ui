@@ -2,7 +2,7 @@ var chartDefaults = {
   singleBarChart: {
     chart: {
       type: 'bar',
-      backgroundColor: '#D14748',
+      backgroundColor: '#d24849',
       margin: [0, 0, 0, 0],
       spacing: [0, 0, 0, 0]
     },

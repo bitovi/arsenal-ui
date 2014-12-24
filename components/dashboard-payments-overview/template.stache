@@ -15,11 +15,9 @@
 </div>
 <div class="column top-not-paid-licensors">
   <h3>Top Not Paid Licensors</h3>
-  <ul class="chart-list licensor-list">
-    {{#each summary.topNotPaidEntities}}
-    <li>
-      <rn-payment-chart text="{entyName}" value="{totBalPrcnt}"></rn-payment-chart>
-    </li>
+  <ul class="licensor-list">
+    {{#each summary.topNotPaidCtyEntys}}
+    <li>{{.}}</li>
     {{/each}}
   </ul>
 </div>

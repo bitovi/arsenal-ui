@@ -12,7 +12,7 @@ var PaymentSummary = Model.extend({
     };
 
     return $.ajax({
-      url: URLs.DOMAIN_SERVICE_URL + 'dashboard/payment',
+      url: URLs.DOMAIN_SERVICE_URL + 'dashboard/payments',
       type: 'POST',
       data: data,
       processData: false

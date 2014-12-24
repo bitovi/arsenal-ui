@@ -62,13 +62,14 @@ var DashboardPaymentsDetail = Component.extend({
         $(li).popover({
           content: popoverContent,
           html: true,
-          trigger: 'hover'
+          trigger: 'click',
+          placement: 'left'
         });
       };
     },
   },
   events: {
-    'li mouseover': function(el, ev) {
+    'li click': function(el, ev) {
       var popoverID = el.attr('aria-describedby');
       var chart = $('#' + popoverID).find('.column-chart');
       chart.empty();

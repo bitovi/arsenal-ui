@@ -18,6 +18,10 @@
   {{else}}
   <rn-dashboard-payments-overview summary="{summary}" appstate="{appstate}"></rn-dashboard-payments-overview>
   {{/if}}
+  <div class="legend">
+    <div class="paid"><div class="square"></div> Paid</div>
+    <div class="unpaid"><div class="square"></div> Unpaid</div>
+  </div>
 </div>
 {{/if}}
 {{else}}
