@@ -4,8 +4,7 @@ var chartDefaults = {
       type: 'bar',
       backgroundColor: '#D14748',
       margin: [0, 0, 0, 0],
-      spacing: [0, 0, 0, 0],
-      borderRadius: 10
+      spacing: [0, 0, 0, 0]
     },
     colors: ['#4D4D4D'],
     yAxis: {
@@ -24,7 +23,6 @@ var chartDefaults = {
     plotOptions: {
       bar: {
         borderWidth: 0,
-        borderRadius: 10,
         groupPadding: 0,
         pointPadding: 0,
         animation: false
