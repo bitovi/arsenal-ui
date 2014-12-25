@@ -195,7 +195,11 @@ var BundleDetailTabs = Component.extend({
     canProceed: function() {
       this.attr('paymentType'); this.attr('approvalComment');
       return this.havePaymentTypeAndComment(this) ? 'action' : '';
+    },
+    pendingWithBM: function(options) {
+      return this.pageState.selectedBundle.pendingWith == 'PENDING WITH BM' ? options.fn(this) :  options.inverse(this);
     }
+
   },
   events: {
     '.remove-invoice click': function(el, ev) {
@@ -241,7 +245,7 @@ var BundleDetailTabs = Component.extend({
         }).then(function(response) {
           if(response.status === 'SUCCESS') {
             Alert.displayAlert('success', response.responseText);
-            
+
             // un-select the selected bundle (we're done here)
             pageState.attr('selectedBundle', null);
             // remove it from the list of bundles too, since the user can't act on it anymore
