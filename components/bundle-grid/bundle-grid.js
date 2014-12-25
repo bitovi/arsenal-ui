@@ -26,7 +26,7 @@ var BundleGrid = ScrollingGrid.extend({
       {
         id: 'paymentAmt',
         title: 'Amount',
-        format: formats.currency
+        format: formats.currencyFormat
       },
       {
         id: 'bundleType',
