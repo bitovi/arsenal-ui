@@ -38,6 +38,7 @@ import periodWidgetHelper from 'utils/periodWidgetHelpers';
 //import Invoice from 'models/invoice/';
 
 var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "licensor", "currency", "inputContent[]"];
+var mandatoryFieldCA = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]"];
 var mandatoryField = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
 
 fileUpload.extend({
@@ -107,13 +108,16 @@ var page = Component.extend({
   	periodType:"",
   	usdFxrateRatio:"",
 	isRequired: function(){
-  	 		if(this.attr("invoicetypeSelect") != "2"){  /*Adhoc*/
+  	 		if(this.attr("invoicetypeSelect") != "2" && this.attr("invoicetypeSelect") != "3"){  /*Adhoc*/
  				$(".breakdownCountry").addClass("requiredBar");
  				$(".breakdownPeriod").addClass("requiredBar");
- 			}else{
-  	 			$(".breakdownCountry").removeClass("requiredBar");
-  	 			$(".breakdownPeriod").removeClass("requiredBar");
-  	 		}
+ 			}else if(this.attr("invoicetypeSelect") == "3"){
+ 						$(".breakdownCountry").removeClass("requiredBar");
+ 						$(".breakdownPeriod").addClass("requiredBar");
+	  	 			} else {
+	  	 				$(".breakdownCountry").removeClass("requiredBar");
+	  	 				$(".breakdownPeriod").removeClass("requiredBar");
+  	 				}
 		},
 	createBreakline: function(rowindex){
 			var self = this;
@@ -471,7 +475,7 @@ var page = Component.extend({
 				                    callback: {
 				                            message: 'Country is mandatory',
 				                            callback: function (value, validator, $field) {
-				                               if((value == "") && (self.scope.attr("invoicetypeSelect") != "2")){
+				                               if((value == "") && (self.scope.attr("invoicetypeSelect") != "2") && (self.scope.attr("invoicetypeSelect") != "3")){
 				                              	   return false;
 				                              }
 				                              return true;
@@ -492,12 +496,12 @@ var page = Component.extend({
 					    		$("#"+data.field+"-err").css("display", "none");
 					    	}
 							if(!self.scope.editpage){
-		        				var requireField = (self.scope.attr("invoicetypeSelect") == "2")?mandatoryFieldAdhoc:mandatoryField;
+		        				var requireField = (self.scope.attr("invoicetypeSelect") == "2")? mandatoryFieldAdhoc: (self.scope.attr("invoicetypeSelect") == "3") ? mandatoryFieldCA  : mandatoryField;
 
 		        				for(var i= 0; i < requireField.length; i++){
-		        					if(!data.bv.isValidField(mandatoryField[i])){
+		        					if(!data.bv.isValidField(requireFieldv[i])){
 		        						 data.bv.disableSubmitButtons(true);
-		        						 if(mandatoryField[i] == "receiveddate"){
+		        						 if(requireField[i] == "receiveddate"){
 		        						 	$('#invoiceform').bootstrapValidator('revalidateField', 'receiveddate'); /*revalidating this field. It initialized with currentdate*/
 		        						 }
 		        						 break;
