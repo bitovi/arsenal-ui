@@ -499,7 +499,7 @@ var page = Component.extend({
 		        				var requireField = (self.scope.attr("invoicetypeSelect") == "2")? mandatoryFieldAdhoc: (self.scope.attr("invoicetypeSelect") == "3") ? mandatoryFieldCA  : mandatoryField;
 
 		        				for(var i= 0; i < requireField.length; i++){
-		        					if(!data.bv.isValidField(requireFieldv[i])){
+		        					if(!data.bv.isValidField(requireField[i])){
 		        						 data.bv.disableSubmitButtons(true);
 		        						 if(requireField[i] == "receiveddate"){
 		        						 	$('#invoiceform').bootstrapValidator('revalidateField', 'receiveddate'); /*revalidating this field. It initialized with currentdate*/
