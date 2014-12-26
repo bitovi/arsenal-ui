@@ -405,7 +405,15 @@ var page = Component.extend({
 						                              	$(".inputContent").not(':hidden').each(function(){   /*duplicate Content type validation*/
 															if($(this).attr("id") != $field.attr("id"))
 															{
-																if($(this).val() == $field.val()){
+																var strEl = $field.attr("id");
+																var rowEl = strEl.replace(/[^0-9]/g, '');
+																var inputMonthEl = "inputMonth"+rowEl;
+
+																var strNow = $(this).attr("id");
+																var rowNow = strNow.replace(/[^0-9]/g, '');
+																var inputMonthNow = "inputMonth"+rowNow;	
+
+																if(($(this).val() == $field.val()) && ($("#"+inputMonthEl).val() == $("#"+inputMonthNow).val())){
 																	$field.val("");
 																	duplicateCont = true;
 															        	
@@ -1083,13 +1091,22 @@ var page = Component.extend({
 							},
 							'.updateperoid blur':function(el){
 						   	 	var self = this;
-								$(".updateperoid").not(':hidden').each(function(){
+								$(".updateperoid").not(':hidden').each(function(index){
 									if($(this).attr("id") != el[0].id){
-										if($(this).val() == el[0].value){
+										var strEl = el[0].id;
+										var rowEl = strEl.replace(/[^0-9]/g, '');
+										var inputContentEl = "inputContent"+rowEl;
+
+										var strNow = $(this).attr("id");
+										var rowNow = strNow.replace(/[^0-9]/g, '');
+										var inputContentNow = "inputContent"+rowNow;
+
+										if(($(this).val() == el[0].value) && ($("#"+inputContentEl).val() == $("#"+inputContentNow).val())){
 						        			$(el).val("");
-						        			showError(el[0].id, "Two invoiceline can not have same period");
+						        			showError(el[0].id, "Two invoiceline can not have same period and content type");
 						        			return false;
 						        		}
+						        		
 						        	}
 						        	else{
 						        		removeError(el[0].id, "no");
