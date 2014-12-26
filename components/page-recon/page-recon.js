@@ -56,6 +56,8 @@ var page = Component.extend({
     currencyList:[],
     reconRefresh : [],
 
+    reconStatsDetailsSelected : [],
+
     //bottomgrid
     refreshStatsReq:undefined,
     isBottomGridRefresh:true,
@@ -275,7 +277,17 @@ var processRejectIngestRequest = function(scope,requestType){
         }
         //console.log(JSON.stringify((rejectSearchRequestObj)));
 
-        Recon.reject((rejectSearchRequestObj)).done(function(data){
+      Promise.all(Recon.reject(rejectSearchRequestObj)).then(function(values) {
+
+        //scope.reconStatsDetailsSelected = data.reconStatsDetails;
+
+        findCCids(scope, ccidSelected);
+
+        scope.ingestList.headerRows.replace(scope.reconStatsDetailsSelected);
+
+        scope.attr("size_ingestCcidSelected", 0);
+
+        if(values != null && values.length > 0) {
           if(data.responseCode == "0000"){
             $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
             $("#messageDiv").show();
@@ -284,7 +296,8 @@ var processRejectIngestRequest = function(scope,requestType){
             setTimeout(function(){
               $("#messageDiv").hide();
             },3000);
-          }else{
+          }
+        } else{
 
               //error text has to be shared. TODO - not sure how service responds to it
               displayErrorMessage(data.responseText,"Failed to Ingest:");
@@ -357,6 +370,8 @@ var fetchReconIngest = function(scope){
       displayErrorMessage(data.responseText,"Failed to load the Recon Ingest Tab:");
     }else  {
       scope.ingestList.headerRows.replace(data.reconStatsDetails);
+
+      scope.reconStatsDetailsSelected = data.reconStatsDetails
 
       scope.currencyScope.replace(data.currency);
 
@@ -473,5 +488,29 @@ var refreshChekboxSelection = function(el,scope){
 
   }
 }
+
+var findCCids =  function(scope, ccidSelected) {
+
+  var found = false;
+  for( var i=0; i< scope.reconStatsDetailsSelected.length ; i++) {
+
+    //alert('Here');
+    if(ccidSelected.indexOf(scope.reconStatsDetailsSelected[i].dtlHdrId) >= 0) {
+
+      scope.reconStatsDetailsSelected.splice(i,1);
+      found = true;
+      break;
+
+    }
+  }
+
+  if(found) {
+
+    findCCids(scope, ccidSelected);
+
+  }
+
+}
+
 
 export default page;
