@@ -22,8 +22,10 @@ import proposedOnAccount from 'models/onAccount/proposedOnAccount/';
 import Comments from 'components/multiple-comments/';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
 import fileUpload from 'components/file-uploader/';
+import onAccountBalance from 'models/onAccount/onAccountBalance/';
 
 import copy from 'components/copy-clipboard/';
+import exportToExcel from 'components/export-toexcel/';
 
 fileUpload.extend({
   tag: 'rn-file-uploader',
@@ -79,7 +81,8 @@ var page = Component.extend({
     errorMessage:"",
     showLoadingImage:"",
     quarters:[],
-    multipleComments:[]
+    csvcontent:[]
+
 
   },
   init: function(){
@@ -196,8 +199,8 @@ var page = Component.extend({
                         if(data["status"]=="SUCCESS"){
                            /* The below calls {scope.appstate} change event that gets the new data for grid*/
                             var returnValue = utils.getProposedOnAccRows(quarters,data);
-                            //var arr = $.unique(returnValue['BUNDLE_NAMES']);
-                            self.scope.attr('bundleNamesForDisplay',returnValue['BUNDLE_NAMES'].toString());
+                            var arr = $.unique(returnValue['BUNDLE_NAMES']);
+                            self.scope.attr('bundleNamesForDisplay',arr.toString());
                             //console.log(self.scope.attr('bundleNamesForDisplay'));
                             var proposedRequest = {};
                             proposedRequest.rows=returnValue['ROWS'];
@@ -210,7 +213,6 @@ var page = Component.extend({
 
                                 var tempcommentObj = data.onAccount.comments;
                                 //console.log("multi comments "+JSON.stringify(tempcommentObj));
-                                self.scope.multipleComments.replace(data.onAccount.comments);
                                 if(tempcommentObj!=null)
                                   $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
                                 else
@@ -290,7 +292,6 @@ var page = Component.extend({
               $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
               $('#usercomments').val("");
               self.scope.attr('onAccountRows',rows);
-              $('#uploadFile').html(stache('<rn-file-uploader uploadedfileinfo={docs}></rn-file-uploader>')({docs:[]})); 
             }else{
                   displayMessage(data["responseText"],false);
                 }
@@ -302,7 +303,6 @@ var page = Component.extend({
         }
       },
       "#proposedDelete click":function(el,ev){
-        var self = this;
         disableEditORDeleteButtons(true);
         var req = this.scope.request;
         var quarters = this.scope.attr('quarters');
@@ -328,18 +328,7 @@ var page = Component.extend({
           if(data["status"]=="SUCCESS"){
               displayMessage(data["responseText"],true);
               req.attr('deletableRows',rows);
-              var comments = getTheUpdatedComments(self.scope.multipleComments,deletableRows);
-              self.scope.multipleComments.replace(comments);
-              if(comments!=null)
-                $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{comments}" divheight="100" isreadOnly="n"></multiple-comments>')({comments}));
-              else
-                $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>');
-              if(rows.length >0){
-                $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));  
-              }else{
-                $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
-              }
-              
+              $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
           }
           else{
             var details = data.onAccount.onAccountDetails;
@@ -463,8 +452,7 @@ var page = Component.extend({
        if(self.scope.tabsClicked=="ON_ACC_BALANCE"){
               onAccountBalance.findOne(createBalanceOnAccountRequestForExportToExcel(self.scope.appstate),function(data){
                       if(data["status"]=="SUCCESS"){
-                        //alert(data);
-                        //self.scope.rows.replace(getUiRowsFromResponse(quarters,data));  
+                        self.scope.csvcontent.replace(data);  
                       }else{
                         $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
                         $("#messageDiv").show();
@@ -636,18 +624,6 @@ var createBalanceOnAccountRequestForExportToExcel=function(appstate){
     balancedOnAccountRequest.excelOutput=true;
     return requestHelper.formRequestDetails(balancedOnAccountRequest);
   };
-
-  var getTheUpdatedComments=function(Comments,deletableRows){
-    var updatedRow=[];
-    for(var i=0;i<deletableRows.length;i++){
-      for(var j=0;j<Comments.length;j++){
-        if(Comments[j].commentId != deletableRows[i].commentId){
-            updatedRow.push(Comments[j]);
-        }
-      }
-    }
-    return updatedRow;
-  }
 
 var validateFilters=function(appstate,validateQuarter,validateStoreType,validateRegion,validateLicensor,validateContentType){
   if(appstate != null && appstate != undefined){

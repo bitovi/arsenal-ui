@@ -1,0 +1,60 @@
+<div class="unpaid-popover">
+  <div class="column-chart"></div>
+  <ul class="unpaid-details">
+    <li class="total">
+      <div class="color"><div class="square">&nbsp;</div></div>
+      <div class="category">Total unpaid:</div>
+      <div class="percent">{{formatPercent item.totBalPrcnt}}</div>
+      <div class="numbers">
+        <span class="local">{{item.totBalAmt}}</span>
+        <span class="global">{{item.totBalGblCcy}}</span>
+      </div>
+      <div class="currency">
+        <span class="local">{{localCurrency}}</span>
+        <span class="global">{{globalCurrency}}</span>
+      </div>
+    </li>
+
+    <li class="recon">
+      <div class="color"><div class="square">&nbsp;</div></div>
+      <div class="category">Unpaid:</div>
+      <div class="percent">{{formatPercent item.reconPrcnt}}</div>
+      <div class="numbers">
+        <span class="local">{{item.reconAmt}}</span>
+        <span class="global">{{item.reconGblCcy}}</span>
+      </div>
+      <div class="currency">
+        <span class="local">{{localCurrency}}</span>
+        <span class="global">{{globalCurrency}}</span>
+      </div>
+    </li>
+
+    <li class="li">
+      <div class="color"><div class="square">&nbsp;</div></div>
+      <div class="category">Line item disputes:</div>
+      <div class="percent">{{formatPercent item.liPrcnt}}</div>
+      <div class="numbers">
+        <span class="local">{{item.liAmt}}</span>
+        <span class="global">{{item.liGblCcy}}</span>
+      </div>
+      <div class="currency">
+        <span class="local">{{localCurrency}}</span>
+        <span class="global">{{globalCurrency}}</span>
+      </div>
+    </li>
+
+    <li class="or">
+      <div class="color"><div class="square">&nbsp;</div></div>
+      <div class="category">Overrep disputes:</div>
+      <div class="percent">{{formatPercent item.orPrcnt}}</div>
+      <div class="numbers">
+        <span class="local">{{item.orAmt}}</span>
+        <span class="global">{{item.orGblCcy}}</span>
+      </div>
+      <div class="currency">
+        <span class="local">{{localCurrency}}</span>
+        <span class="global">{{globalCurrency}}</span>
+      </div>
+    </li>
+  </ul>
+</div>

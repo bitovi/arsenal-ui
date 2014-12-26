@@ -1,0 +1,23 @@
+<h3>Payments in {{appstate.region.value}}</h3>
+<div class="region-chart" {{renderBigChart}}></div>
+<h3>{{summary.percentagePaid}}% paid</h3>
+</div>
+<div class="column-container">
+<div class="column top-not-paid-countries">
+  <h3>Top Not Paid Countries</h3>
+  <ul class="chart-list country-list">
+    {{#each summary.topNotPaidCountries}}
+    <li>
+      <rn-payment-chart text="{ctry}" value="{totBalPrcnt}"></rn-payment-chart>
+    </li>
+    {{/each}}
+  </ul>
+</div>
+<div class="column top-not-paid-licensors">
+  <h3>Top Not Paid Licensors</h3>
+  <ul class="licensor-list">
+    {{#each summary.topNotPaidCtyEntys}}
+    <li>{{.}}</li>
+    {{/each}}
+  </ul>
+</div>

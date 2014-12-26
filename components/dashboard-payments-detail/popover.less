@@ -1,0 +1,84 @@
+@dark-grey: #3d3d3d;
+@medium-grey: #666666;
+@border-grey: #dddddd;
+
+.unpaid-popover {
+  display: flex;
+  width: 400px;
+
+  .column-chart {
+    width: 20%;
+    padding: .5em;
+  }
+
+  .unpaid-details {
+    flex: 1;
+    margin: 0;
+    padding: .5em;
+
+    list-style: none;
+
+    li {
+      display: flex;
+      padding-top: .5em;
+      padding-bottom: .5em;
+
+      &:first-child {
+        border-bottom: 1px solid @border-grey;
+      }
+
+      .color {
+        padding-right: .5em;
+        .square {
+          height: 1em;
+          width: 1em;
+        }
+      }
+
+      .category {
+        flex: 1;
+        font-weight: bold;
+      }
+
+      .percent {
+        width: 3em;
+        padding-right: 3px;
+        text-align: right;
+      }
+
+      .numbers {
+        text-align: right;
+      }
+
+      .currency {
+        padding-left: 3px;
+      }
+
+      .numbers, .currency {
+        .local {
+          display: block;
+          font-weight: bold;
+        }
+        .global {
+          display: block;
+          font-size: .8em;
+          color: @medium-grey;
+        }
+      }
+
+      &.total .square {
+        background-color: transparent;
+      }
+      &.recon .square {
+        background-color: #DD8888;
+      }
+      &.li .square {
+        background-color: #DD4444;
+      }
+      &.or .square {
+        background-color: #DD0000;
+      }
+
+    }
+  }
+}

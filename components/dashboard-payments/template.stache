@@ -1,6 +1,29 @@
-Payments
-{{#if appstate.isPopulated}}
-Populated!
+{{#showPage}}
+{{#if fetching}}
+<div class="select-message">Loading Payments report...</div>
 {{else}}
-Not!
+<div class="sidebar">
+  <rn-switcher options="{tabs}" selected-option="{selectedTab}"></rn-switcher>
+  <ul class="chart-list">
+  {{#selectedItems}}
+  <li class="{{isSelected .}}" {{data 'item'}}>
+    <rn-payment-chart text="{name}" value="{item.totBalPrcnt}"</rn-payment-chart>
+  </li>
+  {{/selectedItems}}
+  </ul>
+</div>
+<div class="detail">
+  {{#if selectedItem}}
+  <rn-dashboard-payments-detail name-property="{selectedTab.detailNameProperty}" detail-items="{selectedItem.payments}"></rn-dashboard-payments-detail>
+  {{else}}
+  <rn-dashboard-payments-overview summary="{summary}" appstate="{appstate}"></rn-dashboard-payments-overview>
+  {{/if}}
+  <div class="legend">
+    <div class="paid"><div class="square"></div> Paid</div>
+    <div class="unpaid"><div class="square"></div> Unpaid</div>
+  </div>
+</div>
 {{/if}}
+{{else}}
+<div class="select-message">Please select parameters above for the Payments report.</div>
+{{/showPage}}

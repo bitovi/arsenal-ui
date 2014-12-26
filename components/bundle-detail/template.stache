@@ -53,8 +53,13 @@
     <textarea can-value="{approvalComment}"></textarea>
     <div class="buttons">
     {{#isBM}}
-      <button class="{{canProceed}}" data-action="delete">Delete</button>
-      <button class="{{canProceed}}" data-action="recall">Recall</button>
+
+      {{#pendingWithBM}}
+        <button class="{{canProceed}}"  data-action="delete">Delete</button>
+      {{else}}
+        <button class="{{canProceed}}"  data-action="recall">Recall</button>
+      {{/pendingWithBM}}
+
       <button class="{{canProceed}}" data-action="approve">Propose</button>
     {{else}}
       <button class="{{canProceed}}" data-action="reject">Reject</button>
