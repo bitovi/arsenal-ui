@@ -786,7 +786,9 @@ var page = Component.extend({
 					   tempInvoiceData["finalInvoiceAmount"] = self.scope.grossTotalStore;
 					   tempInvoiceData["periodType"] = periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0));
 					   tempInvoiceData["netTotal"] = self.scope.totalAmountVal;
-					   tempInvoiceData["tax"] = self.scope.tax;
+					   if(self.scope.tax == undefined && self.scope.tax != null && parseInt(self.scope.tax) > 0) {
+					   		tempInvoiceData["tax"] = self.scope.tax;
+						}
 
 
 					   if(typeof $("#paymentBundleNames").val() == "undefined"){
