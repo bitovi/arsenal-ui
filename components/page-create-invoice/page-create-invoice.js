@@ -35,6 +35,7 @@ import stache from 'can/view/stache/';
 import moment from 'moment';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
+
 //import Invoice from 'models/invoice/';
 
 var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "licensor", "currency", "inputContent[]"];
@@ -757,9 +758,16 @@ var page = Component.extend({
 
 	              bundleRequest["regionId"] = regId;
 
+	              bundleRequest["periodFrom"] = getBundleDateRange().fromDate;
+
+	              bundleRequest["periodTo"] = getBundleDateRange().toDate;
+
+	              bundleRequest["periodType"] = getBundleDateRange().periodType;
+
 	              bundleRequest["bundleType"] = $("#invoiceType option:selected").attr("name");
 
 	              newBundleNameRequest["paymentBundle"] = bundleRequest;
+	              console.log(JSON.stringify(newBundleNameRequest));
 	              self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
 	          } else {
 	            self.scope.attr('newpaymentbundlenamereq', "undefined");
@@ -1258,6 +1266,45 @@ var page = Component.extend({
 						var msg = errortype+": "+ errorStr;
 
 			          	return msg;		
+					}
+
+					var getBundleDateRange = function(){
+
+						var FromToRange = {};
+
+						FromToRange.periodType = periodWidgetHelper.getPeriodType($("#inputMonth0").val());
+
+						var _listofDateRange = $("input[id^='inputMonth']").not(':hidden');
+						var _listofDate = [];
+
+						if(_listofDateRange.length > 0){
+
+							for(var i=0; i < _listofDateRange.length; i++){
+								
+								var currentID = $(_listofDateRange)[i].id;
+								var currentVal = $("#"+currentID).val();
+
+								if(FromToRange.periodType === "Q"){
+									var currentYear = currentVal.substring(2, currentVal.length);							
+									_listofDate.push(currentVal.charAt(1));	
+								}else{
+									var currentYear = currentVal.substring(3, currentVal.length);						
+									_listofDate.push(currentVal.substring(1,3));	
+								}
+								
+							}
+
+							_listofDate.sort(function(a, b){return b-a});
+
+							FromToRange.fromDate = periodWidgetHelper.getFiscalPeriod(FromToRange.periodType + _listofDate[_listofDate.length - 1] + currentYear);
+							FromToRange.toDate = periodWidgetHelper.getFiscalPeriod(FromToRange.periodType + _listofDate[0] + currentYear);
+							
+						}else{
+							FromToRange.fromDate = periodWidgetHelper.getFiscalPeriod($("#inputMonth0").val());
+							FromToRange.toDate = periodWidgetHelper.getFiscalPeriod($("#inputMonth0").val());
+						}
+
+						return FromToRange;
 					}
 
 export default page;
