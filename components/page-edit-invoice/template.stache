@@ -329,7 +329,7 @@
 						 		{{#if regionStore}}
 									<label class="col-sm-2 bundelTitle" for="inputCountry">Bundle Name:</label>
 					        			<div class="col-sm-5">
-						        			<create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}"></create-pb>
+						        			<create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}" selectedbundle="{{invselectedbundle}}"></create-pb>
 										</div>
 				            	{{else}}
 				            		<div class="col-sm-6"></div>

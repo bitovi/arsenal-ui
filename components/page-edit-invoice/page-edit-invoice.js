@@ -47,6 +47,23 @@ fileUpload.extend({
          }
  });
 
+createpb.extend({
+	tag: 'create-pb',
+  	scope: {
+           		selectedbundle:"@",
+           		paymentBundleId: ""	
+           },
+     events:{
+     	"inserted":function(){
+     		console.log("inserted");
+     	},
+     	"{scope} selectedbundle":function(){
+     		this.scope.attr("paymentBundleId", this.scope.attr("selectedbundle"));
+     	}
+
+     }      
+});
+
 var page = Component.extend({
   tag: 'page-edit-invoice',
   template: template,
@@ -107,6 +124,7 @@ var page = Component.extend({
   	periodType:"",
   	ajaxRequestStatus:{},
   	usdFxrateRatio:"",
+  	invselectedbundle:"",
 	isRequired: function(){
   	 		if(this.attr("invoicetypeSelect") != "2"){  /*Adhoc*/
  				$(".breakdownCountry").addClass("requiredBar");
@@ -747,6 +765,10 @@ var page = Component.extend({
 						var tempcommentObj = invoiceData.comments;
 						$('#multipleCommentsInv').html(stache('<multiple-comments divid="usercommentsdivinv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
 		                self.scope.changeTextOnInvType();
+
+		                
+
+		               	self.scope.attr("invselectedbundle", invoiceData.bundleId);
 
 		                var genObj = {regionId:self.scope.attr("regionStore")};
 
