@@ -194,7 +194,7 @@ var GlobalParameterBar = Component.extend({
 
     },
     '{scope.appstate} page': function() {
-      if (this.scope.appstate.attr('page') == 'on-account') {
+      if (this.scope.appstate.attr('page') == 'on-account' && this.scope.appstate.attr('periodType') != 'Q') {
         var quart = getDefaultPeriodFrom('ONACCOUNT');
         $('#periodFrom').val(quart);
         $('#periodTo').val(quart);
