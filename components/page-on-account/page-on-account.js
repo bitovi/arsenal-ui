@@ -199,8 +199,8 @@ var page = Component.extend({
                         if(data["status"]=="SUCCESS"){
                            /* The below calls {scope.appstate} change event that gets the new data for grid*/
                             var returnValue = utils.getProposedOnAccRows(quarters,data);
-                            var arr = $.unique(returnValue['BUNDLE_NAMES']);
-                            self.scope.attr('bundleNamesForDisplay',arr.toString());
+                            //var arr = $.unique(returnValue['BUNDLE_NAMES']);
+                            self.scope.attr('bundleNamesForDisplay',returnValue['BUNDLE_NAMES'].toString());
                             //console.log(self.scope.attr('bundleNamesForDisplay'));
                             var proposedRequest = {};
                             proposedRequest.rows=returnValue['ROWS'];
