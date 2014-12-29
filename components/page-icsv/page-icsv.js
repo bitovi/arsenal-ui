@@ -241,7 +241,7 @@ var page = Component.extend({
             var self = this;
             self.scope.attr('uploadedFileInfo',val.filePropeties);
             //console.log(JSON.stringify(self.scope.attr('uploadedFileInfo')));
-            $('.jQfunhide').show();
+            //$('.jQfunhide').show();
             //val == 'SUCCESS' ?  $('.jQfunhide').show():$('.jQfunhide').hide();
        },
        "#buttonCancelicsv click":function(){
@@ -269,27 +269,18 @@ var page = Component.extend({
                     self.scope.attr('errorMessage',data.errorDesc);
                   }
                  }else{
+                  $('.jQfunhide').show();
                   icsvmap.attr("invoiceData", data); 
+
                  }
                 },function(xhr){
+                  //self.scope.attr('errorMessage','Problem accessing /api/v1/invoice/icsv/validate');
+                  console.log('error while validating ICSV');
           });
-          /* Commenting above line due to unavailability of validateicsv service*/
-
-
-          // Promise.all([
-          //     ValidateIcsv.findAll()
-          // ]).then(function(values) {
-          //     icsvmap.attr("invoiceData", values[0][0]);
-          // }); 
-  
-
-
        },
 
       "#addIcsvSubmit click":function(){
             var tempArr = icsvmap.invoiceData.invoices.attr();
-            
-           // console.log(tempArr);
            var createInvoiceData = {};
              createInvoiceData.invoices = [];
 
