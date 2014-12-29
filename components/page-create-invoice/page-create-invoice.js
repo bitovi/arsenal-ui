@@ -653,20 +653,13 @@ var page = Component.extend({
           // console.log(idGL);
           // console.log(event[0].value);
 		},
-		"#invoicelicensor change": function(event){
-			var genObj = {licensorId:event[0].value};
-			var self = this;
-			Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
-			     ]).then(function(values) {
-				    self.scope.attr("currency").replace(values[0]);
-			   });
-		},
 		"{scope} regionStore": function(){
 		  	var self = this;
 			var genObj = {regionId:self.scope.attr("regionStore")};
 			Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))
 			     ]).then(function(values) {
 		     			//console.log(values[0]);
+		     			self.scope.attr("licensor").replace([]);
 			    		self.scope.attr("licensor").replace(values[0]["entities"][0]);
 			    		if(self.scope.editpage){
 				    		var invoiceData = self.scope.attr().invoiceContainer[0];
@@ -675,6 +668,7 @@ var page = Component.extend({
 			    });
 
 			 Country.findAll(UserReq.formRequestDetails(genObj),function(data){
+			 			self.scope.attr("country").replace([]);
                   		self.scope.attr("country").replace(data);
 		                },function(xhr){
 		                /*Error condition*/
@@ -690,6 +684,7 @@ var page = Component.extend({
 			var genObj = {licensorId:self.scope.attr("licensorStore")};
 			Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
 			     ]).then(function(values) {
+			     	self.scope.attr("currency").replace([]);
 				    self.scope.attr("currency").replace(values[0]);
 				    if(self.scope.editpage){
 					    var invoiceData = self.scope.attr().invoiceContainer[0];

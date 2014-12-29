@@ -639,7 +639,7 @@ var page = Component.extend({
 						
 						Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))
 						     ]).then(function(values) {
-						     	console.log(values[0]);
+						     	self.scope.attr("licensor").replace([]);
 							    self.scope.attr("licensor").replace(values[0]["entities"][0]);
 							    var invoiceData = self.scope.attr().invoiceContainer[0];
 							     self.scope.attr("licensorStore", invoiceData.entityId);
@@ -655,6 +655,7 @@ var page = Component.extend({
 						var genObj = {licensorId:self.scope.attr("licensorStore")};
 						Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
 						     ]).then(function(values) {
+						     	self.scope.attr("currency").replace([]);
 							    self.scope.attr("currency").replace(values[0]);
 							    var invoiceData = self.scope.attr().invoiceContainer[0];
 							    self.scope.attr("currencyStore", invoiceData.invoiceCcy);
@@ -712,6 +713,7 @@ var page = Component.extend({
 		                var genObj = {regionId:self.scope.attr("regionStore")};
 
 		                Country.findAll(UserReq.formRequestDetails(genObj),function(data){
+		                		self.scope.attr("country").replace([]);
 		                  		self.scope.attr("country").replace(data);
 		                  		self.scope.ajaxRequestStatus.attr("countryLoaded", true);
 								},function(xhr){
@@ -1170,7 +1172,7 @@ var page = Component.extend({
 			     	//Licensor.findAll(UserReq.formRequestDetails(genObj)),
 			     	//Currency.findAll(UserReq.formRequestDetails(genObj)),
 			        ContentType.findAll(UserReq.formRequestDetails(genObj)),
-			      	Country.findAll(UserReq.formRequestDetails(genObj)),
+			      //	Country.findAll(UserReq.formRequestDetails(genObj)),
 					AdhocTypes.findAll(UserReq.formRequestDetails(genObj)),
 			      	GLaccounts.findAll(UserReq.formRequestDetails(genObj)),
 			      	Region.findAll(UserReq.formRequestDetails(genObj))
@@ -1180,12 +1182,12 @@ var page = Component.extend({
 		     		 self.scope.attr("invoiceTypes").replace(values[0]["invoiceTypes"]);
 		     		
 		     		 self.scope.attr("contentType").replace(values[1].contentTypes);
-		     		 console.log(self.scope.attr("contentType"));
-		     		 self.scope.attr("country").replace(values[2]);
+		     		 
+		     		// self.scope.attr("country").replace(values[2]);
 
-		     		 self.scope.attr("adhocType").replace(values[3].adhocTypes);
-		     		 self.scope.attr("glaccounts").replace(values[4]);
-		     		 self.scope.attr("regions").replace(values[5]);
+		     		 self.scope.attr("adhocType").replace(values[2].adhocTypes);
+		     		 self.scope.attr("glaccounts").replace(values[3]);
+		     		 self.scope.attr("regions").replace(values[4]);
 
 		     		
 		     	     /*Getting data from icsv map*/
