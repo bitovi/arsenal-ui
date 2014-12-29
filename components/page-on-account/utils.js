@@ -367,13 +367,18 @@ getDisplayPeriod: function(quarter){
     return (quarters[period]+'FY'+year.substring(year.length, year.length-2));  
   },
   createFooterRow:function(onAccountFooter){
-    var footerRows=[];
+    var summaryRows=[];
+    var detailRows=[];
     if(onAccountFooter.onAccountFooterSummary != undefined && onAccountFooter.onAccountFooterSummary.length >0){
-      footerRows.push(this.getFooterRow(onAccountFooter.onAccountFooterSummary,true));  
+      summaryRows = this.getFooterRow(onAccountFooter.onAccountFooterSummary,true);  
     }
-    if(onAccountFooter.onAccountFooterDetails != undefined && onAccountFooter.onAccountFooterDetails.length >0){
-        footerRows.push(this.getFooterRow(onAccountFooter.onAccountFooterDetails,false));
-    }
+     if(onAccountFooter.onAccountFooterDetails != undefined && onAccountFooter.onAccountFooterDetails.length >0){
+      detailRows=this.getFooterRow(onAccountFooter.onAccountFooterDetails,false);
+     }
+
+     var footerRows=summaryRows.concat(detailRows);
+
+
     return footerRows;
   },
   getFooterRow:function(footerData,parent){

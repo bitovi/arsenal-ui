@@ -198,12 +198,18 @@ var page = Component.extend({
                          self.scope.attr('showLoadingImage',false);
                         if(data["status"]=="SUCCESS"){
                            /* The below calls {scope.appstate} change event that gets the new data for grid*/
-                            var returnValue = utils.getProposedOnAccRows(quarters,data);
+                            //var returnValue = utils.getProposedOnAccRows(quarters,data);
+
+                            var detailRows = utils.prepareRowsForDisplay(data.onAccount.onAccountDetails);
+                            var footerRows = utils.createFooterRow(data.onAccount.onAccountFooter);
+
+
                             //var arr = $.unique(returnValue['BUNDLE_NAMES']);
-                            self.scope.attr('bundleNamesForDisplay',returnValue['BUNDLE_NAMES'].toString());
+                            //self.scope.attr('bundleNamesForDisplay',returnValue['BUNDLE_NAMES'].toString());
                             //console.log(self.scope.attr('bundleNamesForDisplay'));
                             var proposedRequest = {};
-                            proposedRequest.rows=returnValue['ROWS'];
+                            proposedRequest.rows=detailRows;
+                            proposedRequest.footerRows = footerRows;
                             if(proposedRequest.rows != null && proposedRequest.rows.length>0){
                                 proposedRequest.quarters=quarters;
                                 disableProposedSubmitButton(true);
