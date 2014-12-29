@@ -115,6 +115,7 @@ var page = Component.extend({
   	uploadedfileinfo:[],
   	periodType:"",
   	usdFxrateRatio:"",
+  	pbrequestObj:[],
 	isRequired: function(){
   	 		if(this.attr("invoicetypeSelect") != "2" && this.attr("invoicetypeSelect") != "3"){  /*Adhoc*/
  				$(".breakdownCountry").addClass("requiredBar");
@@ -680,7 +681,8 @@ var page = Component.extend({
 		        });
 
 
-			self.scope.createPBRequest();
+			var requestObj = self.scope.createPBRequest();
+			self.scope.pbrequestObj.replace(requestObj);
 
 		},
 		"{scope} licensorStore": function(event){

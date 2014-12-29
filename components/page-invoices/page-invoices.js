@@ -31,6 +31,7 @@ import css_tokeninput_theme from 'tokeninput_theme.css!';
 
 import template from './template.stache!';
 import styles from './page-invoices.less!';
+import exportToExcel from 'components/export-toexcel/';
 
 /* Extend grid with the columns */
 Grid.extend({
@@ -111,6 +112,7 @@ var page = Component.extend({
     getPaymentBundlesNames: undefined,
     newpaymentbundlenamereq:undefined,
     fileinfo:[],
+    excelOutput:[],
     refreshTokenInput: function(val, type){
       //console.log("val is "+JSON.stringify(val));
       var self = this;
@@ -194,6 +196,33 @@ var page = Component.extend({
         /* Bundle Names is selectable only when any row is selected */
         $('#paymentBundleNames').prop('disabled', 'disabled');
         $('#invoiceGrid').html(stache('<rn-grid-invoice emptyrows="{emptyrows}"></rn-grid-invoice>')({emptyrows:true}));
+    },
+    '#exportExcel click':function(){
+          var self= this;
+          self.scope.excelOutput.attr('flag',true);
+          if(self.scope.appstate.attr('globalSearch')){
+            self.scope.appstate.attr('globalSearch', false);
+          }else{
+            self.scope.appstate.attr('globalSearch', true);
+          }
+          
+         /* var self=this;
+          Invoice.findOne(invoiceExportToExcel(self.scope.appstate),function(data){
+             if(data["status"]=="SUCCESS"){
+                $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
+              }else{
+                $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                $("#messageDiv").show();
+                setTimeout(function(){
+                    $("#messageDiv").hide();
+                },2000)
+                self.scope.attr('emptyrows',true);
+              }
+            },function(xhr){
+            console.error("Error while loading: bundleNames"+xhr);
+          });*/
+
+
     },
     "{tokenInput} change": function(){
           var self= this;
@@ -802,11 +831,23 @@ var page = Component.extend({
 
                 invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr().toString();
                 invSearchRequest.searchRequest["sortOrder"] = "ASC";
+                
+                /*This parameter is to generating the excel output*/
+                if(self.scope.excelOutput.attr('flag'))invSearchRequest["excelOutput"] = true;
+
 
                 console.log("Request are "+JSON.stringify(UserReq.formRequestDetails(invSearchRequest)));
+
+               
                 GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){
-                    //console.log("response is "+JSON.stringify(data.attr()));
-                    self.scope.allInvoicesMap.replace(data);
+                    if(self.scope.excelOutput.attr('flag')){//when user clicks export to excel icon this block will run otherwise its goes to normal else conditon
+                       if(data["status"]=="SUCCESS"){
+                          $('#exportExcels').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
+                          self.scope.excelOutput.attr('flag',false);
+                        }
+                    }else{
+                      self.scope.allInvoicesMap.replace(data);
+                    }
 
 
                 },function(xhr){
@@ -822,6 +863,15 @@ var page = Component.extend({
       }
   }
 });
+
+
+var invoiceExportToExcel=function(appstate){
+    var invoiceRequest={};
+    invoiceRequest.searchRequest=UserReq.formGlobalRequest(appstate).searchRequest;
+    invoiceRequest.searchRequest.type="invoices";   
+    //invoiceRequest.excelOutput=true;
+    return UserReq.formRequestDetails(invoiceRequest);
+};
 
 function CurrencyFormat(number)
 {

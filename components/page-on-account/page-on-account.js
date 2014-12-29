@@ -447,12 +447,13 @@ var page = Component.extend({
          // console.log("docu changed "+JSON.stringify(this.scope.documents.attr()));
          //alert('hi');
       },
-      '.exportToExcel click':function(){
+      '.exportToExcel click':function(el,ev){
+       
         var self = this;
        if(self.scope.tabsClicked=="ON_ACC_BALANCE"){
-              onAccountBalance.findOne(createBalanceOnAccountRequestForExportToExcel(self.scope.appstate),function(data){
+              onAccountBalance.findOne(createBalanceOnAccountRequestForExportToExcel(self.scope.appstate),function(data){ 
                       if(data["status"]=="SUCCESS"){
-                        self.scope.csvcontent.replace(data);  
+                        $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
                       }else{
                         $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
                         $("#messageDiv").show();
@@ -465,6 +466,24 @@ var page = Component.extend({
                       console.error("Error while loading: onAccount balance Details"+xhr);
                 } ); 
          } else if(self.scope.tabsClicked=="PROPOSED_ON_ACC"){
+            //createProposedOnAccountRequestForExportToExcel
+
+
+               proposedOnAccount.findOne(createProposedOnAccountRequestForExportToExcel(self.scope.appstate),function(data){ 
+                      if(data["status"]=="SUCCESS"){
+                        $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
+                      }else{
+                        $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                        $("#messageDiv").show();
+                        setTimeout(function(){
+                            $("#messageDiv").hide();
+                        },2000)
+                        self.scope.attr('emptyrows',true);
+                      }
+                }, function(xhr) {
+                      console.error("Error while loading: onAccount balance Details"+xhr);
+                } ); 
+
 
          }
       },
@@ -616,7 +635,13 @@ var createProposedOnAccountRequest=function(appstate){
   proposedOnAccountRequest.searchRequest.type="PROPOSED";
   return requestHelper.formRequestDetails(proposedOnAccountRequest);
 };
-
+var createProposedOnAccountRequestForExportToExcel=function(appstate){
+  var proposedOnAccountRequest={};
+  proposedOnAccountRequest.searchRequest=requestHelper.formGlobalRequest(appstate).searchRequest;
+  proposedOnAccountRequest.searchRequest.type="PROPOSED";
+  proposedOnAccountRequest.excelOutput=true;
+  return requestHelper.formRequestDetails(proposedOnAccountRequest);
+};
 var createBalanceOnAccountRequestForExportToExcel=function(appstate){
     var balancedOnAccountRequest={};
     balancedOnAccountRequest.searchRequest=requestHelper.formGlobalRequest(appstate).searchRequest;
