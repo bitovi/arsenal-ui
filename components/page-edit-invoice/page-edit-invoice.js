@@ -47,6 +47,23 @@ fileUpload.extend({
          }
  });
 
+createpb.extend({
+	tag: 'create-pb',
+  	scope: {
+           		selectedbundle:"@",
+           		paymentBundleId: ""	
+           },
+     events:{
+     	"inserted":function(){
+     		console.log("inserted");
+     	},
+     	"{scope} selectedbundle":function(){
+     		this.scope.attr("paymentBundleId", this.scope.attr("selectedbundle"));
+     	}
+
+     }      
+});
+
 var page = Component.extend({
   tag: 'page-edit-invoice',
   template: template,
@@ -69,7 +86,7 @@ var page = Component.extend({
   	calduedate:0,
   	tax:0,
   	taxStore:{},
-  	isAdhocStrore:{"ccidGL":"CCID Document", "contentAdhoc":"Content Type"},
+  	isAdhocStrore:{"ccidGL":"CCID Filename", "contentAdhoc":"Content Type"},
   	editcommentArr:[],
   	/*Form value*/
   	invoicetypeSelect:"",
@@ -107,6 +124,7 @@ var page = Component.extend({
   	periodType:"",
   	ajaxRequestStatus:{},
   	usdFxrateRatio:"",
+  	invselectedbundle:"",
 	isRequired: function(){
   	 		if(this.attr("invoicetypeSelect") != "2"){  /*Adhoc*/
  				$(".breakdownCountry").addClass("requiredBar");
@@ -160,14 +178,14 @@ var page = Component.extend({
 
 	  	 	 }
 	  	 	 else if(this.attr("invoicetypeSelect") == "3"){
-			  	 this.isAdhocStrore.attr("ccidGL", "CCID Document");
+			  	 this.isAdhocStrore.attr("ccidGL", "CCID Filename");
 			  	 this.isAdhocStrore.attr("contentAdhoc", "Content Type");
 			  	 this.isAdhocStrore.attr("invtype", "");
 			  	 this.isAdhocStrore.attr("adhoc", false);
 				 this.attr("showPBR", false);
 			 }
 			 else{
-			  	 this.isAdhocStrore.attr("ccidGL", "CCID Document");
+			  	 this.isAdhocStrore.attr("ccidGL", "CCID Filename");
 			  	 this.isAdhocStrore.attr("contentAdhoc", "Content Type");
 			  	 this.isAdhocStrore.attr("invtype", "");
 			  	 this.isAdhocStrore.attr("adhoc", false);
@@ -748,6 +766,10 @@ var page = Component.extend({
 						$('#multipleCommentsInv').html(stache('<multiple-comments divid="usercommentsdivinv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
 		                self.scope.changeTextOnInvType();
 
+		                
+
+		               	self.scope.attr("invselectedbundle", invoiceData.bundleId);
+
 		                var genObj = {regionId:self.scope.attr("regionStore")};
 
 		                Country.findAll(UserReq.formRequestDetails(genObj),function(data){
@@ -1212,7 +1234,7 @@ var page = Component.extend({
 											return "Adhoc";
 								  	 	}
 								  	 	else{
-								  	 		this.isAdhocStrore.attr("ccidGL", "CCID Document");
+								  	 		this.isAdhocStrore.attr("ccidGL", "CCID Filename");
 								  	 		return this.isAdhocStrore;
 								  	 	}
 								  	},
