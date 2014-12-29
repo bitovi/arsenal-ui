@@ -273,9 +273,9 @@
 			
 			
 	 
-			<div class="col-sm-6">
+			<div class="col-sm-6" style="padding: 0px;">
 
-				<div class="col-sm-12" id="entityGridSD">
+				<div class="col-sm-12" id="entityGridSD" class="entityGridSDHeight">
 
 						<div class="col-sm-12" style="padding-top: 15px; padding-left:0px">
 							<div class="col-sm-12 reportConfErr" can-value="repConfMessage"> {{getRepConfmessage}} </div>
