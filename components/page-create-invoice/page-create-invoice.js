@@ -976,7 +976,9 @@ var page = Component.extend({
 
 				  	 			self.scope.attr("calduedate", "");
 
-				  	 			window.history.back(); /*Going back to referrer page*/
+				  	 			self.scope.uploadedfileinfo.replace([]);
+
+				  	 			
 				  	 		},
 							'period-calendar onSelected': function (ele, event, val) {
 			       					this.scope.attr('periodchoosen', val);
