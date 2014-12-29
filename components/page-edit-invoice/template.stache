@@ -89,7 +89,7 @@
 							    </div>
 						    </div>
 						    <div class="col-sm-6 ">
-							    <label for="inputPassword3" class="col-sm-6 control-label">Fx Rate:</label>
+							    <label for="inputPassword3" class="col-sm-6 control-label">FX Rate:</label>
 							    <div class="col-sm-6 fxrate" style="padding-left:2px;">
 							      <input type="text" class="form-control" name ="fxrate" id="fxrate" placeholder="" can-value="fxrateStore">
 							      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "fxrate-err" style="display:none;">
@@ -100,7 +100,7 @@
 
 				  <div class="form-group">
 						  <div class="col-sm-6">
-							    <label for="inputEmail3" class="col-sm-6 control-label">Invoice Number: </label>
+							    <label for="inputEmail3" class="col-sm-6 control-label">Invoice #: </label>
 								    <div class="col-sm-6 requiredBar invoicenumber">
 									      <input type="text" class="form-control" id="invoicenumber" name="invoicenumber" placeholder=""  can-value="invoicenumberStore">
 									      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "invoicenumber-err" style="display:none;">
@@ -283,7 +283,7 @@
 
 				   <div class="col-sm-12" style="height:20px;"></div>
 				   <div style="text-align:right">
-						   <div class="col-sm-9"><label class="control-label">Net Total: </label></div>
+						   <div class="col-sm-9"><label class="control-label">Gross Total: </label></div>
 						   <div class="col-sm-3 total-amount">{{netTotal}}</div> 
 
 						 	<!--<div class="col-sm-9"></div>
@@ -323,18 +323,17 @@
 						 </div>
 					    </div>
 
-				  <div class="col-sm-12">
-					    <div class="col-sm-12" style="text-align:right;padding:15px;">
+				 <div class="col-sm-12" style="text-align:right;padding:15px;"></div>
 
 						 {{#if showPBR}}
-						 		{{#if regionStore}}	
-									<label class="col-sm-3" for="inputCountry">Bundle Name:</label>
-					        			<div class="col-sm-3">
+						 		{{#if regionStore}}
+									<label class="col-sm-2 bundelTitle" for="inputCountry">Bundle Name:</label>
+					        			<div class="col-sm-5">
 						        			<create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}"></create-pb>
 										</div>
 				            	{{else}}
-				            		<div class="col-sm-6"></div>	
-				            	{{/if}}	
+				            		<div class="col-sm-6"></div>
+				            	{{/if}}
 					       {{else}}
 					        <label class="col-sm-2" for="inputCountry"></label>
 					        <div class="col-sm-4 ">
@@ -343,12 +342,13 @@
 
 					       {{/if}}
 
-					        <div class="col-sm-6 ">
+					        <div class="col-sm-2 ">
 					        <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
-					        <button id="addInvSubmit" type="submit"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>
 					        </div>
-					    </div>
-					 </div>
+					        	<div class="col-sm-1"></div>
+					        <div class="col-sm-2 ">
+					        <button id="addInvSubmit" type="submit"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>
+					     </div>
 
 		</div>
 

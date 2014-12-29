@@ -69,7 +69,7 @@ var page = Component.extend({
   	calduedate:0,
   	tax:0,
   	taxStore:{},
-  	isAdhocStrore:{"ccidGL":"CCID Document", "contentAdhoc":"Content Type"},
+  	isAdhocStrore:{"ccidGL":"CCID Filename", "contentAdhoc":"Content Type"},
   	editcommentArr:[],
   	/*Form value*/
   	invoicetypeSelect:"",
@@ -160,14 +160,14 @@ var page = Component.extend({
 
 	  	 	 }
 	  	 	 else if(this.attr("invoicetypeSelect") == "3"){
-			  	 this.isAdhocStrore.attr("ccidGL", "CCID Document");
+			  	 this.isAdhocStrore.attr("ccidGL", "CCID Filename");
 			  	 this.isAdhocStrore.attr("contentAdhoc", "Content Type");
 			  	 this.isAdhocStrore.attr("invtype", "");
 			  	 this.isAdhocStrore.attr("adhoc", false);
 				 this.attr("showPBR", false);
 			 }
 			 else{
-			  	 this.isAdhocStrore.attr("ccidGL", "CCID Document");
+			  	 this.isAdhocStrore.attr("ccidGL", "CCID Filename");
 			  	 this.isAdhocStrore.attr("contentAdhoc", "Content Type");
 			  	 this.isAdhocStrore.attr("invtype", "");
 			  	 this.isAdhocStrore.attr("adhoc", false);
@@ -1212,7 +1212,7 @@ var page = Component.extend({
 											return "Adhoc";
 								  	 	}
 								  	 	else{
-								  	 		this.isAdhocStrore.attr("ccidGL", "CCID Document");
+								  	 		this.isAdhocStrore.attr("ccidGL", "CCID Filename");
 								  	 		return this.isAdhocStrore;
 								  	 	}
 								  	},
