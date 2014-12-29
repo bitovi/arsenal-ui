@@ -44,9 +44,17 @@ var mandatoryField = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiv
 fileUpload.extend({
   tag: 'rn-file-uploader',
   scope: {
-           fileList : new can.List()
-         }
- });
+           fileList : new can.List(),
+           uploadedfileinfo:[]
+         },
+   events:{
+   	"{uploadedfileinfo} change":function(){
+   		this.scope.fileList.replace(this.scope.uploadedfileinfo);
+   		}
+   }
+});
+
+
 
 var page = Component.extend({
   tag: 'page-create-invoice',
@@ -104,7 +112,7 @@ var page = Component.extend({
     //invoiceid:"",
   	editpage:false,
   	formSuccessCount:1,
-  	uploadedFileInfo:[],
+  	uploadedfileinfo:[],
   	periodType:"",
   	usdFxrateRatio:"",
   	pbrequestObj:[],
@@ -740,7 +748,7 @@ var page = Component.extend({
 
 		'rn-file-uploader onSelected': function (ele, event, val) {
             var self = this;
-            self.scope.attr('uploadedFileInfo',val.filePropeties);
+            self.scope.attr('uploadedfileinfo',val.filePropeties);
          },
 
 		"#invoiceform #paymentBundleNames change": function(){
@@ -826,10 +834,10 @@ var page = Component.extend({
 
 
 
-					 	for(var i =0; i < self.scope.uploadedFileInfo.length; i++){
+					 	for(var i =0; i < self.scope.uploadedfileinfo.length; i++){
       						var tempDocument = {};
-				   			tempDocument.fileName = self.scope.uploadedFileInfo[i].attr("fileName");
-				   			tempDocument.location = self.scope.uploadedFileInfo[i].attr("filePath");
+				   			tempDocument.fileName = self.scope.uploadedfileinfo[i].attr("fileName");
+				   			tempDocument.location = self.scope.uploadedfileinfo[i].attr("filePath");
 				   			tempInvoiceData["invoiceDocuments"].push(tempDocument);
 				   		}
 
@@ -918,7 +926,10 @@ var page = Component.extend({
 								  	 			});
 
 								  	 			self.scope.attr("calduedate", "");
-											}
+
+								  	 			self.scope.uploadedfileinfo.replace([]);
+
+								  	 	   }
 								          else
 								           {
 								           		if(values[0].invoices[0].errors)
@@ -938,7 +949,7 @@ var page = Component.extend({
 										        $("#invmessageDiv").show();
 										        $("#addInvSubmit").attr("disabled", false);
 
-								            }
+										    }
 								     	});
 
 							},
@@ -967,7 +978,9 @@ var page = Component.extend({
 
 				  	 			self.scope.attr("calduedate", "");
 
-				  	 			window.history.back(); /*Going back to referrer page*/
+				  	 			self.scope.uploadedfileinfo.replace([]);
+
+				  	 			
 				  	 		},
 							'period-calendar onSelected': function (ele, event, val) {
 			       					this.scope.attr('periodchoosen', val);

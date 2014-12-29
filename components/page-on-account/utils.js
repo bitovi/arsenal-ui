@@ -224,26 +224,35 @@ var onAccountUpdateRequest ={};
     return onAccountUpdateRequest;
     },
 frameRowsForCopyOnAcc:function(originalRows,data,quarters,period){
+var currencyAmtMap = this.prepareCurrencyDataMap(data.onAccount.onAccountDetails);
 var onAccountDetails = data.onAccount.onAccountDetails;
-    if(onAccountDetails != null && onAccountDetails.length>0){
-        var licensorName="";
-        for(var i=0; i<originalRows.length;i++){
-           if(originalRows[i].__isChild){
-                var value = this.getPeriodValue(onAccountDetails,period);
-                var total = 0;
-                for(var k=0;k<quarters.length;k++)
-                {
-                    originalRows[i][quarters[k]]=value;
-                    total = total+Number(value);
-                }
-                originalRows[i]['total']=total+'';
-           }else{
-            licensorName=originalRows[i].licensor;
-           }
-           
-        }
+    for(var i=0; i<originalRows.length;i++){
+       if(originalRows[i].__isChild){
+            //var value = this.getPeriodValue(onAccountDetails,period);
+            var total = 0;
+            for(var k=0;k<quarters.length;k++)
+            {
+              var period = this.getPeriodForQuarter(quarters[k]);
+              var value = currencyAmtMap[period+originalRows[i].currency];
+              if(value == undefined){
+                value = 0;
+              }
+              originalRows[i][quarters[k]]=value;
+              total = total+Number(value);
+            }
+            originalRows[i]['total']=total+'';
+       }
     }
     return originalRows;
+},
+prepareCurrencyDataMap:function(onAccountDetails){
+  var currencyAmtMap = new Object();
+  if(onAccountDetails != null && onAccountDetails.length>0){
+    for(var i=0;i<onAccountDetails.length;i++){
+      currencyAmtMap[''+onAccountDetails[i].fiscalPeriod+onAccountDetails[i].currencyCode]=onAccountDetails[i].onAccountAmt;
+    }
+  }
+  return currencyAmtMap;
 },
 getPeriodValue:function(onAccountDetails,quarter){
     var fiscalPeriod=this.getPeriodForQuarter(quarter);

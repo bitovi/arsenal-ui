@@ -194,7 +194,7 @@ var GlobalParameterBar = Component.extend({
 
     },
     '{scope.appstate} page': function() {
-      if (this.scope.appstate.attr('page') == 'on-account') {
+      if (this.scope.appstate.attr('page') == 'on-account' && this.scope.appstate.attr('periodType') != 'Q') {
         var quart = getDefaultPeriodFrom('ONACCOUNT');
         $('#periodFrom').val(quart);
         $('#periodTo').val(quart);
@@ -237,6 +237,7 @@ var GlobalParameterBar = Component.extend({
           includeSelectAllOption: true,
           selectAllText: 'Select All',
           selectAllValue: 'selectAll',
+          selectAllName: 'selAllCountry',
           maxHeight: 200,
           onChange: function(option, checked, select) {
             $("#countriesFilter").multiselect("refresh");
@@ -250,6 +251,7 @@ var GlobalParameterBar = Component.extend({
           includeSelectAllOption: true,
           selectAllText: 'Select All',
           selectAllValue: 'selectAll',
+          selectAllName: 'selAllLicensor',
           maxHeight: 200,
           onChange: function(option, checked, select) {
             $("#licensorsFilter").multiselect("refresh");
@@ -261,6 +263,7 @@ var GlobalParameterBar = Component.extend({
           includeSelectAllOption: true,
           selectAllText: 'Select All',
           selectAllValue: 'selectAll',
+          selectAllName: 'selAllContentType',
           maxHeight: 200,
           onChange: function(option, checked, select) {
             $("#contentTypesFilter").multiselect("refresh");
@@ -279,6 +282,10 @@ var GlobalParameterBar = Component.extend({
           if(defCountry=="ALL" || defCountry=="-1"){
             $("#countriesFilter").multiselect('selectAll', false);
             $('#countriesFilter').multiselect('updateButtonText');
+            setTimeout(function(){
+              $("input[name='selAllCountry']").prop("checked",true);
+              $("input[name='selAllCountry']").closest('li').addClass("active");
+            }, 1000);
           } else {
             $("#countriesFilter").multiselect('select', DefaultGlobalParameters.Country.attr());
           }
@@ -288,6 +295,10 @@ var GlobalParameterBar = Component.extend({
           if(defLicensor=="ALL" || defLicensor=="-1"){
             $("#licensorsFilter").multiselect('selectAll', false);
             $('#licensorsFilter').multiselect('updateButtonText');
+            setTimeout(function(){
+              $("input[name='selAllLicensor']").prop("checked",true);
+              $("input[name='selAllLicensor']").closest('li').addClass("active");
+            }, 1000);
           } else {
             $("#licensorsFilter").multiselect('select', DefaultGlobalParameters.Licensor.attr());
           }
@@ -309,6 +320,10 @@ var GlobalParameterBar = Component.extend({
             if(defContentType=="ALL" || defContentType=="-1"){
               $("#contentTypesFilter").multiselect('selectAll', false);
               $('#contentTypesFilter').multiselect('updateButtonText');
+              setTimeout(function(){
+                $("input[name='selAllContentType']").prop("checked",true);
+                $("input[name='selAllContentType']").closest('li').addClass("active");
+              }, 1000);
             } else {
               $("#contentTypesFilter").multiselect('select', DefaultGlobalParameters.ContentType.attr());
             }
