@@ -9,18 +9,18 @@ import PaymentBundleDetailGroup from './payment-bundle-detail-group';
 
 var PaymentBundle = Model.extend({
   id: 'bundleId',
-  parseModels: function(data, xhr) {  console.log(data);
+  parseModels: function(data, xhr) {
      return (typeof (data.exportExcelFileInfo)!="object") ? data.paymentBundles:data;
   },
-  parseModel: function(data, xhr) { //console.log(data);
-    var temp='';
-     if(data.hasOwnProperty('responseCode') && typeof (data.exportExcelFileInfo)!="object") temp=data.paymentBundle;
-     else temp=data;
-
-
-     return temp;
-  },
-  //Removed the parseModel as its picking up old model. Can js Issue: 
+  // parseModel: function(data, xhr) { //console.log(data);
+  //   var temp='';
+  //    if(data.hasOwnProperty('responseCode') && typeof (data.exportExcelFileInfo)!="object") temp=data.paymentBundle;
+  //    else temp=data;
+  //
+  //
+  //    return temp;
+  // },
+  //Removed the parseModel as its picking up old model. Can js Issue:
   //<rdar://problem/19350067> UI-PBR Details Country View: Incorrect Details
   // parseModel: function(data, xhr) {
   //   return data.hasOwnProperty('responseCode') ? data.paymentBundle : data;
@@ -65,7 +65,7 @@ var PaymentBundle = Model.extend({
 
      if(excelOutput!=false){
         data["excelOutput"]=true
-     } 
+     }
 
     return $.ajax({
       url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/getAll',
@@ -74,8 +74,8 @@ var PaymentBundle = Model.extend({
       processData: false
     });
   },
-  findOne: function(params) { console.log(params);
-    var appstate = params.appstate; 
+  findOne: function(params) {
+    var appstate = params.appstate;
     if(params.appstate.excelOutput){
        var excelOutput = appstate.attr('excelOutput') != undefined ? appstate.attr('excelOutput') : false;
        var data = {
@@ -83,7 +83,7 @@ var PaymentBundle = Model.extend({
        };
        if(excelOutput!=false){
           data["excelOutput"]=true
-       } 
+       }
 
        if(appstate.attr('detail')){
          appstate.attr('detail',false);
@@ -118,7 +118,7 @@ var PaymentBundle = Model.extend({
         var excelOutput = appstate.attr('excelOutput') != undefined ? appstate.attr('excelOutput') : false;
         if(excelOutput!=false){
           data["excelOutput"]=true
-        } 
+        }
 
         return $.ajax({
           url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/get',
@@ -129,7 +129,7 @@ var PaymentBundle = Model.extend({
 
       }
 
-    
+
   },
   destroy: function(id, bundle) {
     var d = can.Deferred();
@@ -188,19 +188,25 @@ var PaymentBundle = Model.extend({
 
       can.batch.start();
       validationResponse.paymentBundle.bundleDetailsGroup.forEach(function(group) {
+        var target = undefined;
         // only update these if validation is done
         if(validationResponse.paymentBundle.vldtnStatus === 5) {
-          var target = _.find(bundle.bundleDetailsGroup, {invoiceId: group.invoiceId});
-          target.attr('validationMessages', group.vldtnMessage);
-          target.attr('validationColor', group.vldtnBatchResultColor);
+          if(group.invoiceId != undefined){
+            var target = _.find(bundle.bundleDetailsGroup, {invoiceId: group.invoiceId});
+            target.attr('validationMessages', group.vldtnMessage);
+            target.attr('validationColor', group.vldtnBatchResultColor);
+          }
         }
 
         group.bundleDetails.forEach(function(detail) {
           // only update these if validation is done
+          //TODO code modification is needed when the servcice s is ready with Proper JSON.
           if(validationResponse.paymentBundle.vldtnStatus === 5) {
-            var lineTarget = _.find(target.bundleDetails, {bndlLineId: detail.bndlLineId});
-            lineTarget.attr('validationMessages', detail.vldtnMessage);
-            lineTarget.attr('validationColor', detail.vldtnBatchResultColor);
+            if(target != undefined ){
+              var lineTarget = _.find(target.bundleDetails, {bndlLineId: detail.bndlLineId});
+              lineTarget.attr('validationMessages', detail.vldtnMessage);
+              lineTarget.attr('validationColor', detail.vldtnBatchResultColor);
+            }
           }
 
           rulesCompleted += detail.vldtnRulesCompletedCnt;
