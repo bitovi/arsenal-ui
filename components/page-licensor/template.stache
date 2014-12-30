@@ -329,7 +329,7 @@
 
 			    			</div>
 			    			<div class="col-sm-12 repConf">
-			    				<div class="col-sm-12 repConfFooter">
+			    				<div class="col-sm-12 repConfFooter" style="padding:2px">
 				    				<div class="col-sm-6 col-sm-offset-7">
 
 				    					<button type="button" id="applyAllSelected" name="applyAll" class="btn buttonSubmit btn-custom-small3px  applyAllSelected" style="margin-left:10px;">Apply Selected</button>
@@ -429,7 +429,7 @@
 
 		<div class="col-sm-12 col-sm-offset-10 buttonsBottom">
 			<button type="button" id="buttonsubmit" name="Submit" class="btn submitButton btn-custom-small" style="margin-left:10px;">Submit</button>
-			<button type="button" id="buttonreset" name="Reset" class="btn cancelButton btn-custom-small" style="margin-left:10px;">Cancel</button>
+			<button type="button" id="buttonreset" name="Reset" class="btn cancelButton btn-custom-small-cancel " style="margin-left:10px;">Cancel</button>
 		</div>
 
 		<div class="col-sm-12" id="spaceBar"></div>

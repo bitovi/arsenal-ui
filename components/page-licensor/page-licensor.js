@@ -841,7 +841,7 @@ var page = Component.extend({
 
       var self = this;
 
-        var isValid = self.scope.reValidateFiledsonLoad();
+        var isValid = self.reValidateFiledsonLoad();
 
         $('#entityLicensorBottom').bootstrapValidator('validate');
 
@@ -1775,7 +1775,22 @@ var page = Component.extend({
 
         var obj = el.closest('div')[0];
         country = obj.childNodes[0].getAttribute("value");
+        obj.childNodes[0].checked = true;
         
+      } else {
+
+        var countryBox = $('input.countryBox');
+
+        for(var i=0; i< countryBox.length ; i++) {
+
+          if(countryBox[i].getAttribute("value") === country) {
+
+            countryBox[i].checked = true;
+
+          }
+
+        }
+
       }
 
       var reportConf = self.scope.reportConfMap[country];
