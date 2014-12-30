@@ -47,16 +47,16 @@ Grid.extend({
         }
       },
       {
-        id: 'entity',
+        id: 'entityName',
         title: 'Entity',
-        contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{entity}}')({entity: row.entity, isChild: row.__isChild}); }
+        contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{entityName}}')({entityName: row.entityName, isChild: row.__isChild}); }
       },
       {
-        id: 'invoiceTypeDisp',
+        id: 'invTypeDisp',
         title: 'Invoice Type'
       },
       {
-        id: 'contentType',
+        id: 'contentGrpName',
         title: 'Content Type'
       },
       {
@@ -64,19 +64,19 @@ Grid.extend({
         title: 'Country'
       },
       {
-        id: 'invoiceNum',
+        id: 'invoiceNumber',
         title: 'Invoice No'
       },
       {
-        id: 'invoiceAmt',
+        id: 'invoiceAmount',
         title: 'Invoice Amount'
       },
       {
-        id: 'currency',
+        id: 'invoiceCcy',
         title: 'Currency'
       },
       {
-        id: 'dueDate',
+        id: 'invoiceDueDate',
         title: 'Due date'
       },
       {
@@ -92,6 +92,61 @@ Grid.extend({
         title: 'User comments'
       }
     ]
+  },
+  helpers: {
+    tableClass: function() {
+      return 'scrolling';
+    }
+  },
+  events: {
+    'inserted': function(){
+      var self= this;
+      var tbody = self.element.find('tbody');
+        $(tbody).on('scroll', function(ev) {
+          if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight) {
+            console.log("here11111");
+            console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
+
+            var parentScopeVar = self.element.closest('page-invoices').scope();
+            var offsetVal = parentScopeVar.attr('offset');
+            console.log(offsetVal);
+
+            /* Reset the offset value and call the webservice to fetch next set of records */
+            parentScopeVar.attr('offset', (parseInt(offsetVal)+1));
+            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
+            /* All the neccessary parameters will be set in that event */
+           if(parentScopeVar.appstate.attr('globalSearch')){
+              parentScopeVar.appstate.attr('globalSearch', false);
+            }else{
+              parentScopeVar.appstate.attr('globalSearch', true);
+            }
+          }
+        });
+      
+      var colLength = self.scope.attr("columns").length;
+      var rowLength = tbody.find('tr').length;
+      var tableWidth = 0;
+      if(rowLength>0){
+        setTimeout(function(){
+          for(var i=1;i<=colLength;i++){
+            var tdWidth = $('#invoiceGrid table>tbody>tr>td:nth-child('+i+')').outerWidth();
+            if(i==1)
+              tdWidth = 35;
+            if(i==2)
+              tdWidth = 225;
+            if(i>1 && tdWidth<125)
+              tdWidth = 125;
+            //console.log("td "+i+" width "+$('#invoiceGrid table>tbody>tr>td:nth-child('+i+')').outerWidth());
+            $('#invoiceGrid table>thead>tr>th:nth-child('+i+')').css("width",tdWidth);
+            $('#invoiceGrid table>tbody>tr>td:nth-child('+i+')').css("width",tdWidth);
+            $('#invoiceGrid table>tfoot>tr>td:nth-child('+i+')').css("width",tdWidth);
+            //$('#invoiceGrid table>tfoot>tr>td:nth-child('+i+')').css("width",tdWidth);
+            tableWidth += tdWidth;
+          }
+          $("#invoiceGrid table").css("width",tableWidth);
+        },500);
+      }
+    }
   }
 });
 
@@ -110,6 +165,7 @@ var page = Component.extend({
     disableBundleName:undefined,
     getPaymentBundlesNames: undefined,
     newpaymentbundlenamereq:undefined,
+    offset: 0,
     fileinfo:[],
     refreshTokenInput: function(val, type){
       //console.log("val is "+JSON.stringify(val));
@@ -220,28 +276,23 @@ var page = Component.extend({
               var invTemp = {};
               invTemp["invId"] = invoiceData[i]["invId"];
               invTemp["__isChild"] = false;
-              invTemp["entity"] = (invoiceData[i]["entityName"]==null)?"":invoiceData[i]["entityName"];
+              invTemp["entityName"] = (invoiceData[i]["entityName"]==null)?"":invoiceData[i]["entityName"];
               invTemp["invoiceType"] = (invoiceData[i]["invoiceType"]==null)?"":invoiceData[i]["invoiceType"];
-              invTemp["invoiceTypeDisp"] = (invoiceData[i]["invTypeDisp"]==null)?"":invoiceData[i]["invTypeDisp"];
-              invTemp["contentType"] = "";
+              invTemp["invTypeDisp"] = (invoiceData[i]["invTypeDisp"]==null)?"":invoiceData[i]["invTypeDisp"];
+              invTemp["contentGrpName"] = "";
               invTemp["country"] = "";
-              invTemp["invoiceNum"] = (invoiceData[i]["invoiceNumber"]==null)?"":invoiceData[i]["invoiceNumber"];
-              invTemp["invoiceAmt"] = (invoiceData[i]["invoiceAmount"]==null)?0:parseFloat(invoiceData[i]["invoiceAmount"]);
-              invTemp["dueDate"] = (invoiceData[i]["invoiceDueDate"]==null)?"":invoiceData[i]["invoiceDueDate"];
-              invTemp["currency"] = (invoiceData[i]["invoiceCcy"]==null)?"":invoiceData[i]["invoiceCcy"];
+              invTemp["invoiceNumber"] = (invoiceData[i]["invoiceNumber"]==null)?"":invoiceData[i]["invoiceNumber"];
+              invTemp["invoiceAmount"] = (invoiceData[i]["invoiceAmount"]==null)?0:parseFloat(invoiceData[i]["invoiceAmount"]);
+              invTemp["invoiceDueDate"] = (invoiceData[i]["invoiceDueDate"]==null)?"":invoiceData[i]["invoiceDueDate"];
+              invTemp["invoiceCcy"] = (invoiceData[i]["invoiceCcy"]==null)?"":invoiceData[i]["invoiceCcy"];
               invTemp["statusId"] = (invoiceData[i]["status"]==null || invoiceData[i]["status"]==-1)?"":invoiceData[i]["status"];
               invTemp["status"] = (invoiceData[i]["status"]==null || invoiceData[i]["status"]==-1)?"":StatusCodes[invoiceData[i]["paymentState"]];
               invTemp["paymentState"] = (invoiceData[i]["paymentState"]==null || invoiceData[i]["paymentState"]==-1)?"":invoiceData[i]["paymentState"];
               invTemp["bundleName"] = (invoiceData[i]["bundleName"]==null || invoiceData[i]["bundleName"]=="--Select--")?"":invoiceData[i]["bundleName"];
               invTemp["comments"] = (invoiceData[i]["notes"]==null || invoiceData[i]["notes"].length==0)?"":invoiceData[i]["notes"];
 
-              if(currencyList[invTemp["currency"]]!=undefined){
-                currencyList[invTemp["currency"]] = parseFloat(currencyList[invTemp["currency"]])+parseFloat(invTemp["invoiceAmt"]);
-              }else {
-                currencyList[invTemp["currency"]] = parseFloat(invTemp["invoiceAmt"]);
-              }
 
-              invTemp["invoiceAmt"] = CurrencyFormat(invTemp["invoiceAmt"]); //This is to format the amount with commas
+              invTemp["invoiceAmount"] = CurrencyFormat(invTemp["invoiceAmount"]); //This is to format the amount with commas
               gridData.data.push(invTemp);
               var insertedId = gridData.data.length-1;
 
@@ -252,21 +303,21 @@ var page = Component.extend({
                   var invLITemp={};
                   invLITemp["invId"] = "";
                   invLITemp["__isChild"] = true;
-                  invLITemp["entity"] = "";
+                  invLITemp["entityName"] = "";
                   invLITemp["invoiceType"] = "";
-                  invLITemp["invoiceTypeDisp"] = "";
-                  invLITemp["contentType"] = (invoiceLineItems[j]["contentGrpName"]==null)?"":invoiceLineItems[j]["contentGrpName"];
+                  invLITemp["invTypeDisp"] = "";
+                  invLITemp["contentGrpName"] = (invoiceLineItems[j]["contentGrpName"]==null)?"":invoiceLineItems[j]["contentGrpName"];
                   invLITemp["country"] = (invoiceLineItems[j]["country"]==null)?"":invoiceLineItems[j]["country"];
-                  invLITemp["invoiceNum"] = "";
-                  invLITemp["invoiceAmt"] = (invoiceLineItems[j]["lineAmount"]==null)?0:invoiceLineItems[j]["lineAmount"];
-                  invLITemp["dueDate"] = "";
-                  invLITemp["currency"] = invTemp["currency"];
+                  invLITemp["invoiceNumber"] = "";
+                  invLITemp["invoiceAmount"] = (invoiceLineItems[j]["lineAmount"]==null)?0:invoiceLineItems[j]["lineAmount"];
+                  invLITemp["invoiceDueDate"] = "";
+                  invLITemp["invoiceCcy"] = invTemp["invoiceCcy"];
                   invLITemp["statusId"] = "";
                   invLITemp["status"] = "";
                   invLITemp["paymentState"] = "";
                   invLITemp["bundleName"] = "";
                   invLITemp["comments"] = "";
-                  contentTypeArr.push(invLITemp["contentType"]);
+                  contentTypeArr.push(invLITemp["contentGrpName"]);
                   countryArr.push(invLITemp["country"]);
                   gridData.data.push(invLITemp);
                 }
@@ -278,10 +329,10 @@ var page = Component.extend({
                      return inputArray.indexOf(item) == index;
               });
               if(contentTypeArr.length>1){
-                gridData.data[insertedId]["contentType"] = contentTypeArr.length+" types of Content";
+                gridData.data[insertedId]["contentGrpName"] = contentTypeArr.length+" types of Content";
               }
               else if(contentTypeArr.length==1)
-                gridData.data[insertedId]["contentType"] = contentTypeArr[0];
+                gridData.data[insertedId]["contentGrpName"] = contentTypeArr[0];
 
               /*Below function is to remove the duplicate country and find the count */
               countryArr = countryArr.filter( function( item, index, inputArray ) {
@@ -296,14 +347,14 @@ var page = Component.extend({
             }
 
             var first = "true";
-            var regCcyTemp = {"invId":"", "__isChild":false, "entity":"Total in Regional Currency", "invoiceType":"", "invoiceTypeDisp":"", "contentType":"", "country":"", "invoiceNum":"","invoiceAmt":"", "dueDate":"", "currency":"", "status":"", "bundleName":"", "comments":""};
-            regCcyTemp["invoiceAmt"] = CurrencyFormat(footerData["regAmtTot"]);
-            regCcyTemp["currency"] = footerData["regCcy"];
+            var regCcyTemp = {"invId":"", "__isChild":false, "entityName":"Total in Regional Currency", "invoiceType":"", "invTypeDisp":"", "contentGrpName":"", "country":"", "invoiceNumber":"","invoiceAmount":"", "invoiceDueDate":"", "invoiceCcy":"", "status":"", "bundleName":"", "comments":""};
+            regCcyTemp["invoiceAmount"] = CurrencyFormat(footerData["regAmtTot"]);
+            regCcyTemp["invoiceCcy"] = footerData["regCcy"];
             gridData["footer"].push(regCcyTemp);
             for(var obj in footerData["amtCcyMap"]){
-              var ccyTemp = {"invId":"", "__isChild":true, "entity":"", "invoiceType":"", "invoiceTypeDisp":"", "contentType":"", "country":"", "invoiceNum":"","invoiceAmt":"", "dueDate":"", "currency":"", "status":"", "bundleName":"", "comments":""};
-              ccyTemp["invoiceAmt"] = CurrencyFormat(footerData["amtCcyMap"][obj]);
-              ccyTemp["currency"] = obj;
+              var ccyTemp = {"invId":"", "__isChild":true, "entityName":"", "invoiceType":"", "invTypeDisp":"", "contentGrpName":"", "country":"", "invoiceNumber":"","invoiceAmount":"", "invoiceDueDate":"", "invoiceCcy":"", "status":"", "bundleName":"", "comments":""};
+              ccyTemp["invoiceAmount"] = CurrencyFormat(footerData["amtCcyMap"][obj]);
+              ccyTemp["invoiceCcy"] = obj;
               gridData["footer"].push(ccyTemp);
             }
 
@@ -336,7 +387,7 @@ var page = Component.extend({
           var invoiceid = row.invId;
           var statusId = row.statusId;
           var paymentState = row.paymentState;
-          var invoiceno = row.invoiceNum;
+          var invoiceno = row.invoiceNumber;
           //console.log("row is "+JSON.stringify(row));
 
           /* An invoice can be Edited only if it satisfies the below criteria */
@@ -373,9 +424,10 @@ var page = Component.extend({
                 existFlag = true;
               }
             }
-            if(existFlag==false)
+            if(existFlag==false){
+              self.scope.attr('sortColumns').replace([]);
               self.scope.attr('sortColumns').push(val[0]);
-            else {
+            } else {
               var sortDirection = (self.scope.attr('sortDirection') == 'asc') ? 'desc' : 'asc';
               self.scope.attr('sortDirection', sortDirection);
             }
@@ -402,7 +454,7 @@ var page = Component.extend({
       var flag=false;
       var statusId = row.statusId;
       var paymentState = row.paymentState;
-      var invoiceno = row.invoiceNum;
+      var invoiceno = row.invoiceNumber;
       //console.log("row is "+JSON.stringify(row));
       if(statusId==0){
         if(paymentState==0 || paymentState==9){
@@ -789,7 +841,7 @@ var page = Component.extend({
                 invSearchRequest.searchRequest["periodType"] = "P";
 
                 invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
-                invSearchRequest.searchRequest["offset"] = "0";
+                invSearchRequest.searchRequest["offset"] = this.scope.offset;
                 invSearchRequest.searchRequest["limit"] = "10";
 
                 var filterData = self.scope.tokenInput.attr();
@@ -801,14 +853,18 @@ var page = Component.extend({
                 invSearchRequest.searchRequest["filter"] = newFilterData;
 
                 invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr().toString();
-                invSearchRequest.searchRequest["sortOrder"] = "ASC";
+                invSearchRequest.searchRequest["sortOrder"] = self.scope.attr('sortDirection');
 
                 console.log("Request are "+JSON.stringify(UserReq.formRequestDetails(invSearchRequest)));
                 GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){
                     //console.log("response is "+JSON.stringify(data.attr()));
-                    self.scope.allInvoicesMap.replace(data);
-
-
+                    if(parseInt(invSearchRequest.searchRequest["offset"])==0)
+                      self.scope.allInvoicesMap.replace(data);
+                    else{
+                      //self.scope.allInvoicesMap[0].invoices.push(data.invoices);
+                      $.merge(self.scope.allInvoicesMap[0].invoices, data.invoices);
+                      self.scope.allInvoicesMap.replace(self.scope.allInvoicesMap);
+                    }
                 },function(xhr){
                   console.error("Error while loading: bundleNames"+xhr);
                 });

@@ -3,15 +3,29 @@
 @white-border: 1px solid #fff;
 rn-grid-invoice {
   .grid-mixin();
-  th, td {
-  	white-space: nowrap;
-  }
-  th.checbox, td.checkbox {
-    width: 30px;
+  table {
+    /* You have to specify widths */
+    width: 100%;
+    tr>th, tr > td {
+      width:5%;
+    }
+
+    thead, tbody, tfoot {
+	  display: block;
+	}
+	tbody {
+	  max-height: 25em;
+	  overflow-y: auto;
+	  overflow-x: hidden;
+	}
+	th, td {
+	  white-space: nowrap;
+	}
   }
   .entity, .invoiceTypeDisp, .contentType, .country, .invoiceNum, .dueDate, .currency, .status, .bundleName, .comments{
   	text-align: left !important;
   }
+  
 }
 
 .invoiceContainer{
