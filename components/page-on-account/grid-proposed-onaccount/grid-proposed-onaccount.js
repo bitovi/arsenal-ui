@@ -154,6 +154,7 @@ var proposedonAccountGrid = Grid.extend({
                       self.scope.rows.replace(editableRows);
                }else{
                     self.scope.rows.replace(self.scope.request.rows);
+                    self.scope.footerrows.replace(self.scope.request.footerRows);
    
                   // proposedOnAccount.findAll().then(function(data) {
                   //   //var returnValue = getUiRowsFromResponse(quarters,data);

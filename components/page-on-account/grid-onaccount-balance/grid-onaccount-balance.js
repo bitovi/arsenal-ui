@@ -101,9 +101,21 @@ var OnAccountBalance = Grid.extend({
                       if(data["status"]=="SUCCESS"){
                         if(data.onAccount != undefined && data.onAccount.onAccountDetails != undefined && data.onAccount.onAccountDetails.length==0){
                           self.scope.attr('emptyrows',true);
+                        }else{
+                          var detailRows = utils.prepareRowsForDisplay(data.onAccount.onAccountDetails);
+                          var footerRows=[];
+                          if(data.onAccount.onAccountFooter != undefined){
+                            footerRows = utils.createFooterRow(data.onAccount.onAccountFooter);
+                          }
+                          if(detailRows != undefined && detailRows.length==0){
+                            self.scope.attr('emptyrows',true);
+                          }else{ 
+                           self.scope.rows.replace(detailRows);
+                           if(footerRows != undefined && footerRows.length>0){
+                             self.scope.footerrows.replace(footerRows);
+                           } 
+                          }
                         }
-                        self.scope.rows.replace(getUiRowsFromResponse(quarters,data));  
-
                       }else{
                         $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
                         $("#messageDiv").show();
