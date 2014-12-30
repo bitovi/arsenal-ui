@@ -875,21 +875,30 @@ var page = Component.extend({
                
                 GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){
                     //console.log("response is "+JSON.stringify(data.attr()));
-                    if(self.scope.excelOutput.attr('flag')){//when user clicks export to excel icon this block will run otherwise its goes to normal else conditon
-                       if(data["status"]=="SUCCESS"){
-                          $('#exportExcels').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
-                          self.scope.excelOutput.attr('flag',false);
-                          $("#loading_img").hide();
+                    if(data["status"]=="SUCCESS"){
+                      if(self.scope.excelOutput.attr('flag')){//when user clicks export to excel icon this block will run otherwise its goes to normal else conditon
+                         if(data["status"]=="SUCCESS"){
+                            $('#exportExcels').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
+                            self.scope.excelOutput.attr('flag',false);
+                            $("#loading_img").hide();
+                          }
+                      }else{
+                        self.scope.checkedRows.replace([]); //Reset Checked rows scope variable  
+                        if(parseInt(invSearchRequest.searchRequest["offset"])==0){
+                          self.scope.allInvoicesMap.replace(data);
+                        } else{
+                          //self.scope.allInvoicesMap[0].invoices.push(data.invoices);
+                          $.merge(self.scope.allInvoicesMap[0].invoices, data.invoices);
+                          self.scope.allInvoicesMap.replace(self.scope.allInvoicesMap);
                         }
-                    }else{
-                      self.scope.checkedRows.replace([]); //Reset Checked rows scope variable  
-                      if(parseInt(invSearchRequest.searchRequest["offset"])==0){
-                        self.scope.allInvoicesMap.replace(data);
-                      } else{
-                        //self.scope.allInvoicesMap[0].invoices.push(data.invoices);
-                        $.merge(self.scope.allInvoicesMap[0].invoices, data.invoices);
-                        self.scope.allInvoicesMap.replace(self.scope.allInvoicesMap);
                       }
+                    } else {
+                      $("#loading_img").hide();
+                      $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                      $("#messageDiv").show();
+                      setTimeout(function(){
+                          $("#messageDiv").hide();
+                      },4000);
                     }
                 },function(xhr){
                   console.error("Error while loading: bundleNames"+xhr);
