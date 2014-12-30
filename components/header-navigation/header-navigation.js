@@ -87,7 +87,7 @@ var headerNavigation = Component.extend({
       },
       '{appstate} change':function(el){
         $('#dynamicmenu li a').removeClass('submenuactive');
-        $('#dynamicmenu li a[href*="'+el.page+'"]').addClass('submenuactive');
+        $('#dynamicmenu li a[href$="'+el.page+'"]').addClass('submenuactive');
       }
   },
     helpers: {

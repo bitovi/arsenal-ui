@@ -9,8 +9,16 @@ import PaymentBundleDetailGroup from './payment-bundle-detail-group';
 
 var PaymentBundle = Model.extend({
   id: 'bundleId',
-  parseModels: function(data, xhr) {
-    return data.paymentBundles;
+  parseModels: function(data, xhr) {  console.log(data);
+     return (typeof (data.exportExcelFileInfo)!="object") ? data.paymentBundles:data;
+  },
+  parseModel: function(data, xhr) { //console.log(data);
+    var temp='';
+     if(data.hasOwnProperty('responseCode') && typeof (data.exportExcelFileInfo)!="object") temp=data.paymentBundle;
+     else temp=data;
+
+
+     return temp;
   },
   //Removed the parseModel as its picking up old model. Can js Issue: 
   //<rdar://problem/19350067> UI-PBR Details Country View: Incorrect Details
@@ -32,6 +40,7 @@ var PaymentBundle = Model.extend({
     if(data.hasOwnProperty('deletable')) {
       data.deletable = !!data.deletable;
     }
+
     return Model.model.apply(this, arguments);
   },
   // TODO: Make sure the appropriate bits are models that get parsed into this
@@ -47,10 +56,16 @@ var PaymentBundle = Model.extend({
    */
   findAll: function(params) {
     var appstate = params.appstate;
+    var data = {}
 
-    var data = {
-      bundleSearch: requestHelper.formGlobalRequest(appstate).searchRequest
-    };
+    var excelOutput = appstate.attr('excelOutput') != undefined ? appstate.attr('excelOutput') : false;
+     data = {
+          bundleSearch: requestHelper.formGlobalRequest(appstate).searchRequest,
+      };
+
+     if(excelOutput!=false){
+        data["excelOutput"]=true
+     } 
 
     return $.ajax({
       url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/getAll',
@@ -59,26 +74,62 @@ var PaymentBundle = Model.extend({
       processData: false
     });
   },
-  findOne: function(params) {
-    var paymentOption = params.paymentType,
-        view = params.view.toUpperCase(),
-        bundleId = params.bundleID;
+  findOne: function(params) { console.log(params);
+    var appstate = params.appstate; 
+    if(params.appstate.excelOutput){
+       var excelOutput = appstate.attr('excelOutput') != undefined ? appstate.attr('excelOutput') : false;
+       var data = {
+            bundleSearch: requestHelper.formGlobalRequest(appstate).searchRequest,
+       };
+       if(excelOutput!=false){
+          data["excelOutput"]=true
+       } 
 
-    // TODO: when infrastructure gets set up, fix this.
-    var data = {
-      paymentBundle: {
-        bundleId,
-        paymentOption,
-        view
+       if(appstate.attr('detail')){
+         appstate.attr('detail',false);
+         return $.ajax({
+            url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/get',
+            type: 'POST',
+            data: data,
+            processData: false
+          });
+       }else{
+         return $.ajax({
+          url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/getAll',
+          type: 'POST',
+          data: data,
+          processData: false
+        });
       }
-    };
 
-    return $.ajax({
-      url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/get',
-      type: 'POST',
-      data: data,
-      processData: false
-    });
+    }else{
+        var paymentOption = params.paymentType,
+            view = params.view.toUpperCase(),
+            bundleId = params.bundleID;
+
+        // TODO: when infrastructure gets set up, fix this.
+        data = {
+          paymentBundle: {
+            bundleId,
+            paymentOption,
+            view
+          }
+        };
+        var excelOutput = appstate.attr('excelOutput') != undefined ? appstate.attr('excelOutput') : false;
+        if(excelOutput!=false){
+          data["excelOutput"]=true
+        } 
+
+        return $.ajax({
+          url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/get',
+          type: 'POST',
+          data: data,
+          processData: false
+      });
+
+      }
+
+    
   },
   destroy: function(id, bundle) {
     var d = can.Deferred();
