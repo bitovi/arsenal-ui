@@ -12,9 +12,9 @@ var PaymentBundle = Model.extend({
   parseModels: function(data, xhr) {
     return data.paymentBundles;
   },
-  parseModel: function(data, xhr) {
-    return data.hasOwnProperty('responseCode') ? data.paymentBundle : data;
-  },
+  // parseModel: function(data, xhr) {
+  //   return data.hasOwnProperty('responseCode') ? data.paymentBundle : data;
+  // },
   model: function(data) {
     // TODO: periodFrom, periodTo, paymentCurrency, and region probably need some more handling.
     // Apparently isHighPriority isn't coming back from the services anymore?
@@ -30,7 +30,6 @@ var PaymentBundle = Model.extend({
     if(data.hasOwnProperty('deletable')) {
       data.deletable = !!data.deletable;
     }
-
     return Model.model.apply(this, arguments);
   },
   // TODO: Make sure the appropriate bits are models that get parsed into this
@@ -104,6 +103,7 @@ var PaymentBundle = Model.extend({
       paymentType,
       view
     }).then(function(bundle) {
+      bundle = bundle.hasOwnProperty('responseCode') ? bundle.paymentBundle : bundle;
       // merge all those new properties into this one
       can.batch.start();
       self.attr(bundle.attr());
