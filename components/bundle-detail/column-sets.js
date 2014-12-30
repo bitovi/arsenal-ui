@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import stache from 'can/view/stache/';
 import formats from 'utils/formats';
+import PeriodWidgetHelper from 'utils/periodWidgetHelpers';
 
 var columns = {
   'toggle': {
@@ -32,7 +33,16 @@ var columns = {
   },
   'fiscalPeriod': {
     id: 'fiscalPeriod',
-    title: 'Period'
+    title: 'Period',
+    contents: function(row) {
+      if(row.fiscalPeriod != undefined && row.fiscalPeriod != null && row.fiscalPeriod != "") {
+        if(row.periodType === "Q") {
+          return PeriodWidgetHelper.getDisplayPeriod(row.fiscalPeriod.toString(), "Q")
+        } else {
+          return PeriodWidgetHelper.getDisplayPeriod(row.fiscalPeriod.toString(), "P")
+        }
+      }
+    }
   },
   'country': {
     id: 'country',
