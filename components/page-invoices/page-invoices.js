@@ -123,30 +123,12 @@ Grid.extend({
           }
         });
       
-      var colLength = self.scope.attr("columns").length;
-      var rowLength = tbody.find('tr').length;
-      var tableWidth = 0;
-      console.log("rowLength" + rowLength);
-      if(rowLength>0){
-        setTimeout(function(){
-          for(var i=1;i<=colLength;i++){
-            var tdWidth = $('#invoiceGrid table>tbody>tr>td:nth-child('+i+')').outerWidth();
-            if(i==1)
-              tdWidth = 35;
-            if(i==2)
-              tdWidth = 225;
-            if(i>1 && tdWidth<125)
-              tdWidth = 125;
-            //console.log("td "+i+" width "+$('#invoiceGrid table>tbody>tr>td:nth-child('+i+')').outerWidth());
-            $('#invoiceGrid table>thead>tr>th:nth-child('+i+')').css("width",tdWidth);
-            $('#invoiceGrid table>tbody>tr>td:nth-child('+i+')').css("width",tdWidth);
-            $('#invoiceGrid table>tfoot>tr>td:nth-child('+i+')').css("width",tdWidth);
-            //$('#invoiceGrid table>tfoot>tr>td:nth-child('+i+')').css("width",tdWidth);
-            tableWidth += tdWidth;
-          }
-          $("#invoiceGrid table").css("width",tableWidth);
-        },500);
-      }
+      alignGrid();
+    },
+    '.open-toggle click': function(el, ev) {
+      var row = el.closest('tr').data('row').row;
+      row.attr('__isOpen', !row.attr('__isOpen'));
+      alignGrid();
     }
   }
 });
@@ -338,7 +320,7 @@ var page = Component.extend({
                   invLITemp["contentGrpName"] = (invoiceLineItems[j]["contentGrpName"]==null)?"":invoiceLineItems[j]["contentGrpName"];
                   invLITemp["country"] = (invoiceLineItems[j]["country"]==null)?"":invoiceLineItems[j]["country"];
                   invLITemp["invoiceNumber"] = "";
-                  invLITemp["invoiceAmount"] = (invoiceLineItems[j]["lineAmount"]==null)?0:invoiceLineItems[j]["lineAmount"];
+                  invLITemp["invoiceAmount"] = (invoiceLineItems[j]["lineAmount"]==null)?0:CurrencyFormat(invoiceLineItems[j]["lineAmount"]);
                   invLITemp["invoiceDueDate"] = "";
                   invLITemp["invoiceCcy"] = invTemp["invoiceCcy"];
                   invLITemp["statusId"] = "";
@@ -535,6 +517,7 @@ var page = Component.extend({
       }
       //console.log("Checked rows: "+JSON.stringify(self.scope.checkedRows.attr()));
       //console.log("unDeleted Invoices: "+JSON.stringify(self.scope.attr('unDeletedInvoices')));
+      alignGrid();
     },
     "{checkedRows} change": function(item,el,ev){
           var self = this;
@@ -899,9 +882,10 @@ var page = Component.extend({
                           $("#loading_img").hide();
                         }
                     }else{
-                      if(parseInt(invSearchRequest.searchRequest["offset"])==0)
+                      self.scope.checkedRows.replace([]); //Reset Checked rows scope variable  
+                      if(parseInt(invSearchRequest.searchRequest["offset"])==0){
                         self.scope.allInvoicesMap.replace(data);
-                      else{
+                      } else{
                         //self.scope.allInvoicesMap[0].invoices.push(data.invoices);
                         $.merge(self.scope.allInvoicesMap[0].invoices, data.invoices);
                         self.scope.allInvoicesMap.replace(self.scope.allInvoicesMap);
@@ -935,5 +919,28 @@ function CurrencyFormat(number)
   var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
   return n;
 }
-
+function alignGrid(){
+  var colLength = $('#invoiceGrid table>thead>tr>th').length;
+  var rowLength = $('#invoiceGrid table>tbody>tr').length;
+  var tableWidth = 0;
+  //console.log("rowLength" + rowLength);
+  if(rowLength>0){
+      for(var i=1;i<=colLength;i++){
+        var tdWidth = $('#invoiceGrid table>tbody>tr>td:nth-child('+i+')').outerWidth();
+        if(i==1)
+          tdWidth = 35;
+        if(i==2)
+          tdWidth = 225;
+        if(i>1 && tdWidth<125)
+          tdWidth = 125;
+        //console.log("td "+i+" width "+$('#invoiceGrid table>tbody>tr>td:nth-child('+i+')').outerWidth());
+        $('#invoiceGrid table>thead>tr>th:nth-child('+i+')').css("width",tdWidth);
+        $('#invoiceGrid table>tbody>tr>td:nth-child('+i+')').css("width",tdWidth);
+        $('#invoiceGrid table>tfoot>tr>td:nth-child('+i+')').css("width",tdWidth);
+        //$('#invoiceGrid table>tfoot>tr>td:nth-child('+i+')').css("width",tdWidth);
+        tableWidth += tdWidth;
+      }
+      $("#invoiceGrid table").css("width",tableWidth);
+  }
+}
 export default page;
