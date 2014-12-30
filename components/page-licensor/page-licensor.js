@@ -966,7 +966,7 @@ var page = Component.extend({
           Promise.all([
             Analytics.create(UserReq.formRequestDetails(genObj))
           ]).then(function(data) {
-            if(data[0].responseText == "SUCCESS") {
+            if(data[0].status == "SUCCESS") {
 
                 var msg = "Entity Detials saved successfully";
 
@@ -1020,7 +1020,7 @@ var page = Component.extend({
 
           Promise.all([Analytics.create(UserReq.formRequestDetails(genObj))]).then(function(data) {
 
-            if(data[0].responseText == "SUCCESS") {
+            if(data[0].status == "SUCCESS") {
 
                 var genObj = {};
 
