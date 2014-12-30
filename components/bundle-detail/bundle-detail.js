@@ -139,7 +139,7 @@ var BundleDetailTabs = Component.extend({
       }
 
       if(scope.pageState.selectedBundle === bundle) {
-        /*return bundle.getValidations(view).then(function(bundle) {
+        return bundle.getValidations(view).then(function(bundle) {
           if(bundle.validationStatus !== 5) {
             setTimeout(function() {
               scope.getNewValidations(bundle);
@@ -147,7 +147,7 @@ var BundleDetailTabs = Component.extend({
           }
 
           return bundle;
-        });*/
+        });
       }
     }
   },
