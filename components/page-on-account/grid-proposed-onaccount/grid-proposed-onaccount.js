@@ -16,7 +16,9 @@ var proposedonAccountGrid = Grid.extend({
         id: 'checkbox',
         title: '',
         contents: function(row) {
-          if(row.attr('__isChecked')== null || (row.attr('__isChecked')!= null && row.attr('__isChecked')==false)){
+          if(row.attr('tfooter') != undefined && row.attr('tfooter')){
+            return '';
+          }else if(row.attr('__isChecked')== null || (row.attr('__isChecked')!= null && row.attr('__isChecked')==false)){
             return can.stache('<input type="checkbox"/>')();
           }else{
             return stache('{{#checkbox}}<input type="checkbox" value="{{checkbox}}" {{#if isChecked}}checked{{/if}}/>{{/checkbox}}')({checkbox: row.__isChecked, isChecked: row.__isChecked});
@@ -154,6 +156,7 @@ var proposedonAccountGrid = Grid.extend({
                       self.scope.rows.replace(editableRows);
                }else{
                     self.scope.rows.replace(self.scope.request.rows);
+                    self.scope.footerrows.replace(self.scope.request.footerRows);
    
                   // proposedOnAccount.findAll().then(function(data) {
                   //   //var returnValue = getUiRowsFromResponse(quarters,data);

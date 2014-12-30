@@ -39,6 +39,7 @@
     </div><!-- Attach Document Placeholder ends --->
 </div>
 
+<div class="export-toexcel" id="exportExcels"></div>
 <div  class="form-inline" >
   <div class="col-md-12 paymentBundleDiv" style="text-align:right;padding:10px;">
     <label  for="inputAnalyze">Analyze </label>

@@ -224,26 +224,35 @@ var onAccountUpdateRequest ={};
     return onAccountUpdateRequest;
     },
 frameRowsForCopyOnAcc:function(originalRows,data,quarters,period){
+var currencyAmtMap = this.prepareCurrencyDataMap(data.onAccount.onAccountDetails);
 var onAccountDetails = data.onAccount.onAccountDetails;
-    if(onAccountDetails != null && onAccountDetails.length>0){
-        var licensorName="";
-        for(var i=0; i<originalRows.length;i++){
-           if(originalRows[i].__isChild){
-                var value = this.getPeriodValue(onAccountDetails,period);
-                var total = 0;
-                for(var k=0;k<quarters.length;k++)
-                {
-                    originalRows[i][quarters[k]]=value;
-                    total = total+Number(value);
-                }
-                originalRows[i]['total']=total+'';
-           }else{
-            licensorName=originalRows[i].licensor;
-           }
-           
-        }
+    for(var i=0; i<originalRows.length;i++){
+       if(originalRows[i].__isChild){
+            //var value = this.getPeriodValue(onAccountDetails,period);
+            var total = 0;
+            for(var k=0;k<quarters.length;k++)
+            {
+              var period = this.getPeriodForQuarter(quarters[k]);
+              var value = currencyAmtMap[period+originalRows[i].currency];
+              if(value == undefined){
+                value = 0;
+              }
+              originalRows[i][quarters[k]]=value;
+              total = total+Number(value);
+            }
+            originalRows[i]['total']=total+'';
+       }
     }
     return originalRows;
+},
+prepareCurrencyDataMap:function(onAccountDetails){
+  var currencyAmtMap = new Object();
+  if(onAccountDetails != null && onAccountDetails.length>0){
+    for(var i=0;i<onAccountDetails.length;i++){
+      currencyAmtMap[''+onAccountDetails[i].fiscalPeriod+onAccountDetails[i].currencyCode]=onAccountDetails[i].onAccountAmt;
+    }
+  }
+  return currencyAmtMap;
 },
 getPeriodValue:function(onAccountDetails,quarter){
     var fiscalPeriod=this.getPeriodForQuarter(quarter);
@@ -287,7 +296,7 @@ frameRows:function(data,quarters){
             childrow[quarters[z]]=0;
           }
           childrow.__isChild=true;
-          childrow.total=0;
+          childrow.total='0.00';
           rows.push(childrow);
       }
 
@@ -297,6 +306,123 @@ frameRows:function(data,quarters){
 },
 getOnAccountPeriodType:function(){
     return "Q";
+},
+prepareRowsForDisplay:function(onAccountDetails){
+  var rows=[];
+  var previousEntityId="";
+  var previousCurrency="";
+  var previousContentType="";
+  var row={};
+  if(onAccountDetails != undefined && onAccountDetails.length >0){
+    for(var i=0;i<onAccountDetails.length;i++){
+      var entityId = onAccountDetails[i].entityId;
+      var currency = onAccountDetails[i].currencyCode;
+      var contentType = onAccountDetails[i].contentGroupName;
+      if(entityId==previousEntityId && currency == previousCurrency && contentType==previousContentType){
+        if(i==0){
+          row = this.createRow(onAccountDetails[i],false,row)
+        }else{
+          row[onAccountDetails[i].fiscalPeriod]=utils.currencyFormat(onAccountDetails[i].onAccountAmt);
+        }
+      }else{
+           previousEntityId=entityId;
+           previousCurrency=currency;
+           previousContentType=contentType;
+        if(i!=0){
+          rows.push(row);
+        }
+        row=this.createRow(onAccountDetails[i],true,"");
+      }
+    }
+    rows.push(row);
+  }
+   return rows;
+},
+createRow:function(onAccountDetail,newRow,row){
+  if(newRow){
+    row={};
+  }
+  row['entityId']=onAccountDetail.entityId;
+  row['Licensor']=onAccountDetail.entityName;
+  row['Currency']=onAccountDetail.currencyCode;
+  row['ContentType']=onAccountDetail.contentGroupName;
+  row['contentGroupId']=onAccountDetail.contentGroupId;
+  row['serviceTypeId']=onAccountDetail.serviceTypeId;
+  row['onAccountBalance']= utils.currencyFormat(onAccountDetail.onAccountAmtTotal);
+  row['cashAdjust']= utils.currencyFormat(onAccountDetail.entityCashAdjAmtTotal);
+  var period = this.getDisplayPeriod(onAccountDetail.fiscalPeriod);
+  row[period]=utils.currencyFormat(onAccountDetail.onAccountAmt);
+  return row;
+},
+getDisplayPeriod: function(quarter){
+     quarter  = quarter.toString();
+    var quarters={
+    "03":"Q1",
+    "06":"Q2",
+    "09":"Q3",
+    "12":"Q4"
+  }
+    var year = quarter.substring(0, 4);
+    var period = quarter.substring(quarter.length, quarter.length-2);
+    return (quarters[period]+'FY'+year.substring(year.length, year.length-2));  
+  },
+  createFooterRow:function(onAccountFooter){
+    var summaryRows=[];
+    var detailRows=[];
+    if(onAccountFooter.onAccountFooterSummary != undefined && onAccountFooter.onAccountFooterSummary.length >0){
+      summaryRows = this.getFooterRow(onAccountFooter.onAccountFooterSummary,true);  
+    }
+     if(onAccountFooter.onAccountFooterDetails != undefined && onAccountFooter.onAccountFooterDetails.length >0){
+      detailRows=this.getFooterRow(onAccountFooter.onAccountFooterDetails,false);
+     }
+
+     var footerRows=summaryRows.concat(detailRows);
+
+
+    return footerRows;
+  },
+  getFooterRow:function(footerData,parent){
+    var footerRows=[];
+    var footerRow={};
+    var previousCurrency="";
+    for(var i=0;i < footerData.length;i++){
+      var currency = footerData[i].currencyCode;
+      if(currency == previousCurrency){
+        if(i==0){
+            footerRow = this.createNewFooterRow(footerRow[i],false,footerRow,parent)
+        }else{
+          footerRow[footerData[i].fiscalPeriod]=utils.currencyFormat(footerData[i].onAccountAmt);
+        }
+      }else{
+           previousCurrency=currency;
+          if(i!=0){
+            footerRows.push(footerRow);
+          }
+        footerRow=this.createNewFooterRow(footerData[i],true,"",parent);
+      }
+    }
+    footerRows.push(footerRow);
+    return footerRows;
+  },
+  createNewFooterRow:function(footerData,newRow,footerRow,isParent){
+  if(newRow){
+    footerRow={};
+  } 
+  if(isParent){
+    footerRow["Licensor"]= "Total";
+    footerRow["__isChild"]=false;
+  }else{
+    footerRow["Licensor"]= "";
+    footerRow["__isChild"]=true;
+  }
+  footerRow["Currency"]= footerData.currencyCode;
+  footerRow["ContentType"]= "";
+  footerRow["onAccountBalance"]=utils.currencyFormat(footerData.onAccountAmtTotal);
+  footerRow["cashAdjust"]=utils.currencyFormat(footerData.entityCashAdjAmtTotal);
+  footerRow["tfooter"]=true;
+  var period = this.getDisplayPeriod(footerData.fiscalPeriod);
+  footerRow[period]=utils.currencyFormat(footerData.onAccountAmt);
+  return footerRow;
 },
 getProposedOnAccRows:function(quarters,data){
       var onAccountDetails = data.onAccount.onAccountDetails

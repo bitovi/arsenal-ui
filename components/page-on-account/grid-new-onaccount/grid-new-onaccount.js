@@ -38,8 +38,8 @@ var newOnAccountGrid = Grid.extend({
   },
    helpers: {
     cellContents: function(row, column) {    
-      if(column.editable && row.__isChild) {
-        return stache('<input class="editing" value="{{value}}"/>')({value: column.getEditingValue(row,column.title)});
+      if(column.editable && row.__isChild) { 
+        return stache('<input class="editing" value="{{value}}" tabindex="0"/>')({value: column.getEditingValue(row,column.title)});
       } else {
         if(column.title == 'Total' && row.__isChild && column.getEditingValue(row,column.id) != null)
         {
@@ -109,6 +109,7 @@ var newOnAccountGrid = Grid.extend({
         $(this.element).trigger('rowsForCopyOnAccount', this.scope.rows);
       },
       'td input.editing blur':function(el, ev){
+        ev.preventDefault();
         var value = el.closest('td').find('.editing').val();
           if(isNaN(value)){
             el.addClass('invalid');
@@ -128,7 +129,14 @@ var newOnAccountGrid = Grid.extend({
         var mainRows={};
         mainRows.rows=this.scope.rows;
         $(this.element).trigger('onSelected', mainRows);
-        //Row got updated to the page to the grid component     
+        //Row got updated to the page to the grid component  
+      },
+      'td input keydown':function(el, ev){
+        ev.preventDefault();
+        $('#newonAccountGrid td').attr('tabindex','-1');
+        if(event.keyCode == 9){
+           el.parent().next().find('input').focus();
+        }
       }
     }
 });
