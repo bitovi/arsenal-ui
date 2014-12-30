@@ -1059,6 +1059,7 @@ var page = Component.extend({
       						var tempDocument = {};
 				   			tempDocument.fileName = self.scope.uploadedFileInfo[i].attr("fileName");
 				   			tempDocument.location = self.scope.uploadedFileInfo[i].attr("filePath");
+				   			tempDocument.status = "add";
 				   			tempEditInvoiceData["invoiceDocuments"].push(tempDocument);
 				   			console.log(tempDocument);
 				   		}
