@@ -12,6 +12,8 @@ var PaymentBundle = Model.extend({
   parseModels: function(data, xhr) {
     return data.paymentBundles;
   },
+  //Removed the parseModel as its picking up old model. Can js Issue: 
+  //<rdar://problem/19350067> UI-PBR Details Country View: Incorrect Details
   // parseModel: function(data, xhr) {
   //   return data.hasOwnProperty('responseCode') ? data.paymentBundle : data;
   // },
