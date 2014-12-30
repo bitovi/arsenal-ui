@@ -287,16 +287,16 @@ var page = Component.extend({
                 			callback: {
 		                            message: 'Invoice Due date must be less than calculated due date',
 		                            callback: function (value, validator, $field) {
-		                         /*     if(value != ""){  
-		                              	var invduedate = new Date(value);
-		                              	var calduedate = new Date(self.scope.attr("calduedate"));
-		                              	var timeDiff = Math.abs(invduedate.getTime() - calduedate.getTime());
-										var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-										if(Math.abs(invduedate.getTime()) > Math.abs(calduedate.getTime())){
-											return false;
-										}
-									  }*/
-		                              return true;
+		                               if(value != ""){
+			                              	var invduedate = new Date(value);
+			                              	if(self.scope.attr("calduedate")){
+			                              		var calduedate = new Date(self.scope.attr("calduedate"));
+			                              			if(Math.abs(invduedate.getTime()) > Math.abs(calduedate.getTime())){
+														return false;
+													}
+			                              		}
+											}
+			                              return true;
 		                            }
                     		}
 			              }
@@ -668,6 +668,7 @@ var page = Component.extend({
                   		if(data.status == 'SUCCESS'){
                   			if(data.calInvoiceDueDate != null && data.calInvoiceDueDate != undefined){
                   				self.scope.attr("calduedate", getDateToDisplay(data.calInvoiceDueDate));
+                  				$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
                   			}
                   		  }
 		                },function(xhr){
@@ -685,6 +686,7 @@ var page = Component.extend({
                   		if(data.status == 'SUCCESS'){
                   			if(data.calInvoiceDueDate != null && data.calInvoiceDueDate != undefined){
                   				self.scope.attr("calduedate", getDateToDisplay(data.calInvoiceDueDate));
+                  				$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
                   			}
                   		 }
 		                },function(xhr){
