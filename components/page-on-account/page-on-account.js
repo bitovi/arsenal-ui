@@ -29,11 +29,18 @@ import exportToExcel from 'components/export-toexcel/';
 
 fileUpload.extend({
   tag: 'rn-file-uploader',
+  scope: {
+        fileList : new can.List(),
+        uploadedfileinfo:[]
+    },
   events:{
       'inserted': function (){
         //alert('hi');
-        this.scope.fileList.replace(this.scope.uploadedfileinfo);
+        //this.scope.fileList.replace(this.scope.uploadedfileinfo);
         //console.log(JSON.stringify(this.scope.uploadedfileinfo.attr()));
+      },
+       "{uploadedfileinfo} change":function(){
+          this.scope.fileList.replace(this.scope.uploadedfileinfo);
       }
     }
  });
@@ -52,8 +59,12 @@ fileUpload.extend({
     events:{
       'inserted': function (){
         //alert('hi');
-        this.scope.fileList.replace(this.scope.uploadedfileinfo);
+        //this.scope.fileList.replace(this.scope.uploadedfileinfo);
         //console.log(JSON.stringify(this.scope.uploadedfileinfo.attr()));
+      },
+       "{uploadedfileinfo} change":function(){
+          //alert('in');
+          this.scope.fileList.replace(this.scope.uploadedfileinfo);
       }
     }
  });
@@ -81,9 +92,8 @@ var page = Component.extend({
     errorMessage:"",
     showLoadingImage:"",
     quarters:[],
-    csvcontent:[]
-
-
+    csvcontent:[],
+    uploadedfileinfo:[]
   },
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
@@ -224,8 +234,8 @@ var page = Component.extend({
                                 else
                                   $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>');
 
-                                  
-                                $('#proposeuploadFile').html(stache('<propose-rn-file-uploader uploadedfileinfo={docs}></propose-rn-file-uploader>')({docs:data.documents})); 
+                                  self.scope.proposedOnAccDocuments.replace(data.onAccount.documents);
+                                //$('#proposeuploadFile').html(stache('<propose-rn-file-uploader uploadedfileinfo={docs}></propose-rn-file-uploader>')({docs:data.documents})); 
 
                             }else{
                                 $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
@@ -291,6 +301,7 @@ var page = Component.extend({
                 displayMessage(data["responseText"],true);
               $("#propose").attr("disabled","disabled");
               $("#paymentBundleNames").val('');
+              self.scope.documents.replace([]);
               var request = {};
               var rows = utils.frameRows(self.scope.attr('licensorCurrencies'),self.scope.quarters);
               request.rows=rows;
@@ -409,7 +420,11 @@ var page = Component.extend({
       },
       'rn-onaccount-balance-grid .open-toggle click': function(ele, event, val){
         ele.closest('tr').toggleClass("open");
-        ele.parents('tr').next('tr.child').toggleClass("visible");
+        ele.parents('tr').nextAll('tr.child').toggleClass("visible");
+      },
+      'rn-proposed-onaccount-grid .open-toggle click': function(ele, event, val){
+        ele.closest('tr').toggleClass("open");
+        ele.parents('tr').nextAll('tr.child').toggleClass("visible");
       },
       'rn-proposed-onaccount-grid onSelected':function(ele, event, val){
             this.scope.attr('proposedOnAccountData',val);

@@ -296,7 +296,7 @@ frameRows:function(data,quarters){
             childrow[quarters[z]]=0;
           }
           childrow.__isChild=true;
-          childrow.total=0;
+          childrow.total='0.00';
           rows.push(childrow);
       }
 
