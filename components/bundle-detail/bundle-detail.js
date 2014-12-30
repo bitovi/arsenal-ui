@@ -1,10 +1,12 @@
 import _ from 'lodash';
 import Component from 'can/component/';
 import List from 'can/list/';
+import stache from 'can/view/stache/';
 
 import PaymentBundleDetailGroup from 'models/payment-bundle/payment-bundle-detail-group';
 import PaymentBundleDetail from 'models/payment-bundle/payment-bundle-detail';
 import WorkflowStep from 'models/workflow-step/';
+import PaymentBundle from 'models/payment-bundle/';
 
 import BundleDetailGrid from 'components/bundle-detail-grid/';
 import Switcher from 'components/switcher/';
@@ -208,8 +210,26 @@ var BundleDetailTabs = Component.extend({
     '.show-chart click': function(el, ev) {
       // show the chart
     },
-    '.excel click': function(el, ev) {
+    '.excel click': function(el, ev) { 
       // export data to Excel
+
+      var self = this;
+        self.scope.appstate.attr('excelOutput', true);
+        self.scope.appstate.attr('detail', true);
+        if(this.scope.appstate.excelOutput ) {  
+         PaymentBundle.findOne({appstate: this.scope.appstate}).then(function(data) { 
+            if(data["status"]=="0000"){ 
+              self.scope.appstate.attr("excelOutput",false);
+              self.scope.appstate.attr('detail',false);
+              $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
+            }
+         },function(err){
+            console.log(err);
+        });
+       }
+
+
+
     },
     '.clipboard click': function(el, ev) {
       // copy data to the clipboard

@@ -1,4 +1,5 @@
 <header>
+  <div class="export-toexcel"  appstate="{appstate}" id="exportExcel"></div>
   <h1>Payment Bundle Review</h1>
   <div class="bundle-list-actions">
     {{#if pageState.selectedBundle}}
