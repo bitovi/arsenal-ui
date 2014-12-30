@@ -170,43 +170,7 @@ var page = Component.extend({
       
     },
 
-    ReportCofiguration  : {
-
-    repconf : 
-      [
-        {
-    
-        country : "AUS",
-        reports : ["DDEX2_MUSIC@3", "UNCLAIMED_V13@3", "DDEX43_FILM@3", "CSI@3"]
-        }
-        ,
-        {
-      
-        country : "FJI",
-        reports : ["DDEX2_MUSIC@3", "UNCLAIMED_V13@3", "DDEX43_FILM@3", "CSI@3"]
-        },
-      
-        {
-      
-        country : "FSM",
-        reports : ["DDEX2_MUSIC@3", "UNCLAIMED_V13@3", "DDEX43_FILM@3", "CSI@3"]
-        },
-      
-        {
-      
-        country : "NZL",
-        reports : ["DDEX2_MUSIC@3", "UNCLAIMED_V13@3", "DDEX43_FILM@3", "CSI@3"]
-        },
-        {
-      
-        country : "AUT",
-        reports : ["DDEX2_MUSIC@3", "UNCLAIMED_V13@3", "DDEX43_FILM@3", "CSI@3"]
-        }
-
-      ]
-          
-    
-  },
+    reportConfMap  : {},      
 
     mapCurrentCountryReportConf : function () {
 
@@ -235,6 +199,12 @@ var page = Component.extend({
 
       }
 
+      if (repArray.length <= 0) {
+
+        repArray.push("Report configuration will be removed for this country");
+
+      }
+
       for (var i=0; i < inputCountryBoxes.length ; i++ ) {
 
         if(inputCountryBoxes[i].checked == true) {
@@ -249,6 +219,8 @@ var page = Component.extend({
 
           element.reports = repArray;
 
+
+
           self.rptConfigurationPerCountry.repconf.push(element);
 
           }
@@ -261,7 +233,7 @@ var page = Component.extend({
 
       var self = this;
 
-      var data = self.ReportCofiguration.repconf;
+      var data = self.reportConfMap;
 
       var inputReportBoxes =  $("input.reportBox");
 
@@ -290,28 +262,22 @@ var page = Component.extend({
 
           var country = inputCountryBoxes[i].getAttribute("value");
 
-          var element = {"country" : "" , "reports" : []};
+          var element = {};
 
           var exists = false;
 
-          for (var i=0; i < data.length ; i++) {
+          if(data[country] != undefined) {
 
-            if(data[i].country == country) {
-
-              data[i].reports.replace(repArray);
+              //data[country].splice(0, (data[country]).length );
+              data[country].replace(repArray);
 
               exists = true;
 
-            }
-
           }
+
           if (exists == false) {
 
-            element.country = country;
-
-            element.reports = repArray;
-
-            self.ReportCofiguration.repconf.push(element);
+            self.reportConfMap[country] = repArray;
 
           }
 
@@ -327,18 +293,13 @@ var page = Component.extend({
 
       var self = this;
 
-      var data = self.ReportCofiguration.repconf;
+      var data = self.reportConfMap;
 
-      for (var i=0; i < data.length ; i++ ) {
+      if(data[country] != undefined) {
 
-        if(data[i].country == country) {
-
-            return data[i].reports;
-
-        }
+        return data[country];
 
       }
-
       return [];
 
     },
@@ -535,11 +496,9 @@ var page = Component.extend({
 
       rows = values[0].licensorDetails.countryModelMappings;
 
-      /**  Entire data  **/
-      
+      self.reportConfMap = values[0].licensorDetails.reportConfMap;
+
       self.licDetails.attr("data", values[0].licensorDetails);
-
-
 
       self.invoiceType = values[0].licensorDetails.invoiceDetailType;
 
@@ -882,9 +841,11 @@ var page = Component.extend({
 
       var self = this;
 
+        var isValid = self.reValidateFiledsonLoad();
+
         $('#entityLicensorBottom').bootstrapValidator('validate');
 
-        if($('#entityLicensorBottom').data('bootstrapValidator').isValid() == false) {
+        if($('#entityLicensorBottom').data('bootstrapValidator').isValid() == false && !isValid) {
 
           return;
 
@@ -894,27 +855,27 @@ var page = Component.extend({
 
         var reportConf = {"reports":[], "countries": []};
 
-        var reports = self.getReportConf();
+        //var reports = self.getReportConf();
 
-        var countries = self.getCountries();
+        //var countries = self.getCountries();
 
-        if(reports.length == 0 && countries.length != 0) {
+        //if(reports.length == 0 && countries.length != 0) {
 
-            self.attr("repConfMessage", "Select both Countries and Reports!");
+            //self.attr("repConfMessage", "Select both Countries and Reports!");
 
-            $(".reportConfErr").show();
+            //$(".reportConfErr").show();
 
-            return;
+            //return;
 
-        } else if(countries.length == 0 && reports.length != 0) {
+        //} else if(countries.length == 0 && reports.length != 0) {
 
-            self.attr("repConfMessage", "Select both Countries and Reports!");
+            //self.attr("repConfMessage", "Select both Countries and Reports!");
 
-            $(".reportConfErr").show();
+            //$(".reportConfErr").show();
 
-            return;
+            //return;
 
-        }
+        //}
       
 
         var comments = self.getEditableComments();
@@ -956,17 +917,17 @@ var page = Component.extend({
 
         }
 
-        for(var i=0; i<reports.length; i++) {
+        //for(var i=0; i<reports.length; i++) {
 
-          reportConf.reports[i] = reports[i].toString();
+          //reportConf.reports[i] = reports[i].toString();
 
-        }
+        //}
 
-        for(var i=0; i<countries.length; i++) {
+        //for(var i=0; i<countries.length; i++) {
 
-          reportConf.countries[i] = countries[i].toString();
+          //reportConf.countries[i] = countries[i].toString();
 
-        }
+       // }
 
         if(self.mode == 'fetch') {
 
@@ -990,21 +951,22 @@ var page = Component.extend({
           reLicencorDetails.licensorDetails.prsId = self.licDetails.data.prsId;
           reLicencorDetails.licensorDetails.invoiceDetailType = invoiceType;
           //reLicencorDetails.licensorDetails.revisionHistories = [];
-          reLicencorDetails.licensorDetails.reportConf = reportConf;
+          //reLicencorDetails.licensorDetails.reportConf = reportConf;
             
           reLicencorDetails.licensorDetails.sapVendorNo = self.licDetails.data.sapVendorNo;
           reLicencorDetails.licensorDetails.validFrom = periodFrom;
           reLicencorDetails.licensorDetails.validTo = periodTo;
-          
+
+          reLicencorDetails.licensorDetails.reportConfMap = self.reportConfMap.attr();
+
           reLicencorDetails.licensorId = 0;
 
           var genObj = reLicencorDetails;
 
-          Promise.all([Analytics.create(UserReq.formRequestDetails(genObj))]).then(function(data) {
-
-
-
-            if(data[0].responseText == "SUCCESS") {
+          Promise.all([
+            Analytics.create(UserReq.formRequestDetails(genObj))
+          ]).then(function(data) {
+            if(data[0].status == "SUCCESS") {
 
                 var msg = "Entity Detials saved successfully";
 
@@ -1058,7 +1020,7 @@ var page = Component.extend({
 
           Promise.all([Analytics.create(UserReq.formRequestDetails(genObj))]).then(function(data) {
 
-            if(data[0].responseText == "SUCCESS") {
+            if(data[0].status == "SUCCESS") {
 
                 var genObj = {};
 
@@ -1155,11 +1117,27 @@ var page = Component.extend({
 
     reValidateFiledsonLoad : function() {
 
+      var isValid = true; 
+
       for(var i=0; i< this.bootstrapValidParams.length; i++) {
 
         $("#entityLicensorBottom").data("bootstrapValidator").revalidateField(this.bootstrapValidParams[i]);
 
+        isValid = $("#entityLicensorBottom").data("bootstrapValidator").revalidateField("sapVendor").$invalidFields.length > 0 ? false : true;
+
       }
+
+      if(!isValid) {
+
+        $("#buttonsubmit").attr("disabled", true);
+
+      } else {
+
+        $("#buttonsubmit").attr("disabled", false);
+
+      }
+
+      return isValid;
 
     },
 
@@ -1413,6 +1391,14 @@ var page = Component.extend({
 
   },
 
+  init: function(){
+
+    var self = this;
+    
+    self.scope.appstate.attr("renderGlobalSearch", false);
+  
+  },
+
   helpers:  {
 
     getselectedEntity : function(sEntity) {
@@ -1483,6 +1469,8 @@ var page = Component.extend({
 
       $(".confirmationReportConfig").hide();
 
+      $("#buttonsubmit").attr("disabled", true);
+
       var defaultEntity = [];
 
       Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
@@ -1496,13 +1484,13 @@ var page = Component.extend({
           genObj.id = defaultEntity.id;
           genObj.licensorName =  defaultEntity.value;
 
-          self.scope.attr("selectedEntity", genObj.licensorName);
+          //self.scope.attr("selectedEntity", genObj.licensorName);
 
-          Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
+          //Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
-            self.scope.populateAnalyticsPage(values);
+            //self.scope.populateAnalyticsPage(values);
             
-          });
+          //});
 
       });
 
@@ -1561,6 +1549,15 @@ var page = Component.extend({
           showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0],comp);
           
      },
+
+     ".validateInput change" : function() {
+
+        var self = this;
+
+        self.scope.reValidateFiledsonLoad();
+
+      },
+
 
     ".applyAll click" : function(el, ev){
 
@@ -1769,21 +1766,7 @@ var page = Component.extend({
 
       }
 
-      var reportConf = self.scope.ReportCofiguration.repconf;
-
-      for(var i=0; i < reportConf.length; i++) {
-
-        for(var j=0; j<reportBox.length; j++) {
-
-            if(reportBox[j].getAttribute("value") == reportConf[i] ) {
-
-              reportBox[j].checked = true;
-
-            }
-
-        }
-
-      }
+      
 
       var country = el.closest('div')[0].innerHTML;
       var reportConf = self.scope.getExistCountryReportConf(country);
@@ -1792,8 +1775,25 @@ var page = Component.extend({
 
         var obj = el.closest('div')[0];
         country = obj.childNodes[0].getAttribute("value");
+        obj.childNodes[0].checked = true;
         
+      } else {
+
+        var countryBox = $('input.countryBox');
+
+        for(var i=0; i< countryBox.length ; i++) {
+
+          if(countryBox[i].getAttribute("value") === country) {
+
+            countryBox[i].checked = true;
+
+          }
+
+        }
+
       }
+
+      var reportConf = self.scope.reportConfMap[country];
 
       self.scope.latestSelectedCountry = country;
 

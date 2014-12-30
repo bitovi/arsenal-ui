@@ -85,7 +85,7 @@
 							    </div>
 						    </div>
 						    <div class="col-sm-6 ">
-							    <label for="inputPassword3" class="col-sm-6 control-label">Fx Rate:</label>
+							    <label for="inputPassword3" class="col-sm-6 control-label">FX Rate:</label>
 							    <div class="col-sm-6 fxrate" style="padding-left:2px;">
 							      <input type="text" class="form-control" name ="fxrate" id="fxrate" placeholder="" can-value="fxrateStore">
 							      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "fxrate-err" style="display:none;">
@@ -96,7 +96,7 @@
 
 				  <div class="form-group">
 						  <div class="col-sm-6">
-							    <label for="inputEmail3" class="col-sm-6 control-label">Invoice Number: </label>
+							    <label for="inputEmail3" class="col-sm-6 control-label">Invoice #: </label>
 								    <div class="col-sm-6 requiredBar invoicenumber">
 									      <input type="text" class="form-control" id="invoicenumber" name="invoicenumber" placeholder=""  can-value="invoicenumberStore">
 									      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "invoicenumber-err" style="display:none;">
@@ -346,7 +346,7 @@
 
 				   <div class="col-sm-12" style="height:20px;"></div>
 				   <div style="text-align:right">
-						   <div class="col-sm-9"><label class="control-label">Net Total: </label></div>
+						   <div class="col-sm-9"><label class="control-label">Gross Total: </label></div>
 						   <div class="col-sm-3 total-amount">{{netTotal}}</div> 
 
 						 	<!--<div class="col-sm-9"></div>

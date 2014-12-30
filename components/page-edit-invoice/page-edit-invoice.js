@@ -47,6 +47,23 @@ fileUpload.extend({
          }
  });
 
+createpb.extend({
+	tag: 'create-pb',
+  	scope: {
+           		selectedbundle:"@",
+           		paymentBundleId: ""	
+           },
+     events:{
+     	"inserted":function(){
+     		console.log("inserted");
+     	},
+     	"{scope} selectedbundle":function(){
+     		this.scope.attr("paymentBundleId", this.scope.attr("selectedbundle"));
+     	}
+
+     }      
+});
+
 var page = Component.extend({
   tag: 'page-edit-invoice',
   template: template,
@@ -69,7 +86,7 @@ var page = Component.extend({
   	calduedate:0,
   	tax:0,
   	taxStore:{},
-  	isAdhocStrore:{"ccidGL":"CCID Document", "contentAdhoc":"Content Type"},
+  	isAdhocStrore:{"ccidGL":"CCID Filename", "contentAdhoc":"Content Type"},
   	editcommentArr:[],
   	/*Form value*/
   	invoicetypeSelect:"",
@@ -107,6 +124,7 @@ var page = Component.extend({
   	periodType:"",
   	ajaxRequestStatus:{},
   	usdFxrateRatio:"",
+  	invselectedbundle:"",
 	isRequired: function(){
   	 		if(this.attr("invoicetypeSelect") != "2"){  /*Adhoc*/
  				$(".breakdownCountry").addClass("requiredBar");
@@ -160,14 +178,14 @@ var page = Component.extend({
 
 	  	 	 }
 	  	 	 else if(this.attr("invoicetypeSelect") == "3"){
-			  	 this.isAdhocStrore.attr("ccidGL", "CCID Document");
+			  	 this.isAdhocStrore.attr("ccidGL", "CCID Filename");
 			  	 this.isAdhocStrore.attr("contentAdhoc", "Content Type");
 			  	 this.isAdhocStrore.attr("invtype", "");
 			  	 this.isAdhocStrore.attr("adhoc", false);
 				 this.attr("showPBR", false);
 			 }
 			 else{
-			  	 this.isAdhocStrore.attr("ccidGL", "CCID Document");
+			  	 this.isAdhocStrore.attr("ccidGL", "CCID Filename");
 			  	 this.isAdhocStrore.attr("contentAdhoc", "Content Type");
 			  	 this.isAdhocStrore.attr("invtype", "");
 			  	 this.isAdhocStrore.attr("adhoc", false);
@@ -274,15 +292,15 @@ var page = Component.extend({
 	                			callback: {
 			                            message: 'Invoice Due date must be less than calculated due date',
 			                            callback: function (value, validator, $field) {
-			                         /*     if(value != ""){  
+			                         		if(value != ""){
 			                              	var invduedate = new Date(value);
-			                              	var calduedate = new Date(self.scope.attr("calduedate"));
-			                              	var timeDiff = Math.abs(invduedate.getTime() - calduedate.getTime());
-											var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-											if(Math.abs(invduedate.getTime()) > Math.abs(calduedate.getTime())){
-												return false;
+			                              	if(self.scope.attr("calduedate")){
+			                              		var calduedate = new Date(self.scope.attr("calduedate"));
+			                              			if(Math.abs(invduedate.getTime()) > Math.abs(calduedate.getTime())){
+														return false;
+													}
+			                              		}
 											}
-										  }*/
 			                              return true;
 			                            }
 	                    		}
@@ -386,7 +404,7 @@ var page = Component.extend({
 				                validators: {
 				                    callback: {
 				                           
-				                            callback: function (value, validator, $field) {
+				                                 callback: function (value, validator, $field) {
 				                              if((value == "") && (self.scope.attr("invoicetypeSelect") != "2")){
 				                              	   return {
 												            valid: false,    // or false
@@ -402,18 +420,25 @@ var page = Component.extend({
 				                              else
 				                              {
 				                              		var duplicateCont = false;
-						                              	$(".inputContent").not(':hidden').each(function(){   /*duplicate Content type validation*/
+						                              	$(".inputContent").not(':hidden').each(function(index){   /*duplicate Content type validation*/
 															if($(this).attr("id") != $field.attr("id"))
 															{
+																
 																var strEl = $field.attr("id");
 																var rowEl = strEl.replace(/[^0-9]/g, '');
 																var inputMonthEl = "inputMonth"+rowEl;
+																var inputCountryEl = "inputCountry"+rowEl;
 
 																var strNow = $(this).attr("id");
 																var rowNow = strNow.replace(/[^0-9]/g, '');
-																var inputMonthNow = "inputMonth"+rowNow;	
+																var inputMonthNow = "inputMonth"+rowNow;
+																var inputCountryNow = "inputCountry"+rowNow;	
 
-																if(($(this).val() == $field.val()) && ($("#"+inputMonthEl).val() == $("#"+inputMonthNow).val())){
+																var validMonth = (($("#"+inputMonthEl).val() != "")?($("#"+inputMonthEl).val() == $("#"+inputMonthNow).val()):false);
+																var validCountry = (($("#"+inputCountryEl).val() != "")?($("#"+inputCountryEl).val() == $("#"+inputCountryNow).val()):false);
+
+
+																if( ($(this).val() == $field.val()) && (validMonth ) && (validCountry) ){
 																	$field.val("");
 																	duplicateCont = true;
 															        	
@@ -428,21 +453,22 @@ var page = Component.extend({
 													        {
 													        	return {
 															            valid: false,    // or false
-															            message: 'Two invoicelines can not have same content type.'
+															            message: 'Two invoicelines can not have same period, content type and country.'
 															    }			
 													        }
 														    else
 														    {
 														    	return {
 															            valid: false,    // or false
-															            message: 'Two invoicelines can not have same adhoc type.'
+															            message: 'Two invoicelines can not have same period, adhoc type and country.'
 															    }	
 														    }  
 
 														} 
 														 
-												}
-				                              return true;
+												}	
+
+				                             return true;
 				                            }
 		                    		}
 				                }
@@ -461,12 +487,64 @@ var page = Component.extend({
 				                }
 			            	},
 			            	'inputCountry[]': {
-				                validators: {
+				                            validators: {
 				                    callback: {
-				                            message: 'Country is mandatory',
 				                            callback: function (value, validator, $field) {
-				                               if((value == "") && (self.scope.attr("invoicetypeSelect") != "2")){
-				                              	   return false;
+				                               if((value == "") && (self.scope.attr("invoicetypeSelect") != "2") && (self.scope.attr("invoicetypeSelect") != "3")){
+				                              	   return{
+				                              	   		valid: false,    // or false
+												   		message: 'Country is mandatory'
+				                              	   }
+				                              }
+				                              else{
+
+				                              		var duplicateCont = false;
+						                              	$(".inputCountry").not(':hidden').each(function(index){   /*duplicate Content type validation*/
+															if($(this).attr("id") != $field.attr("id"))
+															{
+																
+																var strEl = $field.attr("id");
+																var rowEl = strEl.replace(/[^0-9]/g, '');
+																var inputMonthEl = "inputMonth"+rowEl;
+																var inputContentEl = "inputContent"+rowEl;
+
+																var strNow = $(this).attr("id");
+																var rowNow = strNow.replace(/[^0-9]/g, '');
+																var inputMonthNow = "inputMonth"+rowNow;
+																var inputContentNow = "inputContent"+rowNow;	
+
+																var validContent = (($("#"+inputContentEl).val() != "")?($("#"+inputContentEl).val() == $("#"+inputContentNow).val()):false);
+																var validMonth = (($("#"+inputMonthEl).val() != "")?($("#"+inputMonthEl).val() == $("#"+inputMonthNow).val()):false);
+
+
+																if( ($(this).val() == $field.val()) && (validContent ) && (validMonth) ){
+																	$field.val("");
+																	duplicateCont = true;
+															        	
+																    return false;
+															    }
+															}
+															
+														});
+
+														if(duplicateCont){
+															if(self.scope.attr("invoicetypeSelect") != 2)
+													        {
+													        	return {
+															            valid: false,    // or false
+															            message: 'Two invoicelines can not have same period, content type and country.'
+															    }			
+													        }
+														    else
+														    {
+														    	return {
+															            valid: false,    // or false
+															            message: 'Two invoicelines can not have same period, adhoc type and country.'
+															    }	
+														    }  
+
+														} 
+
 				                              }
 				                              return true;
 				                            }
@@ -577,6 +655,7 @@ var page = Component.extend({
                   		if(data.status == 'SUCCESS'){
                   			if(data.calInvoiceDueDate != null && data.calInvoiceDueDate != undefined){
                   				self.scope.attr("calduedate", getDateToDisplay(data.calInvoiceDueDate));
+                  				$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
                   			}
                   		 }
 		                },function(xhr){
@@ -594,6 +673,7 @@ var page = Component.extend({
                   		if(data.status == 'SUCCESS'){
                   			if(data.calInvoiceDueDate != null && data.calInvoiceDueDate != undefined){
                   				self.scope.attr("calduedate", getDateToDisplay(data.calInvoiceDueDate));
+                  				$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
                   			}
                   		 }
 		                },function(xhr){
@@ -633,14 +713,7 @@ var page = Component.extend({
          	this.scope.ccidGLStore.attr(event[0].id, event[0].value)
          	console.log(this.scope.ccidGLStore);
 		},
-		"#invoicelicensor change": function(event){
-			var genObj = {licensorId:event[0].value};
-			var self = this;
-			Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
-			     ]).then(function(values) {
-				    self.scope.attr("currency").replace(values[0]);
-			   });
-		},
+	
 		"{scope} currencyStore": function(){
 			var self = this;
 			self.scope.getFxrate();
@@ -650,7 +723,7 @@ var page = Component.extend({
 			var genObj = {regionId:self.scope.attr("regionStore")};
 			Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))
 			     ]).then(function(values) {
-		     			console.log(values[0]);
+		     			self.scope.attr("licensor").replace([]);
 			    		self.scope.attr("licensor").replace(values[0]["entities"][0]);
 			    		if(self.scope.editpage){
 				    		var invoiceData = self.scope.attr().invoiceContainer[0];
@@ -669,7 +742,8 @@ var page = Component.extend({
 			var genObj = {licensorId:self.scope.attr("licensorStore")};
 			Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
 			     ]).then(function(values) {
-				    self.scope.attr("currency").replace(values[0]);
+				    self.scope.attr("currency").replace([]);
+				     self.scope.attr("currency").replace(values[0]);
 				    if(self.scope.editpage){
 					    var invoiceData = self.scope.attr().invoiceContainer[0];
 					    self.scope.attr("currencyStore", invoiceData.invoiceCcy);
@@ -748,9 +822,14 @@ var page = Component.extend({
 						$('#multipleCommentsInv').html(stache('<multiple-comments divid="usercommentsdivinv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
 		                self.scope.changeTextOnInvType();
 
+		                
+
+		               	self.scope.attr("invselectedbundle", invoiceData.bundleId);
+
 		                var genObj = {regionId:self.scope.attr("regionStore")};
 
 		                Country.findAll(UserReq.formRequestDetails(genObj),function(data){
+		                		self.scope.attr("country").replace([]);
 		                  		self.scope.attr("country").replace(data);
 		                  		self.scope.ajaxRequestStatus.attr("countryLoaded", true);
 								},function(xhr){
@@ -982,6 +1061,7 @@ var page = Component.extend({
       						var tempDocument = {};
 				   			tempDocument.fileName = self.scope.uploadedFileInfo[i].attr("fileName");
 				   			tempDocument.location = self.scope.uploadedFileInfo[i].attr("filePath");
+				   			tempDocument.status = "add";
 				   			tempEditInvoiceData["invoiceDocuments"].push(tempDocument);
 				   			console.log(tempDocument);
 				   		}
@@ -1096,14 +1176,21 @@ var page = Component.extend({
 										var strEl = el[0].id;
 										var rowEl = strEl.replace(/[^0-9]/g, '');
 										var inputContentEl = "inputContent"+rowEl;
+										var inputCountryEl = "inputCountry"+rowEl;
 
 										var strNow = $(this).attr("id");
 										var rowNow = strNow.replace(/[^0-9]/g, '');
 										var inputContentNow = "inputContent"+rowNow;
+										var inputCountryNow = "inputCountry"+rowNow;
 
-										if(($(this).val() == el[0].value) && ($("#"+inputContentEl).val() == $("#"+inputContentNow).val())){
+										var validContent = (($("#"+inputContentEl).val() != "")?($("#"+inputContentEl).val() == $("#"+inputContentNow).val()):false);
+										var validCountry = (($("#"+inputCountryEl).val() != "")?($("#"+inputCountryEl).val() == $("#"+inputCountryNow).val()):false);
+
+										
+
+										if(($(this).val() == el[0].value) && (validContent ) && (validCountry)){
 						        			$(el).val("");
-						        			showError(el[0].id, "Two invoiceline can not have same period and content type");
+						        			showError(el[0].id, "Two invoiceline can not have same period, content type and country");
 						        			return false;
 						        		}
 						        		
@@ -1212,7 +1299,7 @@ var page = Component.extend({
 											return "Adhoc";
 								  	 	}
 								  	 	else{
-								  	 		this.isAdhocStrore.attr("ccidGL", "CCID Document");
+								  	 		this.isAdhocStrore.attr("ccidGL", "CCID Filename");
 								  	 		return this.isAdhocStrore;
 								  	 	}
 								  	},
@@ -1230,11 +1317,11 @@ var page = Component.extend({
 									},
 									setMinHeightBreak: function(){
 								  	 	var vph = 282;
-								  	 	return 'Style="height:'+vph+'px;overflow-y:auto"';
+								  	 	return 'Style="min-height:'+vph+'px;"';
 									},
 									calculateUSD:function(){
 										var fxrate = this.attr("usdFxrateRatio");
-										var calUSD = this.attr("totalAmountVal")*fxrate;
+										var calUSD = this.attr("totalAmountVal")/fxrate;
 
 										if(isNaN(calUSD)){
 											calUSD = 0;

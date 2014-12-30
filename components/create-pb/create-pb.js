@@ -15,7 +15,7 @@ var page = Component.extend({
   template: template,
   scope: {
     request: "@",
-    newbundlenamereq:"@",
+    newbundlenamereq: "@",
     /*
     Ex: Create
     {
@@ -44,85 +44,117 @@ var page = Component.extend({
       };
 
     */
-    createPBFlag:{select:true},
-    "bundleNames":[],
-    "paymentBundleId":"",
-    "paymentBundleName":"",
-    "bundleSearch":{}
-  },
-  init: function(){
-
-        var self = this;
-
-
-        var requestObj = JSON.parse(self.scope.attr("request"));
-        //console.log("requestObj is "+JSON.stringify(requestObj));
-
-        if(requestObj!="undefined"){
-            BundleNamesModel.findOne(UserReq.formRequestDetails(requestObj),function(data){
-                  //console.log(" BundleNamesModel response is "+JSON.stringify(data.attr()));
-                  self.scope.bundleNames.replace(data["paymentBundles"]);
-            },function(xhr){
-                console.error("Error while loading: bundleNames"+xhr);
-            });
-
-        }else if (requestObj.mode == "Read"){
-
-          self.scope.attr("createPBFlag",{read:true});
-          self.scope.attr("paymentBundleName",requestObj.paymentBundleName);
-          self.scope.attr("paymentBundleId",requestObj.paymentBundleId);
-
-        }else{
-          console.error("Craete Payment Bundle: Invalid Mode!!");
-        }
+    createPBFlag: {
+      select: true
     },
-    events:{
+    "bundleNames": [],
+    "paymentBundleId": "",
+    "paymentBundleName": "",
+    "bundleSearch": {},
+    value: []
+  },
+  init: function() {
 
-      "#btnCancel click":function(){
-        this.scope.attr("createPBFlag",{select:true});
-        this.scope.attr("paymentBundleId", '');
-      },
-      "{scope} request": function(){
-        var self= this;
+    var self = this;
 
-        var requestObj = JSON.parse(self.scope.attr("request"));
-        if(requestObj!="undefined"){
-            BundleNamesModel.findOne(UserReq.formRequestDetails(requestObj),function(data){
-                  //console.log(" BundleNamesModel response is "+JSON.stringify(data.attr()));
-                  self.scope.bundleNames.replace(data["paymentBundles"]);
-            },function(xhr){
-                console.error("Error while loading: bundleNames"+xhr);
-            });
+    var requestObj = JSON.parse(self.scope.attr("request"));
+    //console.log("requestObj is "+JSON.stringify(requestObj));
 
-        }else if (requestObj.mode == "Read"){
+    if (self.scope.request != undefined) {
+      BundleNamesModel.findOne(UserReq.formRequestDetails(requestObj), function(data) {
+        //console.log(" BundleNamesModel response is "+JSON.stringify(data.attr()));
+        self.scope.bundleNames.replace(data["paymentBundles"]);
+      }, function(xhr) {
+        console.error("Error while loading: bundleNames" + xhr);
+      });
 
-          self.scope.attr("createPBFlag",{read:true});
-          self.scope.attr("paymentBundleName",requestObj.paymentBundleName);
-          self.scope.attr("paymentBundleId",requestObj.paymentBundleId);
+    } else if (requestObj.mode == "Read") {
 
-        }else{
-          console.error("Craete Payment Bundle: Invalid Mode!!");
-        }
-      },
-      "{scope} newbundlenamereq": function(){
-        var self= this;
+      self.scope.attr("createPBFlag", {
+        read: true
+      });
+      self.scope.attr("paymentBundleName", requestObj.paymentBundleName);
+      self.scope.attr("paymentBundleId", requestObj.paymentBundleId);
 
-        var requestObj = self.scope.attr("newbundlenamereq");
-        if(requestObj!="undefined"){
-          requestObj = JSON.parse(requestObj);
-          self.scope.attr("createPBFlag",{input:true});
-          NewBundleNameModel.findOne(UserReq.formRequestDetails(requestObj),function(data){
-            if(data.status == "FAILURE"){
-                 console.error("Failed to load the bundleName: "+data.responseText);
-               }else{
-                  self.scope.attr("paymentBundleName", data.paymentBundle.bundleName);
-              }
-          },function(xhr){
-                console.error("Error while loading: bundleNames"+xhr);
-          });
-        }
+    } else {
+      console.error("Craete Payment Bundle: Invalid Mode!!");
+    }
+  },
+  events: {
+    '{value} change': function() {
+      var self = this;
+      var requestObj = self.scope.attr("value");
+
+      if (self.scope.request != undefined) {
+        BundleNamesModel.findOne(UserReq.formRequestDetails(JSON.parse(requestObj[0])), function(data) {
+          self.scope.bundleNames.replace(data["paymentBundles"]);
+        }, function(xhr) {
+          console.error("Error while loading: bundleNames" + xhr);
+        });
+
+      } else if (requestObj.mode == "Read") {
+
+        self.scope.attr("createPBFlag", {
+          read: true
+        });
+        self.scope.attr("paymentBundleName", requestObj.paymentBundleName);
+        self.scope.attr("paymentBundleId", requestObj.paymentBundleId);
+
+      } else {
+        console.error("Craete Payment Bundle: Invalid Mode!!");
+      }
+    },
+    "#btnCancel click": function() {
+      this.scope.attr("createPBFlag", {
+        select: true
+      });
+      this.scope.attr("paymentBundleId", '');
+    },
+    "{scope} request": function() {
+      var self = this;
+
+      var requestObj = JSON.parse(self.scope.attr("request"));
+      if (self.scope.request != undefined) {
+        BundleNamesModel.findOne(UserReq.formRequestDetails(requestObj), function(data) {
+          //console.log(" BundleNamesModel response is "+JSON.stringify(data.attr()));
+          self.scope.bundleNames.replace(data["paymentBundles"]);
+        }, function(xhr) {
+          console.error("Error while loading: bundleNames" + xhr);
+        });
+
+      } else if (requestObj.mode == "Read") {
+
+        self.scope.attr("createPBFlag", {
+          read: true
+        });
+        self.scope.attr("paymentBundleName", requestObj.paymentBundleName);
+        self.scope.attr("paymentBundleId", requestObj.paymentBundleId);
+
+      } else {
+        console.error("Craete Payment Bundle: Invalid Mode!!");
+      }
+    },
+    "{scope} newbundlenamereq": function() {
+      var self = this;
+
+      var requestObj = self.scope.attr("newbundlenamereq");
+      if (requestObj != "undefined") {
+        requestObj = JSON.parse(requestObj);
+        self.scope.attr("createPBFlag", {
+          input: true
+        });
+        NewBundleNameModel.findOne(UserReq.formRequestDetails(requestObj), function(data) {
+          if (data.status == "FAILURE") {
+            console.error("Failed to load the bundleName: " + data.responseText);
+          } else {
+            self.scope.attr("paymentBundleName", data.paymentBundle.bundleName);
+          }
+        }, function(xhr) {
+          console.error("Error while loading: bundleNames" + xhr);
+        });
       }
     }
+  }
 });
 
 
