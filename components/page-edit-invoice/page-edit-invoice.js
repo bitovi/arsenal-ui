@@ -53,15 +53,17 @@ createpb.extend({
            		selectedbundle:"@",
            		paymentBundleId: ""	
            },
-     events:{
-     	"inserted":function(){
-     		console.log("inserted");
-     	},
-     	"{scope} selectedbundle":function(){
-     		this.scope.attr("paymentBundleId", this.scope.attr("selectedbundle"));
-     	}
 
-     }      
+     events:{
+	     		"{scope} selectedbundle":function(){
+		     		var self = this;
+		     		
+		     		setTimeout(function(){ 
+		     			self.scope.attr("paymentBundleId", self.scope.attr("selectedbundle")); /*Bundle drop down are not getting populated before 1000 ms*/
+		     		}, 2000);
+
+		     	}
+			}      
 });
 
 var page = Component.extend({
