@@ -109,7 +109,7 @@ var BundleDetailTabs = Component.extend({
       if(bundle.bundleType === 'REGULAR_INV') {
           view = this.attr('selectedTab').value;
           if(view === 'country' && this.attr('aggregatePeriod')) {
-            view = 'aggregate';
+            view = 'aggregated';
           }
       } else {
         view = 'licensor';
@@ -134,7 +134,7 @@ var BundleDetailTabs = Component.extend({
       if(bundle.bundleType === 'REGULAR_INV') {
         view = this.attr('selectedTab').value;
         if(view === 'country' && this.attr('aggregatePeriod')) {
-          view = 'aggregate';
+          view = 'aggregated';
         }
       } else {
         view = 'licensor';
@@ -210,15 +210,15 @@ var BundleDetailTabs = Component.extend({
     '.show-chart click': function(el, ev) {
       // show the chart
     },
-    '.excel click': function(el, ev) { 
+    '.excel click': function(el, ev) {
       // export data to Excel
 
       var self = this;
         self.scope.appstate.attr('excelOutput', true);
         self.scope.appstate.attr('detail', true);
-        if(this.scope.appstate.excelOutput ) {  
-         PaymentBundle.findOne({appstate: this.scope.appstate}).then(function(data) { 
-            if(data["status"]=="0000"){ 
+        if(this.scope.appstate.excelOutput ) {
+         PaymentBundle.findOne({appstate: this.scope.appstate}).then(function(data) {
+            if(data["status"]=="0000"){
               self.scope.appstate.attr("excelOutput",false);
               self.scope.appstate.attr('detail',false);
               $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
