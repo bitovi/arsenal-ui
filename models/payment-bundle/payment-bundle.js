@@ -237,6 +237,11 @@ var PaymentBundle = Model.extend({
     // now to reverse all the stuff we did in the name of science
     delete bundleData.bundleFooter;
 
+
+    delete bundleData.validationStatus;
+    delete bundleData.validationRulesCompleted;
+    delete bundleData.validationRulesTotal;
+
     bundleData.bundleDetailsGroup && bundleData.bundleDetailsGroup.forEach(function(group) {
       delete group.__isChild;
       delete group.__isOpen;
