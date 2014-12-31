@@ -109,7 +109,7 @@ var BundleDetailTabs = Component.extend({
       if(bundle.bundleType === 'REGULAR_INV') {
           view = this.attr('selectedTab').value;
           if(view === 'country' && this.attr('aggregatePeriod')) {
-            view = 'aggregate';
+            view = 'aggregated';
           }
       } else {
         view = 'licensor';
@@ -134,7 +134,7 @@ var BundleDetailTabs = Component.extend({
       if(bundle.bundleType === 'REGULAR_INV') {
         view = this.attr('selectedTab').value;
         if(view === 'country' && this.attr('aggregatePeriod')) {
-          view = 'aggregate';
+          view = 'aggregated';
         }
       } else {
         view = 'licensor';
