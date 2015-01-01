@@ -18,7 +18,8 @@ var headerNavigation = Component.extend({
     },
     init: function() {
       var self = this;
-
+      var genObj = {};
+      
       Promise.all([
         roles.findAll(UserReq.formRequestDetails(genObj))
 
