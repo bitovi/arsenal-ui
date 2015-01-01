@@ -15,6 +15,7 @@ import Invoice from 'models/invoice/';
 import BundleNamesModel from 'models/payment/bundleNames/';
 import MassFileUpLoader from 'models/mass-file-upload/';
 import invoicemap from 'models/sharedMap/invoice';
+import commonUtils from 'utils/commonUtils';
 
 import bootstrapmultiselect from 'bootstrap-multiselect';
 import css_bootstrapmultiselect from 'bootstrap-multiselect.css!';
@@ -122,7 +123,7 @@ Grid.extend({
             }
           }
         });
-      
+
       alignGrid();
     },
     '.open-toggle click': function(el, ev) {
@@ -243,7 +244,7 @@ var page = Component.extend({
           }else{
             self.scope.appstate.attr('globalSearch', true);
           }
-          
+
          /* var self=this;
           Invoice.findOne(invoiceExportToExcel(self.scope.appstate),function(data){
              if(data["status"]=="SUCCESS"){
@@ -384,11 +385,13 @@ var page = Component.extend({
 
     },
      "#btnAdd click": function(){
-            this.scope.appstate.attr('page','create-invoice');
+            //this.scope.appstate.attr('page','create-invoice');
+            commonUtils.navigateTo("create-invoice");
             invoicemap.attr('invoiceid','');
     },
     "#btnAddFromiCSV click": function(){
-            this.scope.appstate.attr('page','icsv');
+            //this.scope.appstate.attr('page','icsv');
+            commonUtils.navigateTo("icsv");
     },
     ".rn-grid>tbody>tr td dblclick": function(item, el, ev){
           //var invoiceid = el.closest('tr').data('row').row.id;
@@ -406,6 +409,7 @@ var page = Component.extend({
             if(paymentState==0 || paymentState==1 || paymentState==9){
               invoicemap.attr('invoiceid',invoiceid);
               flag=true;
+              //commonUtils.navigateTo("edit-invoice");
               self.scope.appstate.attr('page','edit-invoice');
             }
           }
@@ -866,13 +870,13 @@ var page = Component.extend({
 
                 invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr().toString();
                 invSearchRequest.searchRequest["sortOrder"] = self.scope.attr('sortDirection');
-                
+
                 /*This parameter is to generating the excel output*/
                 if(self.scope.excelOutput.attr('flag'))invSearchRequest["excelOutput"] = true;
 
                 console.log("Request are "+JSON.stringify(UserReq.formRequestDetails(invSearchRequest)));
 
-               
+
                 GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){
                     //console.log("response is "+JSON.stringify(data.attr()));
                     if(data["status"]=="SUCCESS"){
@@ -883,7 +887,7 @@ var page = Component.extend({
                             $("#loading_img").hide();
                           }
                       }else{
-                        self.scope.checkedRows.replace([]); //Reset Checked rows scope variable  
+                        self.scope.checkedRows.replace([]); //Reset Checked rows scope variable
                         if(parseInt(invSearchRequest.searchRequest["offset"])==0){
                           self.scope.allInvoicesMap.replace(data);
                         } else{
@@ -918,7 +922,7 @@ var page = Component.extend({
 var invoiceExportToExcel=function(appstate){
     var invoiceRequest={};
     invoiceRequest.searchRequest=UserReq.formGlobalRequest(appstate).searchRequest;
-    invoiceRequest.searchRequest.type="invoices";   
+    invoiceRequest.searchRequest.type="invoices";
     //invoiceRequest.excelOutput=true;
     return UserReq.formRequestDetails(invoiceRequest);
 };

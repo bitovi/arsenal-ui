@@ -7,6 +7,11 @@ var rinsCommonUtils = {
     }else{
       appstate.attr('globalSearch', true);
     }
+  },
+  navigateTo:function(page){
+    appstate.attr('page', page);
+    appstate.attr('navigationRequired', true);
+    appstate.attr('navigationRequired', false);
   }
 };
 

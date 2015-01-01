@@ -11,6 +11,7 @@ import PaymentBundle from 'models/payment-bundle/';
 import PaymentBundleGrid from 'components/bundle-grid/';
 import PaymentBundleDetail from 'components/bundle-detail/';
 import PbrDeleteConfirmModal from 'components/pbr-delete-confirm-modal/';
+import commonUtils from 'utils/commonUtils';
 
 import template from './template.stache!';
 import styles from './page-payment-bundles.less!';
@@ -31,10 +32,10 @@ var page = Component.extend({
     pageState: pageState,
     isPageSearch: undefined,
     refreshBundles: _.debounce(function() {
-      if(this.scope.isPageSearch != this.scope.appstate.globalSearch) { 
+      if(this.scope.isPageSearch != this.scope.appstate.globalSearch) {
         this.scope.appstate.attr('excelOutput',false);
         this.scope.isPageSearch  = this.scope.appstate.globalSearch;
-         PaymentBundle.findAll({appstate: this.scope.appstate}).then(function(bundles) { 
+         PaymentBundle.findAll({appstate: this.scope.appstate}).then(function(bundles) {
           can.batch.start();
           pageState.bundles.splice(0, pageState.bundles.length)
           pageState.bundles.replace(bundles);
@@ -42,13 +43,13 @@ var page = Component.extend({
         }, function(err){
           console.log(err);
         });
-      }else { 
-        if(!this.scope.appstate.excelOutput){ 
+      }else {
+        if(!this.scope.appstate.excelOutput){
             can.batch.start();
             pageState.bundles.splice(0, pageState.bundles.length);
             pageState.attr('selectedBundle', null);
-            can.batch.stop(); 
-          } 
+            can.batch.stop();
+          }
     }
     }, 200)
   },
@@ -68,8 +69,8 @@ var page = Component.extend({
       this.scope.appstate.attr('excelOutput',false);
       this.scope.refreshBundles.apply(this);
     },
-    '{scope} change': function(scope, ev, attr) {  
-      if(attr.substr(0, 8) === 'appstate') { 
+    '{scope} change': function(scope, ev, attr) {
+      if(attr.substr(0, 8) === 'appstate') {
          this.scope.refreshBundles.apply(this);
       }
     },
@@ -86,24 +87,27 @@ var page = Component.extend({
       this.scope.attr('selectedBundle', null);
     },
     '.add-invoice click': function(el, ev) {
-      can.route.attr('page', 'invoices');
+      commonUtils.navigateTo("invoices");
     },
-    '.excel click': function(el, ev) {  
+    '.excel click': function(el, ev) {
       var self = this;
+
       self.scope.appstate.attr('excelOutput', true);
-      if(this.scope.appstate.excelOutput ) {  
-         PaymentBundle.findOne({appstate: this.scope.appstate}).then(function(data) { 
-            if(data["status"]=="0000"){ 
+
+      if(this.scope.appstate.excelOutput ) {
+
+         PaymentBundle.findOne({appstate: this.scope.appstate}).then(function(data) {
+            if(data["status"]=="0000"){
                 $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
            }
          },function(err){
             console.log(err);
         });
        }
-     
 
 
-    
+
+
     },
     '.clipboard click': function(el, ev) {
       // copy bundle list information to clipboard
