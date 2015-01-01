@@ -44,11 +44,10 @@ var stateDefaults = {
   country: undefined,
   region: undefined,
   storeType: undefined,
-
   filled: false,
-
   renderGlobalSearch:true,
-  globalSearch:undefined
+  globalSearch:undefined,
+  csrfToken:undefined
 };
 
 var firstPage = 'dashboard';

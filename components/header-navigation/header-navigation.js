@@ -5,7 +5,7 @@ import styles from './header-navigation.less!';
 import roles from 'models/roles/';
 import GlobalParameterBar from 'components/global-parameter-bar/';
 import Bookmark from 'components/bookmark/';
-
+import UserReq from 'utils/request/';
 
 var headerNavigation = Component.extend({
     tag: 'header-navigation',
@@ -20,7 +20,7 @@ var headerNavigation = Component.extend({
       var self = this;
 
       Promise.all([
-        roles.findAll()
+        roles.findAll(UserReq.formRequestDetails(genObj))
 
         ]).then(function(values) {
 

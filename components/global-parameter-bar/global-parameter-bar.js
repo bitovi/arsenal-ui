@@ -10,6 +10,7 @@ import ContentType from 'models/common/content-type/';
 import PeriodFrom from 'models/common/periodFrom/';
 import PeriodTo from 'models/common/periodTo/';
 import UserReq from 'utils/request/';
+import token from 'models/common/token/';
 
 import bootstrapmultiselect from 'bootstrap-multiselect';
 import css_bootstrapmultiselect from 'bootstrap-multiselect.css!';
@@ -214,6 +215,9 @@ var GlobalParameterBar = Component.extend({
     if(DefaultGlobalParameters.Region!=undefined && DefaultGlobalParameters.Region!=""){
       reqObj.regionId = DefaultGlobalParameters.Region.id;
     }
+
+    token.findAll();
+
     Promise.all([
       StoreType.findAll(UserReq.formRequestDetails(genObj)),
       Region.findAll(UserReq.formRequestDetails(genObj)),
