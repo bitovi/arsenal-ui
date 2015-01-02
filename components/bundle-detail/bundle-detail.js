@@ -14,6 +14,7 @@ import WorkflowDisplay from 'components/workflow-display/';
 import PbrDeleteConfirmModal from 'components/pbr-delete-confirm-modal/';
 import PbrRemoveGroupsModal from 'components/pbr-remove-groups-modal/';
 import Alert from 'components/alert/';
+import highchartpage from 'components/highchart/';
 
 import columnSets from './column-sets';
 import constants from 'utils/constants';
@@ -52,6 +53,7 @@ var BundleDetailTabs = Component.extend({
     aggregatePeriod: false,
     paymentType: 1,
     approvalComment: '',
+    details:{},
 
     havePaymentTypeAndComment: function(scope) {
       return  (this.appstate.userInfo.roleIds.indexOf(constants.ROLES.BM) > -1 ? scope.paymentType : true) &&
@@ -207,8 +209,52 @@ var BundleDetailTabs = Component.extend({
     '.remove-invoice click': function(el, ev) {
       PbrRemoveGroupsModal.displayModal(this.scope.pageState.selectedBundle, this.scope.selectedRows, this.scope.appstate);
     },
+   '.grid-container table>tbody>tr click':function(item, el, ev){
+
+          var alreadySelRow = item.closest("tbody").find("tr.selected");
+          alreadySelRow.toggleClass("selected");
+
+          $(item[0]).toggleClass("selected");
+          var row = item.closest('tr').data('row').row;
+
+          var className = item.closest('tr').hasClass("child");
+
+           this.scope.details["countryId"]=row.country;
+           this.scope.details["requestFrom"]=$(".switcher li.selected").text();
+           this.scope.details["licensorId"]=row.entityName;
+           this.scope.details["fiscalPeriod"]=row.fiscalPeriod;
+           this.scope.details["periodType"]=row.periodType;
+           this.scope.details["contentType"]=row.contentGrpName;
+           this.scope.details["isChild"]=className;
+      },
     '.show-chart click': function(el, ev) {
       // show the chart
+      //{"requestFrom":"Licensor","licensorId":"CELAS","countryId":"GBR","fiscalPeriod":201307,"periodType":"P","contentType":"Music"} 
+      if(this.scope.details.isChild){
+          var data = this.scope.details;
+          console.log("chart data");console.log(data);
+             $("#highChartDetails").append(stache('<high-chart details={data}></high-chart>')({data}));
+        }else{
+          console.log('Data not set so not showing the chart');
+        }
+    },
+    '#highChartDetails mousedown': function(item, el, ev){
+        if(el.toElement.id == 'close'){
+          $("#highChartDetails").addClass("hide")
+        }else{
+             $(item[0]).addClass("draggable").parents().on('mousemove', function(e) {
+              $('.draggable').offset({
+                  top: e.pageY - $('.draggable').outerHeight() / 2,
+                  left: e.pageX - $('.draggable').outerWidth() / 2
+              }).on('mouseup', function() {
+                  $(this).removeClass('draggable');
+              });
+          });
+        }
+        e.preventDefault();
+    },
+    '#highChartDetails mouseup': function(item, el, ev){
+       $(item[0]).removeClass("draggable")
     },
     '.excel click': function(el, ev) {
       // export data to Excel
