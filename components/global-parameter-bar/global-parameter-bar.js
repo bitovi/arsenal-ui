@@ -238,6 +238,46 @@ var GlobalParameterBar = Component.extend({
         this.scope.changesToApply.attr('periodTo', periodWidgetHelper.getFiscalPeriod(quart));
         this.scope.changesToApply.attr('periodType', 'Q');
       }
+    },
+    "#periodFrom blur":function(el,ev){
+      var self = this;
+      var message ='';
+      if(isDate(el.val())){
+        self.scope.changesToApply.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(el.val()));
+        self.scope.changesToApply.attr('periodType', periodWidgetHelper.getPeriodType(el.val()));
+      }else{
+          message = 'Invalid Period From';
+      }
+       self.scope.attr('errorMessage', message);
+    },
+    '#periodFrom keydown':function(el,ev){
+      //$('.box-modal').hide();
+      $(el).closest('.calendarcls').find('.box-modal').hide();
+    },
+    "#periodTo blur":function(el,ev){
+      var self = this;
+      var message ='';
+      if(isDate(el.val())){
+        var periodFrom=$('#periodFrom').val();
+        var periodTo=el.val();
+        var periodFromType = periodWidgetHelper.getPeriodType(periodFrom);
+        var periodToType = periodWidgetHelper.getPeriodType(periodTo)
+        if(periodFromType == periodToType){
+          message = showErrorMsg(periodWidgetHelper.getFiscalPeriod(periodFrom, periodFromType), periodWidgetHelper.getFiscalPeriod(periodTo, periodFromType));           
+          if(message.length <= 0){
+            self.scope.changesToApply.attr('periodTo', periodWidgetHelper.getFiscalPeriod(el.val()));
+          }
+        }else{
+          message = 'Please select the similar type for periodFrom and periodTo';
+        }  
+      }else{
+        message = 'Invalid Period To';
+      }
+      self.scope.attr('errorMessage', message);
+    },
+    '#periodTo keydown':function(el,ev){
+      //$('.box-modal').hide();
+      $(el).closest('.calendarcls').find('.box-modal').hide();
     }
   },
   init: function() {
@@ -512,12 +552,22 @@ var showErrorMsg = function(periodFrom, periodTo) {
         return message1;
       }
     }else{
-      return message3;
+      //return message3;
     }
   }
   return "";
 }
 
-
+var isDate=function(txtDate){
+  var currVal = txtDate;
+  if(currVal == undefined || currVal == '')
+    return false;
+  //Declare Regex 
+  //var rxDatePattern = /^(\d{1,2})(\/|-)(\d{1,2})(\/|-)(\d{4})$/;
+  var rxDatePattern = /^[P-Q]{1}\d{1,2}[FY]{2}\d{2}$/;
+  var dtArray = currVal.match(rxDatePattern); // is format OK?
+  var result = (dtArray == null) ? false : true;
+   return result;
+}
 
 export default GlobalParameterBar;

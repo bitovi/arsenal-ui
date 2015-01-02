@@ -241,7 +241,7 @@ var onAccountDetails = data.onAccount.onAccountDetails;
             for(var k=0;k<quarters.length;k++)
             {
               var period = this.getPeriodForQuarter(quarters[k]);
-              var value = currencyAmtMap[period+originalRows[i].currency];
+              var value = currencyAmtMap[originalRows[i].entityId+originalRows[i].currency];
               if(value == undefined){
                 value = 0;
               }
@@ -257,7 +257,7 @@ prepareCurrencyDataMap:function(onAccountDetails){
   var currencyAmtMap = new Object();
   if(onAccountDetails != null && onAccountDetails.length>0){
     for(var i=0;i<onAccountDetails.length;i++){
-      currencyAmtMap[''+onAccountDetails[i].fiscalPeriod+onAccountDetails[i].currencyCode]=onAccountDetails[i].onAccountAmt;
+      currencyAmtMap[''+onAccountDetails[i].entityId+onAccountDetails[i].currencyCode]=onAccountDetails[i].onAccountAmt;
     }
   }
   return currencyAmtMap;

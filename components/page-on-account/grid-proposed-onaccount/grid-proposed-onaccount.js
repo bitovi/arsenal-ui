@@ -149,6 +149,10 @@ var proposedonAccountGrid = Grid.extend({
                   };
                   self.scope.columns.push(column);
 
+                    for(var i=0;i<quarters.length;i++){
+                        $('.'+ quarters[i]).addClass('quarter');
+                    }
+
                   self.scope.quarters.replace(quarters);
                  
                if(type == 'DELETE'&& deletableRows != undefined && deletableRows.length >0){
