@@ -90,7 +90,7 @@ var GlobalParameterBar = Component.extend({
       this.scope.attr('errorMessage', '');
       this.scope.changesToApply.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(this.scope.attr('periodFrom')[0]));
       this.scope.changesToApply.attr('periodFromType', periodWidgetHelper.getPeriodType(this.scope.attr('periodFrom')[0]));
-      
+
       var periodToValue = this.scope.attr('periodTo')[0] !== "undefined" ? this.scope.attr('periodTo')[0] : $('#periodFrom').val();
 
       this.scope.attr('errorMessage', showErrorMsg(this.scope.attr('periodFrom')[0], periodToValue));
@@ -128,7 +128,7 @@ var GlobalParameterBar = Component.extend({
         /* To show 'Select All' only if more than one options available */
         if(newContentTypes.length<=1)
           $("input[name='selAllContentType']").closest('li').hide();
-        else 
+        else
           $("input[name='selAllContentType']").closest('li').show();
       }, 1000);
       /* This is to reset the contentType attr in 'appstate' variable  */
@@ -161,12 +161,12 @@ var GlobalParameterBar = Component.extend({
           /* To show 'Select All' option only if more than one options available */
           if(values[0].length<=1)
             $("input[name='selAllCountry']").closest('li').hide();
-          else 
+          else
             $("input[name='selAllCountry']").closest('li').show();
 
           if(values[1]["entities"][0]['entities'].length<=1)
             $("input[name='selAllLicensor']").closest('li').hide();
-          else 
+          else
             $("input[name='selAllLicensor']").closest('li').show();
         });
       } else {
@@ -263,13 +263,13 @@ var GlobalParameterBar = Component.extend({
         var periodFromType = periodWidgetHelper.getPeriodType(periodFrom);
         var periodToType = periodWidgetHelper.getPeriodType(periodTo)
         if(periodFromType == periodToType){
-          message = showErrorMsg(periodWidgetHelper.getFiscalPeriod(periodFrom, periodFromType), periodWidgetHelper.getFiscalPeriod(periodTo, periodFromType));           
+          message = showErrorMsg(periodWidgetHelper.getFiscalPeriod(periodFrom, periodFromType), periodWidgetHelper.getFiscalPeriod(periodTo, periodFromType));
           if(message.length <= 0){
             self.scope.changesToApply.attr('periodTo', periodWidgetHelper.getFiscalPeriod(el.val()));
           }
         }else{
           message = 'Please select the similar type for periodFrom and periodTo';
-        }  
+        }
       }else{
         message = 'Invalid Period To';
       }
@@ -413,6 +413,7 @@ var GlobalParameterBar = Component.extend({
             }
 
             self.scope.changesToApply.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(DefaultGlobalParameters.PeriodFrom).toString());
+            self.scope.changesToApply.attr('periodType', periodWidgetHelper.getPeriodType(DefaultGlobalParameters.PeriodFrom));
             self.scope.changesToApply.attr('periodFromType', periodWidgetHelper.getPeriodType(DefaultGlobalParameters.PeriodFrom));
             self.scope.changesToApply.attr('periodTo', periodWidgetHelper.getFiscalPeriod(DefaultGlobalParameters.PeriodTo));
             self.scope.changesToApply.attr('periodToType', periodWidgetHelper.getPeriodType(DefaultGlobalParameters.PeriodTo));
@@ -442,7 +443,7 @@ var validateFilters = function(appstate, validateStoreType, validateRegion, vali
     var countryId = appstate['country'];
     var licId = appstate['licensor'];
     var contGrpId = appstate['contentType'];
-    
+
     var periodFrom = appstate.attr('periodFrom');
     var periodFromType = appstate['periodFromType'];
     var periodTo = appstate.attr('periodTo');
@@ -562,7 +563,7 @@ var isDate=function(txtDate){
   var currVal = txtDate;
   if(currVal == undefined || currVal == '')
     return false;
-  //Declare Regex 
+  //Declare Regex
   //var rxDatePattern = /^(\d{1,2})(\/|-)(\d{1,2})(\/|-)(\d{4})$/;
   var rxDatePattern = /^[P-Q]{1}\d{1,2}[FY]{2}\d{2}$/;
   var dtArray = currVal.match(rxDatePattern); // is format OK?
