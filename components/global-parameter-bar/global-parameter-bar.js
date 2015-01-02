@@ -89,14 +89,21 @@ var GlobalParameterBar = Component.extend({
       var comp = 'from';
       this.scope.attr('errorMessage', '');
       this.scope.changesToApply.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(this.scope.attr('periodFrom')[0]));
-      this.scope.changesToApply.attr('periodType', periodWidgetHelper.getPeriodType(this.scope.attr('periodFrom')[0]));
-      this.scope.attr('errorMessage', showErrorMsg(this.scope.attr('periodFrom')[0], this.scope.attr('periodTo')[0]));
+      this.scope.changesToApply.attr('periodFromType', periodWidgetHelper.getPeriodType(this.scope.attr('periodFrom')[0]));
+      
+      var periodToValue = this.scope.attr('periodTo')[0] !== "undefined" ? this.scope.attr('periodTo')[0] : $('#periodFrom').val();
+
+      this.scope.attr('errorMessage', showErrorMsg(this.scope.attr('periodFrom')[0], periodToValue));
     },
     '{periodTo} change': function(el, ev) {
       var comp = 'to';
       this.scope.attr('errorMessage', '');
       this.scope.changesToApply.attr('periodTo', periodWidgetHelper.getFiscalPeriod(this.scope.attr('periodTo')[0]));
-      this.scope.attr('errorMessage', showErrorMsg(this.scope.attr('periodFrom')[0], this.scope.attr('periodTo')[0]));
+      this.scope.changesToApply.attr('periodToType', periodWidgetHelper.getPeriodType(this.scope.attr('periodTo')[0]));
+
+      var periodFromValue = this.scope.attr('periodFrom')[0] !== "undefined" ? this.scope.attr('periodFrom')[0] : $('#periodFrom').val();
+
+      this.scope.attr('errorMessage', showErrorMsg(periodFromValue, this.scope.attr('periodTo')[0]));
     },
     '#store-type select change': function(el, ev) {
       var selected = $(el[0].selectedOptions).data('storetype');
@@ -366,8 +373,9 @@ var GlobalParameterBar = Component.extend({
             }
 
             self.scope.changesToApply.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(DefaultGlobalParameters.PeriodFrom).toString());
+            self.scope.changesToApply.attr('periodFromType', periodWidgetHelper.getPeriodType(DefaultGlobalParameters.PeriodFrom));
             self.scope.changesToApply.attr('periodTo', periodWidgetHelper.getFiscalPeriod(DefaultGlobalParameters.PeriodTo));
-            self.scope.changesToApply.attr('periodType', 'P');
+            self.scope.changesToApply.attr('periodToType', periodWidgetHelper.getPeriodType(DefaultGlobalParameters.PeriodTo));
             self.scope.changesToApply.attr('storeType', DefaultGlobalParameters.StoreType);
             self.scope.changesToApply.attr('region', DefaultGlobalParameters.Region);
             self.scope.changesToApply.attr('country').replace($("#countriesFilter").val());
@@ -394,10 +402,12 @@ var validateFilters = function(appstate, validateStoreType, validateRegion, vali
     var countryId = appstate['country'];
     var licId = appstate['licensor'];
     var contGrpId = appstate['contentType'];
-    var periodType = appstate['periodType'];
+    
     var periodFrom = appstate.attr('periodFrom');
+    var periodFromType = appstate['periodFromType'];
     var periodTo = appstate.attr('periodTo');
-    var message = showErrorMsg(periodWidgetHelper.getDisplayPeriod(periodFrom, periodType), periodWidgetHelper.getDisplayPeriod(periodTo, periodType));
+    var periodToType = appstate['periodToType'];
+    var message = showErrorMsg(periodWidgetHelper.getDisplayPeriod(periodFrom, periodFromType), periodWidgetHelper.getDisplayPeriod(periodTo, periodToType));
 
     if (periodFrom.length == 0 || periodFrom.trim().length == 0) {
       return 'Invalid PeriodFrom !';
@@ -473,6 +483,7 @@ var showErrorMsg = function(periodFrom, periodTo) {
   var to = periodTo || false;
   var message1 = 'Period from is greater than period to !';
   var message2 = 'Please select one year of data !';
+  var message3 = 'Invalid Month Selection !'
 
   if (from && to) {
     var fromYear = parseInt(from.slice(-2));
@@ -500,6 +511,8 @@ var showErrorMsg = function(periodFrom, periodTo) {
       } else if (yearDiff == 0 && quarterFromValue > quarterToValue) {
         return message1;
       }
+    }else{
+      return message3;
     }
   }
   return "";
