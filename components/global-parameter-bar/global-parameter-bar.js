@@ -552,7 +552,7 @@ var showErrorMsg = function(periodFrom, periodTo) {
         return message1;
       }
     }else{
-      return message3;
+      //return message3;
     }
   }
   return "";
