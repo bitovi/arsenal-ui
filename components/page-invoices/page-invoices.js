@@ -43,7 +43,8 @@ Grid.extend({
     columns: [
       {
         id: 'invId',
-        title: '',
+        title: '<input type="checkbox" class="select-toggle-all"/> ',
+        sortable: true,
         contents: function(row) {
           return stache('{{#invId}}<input type="checkbox" value="{{invId}}" {{#if isChecked}}checked{{/if}}/>{{/invId}}')({invId: row.invId, isChecked: row.__isChecked});
         }
@@ -130,7 +131,16 @@ Grid.extend({
       var row = el.closest('tr').data('row').row;
       row.attr('__isOpen', !row.attr('__isOpen'));
       alignGrid();
-    }
+    },
+    '.select-toggle-all click': function(el, ev) {
+      ev.stopPropagation();
+      var allChecked = _.every(this.scope.rows, row => row.__isChecked ? true : false);
+      can.batch.start();
+      // open parent rows if they are closed; close them if they are open
+      this.scope.rows.each(row => row.attr('__isChecked', !allChecked));
+      can.batch.stop();
+      alignGrid();
+    },
   }
 });
 
@@ -288,6 +298,7 @@ var page = Component.extend({
               var invTemp = {};
               invTemp["invId"] = invoiceData[i]["invId"];
               invTemp["__isChild"] = false;
+              invTemp["__isChecked"] = false;
               invTemp["entityName"] = (invoiceData[i]["entityName"]==null)?"":invoiceData[i]["entityName"];
               invTemp["invoiceType"] = (invoiceData[i]["invoiceType"]==null)?"":invoiceData[i]["invoiceType"];
               invTemp["invTypeDisp"] = (invoiceData[i]["invTypeDisp"]==null)?"":invoiceData[i]["invTypeDisp"];
@@ -315,6 +326,7 @@ var page = Component.extend({
                   var invLITemp={};
                   invLITemp["invId"] = "";
                   invLITemp["__isChild"] = true;
+                  invLITemp["__isChecked"] = false;
                   invLITemp["entityName"] = "";
                   invLITemp["invoiceType"] = "";
                   invLITemp["invTypeDisp"] = "";
@@ -459,11 +471,43 @@ var page = Component.extend({
             }
 
     },
-    '.invId :checkbox change': function(item, el, ev) {
+    '.select-toggle-all change': function(){
+      var self=this;
+      if($('.select-toggle-all').is(":checked")){
+        var invoiceData = self.scope.attr().allInvoicesMap[0].invoices;
+        var invIdArr = [];
+        var unDelInvIdArr = [];
+        for(var i=0;i<invoiceData.length;i++){
+          var flag=false;
+          var statusId = invoiceData[i]["statusId"];
+          var paymentState = invoiceData[i]["paymentState"];
+          var invoiceno = invoiceData[i]["invoiceNumber"];
+          //console.log("row is "+JSON.stringify(row));
+          if(statusId==0){
+            if(paymentState==0 || paymentState==9){
+              flag=true; // Allow deleteing the invoice
+            }
+          }
+
+          invIdArr.push(invoiceData[i]["invId"]);
+          if(flag==false)
+            unDelInvIdArr.push(invoiceData[i]["invId"]);  
+        }
+
+        self.scope.attr('checkedRows').replace(invIdArr);
+        self.scope.attr('unDeletedInvoices').replace(unDelInvIdArr);
+      } else {
+        self.scope.attr('checkedRows').replace([]);
+        self.scope.attr('unDeletedInvoices').replace([]);
+      }
+    },
+    '.invId :checkbox click': function(item, el, ev) {
       var self = this;
       var val = parseInt($(item[0]).attr("value"));
       var row = item.closest('tr').data('row').row;
       var invoiceType = row.invoiceType;
+
+      $('.select-toggle-all').prop("checked", false);
 
       /* An invoice can be deleted only if it satisfies the below criteria */
       var flag=false;
@@ -484,25 +528,7 @@ var page = Component.extend({
             self.scope.attr('unDeletedInvoices').push(invoiceno);
           }
 
-          /* Load the new Payment Bundle Names based on 'Invoice Type' */
-           var bundleNamesRequest = {"bundleSearch":{}};
-            //console.log("appstate "+JSON.stringify(this.appstate));
-            var serTypeId = self.scope.appstate.attr('storeType');
-            var regId = self.scope.appstate.attr('region');
 
-            if(typeof(serTypeId)!="undefined")
-              bundleNamesRequest.bundleSearch["serviceTypeId"] = serTypeId['id'];
-
-            if(typeof(regId)=="undefined")
-              bundleNamesRequest.bundleSearch["regionId"] = "";
-            else
-              bundleNamesRequest.bundleSearch["regionId"] = regId['id'];
-
-              bundleNamesRequest.bundleSearch["type"] = invoiceType;
-
-              console.log("GetBundleNamesRequest is "+JSON.stringify(bundleNamesRequest));
-              self.scope.attr('getPaymentBundlesNames', JSON.stringify(bundleNamesRequest));
-              /*Ends Here */
       } else {
           self.scope.attr('checkedRows').each(function(value, key) {
               row.attr('__isChecked', false);
@@ -525,7 +551,7 @@ var page = Component.extend({
     },
     "{checkedRows} change": function(item,el,ev){
           var self = this;
-          //console.log(JSON.stringify(self.scope.checkedRows.attr()));
+          console.log("Checked rows "+JSON.stringify(self.scope.checkedRows.attr()));
           if(self.scope.attr('checkedRows').length > 0){
               $("#btnDelete").removeAttr("disabled");
               $("#btnAttach").removeAttr("disabled");
@@ -572,12 +598,34 @@ var page = Component.extend({
               $("#paymentBundleNames").attr("disabled","disabled");
               $("#btnSubmit").attr("disabled","disabled");
               $("#messageDiv").html("<label class='errorMessage'>Selected rows has different Invoice Types</label>");
+              $("#messageDiv").show();
           }else {
-              $("#messageDiv").text("");
+               $("#messageDiv").hide();
               if(self.scope.attr('checkedRows').length > 0){
                   $("#btnSubmit").removeAttr("disabled");
                   $("#paymentBundleNames").removeAttr("disabled");
               }
+
+              /* Load the new Payment Bundle Names based on 'Invoice Type' */
+             var invoiceType = invTypeArr[0];
+             var bundleNamesRequest = {"bundleSearch":{}};
+              //console.log("appstate "+JSON.stringify(this.appstate));
+              var serTypeId = self.scope.appstate.attr('storeType');
+              var regId = self.scope.appstate.attr('region');
+
+              if(typeof(serTypeId)!="undefined")
+                bundleNamesRequest.bundleSearch["serviceTypeId"] = serTypeId['id'];
+
+              if(typeof(regId)=="undefined")
+                bundleNamesRequest.bundleSearch["regionId"] = "";
+              else
+                bundleNamesRequest.bundleSearch["regionId"] = regId['id'];
+
+                bundleNamesRequest.bundleSearch["type"] = invoiceType;
+
+                console.log("GetBundleNamesRequest is "+JSON.stringify(bundleNamesRequest));
+                self.scope.attr('getPaymentBundlesNames', JSON.stringify(bundleNamesRequest));
+                /*Ends Here */
           }
       },
       "#inputAnalyze change": function(){
