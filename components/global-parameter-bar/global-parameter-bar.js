@@ -240,7 +240,7 @@ var GlobalParameterBar = Component.extend({
           numberDisplayed: 1,
           includeSelectAllOption: true,
           selectAllText: 'Select All',
-          selectAllValue: 'selectAll',
+          //selectAllValue: 'selectAll',
           selectAllName: 'selAllCountry',
           maxHeight: 200,
           onChange: function(option, checked, select) {
@@ -254,7 +254,7 @@ var GlobalParameterBar = Component.extend({
           numberDisplayed: 1,
           includeSelectAllOption: true,
           selectAllText: 'Select All',
-          selectAllValue: 'selectAll',
+          //selectAllValue: 'selectAll',
           selectAllName: 'selAllLicensor',
           maxHeight: 200,
           onChange: function(option, checked, select) {
@@ -266,7 +266,7 @@ var GlobalParameterBar = Component.extend({
           numberDisplayed: 1,
           includeSelectAllOption: true,
           selectAllText: 'Select All',
-          selectAllValue: 'selectAll',
+          //selectAllValue: 'selectAll',
           selectAllName: 'selAllContentType',
           maxHeight: 200,
           onChange: function(option, checked, select) {
