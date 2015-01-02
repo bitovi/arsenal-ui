@@ -94,6 +94,7 @@ var proposedonAccountGrid = Grid.extend({
       var proposedOnAccountData={};
       proposedOnAccountData.rows=this.scope.rows;
       proposedOnAccountData.checkedRows=this.scope.checkedRows;
+      proposedOnAccountData.footerrows=this.scope.footerrows;
 
       $(this.element).trigger('onSelected', proposedOnAccountData);
     },
@@ -123,6 +124,7 @@ var proposedonAccountGrid = Grid.extend({
                  var rows = self.scope.request.rows;
                  var deletableRows = self.scope.request.deletableRows;
                  var editableRows = self.scope.request.editableRows;
+                 var footerrows = self.scope.request.footerrows;
                  var type =self.scope.type;
                  //console.log(self.scope.request.rows);
                  var quarters = self.scope.request.quarters;
@@ -145,6 +147,7 @@ var proposedonAccountGrid = Grid.extend({
                  
                if(type == 'DELETE'&& deletableRows != undefined && deletableRows.length >0){
                   self.scope.rows.replace(deletableRows);
+                  self.scope.footerrows.replace(footerrows);
                }else if(type == 'EDIT' && editableRows != undefined && editableRows.length>0){
                     for(var i=0;i<editableRows.length;i++){
                       if(editableRows[i].__isChecked != undefined && editableRows[i].__isChecked){
@@ -154,6 +157,7 @@ var proposedonAccountGrid = Grid.extend({
                       //console.log('Editable Rows')
                      // console.log(editableRows);
                       self.scope.rows.replace(editableRows);
+                      self.scope.footerrows.replace(footerrows);
                }else{
                     self.scope.rows.replace(self.scope.request.rows);
                     self.scope.footerrows.replace(self.scope.request.footerRows);

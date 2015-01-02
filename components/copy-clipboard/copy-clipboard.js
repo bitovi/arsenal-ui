@@ -11,13 +11,38 @@ var copyClipboard = Component.extend({
    
  },
   init:function(){
-   
-  
     
-   },
+  },
   events:{
     '.clipboardClose click':function(){
-          $('copy-clipboard').hide();
+       $('copy-clipboard').slideUp(function(){
+            $('body').css('overflow','auto');
+       });
+    },
+    '#copyall click':function(){
+        var el = $('#clonetable'), range, sel;
+        function selectElementContents(el) {
+        var body = document.body, range, sel;
+        if (document.createRange && window.getSelection) {
+            range = document.createRange();
+            sel = window.getSelection();
+            sel.removeAllRanges();
+            try {
+                range.selectNodeContents(el);
+                sel.addRange(range);
+            } catch (e) {
+                range.selectNode(el);
+                sel.addRange(range);
+            }
+        } else if (body.createTextRange) { 
+            range = body.createTextRange(); 
+            range.moveToElementText(el);
+            range.select();
+            range.execCommand("Copy");
+        }
+        return; 
+      }
+      selectElementContents(document.getElementById('dynamic'))
     }
    },
   helpers:function(){

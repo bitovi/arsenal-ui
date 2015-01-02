@@ -130,14 +130,14 @@ var newOnAccountGrid = Grid.extend({
         mainRows.rows=this.scope.rows;
         $(this.element).trigger('onSelected', mainRows);
         //Row got updated to the page to the grid component  
-      },
-      'td input keydown':function(el, ev){
-        ev.preventDefault();
-        $('#newonAccountGrid td').attr('tabindex','-1');
-        if(event.keyCode == 9){
-           el.parent().next().find('input').focus();
-        }
       }
+      // 'td input keydown':function(el, ev){
+      //   ev.preventDefault();
+      //   $('#newonAccountGrid td').attr('tabindex','-1');
+      //   if(event.keyCode == 9){
+      //      el.parent().next().find('input').focus();
+      //   }
+      // }
     }
 });
 
