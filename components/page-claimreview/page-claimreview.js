@@ -45,7 +45,7 @@ Grid.extend({
       },
       {
         id: 'currency',
-        title: 'Currency',
+        title: 'CCY',
         sortable: true
       },
       {

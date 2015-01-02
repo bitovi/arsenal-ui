@@ -415,7 +415,7 @@ var page = Component.extend({
           }
 
           if(flag==false) {
-            $("#messageDiv").html("<label class='errorMessage'>"+invoiceno+" : Cannot edit the invoice </label>");
+            $("#messageDiv").html("<label class='errorMessage'>Invoice can't be edited as its in transit</label>");
             $("#messageDiv").show();
             setTimeout(function(){
                 $("#messageDiv").hide();
@@ -737,7 +737,17 @@ var page = Component.extend({
         var bundleLines = [];
         for(var i=0;i<invoiceData.length;i++){
             var invId = invoiceData[i]["invId"];
+            var paymentState = invoiceData[i]["paymentState"];
             if(invoiceData.length > 0 && selInvoices.indexOf(invId)>-1) {
+                /* The below condition is to check if an invoice is already Bundled */
+                if(paymentState!=0){
+                  $("#messageDiv").html("<label class='errorMessage'>Only unbundled invoice can be bundled</label>")
+                  $("#messageDiv").show();
+                   setTimeout(function(){
+                      $("#messageDiv").hide();
+                   },4000);
+                   return false;
+                }
                 var lineType = invoiceData[i]["invoiceType"];
                 var periodType = invoiceData[i]["periodType"];
 
@@ -887,7 +897,13 @@ var page = Component.extend({
                             $("#loading_img").hide();
                           }
                       }else{
-                        self.scope.checkedRows.replace([]); //Reset Checked rows scope variable
+                        $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>");
+                        $("#messageDiv").show();
+                        setTimeout(function(){
+                            $("#messageDiv").hide();
+                        },4000);
+
+                        self.scope.checkedRows.replace([]); //Reset Checked rows scope variable  
                         if(parseInt(invSearchRequest.searchRequest["offset"])==0){
                           self.scope.allInvoicesMap.replace(data);
                         } else{
