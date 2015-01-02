@@ -855,6 +855,7 @@ var page = Component.extend({
 		                       	$("#breakrow"+rowindex+" #inputContent").attr("id","inputContent"+rowindex).val(invoiceData.invoiceLines[i].contentGrpId);
 		                       	if(self.scope.attr("invoicetypeSelect") == "2"){
 		                       		self.scope.contentTypeStore.attr("inputContent"+rowindex, invoiceData.invoiceLines[i].adhocTypeId);
+		                       		$("#breakrow"+rowindex+" #inputContent"+rowindex).val(invoiceData.invoiceLines[i].adhocTypeId);
 								}
 						 		else
 						 		{
