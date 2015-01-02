@@ -15,7 +15,7 @@ var requestHelper = {
       requestTimeStamp: (new Date()).getTime()
     });
 
-    console.log(JSON.stringify(userRequest));
+    //console.log(JSON.stringify(userRequest));
     return userRequest;
   },
   formGlobalRequest: function(appstate){

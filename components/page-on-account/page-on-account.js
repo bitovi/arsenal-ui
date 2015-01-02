@@ -35,7 +35,6 @@ fileUpload.extend({
     },
   events:{
       'inserted': function (){
-        //alert('hi');
         //this.scope.fileList.replace(this.scope.uploadedfileinfo);
         //console.log(JSON.stringify(this.scope.uploadedfileinfo.attr()));
       },
@@ -58,12 +57,10 @@ fileUpload.extend({
     },
     events:{
       'inserted': function (){
-        //alert('hi');
         //this.scope.fileList.replace(this.scope.uploadedfileinfo);
         //console.log(JSON.stringify(this.scope.uploadedfileinfo.attr()));
       },
        "{uploadedfileinfo} change":function(){
-          //alert('in');
           this.scope.fileList.replace(this.scope.uploadedfileinfo);
       }
     }
@@ -94,7 +91,7 @@ var page = Component.extend({
     quarters:[],
     csvcontent:[],
     uploadedfileinfo:[],
-    loadProposedOaccountPage:[]
+    loadProposedONAccountPage:[]
   },
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
@@ -160,7 +157,6 @@ var page = Component.extend({
           }
       },
       '{scope.appstate} change': function() {
-        //alert(this.scope.appstate.attr('globalSearch'));
          var self = this;
          if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch')){
             this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
@@ -208,7 +204,7 @@ var page = Component.extend({
                   message = validateFilters(self.scope.appstate,true,false,false,false,false);
                   self.scope.attr('errorMessage',message); 
                   if(message.length == 0){
-                      self.scope.loadProposedOaccountPage.replace('LOAD'+Date.now())
+                      self.scope.loadProposedONAccountPage.replace('LOAD'+Date.now())
                       //self.scope.attr('loadProposedOaccountPage','LOAD'+Date.now());
                   }
                 }
@@ -281,6 +277,7 @@ var page = Component.extend({
         }
       },
       "#proposedDelete click":function(el,ev){
+        var self = this;
         disableEditORDeleteButtons(true);
         var req = this.scope.request;
         var quarters = this.scope.attr('quarters');
@@ -308,7 +305,7 @@ var page = Component.extend({
               displayMessage(data["responseText"],true);
               //req.attr('deletableRows',rows);
               //$('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
-              self.scope.attr('loadProposedOaccountPage','LOAD'+Date.now());
+              self.scope.loadProposedONAccountPage.replace('LOAD'+Date.now())
           }
           else{
             // var details = data.onAccount.onAccountDetails;
@@ -427,8 +424,7 @@ var page = Component.extend({
             console.error("Error while executing Copy onAccount domain service "+xhr);
           });
       },
-      "{loadProposedOaccountPage} change": function(){
-          //alert('hi');
+      "{loadProposedONAccountPage} change": function(){
           var self = this;
           //var quarters = self.scope.quarters;         
           self.scope.attr('showLoadingImage',true);
@@ -482,7 +478,6 @@ var page = Component.extend({
         /* documents is binded to uploadedfileinfo in <rn-file-uploader uploadedfileinfo="{documents}"></rn-file-uploader> */
         /* IF the uploadedfileinfo is changed in rn-file-uploader component, documents gets updated automatically and this change event triggered. */
          // console.log("docu changed "+JSON.stringify(this.scope.documents.attr()));
-         //alert('hi');
       },
       '.exportToExcel click':function(el,ev){
        
