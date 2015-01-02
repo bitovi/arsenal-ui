@@ -2,9 +2,8 @@
   <div class="export-toexcel"  appstate="{appstate}" id="exportExcel"></div>
   <h1>Payment Bundle Review</h1>
   <div class="bundle-list-actions">
-    {{#if pageState.selectedBundle}}
-    <button class="delete-bundle">Delete Bundle</button>
-    <button class="add-invoice">Add Invoices To Bundle</button>
+    {{#if pageState.selectedBundle.editable}}
+      <button class="add-invoice">Add Invoices To Bundle</button>
     {{/if}}
     {{#if pageState.bundles.length}}
     <img class="excel" src="/resources/images/rn_ExcelActive@2x.png"/>

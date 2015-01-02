@@ -14,7 +14,7 @@ import WorkflowDisplay from 'components/workflow-display/';
 import PbrDeleteConfirmModal from 'components/pbr-delete-confirm-modal/';
 import PbrRemoveGroupsModal from 'components/pbr-remove-groups-modal/';
 import Alert from 'components/alert/';
-import highchartpage from 'components/highchart/';
+//import highchartpage from 'components/highchart/';
 
 import columnSets from './column-sets';
 import constants from 'utils/constants';
@@ -229,7 +229,7 @@ var BundleDetailTabs = Component.extend({
       },
     '.show-chart click': function(el, ev) {
       // show the chart
-      //{"requestFrom":"Licensor","licensorId":"CELAS","countryId":"GBR","fiscalPeriod":201307,"periodType":"P","contentType":"Music"} 
+      //{"requestFrom":"Licensor","licensorId":"CELAS","countryId":"GBR","fiscalPeriod":201307,"periodType":"P","contentType":"Music"}
       if(this.scope.details.isChild){
           var data = this.scope.details;
           console.log("chart data");console.log(data);
