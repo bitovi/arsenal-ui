@@ -358,6 +358,7 @@ createRow:function(onAccountDetail,newRow,row){
   row['serviceTypeId']=onAccountDetail.serviceTypeId;
   row['onAccountBalance']= utils.currencyFormat(onAccountDetail.onAccountAmtTotal);
   row['cashAdjust']= utils.currencyFormat(onAccountDetail.entityCashAdjAmtTotal);
+  row['Total']= utils.currencyFormat(onAccountDetail.onAccountAmtTotal);
   var period = this.getDisplayPeriod(onAccountDetail.fiscalPeriod);
   row[period]=utils.currencyFormat(onAccountDetail.onAccountAmt);
   return row;
@@ -416,7 +417,7 @@ getDisplayPeriod: function(quarter){
     footerRow={};
   } 
   if(isParent){
-    footerRow["Licensor"]= "Total";
+    footerRow["Licensor"]= "Total in Regional currency";
     footerRow["__isChild"]=false;
   }else{
     footerRow["Licensor"]= "";
@@ -427,6 +428,7 @@ getDisplayPeriod: function(quarter){
   footerRow["onAccountBalance"]=utils.currencyFormat(footerData.onAccountAmtTotal);
   footerRow["cashAdjust"]=utils.currencyFormat(footerData.entityCashAdjAmtTotal);
   footerRow["tfooter"]=true;
+  footerRow['Total']= utils.currencyFormat(footerData.onAccountAmtTotal);
   var period = this.getDisplayPeriod(footerData.fiscalPeriod);
   footerRow[period]=utils.currencyFormat(footerData.onAccountAmt);
   return footerRow;

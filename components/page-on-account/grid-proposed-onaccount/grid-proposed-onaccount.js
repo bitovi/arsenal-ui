@@ -143,7 +143,13 @@ var proposedonAccountGrid = Grid.extend({
                   self.scope.columns.push(column);
                  }
 
-                    self.scope.quarters.replace(quarters);
+                  var column={
+                    id:"Total",
+                    title:'Total'
+                  };
+                  self.scope.columns.push(column);
+
+                  self.scope.quarters.replace(quarters);
                  
                if(type == 'DELETE'&& deletableRows != undefined && deletableRows.length >0){
                   self.scope.rows.replace(deletableRows);
