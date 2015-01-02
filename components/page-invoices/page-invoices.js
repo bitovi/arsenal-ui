@@ -956,11 +956,11 @@ function alignGrid(){
   if(rowLength>0){
       for(var i=1;i<=colLength;i++){
         var tdWidth = $('#invoiceGrid table>tbody>tr>td:nth-child('+i+')').outerWidth();
-        if(i==1)
+        if(i==1) //For the column holding 'check box'
           tdWidth = 35;
-        if(i==2)
+        if(i==2) // For the footer column hold 'Total in Regional Currency'
           tdWidth = 225;
-        if(i>1 && tdWidth<125)
+        if(i>1 && tdWidth<125) // For all other columns which has the size less than 125px
           tdWidth = 125;
         if(i==11 && tdWidth<150) //For the title 'Payment Bundle Name'
           tdWidth = 150;
