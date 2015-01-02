@@ -962,6 +962,8 @@ function alignGrid(){
           tdWidth = 225;
         if(i>1 && tdWidth<125)
           tdWidth = 125;
+        if(i==11 && tdWidth<150) //For the title 'Payment Bundle Name'
+          tdWidth = 150;
         //console.log("td "+i+" width "+$('#invoiceGrid table>tbody>tr>td:nth-child('+i+')').outerWidth());
         $('#invoiceGrid table>thead>tr>th:nth-child('+i+')').css("width",tdWidth);
         $('#invoiceGrid table>tbody>tr>td:nth-child('+i+')').css("width",tdWidth);
