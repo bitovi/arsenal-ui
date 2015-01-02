@@ -132,35 +132,42 @@ var GlobalParameterBar = Component.extend({
       self.scope.attr('errorMessage', '');
       var selected = $(el[0].selectedOptions).data('region');
       self.scope.changesToApply.attr('region', selected);
-      //console.log("region id is "+JSON.stringify(selected.id));
-      Promise.all([
-        Country.findAll(UserReq.formRequestDetails({
-          "regionId": selected.id
-        })),
-        Licensor.findAll(UserReq.formRequestDetails({
-          "regionId": selected.id
-        }))
-      ]).then(function(values) {
-        //console.log(JSON.stringify(values[1]["entities"][0]['entities'].attr()));
-        if (values[0].length == 0 && values[1].length == 0) {
-          self.scope.attr('errorMessage', ' No data available for search criteria !');
-        }
-        self.scope.countries.replace(values[0]);
-        self.scope.licensors.replace(values[1]["entities"]);
+      //console.log("region id is "+JSON.stringify(selected));
+      if(selected != undefined){
+        Promise.all([
+          Country.findAll(UserReq.formRequestDetails({
+            "regionId": selected.id
+          })),
+          Licensor.findAll(UserReq.formRequestDetails({
+            "regionId": selected.id
+          }))
+        ]).then(function(values) {
+          //console.log(JSON.stringify(values[1]["entities"][0]['entities'].attr()));
+          if (values[0].length == 0 && values[1].length == 0) {
+            self.scope.attr('errorMessage', ' No data available for search criteria !');
+          }
+          self.scope.countries.replace(values[0]);
+          self.scope.licensors.replace(values[1]["entities"]);
+          $("#countriesFilter").multiselect('rebuild');
+          $("#licensorsFilter").multiselect('rebuild');
+
+          /* To show 'Select All' option only if more than one options available */
+          if(values[0].length<=1)
+            $("input[name='selAllCountry']").closest('li').hide();
+          else 
+            $("input[name='selAllCountry']").closest('li').show();
+
+          if(values[1]["entities"][0]['entities'].length<=1)
+            $("input[name='selAllLicensor']").closest('li').hide();
+          else 
+            $("input[name='selAllLicensor']").closest('li').show();
+        });
+      } else {
+        self.scope.countries.replace([]);
+        self.scope.licensors.replace([]);
         $("#countriesFilter").multiselect('rebuild');
         $("#licensorsFilter").multiselect('rebuild');
-
-        /* To show 'Select All' option only if more than one options available */
-        if(values[0].length<=1)
-          $("input[name='selAllCountry']").closest('li').hide();
-        else 
-          $("input[name='selAllCountry']").closest('li').show();
-
-        if(values[1]["entities"][0]['entities'].length<=1)
-          $("input[name='selAllLicensor']").closest('li').hide();
-        else 
-          $("input[name='selAllLicensor']").closest('li').show();
-      });
+      }
       /* This is to reset the country & licensor attr in 'appstate' variable  */
       this.scope.changesToApply.removeAttr('country');
       this.scope.changesToApply.removeAttr('licensor');
