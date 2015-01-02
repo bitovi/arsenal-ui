@@ -401,12 +401,12 @@ getDisplayPeriod: function(quarter){
           //footerRow[footerData[i].fiscalPeriod]=utils.currencyFormat(footerData[i].onAccountAmt);
         }
       }else{
-           previousCurrency=currency;
           if(i!=0){
             footerRows.push(footerRow);
           }
         footerRow=this.createNewFooterRow(footerData[i],true,"",parent);
       }
+      previousCurrency=currency;
     }
     footerRows.push(footerRow);
     return footerRows;

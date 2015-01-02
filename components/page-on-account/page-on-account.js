@@ -160,7 +160,7 @@ var page = Component.extend({
           }
       },
       '{scope.appstate} change': function() {
-        alert(this.scope.appstate.attr('globalSearch'));
+        //alert(this.scope.appstate.attr('globalSearch'));
          var self = this;
          if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch')){
             this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
@@ -428,7 +428,7 @@ var page = Component.extend({
           });
       },
       "{loadProposedOaccountPage} change": function(){
-          alert('hi');
+          //alert('hi');
           var self = this;
           //var quarters = self.scope.quarters;         
           self.scope.attr('showLoadingImage',true);
