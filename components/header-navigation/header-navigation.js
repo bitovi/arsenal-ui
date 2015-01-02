@@ -5,7 +5,7 @@ import styles from './header-navigation.less!';
 import roles from 'models/roles/';
 import GlobalParameterBar from 'components/global-parameter-bar/';
 import Bookmark from 'components/bookmark/';
-
+import UserReq from 'utils/request/';
 
 var headerNavigation = Component.extend({
     tag: 'header-navigation',
@@ -16,11 +16,12 @@ var headerNavigation = Component.extend({
         roles: [],
         allowedScreenId : []
     },
-    init: function() { 
+    init: function() {
       var self = this;
-
+      var genObj = {};
+      
       Promise.all([
-        roles.findAll()
+        roles.findAll(UserReq.formRequestDetails(genObj))
 
         ]).then(function(values) {
 
@@ -43,7 +44,7 @@ var headerNavigation = Component.extend({
           });
         },
     events:{
-      '.bookmark click':function(){ 
+      '.bookmark click':function(){
           $('book-mark').slideToggle('fast');
       },
      '#homemenu li a click':function(btn){
@@ -86,8 +87,7 @@ var headerNavigation = Component.extend({
         }
       },
       '{appstate} change':function(el){
-        $('#dynamicmenu li a').removeClass('submenuactive');
-        $('#dynamicmenu li a[href$="'+el.page+'"]').addClass('submenuactive');
+        if(el.navigationRequired) traverseSubMenu(el.page);
       }
   },
     helpers: {
@@ -108,6 +108,7 @@ var headerNavigation = Component.extend({
         }
     }
 });
+
 var changeMenu = function(mainmenu_txt){
     var test = '<li><ul id="dropdown"></ul></li>',addcls;
     var temp ='<li class="show active"><a id="show">'+mainmenu_txt+'<span class="activemenu">></span>'+'</a></li>'+$(test).html();
@@ -125,13 +126,51 @@ var changeMenu = function(mainmenu_txt){
             }
         });
 
-     
+
 
        $('#dynamicmenu').empty().append(temp);
        $('#dropdown').empty().append($('#homemenu').html());
        $( "#dropdown li[name*='"+mainmenu_txt+"']").hide()
 
 };
+
+//traverseSubMenu is need to look for the mainMenu to looked and and sub menu to be selected.
+// This will only be trigerred when the appstate.navigationRequired is set true
+var traverseSubMenu = function(pageLoad){
+  if(pageLoad == "null") return false;
+
+  var mainMenu = "";
+  var subMenu = "";
+
+
+  if(pageLoad == "dashboard"){
+    mainMenu = pageLoad;
+  }else{
+    $.each(menu,function(i,el){
+        if(el.submenu != undefined)
+        {
+            $.each(el.submenu,function(i,el){
+              if(el.id == pageLoad){
+                subMenu = el.value;
+                return false;
+              }
+            });
+
+          if(subMenu != ""){
+            mainMenu = el.value;
+            console.log("Page : Main : "+mainMenu+", subMenu:> "+subMenu)
+            return false;
+          }
+        }
+    });
+  }
+
+  changeMenu(mainMenu);
+  $('#dynamicmenu li a[href$="'+pageLoad+'"]').addClass('submenuactive');
+
+};//------traverseSubMenu: end
+
+
 var  menu =[{
     "id": "dashboard",
    "value": "Dashboard",

@@ -210,7 +210,8 @@ var page = Component.extend({
 
     },
     '.btn-holesReport click': function() {
-      this.scope.appstate.attr('page','dashboard');
+      commonUtils.navigateTo("dashboard");
+      // this.scope.appstate.attr('page','dashboard');
     },
     '.btn-OverRep click': function() {
         window.open(RinsCommon.RINS_OLD_URL+'overRepConfig');
