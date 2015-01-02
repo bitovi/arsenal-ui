@@ -103,8 +103,8 @@ var GlobalParameterBar = Component.extend({
 
       /* Change the Content types based on Store Type */
       var allContentTypes = this.scope.allContentTypes.attr();
+      var newContentTypes = [];
       if (selected != undefined) {
-        var newContentTypes = [];
         for (var i = 0; i < allContentTypes.length; i++) {
           if (allContentTypes[i]["serviceTypeId"] == selected.id) {
             newContentTypes.push(allContentTypes[i]);
@@ -116,6 +116,12 @@ var GlobalParameterBar = Component.extend({
       }
       setTimeout(function() {
         $("#contentTypesFilter").multiselect('rebuild');
+
+        /* To show 'Select All' only if more than one options available */
+        if(newContentTypes.length<=1)
+          $("input[name='selAllContentType']").closest('li').hide();
+        else 
+          $("input[name='selAllContentType']").closest('li').show();
       }, 1000);
       /* This is to reset the contentType attr in 'appstate' variable  */
       this.scope.changesToApply.removeAttr('contentType');
@@ -134,6 +140,7 @@ var GlobalParameterBar = Component.extend({
           "regionId": selected.id
         }))
       ]).then(function(values) {
+        //console.log(JSON.stringify(values[1]["entities"][0]['entities'].attr()));
         if (values[0].length == 0 && values[1].length == 0) {
           self.scope.attr('errorMessage', ' No data available for search criteria !');
         }
@@ -141,6 +148,17 @@ var GlobalParameterBar = Component.extend({
         self.scope.licensors.replace(values[1]["entities"]);
         $("#countriesFilter").multiselect('rebuild');
         $("#licensorsFilter").multiselect('rebuild');
+
+        /* To show 'Select All' option only if more than one options available */
+        if(values[0].length<=1)
+          $("input[name='selAllCountry']").closest('li').hide();
+        else 
+          $("input[name='selAllCountry']").closest('li').show();
+
+        if(values[1]["entities"][0]['entities'].length<=1)
+          $("input[name='selAllLicensor']").closest('li').hide();
+        else 
+          $("input[name='selAllLicensor']").closest('li').show();
       });
       /* This is to reset the country & licensor attr in 'appstate' variable  */
       this.scope.changesToApply.removeAttr('country');
