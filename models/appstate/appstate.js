@@ -36,7 +36,7 @@ var stateDefaults = {
     permissions:[],
     secretKey: 'f4166789-30bb-4e12-9973-a76376745096'
   },
-  userInfo1:undefined,
+
   page: null,
   navigationRequired: false,
   periodFrom: undefined,
