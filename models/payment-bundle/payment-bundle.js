@@ -255,6 +255,7 @@ var PaymentBundle = Model.extend({
     if(bundleData.bdlFooter) {
       delete bundleData.bdlFooter.paymentCcy;
       delete bundleData.bdlFooter.isFooterRow;
+      delete bundleData.bdlFooter.view;
       bundleData.bdlFooter.bdlFooterDetails.forEach(function(detail) {
         delete detail.__isChild;
         delete detail.__isOpen;

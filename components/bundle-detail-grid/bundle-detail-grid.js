@@ -33,6 +33,7 @@ var BundleDetailGrid = Grid.extend({
       var rows = [];
       if(bundle.bundleFooter) {
         bundle.bundleFooter.attr("isFooterRow",true);
+        bundle.bundleFooter.attr("view",bundle.view);
         rows.push(bundle.bundleFooter);
         bundle.bundleFooter.bdlFooterDetails.forEach(function(detail) {
           detail.attr('__isChild', true);
