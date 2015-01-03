@@ -33,6 +33,7 @@ var page = Component.extend({
     isPageSearch: undefined,
     refreshBundles: _.debounce(function() {
       if(this.scope.isPageSearch != this.scope.appstate.globalSearch) {
+        
         this.scope.appstate.attr('excelOutput',false);
         this.scope.isPageSearch  = this.scope.appstate.globalSearch;
          PaymentBundle.findAll({appstate: this.scope.appstate}).then(function(bundles) {
