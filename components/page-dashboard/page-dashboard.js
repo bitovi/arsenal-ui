@@ -8,22 +8,60 @@ import DashboardApprovals from 'components/dashboard-payments/';
 
 import template from './template.stache!';
 import styles from './page-dashboard.less!';
+import fieldPermission from 'utils/fieldPermission';
 
 var page = Component.extend({
   tag: 'page-dashboard',
   template: template,
   scope: {
-    appstate: null, // passed in
-    tabs: [{
-      text: 'Approvals'
-    }, {
-      text: 'Invoices Received'
-    }, {
-      text: 'Payments'
-    }],
-    selectedTab: null
+    appstate:undefined,  // passed in
+    role :"",
+    screenId: 10,
+    tabs: [
+    {
+      text: 'Approvals',
+      id: 1
+    },
+
+    {
+      text: 'Invoices Received',
+      id:2
+    }
+    ,
+    {
+      text: 'Payments',
+      id:3
+    }
+
+    ],
+    selectedTab: null,
+
   },
+
+  init: function(){
+    for(var i=0; i<this.scope.tabs.length; i++)
+    {
+      var screenId = this.scope.attr("screenId") ;
+      var fieldId = this.scope.tabs[i].id ;
+
+      var attr = fieldPermission.formRequestDetails(fieldId,screenId);
+
+      if(attr == 'hidden')
+      {
+        this.scope.tabs.splice(i, 1);
+
+      }
+
+    }
+
+   },
+
   helpers: {
+    getFieldAttribute:function(fieldId){
+      var role = this.attr("role") ;
+      return fieldPermission.formRequestDetails(fieldId,this.attr("screenId"),role);
+
+    },
     ifSelectedTab: function(tabText, options) {
       return this.attr('selectedTab').text === tabText ? options.fn(this) : '';
     }

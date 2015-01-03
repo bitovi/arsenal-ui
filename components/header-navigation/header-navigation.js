@@ -19,7 +19,7 @@ var headerNavigation = Component.extend({
     init: function() {
       var self = this;
       var genObj = {};
-      
+
       Promise.all([
         roles.findAll(UserReq.formRequestDetails(genObj))
 
@@ -28,6 +28,9 @@ var headerNavigation = Component.extend({
           var role = {
             permissions: values[0]
           };
+          //added
+          self.scope.appstate.userInfo.permissions = role;
+          //end
           self.scope.appstate.userInfo.attr(role);
 
           console.log("role="+ role);
