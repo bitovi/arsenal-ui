@@ -15,9 +15,12 @@
   {{/validationStatus}}
   {{/if}}
   <div class="bundle-detail-actions">
-    {{#canRemoveInvoice}}
-    <button class="remove-invoice">Remove Invoice From Bundle</button>
-    {{/canRemoveInvoice}}
+    {{#if pageState.selectedBundle.editable}}
+      {{#canRemoveInvoice}}
+        <button class="remove-invoice">Remove Invoice From Bundle</button>
+      {{/canRemoveInvoice}}
+    {{/if}}
+
     {{#canShowChart}}
     <img class="show-chart" src="/resources/images/rn_BundleActive@2x.png"/>
     {{/canShowChart}}
@@ -58,14 +61,20 @@
     <div class="buttons">
     {{#isBM}}
 
-      {{#pendingWithBM}}
+      {{#if pageState.selectedBundle.deletable}}
         <button class="{{canProceed}}"  data-action="delete">Delete</button>
-      {{else}}
+      {{/if}}
+
+      {{#if pageState.selectedBundle.recallable}}
         <button class="{{canProceed}}"  data-action="recall">Recall</button>
-      {{/pendingWithBM}}
+      {{/if}}
 
       <button class="{{canProceed}}" data-action="approve">Propose</button>
     {{else}}
+      {{#if pageState.selectedBundle.recallable}}
+        <button class="{{canProceed}}"  data-action="recall">Recall</button>
+      {{/if}}
+
       <button class="{{canProceed}}" data-action="reject">Reject</button>
       <button class="{{canProceed}}" data-action="approve">Approve</button>
     {{/isBM}}
