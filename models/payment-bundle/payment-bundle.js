@@ -156,15 +156,22 @@ var PaymentBundle = Model.extend({
       paymentType,
       view
     }).then(function(bundle) {
-      bundle = bundle.hasOwnProperty('responseCode') ? bundle.paymentBundle : bundle;
-      // merge all those new properties into this one
-      can.batch.start();
-      self.attr(bundle.attr());
-      self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
-      self.attr('bundleFooter', transformFooter(bundle.bdlFooter));
-      can.batch.stop();
+      if(bundle.status == "FAILURE" ){
 
-      return self;
+        console.error(bundle.responseText);
+
+      }else{
+        bundle = bundle.hasOwnProperty('responseCode') ? bundle.paymentBundle : bundle;
+
+        // merge all those new properties into this one
+        can.batch.start();
+        self.attr(bundle.attr());
+        self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
+        self.attr('bundleFooter', transformFooter(bundle.bdlFooter));
+        can.batch.stop();
+     }
+
+     return self;
     });
   },
   getValidations: function(view) {
