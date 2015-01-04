@@ -216,6 +216,7 @@ var GlobalParameterBar = Component.extend({
       var self = this;
       //      self.scope.appstate.attr('periodFrom', $('#periodFrom').val());
       //      self.scope.appstate.attr('periodTo', $('#periodTo').val());
+      //$('.errorOnAccount').html('');
       var message = validateFilters(self.scope.changesToApply, false, true, false, false, false)
       self.scope.attr('errorMessage', message);
 
@@ -463,7 +464,7 @@ var validateFilters = function(appstate, validateStoreType, validateRegion, vali
     }
 
     if (validateRegion && (regId == null || regId == undefined)) {
-      return 'Invalid Region !';
+      return 'Please select Region !';
     }
 
     if (validateCountry && (countryId == null || countryId == undefined)) {

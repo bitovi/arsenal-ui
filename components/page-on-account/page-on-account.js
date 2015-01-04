@@ -159,6 +159,7 @@ var page = Component.extend({
       },
       '{scope.appstate} change': function() {
          var self = this;
+         self.scope.attr('errorMessage',message); 
          if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch')){
             this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
             var genObj = {};
@@ -209,10 +210,7 @@ var page = Component.extend({
                       //self.scope.attr('loadProposedOaccountPage','LOAD'+Date.now());
                   }
                 }
-          }else{
-            self.scope.attr('errorMessage',''); 
-          }
-          
+          }       
       },
       "#onAccountBalance click":function(el, ev){
         ev.preventDefault();
@@ -714,8 +712,8 @@ var validateFilters=function(appstate,validateQuarter,validateStoreType,validate
 
       if(validateContentType && (contGrpId == null || contGrpId == undefined || contGrpId == "")){
         return "Invalid contentType !";
-      }else if(validateContentType && (contGrpId == undefined && contGrpId.attr() == null || contGrpId.attr() =="")){
-        return "Invalid contentType !";
+      }else if(validateContentType && (contGrpId == undefined && contGrpId.attr() == null || contGrpId.attr() =="") && contGrpId.attr().length ==0){
+        return "Please select contentType !";
       }else if(validateContentType && (contGrpId.attr().length >1 )){
         return "Please select single contentType !";
       }
