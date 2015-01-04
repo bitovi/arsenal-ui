@@ -142,6 +142,7 @@ var page = Component.extend({
               bundleRequest.regionId = regId['id'];
               bundleRequest.periodFrom = self.scope.appstate.attr('periodFrom');
               bundleRequest.periodTo=self.scope.appstate.attr('periodTo');
+              bundleRequest.periodType=self.scope.appstate.attr('periodType');
               bundleRequest.bundleType ="ON_ACCOUNT";
               newBundleNameRequest["paymentBundle"] = bundleRequest;
               self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
