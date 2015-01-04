@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import stache from 'can/view/stache/';
 import _ from 'lodash';
-//import Currency from 'models/common/currency/';
 import UserReq from 'utils/request/';
 import utils from 'components/page-on-account/utils';
 
@@ -90,16 +89,6 @@ var newOnAccountGrid = Grid.extend({
                 };
                 self.scope.columns.push(totalcolumn);
                 self.scope.quarters.replace(quarters);
-
-
-              // var genObj = {};
-              // genObj["licensorId"]=self.scope.request.searchRequest.entityId.attr().toString();
-              //  Currency.findAll(UserReq.formRequestDetails(genObj)).then(function(data) {
-              //  //console.log(JSON.stringify(data.attr()));
-              // // console.log(JSON.stringify(data.licensorCurrencies.attr()));
-              //  var rows = frameRows(data.licensorCurrencies,quarters);
-              //   self.scope.rows.replace(rows);
-              // });
               self.scope.rows.replace(self.scope.request.rows);
 
           }

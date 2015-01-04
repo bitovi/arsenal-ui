@@ -62,8 +62,6 @@ var proposedonAccountGrid = Grid.extend({
 
   helpers: {
     cellContents:function(row, column){
-      //console.log(type);
-      //console.log(row.__isEditable);
       if(column.editable && row.__isChecked && row.__isEditable) {
         return stache('<input class="editing" value="{{value}}"/>')({value: column.getEditingValue(row,column.title)});
       } else {
@@ -164,27 +162,11 @@ var proposedonAccountGrid = Grid.extend({
                           editableRows[i].attr('__isEditable',true);
                         }
                       }
-                      //console.log('Editable Rows')
-                     // console.log(editableRows);
                       self.scope.rows.replace(editableRows);
                       self.scope.footerrows.replace(footerrows);
                }else{
                     self.scope.rows.replace(self.scope.request.rows);
                     self.scope.footerrows.replace(self.scope.request.footerRows);
-   
-                  // proposedOnAccount.findAll().then(function(data) {
-                  //   //var returnValue = getUiRowsFromResponse(quarters,data);
-                  //   //var arr = $.unique(returnValue['BUNDLE_NAMES']);
-                  //   //self.scope.attr('bundleNames',arr.toString());
-
-                  //   //alert(self.scope.attr('bundleNames'));
-
-                  //   //$(self).trigger('change', arr.toString());
-                  //  // var footerRows = getFooterRows(quarters,rows);
-                  //   self.scope.rows.replace(data);
-                  //  //  self.scope.footerrows.replace(footerRows);
-                  // }); 
-                
                }
          
            }
@@ -192,94 +174,4 @@ var proposedonAccountGrid = Grid.extend({
         
   }
 });
-
-
-var getFooterRows=function(quarters,rows){
-  var periodMap = new Array();
-  var totalMap = new Array();
-  var currencies=[];
-  for(var i=0;i<rows.length;i++){
-    if(currencies[rows[i]["Currency"]] != undefined && currencies[rows[i]["Currency"]] != null){
-      periodMap = currencies[rows[i]["Currency"]];
-    }
-
-    for(var k=0; k<quarters.length;k++){
-      if(periodMap[quarters[k]] == undefined){
-        periodMap[quarters[k]] = Number(rows[i][quarters[k]]);
-      }else{
-        periodMap[quarters[k]]= Number(rows[i][quarters[k]]) + Number(periodMap[quarters[k]]);
-      }
-      if(totalMap[quarters[k]] == undefined){
-        totalMap[quarters[k]] = Number(rows[i][quarters[k]]);
-      }else{
-        totalMap[quarters[k]]= Number(rows[i][quarters[k]]) + Number(totalMap[quarters[k]]);
-      }
-
-    }
-    
-    if(periodMap["ON_ACC_BALANCE"] == undefined){
-      periodMap["ON_ACC_BALANCE"]=0;
-    }
-
-    if(periodMap["CASH_ADJUSTMENTS"] == undefined){
-      periodMap["CASH_ADJUSTMENTS"]=0;
-    }
-
-    if(totalMap["ON_ACC_BALANCE"] == undefined){
-      totalMap["ON_ACC_BALANCE"]=0;
-    }
-
-    if(totalMap["CASH_ADJUSTMENTS"] == undefined){
-      totalMap["CASH_ADJUSTMENTS"]=0;
-    }
-
-    periodMap["ON_ACC_BALANCE"]=Number(periodMap["ON_ACC_BALANCE"])+Number(rows[i]["onAccountBalance"]);
-    periodMap["CASH_ADJUSTMENTS"]=Number(periodMap["CASH_ADJUSTMENTS"])+Number(rows[i]["cashAdjust"]);
-
-    totalMap["ON_ACC_BALANCE"]=Number(totalMap["ON_ACC_BALANCE"])+Number(rows[i]["onAccountBalance"]);
-    totalMap["CASH_ADJUSTMENTS"]=Number(totalMap["CASH_ADJUSTMENTS"])+Number(rows[i]["cashAdjust"]);
-    currencies[rows[i]["Currency"]] = periodMap;
-  }
-  return frameFooter(currencies,totalMap,quarters);
-
-}
-
-var frameFooter=function(currencyPeriodArray,totalMap,quarters){
-
-  var footerRows=[];
-  var row ={};
-  var currencies= Object.keys(currencyPeriodArray);
-
-  row["Licensor"]= "Total";
-  row["Currency"]= "EUR";
-  row["ContentType"]= "";
-  for(var i=0;i<quarters.length;i++){
-    row[quarters[i]]=totalMap[quarters[i]];
-  }
-  row["onAccountBalance"]=totalMap["ON_ACC_BALANCE"];
-  row["cashAdjust"]=totalMap["CASH_ADJUSTMENTS"];
-  row["__isChild"]=false;
-  row["tfooter"]=true;
-  footerRows.push(row);
- // console.log("Total Parent Row created !");
-  for(var k=0; k<currencies.length;k++){
-
-    var childRow ={};
-    childRow["Licensor"]= "";
-    childRow["Currency"]=currencies[k];
-    childRow["ContentType"]= "";
-      for(var i=0;i<quarters.length;i++){
-        childRow[quarters[i]]=currencyPeriodArray[currencies[k]][quarters[i]];
-      }
-    childRow["onAccountBalance"]=currencyPeriodArray[currencies[k]]["ON_ACC_BALANCE"];
-    childRow["cashAdjust"]=currencyPeriodArray[currencies[k]]["CASH_ADJUSTMENTS"];
-    childRow["__isChild"]=true;
-    childRow["tfooter"]=true;
-    footerRows.push(childRow);
-  }
-
-//console.log('Footer rows are :'+JSON.stringify(footerRows));
-return footerRows;
-}
-
 export default proposedonAccountGrid;

@@ -216,7 +216,7 @@ var page = Component.extend({
       "#onAccountBalance click":function(el, ev){
         ev.preventDefault();
         this.scope.tabsClicked="ON_ACC_BALANCE";
-        $('#newonAccountGrid, #newonAccountGridComps, #proposedonAccountDiv,#proposeOnAccountGridComps, #forminlineElements,#searchDiv, #onAccountEditDeleteDiv').hide();
+        $('#newonAccountGrid, #newonAccountGridComps, #proposedonAccountDiv,#proposeOnAc           countGridComps, #forminlineElements,#searchDiv, #onAccountEditDeleteDiv').hide();
         $('#onAccountBalanceDiv').show();
        if ($("rn-onaccount-balance-grid").find("tbody>tr").length) {
            $('rn-onaccount-balance-grid tbody tr').css("outline","0px solid #f1c8c8");
@@ -359,6 +359,7 @@ var page = Component.extend({
            }
 
            var updateRequest = utils.frameUpdateRequest(self.scope.request,updatableRows,self.scope.proposedOnAccDocuments,comments,self.scope.quarters);
+           updateRequest.searchRequest=requestHelper.formGlobalRequest(self.scope.appstate).searchRequest;
             proposedOnAccount.update(requestHelper.formRequestDetails(updateRequest),"UPDATE",function(data){
             //console.log("Update response is "+JSON.stringify(data));
               if(data["status"]=="SUCCESS"){
