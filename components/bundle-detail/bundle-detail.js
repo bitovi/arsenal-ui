@@ -14,7 +14,7 @@ import WorkflowDisplay from 'components/workflow-display/';
 import PbrDeleteConfirmModal from 'components/pbr-delete-confirm-modal/';
 import PbrRemoveGroupsModal from 'components/pbr-remove-groups-modal/';
 import Alert from 'components/alert/';
-//import highchartpage from 'components/highchart/';
+import highchartpage from 'components/highchart/';
 
 import columnSets from './column-sets';
 import constants from 'utils/constants';
@@ -219,7 +219,7 @@ var BundleDetailTabs = Component.extend({
     },
     '#highChartDetails mousedown': function(item, el, ev){
       if(el.toElement.id == 'close'){
-        $("#highChartDetails").addClass("hide")
+        $("#highChartDetails").addClass("highcharts_Hide")
       }else{
         $(item[0]).addClass("draggable").parents().on('mousemove', function(e) {
           $('.draggable').offset({
