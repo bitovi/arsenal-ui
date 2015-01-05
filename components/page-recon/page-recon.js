@@ -278,7 +278,7 @@ var processRejectIngestRequest = function(scope,requestType){
         }
         //console.log(JSON.stringify((rejectSearchRequestObj)));
 
-      Promise.all(Recon.reject(rejectSearchRequestObj)).then(function(values) {
+      Promise.all([Recon.reject(rejectSearchRequestObj)]).then(function(values) {
 
         //scope.reconStatsDetailsSelected = data.reconStatsDetails;
 
@@ -289,10 +289,11 @@ var processRejectIngestRequest = function(scope,requestType){
         scope.attr("size_ingestCcidSelected", 0);
 
         if(values != null && values.length > 0) {
-          if(data.responseCode == "0000"){
+          var data = values[0];
+          if(data.responseCode == "RINS_DI_DELETE_001"){
             $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
             $("#messageDiv").show();
-            this.scope.reconRefresh[0].summaryStatsData.splice(0,1);
+            scope.reconRefresh[0].summaryStatsData.splice(0,1);
             $('.statsTable').hide();
 
             scope.attr("ingestCcidSelected").splice(0, scope.attr("ingestCcidSelected").length);
@@ -378,6 +379,8 @@ var fetchReconIngest = function(scope){
       scope.reconStatsDetailsSelected = data.reconStatsDetails
 
       scope.currencyScope.replace(data.currency);
+
+      scope.reconRefresh[0].attr("currency", data.currency[0]);
 
       $("#currency").val(data.currency[0]);
 

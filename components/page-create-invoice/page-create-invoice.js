@@ -1135,6 +1135,7 @@ var page = Component.extend({
 							     		 	self.scope.attr("regions").replace(values[4]);
 
 											});
+										self.scope.attr('invoicetypeSelect','1');
 						},
 					  	helpers: {
 					         		currentDate: function(){
