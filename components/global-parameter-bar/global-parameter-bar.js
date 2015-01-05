@@ -217,8 +217,11 @@ var GlobalParameterBar = Component.extend({
       //      self.scope.appstate.attr('periodFrom', $('#periodFrom').val());
       //      self.scope.appstate.attr('periodTo', $('#periodTo').val());
       //$('.errorOnAccount').html('');
-      var message = validateFilters(self.scope.changesToApply, false, true, false, false, false)
-      self.scope.attr('errorMessage', message);
+      var message='';
+      if (self.scope.appstate.attr('page') != 'on-account'){
+         message = validateFilters(self.scope.changesToApply, false, true, false, false, false)
+         self.scope.attr('errorMessage', message);
+      }
 
       if (message.length == 0) {
         this.scope.applyChanges(this.scope.changesToApply, this.scope.appstate);
