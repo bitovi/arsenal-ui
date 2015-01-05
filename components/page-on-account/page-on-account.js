@@ -159,7 +159,7 @@ var page = Component.extend({
       },
       '{scope.appstate} change': function() {
          var self = this;
-         self.scope.attr('errorMessage',message); 
+         self.scope.attr('errorMessage',''); 
          if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch')){
             this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
             var genObj = {};
@@ -304,7 +304,7 @@ var page = Component.extend({
               displayMessage(data["responseText"],true);
               //req.attr('deletableRows',rows);
               //$('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
-              self.scope.loadProposedONAccountPage.replace('LOAD'+Date.now())
+              self.scope.loadProposedONAccountPage.replace('LOAD'+Date.now());
           }
           else{
             // var details = data.onAccount.onAccountDetails;
@@ -363,8 +363,9 @@ var page = Component.extend({
             //console.log("Update response is "+JSON.stringify(data));
               if(data["status"]=="SUCCESS"){
                  displayMessage(data["responseText"],true);
-                  req.attr('editableRows',rows);
-                  $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
+                  //req.attr('editableRows',rows);
+                  //$('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
+                  self.scope.loadProposedONAccountPage.replace(Date.now());
                   $("#submitPOA").attr("disabled","disabled");
               }
               else{
@@ -464,10 +465,14 @@ var page = Component.extend({
                 }else{
                     $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
                      $('#proposeuploadFile').html(stache('<propose-rn-file-uploader uploadedfileinfo={docs}></propose-rn-file-uploader>')({docs:[]})); 
+                     $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj:[]}));
+                     self.scope.attr('bundleNamesForDisplay','');
                 }
             } else{
                 displayMessage(data["responseText"],false);
                 $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
+                $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj:[]}));
+                self.scope.attr('bundleNamesForDisplay','');
             }
         }, function(xhr) {
               console.error("Error while loading: proposed onAccount Details"+xhr);
