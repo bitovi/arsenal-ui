@@ -264,7 +264,7 @@ var GlobalParameterBar = Component.extend({
         var periodFromType = periodWidgetHelper.getPeriodType(periodFrom);
         var periodToType = periodWidgetHelper.getPeriodType(periodTo)
         if(periodFromType == periodToType){
-          message = showErrorMsg(periodWidgetHelper.getFiscalPeriod(periodFrom, periodFromType), periodWidgetHelper.getFiscalPeriod(periodTo, periodFromType));
+          message = showErrorMsg(periodFrom,periodTo);
           if(message.length <= 0){
             self.scope.changesToApply.attr('periodTo', periodWidgetHelper.getFiscalPeriod(el.val()));
           }
@@ -538,7 +538,7 @@ var showErrorMsg = function(periodFrom, periodTo) {
     if (from.charAt(0) === "P" && to.charAt(0) === "P") {
       var periodFromValue = periodFrom.substr(1, 2);
       var periodToValue = periodTo.substr(1, 2);
-      if (yearDiff >= 1 && periodFromValue == periodToValue) {
+      if (yearDiff >= 1 && periodToValue >= periodFromValue) {
         return message2;
       } else if (yearDiff == 0 && periodFromValue > periodToValue) {
         return message1;
@@ -546,7 +546,7 @@ var showErrorMsg = function(periodFrom, periodTo) {
     } else if (from.charAt(0) === "Q" && to.charAt(0) === "Q") {
       var quarterFromValue = periodFrom.substr(1, 1);
       var quarterToValue = periodTo.substr(1, 1);
-      if (yearDiff >= 1 && quarterFromValue == quarterToValue) {
+      if (yearDiff >= 1 && quarterToValue >= quarterFromValue) {
         //if(quarterFromValue >= quarterToValue ){
         return message2;
         //}
