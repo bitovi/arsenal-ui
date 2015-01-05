@@ -20,7 +20,7 @@
 		<div class="col-sm-6" id="uploadsummary">
 			
 			<label class="fontSize14 padL10"> iCSV Files (CSVs and PDFs)</label>
-			<rn-file-uploader uploadedfileinfo="{uploadedfileinfo}"></rn-file-uploader>
+			<rn-file-uploader-icsv-sum uploadedfileinfo="{uploadedfileinfo}"></rn-file-uploader-icsv-sum>
 		</div>
 		<div class=" verticallineDivider col-sm-6 jQfunhide" id="summaryfragment">
 			

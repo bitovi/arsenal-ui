@@ -257,7 +257,7 @@ var page = Component.extend({
 		                group:'.invdate',
 		                validators: {
 		                    notEmpty: {
-		                        message: 'Invoicedate is mandatory'
+		                        message: 'Invoice date is mandatory'
 		                    },
 		                    date: {
 			                        format: 'MM/DD/YYYY',
@@ -784,9 +784,15 @@ var page = Component.extend({
 
 				        	var $template = $('#breakrowTemplate');
 
+				        	$("[id^=breakrow]").not(":hidden").each(function(i){
+								this.remove();
+							});
+
 			         		for(var i=0;i<invoiceData.invoiceLines.length;i++){
 								self.scope.attr("rowindex",i)
 								var rowindex = self.scope.attr("rowindex");
+
+
 
 			                	var $clone = $template.clone().removeClass('hide').removeAttr('id').attr("id","breakrow"+rowindex).attr("rowid", rowindex).insertBefore($template);
 
@@ -1234,6 +1240,7 @@ var page = Component.extend({
    	 	var self = this;
    	 	var i = 1;
       this.scope.appstate.attr("renderGlobalSearch",false);
+     
 
    	 	var genObj = {};
    	 	Promise.all([
@@ -1260,6 +1267,8 @@ var page = Component.extend({
 
 		     		
 		     	     /*Getting data from icsv map*/
+
+		     	    
 
 		     	     for(var i = 0; i < icsvmap.attr().invoiceData.invoices.length; i++){
 							if(icsvmap.attr().invoiceData.invoices[i].invoiceNumber == icsvmap.attr().invoiceid){
