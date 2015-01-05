@@ -183,13 +183,15 @@ var GlobalParameterBar = Component.extend({
     '#country select change': function(el, ev) {
 
       //var selected = $(el[0].selectedOptions).data('country');
-      //console.log("Country sel id is "+$(el[0]).val());
+      console.log("Country sel id is "+$(el[0]).val());
       var selected = $(el[0]).val();
       if (selected != null) {
         this.scope.changesToApply.attr('country', selected);
       } else {
         this.scope.changesToApply.removeAttr('country');
       }
+      if($("input[name='selAllCountry']").prop("checked"))
+         this.scope.changesToApply.attr('country', ["ALL"]);
     },
     '#licensor select change': function(el, ev) {
       //var selected = $(el[0].selectedOptions).data('licensor');
@@ -198,6 +200,9 @@ var GlobalParameterBar = Component.extend({
         this.scope.changesToApply.attr('licensor', selected);
       else
         this.scope.changesToApply.removeAttr('licensor');
+
+      if($("input[name='selAllLicensor']").prop("checked"))
+         this.scope.changesToApply.attr('licensor', ["-1"]);
     },
     '#contentType select change': function(el, ev) {
       //var selected = $(el[0].selectedOptions).data('contenttype');
@@ -211,6 +216,9 @@ var GlobalParameterBar = Component.extend({
         this.scope.changesToApply.attr('contentType', formatSelected);
       } else
         this.scope.changesToApply.removeAttr('contentType');
+
+      if($("input[name='selAllContentType']").prop("checked"))
+       this.scope.changesToApply.attr('contentType', ["-1"]);
     },
     '#globalSearch click': function() {
       var self = this;
@@ -423,9 +431,20 @@ var GlobalParameterBar = Component.extend({
             self.scope.changesToApply.attr('periodToType', periodWidgetHelper.getPeriodType(DefaultGlobalParameters.PeriodTo));
             self.scope.changesToApply.attr('storeType', DefaultGlobalParameters.StoreType);
             self.scope.changesToApply.attr('region', DefaultGlobalParameters.Region);
-            self.scope.changesToApply.attr('country').replace($("#countriesFilter").val());
-            self.scope.changesToApply.attr('licensor').replace($("#licensorsFilter").val());
-            self.scope.changesToApply.attr('contentType').replace(formatContentType);
+            if(defCountry=="ALL" || defCountry=="-1")
+              self.scope.changesToApply.attr('country').replace(["ALL"]);
+            else 
+              self.scope.changesToApply.attr('country').replace($("#countriesFilter").val());
+
+            if(defLicensor=="ALL" || defLicensor=="-1")
+              self.scope.changesToApply.attr('licensor').replace(["-1"]);
+            else 
+              self.scope.changesToApply.attr('licensor').replace($("#licensorsFilter").val());
+
+            if(defContentType=="ALL" || defContentType=="-1")
+              self.scope.changesToApply.attr('contentType').replace(["-1"]);
+            else 
+              self.scope.changesToApply.attr('contentType').replace(formatContentType);
 
             self.scope.applyChanges(self.scope.changesToApply, self.scope.appstate);
             //console.log("APpp state & ChangesTOAPPLY is "+JSON.stringify(self.scope.appstate.attr())+","+JSON.stringify(self.scope.changesToApply.attr()));
