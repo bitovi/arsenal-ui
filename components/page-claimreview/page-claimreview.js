@@ -312,6 +312,11 @@ var page = Component.extend({
              $("#highChartDetails").append(stache('<high-chart details={data}></high-chart>')({data}));
         }else{
           console.log('Data not set so not showing the chart');
+          $("#messageDiv").html("<label class='errorMessage'>Select child row to see the report</label>");
+          $("#messageDiv").show();
+          setTimeout(function(){
+              $("#messageDiv").hide();
+          },4000);
         }
     	},
       "#highChartDetails mousedown": function(item, el, ev){
@@ -380,7 +385,7 @@ var page = Component.extend({
           var row = item.closest('tr').data('row').row;
           //row.attr('__isSelected', true)
           var className = item.closest('tr').hasClass("child");
-           //console.log("row "+JSON.stringify(row.attr()));
+           console.log("row "+JSON.stringify(row.attr()));
            this.scope.details["countryId"]=row.country;
            this.scope.details["requestFrom"]="Licensor";
            this.scope.details["licensorId"]=row.entityId.split(",")[1];
@@ -616,7 +621,7 @@ var generateTableData = function(invoiceData,footerData){
         
         for(var i=0;i<invoiceData.length;i++){
             var invTemp = {};
-            invTemp["entityId"] = invoiceData[i]["entityId"];
+            invTemp["entityId"] = invoiceData[i]["entityId"]+","+ invoiceData[i]["entityName"];
             invTemp["__isChild"] = false;
             invTemp["entity"] = (invoiceData[i]["entityName"]==null)?"":invoiceData[i]["entityName"];
             invTemp["invoiceNum"] = "";

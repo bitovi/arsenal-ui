@@ -784,73 +784,78 @@ var page = Component.extend({
 
 				        	var $template = $('#breakrowTemplate');
 
+				        	//alert("yes");
+
+				        	var isInvlineExist = false;
+
 				        	$("[id^=breakrow]").not(":hidden").each(function(i){
-								this.remove();
+								//this.remove();
+								isInvlineExist = true;
 							});
+				        	if(!isInvlineExist){
+						        		for(var i=0;i<invoiceData.invoiceLines.length;i++){
+					         				self.scope.attr("rowindex",i)
+											var rowindex = self.scope.attr("rowindex");
 
-			         		for(var i=0;i<invoiceData.invoiceLines.length;i++){
-								self.scope.attr("rowindex",i)
-								var rowindex = self.scope.attr("rowindex");
+											var $clone = $template.clone().removeClass('hide').removeAttr('id').attr("id","breakrow"+rowindex).attr("rowid", rowindex).insertBefore($template);
 
+						                	$("#breakrow"+rowindex).attr("data-invLineId",invoiceData.invoiceLines[i].invLineId);
 
+						                	$("#breakrow"+rowindex).attr("data-lineStatus",invoiceData.invoiceLines[i].lineStatus);
+						                	
+						                                
+											$("#breakrow"+rowindex+" .amountText").attr("id","amountText"+rowindex).val(invoiceData.invoiceLines[i].lineAmount);
+					                       	self.scope.AmountStore.attr("amountText"+rowindex, invoiceData.invoiceLines[i].lineAmount);
+					                       	$("#breakrow"+rowindex+" #inputContent").attr("id","inputContent"+rowindex).val(invoiceData.invoiceLines[i].contentGrpId);
+					                       	if(self.scope.attr("invoicetypeSelect") == "2"){
+					                       		self.scope.contentTypeStore.attr("inputContent"+rowindex, invoiceData.invoiceLines[i].adhocTypeId);
+											}
+									 		else
+									 		{
+												self.scope.contentTypeStore.attr("inputContent"+rowindex, invoiceData.invoiceLines[i].contentGrpId);
+									 		}
+									 		
+									 		var servictypeid = $("#inputContent0 option:selected").attr("servicetypeid"); 
+											if (typeof servictypeid !== "undefined" && rowindex > 0) {
+												$('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
+											}
 
-			                	var $clone = $template.clone().removeClass('hide').removeAttr('id').attr("id","breakrow"+rowindex).attr("rowid", rowindex).insertBefore($template);
+									 		var displayPeriod = "";
+									 		if(invoiceData.invoiceLines[i].fiscalPeriod != null && invoiceData.invoiceLines[i].periodType != null){
+									 			 displayPeriod = periodWidgetHelper.getDisplayPeriod(invoiceData.invoiceLines[i].fiscalPeriod+'',invoiceData.invoiceLines[i].periodType);
+									 		}
+									 		
 
-			                	$("#breakrow"+rowindex).attr("data-invLineId",invoiceData.invoiceLines[i].invLineId);
+					  						$("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).val(displayPeriod).parent().append(stache('<period-calendar></period-calendar>'));
+					                       	//$("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).parent().append(stache('<period-calendar></period-calendar>'));
+					                        //console.log($("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).parent());
+					                       	self.scope.monthStore.attr("inputMonth"+rowindex, displayPeriod);
+					                      // $("#breakrow"+rowindex+" #inputYear").attr("id","inputYear"+rowindex);
+					                       	$("#breakrow"+rowindex+" #inputCountry").attr("id","inputCountry"+rowindex).val(invoiceData.invoiceLines[i].country);
+					                         self.scope.countryStore.attr("inputCountry"+rowindex, invoiceData.invoiceLines[i].country);
 
-			                	$("#breakrow"+rowindex).attr("data-lineStatus",invoiceData.invoiceLines[i].lineStatus);
-			                	
-			                                
-								$("#breakrow"+rowindex+" .amountText").attr("id","amountText"+rowindex).val(invoiceData.invoiceLines[i].lineAmount);
-		                       	self.scope.AmountStore.attr("amountText"+rowindex, invoiceData.invoiceLines[i].lineAmount);
-		                       	$("#breakrow"+rowindex+" #inputContent").attr("id","inputContent"+rowindex).val(invoiceData.invoiceLines[i].contentGrpId);
-		                       	if(self.scope.attr("invoicetypeSelect") == "2"){
-		                       		self.scope.contentTypeStore.attr("inputContent"+rowindex, invoiceData.invoiceLines[i].adhocTypeId);
-								}
-						 		else
-						 		{
-									self.scope.contentTypeStore.attr("inputContent"+rowindex, invoiceData.invoiceLines[i].contentGrpId);
-						 		}
-						 		
-						 		var servictypeid = $("#inputContent0 option:selected").attr("servicetypeid"); 
-								if (typeof servictypeid !== "undefined" && rowindex > 0) {
-									$('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
-								}
+					                       	$("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val(invoiceData.invoiceLines[i].glAccount);
 
-						 		var displayPeriod = "";
-						 		if(invoiceData.invoiceLines[i].fiscalPeriod != null && invoiceData.invoiceLines[i].periodType != null){
-						 			 displayPeriod = periodWidgetHelper.getDisplayPeriod(invoiceData.invoiceLines[i].fiscalPeriod+'',invoiceData.invoiceLines[i].periodType);
-						 		}
-						 		
+					                       	if(self.scope.attr("invoicetypeSelect") == "2"){
+												self.scope.ccidGLStore.attr("ccidGL"+rowindex, invoiceData.invoiceLines[i].glAccount);
+									 		}
+									 		else
+									 		{
+												self.scope.ccidGLStore.attr("ccidGL"+rowindex, invoiceData.invoiceLines[i].ccidName);
+									 		}
+											
+											if(rowindex != 0)
+					                       		$("#breakrow"+rowindex+" .removeRow").css("display", "block");
+												var $option   = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"]');
+					                        
+						                        $option.each(function(index){
+						                        	$('#invoiceform').bootstrapValidator('addField', $(this));
+						                        });
+										}
 
-		  						$("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).val(displayPeriod).parent().append(stache('<period-calendar></period-calendar>'));
-		                       	//$("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).parent().append(stache('<period-calendar></period-calendar>'));
-		                        //console.log($("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).parent());
-		                       	self.scope.monthStore.attr("inputMonth"+rowindex, displayPeriod);
-		                      // $("#breakrow"+rowindex+" #inputYear").attr("id","inputYear"+rowindex);
-		                       	$("#breakrow"+rowindex+" #inputCountry").attr("id","inputCountry"+rowindex).val(invoiceData.invoiceLines[i].country);
-		                         self.scope.countryStore.attr("inputCountry"+rowindex, invoiceData.invoiceLines[i].country);
-
-		                       	$("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val(invoiceData.invoiceLines[i].glAccount);
-
-		                       	if(self.scope.attr("invoicetypeSelect") == "2"){
-									self.scope.ccidGLStore.attr("ccidGL"+rowindex, invoiceData.invoiceLines[i].glAccount);
-						 		}
-						 		else
-						 		{
-									self.scope.ccidGLStore.attr("ccidGL"+rowindex, invoiceData.invoiceLines[i].ccidName);
-						 		}
-								
-								if(rowindex != 0)
-		                       		$("#breakrow"+rowindex+" .removeRow").css("display", "block");
-									var $option   = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"]');
-		                        
-			                        $option.each(function(index){
-			                        	$('#invoiceform').bootstrapValidator('addField', $(this));
-			                        });
-							}
-
-							$(".removeRow").click(function(event){
+				        			}
+			         		
+								$(".removeRow").click(function(event){
 		              	           $option.each(function(index){
 		                            	$('#invoiceform').bootstrapValidator('removeField', $(this));
 		                           	});

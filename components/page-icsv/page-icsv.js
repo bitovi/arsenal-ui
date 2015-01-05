@@ -101,18 +101,18 @@ var page = Component.extend({
       fileUpload:'',
       uploadedfileinfo:[],
       errorMessage:"@",
+      regionIdForPaymentBundle:"",
+      serviceTypeIdForPaymentBundle:"",
+      periodTypeForPaymentBundle:"",
+      periodFromForPaymentBundle:"",
+      periodToForPaymentBundle:"",
+      fetchPB:"@",
       createPBRequest: function(){
         var bundleNamesRequest = {"bundleSearch":{}};
           //console.log("fsdfsdfsdf "+JSON.stringify(this.attr('appstate')));
-            
-         
-            bundleNamesRequest.bundleSearch["serviceTypeId"] = '1';
-
-            bundleNamesRequest.bundleSearch["regionId"] = '2';
-            
+          bundleNamesRequest.bundleSearch["serviceTypeId"] = this.attr('serviceTypeIdForPaymentBundle');
+          bundleNamesRequest.bundleSearch["regionId"] = this.attr('regionIdForPaymentBundle');
           bundleNamesRequest.bundleSearch["type"] = "REGULAR_INV";
-          
-
           return JSON.stringify(bundleNamesRequest);
         }
     
@@ -124,25 +124,29 @@ var page = Component.extend({
       $('.popover').popover('destroy');
       this.scope.appstate.attr("renderGlobalSearch",false);
       icsvmap.attr("showediticsv", false);
-      
+      self.scope.attr('fetchPB',false);
     },
    events:{
       "inserted":function(){
        var self = this;
        
        icsvmap.delegate("invoiceData","change", function(ev, newVal){
-            console.log(icsvmap.attr("invoiceData"));
+            //console.log(icsvmap.attr("invoiceData"));
             if(icsvmap.attr("invoiceData"))
             {
                   var gridData = [];
                   var tempArr = icsvmap.invoiceData.invoices.attr();
-         
-           
-
+                  var lowest = 0;
+                  var highest = 0;
+                  var tmp=0;
                   for(var i=0; i< tempArr.length; i++){
                         var tempObj = {};
-                        
-                        console.log(JSON.stringify(tempArr[i].errors));
+                        //console.log(JSON.stringify(tempArr[i].errors));
+                        if(i==0){
+                          self.scope.attr('regionIdForPaymentBundle',tempArr[i].regionId);
+                          self.scope.attr('serviceTypeIdForPaymentBundle',tempArr[i].serviceTypeId);
+                          self.scope.attr('periodTypeForPaymentBundle',tempArr[i].periodType);
+                        }
                         if(tempArr[i].errors){
 
                               var errString = "";
@@ -164,10 +168,6 @@ var page = Component.extend({
 
                               tempObj.error = (errString)?errlabel+errString:"";
                           }
-
-                        
-                     
-
                         tempObj.licensor= tempArr[i].entityName;
                         tempObj.invoiceNum= tempArr[i].invoiceNumber;
                         tempObj.dueDate= tempArr[i].invoiceDueDate;
@@ -179,15 +179,24 @@ var page = Component.extend({
                         }
 
                         var contentTypeArr = [], countryArr = [];
+
                         if(typeof tempArr[i].invoiceLines !== "undefined"){
                              var invLineCount = tempArr[i].invoiceLines.length;
                             for(var j =0; j < invLineCount; j++){
                                   countryArr.push(tempArr[i].invoiceLines[j].country);
                                   contentTypeArr.push(tempArr[i].invoiceLines[j].contentGrpName);
+
+                                  //setting the mix and max fiscal period in scope for payment bundle;
+                                  if(i==0){
+                                        lowest=Number(tempArr[i].invoiceLines[j].fiscalPeriod);
+                                        highest=Number(tempArr[i].invoiceLines[j].fiscalPeriod);
+                                  }
+                                tmp = Number(tempArr[i].invoiceLines[j].fiscalPeriod);
+                                if (tmp < lowest) lowest = tmp;
+                                if (tmp > highest) highest = tmp;
                             }
                         }
                        
-
                          /*Below function is to remove the duplicate content type and find the count */
                           contentTypeArr = contentTypeArr.filter( function( item, index, inputArray ) {
                                  return inputArray.indexOf(item) == index;
@@ -208,10 +217,12 @@ var page = Component.extend({
                           else if(countryArr.length==1)
                             tempObj.country = countryArr[0];
 
-
-                        
                         gridData.push(tempObj);
                    }
+
+                        self.scope.attr('periodFromForPaymentBundle',lowest+'');
+                        self.scope.attr('periodToForPaymentBundle',highest+'');
+                        self.scope.attr('fetchPB',true);
                 }
                 else{
                   var gridData = [];
@@ -449,10 +460,10 @@ var page = Component.extend({
               var newBundleNameRequest = {"paymentBundle":{}};
               var bundleRequest = {};
 
-              bundleRequest["regionId"] = '2';
-              bundleRequest["periodFrom"] = "201303";
-              bundleRequest["periodTo"] = "201304";
-              //bundleRequest["bundleType"] =lineType;
+              bundleRequest["regionId"] = self.scope.regionIdForPaymentBundle;
+              bundleRequest["periodFrom"] = self.scope.periodFromForPaymentBundle;
+              bundleRequest["periodTo"] = self.scope.periodToForPaymentBundle;
+              bundleRequest["periodType"] =self.scope.periodTypeForPaymentBundle;
               bundleRequest["bundleType"] ="REGULAR_INV";
 
               newBundleNameRequest["paymentBundle"] = bundleRequest;

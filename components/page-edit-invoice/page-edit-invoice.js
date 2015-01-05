@@ -1272,6 +1272,7 @@ var page = Component.extend({
 
 												}
 											});
+							self.scope.attr('invoicetypeSelect','1');
 						},
 					  	helpers: {
 					         		currentDate: function(){

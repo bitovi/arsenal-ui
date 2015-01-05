@@ -862,7 +862,7 @@ var page = Component.extend({
 					   tempInvoiceData["invoiceAmount"] = self.scope.totalAmountVal;
 					   tempInvoiceData["grossTotal"] = self.scope.grossTotalStore;
 					   tempInvoiceData["finalInvoiceAmount"] = self.scope.grossTotalStore;
-					   tempInvoiceData["periodType"] = periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0));
+					   tempInvoiceData["periodType"] = ($("#inputMonth0").val() != "")?periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0)):null;
 					   tempInvoiceData["netTotal"] = self.scope.totalAmountVal;
 					   if(self.scope.tax == undefined || self.scope.tax != null || parseInt(self.scope.tax) > 0) {
 					   		tempInvoiceData["tax"] = self.scope.tax;
@@ -918,7 +918,7 @@ var page = Component.extend({
 
 								tempArry["country"] = self.scope.countryStore.attr("inputCountry"+index);
 						   		tempArry["fiscalPeriod"] = periodWidgetHelper.getFiscalPeriod($("#inputMonth"+index).val());
-						   		tempArry["periodType"] = periodWidgetHelper.getPeriodType($("#inputMonth"+index).val().charAt(0));
+						   		tempArry["periodType"] = ($("#inputMonth"+index).val() != "")?periodWidgetHelper.getPeriodType($("#inputMonth"+index).val().charAt(0)):null;
 						   		tempArry["lineAmount"] = self.scope.AmountStore.attr("amountText"+index);
 
 						   		if(self.scope.attr("invoicetypeSelect") == "2"){
@@ -1135,6 +1135,7 @@ var page = Component.extend({
 							     		 	self.scope.attr("regions").replace(values[4]);
 
 											});
+										self.scope.attr('invoicetypeSelect','1');
 						},
 					  	helpers: {
 					         		currentDate: function(){
