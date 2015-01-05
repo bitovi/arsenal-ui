@@ -28,7 +28,7 @@
 						    <div class="col-sm-4 requiredBarNone">
 
 						      <select id="invoiceType" class="form-control" can-value="invoicetypeSelect" name="invoiceType">
-
+						      			<option value="">Select</option>
 								        {{#each invoiceTypes}}
 								        	<option name="{{invoiceTypeName}}" value="{{invoiceTypeId}}">{{description}}</option>
 								       	{{/each}}
