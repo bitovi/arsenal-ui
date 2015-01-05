@@ -25,7 +25,6 @@
       <div class="box">
         <span class="parameter-name">Store Type:</span>
         <select id="storeTypesFilter" class="form-control resizeBox">
-                <option value="">Select</option>
                {{#each storeTypes}}
                   <option {{isSelected 'storetype' id}} {{data 'storetype'}}>{{value}}</option>
                 {{/each}}
