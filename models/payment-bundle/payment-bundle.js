@@ -193,41 +193,45 @@ var PaymentBundle = Model.extend({
       var rulesCompleted = 0,
           rulesTotal = 0;
 
-      can.batch.start();
-      validationResponse.paymentBundle.bundleDetailsGroup.forEach(function(group) {
-        var target = undefined;
-        // only update these if validation is done
-        if(validationResponse.paymentBundle.vldtnStatus === 5) {
-          if(group.invoiceId != undefined){
-            var target = _.find(bundle.bundleDetailsGroup, {invoiceId: group.invoiceId});
-            target.attr('validationMessages', group.vldtnMessage);
-            target.attr('validationColor', group.vldtnBatchResultColor);
-          }
-        }
+      if(validationResponse.status != "FAILURE"){ // On success
 
-        group.bundleDetails.forEach(function(detail) {
+        can.batch.start();
+        validationResponse.paymentBundle.bundleDetailsGroup.forEach(function(group) {
+          var target = undefined;
           // only update these if validation is done
-          //TODO code modification is needed when the servcice s is ready with Proper JSON.
           if(validationResponse.paymentBundle.vldtnStatus === 5) {
-            if(target != undefined ){
-              var lineTarget = _.find(target.bundleDetails, {bndlLineId: detail.bndlLineId});
-              lineTarget.attr('validationMessages', detail.vldtnMessage);
-              lineTarget.attr('validationColor', detail.vldtnBatchResultColor);
+            if(group.invoiceId != undefined){
+              var target = _.find(bundle.bundleDetailsGroup, {invoiceId: group.invoiceId});
+              target.attr('validationMessages', group.vldtnMessage);
+              target.attr('validationColor', group.vldtnBatchResultColor);
             }
           }
 
-          rulesCompleted += detail.vldtnRulesCompletedCnt;
-          rulesTotal += detail.vldtnRulesTotalCnt;
+          group.bundleDetails.forEach(function(detail) {
+            // only update these if validation is done
+            //TODO code modification is needed when the servcice s is ready with Proper JSON.
+            if(validationResponse.paymentBundle.vldtnStatus === 5) {
+              if(target != undefined ){
+                var lineTarget = _.find(target.bundleDetails, {bndlLineId: detail.bndlLineId});
+                lineTarget.attr('validationMessages', detail.vldtnMessage);
+                lineTarget.attr('validationColor', detail.vldtnBatchResultColor);
+              }
+            }
+
+            rulesCompleted += detail.vldtnRulesCompletedCnt;
+            rulesTotal += detail.vldtnRulesTotalCnt;
+          });
         });
-      });
 
-      bundle.attr({
-        validationStatus: validationResponse.paymentBundle.vldtnStatus,
-        validationRulesCompleted: rulesCompleted,
-        validationRulesTotal: rulesTotal
-      });
+        bundle.attr({
+          validationStatus: validationResponse.paymentBundle.vldtnStatus,
+          validationRulesCompleted: rulesCompleted,
+          validationRulesTotal: rulesTotal
+        });
 
-      can.batch.stop();
+        can.batch.stop();
+
+      }
 
       return bundle;
     });
