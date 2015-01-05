@@ -145,9 +145,11 @@
 						    </div>
 					  	</div>
 					 </div>
-					<div class="col-sm-6 form-group" style="margin-left:0px;width:100%;"></div>
+					<div class="col-sm-6" style="margin-left:0px;width:100%;"></div>
 
-					<div id="country-lic-grid"></div>
+					<div id="country-lic-grid">
+						<countrylic-grid></countrylic-grid>
+					</div>
 
 					<div class="col-sm-6 form-group">
 				 		<div class="singleField">
@@ -293,7 +295,7 @@
 						</div>
 						<legend class="scheduler-border" style="margin-left: 10px;">Comments</legend>
 						
-							{{#if editstate}}
+						<!--{{#if editstate}}
 							<div class="col-sm-12">
 								<div class="col-sm-8" id="multipleComments" class="requiredBar">
 									{{#if isCommentData}}<multiple-comments divid="usercommentsdiv" options="{multipleComments}" divheight="100" isreadOnly="n"></multiple-comments>{{/if}}
@@ -305,7 +307,13 @@
 								<textarea class="form-control" id="usercomments" name="usercommentsdiv"  can-value="usercommentsStore"></textarea>
 								</div>
 							</div>
-							{{/if}}
+							{{/if}} -->
+
+							<div class="col-sm-12">
+								<div id="multipleComments" class="requiredBar">
+									<textarea class="form-control" id="usercomments" name="usercommentsdiv"  can-value="usercommentsStore"></textarea>
+								</div>
+							</div>
 						
 						{{#if editstate}}
 							<div  class="col-sm-4 col-sm-offset-8" >

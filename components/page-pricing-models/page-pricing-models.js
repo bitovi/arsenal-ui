@@ -43,10 +43,6 @@ Grid.extend({
         title: 'Licensor'
       },
       {
-        id: 'version',
-        title: 'Version'
-      },
-      {
         id: 'validfrom',
         title: 'Valid From'
       },
@@ -92,7 +88,8 @@ var page = Component.extend({
     addEditUIProperty:{},
     showbottomSection:false,
     isCommentData:false,
-    filterSwitchOption:"licensor"
+    filterSwitchOption:"licensor",
+    maxVersion:0
   
   },
   init:function(){
@@ -190,7 +187,10 @@ var page = Component.extend({
 
         PricingModels.findOne(UserReq.formRequestDetails(genObj),function(data){
             var pmVersionList = data.pricingModels;
-             self.scope.pmVersion.replace(pmVersionList);     
+             self.scope.pmVersion.replace(pmVersionList);
+          var versionCollection =  _.max(pmVersionList, function(pricingmodel) { return pricingmodel.version; });
+          self.scope.attr("maxVersion", versionCollection.version);
+          
                 },function(xhr){
                 /*Error condition*/
           });
@@ -272,16 +272,42 @@ var page = Component.extend({
 
            PricingModels.findOne(UserReq.formRequestDetails(genObj),function(data){
                   
-              self.scope.attr("multipleComments", data.pricingModelDetails.userComments);
-              var tempcommentObj = data.pricingModelDetails.userComments;
-              $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
+              var userComments = "";
+              if(data.pricingModelDetails.userComments != "null"){
+                userComments = data.pricingModelDetails.userComments;
+              }
+              self.scope.attr("usercommentsStore", userComments);
+           //   var tempcommentObj = data.pricingModelDetails.userComments;
+           //   $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
               
               /*Country Licensor Grid code to be put here*/
-              
-              
+
+              var gridData = [];
+
+             
+
+              for(var i = 0; i < data.pricingModelDetails.pricingModelLicensors.length; i++){
+
+                var tempObj = {};
+
+                tempObj.country = data.pricingModelDetails.pricingModelLicensors[i].country;
+                tempObj.licensor = data.pricingModelDetails.pricingModelLicensors[i].licensor;
+                tempObj.validfrom = data.pricingModelDetails.pricingModelLicensors[i].validFrom;
+                tempObj.validto = data.pricingModelDetails.pricingModelLicensors[i].validTo;
+
+                gridData.push(tempObj);
+
+              }
+
+               var rows = new can.List(gridData);
+                if(rows.length>0){
+                  $('#country-lic-grid').html(stache('<countrylic-grid rows="{rows}"></countrylic-grid>')({rows}));  
+                }else{
+                  $('#country-lic-grid').html(stache('<countrylic-grid emptyrows="{emptyrows}"></countrylic-grid>')({emptyrows:true}));
+                }
 
               self.scope.attr("baseModelParamList").replace([]); /*cleaning table row to load new data on click*/
-              self.scope.attr("basemodelContainer").replace(data.pricingModel.baseModelParameters);
+              self.scope.attr("basemodelContainer").replace(data.pricingModelDetails.baseModelParameters);
              
              
               var basemodelCount = self.scope.basemodelContainer.attr().length;
@@ -308,7 +334,7 @@ var page = Component.extend({
 
 
               self.scope.attr("trackCountMinimaList").replace([]); /*cleaning table row to load new data on click*/
-               self.scope.attr("trackContainer").replace(data.pricingModel.trackCounts);
+               self.scope.attr("trackContainer").replace(data.pricingModelDetails.trackCounts);
                   
 
                   var trackCount = self.scope.trackContainer.attr().length;
@@ -420,20 +446,22 @@ var page = Component.extend({
       var usercomments = (self.scope.editstate === false)?self.scope.usercommentsStore:$(".new-comments").val();
 
       var saveRecord = {
+        
+        "filterOption":self.scope.attr("filterSwitchOption"),
         "details":{  
-          "country":self.scope.attr("country"),
+         // "country":self.scope.attr("country"),
           "region":self.scope.attr("regions"),
-          "entityId":self.scope.attr("entity"),
+         // "entityId":self.scope.attr("entity"),
           "trackCounts":self.scope.trackCountMinimaList.attr(),
-          "createdBy":0,
-          "userComments":usercomments,
+          "createdBy":UserReq.formRequestDetails().prsId,
+          "userComments":self.scope.usercommentsStore,
           "baseModelParameters":self.scope.baseModelParamList.attr(),
           "pricingModel":{  
              "region":self.scope.attr("regions"),
              "modelId":self.scope.attr("modelid"),
             // "commentId":9685,
             // "comments":null,
-             "createdBy":299221510,
+             "createdBy":UserReq.formRequestDetails().prsId,
              "modelDescription":self.scope.attr("modelname"),
              "modelName":self.scope.attr("pricingmodeltype"),
              "version":self.scope.attr("version") 
