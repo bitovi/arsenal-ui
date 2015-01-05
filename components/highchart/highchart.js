@@ -46,7 +46,7 @@ var highchartpage = Component.extend({
    	    	  var servicedata = values[0].historicalTrends;
    	    	   		if(values[0].historicalTrends.length){
    	    	   			highChartdata = prepareCanMap(values[0].historicalTrends);
-   	    	   			$("#highChartDetails").removeClass("hide");
+   	    	   			$("#highChartDetails").removeClass("highcharts_Hide");
 			    		$('#highChartDetails').highcharts({
 			    			chart: {
 						        renderTo: 'highChartDetails',
@@ -124,7 +124,7 @@ var highchartpage = Component.extend({
 
 					}else{
 						console.log('high chart did not return any data');
-						$("#highChartDetails").addClass("hide");
+						$("#highChartDetails").addClass("highcharts_Hide");
 						 $("#messageDiv").html("<label class='errorMessage'>Data not available</label>");
 			             $("#messageDiv").show();
 			             setTimeout(function(){
@@ -138,7 +138,7 @@ var highchartpage = Component.extend({
     	}
     },
     "#myImage click ":function(){
-    	$("#highChartDetails").addClass("hide");
+    	$("#highChartDetails").addClass("highcharts_Hide");
     }
 });
 
