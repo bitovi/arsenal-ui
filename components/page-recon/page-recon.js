@@ -380,6 +380,8 @@ var fetchReconIngest = function(scope){
 
       scope.currencyScope.replace(data.currency);
 
+      scope.reconRefresh[0].attr("currency", data.currency[0]);
+
       $("#currency").val(data.currency[0]);
 
       if(data.summary == undefined){
