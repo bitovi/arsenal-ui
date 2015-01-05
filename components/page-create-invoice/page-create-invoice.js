@@ -258,7 +258,7 @@ var page = Component.extend({
 			                group:'.invdate',
 			                validators: {
 			                    notEmpty: {
-			                        message: 'Invoicedate is mandatory'
+			                        message: 'Invoice date is mandatory'
 			                    },
 			                    date: {
 				                        format: 'MM/DD/YYYY',

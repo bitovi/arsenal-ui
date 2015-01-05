@@ -68,12 +68,20 @@ Grid.extend({
 });
 
 
+
+
 fileUpload.extend({
-  tag: 'rn-file-uploader',
+  tag: 'rn-file-uploader-icsv-sum',
   scope: {
-           fileList : new can.List()
-         }
- });
+    fileList: new can.List(),
+    isAnyFileLoaded : can.compute(function() { return this.fileList.attr('length') > 0; })
+  },
+  events: {
+    'inserted': function() {
+      this.scope.fileList.replace(this.scope.uploadedfileinfo);
+    }
+  }
+});
 
 
 var page = Component.extend({
@@ -89,7 +97,7 @@ var page = Component.extend({
       errorMsg:{},
       errorStatus:{},
       fileUpload:'',
-      uploadedFileInfo:[],
+      uploadedfileinfo:[],
       errorMessage:"@",
       createPBRequest: function(){
         var bundleNamesRequest = {"bundleSearch":{}};
@@ -109,9 +117,11 @@ var page = Component.extend({
     },
     init:function(){
       var self = this;
+      self.scope.uploadedfileinfo.replace([]);
       icsvmap.removeAttr("invoiceData"); 
       $('.popover').popover('destroy');
       this.scope.appstate.attr("renderGlobalSearch",false);
+      icsvmap.attr("showediticsv", false);
       
     },
    events:{
@@ -237,9 +247,9 @@ var page = Component.extend({
       },
 
       
-      'rn-file-uploader onSelected': function (ele, event, val) {
+      'rn-file-uploader-icsv-sum onSelected': function (ele, event, val) {
             var self = this;
-            self.scope.attr('uploadedFileInfo',val.filePropeties);
+            self.scope.attr('uploadedfileinfo',val.filePropeties);
             //console.log(JSON.stringify(self.scope.attr('uploadedFileInfo')));
             //$('.jQfunhide').show();
             //val == 'SUCCESS' ?  $('.jQfunhide').show():$('.jQfunhide').hide();
@@ -247,12 +257,18 @@ var page = Component.extend({
        "#buttonCancelicsv click":function(){
           this.scope.appstate.attr('page','invoices');
        },
-       '{scope} uploadedFileInfo':function(){
+       '{scope} uploadedfileinfo':function(){
           var self = this;
           /* Below is request for validateicsv*/
-          var icsvReq =getICSVRequest(this.scope.uploadedFileInfo);
+          var icsvReq =getICSVRequest(this.scope.uploadedfileinfo);
 
           //console.log('Request:'+ JSON.stringify(icsvReq));
+
+         
+
+          icsvmap.removeAttr("invoiceData"); 
+
+        
 
           ValidateIcsv.findOne(icsvReq,function(data){
                   //console.log(data);
@@ -280,6 +296,7 @@ var page = Component.extend({
        },
 
       "#addIcsvSubmit click":function(){
+          var self = this;
             var tempArr = icsvmap.invoiceData.invoices.attr();
            var createInvoiceData = {};
              createInvoiceData.invoices = [];
@@ -388,12 +405,7 @@ var page = Component.extend({
 
                                        icsvmap.removeAttr("invoiceData"); 
 
-                                        fileUpload.extend({
-                                              tag: 'rn-file-uploader',
-                                              scope: {
-                                                       fileList : new can.List()
-                                                     }
-                                        });
+                                        self.scope.uploadedfileinfo.replace([]);
 
                                          $('.jQfunhide').hide();
                                     }
