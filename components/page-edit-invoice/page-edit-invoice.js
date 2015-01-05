@@ -59,9 +59,9 @@ createpb.extend({
 	     		"{scope} selectedbundle":function(){
 		     		var self = this;
 		     		
-		     		setTimeout(function(){ 
+		    		setTimeout(function(){ 
 		     			self.scope.attr("paymentBundleId", self.scope.attr("selectedbundle")); /*Bundle drop down are not getting populated before 1000 ms*/
-		     		}, 2000);
+		    		}, 2000); 
 
 		     	}
 			}      
@@ -756,7 +756,7 @@ var page = Component.extend({
 		},
 		"{ajaxRequestStatus} change":function(event){
 				var self = this;
-				if((self.scope.ajaxRequestStatus.currencyStore == true) && (self.scope.ajaxRequestStatus.licensorLoaded == true) && (self.scope.ajaxRequestStatus.countryLoaded == true)){
+				if((self.scope.ajaxRequestStatus.currencyStore == true) && (self.scope.ajaxRequestStatus.licensorLoaded == true) && (self.scope.ajaxRequestStatus.countryLoaded == true) && (self.scope.ajaxRequestStatus.allDataLoaded == true)){
 						var invoicevalid = $("#invoiceform").data('bootstrapValidator').isValid();
 						if(!invoicevalid){
 							$("#invoiceform").data('bootstrapValidator').validate();
@@ -815,8 +815,11 @@ var page = Component.extend({
 						self.scope.attr("fxrateStore", invoiceData.fxRate);
 				 		self.scope.attr("licnotesStore", invoiceData.notes);
 				 		self.scope.attr("invoicedate", moment(invoiceData.invoiceDate).format("MM/DD/YYYY"));
+				 		$("#invoicedate input[type=text]").val(moment(invoiceData.invoiceDate).format("MM/DD/YYYY"));
 				 		self.scope.attr("receiveddate", moment(invoiceData.receivedDate).format("MM/DD/YYYY"));
+				 		$("#receiveddate input[type=text]").val(moment(invoiceData.receivedDate).format("MM/DD/YYYY"));
 				 		self.scope.attr("invoiceduedate", moment(invoiceData.invoiceDueDate).format("MM/DD/YYYY"));
+				 		$("#invoiceduedate input[type=text]").val(moment(invoiceData.invoiceDueDate).format("MM/DD/YYYY"));
 				 		self.scope.attr("calduedate",moment(invoiceData.invoiceCalcDueDate).format("MM/DD/YYYY"));
 						self.scope.attr("tax", invoiceData.tax);
 						self.scope.attr("invoiceId",invoiceData.invId);
@@ -897,6 +900,8 @@ var page = Component.extend({
 			                        	$('#invoiceform').bootstrapValidator('addField', $(this));
 			                        });
 							}
+
+							self.scope.ajaxRequestStatus.attr("allDataLoaded", true);
 
 							$(".removeRow").click(function(event){
 		              	           $option.each(function(index){
@@ -1272,7 +1277,7 @@ var page = Component.extend({
 
 												}
 											});
-							self.scope.attr('invoicetypeSelect','1');
+							//self.scope.attr('invoicetypeSelect','1');
 						},
 					  	helpers: {
 					         		currentDate: function(){
