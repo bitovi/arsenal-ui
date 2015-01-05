@@ -24,7 +24,7 @@
 
 				    		<div class="col-sm-12">
 
-				    			<div class="col-sm-2">
+				    			<div class="col-sm-2 small-headers">
 				    				<label>Entity:</label>
 								</div>
 				    			<div class="col-sm-4 form-group requiredBar">
@@ -94,7 +94,7 @@
 	    				<div class="col-sm-12" id="spaceBar"></div>
 	    		
 		    			<div class="col-sm-11 col-sm-offset-1">
-		    				<div class="col-sm-3 textalignright">
+		    				<div class="col-sm-3 textalignright small-headers">
 			    				<label>Licensor:</label>
 							</div>
 			    			<div class="col-sm-4 form-group requiredBar">
@@ -105,7 +105,7 @@
 					
 
 		    			<div class="col-sm-11 col-sm-offset-1 status">
-		    				<div class="col-sm-3 textalignright">
+		    				<div class="col-sm-3 textalignright small-headers">
 			    				<label>Status:</label>
 							</div>
 			    			<div class="col-sm-4 inputPadding" can-value="licDetails.data.status">
@@ -118,7 +118,7 @@
 					
 		    			{{getPeriodFromVal}}
 		    			<div class="col-sm-11 col-sm-offset-1">
-		    				<div class="col-sm-3 textalignright">
+		    				<div class="col-sm-3 textalignright small-headers">
 			    				<label>Valid From:</label>
 							</div>
 			    			<div class="col-sm-4 form-group requiredBar" id="periodFromcontainer">
@@ -136,7 +136,7 @@
 					
 
 						<div class="col-sm-11 col-sm-offset-1">
-		    				<div class="col-sm-3 textalignright">
+		    				<div class="col-sm-3 textalignright small-headers">
 			    				<label>Valid To:</label>
 							</div>
 			    			<div class="col-sm-4 inputPadding" id="periodTocontainer">
@@ -153,7 +153,7 @@
 		    							
 
 						<div class="col-sm-11 col-sm-offset-1 form-group">
-		    				<div class="col-sm-3 textalignright">
+		    				<div class="col-sm-3 textalignright small-headers">
 			    				<label>Account Name:</label>
 							</div>
 			    			<div class="col-sm-4 requiredBar">
@@ -164,7 +164,7 @@
 						<div class="col-sm-12" id="spaceBar5px"></div>
 
 						<div class="col-sm-11 col-sm-offset-1 form-group">
-		    				<div class="col-sm-3 textalignright">
+		    				<div class="col-sm-3 textalignright small-headers">
 			    				<label>Invoice Type:</label>
 							</div>
 			    			<div class="col-sm-4 requiredBar">
@@ -188,7 +188,7 @@
 
 		    			<div class="col-sm-11 col-sm-offset-1 form-group RepSplit">
 
-		    				<div class="col-sm-3 textalignright">
+		    				<div class="col-sm-3 textalignright small-headers">
 			    				<label>Representation Split:</label>
 							</div>
 			    			<div class="col-sm-4 inputPadding">
@@ -201,7 +201,7 @@
 
 		    			<div class="col-sm-11 col-sm-offset-1 form-group">
 
-		    				<div class="col-sm-3 textalignright">
+		    				<div class="col-sm-3 textalignright small-headers">
 			    				<label>SAP vendor#:</label>
 							</div>
 			    			<div class="col-sm-4 requiredBar">
@@ -214,7 +214,7 @@
 
 		    			<div class="col-sm-11 col-sm-offset-1 form-group paymentTerms">
 
-		    				<div class="col-sm-3 textalignright">
+		    				<div class="col-sm-3 textalignright small-headers">
 			    				<label>Payment Terms(Days):</label>
 							</div>
 			    			<div class="col-sm-4 inputPadding">
@@ -226,7 +226,7 @@
 
 		    			<div class="col-sm-11 col-sm-offset-1 uploadedFTP">
 
-		    				<div class="col-sm-3 textalignright">
+		    				<div class="col-sm-3 textalignright small-headers">
 			    				<label>Uploaded Files to sFTP: </label>
 							</div>
 			    			<div class="col-sm-4 inputPadding">
@@ -240,7 +240,7 @@
 		    			<div class="col-sm-11 col-sm-offset-1 form-group">
 		    				<div class="col-sm-12 multicomments-required"> Enter comments !</div>
 
-		    				<div class="col-sm-3 textalignright">
+		    				<div class="col-sm-3 textalignright small-headers">
 			    				<label>Comments:</label>
 							</div>
 			    			<div class="multipleComments col-sm-7 requiredBar" id="multipleComments">
@@ -254,7 +254,7 @@
 						<div class="col-sm-12 countryModelLabel">
 		 		
 				 			<div class="col-sm-12" id="countryModelLabelId">
-								<label class="tableLabel">Country Model Mapping:</label>
+								<label class="mid-headers">Country Model Mapping:</label>
 							</div>
 
 							<div class="col-sm-12" id="countryModelMapping">
@@ -277,13 +277,13 @@
 
 				<div class="col-sm-12" id="entityGridSD" class="entityGridSDHeight">
 
-						<div class="col-sm-12" style="padding-top: 15px; padding-left:0px">
+						<div class="col-sm-12" style="padding-top: 10px; padding-left:0px">
 							<div class="col-sm-12 reportConfErr" can-value="repConfMessage"> {{getRepConfmessage}} </div>
 						</div>
 						
 						<div class="repConfigurationTab">
 							<div class="col-sm-12" >
-								<label class="tableLabel">Report Configuration:</label> 
+								<label class="mid-headers">Report Configuration:</label> 
 							</div>
 
 			    			<div id="repConfiguration" class="col-sm-12 repConfiguration">
@@ -341,8 +341,8 @@
 		    		
 
 		    			<div class="societyContactsTab">
-			    			<div class="col-sm-12">
-								<label class="tableLabel">Society Contacts:</label>
+			    			<div class="col-sm-12" style="margin-top: -10px;">
+								<label class="mid-headers">Society Contacts:</label>
 							</div>
 			    		
 			    			<div class="col-sm-12 societyContacts">
@@ -396,6 +396,8 @@
 			    			
 				    	</div>
 
+				    	<div class="col-sm-12 adjustHeight"></div>
+
 				    	<div class="col-sm-12" id="spaceBar"></div>
 
 
@@ -404,7 +406,7 @@
 			 			<div class="col-sm-12 revHistCollapserId" style="padding-left: 0px;">
 			 				<div class="col-sm-12">
 								<img src="resources/images/collapse.png" class="revHistCollapse"  style="float:left"></img>
-								<label class="tableLabel">Revision History</label>
+								<label class="mid-headers">Revision History</label>
 							</div>
 						</div>
 
