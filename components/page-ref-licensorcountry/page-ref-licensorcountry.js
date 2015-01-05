@@ -323,7 +323,7 @@ var page = Component.extend({
               entityCountryDetails  :{
                 entityCountry:entityCountry_data,
                 reportConfigurationList:reportConfigurationListObj,
-                pricingModelVersionNo: this.scope.pageState.entityCountryDetails.pricingModelVersionNo,
+                pricingModelVersionNo: this.scope.pageState.entityCountryDetails.pricingModelVersionNumber,
                 pricingModelId:this.scope.pageState.entityCountryDetails.pricingModelId,
                 comment: this.scope.pageState.entityCountryDetails.comment,
                 commentType:"ENTITY_COUNTRY"//TODO: Should be handled at server side. Not required to pass it.
@@ -462,6 +462,8 @@ var loadPage = function(scope,data){
 
 
   scope.pageState.entityCountryDetails.attr("entityCountry",data.entityCountryDetails.entityCountry);
+
+  scope.pageState.entityCountryDetails.attr("pricingModelVersionNumber", data.entityCountryDetails.pricingModelVersionNo);
 
   $('#validFrom').trigger("change");
 

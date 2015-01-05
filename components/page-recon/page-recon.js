@@ -294,6 +294,9 @@ var processRejectIngestRequest = function(scope,requestType){
             $("#messageDiv").show();
             this.scope.reconRefresh[0].summaryStatsData.splice(0,1);
             $('.statsTable').hide();
+
+            scope.attr("ingestCcidSelected").splice(0, scope.attr("ingestCcidSelected").length);
+            
             setTimeout(function(){
               $("#messageDiv").hide();
             },3000);
