@@ -16,6 +16,8 @@ import icsvsummary from 'components/icsv-summary/';
 import fileUpload from 'components/file-uploader/';
 import UserReq from 'utils/request/';
 import Invoice from 'models/invoice/';
+import commonUtils from 'utils/commonUtils';
+
 
 
 Grid.extend({
@@ -255,7 +257,8 @@ var page = Component.extend({
             //val == 'SUCCESS' ?  $('.jQfunhide').show():$('.jQfunhide').hide();
        },
        "#buttonCancelicsv click":function(){
-          this.scope.appstate.attr('page','invoices');
+         
+          commonUtils.navigateTo("invoices");
        },
        '{scope} uploadedfileinfo':function(){
           var self = this;
@@ -264,11 +267,11 @@ var page = Component.extend({
 
           //console.log('Request:'+ JSON.stringify(icsvReq));
 
-         
+          console.log(icsvmap);
 
           icsvmap.removeAttr("invoiceData"); 
 
-        
+          console.log(icsvmap);
 
           ValidateIcsv.findOne(icsvReq,function(data){
                   //console.log(data);

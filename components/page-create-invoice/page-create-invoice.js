@@ -722,7 +722,7 @@ var page = Component.extend({
 			     ]).then(function(values) {
 		     			//console.log(values[0]);
 		     			self.scope.attr("licensor").replace([]);
-			    		self.scope.attr("licensor").replace(values[0]["entities"][0]);
+			    		self.scope.attr("licensor").replace(values[0]["entities"]);
 			    		if(self.scope.editpage){
 				    		var invoiceData = self.scope.attr().invoiceContainer[0];
 				    		self.scope.attr("licensorStore", invoiceData.entityId);
@@ -1297,7 +1297,10 @@ var page = Component.extend({
 
 					var getDateToDisplay=function(longDate){
 						var calculateDueDate = new Date(longDate);
-						return calculateDueDate.getMonth()+1 + "/" + calculateDueDate.getDate() + "/" + calculateDueDate.getFullYear();
+						var calMonth = ("0" + (calculateDueDate.getMonth() + 1)).slice(-2);
+						var calDate =  ("0" + calculateDueDate.getDate()).slice(-2);
+						var calYear = calculateDueDate.getFullYear();
+						return calMonth + "/" + calDate + "/" + calYear;
 					}
 
 					var updateContentType = function(element){

@@ -33,9 +33,12 @@ var stateDefaults = {
     prsId: '2002005722',
     roleIds: [2],
     appId: '1179',
+    permissions:[],
     secretKey: 'f4166789-30bb-4e12-9973-a76376745096'
   },
+
   page: null,
+  navigationRequired: false,
   periodFrom: undefined,
   periodTo: undefined,
   periodType: undefined,
@@ -43,11 +46,10 @@ var stateDefaults = {
   country: undefined,
   region: undefined,
   storeType: undefined,
-
   filled: false,
-
   renderGlobalSearch:true,
-  globalSearch:undefined
+  globalSearch:undefined,
+  csrfToken:undefined
 };
 
 var firstPage = 'dashboard';

@@ -23,12 +23,13 @@ import requestHelper from 'utils/request/';
 import index_template from 'index.stache!';
 import less_common from 'common.less!';
 import less_index from 'index.less!';
-
+import token from 'models/common/token/';
 // Fixtures?
 import _fixtures from 'models/fixtures/';
 
 appstate.bind('page', function(ev, newVal, oldVal) {
   newVal = newVal || appstate.constuctor.prototype.defaults.page;
+  token.findAll();
 
   System.import('components/page-' + newVal + '/').then(function(pageComponent) {
     var template = '<page-' + newVal + ' appstate=  "{appstate}"></page-' + newVal + '>';
@@ -45,7 +46,16 @@ appstate.bind('page', function(ev, newVal, oldVal) {
 $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
  //FIX: <rdar://problem/19231697> Wave M2 : Invoice Entry/iCSV Entr
  //skip for multipart/form-data
+
+ //added for CSRF token
+ if(appstate.csrfToken != null)
+ {
+   jqXHR.setRequestHeader('X-Apple-CSRF-Token', appstate.csrfToken);
+ }
+ options.async = false;
+ //end
  if(!options.data || options.contentType === "multipart/form-data" || options.data.constructor == FormData ) {
+
    return;
  }
 
@@ -56,6 +66,7 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
  ) {
    var data = (options.data.constructor === String ? JSON.parse(options.data) : options.data);
    can.extend(data, requestHelper.formRequestDetails({}, appstate));
+
    options.data = JSON.stringify(data);
    options.contentType = 'application/json';
  }
@@ -63,6 +74,12 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
 
 // Every time a service fails, display an error with the error text.
 $(document).ajaxComplete(function(ev, xhr, options) {
+
+  console.log("In post filter");
+  var token = xhr.getResponseHeader('X-Apple-CSRF-Token');
+  appstate.csrfToken = token;
+  console.log("token=="+token);
+
   // ony do this for regular requests
   if(options.contentType !== 'application/json') {
     return;

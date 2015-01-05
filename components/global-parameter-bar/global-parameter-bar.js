@@ -10,6 +10,7 @@ import ContentType from 'models/common/content-type/';
 import PeriodFrom from 'models/common/periodFrom/';
 import PeriodTo from 'models/common/periodTo/';
 import UserReq from 'utils/request/';
+import token from 'models/common/token/';
 
 import bootstrapmultiselect from 'bootstrap-multiselect';
 import css_bootstrapmultiselect from 'bootstrap-multiselect.css!';
@@ -88,14 +89,21 @@ var GlobalParameterBar = Component.extend({
       var comp = 'from';
       this.scope.attr('errorMessage', '');
       this.scope.changesToApply.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(this.scope.attr('periodFrom')[0]));
-      this.scope.changesToApply.attr('periodType', periodWidgetHelper.getPeriodType(this.scope.attr('periodFrom')[0]));
-      this.scope.attr('errorMessage', showErrorMsg(this.scope.attr('periodFrom')[0], this.scope.attr('periodTo')[0]));
+      this.scope.changesToApply.attr('periodFromType', periodWidgetHelper.getPeriodType(this.scope.attr('periodFrom')[0]));
+
+      var periodToValue = this.scope.attr('periodTo')[0] !== "undefined" ? this.scope.attr('periodTo')[0] : $('#periodFrom').val();
+
+      this.scope.attr('errorMessage', showErrorMsg(this.scope.attr('periodFrom')[0], periodToValue));
     },
     '{periodTo} change': function(el, ev) {
       var comp = 'to';
       this.scope.attr('errorMessage', '');
       this.scope.changesToApply.attr('periodTo', periodWidgetHelper.getFiscalPeriod(this.scope.attr('periodTo')[0]));
-      this.scope.attr('errorMessage', showErrorMsg(this.scope.attr('periodFrom')[0], this.scope.attr('periodTo')[0]));
+      this.scope.changesToApply.attr('periodToType', periodWidgetHelper.getPeriodType(this.scope.attr('periodTo')[0]));
+
+      var periodFromValue = this.scope.attr('periodFrom')[0] !== "undefined" ? this.scope.attr('periodFrom')[0] : $('#periodFrom').val();
+
+      this.scope.attr('errorMessage', showErrorMsg(periodFromValue, this.scope.attr('periodTo')[0]));
     },
     '#store-type select change': function(el, ev) {
       var selected = $(el[0].selectedOptions).data('storetype');
@@ -103,8 +111,8 @@ var GlobalParameterBar = Component.extend({
 
       /* Change the Content types based on Store Type */
       var allContentTypes = this.scope.allContentTypes.attr();
+      var newContentTypes = [];
       if (selected != undefined) {
-        var newContentTypes = [];
         for (var i = 0; i < allContentTypes.length; i++) {
           if (allContentTypes[i]["serviceTypeId"] == selected.id) {
             newContentTypes.push(allContentTypes[i]);
@@ -116,6 +124,12 @@ var GlobalParameterBar = Component.extend({
       }
       setTimeout(function() {
         $("#contentTypesFilter").multiselect('rebuild');
+
+        /* To show 'Select All' only if more than one options available */
+        if(newContentTypes.length<=1)
+          $("input[name='selAllContentType']").closest('li').hide();
+        else
+          $("input[name='selAllContentType']").closest('li').show();
       }, 1000);
       /* This is to reset the contentType attr in 'appstate' variable  */
       this.scope.changesToApply.removeAttr('contentType');
@@ -125,23 +139,42 @@ var GlobalParameterBar = Component.extend({
       self.scope.attr('errorMessage', '');
       var selected = $(el[0].selectedOptions).data('region');
       self.scope.changesToApply.attr('region', selected);
-      //console.log("region id is "+JSON.stringify(selected.id));
-      Promise.all([
-        Country.findAll(UserReq.formRequestDetails({
-          "regionId": selected.id
-        })),
-        Licensor.findAll(UserReq.formRequestDetails({
-          "regionId": selected.id
-        }))
-      ]).then(function(values) {
-        if (values[0].length == 0 && values[1].length == 0) {
-          self.scope.attr('errorMessage', ' No data available for search criteria !');
-        }
-        self.scope.countries.replace(values[0]);
-        self.scope.licensors.replace(values[1]["entities"]);
+      //console.log("region id is "+JSON.stringify(selected));
+      if(selected != undefined){
+        Promise.all([
+          Country.findAll(UserReq.formRequestDetails({
+            "regionId": selected.id
+          })),
+          Licensor.findAll(UserReq.formRequestDetails({
+            "regionId": selected.id
+          }))
+        ]).then(function(values) {
+          //console.log(JSON.stringify(values[1]["entities"][0]['entities'].attr()));
+          if (values[0].length == 0 && values[1].length == 0) {
+            self.scope.attr('errorMessage', ' No data available for search criteria !');
+          }
+          self.scope.countries.replace(values[0]);
+          self.scope.licensors.replace(values[1]["entities"]);
+          $("#countriesFilter").multiselect('rebuild');
+          $("#licensorsFilter").multiselect('rebuild');
+
+          /* To show 'Select All' option only if more than one options available */
+          if(values[0].length<=1)
+            $("input[name='selAllCountry']").closest('li').hide();
+          else
+            $("input[name='selAllCountry']").closest('li').show();
+
+          if(values[1]["entities"][0]['entities'].length<=1)
+            $("input[name='selAllLicensor']").closest('li').hide();
+          else
+            $("input[name='selAllLicensor']").closest('li').show();
+        });
+      } else {
+        self.scope.countries.replace([]);
+        self.scope.licensors.replace([]);
         $("#countriesFilter").multiselect('rebuild');
         $("#licensorsFilter").multiselect('rebuild');
-      });
+      }
       /* This is to reset the country & licensor attr in 'appstate' variable  */
       this.scope.changesToApply.removeAttr('country');
       this.scope.changesToApply.removeAttr('licensor');
@@ -183,6 +216,7 @@ var GlobalParameterBar = Component.extend({
       var self = this;
       //      self.scope.appstate.attr('periodFrom', $('#periodFrom').val());
       //      self.scope.appstate.attr('periodTo', $('#periodTo').val());
+      //$('.errorOnAccount').html('');
       var message = validateFilters(self.scope.changesToApply, false, true, false, false, false)
       self.scope.attr('errorMessage', message);
 
@@ -205,6 +239,46 @@ var GlobalParameterBar = Component.extend({
         this.scope.changesToApply.attr('periodTo', periodWidgetHelper.getFiscalPeriod(quart));
         this.scope.changesToApply.attr('periodType', 'Q');
       }
+    },
+    "#periodFrom blur":function(el,ev){
+      var self = this;
+      var message ='';
+      if(isDate(el.val())){
+        self.scope.changesToApply.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(el.val()));
+        self.scope.changesToApply.attr('periodType', periodWidgetHelper.getPeriodType(el.val()));
+      }else{
+          message = 'Invalid Period From';
+      }
+       self.scope.attr('errorMessage', message);
+    },
+    '#periodFrom keydown':function(el,ev){
+      //$('.box-modal').hide();
+      $(el).closest('.calendarcls').find('.box-modal').hide();
+    },
+    "#periodTo blur":function(el,ev){
+      var self = this;
+      var message ='';
+      if(isDate(el.val())){
+        var periodFrom=$('#periodFrom').val();
+        var periodTo=el.val();
+        var periodFromType = periodWidgetHelper.getPeriodType(periodFrom);
+        var periodToType = periodWidgetHelper.getPeriodType(periodTo)
+        if(periodFromType == periodToType){
+          message = showErrorMsg(periodFrom,periodTo);
+          if(message.length <= 0){
+            self.scope.changesToApply.attr('periodTo', periodWidgetHelper.getFiscalPeriod(el.val()));
+          }
+        }else{
+          message = 'Please select the similar type for periodFrom and periodTo';
+        }
+      }else{
+        message = 'Invalid Period To';
+      }
+      self.scope.attr('errorMessage', message);
+    },
+    '#periodTo keydown':function(el,ev){
+      //$('.box-modal').hide();
+      $(el).closest('.calendarcls').find('.box-modal').hide();
     }
   },
   init: function() {
@@ -214,6 +288,9 @@ var GlobalParameterBar = Component.extend({
     if(DefaultGlobalParameters.Region!=undefined && DefaultGlobalParameters.Region!=""){
       reqObj.regionId = DefaultGlobalParameters.Region.id;
     }
+
+    token.findAll();
+
     Promise.all([
       StoreType.findAll(UserReq.formRequestDetails(genObj)),
       Region.findAll(UserReq.formRequestDetails(genObj)),
@@ -236,7 +313,7 @@ var GlobalParameterBar = Component.extend({
           numberDisplayed: 1,
           includeSelectAllOption: true,
           selectAllText: 'Select All',
-          selectAllValue: 'selectAll',
+          //selectAllValue: 'selectAll',
           selectAllName: 'selAllCountry',
           maxHeight: 200,
           onChange: function(option, checked, select) {
@@ -250,7 +327,7 @@ var GlobalParameterBar = Component.extend({
           numberDisplayed: 1,
           includeSelectAllOption: true,
           selectAllText: 'Select All',
-          selectAllValue: 'selectAll',
+          //selectAllValue: 'selectAll',
           selectAllName: 'selAllLicensor',
           maxHeight: 200,
           onChange: function(option, checked, select) {
@@ -262,7 +339,7 @@ var GlobalParameterBar = Component.extend({
           numberDisplayed: 1,
           includeSelectAllOption: true,
           selectAllText: 'Select All',
-          selectAllValue: 'selectAll',
+          //selectAllValue: 'selectAll',
           selectAllName: 'selAllContentType',
           maxHeight: 200,
           onChange: function(option, checked, select) {
@@ -337,8 +414,10 @@ var GlobalParameterBar = Component.extend({
             }
 
             self.scope.changesToApply.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(DefaultGlobalParameters.PeriodFrom).toString());
+            self.scope.changesToApply.attr('periodType', periodWidgetHelper.getPeriodType(DefaultGlobalParameters.PeriodFrom));
+            self.scope.changesToApply.attr('periodFromType', periodWidgetHelper.getPeriodType(DefaultGlobalParameters.PeriodFrom));
             self.scope.changesToApply.attr('periodTo', periodWidgetHelper.getFiscalPeriod(DefaultGlobalParameters.PeriodTo));
-            self.scope.changesToApply.attr('periodType', 'P');
+            self.scope.changesToApply.attr('periodToType', periodWidgetHelper.getPeriodType(DefaultGlobalParameters.PeriodTo));
             self.scope.changesToApply.attr('storeType', DefaultGlobalParameters.StoreType);
             self.scope.changesToApply.attr('region', DefaultGlobalParameters.Region);
             self.scope.changesToApply.attr('country').replace($("#countriesFilter").val());
@@ -365,10 +444,12 @@ var validateFilters = function(appstate, validateStoreType, validateRegion, vali
     var countryId = appstate['country'];
     var licId = appstate['licensor'];
     var contGrpId = appstate['contentType'];
-    var periodType = appstate['periodType'];
+
     var periodFrom = appstate.attr('periodFrom');
+    var periodFromType = appstate['periodFromType'];
     var periodTo = appstate.attr('periodTo');
-    var message = showErrorMsg(periodWidgetHelper.getDisplayPeriod(periodFrom, periodType), periodWidgetHelper.getDisplayPeriod(periodTo, periodType));
+    var periodToType = appstate['periodToType'];
+    var message = showErrorMsg(periodWidgetHelper.getDisplayPeriod(periodFrom, periodFromType), periodWidgetHelper.getDisplayPeriod(periodTo, periodToType));
 
     if (periodFrom.length == 0 || periodFrom.trim().length == 0) {
       return 'Invalid PeriodFrom !';
@@ -383,7 +464,7 @@ var validateFilters = function(appstate, validateStoreType, validateRegion, vali
     }
 
     if (validateRegion && (regId == null || regId == undefined)) {
-      return 'Invalid Region !';
+      return 'Please select Region !';
     }
 
     if (validateCountry && (countryId == null || countryId == undefined)) {
@@ -444,6 +525,7 @@ var showErrorMsg = function(periodFrom, periodTo) {
   var to = periodTo || false;
   var message1 = 'Period from is greater than period to !';
   var message2 = 'Please select one year of data !';
+  var message3 = 'Invalid Month Selection !'
 
   if (from && to) {
     var fromYear = parseInt(from.slice(-2));
@@ -456,7 +538,7 @@ var showErrorMsg = function(periodFrom, periodTo) {
     if (from.charAt(0) === "P" && to.charAt(0) === "P") {
       var periodFromValue = periodFrom.substr(1, 2);
       var periodToValue = periodTo.substr(1, 2);
-      if (yearDiff >= 1 && periodFromValue == periodToValue) {
+      if (yearDiff >= 1 && periodToValue >= periodFromValue) {
         return message2;
       } else if (yearDiff == 0 && periodFromValue > periodToValue) {
         return message1;
@@ -464,18 +546,30 @@ var showErrorMsg = function(periodFrom, periodTo) {
     } else if (from.charAt(0) === "Q" && to.charAt(0) === "Q") {
       var quarterFromValue = periodFrom.substr(1, 1);
       var quarterToValue = periodTo.substr(1, 1);
-      if (yearDiff >= 1 && quarterFromValue == quarterToValue) {
+      if (yearDiff >= 1 && quarterToValue >= quarterFromValue) {
         //if(quarterFromValue >= quarterToValue ){
         return message2;
         //}
       } else if (yearDiff == 0 && quarterFromValue > quarterToValue) {
         return message1;
       }
+    }else{
+      //return message3;
     }
   }
   return "";
 }
 
-
+var isDate=function(txtDate){
+  var currVal = txtDate;
+  if(currVal == undefined || currVal == '')
+    return false;
+  //Declare Regex
+  //var rxDatePattern = /^(\d{1,2})(\/|-)(\d{1,2})(\/|-)(\d{4})$/;
+  var rxDatePattern = /^[P-Q]{1}\d{1,2}[FY]{2}\d{2}$/;
+  var dtArray = currVal.match(rxDatePattern); // is format OK?
+  var result = (dtArray == null) ? false : true;
+   return result;
+}
 
 export default GlobalParameterBar;

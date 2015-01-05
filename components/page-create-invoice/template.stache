@@ -28,7 +28,7 @@
 						    <div class="col-sm-4 requiredBarNone">
 
 						      <select id="invoiceType" class="form-control" can-value="invoicetypeSelect" name="invoiceType">
-
+						      			<option value="">Select</option>
 								        {{#each invoiceTypes}}
 								        	<option name="{{invoiceTypeName}}" value="{{invoiceTypeId}}">{{description}}</option>
 								       	{{/each}}
@@ -414,16 +414,20 @@
 					        </div>
 
 					       {{/if}}
+						<!--
+					       <div class="col-sm-2 ">
+					       <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
+					       </div>
+					       <div class="col-sm-1"></div>
+					       <div class="col-sm-2 ">
+					       <button id="addInvSubmit" type="submit"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>
+					       </div>
+					    -->
 
-					        <div class="col-sm-2 ">
-					        <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
-					        </div>
-					        <div class="col-sm-1"></div>
-					        <div class="col-sm-2 ">
-					        <button id="addInvSubmit" type="submit"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>
-					        </div>
-					    
-					
+					    <div class="col-sm-12" style="padding:15px;">
+							<button id="addInvSubmit" type="submit"  class="btn btn-primary addInvSubmit btn-custom-big pull-right marginLeft20">Submit</button>
+							<button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled pull-right" id="buttonCancel">Cancel</button>
+						</div>
 
 		</div>
 

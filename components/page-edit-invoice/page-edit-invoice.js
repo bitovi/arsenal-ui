@@ -34,6 +34,7 @@ import Region from 'models/common/region/';
 import stache from 'can/view/stache/';
 import moment from 'moment';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
+import commonUtils from 'utils/commonUtils';
 
 //import Invoice from 'models/invoice/';
 
@@ -1155,7 +1156,7 @@ var page = Component.extend({
 				/*Edit invoice end*/
 							},
 							"#buttonCancel click":function(){
-								this.scope.appstate.attr('page','invoices');
+								commonUtils.navigateTo("invoices");
 							},
 							'period-calendar onSelected': function (ele, event, val) {  
 			       					this.scope.attr('periodchoosen', val);

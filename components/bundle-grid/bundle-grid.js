@@ -2,6 +2,7 @@ import Period from 'models/common/periodFrom/';
 import ScrollingGrid from 'components/grid/examples/scrolling-grid/';
 import formats from 'utils/formats';
 import _less from './bundle-grid.less!';
+import PeriodWidgetHelper from 'utils/periodWidgetHelpers';
 
 var BundleGrid = ScrollingGrid.extend({
   tag: 'rn-bundle-grid',
@@ -44,9 +45,9 @@ var BundleGrid = ScrollingGrid.extend({
         title: 'Period Range',
         contents: function(row) {
           if(row.periodFrom === row.periodTo) {
-            return Period.format(row.periodFrom);
+            return PeriodWidgetHelper.getDisplayPeriod(row.periodFrom.toString(), row.periodType);
           } else {
-            return Period.format(row.periodFrom) + ' - ' + Period.format(row.periodTo);
+            return PeriodWidgetHelper.getDisplayPeriod(row.periodFrom.toString(), row.periodType) + ' - ' + PeriodWidgetHelper.getDisplayPeriod(row.periodTo.toString(), row.periodType)
           }
         }
       },

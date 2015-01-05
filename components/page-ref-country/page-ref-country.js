@@ -13,7 +13,7 @@ import Comments from 'components/multiple-comments/';
 import css_bootstrapValidator from 'bootstrapValidator.css!';
 
 import bootstrapValidator from 'bootstrapValidator';
-
+import commonUtils from 'utils/commonUtils';
 
 import UserReq from 'utils/request/';
 import PeriodHelper from 'utils/periodWidgetHelpers'
@@ -222,7 +222,7 @@ var page = Component.extend({
 
           console.log("Response data is "+JSON.stringify(data.attr()));
           self.pageState.countryDetails.attr("country",data.countryDetails);
-          
+
           /* if the data.countryDetails.countryId is null then set the country dropdown using requestObj*/
           if(data.countryDetails.countryId==null){
             self.pageState.countryDetails.country.attr("countryId",requestObj.countryId);
@@ -230,7 +230,7 @@ var page = Component.extend({
 
           if(data.countryDetails.attr("validFrom")!=0)
             var validFrom = data.countryDetails.attr("validFrom").toString();
-          else 
+          else
             var validFrom = "0";
 
           if(validFrom == "0")
@@ -242,7 +242,7 @@ var page = Component.extend({
 
           if(data.countryDetails.attr("validTo")!=0)
             var validTo = data.countryDetails.attr("validTo").toString();
-          else 
+          else
             var validTo = "0";
 
           if(validTo == "0")
@@ -324,7 +324,7 @@ var page = Component.extend({
               $("#accModelSel").val(selectedAccModel);
           },1000);
 
-          
+
           var tempcommentObj = data.countryDetails.commentList;
           //console.log("multi comments "+JSON.stringify(tempcommentObj));
           if(tempcommentObj!=null){
@@ -369,7 +369,7 @@ var page = Component.extend({
 
         console.log("Response data is "+JSON.stringify(data.attr()));
         self.pageState.countryDetails.attr("country",data.countryDetails);
-        
+
         /* if the data.countryDetails.countryId is null then set the country dropdown using requestObj*/
         if(data.countryDetails.countryId==null){
           self.pageState.countryDetails.country.attr("countryId",requestObj.countryId);
@@ -377,7 +377,7 @@ var page = Component.extend({
 
         if(data.countryDetails.attr("validFrom")!=0)
           var validFrom = data.countryDetails.attr("validFrom").toString();
-        else 
+        else
           var validFrom = "0";
 
         if(validFrom == "0")
@@ -389,7 +389,7 @@ var page = Component.extend({
 
         if(data.countryDetails.attr("validTo")!=0)
           var validTo = data.countryDetails.attr("validTo").toString();
-        else 
+        else
           var validTo = "0";
 
         if(validTo == "0")
@@ -470,7 +470,7 @@ var page = Component.extend({
             $("#accModelSel").val(selectedAccModel);
         },1000);
 
-          
+
         var tempcommentObj = data.countryDetails.commentList;
         //console.log("multi comments "+JSON.stringify(tempcommentObj.attr()));
         if(tempcommentObj !=null)
@@ -533,7 +533,8 @@ var page = Component.extend({
       self.attr("selectedModelId",selModelId);
     },
     '.society click': function(){
-        this.scope.appstate.attr('page','licensor');
+        commonUtils.navigateTo("licensor");
+        // this.scope.appstate.attr('page','licensor');
     },
     '.pricingModel click': function(item, el, ev){
         var self = this.scope;
@@ -554,7 +555,7 @@ var page = Component.extend({
             var tempcommentObj = data.pricingModel.pricingModel.comments;
             if(tempcommentObj!=null)
               $('#priceModelmultipleComments').html(stache('<multiple-comments divid="priceModelmultipleComments" options="{tempcommentObj}" divheight="100" isreadOnly="y"></multiple-comments>')({tempcommentObj}));
-            
+
             $("#viewPricingModelDiv").show();
         }).then(function(){
           console.log("ERROR");
@@ -577,7 +578,7 @@ var page = Component.extend({
           var tempcommentObj = data.pricingModel.pricingModel.comments;
           if(tempcommentObj!=null)
             $('#priceModelmultipleComments').html(stache('<multiple-comments divid="priceModelmultipleComments" options="{tempcommentObj}" divheight="100" isreadOnly="y"></multiple-comments>')({tempcommentObj}));
-          
+
           $("#viewPricingModelDiv").show();
       }).then(function(){
         console.log("ERROR");

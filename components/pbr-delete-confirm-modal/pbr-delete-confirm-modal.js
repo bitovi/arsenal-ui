@@ -31,11 +31,15 @@ var PbrDeleteConfirmModal = can.Component.extend({
       this.scope.bundle.moveInWorkflow(this.scope.params).then(function(result) {
         if(result.status === 'SUCCESS') {
           self.scope.bundle.destroy();
-          Alert.displayAlert(response.responseText, 'success');
+          self.element.find('.modal').modal('hide');
+          self.element.remove();
+          Alert.displayAlert(result.responseText, 'success');
+        }else{
+          self.element.find('.modal').modal('hide');
+          self.element.remove();
         }
       });
-      this.element.find('.modal').modal('hide');
-      this.element.remove();
+
     }
   }
 });
