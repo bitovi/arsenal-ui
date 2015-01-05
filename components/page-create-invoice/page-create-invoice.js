@@ -927,7 +927,21 @@ var page = Component.extend({
 
                     				ccidGL = (index == 0 ? ccidGL : ccidGL+index);
 
-									tempArry["glAccRefId"] = self.scope.ccidGLStore.attr(ccidGL);
+                    				if(index == 0){
+                    					if($('#ccidGL').val() != undefined && $('#ccidGL').val().length > 0){
+					   						tempArry["glAccRefId"] = self.scope.ccidGLStore.attr(ccidGL)
+					   					}else{
+					   						tempArry["glAccNum"] = self.scope.ccidGLStore.attr(ccidGL);
+					   					}
+                    				}else{
+                    					if($('#ccidGL'+index).val()!=undefined  && $('#ccidGL'+index).val().length>0){
+					   						tempArry["glAccRefId"] = self.scope.ccidGLStore.attr(ccidGL)
+					   					}else{
+					   						tempArry["glAccNum"] = self.scope.ccidGLStore.attr(ccidGL);
+					   					}
+                    				}
+
+									//tempArry["glAccRefId"] = self.scope.ccidGLStore.attr(ccidGL);
 						  	 		tempArry["adhocTypeId"] = self.scope.contentTypeStore.attr("inputContent"+index);
 						  	 	}
 						  	 	else{
