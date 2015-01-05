@@ -159,7 +159,7 @@ var page = Component.extend({
       },
       '{scope.appstate} change': function() {
          var self = this;
-         self.scope.attr('errorMessage',message); 
+         self.scope.attr('errorMessage',''); 
          if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch')){
             this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
             var genObj = {};
