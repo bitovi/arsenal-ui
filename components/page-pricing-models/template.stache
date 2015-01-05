@@ -25,6 +25,12 @@
 					    </div>
 				  	</div>
 				 </div>
+
+				 <div class="col-sm-2">
+					<div class="col-sm-2" id="switcher-cont">
+		 			</div>
+			 	</div>
+
 				<div class="col-sm-1">
 		 			<button id="fetch"  class="btn btn-primary btn-custom-big" disabled>Fetch</button>
 			 	</div>
@@ -34,12 +40,18 @@
 		 				<button id="add"  class="btn btn-primary btn-custom-big" disabled>Add</button>
 			 		</div>
 			 	</div>
+
+			 	
+			
+
+
 			</div>
 		</div>
 	 </div>
 
 	<div class="col-sm-12" style="height: 10px;">&nbsp;</div>
 	<div id="bottomsection" class="{{#if showbottomSection}}bottompartshow{{else}}bottomparthide{{/if}}">
+
 		<div class="{{#if editstate}}modelsummaryVisible col-sm-4{{else}}modelsummaryInVisible col-sm-0{{/if}}" id="modelSummaryCont">
 				<div class="modelsummary">
 					<table id="pricingmodelGrid" class="table table-condensed  pricingmodelGrid">
@@ -47,15 +59,14 @@
 							        <tr>
 							            <th>Models</th>
 							            <th>Model Type</th>
-							            <th>Version</th>
+							            
 							        </tr>
 							    </thead>
 							    <tbody>
 							    	{{#each pricingModelList}}
-							    	<tr version="{{version}}" modelid="{{modelid}}">
+							    	<tr modelid="{{modelid}}">
 							    		<td>{{model}}</td>
 							    		<td>{{modeltype}}</td>
-							    		<td>{{version}}</td>
 							    	</tr>
 							    	{{/each}}	
 							    </tbody>
@@ -67,7 +78,7 @@
 		
 			<div class="right-pb-container">
 				<legend class="scheduler-border">View/Add/Edit Pricing Model</legend>
-					<div class="col-sm-6 form-group">
+				<!--<div class="col-sm-6 form-group">
 				 		<div class="singleField">
 						    <label for="inputEmail3" class="col-sm-4 control-label">Country:</label>
 						    <div class="col-sm-4 requiredBar">
@@ -120,7 +131,24 @@
 							{{/if}}	
 						    </div>
 					  	</div>
-					</div>
+					</div>-->
+					<div class="col-sm-6 form-group" style="margin-left:0px;">
+				 		<div class="singleField">
+						    <label for="inputEmail3" class="col-sm-4 control-label">Version:</label>
+						    <div class="col-sm-4 requiredBar">
+						    	<select  class="form-control" name="version" id="version" can-value="version">
+							       <option value="">Select</option>
+							        {{#each pmVersion}}
+									  <option value="{{modelId}}">{{version}}</option>     
+									 {{/each}}      
+								</select>
+						    </div>
+					  	</div>
+					 </div>
+					<div class="col-sm-6 form-group" style="margin-left:0px;width:100%;"></div>
+
+					<div id="country-lic-grid"></div>
+
 					<div class="col-sm-6 form-group">
 				 		<div class="singleField">
 						    <label for="inputEmail3" class="col-sm-4 control-label">Pricing Model:</label>

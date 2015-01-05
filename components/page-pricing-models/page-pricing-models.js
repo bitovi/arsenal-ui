@@ -3,10 +3,12 @@ import Map from 'can/map/';
 
 /** for pricing model*/
 import view from 'can/view/';
+import stache from 'can/view/stache/';
 import _ from 'lodash';
 import Grid from 'components/grid/';
 import stache from 'can/view/stache/';
 import validation from 'can/map/validations/';
+import countrylicgrid from './countrylicgrid.stache!';
 
 import css_bootstrapValidator from 'bootstrapValidator.css!';
 import bootstrapValidator from 'bootstrapValidator';
@@ -23,6 +25,38 @@ import PricingModels from 'models/pricing-models/';
 import PricingModelsValidation from './pricingmodels.validation';
 
 import Comments from 'components/multiple-comments/';
+import Switcher from 'components/switcher/';
+
+
+Grid.extend({
+  tag: 'countrylic-grid',
+  template: countrylicgrid,
+  scope: {
+    appstate:undefined,
+    columns: [
+      {
+        id: 'country',
+        title: 'Country'
+      },  
+      {
+        id: 'licensor',
+        title: 'Licensor'
+      },
+      {
+        id: 'version',
+        title: 'Version'
+      },
+      {
+        id: 'validfrom',
+        title: 'Valid From'
+      },
+      {
+        id: 'validto',
+        title: 'Valid To'
+      }
+    ]
+  }
+});
 
 
 
@@ -40,6 +74,7 @@ var page = Component.extend({
     version:"",
     pricingModelList:[],
     basemodelContainer:[],
+    pmVersion:[],
     
     trackCountMinimaList:new can.List(),
     trackContainer:[],
@@ -56,7 +91,8 @@ var page = Component.extend({
     usercommentsStore:"",
     addEditUIProperty:{},
     showbottomSection:false,
-    isCommentData:false
+    isCommentData:false,
+    filterSwitchOption:"licensor"
   
   },
   init:function(){
@@ -76,7 +112,9 @@ var page = Component.extend({
             self.scope.countryStore.replace(values[2]);
             self.scope.licensorStore.replace(values[3]["entities"][0]);
             self.scope.pricingmodeltypeStore.replace(values[4].modelTypes);
-      });       
+      });
+
+      
   },
   events:{
   	"inserted":function(){
@@ -84,12 +122,31 @@ var page = Component.extend({
           $('#pmform').bootstrapValidator(PricingModelsValidation).on('error.field.bv', function(e, data) {
               $('[data-bv-icon-for="'+data.field +'"]').popover('show');
           });
+
+
+          var options = [{
+            text: 'Licensor',
+            value: 'licensor'
+          },{
+            text: 'Accural',
+            value: 'accural'
+          }];
+
+          var state = new can.Map({
+            options: options,
+            selectedThing: options[0]
+          });
+
+        $('#switcher-cont').html(stache('<rn-switcher options="{options}" selected-option="{selectedThing}"></rn-switcher>')(state));       
   	 },
     "#fetch click":function(){
       var self = this;
       self.scope.addEditUIProperty.attr("country", true);
       self.scope.addEditUIProperty.attr("entity", true);
-      var genObj = {region:self.scope.attr("regions"),reqType:'summary'};
+
+      self.scope.attr("filterSwitchOption", $(".switcher .selected").attr("data-value")); 
+      var filterOption = self.scope.attr("filterSwitchOption");
+      var genObj = {region:self.scope.attr("regions"), filterOption:filterOption, reqType:'summary'};
         
         self.scope.pricingModelList.replace([]); 
         self.scope.attr("editstate", true);
@@ -118,6 +175,27 @@ var page = Component.extend({
     },
      ".pricingmodelGrid tr click":function(el){
         var self = this;
+
+        var colModelDesc = el.closest('tr').find('td');
+        var modelDescription = $(colModelDesc[0]).html();
+
+        var modelType = $(colModelDesc[1]).html();
+
+        self.scope.attr("modelname", modelDescription);
+        self.scope.attr("pricingmodeltype", modelType);
+
+        var filterOption = self.scope.attr("filterSwitchOption");
+
+        var genObj = {modelDescription:modelDescription, filterOption:filterOption, reqType:'pmVersion'}; 
+
+        PricingModels.findOne(UserReq.formRequestDetails(genObj),function(data){
+            var pmVersionList = data.pricingModels;
+             self.scope.pmVersion.replace(pmVersionList);     
+                },function(xhr){
+                /*Error condition*/
+          });
+        
+
         self.scope.attr("selectedPriceModel", el.closest('tr')[0].rowIndex);
         var selrow = el.closest('tr').attr("version");
         var selmodelid = el.closest('tr').attr("modelid");
@@ -125,7 +203,7 @@ var page = Component.extend({
         self.scope.attr("version", selrow);
         var genObj = {modelId:selmodelid,reqType:'details'};
 
-        PricingModels.findOne(UserReq.formRequestDetails(genObj),function(data){
+    /*    PricingModels.findOne(UserReq.formRequestDetails(genObj),function(data){
                   
               self.scope.attr("multipleComments", data.pricingModel.pricingModel.comments);
               var tempcommentObj = data.pricingModel.pricingModel.comments;
@@ -138,7 +216,7 @@ var page = Component.extend({
               
 
               self.scope.attr("baseModelParamList").replace([]); /*cleaning table row to load new data on click*/
-              self.scope.attr("basemodelContainer").replace(data.pricingModel.baseModelParameters);
+        /*      self.scope.attr("basemodelContainer").replace(data.pricingModel.baseModelParameters);
              
              
               var basemodelCount = self.scope.basemodelContainer.attr().length;
@@ -161,8 +239,8 @@ var page = Component.extend({
               /** Track count minima Grid*/
 
 
-                  self.scope.attr("trackCountMinimaList").replace([]); /*cleaning table row to load new data on click*/
-                  self.scope.attr("trackContainer").replace(data.pricingModel.trackCounts);
+    /*              self.scope.attr("trackCountMinimaList").replace([]); /*cleaning table row to load new data on click*/
+       /*           self.scope.attr("trackContainer").replace(data.pricingModel.trackCounts);
                   
 
                   var trackCount = self.scope.trackContainer.attr().length;
@@ -181,11 +259,84 @@ var page = Component.extend({
                         }
                     },function(xhr){
                 /*Error condition*/
-              }).then(function(){
+        /*      }).then(function(){
+                  self.scope.attr("isCommentData", true);
+                  $('#pmform').bootstrapValidator('addField', 'usercommentsdiv');
+               });*/
+          },
+        "#version change":function(){
+            var self = this;
+
+            var filterOption = self.scope.attr("filterSwitchOption");
+            var genObj = {filterOption:filterOption, reqType:'details', modelId:self.scope.version}; 
+
+           PricingModels.findOne(UserReq.formRequestDetails(genObj),function(data){
+                  
+              self.scope.attr("multipleComments", data.pricingModelDetails.userComments);
+              var tempcommentObj = data.pricingModelDetails.userComments;
+              $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
+              
+              /*Country Licensor Grid code to be put here*/
+              
+              
+
+              self.scope.attr("baseModelParamList").replace([]); /*cleaning table row to load new data on click*/
+              self.scope.attr("basemodelContainer").replace(data.pricingModel.baseModelParameters);
+             
+             
+              var basemodelCount = self.scope.basemodelContainer.attr().length;
+              var basemodelData = self.scope.basemodelContainer.attr();
+
+              
+
+
+              for(var i=0; i < basemodelCount; i++){
+                  
+                  self.scope.attr("modelId", basemodelData[i].modelId);
+                  self.scope.baseModelParamList.push({contentGroup:basemodelData[i].contentGroup, baseRate:basemodelData[i].baseRate, 
+                                                      minima:basemodelData[i].minima, listenerMinima:basemodelData[i].listenerMinima,
+                                                      discount:basemodelData[i].discount, isDefault:basemodelData[i].isDefault.toString(),
+                                                      baseId:basemodelData[i].baseId, modelId:basemodelData[i].modelId
+                                                    });
+
+                  var $option   = $("#baseModelTable").find('[name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
+                  DynamicFieldValidation($option, 'addField');
+                 
+                 }
+
+              /** Track count minima Grid*/
+
+
+              self.scope.attr("trackCountMinimaList").replace([]); /*cleaning table row to load new data on click*/
+               self.scope.attr("trackContainer").replace(data.pricingModel.trackCounts);
+                  
+
+                  var trackCount = self.scope.trackContainer.attr().length;
+                  var trackData = self.scope.trackContainer.attr();
+
+                  for(var i=0; i < trackCount; i++){
+                        self.scope.attr("trackCountMinimaList").push({description:trackData[i].description, from:trackData[i].from,
+                                                                      to:trackData[i].to, modelId:trackData[i].modelId,
+                                                                      minima:trackData[i].minima, tierId:trackData[i].tierId,
+                                                                      paramId:trackData[i].paramId});
+                                                              
+
+                        var $option = $("#trackCount").find('[name="description[]"], [name="from[]"], [name="to[]"], [name="minimatrack[]"]');
+                        DynamicFieldValidation($option, 'addField');
+                            
+                        }
+                    },function(xhr){
+                /*Error condition*/
+                }).then(function(){
                   self.scope.attr("isCommentData", true);
                   $('#pmform').bootstrapValidator('addField', 'usercommentsdiv');
                });
-          },
+
+
+
+
+          }, 
+
         "#addbasemodel click":function(){
         var self = this;
         self.scope.baseModelParamList.push({contentGroup:"", baseRate:"", 

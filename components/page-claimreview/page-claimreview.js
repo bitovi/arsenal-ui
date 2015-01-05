@@ -321,7 +321,7 @@ var page = Component.extend({
     	},
       "#highChartDetails mousedown": function(item, el, ev){
         if(el.toElement.id == 'close'){
-          $("#highChartDetails").addClass("hide")
+          $("#highChartDetails").addClass("highcharts_Hide")
         }else{
              $(item[0]).addClass("draggable").parents().on('mousemove', function(e) {
               $('.draggable').offset({

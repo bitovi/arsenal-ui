@@ -3,6 +3,7 @@ import RinsCommon from 'utils/urls';
 
 var pricingModels = Model.extend({
  findOne: function(params){
+
  		if(params.reqType === 'summary'){
  				delete params.reqType;
 	 			return $.ajax({
@@ -16,7 +17,7 @@ var pricingModels = Model.extend({
  		else if(params.reqType === 'details'){
  				delete params.reqType;
  				return $.ajax({
-					url: RinsCommon.UI_SERVICE_URL +'getPricingModelDetails',
+					url: RinsCommon.UI_SERVICE_URL +'getPricingModelParameterDetails',
 		 			type: 'POST',
 		  			data: JSON.stringify(params),
 		  			dataType:'json',
@@ -33,8 +34,19 @@ var pricingModels = Model.extend({
 		  		contentType: 'application/json'
 	  		});
 		}
+		else if(params.reqType === 'pmVersion'){
+			delete params.reqType;
+			return $.ajax({
+		 		url: RinsCommon.UI_SERVICE_URL +'getPricingModelsForModelDescription',
+		  		type: 'POST',
+		  		data: JSON.stringify(params),
+		  		dataType:'json',
+		  		contentType: 'application/json'
+	  		});
+		}
 	},
 	create: function(params){
+		//var RinsCommon.UI_SERVICE_URL = "http://localhost:10645/api/v1/rinsui/";
 	 	return $.ajax({
 	  		url: RinsCommon.UI_SERVICE_URL +'updatePricingModelDetails',
 	  		type: 'POST',

@@ -3,7 +3,7 @@ import stache from 'can/view/stache/';
 export default [
   {
     id: 'entityName',
-    title: 'FTP folder',
+    title: 'FTP Folder',
     sortable: true
   },
   {
