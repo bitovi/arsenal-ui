@@ -304,7 +304,7 @@ var page = Component.extend({
               displayMessage(data["responseText"],true);
               //req.attr('deletableRows',rows);
               //$('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
-              self.scope.loadProposedONAccountPage.replace('LOAD'+Date.now())
+              self.scope.loadProposedONAccountPage.replace('LOAD'+Date.now());
           }
           else{
             // var details = data.onAccount.onAccountDetails;
@@ -363,8 +363,9 @@ var page = Component.extend({
             //console.log("Update response is "+JSON.stringify(data));
               if(data["status"]=="SUCCESS"){
                  displayMessage(data["responseText"],true);
-                  req.attr('editableRows',rows);
-                  $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
+                  //req.attr('editableRows',rows);
+                  //$('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
+                  self.scope.loadProposedONAccountPage.replace(Date.now());
                   $("#submitPOA").attr("disabled","disabled");
               }
               else{
