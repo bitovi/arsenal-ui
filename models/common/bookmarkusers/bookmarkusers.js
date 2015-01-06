@@ -6,9 +6,9 @@ var Bookmarkusers = Model.extend({
     findOne: function(params){
      	return $.ajax({
       		url: RinsCommon.UI_SERVICE_URL+'bookMarkUsers',
-      		type: 'POST',
-      		data: JSON.stringify(params),
-      		dataType:'json',
+      		type: 'GET',
+      		//data: JSON.stringify(params),
+      		//dataType:'json',
       		contentType: 'application/json'
       	});
     },
@@ -20,7 +20,7 @@ var Bookmarkusers = Model.extend({
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(params)
           })
-      
+
     }
 }, {});
 

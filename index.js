@@ -48,11 +48,16 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
  //skip for multipart/form-data
 
  //added for CSRF token
- if(appstate.csrfToken != null)
+
+ if(appstate.csrfToken != null )
  {
    jqXHR.setRequestHeader('X-Apple-CSRF-Token', appstate.csrfToken);
  }
- options.async = false;
+
+  if(options.type=='POST')
+  {
+    options.async = false;
+  }
  //end
  if(!options.data || options.contentType === "multipart/form-data" || options.data.constructor == FormData ) {
 

@@ -6,9 +6,9 @@ var Bookmark = Model.extend({
     findOne: function(params){
      	return $.ajax({
       		url: RinsCommon.UI_SERVICE_URL+'bookmarks',
-      		type: 'POST',
-      		data: JSON.stringify(params),
-      		dataType:'json',
+      		type: 'GET',
+      		//data: JSON.stringify(params),
+      		//dataType:'json',
       		contentType: 'application/json'
       	});
     },
@@ -21,7 +21,7 @@ var Bookmark = Model.extend({
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(params)
           })
-      } else { 
+      } else {
         return $.ajax({
             url: RinsCommon.UI_SERVICE_URL+'saveBookmark',
             type: 'POST',

@@ -5,9 +5,9 @@ var StoreType = Model.extend({
 	findAll: function(params){
 	 	return $.ajax({
 	 		url: RinsCommon.UI_SERVICE_URL +'getStoreTypes',
-	  		type: 'POST',
-	  		data: JSON.stringify(params),
-	  		dataType:'json',
+	  		type: 'GET',
+	  		//data: JSON.stringify(params),
+	  		//dataType:'json',
 	  		contentType: 'application/json'
 	  	});
 	}

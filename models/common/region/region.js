@@ -5,9 +5,9 @@ var Region = Model.extend({
 findAll: function(params){
  	return $.ajax({
  		url: RinsCommon.UI_SERVICE_URL +'getRegions',
-  		type: 'POST',
-  		data: JSON.stringify(params),
-  		dataType:'json',
+  		type: 'GET',
+  		//data: JSON.stringify(params),
+  		//dataType:'json',
   		contentType: 'application/json'
   	});
 }
