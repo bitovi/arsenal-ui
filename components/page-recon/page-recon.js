@@ -428,49 +428,68 @@ var fetchReconIngest = function(scope){
   searchRequestObj.searchRequest["filter"] = newFilterData;
 
 
-  Recon.findOne((searchRequestObj),function(data){
-    if(data.status == "FAILURE"){
-      displayErrorMessage(data.responseText,"Failed to load the Recon Ingest Tab:");
-    }else  {
-      scope.ingestList.headerRows.replace(data.reconStatsDetails);
+  Promise.all([Recon.findOne(searchRequestObj)]).then(function(values){
+    if(values != undefined && values != null) {
+      var data = values[0];
+      if(data.status == "FAILURE"){
+        displayErrorMessage(data.responseText,"Failed to load the Recon Ingest Tab:");
+      }else  {
+        scope.ingestList.headerRows.replace(data.reconStatsDetails);
 
-      scope.reconStatsDetailsSelected = data.reconStatsDetails
+        scope.reconStatsDetailsSelected = data.reconStatsDetails
 
-      scope.currencyScope.replace(data.currency);
+        scope.currencyScope.replace(data.currency);
 
-      scope.reconRefresh[0].attr("currency", data.currency[0]);
+        if(scope.reconRefresh[0] != undefined) {
+          scope.reconRefresh[0].attr("currency", data.currency[0]);
+        }
 
-      $("#currency").val(data.currency[0]);
+        $("#currency").val(data.currency[0]);
 
-      if(data.summary == undefined){
-        console.error("Footer rows doesn't exists in the response");
+        if(data.summary == undefined){
+          console.error("Footer rows doesn't exists in the response");
+        }
+
+        var footerLine= {
+          "__isChild": true,
+          "ccy":"EUR",
+          "pubfee":data.summary.totalPubFee,
+          "reconAmt":data.summary.totalRecon,
+          "liDispAmt":data.summary.totalLi,
+          "copConAmt":data.summary.totalCopCon,
+          "unMatchedAmt":data.summary.totalUnMatched,
+          "badLines":data.summary.totalBadLines,
+          "ccidId":"",
+          "entityName":"",
+          "countryId":"",
+          "contType":"",
+          "fiscalPeriod":"",
+          "ingstdDate":"",
+          "invFileName":"",
+          "status":"",
+          "isFooterRow":true
+        };
+
+        scope.ingestList.footerRows.replace(footerLine);
       }
-
-      var footerLine= {
-        "__isChild": true,
-        "ccy":"EUR",
-        "pubfee":data.summary.totalPubFee,
-        "reconAmt":data.summary.totalRecon,
-        "liDispAmt":data.summary.totalLi,
-        "copConAmt":data.summary.totalCopCon,
-        "unMatchedAmt":data.summary.totalUnMatched,
-        "badLines":data.summary.totalBadLines,
-        "ccidId":"",
-        "entityName":"",
-        "countryId":"",
-        "contType":"",
-        "fiscalPeriod":"",
-        "ingstdDate":"",
-        "invFileName":"",
-        "status":"",
-        "isFooterRow":true
-      };
-
-      scope.ingestList.footerRows.replace(footerLine);
     }
 
   },function(xhr){
     console.error("Error while loading: fetchReconIngest"+xhr);
+  }).then(function(values){
+
+    var ccidCheckbox = $("input.ccid")
+
+    for(var i=0; i<ccidCheckbox.length  ;i++) {
+
+      ccidCheckbox[i].click();
+
+    }
+
+    //$(".refreshReconStats")[0].disabled = false;
+    var ccids = scope.ingestCcidSelected;
+    scope.reconRefresh[0].fn_refreshReconStats(ccids,scope.reconRefresh[0].attr("currency"));
+
   });
 }
 
