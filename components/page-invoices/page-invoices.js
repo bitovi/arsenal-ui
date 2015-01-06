@@ -33,6 +33,7 @@ import css_tokeninput_theme from 'tokeninput_theme.css!';
 import template from './template.stache!';
 import styles from './page-invoices.less!';
 import exportToExcel from 'components/export-toexcel/';
+import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 /* Extend grid with the columns */
 Grid.extend({
@@ -53,6 +54,10 @@ Grid.extend({
         id: 'entityName',
         title: 'Entity',
         contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{entityName}}')({entityName: row.entityName, isChild: row.__isChild}); }
+      },
+      {
+        id: 'periodRange',
+        title: 'Period Range'
       },
       {
         id: 'invTypeDisp',
@@ -313,21 +318,25 @@ var page = Component.extend({
               invTemp["paymentState"] = (invoiceData[i]["paymentState"]==null || invoiceData[i]["paymentState"]==-1)?"":invoiceData[i]["paymentState"];
               invTemp["bundleName"] = (invoiceData[i]["bundleName"]==null || invoiceData[i]["bundleName"]=="--Select--")?"":invoiceData[i]["bundleName"];
               invTemp["comments"] = (invoiceData[i]["notes"]==null || invoiceData[i]["notes"].length==0)?"":invoiceData[i]["notes"];
-
-
               invTemp["invoiceAmount"] = CurrencyFormat(invTemp["invoiceAmount"]); //This is to format the amount with commas
-              gridData.data.push(invTemp);
-              var insertedId = gridData.data.length-1;
+
 
               var invoiceLineItems = invoiceData[i]["invoiceLines"];
               var contentTypeArr = [], countryArr = [];
+              var lowestPeriod = 0;
+              var highestPeriod = 0;
+              var tmpPeriod = 0;
+              var periodType = "";
+              var displayMultiplePeriod = false;
               if(invoiceLineItems.length > 0){
                 for(var j=0;j<invoiceLineItems.length;j++){
                   var invLITemp={};
+                  periodType = 'P';
                   invLITemp["invId"] = "";
                   invLITemp["__isChild"] = true;
                   invLITemp["__isChecked"] = false;
                   invLITemp["entityName"] = "";
+                  invLITemp["periodRange"] = periodWidgetHelper.getDisplayPeriod(invoiceLineItems[j]["fiscalPeriod"],periodType);
                   invLITemp["invoiceType"] = "";
                   invLITemp["invTypeDisp"] = "";
                   invLITemp["contentGrpName"] = (invoiceLineItems[j]["contentGrpName"]==null)?"":invoiceLineItems[j]["contentGrpName"];
@@ -340,13 +349,38 @@ var page = Component.extend({
                   invLITemp["status"] = "";
                   invLITemp["paymentState"] = "";
                   invLITemp["bundleName"] = "";
-                  invLITemp["comments"] = "";
+                  invLITemp["comments"] = "";  
+                  if(invoiceLineItems.length == 1){
+                    invTemp["periodRange"] = periodWidgetHelper.getDisplayPeriod(invoiceLineItems[j]["fiscalPeriod"],periodType);
+                  }else{
+                    if(j==0){
+                      lowestPeriod=Number(invoiceLineItems[j]["fiscalPeriod"]);
+                      highestPeriod=Number(invoiceLineItems[j]["fiscalPeriod"]);
+                      //periodType = invoiceLineItems[j]["periodType"];
+                      //periodType = 'P';
+                    }
+                    displayMultiplePeriod = true;
+                    tmpPeriod = Number(invoiceLineItems[j]["fiscalPeriod"]);
+                    if (tmpPeriod < lowestPeriod) lowestPeriod = tmpPeriod;
+                    if (tmpPeriod > highestPeriod) highestPeriod = tmpPeriod;
+                  }
+
                   contentTypeArr.push(invLITemp["contentGrpName"]);
                   countryArr.push(invLITemp["country"]);
                   gridData.data.push(invLITemp);
                 }
-
+                if(displayMultiplePeriod){
+                  if(lowestPeriod != highestPeriod){
+                    invTemp["periodRange"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType)+' - '+periodWidgetHelper.getDisplayPeriod(highestPeriod,periodType);  
+                  }else{
+                    invTemp["periodRange"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType);
+                  }
+                }
               }
+
+
+              gridData.data.push(invTemp);
+              var insertedId = gridData.data.length-1;
 
               /*Below function is to remove the duplicate content type and find the count */
               contentTypeArr = contentTypeArr.filter( function( item, index, inputArray ) {
@@ -1000,7 +1034,7 @@ function alignGrid(){
   var colLength = $('#invoiceGrid table>thead>tr>th').length;
   var rowLength = $('#invoiceGrid table>tbody>tr').length;
   var tableWidth = 0;
-  //console.log("rowLength" + rowLength);
+  console.log("colLength" + colLength);
   if(rowLength>0){
       for(var i=1;i<=colLength;i++){
         var tdWidth = $('#invoiceGrid table>tbody>tr>td:nth-child('+i+')').outerWidth();
@@ -1010,7 +1044,7 @@ function alignGrid(){
           tdWidth = 225;
         if(i>1 && tdWidth<125) // For all other columns which has the size less than 125px
           tdWidth = 125;
-        if(i==11 && tdWidth<150) //For the title 'Payment Bundle Name'
+        if(i==12 && tdWidth<150) //For the title 'Payment Bundle Name'
           tdWidth = 150;
         //console.log("td "+i+" width "+$('#invoiceGrid table>tbody>tr>td:nth-child('+i+')').outerWidth());
         $('#invoiceGrid table>thead>tr>th:nth-child('+i+')').css("width",tdWidth);
