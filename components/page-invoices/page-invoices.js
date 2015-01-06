@@ -754,6 +754,9 @@ var page = Component.extend({
                     $("#paymentBundleNames").val("");
                     $("#messageDiv").html("<label class='errorMessage'>Only unbundled invoices can be bundled</label>");
                     $("#messageDiv").show();
+                     setTimeout(function(){
+                      $("#messageDiv").hide();
+                   },4000);
                   }
             }
       },
