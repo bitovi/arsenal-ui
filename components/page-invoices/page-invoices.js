@@ -162,6 +162,7 @@ var page = Component.extend({
     offset: 0,
     fileinfo:[],
     excelOutput:[],
+    bundleState:{},
     refreshTokenInput: function(val, type){
       //console.log("val is "+JSON.stringify(val));
       var self = this;
@@ -506,8 +507,9 @@ var page = Component.extend({
       var val = parseInt($(item[0]).attr("value"));
       var row = item.closest('tr').data('row').row;
       var invoiceType = row.invoiceType;
-
-      $('.select-toggle-all').prop("checked", false);
+      var bundleStatus = row.status;
+    
+     $('.select-toggle-all').prop("checked", false);
 
       /* An invoice can be deleted only if it satisfies the below criteria */
       var flag=false;
@@ -522,6 +524,14 @@ var page = Component.extend({
       }
 
       if($(item[0]).is(":checked")){
+           if(bundleStatus == "UNBUNDLED"){
+              self.scope.bundleState.attr(val, true);
+            }
+            else
+            {
+              self.scope.bundleState.attr(val, false);
+            }
+
           row.attr('__isChecked', true);
           self.scope.attr('checkedRows').push(val);
           if(flag==false){
@@ -530,6 +540,7 @@ var page = Component.extend({
 
 
       } else {
+        self.scope.bundleState.removeAttr(val);
           self.scope.attr('checkedRows').each(function(value, key) {
               row.attr('__isChecked', false);
               if(val == value){
@@ -685,46 +696,66 @@ var page = Component.extend({
       "#paymentBundleNames change": function(){
           var self = this;
           var pbval = $("#paymentBundleNames").val();
+          
           if(pbval=="createB"){
 
-              var regId = self.scope.appstate.attr('region');
-              var periodFrom = self.scope.appstate.attr('periodFrom');
-              var periodTo = self.scope.appstate.attr('periodTo');
-              var invoiceData = self.scope.attr().allInvoicesMap[0].invoices;
-              //console.log(JSON.stringify(self.scope.checkedRows.attr()));
+                var bundleStateObj = self.scope.bundleState;
+                var unbundleStatus = true;;
 
-              var selInvoices = self.scope.checkedRows.attr();
-
-              console.log(JSON.stringify(self.scope.checkedRows.attr()));
-              var bundleLines = [];
-              for(var i=0;i<invoiceData.length;i++){
-                  var invId = invoiceData[i]["invId"];
-               if(invoiceData.length > 0 && selInvoices.indexOf(invId)>-1) {
-
-                      var lineType = invoiceData[i]["invoiceType"];
-                      var periodType = invoiceData[i]["periodType"];
-
-                      var temp = {};
-                      temp["refLineId"] = invId;
-                      temp["refLineType"] = lineType;
-                      temp["periodType"] = (periodType == null) ? "P" : periodType;
-                      bundleLines.push(temp);
+                for(var key in bundleStateObj){
+                  if(!bundleStateObj[key]){
+                    unbundleStatus = false;
+                    break;
                   }
-              }
-              console.log("create bundle bundleLines "+JSON.stringify(bundleLines));
-              var bundleType = lineType;
-              var newBundleNameRequest = {"paymentBundle":{}};
-              var bundleRequest = {};
+                }
+                if(unbundleStatus)  
+                {
+                    var regId = self.scope.appstate.attr('region');
+                    var periodFrom = self.scope.appstate.attr('periodFrom');
+                    var periodTo = self.scope.appstate.attr('periodTo');
+                    var invoiceData = self.scope.attr().allInvoicesMap[0].invoices;
+                    //console.log(JSON.stringify(self.scope.checkedRows.attr()));
 
-              bundleRequest["regionId"] = regId['id'];
-              //bundleRequest["periodFrom"] = periodFrom;
-              //bundleRequest["periodTo"] = periodTo;
-              bundleRequest["bundleType"] =lineType;
-              bundleRequest["bundleDetailsGroup"] =bundleLines;
-              newBundleNameRequest["paymentBundle"] = bundleRequest;
-              console.log("New Bundle name request is "+JSON.stringify(newBundleNameRequest));
-              self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
-          }
+                    var selInvoices = self.scope.checkedRows.attr();
+
+                    console.log(JSON.stringify(self.scope.checkedRows.attr()));
+                    var bundleLines = [];
+                    for(var i=0;i<invoiceData.length;i++){
+                        var invId = invoiceData[i]["invId"];
+                     if(invoiceData.length > 0 && selInvoices.indexOf(invId)>-1) {
+
+                            var lineType = invoiceData[i]["invoiceType"];
+                            var periodType = invoiceData[i]["periodType"];
+
+                            var temp = {};
+                            temp["refLineId"] = invId;
+                            temp["refLineType"] = lineType;
+                            temp["periodType"] = (periodType == null) ? "P" : periodType;
+                            bundleLines.push(temp);
+                        }
+                    }
+                    console.log("create bundle bundleLines "+JSON.stringify(bundleLines));
+                    var bundleType = lineType;
+                    var newBundleNameRequest = {"paymentBundle":{}};
+                    var bundleRequest = {};
+
+                    bundleRequest["regionId"] = regId['id'];
+                    //bundleRequest["periodFrom"] = periodFrom;
+                    //bundleRequest["periodTo"] = periodTo;
+                    bundleRequest["bundleType"] =lineType;
+                    bundleRequest["bundleDetailsGroup"] =bundleLines;
+                    newBundleNameRequest["paymentBundle"] = bundleRequest;
+                    console.log("New Bundle name request is "+JSON.stringify(newBundleNameRequest));
+                    self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
+
+                  }
+                  else
+                  {
+                    $("#paymentBundleNames").val("");
+                    $("#messageDiv").html("<label class='errorMessage'>Only unbundled invoice can be bundled</label>");
+                    $("#messageDiv").show();
+                  }
+            }
       },
       "#btnAttach click": function(){
           //this.scope.attr("fileinfo").replace([]);
