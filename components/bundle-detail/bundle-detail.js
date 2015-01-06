@@ -293,7 +293,7 @@ var BundleDetailTabs = Component.extend({
           paymentOption: this.scope.paymentType
         }).then(function(response) {
           if(response.status === 'SUCCESS') {
-            Alert.displayAlert('success', response.responseText);
+            Alert.displayAlert(response.responseText, 'success' );
 
             // un-select the selected bundle (we're done here)
             pageState.attr('selectedBundle', null);

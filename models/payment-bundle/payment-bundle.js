@@ -183,7 +183,7 @@ var PaymentBundle = Model.extend({
       data: {
         paymentBundle: {
           bundleId: bundle.bundleId,
-          view: view
+          view: view.toUpperCase()
         }
       },
       processData: false
@@ -193,7 +193,7 @@ var PaymentBundle = Model.extend({
       var rulesCompleted = 0,
           rulesTotal = 0;
 
-      if(validationResponse.status != "FAILURE"){ // On success
+      if(validationResponse.status != "FAILURE" && validationResponse.paymentBundle != undefined){ // On success
 
         can.batch.start();
         validationResponse.paymentBundle.bundleDetailsGroup.forEach(function(group) {
@@ -253,11 +253,15 @@ var PaymentBundle = Model.extend({
     delete bundleData.validationRulesCompleted;
     delete bundleData.validationRulesTotal;
 
+
+
     bundleData.bundleDetailsGroup && bundleData.bundleDetailsGroup.forEach(function(group) {
       delete group.__isChild;
       delete group.__isOpen;
+
       delete group.contentGrpName;
       delete group.country;
+      delete group.fiscalPeriod
 
       group.bundleDetails.forEach(function(detail) {
         delete detail.__isChild;
