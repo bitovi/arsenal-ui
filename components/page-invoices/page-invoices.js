@@ -125,12 +125,12 @@ Grid.extend({
           }
         });
 
-      alignGrid();
+      alignGrid('invoiceGrid');
     },
     '.open-toggle click': function(el, ev) {
       var row = el.closest('tr').data('row').row;
       row.attr('__isOpen', !row.attr('__isOpen'));
-      alignGrid();
+      alignGrid('invoiceGrid');
     },
     '.select-toggle-all click': function(el, ev) {
       ev.stopPropagation();
@@ -139,7 +139,7 @@ Grid.extend({
       // open parent rows if they are closed; close them if they are open
       this.scope.rows.each(row => row.attr('__isChecked', !allChecked));
       can.batch.stop();
-      alignGrid();
+      alignGrid('invoiceGrid');
     },
   }
 });
@@ -547,7 +547,7 @@ var page = Component.extend({
       }
       //console.log("Checked rows: "+JSON.stringify(self.scope.checkedRows.attr()));
       //console.log("unDeleted Invoices: "+JSON.stringify(self.scope.attr('unDeletedInvoices')));
-      alignGrid();
+      alignGrid('invoiceGrid');
     },
     "{checkedRows} change": function(item,el,ev){
           var self = this;
@@ -996,30 +996,52 @@ function CurrencyFormat(number)
   var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
   return n;
 }
-function alignGrid(){
-  var colLength = $('#invoiceGrid table>thead>tr>th').length;
-  var rowLength = $('#invoiceGrid table>tbody>tr').length;
+function alignGrid(divId){
+  var colLength = $('#'+divId+' table>thead>tr>th').length;
+  var rowLength = $('#'+divId+' table>tbody>tr').length;
+  var divWidth = $('#'+divId).outerWidth();
   var tableWidth = 0;
-  //console.log("rowLength" + rowLength);
+  var tdWidth, cellWidthArr = [];
+
   if(rowLength>0){
+    $('#'+divId+' table').css("width",divWidth-300);
       for(var i=1;i<=colLength;i++){
-        var tdWidth = $('#invoiceGrid table>tbody>tr>td:nth-child('+i+')').outerWidth();
+        var theadTdWidth = $('#'+divId+' table>thead>tr>th:nth-child('+i+')').outerWidth();
+        var tbodyTdWidth = $('#'+divId+' table>tbody>tr>td:nth-child('+i+')').outerWidth();
+        var tfootTdWidth = $('#'+divId+' table>tfoot>tr>td:nth-child('+i+')').outerWidth();
+
+        if(theadTdWidth >= tbodyTdWidth && theadTdWidth >= tfootTdWidth)
+          tdWidth = theadTdWidth;
+        else if(tfootTdWidth >= tbodyTdWidth && tfootTdWidth >= theadTdWidth)
+          tdWidth = tfootTdWidth;
+        else 
+          tdWidth = tbodyTdWidth;
+
         if(i==1) //For the column holding 'check box'
-          tdWidth = 35;
-        if(i==2) // For the footer column hold 'Total in Regional Currency'
-          tdWidth = 225;
-        if(i>1 && tdWidth<125) // For all other columns which has the size less than 125px
-          tdWidth = 125;
-        if(i==11 && tdWidth<150) //For the title 'Payment Bundle Name'
-          tdWidth = 150;
-        //console.log("td "+i+" width "+$('#invoiceGrid table>tbody>tr>td:nth-child('+i+')').outerWidth());
-        $('#invoiceGrid table>thead>tr>th:nth-child('+i+')').css("width",tdWidth);
-        $('#invoiceGrid table>tbody>tr>td:nth-child('+i+')').css("width",tdWidth);
-        $('#invoiceGrid table>tfoot>tr>td:nth-child('+i+')').css("width",tdWidth);
-        //$('#invoiceGrid table>tfoot>tr>td:nth-child('+i+')').css("width",tdWidth);
+            tdWidth = 35;      
+
         tableWidth += tdWidth;
+        cellWidthArr.push(tdWidth);
       }
-      $("#invoiceGrid table").css("width",tableWidth);
+
+      if(tableWidth < divWidth){
+        var moreWidth = (divWidth-tableWidth)/colLength;
+        for(var j=1;j<=cellWidthArr.length;j++){
+          var width = cellWidthArr[j-1]+moreWidth;
+          $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
+          $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width);
+          $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
+        }
+        $("#invoiceGrid table").css("width",divWidth);
+      } else {
+        for(var j=1;j<=cellWidthArr.length;j++){
+          var width = cellWidthArr[j-1];
+          $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
+          $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width);
+          $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
+        }
+        $('#'+divId+' table').css("width",tableWidth);
+      }
   }
 }
 export default page;
