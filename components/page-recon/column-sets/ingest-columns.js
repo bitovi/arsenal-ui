@@ -8,7 +8,7 @@ export default [
     title: '',
     contents: function(row) {
       if(row.isFooterRow == undefined){
-        return (row.ccidId == null || row.ccidId == "0" ) ? "": can.stache('<input type="checkbox"/>' )() ;
+        return (row.ccidId == null || row.ccidId == "0"|| row.status ==="Paid") ? "": can.stache('<input type="checkbox" class="ccid"/>' )() ;
       }
     }
   },

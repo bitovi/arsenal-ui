@@ -148,8 +148,8 @@ frameDeleteRequest:function(rowsToBedeleted,comments,quarters){
             onAccountDetail.status="I";
 
             for(var k=0;k<quarters.length;k++){
-              var periodVal = (rowsToBedeleted[i][quarters[k]]);
-              if(periodVal != undefined && periodVal.length > 0){
+              var periodVal = rowsToBedeleted[i][quarters[k]]+'';
+              if(periodVal != undefined && periodVal.length > 0 && periodVal != "undefined"){
                 var copyiedObj = jQuery.extend({}, onAccountDetail);
                 copyiedObj.fiscalPeriod = this.getPeriodForQuarter(quarters[k]);
                 onAccountDeleteRequest.onAccount.onAccountDetails.push(copyiedObj);
@@ -321,6 +321,7 @@ prepareRowsForDisplay:function(onAccountDetails){
   var previousEntityId="";
   var previousCurrency="";
   var previousContentType="";
+  var periodMap = new Object();
   var row={};
   if(onAccountDetails != undefined && onAccountDetails.length >0){
     for(var i=0;i<onAccountDetails.length;i++){
@@ -330,12 +331,23 @@ prepareRowsForDisplay:function(onAccountDetails){
       if(entityId==previousEntityId && currency == previousCurrency && contentType==previousContentType){
         if(i==0){
           row = this.createRow(onAccountDetails[i],false,row)
+          periodMap[period]=onAccountDetails[i].onAccountAmt;
         }else{
-          row[onAccountDetails[i].fiscalPeriod]=utils.currencyFormat(onAccountDetails[i].onAccountAmt);
+          //row[onAccountDetails[i].fiscalPeriod]=utils.currencyFormat(onAccountDetails[i].onAccountAmt);
+          periodMap[period]=onAccountDetails[i].onAccountAmt;
         }
       }else{
         if(i!=0){
-          rows.push(row);
+          var addToRow = false;
+          for(var k=0;k<quarters.length;k++){
+             if(periodMap.hasOwnProperty(quarters[k])){
+              addToRow = true;
+              row[quarters[k]]=periodMap[quarters[k]];
+              }
+           }
+          if(addToRow){
+            rows.push(row);  
+          } 
         }
         row=this.createRow(onAccountDetails[i],true,"");
       }
@@ -343,7 +355,16 @@ prepareRowsForDisplay:function(onAccountDetails){
        previousCurrency=currency;
        previousContentType=contentType;
     }
-    rows.push(row);
+    var addToRow = false;
+    for(var k=0;k<quarters.length;k++){
+       if(periodMap.hasOwnProperty(quarters[k])){
+        addToRow = true;
+        row[quarters[k]]=periodMap[quarters[k]];
+        }
+     }
+    if(addToRow){
+      rows.push(row);  
+    } 
   }
    return rows;
 },
@@ -364,8 +385,8 @@ createRow:function(onAccountDetail,newRow,row){
   row['docId']=onAccountDetail.docId;
   row['commentId']=onAccountDetail.commentId;
   row['Total']= utils.currencyFormat(onAccountDetail.onAccountAmtTotal);
-  var period = this.getDisplayPeriod(onAccountDetail.fiscalPeriod);
-  row[period]=utils.currencyFormat(onAccountDetail.onAccountAmt);
+  //var period = this.getDisplayPeriod(onAccountDetail.fiscalPeriod);
+  //row[period]=utils.currencyFormat(onAccountDetail.onAccountAmt);
   return row;
 },
 getDisplayPeriod: function(quarter){
@@ -438,30 +459,44 @@ getDisplayPeriod: function(quarter){
   footerRow[period]=utils.currencyFormat(footerData.onAccountAmt);
   return footerRow;
 },
-prepareOnAccountRowsForDisplay:function(onAccountDetails){
+prepareOnAccountRowsForDisplay:function(onAccountDetails,quarters){
   var rows=[];
   var previousEntityId="";
   var previousCurrency="";
   var previousContentType="";
   var bundleNames=[];
+  var periodMap = new Object();
   var row={};
   if(onAccountDetails != undefined && onAccountDetails.length >0){
     for(var i=0;i<onAccountDetails.length;i++){
       var entityId = onAccountDetails[i].entityId;
       var currency = onAccountDetails[i].currencyCode;
       var contentType = onAccountDetails[i].contentGroupName;
+      var period = this.getDisplayPeriod(onAccountDetails[i].fiscalPeriod);
       if(entityId==previousEntityId && currency == previousCurrency && contentType==previousContentType){
         if(i==0){
           row = this.createRow(onAccountDetails[i],false,row)
+          periodMap[period]=onAccountDetails[i].onAccountAmt;
         }else{
-          var period = this.getDisplayPeriod(onAccountDetails[i].fiscalPeriod);
-          row[period]=utils.currencyFormat(onAccountDetails[i].onAccountAmt);
+          periodMap[period]=onAccountDetails[i].onAccountAmt;
+          //row[period]=utils.currencyFormat(onAccountDetails[i].onAccountAmt);
         }
       }else{
         if(i!=0){
-          rows.push(row);
+          var addToRow = false;
+          for(var k=0;k<quarters.length;k++){
+             if(periodMap.hasOwnProperty(quarters[k])){
+              addToRow = true;
+              row[quarters[k]]=periodMap[quarters[k]];
+              }
+           }
+          if(addToRow){
+            rows.push(row);  
+          } 
+          //rows.push(row);
         }
         row=this.createRow(onAccountDetails[i],true,"");
+        periodMap[period]=onAccountDetails[i].onAccountAmt;
         row['bundleId']=onAccountDetails[i].bundleId;
         row['bundleName']=onAccountDetails[i].bundleName;
         bundleNames.push(onAccountDetails[i].bundleName);
@@ -470,7 +505,16 @@ prepareOnAccountRowsForDisplay:function(onAccountDetails){
        previousCurrency=currency;
        previousContentType=contentType;
     }
-    rows.push(row);
+    var addToRow = false;
+    for(var k=0;k<quarters.length;k++){
+       if(periodMap.hasOwnProperty(quarters[k])){
+        addToRow = true;
+        row[quarters[k]]=periodMap[quarters[k]];
+        }
+     }
+    if(addToRow){
+      rows.push(row);  
+    } 
   }
    var returnValue = new Array();
       returnValue['ROWS']=rows;

@@ -18,6 +18,7 @@ import css_tokeninput_theme from 'tokeninput_theme.css!';
 import commonUtils from 'utils/commonUtils';
 import FileManager from 'utils/fileManager/';
 
+import exportToExcel from 'components/export-toexcel/';
 
 //Navigation bar definitions
 var tabNameObj = {
@@ -57,6 +58,8 @@ var page = Component.extend({
     reconRefresh : [],
 
     reconStatsDetailsSelected : [],
+
+    incomingStatsDetailsSelected : [],
 
     //bottomgrid
     refreshStatsReq:undefined,
@@ -244,22 +247,82 @@ var page = Component.extend({
         }
       );
       this.scope.currencyList.replace(list);
-    }
+    },
+   '.exportToExcel click':function(el,ev){
+       
+        var self = this;
+        console.log(self.scope.tabSelected);
+       if(self.scope.tabSelected=="Ingested"){
+              Recon.findOne(createIngestedReconRequestForExportToExcel(self.scope.appstate),function(data){ 
+                console.log(data);
+                console.log(JSON.stringify(data));
+                      if(data["status"]=="SUCCESS"){
+                        $('#exportExcel').html(template('<export-toexcel csv={data}></export-toexcel>')({data}));
+                      }else{
+                        $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                        $("#messageDiv").show();
+                        setTimeout(function(){
+                            $("#messageDiv").hide();
+                        },2000)
+                        self.scope.attr('emptyrows',true);
+                      }
+                }, function(xhr) {
+                      console.error("Error while loading: onAccount balance Details"+xhr);
+                } ); 
+         }else if(self.scope.tabSelected=="Incoming Details"){
+              Recon.findOne(createIngestedReconRequestForExportToExcel(self.scope.appstate),function(data){ 
+                console.log(data);
+                      if(data["status"]=="SUCCESS"){
+                        $('#exportExcel').html(template('<export-toexcel csv={data}></export-toexcel>')({data}));
+                      }else{
+                        $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                        $("#messageDiv").show();
+                        setTimeout(function(){
+                            $("#messageDiv").hide();
+                        },2000)
+                        self.scope.attr('emptyrows',true);
+                      }
+                }, function(xhr) {
+                      console.error("Error while loading: onAccount balance Details"+xhr);
+                } ); 
+         }    
+       }
    }
 });
 
+
+var createIngestedReconRequestForExportToExcel=function(appstate){
+    var IngestedReconRequest={};
+    IngestedReconRequest.searchRequest=UserReq.formGlobalRequest(appstate).searchRequest;
+    IngestedReconRequest.searchRequest.type="INGESTED";
+    IngestedReconRequest.excelOutput=true;
+    console.log(JSON.stringify(IngestedReconRequest));
+    return UserReq.formRequestDetails(IngestedReconRequest);
+  };
+
+var createIncomingReconRequestForExportToExcel=function(appstate){
+    var IncomingReconRequest={};
+    IncomingReconRequest.searchRequest=UserReq.formGlobalRequest(appstate).searchRequest;
+    IncomingReconRequest.searchRequest.type="INCOMING";
+    IncomingReconRequest.excelOutput=true;
+    console.log(JSON.stringify(IncomingReconRequest));
+    return UserReq.formRequestDetails(IncomingReconRequest);
+  };
 
 var processRejectIngestRequest = function(scope,requestType){
     var ccidList ;
     var type ;
     var ccidSelected = [];
+    var tab = "";
 
     if(scope.tabSelected == scope.tabName.ingest.attr("name")){
       ccidList = scope.attr("ingestCcidSelected");
       type =  scope.tabName.ingest.attr("type");
+      tab = "ingest";
     }else{
       ccidList = scope.attr("incomingCcidSelected");
       type =  scope.tabName.incoming.attr("type");
+      tab = "incoming";
     }
 
     can.each(ccidList,
@@ -282,9 +345,17 @@ var processRejectIngestRequest = function(scope,requestType){
 
         //scope.reconStatsDetailsSelected = data.reconStatsDetails;
 
-        findCCids(scope, ccidSelected);
+        findCCids(scope, ccidSelected, tab);
 
-        scope.ingestList.headerRows.replace(scope.reconStatsDetailsSelected);
+        if(tab == "ingest") {
+
+          scope.ingestList.headerRows.replace(scope.reconStatsDetailsSelected);
+
+        } else {
+
+          scope.incomingDetails.headerRows.replace(scope.incomingStatsDetailsSelected);
+          
+        }
 
         scope.attr("size_ingestCcidSelected", 0);
 
@@ -370,51 +441,67 @@ var fetchReconIngest = function(scope){
   searchRequestObj.searchRequest["filter"] = newFilterData;
 
 
-  Recon.findOne((searchRequestObj),function(data){
-    if(data.status == "FAILURE"){
-      displayErrorMessage(data.responseText,"Failed to load the Recon Ingest Tab:");
-    }else  {
-      scope.ingestList.headerRows.replace(data.reconStatsDetails);
+  Promise.all([Recon.findOne(searchRequestObj)]).then(function(values){
+    if(values != undefined && values != null) {
+      var data = values[0];
+      if(data.status == "FAILURE"){
+        displayErrorMessage(data.responseText,"Failed to load the Recon Ingest Tab:");
+      }else  {
+        scope.ingestList.headerRows.replace(data.reconStatsDetails);
 
-      scope.reconStatsDetailsSelected = data.reconStatsDetails
+        scope.reconStatsDetailsSelected = data.reconStatsDetails
 
-      scope.currencyScope.replace(data.currency);
+        scope.currencyScope.replace(data.currency);
 
-      if(scope.reconRefresh[0] != undefined) {
-        scope.reconRefresh[0].attr("currency", data.currency[0]);
+        if(scope.reconRefresh[0] != undefined) {
+          scope.reconRefresh[0].attr("currency", data.currency[0]);
+        }
+
+        $("#currency").val(data.currency[0]);
+
+        if(data.summary == undefined){
+          console.error("Footer rows doesn't exists in the response");
+        }
+
+        var footerLine= {
+          "__isChild": true,
+          "ccy":"EUR",
+          "pubfee":data.summary.totalPubFee,
+          "reconAmt":data.summary.totalRecon,
+          "liDispAmt":data.summary.totalLi,
+          "copConAmt":data.summary.totalCopCon,
+          "unMatchedAmt":data.summary.totalUnMatched,
+          "badLines":data.summary.totalBadLines,
+          "ccidId":"",
+          "entityName":"",
+          "countryId":"",
+          "contType":"",
+          "fiscalPeriod":"",
+          "ingstdDate":"",
+          "invFileName":"",
+          "status":"",
+          "isFooterRow":true
+        };
+
+        scope.ingestList.footerRows.replace(footerLine);
       }
-
-      $("#currency").val(data.currency[0]);
-
-      if(data.summary == undefined){
-        console.error("Footer rows doesn't exists in the response");
-      }
-
-      var footerLine= {
-        "__isChild": true,
-        "ccy":"EUR",
-        "pubfee":data.summary.totalPubFee,
-        "reconAmt":data.summary.totalRecon,
-        "liDispAmt":data.summary.totalLi,
-        "copConAmt":data.summary.totalCopCon,
-        "unMatchedAmt":data.summary.totalUnMatched,
-        "badLines":data.summary.totalBadLines,
-        "ccidId":"",
-        "entityName":"",
-        "countryId":"",
-        "contType":"",
-        "fiscalPeriod":"",
-        "ingstdDate":"",
-        "invFileName":"",
-        "status":"",
-        "isFooterRow":true
-      };
-
-      scope.ingestList.footerRows.replace(footerLine);
     }
 
   },function(xhr){
     console.error("Error while loading: fetchReconIngest"+xhr);
+  }).then(function(values){
+
+    var ccidCheckbox = $("input.ccid")
+
+    for(var i=0; i<ccidCheckbox.length  ;i++) {
+
+      ccidCheckbox[i].click();
+
+    }
+
+    var ccids = scope.ingestCcidSelected;
+    scope.reconRefresh[0].fn_refreshReconStats(ccids,scope.reconRefresh[0].attr("currency"));
+
   });
 }
 
@@ -444,27 +531,32 @@ var fetchReconDetails = function(scope){
       displayErrorMessage(data.responseText,"Failed to load the Recondetails:");
     }else  {
       scope.incomingDetails.headerRows.replace(data.reconStatsDetails);
+      
+      scope.incomingStatsDetailsSelected = data.reconStatsDetails;
 
-      var footerLine= {
-        "__isChild": true,
-        "ccy":"EUR",
-        "pubfee":data.summary.totalPubFee,
-        "reconAmt":data.summary.totalRecon,
-        "liDispAmt":data.summary.totalLi,
-        "copConAmt":data.summary.totalCopCon,
-        "unMatchedAmt":data.summary.totalUnMatched,
-        "badLines":data.summary.totalBadLines,
-        "ccidId":"",
-        "entityName":"",
-        "countryId":"",
-        "contType":"",
-        "fiscalPeriod":"",
-        "rcvdDate":"",
-        "invFileName":"",
-        "status":"",
-        "isFooterRow":true
-      };
-      scope.incomingDetails.footerRows.replace(footerLine);
+      if (data.summary!== null) {
+        var footerLine= {
+          "__isChild": true,
+          "ccy":"EUR",
+          "pubfee":(data.summary.totalPubFee != undefined)? data.summary.totalPubFee:"",
+          "reconAmt":data.summary.totalRecon,
+          "liDispAmt":data.summary.totalLi,
+          "copConAmt":data.summary.totalCopCon,
+          "unMatchedAmt":data.summary.totalUnMatched,
+          "badLines":data.summary.totalBadLines,
+          "ccidId":"",
+          "entityName":"",
+          "countryId":"",
+          "contType":"",
+          "fiscalPeriod":"",
+          "rcvdDate":"",
+          "invFileName":"",
+          "status":"",
+          "isFooterRow":true
+        };
+        scope.incomingDetails.footerRows.replace(footerLine);  
+      }
+      
     }
   },function(xhr){
     console.error("Error while loading: fetchReconDetails"+xhr);
@@ -498,16 +590,35 @@ var refreshChekboxSelection = function(el,scope){
   }
 }
 
-var findCCids =  function(scope, ccidSelected) {
+var findCCids =  function(scope, ccidSelected, tab) {
 
   var found = false;
-  for( var i=0; i< scope.reconStatsDetailsSelected.length ; i++) {
+
+  var detailsList = [];
+
+  if(tab == "ingest") {
+
+    detailsList = scope.reconStatsDetailsSelected;
+
+  } else {
+
+    detailsList = scope.incomingStatsDetailsSelected;
+
+  }
+
+
+  for( var i=0; i< detailsList.length ; i++) {
 
     //alert('Here');
-    if(ccidSelected.indexOf(scope.reconStatsDetailsSelected[i].dtlHdrId) >= 0) {
+    if(ccidSelected.indexOf(detailsList[i].dtlHdrId) >= 0) {
 
-      scope.reconStatsDetailsSelected.splice(i,1);
+      detailsList.splice(i,1);
       found = true;
+      if(tab == "ingest") {
+        scope.reconStatsDetailsSelected.replace(detailsList);
+      } else {
+        scope.incomingStatsDetailsSelected.replace(detailsList);
+      }
       break;
 
     }

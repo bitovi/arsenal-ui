@@ -435,7 +435,7 @@ var page = Component.extend({
                /* The below calls {scope.appstate} change event that gets the new data for grid*/
                 //var returnValue = utils.getProposedOnAccRows(quarters,data);
 
-                var returnValue = utils.prepareOnAccountRowsForDisplay(data.onAccount.onAccountDetails);
+                var returnValue = utils.prepareOnAccountRowsForDisplay(data.onAccount.onAccountDetails,self.scope.quarters);
                 var footerRows = utils.createFooterRow(data.onAccount.onAccountFooter);
 
 
@@ -719,7 +719,7 @@ var validateFilters=function(appstate,validateQuarter,validateStoreType,validate
         return "Invalid contentType !";
       }else if(validateContentType && (contGrpId == undefined && contGrpId.attr() == null || contGrpId.attr() =="") && contGrpId.attr().length ==0){
         return "Please select contentType !";
-      }else if(validateContentType && (contGrpId.attr().length >1 )){
+      }else if(validateContentType && (contGrpId.attr().length >1  || contGrpId[0] == "-1")){
         return "Please select single contentType !";
       }
      

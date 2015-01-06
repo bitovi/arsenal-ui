@@ -379,7 +379,7 @@ var page = Component.extend({
 				                   	callback: {
 				                            message: 'Licensor is mandatory',
 				                            callback: function (value, validator, $field) {
-				                              if(value == ""){
+				                              if(value == "" || value == "Select" || value == null){
 				                              	   return false;
 				                              }
 				                              return true;
@@ -394,7 +394,7 @@ var page = Component.extend({
 				                   	callback: {
 				                            message: 'Currency is mandatory',
 				                            callback: function (value, validator, $field) {
-				                              if(value == ""){
+				                              if(value == "" || value == "Select" || value == null){
 				                              	   return false;
 				                              }
 				                              return true;

@@ -33,6 +33,7 @@ import css_tokeninput_theme from 'tokeninput_theme.css!';
 import template from './template.stache!';
 import styles from './page-invoices.less!';
 import exportToExcel from 'components/export-toexcel/';
+import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 /* Extend grid with the columns */
 Grid.extend({
@@ -53,6 +54,10 @@ Grid.extend({
         id: 'entityName',
         title: 'Entity',
         contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{entityName}}')({entityName: row.entityName, isChild: row.__isChild}); }
+      },
+      {
+        id: 'fiscalPeriod',
+        title: 'Period Range'
       },
       {
         id: 'invTypeDisp',
@@ -162,6 +167,7 @@ var page = Component.extend({
     offset: 0,
     fileinfo:[],
     excelOutput:[],
+    bundleState:{},
     refreshTokenInput: function(val, type){
       //console.log("val is "+JSON.stringify(val));
       var self = this;
@@ -300,6 +306,7 @@ var page = Component.extend({
               invTemp["__isChild"] = false;
               invTemp["__isChecked"] = false;
               invTemp["entityName"] = (invoiceData[i]["entityName"]==null)?"":invoiceData[i]["entityName"];
+              invTemp["fiscalPeriod"] = "";
               invTemp["invoiceType"] = (invoiceData[i]["invoiceType"]==null)?"":invoiceData[i]["invoiceType"];
               invTemp["invTypeDisp"] = (invoiceData[i]["invTypeDisp"]==null)?"":invoiceData[i]["invTypeDisp"];
               invTemp["contentGrpName"] = "";
@@ -313,21 +320,27 @@ var page = Component.extend({
               invTemp["paymentState"] = (invoiceData[i]["paymentState"]==null || invoiceData[i]["paymentState"]==-1)?"":invoiceData[i]["paymentState"];
               invTemp["bundleName"] = (invoiceData[i]["bundleName"]==null || invoiceData[i]["bundleName"]=="--Select--")?"":invoiceData[i]["bundleName"];
               invTemp["comments"] = (invoiceData[i]["notes"]==null || invoiceData[i]["notes"].length==0)?"":invoiceData[i]["notes"];
-
-
               invTemp["invoiceAmount"] = CurrencyFormat(invTemp["invoiceAmount"]); //This is to format the amount with commas
+
+
               gridData.data.push(invTemp);
               var insertedId = gridData.data.length-1;
 
               var invoiceLineItems = invoiceData[i]["invoiceLines"];
               var contentTypeArr = [], countryArr = [];
+              var lowestPeriod = 0;
+              var highestPeriod = 0;
+              var tmpPeriod = 0;
+              var periodType = 'P';
               if(invoiceLineItems.length > 0){
                 for(var j=0;j<invoiceLineItems.length;j++){
                   var invLITemp={};
+                  //periodType = invoiceLineItems[j]['periodType'];
                   invLITemp["invId"] = "";
                   invLITemp["__isChild"] = true;
                   invLITemp["__isChecked"] = false;
                   invLITemp["entityName"] = "";
+                  invLITemp["fiscalPeriod"] = periodWidgetHelper.getDisplayPeriod(invoiceLineItems[j]["fiscalPeriod"],periodType);
                   invLITemp["invoiceType"] = "";
                   invLITemp["invTypeDisp"] = "";
                   invLITemp["contentGrpName"] = (invoiceLineItems[j]["contentGrpName"]==null)?"":invoiceLineItems[j]["contentGrpName"];
@@ -340,13 +353,22 @@ var page = Component.extend({
                   invLITemp["status"] = "";
                   invLITemp["paymentState"] = "";
                   invLITemp["bundleName"] = "";
-                  invLITemp["comments"] = "";
+                  invLITemp["comments"] = "";  
+                    if(j==0){
+                      lowestPeriod=Number(invoiceLineItems[j]["fiscalPeriod"]);
+                      highestPeriod=Number(invoiceLineItems[j]["fiscalPeriod"]);
+                    }
+                    tmpPeriod = Number(invoiceLineItems[j]["fiscalPeriod"]);
+                    if (tmpPeriod < lowestPeriod) lowestPeriod = tmpPeriod;
+                    if (tmpPeriod > highestPeriod) highestPeriod = tmpPeriod;
+
                   contentTypeArr.push(invLITemp["contentGrpName"]);
                   countryArr.push(invLITemp["country"]);
                   gridData.data.push(invLITemp);
                 }
-
               }
+
+
 
               /*Below function is to remove the duplicate content type and find the count */
               contentTypeArr = contentTypeArr.filter( function( item, index, inputArray ) {
@@ -367,6 +389,13 @@ var page = Component.extend({
               }
               else if(countryArr.length==1)
                 gridData.data[insertedId]["country"] = countryArr[0];
+
+              if(lowestPeriod != undefined && highestPeriod != undefined){
+                  gridData.data[insertedId]["fiscalPeriod"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType);
+                  if(lowestPeriod != highestPeriod){
+                    gridData.data[insertedId]["fiscalPeriod"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType)+' - '+periodWidgetHelper.getDisplayPeriod(highestPeriod,periodType);  
+                  }
+                }
 
             }
 
@@ -506,8 +535,9 @@ var page = Component.extend({
       var val = parseInt($(item[0]).attr("value"));
       var row = item.closest('tr').data('row').row;
       var invoiceType = row.invoiceType;
-
-      $('.select-toggle-all').prop("checked", false);
+      var bundleStatus = row.status;
+    
+     $('.select-toggle-all').prop("checked", false);
 
       /* An invoice can be deleted only if it satisfies the below criteria */
       var flag=false;
@@ -522,6 +552,14 @@ var page = Component.extend({
       }
 
       if($(item[0]).is(":checked")){
+           if(bundleStatus == "UNBUNDLED"){
+              self.scope.bundleState.attr(val, true);
+            }
+            else
+            {
+              self.scope.bundleState.attr(val, false);
+            }
+
           row.attr('__isChecked', true);
           self.scope.attr('checkedRows').push(val);
           if(flag==false){
@@ -530,6 +568,7 @@ var page = Component.extend({
 
 
       } else {
+        self.scope.bundleState.removeAttr(val);
           self.scope.attr('checkedRows').each(function(value, key) {
               row.attr('__isChecked', false);
               if(val == value){
@@ -685,46 +724,69 @@ var page = Component.extend({
       "#paymentBundleNames change": function(){
           var self = this;
           var pbval = $("#paymentBundleNames").val();
+          
           if(pbval=="createB"){
 
-              var regId = self.scope.appstate.attr('region');
-              var periodFrom = self.scope.appstate.attr('periodFrom');
-              var periodTo = self.scope.appstate.attr('periodTo');
-              var invoiceData = self.scope.attr().allInvoicesMap[0].invoices;
-              //console.log(JSON.stringify(self.scope.checkedRows.attr()));
+                var bundleStateObj = self.scope.bundleState;
+                var unbundleStatus = true;;
 
-              var selInvoices = self.scope.checkedRows.attr();
-
-              console.log(JSON.stringify(self.scope.checkedRows.attr()));
-              var bundleLines = [];
-              for(var i=0;i<invoiceData.length;i++){
-                  var invId = invoiceData[i]["invId"];
-               if(invoiceData.length > 0 && selInvoices.indexOf(invId)>-1) {
-
-                      var lineType = invoiceData[i]["invoiceType"];
-                      var periodType = invoiceData[i]["periodType"];
-
-                      var temp = {};
-                      temp["refLineId"] = invId;
-                      temp["refLineType"] = lineType;
-                      temp["periodType"] = (periodType == null) ? "P" : periodType;
-                      bundleLines.push(temp);
+                for(var key in bundleStateObj){
+                  if(!bundleStateObj[key]){
+                    unbundleStatus = false;
+                    break;
                   }
-              }
-              console.log("create bundle bundleLines "+JSON.stringify(bundleLines));
-              var bundleType = lineType;
-              var newBundleNameRequest = {"paymentBundle":{}};
-              var bundleRequest = {};
+                }
+                if(unbundleStatus)  
+                {
+                    var regId = self.scope.appstate.attr('region');
+                    var periodFrom = self.scope.appstate.attr('periodFrom');
+                    var periodTo = self.scope.appstate.attr('periodTo');
+                    var invoiceData = self.scope.attr().allInvoicesMap[0].invoices;
+                    //console.log(JSON.stringify(self.scope.checkedRows.attr()));
 
-              bundleRequest["regionId"] = regId['id'];
-              //bundleRequest["periodFrom"] = periodFrom;
-              //bundleRequest["periodTo"] = periodTo;
-              bundleRequest["bundleType"] =lineType;
-              bundleRequest["bundleDetailsGroup"] =bundleLines;
-              newBundleNameRequest["paymentBundle"] = bundleRequest;
-              console.log("New Bundle name request is "+JSON.stringify(newBundleNameRequest));
-              self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
-          }
+                    var selInvoices = self.scope.checkedRows.attr();
+
+                    console.log(JSON.stringify(self.scope.checkedRows.attr()));
+                    var bundleLines = [];
+                    for(var i=0;i<invoiceData.length;i++){
+                        var invId = invoiceData[i]["invId"];
+                     if(invoiceData.length > 0 && selInvoices.indexOf(invId)>-1) {
+
+                            var lineType = invoiceData[i]["invoiceType"];
+                            var periodType = invoiceData[i]["periodType"];
+
+                            var temp = {};
+                            temp["refLineId"] = invId;
+                            temp["refLineType"] = lineType;
+                            temp["periodType"] = (periodType == null) ? "P" : periodType;
+                            bundleLines.push(temp);
+                        }
+                    }
+                    console.log("create bundle bundleLines "+JSON.stringify(bundleLines));
+                    var bundleType = lineType;
+                    var newBundleNameRequest = {"paymentBundle":{}};
+                    var bundleRequest = {};
+
+                    bundleRequest["regionId"] = regId['id'];
+                    //bundleRequest["periodFrom"] = periodFrom;
+                    //bundleRequest["periodTo"] = periodTo;
+                    bundleRequest["bundleType"] =lineType;
+                    bundleRequest["bundleDetailsGroup"] =bundleLines;
+                    newBundleNameRequest["paymentBundle"] = bundleRequest;
+                    console.log("New Bundle name request is "+JSON.stringify(newBundleNameRequest));
+                    self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
+
+                  }
+                  else
+                  {
+                    $("#paymentBundleNames").val("");
+                    $("#messageDiv").html("<label class='errorMessage'>Only unbundled invoices can be bundled</label>");
+                    $("#messageDiv").show();
+                     setTimeout(function(){
+                      $("#messageDiv").hide();
+                   },4000);
+                  }
+            }
       },
       "#btnAttach click": function(){
           //this.scope.attr("fileinfo").replace([]);
@@ -789,7 +851,7 @@ var page = Component.extend({
             if(invoiceData.length > 0 && selInvoices.indexOf(invId)>-1) {
                 /* The below condition is to check if an invoice is already Bundled */
                 if(paymentState!=0){
-                  $("#messageDiv").html("<label class='errorMessage'>Only unbundled invoice can be bundled</label>")
+                  $("#messageDiv").html("<label class='errorMessage'>Only unbundled invoices can be bundled</label>")
                   $("#messageDiv").show();
                    setTimeout(function(){
                       $("#messageDiv").hide();
@@ -1002,7 +1064,6 @@ function alignGrid(divId){
   var divWidth = $('#'+divId).outerWidth();
   var tableWidth = 0;
   var tdWidth, cellWidthArr = [];
-
   if(rowLength>0){
     $('#'+divId+' table').css("width",divWidth-300);
       for(var i=1;i<=colLength;i++){
@@ -1018,8 +1079,8 @@ function alignGrid(divId){
           tdWidth = tbodyTdWidth;
 
         if(i==1) //For the column holding 'check box'
-            tdWidth = 35;      
-
+            tdWidth = 35;   
+               
         tableWidth += tdWidth;
         cellWidthArr.push(tdWidth);
       }
