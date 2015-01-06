@@ -56,7 +56,7 @@ Grid.extend({
         contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{entityName}}')({entityName: row.entityName, isChild: row.__isChild}); }
       },
       {
-        id: 'periodRange',
+        id: 'fiscalPeriod',
         title: 'Period Range'
       },
       {
@@ -306,6 +306,7 @@ var page = Component.extend({
               invTemp["__isChild"] = false;
               invTemp["__isChecked"] = false;
               invTemp["entityName"] = (invoiceData[i]["entityName"]==null)?"":invoiceData[i]["entityName"];
+              invTemp["fiscalPeriod"] = "";
               invTemp["invoiceType"] = (invoiceData[i]["invoiceType"]==null)?"":invoiceData[i]["invoiceType"];
               invTemp["invTypeDisp"] = (invoiceData[i]["invTypeDisp"]==null)?"":invoiceData[i]["invTypeDisp"];
               invTemp["contentGrpName"] = "";
@@ -322,22 +323,24 @@ var page = Component.extend({
               invTemp["invoiceAmount"] = CurrencyFormat(invTemp["invoiceAmount"]); //This is to format the amount with commas
 
 
+              gridData.data.push(invTemp);
+              var insertedId = gridData.data.length-1;
+
               var invoiceLineItems = invoiceData[i]["invoiceLines"];
               var contentTypeArr = [], countryArr = [];
               var lowestPeriod = 0;
               var highestPeriod = 0;
               var tmpPeriod = 0;
-              var periodType = "";
-              var displayMultiplePeriod = false;
+              var periodType = 'P';
               if(invoiceLineItems.length > 0){
                 for(var j=0;j<invoiceLineItems.length;j++){
                   var invLITemp={};
-                  periodType = 'P';
+                  //periodType = invoiceLineItems[j]['periodType'];
                   invLITemp["invId"] = "";
                   invLITemp["__isChild"] = true;
                   invLITemp["__isChecked"] = false;
                   invLITemp["entityName"] = "";
-                  invLITemp["periodRange"] = periodWidgetHelper.getDisplayPeriod(invoiceLineItems[j]["fiscalPeriod"],periodType);
+                  invLITemp["fiscalPeriod"] = periodWidgetHelper.getDisplayPeriod(invoiceLineItems[j]["fiscalPeriod"],periodType);
                   invLITemp["invoiceType"] = "";
                   invLITemp["invTypeDisp"] = "";
                   invLITemp["contentGrpName"] = (invoiceLineItems[j]["contentGrpName"]==null)?"":invoiceLineItems[j]["contentGrpName"];
@@ -351,37 +354,21 @@ var page = Component.extend({
                   invLITemp["paymentState"] = "";
                   invLITemp["bundleName"] = "";
                   invLITemp["comments"] = "";  
-                  if(invoiceLineItems.length == 1){
-                    invTemp["periodRange"] = periodWidgetHelper.getDisplayPeriod(invoiceLineItems[j]["fiscalPeriod"],periodType);
-                  }else{
                     if(j==0){
                       lowestPeriod=Number(invoiceLineItems[j]["fiscalPeriod"]);
                       highestPeriod=Number(invoiceLineItems[j]["fiscalPeriod"]);
-                      //periodType = invoiceLineItems[j]["periodType"];
-                      //periodType = 'P';
                     }
-                    displayMultiplePeriod = true;
                     tmpPeriod = Number(invoiceLineItems[j]["fiscalPeriod"]);
                     if (tmpPeriod < lowestPeriod) lowestPeriod = tmpPeriod;
                     if (tmpPeriod > highestPeriod) highestPeriod = tmpPeriod;
-                  }
 
                   contentTypeArr.push(invLITemp["contentGrpName"]);
                   countryArr.push(invLITemp["country"]);
                   gridData.data.push(invLITemp);
                 }
-                if(displayMultiplePeriod){
-                  if(lowestPeriod != highestPeriod){
-                    invTemp["periodRange"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType)+' - '+periodWidgetHelper.getDisplayPeriod(highestPeriod,periodType);  
-                  }else{
-                    invTemp["periodRange"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType);
-                  }
-                }
               }
 
 
-              gridData.data.push(invTemp);
-              var insertedId = gridData.data.length-1;
 
               /*Below function is to remove the duplicate content type and find the count */
               contentTypeArr = contentTypeArr.filter( function( item, index, inputArray ) {
@@ -402,6 +389,13 @@ var page = Component.extend({
               }
               else if(countryArr.length==1)
                 gridData.data[insertedId]["country"] = countryArr[0];
+
+              if(lowestPeriod != undefined && highestPeriod != undefined){
+                  gridData.data[insertedId]["fiscalPeriod"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType);
+                  if(lowestPeriod != highestPeriod){
+                    gridData.data[insertedId]["fiscalPeriod"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType)+' - '+periodWidgetHelper.getDisplayPeriod(highestPeriod,periodType);  
+                  }
+                }
 
             }
 

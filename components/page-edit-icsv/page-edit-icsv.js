@@ -278,16 +278,19 @@ var page = Component.extend({
 			              }
 		            },
 		            invoiceduedate :{
-		                group:'.invduedate',
-		                validators: {
-		                    date: {
-			                        format: 'MM/DD/YYYY',
-			                        message: 'Please provide valid date in MM/DD/YYYY format'
-                    		},
-                			callback: {
-		                            message: 'Invoice Due date must be less than calculated due date',
-		                            callback: function (value, validator, $field) {
-		                               if(value != ""){
+			                group:'.invduedate',
+			                validators: {
+			                	notEmpty: {
+			                        message: 'Invoice due date is mandatory'
+			                    },
+			                    date: {
+				                        format: 'MM/DD/YYYY',
+				                        message: 'Please provide valid date in MM/DD/YYYY format'
+	                    		},
+	                			callback: {
+			                            message: 'Invoice Due date must be less than calculated due date',
+			                            callback: function (value, validator, $field) {
+			                         		if(value != ""){
 			                              	var invduedate = new Date(value);
 			                              	if(self.scope.attr("calduedate")){
 			                              		var calduedate = new Date(self.scope.attr("calduedate"));
@@ -297,10 +300,10 @@ var page = Component.extend({
 			                              		}
 											}
 			                              return true;
-		                            }
-                    		}
-			              }
-		            },
+			                            }
+	                    		}
+				              }
+			        },
 		            fxrate: {
 		                group:'.fxrate',
 		                validators: {
@@ -371,7 +374,7 @@ var page = Component.extend({
 			                   	callback: {
 			                            message: 'Licensor is mandatory',
 			                            callback: function (value, validator, $field) {
-			                              if(value == "" || value == "Select"){
+			                              if(value == "" || value == "Select" || value == null){
 			                              	   return false;
 			                              }
 			                              return true;
@@ -386,7 +389,7 @@ var page = Component.extend({
 			                   	callback: {
 			                            message: 'Currency is mandatory',
 			                            callback: function (value, validator, $field) {
-			                              if(value == ""){
+			                              if(value == "" || value == "Select" || value == null){
 			                              	   return false;
 			                              }
 			                              return true;
@@ -401,7 +404,7 @@ var page = Component.extend({
 			                   	callback: {
 			                            message: 'Region is mandatory',
 			                            callback: function (value, validator, $field) {
-			                              if(value == ""){
+			                              if(value == "" || value == "Select" || value == null){
 			                              	   return false;
 			                              }
 			                              return true;
@@ -705,6 +708,7 @@ var page = Component.extend({
 							    self.scope.attr("licensor").replace(values[0]["entities"][0]);
 							    var invoiceData = self.scope.attr().invoiceContainer[0];
 							     self.scope.attr("licensorStore", invoiceData.entityId);
+							     self.scope.ajaxRequestStatus.attr("licensorLoaded", true);
 							   
 						   });
 
@@ -719,20 +723,26 @@ var page = Component.extend({
 						     ]).then(function(values) {
 						     	self.scope.attr("currency").replace([]);
 							    self.scope.attr("currency").replace(values[0]);
-							    var invoiceData = self.scope.attr().invoiceContainer[0];
-							    self.scope.attr("currencyStore", invoiceData.invoiceCcy);
-							    $('#invoiceform').bootstrapValidator('revalidateField', 'currency');
-
-							    var invoicevalid = $("#invoiceform").data('bootstrapValidator').isValid();
-							   
-							  
-				               if(!invoicevalid){
-									$("#invoiceform").data('bootstrapValidator').validate();
-									$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
-									
-				               	}
-						   });
+							     if(self.scope.editpage){
+									    var invoiceData = self.scope.attr().invoiceContainer[0];
+									    self.scope.attr("currencyStore", invoiceData.invoiceCcy);
+									    self.scope.ajaxRequestStatus.attr("currencyStore", true);
+									}
+							  });
 						},
+
+						"{ajaxRequestStatus} change":function(event){
+								var self = this;
+								if((self.scope.ajaxRequestStatus.currencyStore == true) && (self.scope.ajaxRequestStatus.licensorLoaded == true) && (self.scope.ajaxRequestStatus.countryLoaded == true) && (self.scope.ajaxRequestStatus.allDataLoaded == true)){
+										var invoicevalid = $("#invoiceform").data('bootstrapValidator').isValid();
+										if(!invoicevalid){
+											$("#invoiceform").data('bootstrapValidator').validate();
+
+											$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
+										}
+								}
+						},	
+
 					"{scope} currencyStore": function(){
 						var self = this;
 						self.scope.getFxrate();
@@ -749,9 +759,10 @@ var page = Component.extend({
 				 		self.scope.attr("regionStore", invoiceData.regionId);
 						self.scope.attr("fxrateStore", invoiceData.fxRate);
 				 		self.scope.attr("licnotesStore", invoiceData.notes);
-				 		self.scope.attr("invoicedate", moment(invoiceData.invoiceDate).format("MM/DD/YYYY"));
-				 		self.scope.attr("receiveddate", moment(invoiceData.receivedDate).format("MM/DD/YYYY"));
-				 		self.scope.attr("invoiceduedate", moment(invoiceData.invoiceDueDate).format("MM/DD/YYYY"));
+
+				 		self.scope.attr("invoicedate", (invoiceData.invoiceDate == null)?"":moment(invoiceData.invoiceDate).format("MM/DD/YYYY"));
+				 		self.scope.attr("receiveddate", (invoiceData.receivedDate == null)?"":moment(invoiceData.receivedDate).format("MM/DD/YYYY"));
+				 		self.scope.attr("invoiceduedate", (invoiceData.invoiceDueDate == null)?"":moment(invoiceData.invoiceDueDate).format("MM/DD/YYYY"));
 				 		self.scope.attr("calduedate",moment(invoiceData.invoiceCalcDueDate).format("MM/DD/YYYY"));
 						self.scope.attr("tax", invoiceData.tax);
 						self.scope.attr("invoiceId",invoiceData.invId);
@@ -854,6 +865,9 @@ var page = Component.extend({
 										}
 
 				        			}
+
+				        			self.scope.ajaxRequestStatus.attr("allDataLoaded", true);
+
 			         		
 								$(".removeRow").click(function(event){
 		              	           $option.each(function(index){
@@ -1032,11 +1046,7 @@ var page = Component.extend({
 							   console.log(self.scope.invoiceduedate);
 							   editInvoiceCSVData.comments = [];
 							 
-									var tempComments = {};
-							   		  tempComments.comments = self.scope.usercommentsStore;
-							   		  tempComments.createdBy = UserReq.formRequestDetails().prsId;
-							   		  tempComments.createdDate = getCurrentDate();
-							   		  editInvoiceCSVData.comments.push(tempComments);
+								
 								
 									
 							   	/*comment start*/
@@ -1053,7 +1063,7 @@ var page = Component.extend({
 							   		  	editInvoiceCSVData.comments.push(tempComments);
 									}
 									var tempComments = {};  /*new comments*/
-									if($("#editableText").val() != null && $("#editableText").val() != undefined){
+									if($("#editableText").val() != null && $("#editableText").val() != undefined && $("#editableText").val() != ""){
 										tempComments.comments = $("#editableText").val();//self.scope.usercommentsStore;
 									   	//tempComments.id = "";
 									   	tempComments.createdBy = UserReq.formRequestDetails().prsId;

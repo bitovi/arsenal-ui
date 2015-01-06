@@ -32,7 +32,14 @@ var comments = Component.extend({
               $(editableTextarea).attr('id', 'editableText');
               $(textAreactrl).addClass("multiple-comments-editable").addClass("form-control-comments old-comments");
               $(textAreactrl).attr('readonly', 'readonly');
-              $(textAreactrl).val(val.comments + "\n-" + val.createdBy + " on " + val.createdDate);
+              if(val.createdDate != null){
+                $(textAreactrl).val(val.comments + "\n-" + val.createdBy + " on " + val.createdDate);
+              }
+              else
+              {
+                $(textAreactrl).val(val.comments);
+              }  
+              
               $(msterObj).append(textAreactrl);     
               $(msterObj).append(getLine());
               
