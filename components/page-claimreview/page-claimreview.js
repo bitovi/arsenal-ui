@@ -18,6 +18,9 @@ import css_tokeninput_theme from 'tokeninput_theme.css!';
 
 import highchartpage from 'components/highchart/';
 
+import exportToExcel from 'components/export-toexcel/';
+import copy from 'components/copy-clipboard/';
+
 /* Extend grid with the columns */
 Grid.extend({
   tag: "rn-claim-licensor-grid",
@@ -507,13 +510,26 @@ var page = Component.extend({
           $(".entity").show();
         }
       },
+      '.exportToExcel click':function(el,ev){
+          var self = this;
+         // if(this.scope.appstate.attr('excelOutput')==undefined || !this.scope.appstate.attr('excelOutput'))
+            self.scope.appstate.attr("excelOutput",true);
+          
+      },
+      '#copyToClipboard click':function(){  console.log($('#myTabs').next('.tab-content').find('.tab-pane:visible table:visible').clone(true));
+         $('#clonetable').empty().html($('#myTabs').next('.tab-content').find('.tab-pane:visible table:visible').clone(true).attr('id','dynamic'));
+         $('copy-clipboard').slideDown(function(){
+           $('body').css('overflow','hidden');
+           $('#copyall').trigger('click');
+        });       
+      },
       '{scope.appstate} change': function() {
           var self=this;
           console.log("appState set to "+JSON.stringify(this.scope.appstate.attr()));
           /* Page is not allowed to do search by default when page is loaded */
           /* This can be checked using 'localGlobalSearch' parameter, it will be undefined when page loaded */
-          if(this.scope.attr("localGlobalSearch") != undefined){
-            if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch') ){
+          if(this.scope.attr("localGlobalSearch") != undefined || self.scope.appstate.attr("excelOutput")){
+            if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch') || self.scope.appstate.attr("excelOutput")){
                 this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
                 console.log("User clicked on  search");
                 $("#loading_img").show();
@@ -566,6 +582,9 @@ var page = Component.extend({
                 claimLicSearchRequest["status"] = "";
                 claimLicSearchRequest["offset"] = "0";
                 claimLicSearchRequest["limit"] = "10";
+
+                if(self.scope.appstate.attr('excelOutput')) claimLicSearchRequest["excelOutput"] = true;
+
                 
                 var tabView =  self.scope.attr('view');
                 claimLicSearchRequest["view"] = self.scope.attr('view');
@@ -581,20 +600,40 @@ var page = Component.extend({
                 claimLicSearchRequest["sortBy"] = self.scope.sortColumns.attr().toString();
                 claimLicSearchRequest["sortOrder"] = "ASC";
 
+                
                 //console.log("Request are "+JSON.stringify(UserReq.formRequestDetails(claimLicSearchRequest)));
                 console.log("Request are "+JSON.stringify(claimLicSearchRequest));
                 if(tabView=="licensor"){
                   claimLicensorInvoices.findOne(UserReq.formRequestDetails(claimLicSearchRequest),function(values){
                       console.log("data is "+JSON.stringify(values.attr()));
-                      self.scope.allClaimLicensorMap.replace(values);
+                      if(self.scope.appstate.attr('excelOutput')){
+                        $("#loading_img").hide();
+                        $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
+                         self.scope.appstate.attr("excelOutput",false);
+
+                      }else{
+                        self.scope.allClaimLicensorMap.replace(values);
+                    }
                   },function(xhr){
+                     $("#loading_img").hide();
+                     self.scope.appstate.attr("excelOutput",false);
                     console.error("Error while loading: "+xhr);
                   });
                 } else if(tabView=="country" || tabView=="country-aggregate"){
                   claimCountryInvoices.findOne(UserReq.formRequestDetails(claimLicSearchRequest),function(values){
-                      //console.log("datafsdf is "+JSON.stringify(values.attr()));
-                      self.scope.allClaimCountryMap.replace(values);
+                      console.log("data is "+JSON.stringify(values.attr()));
+                      if(self.scope.appstate.attr('excelOutput')){
+                        $("#loading_img").hide();
+                        $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
+                         self.scope.appstate.attr("excelOutput",false);
+
+                      }else{
+                        self.scope.allClaimCountryMap.replace(values);
+                    }
+
                   },function(xhr){
+                    $("#loading_img").hide();
+                    self.scope.appstate.attr("excelOutput",false);
                     console.error("Error while loading: "+xhr);
                   });
                 }

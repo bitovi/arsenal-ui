@@ -18,6 +18,7 @@ import css_tokeninput_theme from 'tokeninput_theme.css!';
 import commonUtils from 'utils/commonUtils';
 import FileManager from 'utils/fileManager/';
 
+import exportToExcel from 'components/export-toexcel/';
 
 //Navigation bar definitions
 var tabNameObj = {
@@ -244,10 +245,67 @@ var page = Component.extend({
         }
       );
       this.scope.currencyList.replace(list);
-    }
+    },
+   '.exportToExcel click':function(el,ev){
+       
+        var self = this;
+        console.log(self.scope.tabSelected);
+       if(self.scope.tabSelected=="Ingested"){
+              Recon.findOne(createIngestedReconRequestForExportToExcel(self.scope.appstate),function(data){ 
+                console.log(data);
+                console.log(JSON.stringify(data));
+                      if(data["status"]=="SUCCESS"){
+                        $('#exportExcel').html(template('<export-toexcel csv={data}></export-toexcel>')({data}));
+                      }else{
+                        $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                        $("#messageDiv").show();
+                        setTimeout(function(){
+                            $("#messageDiv").hide();
+                        },2000)
+                        self.scope.attr('emptyrows',true);
+                      }
+                }, function(xhr) {
+                      console.error("Error while loading: onAccount balance Details"+xhr);
+                } ); 
+         }else if(self.scope.tabSelected=="Incoming Details"){
+              Recon.findOne(createIngestedReconRequestForExportToExcel(self.scope.appstate),function(data){ 
+                console.log(data);
+                      if(data["status"]=="SUCCESS"){
+                        $('#exportExcel').html(template('<export-toexcel csv={data}></export-toexcel>')({data}));
+                      }else{
+                        $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                        $("#messageDiv").show();
+                        setTimeout(function(){
+                            $("#messageDiv").hide();
+                        },2000)
+                        self.scope.attr('emptyrows',true);
+                      }
+                }, function(xhr) {
+                      console.error("Error while loading: onAccount balance Details"+xhr);
+                } ); 
+         }    
+       }
    }
 });
 
+
+var createIngestedReconRequestForExportToExcel=function(appstate){
+    var IngestedReconRequest={};
+    IngestedReconRequest.searchRequest=UserReq.formGlobalRequest(appstate).searchRequest;
+    IngestedReconRequest.searchRequest.type="INGESTED";
+    IngestedReconRequest.excelOutput=true;
+    console.log(JSON.stringify(IngestedReconRequest));
+    return UserReq.formRequestDetails(IngestedReconRequest);
+  };
+
+var createIncomingReconRequestForExportToExcel=function(appstate){
+    var IncomingReconRequest={};
+    IncomingReconRequest.searchRequest=UserReq.formGlobalRequest(appstate).searchRequest;
+    IncomingReconRequest.searchRequest.type="INCOMING";
+    IncomingReconRequest.excelOutput=true;
+    console.log(JSON.stringify(IncomingReconRequest));
+    return UserReq.formRequestDetails(IncomingReconRequest);
+  };
 
 var processRejectIngestRequest = function(scope,requestType){
     var ccidList ;
@@ -460,27 +518,29 @@ var fetchReconDetails = function(scope){
       displayErrorMessage(data.responseText,"Failed to load the Recondetails:");
     }else  {
       scope.incomingDetails.headerRows.replace(data.reconStatsDetails);
-
-      var footerLine= {
-        "__isChild": true,
-        "ccy":"EUR",
-        "pubfee":data.summary.totalPubFee,
-        "reconAmt":data.summary.totalRecon,
-        "liDispAmt":data.summary.totalLi,
-        "copConAmt":data.summary.totalCopCon,
-        "unMatchedAmt":data.summary.totalUnMatched,
-        "badLines":data.summary.totalBadLines,
-        "ccidId":"",
-        "entityName":"",
-        "countryId":"",
-        "contType":"",
-        "fiscalPeriod":"",
-        "rcvdDate":"",
-        "invFileName":"",
-        "status":"",
-        "isFooterRow":true
-      };
-      scope.incomingDetails.footerRows.replace(footerLine);
+      if (data.summary!== null) {
+        var footerLine= {
+          "__isChild": true,
+          "ccy":"EUR",
+          "pubfee":(data.summary.totalPubFee != undefined)? data.summary.totalPubFee:"",
+          "reconAmt":data.summary.totalRecon,
+          "liDispAmt":data.summary.totalLi,
+          "copConAmt":data.summary.totalCopCon,
+          "unMatchedAmt":data.summary.totalUnMatched,
+          "badLines":data.summary.totalBadLines,
+          "ccidId":"",
+          "entityName":"",
+          "countryId":"",
+          "contType":"",
+          "fiscalPeriod":"",
+          "rcvdDate":"",
+          "invFileName":"",
+          "status":"",
+          "isFooterRow":true
+        };
+        scope.incomingDetails.footerRows.replace(footerLine);  
+      }
+      
     }
   },function(xhr){
     console.error("Error while loading: fetchReconDetails"+xhr);

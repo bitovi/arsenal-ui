@@ -438,12 +438,13 @@ getDisplayPeriod: function(quarter){
   footerRow[period]=utils.currencyFormat(footerData.onAccountAmt);
   return footerRow;
 },
-prepareOnAccountRowsForDisplay:function(onAccountDetails){
+prepareOnAccountRowsForDisplay:function(onAccountDetails,quarters){
   var rows=[];
   var previousEntityId="";
   var previousCurrency="";
   var previousContentType="";
   var bundleNames=[];
+  var periodMap = new Object();
   var row={};
   if(onAccountDetails != undefined && onAccountDetails.length >0){
     for(var i=0;i<onAccountDetails.length;i++){
@@ -451,14 +452,26 @@ prepareOnAccountRowsForDisplay:function(onAccountDetails){
       var currency = onAccountDetails[i].currencyCode;
       var contentType = onAccountDetails[i].contentGroupName;
       if(entityId==previousEntityId && currency == previousCurrency && contentType==previousContentType){
+        var period = this.getDisplayPeriod(onAccountDetails[i].fiscalPeriod);
         if(i==0){
           row = this.createRow(onAccountDetails[i],false,row)
+          periodMap[period]=onAccountDetails[i].onAccountAmt;
         }else{
-          var period = this.getDisplayPeriod(onAccountDetails[i].fiscalPeriod);
-          row[period]=utils.currencyFormat(onAccountDetails[i].onAccountAmt);
+          periodMap[period]=onAccountDetails[i].onAccountAmt;
+          //row[period]=utils.currencyFormat(onAccountDetails[i].onAccountAmt);
         }
       }else{
         if(i!=0){
+          var addToRow = false;
+          for(var k=0;k<quarters.length;k++){
+             if(periodMap.hasOwnProperty(quarters[k])){
+              addToRow = true;
+              row[quarters[k]]=periodMap[quarters[k]];
+              }
+           }
+          if(addToRow){
+            rows.push(row);  
+          } 
           rows.push(row);
         }
         row=this.createRow(onAccountDetails[i],true,"");
@@ -470,7 +483,16 @@ prepareOnAccountRowsForDisplay:function(onAccountDetails){
        previousCurrency=currency;
        previousContentType=contentType;
     }
-    rows.push(row);
+    var addToRow = false;
+    for(var k=0;k<quarters.length;k++){
+       if(periodMap.hasOwnProperty(quarters[k])){
+        addToRow = true;
+        row[quarters[k]]=periodMap[quarters[k]];
+        }
+     }
+    if(addToRow){
+      rows.push(row);  
+    } 
   }
    var returnValue = new Array();
       returnValue['ROWS']=rows;
