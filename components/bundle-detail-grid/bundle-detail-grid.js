@@ -14,14 +14,46 @@ var BundleDetailGrid = Grid.extend({
       // and each of those instances is a parent row
       // each BundleDetailGroup instance has a bundleDetails (which is a List of BundleDetail model instances)
       // and each of those is a child row
+      var contentType = [];
+      var country = [];
+      var periods = [];
+
       can.batch.start();
       var rows = [];
       bundle.bundleDetailsGroup && _.each(bundle.bundleDetailsGroup, function(group) {
+        contentType = [];
+        country = [];
+        periods = [];
+
         rows.push(group);
         _.each(group.bundleDetails, function(detail) {
+
+          if(detail.contentGrpName != undefined && detail.contentGrpName != 'TAX'){
+            _.contains(contentType, detail.contentGrpName) ?  "": contentType.push(detail.contentGrpName) ;
+          }
+
+          if(detail.country != undefined){
+            _.contains(country, detail.country) ?  "" : country.push(detail.country);
+          }
+
+          if(detail.country != undefined){
+            _.contains(periods, detail.fiscalPeriod) ?  "" : periods.push(detail.fiscalPeriod);
+          }
+
+
+
           detail.attr('__isChild', true);
           rows.push(detail);
         });
+
+        var arrSize = _.size(contentType) ;
+        arrSize > 1 ? group.attr('contentGrpName', arrSize+" types of Content") : group.attr('contentGrpName',contentType[0]) ;
+        arrSize = _.size(country) ;
+        arrSize > 1 ? group.attr('country',arrSize+" Countries") : group.attr('country',country[0]) ;
+
+        arrSize = _.size(periods) ;
+        arrSize > 1 ? group.attr('fiscalPeriod',"Multiple") : group.attr('fiscalPeriod',periods[0]) ;
+
       });
       can.batch.stop();
 

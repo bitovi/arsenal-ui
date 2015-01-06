@@ -256,6 +256,8 @@ var PaymentBundle = Model.extend({
     bundleData.bundleDetailsGroup && bundleData.bundleDetailsGroup.forEach(function(group) {
       delete group.__isChild;
       delete group.__isOpen;
+      delete group.contentGrpName;
+      delete group.country;
 
       group.bundleDetails.forEach(function(detail) {
         delete detail.__isChild;
@@ -317,6 +319,7 @@ var PaymentBundle = Model.extend({
       if(response.status === 'SUCCESS') {
         //debugger;
         groups.forEach(group => group.destroy());
+
       }
 
       return response;
