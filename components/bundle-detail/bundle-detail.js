@@ -109,8 +109,12 @@ var BundleDetailTabs = Component.extend({
       });
     },
     getNewValidations: function(bundle) {
-      var scope = this;
 
+      if(bundle.status != 1){
+        return;
+      }
+
+      var scope = this;
       var view;
       if(bundle.bundleType === 'REGULAR_INV') {
         view = this.attr('selectedTab').value;
@@ -123,7 +127,7 @@ var BundleDetailTabs = Component.extend({
 
       if(scope.pageState.selectedBundle === bundle) {
         return bundle.getValidations(view).then(function(bundle) {
-          if(bundle.validationStatus !== 5) {
+          if(bundle.status == 1 && bundle.validationStatus !== 5) {
             setTimeout(function() {
               scope.getNewValidations(bundle);
             }, VALIDATION_CHECK_INTERVAL);
@@ -324,7 +328,7 @@ var BundleDetailTabs = Component.extend({
 
 
 var resetSelectedBundle = function(scope){
-  
+
   var selectedBundle = scope.pageState.selectedBundle;
   can.batch.start();
   // clear out selectedRows
