@@ -49,8 +49,8 @@
     <label>Payment Option</label>
     <select can-value="{paymentType}">
       <option value="1">Payment - In Full</option>
-      <option value="2">Payment LI Disputes</option>
-      <option value="3">Payment Recon Amount</option>
+      <option value="3">Payment LI Disputes</option>
+      <option value="2">Payment Recon Amount</option>
       <option value="4">Payment Over Rep Disputes</option>
     </select>
     {{/isBM}}

@@ -51,7 +51,7 @@ var BundleDetailTabs = Component.extend({
     tabs: [],
     selectedTab: null,
     aggregatePeriod: false,
-    paymentType: 3,
+    paymentType: 2,
     approvalComment: '',
     details:{},
 
