@@ -149,10 +149,10 @@ var page = Component.extend({
 
                     ingestionArr["disputeType"] = ingestionStats[i]["disputeType"];
                     ingestionArr["noOfRecords"] = (formats.numberFormat(ingestionStats[i]["noOfRecords"])).toString().split(".")[0];
-                    ingestionArr["recordsPercentage"] = ingestionStats[i]["recordsPercentage"];
+                    ingestionArr["recordsPercentage"] = ingestionStats[i]["recordsPercentage"] == "0" ? "0.00" : ingestionStats[i]["recordsPercentage"];
                     ingestionArr["noOfAdamIds"] = (formats.numberFormat(ingestionStats[i]["noOfAdamIds"])).toString().split(".")[0];
-                    ingestionArr["totalPubFee"] = formats.currencyFormat(ingestionStats[i]["totalPubFee"]);
-                    ingestionArr["pubFeePercentage"] = ingestionStats[i]["pubFeePercentage"];
+                    ingestionArr["totalPubFee"] = formats.currencyFormat(ingestionStats[i]["totalPubFee"] != "" ? ingestionStats[i]["totalPubFee"] : "0");
+                    ingestionArr["pubFeePercentage"] = ingestionStats[i]["pubFeePercentage"] == "0" ? "0.00" : ingestionStats[i]["pubFeePercentage"];
 
                     grid.data.push(ingestionArr);
 
@@ -175,7 +175,7 @@ var page = Component.extend({
 
                   ingestionSummaryStats.recommendedPayment = formats.currencyFormat(data.summaryStats.recommendedPayment);
 
-                  ingestionSummaryStats.actualPayment = formats.currencyFormat(data.summaryStats.actualPayment);
+                  ingestionSummaryStats.actualPayment = formats.currencyFormat(data.summaryStats.actualPayment == "" ? 0 : data.summaryStats.actualPayment);
 
                   var summaryData = [];
 
