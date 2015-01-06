@@ -738,7 +738,7 @@ var page = Component.extend({
 										if(!invoicevalid){
 											$("#invoiceform").data('bootstrapValidator').validate();
 
-											//$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
+											$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
 										}
 								}
 						},	
