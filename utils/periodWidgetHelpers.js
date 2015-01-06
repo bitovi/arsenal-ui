@@ -45,6 +45,9 @@ var periodWidgetHelper = {
     }
     var year = quarter.substring(0, 4);
     var period = quarter.substring(quarter.length, quarter.length-2);
+    if(periodType == undefined || periodType == null){
+      return null;
+    }
     if(periodType.indexOf('P') > -1){
       return (periods[period]+'FY'+year.substring(year.length, year.length-2));
     }else if(periodType.indexOf('Q') > -1 ){

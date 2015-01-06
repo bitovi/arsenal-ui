@@ -2,6 +2,11 @@
 {{#if fetching}}
 <div class="select-message">Fetching report...</div>
 {{else}}
+<div class="export-toexcel" id="exportExcel"></div>
+<div class="col-sm-12" id="searchDiv" class="pull-right">
+        <img src="resources/images/exportExcelIcon.png" class="exportToExcel" id="exportExcel">
+        <img src="resources/images/copyToClipboardIcon.png" class="" id="copyToClipboard">
+</div>
 <table class="holes-report">
   <thead>
     <tr>

@@ -10,6 +10,9 @@ import template from './template.stache!';
 import missingInvoicesTemplate from './missing-invoices.stache!';
 import styles from './dashboard-invoices.less!';
 
+import exportToExcel from 'components/export-toexcel/';
+import UserReq from 'utils/request/';
+
 var refreshTimeoutID;
 
 var DashboardInvoices = Component.extend({
@@ -128,6 +131,27 @@ var DashboardInvoices = Component.extend({
         this.scope.debouncedRefreshReport(this.scope);
       }
     },
+    '.exportToExcel click':function(el,ev){
+        var self = this;
+        HolesReport.findOne(createHolesRequestForExportToExcel(self.scope.appstate), function(data) {
+          console.log(JSON.stringify(data));
+              if (data["status"] == "SUCCESS") {
+                $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({
+                  data
+                }));
+              } else {
+                $("#messageDiv").html("<label class='errorMessage'>" + data["responseText"] + "</label>");
+                $("#messageDiv").show();
+                setTimeout(function() {
+                  $("#messageDiv").hide();
+                }, 2000)
+                self.scope.attr('emptyrows', true);
+              }
+            }, function(xhr) {
+              console.log(JSON.stringify(xhr));
+              console.error("Error while loading: dashboard-invoices details" + xhr);
+            });
+    },
     '{scope.appstate} change': function() {
       var self = this;
 
@@ -140,5 +164,15 @@ var DashboardInvoices = Component.extend({
     }
   }
 });
+
+
+var createHolesRequestForExportToExcel=function(appstate){
+    var holesRequest={};
+    holesRequest.searchRequest=UserReq.formGlobalRequest(appstate).searchRequest;
+    holesRequest.searchRequest.type="INVOICE-RECEIVED";
+    holesRequest.excelOutput=true;
+    console.log(JSON.stringify(holesRequest));
+    return UserReq.formRequestDetails(holesRequest);
+  };
 
 export default DashboardInvoices;

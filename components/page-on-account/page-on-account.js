@@ -435,7 +435,7 @@ var page = Component.extend({
                /* The below calls {scope.appstate} change event that gets the new data for grid*/
                 //var returnValue = utils.getProposedOnAccRows(quarters,data);
 
-                var returnValue = utils.prepareOnAccountRowsForDisplay(data.onAccount.onAccountDetails);
+                var returnValue = utils.prepareOnAccountRowsForDisplay(data.onAccount.onAccountDetails,self.scope.quarters);
                 var footerRows = utils.createFooterRow(data.onAccount.onAccountFooter);
 
 
