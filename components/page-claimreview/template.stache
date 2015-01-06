@@ -1,3 +1,4 @@
+<copy-clipboard> {{values}}</copy-clipboard>
 <div class="col-lg-12 pageTitle">
     <h3>Claim Review </h3>
 </div>
@@ -7,6 +8,7 @@
 </div>
 
 <div class="col-lg-12 claimReviewContainer">
+	<div class="export-toexcel" id="exportExcel"></div>
 
     <div class="col-sm-8 form-inline" style="text-align:right;">
     	<!--Currency: <select id="currencyType" class="form-control resizeBox">
@@ -18,8 +20,8 @@
     <div class="col-sm-4" id="searchDiv" style="">
         <input type="text" class="form-control" id="tokenSearch">
         <img src="resources/images/charticon.png" class="" id="highChart">
-        <img src="resources/images/exportExcelIcon.png" class="" id="exportExcel">
-        <img src="resources/images/copyToClipboardIcon.png" class="" id="copyToClipboard">
+        <img src="resources/images/exportExcelIcon.png" class="exportToExcel" id="exportExcel">
+        <img src="resources/images/copyToClipboardIcon.png" class="copyToClipboard" id="copyToClipboard">
     </div>
     <div class="col-lg-12">
 	    <ul id="myTabs" class="nav nav-tabs">

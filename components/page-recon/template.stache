@@ -8,7 +8,7 @@
 </div>
 
 <div class="col-lg-12 recon-container">
-
+    <div class="export-toexcel" id="exportExcel"></div>
     <div class="col-sm-9 btn-display-center" {{isTabSelectedAs 'Ingested'}} >
       <button  class="btn btn-primary buttonSubmit btn-custom-small btn-ingested-reject" type="button" {{isIngestCcidsSelected 0}}>Reject</button>
       <button type="button" class="btn btn-primary buttonSubmit btn-custom-small btn-holesReport">Holes Report</button>
@@ -22,8 +22,8 @@
 
     <div class="col-sm-3" id="searchDiv">
       <input type="text" class="form-control" id="tokenSearch">
-      <img src="resources/images/exportExcelIcon.png" class="" id="exportExcel">
-      <img src="resources/images/copyToClipboardIcon.png" class="" id="copyToClipboard">
+      <img src="resources/images/exportExcelIcon.png" class="exportToExcel" id="exportExcel">
+      <img src="resources/images/copyToClipboardIcon.png" class="copyToClipboard" id="copyToClipboard">
     </div>
 
 </div>
