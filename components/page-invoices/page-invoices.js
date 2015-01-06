@@ -752,7 +752,7 @@ var page = Component.extend({
                   else
                   {
                     $("#paymentBundleNames").val("");
-                    $("#messageDiv").html("<label class='errorMessage'>Only unbundled invoice can be bundled</label>");
+                    $("#messageDiv").html("<label class='errorMessage'>Only unbundled invoices can be bundled</label>");
                     $("#messageDiv").show();
                   }
             }
@@ -820,7 +820,7 @@ var page = Component.extend({
             if(invoiceData.length > 0 && selInvoices.indexOf(invId)>-1) {
                 /* The below condition is to check if an invoice is already Bundled */
                 if(paymentState!=0){
-                  $("#messageDiv").html("<label class='errorMessage'>Only unbundled invoice can be bundled</label>")
+                  $("#messageDiv").html("<label class='errorMessage'>Only unbundled invoices can be bundled</label>")
                   $("#messageDiv").show();
                    setTimeout(function(){
                       $("#messageDiv").hide();
