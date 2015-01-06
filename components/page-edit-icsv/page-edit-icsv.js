@@ -1046,11 +1046,7 @@ var page = Component.extend({
 							   console.log(self.scope.invoiceduedate);
 							   editInvoiceCSVData.comments = [];
 							 
-									var tempComments = {};
-							   		  tempComments.comments = self.scope.usercommentsStore;
-							   		  tempComments.createdBy = UserReq.formRequestDetails().prsId;
-							   		  tempComments.createdDate = getCurrentDate();
-							   		  editInvoiceCSVData.comments.push(tempComments);
+								
 								
 									
 							   	/*comment start*/
@@ -1067,7 +1063,7 @@ var page = Component.extend({
 							   		  	editInvoiceCSVData.comments.push(tempComments);
 									}
 									var tempComments = {};  /*new comments*/
-									if($("#editableText").val() != null && $("#editableText").val() != undefined){
+									if($("#editableText").val() != null && $("#editableText").val() != undefined && $("#editableText").val() != ""){
 										tempComments.comments = $("#editableText").val();//self.scope.usercommentsStore;
 									   	//tempComments.id = "";
 									   	tempComments.createdBy = UserReq.formRequestDetails().prsId;
