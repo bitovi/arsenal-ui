@@ -428,7 +428,6 @@ var fetchReconIngest = function(scope){
 
     }
 
-    //$(".refreshReconStats")[0].disabled = false;
     var ccids = scope.ingestCcidSelected;
     scope.reconRefresh[0].fn_refreshReconStats(ccids,scope.reconRefresh[0].attr("currency"));
 
