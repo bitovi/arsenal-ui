@@ -8,7 +8,7 @@ export default [
   title: '',
   contents: function(row) {
     if(!row.isFooterRow){
-      return row.status == "Not Ingested" ? "" : can.stache('<input type="checkbox"/>')();
+      return row.rejectable ? can.stache('<input type="checkbox"/>')() : "" ;
     }
   }
 },
