@@ -59,6 +59,8 @@ var page = Component.extend({
 
     reconStatsDetailsSelected : [],
 
+    incomingStatsDetailsSelected : [],
+
     //bottomgrid
     refreshStatsReq:undefined,
     isBottomGridRefresh:true,
@@ -311,13 +313,16 @@ var processRejectIngestRequest = function(scope,requestType){
     var ccidList ;
     var type ;
     var ccidSelected = [];
+    var tab = "";
 
     if(scope.tabSelected == scope.tabName.ingest.attr("name")){
       ccidList = scope.attr("ingestCcidSelected");
       type =  scope.tabName.ingest.attr("type");
+      tab = "ingest";
     }else{
       ccidList = scope.attr("incomingCcidSelected");
       type =  scope.tabName.incoming.attr("type");
+      tab = "incoming";
     }
 
     can.each(ccidList,
@@ -340,9 +345,17 @@ var processRejectIngestRequest = function(scope,requestType){
 
         //scope.reconStatsDetailsSelected = data.reconStatsDetails;
 
-        findCCids(scope, ccidSelected);
+        findCCids(scope, ccidSelected, tab);
 
-        scope.ingestList.headerRows.replace(scope.reconStatsDetailsSelected);
+        if(tab == "ingest") {
+
+          scope.ingestList.headerRows.replace(scope.reconStatsDetailsSelected);
+
+        } else {
+
+          scope.incomingDetails.headerRows.replace(scope.incomingStatsDetailsSelected);
+          
+        }
 
         scope.attr("size_ingestCcidSelected", 0);
 
@@ -518,6 +531,9 @@ var fetchReconDetails = function(scope){
       displayErrorMessage(data.responseText,"Failed to load the Recondetails:");
     }else  {
       scope.incomingDetails.headerRows.replace(data.reconStatsDetails);
+      
+      scope.incomingStatsDetailsSelected = data.reconStatsDetails;
+
       if (data.summary!== null) {
         var footerLine= {
           "__isChild": true,
@@ -574,16 +590,35 @@ var refreshChekboxSelection = function(el,scope){
   }
 }
 
-var findCCids =  function(scope, ccidSelected) {
+var findCCids =  function(scope, ccidSelected, tab) {
 
   var found = false;
-  for( var i=0; i< scope.reconStatsDetailsSelected.length ; i++) {
+
+  var detailsList = [];
+
+  if(tab == "ingest") {
+
+    detailsList = scope.reconStatsDetailsSelected;
+
+  } else {
+
+    detailsList = scope.incomingStatsDetailsSelected;
+
+  }
+
+
+  for( var i=0; i< detailsList.length ; i++) {
 
     //alert('Here');
-    if(ccidSelected.indexOf(scope.reconStatsDetailsSelected[i].dtlHdrId) >= 0) {
+    if(ccidSelected.indexOf(detailsList[i].dtlHdrId) >= 0) {
 
-      scope.reconStatsDetailsSelected.splice(i,1);
+      detailsList.splice(i,1);
       found = true;
+      if(tab == "ingest") {
+        scope.reconStatsDetailsSelected.replace(detailsList);
+      } else {
+        scope.incomingStatsDetailsSelected.replace(detailsList);
+      }
       break;
 
     }
