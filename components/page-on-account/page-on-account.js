@@ -719,7 +719,7 @@ var validateFilters=function(appstate,validateQuarter,validateStoreType,validate
         return "Invalid contentType !";
       }else if(validateContentType && (contGrpId == undefined && contGrpId.attr() == null || contGrpId.attr() =="") && contGrpId.attr().length ==0){
         return "Please select contentType !";
-      }else if(validateContentType && (contGrpId.attr().length >1 )){
+      }else if(validateContentType && (contGrpId.attr().length >1  || contGrpId[0] == "-1")){
         return "Please select single contentType !";
       }
      
