@@ -56,7 +56,7 @@ Grid.extend({
         contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{entityName}}')({entityName: row.entityName, isChild: row.__isChild}); }
       },
       {
-        id: 'periodRange',
+        id: 'fiscalPeriod',
         title: 'Period Range'
       },
       {
@@ -306,6 +306,7 @@ var page = Component.extend({
               invTemp["__isChild"] = false;
               invTemp["__isChecked"] = false;
               invTemp["entityName"] = (invoiceData[i]["entityName"]==null)?"":invoiceData[i]["entityName"];
+              invTemp["fiscalPeriod"] = "";
               invTemp["invoiceType"] = (invoiceData[i]["invoiceType"]==null)?"":invoiceData[i]["invoiceType"];
               invTemp["invTypeDisp"] = (invoiceData[i]["invTypeDisp"]==null)?"":invoiceData[i]["invTypeDisp"];
               invTemp["contentGrpName"] = "";
@@ -339,7 +340,7 @@ var page = Component.extend({
                   invLITemp["__isChild"] = true;
                   invLITemp["__isChecked"] = false;
                   invLITemp["entityName"] = "";
-                  invLITemp["periodRange"] = periodWidgetHelper.getDisplayPeriod(invoiceLineItems[j]["fiscalPeriod"],periodType);
+                  invLITemp["fiscalPeriod"] = periodWidgetHelper.getDisplayPeriod(invoiceLineItems[j]["fiscalPeriod"],periodType);
                   invLITemp["invoiceType"] = "";
                   invLITemp["invTypeDisp"] = "";
                   invLITemp["contentGrpName"] = (invoiceLineItems[j]["contentGrpName"]==null)?"":invoiceLineItems[j]["contentGrpName"];
@@ -390,9 +391,9 @@ var page = Component.extend({
                 gridData.data[insertedId]["country"] = countryArr[0];
 
               if(lowestPeriod != undefined && highestPeriod != undefined){
-                  gridData.data[insertedId]["periodRange"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType);
+                  gridData.data[insertedId]["fiscalPeriod"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType);
                   if(lowestPeriod != highestPeriod){
-                    gridData.data[insertedId]["periodRange"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType)+' - '+periodWidgetHelper.getDisplayPeriod(highestPeriod,periodType);  
+                    gridData.data[insertedId]["fiscalPeriod"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType)+' - '+periodWidgetHelper.getDisplayPeriod(highestPeriod,periodType);  
                   }
                 }
 
