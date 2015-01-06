@@ -115,12 +115,12 @@ var page = Component.extend({
           bundleNamesRequest.bundleSearch["type"] = "REGULAR_INV";
           return JSON.stringify(bundleNamesRequest);
         }
-    
+
     },
     init:function(){
       var self = this;
       self.scope.uploadedfileinfo.replace([]);
-      icsvmap.removeAttr("invoiceData"); 
+      icsvmap.removeAttr("invoiceData");
       $('.popover').popover('destroy');
       this.scope.appstate.attr("renderGlobalSearch",false);
       icsvmap.attr("showediticsv", false);
@@ -129,7 +129,7 @@ var page = Component.extend({
    events:{
       "inserted":function(){
        var self = this;
-       
+
        icsvmap.delegate("invoiceData","change", function(ev, newVal){
             //console.log(icsvmap.attr("invoiceData"));
             if(icsvmap.attr("invoiceData"))
@@ -150,7 +150,7 @@ var page = Component.extend({
                         if(tempArr[i].errors){
 
                               var errString = "";
-                        
+
                               for(var key in tempArr[i].errors.errorMap){  /*Invoice error*/
                                      if(tempArr[i].errors.errorMap[key].trim())
                                      errString += tempArr[i].errors.errorMap[key]+", ";
@@ -162,8 +162,8 @@ var page = Component.extend({
                                          errString += tempArr[i].invoiceLines[j].errors.errorMap[key]+", ";
                                      }
                               }
-                              errString = errString.replace(/,\s*$/, "");  
-                            
+                              errString = errString.replace(/,\s*$/, "");
+
                               var errlabel = "<span class='errorlabel'>Error: </span>";
 
                               tempObj.error = (errString)?errlabel+errString:"";
@@ -196,7 +196,7 @@ var page = Component.extend({
                                 if (tmp > highest) highest = tmp;
                             }
                         }
-                       
+
                          /*Below function is to remove the duplicate content type and find the count */
                           contentTypeArr = contentTypeArr.filter( function( item, index, inputArray ) {
                                  return inputArray.indexOf(item) == index;
@@ -229,37 +229,37 @@ var page = Component.extend({
                 }
                     var rows = new can.List(gridData);
                     if(rows.length>0){
-                      $('#icsvinvoiceGrid').html(stache('<icsv-grid rows="{rows}"></icsv-grid>')({rows}));  
+                      $('#icsvinvoiceGrid').html(stache('<icsv-grid rows="{rows}"></icsv-grid>')({rows}));
                     }else{
                         disableBundle(true);
                         self.scope.attr("activesubmitbutton", false);
                        $('#icsvinvoiceGrid').html(stache('<icsv-grid emptyrows="{emptyrows}"></icsv-grid>')({emptyrows:true}));
                     }
-                    
+
 
                     $('.rn-grid>tbody>tr').find("td.errormsg").each(function(i){
                     if($(this).html() != ""){
-                    
+
                          self.scope.attr("activesubmitbutton", false);
-                   
+
                           return false;
-                      } 
-                 
-                     self.scope.attr("activesubmitbutton", true);                
+                      }
+
+                     self.scope.attr("activesubmitbutton", true);
                    });
 
-              
- 
-        }); 
 
-       
+
+        });
+
+
          icsvmap.bind('showediticsv', function(ev, newVal, oldVal) {
               self.scope.attr("showediticsv", newVal);
-            
-          });  
+
+          });
       },
 
-      
+
       'rn-file-uploader-icsv-sum onSelected': function (ele, event, val) {
             var self = this;
             self.scope.attr('uploadedfileinfo',val.filePropeties);
@@ -268,7 +268,7 @@ var page = Component.extend({
             //val == 'SUCCESS' ?  $('.jQfunhide').show():$('.jQfunhide').hide();
        },
        "#buttonCancelicsv click":function(){
-         
+
           commonUtils.navigateTo("invoices");
        },
        '{scope} uploadedfileinfo':function(){
@@ -280,7 +280,7 @@ var page = Component.extend({
 
           console.log(icsvmap);
 
-          icsvmap.removeAttr("invoiceData"); 
+          icsvmap.removeAttr("invoiceData");
 
           console.log(icsvmap);
 
@@ -294,13 +294,13 @@ var page = Component.extend({
                     if(messages.length >0){
                       errorMess = errorMess+" : "+fatalErrorList[0].errorMessages[0]+" "+fatalErrorList[0].csvFileName+" at lineNumber "+fatalErrorList[0].lineNumber;
                       self.scope.attr('errorMessage',errorMess);
-                    }  
+                    }
                   }else{
                     self.scope.attr('errorMessage',data.errorDesc);
                   }
                  }else{
                   $('.jQfunhide').show();
-                  icsvmap.attr("invoiceData", data); 
+                  icsvmap.attr("invoiceData", data);
 
                  }
                 },function(xhr){
@@ -318,7 +318,7 @@ var page = Component.extend({
             for(var i=0; i < tempArr.length; i++)
                 {
                     var tempInvoiceData = {};
-             
+
                    tempInvoiceData["invoiceNumber"] = tempArr[i].invoiceNumber;
                    tempInvoiceData["invoiceTypeId"] = tempArr[i].invoiceTypeId;
                    tempInvoiceData["serviceTypeId"] = tempArr[i].serviceTypeId;
@@ -337,32 +337,32 @@ var page = Component.extend({
                    if(tempArr[i].tax== undefined && tempArr[i].tax != null && parseInt(tempArr[i].tax) > 0) {
                       tempInvoiceData["tax"] = tempArr[i].tax;
                    }
-            
+
                   if(typeof $("#paymentBundleNames").val() == "undefined"){
                     // tempInvoiceData["bundleId"] = "";
                         tempInvoiceData["bundleName"] = $("#newPaymentBundle").val();
                    }else{
-                      
+
                       if($("#paymentBundleNames").val() != ""){
                         tempInvoiceData["bundleId"] = $("#paymentBundleNames").val();
                         tempInvoiceData["bundleName"] = $("#paymentBundleNames option:selected").text();
                       }
                    }
 
-           
+
                    tempInvoiceData["receivedDate"] = dateFormatter(tempArr[i].receivedDate,"mm/dd/yyyy");//"06/19/2014"//self.scope.receiveddate;
                    tempInvoiceData["invoiceDate"] = dateFormatter(tempArr[i].invoiceDate,"mm/dd/yyyy");//"06/19/2014"//self.scope.invoicedate;
                    tempInvoiceData["invoiceCalcDueDate"] = dateFormatter(tempArr[i].invoiceCalcDueDate, "mm/dd/yyyy");
                    tempInvoiceData["invoiceDueDate"] = dateFormatter(tempArr[i].invoiceDueDate,"mm/dd/yyyy"); //"06/19/2014"//self.scope.invoiceduedate;
-                  
-                   tempInvoiceData["createdBy"] = "1000";  
-                   
+
+                   tempInvoiceData["createdBy"] = self.scope.appstate.userInfo.prsId;  
+
                    tempInvoiceData["comments"] = [];
                    var tempComment = {};
                    tempComment.comments = tempArr[i].comments.comments;
                    tempInvoiceData["comments"].push(tempComment);
 
-                   
+
                    tempInvoiceData["invoiceDocuments"] = [];
                    var tempDocument = {};
                    tempDocument.fileName = tempArr[i].invoiceDocuments.fileName;
@@ -370,20 +370,20 @@ var page = Component.extend({
 
                    tempInvoiceData["invoiceDocuments"].push(tempDocument);
                   // console.log(tempArr[i].invoiceLines.length);
-            
-               
+
+
                    tempInvoiceData["invoiceLines"] = [];
 
                   var invoiceLineCount = tempArr[i].invoiceLines.length;
-                                
+
                    for(var j=0; j < invoiceLineCount; j++){
                          var tempArryInv = {};
                           tempArryInv["country"] = tempArr[i].invoiceLines[j].country;
                           tempArryInv["fiscalPeriod"] =  tempArr[i].invoiceLines[j].fiscalPeriod;
                           tempArryInv["periodType"] = tempArr[i].invoiceLines[j].periodType;
-                         
+
                           tempArryInv["lineAmount"] = tempArr[i].invoiceLines[j].lineAmount;
-                         
+
                          if(tempArr[i].invoiceTypeId == "2"){
 
                             tempArryInv["glAccRefId"] = tempArr[i].invoiceLines[j].glAccRefId;
@@ -397,18 +397,18 @@ var page = Component.extend({
                           tempArryInv["ccidFileName"] = tempArr[i].invoiceLines[j].ccidFileName;
                           //  tempArry["ccidFileName"] = self.scope.ccidGLStore.attr(inputContent);
                           }
-                         
+
                           tempInvoiceData["invoiceLines"].push(tempArryInv);
                      }
 
-                 createInvoiceData.invoices.push(tempInvoiceData);            
+                 createInvoiceData.invoices.push(tempInvoiceData);
 
             }
-                  
+
              Promise.all([
                             Invoice.create(UserReq.formRequestDetails(createInvoiceData))
                          ]).then(function(values) {
-                            
+
                                 if(values[0]["status"]=="SUCCESS"){
                                        var msg = "Invoices  saved successfully."
                                        $("#invcsvmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
@@ -417,7 +417,7 @@ var page = Component.extend({
                                           $("#invcsvmessageDiv").hide();
                                        },5000)
 
-                                       icsvmap.removeAttr("invoiceData"); 
+                                       icsvmap.removeAttr("invoiceData");
 
                                         self.scope.uploadedfileinfo.replace([]);
 
@@ -427,14 +427,14 @@ var page = Component.extend({
                                     {
                                         var responseInvoiceArr = values[0].invoices;
                                         icsvmap.invoiceData.attr("invoices", responseInvoiceArr);  /*updating icsv map with invoice response*/
-                                        
+
                                         if(values[0].responseCode == "IN1022"){  /* Contact support team error*/
                                           var msg = values[0].responseText;
                                           $("#invcsvmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
                                           $("#invcsvmessageDiv").show();
                                         }
-                                    }   
-                                });  
+                                    }
+                                });
       },
       ".rn-grid>tbody>tr td dblclick": function(el, ev){
           var invoiceid = el.closest('tr').data('row').row.invoiceNum;
@@ -453,7 +453,7 @@ var page = Component.extend({
           var pbval = $("#paymentBundleNames").val();
           //console.log("val djsi is "+ pbval);
           if(pbval=="createB"){
-              
+
               var regId = self.scope.appstate.attr('region');
 
 
@@ -472,7 +472,7 @@ var page = Component.extend({
           } else {
             self.scope.attr('newpaymentbundlenamereq', "undefined");
           }
-      }   
+      }
 
     },
     helpers:{
@@ -500,20 +500,20 @@ var page = Component.extend({
                 }else{
                     return "<label class='errorMessage'>"+this.attr("responseText")+"</label>";
                 }
-                
+
                 setTimeout(function(){
                       $("#icsvMessageDiv").hide();
                 },2000);
-           } 
+           }
        }
 
-    }   
+    }
 });
 
 
 function dateFormatter(datestring, currentformat){
   if(currentformat == "mm/dd/yyyy")
-  { 
+  {
     var date = new Date(datestring);
     return  date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate();
   }
@@ -528,13 +528,13 @@ function dateFormatter(datestring, currentformat){
 function CurrencyFormat(number)
 {
   if($.isNumeric(number)){
-    
+
     var n = parseFloat(number).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
     return n;
   }else{
     return 0;
   }
-  
+
 }
 
 function getICSVRequest(fileInfo)
@@ -549,7 +549,7 @@ function getICSVRequest(fileInfo)
       fileDocument['location'] = fileInfo[i].filePath;
       request.documents.push(fileDocument);
     }
-    
+
   }
   return UserReq.formRequestDetails(request);
 }
@@ -560,7 +560,7 @@ function disableBundle(disable){
   }else{
     $("#paymentBundleNames").removeAttr("disabled");
   }
-  
+
 }
 
 
