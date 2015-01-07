@@ -56,6 +56,7 @@ var page = Component.extend({
     currencyScope:[],
     currencyList:[],
     reconRefresh : [],
+    emptyrows : true,
 
     reconStatsDetailsSelected : [],
 
@@ -349,9 +350,29 @@ var processRejectIngestRequest = function(scope,requestType){
 
         if(tab == "ingest") {
 
+          if(scope.reconStatsDetailsSelected == undefined ||  (scope.reconStatsDetailsSelected != null && scope.reconStatsDetailsSelected.length <= 0)) {
+
+            scope.attr("emptyrows", true);
+
+          } else {
+
+            scope.attr("emptyrows", false);
+
+          } 
+
           scope.ingestList.headerRows.replace(scope.reconStatsDetailsSelected);
 
         } else {
+
+          if(scope.incomingStatsDetailsSelected == undefined || (scope.incomingStatsDetailsSelected != null && scope.incomingStatsDetailsSelected.length <= 0)) {
+
+            scope.attr("emptyrows", true);
+
+          } else {
+
+            scope.attr("emptyrows", false);
+
+          }
 
           scope.incomingDetails.headerRows.replace(scope.incomingStatsDetailsSelected);
 
@@ -454,6 +475,17 @@ var fetchReconIngest = function(scope){
       if(data.status == "FAILURE"){
         displayErrorMessage(data.responseText,"Failed to load the Recon Ingest Tab:");
       }else  {
+
+        if(data.reconStatsDetails == undefined || (data.reconStatsDetails != null && data.reconStatsDetails.length <= 0)) {
+
+          scope.attr("emptyrows", true);
+
+        } else {
+
+          scope.attr("emptyrows", false);
+
+        } 
+        
         scope.ingestList.headerRows.replace(data.reconStatsDetails);
 
         scope.reconStatsDetailsSelected = data.reconStatsDetails
@@ -537,8 +569,18 @@ var fetchReconDetails = function(scope){
     if(data.status == "FAILURE"){
       displayErrorMessage(data.responseText,"Failed to load the Recondetails:");
     }else  {
+
+      if(data.reconStatsDetails == undefined || (data.reconStatsDetails != null && data.reconStatsDetails.length <= 0)) {
+
+        scope.attr("emptyrows", true);
+
+      } else {
+
+        scope.attr("emptyrows", false);
+
+      }   
       scope.incomingDetails.headerRows.replace(data.reconStatsDetails);
-      
+
       scope.incomingStatsDetailsSelected = data.reconStatsDetails;
 
       if (data.summary!== null) {
