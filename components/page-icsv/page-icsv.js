@@ -118,11 +118,11 @@ var page = Component.extend({
 
     },
     init:function(){
+       this.scope.appstate.attr("renderGlobalSearch",false);
       var self = this;
       self.scope.uploadedfileinfo.replace([]);
       icsvmap.removeAttr("invoiceData");
       $('.popover').popover('destroy');
-      this.scope.appstate.attr("renderGlobalSearch",false);
       icsvmap.attr("showediticsv", false);
       self.scope.attr('fetchPB',false);
     },

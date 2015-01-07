@@ -111,16 +111,22 @@ Grid.extend({
     'inserted': function(){
       var self= this;
       var tbody = self.element.find('tbody');
+      var parentScopeVar = self.element.closest('page-invoices').scope();
+      var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
+      $(tbody[0]).scrollTop(tableScrollTopVal);
         $(tbody).on('scroll', function(ev) {
           if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight) {
             //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
 
-            var parentScopeVar = self.element.closest('page-invoices').scope();
+            
             var offsetVal = parentScopeVar.attr('offset');
             //console.log(offsetVal);
 
             /* Reset the offset value and call the webservice to fetch next set of records */
             parentScopeVar.attr('offset', (parseInt(offsetVal)+1));
+            parentScopeVar.attr('tableScrollTop', (tbody[0].scrollHeight-200));
+            parentScopeVar.appstate.attr('globalSearchButtonClicked', false);
+
             /* The below code calls {scope.appstate} change event that gets the new data for grid*/
             /* All the neccessary parameters will be set in that event */
            if(parentScopeVar.appstate.attr('globalSearch')){
@@ -165,6 +171,7 @@ var page = Component.extend({
     disableBundleName:undefined,
     getPaymentBundlesNames: undefined,
     newpaymentbundlenamereq:undefined,
+    tableScrollTop: 0,
     offset: 0,
     fileinfo:[],
     excelOutput:[],
@@ -914,6 +921,15 @@ var page = Component.extend({
       },
       '{scope.appstate} change': function() {
           var self=this;
+
+          /* When fetch button is clicked the first set of records should be brought */
+          /* Reset the offset to 0 only when global search Fetch button is clicked */
+          /* In the case of scroll, globalSearchButtonClicked attr will be false */
+          if(self.scope.appstate.attr('globalSearchButtonClicked')==true){
+            self.scope.attr("offset",0);
+            self.scope.attr("tableScrollTop",0);
+          }
+
           /* Page is not allowed to do search by default when page is loaded */
           /* This can be checked using 'localGlobalSearch' parameter, it will be undefined when page loaded */
           if(this.scope.attr("localGlobalSearch") != undefined){
