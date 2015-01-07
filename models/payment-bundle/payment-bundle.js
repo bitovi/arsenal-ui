@@ -105,7 +105,8 @@ var PaymentBundle = Model.extend({
     }else{
         var paymentOption = params.paymentType,
             view = params.view.toUpperCase(),
-            bundleId = params.bundleID;
+            bundleId = params.bundleID,
+            filter = params.filter;
 
         // TODO: when infrastructure gets set up, fix this.
         data = {
@@ -147,14 +148,15 @@ var PaymentBundle = Model.extend({
       }
     }
   },
-  getDetails: function(appstate, view, paymentType) {
+  getDetails: function(appstate, view, paymentType,filterData) {
     var self = this;
 
     return PaymentBundle.findOne({
       appstate,
       bundleID: self.bundleId,
       paymentType,
-      view
+      view,
+      filter:filterData
     }).then(function(bundle) {
       if(bundle.status == "FAILURE" ){
 
