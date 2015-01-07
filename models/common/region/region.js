@@ -1,13 +1,16 @@
 import Model from 'can/model/';
 
 import RinsCommon from 'utils/urls';
+import getUtility from 'utils/getUtility' ;
+
 var Region = Model.extend({
 findAll: function(params){
- 	return $.ajax({
- 		url: RinsCommon.UI_SERVICE_URL +'getRegions',
+
+  var getURL = getUtility.createGetURL(params);
+  
+  return $.ajax({
+    url: RinsCommon.UI_SERVICE_URL +'getRegions' +"/?"+getURL,
   		type: 'GET',
-  		//data: JSON.stringify(params),
-  		//dataType:'json',
   		contentType: 'application/json'
   	});
 }

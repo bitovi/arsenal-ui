@@ -1,14 +1,15 @@
 import Model from 'can/model/';
 
 import RinsCommon from 'utils/urls';
+import getUtility from 'utils/getUtility' ;
 
 var Bookmarkusers = Model.extend({
     findOne: function(params){
+
+      var getURL = getUtility.createGetURL(params);
      	return $.ajax({
-      		url: RinsCommon.UI_SERVICE_URL+'bookMarkUsers',
+      		url: RinsCommon.UI_SERVICE_URL+'bookMarkUsers'+"/?"+getURL,
       		type: 'GET',
-      		//data: JSON.stringify(params),
-      		//dataType:'json',
       		contentType: 'application/json'
       	});
     },

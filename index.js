@@ -29,7 +29,7 @@ import _fixtures from 'models/fixtures/';
 
 appstate.bind('page', function(ev, newVal, oldVal) {
   newVal = newVal || appstate.constuctor.prototype.defaults.page;
-  token.findAll();
+//  token.findAll();
 
   System.import('components/page-' + newVal + '/').then(function(pageComponent) {
     var template = '<page-' + newVal + ' appstate=  "{appstate}"></page-' + newVal + '>';
@@ -44,53 +44,51 @@ appstate.bind('page', function(ev, newVal, oldVal) {
 });
 
 $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
- //FIX: <rdar://problem/19231697> Wave M2 : Invoice Entry/iCSV Entr
- //skip for multipart/form-data
+  //FIX: <rdar://problem/19231697> Wave M2 : Invoice Entry/iCSV Entr
+  //skip for multipart/form-data
 
- //added for CSRF token
+  //added for CSRF token
 
- if(appstate.csrfToken != null )
- {
-   jqXHR.setRequestHeader('X-Apple-CSRF-Token', appstate.csrfToken);
- }
-
-  if(options.type=='POST')
+  if(appstate.csrfToken != null && options.type=='POST')
   {
+    jqXHR.setRequestHeader('X-Apple-CSRF-Token', appstate.csrfToken);
     options.async = false;
   }
- //end
- if(!options.data || options.contentType === "multipart/form-data" || options.data.constructor == FormData ) {
 
-   return;
- }
+  //end
+  if(!options.data || options.contentType === "multipart/form-data" || options.data.constructor == FormData ) {
 
- // Otherwise, every domain service call requires some common params, so we do them here to save effort.
- if( options.url.indexOf(URLs.DOMAIN_SERVICE_URL) === 0 ||
-     options.url.indexOf(URLs.UI_SERVICE_URL) === 0 ||
-     options.url.indexOf(URLs.INTEGRATION_SERVICE_URL) === 0
- ) {
-   var data = (options.data.constructor === String ? JSON.parse(options.data) : options.data);
-   can.extend(data, requestHelper.formRequestDetails({}, appstate));
+    return;
+  }
 
-   options.data = JSON.stringify(data);
-   options.contentType = 'application/json';
- }
+  // Otherwise, every domain service call requires some common params, so we do them here to save effort.
+  if( options.url.indexOf(URLs.DOMAIN_SERVICE_URL) === 0 ||
+    options.url.indexOf(URLs.UI_SERVICE_URL) === 0 ||
+    options.url.indexOf(URLs.INTEGRATION_SERVICE_URL) === 0
+  ) {
+    var data = (options.data.constructor === String ? JSON.parse(options.data) : options.data);
+    can.extend(data, requestHelper.formRequestDetails({}, appstate));
+
+    options.data = JSON.stringify(data);
+    options.contentType = 'application/json';
+  }
 });
 
 // Every time a service fails, display an error with the error text.
 $(document).ajaxComplete(function(ev, xhr, options) {
 
-  console.log("In post filter");
-  var token = xhr.getResponseHeader('X-Apple-CSRF-Token');
-  appstate.csrfToken = token;
-  console.log("token=="+token);
+  if(xhr.getResponseHeader('X-Apple-CSRF-Token') != null){
+    var token = xhr.getResponseHeader('X-Apple-CSRF-Token');
+    appstate.csrfToken = token;
+    console.log("token=="+token);
+  }
 
   // ony do this for regular requests
   if(options.contentType !== 'application/json') {
     return;
   }
   var response = xhr.status === 200 ? JSON.parse(xhr.responseText) : null,
-      error;
+  error;
 
   if(xhr.status !== 200) {
     error = xhr.status + ' ' + xhr.statusText;

@@ -1,15 +1,17 @@
 import Model from 'can/model/';
 
 import RinsCommon from 'utils/urls';
+import getUtility from 'utils/getUtility' ;
 
 var Licensor = Model.extend({
     findAll: function(params){
+
+      var getURL = getUtility.createGetURL(params);
+      console.log(getURL);
+
      	return $.ajax({
-      		url: RinsCommon.UI_SERVICE_URL +'getLicensors' +"/"+params.regionId,
-      		//url: 'http://17.149.230.135:10645/getLicensors',
+      		url: RinsCommon.UI_SERVICE_URL +'getLicensors' +"/?"+getURL,
       		type: 'GET',
-      		//data: JSON.stringify(params),
-      		//dataType:'json',
       		contentType: 'application/json'
       	});
     }

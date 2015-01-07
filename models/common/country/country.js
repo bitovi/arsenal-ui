@@ -1,14 +1,15 @@
 import Model from 'can/model/';
 import RinsCommon from 'utils/urls';
+import getUtility from 'utils/getUtility' ;
 
 var Country = Model.extend({
 findAll: function(params){
 
+  var getURLParams = getUtility.createGetURL(params);
+
  	return $.ajax({
-     url: RinsCommon.UI_SERVICE_URL +'getCountries'+'/'+params.entityId+"/"+params.regionId,
+     url: RinsCommon.UI_SERVICE_URL +'getCountries'+"/?"+getURLParams,
   		type: 'GET',
-  		//data: JSON.stringify(params),
-  		//dataType:'json',
   		contentType: 'application/json'
   	});
 }

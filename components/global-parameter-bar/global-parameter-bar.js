@@ -300,7 +300,7 @@ var GlobalParameterBar = Component.extend({
       reqObj.regionId = DefaultGlobalParameters.Region.id;
     }
 
-    token.findAll();
+    //token.findAll();
 
     Promise.all([
       StoreType.findAll(UserReq.formRequestDetails(genObj)),
@@ -433,17 +433,17 @@ var GlobalParameterBar = Component.extend({
             self.scope.changesToApply.attr('region', DefaultGlobalParameters.Region);
             if(defCountry=="ALL" || defCountry=="-1")
               self.scope.changesToApply.attr('country').replace(["ALL"]);
-            else 
+            else
               self.scope.changesToApply.attr('country').replace($("#countriesFilter").val());
 
             if(defLicensor=="ALL" || defLicensor=="-1")
               self.scope.changesToApply.attr('licensor').replace(["-1"]);
-            else 
+            else
               self.scope.changesToApply.attr('licensor').replace($("#licensorsFilter").val());
 
             if(defContentType=="ALL" || defContentType=="-1")
               self.scope.changesToApply.attr('contentType').replace(["-1"]);
-            else 
+            else
               self.scope.changesToApply.attr('contentType').replace(formatContentType);
 
             self.scope.applyChanges(self.scope.changesToApply, self.scope.appstate);
