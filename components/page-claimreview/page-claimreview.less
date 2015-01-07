@@ -3,8 +3,24 @@
 
 rn-claim-licensor-grid, rn-claim-country-grid{
   .grid-mixin();
-	  th, td {
-	  	white-space: nowrap;
+	table {
+	    /* You have to specify widths */
+	    width: 100%;
+	    tr>th, tr > td {
+	      width:2%;
+	    }
+
+	    thead, tbody, tfoot {
+		  display: block;
+		}
+		tbody {
+		  max-height: 25em;
+		  overflow-y: auto;
+		  overflow-x: hidden;
+		}
+		th, td {
+		  white-space: nowrap;
+		}
 	  }
 	.entity, .currency, .period, .country, .contentType, .status{
 		text-align: left;
@@ -93,7 +109,8 @@ rn-claim-licensor-grid, rn-claim-country-grid{
 	}
 	#claimLicencorGrid, #claimCountryGrid {
 		max-height: 400px;
-		overflow: auto;
+		overflow-x: scroll;
+		overflow-y: hidden;
 		clear: both;
 		
 		.selected td{

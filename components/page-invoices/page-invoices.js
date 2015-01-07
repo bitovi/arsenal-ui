@@ -1099,7 +1099,7 @@ function alignGrid(divId){
           $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width);
           $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
         }
-        $("#invoiceGrid table").css("width",divWidth);
+        $('#'+divId+' table').css("width",divWidth);
       } else {
         for(var j=1;j<=cellWidthArr.length;j++){
           var width = cellWidthArr[j-1];
