@@ -93,7 +93,9 @@ export default [
     id: 'unMatchedAmt',
     title: 'Unmatched',
     className: "amountColumn",
-    format: formats.currencyFormat,
+    contents: function(row) {
+      return formats.currencyFormat(row.unMatchedAmt == undefined || row.unMatchedAmt == null || row.unMatchedAmt == "" ? 0 :  row.unMatchedAmt);
+    },
     sortable: true
   },
   {
