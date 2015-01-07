@@ -97,15 +97,6 @@ var BundleDetailTabs = Component.extend({
     getNewDetails: function(bundle) {
       var scope = this;
 
-      var filterData = tokenInput;
-      var newFilterData = [];
-      if(filterData.length>0){
-        for(var p=0;p<filterData.length;p++)
-          newFilterData.push(filterData[p]["name"]);
-        }
-      console.log("newFilterData :"+newFilterData);
-
-
       var view;
       if(bundle.bundleType === 'REGULAR_INV') {
         view = this.attr('selectedTab').value;
@@ -121,7 +112,7 @@ var BundleDetailTabs = Component.extend({
         this.appstate,
         view,
         this.paymentType,
-        filterData
+        tokenInput
       ).then(function(bundle) {
         scope.attr('gettingDetails', false);
 
@@ -170,6 +161,8 @@ var BundleDetailTabs = Component.extend({
             }
           });
         }
+
+      this.getNewDetails(this.pageState.selectedBundle);  
     }
   },
   helpers: {
@@ -302,7 +295,7 @@ var BundleDetailTabs = Component.extend({
          $('copy-clipboard').slideDown(function(){
            $('body').css('overflow','hidden');
            $('#copyall').trigger('click');
-        }); 
+        });
     },
     '.verbose-toggle click': function(el, ev) {
       this.scope.pageState.attr('verboseGrid', !this.scope.pageState.verboseGrid);
@@ -386,9 +379,6 @@ var BundleDetailTabs = Component.extend({
     },
     '{scope} paymentType': function(scope) {
       scope.getNewDetails(scope.pageState.selectedBundle);
-    },
-    '{tokenInput} change':function() {
-      this.scope.getNewDetails(this.scope.pageState.selectedBundle);
     }
   }
 });

@@ -114,6 +114,9 @@ var PaymentBundle = Model.extend({
             bundleId,
             paymentOption,
             view
+          },
+         bundleSearch: {
+           filter
           }
         };
         var excelOutput = appstate.attr('excelOutput') != undefined ? appstate.attr('excelOutput') : false;
@@ -151,12 +154,17 @@ var PaymentBundle = Model.extend({
   getDetails: function(appstate, view, paymentType,filterData) {
     var self = this;
 
+    var filterFormatted = [];
+    _.each(filterData, function(obj) {
+      filterFormatted.push(obj.name);
+    });
+
     return PaymentBundle.findOne({
       appstate,
       bundleID: self.bundleId,
       paymentType,
       view,
-      filter:filterData
+      filter:filterFormatted
     }).then(function(bundle) {
       if(bundle.status == "FAILURE" ){
 
@@ -309,7 +317,7 @@ var PaymentBundle = Model.extend({
         bundleType: this.bundleType,
         mode: 'REMOVE',
         bundleDetailsGroup: _.map(groups, function(group) { return {
-          refLineId: group.refLineId,
+          refLineId: group.invoiceId,
           refLineType: group.refLineType,
           periodType: appstate.periodType
         }})
