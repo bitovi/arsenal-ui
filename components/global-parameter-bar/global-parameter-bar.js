@@ -190,8 +190,10 @@ var GlobalParameterBar = Component.extend({
       } else {
         this.scope.changesToApply.removeAttr('country');
       }
-      if($("input[name='selAllCountry']").prop("checked"))
-         this.scope.changesToApply.attr('country', ["ALL"]);
+     /* if($("input[name='selAllCountry']").prop("checked"))
+         this.scope.changesToApply.attr('country', ["ALL"]);*/
+
+    
     },
     '#licensor select change': function(el, ev) {
       //var selected = $(el[0].selectedOptions).data('licensor');
@@ -201,8 +203,8 @@ var GlobalParameterBar = Component.extend({
       else
         this.scope.changesToApply.removeAttr('licensor');
 
-      if($("input[name='selAllLicensor']").prop("checked"))
-         this.scope.changesToApply.attr('licensor', ["-1"]);
+   //   if($("input[name='selAllLicensor']").prop("checked"))
+     //    this.scope.changesToApply.attr('licensor', ["-1"]);
     },
     '#contentType select change': function(el, ev) {
       //var selected = $(el[0].selectedOptions).data('contenttype');
@@ -217,8 +219,8 @@ var GlobalParameterBar = Component.extend({
       } else
         this.scope.changesToApply.removeAttr('contentType');
 
-      if($("input[name='selAllContentType']").prop("checked"))
-       this.scope.changesToApply.attr('contentType', ["-1"]);
+  //    if($("input[name='selAllContentType']").prop("checked"))
+    //   this.scope.changesToApply.attr('contentType', ["-1"]);
     },
     '#globalSearch click': function() {
       var self = this;
@@ -233,6 +235,22 @@ var GlobalParameterBar = Component.extend({
       }
 
       if (message.length == 0) {
+         if($("input[name='selAllCountry']").closest('li').siblings().filter(function(index){return !$(this).hasClass("active")}).length == 0)
+          {
+            this.scope.changesToApply.attr('country', ["ALL"]);
+          }  
+
+        if($("input[name='selAllContentType']").closest('li').siblings().filter(function(index){return !$(this).hasClass("active")}).length == 0)
+          { 
+           this.scope.changesToApply.attr('contentType', ["-1"]);
+          } 
+
+        if($("input[name='selAllLicensor']").closest('li').siblings().filter(function(index){return !$(this).hasClass("active")}).length == 0)
+          { 
+           this.scope.changesToApply.attr('licensor', ["-1"]);
+          } 
+
+
         this.scope.applyChanges(this.scope.changesToApply, this.scope.appstate);
         //this.scope.appstate.attr('globalSearch', !!this.scope.appstate.globalSearch);
         commonUtils.triggerGlobalSearch();
