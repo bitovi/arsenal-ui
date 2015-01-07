@@ -361,13 +361,18 @@ var processRejectIngestRequest = function(scope,requestType){
 
         if(values != null && values.length > 0) {
           var data = values[0];
-          if(data.responseCode == "RINS_DI_DELETE_001"){
+          if(data.status == "SUCCESS"){
             $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
             $("#messageDiv").show();
-            scope.reconRefresh[0].summaryStatsData.splice(0,1);
+            
+            if(tab == "ingest") {
+              scope.reconRefresh[0].summaryStatsData.splice(0,1);
+              scope.attr("ingestCcidSelected").splice(0, scope.attr("ingestCcidSelected").length);
+            } else {
+              scope.attr("incomingCcidSelected").splice(0, scope.attr("incomingCcidSelected").length);
+            }
+            
             $('.statsTable').hide();
-
-            scope.attr("ingestCcidSelected").splice(0, scope.attr("ingestCcidSelected").length);
             
             setTimeout(function(){
               $("#messageDiv").hide();
