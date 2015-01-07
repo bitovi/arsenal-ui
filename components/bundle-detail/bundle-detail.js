@@ -295,8 +295,13 @@ var BundleDetailTabs = Component.extend({
 
 
     },
-    '.clipboard click': function(el, ev) {
+    '.clipboardd click': function(el, ev) {
       // copy data to the clipboard
+       $('#clonetable').empty().html($('.grid-container').find('table:visible').clone(true).attr('id','dynamic'));
+         $('copy-clipboard').slideDown(function(){
+           $('body').css('overflow','hidden');
+           $('#copyall').trigger('click');
+        }); 
     },
     '.verbose-toggle click': function(el, ev) {
       this.scope.pageState.attr('verboseGrid', !this.scope.pageState.verboseGrid);
