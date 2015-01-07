@@ -1,10 +1,12 @@
+<copy-clipboard> {{values}}</copy-clipboard>
 {{#showPage}}
 {{#if fetching}}
 <div class="select-message">Fetching report...</div>
+<div id="messageDiv" class="col-md-12" style="text-align:center;padding-top:5px;"></div>
 {{else}}
 <div class="export-toexcel" id="exportExcel"></div>
 <div class="col-sm-12" id="searchDiv" class="pull-right">
-        <img src="resources/images/exportExcelIcon.png" class="exportToExcel" id="exportExcel">
+        <img src="resources/images/exportExcelIcon.png" class="exportToExcell">
         <img src="resources/images/copyToClipboardIcon.png" class="" id="copyToClipboard">
 </div>
 <table class="holes-report">

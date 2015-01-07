@@ -588,6 +588,7 @@ var page = Component.extend({
                 
                 var tabView =  self.scope.attr('view');
                 claimLicSearchRequest["view"] = self.scope.attr('view');
+                claimLicSearchRequest["gridName"] = (tabView === "licensor")? "CR_LICENSOR_VIEW":"CR_COUNTRY_VIEW";
                 
                 var filterData = self.scope.tokenInput.attr();
                 var newFilterData = [];
@@ -608,8 +609,9 @@ var page = Component.extend({
                       console.log("data is "+JSON.stringify(values.attr()));
                       if(self.scope.appstate.attr('excelOutput')){
                         $("#loading_img").hide();
-                        $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
-                         self.scope.appstate.attr("excelOutput",false);
+                        self.scope.appstate.attr("excelOutput",false);
+                        $('#exportExcel').html(stache('<export-toexcel csv={values}></export-toexcel>')({values}));
+                         
 
                       }else{
                         self.scope.allClaimLicensorMap.replace(values);
@@ -624,8 +626,9 @@ var page = Component.extend({
                       console.log("data is "+JSON.stringify(values.attr()));
                       if(self.scope.appstate.attr('excelOutput')){
                         $("#loading_img").hide();
-                        $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
                          self.scope.appstate.attr("excelOutput",false);
+                        $('#exportExcel').html(stache('<export-toexcel csv={values}></export-toexcel>')({values}));
+                        
 
                       }else{
                         self.scope.allClaimCountryMap.replace(values);

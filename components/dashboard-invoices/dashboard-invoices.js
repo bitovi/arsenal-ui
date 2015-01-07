@@ -5,13 +5,14 @@ import Component from 'can/component/';
 import Map from 'can/map/';
 
 import HolesReport from 'models/holes-report/';
+import stache from 'can/view/stache/';
 
 import template from './template.stache!';
 import missingInvoicesTemplate from './missing-invoices.stache!';
 import styles from './dashboard-invoices.less!';
 
 import exportToExcel from 'components/export-toexcel/';
-import UserReq from 'utils/request/';
+import copy from 'components/copy-clipboard/';
 
 var refreshTimeoutID;
 
@@ -54,29 +55,49 @@ var DashboardInvoices = Component.extend({
     refreshReport: function() {
       var self = this;
       this.attr('fetching', true);
-      return HolesReport.findAll({appstate: self.appstate}).then(function(holes) {
+      
+      return HolesReport.findOne({ appstate: self.appstate }).then(function(holes) {
         // TODO: I think I may need a holesByEntity as well
         var entities = [];
         var holesByCountry = {};
-        _.each(holes, function(hole) {
-          if(entities.indexOf(hole.entityName) < 0) {
-            entities.push(hole.entityName);
-          }
+        var data = holes;
+        if (self.appstate.attr('excelOutput') != undefined || self.appstate.excelOutput) {
 
-          if(! holesByCountry[hole.countryId]) {
-            holesByCountry[hole.countryId] = [];
-          }
+          if (data["status"] == "SUCCESS" && data["exportExcelFileInfo"] != null) {
+            self.appstate.attr('excelOutput', false);
+            $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
 
-          holesByCountry[hole.countryId].push(hole);
-        });
+          } /*else {
+            $("#messageDiv").html("<label class='errorMessage'>" + data["responseText"] + "</label>");
+            $("#messageDiv").show();
+            setTimeout(function() {
+              $("#messageDiv").hide();
+            }, 2000);
+          }*/
+        } else {
 
-        entities = _.sortBy(entities, e => e.toUpperCase());
+          var holes = holes.holesReportWrapper[0].holesReport;
 
-        can.batch.start();
-        self.attr('entities', entities);
-        self.attr('holesByCountry', holesByCountry);
-        can.batch.stop();
+          _.each(holes, function(hole) {
+            if (entities.indexOf(hole.entityName) < 0) {
+              entities.push(hole.entityName);
+            }
 
+            if (!holesByCountry[hole.countryId]) {
+              holesByCountry[hole.countryId] = [];
+            }
+
+            holesByCountry[hole.countryId].push(hole);
+          });
+
+          entities = _.sortBy(entities, e => e.toUpperCase());
+
+          can.batch.start();
+          self.attr('entities', entities);
+          self.attr('holesByCountry', holesByCountry);
+          can.batch.stop();
+
+        }
         self.attr('fetching', false);
       });
     }
@@ -131,27 +152,18 @@ var DashboardInvoices = Component.extend({
         this.scope.debouncedRefreshReport(this.scope);
       }
     },
-    '.exportToExcel click':function(el,ev){
+    '.exportToExcell click':function(el,ev){
         var self = this;
-        HolesReport.findOne(createHolesRequestForExportToExcel(self.scope.appstate), function(data) {
-          console.log(JSON.stringify(data));
-              if (data["status"] == "SUCCESS") {
-                $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({
-                  data
-                }));
-              } else {
-                $("#messageDiv").html("<label class='errorMessage'>" + data["responseText"] + "</label>");
-                $("#messageDiv").show();
-                setTimeout(function() {
-                  $("#messageDiv").hide();
-                }, 2000)
-                self.scope.attr('emptyrows', true);
-              }
-            }, function(xhr) {
-              console.log(JSON.stringify(xhr));
-              console.error("Error while loading: dashboard-invoices details" + xhr);
-            });
+        if(this.scope.appstate.attr('excelOutput')==undefined || !self.scope.appstate.excelOutput)
+          self.scope.appstate.attr("excelOutput",true);
     },
+    '#copyToClipboard click':function(){  
+        $('#clonetable').empty().html($('.dashboard-container').find('table:visible').clone(true).attr('id','dynamic'));
+         $('copy-clipboard').slideDown(function(){
+           $('body').css('overflow','hidden');
+           $('#copyall').trigger('click');
+        });       
+      },
     '{scope.appstate} change': function() {
       var self = this;
 
@@ -165,14 +177,5 @@ var DashboardInvoices = Component.extend({
   }
 });
 
-
-var createHolesRequestForExportToExcel=function(appstate){
-    var holesRequest={};
-    holesRequest.searchRequest=UserReq.formGlobalRequest(appstate).searchRequest;
-    holesRequest.searchRequest.type="INVOICE-RECEIVED";
-    holesRequest.excelOutput=true;
-    console.log(JSON.stringify(holesRequest));
-    return UserReq.formRequestDetails(holesRequest);
-  };
 
 export default DashboardInvoices;

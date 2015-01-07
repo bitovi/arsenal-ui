@@ -15,6 +15,10 @@ import commonUtils from 'utils/commonUtils';
 import FileManager from 'utils/fileManager/';
 
 
+import stache from 'can/view/stache/';
+import exportToExcel from 'components/export-toexcel/';
+import copy from 'components/copy-clipboard/';
+
 var page = Component.extend({
   tag: 'page-reconOther',
   template: template,
@@ -98,6 +102,31 @@ var page = Component.extend({
       FileManager.downloadFile(request);
 
     },
+    '#copyToClipboard click':function(){  
+        $('#clonetable').empty().html($('#reconstatsOtherGrid').find('table:visible').clone(true).attr('id','dynamic'));
+         $('copy-clipboard').slideDown(function(){
+           $('body').css('overflow','hidden');
+           $('#copyall').trigger('click');
+        });       
+      },
+    '.exportToExcel click':function(el,ev){
+        var self = this;
+        Recon.findOne(createReconOtherRequestForExportToExcel(self.scope.appstate),function(data){ 
+              if (data["status"] == "SUCCESS" && data["exportExcelFileInfo"] != null) {
+                if(data.exportExcelFileInfo["values"]!=null)
+                  $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
+              }else{
+                $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                $("#messageDiv").show();
+                setTimeout(function(){
+                    $("#messageDiv").hide();
+                },2000)
+                self.scope.attr('emptyrows',true);
+              }
+        }, function(xhr) {
+              console.error("Error while loading: onAccount balance Details"+xhr);
+        } );    
+    },
     '{scope.appstate} change': function() {
       if(this.scope.isGlobalSearch != this.scope.appstate.attr('globalSearch')){
         this.scope.attr("isGlobalSearch",this.scope.appstate.attr("globalSearch"));
@@ -106,6 +135,14 @@ var page = Component.extend({
     }
   }
 });
+
+var createReconOtherRequestForExportToExcel = function(appstate){
+  var reconOtherRequest={};
+  reconOtherRequest.searchRequest=UserReq.formGlobalRequest(appstate).searchRequest;
+  reconOtherRequest.searchRequest.type="OTHER";
+  reconOtherRequest.excelOutput=true;
+  return UserReq.formRequestDetails(reconOtherRequest);
+};
 
 
 var fetchReconIncoming = function(scope){

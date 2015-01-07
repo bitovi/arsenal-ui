@@ -24,7 +24,7 @@
     {{#canShowChart}}
     <img class="show-chart" src="/resources/images/rn_BundleActive@2x.png"/>
     {{/canShowChart}}
-    <img class="excel" src="/resources/images/rn_ExcelActive@2x.png"/>
+    <img class="excell" src="/resources/images/rn_ExcelActive@2x.png"/>
     <img class="clipboardd" src="/resources/images/rn_CopyActive@2x.png"/>
     {{#showVerboseToggle}}
     <img class="verbose-toggle" src="/resources/images/approval_arrow_{{#if pageState.verboseGrid}}left{{else}}right{{/if}}.png"/>

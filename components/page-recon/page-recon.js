@@ -18,6 +18,7 @@ import css_tokeninput_theme from 'tokeninput_theme.css!';
 import commonUtils from 'utils/commonUtils';
 import FileManager from 'utils/fileManager/';
 
+import stache from 'can/view/stache/';
 import exportToExcel from 'components/export-toexcel/';
 import copy from 'components/copy-clipboard/';
 
@@ -265,7 +266,7 @@ var page = Component.extend({
                 console.log(data);
                 console.log(JSON.stringify(data));
                       if(data["status"]=="SUCCESS"){
-                        $('#exportExcel').html(template('<export-toexcel csv={data}></export-toexcel>')({data}));
+                        $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
                       }else{
                         $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
                         $("#messageDiv").show();
@@ -281,7 +282,7 @@ var page = Component.extend({
               Recon.findOne(createIngestedReconRequestForExportToExcel(self.scope.appstate),function(data){ 
                 console.log(data);
                       if(data["status"]=="SUCCESS"){
-                        $('#exportExcel').html(template('<export-toexcel csv={data}></export-toexcel>')({data}));
+                        $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
                       }else{
                         $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
                         $("#messageDiv").show();

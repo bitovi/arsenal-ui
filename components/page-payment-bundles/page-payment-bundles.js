@@ -110,10 +110,7 @@ var page = Component.extend({
             console.log(err);
         });
        }
-
-
-
-
+       
     },
     '.clipboard click': function(el, ev) {
       // copy bundle list information to clipboard
