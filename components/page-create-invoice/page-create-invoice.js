@@ -822,6 +822,7 @@ var page = Component.extend({
 		"#invoiceform #paymentBundleNames change": function(){
 	          var self = this;
 	          var pbval = $("#invoiceform #paymentBundleNames").val();
+	          self.scope.attr('newpaymentbundlenamereq', "undefined");
 	          if(pbval=="createB"){
 
 	              var regId = self.scope.regionStore;
@@ -839,11 +840,9 @@ var page = Component.extend({
 	              bundleRequest["bundleType"] = $("#invoiceType option:selected").attr("name");
 
 	              newBundleNameRequest["paymentBundle"] = bundleRequest;
-	              console.log(JSON.stringify(newBundleNameRequest));
+	              //console.log(JSON.stringify(newBundleNameRequest));
 	              self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
-	          } else {
-	            self.scope.attr('newpaymentbundlenamereq', "undefined");
-	          }
+	          } 
 	      },
 
 		"#addInvSubmit click":function(){
