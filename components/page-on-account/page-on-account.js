@@ -135,6 +135,7 @@ var page = Component.extend({
           var self = this;
           var pbval = $("#paymentBundleNames").val();
           var paymentBundleNameText;
+          self.scope.attr('newpaymentbundlenamereq',"undefined");
           if(pbval=="createB"){
               var regId = self.scope.appstate.attr('region');
               var newBundleNameRequest = {"paymentBundle":{}};
@@ -150,7 +151,6 @@ var page = Component.extend({
             paymentBundleNameText=$("#paymentBundleNames option:selected").text();
             self.scope.attr('paymentBundleName',pbval);
             self.scope.attr('paymentBundleNameText',paymentBundleNameText);
-            self.scope.attr('newpaymentbundlenamereq', "undefined");
           }
 
           if(pbval != undefined || paymentBundleNameText != undefined){
