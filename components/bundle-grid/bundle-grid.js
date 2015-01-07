@@ -73,7 +73,7 @@ var BundleGrid = ScrollingGrid.extend({
   helpers: {
     // override rowClass handler to add a class if the row is selected
     rowClass: function(row) {
-      if(this.pageState.attr('selectedBundle') && this.pageState.selectedBundle.bundleId === row.bundleId) {
+      if(this.pageState.attr('selectedBundle') && this.pageState.selectedBundle != null && this.pageState.selectedBundle.bundleId === row.bundleId) {
         return 'selected';
       } else {
         return '';
@@ -83,7 +83,6 @@ var BundleGrid = ScrollingGrid.extend({
   events: {
     'tbody tr click': function(el, ev) {
       var bundle = el.data('row').row;
-
       this.scope.pageState.attr('selectedBundle', bundle);
     }
   }

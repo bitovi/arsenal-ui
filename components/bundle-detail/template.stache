@@ -61,7 +61,7 @@
     <div class="buttons">
     {{#isBM}}
 
-      {{#if pageState.selectedBundle.deletable}}
+      {{#if pageState.selectedBundle.editable}}
         <button class="{{canProceed}}"  data-action="delete">Delete</button>
       {{/if}}
 
@@ -69,14 +69,19 @@
         <button class="{{canProceed}}"  data-action="recall">Recall</button>
       {{/if}}
 
-      <button class="{{canProceed}}" data-action="approve">Propose</button>
+      {{#if pageState.selectedBundle.approvable}}
+        <button class="{{canProceed}}" data-action="approve">Propose</button>
+      {{/if}}
     {{else}}
       {{#if pageState.selectedBundle.recallable}}
         <button class="{{canProceed}}"  data-action="recall">Recall</button>
       {{/if}}
 
-      <button class="{{canProceed}}" data-action="reject">Reject</button>
-      <button class="{{canProceed}}" data-action="approve">Approve</button>
+      {{#if pageState.selectedBundle.approvable}}
+        <button class="{{canProceed}}" data-action="reject">Reject</button>
+        <button class="{{canProceed}}" data-action="approve">Approve</button>
+      {{/if}}
+
     {{/isBM}}
     </div>
   </div>

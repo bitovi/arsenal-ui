@@ -21,7 +21,8 @@ import exportToExcel from 'components/export-toexcel/';
 var pageState = new Map({
   bundles: new PaymentBundle.List([]),
   selectedBundle: null,
-  verboseGrid: true
+  verboseGrid: true,
+  resetSelection: true
 });
 
 var page = Component.extend({
@@ -33,8 +34,11 @@ var page = Component.extend({
     isPageSearch: undefined,
     refreshBundles: _.debounce(function() {
       if(this.scope.isPageSearch != this.scope.appstate.globalSearch) {
-        
+
         this.scope.appstate.attr('excelOutput',false);
+
+        resetGrids(pageState);
+
         this.scope.isPageSearch  = this.scope.appstate.globalSearch;
          PaymentBundle.findAll({appstate: this.scope.appstate}).then(function(bundles) {
           can.batch.start();
@@ -46,10 +50,9 @@ var page = Component.extend({
         });
       }else {
         if(!this.scope.appstate.excelOutput){
-            can.batch.start();
-            pageState.bundles.splice(0, pageState.bundles.length);
-            pageState.attr('selectedBundle', null);
-            can.batch.stop();
+
+            resetGrids(pageState);
+            
           }
     }
     }, 200)
@@ -116,5 +119,18 @@ var page = Component.extend({
     }
   }
 });
+
+
+
+var resetGrids = function(pageState){
+  //Reset the grid
+
+  can.batch.start();
+  pageState.bundles.splice(0, pageState.bundles.length);
+  pageState.attr('selectedBundle', null);
+  can.batch.stop();
+
+
+}
 
 export default page;
