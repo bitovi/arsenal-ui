@@ -56,6 +56,7 @@ var page = Component.extend({
     currencyScope:[],
     currencyList:[],
     reconRefresh : [],
+    emptyrows : true,
 
     reconStatsDetailsSelected : [],
 
@@ -351,9 +352,29 @@ var processRejectIngestRequest = function(scope,requestType){
 
           scope.ingestList.headerRows.replace(scope.reconStatsDetailsSelected);
 
+          if(scope.reconStatsDetailsSelected == undefined ||  (scope.reconStatsDetailsSelected != null && scope.reconStatsDetailsSelected.length <= 0)) {
+
+            scope.attr("emptyrows", true);
+
+          } else {
+
+            scope.attr("emptyrows", false);
+
+          }
+
         } else {
 
           scope.incomingDetails.headerRows.replace(scope.incomingStatsDetailsSelected);
+
+          if(scope.reconStatsDetailsSelected == undefined || (scope.incomingStatsDetailsSelected != null && scope.incomingStatsDetailsSelected.length <= 0)) {
+
+            scope.attr("emptyrows", true);
+
+          } else {
+
+            scope.attr("emptyrows", false);
+
+          }
 
         }
 
@@ -456,6 +477,16 @@ var fetchReconIngest = function(scope){
       }else  {
         scope.ingestList.headerRows.replace(data.reconStatsDetails);
 
+        if(scope.reconStatsDetails == undefined || (scope.reconStatsDetails != null && scope.reconStatsDetails.length <= 0)) {
+
+          scope.attr("emptyrows", true);
+
+        } else {
+
+          scope.attr("emptyrows", false);
+
+        } 
+
         scope.reconStatsDetailsSelected = data.reconStatsDetails
 
         scope.currencyScope.replace(data.currency);
@@ -538,6 +569,16 @@ var fetchReconDetails = function(scope){
       displayErrorMessage(data.responseText,"Failed to load the Recondetails:");
     }else  {
       scope.incomingDetails.headerRows.replace(data.reconStatsDetails);
+
+      if(scope.reconStatsDetails == undefined || (scope.reconStatsDetails != null && scope.reconStatsDetails.length <= 0)) {
+
+          scope.attr("emptyrows", true);
+
+        } else {
+
+          scope.attr("emptyrows", false);
+
+        } 
       
       scope.incomingStatsDetailsSelected = data.reconStatsDetails;
 
