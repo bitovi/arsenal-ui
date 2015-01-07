@@ -35,7 +35,9 @@ export default [
 {
   id: 'pubfee',
   title: 'PUB Fee',
-  format: formats.currencyFormat,
+  contents: function(row) {
+    return formats.currencyFormat(row.pubfee == undefined || row.pubfee == null || row.pubfee == "" ? 0 :  row.pubfee);
+  },
   sortable: true
 },
 {
