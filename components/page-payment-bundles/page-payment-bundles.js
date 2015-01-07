@@ -52,7 +52,7 @@ var page = Component.extend({
         if(!this.scope.appstate.excelOutput){
 
             resetGrids(pageState);
-            
+
           }
     }
     }, 200)

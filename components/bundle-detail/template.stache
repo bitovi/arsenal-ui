@@ -30,6 +30,9 @@
     <img class="verbose-toggle" src="/resources/images/approval_arrow_{{#if pageState.verboseGrid}}left{{else}}right{{/if}}.png"/>
     {{/showVerboseToggle}}
   </div>
+  <div class="tokenData">
+    <input type="text" class="form-control" id="tokenSearch">
+  </div>
 </div>
 <div class="grid-container">
   {{#if pageState.selectedBundle.bundleDetailsGroup.length}}
