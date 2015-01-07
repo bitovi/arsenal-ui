@@ -105,10 +105,14 @@ var page = Component.extend({
       }
     },
     "#btnCancel click": function() {
+      var self = this;
       this.scope.attr("createPBFlag", {
         select: true
       });
       this.scope.attr("paymentBundleId", '');
+      self.scope.attr('newbundlenamereq', "undefined");
+      self.scope.attr('paymentBundleName','');
+
     },
     "{scope} request": function() {
       var self = this;
@@ -136,7 +140,7 @@ var page = Component.extend({
     },
     "{scope} newbundlenamereq": function() {
       var self = this;
-
+      //alert('comming inside');
       var requestObj = self.scope.attr("newbundlenamereq");
       if (requestObj != "undefined") {
         requestObj = JSON.parse(requestObj);
