@@ -150,11 +150,11 @@ Grid.extend({
             //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
 
             
-            var offsetVal = parentScopeVar.attr('offset');
+            var offsetVal = parentScopeVar.attr('licensorViewOffset');
             //console.log(offsetVal);
 
             /* Reset the offset value and call the webservice to fetch next set of records */
-            parentScopeVar.attr('offset', (parseInt(offsetVal)+1));
+            parentScopeVar.attr('licensorViewOffset', (parseInt(offsetVal)+1));
             parentScopeVar.attr('tableScrollTop', (tbody[0].scrollHeight-200));
             parentScopeVar.appstate.attr('globalSearchButtonClicked', false);
 
@@ -291,23 +291,52 @@ Grid.extend({
     ]
   },
   events:{
-  '.open-toggle click': function(el, ev) {
-     var self = this;
+    'inserted': function(){
+      var self= this;
+      var tbody = self.element.find('tbody');
+      var parentScopeVar = self.element.closest('page-claimreview').scope();
+      var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
+      $(tbody[0]).scrollTop(tableScrollTopVal);
+        $(tbody).on('scroll', function(ev) {
+          if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight) {
+            //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
+
+            
+            var offsetVal = parentScopeVar.attr('countryViewOffset');
+            //console.log(offsetVal);
+
+            /* Reset the offset value and call the webservice to fetch next set of records */
+            parentScopeVar.attr('countryViewOffset', (parseInt(offsetVal)+1));
+            parentScopeVar.attr('tableScrollTop', (tbody[0].scrollHeight-200));
+            parentScopeVar.appstate.attr('globalSearchButtonClicked', false);
+
+            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
+            /* All the neccessary parameters will be set in that event */
+           if(parentScopeVar.appstate.attr('globalSearch')){
+              parentScopeVar.appstate.attr('globalSearch', false);
+            }else{
+              parentScopeVar.appstate.attr('globalSearch', true);
+            }
+          }
+        });
+
+      alignGrid('claimCountryGrid', self.scope.is_aggregate);
+    },
+    '.open-toggle click': function(el, ev) {
+      var self = this;
       var row = el.closest('tr').data('row').row;
       row.attr('__isOpen', !row.attr('__isOpen'));
       if(self.scope.is_aggregate == 1){
-          $(".period").hide();
-          $(".entity").hide();
-          
-        } else {
-          $(".period").show();
-          $(".entity").show();
-          
-        }
-
+        $(".period").hide();
+        $(".entity").hide();
+      } else {
+        $(".period").show();
+        $(".entity").show(); 
+      }
+      alignGrid('claimCountryGrid', self.scope.is_aggregate);
     },
     '.open-toggle-all click': function(el, ev) {
-       var self = this;
+      var self = this;
       ev.stopPropagation();
       var allOpen = _.every(this.scope.rows, row => row.__isChild ? true : row.__isOpen);
       can.batch.start();
@@ -316,16 +345,14 @@ Grid.extend({
       this.scope.attr('allOpen', !allOpen);
       can.batch.stop();
       if(self.scope.is_aggregate == 1){
-          $(".period").hide();
-          $(".entity").hide();
-          
-        } else {
-          $(".period").show();
-          $(".entity").show();
-          
-        }
+        $(".period").hide();
+        $(".entity").hide();
+      } else {
+        $(".period").show();
+        $(".entity").show();
+      }
+      alignGrid('claimCountryGrid', self.scope.is_aggregate);
     }
-   
   }
 });
 
@@ -339,8 +366,10 @@ var page = Component.extend({
     allClaimCountryMap: [],
     sortColumns:[],
     sortDirection: "asc",
-    tableScrollTop: 0,
-    offset: 0,
+    licensorTableScrollTop: 0,
+    countryTableScrollTop: 0,
+    licensorViewOffset: 0,
+    countryViewOffset: 0,
     details:{},
     view:"licensor",
 	  tokenInput: [],
@@ -451,9 +480,10 @@ var page = Component.extend({
           ev.preventDefault();
           console.log("fdfsdfsdf "+self.scope.attr("allClaimCountryMap").length);
           var invoiceData = self.scope.attr("allClaimCountryMap").length;
-          if(invoiceData == 0)
+          if(invoiceData == 0){
             var is_aggregate = self.scope.attr("is_aggregate");
             $('#claimCountryGrid').html(stache('<rn-claim-country-grid emptyrows="{emptyrows}" is_aggregate="{is_aggregate}"></rn-claim-country-grid>')({emptyrows:true, is_aggregate}));
+          }
       },
       '#chkAggregate change': function(item, el, ev) {
         var self = this;    
@@ -608,7 +638,6 @@ var page = Component.extend({
         } else {
           $(".period").show();
           $(".entity").show();
-          
         }
       },
      
@@ -628,13 +657,19 @@ var page = Component.extend({
       },
       '{scope.appstate} change': function() {
           var self=this;
-          //console.log("appState set to "+JSON.stringify(this.scope.appstate.attr()));
+          var tabView =  self.scope.attr('view');
+
           /* When fetch button is clicked the first set of records should be brought */
           /* Reset the offset to 0 only when global search Fetch button is clicked */
           /* In the case of scroll, globalSearchButtonClicked attr will be false */
           if(self.scope.appstate.attr('globalSearchButtonClicked')==true){
-            self.scope.attr("offset",0);
-            self.scope.attr("tableScrollTop",0);
+            if(tabView=="licensor"){
+              self.scope.attr("licensorViewOffset",0);
+              self.scope.attr("licensorTableScrollTop",0);
+            } else {
+              self.scope.attr("countryViewOffset",0);
+              self.scope.attr("countryTableScrollTop",0);
+            }
           }
           /* Page is not allowed to do search by default when page is loaded */
           /* This can be checked using 'localGlobalSearch' parameter, it will be undefined when page loaded */
@@ -690,13 +725,16 @@ var page = Component.extend({
                 claimLicSearchRequest["periodType"] = "P";
 
                 claimLicSearchRequest["status"] = "";
-                claimLicSearchRequest["offset"] = this.scope.offset;
+
+                if(tabView=="licensor")
+                  claimLicSearchRequest["offset"] = this.scope.licensorViewOffset;
+                else 
+                  claimLicSearchRequest["offset"] = this.scope.countryViewOffset;
+
                 claimLicSearchRequest["limit"] = "10";
 
                 if(self.scope.appstate.attr('excelOutput')) claimLicSearchRequest["excelOutput"] = true;
 
-                
-                var tabView =  self.scope.attr('view');
                 claimLicSearchRequest["view"] = self.scope.attr('view');
                 
                 var filterData = self.scope.tokenInput.attr();
@@ -716,19 +754,32 @@ var page = Component.extend({
                 if(tabView=="licensor"){
                   claimLicensorInvoices.findOne(UserReq.formRequestDetails(claimLicSearchRequest),function(values){
                       //console.log("data is "+JSON.stringify(values.attr()));
-                      if(self.scope.appstate.attr('excelOutput')){
-                        $("#loading_img").hide();
-                        $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
-                         self.scope.appstate.attr("excelOutput",false);
+                      if(values["status"]!="FAILURE"){
+                        if(self.scope.appstate.attr('excelOutput')){
+                          $("#loading_img").hide();
+                          $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
+                           self.scope.appstate.attr("excelOutput",false);
 
-                      }else{
-
-                        if(parseInt(claimLicSearchRequest["offset"])==0){
-                          self.scope.allClaimLicensorMap.replace(values);
-                        } else{
-                          $.merge(self.scope.allClaimLicensorMap[0].reviews, values.reviews);
-                          self.scope.allClaimLicensorMap.replace(self.scope.allClaimLicensorMap);
+                        }else{
+                          $("#messageDiv").html("<label class='successMessage'>"+values["responseText"]+"</label>");
+                          $("#messageDiv").show();
+                          setTimeout(function(){
+                              $("#messageDiv").hide();
+                          },4000);
+                          if(parseInt(claimLicSearchRequest["offset"])==0){
+                            self.scope.allClaimLicensorMap.replace(values);
+                          } else{
+                            $.merge(self.scope.allClaimLicensorMap[0].reviews, values.reviews);
+                            self.scope.allClaimLicensorMap.replace(self.scope.allClaimLicensorMap);
+                          }
                         }
+                      } else {
+                        $("#loading_img").hide();
+                        $("#messageDiv").html("<label class='errorMessage'>"+values["responseText"]+"</label>");
+                        $("#messageDiv").show();
+                        setTimeout(function(){
+                            $("#messageDiv").hide();
+                        },4000);
                       }
                   },function(xhr){
                      $("#loading_img").hide();
@@ -737,15 +788,34 @@ var page = Component.extend({
                   });
                 } else if(tabView=="country" || tabView=="country-aggregate"){
                   claimCountryInvoices.findOne(UserReq.formRequestDetails(claimLicSearchRequest),function(values){
-                      console.log("data is "+JSON.stringify(values.attr()));
-                      if(self.scope.appstate.attr('excelOutput')){
-                        $("#loading_img").hide();
-                        $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
-                         self.scope.appstate.attr("excelOutput",false);
+                      //console.log("data is "+JSON.stringify(values.attr()));
+                      if(values["status"]!="FAILURE"){
+                        if(self.scope.appstate.attr('excelOutput')){
+                          $("#loading_img").hide();
+                          $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
+                           self.scope.appstate.attr("excelOutput",false);
 
-                      }else{
-                        self.scope.allClaimCountryMap.replace(values);
-                    }
+                        }else{
+                          $("#messageDiv").html("<label class='successMessage'>"+values["responseText"]+"</label>");
+                          $("#messageDiv").show();
+                          setTimeout(function(){
+                              $("#messageDiv").hide();
+                          },4000);
+                          if(parseInt(claimLicSearchRequest["offset"])==0){
+                            self.scope.allClaimCountryMap.replace(values);
+                          } else{
+                            $.merge(self.scope.allClaimCountryMap[0].reviews, values.reviews);
+                            self.scope.allClaimCountryMap.replace(self.scope.allClaimCountryMap);
+                          }
+                        }
+                      } else {
+                        $("#loading_img").hide();
+                        $("#messageDiv").html("<label class='errorMessage'>"+values["responseText"]+"</label>");
+                        $("#messageDiv").show();
+                        setTimeout(function(){
+                            $("#messageDiv").hide();
+                        },4000);
+                      }
 
                   },function(xhr){
                     $("#loading_img").hide();
@@ -892,7 +962,7 @@ var generateTableData = function(invoiceData,footerData){
 /* generateFooterData - This function is used to convert the reponse json in to a format accepted by Grid */
 /* One parameter "footerData" - holds the footer data */
 var generateFooterData = function(footerData){
-    console.log("footerData is "+JSON.stringify(footerData));
+    //console.log("footerData is "+JSON.stringify(footerData));
     var formatFooterData = []; 
     var footTemp ={};
     footTemp["entityId"] = "";
@@ -953,7 +1023,7 @@ function CurrencyFormat(number)
   var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
   return n;
 }
-function alignGrid(divId){
+function alignGrid(divId, is_aggregate){
   var colLength = $('#'+divId+' table>thead>tr>th').length;
   var rowLength = $('#'+divId+' table>tbody>tr').length;
   var divWidth = $('#'+divId).outerWidth();
@@ -972,6 +1042,12 @@ function alignGrid(divId){
           tdWidth = tfootTdWidth;
         else 
           tdWidth = tbodyTdWidth;
+
+        /* When aggregate period is checked, 'period' & 'entity' will be hidden, so its width made 0 */
+        if(is_aggregate==1){
+          if(i==2 || i==3) 
+            tdWidth = 0;
+        }
         
         tableWidth += tdWidth;
         cellWidthArr.push(tdWidth);
@@ -980,7 +1056,11 @@ function alignGrid(divId){
       if(tableWidth < divWidth){
         var moreWidth = (divWidth-tableWidth)/colLength;
         for(var j=1;j<=cellWidthArr.length;j++){
-          var width = cellWidthArr[j-1]+moreWidth;
+          var width = Math.round(cellWidthArr[j-1]+moreWidth);
+          if(is_aggregate==1){
+            if(j==2 || j==3) 
+              width = 0;
+          }
           $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
           $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width);
           $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
