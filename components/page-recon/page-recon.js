@@ -350,8 +350,6 @@ var processRejectIngestRequest = function(scope,requestType){
 
         if(tab == "ingest") {
 
-          scope.ingestList.headerRows.replace(scope.reconStatsDetailsSelected);
-
           if(scope.reconStatsDetailsSelected == undefined ||  (scope.reconStatsDetailsSelected != null && scope.reconStatsDetailsSelected.length <= 0)) {
 
             scope.attr("emptyrows", true);
@@ -360,13 +358,13 @@ var processRejectIngestRequest = function(scope,requestType){
 
             scope.attr("emptyrows", false);
 
-          }
+          } 
+
+          scope.ingestList.headerRows.replace(scope.reconStatsDetailsSelected);
 
         } else {
 
-          scope.incomingDetails.headerRows.replace(scope.incomingStatsDetailsSelected);
-
-          if(scope.reconStatsDetailsSelected == undefined || (scope.incomingStatsDetailsSelected != null && scope.incomingStatsDetailsSelected.length <= 0)) {
+          if(scope.incomingStatsDetailsSelected == undefined || (scope.incomingStatsDetailsSelected != null && scope.incomingStatsDetailsSelected.length <= 0)) {
 
             scope.attr("emptyrows", true);
 
@@ -375,6 +373,8 @@ var processRejectIngestRequest = function(scope,requestType){
             scope.attr("emptyrows", false);
 
           }
+
+          scope.incomingDetails.headerRows.replace(scope.incomingStatsDetailsSelected);
 
         }
 
@@ -475,9 +475,8 @@ var fetchReconIngest = function(scope){
       if(data.status == "FAILURE"){
         displayErrorMessage(data.responseText,"Failed to load the Recon Ingest Tab:");
       }else  {
-        scope.ingestList.headerRows.replace(data.reconStatsDetails);
 
-        if(scope.reconStatsDetails == undefined || (scope.reconStatsDetails != null && scope.reconStatsDetails.length <= 0)) {
+        if(data.reconStatsDetails == undefined || (data.reconStatsDetails != null && data.reconStatsDetails.length <= 0)) {
 
           scope.attr("emptyrows", true);
 
@@ -486,6 +485,8 @@ var fetchReconIngest = function(scope){
           scope.attr("emptyrows", false);
 
         } 
+        
+        scope.ingestList.headerRows.replace(data.reconStatsDetails);
 
         scope.reconStatsDetailsSelected = data.reconStatsDetails
 
@@ -568,18 +569,18 @@ var fetchReconDetails = function(scope){
     if(data.status == "FAILURE"){
       displayErrorMessage(data.responseText,"Failed to load the Recondetails:");
     }else  {
+
+      if(data.reconStatsDetails == undefined || (data.reconStatsDetails != null && data.reconStatsDetails.length <= 0)) {
+
+        scope.attr("emptyrows", true);
+
+      } else {
+
+        scope.attr("emptyrows", false);
+
+      }   
       scope.incomingDetails.headerRows.replace(data.reconStatsDetails);
 
-      if(scope.reconStatsDetails == undefined || (scope.reconStatsDetails != null && scope.reconStatsDetails.length <= 0)) {
-
-          scope.attr("emptyrows", true);
-
-        } else {
-
-          scope.attr("emptyrows", false);
-
-        } 
-      
       scope.incomingStatsDetailsSelected = data.reconStatsDetails;
 
       if (data.summary!== null) {
