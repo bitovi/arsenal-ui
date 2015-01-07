@@ -49,7 +49,7 @@ fileUpload.extend({
  });
 
 createpb.extend({
-	tag: 'create-pb',
+	tag: 'create-pb-editinv',
   	scope: {
            		selectedbundle:"@",
            		paymentBundleId: ""	
@@ -60,8 +60,18 @@ createpb.extend({
 		     		var self = this;
 		     		
 		    		setTimeout(function(){ 
-		     			self.scope.attr("paymentBundleId", self.scope.attr("selectedbundle")); /*Bundle drop down are not getting populated before 1000 ms*/
-		    		}, 2000); 
+		     			self.scope.attr("paymentBundleId", self.scope.attr("selectedbundle")); /*Bundle drop down are not getting populated before 2900 ms*/
+		     			//console.log(self.scope.attr("selectedbundle"));
+		     			var isBundleId = $.isNumeric(self.scope.attr("selectedbundle"));
+
+		     			if(isBundleId){
+		     				$("create-pb-editinv #paymentBundleNames").attr("disabled", true);
+		     			}
+		     			else
+		     			{
+		     				$("create-pb-editinv #paymentBundleNames").attr("disabled", false);
+		     			}
+					}, 2900); 
 
 		     	}
 			}      

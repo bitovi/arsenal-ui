@@ -23,6 +23,12 @@ import formats from 'utils/formats';
 import template from './template.stache!';
 import _less from './bundle-detail.less!';
 
+import tokeninput from 'tokeninput';
+import css_tokeninput from 'tokeninput.css!';
+import css_tokeninput_theme from 'tokeninput_theme.css!';
+import commonUtils from 'utils/commonUtils';
+
+
 var VALIDATION_CHECK_INTERVAL = 3000;
 
 var bundleTypeColumnSets = {
@@ -41,6 +47,9 @@ var bundleTypeColumnSets = {
   'ON_ACCOUNT': columnSets.onAccount,
   'ADHOC_INV': columnSets.adHoc,
 };
+
+var tokenInput = [];
+
 
 var BundleDetailTabs = Component.extend({
   tag: 'rn-bundle-detail',
@@ -63,6 +72,7 @@ var BundleDetailTabs = Component.extend({
     gridColumns: [],
     selectedRows: [],
 
+
     workflowSteps: new WorkflowStep.List([]),
 
     selectedBundleChanged: function(scope) {
@@ -78,6 +88,7 @@ var BundleDetailTabs = Component.extend({
           workflowInstanceId: bundle.approvalId
         });
       }).then(function(steps) {
+        tokenInput = [];
         scope.workflowSteps.replace(steps);
       });
     },
@@ -85,6 +96,15 @@ var BundleDetailTabs = Component.extend({
     gettingDetails: false,
     getNewDetails: function(bundle) {
       var scope = this;
+
+      var filterData = tokenInput;
+      var newFilterData = [];
+      if(filterData.length>0){
+        for(var p=0;p<filterData.length;p++)
+          newFilterData.push(filterData[p]["name"]);
+        }
+      console.log("newFilterData :"+newFilterData);
+
 
       var view;
       if(bundle.bundleType === 'REGULAR_INV') {
@@ -100,7 +120,8 @@ var BundleDetailTabs = Component.extend({
       return bundle.getDetails(
         this.appstate,
         view,
-        this.paymentType
+        this.paymentType,
+        filterData
       ).then(function(bundle) {
         scope.attr('gettingDetails', false);
 
@@ -136,6 +157,19 @@ var BundleDetailTabs = Component.extend({
           return bundle;
         });
       }
+    },
+    refreshTokenInput: function(val, type){
+      var self = this;
+      if(type=="Add")
+        tokenInput.push(val);
+        else if(type=="Delete"){
+          var flag=true;
+          _.each(tokenInput, function(obj) {
+            if(val.id == obj.id){
+              tokenInput.splice(obj.key,1);
+            }
+          });
+        }
     }
   },
   helpers: {
@@ -318,6 +352,30 @@ var BundleDetailTabs = Component.extend({
     },
     'inserted': function() {
       this.scope.selectedBundleChanged(this.scope);
+      var self = this;
+
+      $("#tokenSearch").tokenInput([
+        {id: 1, name: "Search"} //This is needed
+        ],
+        {
+          theme: "facebook",
+          placeholder:"Search...",
+          preventDuplicates: true,
+          onResult: function (item) {
+            if($.isEmptyObject(item)){
+              return [{id:$("#token-input-tokenSearch").val(),name: $("#token-input-tokenSearch").val()}];
+            }else{
+              return item;
+            }
+          },
+          onAdd: function (item) {
+            self.scope.refreshTokenInput(item,"Add");
+          },
+          onDelete: function (item) {
+            self.scope.refreshTokenInput(item,"Delete");
+          }
+        });
+
     },
     '{scope} pageState.selectedBundle': function(scope) {
       this.scope.selectedBundleChanged(this.scope);
@@ -327,6 +385,9 @@ var BundleDetailTabs = Component.extend({
     },
     '{scope} paymentType': function(scope) {
       scope.getNewDetails(scope.pageState.selectedBundle);
+    },
+    '{tokenInput} change':function() {
+      this.scope.getNewDetails(this.scope.pageState.selectedBundle);
     }
   }
 });
