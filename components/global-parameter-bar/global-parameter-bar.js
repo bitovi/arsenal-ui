@@ -181,7 +181,7 @@ var GlobalParameterBar = Component.extend({
 
     },
     '#country select change': function(el, ev) {
-
+      var self=this;
       //var selected = $(el[0].selectedOptions).data('country');
       console.log("Country sel id is "+$(el[0]).val());
       var selected = $(el[0]).val();
@@ -190,12 +190,13 @@ var GlobalParameterBar = Component.extend({
       } else {
         this.scope.changesToApply.removeAttr('country');
       }
-     /* if($("input[name='selAllCountry']").prop("checked"))
-         this.scope.changesToApply.attr('country', ["ALL"]);*/
-
-    
+      setTimeout(function(){
+        if($("input[name='selAllCountry']").prop("checked"))
+          self.scope.changesToApply.attr('country', ["ALL"]);
+      }, 200);
     },
     '#licensor select change': function(el, ev) {
+      var self=this;
       //var selected = $(el[0].selectedOptions).data('licensor');
       var selected = $(el[0]).val();
       if (selected != null)
@@ -203,10 +204,13 @@ var GlobalParameterBar = Component.extend({
       else
         this.scope.changesToApply.removeAttr('licensor');
 
-   //   if($("input[name='selAllLicensor']").prop("checked"))
-     //    this.scope.changesToApply.attr('licensor', ["-1"]);
+      setTimeout(function(){
+        if($("input[name='selAllLicensor']").prop("checked"))
+          self.scope.changesToApply.attr('licensor', ["-1"]);
+      }, 200);
     },
     '#contentType select change': function(el, ev) {
+      var self=this;
       //var selected = $(el[0].selectedOptions).data('contenttype');
       var selected = $(el[0]).val();
       var formatSelected = [];
@@ -219,8 +223,10 @@ var GlobalParameterBar = Component.extend({
       } else
         this.scope.changesToApply.removeAttr('contentType');
 
-  //    if($("input[name='selAllContentType']").prop("checked"))
-    //   this.scope.changesToApply.attr('contentType', ["-1"]);
+      setTimeout(function(){
+        if($("input[name='selAllContentType']").prop("checked"))
+         self.scope.changesToApply.attr('contentType', ["-1"]);
+      }, 200);
     },
     '#globalSearch click': function() {
       var self = this;
@@ -235,22 +241,6 @@ var GlobalParameterBar = Component.extend({
       }
 
       if (message.length == 0) {
-         if($("input[name='selAllCountry']").closest('li').siblings().filter(function(index){return !$(this).hasClass("active")}).length == 0)
-          {
-            this.scope.changesToApply.attr('country', ["ALL"]);
-          }  
-
-        if($("input[name='selAllContentType']").closest('li').siblings().filter(function(index){return !$(this).hasClass("active")}).length == 0)
-          { 
-           this.scope.changesToApply.attr('contentType', ["-1"]);
-          } 
-
-        if($("input[name='selAllLicensor']").closest('li').siblings().filter(function(index){return !$(this).hasClass("active")}).length == 0)
-          { 
-           this.scope.changesToApply.attr('licensor', ["-1"]);
-          } 
-
-
         this.scope.applyChanges(this.scope.changesToApply, this.scope.appstate);
         //this.scope.appstate.attr('globalSearch', !!this.scope.appstate.globalSearch);
         commonUtils.triggerGlobalSearch();
