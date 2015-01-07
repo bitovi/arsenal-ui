@@ -140,6 +140,7 @@ Grid.extend({
   template: gridtemplate,
   scope: {
     appstate:undefined,
+    is_aggregate:2,
     columns: [
       /*{
         id: 'entityId',
@@ -235,6 +236,43 @@ Grid.extend({
         sortable: true
       }
     ]
+  },
+  events:{
+  '.open-toggle click': function(el, ev) {
+     var self = this;
+      var row = el.closest('tr').data('row').row;
+      row.attr('__isOpen', !row.attr('__isOpen'));
+      if(self.scope.is_aggregate == 1){
+          $(".period").hide();
+          $(".entity").hide();
+          
+        } else {
+          $(".period").show();
+          $(".entity").show();
+          
+        }
+
+    },
+    '.open-toggle-all click': function(el, ev) {
+       var self = this;
+      ev.stopPropagation();
+      var allOpen = _.every(this.scope.rows, row => row.__isChild ? true : row.__isOpen);
+      can.batch.start();
+      // open parent rows if they are closed; close them if they are open
+      this.scope.rows.each(row => row.__isChild || row.attr('__isOpen', !allOpen));
+      this.scope.attr('allOpen', !allOpen);
+      can.batch.stop();
+      if(self.scope.is_aggregate == 1){
+          $(".period").hide();
+          $(".entity").hide();
+          
+        } else {
+          $(".period").show();
+          $(".entity").show();
+          
+        }
+    }
+   
   }
 });
 
@@ -251,6 +289,7 @@ var page = Component.extend({
     details:{},
     view:"licensor",
 	  tokenInput: [],
+    is_aggregate:0,
     refreshTokenInput: function(val, type){
       //console.log("val is "+JSON.stringify(val));
       var self = this;
@@ -358,16 +397,20 @@ var page = Component.extend({
           console.log("fdfsdfsdf "+self.scope.attr("allClaimCountryMap").length);
           var invoiceData = self.scope.attr("allClaimCountryMap").length;
           if(invoiceData == 0)
-            $('#claimCountryGrid').html(stache('<rn-claim-country-grid emptyrows="{emptyrows}"></rn-claim-country-grid>')({emptyrows:true}));
+            var is_aggregate = self.scope.attr("is_aggregate");
+            $('#claimCountryGrid').html(stache('<rn-claim-country-grid emptyrows="{emptyrows}" is_aggregate="{is_aggregate}"></rn-claim-country-grid>')({emptyrows:true, is_aggregate}));
       },
       '#chkAggregate change': function(item, el, ev) {
         var self = this;    
         //console.log("here");
         if($("#chkAggregate").is(":checked")){
             self.scope.attr("view","country-aggregate");
+            self.scope.attr("is_aggregate", 1);
 
         } else {
             self.scope.attr('view',"country");
+            self.scope.attr("is_aggregate", 0);
+
         }
         /* The below code calls {scope.appstate} change event that gets the new data for grid*/
         /* All the neccessary parameters will be set in that event */
@@ -495,21 +538,26 @@ var page = Component.extend({
           //console.log("grid data for "+currencyType+" currency is "+JSON.stringify(gridData));
           var rows = new can.List(gridData.data); 
           var footerrows = new can.List(gridData.footer);
+          var is_aggregate = self.scope.attr("is_aggregate");
           
           $("#loading_img").hide();
-          $('#claimCountryGrid').html(stache('<rn-claim-country-grid rows="{rows}" footerrows="{footerrows}" sortcolumnnames="{sortcolumnnames}" sortdir="{sortdir}" emptyrows="{emptyrows}"></rn-claim-country-grid>')({rows, footerrows, sortcolumnnames:sortedColumns, sortdir:sortDir, emptyrows:false}));
+          $('#claimCountryGrid').html(stache('<rn-claim-country-grid rows="{rows}" footerrows="{footerrows}" sortcolumnnames="{sortcolumnnames}" sortdir="{sortdir}" emptyrows="{emptyrows}" is_aggregate="{{is_aggregate}}"></rn-claim-country-grid>')({rows, footerrows, sortcolumnnames:sortedColumns, sortdir:sortDir, emptyrows:false, is_aggregate}));
         } else {
           $("#loading_img").hide();
-          $('#claimCountryGrid').html(stache('<rn-claim-country-grid emptyrows="{emptyrows}"></rn-claim-country-grid>')({emptyrows:true}));
+          $('#claimCountryGrid').html(stache('<rn-claim-country-grid emptyrows="{emptyrows}" is_aggregate="{{is_aggregate}}"></rn-claim-country-grid>')({emptyrows:true, is_aggregate}));
         }
         if(self.scope.attr("view") == "country-aggregate"){
           $(".period").hide();
           $(".entity").hide();
+          
         } else {
           $(".period").show();
           $(".entity").show();
+          
         }
       },
+     
+
       '.exportToExcel click':function(el,ev){
           var self = this;
          // if(this.scope.appstate.attr('excelOutput')==undefined || !this.scope.appstate.attr('excelOutput'))
