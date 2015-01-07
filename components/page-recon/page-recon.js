@@ -19,7 +19,6 @@ import commonUtils from 'utils/commonUtils';
 import FileManager from 'utils/fileManager/';
 
 import exportToExcel from 'components/export-toexcel/';
-import copy from 'components/copy-clipboard/';
 
 //Navigation bar definitions
 var tabNameObj = {
@@ -249,13 +248,6 @@ var page = Component.extend({
       );
       this.scope.currencyList.replace(list);
     },
-    '#copyToClipboard click':function(){  
-        $('#clonetable').empty().html($('#myTabs').next('.tab-content').find('.tab-pane:visible table:visible').clone(true).attr('id','dynamic'));
-         $('copy-clipboard').slideDown(function(){
-           $('body').css('overflow','hidden');
-           $('#copyall').trigger('click');
-        });       
-      },
    '.exportToExcel click':function(el,ev){
        
         var self = this;
@@ -362,7 +354,7 @@ var processRejectIngestRequest = function(scope,requestType){
         } else {
 
           scope.incomingDetails.headerRows.replace(scope.incomingStatsDetailsSelected);
-          
+
         }
 
         scope.attr("size_ingestCcidSelected", 0);
@@ -448,10 +440,12 @@ var fetchReconIngest = function(scope){
 
   searchRequestObj.searchRequest["filter"] = newFilterData;
 
+  var dataLowerGrid = {};
 
   Promise.all([Recon.findOne(searchRequestObj)]).then(function(values){
     if(values != undefined && values != null) {
       var data = values[0];
+      dataLowerGrid = data;
       if(data.status == "FAILURE"){
         displayErrorMessage(data.responseText,"Failed to load the Recon Ingest Tab:");
       }else  {
@@ -508,7 +502,7 @@ var fetchReconIngest = function(scope){
     }
 
     var ccids = scope.ingestCcidSelected;
-    scope.reconRefresh[0].fn_refreshReconStats(ccids,scope.reconRefresh[0].attr("currency"));
+    scope.reconRefresh[0].loadRefreshStats(dataLowerGrid, scope.reconRefresh[0]);
 
   });
 }
