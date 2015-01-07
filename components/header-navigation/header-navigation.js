@@ -33,17 +33,41 @@ var headerNavigation = Component.extend({
           //end
           self.scope.appstate.userInfo.attr(role);
 
-          console.log("role="+ role);
-
           self.scope.roles.replace(values[0]);
           var screenId= [] ;
           for(var i = 0, size = role.permissions.length; i < size ; i++)
             {
-
               screenId.push(role.permissions[i].screenId) ;
-
             }
             self.scope.attr("allowedScreenId",screenId );
+
+            //added to show only the permitted screens
+          //  console.log("Allowed Screen Id=="+screenId);
+            //method starts here
+            for(var i=0; i<menu.length; i++)
+            {
+            //  console.log("menu Name=="+menu[i].id);
+                var removeId = [] ;
+                for(var x=0; x< menu[i].submenu.length; x++)
+                {
+                //  console.log("Screen Name==="+menu[i].submenu[x].value);
+                //  console.log("screenId.indexOf(menu[i].submenu[x].screenId)====="+screenId.indexOf(menu[i].submenu[x].screenId));
+                  if(screenId.indexOf(menu[i].submenu[x].screenId) == -1)
+                  {
+                    removeId.push(x);
+
+                  }
+                }
+                for (var y = removeId.length-1; y >= 0; y--)
+                {
+                //  console.log("removing removeId[y]=" +removeId[y]);
+                  menu[i].submenu.splice(removeId[y],1);
+
+                }
+
+            }
+            //ends here
+
           });
         },
     events:{
@@ -174,71 +198,74 @@ var traverseSubMenu = function(pageLoad){
 };//------traverseSubMenu: end
 
 
-var  menu =[{
+var  menu =[
+  {
     "id": "dashboard",
    "value": "Dashboard",
-  },{
+   "submenu":[]
+  },
+  {
   "id": "approvals",
   "value": "Approvals",
    "submenu": [
-      {"value": "Accrual Journal Voucher", "id": "accrualjournalvoucher"},
-      {"value": "Accrual Details", "id": "accrualdetails"},
-      {"value": "Accruals Aging Report", "id": "accrualsagingreport"},
-      {"value": "Accrual Trueup", "id": "accrualtrueup"},
-       {"value": "Accrual Analysis", "id": "accrualanalysis"}
+ {"value": "Accrual Journal Voucher", "id": "accrualjournalvoucher","screenId":11},
+    {"value": "Accrual Details", "id": "accrualdetails","screenId":12},
+  {"value": "Accruals Aging Report", "id": "accrualsagingreport","screenId":13},
+{"value": "Accrual Trueup", "id": "accrualtrueup","screenId":14},
+    {"value": "Accrual Analysis", "id": "accrualanalysis","screenId":15}
    ]
 },{
   "id": "invoices",
   "value": "Invoices",
    "submenu": [
-      {"value": "Invoice Entry", "id": "create-invoice"},
-      {"value": "iCSV Entry", "id": "icsv"},
-      {"value": "Search Invoice", "id": "invoices"},
-      {"value": "Recon Stats", "id": "recon"},
-      {"value": "Recon Stats Other", "id": "reconOther"},
-      {"value": "On Account", "id": "on-account"}
+ {"value": "Invoice Entry", "id": "create-invoice","screenId":3},
+      {"value": "iCSV Entry", "id": "icsv","screenId":4},
+    {"value": "Search Invoice", "id": "invoices","screenId":5},
+  {"value": "Recon Stats", "id": "recon","screenId":7},
+{"value": "Recon Stats Other", "id": "reconOther","screenId":8},
+      {"value": "On Account", "id": "on-account","screenId":9}
    ]
 },{
   "id": "reference",
   "value": "Reference",
    "submenu": [
   //    {"value": "Licensor", "id": "licensor"},
-      {"value": "Licensor", "id": "licensor"},
-      {"value": "Country", "id": "ref-country"},
-      {"value": "Country Licensor", "id": "ref-licensorcountry"},
-      {"value": "Pricing Model", "id": "pricing-models"}
+    {"value": "Licensor", "id": "licensor","screenId":16},
+      {"value": "Country", "id": "ref-country","screenId":17},
+    {"value": "Country Licensor", "id": "ref-licensorcountry","screenId":18},
+  {"value": "Pricing Model", "id": "pricing-models","screenId":19}
    ]
 },{
   "id": "analytic",
   "value": "Analytics",
    "submenu": [
-      {"value": "Analytics", "id": "analytic"},
-      {"value": "Payment Bundle Review", "id": "payment-bundles"},
-      {"value": "Claim Review", "id": "claimreview"},
-      {"value": "Global Revenue", "id": "globalrevenue"},
+ {"value": "Analytics", "id": "analytic","screenId":20},
+      {"value": "Payment Bundle Review", "id": "payment-bundles","screenId":21},
+    {"value": "Claim Review", "id": "claimreview","screenId":22},
+  {"value": "Global Revenue", "id": "globalrevenue","screenId":23},
       /*{"value": "Monthly Billings Reconciliation", "id": "monthlybillingsreconciliation"},*/
-      {"value": "Unclaimed Summary", "id": "unclaimedsummary"},
+    {"value": "Unclaimed Summary", "id": "unclaimedsummary","screenId":24},
    ]
 },{
   "id": "system",
   "value": "System",
    "submenu": [
-      {"value": "Job Statistics", "id": "jobstatistics"},
-      {"value": "Report Downloads", "id": "reportdownloads"}
+ {"value": "Job Statistics", "id": "jobstatistics","screenId":25},
+      {"value": "Report Downloads", "id": "reportdownloads","screenId":26}
    ]
 },{
   "id": "approvalhistory",
   "value": "Approval History",
    "submenu": [
-      {"value": "Accrual", "id": "accrual"},
-      {"value": "Ref Data", "id": "refdata"},
-      {"value": "Recon/Payment", "id": "reconpayment"},
-      {"value": "Sales Report", "id": "salesreport"},
+    {"value": "Accrual", "id": "accrual","screenId":27},
+    {"value": "Ref Data", "id": "refdata","screenId":28},
+    {"value": "Recon/Payment", "id": "reconpayment","screenId":29},
+    {"value": "Sales Report", "id": "salesreport","screenId":30},
       /*{"value": "Payment Report", "id": "paymentreport"},
       {"value": "Unclaimed Report", "id": "unclaimedreport"},*/
-      {"value": "On Account", "id": "onaccount"},
-      {"value": "Dispute Report", "id": "disputereport"},
-      {"value": "Accrual Rerun", "id": "accrualrerun"},
+    {"value": "On Account", "id": "onaccount","screenId":31},
+    {"value": "Dispute Report", "id": "disputereport","screenId":32},
+    {"value": "Accrual Rerun", "id": "accrualrerun","screenId":33},
    ]
 }];
 export default headerNavigation;
