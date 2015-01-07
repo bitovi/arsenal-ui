@@ -226,6 +226,7 @@ var GlobalParameterBar = Component.extend({
       //      self.scope.appstate.attr('periodTo', $('#periodTo').val());
       //$('.errorOnAccount').html('');
       var message='';
+      self.scope.appstate.attr('globalSearchButtonClicked', true);
       if (self.scope.appstate.attr('page') != 'on-account'){
          message = validateFilters(self.scope.changesToApply, false, true, false, false, false)
          self.scope.attr('errorMessage', message);

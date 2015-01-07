@@ -134,61 +134,8 @@ var page = Component.extend({
 
               var data = values[0];
 
-
-              if( data.ingestionStats != null && data.ingestionStats.length > 0 && data.summaryStats!= null)
-              {
-
-                  var ingestionStats = data.ingestionStats;
-
-                  // Grid data
-                  var grid = {"data" : []};
-
-                  for(var i=0;i<ingestionStats.length;i++) {
-
-                    var ingestionArr = {};
-
-                    ingestionArr["disputeType"] = ingestionStats[i]["disputeType"];
-                    ingestionArr["noOfRecords"] = (formats.numberFormat(ingestionStats[i]["noOfRecords"])).toString().split(".")[0];
-                    ingestionArr["recordsPercentage"] = ingestionStats[i]["recordsPercentage"] == "0" ? "0.00" : ingestionStats[i]["recordsPercentage"];
-                    ingestionArr["noOfAdamIds"] = (formats.numberFormat(ingestionStats[i]["noOfAdamIds"])).toString().split(".")[0];
-                    ingestionArr["totalPubFee"] = formats.currencyFormat(ingestionStats[i]["totalPubFee"] != "" ? ingestionStats[i]["totalPubFee"] : "0");
-                    ingestionArr["pubFeePercentage"] = ingestionStats[i]["pubFeePercentage"] == "0" ? "0.00" : ingestionStats[i]["pubFeePercentage"];
-
-                    grid.data.push(ingestionArr);
-
-                  }
-
-                  var ingestionSummaryStats = {};
-
-                  ingestionSummaryStats.reconRecordsPercentage = data.summaryStats.reconRecordsPercentage;
-                  ingestionSummaryStats.reconAmountPercentage = data.summaryStats.reconAmountPercentage;
-                  ingestionSummaryStats.overRepDispute = data.summaryStats.overRepDispute;
-
-
-                  ingestionSummaryStats.noOfReconRecords = (formats.numberFormat(data.summaryStats.noOfReconRecords).toString()).split(".")[0];
-
-                  ingestionSummaryStats.reconAmount = formats.currencyFormat(data.summaryStats.reconAmount);
-
-                  ingestionSummaryStats.lineItemDispute = formats.currencyFormat(data.summaryStats.lineItemDispute);
-
-                  ingestionSummaryStats.totalPubFee = formats.currencyFormat(data.summaryStats.totalPubFee);
-
-                  ingestionSummaryStats.recommendedPayment = formats.currencyFormat(data.summaryStats.recommendedPayment);
-
-                  ingestionSummaryStats.actualPayment = formats.currencyFormat(data.summaryStats.actualPayment == "" ? 0 : data.summaryStats.actualPayment);
-
-                  var summaryData = [];
-
-                  self.summaryStatsData.push(ingestionSummaryStats);
-
-                  var rows = new can.List(grid.data);
-
-                  $('#ingestionReconStats').html(stache('<rn-grid-ingestionstats rows="{rows}"></rn-grid-ingestionstats>')({rows}));
-
-                  $('#ingestionStatsDiv').show();
-                  $('#summaryStatsDiv').show();
-
-              }
+              loadRefreshStats(data,self);
+              
 
             },function(xhr){
 
@@ -197,7 +144,67 @@ var page = Component.extend({
 
           }
 
-      }
+      },
+
+       loadRefreshStats: function(data, self) {
+
+          if( data.ingestionStats != null && data.ingestionStats.length > 0 && data.summaryStats!= null)
+          {
+
+              var ingestionStats = data.ingestionStats;
+
+              // Grid data
+              var grid = {"data" : []};
+
+              for(var i=0;i<ingestionStats.length;i++) {
+
+                var ingestionArr = {};
+
+                ingestionArr["disputeType"] = ingestionStats[i]["disputeType"];
+                ingestionArr["noOfRecords"] = (formats.numberFormat(ingestionStats[i]["noOfRecords"])).toString().split(".")[0];
+                ingestionArr["recordsPercentage"] = ingestionStats[i]["recordsPercentage"] == "0" ? "0.00" : ingestionStats[i]["recordsPercentage"];
+                ingestionArr["noOfAdamIds"] = (formats.numberFormat(ingestionStats[i]["noOfAdamIds"])).toString().split(".")[0];
+                ingestionArr["totalPubFee"] = formats.currencyFormat(ingestionStats[i]["totalPubFee"] != "" ? ingestionStats[i]["totalPubFee"] : "0");
+                ingestionArr["pubFeePercentage"] = ingestionStats[i]["pubFeePercentage"] == "0" ? "0.00" : ingestionStats[i]["pubFeePercentage"];
+
+                grid.data.push(ingestionArr);
+
+              }
+
+              var ingestionSummaryStats = {};
+
+              ingestionSummaryStats.reconRecordsPercentage = data.summaryStats.reconRecordsPercentage;
+              ingestionSummaryStats.reconAmountPercentage = data.summaryStats.reconAmountPercentage;
+              ingestionSummaryStats.overRepDispute = data.summaryStats.overRepDispute;
+
+
+              ingestionSummaryStats.noOfReconRecords = (formats.numberFormat(data.summaryStats.noOfReconRecords).toString()).split(".")[0];
+
+              ingestionSummaryStats.reconAmount = formats.currencyFormat(data.summaryStats.reconAmount);
+
+              ingestionSummaryStats.lineItemDispute = formats.currencyFormat(data.summaryStats.lineItemDispute);
+
+              ingestionSummaryStats.totalPubFee = formats.currencyFormat(data.summaryStats.totalPubFee);
+
+              ingestionSummaryStats.recommendedPayment = formats.currencyFormat(data.summaryStats.recommendedPayment);
+
+              ingestionSummaryStats.actualPayment = formats.currencyFormat(data.summaryStats.actualPayment == "" ? 0 : data.summaryStats.actualPayment);
+
+              var summaryData = [];
+
+              self.summaryStatsData.push(ingestionSummaryStats);
+
+              var rows = new can.List(grid.data);
+
+              $('#ingestionReconStats').html(stache('<rn-grid-ingestionstats rows="{rows}"></rn-grid-ingestionstats>')({rows}));
+
+              $('.statsTable').show();
+              $('#ingestionStatsDiv').show();
+              $('#summaryStatsDiv').show();
+
+          }
+
+       }
 
   },
 
