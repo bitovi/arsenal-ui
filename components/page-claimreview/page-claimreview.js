@@ -132,6 +132,59 @@ Grid.extend({
         sortable: true
       }
     ]
+  },
+  helpers: {
+    tableClass: function() {
+      return 'scrolling';
+    }
+  },
+  events: {
+    'inserted': function(){
+      var self= this;
+      var tbody = self.element.find('tbody');
+      var parentScopeVar = self.element.closest('page-claimreview').scope();
+      var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
+      $(tbody[0]).scrollTop(tableScrollTopVal);
+        $(tbody).on('scroll', function(ev) {
+          if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight) {
+            //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
+
+            
+            var offsetVal = parentScopeVar.attr('offset');
+            //console.log(offsetVal);
+
+            /* Reset the offset value and call the webservice to fetch next set of records */
+            parentScopeVar.attr('offset', (parseInt(offsetVal)+1));
+            parentScopeVar.attr('tableScrollTop', (tbody[0].scrollHeight-200));
+            parentScopeVar.appstate.attr('globalSearchButtonClicked', false);
+
+            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
+            /* All the neccessary parameters will be set in that event */
+           if(parentScopeVar.appstate.attr('globalSearch')){
+              parentScopeVar.appstate.attr('globalSearch', false);
+            }else{
+              parentScopeVar.appstate.attr('globalSearch', true);
+            }
+          }
+        });
+
+      alignGrid('claimLicencorGrid');
+    },
+    '.open-toggle click': function(el, ev) {
+      var row = el.closest('tr').data('row').row;
+      row.attr('__isOpen', !row.attr('__isOpen'));
+      alignGrid('claimLicencorGrid');
+    },
+    '.open-toggle-all click': function(el, ev) {
+      ev.stopPropagation();
+      var allOpen = _.every(this.scope.rows, row => row.__isChild ? true : row.__isOpen);
+      can.batch.start();
+      // open parent rows if they are closed; close them if they are open
+      this.scope.rows.each(row => row.__isChild || row.attr('__isOpen', !allOpen));
+      this.scope.attr('allOpen', !allOpen);
+      can.batch.stop();
+      alignGrid('claimLicencorGrid');
+    },
   }
 });
 
@@ -286,6 +339,8 @@ var page = Component.extend({
     allClaimCountryMap: [],
     sortColumns:[],
     sortDirection: "asc",
+    tableScrollTop: 0,
+    offset: 0,
     details:{},
     view:"licensor",
 	  tokenInput: [],
@@ -573,7 +628,14 @@ var page = Component.extend({
       },
       '{scope.appstate} change': function() {
           var self=this;
-          console.log("appState set to "+JSON.stringify(this.scope.appstate.attr()));
+          //console.log("appState set to "+JSON.stringify(this.scope.appstate.attr()));
+          /* When fetch button is clicked the first set of records should be brought */
+          /* Reset the offset to 0 only when global search Fetch button is clicked */
+          /* In the case of scroll, globalSearchButtonClicked attr will be false */
+          if(self.scope.appstate.attr('globalSearchButtonClicked')==true){
+            self.scope.attr("offset",0);
+            self.scope.attr("tableScrollTop",0);
+          }
           /* Page is not allowed to do search by default when page is loaded */
           /* This can be checked using 'localGlobalSearch' parameter, it will be undefined when page loaded */
           if(this.scope.attr("localGlobalSearch") != undefined || self.scope.appstate.attr("excelOutput")){
@@ -628,7 +690,7 @@ var page = Component.extend({
                 claimLicSearchRequest["periodType"] = "P";
 
                 claimLicSearchRequest["status"] = "";
-                claimLicSearchRequest["offset"] = "0";
+                claimLicSearchRequest["offset"] = this.scope.offset;
                 claimLicSearchRequest["limit"] = "10";
 
                 if(self.scope.appstate.attr('excelOutput')) claimLicSearchRequest["excelOutput"] = true;
@@ -653,15 +715,21 @@ var page = Component.extend({
                 console.log("Request are "+JSON.stringify(claimLicSearchRequest));
                 if(tabView=="licensor"){
                   claimLicensorInvoices.findOne(UserReq.formRequestDetails(claimLicSearchRequest),function(values){
-                      console.log("data is "+JSON.stringify(values.attr()));
+                      //console.log("data is "+JSON.stringify(values.attr()));
                       if(self.scope.appstate.attr('excelOutput')){
                         $("#loading_img").hide();
                         $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
                          self.scope.appstate.attr("excelOutput",false);
 
                       }else{
-                        self.scope.allClaimLicensorMap.replace(values);
-                    }
+
+                        if(parseInt(claimLicSearchRequest["offset"])==0){
+                          self.scope.allClaimLicensorMap.replace(values);
+                        } else{
+                          $.merge(self.scope.allClaimLicensorMap[0].reviews, values.reviews);
+                          self.scope.allClaimLicensorMap.replace(self.scope.allClaimLicensorMap);
+                        }
+                      }
                   },function(xhr){
                      $("#loading_img").hide();
                      self.scope.appstate.attr("excelOutput",false);
@@ -817,7 +885,7 @@ var generateTableData = function(invoiceData,footerData){
           //console.log("footerData is "+JSON.stringify(footerData));
           var formatFooterData = generateFooterData(footerData);
           gridData.footer = formatFooterData;
-          console.log("gridData is "+JSON.stringify(gridData));
+          //console.log("gridData is "+JSON.stringify(gridData));
           return gridData;
 }
 
@@ -884,5 +952,49 @@ function CurrencyFormat(number)
 {
   var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
   return n;
+}
+function alignGrid(divId){
+  var colLength = $('#'+divId+' table>thead>tr>th').length;
+  var rowLength = $('#'+divId+' table>tbody>tr').length;
+  var divWidth = $('#'+divId).outerWidth();
+  var tableWidth = 0;
+  var tdWidth, cellWidthArr = [];
+  if(rowLength>0){
+    $('#'+divId+' table').css("width",divWidth-300);
+      for(var i=1;i<=colLength;i++){
+        var theadTdWidth = $('#'+divId+' table>thead>tr>th:nth-child('+i+')').outerWidth();
+        var tbodyTdWidth = $('#'+divId+' table>tbody>tr>td:nth-child('+i+')').outerWidth();
+        var tfootTdWidth = $('#'+divId+' table>tfoot>tr>td:nth-child('+i+')').outerWidth();
+
+        if(theadTdWidth >= tbodyTdWidth && theadTdWidth >= tfootTdWidth)
+          tdWidth = theadTdWidth;
+        else if(tfootTdWidth >= tbodyTdWidth && tfootTdWidth >= theadTdWidth)
+          tdWidth = tfootTdWidth;
+        else 
+          tdWidth = tbodyTdWidth;
+        
+        tableWidth += tdWidth;
+        cellWidthArr.push(tdWidth);
+      }
+
+      if(tableWidth < divWidth){
+        var moreWidth = (divWidth-tableWidth)/colLength;
+        for(var j=1;j<=cellWidthArr.length;j++){
+          var width = cellWidthArr[j-1]+moreWidth;
+          $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
+          $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width);
+          $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
+        }
+        $('#'+divId+' table').css("width",divWidth);
+      } else {
+        for(var j=1;j<=cellWidthArr.length;j++){
+          var width = cellWidthArr[j-1];
+          $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
+          $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width);
+          $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
+        }
+        $('#'+divId+' table').css("width",tableWidth);
+      }
+  }
 }
 export default page;
