@@ -42,7 +42,7 @@
                 <rn-recon-grid columns="{ingestGridColumns}" rows="{ingestList.headerRows}" footerrows="{ingestList.footerRows}" emptyrows="{emptyrows}"></rn-recon-grid>
             </div>
             <div class="tab-pane grid-custom-overflow" id="incomingDetails">
-              <rn-recon-grid columns="{detailGridColumns}" rows="{incomingDetails.headerRows}" footerrows="{incomingDetails.footerRows}" ></rn-recon-grid>
+              <rn-recon-grid columns="{detailGridColumns}" rows="{incomingDetails.headerRows}" footerrows="{incomingDetails.footerRows}" emptyrows="{emptyrows}"></rn-recon-grid>
             </div>
         </div>
     </div> <!-- Tabs - End-->
