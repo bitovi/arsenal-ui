@@ -35,7 +35,9 @@ export default [
 {
   id: 'pubfee',
   title: 'PUB Fee',
-  format: formats.currencyFormat,
+  contents: function(row) {
+    return formats.currencyFormat(row.pubfee == undefined || row.pubfee == null || row.pubfee == "" ? 0 :  row.pubfee);
+  },
   sortable: true
 },
 {
@@ -62,7 +64,9 @@ export default [
   id: 'unMatchedAmt',
   title: 'Unmatched',
   className: "amountColumn",
-  format: formats.currencyFormat,
+  contents: function(row) {
+    return formats.currencyFormat(row.unMatchedAmt == undefined || row.unMatchedAmt == null || row.unMatchedAmt == "" ? 0 :  row.unMatchedAmt);
+  },
   sortable: true
 },
 {

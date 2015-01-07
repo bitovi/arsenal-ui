@@ -46,7 +46,7 @@ var stateDefaults = {
   country: undefined,
   region: undefined,
   storeType: undefined,
-  fetchButtonClicked: false,
+  globalSearchButtonClicked: false,
   filled: false,
   renderGlobalSearch:true,
   globalSearch:undefined,

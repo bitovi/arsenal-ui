@@ -20,7 +20,6 @@ import FileManager from 'utils/fileManager/';
 
 import stache from 'can/view/stache/';
 import exportToExcel from 'components/export-toexcel/';
-import copy from 'components/copy-clipboard/';
 
 //Navigation bar definitions
 var tabNameObj = {
@@ -58,6 +57,7 @@ var page = Component.extend({
     currencyScope:[],
     currencyList:[],
     reconRefresh : [],
+    emptyrows : true,
 
     reconStatsDetailsSelected : [],
 
@@ -250,13 +250,6 @@ var page = Component.extend({
       );
       this.scope.currencyList.replace(list);
     },
-    '#copyToClipboard click':function(){  
-        $('#clonetable').empty().html($('#myTabs').next('.tab-content').find('.tab-pane:visible table:visible').clone(true).attr('id','dynamic'));
-         $('copy-clipboard').slideDown(function(){
-           $('body').css('overflow','hidden');
-           $('#copyall').trigger('click');
-        });       
-      },
    '.exportToExcel click':function(el,ev){
        
         var self = this;
@@ -358,25 +351,50 @@ var processRejectIngestRequest = function(scope,requestType){
 
         if(tab == "ingest") {
 
+          if(scope.reconStatsDetailsSelected == undefined ||  (scope.reconStatsDetailsSelected != null && scope.reconStatsDetailsSelected.length <= 0)) {
+
+            scope.attr("emptyrows", true);
+
+          } else {
+
+            scope.attr("emptyrows", false);
+
+          } 
+
           scope.ingestList.headerRows.replace(scope.reconStatsDetailsSelected);
 
         } else {
 
+          if(scope.incomingStatsDetailsSelected == undefined || (scope.incomingStatsDetailsSelected != null && scope.incomingStatsDetailsSelected.length <= 0)) {
+
+            scope.attr("emptyrows", true);
+
+          } else {
+
+            scope.attr("emptyrows", false);
+
+          }
+
           scope.incomingDetails.headerRows.replace(scope.incomingStatsDetailsSelected);
-          
+
         }
 
         scope.attr("size_ingestCcidSelected", 0);
 
         if(values != null && values.length > 0) {
           var data = values[0];
-          if(data.responseCode == "RINS_DI_DELETE_001"){
+          if(data.status == "SUCCESS"){
             $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
             $("#messageDiv").show();
-            scope.reconRefresh[0].summaryStatsData.splice(0,1);
+            
+            if(tab == "ingest") {
+              scope.reconRefresh[0].summaryStatsData.splice(0,1);
+              scope.attr("ingestCcidSelected").splice(0, scope.attr("ingestCcidSelected").length);
+            } else {
+              scope.attr("incomingCcidSelected").splice(0, scope.attr("incomingCcidSelected").length);
+            }
+            
             $('.statsTable').hide();
-
-            scope.attr("ingestCcidSelected").splice(0, scope.attr("ingestCcidSelected").length);
             
             setTimeout(function(){
               $("#messageDiv").hide();
@@ -449,13 +467,26 @@ var fetchReconIngest = function(scope){
 
   searchRequestObj.searchRequest["filter"] = newFilterData;
 
+  var dataLowerGrid = {};
 
   Promise.all([Recon.findOne(searchRequestObj)]).then(function(values){
     if(values != undefined && values != null) {
       var data = values[0];
+      dataLowerGrid = data;
       if(data.status == "FAILURE"){
         displayErrorMessage(data.responseText,"Failed to load the Recon Ingest Tab:");
       }else  {
+
+        if(data.reconStatsDetails == undefined || (data.reconStatsDetails != null && data.reconStatsDetails.length <= 0)) {
+
+          scope.attr("emptyrows", true);
+
+        } else {
+
+          scope.attr("emptyrows", false);
+
+        } 
+        
         scope.ingestList.headerRows.replace(data.reconStatsDetails);
 
         scope.reconStatsDetailsSelected = data.reconStatsDetails
@@ -509,7 +540,7 @@ var fetchReconIngest = function(scope){
     }
 
     var ccids = scope.ingestCcidSelected;
-    scope.reconRefresh[0].fn_refreshReconStats(ccids,scope.reconRefresh[0].attr("currency"));
+    scope.reconRefresh[0].loadRefreshStats(dataLowerGrid, scope.reconRefresh[0]);
 
   });
 }
@@ -539,8 +570,18 @@ var fetchReconDetails = function(scope){
     if(data.status == "FAILURE"){
       displayErrorMessage(data.responseText,"Failed to load the Recondetails:");
     }else  {
+
+      if(data.reconStatsDetails == undefined || (data.reconStatsDetails != null && data.reconStatsDetails.length <= 0)) {
+
+        scope.attr("emptyrows", true);
+
+      } else {
+
+        scope.attr("emptyrows", false);
+
+      }   
       scope.incomingDetails.headerRows.replace(data.reconStatsDetails);
-      
+
       scope.incomingStatsDetailsSelected = data.reconStatsDetails;
 
       if (data.summary!== null) {
