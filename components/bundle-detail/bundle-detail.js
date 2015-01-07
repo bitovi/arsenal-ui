@@ -161,6 +161,8 @@ var BundleDetailTabs = Component.extend({
             }
           });
         }
+
+      this.getNewDetails(this.pageState.selectedBundle);  
     }
   },
   helpers: {
@@ -377,9 +379,6 @@ var BundleDetailTabs = Component.extend({
     },
     '{scope} paymentType': function(scope) {
       scope.getNewDetails(scope.pageState.selectedBundle);
-    },
-    '{tokenInput} change':function() {
-      this.scope.getNewDetails(this.scope.pageState.selectedBundle);
     }
   }
 });
