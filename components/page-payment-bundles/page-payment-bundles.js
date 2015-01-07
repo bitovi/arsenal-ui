@@ -17,6 +17,7 @@ import template from './template.stache!';
 import styles from './page-payment-bundles.less!';
 
 import exportToExcel from 'components/export-toexcel/';
+import copy from 'components/copy-clipboard/';
 
 var pageState = new Map({
   bundles: new PaymentBundle.List([]),
@@ -116,6 +117,11 @@ var page = Component.extend({
     },
     '.clipboard click': function(el, ev) {
       // copy bundle list information to clipboard
+       $('#clonetable').empty().html($('#page').find('table:visible').clone(true).attr('id','dynamic'));
+         $('copy-clipboard').slideDown(function(){
+           $('body').css('overflow','hidden');
+           $('#copyall').trigger('click');
+        }); 
     }
   }
 });

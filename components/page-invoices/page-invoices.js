@@ -34,6 +34,7 @@ import template from './template.stache!';
 import styles from './page-invoices.less!';
 import exportToExcel from 'components/export-toexcel/';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
+import copy from 'components/copy-clipboard/';
 
 /* Extend grid with the columns */
 Grid.extend({
@@ -260,25 +261,14 @@ var page = Component.extend({
           }else{
             self.scope.appstate.attr('globalSearch', true);
           }
-
-         /* var self=this;
-          Invoice.findOne(invoiceExportToExcel(self.scope.appstate),function(data){
-             if(data["status"]=="SUCCESS"){
-                $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
-              }else{
-                $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-                $("#messageDiv").show();
-                setTimeout(function(){
-                    $("#messageDiv").hide();
-                },2000)
-                self.scope.attr('emptyrows',true);
-              }
-            },function(xhr){
-            console.error("Error while loading: bundleNames"+xhr);
-          });*/
-
-
     },
+     '#copyToClipboard click':function(){  console.log($('#myTabs').next('.tab-content').find('.tab-pane:visible table:visible').clone(true));
+        $('#clonetable').empty().html($('#invoiceGrid').find('table:visible').clone(true).attr('id','dynamic'));
+         $('copy-clipboard').slideDown(function(){
+           $('body').css('overflow','hidden');
+           $('#copyall').trigger('click');
+        });       
+      },
     "{tokenInput} change": function(){
           var self= this;
           //console.log(JSON.stringify(self.scope.tokenInput.attr()));
