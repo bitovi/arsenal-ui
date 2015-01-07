@@ -190,7 +190,8 @@ var BundleDetailTabs = Component.extend({
   },
   events: {
     '.remove-invoice click': function(el, ev) {
-      PbrRemoveGroupsModal.displayModal(this.scope.pageState.selectedBundle, this.scope.selectedRows, this.scope.appstate);
+      PbrRemoveGroupsModal.displayModal(this.scope);
+
     },
     '.grid-container table>tbody>tr click':function(item, el, ev){
 

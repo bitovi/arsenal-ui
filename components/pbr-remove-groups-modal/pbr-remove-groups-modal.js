@@ -12,9 +12,7 @@ var PbrRemoveGroupsModal = can.Component.extend({
   tag: 'rn-pbr-remove-groups-modal',
   template: template,
   scope: {
-    bundle: null,
-    groups: [],
-    appstate: null
+    bundlescope: null
   },
   events: {
     init: function() {
@@ -29,9 +27,10 @@ var PbrRemoveGroupsModal = can.Component.extend({
     },
     '.submit click': function(el, ev) {
       var self = this;
-      this.scope.bundle.removeBundleGroups(this.scope.groups, this.scope.appstate).then(function(response) {
+      this.scope.bundlescope.pageState.selectedBundle.removeBundleGroups(this.scope.bundlescope.selectedRows, this.scope.bundlescope.appstate).then(function(response) {
         if(response.status === 'SUCCESS') {
           Alert.displayAlert(response.responseText, 'success');
+          self.scope.bundlescope.getNewDetails(self.scope.bundlescope.pageState.selectedBundle);
         }
       });
       this.element.find('.modal').modal('hide');
@@ -40,11 +39,10 @@ var PbrRemoveGroupsModal = can.Component.extend({
   }
 });
 
-PbrRemoveGroupsModal.displayModal = function(bundle, groups, appstate) {
-  $(document.body).append(stache('<rn-pbr-remove-groups-modal bundle="{bundle}" groups="{groups}" appstate="{appstate}"></rn-pbr-remove-groups-modal>')({
-    bundle,
-    groups,
-    appstate
+PbrRemoveGroupsModal.displayModal = function(requestScope) {
+  //this.scope.pageState.selectedBundle, this.scope.selectedRows, this.scope.appstate,
+  $(document.body).append(stache('<rn-pbr-remove-groups-modal bundlescope="{requestScope}"></rn-pbr-remove-groups-modal>')({
+    requestScope
   }));
 };
 
