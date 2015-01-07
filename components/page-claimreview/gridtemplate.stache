@@ -19,7 +19,7 @@
       {{#footerRows}}
         <tr class="{{rowClass row}} {{#if isOpen}}open{{/if}} {{#if isChild}}child{{/if}} {{#if isVisible}}visible{{/if}}" {{data 'row'}}>
           {{#filteredColumns}}
-          <th class="{{columnClass column}} {{cellClass row column}}" {{data 'column'}}>{{cellContents row column}}</th>
+          <td class="{{columnClass column}} {{cellClass row column}}" {{data 'column'}}>{{cellContents row column}}</td>
           {{/filteredColumns}}
         </tr>
       {{/footerRows}}
