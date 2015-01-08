@@ -43,7 +43,7 @@ fileUpload.extend({
           this.scope.fileList.replace(this.scope.uploadedfileinfo);
       },
       "{deletedFileInfo} change":function(){
-        alert('deleting');
+        //this.scope.deletedFileInfo.replace(this.scope.deletedFileInfo);
       }
     }
  });
@@ -69,7 +69,7 @@ fileUpload.extend({
           this.scope.fileList.replace(this.scope.uploadedfileinfo);
       }, 
       "{deletedFileInfo} change":function(){
-        alert('deleting') ;
+        //this.scope.deletedFileInfo.replace(this.scope.deletedFileInfo);
       }
     }
  });

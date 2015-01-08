@@ -91,8 +91,12 @@
                 '.downLoad-Link click': function(el, ev) {
                     var downLoadFile={};
                     var fileId = el[0].id;
-                    downLoadFile.fileId= fileId;
-                    downLoadFile.boundType='INBOUND';
+                    downLoadFile.files=[];
+                    var file={};
+                    file.fileId= fileId;
+                    file.boundType='INBOUND';
+                    downLoadFile.files.push(file);
+                    console.log(JSON.stringify(downLoadFile));
                     fileManager.downloadFile(downLoadFile,function(data){ 
                         if(data["status"]=="SUCCESS"){
                           
