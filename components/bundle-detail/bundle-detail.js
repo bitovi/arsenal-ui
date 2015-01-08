@@ -118,7 +118,8 @@ var BundleDetailTabs = Component.extend({
       ).then(function(bundle) {
         scope.attr('gettingDetails', false);
 
-        scope.getNewValidations(bundle);
+        bundle.status === 'FAILURE' ? displayMessage("errorMessage",bundle.responseText) : scope.getNewValidations(bundle);;
+
         return bundle;
       });
     },
@@ -340,13 +341,8 @@ var BundleDetailTabs = Component.extend({
         }).then(function(response) {
           if(response.status === 'SUCCESS') {
             //Alert.displayAlert(response.responseText, 'success' );
-            $("#messageDiv").html("<label class='successMessage' style='padding: 0px 15px;'>"+response.responseText+"</label>")
-            $("#messageDiv").show();
 
-            setTimeout(function(){
-              $("#messageDiv").hide();
-            },constants.MESSAGE_DISPLAY_TIME);
-
+            displayMessage("successMessage",response.responseText);
 
             // un-select the selected bundle (we're done here)
             pageState.attr('selectedBundle', null);
@@ -438,5 +434,14 @@ var resetSelectedBundle = function(scope){
 
 }
 
+var displayMessage = function(className,message){
+  $("#messageDiv").html("<label class='"+className+"' style='padding: 0px 15px;'>"+message+"</label>")
+  $("#messageDiv").show();
+
+  setTimeout(function(){
+    $("#messageDiv").hide();
+  },constants.MESSAGE_DISPLAY_TIME);
+
+}
 
 export default BundleDetailTabs;

@@ -110,7 +110,7 @@ var page = Component.extend({
             console.log(err);
         });
        }
-       
+
     },
     '.clipboard click': function(el, ev) {
       // copy bundle list information to clipboard
@@ -118,7 +118,7 @@ var page = Component.extend({
          $('copy-clipboard').slideDown(function(){
            $('body').css('overflow','hidden');
            $('#copyall').trigger('click');
-        }); 
+        });
     }
   }
 });

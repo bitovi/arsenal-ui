@@ -183,7 +183,10 @@ var PaymentBundle = Model.extend({
     }).then(function(bundle) {
       if(bundle.status == "FAILURE" ){
 
-        console.error(bundle.responseText);
+        can.batch.start();
+        self.attr('status',bundle.status);
+        self.attr('responseText',bundle.responseText);
+        can.batch.stop();
 
       }else{
         bundle = bundle.hasOwnProperty('responseCode') ? bundle.paymentBundle : bundle;

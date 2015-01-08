@@ -138,7 +138,7 @@ var columns = {
   'preview': {
     id: 'preview',
     title: 'Preview',
-    contents: row => row.__isChild || row.isFooterRow ? '' : stache('<img src="/resources/images/rn_VisibleSelected@2x.png"/>')(row)
+    contents: row => row.__isChild || row.isFooterRow ? '' : stache('<img src="/resources/images/rn_VisibleSelected.png"/>')(row)
   }
 };
 
