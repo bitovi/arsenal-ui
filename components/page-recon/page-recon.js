@@ -58,6 +58,10 @@ var page = Component.extend({
     currencyList:[],
     reconRefresh : [],
     emptyrows : true,
+    ingestedScrollTop: 0,
+    incomingScrollTop: 0,
+    ingestedOffset: 0,
+    incomingOffset: 0,
 
     reconStatsDetailsSelected : [],
 
@@ -452,8 +456,13 @@ var fetchReconIngest = function(scope){
   var searchRequestObj = UserReq.formGlobalRequest(scope.appstate);
   searchRequestObj.searchRequest["type"] =  scope.tabName.ingest.attr("type");
   //TODO During pagination / scrolling, the below values has tobe chnaged.
+
+  if(scope.appstate.attr('globalSearchButtonClicked')==true){
+      scope.attr("ingestedOffset",0);
+      scope.attr("ingestedScrollTop",0);
+  }
   searchRequestObj.searchRequest["limit"] = "10";
-  searchRequestObj.searchRequest["offset"] = "0";
+  searchRequestObj.searchRequest["offset"] = scope.ingestedOffset;
   searchRequestObj.searchRequest["sortBy"] = "COUNTRY";
   searchRequestObj.searchRequest["sortOrder"] = "ASC";
   searchRequestObj.searchRequest["sortOrder"] = "ASC";
@@ -486,8 +495,12 @@ var fetchReconIngest = function(scope){
           scope.attr("emptyrows", false);
 
         } 
-        
-        scope.ingestList.headerRows.replace(data.reconStatsDetails);
+        if(searchRequestObj.searchRequest["offset"]==0)
+          scope.ingestList.headerRows.replace(data.reconStatsDetails);
+        else {
+          $.merge(scope.ingestList.headerRows, data.reconStatsDetails);
+          scope.ingestList.headerRows.replace(scope.ingestList.headerRows);
+        }
 
         scope.reconStatsDetailsSelected = data.reconStatsDetails
 
@@ -553,8 +566,12 @@ var fetchReconDetails = function(scope){
   var searchRequestObj = UserReq.formGlobalRequest(scope.appstate);
   searchRequestObj.searchRequest["type"] = scope.tabName.incoming.attr("type");;
   //TODO During pagination / scrolling, the below values has tobe chnaged.
+  if(scope.appstate.attr('globalSearchButtonClicked')==true){
+      scope.attr("incomingOffset",0);
+      scope.attr("incomingScrollTop",0);
+  }
   searchRequestObj.searchRequest["limit"] = "10";
-  searchRequestObj.searchRequest["offset"] = "0";
+  searchRequestObj.searchRequest["offset"] = scope.incomingOffset;
   searchRequestObj.searchRequest["sortBy"] = "COUNTRY";
   searchRequestObj.searchRequest["sortOrder"] = "ASC";
 
@@ -581,7 +598,12 @@ var fetchReconDetails = function(scope){
         scope.attr("emptyrows", false);
 
       }   
-      scope.incomingDetails.headerRows.replace(data.reconStatsDetails);
+      if(searchRequestObj.searchRequest["offset"]==0)
+        scope.incomingDetails.headerRows.replace(data.reconStatsDetails);
+      else {
+        $.merge(scope.incomingDetails.headerRows, data.reconStatsDetails);
+        scope.incomingDetails.headerRows.replace(scope.incomingDetails.headerRows);
+      }
 
       scope.incomingStatsDetailsSelected = data.reconStatsDetails;
 
