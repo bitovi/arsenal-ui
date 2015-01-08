@@ -74,6 +74,21 @@ var PaymentBundle = Model.extend({
       processData: false
     });
   },
+  preview: function(invId){
+
+    var requestObj = {
+      searchRequest:{
+        ids:[invId]
+      }
+    }
+
+    return $.ajax({
+      url: URLs.DOMAIN_SERVICE_URL + 'invoice/getPdfContent',
+      type: 'POST',
+      data: requestObj,
+      processData: false
+    })
+  },
   findOne: function(params) {
     var appstate = params.appstate;
     if(params.appstate.excelOutput){

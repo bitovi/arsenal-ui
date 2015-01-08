@@ -194,7 +194,7 @@ var page = Component.extend({
 	createPBRequest: function(){
 	          	var bundleNamesRequest = {"bundleSearch":{}};
 	          	var serTypeId = $("#invoiceType option:selected").attr("name");
-	          	var regId = this.regionStore;
+	          	var regId = this.attr("regionStore");
 
 			  	if(typeof(serTypeId)!="undefined")
 	            	bundleNamesRequest.bundleSearch["type"] = serTypeId;
@@ -748,8 +748,9 @@ var page = Component.extend({
 		        });
 
 
-			var requestObj = self.scope.createPBRequest();
-			self.scope.pbrequestObj.replace(requestObj);
+		//	var requestObj = self.scope.createPBRequest();
+		//	self.scope.pbrequestObj.replace(requestObj);
+			self.scope.createPBRequest();
 
 		},
 		"{scope} licensorStore": function(event){
@@ -823,25 +824,43 @@ var page = Component.extend({
 	          var self = this;
 	          var pbval = $("#invoiceform #paymentBundleNames").val();
 	          self.scope.attr('newpaymentbundlenamereq', "undefined");
-	          if(pbval=="createB"){
 
-	              var regId = self.scope.regionStore;
-				  var newBundleNameRequest = {"paymentBundle":{}};
-	              var bundleRequest = {};
+			if(pbval=="createB"){
 
-	              bundleRequest["regionId"] = regId;
+	          	if(($("#inputMonth0").val() == "") && (self.scope.attr("invoicetypeSelect") != "2"))
+	          		{
+	          			$("#paymentBundleNames").val("");
+	          			
+                    	$("#paymentBundleNames").popover({"content":"Please select invoielines period", "placement":"top"});
+                    	$("#paymentBundleNames").popover('show');
+                    	
+	                     setTimeout(function(){
+	                      	$("#paymentBundleNames").popover('destroy');
 
-	              bundleRequest["periodFrom"] = getBundleDateRange().fromDate;
+	                   },2000);
+		          	}
+		          else
+		          	{	
+	          		  var regId = self.scope.regionStore;
+					  var newBundleNameRequest = {"paymentBundle":{}};
+		              var bundleRequest = {};
 
-	              bundleRequest["periodTo"] = getBundleDateRange().toDate;
+		              bundleRequest["regionId"] = regId;
 
-	              bundleRequest["periodType"] = getBundleDateRange().periodType;
+		              bundleRequest["periodFrom"] = getBundleDateRange().fromDate;
 
-	              bundleRequest["bundleType"] = $("#invoiceType option:selected").attr("name");
+		              bundleRequest["periodTo"] = getBundleDateRange().toDate;
 
-	              newBundleNameRequest["paymentBundle"] = bundleRequest;
-	              //console.log(JSON.stringify(newBundleNameRequest));
-	              self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
+		              bundleRequest["periodType"] = getBundleDateRange().periodType;
+
+		              bundleRequest["bundleType"] = $("#invoiceType option:selected").attr("name");
+
+		              newBundleNameRequest["paymentBundle"] = bundleRequest;
+		              //console.log(JSON.stringify(newBundleNameRequest));
+		              self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
+		          	}	
+
+	              
 	          } 
 	      },
 

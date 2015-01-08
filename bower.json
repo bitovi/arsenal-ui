@@ -35,7 +35,8 @@
     "highcharts.com": "~4.0.4",
     "highcharts-release": "~4.0.4",
     "draggable-legend": "https://rawgithub.com/highslide-software/draggable-legend/master/draggable-legend.js",
-    "jquery-tokeninput": "~1.7.0"
+    "jquery-tokeninput": "~1.7.0",
+    "pdfjs-bower": "1.0.233"
   },
   "resolutions": {
     "jquery": "~2.1.1"
