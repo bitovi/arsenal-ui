@@ -102,7 +102,8 @@ var page = Component.extend({
     loadProposedONAccountPage:[],
     deletedFileInfo:[],
     proposeOnAccOffset: 0,
-    tableScrollTop: 0
+    tableScrollTop: 0,
+    previouslyFetchOnAccRows:[]
   },
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
@@ -217,8 +218,8 @@ var page = Component.extend({
                   message = validateFilters(self.scope.appstate,true,false,false,false,false);
                   self.scope.attr('errorMessage',message); 
                   if(message.length == 0){
-                      self.scope.loadProposedONAccountPage.replace('LOAD'+Date.now())
-                      //self.scope.attr('loadProposedOaccountPage','LOAD'+Date.now());
+                      self.scope.loadProposedONAccountPage.replace(Date.now());
+                      self.scope.appstate.attr("offset",0);
                   }
                 }
           }       
@@ -316,6 +317,7 @@ var page = Component.extend({
               //req.attr('deletableRows',rows);
               //$('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
               self.scope.loadProposedONAccountPage.replace('LOAD'+Date.now());
+              self.scope.appstate.attr("offset",0);
           }
           else{
             // var details = data.onAccount.onAccountDetails;
@@ -377,6 +379,7 @@ var page = Component.extend({
                   //req.attr('editableRows',rows);
                   //$('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
                   self.scope.loadProposedONAccountPage.replace(Date.now());
+                  self.scope.appstate.attr("offset",0);
                   $("#submitPOA").attr("disabled","disabled");
               }
               else{
@@ -448,6 +451,8 @@ var page = Component.extend({
                 //var returnValue = utils.getProposedOnAccRows(quarters,data);
 
                 var returnValue = utils.prepareOnAccountRowsForDisplay(data.onAccount.onAccountDetails,self.scope.quarters);
+                var finalRows = self.scope.previouslyFetchOnAccRows.concat(returnValue['ROWS']);
+
                 var footerRows = utils.createFooterRow(data.onAccount.onAccountFooter);
 
 
@@ -455,7 +460,7 @@ var page = Component.extend({
                 self.scope.attr('bundleNamesForDisplay',returnValue['BUNDLE_NAMES'].toString());
                 //console.log(self.scope.attr('bundleNamesForDisplay'));
                 var proposedRequest = {};
-                proposedRequest.rows=returnValue['ROWS'];
+                proposedRequest.rows=finalRows;
                 proposedRequest.footerRows = footerRows;
                 if(proposedRequest.rows != null && proposedRequest.rows.length>0){
                     proposedRequest.quarters=self.scope.quarters;
@@ -480,6 +485,7 @@ var page = Component.extend({
                      $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj:[]}));
                      self.scope.attr('bundleNamesForDisplay','');
                 }
+                self.scope.previouslyFetchOnAccRows.replace(returnValue['ROWS']);
             } else{
                 displayMessage(data["responseText"],false);
                 $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
