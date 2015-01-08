@@ -59,10 +59,10 @@ var BundleGrid = ScrollingGrid.extend({
         id: 'pendingWith',
         title: 'Pending With'
       },
-      {
-        id: 'status',
-        title: 'Status'
-      },
+      // {rdar://problem/19401266 - Status in PBR is not descriptive
+      //   id: 'status',
+      //   title: 'Status'
+      // },
       {
         id: 'pendingDays',
         title: 'Pending Days',
