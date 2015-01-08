@@ -254,10 +254,9 @@ var GlobalParameterBar = Component.extend({
       //$('.errorOnAccount').html('');
       var message='';
       self.scope.appstate.attr('globalSearchButtonClicked', true);
-      if (self.scope.appstate.attr('page') != 'on-account'){
-         message = validateFilters(self.scope.changesToApply, false, true, false, false, false)
+         message = validateFilters(self.scope.changesToApply, false, true, false, false, false,self.scope.appstate.attr('page'))
          self.scope.attr('errorMessage', message);
-      }
+     
 
       if (message.length == 0) {
         this.scope.applyChanges(this.scope.changesToApply, this.scope.appstate);
@@ -286,6 +285,7 @@ var GlobalParameterBar = Component.extend({
         self.scope.changesToApply.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(el.val()));
         self.scope.changesToApply.attr('periodType', periodWidgetHelper.getPeriodType(el.val()));
       }else{
+        self.scope.changesToApply.attr('periodFrom', '');
           message = 'Invalid Period From';
       }
        self.scope.attr('errorMessage', message);
@@ -311,6 +311,7 @@ var GlobalParameterBar = Component.extend({
           message = 'Please select the similar type for periodFrom and periodTo';
         }
       }else{
+        self.scope.changesToApply.attr('periodFrom', '');
         message = 'Invalid Period To';
       }
       self.scope.attr('errorMessage', message);
@@ -485,7 +486,7 @@ var GlobalParameterBar = Component.extend({
   }
 });
 
-var validateFilters = function(appstate, validateStoreType, validateRegion, validateCountry, validateLicensor, validateContentType) {
+var validateFilters = function(appstate, validateStoreType, validateRegion, validateCountry, validateLicensor, validateContentType,page) {
 
   if (appstate != null && appstate != undefined) {
 
@@ -513,7 +514,7 @@ var validateFilters = function(appstate, validateStoreType, validateRegion, vali
       return 'Invalid Store Type !';
     }
 
-    if (validateRegion && (regId == null || regId == undefined)) {
+    if (page != 'on-account' && validateRegion && (regId == null || regId == undefined)) {
       return 'Please select Region !';
     }
 
