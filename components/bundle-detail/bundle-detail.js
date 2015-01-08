@@ -15,6 +15,7 @@ import PbrDeleteConfirmModal from 'components/pbr-delete-confirm-modal/';
 import PbrRemoveGroupsModal from 'components/pbr-remove-groups-modal/';
 import Alert from 'components/alert/';
 import highchartpage from 'components/highchart/';
+import Preview from 'components/pbr-preview/';
 
 import columnSets from './column-sets';
 import constants from 'utils/constants';
@@ -27,6 +28,8 @@ import tokeninput from 'tokeninput';
 import css_tokeninput from 'tokeninput.css!';
 import css_tokeninput_theme from 'tokeninput_theme.css!';
 import commonUtils from 'utils/commonUtils';
+
+import pdfjs from 'pdfjs';
 
 
 var VALIDATION_CHECK_INTERVAL = 3000;
@@ -162,7 +165,7 @@ var BundleDetailTabs = Component.extend({
           });
         }
 
-      this.getNewDetails(this.pageState.selectedBundle);  
+      this.getNewDetails(this.pageState.selectedBundle);
     }
   },
   helpers: {
@@ -379,6 +382,10 @@ var BundleDetailTabs = Component.extend({
     },
     '{scope} paymentType': function(scope) {
       scope.getNewDetails(scope.pageState.selectedBundle);
+    },
+    '.preview click': function(el, ev) {
+      var row = el.closest('tr').data('row').row;
+      Preview.invoicePreview(row.invoiceId);
     }
   }
 });
