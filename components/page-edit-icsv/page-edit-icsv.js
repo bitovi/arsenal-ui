@@ -686,6 +686,10 @@ var page = Component.extend({
                   				$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
                   			}
                   		  }
+                  		  else{
+	                  			self.scope.attr("calduedate", "");
+	                  			$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
+	                  		}
 		                },function(xhr){
 		                /*Error condition*/
 		           		 });  
@@ -704,6 +708,10 @@ var page = Component.extend({
                   				$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
                   			}
                   		 }
+                  		 else{
+	                  			self.scope.attr("calduedate", "");
+	                  			$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
+	                  		}
 		                },function(xhr){
 		                /*Error condition*/
 		           		 });  
@@ -775,7 +783,18 @@ var page = Component.extend({
 				 		self.scope.attr("invoicedate", (invoiceData.invoiceDate == null)?"":moment(invoiceData.invoiceDate).format("MM/DD/YYYY"));
 				 		self.scope.attr("receiveddate", (invoiceData.receivedDate == null)?"":moment(invoiceData.receivedDate).format("MM/DD/YYYY"));
 				 		self.scope.attr("invoiceduedate", (invoiceData.invoiceDueDate == null)?"":moment(invoiceData.invoiceDueDate).format("MM/DD/YYYY"));
-				 		self.scope.attr("calduedate",moment(invoiceData.invoiceCalcDueDate).format("MM/DD/YYYY"));
+				 		
+						
+
+				 		if(invoiceData.invoiceCalcDueDate != ""){
+				 			self.scope.attr("calduedate",moment(invoiceData.invoiceCalcDueDate).format("MM/DD/YYYY"));
+				 		}
+				 		else
+				 		{
+				 			self.scope.attr("calduedate","");
+				 		}
+
+
 						self.scope.attr("tax", invoiceData.tax);
 						self.scope.attr("invoiceId",invoiceData.invId);
 				 	
