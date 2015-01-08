@@ -44,9 +44,23 @@ var mandatoryField = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiv
 fileUpload.extend({
   tag: 'rn-file-uploader-edit',
   scope: {
-           fileList : new can.List()
-         }
- });
+           fileList : new can.List(),
+           uploadedfileinfo:[]
+         },
+   events:{
+   	"{uploadedfileinfo} change":function(){
+	   		if(this.scope.uploadedfileinfo[0] == "none")
+	   		{
+	   			this.scope.fileList.replace([]);
+	   		}
+	   		else
+	   		{
+	   			this.scope.fileList.replace(this.scope.uploadedfileinfo);
+	   		}	
+   		
+   		}
+   }      
+});
 
 createpb.extend({
 	tag: 'create-pb-editinv',
@@ -133,7 +147,7 @@ var page = Component.extend({
     invoiceId:"",
   	editpage:false,
   	formSuccessCount:1,
-  	uploadedFileInfo:[],
+  	uploadedfileinfo:[],
   	periodType:"",
   	ajaxRequestStatus:{},
   	usdFxrateRatio:"",
@@ -683,6 +697,10 @@ var page = Component.extend({
                   				$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
                   			}
                   		 }
+                  		 else{
+	                  			self.scope.attr("calduedate", "");
+	                  			$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
+	                  		}
 		                },function(xhr){
 		                /*Error condition*/
 		           		 });  
@@ -701,6 +719,10 @@ var page = Component.extend({
                   				$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
                   			}
                   		 }
+                  		 else{
+	                  			self.scope.attr("calduedate", "");
+	                  			$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
+	                  		}
 		                },function(xhr){
 		                /*Error condition*/
 		           		 });  
@@ -842,13 +864,32 @@ var page = Component.extend({
 				 		$("#receiveddate input[type=text]").val(moment(invoiceData.receivedDate).format("MM/DD/YYYY"));
 				 		self.scope.attr("invoiceduedate", moment(invoiceData.invoiceDueDate).format("MM/DD/YYYY"));
 				 		$("#invoiceduedate input[type=text]").val(moment(invoiceData.invoiceDueDate).format("MM/DD/YYYY"));
-				 		self.scope.attr("calduedate",moment(invoiceData.invoiceCalcDueDate).format("MM/DD/YYYY"));
+				 		if(invoiceData.invoiceCalcDueDate != ""){
+				 			self.scope.attr("calduedate",moment(invoiceData.invoiceCalcDueDate).format("MM/DD/YYYY"));
+				 		}
+				 		else
+				 		{
+				 			self.scope.attr("calduedate","");
+				 		}	
+				 		
+						
 						self.scope.attr("tax", invoiceData.tax);
 						self.scope.attr("invoiceId",invoiceData.invId);
 				 	
 						var tempcommentObj = invoiceData.comments;
 						$('#multipleCommentsInv').html(stache('<multiple-comments divid="usercommentsdivinv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
 		                self.scope.changeTextOnInvType();
+
+		                if(invoiceData.invoiceDocuments.length > 0){
+		                	self.scope.uploadedfileinfo.replace(invoiceData.invoiceDocuments);
+		                }
+		                else
+		                {
+		                	self.scope.uploadedfileinfo.replace(["none"]);
+		                }
+		                
+
+		               
 
 		                
 
@@ -978,7 +1019,7 @@ var page = Component.extend({
 
 		'rn-file-uploader-edit onSelected': function (ele, event, val) {
             var self = this;
-            self.scope.attr('uploadedFileInfo',val.filePropeties);
+            self.scope.attr('uploadedfileinfo',val.filePropeties);
          },
 
 		"#invoiceform #paymentBundleNames change": function(){
@@ -1068,7 +1109,9 @@ var page = Component.extend({
 
 				    tempEditInvoiceData["receivedDate"] = dateFormatter($("#receiveddate input[type=text]").val(),"mm/dd/yyyy");
 				    tempEditInvoiceData["invoiceDate"] = dateFormatter($("#invoicedate input[type=text]").val(),"mm/dd/yyyy");
-				    tempEditInvoiceData["invoiceCalcDueDate"] = dateFormatter(self.scope.calduedate, "mm/dd/yyyy");
+				    if(self.scope.calduedate){
+				    	tempEditInvoiceData["invoiceCalcDueDate"] = dateFormatter(self.scope.calduedate, "mm/dd/yyyy");
+				    }
 				    tempEditInvoiceData["invoiceDueDate"] = dateFormatter($("#invoiceduedate input[type=text]").val(),"mm/dd/yyyy"); 
 
 
@@ -1115,10 +1158,10 @@ var page = Component.extend({
 
 					 	/* adding new document */
 
-						for(var i =0; i < self.scope.uploadedFileInfo.length; i++){
+						for(var i =0; i < self.scope.uploadedfileinfo.length; i++){
       						var tempDocument = {};
-				   			tempDocument.fileName = self.scope.uploadedFileInfo[i].attr("fileName");
-				   			tempDocument.location = self.scope.uploadedFileInfo[i].attr("filePath");
+				   			tempDocument.fileName = self.scope.uploadedfileinfo[i].attr("fileName");
+				   			tempDocument.location = self.scope.uploadedfileinfo[i].attr("filePath");
 				   			tempDocument.status = "add";
 				   			tempEditInvoiceData["invoiceDocuments"].push(tempDocument);
 				   			console.log(tempDocument);

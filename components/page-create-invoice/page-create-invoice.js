@@ -668,6 +668,10 @@ var page = Component.extend({
 	                  				$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
 	                  			}
 	                  		}
+	                  		else{
+	                  			self.scope.attr("calduedate", "");
+	                  			$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
+	                  		}
 		                },function(xhr){
 		                /*Error condition*/
 		           		 });
@@ -686,6 +690,10 @@ var page = Component.extend({
 	                  				$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
 	                  			}
 	                  		 }
+	                  		 else{
+	                  			self.scope.attr("calduedate", "");
+	                  			$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
+	                  		}
 		                },function(xhr){
 		                /*Error condition*/
 		           		 });
