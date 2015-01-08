@@ -488,16 +488,28 @@ var page = Component.extend({
 			            	},
 						'inputMonth[]': {
 			                validators: {
-			                    callback: {
-			                            message: 'Period is mandatory',
-			                            callback: function (value, validator, $field) {
-			                              if((value == "") && (self.scope.attr("invoicetypeSelect") != "2")){
-			                              	   return false;
-			                              }
-			                              return true;
-			                            }
-	                    		}
-			                }
+				                    callback: {
+				                            //message: 'Period is mandatory',
+				                            callback: function (value, validator, $field) {
+				                            	if((value == "") && (self.scope.attr("invoicetypeSelect") != "2")){
+				                              	   	return {
+				                              	   		valid: false,
+				                              	   		message: 'Period is mandatory'
+				                              	   	}
+				                              	}else if(value != undefined && value.length > 0){
+													  var rxDatePattern = /^[P-Q]{1}\d{1,2}[FY]{2}\d{2}$/;
+													  var dtArray = value.match(rxDatePattern); // is format OK?
+													  var result = (dtArray == null) ? false : true;
+													  return{
+													  	valid:result,
+													  	message: 'Invalid period'
+													  }
+				                              	}
+				                             	
+												return true;
+				                            }
+		                    		}
+				                }
 		            	},
 		            	'inputCountry[]': {
 								validators: {
@@ -674,6 +686,10 @@ var page = Component.extend({
                   				$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
                   			}
                   		  }
+                  		  else{
+	                  			self.scope.attr("calduedate", "");
+	                  			$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
+	                  		}
 		                },function(xhr){
 		                /*Error condition*/
 		           		 });  
@@ -692,6 +708,10 @@ var page = Component.extend({
                   				$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
                   			}
                   		 }
+                  		 else{
+	                  			self.scope.attr("calduedate", "");
+	                  			$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
+	                  		}
 		                },function(xhr){
 		                /*Error condition*/
 		           		 });  
@@ -763,7 +783,18 @@ var page = Component.extend({
 				 		self.scope.attr("invoicedate", (invoiceData.invoiceDate == null)?"":moment(invoiceData.invoiceDate).format("MM/DD/YYYY"));
 				 		self.scope.attr("receiveddate", (invoiceData.receivedDate == null)?"":moment(invoiceData.receivedDate).format("MM/DD/YYYY"));
 				 		self.scope.attr("invoiceduedate", (invoiceData.invoiceDueDate == null)?"":moment(invoiceData.invoiceDueDate).format("MM/DD/YYYY"));
-				 		self.scope.attr("calduedate",moment(invoiceData.invoiceCalcDueDate).format("MM/DD/YYYY"));
+				 		
+						
+
+				 		if(invoiceData.invoiceCalcDueDate != ""){
+				 			self.scope.attr("calduedate",moment(invoiceData.invoiceCalcDueDate).format("MM/DD/YYYY"));
+				 		}
+				 		else
+				 		{
+				 			self.scope.attr("calduedate","");
+				 		}
+
+
 						self.scope.attr("tax", invoiceData.tax);
 						self.scope.attr("invoiceId",invoiceData.invId);
 				 	

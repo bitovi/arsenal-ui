@@ -58,6 +58,10 @@ var page = Component.extend({
     currencyList:[],
     reconRefresh : [],
     emptyrows : true,
+    ingestedScrollTop: 0,
+    incomingScrollTop: 0,
+    ingestedOffset: 0,
+    incomingOffset: 0,
 
     reconStatsDetailsSelected : [],
 
@@ -103,6 +107,7 @@ var page = Component.extend({
   },
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
+    this.scope.attr("emptyrows", false);
     // this.scope.attr("isGlobalSearchIngested",this.scope.appstate.attr("globalSearch"));
     // console.log(" ")
     // fetchReconIngest(this.scope);
@@ -345,7 +350,7 @@ var processRejectIngestRequest = function(scope,requestType){
 
       Promise.all([Recon.reject(rejectSearchRequestObj)]).then(function(values) {
 
-        //scope.reconStatsDetailsSelected = data.reconStatsDetails;
+        scope.reconStatsDetailsSelected = data.reconStatsDetails;
 
         findCCids(scope, ccidSelected, tab);
 
@@ -365,7 +370,7 @@ var processRejectIngestRequest = function(scope,requestType){
 
         } else {
 
-          if(scope.incomingStatsDetailsSelected == undefined || (scope.incomingStatsDetailsSelected != null && scope.incomingStatsDetailsSelected.length <= 0)) {
+          if(scope.reconStatsDetailsSelected == undefined || (scope.reconStatsDetailsSelected != null && scope.reconStatsDetailsSelected.length <= 0)) {
 
             scope.attr("emptyrows", true);
 
@@ -375,7 +380,7 @@ var processRejectIngestRequest = function(scope,requestType){
 
           }
 
-          scope.incomingDetails.headerRows.replace(scope.incomingStatsDetailsSelected);
+          scope.incomingDetails.headerRows.replace(scope.reconStatsDetailsSelected);
 
         }
 
@@ -452,8 +457,13 @@ var fetchReconIngest = function(scope){
   var searchRequestObj = UserReq.formGlobalRequest(scope.appstate);
   searchRequestObj.searchRequest["type"] =  scope.tabName.ingest.attr("type");
   //TODO During pagination / scrolling, the below values has tobe chnaged.
+
+  if(scope.appstate.attr('globalSearchButtonClicked')==true){
+      scope.attr("ingestedOffset",0);
+      scope.attr("ingestedScrollTop",0);
+  }
   searchRequestObj.searchRequest["limit"] = "10";
-  searchRequestObj.searchRequest["offset"] = "0";
+  searchRequestObj.searchRequest["offset"] = scope.ingestedOffset;
   searchRequestObj.searchRequest["sortBy"] = "COUNTRY";
   searchRequestObj.searchRequest["sortOrder"] = "ASC";
   searchRequestObj.searchRequest["sortOrder"] = "ASC";
@@ -486,32 +496,38 @@ var fetchReconIngest = function(scope){
           scope.attr("emptyrows", false);
 
         } 
-        
-        scope.ingestList.headerRows.replace(data.reconStatsDetails);
+        if(searchRequestObj.searchRequest["offset"]==0)
+          scope.ingestList.headerRows.replace(data.reconStatsDetails);
+        else {
+          $.merge(scope.ingestList.headerRows, data.reconStatsDetails);
+          scope.ingestList.headerRows.replace(scope.ingestList.headerRows);
+        }
 
         scope.reconStatsDetailsSelected = data.reconStatsDetails
 
         scope.currencyScope.replace(data.currency);
 
         if(scope.reconRefresh[0] != undefined) {
-          scope.reconRefresh[0].attr("currency", data.currency[0]);
+          scope.reconRefresh[0].attr("currency", data.currency != null && data.currency.length > 0 ? data.currency[0] : "");
+          $("#currency").val(scope.reconRefresh[0].attr("currency"));
         }
 
-        $("#currency").val(data.currency[0]);
+        
 
         if(data.summary == undefined){
           console.error("Footer rows doesn't exists in the response");
         }
 
+      if (data.summary!== null) {
         var footerLine= {
           "__isChild": true,
           "ccy":"EUR",
-          "pubfee":data.summary.totalPubFee,
-          "reconAmt":data.summary.totalRecon,
-          "liDispAmt":data.summary.totalLi,
-          "copConAmt":data.summary.totalCopCon,
-          "unMatchedAmt":data.summary.totalUnMatched,
-          "badLines":data.summary.totalBadLines,
+          "pubfee": data.summary.totalPubFee,
+          "reconAmt": data.summary.totalRecon,
+          "liDispAmt": data.summary.totalLi,
+          "copConAmt": data.summary.totalCopCon,
+          "unMatchedAmt": data.summary.totalUnMatched,
+          "badLines": data.summary.totalBadLines,
           "ccidId":"",
           "entityName":"",
           "countryId":"",
@@ -522,6 +538,7 @@ var fetchReconIngest = function(scope){
           "status":"",
           "isFooterRow":true
         };
+      }
 
         scope.ingestList.footerRows.replace(footerLine);
       }
@@ -552,8 +569,13 @@ var fetchReconDetails = function(scope){
   var searchRequestObj = UserReq.formGlobalRequest(scope.appstate);
   searchRequestObj.searchRequest["type"] = scope.tabName.incoming.attr("type");;
   //TODO During pagination / scrolling, the below values has tobe chnaged.
+
+  if(scope.appstate.attr('globalSearchButtonClicked')==true){
+      scope.attr("incomingOffset",0);
+      scope.attr("incomingScrollTop",0);
+  }
   searchRequestObj.searchRequest["limit"] = "10";
-  searchRequestObj.searchRequest["offset"] = "0";
+  searchRequestObj.searchRequest["offset"] = scope.incomingOffset;
   searchRequestObj.searchRequest["sortBy"] = "COUNTRY";
   searchRequestObj.searchRequest["sortOrder"] = "ASC";
 
@@ -580,7 +602,12 @@ var fetchReconDetails = function(scope){
         scope.attr("emptyrows", false);
 
       }   
-      scope.incomingDetails.headerRows.replace(data.reconStatsDetails);
+      if(searchRequestObj.searchRequest["offset"]==0)
+        scope.incomingDetails.headerRows.replace(data.reconStatsDetails);
+      else {
+        $.merge(scope.incomingDetails.headerRows, data.reconStatsDetails);
+        scope.incomingDetails.headerRows.replace(scope.incomingDetails.headerRows);
+      }
 
       scope.incomingStatsDetailsSelected = data.reconStatsDetails;
 
@@ -588,12 +615,12 @@ var fetchReconDetails = function(scope){
         var footerLine= {
           "__isChild": true,
           "ccy":"EUR",
-          "pubfee":(data.summary.totalPubFee != undefined)? data.summary.totalPubFee:"",
-          "reconAmt":data.summary.totalRecon,
-          "liDispAmt":data.summary.totalLi,
+          "pubfee": data.summary.totalPubFee,
+          "reconAmt": data.summary.totalRecon,
+          "liDispAmt": data.summary.totalLi ,
           "copConAmt":data.summary.totalCopCon,
-          "unMatchedAmt":data.summary.totalUnMatched,
-          "badLines":data.summary.totalBadLines,
+          "unMatchedAmt": data.summary.totalUnMatched,
+          "badLines": data.summary.totalBadLines,
           "ccidId":"",
           "entityName":"",
           "countryId":"",
@@ -638,7 +665,7 @@ var refreshChekboxSelection = function(el,scope){
     scope.attr("size_incomingCcidSelected" ,_.size(scope.attr("incomingCcidSelected")));
 
   }
-}
+};
 
 var findCCids =  function(scope, ccidSelected, tab) {
 
@@ -646,16 +673,7 @@ var findCCids =  function(scope, ccidSelected, tab) {
 
   var detailsList = [];
 
-  if(tab == "ingest") {
-
-    detailsList = scope.reconStatsDetailsSelected;
-
-  } else {
-
-    detailsList = scope.incomingStatsDetailsSelected;
-
-  }
-
+  detailsList = scope.incomingStatsDetailsSelected;
 
   for( var i=0; i< detailsList.length ; i++) {
 
@@ -664,11 +682,8 @@ var findCCids =  function(scope, ccidSelected, tab) {
 
       detailsList.splice(i,1);
       found = true;
-      if(tab == "ingest") {
-        scope.reconStatsDetailsSelected.replace(detailsList);
-      } else {
-        scope.incomingStatsDetailsSelected.replace(detailsList);
-      }
+
+      scope.incomingStatsDetailsSelected.replace(detailsList);
       break;
 
     }

@@ -3,6 +3,7 @@
   import FileUpLoader from 'models/fileuploader/';
   import compute from 'can/compute/';
   import _less from './file-uploader.less!';
+  import fileManager from 'utils/fileManager/'
 
   var FileUploader = Component.extend ({
 
@@ -14,8 +15,8 @@
                   fileUpload:false,
                   uploadedfileinfo:[],
                   isAnyFileLoaded : can.compute(function() { return this.fileList.attr('length') > 0; }),
-                  isSuccess: false
-
+                  isSuccess: false,
+                  deletedFileInfo:[]
               },
         helpers: {
                 convertToKB: function (size) {
@@ -63,20 +64,53 @@
                      var uploadedfileinfoSize = this.scope.uploadedfileinfo.length;
                     this.scope.uploadedfileinfo.splice(0,uploadedfileinfoSize);
                 },
-                '.filelist li click': function(el, ev) {
-                   var liText = el.text();
+                '.action-link click': function(el, ev) {
+                   var self = this;
+                   var liText = el.closest('li').find('a:eq(0)').html();
+                   var fileId= el.closest('li').find('a:eq(0)').attr('id');
                     var index = liText.indexOf("(");
                     var name = '';
                     var selectedIndex = '';
+                    var deleteFile;
                     if(index != -1) {
                       name = liText.substring(0,index);
                       this.scope.attr("fileList").forEach(function(file, index) {
-                          if(file.name == name.trim()) {
+                        if(fileId != undefined && fileId.length >0 && (fileId == (file.fileId+''))){
                             selectedIndex = index;
-                          }
+                            deleteFile = file;
+                        }else if(file.name == name.trim()){
+                              selectedIndex = index;
+                              deleteFile = file;
+                        }
                       });
                     }
-                      this.scope.attr("fileList").splice(selectedIndex,1);
+                        self.scope.deletedFileInfo.push(deleteFile);
+                        this.scope.attr("fileList").splice(selectedIndex,1);
+                      
+                },
+                '.downLoad-Link click': function(el, ev) {
+                    var downLoadFile={};
+                    var fileId = el[0].id;
+                    downLoadFile.files=[];
+                    var file={};
+                    file.fileId= fileId;
+                    file.boundType='INBOUND';
+                    downLoadFile.files.push(file);
+                    console.log(JSON.stringify(downLoadFile));
+                    fileManager.downloadFile(downLoadFile,function(data){ 
+                        if(data["status"]=="SUCCESS"){
+                          
+                        }else{
+                          $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                          $("#messageDiv").show();
+                          setTimeout(function(){
+                              $("#messageDiv").hide();
+                          },2000)
+                        }
+                  }, function(xhr) {
+                        console.error("Error while downloading the file with fileId: "+fileId+xhr);
+                  }); 
+
                 },
                 '{fileList} change': function(){
                   

@@ -2,13 +2,25 @@
 
 rn-recon-grid {
   .grid-mixin();
-  th, td {
-    white-space: nowrap;
-  }
-  th.checbox, td.checkbox {
-    width: 30px;
-  }
+  table {
+    /* You have to specify widths */
+    width: 100%;
+    tr>th, tr > td {
+      width:2%;
+    }
 
+    thead, tbody, tfoot {
+      display: block;
+    }
+    tbody {
+      max-height: 11em;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    th, td {
+      white-space: nowrap;
+    }
+  }
   .amountColumn {
     text-align: right;
   }

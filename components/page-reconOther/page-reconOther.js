@@ -3,6 +3,7 @@ import Component from 'can/component/';
 import template from './template.stache!';
 import styles from './page-reconOther.less!';
 import UserReq from 'utils/request/';
+import detailsColumns from './column-sets/details-columns';
 
 import reconGrid from  'components/recon-grid/';
 import incomingOtherColumns from './column-sets/incomingOther-columns';
@@ -19,6 +20,18 @@ import stache from 'can/view/stache/';
 import exportToExcel from 'components/export-toexcel/';
 import copy from 'components/copy-clipboard/';
 
+//Navigation bar definitions
+var tabNameObj = {
+    incoming:{
+      name:"IncomingDetails",
+      type: "INCOMING"
+    },
+    other:{
+      name:"Other",
+      type: "Other"
+    }
+}
+
 var page = Component.extend({
   tag: 'page-reconOther',
   template: template,
@@ -28,6 +41,22 @@ var page = Component.extend({
     incomingOtherList: new can.List(),
     isGlobalSearch:undefined,
     tokenInput: [],
+
+    incomingDetails: {
+      headerRows: new can.List(),
+      footerRows: new can.List()
+    },
+    detailGridColumns: detailsColumns,
+    tabName:tabNameObj,
+    incomingStatsDetailsSelected : [],
+    incomingCcidSelected : [],
+    tabSelected :tabNameObj.incoming.name,
+    size_incomingCcidSelected : 0,
+
+
+    scrollTop: 0,
+    offset: 0,
+
     refreshTokenInput: function(val, type){
       var self = this;
       if(type=="Add")
@@ -44,11 +73,28 @@ var page = Component.extend({
   },
   helpers: {
     //none
+    isTabSelectedAs:function(tabName){
+      return 'style="display:' + ( this.attr("tabSelected") == tabName  ? 'block' : 'none') + '"';
+    },
+    isIncomingCcidsSelected:function(ref){
+      //if the size of the list is greater than 0, enables the Reject button
+      return ( this.attr("size_incomingCcidSelected") == ref ? 'disabled' : '' ) ;
+    }
   },
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
   },
   events:{
+
+    'shown.bs.tab': function(el, ev) {
+      this.scope.attr("tabSelected", $('.nav-tabs .active').text());
+      this.scope.appstate.attr("renderGlobalSearch",true);
+      //Load when the list is empty
+      if(_.size(this.scope.ingestList.headerRows) == 0 || _.size(this.scope.incomingDetails.headerRows) == 0 ){
+        commonUtils.triggerGlobalSearch();
+      }
+    },
+
     "inserted": function(){
         var self = this;
 
@@ -130,9 +176,35 @@ var page = Component.extend({
     '{scope.appstate} change': function() {
       if(this.scope.isGlobalSearch != this.scope.appstate.attr('globalSearch')){
         this.scope.attr("isGlobalSearch",this.scope.appstate.attr("globalSearch"));
-        fetchReconIncoming(this.scope);
+        if(this.scope.tabSelected == this.scope.tabName.other.attr("name")){
+          fetchReconIncoming(this.scope);
+        }else{
+          fetchReconDetailsOther(this.scope);
+        }
+        
       }
+    },
+    '.btn-incoming-reject click': function() {
+
+      $('#rejectModal').modal({
+        "backdrop" : "static"
+      });
+
+    },
+
+    '.btn-Ingest click': function() {
+      processRejectIngestRequestOther(this.scope,"ingest");
+    },
+
+    '.btn-confirm-ok click': function(){
+      $('#rejectModal').modal('hide');
+      processRejectIngestRequestOther(this.scope,"reject");
+    },
+
+    '.toggle :checkbox change': function(el, ev) {
+      refreshChekboxSelection(el,this.scope);
     }
+
   }
 });
 
@@ -174,6 +246,213 @@ var fetchReconIncoming = function(scope){
       console.error("Error while loading: fetchReconIncoming"+xhr);
 
     });
+
+};
+
+var fetchReconDetailsOther = function(scope){
+
+  var searchRequestObj = UserReq.formGlobalRequest(scope.appstate);
+  searchRequestObj.searchRequest["type"] = scope.tabName.incoming.attr("type");;
+  //TODO During pagination / scrolling, the below values has tobe chnaged.
+  searchRequestObj.searchRequest["limit"] = "10";
+  searchRequestObj.searchRequest["offset"] = "0";
+  searchRequestObj.searchRequest["sortBy"] = "COUNTRY";
+  searchRequestObj.searchRequest["sortOrder"] = "ASC";
+
+  var filterData = scope.tokenInput.attr();
+  var newFilterData = [];
+  if(filterData.length>0){
+    for(var p=0;p<filterData.length;p++)
+      newFilterData.push(filterData[p]["name"]);
+    }
+
+  searchRequestObj.searchRequest["filter"] = newFilterData;
+
+  Recon.findOne((searchRequestObj),function(data){
+    if(data.status == "FAILURE"){
+      displayErrorMessage(data.responseText,"Failed to load the Recondetails:");
+    }else  {
+
+      if(data.reconStatsDetails == undefined || (data.reconStatsDetails != null && data.reconStatsDetails.length <= 0)) {
+
+        scope.attr("emptyrows", true);
+
+      } else {
+
+        scope.attr("emptyrows", false);
+
+      }   
+      scope.incomingDetails.headerRows.replace(data.reconStatsDetails);
+
+      scope.incomingStatsDetailsSelected = data.reconStatsDetails;
+
+      scope.incomingDetails.footerRows.splice(0, scope.incomingDetails.footerRows.length);
+
+      if (data.summary!== null) {
+        var footerLine= {
+          "__isChild": true,
+          "ccy":"EUR",
+          "pubfee": data.summary.totalPubFee,
+          "reconAmt": data.summary.totalRecon,
+          "liDispAmt": data.summary.totalLi ,
+          "copConAmt":data.summary.totalCopCon,
+          "unMatchedAmt": data.summary.totalUnMatched,
+          "badLines": data.summary.totalBadLines,
+          "ccidId":"",
+          "entityName":"",
+          "countryId":"",
+          "contType":"",
+          "fiscalPeriod":"",
+          "rcvdDate":"",
+          "invFileName":"",
+          "status":"",
+          "isFooterRow":true
+        };
+        scope.incomingDetails.footerRows.replace(footerLine);  
+      }
+      
+    }
+  },function(xhr){
+    console.error("Error while loading: fetchReconDetailsOther"+xhr);
+  });
+};
+
+var processRejectIngestRequestOther = function(scope,requestType){
+    var ccidList ;
+    var type ;
+    var ccidSelected = [];
+    var tab = "";
+
+    ccidList = scope.attr("incomingCcidSelected");
+    type =  scope.tabName.incoming.attr("type");
+    tab = "incoming";
+
+
+    can.each(ccidList,
+      function( value, index ) {
+        ccidSelected.push(value);
+      }
+    );
+
+    if(requestType == "reject"){
+
+        var rejectSearchRequestObj =   {
+          "searchRequest": {
+          "type" : type,
+          "ids" : ccidSelected
+          }
+        }
+        //console.log(JSON.stringify((rejectSearchRequestObj)));
+
+      Promise.all([Recon.reject(rejectSearchRequestObj)]).then(function(values) {
+
+        //scope.reconStatsDetailsSelected = data.reconStatsDetails;
+
+        findCCids(scope, ccidSelected, tab);
+
+        if(scope.incomingStatsDetailsSelected == undefined || (scope.incomingStatsDetailsSelected != null && scope.incomingStatsDetailsSelected.length <= 0)) {
+
+          scope.attr("emptyrows", true);
+
+        } else {
+
+          scope.attr("emptyrows", false);
+
+        }
+
+        scope.incomingDetails.headerRows.replace(scope.incomingStatsDetailsSelected);
+
+
+        scope.attr("size_ingestCcidSelected", 0);
+
+        if(values != null && values.length > 0) {
+          var data = values[0];
+          if(data.status == "SUCCESS"){
+            $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
+            $("#messageDiv").show();
+            
+            scope.attr("incomingCcidSelected").splice(0, scope.attr("incomingCcidSelected").length);
+         
+            $('.statsTable').hide();
+            
+            setTimeout(function(){
+              $("#messageDiv").hide();
+            },3000);
+          }
+        } else{
+
+            //error text has to be shared. TODO - not sure how service responds to it
+            displayErrorMessage(data.responseText,"Failed to Ingest:");
+
+          }
+        });
+
+    }else if(requestType == "ingest"){
+
+
+      var rejectSearchRequestObj =   {
+        "searchRequest": {
+          "ids" : ccidSelected
+        }
+      }
+
+      //console.log(JSON.stringify((rejectSearchRequestObj)));
+
+      Recon.ingest((rejectSearchRequestObj)).done(function(data){
+        if(data.responseCode == "0000"){
+          $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
+          $("#messageDiv").show();
+          setTimeout(function(){
+            $("#messageDiv").hide();
+          },4000);
+        }else{
+          //error text has to be shared. TODO - not sure how service responds to it
+          displayErrorMessage(data.responseText,"Failed to Ingest:");
+        }
+      });
+
+    }
+};
+
+var refreshChekboxSelection = function(el,scope){
+  var row = el.closest('tr').data('row').row;
+  if(el[0].checked) {
+      scope.incomingCcidSelected.push(row.dtlHdrId);
+    } else {
+      var index = _.indexOf(scope.incomingCcidSelected, row.dtlHdrId);
+      (index > -1) && scope.incomingCcidSelected.splice(index, 1);
+     }
+    scope.attr("size_incomingCcidSelected" ,_.size(scope.attr("incomingCcidSelected")));
+
+};
+
+var findCCids =  function(scope, ccidSelected, tab) {
+
+  var found = false;
+
+  var detailsList = [];
+
+  detailsList = scope.incomingStatsDetailsSelected;
+
+  for( var i=0; i< detailsList.length ; i++) {
+
+    //alert('Here');
+    if(ccidSelected.indexOf(detailsList[i].dtlHdrId) >= 0) {
+
+      detailsList.splice(i,1);
+      found = true;
+
+      scope.incomingStatsDetailsSelected.replace(detailsList);
+      break;
+
+    }
+  }
+
+  if(found) {
+
+    findCCids(scope, ccidSelected);
+
+  }
 
 }
 

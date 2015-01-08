@@ -44,9 +44,23 @@ var mandatoryField = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiv
 fileUpload.extend({
   tag: 'rn-file-uploader-edit',
   scope: {
-           fileList : new can.List()
-         }
- });
+           fileList : new can.List(),
+           uploadedfileinfo:[]
+         },
+   events:{
+   	"{uploadedfileinfo} change":function(){
+	   		if(this.scope.uploadedfileinfo[0] == "none")
+	   		{
+	   			this.scope.fileList.replace([]);
+	   		}
+	   		else
+	   		{
+	   			this.scope.fileList.replace(this.scope.uploadedfileinfo);
+	   		}	
+   		
+   		}
+   }      
+});
 
 createpb.extend({
 	tag: 'create-pb-editinv',
@@ -133,7 +147,7 @@ var page = Component.extend({
     invoiceId:"",
   	editpage:false,
   	formSuccessCount:1,
-  	uploadedFileInfo:[],
+  	uploadedfileinfo:[],
   	periodType:"",
   	ajaxRequestStatus:{},
   	usdFxrateRatio:"",
@@ -489,12 +503,24 @@ var page = Component.extend({
 							'inputMonth[]': {
 				                validators: {
 				                    callback: {
-				                            message: 'Period is mandatory',
+				                            //message: 'Period is mandatory',
 				                            callback: function (value, validator, $field) {
-				                              if((value == "") && (self.scope.attr("invoicetypeSelect") != "2")){
-				                              	   return false;
-				                              }
-				                              return true;
+				                            	if((value == "") && (self.scope.attr("invoicetypeSelect") != "2")){
+				                              	   	return {
+				                              	   		valid: false,
+				                              	   		message: 'Period is mandatory'
+				                              	   	}
+				                              	}else if(value != undefined && value.length > 0){
+													  var rxDatePattern = /^[P-Q]{1}\d{1,2}[FY]{2}\d{2}$/;
+													  var dtArray = value.match(rxDatePattern); // is format OK?
+													  var result = (dtArray == null) ? false : true;
+													  return{
+													  	valid:result,
+													  	message: 'Invalid period'
+													  }
+				                              	}
+				                             	
+												return true;
 				                            }
 		                    		}
 				                }
@@ -671,6 +697,10 @@ var page = Component.extend({
                   				$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
                   			}
                   		 }
+                  		 else{
+	                  			self.scope.attr("calduedate", "");
+	                  			$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
+	                  		}
 		                },function(xhr){
 		                /*Error condition*/
 		           		 });  
@@ -689,6 +719,10 @@ var page = Component.extend({
                   				$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
                   			}
                   		 }
+                  		 else{
+	                  			self.scope.attr("calduedate", "");
+	                  			$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
+	                  		}
 		                },function(xhr){
 		                /*Error condition*/
 		           		 });  
@@ -830,13 +864,32 @@ var page = Component.extend({
 				 		$("#receiveddate input[type=text]").val(moment(invoiceData.receivedDate).format("MM/DD/YYYY"));
 				 		self.scope.attr("invoiceduedate", moment(invoiceData.invoiceDueDate).format("MM/DD/YYYY"));
 				 		$("#invoiceduedate input[type=text]").val(moment(invoiceData.invoiceDueDate).format("MM/DD/YYYY"));
-				 		self.scope.attr("calduedate",moment(invoiceData.invoiceCalcDueDate).format("MM/DD/YYYY"));
+				 		if(invoiceData.invoiceCalcDueDate != ""){
+				 			self.scope.attr("calduedate",moment(invoiceData.invoiceCalcDueDate).format("MM/DD/YYYY"));
+				 		}
+				 		else
+				 		{
+				 			self.scope.attr("calduedate","");
+				 		}	
+				 		
+						
 						self.scope.attr("tax", invoiceData.tax);
 						self.scope.attr("invoiceId",invoiceData.invId);
 				 	
 						var tempcommentObj = invoiceData.comments;
 						$('#multipleCommentsInv').html(stache('<multiple-comments divid="usercommentsdivinv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
 		                self.scope.changeTextOnInvType();
+
+		                if(invoiceData.invoiceDocuments.length > 0){
+		                	self.scope.uploadedfileinfo.replace(invoiceData.invoiceDocuments);
+		                }
+		                else
+		                {
+		                	self.scope.uploadedfileinfo.replace(["none"]);
+		                }
+		                
+
+		               
 
 		                
 
@@ -966,27 +1019,51 @@ var page = Component.extend({
 
 		'rn-file-uploader-edit onSelected': function (ele, event, val) {
             var self = this;
-            self.scope.attr('uploadedFileInfo',val.filePropeties);
+            self.scope.attr('uploadedfileinfo',val.filePropeties);
          },
 
 		"#invoiceform #paymentBundleNames change": function(){
-	          var self = this;
+	           var self = this;
 	          var pbval = $("#invoiceform #paymentBundleNames").val();
-	          if(pbval=="createB"){
+	          self.scope.attr('newpaymentbundlenamereq', "undefined");
+
+			if(pbval=="createB"){
+
+	          	if(($("#inputMonth0").val() == "") && (self.scope.attr("invoicetypeSelect") != "2"))
+	          		{
+	          			$("#paymentBundleNames").val("");
+	          			
+                    	$("#paymentBundleNames").popover({"content":"Please select invoielines period", "placement":"top"});
+                    	$("#paymentBundleNames").popover('show');
+                    	
+	                     setTimeout(function(){
+	                      	$("#paymentBundleNames").popover('destroy');
+
+	                   },2000);
+		          	}
+		          else
+		          	{	
+	          		  var regId = self.scope.regionStore;
+					  var newBundleNameRequest = {"paymentBundle":{}};
+		              var bundleRequest = {};
+
+		              bundleRequest["regionId"] = regId;
+
+		              bundleRequest["periodFrom"] = getBundleDateRange().fromDate;
+
+		              bundleRequest["periodTo"] = getBundleDateRange().toDate;
+
+		              bundleRequest["periodType"] = getBundleDateRange().periodType;
+
+		              bundleRequest["bundleType"] = $("#invoiceType option:selected").attr("name");
+
+		              newBundleNameRequest["paymentBundle"] = bundleRequest;
+		              //console.log(JSON.stringify(newBundleNameRequest));
+		              self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
+		          	}	
+
 	              
-	              var regId = self.scope.regionStore;
-				  var newBundleNameRequest = {"paymentBundle":{}};
-	              var bundleRequest = {};
-
-	              bundleRequest["regionId"] = regId;
-
-	              bundleRequest["bundleType"] = $("#invoiceType option:selected").attr("name");
-
-	              newBundleNameRequest["paymentBundle"] = bundleRequest;
-	              self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
-	          } else {
-	            self.scope.attr('newpaymentbundlenamereq', "undefined");
-	          }
+	          } 
 	      },
 		
 		"#addInvSubmit click":function(){
@@ -1032,7 +1109,9 @@ var page = Component.extend({
 
 				    tempEditInvoiceData["receivedDate"] = dateFormatter($("#receiveddate input[type=text]").val(),"mm/dd/yyyy");
 				    tempEditInvoiceData["invoiceDate"] = dateFormatter($("#invoicedate input[type=text]").val(),"mm/dd/yyyy");
-				    tempEditInvoiceData["invoiceCalcDueDate"] = dateFormatter(self.scope.calduedate, "mm/dd/yyyy");
+				    if(self.scope.calduedate){
+				    	tempEditInvoiceData["invoiceCalcDueDate"] = dateFormatter(self.scope.calduedate, "mm/dd/yyyy");
+				    }
 				    tempEditInvoiceData["invoiceDueDate"] = dateFormatter($("#invoiceduedate input[type=text]").val(),"mm/dd/yyyy"); 
 
 
@@ -1079,10 +1158,10 @@ var page = Component.extend({
 
 					 	/* adding new document */
 
-						for(var i =0; i < self.scope.uploadedFileInfo.length; i++){
+						for(var i =0; i < self.scope.uploadedfileinfo.length; i++){
       						var tempDocument = {};
-				   			tempDocument.fileName = self.scope.uploadedFileInfo[i].attr("fileName");
-				   			tempDocument.location = self.scope.uploadedFileInfo[i].attr("filePath");
+				   			tempDocument.fileName = self.scope.uploadedfileinfo[i].attr("fileName");
+				   			tempDocument.location = self.scope.uploadedfileinfo[i].attr("filePath");
 				   			tempDocument.status = "add";
 				   			tempEditInvoiceData["invoiceDocuments"].push(tempDocument);
 				   			console.log(tempDocument);
@@ -1495,5 +1574,45 @@ var page = Component.extend({
 
 			          	return msg;		
 					}
+
+					var getBundleDateRange = function(){
+
+						var FromToRange = {};
+
+						FromToRange.periodType = periodWidgetHelper.getPeriodType($("#inputMonth0").val());
+
+						var _listofDateRange = $("input[id^='inputMonth']").not(':hidden');
+						var _listofDate = [];
+
+						if(_listofDateRange.length > 0){
+
+							for(var i=0; i < _listofDateRange.length; i++){
+								
+								var currentID = $(_listofDateRange)[i].id;
+								var currentVal = $("#"+currentID).val();
+
+								if(FromToRange.periodType === "Q"){
+									var currentYear = currentVal.substring(2, currentVal.length);							
+									_listofDate.push(currentVal.charAt(1));	
+								}else{
+									var currentYear = currentVal.substring(3, currentVal.length);						
+									_listofDate.push(currentVal.substring(1,3));	
+								}
+								
+							}
+
+							_listofDate.sort(function(a, b){return b-a});
+
+							FromToRange.fromDate = periodWidgetHelper.getFiscalPeriod(FromToRange.periodType + _listofDate[_listofDate.length - 1] + currentYear);
+							FromToRange.toDate = periodWidgetHelper.getFiscalPeriod(FromToRange.periodType + _listofDate[0] + currentYear);
+							
+						}else{
+							FromToRange.fromDate = periodWidgetHelper.getFiscalPeriod($("#inputMonth0").val());
+							FromToRange.toDate = periodWidgetHelper.getFiscalPeriod($("#inputMonth0").val());
+						}
+
+						return FromToRange;
+					}
+
 
 export default page;

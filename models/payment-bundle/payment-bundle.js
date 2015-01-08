@@ -74,6 +74,21 @@ var PaymentBundle = Model.extend({
       processData: false
     });
   },
+  preview: function(invId){
+
+    var requestObj = {
+      searchRequest:{
+        ids:[invId]
+      }
+    }
+
+    return $.ajax({
+      url: URLs.DOMAIN_SERVICE_URL + 'invoice/getPdfContent',
+      type: 'POST',
+      data: requestObj,
+      processData: false
+    })
+  },
   findOne: function(params) {
     var appstate = params.appstate;
     if(params.appstate.excelOutput){
@@ -168,7 +183,10 @@ var PaymentBundle = Model.extend({
     }).then(function(bundle) {
       if(bundle.status == "FAILURE" ){
 
-        console.error(bundle.responseText);
+        can.batch.start();
+        self.attr('status',bundle.status);
+        self.attr('responseText',bundle.responseText);
+        can.batch.stop();
 
       }else{
         bundle = bundle.hasOwnProperty('responseCode') ? bundle.paymentBundle : bundle;
