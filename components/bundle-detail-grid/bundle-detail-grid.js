@@ -14,9 +14,7 @@ var BundleDetailGrid = Grid.extend({
       // and each of those instances is a parent row
       // each BundleDetailGroup instance has a bundleDetails (which is a List of BundleDetail model instances)
       // and each of those is a child row
-      var contentType = [];
-      var country = [];
-      var periods = [];
+      var contentType = [],country = [],periods = [],licensors = [];
 
       can.batch.start();
       var rows = [];
@@ -24,7 +22,7 @@ var BundleDetailGrid = Grid.extend({
         contentType = [];
         country = [];
         periods = [];
-
+        licensors = [];
         rows.push(group);
         _.each(group.bundleDetails, function(detail) {
 
@@ -36,13 +34,19 @@ var BundleDetailGrid = Grid.extend({
             _.contains(country, detail.country) ?  "" : country.push(detail.country);
           }
 
-          if(detail.country != undefined){
+          if(detail.fiscalPeriod != undefined){
             _.contains(periods, detail.fiscalPeriod) ?  "" : periods.push(detail.fiscalPeriod);
           }
+
+          if(bundle.view != undefined && bundle.view == "COUNTRY"
+              &&   detail.entityName != undefined ){
+                _.contains(licensors, detail.entityName) ?  "" : licensors.push(detail.entityName);
+            }
 
 
 
           detail.attr('__isChild', true);
+          detail.attr("view",bundle.view);
           rows.push(detail);
         });
 
@@ -50,9 +54,17 @@ var BundleDetailGrid = Grid.extend({
         arrSize > 1 ? group.attr('contentGrpName', arrSize+" types of Content") : group.attr('contentGrpName',contentType[0]) ;
         arrSize = _.size(country) ;
         arrSize > 1 ? group.attr('country',arrSize+" Countries") : group.attr('country',country[0]) ;
-
         arrSize = _.size(periods) ;
         arrSize > 1 ? group.attr('fiscalPeriod',"Multiple") : group.attr('fiscalPeriod',periods[0]) ;
+
+        if(bundle.view == "COUNTRY"){
+          //<rdar://problem/19396429> UI-PBR: Country tab missing licensor
+          arrSize = _.size(licensors) ;
+          arrSize > 1 ? group.attr('entityNameCnt',arrSize+" Licensors") : group.attr('entityNameCnt',licensors[0])  ;
+          group.attr("view",bundle.view);
+        }
+
+
 
       });
       can.batch.stop();

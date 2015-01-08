@@ -289,11 +289,18 @@ var PaymentBundle = Model.extend({
 
       delete group.contentGrpName;
       delete group.country;
-      delete group.fiscalPeriod
+      delete group.fiscalPeriod;
+      delete group.entityNameCnt;
+      delete group.view;
+      delete group.validationMessages;
+      delete group.validationColor;
 
       group.bundleDetails.forEach(function(detail) {
         delete detail.__isChild;
         delete detail.__isOpen;
+        delete detail.view;
+        delete detail.validationMessages;
+        delete detail.validationColor;
       });
     });
 

@@ -20,7 +20,14 @@ var columns = {
   'licensor': {
     id: 'licensor',
     title: 'Licensor',
-    contents: row => row.__isChild ? '' : row.entityName
+    contents: function(row) {
+      if(row.view != undefined && row.view == "COUNTRY"){
+        return row.__isChild ? row.entityName : row.entityNameCnt;
+      }
+      else{
+         return row.__isChild ? '' : row.entityName;
+      }
+    }
   },
   'invoiceNumber': {
     id: 'invoiceNumber',
