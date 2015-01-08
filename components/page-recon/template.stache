@@ -16,11 +16,6 @@
       <button type="button" class="btn btn-primary buttonSubmit btn-custom-small btn-OverRep" >Overrep Config</button>
     </div>
 
-    <div class="col-sm-9 btn-display-center" {{isTabSelectedAs 'Incoming Details'}}>
-      <button  class="btn btn-primary buttonSubmit btn-custom-small btn-incoming-reject" type="button"  {{isIncomingCcidsSelected 0}}>Reject</button>
-      <button type="button" class="btn btn-primary buttonSubmit btn-custom-small btn-Ingest" {{isIncomingCcidsSelected 0}} >Ingest</button>
-    </div>
-
     <div class="col-sm-3" id="searchDiv">
       <input type="text" class="form-control" id="tokenSearch">
       <img src="resources/images/exportExcelIcon.png" class="exportToExcel" id="exportExcel">
@@ -29,23 +24,11 @@
 
 </div>
 
-
-
-    <div id="content"><!-- Tabs - Start-->
-        <ul id="myTabs" class="nav nav-tabs" data-tabs="tabs">
-            <li class="active"><a href="#ingested" data-toggle="tab"  >{{tabName.ingest.name}}</a></li>
-            <li><a href="#incomingDetails" data-toggle="tab"  >{{tabName.incoming.name}}</a></li>
-        </ul>
-
-        <div id="my-tab-content" class="tab-content">
-            <div class="tab-pane active grid-custom-overflow" id="ingested" >
-                <rn-recon-grid columns="{ingestGridColumns}" rows="{ingestList.headerRows}" footerrows="{ingestList.footerRows}" pagename="recon" emptyrows="{emptyrows}"></rn-recon-grid>
-            </div>
-            <div class="tab-pane grid-custom-overflow" id="incomingDetails">
-              <rn-recon-grid columns="{detailGridColumns}" rows="{incomingDetails.headerRows}" footerrows="{incomingDetails.footerRows}" pagename="recon" emptyrows="{emptyrows}"></rn-recon-grid>
-            </div>
-        </div>
-    </div> <!-- Tabs - End-->
+    
+    <div class="tab-pane active grid-custom-overflow" id="ingested" >
+        <rn-recon-grid columns="{ingestGridColumns}" rows="{ingestList.headerRows}" footerrows="{ingestList.footerRows}" emptyrows="{emptyrows}"></rn-recon-grid>
+    </div>
+            
 
 		<!-- Recon Stats -->
 		<recon-stats loadrefresh="true" {{isTabSelectedAs 'Ingested'}}></recon-stats>

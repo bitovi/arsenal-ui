@@ -107,6 +107,7 @@ var page = Component.extend({
   },
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
+    this.scope.attr("emptyrows", false);
     // this.scope.attr("isGlobalSearchIngested",this.scope.appstate.attr("globalSearch"));
     // console.log(" ")
     // fetchReconIngest(this.scope);
@@ -349,7 +350,7 @@ var processRejectIngestRequest = function(scope,requestType){
 
       Promise.all([Recon.reject(rejectSearchRequestObj)]).then(function(values) {
 
-        //scope.reconStatsDetailsSelected = data.reconStatsDetails;
+        scope.reconStatsDetailsSelected = data.reconStatsDetails;
 
         findCCids(scope, ccidSelected, tab);
 
@@ -369,7 +370,7 @@ var processRejectIngestRequest = function(scope,requestType){
 
         } else {
 
-          if(scope.incomingStatsDetailsSelected == undefined || (scope.incomingStatsDetailsSelected != null && scope.incomingStatsDetailsSelected.length <= 0)) {
+          if(scope.reconStatsDetailsSelected == undefined || (scope.reconStatsDetailsSelected != null && scope.reconStatsDetailsSelected.length <= 0)) {
 
             scope.attr("emptyrows", true);
 
@@ -379,7 +380,7 @@ var processRejectIngestRequest = function(scope,requestType){
 
           }
 
-          scope.incomingDetails.headerRows.replace(scope.incomingStatsDetailsSelected);
+          scope.incomingDetails.headerRows.replace(scope.reconStatsDetailsSelected);
 
         }
 
@@ -517,15 +518,16 @@ var fetchReconIngest = function(scope){
           console.error("Footer rows doesn't exists in the response");
         }
 
+      if (data.summary!== null) {
         var footerLine= {
           "__isChild": true,
           "ccy":"EUR",
-          "pubfee":(data.summary != undefined && data.summary != null) ? data.summary.totalPubFee : "",
-          "reconAmt":(data.summary != undefined && data.summary != null) ? data.summary.totalRecon : 0,
-          "liDispAmt":(data.summary != undefined && data.summary != null) ? data.summary.totalLi : 0,
-          "copConAmt":(data.summary != undefined && data.summary != null) ? data.summary.totalCopCon : 0,
-          "unMatchedAmt":(data.summary != undefined && data.summary != null) ? data.summary.totalUnMatched : 0,
-          "badLines":(data.summary != undefined && data.summary != null) ? data.summary.totalBadLines : 0,
+          "pubfee": data.summary.totalPubFee,
+          "reconAmt": data.summary.totalRecon,
+          "liDispAmt": data.summary.totalLi,
+          "copConAmt": data.summary.totalCopCon,
+          "unMatchedAmt": data.summary.totalUnMatched,
+          "badLines": data.summary.totalBadLines,
           "ccidId":"",
           "entityName":"",
           "countryId":"",
@@ -536,6 +538,7 @@ var fetchReconIngest = function(scope){
           "status":"",
           "isFooterRow":true
         };
+      }
 
         scope.ingestList.footerRows.replace(footerLine);
       }
@@ -612,12 +615,12 @@ var fetchReconDetails = function(scope){
         var footerLine= {
           "__isChild": true,
           "ccy":"EUR",
-          "pubfee":(data.summary != undefined && data.summary != null) ? data.summary.totalPubFee : "",
-          "reconAmt":(data.summary != undefined && data.summary != null) ? data.summary.totalRecon : 0,
-          "liDispAmt":(data.summary != undefined && data.summary != null) ? data.summary.totalLi : 0,
-          "copConAmt":(data.summary != undefined && data.summary != null) ? data.summary.totalCopCon : 0,
-          "unMatchedAmt":(data.summary != undefined && data.summary != null) ? data.summary.totalUnMatched : 0,
-          "badLines":(data.summary != undefined && data.summary != null) ? data.summary.totalBadLines : 0,
+          "pubfee": data.summary.totalPubFee,
+          "reconAmt": data.summary.totalRecon,
+          "liDispAmt": data.summary.totalLi ,
+          "copConAmt":data.summary.totalCopCon,
+          "unMatchedAmt": data.summary.totalUnMatched,
+          "badLines": data.summary.totalBadLines,
           "ccidId":"",
           "entityName":"",
           "countryId":"",
@@ -662,7 +665,7 @@ var refreshChekboxSelection = function(el,scope){
     scope.attr("size_incomingCcidSelected" ,_.size(scope.attr("incomingCcidSelected")));
 
   }
-}
+};
 
 var findCCids =  function(scope, ccidSelected, tab) {
 
@@ -670,16 +673,7 @@ var findCCids =  function(scope, ccidSelected, tab) {
 
   var detailsList = [];
 
-  if(tab == "ingest") {
-
-    detailsList = scope.reconStatsDetailsSelected;
-
-  } else {
-
-    detailsList = scope.incomingStatsDetailsSelected;
-
-  }
-
+  detailsList = scope.incomingStatsDetailsSelected;
 
   for( var i=0; i< detailsList.length ; i++) {
 
@@ -688,11 +682,8 @@ var findCCids =  function(scope, ccidSelected, tab) {
 
       detailsList.splice(i,1);
       found = true;
-      if(tab == "ingest") {
-        scope.reconStatsDetailsSelected.replace(detailsList);
-      } else {
-        scope.incomingStatsDetailsSelected.replace(detailsList);
-      }
+
+      scope.incomingStatsDetailsSelected.replace(detailsList);
       break;
 
     }
