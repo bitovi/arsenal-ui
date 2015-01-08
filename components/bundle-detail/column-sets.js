@@ -134,14 +134,19 @@ var columns = {
       id: 'adhocTypeId',
       title: 'AdHoc Type',
       format: formats.formatIf(_.isNumber, formats.int, '')
+  },
+  'preview': {
+    id: 'preview',
+    title: 'Preview',
+    contents: row => row.__isChild || row.isFooterRow ? '' : stache('<img src="/resources/images/rn_VisibleSelected@2x.png"/>')(row)
   }
 };
 
 var sets = {
-  regularLicensor: _.map(['toggle', 'validations', 'licensor', 'invoiceNumber', 'paymentCcy', 'fiscalPeriod', 'country', 'contentGrpName', 'lineAmt', 'orDispAmt', 'liDispAmt', 'reconAmt', 'onaccountAllocatedAmt', 'cashadjAllocatedAmt', 'priorPaid', 'paymentAmt', 'invoicePaymentSaturation', 'invoiceSaturation'], colID => columns[colID]),
-  regularCountry: _.map(['toggle', 'validations', 'country', 'fiscalPeriod', 'licensor', 'paymentCcy','contentGrpName', 'lineAmt', 'orDispAmt', 'liDispAmt', 'reconAmt', 'onaccountAllocatedAmt', 'cashadjAllocatedAmt', 'priorPaid', 'paymentAmt', 'invoiceSaturation', 'paymentSaturation'], colID => columns[colID]),
-  onAccount: _.map(['toggle', 'validations', 'licensor', 'paymentCcy', 'fiscalPeriod', 'country', 'contentGrpName', 'paymentAmt'], colID => columns[colID]),
-  adHoc: _.map(['toggle', 'validations', 'licensor', 'invoiceNumber', 'paymentCcy', 'fiscalPeriod', 'country', 'adhocTypeId', 'lineAmt', 'paymentAmt'], colID => columns[colID])
+  regularLicensor: _.map(['toggle', 'validations', 'licensor', 'invoiceNumber', 'paymentCcy', 'fiscalPeriod', 'country', 'contentGrpName', 'lineAmt', 'orDispAmt', 'liDispAmt', 'reconAmt', 'onaccountAllocatedAmt', 'cashadjAllocatedAmt', 'priorPaid', 'paymentAmt', 'invoicePaymentSaturation', 'invoiceSaturation','preview'], colID => columns[colID]),
+  regularCountry: _.map(['toggle', 'validations', 'country', 'fiscalPeriod', 'licensor', 'paymentCcy','contentGrpName', 'lineAmt', 'orDispAmt', 'liDispAmt', 'reconAmt', 'onaccountAllocatedAmt', 'cashadjAllocatedAmt', 'priorPaid', 'paymentAmt', 'invoiceSaturation', 'paymentSaturation','preview'], colID => columns[colID]),
+  onAccount: _.map(['toggle', 'validations', 'licensor', 'paymentCcy', 'fiscalPeriod', 'country', 'contentGrpName', 'paymentAmt','preview'], colID => columns[colID]),
+  adHoc: _.map(['toggle', 'validations', 'licensor', 'invoiceNumber', 'paymentCcy', 'fiscalPeriod', 'country', 'adhocTypeId', 'lineAmt', 'paymentAmt','preview'], colID => columns[colID])
 }
 
 export default sets;

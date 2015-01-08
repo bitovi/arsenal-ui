@@ -56,6 +56,7 @@
 			"exporting": "bower_components/highcharts-release/modules/exporting.js",
 			"bootstrap-multiselect": "bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect.js",
 			"bootstrap-multiselect.css": "bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.csscss",
+			"pdfjs": "bower_components/pdfjs-bower/dist/pdf.js",
 		},
 		meta: {
 			jquery: {

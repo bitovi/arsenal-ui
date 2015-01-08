@@ -488,16 +488,28 @@ var page = Component.extend({
 			            	},
 						'inputMonth[]': {
 			                validators: {
-			                    callback: {
-			                            message: 'Period is mandatory',
-			                            callback: function (value, validator, $field) {
-			                              if((value == "") && (self.scope.attr("invoicetypeSelect") != "2")){
-			                              	   return false;
-			                              }
-			                              return true;
-			                            }
-	                    		}
-			                }
+				                    callback: {
+				                            //message: 'Period is mandatory',
+				                            callback: function (value, validator, $field) {
+				                            	if((value == "") && (self.scope.attr("invoicetypeSelect") != "2")){
+				                              	   	return {
+				                              	   		valid: false,
+				                              	   		message: 'Period is mandatory'
+				                              	   	}
+				                              	}else if(value != undefined && value.length > 0){
+													  var rxDatePattern = /^[P-Q]{1}\d{1,2}[FY]{2}\d{2}$/;
+													  var dtArray = value.match(rxDatePattern); // is format OK?
+													  var result = (dtArray == null) ? false : true;
+													  return{
+													  	valid:result,
+													  	message: 'Invalid period'
+													  }
+				                              	}
+				                             	
+												return true;
+				                            }
+		                    		}
+				                }
 		            	},
 		            	'inputCountry[]': {
 								validators: {
