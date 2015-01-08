@@ -28,6 +28,8 @@ var page = Component.extend({
     incomingOtherList: new can.List(),
     isGlobalSearch:undefined,
     tokenInput: [],
+    scrollTop: 0,
+    offset: 0,
     refreshTokenInput: function(val, type){
       var self = this;
       if(type=="Add")

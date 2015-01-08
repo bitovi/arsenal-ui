@@ -21,55 +21,89 @@ var reconGrid = Grid.extend({
     'inserted': function(){
       var self= this;
       var tbody = self.element.find('tbody');
-      var parentScopeVar = self.element.closest('page-recon').scope();
-      var tableScrollTopVal = parentScopeVar.attr('ingestedScrollTop');
-      console.log("Tabname "+parentScopeVar.attr('tabSelected'));
-      $(tbody[0]).scrollTop(tableScrollTopVal);
-        $(tbody).on('scroll', function(ev) {
-          if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight) {
-            //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
-            
-            var tabSelected = parentScopeVar.attr('tabSelected');
-            /* Reset the offset value and call the webservice to fetch next set of records */
-            if(tabSelected=="Ingested"){
-              var offsetVal = parentScopeVar.attr('ingestedOffset');
-              parentScopeVar.attr('ingestedOffset', (parseInt(offsetVal)+1));
-              parentScopeVar.attr('ingestedScrollTop', (tbody[0].scrollHeight-100));
-            } else {
-              var offsetVal = parentScopeVar.attr('incomingOffset');
-              parentScopeVar.attr('incomingOffset', (parseInt(offsetVal)+1));
-              parentScopeVar.attr('incomingScrollTop', (tbody[0].scrollHeight-100));
-            }
-            parentScopeVar.appstate.attr('globalSearchButtonClicked', false);
+      if(self.scope.attr("pagename")=="recon"){
+        var parentScopeVar = self.element.closest('page-recon').scope();
+        var tableScrollTopVal = parentScopeVar.attr('ingestedScrollTop');
+        $(tbody[0]).scrollTop(tableScrollTopVal);
+          $(tbody).on('scroll', function(ev) {
+            if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight) {
+              //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
+              
+              var tabSelected = parentScopeVar.attr('tabSelected');
+              /* Reset the offset value and call the webservice to fetch next set of records */
+              if(tabSelected=="Ingested"){
+                var offsetVal = parentScopeVar.attr('ingestedOffset');
+                parentScopeVar.attr('ingestedOffset', (parseInt(offsetVal)+1));
+                parentScopeVar.attr('ingestedScrollTop', (tbody[0].scrollHeight-100));
+              } else {
+                var offsetVal = parentScopeVar.attr('incomingOffset');
+                parentScopeVar.attr('incomingOffset', (parseInt(offsetVal)+1));
+                parentScopeVar.attr('incomingScrollTop', (tbody[0].scrollHeight-100));
+              }
+              parentScopeVar.appstate.attr('globalSearchButtonClicked', false);
 
-            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
-            /* All the neccessary parameters will be set in that event */
-           if(parentScopeVar.appstate.attr('globalSearch')){
-              parentScopeVar.appstate.attr('globalSearch', false);
-            }else{
-              parentScopeVar.appstate.attr('globalSearch', true);
+              /* The below code calls {scope.appstate} change event that gets the new data for grid*/
+              /* All the neccessary parameters will be set in that event */
+             if(parentScopeVar.appstate.attr('globalSearch')){
+                parentScopeVar.appstate.attr('globalSearch', false);
+              }else{
+                parentScopeVar.appstate.attr('globalSearch', true);
+              }
             }
-          }
-        });
+          });
+        } else if(self.scope.attr("pagename")=="reconOther"){
+          var parentScopeVar = self.element.closest('page-reconOther').scope();
+          var tableScrollTopVal = parentScopeVar.attr('scrollTop');
+          $(tbody[0]).scrollTop(tableScrollTopVal);
+          $(tbody).on('scroll', function(ev) {
+            if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight) {
+              //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
+              
+              var tabSelected = parentScopeVar.attr('tabSelected');
+              /* Reset the offset value and call the webservice to fetch next set of records */
+                var offsetVal = parentScopeVar.attr('offset');
+                parentScopeVar.attr('offset', (parseInt(offsetVal)+1));
+                parentScopeVar.attr('scrollTop', (tbody[0].scrollHeight-100));
+
+              parentScopeVar.appstate.attr('globalSearchButtonClicked', false);
+
+              /* The below code calls {scope.appstate} change event that gets the new data for grid*/
+              /* All the neccessary parameters will be set in that event */
+             if(parentScopeVar.appstate.attr('globalSearch')){
+                parentScopeVar.appstate.attr('globalSearch', false);
+              }else{
+                parentScopeVar.appstate.attr('globalSearch', true);
+              }
+            }
+          });
+        }
     },
     '{rows} change':function(){
       var self = this;
-      var parentScopeVar = self.element.closest('page-recon').scope();
-      var tabSelected = parentScopeVar.attr('tabSelected');
       var tbody = self.element.find('tbody');
-      var tableScrollTopVal=0;
-      if(tabSelected=="Ingested"){
+      if(self.scope.attr("pagename")=="recon"){
+        var parentScopeVar = self.element.closest('page-recon').scope();
+        var tabSelected = parentScopeVar.attr('tabSelected');
+        var tableScrollTopVal=0;
+        if(tabSelected=="Ingested"){
+          setTimeout(function(){
+            alignGrid("ingested");
+            tableScrollTopVal = parentScopeVar.attr('ingestedScrollTop');
+            $(tbody[0]).scrollTop(tableScrollTopVal);
+          },1000);
+        } else {
+          setTimeout(function(){
+            alignGrid("incomingDetails");
+            tableScrollTopVal = parentScopeVar.attr('incomingScrollTop');
+            $(tbody[0]).scrollTop(tableScrollTopVal);
+          },1000);
+        }
+      } else if(self.scope.attr("pagename")=="reconOther"){
+        var parentScopeVar = self.element.closest('page-reconOther').scope();
+        var tableScrollTopVal=0;
         setTimeout(function(){
-          alignGrid("ingested");
-          tableScrollTopVal = parentScopeVar.attr('ingestedScrollTop');
-          console.log("tableScrollTopVal "+ tableScrollTopVal);
-          $(tbody[0]).scrollTop(tableScrollTopVal);
-        },1000);
-      } else {
-        setTimeout(function(){
-          alignGrid("incomingDetails");
-          tableScrollTopVal = parentScopeVar.attr('incomingScrollTop');
-          console.log("tableScrollTopVal "+ tableScrollTopVal);
+          alignGrid("reconstatsOtherGrid");
+          tableScrollTopVal = parentScopeVar.attr('scrollTop');
           $(tbody[0]).scrollTop(tableScrollTopVal);
         },1000);
       }
