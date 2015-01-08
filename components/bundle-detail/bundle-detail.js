@@ -340,13 +340,13 @@ var BundleDetailTabs = Component.extend({
         }).then(function(response) {
           if(response.status === 'SUCCESS') {
             //Alert.displayAlert(response.responseText, 'success' );
-            $("#messageDiv").html("<label class='successMessage' style='padding: 0px 15px;' >+"response.responseText"+</label>");
+            $("#messageDiv").html("<label class='successMessage' style='padding: 0px 15px;'>"+response.responseText+"</label>")
             $("#messageDiv").show();
 
             setTimeout(function(){
               $("#messageDiv").hide();
             },constants.MESSAGE_DISPLAY_TIME);
-            
+
 
             // un-select the selected bundle (we're done here)
             pageState.attr('selectedBundle', null);
