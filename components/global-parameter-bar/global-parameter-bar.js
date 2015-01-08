@@ -192,7 +192,13 @@ var GlobalParameterBar = Component.extend({
       }
       setTimeout(function(){
         if($("input[name='selAllCountry']").prop("checked"))
-          self.scope.changesToApply.attr('country', ["ALL"]);
+          {
+            self.scope.changesToApply.attr('country', ["ALL"]);
+          }
+         else if($(el[0]).val() == null)
+          {
+            self.scope.changesToApply.attr('country', ["ALL"]);
+          }  
       }, 200);
     },
     '#licensor select change': function(el, ev) {
@@ -205,8 +211,14 @@ var GlobalParameterBar = Component.extend({
         this.scope.changesToApply.removeAttr('licensor');
 
       setTimeout(function(){
-        if($("input[name='selAllLicensor']").prop("checked"))
-          self.scope.changesToApply.attr('licensor', ["-1"]);
+          if($("input[name='selAllLicensor']").prop("checked"))
+          {
+             self.scope.changesToApply.attr('licensor', ["-1"]);
+          }
+        else if($(el[0]).val() == null)
+          {
+            self.scope.changesToApply.attr('licensor', ["-1"]);
+          }  
       }, 200);
     },
     '#contentType select change': function(el, ev) {
@@ -225,7 +237,14 @@ var GlobalParameterBar = Component.extend({
 
       setTimeout(function(){
         if($("input[name='selAllContentType']").prop("checked"))
-         self.scope.changesToApply.attr('contentType', ["-1"]);
+        {
+          self.scope.changesToApply.attr('contentType', ["-1"]);
+        }
+        else if($(el[0]).val() == null)
+        {
+          self.scope.changesToApply.attr('contentType', ["-1"]);
+        } 
+        
       }, 200);
     },
     '#globalSearch click': function() {

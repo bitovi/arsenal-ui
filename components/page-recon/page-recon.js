@@ -494,10 +494,11 @@ var fetchReconIngest = function(scope){
         scope.currencyScope.replace(data.currency);
 
         if(scope.reconRefresh[0] != undefined) {
-          scope.reconRefresh[0].attr("currency", data.currency[0]);
+          scope.reconRefresh[0].attr("currency", data.currency != null && data.currency.length > 0 ? data.currency[0] : "");
+          $("#currency").val(scope.reconRefresh[0].attr("currency"));
         }
 
-        $("#currency").val(data.currency[0]);
+        
 
         if(data.summary == undefined){
           console.error("Footer rows doesn't exists in the response");
@@ -506,12 +507,12 @@ var fetchReconIngest = function(scope){
         var footerLine= {
           "__isChild": true,
           "ccy":"EUR",
-          "pubfee":data.summary.totalPubFee,
-          "reconAmt":data.summary.totalRecon,
-          "liDispAmt":data.summary.totalLi,
-          "copConAmt":data.summary.totalCopCon,
-          "unMatchedAmt":data.summary.totalUnMatched,
-          "badLines":data.summary.totalBadLines,
+          "pubfee":(data.summary != undefined && data.summary != null) ? data.summary.totalPubFee : "",
+          "reconAmt":(data.summary != undefined && data.summary != null) ? data.summary.totalRecon : 0,
+          "liDispAmt":(data.summary != undefined && data.summary != null) ? data.summary.totalLi : 0,
+          "copConAmt":(data.summary != undefined && data.summary != null) ? data.summary.totalCopCon : 0,
+          "unMatchedAmt":(data.summary != undefined && data.summary != null) ? data.summary.totalUnMatched : 0,
+          "badLines":(data.summary != undefined && data.summary != null) ? data.summary.totalBadLines : 0,
           "ccidId":"",
           "entityName":"",
           "countryId":"",
@@ -588,12 +589,12 @@ var fetchReconDetails = function(scope){
         var footerLine= {
           "__isChild": true,
           "ccy":"EUR",
-          "pubfee":(data.summary.totalPubFee != undefined)? data.summary.totalPubFee:"",
-          "reconAmt":data.summary.totalRecon,
-          "liDispAmt":data.summary.totalLi,
-          "copConAmt":data.summary.totalCopCon,
-          "unMatchedAmt":data.summary.totalUnMatched,
-          "badLines":data.summary.totalBadLines,
+          "pubfee":(data.summary != undefined && data.summary != null) ? data.summary.totalPubFee : "",
+          "reconAmt":(data.summary != undefined && data.summary != null) ? data.summary.totalRecon : 0,
+          "liDispAmt":(data.summary != undefined && data.summary != null) ? data.summary.totalLi : 0,
+          "copConAmt":(data.summary != undefined && data.summary != null) ? data.summary.totalCopCon : 0,
+          "unMatchedAmt":(data.summary != undefined && data.summary != null) ? data.summary.totalUnMatched : 0,
+          "badLines":(data.summary != undefined && data.summary != null) ? data.summary.totalBadLines : 0,
           "ccidId":"",
           "entityName":"",
           "countryId":"",
