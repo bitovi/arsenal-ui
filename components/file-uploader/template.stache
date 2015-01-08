@@ -6,9 +6,9 @@
                   <li {{data 'listView'}}>
                     {{#if fileName}}
                       {{#if fileId}}
-                         <a  class="downLoad-Link" id="{{fileId}}">{{fileName}} {{#if size}}({{convertToKB size}}){{/if}} </a>
+                         <a  class="downLoad-Link" id="{{fileId}}">{{fileName}} {{#if fileSize}}({{convertToKB fileSize}}){{/if}} </a>
                        {{#else}}
-                          {{fileName}} {{#if size}}({{convertToKB size}}){{/if}}
+                          {{fileName}} {{#if fileSize}}({{convertToKB fileSize}}){{/if}}
                        {{/if}}
                     {{#else}}
                       {{#if fileId}}

@@ -2,17 +2,32 @@
 
 rn-proposed-onaccount-grid {
   .grid-mixin();
+    table {
+    /* You have to specify widths */
+    width: 100%;
+    tr>th, tr > td {
+      width:2%;
+    }
+
+    thead, tbody, tfoot {
+      display: block;
+    }
+    tbody {
+      max-height: 8em;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
     th, td {
       white-space: nowrap;
-      text-align: right;
     }
+  }
   input.invalid {
     background: red;
     color: white;
   }
   .toggle, .licensor, .Licensor , .currency, .Currency, .ContentType{
       text-align: left;
-      width: auto;
+      width: 40%;
     }
     tfoot {
     tr.child {

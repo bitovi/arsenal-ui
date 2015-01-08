@@ -31,7 +31,8 @@ fileUpload.extend({
   tag: 'rn-file-uploader',
   scope: {
         fileList : new can.List(),
-        uploadedfileinfo:[]
+        uploadedfileinfo:[],
+        deletedFileInfo:[]
     },
   events:{
       'inserted': function (){
@@ -40,6 +41,9 @@ fileUpload.extend({
       },
        "{uploadedfileinfo} change":function(){
           this.scope.fileList.replace(this.scope.uploadedfileinfo);
+      },
+      "{deletedFileInfo} change":function(){
+        //this.scope.deletedFileInfo.replace(this.scope.deletedFileInfo);
       }
     }
  });
@@ -51,6 +55,7 @@ fileUpload.extend({
         displayMessage:"display:none",
         fileUpload:false,
         uploadedfileinfo:[],
+        deletedFileInfo:[],
         isAnyFileLoaded : can.compute(function() { return this.fileList.attr('length') > 0; }),
         isSuccess: false
 
@@ -62,6 +67,9 @@ fileUpload.extend({
       },
        "{uploadedfileinfo} change":function(){
           this.scope.fileList.replace(this.scope.uploadedfileinfo);
+      }, 
+      "{deletedFileInfo} change":function(){
+        //this.scope.deletedFileInfo.replace(this.scope.deletedFileInfo);
       }
     }
  });
@@ -91,7 +99,10 @@ var page = Component.extend({
     quarters:[],
     csvcontent:[],
     uploadedfileinfo:[],
-    loadProposedONAccountPage:[]
+    loadProposedONAccountPage:[],
+    deletedFileInfo:[],
+    proposeOnAccOffset: 0,
+    tableScrollTop: 0
   },
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
@@ -429,6 +440,7 @@ var page = Component.extend({
           var self = this;
           //var quarters = self.scope.quarters;         
           self.scope.attr('showLoadingImage',true);
+          self.scope.appstate.attr("offset", self.scope.attr('proposeOnAccOffset'));
           proposedOnAccount.findOne(createProposedOnAccountRequest(self.scope.appstate),function(data){
             self.scope.attr('showLoadingImage',false);
             if(data["status"]=="SUCCESS"){
@@ -670,6 +682,7 @@ var createProposedOnAccountRequest=function(appstate){
   var proposedOnAccountRequest={};
   proposedOnAccountRequest.searchRequest=requestHelper.formGlobalRequest(appstate).searchRequest;
   proposedOnAccountRequest.searchRequest.type="PROPOSED";
+  proposedOnAccountRequest.searchRequest.offset=appstate.attr("offset");
   return requestHelper.formRequestDetails(proposedOnAccountRequest);
 };
 var createProposedOnAccountRequestForExportToExcel=function(appstate){

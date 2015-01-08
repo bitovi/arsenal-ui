@@ -644,7 +644,7 @@ var page = Component.extend({
 
       '.exportToExcel click':function(el,ev){
           var self = this;
-         // if(this.scope.appstate.attr('excelOutput')==undefined || !this.scope.appstate.attr('excelOutput'))
+          if(this.scope.appstate.attr('excelOutput')==undefined || !this.scope.appstate.attr('excelOutput'))
             self.scope.appstate.attr("excelOutput",true);
           
       },
@@ -758,7 +758,7 @@ var page = Component.extend({
                       if(values["status"]!="FAILURE"){
                         if(self.scope.appstate.attr('excelOutput')){
                           $("#loading_img").hide();
-                          $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({values}));
+                          $('#exportExcel').html(stache('<export-toexcel csv={values}></export-toexcel>')({values}));
                            self.scope.appstate.attr("excelOutput",false);
                         }else{
                           $("#messageDiv").html("<label class='successMessage'>"+values["responseText"]+"</label>");
@@ -792,7 +792,7 @@ var page = Component.extend({
                       if(values["status"]!="FAILURE"){
                         if(self.scope.appstate.attr('excelOutput')){
                           $("#loading_img").hide();
-                          $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({values}));
+                          $('#exportExcel').html(stache('<export-toexcel csv={values}></export-toexcel>')({values}));
                            self.scope.appstate.attr("excelOutput",false);
                         }else{
                           $("#messageDiv").html("<label class='successMessage'>"+values["responseText"]+"</label>");

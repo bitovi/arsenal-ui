@@ -65,26 +65,38 @@
                     this.scope.uploadedfileinfo.splice(0,uploadedfileinfoSize);
                 },
                 '.action-link click': function(el, ev) {
-                   var liText = el.text();
+                   var self = this;
+                   var liText = el.closest('li').find('a:eq(0)').html();
+                   var fileId= el.closest('li').find('a:eq(0)').attr('id');
                     var index = liText.indexOf("(");
                     var name = '';
                     var selectedIndex = '';
+                    var deleteFile;
                     if(index != -1) {
                       name = liText.substring(0,index);
                       this.scope.attr("fileList").forEach(function(file, index) {
-                        self.scope.deletedFileInfo.push(file);
-                          if(file.name == name.trim()) {
+                        if(fileId != undefined && fileId.length >0 && (fileId == (file.fileId+''))){
                             selectedIndex = index;
-                          }
+                            deleteFile = file;
+                        }else if(file.name == name.trim()){
+                              selectedIndex = index;
+                              deleteFile = file;
+                        }
                       });
                     }
-                      this.scope.attr("fileList").splice(selectedIndex,1);
+                        self.scope.deletedFileInfo.push(deleteFile);
+                        this.scope.attr("fileList").splice(selectedIndex,1);
+                      
                 },
                 '.downLoad-Link click': function(el, ev) {
                     var downLoadFile={};
                     var fileId = el[0].id;
-                    downLoadFile.fileId= fileId;
-                    downLoadFile.boundType='INBOUND';
+                    downLoadFile.files=[];
+                    var file={};
+                    file.fileId= fileId;
+                    file.boundType='INBOUND';
+                    downLoadFile.files.push(file);
+                    console.log(JSON.stringify(downLoadFile));
                     fileManager.downloadFile(downLoadFile,function(data){ 
                         if(data["status"]=="SUCCESS"){
                           
