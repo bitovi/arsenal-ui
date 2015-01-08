@@ -566,6 +566,7 @@ var fetchReconDetails = function(scope){
   var searchRequestObj = UserReq.formGlobalRequest(scope.appstate);
   searchRequestObj.searchRequest["type"] = scope.tabName.incoming.attr("type");;
   //TODO During pagination / scrolling, the below values has tobe chnaged.
+
   if(scope.appstate.attr('globalSearchButtonClicked')==true){
       scope.attr("incomingOffset",0);
       scope.attr("incomingScrollTop",0);

@@ -110,6 +110,9 @@ var highchartpage = Component.extend({
 					            verticalAlign: 'middle',
 					            borderWidth: 0
 					        },
+					        exporting: {
+					            enabled: false
+					        },
 					        series: [{
 					            name: 'Invoice Amount',
 					            data: highChartdata["INVOICE_AMOUNT"] 
