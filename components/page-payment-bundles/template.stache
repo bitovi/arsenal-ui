@@ -2,6 +2,9 @@
   <copy-clipboard> {{values}}</copy-clipboard>
   <div class="export-toexcel"  appstate="{appstate}" id="exportExcel"></div>
   <h1>Payment Bundle Review</h1>
+  <div class="col-lg-4">
+    <div id="messageDiv" class="col-md-12" style="text-align:center;padding-top:5px;"></div>
+  </div>
   <div class="bundle-list-actions">
     {{#if pageState.selectedBundle.editable}}
       <button class="add-invoice">Add Invoices To Bundle</button>
