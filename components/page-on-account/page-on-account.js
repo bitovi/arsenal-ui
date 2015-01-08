@@ -31,7 +31,8 @@ fileUpload.extend({
   tag: 'rn-file-uploader',
   scope: {
         fileList : new can.List(),
-        uploadedfileinfo:[]
+        uploadedfileinfo:[],
+        deletedFileInfo:[]
     },
   events:{
       'inserted': function (){
@@ -40,6 +41,9 @@ fileUpload.extend({
       },
        "{uploadedfileinfo} change":function(){
           this.scope.fileList.replace(this.scope.uploadedfileinfo);
+      },
+      "{deletedFileInfo} change":function(){
+        alert('deleting');
       }
     }
  });
@@ -51,6 +55,7 @@ fileUpload.extend({
         displayMessage:"display:none",
         fileUpload:false,
         uploadedfileinfo:[],
+        deletedFileInfo:[],
         isAnyFileLoaded : can.compute(function() { return this.fileList.attr('length') > 0; }),
         isSuccess: false
 
@@ -62,6 +67,9 @@ fileUpload.extend({
       },
        "{uploadedfileinfo} change":function(){
           this.scope.fileList.replace(this.scope.uploadedfileinfo);
+      }, 
+      "{deletedFileInfo} change":function(){
+        alert('deleting') ;
       }
     }
  });
@@ -91,7 +99,8 @@ var page = Component.extend({
     quarters:[],
     csvcontent:[],
     uploadedfileinfo:[],
-    loadProposedONAccountPage:[]
+    loadProposedONAccountPage:[],
+    deletedFileInfo:[]
   },
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
