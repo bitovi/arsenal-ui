@@ -91,7 +91,6 @@ var BundleDetailTabs = Component.extend({
           workflowInstanceId: bundle.approvalId
         });
       }).then(function(steps) {
-        tokenInput = [];
         scope.workflowSteps.replace(steps);
       });
     },
@@ -159,13 +158,23 @@ var BundleDetailTabs = Component.extend({
         else if(type=="Delete"){
           var flag=true;
           _.each(tokenInput, function(obj) {
-            if(val.id == obj.id){
+            if(obj != undefined && val.id == obj.id){
               tokenInput.splice(obj.key,1);
             }
           });
         }
 
       this.getNewDetails(this.pageState.selectedBundle);
+    },
+    resetToken:  function(){
+      var self = this;
+      _.each(tokenInput, function(obj) {
+        tokenInput.splice(obj.key,1);
+      });
+
+      $("li").remove(".token-input-token-facebook");
+      $("#token-input-tokenSearch").attr('placeholder', "Search...");
+
     }
   },
   helpers: {
@@ -344,6 +353,7 @@ var BundleDetailTabs = Component.extend({
     '{scope} selectedTab': function(scope, ev, newTab, oldTab) {
       if(newTab && oldTab) { // only when *changing* tabs
         this.scope.attr('gridColumns', newTab.columns);
+        this.scope.resetToken();
         scope.pageState.selectedBundle && scope.getNewDetails(scope.pageState.selectedBundle);
       }
     },
@@ -395,6 +405,7 @@ var BundleDetailTabs = Component.extend({
 var resetSelectedBundle = function(scope){
 
   var selectedBundle = scope.pageState.selectedBundle;
+  scope.resetToken();
   can.batch.start();
   // clear out selectedRows
   scope.selectedRows.splice(0, scope.selectedRows.length);
