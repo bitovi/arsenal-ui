@@ -316,7 +316,7 @@ frameRows:function(data,quarters){
 getOnAccountPeriodType:function(){
     return "Q";
 },
-prepareRowsForDisplay:function(onAccountDetails){
+prepareRowsForDisplay:function(onAccountDetails,quarters){
   var rows=[];
   var previousEntityId="";
   var previousCurrency="";
@@ -328,6 +328,7 @@ prepareRowsForDisplay:function(onAccountDetails){
       var entityId = onAccountDetails[i].entityId;
       var currency = onAccountDetails[i].currencyCode;
       var contentType = onAccountDetails[i].contentGroupName;
+       var period = this.getDisplayPeriod(onAccountDetails[i].fiscalPeriod);
       if(entityId==previousEntityId && currency == previousCurrency && contentType==previousContentType){
         if(i==0){
           row = this.createRow(onAccountDetails[i],false,row)
@@ -350,6 +351,7 @@ prepareRowsForDisplay:function(onAccountDetails){
           } 
         }
         row=this.createRow(onAccountDetails[i],true,"");
+        periodMap[period]=onAccountDetails[i].onAccountAmt;
       }
        previousEntityId=entityId;
        previousCurrency=currency;
