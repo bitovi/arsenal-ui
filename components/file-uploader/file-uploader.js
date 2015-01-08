@@ -3,6 +3,7 @@
   import FileUpLoader from 'models/fileuploader/';
   import compute from 'can/compute/';
   import _less from './file-uploader.less!';
+  import fileManager from 'utils/fileManager/'
 
   var FileUploader = Component.extend ({
 
@@ -14,8 +15,8 @@
                   fileUpload:false,
                   uploadedfileinfo:[],
                   isAnyFileLoaded : can.compute(function() { return this.fileList.attr('length') > 0; }),
-                  isSuccess: false
-
+                  isSuccess: false,
+                  deletedFileInfo:[]
               },
         helpers: {
                 convertToKB: function (size) {
@@ -63,7 +64,7 @@
                      var uploadedfileinfoSize = this.scope.uploadedfileinfo.length;
                     this.scope.uploadedfileinfo.splice(0,uploadedfileinfoSize);
                 },
-                '.filelist li click': function(el, ev) {
+                '.action-link click': function(el, ev) {
                    var liText = el.text();
                     var index = liText.indexOf("(");
                     var name = '';
@@ -71,12 +72,33 @@
                     if(index != -1) {
                       name = liText.substring(0,index);
                       this.scope.attr("fileList").forEach(function(file, index) {
+                        self.scope.deletedFileInfo.push(file);
                           if(file.name == name.trim()) {
                             selectedIndex = index;
                           }
                       });
                     }
                       this.scope.attr("fileList").splice(selectedIndex,1);
+                },
+                '.downLoad-Link click': function(el, ev) {
+                    var downLoadFile={};
+                    var fileId = el[0].id;
+                    downLoadFile.fileId= fileId;
+                    downLoadFile.boundType='INBOUND';
+                    fileManager.downloadFile(downLoadFile,function(data){ 
+                        if(data["status"]=="SUCCESS"){
+                          
+                        }else{
+                          $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                          $("#messageDiv").show();
+                          setTimeout(function(){
+                              $("#messageDiv").hide();
+                          },2000)
+                        }
+                  }, function(xhr) {
+                        console.error("Error while downloading the file with fileId: "+fileId+xhr);
+                  }); 
+
                 },
                 '{fileList} change': function(){
                   
