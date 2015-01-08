@@ -100,7 +100,9 @@ var page = Component.extend({
     csvcontent:[],
     uploadedfileinfo:[],
     loadProposedONAccountPage:[],
-    deletedFileInfo:[]
+    deletedFileInfo:[],
+    proposeOnAccOffset: 0,
+    tableScrollTop: 0
   },
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
@@ -438,6 +440,7 @@ var page = Component.extend({
           var self = this;
           //var quarters = self.scope.quarters;         
           self.scope.attr('showLoadingImage',true);
+          self.scope.appstate.attr("offset", self.scope.attr('proposeOnAccOffset'));
           proposedOnAccount.findOne(createProposedOnAccountRequest(self.scope.appstate),function(data){
             self.scope.attr('showLoadingImage',false);
             if(data["status"]=="SUCCESS"){
@@ -679,6 +682,7 @@ var createProposedOnAccountRequest=function(appstate){
   var proposedOnAccountRequest={};
   proposedOnAccountRequest.searchRequest=requestHelper.formGlobalRequest(appstate).searchRequest;
   proposedOnAccountRequest.searchRequest.type="PROPOSED";
+  proposedOnAccountRequest.searchRequest.offset=appstate.attr("offset");
   return requestHelper.formRequestDetails(proposedOnAccountRequest);
 };
 var createProposedOnAccountRequestForExportToExcel=function(appstate){
