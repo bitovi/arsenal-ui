@@ -62,6 +62,8 @@ var page = Component.extend({
     incomingScrollTop: 0,
     ingestedOffset: 0,
     incomingOffset: 0,
+    pagename : "recon",
+    load : true,
 
     reconStatsDetailsSelected : [],
 
@@ -108,6 +110,8 @@ var page = Component.extend({
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
     this.scope.attr("emptyrows", false);
+    this.scope.ingestList.headerRows.splice(0, this.scope.ingestList.headerRows.length);
+    this.scope.ingestList.footerRows.splice(0,this.scope.ingestList.footerRows.length);
     // this.scope.attr("isGlobalSearchIngested",this.scope.appstate.attr("globalSearch"));
     // console.log(" ")
     // fetchReconIngest(this.scope);
@@ -238,7 +242,7 @@ var page = Component.extend({
       if(this.scope.isGlobalSearchIngested != this.scope.appstate.attr('globalSearch')){
         this.scope.attr("isGlobalSearchIngested",this.scope.appstate.attr("globalSearch"));
         if(this.scope.tabSelected == this.scope.tabName.ingest.attr("name")){
-          fetchReconIngest(this.scope);
+          fetchReconIngest(this.scope, this.scope.load);
         }else{
           fetchReconDetails(this.scope);
         }
@@ -350,40 +354,6 @@ var processRejectIngestRequest = function(scope,requestType){
 
       Promise.all([Recon.reject(rejectSearchRequestObj)]).then(function(values) {
 
-        scope.reconStatsDetailsSelected = data.reconStatsDetails;
-
-        findCCids(scope, ccidSelected, tab);
-
-        if(tab == "ingest") {
-
-          if(scope.reconStatsDetailsSelected == undefined ||  (scope.reconStatsDetailsSelected != null && scope.reconStatsDetailsSelected.length <= 0)) {
-
-            scope.attr("emptyrows", true);
-
-          } else {
-
-            scope.attr("emptyrows", false);
-
-          } 
-
-          scope.ingestList.headerRows.replace(scope.reconStatsDetailsSelected);
-
-        } else {
-
-          if(scope.reconStatsDetailsSelected == undefined || (scope.reconStatsDetailsSelected != null && scope.reconStatsDetailsSelected.length <= 0)) {
-
-            scope.attr("emptyrows", true);
-
-          } else {
-
-            scope.attr("emptyrows", false);
-
-          }
-
-          scope.incomingDetails.headerRows.replace(scope.reconStatsDetailsSelected);
-
-        }
-
         scope.attr("size_ingestCcidSelected", 0);
 
         if(values != null && values.length > 0) {
@@ -404,6 +374,8 @@ var processRejectIngestRequest = function(scope,requestType){
             setTimeout(function(){
               $("#messageDiv").hide();
             },3000);
+
+            fetchReconIngest(scope, scope.load);
           }
         } else{
 
@@ -453,7 +425,7 @@ var displayErrorMessage = function(message,log){
 }
 
 /**/
-var fetchReconIngest = function(scope){
+var fetchReconIngest = function(scope, load){
   var searchRequestObj = UserReq.formGlobalRequest(scope.appstate);
   searchRequestObj.searchRequest["type"] =  scope.tabName.ingest.attr("type");
   //TODO During pagination / scrolling, the below values has tobe chnaged.
@@ -548,16 +520,23 @@ var fetchReconIngest = function(scope){
     console.error("Error while loading: fetchReconIngest"+xhr);
   }).then(function(values){
 
-    var ccidCheckbox = $("input.ccid")
+    if(load) {
+      var ccidCheckbox = $("input.ccid")
 
-    for(var i=0; i<ccidCheckbox.length  ;i++) {
+      for(var i=0; i<ccidCheckbox.length  ;i++) {
 
-      ccidCheckbox[i].click();
+        ccidCheckbox[i].click();
+
+      }
+
+      var ccids = scope.ingestCcidSelected;
+      scope.reconRefresh[0].loadRefreshStats(dataLowerGrid, scope.reconRefresh[0]);
+    } else {
+
+      scope.attr("load", true);
 
     }
 
-    var ccids = scope.ingestCcidSelected;
-    scope.reconRefresh[0].loadRefreshStats(dataLowerGrid, scope.reconRefresh[0]);
 
   });
 }

@@ -22,7 +22,7 @@
     <img src="resources/images/exportExcelIcon.png" class="exportToExcel" id="exportExcel">
     <img src="resources/images/copyToClipboardIcon.png" class="copyToClipboard" id="copyToClipboard">
   </div>
-</div>
+
 
   <div id="content"><!-- Tabs - Start-->
 
@@ -35,7 +35,7 @@
         <div id="my-tab-content" class="tab-content">
         
         <div class="tab-pane active grid-custom-overflow" id="incomingDetails">
-          <rn-recon-grid columns="{detailGridColumns}" rows="{incomingDetails.headerRows}" footerrows="{incomingDetails.footerRows}" emptyrows="{emptyrows}"></rn-recon-grid>
+          <rn-recon-grid columns="{detailGridColumns}" rows="{incomingDetails.headerRows}" footerrows="{incomingDetails.footerRows}" emptyrows="{emptyrows}" pagename="{pagename}"></rn-recon-grid>
         </div>
 
         <!-- <div class="col-lg-12 " style="max-height: 200px; overflow-y:scroll;" id="reconstatsOtherGrid"> -->
