@@ -132,11 +132,11 @@ var BundleDetailTabs = Component.extend({
     },
     getNewValidations: function(bundle) {
 
-      if(bundle.status != 1){
+      if(bundle.status != 1 && !this.appstate.userInfo.roleIds.indexOf(constants.ROLES.BM)){
         return;
       }
-
       var scope = this;
+
       var view;
       if(bundle.bundleType === 'REGULAR_INV') {
         view = this.attr('selectedTab').value;

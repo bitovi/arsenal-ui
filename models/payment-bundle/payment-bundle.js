@@ -242,7 +242,7 @@ var PaymentBundle = Model.extend({
               if(target != undefined ){
                 var lineTarget = _.find(target.bundleDetails, {bndlLineId: detail.bndlLineId});
                 lineTarget.attr('validationMessages', detail.vldtnMessage);
-                lineTarget.attr('validationColor', detail.vldtnBatchResultColor);
+                detail.vldtnBatchResultColor != undefined  ?  lineTarget.attr('validationColor', detail.vldtnBatchResultColor ) :  lineTarget.attr('validationColor', "" );
               }
             }
 
