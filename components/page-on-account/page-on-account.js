@@ -101,6 +101,7 @@ var page = Component.extend({
     uploadedfileinfo:[],
     loadProposedONAccountPage:[],
     deletedFileInfo:[],
+    balanceOnAccOffset: 0,
     proposeOnAccOffset: 0,
     tableScrollTop: 0,
     previouslyFetchOnAccRows:[]
@@ -209,6 +210,8 @@ var page = Component.extend({
             } else if(self.scope.tabsClicked=="ON_ACC_BALANCE"){
               message = validateFilters(self.scope.appstate,true,false,false,false,false);
               self.scope.attr('errorMessage',message); 
+              self.scope.appstate.attr("offset", self.scope.attr('balanceOnAccOffset'));
+
               if(message.length == 0){
                 //request.searchRequest["type"] = "BALANCE";
                   request.appstate=this.scope.appstate;
