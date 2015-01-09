@@ -120,6 +120,13 @@ var BundleDetailTabs = Component.extend({
 
         bundle.status === 'FAILURE' ? displayMessage("errorMessage",bundle.responseText) : scope.getNewValidations(bundle);;
 
+        //<!--rdar://problem/19415830 UI-PBR: Approve/Reject/Recall/Delete should happen only from Licensor Tab-->
+        if(bundle.view === 'LICENSOR'){
+          $(".allowedClass").show();
+        }else{
+          $(".allowedClass").hide();
+        }
+
         return bundle;
       });
     },
@@ -222,11 +229,7 @@ var BundleDetailTabs = Component.extend({
     canProceed: function() {
       this.attr('paymentType'); this.attr('approvalComment');
       return this.havePaymentTypeAndComment(this) ? 'action' : '';
-    },
-    pendingWithBM: function(options) {
-      return this.pageState.selectedBundle.pendingWith == 'PENDING WITH BM' ? options.fn(this) :  options.inverse(this);
     }
-
   },
   events: {
     '.remove-invoice click': function(el, ev) {

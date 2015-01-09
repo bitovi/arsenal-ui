@@ -61,32 +61,32 @@
   <div class="approval-comment">
     <label>Approval Comment</label>
     <textarea can-value="{approvalComment}"></textarea>
-    <div class="buttons">
-    {{#isBM}}
+    
+      <div class="buttons allowedClass">
+      {{#isBM}}
+        {{#if pageState.selectedBundle.editable}}
+          <button class="{{canProceed}}"  data-action="delete">Delete</button>
+        {{/if}}
 
-      {{#if pageState.selectedBundle.editable}}
-        <button class="{{canProceed}}"  data-action="delete">Delete</button>
-      {{/if}}
+        {{#if pageState.selectedBundle.recallable}}
+          <button class="{{canProceed}}"  data-action="recall">Recall</button>
+        {{/if}}
 
-      {{#if pageState.selectedBundle.recallable}}
-        <button class="{{canProceed}}"  data-action="recall">Recall</button>
-      {{/if}}
+        {{#if pageState.selectedBundle.approvable}}
+          <button class="{{canProceed}}" data-action="approve">Propose</button>
+        {{/if}}
+      {{else}}
+        {{#if pageState.selectedBundle.recallable}}
+          <button class="{{canProceed}}"  data-action="recall">Recall</button>
+        {{/if}}
 
-      {{#if pageState.selectedBundle.approvable}}
-        <button class="{{canProceed}}" data-action="approve">Propose</button>
-      {{/if}}
-    {{else}}
-      {{#if pageState.selectedBundle.recallable}}
-        <button class="{{canProceed}}"  data-action="recall">Recall</button>
-      {{/if}}
+        {{#if pageState.selectedBundle.approvable}}
+          <button class="{{canProceed}}" data-action="reject">Reject</button>
+          <button class="{{canProceed}}" data-action="approve">Approve</button>
+        {{/if}}
 
-      {{#if pageState.selectedBundle.approvable}}
-        <button class="{{canProceed}}" data-action="reject">Reject</button>
-        <button class="{{canProceed}}" data-action="approve">Approve</button>
-      {{/if}}
-
-    {{/isBM}}
-    </div>
+        {{/isBM}}
+      </div>
   </div>
 </div>
 {{/if}}
