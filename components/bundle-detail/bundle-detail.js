@@ -77,8 +77,9 @@ var BundleDetailTabs = Component.extend({
 
 
     workflowSteps: new WorkflowStep.List([]),
-
+    isBundleSelectionChange: false,
     selectedBundleChanged: function(scope) {
+      scope.isBundleSelectionChange = true;
       var selectedBundle = scope.pageState.selectedBundle;
       if(!selectedBundle) {
         return;
@@ -86,13 +87,15 @@ var BundleDetailTabs = Component.extend({
 
       resetSelectedBundle(scope);
 
-      scope.getNewDetails(selectedBundle).then(function(bundle) {
-        return WorkflowStep.findAll({
-          workflowInstanceId: bundle.approvalId
-        });
-      }).then(function(steps) {
-        scope.workflowSteps.replace(steps);
-      });
+      scope.getNewDetails(selectedBundle);
+      // .then(function(bundle) {
+      //   return WorkflowStep.findAll({
+      //     workflowInstanceId: bundle.approvalId
+      //   });
+      // }).then(function(steps) {
+      //   scope.workflowSteps.replace(steps);
+      // });
+      scope.isBundleSelectionChange = false;
     },
 
     gettingDetails: false,
@@ -118,7 +121,8 @@ var BundleDetailTabs = Component.extend({
       ).then(function(bundle) {
         scope.attr('gettingDetails', false);
 
-        bundle.status === 'FAILURE' ? displayMessage("errorMessage",bundle.responseText) : scope.getNewValidations(bundle);;
+        bundle.status === 'FAILURE' ? displayMessage("errorMessage",bundle.responseText) : "";
+        //scope.getNewValidations(bundle);
 
         //<!--rdar://problem/19415830 UI-PBR: Approve/Reject/Recall/Delete should happen only from Licensor Tab-->
         if(bundle.view === 'LICENSOR'){
@@ -363,7 +367,7 @@ var BundleDetailTabs = Component.extend({
       }
     },
     '{scope} selectedTab': function(scope, ev, newTab, oldTab) {
-      if(newTab && oldTab) { // only when *changing* tabs
+      if(newTab && oldTab && !scope.isBundleSelectionChange) { // only when *changing* tabs
         this.scope.attr('gridColumns', newTab.columns);
         this.scope.resetToken();
         scope.pageState.selectedBundle && scope.getNewDetails(scope.pageState.selectedBundle);
