@@ -93,7 +93,16 @@ var PaymentBundle = Model.extend({
     var appstate = params.appstate;
     if(params.appstate.excelOutput){
        var excelOutput = appstate.attr('excelOutput') != undefined ? appstate.attr('excelOutput') : false;
+       var paymentOption = appstate.paymentOption,
+            view = appstate.view.toUpperCase(),
+            bundleId = appstate.bundleId;
+
        var data = {
+           paymentBundle: {
+              bundleId,
+              paymentOption,
+              view
+            },
             bundleSearch: requestHelper.formGlobalRequest(appstate).searchRequest,
        };
        if(excelOutput!=false){

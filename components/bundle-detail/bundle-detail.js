@@ -287,12 +287,13 @@ var BundleDetailTabs = Component.extend({
       // export data to Excel
 
       var self = this;
+      self.scope.appstate = self.scope.pageState.selectedBundle;
       self.scope.appstate.attr('excelOutput', true);
       self.scope.appstate.attr('detail', true);
       if(this.scope.appstate.excelOutput ) {
-        PaymentBundle.findAll({appstate: this.scope.appstate}).then(function(data) {
-          console.log(JSON.stringify(data));
-          if(data["status"]=="0000"){
+        PaymentBundle.findOne({appstate: this.scope.appstate}).then(function(data) {
+          console.log(data);
+         if (data != undefined && data["status"] == "SUCCESS" && data["exportExcelFileInfo"] != null) {
             self.scope.appstate.attr("excelOutput",false);
             self.scope.appstate.attr('detail',false);
             $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
