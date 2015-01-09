@@ -332,12 +332,12 @@ var page = Component.extend({
               if(invoiceLineItems.length > 0){
                 for(var j=0;j<invoiceLineItems.length;j++){
                   var invLITemp={};
-                  //periodType = invoiceLineItems[j]['periodType'];
+                  var period = invoiceLineItems[j]["fiscalPeriod"];
                   invLITemp["invId"] = "";
                   invLITemp["__isChild"] = true;
                   invLITemp["__isChecked"] = false;
                   invLITemp["entityName"] = "";
-                  invLITemp["fiscalPeriod"] = periodWidgetHelper.getDisplayPeriod(invoiceLineItems[j]["fiscalPeriod"],periodType);
+                  invLITemp["fiscalPeriod"] = "";
                   invLITemp["invoiceType"] = "";
                   invLITemp["invTypeDisp"] = "";
                   invLITemp["contentGrpName"] = (invoiceLineItems[j]["contentGrpName"]==null)?"":invoiceLineItems[j]["contentGrpName"];
@@ -350,15 +350,19 @@ var page = Component.extend({
                   invLITemp["status"] = "";
                   invLITemp["paymentState"] = "";
                   invLITemp["bundleName"] = "";
-                  invLITemp["comments"] = "";  
-                    if(j==0){
-                      lowestPeriod=Number(invoiceLineItems[j]["fiscalPeriod"]);
-                      highestPeriod=Number(invoiceLineItems[j]["fiscalPeriod"]);
+                  invLITemp["comments"] = "";
+                  if(period != undefined && period > 0){
+                    invLITemp["fiscalPeriod"] = periodWidgetHelper.getDisplayPeriod(period,periodType);
+                    if(lowestPeriod==0 && highestPeriod == 0){
+                      lowestPeriod=Number(period);
+                      highestPeriod=Number(period);
                     }
-                    tmpPeriod = Number(invoiceLineItems[j]["fiscalPeriod"]);
+                    tmpPeriod = Number(period);
                     if (tmpPeriod < lowestPeriod) lowestPeriod = tmpPeriod;
                     if (tmpPeriod > highestPeriod) highestPeriod = tmpPeriod;
-
+                  }else if(period == 0){
+                    invLITemp["fiscalPeriod"] = 'null';
+                  }
                   contentTypeArr.push(invLITemp["contentGrpName"]);
                   countryArr.push(invLITemp["country"]);
                   gridData.data.push(invLITemp);
