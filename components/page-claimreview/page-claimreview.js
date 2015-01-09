@@ -525,7 +525,7 @@ var page = Component.extend({
            this.scope.details["contentType"]=row.contentType;
            this.scope.details["isChild"]=className;
       },
-      "#claimLicencorGrid .rn-grid>thead>tr>th click": function(item, el, ev){
+      ".rn-grid>thead>tr>th click": function(item, el, ev){
           var self=this;
            //console.log($(item[0]).attr("class"));
           var val = $(item[0]).attr("class").split(" ");
@@ -536,19 +536,20 @@ var page = Component.extend({
             self.scope.attr('sortColumns').push(val[0]);
           } else {
             for(var i=0;i<existingSortColumnsLen;i++){
-              /* The below condition is to selected column to be sorted in asc & dec way */ 
+              /* The below condition is to selected column to be sorted in asc & dec way */
               console.log(val[0]+","+existingSortColumns[i] )
               if(existingSortColumns[i] == val[0]){
                 existFlag = true;
-              } 
-            } 
-            if(existFlag==false)
+              }
+            }
+            if(existFlag==false){
+              self.scope.attr('sortColumns').replace([]);
               self.scope.attr('sortColumns').push(val[0]);
-            else {
+            } else {
               var sortDirection = (self.scope.attr('sortDirection') == 'asc') ? 'desc' : 'asc';
               self.scope.attr('sortDirection', sortDirection);
             }
-              
+
           }
            
           console.log("aaa "+self.scope.sortColumns.attr());
