@@ -99,7 +99,7 @@ var page = Component.extend({
     quarters:[],
     csvcontent:[],
     uploadedfileinfo:[],
-    loadProposedONAccountPage:[],
+    loadProposedONAccountPage:undefined,
     deletedFileInfo:[],
     balanceOnAccOffset: 0,
     proposeOnAccOffset: 0,
@@ -222,8 +222,7 @@ var page = Component.extend({
                   message = validateFilters(self.scope.appstate,true,false,false,false,false);
                   self.scope.attr('errorMessage',message); 
                   if(message.length == 0){
-                      self.scope.loadProposedONAccountPage.replace(Date.now());
-                      self.scope.appstate.attr("offset",0);
+                      self.scope.attr('loadProposedONAccountPage',Date.now());
                   }
                 }
           }       
@@ -320,8 +319,9 @@ var page = Component.extend({
               displayMessage(data["responseText"],true);
               //req.attr('deletableRows',rows);
               //$('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
-              self.scope.loadProposedONAccountPage.replace('LOAD'+Date.now());
-              self.scope.appstate.attr("offset",0);
+               self.scope.attr('loadProposedONAccountPage',Date.now());
+               self.scope.appstate.attr('globalSearchButtonClicked',true);
+              self.scope.previouslyFetchOnAccRows.replace([]);
           }
           else{
             // var details = data.onAccount.onAccountDetails;
@@ -382,8 +382,9 @@ var page = Component.extend({
                  displayMessage(data["responseText"],true);
                   //req.attr('editableRows',rows);
                   //$('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
-                  self.scope.loadProposedONAccountPage.replace(Date.now());
-                  self.scope.appstate.attr("offset",0);
+                   self.scope.attr('loadProposedONAccountPage',Date.now());
+                   self.scope.appstate.attr('globalSearchButtonClicked',true);
+                   self.scope.previouslyFetchOnAccRows.replace([]);
                   $("#submitPOA").attr("disabled","disabled");
               }
               else{
@@ -443,10 +444,15 @@ var page = Component.extend({
             console.error("Error while executing Copy onAccount domain service "+xhr);
           });
       },
-      "{loadProposedONAccountPage} change": function(){
+      "{scope} loadProposedONAccountPage": function(){
+        alert('inside');
           var self = this;
           //var quarters = self.scope.quarters;         
           self.scope.attr('showLoadingImage',true);
+          if(self.scope.appstate.attr('globalSearchButtonClicked')==true){
+            self.scope.attr("proposeOnAccOffset",0);
+            self.scope.attr("tableScrollTop",0);
+          }  
           self.scope.appstate.attr("offset", self.scope.attr('proposeOnAccOffset'));
           proposedOnAccount.findOne(createProposedOnAccountRequest(self.scope.appstate),function(data){
             self.scope.attr('showLoadingImage',false);
@@ -455,7 +461,12 @@ var page = Component.extend({
                 //var returnValue = utils.getProposedOnAccRows(quarters,data);
 
                 var returnValue = utils.prepareOnAccountRowsForDisplay(data.onAccount.onAccountDetails,self.scope.quarters);
-                var finalRows = self.scope.previouslyFetchOnAccRows.concat(returnValue['ROWS']);
+                var finalRows = returnValue['ROWS'];
+                if(self.scope.attr('proposeOnAccOffset') > 0){
+                  finalRows = self.scope.previouslyFetchOnAccRows.concat(returnValue['ROWS']);
+                  alert('appending');
+                } 
+                //var finalRows = self.scope.previouslyFetchOnAccRows.concat(returnValue['ROWS']);
 
                 var footerRows = utils.createFooterRow(data.onAccount.onAccountFooter);
 
@@ -489,7 +500,7 @@ var page = Component.extend({
                      $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj:[]}));
                      self.scope.attr('bundleNamesForDisplay','');
                 }
-                self.scope.previouslyFetchOnAccRows.replace(returnValue['ROWS']);
+                self.scope.previouslyFetchOnAccRows.replace(finalRows);
             } else{
                 displayMessage(data["responseText"],false);
                 $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
@@ -693,6 +704,7 @@ var createProposedOnAccountRequest=function(appstate){
   proposedOnAccountRequest.searchRequest=requestHelper.formGlobalRequest(appstate).searchRequest;
   proposedOnAccountRequest.searchRequest.type="PROPOSED";
   proposedOnAccountRequest.searchRequest.offset=appstate.attr("offset");
+  proposedOnAccountRequest.searchRequest.limit="10";
   return requestHelper.formRequestDetails(proposedOnAccountRequest);
 };
 var createProposedOnAccountRequestForExportToExcel=function(appstate){
