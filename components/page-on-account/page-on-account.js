@@ -730,7 +730,7 @@ var validateFilters=function(appstate,validateQuarter,validateStoreType,validate
 
       if(validateLicensor && (licId == null || licId == undefined || licId == "")){
         return "Please select Licensor !";
-      }else if(validateLicensor && (licId == undefined || (licId.attr() == null || licId.attr() =="")) || licId.length==0){
+      }else if(validateLicensor && (licId == undefined || (licId.attr() == null || licId.attr() =="")) || licId.length==0 || (licId[0] == "-1")){
         return "Please select Licensor !";
       }
 
