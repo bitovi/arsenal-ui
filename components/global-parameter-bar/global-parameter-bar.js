@@ -198,7 +198,7 @@ var GlobalParameterBar = Component.extend({
          else if($(el[0]).val() == null)
           {
             self.scope.changesToApply.attr('country', ["ALL"]);
-          }  
+          }
       }, 200);
     },
     '#licensor select change': function(el, ev) {
@@ -218,7 +218,7 @@ var GlobalParameterBar = Component.extend({
         else if($(el[0]).val() == null)
           {
             self.scope.changesToApply.attr('licensor', ["-1"]);
-          }  
+          }
       }, 200);
     },
     '#contentType select change': function(el, ev) {
@@ -243,8 +243,8 @@ var GlobalParameterBar = Component.extend({
         else if($(el[0]).val() == null)
         {
           self.scope.changesToApply.attr('contentType', ["-1"]);
-        } 
-        
+        }
+
       }, 200);
     },
     '#globalSearch click': function() {
@@ -256,7 +256,7 @@ var GlobalParameterBar = Component.extend({
       self.scope.appstate.attr('globalSearchButtonClicked', true);
          message = validateFilters(self.scope.changesToApply, false, true, false, false, false,self.scope.appstate.attr('page'))
          self.scope.attr('errorMessage', message);
-     
+
 
       if (message.length == 0) {
         this.scope.applyChanges(this.scope.changesToApply, this.scope.appstate);
@@ -329,7 +329,7 @@ var GlobalParameterBar = Component.extend({
       reqObj.regionId = DefaultGlobalParameters.Region.id;
     }
 
-    //token.findAll();
+    token.findAll();
 
     Promise.all([
       StoreType.findAll(UserReq.formRequestDetails(genObj)),

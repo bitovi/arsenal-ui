@@ -29,7 +29,7 @@ import _fixtures from 'models/fixtures/';
 
 appstate.bind('page', function(ev, newVal, oldVal) {
   newVal = newVal || appstate.constuctor.prototype.defaults.page;
-//  token.findAll();
+  token.findAll();
 
   System.import('components/page-' + newVal + '/').then(function(pageComponent) {
     var template = '<page-' + newVal + ' appstate=  "{appstate}"></page-' + newVal + '>';
@@ -49,7 +49,7 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
 
   //added for CSRF token
 
-  if(appstate.csrfToken != null && options.type=='POST')
+  if(appstate.csrfToken != null && options.type=='POST' && options.url.indexOf(URLs.UI_SERVICE_URL) === 0)
   {
     jqXHR.setRequestHeader('X-Apple-CSRF-Token', appstate.csrfToken);
     options.async = false;
