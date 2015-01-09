@@ -246,12 +246,12 @@ var BundleDetailTabs = Component.extend({
 
       var className = item.closest('tr').hasClass("child");
 
-      this.scope.details["countryId"]=row.country;
+      this.scope.details["countryId"]=row.country || "";
       this.scope.details["requestFrom"]=$(".switcher li.selected").text();
-      this.scope.details["licensorId"]=row.entityName;
-      this.scope.details["fiscalPeriod"]=row.fiscalPeriod;
-      this.scope.details["periodType"]=row.periodType;
-      this.scope.details["contentType"]=row.contentGrpName;
+      this.scope.details["licensorId"]=row.entityName || "";
+      this.scope.details["fiscalPeriod"]=row.fiscalPeriod || "";
+      this.scope.details["periodType"]=row.periodType || "";
+      this.scope.details["contentType"]=row.contentGrpName || "";
       this.scope.details["isChild"]=className;
     },
     '.show-chart click': function(el, ev) {
@@ -263,6 +263,11 @@ var BundleDetailTabs = Component.extend({
         $("#highChartDetails").append(stache('<high-chart details={data}></high-chart>')({data}));
       }else{
         console.log('Data not set so not showing the chart');
+        $("#messageDiv").html("<label class='errorMessage'>Select child row to see the report</label>");
+          $("#messageDiv").show();
+          setTimeout(function(){
+              $("#messageDiv").hide();
+        },4000);
       }
     },
     '#highChartDetails mousedown': function(item, el, ev){
@@ -287,12 +292,13 @@ var BundleDetailTabs = Component.extend({
       // export data to Excel
 
       var self = this;
+      self.scope.appstate = self.scope.pageState.selectedBundle;
       self.scope.appstate.attr('excelOutput', true);
       self.scope.appstate.attr('detail', true);
       if(this.scope.appstate.excelOutput ) {
-        PaymentBundle.findAll({appstate: this.scope.appstate}).then(function(data) {
-          console.log(JSON.stringify(data));
-          if(data["status"]=="0000"){
+        PaymentBundle.findOne({appstate: this.scope.appstate}).then(function(data) {
+          console.log(data);
+         if (data != undefined && data["status"] == "SUCCESS" && data["exportExcelFileInfo"] != null) {
             self.scope.appstate.attr("excelOutput",false);
             self.scope.appstate.attr('detail',false);
             $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
