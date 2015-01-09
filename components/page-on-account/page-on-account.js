@@ -192,6 +192,7 @@ var page = Component.extend({
                     //console.log("inside NEW_ON_ACC");
                     $('#newonAccountGrid, #newonAccountGridComps').show();
                     genObj["licensorId"]=request.searchRequest.entityId.toString();
+                    genObj["regionId"]=request.searchRequest.regionId;
                     self.scope.attr('showLoadingImage',true);
                     LicensorCurrency.findAll(requestHelper.formRequestDetails(genObj)).then(function(data) {
                     self.scope.attr('showLoadingImage',false);
@@ -730,10 +731,10 @@ var validateFilters=function(appstate,validateQuarter,validateStoreType,validate
         return 'Please select Region !';
       }
 
-
+      var licTxt = $('#licensorsFilter option:selected').text();
       if(validateLicensor && (licId == null || licId == undefined || licId == "")){
         return "Please select Licensor !";
-      }else if(validateLicensor && (licId == undefined || (licId.attr() == null || licId.attr() =="")) || licId.length==0 || (licId[0] == "-1")){
+      }else if(validateLicensor && (licId == undefined || (licId.attr() == null || licId.attr() =="")) || licId.length==0 || (licTxt != undefined && licTxt.length <= 0)){
         return "Please select Licensor !";
       }
 
