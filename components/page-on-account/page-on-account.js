@@ -445,7 +445,6 @@ var page = Component.extend({
           });
       },
       "{scope} loadProposedONAccountPage": function(){
-        alert('inside');
           var self = this;
           //var quarters = self.scope.quarters;         
           self.scope.attr('showLoadingImage',true);
@@ -464,7 +463,6 @@ var page = Component.extend({
                 var finalRows = returnValue['ROWS'];
                 if(self.scope.attr('proposeOnAccOffset') > 0){
                   finalRows = self.scope.previouslyFetchOnAccRows.concat(returnValue['ROWS']);
-                  alert('appending');
                 } 
                 //var finalRows = self.scope.previouslyFetchOnAccRows.concat(returnValue['ROWS']);
 
@@ -496,7 +494,7 @@ var page = Component.extend({
 
                 }else{
                     $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
-                     $('#proposeuploadFile').html(stache('<propose-rn-file-uploader uploadedfileinfo={docs}></propose-rn-file-uploader>')({docs:[]})); 
+                     self.scope.proposedOnAccDocuments.replace('');
                      $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj:[]}));
                      self.scope.attr('bundleNamesForDisplay','');
                 }
@@ -505,6 +503,7 @@ var page = Component.extend({
                 displayMessage(data["responseText"],false);
                 $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
                 $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj:[]}));
+                self.scope.proposedOnAccDocuments.replace('');
                 self.scope.attr('bundleNamesForDisplay','');
             }
         }, function(xhr) {
