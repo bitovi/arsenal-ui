@@ -44,21 +44,23 @@ var mandatoryField = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiv
 fileUpload.extend({
   tag: 'rn-file-uploader-edit',
   scope: {
-           fileList : new can.List(),
-           uploadedfileinfo:[]
-         },
+      fileList : new can.List(),
+      uploadedfileinfo:[],
+      deletedFileInfo:[]
+   },
    events:{
-   	"{uploadedfileinfo} change":function(){
-	   		if(this.scope.uploadedfileinfo[0] == "none")
-	   		{
-	   			this.scope.fileList.replace([]);
-	   		}
-	   		else
-	   		{
-	   			this.scope.fileList.replace(this.scope.uploadedfileinfo);
-	   		}	
-   		
-   		}
+   	    "{uploadedfileinfo} change":function () {
+            // update areFilesToBeUploaded boolean
+            //Handling this using data as scope is not accessible from page-edit -invoice.
+            $('rn-file-uploader-edit').data('_d_uploadedFileInfo', this.scope.uploadedfileinfo);
+            // check if all files in uploadedfileinfo have a isServer flag
+            // then replace fileList with uploadedfileinfo
+            // this is the initial fileList setup
+            this.scope.fileList.replace(this.scope.uploadedfileinfo);
+   		},
+       "{deletedFileInfo} change":function () {
+           $('rn-file-uploader-edit').data('_d_deletedFileInfo', this.scope.deletedFileInfo);
+       }
    }      
 });
 
@@ -75,7 +77,7 @@ createpb.extend({
 		     		
 		    		setTimeout(function(){ 
 		     			self.scope.attr("paymentBundleId", self.scope.attr("selectedbundle")); /*Bundle drop down are not getting populated before 2900 ms*/
-		     			//console.log(self.scope.attr("selectedbundle"));
+
 		     			var isBundleId = $.isNumeric(self.scope.attr("selectedbundle"));
 
 		     			if(isBundleId){
@@ -148,6 +150,7 @@ var page = Component.extend({
   	editpage:false,
   	formSuccessCount:1,
   	uploadedfileinfo:[],
+    deletedFileInfo:[],
   	periodType:"",
   	ajaxRequestStatus:{},
   	usdFxrateRatio:"",
@@ -161,6 +164,7 @@ var page = Component.extend({
   	 			$(".breakdownPeriod").removeClass("requiredBar");
   	 		} 
 		},
+
 	createBreakline: function(rowindex){
 			var self = this;
 			var $template = $('#breakrowTemplate'),
@@ -870,9 +874,7 @@ var page = Component.extend({
 				 		else
 				 		{
 				 			self.scope.attr("calduedate","");
-				 		}	
-				 		
-						
+				 		}
 						self.scope.attr("tax", invoiceData.tax);
 						self.scope.attr("invoiceId",invoiceData.invId);
 				 	
@@ -880,20 +882,21 @@ var page = Component.extend({
 						$('#multipleCommentsInv').html(stache('<multiple-comments divid="usercommentsdivinv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
 		                self.scope.changeTextOnInvType();
 
+                        //Sudesna
+                        //Code to display server list of files on file upload rn-file-uploader-edit control starts
+                        for(var j=0;j<invoiceData.invoiceDocuments.length;j++){
+                            invoiceData.invoiceDocuments[j].isServer = true;
+                            invoiceData.invoiceDocuments[j].filePath = invoiceData.invoiceDocuments[j].location;
+                        }
+
 		                if(invoiceData.invoiceDocuments.length > 0){
 		                	self.scope.uploadedfileinfo.replace(invoiceData.invoiceDocuments);
+		                } else {
+		                	self.scope.uploadedfileinfo.replace([]);
 		                }
-		                else
-		                {
-		                	self.scope.uploadedfileinfo.replace(["none"]);
-		                }
-		                
+                        //Code to display server list of files on file upload rn-file-uploader-edit control ends
 
-		               
-
-		                
-
-		               	self.scope.attr("invselectedbundle", invoiceData.bundleId);
+                        self.scope.attr("invselectedbundle", invoiceData.bundleId);
 
 		                var genObj = {regionId:self.scope.attr("regionStore")};
 
@@ -1018,8 +1021,8 @@ var page = Component.extend({
 		},
 
 		'rn-file-uploader-edit onSelected': function (ele, event, val) {
-            var self = this;
-            self.scope.attr('uploadedfileinfo',val.filePropeties);
+            // var self = this;
+            // self.scope.attr('uploadedfileinfo',val.filePropeties);
          },
 
 		"#invoiceform #paymentBundleNames change": function(){
@@ -1140,33 +1143,55 @@ var page = Component.extend({
 					
 				    /*comment end*/
 
-				   /*document start*/
-				   tempEditInvoiceData["invoiceDocuments"] = [];
-					
-					if(self.scope.attr().invoiceContainer[0].invoiceDocuments != null){
-						for(var j=0;j<self.scope.attr().invoiceContainer[0].invoiceDocuments.length;j++){   /*old documents*/
-							var tempDocuments = {};  /*Data populate from upload plugin*/
-							tempDocuments.fileName=self.scope.attr().invoiceContainer[0].invoiceDocuments[j].fileName;
-							tempDocuments.location = self.scope.attr().invoiceContainer[0].invoiceDocuments[j].location;
-							tempDocuments.inboundFileId = self.scope.attr().invoiceContainer[0].invoiceDocuments[j].inboundFileId;
-							tempDocuments.status = self.scope.attr().invoiceContainer[0].invoiceDocuments[j].status;
-							tempDocuments.id = self.scope.attr().invoiceContainer[0].invoiceDocuments[j].id;
-							tempEditInvoiceData["invoiceDocuments"].push(tempDocuments);
-						}
-					 }	
+                    /*document start*/
 
+                    tempEditInvoiceData["invoiceDocuments"] = [];
 
-					 	/* adding new document */
+                    //Sudesna
+                    //Code to send the updated list of files on file upload rn-file-uploader-edit to backend starts
 
-						for(var i =0; i < self.scope.uploadedfileinfo.length; i++){
-      						var tempDocument = {};
-				   			tempDocument.fileName = self.scope.uploadedfileinfo[i].attr("fileName");
-				   			tempDocument.location = self.scope.uploadedfileinfo[i].attr("filePath");
-				   			tempDocument.status = "add";
-				   			tempEditInvoiceData["invoiceDocuments"].push(tempDocument);
-				   			console.log(tempDocument);
-				   		}
+					/* adding new document */
+                    // make sure that you remove all files from _d_uploadedFileInfo that have just the term ftype = 'selectedFromLocal' & isServer
+                    var uploadedfiles = $('rn-file-uploader-edit').data('_d_uploadedFileInfo');
 
+                    for(var i =0; i < uploadedfiles.length; i++){
+                        if (uploadedfiles[i].ftype === 'pushedToServer') {
+                            // This is the list of newly uploaded files.
+                            var tempDocument = {};
+                            tempDocument.fileName = uploadedfiles[i].fileName;
+                            tempDocument.location = uploadedfiles[i].filePath;
+                            tempDocument.status = "add";
+                            tempEditInvoiceData["invoiceDocuments"].push(tempDocument);
+                        } else if (uploadedfiles[i].isServer) {
+                            // This is the existing server file list which will be send back as-is with no change.
+                            var tempDocument = {};
+                            tempDocument.fileName = uploadedfiles[i].fileName;
+                            tempDocument.location = uploadedfiles[i].location;
+                            tempDocument.docId = uploadedfiles[i].docId;
+                            tempDocument.id = uploadedfiles[i].id;
+                            tempDocument.status = uploadedfiles[i].status;
+                            tempEditInvoiceData["invoiceDocuments"].push(tempDocument);
+                        }
+                    }
+                    /* deleting existing documents */
+                    var deletedFiles = $('rn-file-uploader-edit').data('_d_deletedFileInfo');
+
+                    if (typeof deletedFiles !== 'undefined') {
+                        for (var i = 0; i < deletedFiles.length; i++) {
+                            if (deletedFiles[i].isServer) {
+                                var tempDocument = {};
+                                tempDocument.fileName = deletedFiles[i].fileName;
+                                tempDocument.location = deletedFiles[i].location;
+                                tempDocument.docId = deletedFiles[i].docId;
+                                tempDocument.status = "delete";
+                                tempDocument.id = deletedFiles[i].id;
+                                tempEditInvoiceData["invoiceDocuments"].push(tempDocument);
+                                console.log(tempDocument);
+                            }
+                        }
+                    }
+
+            //Code to send the updated list of files on file upload rn-file-uploader-edit to backend ends
 						
 
 				   /*document end*/
@@ -1212,18 +1237,17 @@ var page = Component.extend({
 					editInvoiceData.invoices.push(tempEditInvoiceData);
 					Promise.all([Invoice.update(UserReq.formRequestDetails(editInvoiceData))
 						     ]).then(function(values) {
-										if(values[0]["status"]=="SUCCESS"){
-                                  		 	 var msg = "Invoice number "+self.scope.invoicenumberStore+" was saved successfully."
-								             $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
-								             $("#invmessageDiv").show();
-								             setTimeout(function(){
+										if(values[0]["status"]=="SUCCESS") {
+                                  		 	var msg = "Invoice number "+self.scope.invoicenumberStore+" was saved successfully."
+								            $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
+								            $("#invmessageDiv").show();
+								            setTimeout(function(){
 								                $("#invmessageDiv").hide();
-								             },5000)
+								            },5000)
 
-								             if(values[0].invoices[0].errors)
-								           		{
+								            if(values[0].invoices[0].errors) {
 								           			var errorMap = values[0].invoices[0].errors.errorMap;
-								           		}
+								           	}
 
 								           		if(errorMap){
 										       		 var msg =showErrorDetails(errorMap, "Warning");
@@ -1234,6 +1258,9 @@ var page = Component.extend({
 										             },5000)
 												}
 
+                                            // reset data for uploaded fileinfo
+                                            this.scope.uploadedfileinfo.replace([]);
+                                            this.scope.deletedFileInfo.replace([]);
 										}
 							          	else
 							          	{
@@ -1249,12 +1276,19 @@ var page = Component.extend({
 										        $("#invmessageDiv").show();
 										        $("#addInvSubmit").attr("disabled", false);
 											}
-									});
+				});
 								
 				/*Edit invoice end*/
 							},
 							"#buttonCancel click":function(){
 								commonUtils.navigateTo("invoices");
+                                //Set these values to null:
+//                               var previouslyUploaded = $('rn-file-uploader-edit').data('_d_uploadedFileInfo');
+//                                previouslyUploaded.replace([]);//deletedFileInfo:[],
+
+                                this.scope.uploadedfileinfo.replace([]);
+                                this.scope.deletedFileInfo.replace([]);
+
 							},
 							'period-calendar onSelected': function (ele, event, val) {  
 			       					this.scope.attr('periodchoosen', val);
@@ -1319,23 +1353,20 @@ var page = Component.extend({
 						  	}
 						  	
 						},
-					  	init: function(){
+					  	init: function () {
 					   	 	var self = this;
 					   	 	var i = 1;
-					      this.scope.appstate.attr("renderGlobalSearch",false);
-
+					        this.scope.appstate.attr("renderGlobalSearch",false);
 					   	 	var genObj = {};
 					   	 	Promise.all([
 									      	InvoiceType.findAll(UserReq.formRequestDetails(genObj)),
 									     	ContentType.findAll(UserReq.formRequestDetails(genObj)),
-									      	//Country.findAll(UserReq.formRequestDetails(genObj)),
 											AdhocTypes.findAll(UserReq.formRequestDetails(genObj)),
 									      	GLaccounts.findAll(UserReq.formRequestDetails(genObj)),
 									      	Region.findAll(UserReq.formRequestDetails(genObj))
 										]).then(function(values) {
 							     		 	self.scope.attr("invoiceTypes").replace(values[0]["invoiceTypes"]);
 							     			self.scope.attr("contentType").replace(values[1].contentTypes);
-							     		 	//self.scope.attr("country").replace(values[2]);
 											self.scope.attr("adhocType").replace(values[2].adhocTypes);
 							     		 	self.scope.attr("glaccounts").replace(values[3]);
 							     		 	self.scope.attr("regions").replace(values[4]);

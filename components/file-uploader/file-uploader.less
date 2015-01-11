@@ -20,15 +20,22 @@
         padding-left: 1em;
       }
 
-     .filelist li {
-         padding: .2em 0 .2em 1em;
-         text-align: left;
-       background-color: white;
-       border-radius: 0.25em;
-       margin-bottom: 0.5em;
-       font-weight: 300;
-       font-size: 0.9em;
-      }
+
+  .filelist li {
+    padding: .2em 0 .2em 1em;
+    text-align: left;
+    background-color: white;
+    border-radius: 0.25em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    font-weight: 300;
+    font-size: 0.9em;
+  }
+
+  .filelist li.uploaded::before {
+    content: '✔';
+    color: green;
+  }
 
       .action-link {
         float: right;
