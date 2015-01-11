@@ -21,26 +21,27 @@ var DashboardInvoices = Component.extend({
   template: template,
   scope: {
     entities: [],
+    holesReports:[],
     holesByCountry: {/*
       AUT: [hole, hole, hole],
     */},
     fetching: false,
 
     renderMissingInvoices: function(holes) {
-      var missingInvoices = _.filter(holes, hole => hole.pdfCount < 1 || hole.ccidCount < 1);
-      return missingInvoicesTemplate({missingInvoices}, {
-        missingParts: function(pdfCount, ccidCount) {
-          if(pdfCount() < 1 && ccidCount() < 1) {
-            return 'PDF + CCID';
-          } else if(pdfCount() < 1) {
-            return 'PDF';
-          } else if(ccidCount() < 1) {
-            return 'CCID';
-          } else {
-            return '?';
-          }
-        }
-      })
+      // var missingInvoices = _.filter(holes, hole => hole.pdfCount < 1 || hole.ccidCount < 1);
+      // return missingInvoicesTemplate({missingInvoices}, {
+      //   missingParts: function(pdfCount, ccidCount) {
+      //     if(pdfCount() < 1 && ccidCount() < 1) {
+      //       return 'PDF + CCID';
+      //     } else if(pdfCount() < 1) {
+      //       return 'PDF';
+      //     } else if(ccidCount() < 1) {
+      //       return 'CCID';
+      //     } else {
+      //       return '?';
+      //     }
+      //   }
+      // })
     },
 
     debouncedRefreshReport: function() {
@@ -76,26 +77,111 @@ var DashboardInvoices = Component.extend({
           }*/
         } else {
 
-          var holes = holes.holesReportWrapper[0].holesReport;
+          // var holes = holes.holesReportWrapper[0].holesReport;
 
-          _.each(holes, function(hole) {
-            if (entities.indexOf(hole.entityName) < 0) {
-              entities.push(hole.entityName);
-            }
+          // _.each(holes, function(hole) {
+          //   if (entities.indexOf(hole.entityName) < 0) {
+          //     entities.push(hole.entityName);
+          //   }
 
-            if (!holesByCountry[hole.countryId]) {
-              holesByCountry[hole.countryId] = [];
-            }
+          //   if (!holesByCountry[hole.countryId]) {
+          //     holesByCountry[hole.countryId] = [];
+          //   }
 
-            holesByCountry[hole.countryId].push(hole);
+          //   holesByCountry[hole.countryId].push(hole);
+          // });
+
+          // entities = _.sortBy(entities, e => e.toUpperCase());
+
+          // can.batch.start();
+          // self.attr('entities', entities);
+          // self.attr('holesByCountry', holesByCountry);
+          // can.batch.stop();
+
+          //var holes = holes.holesReportWrapper[0].holesReport;
+          var holesReports=[];
+          var entities=[];
+
+_.each(holes.holesReportWrapper, function(holesWrapper) {
+          var holesReport={};
+          var dataList = holesWrapper.holesReport.attr();
+              holesReport.holesList=[];
+              var displayBackGreen = true;
+              var holes = holesWrapper.holesReport;
+              holesReport.countryId=holesWrapper.countryId;
+              holesReport.localSociety="";
+              var localSociety=holesWrapper.localSociety;
+              var localDisplay="";
+              var checkForLocalSociety = false;
+              if(typeof(localSociety) != "undefined" && localSociety != "null" && (localSociety != null) && localSociety.length >0){
+                holesReport.localSociety = localSociety;
+                checkForLocalSociety = true;
+              }
+
+           dataList.sort(function(obj1, obj2) {
+                var nameA=obj1.entityName.toLowerCase(), nameB=obj2.entityName.toLowerCase()
+               if (nameA < nameB) //sort string ascending
+                return -1 
+               if (nameA > nameB)
+                return 1
+               return 0 //default return value (no sorting)
+              });
+
+          _.each(dataList, function(value) {
+                var hole={};
+                var display='';
+                var showImage=false;
+                hole.entityId=value.entityId;
+                hole.entityName=value.entityName;
+                entities.push(hole.entityName);
+                hole.isCCIDExpect=(value.isCCIDExpect == 1) ? true : false;
+                if(value.pdfCount > value.ccidCount){
+                  display="PDF";
+                  displayBackGreen = false;
+                }else if(value.pdfCount < value.ccidCount){
+                  display="CCID";
+                  displayBackGreen = false;
+                }else{
+                  showImage=true;
+                }
+
+                hole.show = display;
+
+                if(checkForLocalSociety && localSociety == value.entityName){
+                  localDisplay = display;
+                }
+               
+                hole.isLA = (value.laFlag == 'Y') ? true : false;
+                hole.showImage=showImage;
+                holesList.push(hole);
+              });
+              holesReport.localDisplay=localDisplay;
+              holesReport.displayBackGreen=displayBackGreen;
+
+              // holesList.sort(function(obj1, obj2) {
+              //   var nameA=obj1.entityName.toLowerCase(), nameB=obj2.entityName.toLowerCase()
+              //  if (nameA < nameB) //sort string ascending
+              //   return -1 
+              //  if (nameA > nameB)
+              //   return 1
+              //  return 0 //default return value (no sorting)
+              // });
+
+              //holesReport.holesList=holesList;
+              holesReports.push(holesReport);
           });
-
+  
+          
+          
           entities = _.sortBy(entities, e => e.toUpperCase());
 
+          entities = $.unique(entities);
           can.batch.start();
           self.attr('entities', entities);
           self.attr('holesByCountry', holesByCountry);
+          self.attr('holesReports',holesReports);
           can.batch.stop();
+
 
         }
         self.attr('fetching', false);

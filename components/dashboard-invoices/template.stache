@@ -16,29 +16,43 @@
       {{#entities}}
       <th class="entity" {{data 'entity'}}>{{.}}</th>
       {{/entities}}
+      <th class="entity">LOCAL</th>
       <th></th>
     </tr>
   </thead>
   <tbody>
-    {{#eachCountry}}
-    <tr {{data 'country'}}>
-      <th class="country"><span {{popover holes}}>{{country}}</span></th>
-      {{#entities}}
-      {{#renderCell holes country .}}
-      {{#if holeExists}}
-      <td class="hole {{#if isCCIDExpect}}invoice-expected{{/if}}">
-        {{#if pdfExists}}<div class="top circle"></div>{{/if}}
-        {{#if ccidExists}}<div class="bottom circle"></div>{{/if}}
-        {{#if la}}<img class="la" src="resources/images/rn_LegendLondonAgreement@2x.png"/>{{/if}}
-      </td>
+    {{#holesReports}}
+    <tr>
+      <th class="country" {{#if displayBackGreen}}bgcolor="#669933" {{/if}}><span {{popover holes}}>{{countryId}}</span></th>
+      <!--<th class="country">{{countryId}}</th>-->
+      {{#holesList}}
+        {{#if isCCIDExpect}}
+          <td class="hole invoice-expected"></td>
+        {{else}}
+          <td class="hole">
+            {{#if showImage}}<img style="width:40px;height:40px" src="resources/images/checkMark.png"/>
+            {{else}}
+              {{show}}
+            {{/if}}
+          {{#if isLA}}<img class="la" src="resources/images/rn_LegendLondonAgreement@2x.png"/>{{/if}}
+          </td>
+        {{/if}}
+      {{/holesList}}
+
+      {{#if localDisplay}}
+        <td class="hole">{{localDisplay}}</td>
       {{else}}
-      <td class="hole no-hole"></td>
+        <td></td>
       {{/if}}
-      {{/renderCell}}
-      {{/entities}}
-      <td class="local-society">{{localSociety}}</td>
+
+       {{#if localSociety}}
+        <td class="hole">{{localSociety}}</td>
+      {{else}}
+        <td></td>
+      {{/if}}
+
     </tr>
-    {{/eachCountry}}
+    {{/holesReports}}
   </tbody>
 </table>
 {{/if}}
