@@ -87,14 +87,14 @@ var BundleDetailTabs = Component.extend({
 
       resetSelectedBundle(scope);
 
-      scope.getNewDetails(selectedBundle);
-      // .then(function(bundle) {
-      //   return WorkflowStep.findAll({
-      //     workflowInstanceId: bundle.approvalId
-      //   });
-      // }).then(function(steps) {
-      //   scope.workflowSteps.replace(steps);
-      // });
+      scope.getNewDetails(selectedBundle)
+      .then(function(bundle) {
+        return WorkflowStep.findAll({
+          workflowInstanceId: bundle.approvalId
+        });
+      }).then(function(steps) {
+        scope.workflowSteps.replace(steps);
+      });
       scope.isBundleSelectionChange = false;
     },
 
@@ -121,8 +121,8 @@ var BundleDetailTabs = Component.extend({
       ).then(function(bundle) {
         scope.attr('gettingDetails', false);
 
-        bundle.status === 'FAILURE' ? displayMessage("errorMessage",bundle.responseText) : "";
-        //scope.getNewValidations(bundle);
+        bundle.status === 'FAILURE' ? displayMessage("errorMessage",bundle.responseText) : scope.getNewValidations(bundle);
+        //
 
         //<!--rdar://problem/19415830 UI-PBR: Approve/Reject/Recall/Delete should happen only from Licensor Tab-->
         if(bundle.view === 'LICENSOR'){

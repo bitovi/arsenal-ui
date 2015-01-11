@@ -93,17 +93,21 @@ var BundleDetailGrid = Grid.extend({
 
     prefilteredColumns: [],
     filterColumns: function() {
+      this.scope.prefilteredColumns.splice(0, this.scope.prefilteredColumns.length);
+
       var filteredColumns = this.scope.attr('columns');
       if(! this.scope.pageState.attr('verboseGrid')) {
         // use only the ones without verboseOnly = true
         filteredColumns = _.filter(filteredColumns, column => !column.verboseOnly);
       }
-
       if(!_.some(this.scope.attr('rows'), row => row.attr('validationMessages') && row.attr('validationMessages').attr('length'))) {
-        filteredColumns = _.filter(filteredColumns, column => !column.validationsOnly);
+       filteredColumns = _.filter(filteredColumns, column => !column.validationsOnly);
       }
+      this.scope.prefilteredColumns.attr(
+        filteredColumns
+      );
 
-      return filteredColumns;
+    //  return filteredColumns;
     }
   },
   helpers: {
@@ -195,16 +199,19 @@ var BundleDetailGrid = Grid.extend({
       el.popover('hide');
     },
     init: function() {
-      this.scope.prefilteredColumns.splice(0, this.scope.prefilteredColumns.length, ...this.scope.filterColumns.apply(this));
+      this.scope.filterColumns.apply(this);
     },
     ' inserted': function() {
-      this.scope.prefilteredColumns.splice(0, this.scope.prefilteredColumns.length, ...this.scope.filterColumns.apply(this));
+      this.scope.filterColumns.apply(this);
+      //this.scope.prefilteredColumns.splice(0, this.scope.prefilteredColumns.length, ...this.scope.filterColumns.apply(this));
     },
     '{scope.pageState} verboseGrid': function() {
-      this.scope.prefilteredColumns.splice(0, this.scope.prefilteredColumns.length, ...this.scope.filterColumns.apply(this));
+      //this.scope.prefilteredColumns.splice(0, this.scope.prefilteredColumns.length, ...this.scope.filterColumns.apply(this));
+      this.scope.filterColumns.apply(this);
     },
     '{scope} columns': function() {
-      this.scope.prefilteredColumns.splice(0, this.scope.prefilteredColumns.length, ...this.scope.filterColumns.apply(this));
+      //this.scope.prefilteredColumns.splice(0, this.scope.prefilteredColumns.length, ...this.scope.filterColumns.apply(this));
+      this.scope.filterColumns.apply(this);
     }
   }
 });
