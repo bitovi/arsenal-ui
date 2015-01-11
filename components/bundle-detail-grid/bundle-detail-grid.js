@@ -103,6 +103,7 @@ var BundleDetailGrid = Grid.extend({
       if(!_.some(this.scope.attr('rows'), row => row.attr('validationMessages') && row.attr('validationMessages').attr('length'))) {
        filteredColumns = _.filter(filteredColumns, column => !column.validationsOnly);
       }
+      
       this.scope.prefilteredColumns.attr(
         filteredColumns
       );

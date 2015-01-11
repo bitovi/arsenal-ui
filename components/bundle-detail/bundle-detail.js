@@ -79,6 +79,7 @@ var BundleDetailTabs = Component.extend({
     workflowSteps: new WorkflowStep.List([]),
     isBundleSelectionChange: false,
     selectedBundleChanged: function(scope) {
+      $("#messageDiv").hide();
       scope.isBundleSelectionChange = true;
       var selectedBundle = scope.pageState.selectedBundle;
       if(!selectedBundle) {
@@ -451,9 +452,11 @@ var displayMessage = function(className,message){
   $("#messageDiv").html("<label class='"+className+"' style='padding: 0px 15px;'>"+message+"</label>")
   $("#messageDiv").show();
 
-  setTimeout(function(){
-    $("#messageDiv").hide();
-  },constants.MESSAGE_DISPLAY_TIME);
+  //<rdar://problem/19301217> UI - PBR - Approval Succesful message missing
+  //TOOD: Tem disabled the message., which need to reset before going to UAT
+  // setTimeout(function(){
+  //   $("#messageDiv").hide();
+  // },constants.MESSAGE_DISPLAY_TIME);
 
 }
 
