@@ -3,7 +3,8 @@
 	#country-lic-grid {
 		max-height: 200px;
 		overflow: auto;
-		padding: 30px;
+		padding: 10px;
+		margin: 30px;
 	}
 
 	//@white-border: 1px solid #fff;
@@ -14,6 +15,15 @@
 	  }
 	}
 
+
+
+	//@white-border: 1px solid #fff;
+	models-grid{
+	  .grid-mixin();
+	  th, td {
+	  	white-space: nowrap;
+	  }
+	}
 
 
 page-pricing-models {
@@ -51,8 +61,8 @@ page-pricing-models {
 	}
 
 	.right-pb-container{
-		border:1px solid #DAD7D7;
-		height: 780px; 
+		// border:1px solid #DAD7D7;
+		// height: 780px; 
 	}
 
 	fieldset.scheduler-border {
@@ -70,7 +80,7 @@ page-pricing-models {
 
 
 	.modelsummary{
-		height: 780px;
+		max-height: 780px;
 		overflow-y:auto;
 	}
 
@@ -285,6 +295,11 @@ page-pricing-models {
 	    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
 	    -moz-opacity: .5;
 	    opacity: .5;
+	}
+
+    .modelDetailContCls{
+      border: 1px solid #DAD7D7;
+      padding-bottom:5px;
 	}
 
 
