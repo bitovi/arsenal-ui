@@ -58,7 +58,7 @@ var reconGrid = Grid.extend({
               //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
               
               var tabSelected = parentScopeVar.attr('tabSelected');
-              if(tabSelected=="Other") {
+              if(tabSelected=="Incoming Other") {
               /* Reset the offset value and call the webservice to fetch next set of records */
                 var offsetVal = parentScopeVar.attr('offset');
                 parentScopeVar.attr('offset', (parseInt(offsetVal)+1));
@@ -99,7 +99,7 @@ var reconGrid = Grid.extend({
       } else if(self.scope.attr("pagename")=="reconOther"){
         var parentScopeVar = self.element.closest('page-reconOther').scope();
         var tableScrollTopVal=0;
-        if(tabSelected=="Other"){
+        if(tabSelected=="Incoming Other"){
           setTimeout(function(){
             alignGrid("reconstatsOtherGrid");
             tableScrollTopVal = parentScopeVar.attr('scrollTop');

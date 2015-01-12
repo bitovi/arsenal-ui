@@ -23,11 +23,11 @@ import copy from 'components/copy-clipboard/';
 //Navigation bar definitions
 var tabNameObj = {
     incoming:{
-      name:"IncomingDetails",
+      name:"Incoming Details",
       type: "INCOMING"
     },
     other:{
-      name:"Other",
+      name:"Incoming Other",
       type: "Other"
     }
 }
@@ -334,7 +334,7 @@ var processRejectIngestRequestOther = function(scope,requestType){
 
     ccidList = scope.attr("incomingCcidSelected");
     type =  scope.tabName.incoming.attr("type");
-    tab = "incoming";
+    tab = "Incoming Other";
 
 
     can.each(ccidList,
