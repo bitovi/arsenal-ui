@@ -239,7 +239,7 @@ var page = Component.extend({
                 /*Error condition*/
               }).then(function(){
                 self.scope.attr("showbottomSection", true);
-                handleMsg("show", "Please click on pricing model row at left grid to view/edit.");
+                handleMsg("show", "Please click on pricing model row to view/edit.");
                 $('#pmform').bootstrapValidator('addField', 'version');
                 $('#pmform').bootstrapValidator('addField', 'pricingmodeltype');
                 $('#pmform').bootstrapValidator('addField', 'modelname');
@@ -257,12 +257,12 @@ var page = Component.extend({
      "models-grid table tbody tr click":function(el){
         var self = this;
        
-
+        $(".popover").hide();
         
 
         var colModelDesc = el.closest('tr').find('td');
         if(self.scope.attr("modelSumRowIndex") != el.closest('tr')[0].rowIndex){
-           handleMsg("hide");
+          handleMsg("hide");
           clearOldEditData(self);
         }
 
