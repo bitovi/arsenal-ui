@@ -19,7 +19,7 @@ findAllCountriesByLicenesor: function(params){
   var getURLParams = getUtility.createGetURL(params);
 
  	return $.ajax({
-     url: 'http://10.249.20.99:10645/api/v1/rinsui/' +'getCountriesForLicensorCountry'+"?"+getURLParams,
+     url: RinsCommon.UI_SERVICE_URL +'getCountriesForLicensorCountry'+"?"+getURLParams,
   		type: 'GET',
   		contentType: 'application/json'
   	});
