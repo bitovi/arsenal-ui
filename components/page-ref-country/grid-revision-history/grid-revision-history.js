@@ -40,8 +40,10 @@ var GridRevisionHistory = Grid.extend({
         contents: function(row) {
           if(row.status == "A")
             return "Active";
-          else
+          else if(row.status == "I")
           return "InActive";
+          else if(row.status == "N")
+            return "New";
         }
       },
       {
