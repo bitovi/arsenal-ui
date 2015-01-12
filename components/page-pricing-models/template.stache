@@ -9,8 +9,7 @@
 			</div>
 		 
 			<div class="col-sm-12">
-			 	<div class="form-group col-sm-7">
-				 	<div class="col-sm-4 regions">
+			 	 <div class="col-sm-3 regions form-group">
 				 		<div class="col-sm-12 singleField">
 						    <label for="inputEmail3" class="col-sm-4 control-label">Region:</label>
 						    <div class="col-sm-8 requiredBar">
@@ -25,27 +24,23 @@
 					    </div>
 				  	</div>
 				 </div>
+				 
+				
+				<div class="col-sm-1" id="switcher-cont"></div>
+			 	
 
-				 <div class="col-sm-2">
-					<div class="col-sm-2" id="switcher-cont">
-		 			</div>
-			 	</div>
-
-				<div class="col-sm-1">
-		 			<button id="fetch"  class="btn btn-primary btn-custom-big" disabled>Fetch</button>
-			 	</div>
-
-			 	<div class="col-sm-2">
-					<div class="col-sm-2">
-		 				<button id="add"  class="btn btn-primary btn-custom-big" disabled>Add</button>
-			 		</div>
+				<div class="col-sm-6 marginLeft20">
+		 			<button id="fetch" class="btn btn-primary btn-custom-big marginLeft20" disabled>Fetch</button>
+		 			<button id="add"  class="btn btn-primary btn-custom-big" disabled>Add</button>
 			 	</div>
 
 			 	
-			
+				
 
+		 		
+			 	
 
-			</div>
+			 
 		</div>
 	 </div>
 
@@ -54,23 +49,7 @@
 
 		<div class="{{#if editstate}}modelsummaryVisible col-sm-4{{else}}modelsummaryInVisible col-sm-0{{/if}}" id="modelSummaryCont">
 				<div class="modelsummary" id="modelsummary">
-				<!--	<table id="pricingmodelGrid" class="table table-condensed  pricingmodelGrid">
-							    <thead>
-							        <tr>
-							            <th>Models</th>
-							            <th>Model Type</th>
-							            
-							        </tr>
-							    </thead>
-							    <tbody>
-							    	{{#each pricingModelList}}
-							    	<tr modelid="{{modelid}}">
-							    		<td>{{model}}</td>
-							    		<td>{{modeltype}}</td>
-							    	</tr>
-							    	{{/each}}	
-							    </tbody>
-					</table>	-->	    
+				
 				</div>
 		</div>
 	
@@ -78,60 +57,8 @@
 		
 			<div class="right-pb-container">
 				<legend class="scheduler-border">View/Add/Edit Pricing Model</legend>
-				<!--<div class="col-sm-6 form-group">
-				 		<div class="singleField">
-						    <label for="inputEmail3" class="col-sm-4 control-label">Country:</label>
-						    <div class="col-sm-4 requiredBar">
-						   {{#if addEditUIProperty.country}}
-						    	<select id="countrypm" class="form-control" name="country" can-value="country" readonly>
-						    		<option value="">Select</option>
-							       {{#each countryStore}}
-							       		<option value="{{id}}">{{value}}</option>
-							       	{{/each}}
-							     </select> 	
-						    {{else}}
-						    	<select id="countrypm" class="form-control" name="country" can-value="country">
-						    		<option value="">Select</option>
-							       {{#each countryStore}}
-							       		<option value="{{id}}">{{value}}</option>
-							       	{{/each}}
-							     </select> 	
-						    {{/if}}	
-							       
-						    	
-						    </div>
-					  	</div>
-					 </div>
-					<div class="col-sm-6 form-group">
-				 		<div class="singleField">
-						    <label for="inputEmail3" class="col-sm-4 control-label">Entity:</label>
-						    <div class="col-sm-4 requiredBar">
-						    {{#if addEditUIProperty.entity}}
-						      	<select id="entity" class="form-control" name="entity" can-value="entity" readonly>
-							       <option value="">Select</option>
-							     		{{#each licensorStore}}
-						              		<optgroup label="{{entityType}}">
-								                {{#each entities}}
-								                 <option value="{{id}}">{{value}}</option>
-								                {{/each}}
-						              		</optgroup>
-						            	{{/each}}
-						   		</select>
-						   	{{else}}	
-						   		<select id="entity" class="form-control" name="entity" can-value="entity">
-							       <option value="">Select</option>
-							       {{#each licensorStore}}
-						              		<optgroup label="{{entityType}}">
-								                {{#each entities}}
-								                 <option value="{{id}}">{{value}}</option>
-								                {{/each}}
-						              		</optgroup>
-						            	{{/each}}
-						   		</select>
-							{{/if}}	
-						    </div>
-					  	</div>
-					</div>-->
+		
+					{{#if editstate}}
 					<div class="col-sm-6 form-group" style="margin-left:0px;">
 				 		<div class="singleField">
 						    <label for="inputEmail3" class="col-sm-4 control-label">Version:</label>
@@ -147,9 +74,11 @@
 					 </div>
 					<div class="col-sm-6" style="margin-left:0px;width:100%;"></div>
 
+
 					<div id="country-lic-grid">
 						<countrylic-grid></countrylic-grid>
 					</div>
+					{{/if}}
 
 					<div class="col-sm-6 form-group">
 				 		<div class="singleField">
@@ -194,8 +123,8 @@
 											  	{{#each baseModelParamList}}
 													<tr id="breakrow0" rowid="0">
 											      		<td class="form-group">
-											            	<div class="requiredBar">
-											            		<select id='contentGroup' can-value="baseModelParamList.{{@index}}.contentGroup" name="contentGroup[]">
+											            	<div class="contentGroup requiredBar">
+											            		<select class="form-control" id='contentGroup' can-value="baseModelParamList.{{@index}}.contentGroup" name="contentGroup[]">
 											            			<option value="">Select</option>
 											            			{{#each contentType}}
 													        				<option serviceTypeId="{{serviceTypeId}}" value="{{contentGroupName}}">{{contentGroupName}}
@@ -313,11 +242,7 @@
 							</div>
 							{{/if}}
 
-							<!-- <div class="col-sm-12">
-									<div id="multipleComments" class="requiredBar">
-										<textarea class="form-control" id="usercomments" name="usercommentsdiv"  can-value="usercommentsStore"></textarea>
-									</div>
-								</div> -->
+							
 						
 						{{#if editstate}}
 							<div  class="col-sm-4 col-sm-offset-8" >

@@ -28,6 +28,10 @@ import PricingModelsValidation from './pricingmodels.validation';
 import Comments from 'components/multiple-comments/';
 import Switcher from 'components/switcher/';
 
+var mandatoryAddField = ["pricingmodeltype", "modelname", "usercommentsdiv", "contentGroup[]", "baseRate[]", "minima[]", "listenerMinima[]", "discount[]", "description[]", "from[]", "to[]", "minimatrack[]"];
+var mandatoryEditField = ["version", "pricingmodeltype", "modelname", "usercommentsdiv", "contentGroup[]", "baseRate[]", "minima[]", "listenerMinima[]", "discount[]", "description[]", "from[]", "to[]", "minimatrack[]"];
+
+
 
 Grid.extend({
   tag: 'countrylic-grid',
@@ -155,7 +159,21 @@ var page = Component.extend({
   		var self = this;
           $('#pmform').bootstrapValidator(PricingModelsValidation).on('error.field.bv', function(e, data) {
               $('[data-bv-icon-for="'+data.field +'"]').popover('show');
-          });
+               $("#save").attr("disabled", true);
+          }).on('success.field.bv', function(e, data) {
+            var requireField = (self.scope.attr("editstate") == false)? mandatoryAddField:mandatoryEditField;
+               $("#save").attr("disabled", false);
+              for(var i= 0; i < requireField.length; i++){
+
+                      if(!data.bv.isValidField(requireField[i])){
+                      //  console.log(requireField[i]);
+                       // data.bv.validateField(requireField[i]);
+                         $("#save").attr("disabled", true);
+                         
+                         break;
+                      }
+                  }
+            });
 
 
           var options = [{
@@ -173,12 +191,16 @@ var page = Component.extend({
 
         $('#switcher-cont').html(stache('<rn-switcher options="{options}" selected-option="{selectedThing}"></rn-switcher>')(state));  
 
-        commentValidation();
+        $("#save").attr("disabled", true);
+
+
 
 
   	 },
     "#fetch click":function(){
       var self = this;
+       clearOldEditData(self);
+
       self.scope.addEditUIProperty.attr("country", true);
       self.scope.addEditUIProperty.attr("entity", true);
 
@@ -194,14 +216,6 @@ var page = Component.extend({
                    var gridData = [];
                    for(var i =0; i < pricingmodels.length; i++){
                      
-                  /*    self.scope.pricingModelList.push({
-                          model:pricingmodels[i].modelDescription,
-                          modeltype:pricingmodels[i].modelName,  
-                          version:pricingmodels[i].version,
-                          modelid:pricingmodels[i].modelId
-                        });*/
-                    
-
                       var tempObj = {};
 
                       tempObj.models = pricingmodels[i].modelDescription;
@@ -209,9 +223,6 @@ var page = Component.extend({
                      
 
                       gridData.push(tempObj);
-
-
-
                     }
 
                      var rows = new can.List(gridData);
@@ -228,19 +239,37 @@ var page = Component.extend({
                 /*Error condition*/
               }).then(function(){
                 self.scope.attr("showbottomSection", true);
+                handleMsg("show", "Please click on pricing model row at left grid to view/edit.");
+                $('#pmform').bootstrapValidator('addField', 'version');
+                $('#pmform').bootstrapValidator('addField', 'pricingmodeltype');
+                $('#pmform').bootstrapValidator('addField', 'modelname');
+                
+              
               //  self.scope.attr('isCommentData',true);
              //   $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv" id="usercommentsdiv" style="height:100px; margin-bottom:10px; min-height:100px; max-height:100px;"></textarea>');
                 //$('#pricingmodelGrid tbody tr:nth-child(1)').trigger('click').addClass("selected");
               });
 
             $("#pmform").data('bootstrapValidator').resetForm();
+             $("#save").attr("disabled", true);
             return false;
     },
      "models-grid table tbody tr click":function(el){
         var self = this;
+       
+
+        
 
         var colModelDesc = el.closest('tr').find('td');
+        if(self.scope.attr("modelSumRowIndex") != el.closest('tr')[0].rowIndex){
+           handleMsg("hide");
+          clearOldEditData(self);
+        }
+
        self.scope.attr("modelSumRowIndex", el.closest('tr')[0].rowIndex);
+        
+
+
         var modelDescription = $(colModelDesc[0]).html();
 
         var modelType = $(colModelDesc[1]).html();
@@ -269,80 +298,27 @@ var page = Component.extend({
         el.addClass("selected").siblings().removeClass("selected");
         self.scope.attr("version", selrow);
         var genObj = {modelId:selmodelid,reqType:'details'};
+        
+        },
 
-    /*    PricingModels.findOne(UserReq.formRequestDetails(genObj),function(data){
-                  
-              self.scope.attr("multipleComments", data.pricingModel.pricingModel.comments);
-              var tempcommentObj = data.pricingModel.pricingModel.comments;
-              $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
-              self.scope.attr("modelname", data.pricingModel.pricingModel.modelDescription);
-              self.scope.attr("pricingmodeltype", data.pricingModel.pricingModel.modelName);
-
-              self.scope.attr("country", data.pricingModel.country);
-              self.scope.attr("entity", data.pricingModel.entityId);
-              
-
-              self.scope.attr("baseModelParamList").replace([]); /*cleaning table row to load new data on click*/
-        /*      self.scope.attr("basemodelContainer").replace(data.pricingModel.baseModelParameters);
-             
-             
-              var basemodelCount = self.scope.basemodelContainer.attr().length;
-              var basemodelData = self.scope.basemodelContainer.attr();
-
-              for(var i=0; i < basemodelCount; i++){
-                  
-                  self.scope.attr("modelId", basemodelData[i].modelId);
-                  self.scope.baseModelParamList.push({contentGroup:basemodelData[i].contentGroup, baseRate:basemodelData[i].baseRate, 
-                                                      minima:basemodelData[i].minima, listenerMinima:basemodelData[i].listenerMinima,
-                                                      discount:basemodelData[i].discount, isDefault:basemodelData[i].isDefault.toString(),
-                                                      baseId:basemodelData[i].baseId, modelId:basemodelData[i].modelId
-                                                    });
-
-                  var $option   = $("#baseModelTable").find('[name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
-                  DynamicFieldValidation($option, 'addField');
-                 
-                 }
-
-              /** Track count minima Grid*/
-
-
-    /*              self.scope.attr("trackCountMinimaList").replace([]); /*cleaning table row to load new data on click*/
-       /*           self.scope.attr("trackContainer").replace(data.pricingModel.trackCounts);
-                  
-
-                  var trackCount = self.scope.trackContainer.attr().length;
-                  var trackData = self.scope.trackContainer.attr();
-
-                  for(var i=0; i < trackCount; i++){
-                        self.scope.attr("trackCountMinimaList").push({description:trackData[i].description, from:trackData[i].from,
-                                                                      to:trackData[i].to, modelId:trackData[i].modelId,
-                                                                      minima:trackData[i].minima, tierId:trackData[i].tierId,
-                                                                      paramId:trackData[i].paramId});
-                                                              
-
-                        var $option = $("#trackCount").find('[name="description[]"], [name="from[]"], [name="to[]"], [name="minimatrack[]"]');
-                        DynamicFieldValidation($option, 'addField');
-                            
-                        }
-                    },function(xhr){
-                /*Error condition*/
-        /*      }).then(function(){
-                  self.scope.attr("isCommentData", true);
-                  $('#pmform').bootstrapValidator('addField', 'usercommentsdiv');
-               });*/
-          },
         "#version change":function(el){
             var self = this;
 
             var selectedVersion = $("#version option:selected").text();
             var maxVersion = self.scope.attr("maxVersion");
 
+            if(selectedVersion == "Select"){
+               return;
+            }
+
             if(selectedVersion == maxVersion){
               $("#save").attr("disabled", false);
+              handleMsg("hide");
             }
             else
             {
               $("#save").attr("disabled", true);
+               handleMsg("show", "Only Maximum version is allowed to edit.");
             }
 
             var filterOption = self.scope.attr("filterSwitchOption");
@@ -350,26 +326,19 @@ var page = Component.extend({
 
            PricingModels.findOne(UserReq.formRequestDetails(genObj),function(data){
                   
-          /*    var userComments = "";
-              if(data.pricingModelDetails.userComments != "null"){
-                userComments = data.pricingModelDetails.userComments;
-              }*/
-        //      self.scope.attr("usercommentsStore", userComments);
+   
+            var tempcommentObj = "";
 
-           //   var tempcommentObj = data.pricingModelDetails.comments;
-              var tempcommentObj = [  
-                                    {  
-                                       "comments":"Please approve. ",
-                                       "createdBy":2002005722,
-                                       "createdDate":"2014-12-29"
-                                    }
-                                 ]
-
+          
+              var tempcommentObj = data.pricingModelDetails.comments;
               self.scope.attr("multipleComments", tempcommentObj);
-               self.scope.attr('isCommentData',true);
-           //   var tempcommentObj = data.pricingModelDetails.userComments;
-           //   $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
-              
+             // $('#multiple-comments').html(stache('<multiple-comments divid="usercommentsdiv" options="{multipleComments}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));  
+              self.scope.attr('isCommentData',true);
+
+            
+            
+
+          
               /*Country Licensor Grid code to be put here*/
 
               var gridData = [];
@@ -415,7 +384,7 @@ var page = Component.extend({
                                                       baseId:basemodelData[i].baseId, modelId:basemodelData[i].modelId
                                                     });
 
-                  var $option   = $("#baseModelTable").find('[name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
+                  var $option   = $("#baseModelTable").find('[name="contentGroup[]"], [name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
                   DynamicFieldValidation($option, 'addField');
                  
                  }
@@ -446,12 +415,18 @@ var page = Component.extend({
                 }).then(function(){
                   self.scope.attr("isCommentData", true);
                   $('#pmform').bootstrapValidator('addField', 'usercommentsdiv');
-                  
-                  if(selectedVersion == maxVersion){
+                 
+
+                
+                 if(selectedVersion == maxVersion){
+
+                    setTimeout(function(){ $("#pmform").data('bootstrapValidator').validate(); }, 1000);
+                   
+
                     var pmvalid = $("#pmform").data('bootstrapValidator').isValid();
 
                     if(!pmvalid){
-                      $("#pmform").data('bootstrapValidator').validate();
+                     
                       $("#save").attr("disabled", true);
                     }
                     else{
@@ -469,9 +444,9 @@ var page = Component.extend({
 
 
           },
-          '.form-control, #editableText blur':function(){
+         /* '#editableText keypress':function(){
 
-             var self = this;
+            var self = this;
 
             var selectedVersion = $("#version option:selected").text();
             var maxVersion = self.scope.attr("maxVersion");
@@ -493,9 +468,44 @@ var page = Component.extend({
 
                   
 
-          }, 
+          },*/
+        '#editableText, .form-control change':function(el){
 
+        //  console.log(el);
+
+       /*     var self = this;
+
+            var selectedVersion = $("#version option:selected").text();
+            var maxVersion = self.scope.attr("maxVersion");
+
+            if(self.scope.editstate == false){
+              selectedVersion =  1;
+              maxVersion  = 1;
+            }
+
+
+            if(selectedVersion == maxVersion){
+                    var pmvalid = $("#pmform").data('bootstrapValidator').isValid();
+                    $("#pmform").data('bootstrapValidator').validate();
+                    $("#pmform").data('bootstrapValidator').resetForm();
+
+
+                    if(!pmvalid){
+                      $("#pmform").data('bootstrapValidator').validateField(el[0].name);
+                      $("#save").attr("disabled", true);
+                    }
+                    else{
+                      $("#save").attr("disabled", false);
+                    } 
+                  } */
+
+          }, 
           
+
+          'shown.bs.popover':function(){
+           $('.popover .arrow').removeAttr("style");
+             
+          },
 
         "#addbasemodel click":function(){
         var self = this;
@@ -505,17 +515,21 @@ var page = Component.extend({
                                                       modelId:self.scope.attr("modelId")
                                                     });
 
-        var $option   = $("#baseModelTable").find('[name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
+        var $option   = $("#baseModelTable").find('[name="contentGroup[]"], [name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
         DynamicFieldValidation($option, 'addField');
+        $("#pmform").data('bootstrapValidator').validate();
+        $(".popover").hide();
                           
       },
     "#basemodeldel click":function(el){
         var self = this;
         var selrow = el.closest('tr')[0].rowIndex;
 
-        var $option   = $("#baseModelTable tbody tr:nth-child("+selrow+")").find('[name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
+        var $option   = $("#baseModelTable tbody tr:nth-child("+selrow+")").find('[name="contentGroup[]"], [name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
         DynamicFieldValidation($option, 'removeField');                  
-        self.scope.attr("baseModelParamList").removeAttr(selrow-1);                  
+        self.scope.attr("baseModelParamList").removeAttr(selrow-1);   
+        $(".popover").hide();
+        $("#pmform").data('bootstrapValidator').validate();               
     },
     "#addtrack click":function(){
         var self = this;
@@ -525,6 +539,8 @@ var page = Component.extend({
 
          var $option = $("#trackCount").find('[name="description[]"], [name="from[]"], [name="to[]"], [name="minimatrack[]"]');
          DynamicFieldValidation($option, 'addField');
+         $("#pmform").data('bootstrapValidator').validate();
+        $(".popover").hide();
             
     },
     "#trackdel click":function(el){
@@ -532,7 +548,9 @@ var page = Component.extend({
         var selrow = el.closest('tr')[0].rowIndex;
         var $option = $("#trackCount tbody tr:nth-child("+selrow+")").find('[name="description[]"], [name="from[]"], [name="to[]"], [name="minimatrack[]"]');
         DynamicFieldValidation($option, 'removeField');
-        self.scope.attr("trackCountMinimaList").removeAttr(selrow-1);                   
+        self.scope.attr("trackCountMinimaList").removeAttr(selrow-1);  
+        $(".popover").hide();
+        $("#pmform").data('bootstrapValidator').validate();                    
     },
     "#regions change":function(el){
       if(el[0].value != ""){
@@ -545,8 +563,9 @@ var page = Component.extend({
     },
     "#add click":function(){
         var self = this;  
-      self.scope.attr("showbottomSection", true);
-      self.scope.attr("editstate", false);
+
+        self.scope.attr("showbottomSection", true);
+        self.scope.attr("editstate", false);
        self.scope.addEditUIProperty.attr("country", false);
        self.scope.addEditUIProperty.attr("entity", false);
        self.scope.attr("entity", "");
@@ -562,16 +581,17 @@ var page = Component.extend({
         $(".old-comments").remove();
         $('#pmform').bootstrapValidator('addField', 'usercommentsdiv');
        $("#pmform").data('bootstrapValidator').resetForm();
+       $("#save").attr("disabled", true);
        return false;
     },
     "#addCancel click":function(){
       this.scope.attr("showbottomSection", false);
     },
     "#editCancel click":function(){
-       
        var self = this;
-       var selRow = self.scope.attr("selectedPriceModel");
-       $('#pricingmodelGrid tbody tr:nth-child('+selRow+')').trigger('click').addClass("selected");
+       clearOldEditData(self);
+       $("models-grid table tbody tr").removeClass("selected");
+       self.scope.pmVersion.replace([]);
     },
    
     "#save click":function(){
@@ -610,7 +630,8 @@ var page = Component.extend({
                   if(data["status"]=="SUCCESS"){
                               var msg = "Pricing model was saved successfully."
                               $("#pbmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
-                              $("#pbmessageDiv").show();
+                              $("#pbmessageDiv").css("display", "block");
+                              
                                  setTimeout(function(){
                                     $("#pbmessageDiv").hide();
                                  },5000);
@@ -622,7 +643,10 @@ var page = Component.extend({
                                     $("#version option:last-child").attr('selected', 'selected');
                                  },1000);
 
-                                
+                                  if(self.scope.editstate == false){
+                                    clearOldEditData(self);
+                                  }
+                                        
                               }
                             else
                             {
@@ -645,15 +669,38 @@ var page = Component.extend({
 function DynamicFieldValidation($option, type){
      $option.each(function(index){
             $('#pmform').bootstrapValidator(type, $(this));
+            //console.log($(this));
       });
 }
 
-
-function commentValidation(){
-  var errfieldArr = $("#pmform").data('bootstrapValidator').getInvalidFields();
-  if((errfieldArr.length == 1) && (errfieldArr[0].id == "editableText")){
-      $("div.popover .arrow").removeAttr("style");
-  }
+function handleMsg(state, msg){
+    if(state == "show")
+    { 
+       var msg = msg;
+       $("#pbmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+       $("#pbmessageDiv").show();
+        setTimeout(function(){
+          $("#pbmessageDiv").hide();
+       },3000);
+    }
+    else
+    {
+      $("#pbmessageDiv").hide();
+    }  
 }
+
+function clearOldEditData(componentstate){
+     var self = componentstate;
+     self.scope.attr("trackCountMinimaList").replace([]); 
+     self.scope.attr("baseModelParamList").replace([]); 
+     self.scope.attr("modelname", "");
+     self.scope.attr("pricingmodeltype", "");
+     $('#country-lic-grid').html(stache('<countrylic-grid emptyrows="{emptyrows}"></countrylic-grid>')({}));
+     
+    self.scope.attr("isCommentData", false);
+    $("#usercomments").val("");
+    $("#save").attr("disabled", true);
+}
+
 
 export default page;

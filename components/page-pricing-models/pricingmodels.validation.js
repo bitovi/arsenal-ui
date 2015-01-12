@@ -15,6 +15,14 @@ var pricingmodelValidation = {
                           
                       }
                 },
+                version: {
+                     validators: {
+                          notEmpty: {
+                              message: 'Version is mandatory'
+                          }
+                          
+                      }
+                },
                 country :{
                    validators: {
                         notEmpty: {
@@ -56,6 +64,21 @@ var pricingmodelValidation = {
                         
                     }
                 },
+               'contentGroup[]': {
+                     group:'.contentGroup',
+                     validators: {
+                        callback: {
+                                message: 'Content Group is mandatory',
+                                callback: function (value, validator, $field) {
+                                   if(value == "" || value == "Select" || value == null){
+                                       return false;
+                                  }
+                                  return true;
+                                }
+                        }
+
+                    }
+                  },
                 'baseRate[]': {
                       group:'.baseRate',
                       validators: {
