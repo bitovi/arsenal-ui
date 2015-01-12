@@ -52,7 +52,37 @@ var page = Component.extend({
     selectedperiod:[],
     displayMessage:"display:none",
     state:"Edit",
-    periodValidationMsg:""
+    periodValidationMsg:"",
+    modelsTemp:[{  
+            "region":"Japan",
+            "comments":null,
+            "commentId":11086,
+            "minimaCcy":null,
+            "accrualModelType":"STANDARD",
+            "accrualModelID":"301",
+            "accrualModelName":"234234",
+            "versionNo":"2"
+         },
+         {  
+            "region":"Europe",
+            "comments":null,
+            "commentId":4001,
+            "minimaCcy":null,
+            "accrualModelType":"STANDARD",
+            "accrualModelID":"36006",
+            "accrualModelName":"8% No Album Maxima",
+            "versionNo":"1"
+         },
+         {  
+            "region":"Europe",
+            "comments":null,
+            "commentId":4001,
+            "minimaCcy":null,
+            "accrualModelType":"OML",
+            "accrualModelID":"76010",
+            "accrualModelName":"8% No Album Maxima",
+            "versionNo":"2"
+         }]
   },
 
   init: function(){
@@ -81,12 +111,12 @@ var page = Component.extend({
         }
 
         Promise.all([
-          Country.findAll(UserReq.formRequestDetails(requestObj)),
+          //Country.findAll(UserReq.formRequestDetails(requestObj)),
           PricingModelVersions.findOne(UserReq.formRequestDetails(pricingReq))
           ]).then(function(values) {
-            self.scope.attr("countries").replace(values[0]);
+            //self.scope.attr("countries").replace(values[0]);
             var list = [];
-            can.each(values[1].version,
+            can.each(values[0].version,
               function( value, index ) {
                 list.push( {
                   "id":value
@@ -220,11 +250,18 @@ var page = Component.extend({
         },
 
         '{scope} pageState.entityCountryDetails.entityCountry.entityId': function() {
+
+           $('#fetchDetailsBtn').attr("disabled", true)
           var self = this;
 
-          var requestObj = {licensorId:self.scope.pageState.entityCountryDetails.entityCountry.entityId};
-          this.scope.countries.replace(Country.findAll(UserReq.formRequestDetails(requestObj)));
-          this.scope.currencies.replace(Currency.findAll(UserReq.formRequestDetails(requestObj)));
+          var requestObj = {entityId:self.scope.pageState.entityCountryDetails.entityCountry.entityId};
+          Promise.all([Country.findAllCountriesByLicenesor(UserReq.formRequestDetails(requestObj))]).then(function(values) {
+             $('#fetchDetailsBtn').attr("disabled", false)   
+            self.scope.attr("countries").replace(values[0].data);
+
+          });
+
+          //this.scope.currencies.replace(Currency.findAll(UserReq.formRequestDetails(requestObj)));
         },
         '{scope} pageState.entityCountryDetails.pricingModelVersionNo': function() {
           var self = this;
@@ -263,7 +300,8 @@ var page = Component.extend({
             var self = this.scope;
             CountryLicensor.findOne(UserReq.formRequestDetails(requestObj),function(data){
               loadPage(self, data);
-
+              this.scope.pageState.entityCountryDetails.entityCountry.attr("entityId", requestObj.entityCountryDetails.entityCountry.entityId); 
+              this.scope.pageState.entityCountryDetails.entityCountry.attr("countryId", requestObj.entityCountryDetails.entityCountry.countryId);
             },function(xhr){
               console.error("Error while loading: country-Entity Details"+xhr);
             });
@@ -393,7 +431,8 @@ var page = Component.extend({
           },
           'hidden.bs.collapse':function(ele, event){
             $(ele).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
-          }
+          },
+
         }
       });
 
@@ -434,6 +473,7 @@ var loadPage = function(scope,data){
 
 
 
+
   reportConfigurationList.replace(data.entityCountryDetails.reportConfigurationList);
 
   revisionHistory.replace(data.revisionHistory);
@@ -458,8 +498,7 @@ var loadPage = function(scope,data){
     data.entityCountryDetails.entityCountry.attr("status","InActive");
   }
 
-
-
+  
 
   scope.pageState.entityCountryDetails.attr("entityCountry",data.entityCountryDetails.entityCountry);
 
