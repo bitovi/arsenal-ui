@@ -57,7 +57,7 @@ fileUpload.extend({
         uploadedfileinfo:[],
         deletedFileInfo:[],
         isAnyFileLoaded : can.compute(function() { return this.fileList.attr('length') > 0; }),
-        isSuccess: false
+        isSuccess: false,
 
     },
     events:{
@@ -107,6 +107,8 @@ var page = Component.extend({
     balanceOnAccOffset: 0,
     proposeOnAccOffset: 0,
     tableScrollTop: 0,
+    sortColumns:[],
+    sortDirection: "asc",
     previouslyFetchOnAccRows:[]
   },
   init: function(){
@@ -173,6 +175,44 @@ var page = Component.extend({
             $("#propose").removeAttr("disabled");
           }
       },
+      ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
+          var self=this;
+           //console.log($(item[0]).attr("class"));
+          var val = $(item[0]).attr("class").split(" ");
+          var existingSortColumns =self.scope.sortColumns.attr();
+          var existingSortColumnsLen = existingSortColumns.length;
+          var existFlag = false;
+          if(existingSortColumnsLen==0){
+            self.scope.attr('sortColumns').push(val[0]);
+          } else {
+            for(var i=0;i<existingSortColumnsLen;i++){
+              /* The below condition is to selected column to be sorted in asc & dec way */
+              console.log(val[0]+","+existingSortColumns[i] )
+              if(existingSortColumns[i] == val[0]){
+                existFlag = true;
+              }
+            }
+            if(existFlag==false){
+              self.scope.attr('sortColumns').replace([]);
+              self.scope.attr('sortColumns').push(val[0]);
+            } else {
+              var sortDirection = (self.scope.attr('sortDirection') == 'asc') ? 'desc' : 'asc';
+              self.scope.attr('sortDirection', sortDirection);
+            }
+
+          }
+
+          console.log("aaa "+self.scope.sortColumns.attr());
+           /* The below code calls {scope.appstate} change event that gets the new data for grid*/
+           /* All the neccessary parameters will be set in that event */
+           self.scope.appstate.attr('globalSearchButtonClicked', false);
+           if(self.scope.appstate.attr('globalSearch')){
+              self.scope.appstate.attr('globalSearch', false);
+            }else{
+              self.scope.appstate.attr('globalSearch', true);
+            }
+
+    },
       '{scope.appstate} change': function() {
          var self = this;
          self.scope.attr('errorMessage',''); 
@@ -215,6 +255,8 @@ var page = Component.extend({
               message = validateFilters(self.scope.appstate,true,false,false,false,false);
               self.scope.attr('errorMessage',message); 
               self.scope.appstate.attr("offset", self.scope.attr('balanceOnAccOffset'));
+              self.scope.appstate.attr("sortBy", self.scope.sortColumns.attr().toString());
+              self.scope.appstate.attr("sortOrder", self.scope.attr('sortDirection'));
 
               if(message.length == 0){
                 //request.searchRequest["type"] = "BALANCE";
@@ -495,8 +537,12 @@ var page = Component.extend({
           if(self.scope.appstate.attr('globalSearchButtonClicked')==true){
             self.scope.attr("proposeOnAccOffset",0);
             self.scope.attr("tableScrollTop",0);
+            self.scope.sortColumns.replace([]);
+            self.scope.attr('sortDirection','asc');
           }  
           self.scope.appstate.attr("offset", self.scope.attr('proposeOnAccOffset'));
+          self.scope.appstate.attr("sortBy", self.scope.sortColumns.attr().toString());
+          self.scope.appstate.attr("sortOrder", self.scope.attr('sortDirection'));
           proposedOnAccount.findOne(createProposedOnAccountRequest(self.scope.appstate),function(data){
             self.scope.attr('showLoadingImage',false);
             if(data["status"]=="SUCCESS"){
@@ -752,6 +798,9 @@ var createProposedOnAccountRequest=function(appstate){
   proposedOnAccountRequest.searchRequest.type="PROPOSED";
   proposedOnAccountRequest.searchRequest.offset=appstate.attr("offset");
   proposedOnAccountRequest.searchRequest.limit="10";
+  proposedOnAccountRequest.searchRequest.sortBy=appstate.attr("sortBy");
+  proposedOnAccountRequest.searchRequest.sortOrder=appstate.attr("sortOrder");
+
   return requestHelper.formRequestDetails(proposedOnAccountRequest);
 };
 var createProposedOnAccountRequestForExportToExcel=function(appstate){
@@ -766,6 +815,10 @@ var createBalanceOnAccountRequestForExportToExcel=function(appstate){
     balancedOnAccountRequest.searchRequest=requestHelper.formGlobalRequest(appstate).searchRequest;
     balancedOnAccountRequest.searchRequest.type="BALANCE";
     balancedOnAccountRequest.excelOutput=true;
+    balancedOnAccountRequest.searchRequest.offset=appstate.attr("offset");;
+    balancedOnAccountRequest.searchRequest.limit="10";
+    balancedOnAccountRequest.searchRequest.sortBy=appstate.attr("sortBy");
+    balancedOnAccountRequest.searchRequest.sortOrder=appstate.attr("sortOrder");
     return requestHelper.formRequestDetails(balancedOnAccountRequest);
   };
 
