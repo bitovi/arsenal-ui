@@ -63,6 +63,8 @@ var page = Component.extend({
     ingestedOffset: 0,
     incomingOffset: 0,
     pagename : "recon",
+    sortColumns:[],
+    sortDirection: "asc",
     load : true,
 
     reconStatsDetailsSelected : [],
@@ -259,6 +261,43 @@ var page = Component.extend({
       );
       this.scope.currencyList.replace(list);
     },
+    ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
+          var self=this;
+           //console.log($(item[0]).attr("class"));
+          var val = $(item[0]).attr("class").split(" ");
+          var existingSortColumns =self.scope.sortColumns.attr();
+          var existingSortColumnsLen = existingSortColumns.length;
+          var existFlag = false;
+          if(existingSortColumnsLen==0){
+            self.scope.attr('sortColumns').push(val[0]);
+          } else {
+            for(var i=0;i<existingSortColumnsLen;i++){
+              /* The below condition is to selected column to be sorted in asc & dec way */
+              console.log(val[0]+","+existingSortColumns[i] )
+              if(existingSortColumns[i] == val[0]){
+                existFlag = true;
+              }
+            }
+            if(existFlag==false){
+              self.scope.attr('sortColumns').replace([]);
+              self.scope.attr('sortColumns').push(val[0]);
+            } else {
+              var sortDirection = (self.scope.attr('sortDirection') == 'asc') ? 'desc' : 'asc';
+              self.scope.attr('sortDirection', sortDirection);
+            }
+
+          }
+
+          console.log("aaa "+self.scope.sortColumns.attr());
+           /* The below code calls {scope.appstate} change event that gets the new data for grid*/
+           /* All the neccessary parameters will be set in that event */
+           if(self.scope.appstate.attr('globalSearch')){
+              self.scope.appstate.attr('globalSearch', false);
+            }else{
+              self.scope.appstate.attr('globalSearch', true);
+            }
+
+    },
    '.exportToExcel click':function(el,ev){
        
         var self = this;
@@ -436,9 +475,8 @@ var fetchReconIngest = function(scope, load){
   }
   searchRequestObj.searchRequest["limit"] = "10";
   searchRequestObj.searchRequest["offset"] = scope.ingestedOffset;
-  searchRequestObj.searchRequest["sortBy"] = "COUNTRY";
-  searchRequestObj.searchRequest["sortOrder"] = "ASC";
-  searchRequestObj.searchRequest["sortOrder"] = "ASC";
+  searchRequestObj.searchRequest["sortBy"] = scope.sortColumns.attr().toString();
+  searchRequestObj.searchRequest["sortOrder"] = scope.sortDirection;
 
   var filterData = scope.tokenInput.attr();
   var newFilterData = [];
