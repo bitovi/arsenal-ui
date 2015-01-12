@@ -165,9 +165,8 @@
 				   <div class="form-group">
 				    <div class="col-sm-12 singleField">
 				    <label for="inputEmail3" class="col-sm-3 control-label">Supporting Documents: </label>
-	    				<!--<editicsv-upload uploadedfileinfo="{uploadedfileinfo}"></editicsv-upload>-->
 	    				<div id="icsvFileUploader">
-							<rn-file-uploader-icsv uploadedfileinfo="{uploadedfileinfo}"></rn-file-uploader-icsv>
+							<rn-file-uploader-icsv uploadedfileinfo="{uploadedfileinfo}" deletedFileInfo="{deletedFileInfo}></rn-file-uploader-icsv>
 						</div>
 				  	</div>
 
