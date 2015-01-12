@@ -9,7 +9,8 @@ var reconGrid = Grid.extend({
   template: template,
   scope: {
     checkedRows: [],
-    footerrows: []
+    footerrows: [],
+    pagename : ""
   },
   helpers: {
     getColumnLength: function(options){
@@ -35,12 +36,9 @@ var reconGrid = Grid.extend({
                 var offsetVal = parentScopeVar.attr('ingestedOffset');
                 parentScopeVar.attr('ingestedOffset', (parseInt(offsetVal)+1));
                 parentScopeVar.attr('ingestedScrollTop', (tbody[0].scrollHeight-100));
-              } else {
-                var offsetVal = parentScopeVar.attr('incomingOffset');
-                parentScopeVar.attr('incomingOffset', (parseInt(offsetVal)+1));
-                parentScopeVar.attr('incomingScrollTop', (tbody[0].scrollHeight-100));
-              }
+              } 
               parentScopeVar.appstate.attr('globalSearchButtonClicked', false);
+              parentScopeVar.attr("load", false);
 
               /* The below code calls {scope.appstate} change event that gets the new data for grid*/
               /* All the neccessary parameters will be set in that event */
@@ -60,12 +58,18 @@ var reconGrid = Grid.extend({
               //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
               
               var tabSelected = parentScopeVar.attr('tabSelected');
+              if(tabSelected=="Other") {
               /* Reset the offset value and call the webservice to fetch next set of records */
                 var offsetVal = parentScopeVar.attr('offset');
                 parentScopeVar.attr('offset', (parseInt(offsetVal)+1));
                 parentScopeVar.attr('scrollTop', (tbody[0].scrollHeight-100));
 
-              parentScopeVar.appstate.attr('globalSearchButtonClicked', false);
+                parentScopeVar.appstate.attr('globalSearchButtonClicked', false);
+              } else {
+                var offsetVal = parentScopeVar.attr('incomingOffset');
+                parentScopeVar.attr('incomingOffset', (parseInt(offsetVal)+1));
+                parentScopeVar.attr('incomingScrollTop', (tbody[0].scrollHeight-100));
+              }
 
               /* The below code calls {scope.appstate} change event that gets the new data for grid*/
               /* All the neccessary parameters will be set in that event */
@@ -91,21 +95,23 @@ var reconGrid = Grid.extend({
             tableScrollTopVal = parentScopeVar.attr('ingestedScrollTop');
             $(tbody[0]).scrollTop(tableScrollTopVal);
           },1000);
-        } else {
+        }
+      } else if(self.scope.attr("pagename")=="reconOther"){
+        var parentScopeVar = self.element.closest('page-reconOther').scope();
+        var tableScrollTopVal=0;
+        if(tabSelected=="Other"){
+          setTimeout(function(){
+            alignGrid("reconstatsOtherGrid");
+            tableScrollTopVal = parentScopeVar.attr('scrollTop');
+            $(tbody[0]).scrollTop(tableScrollTopVal);
+          },1000);
+        }  else {
           setTimeout(function(){
             alignGrid("incomingDetails");
             tableScrollTopVal = parentScopeVar.attr('incomingScrollTop');
             $(tbody[0]).scrollTop(tableScrollTopVal);
           },1000);
         }
-      } else if(self.scope.attr("pagename")=="reconOther"){
-        var parentScopeVar = self.element.closest('page-reconOther').scope();
-        var tableScrollTopVal=0;
-        setTimeout(function(){
-          alignGrid("reconstatsOtherGrid");
-          tableScrollTopVal = parentScopeVar.attr('scrollTop');
-          $(tbody[0]).scrollTop(tableScrollTopVal);
-        },1000);
       }
       
     },
@@ -166,6 +172,7 @@ function alignGrid(divId){
           $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
           $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width);
           $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
+
         }
         $('#'+divId+' table').css("width",tableWidth);
       }

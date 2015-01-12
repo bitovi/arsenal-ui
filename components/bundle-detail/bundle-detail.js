@@ -77,8 +77,10 @@ var BundleDetailTabs = Component.extend({
 
 
     workflowSteps: new WorkflowStep.List([]),
-
+    isBundleSelectionChange: false,
     selectedBundleChanged: function(scope) {
+      $("#messageDiv").hide();
+      scope.isBundleSelectionChange = true;
       var selectedBundle = scope.pageState.selectedBundle;
       if(!selectedBundle) {
         return;
@@ -86,13 +88,15 @@ var BundleDetailTabs = Component.extend({
 
       resetSelectedBundle(scope);
 
-      scope.getNewDetails(selectedBundle).then(function(bundle) {
+      scope.getNewDetails(selectedBundle)
+      .then(function(bundle) {
         return WorkflowStep.findAll({
           workflowInstanceId: bundle.approvalId
         });
       }).then(function(steps) {
         scope.workflowSteps.replace(steps);
       });
+      scope.isBundleSelectionChange = false;
     },
 
     gettingDetails: false,
@@ -118,7 +122,8 @@ var BundleDetailTabs = Component.extend({
       ).then(function(bundle) {
         scope.attr('gettingDetails', false);
 
-        bundle.status === 'FAILURE' ? displayMessage("errorMessage",bundle.responseText) : scope.getNewValidations(bundle);;
+        bundle.status === 'FAILURE' ? displayMessage("errorMessage",bundle.responseText) : scope.getNewValidations(bundle);
+        //
 
         //<!--rdar://problem/19415830 UI-PBR: Approve/Reject/Recall/Delete should happen only from Licensor Tab-->
         if(bundle.view === 'LICENSOR'){
@@ -246,12 +251,12 @@ var BundleDetailTabs = Component.extend({
 
       var className = item.closest('tr').hasClass("child");
 
-      this.scope.details["countryId"]=row.country;
+      this.scope.details["countryId"]=row.country || "";
       this.scope.details["requestFrom"]=$(".switcher li.selected").text();
-      this.scope.details["licensorId"]=row.entityName;
-      this.scope.details["fiscalPeriod"]=row.fiscalPeriod;
-      this.scope.details["periodType"]=row.periodType;
-      this.scope.details["contentType"]=row.contentGrpName;
+      this.scope.details["licensorId"]=row.entityName || "";
+      this.scope.details["fiscalPeriod"]=row.fiscalPeriod || "";
+      this.scope.details["periodType"]=row.periodType || "";
+      this.scope.details["contentType"]=row.contentGrpName || "";
       this.scope.details["isChild"]=className;
     },
     '.show-chart click': function(el, ev) {
@@ -263,6 +268,11 @@ var BundleDetailTabs = Component.extend({
         $("#highChartDetails").append(stache('<high-chart details={data}></high-chart>')({data}));
       }else{
         console.log('Data not set so not showing the chart');
+        $("#messageDiv").html("<label class='errorMessage'>Select child row to see the report</label>");
+          $("#messageDiv").show();
+          setTimeout(function(){
+              $("#messageDiv").hide();
+        },4000);
       }
     },
     '#highChartDetails mousedown': function(item, el, ev){
@@ -287,12 +297,13 @@ var BundleDetailTabs = Component.extend({
       // export data to Excel
 
       var self = this;
+      self.scope.appstate = self.scope.pageState.selectedBundle;
       self.scope.appstate.attr('excelOutput', true);
       self.scope.appstate.attr('detail', true);
       if(this.scope.appstate.excelOutput ) {
-        PaymentBundle.findAll({appstate: this.scope.appstate}).then(function(data) {
-          console.log(JSON.stringify(data));
-          if(data["status"]=="0000"){
+        PaymentBundle.findOne({appstate: this.scope.appstate}).then(function(data) {
+          console.log(data);
+         if (data != undefined && data["status"] == "SUCCESS" && data["exportExcelFileInfo"] != null) {
             self.scope.appstate.attr("excelOutput",false);
             self.scope.appstate.attr('detail',false);
             $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
@@ -357,7 +368,7 @@ var BundleDetailTabs = Component.extend({
       }
     },
     '{scope} selectedTab': function(scope, ev, newTab, oldTab) {
-      if(newTab && oldTab) { // only when *changing* tabs
+      if(newTab && oldTab && !scope.isBundleSelectionChange) { // only when *changing* tabs
         this.scope.attr('gridColumns', newTab.columns);
         this.scope.resetToken();
         scope.pageState.selectedBundle && scope.getNewDetails(scope.pageState.selectedBundle);
@@ -441,9 +452,11 @@ var displayMessage = function(className,message){
   $("#messageDiv").html("<label class='"+className+"' style='padding: 0px 15px;'>"+message+"</label>")
   $("#messageDiv").show();
 
-  setTimeout(function(){
-    $("#messageDiv").hide();
-  },constants.MESSAGE_DISPLAY_TIME);
+  //<rdar://problem/19301217> UI - PBR - Approval Succesful message missing
+  //TOOD: Tem disabled the message., which need to reset before going to UAT
+  // setTimeout(function(){
+  //   $("#messageDiv").hide();
+  // },constants.MESSAGE_DISPLAY_TIME);
 
 }
 

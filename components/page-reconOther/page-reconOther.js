@@ -52,10 +52,12 @@ var page = Component.extend({
     incomingCcidSelected : [],
     tabSelected :tabNameObj.incoming.name,
     size_incomingCcidSelected : 0,
-
+    incomingScrollTop: 0,
+    incomingOffset: 0,
 
     scrollTop: 0,
     offset: 0,
+    pagename : "reconOther",
 
     refreshTokenInput: function(val, type){
       var self = this;
@@ -179,6 +181,7 @@ var page = Component.extend({
         if(this.scope.tabSelected == this.scope.tabName.other.attr("name")){
           fetchReconIncoming(this.scope);
         }else{
+          this.scope.attr("size_incomingCcidSelected", 0);
           fetchReconDetailsOther(this.scope);
         }
         
@@ -252,10 +255,16 @@ var fetchReconIncoming = function(scope){
 var fetchReconDetailsOther = function(scope){
 
   var searchRequestObj = UserReq.formGlobalRequest(scope.appstate);
-  searchRequestObj.searchRequest["type"] = scope.tabName.incoming.attr("type");;
+  searchRequestObj.searchRequest["type"] = scope.tabName.incoming.attr("type");
+
+
   //TODO During pagination / scrolling, the below values has tobe chnaged.
+  if(scope.appstate.attr('globalSearchButtonClicked')==true){
+    scope.attr("incomingOffset",0);
+    scope.attr("incomingScrollTop",0);
+  }
   searchRequestObj.searchRequest["limit"] = "10";
-  searchRequestObj.searchRequest["offset"] = "0";
+  searchRequestObj.searchRequest["offset"] = scope.incomingOffset;
   searchRequestObj.searchRequest["sortBy"] = "COUNTRY";
   searchRequestObj.searchRequest["sortOrder"] = "ASC";
 
@@ -347,23 +356,9 @@ var processRejectIngestRequestOther = function(scope,requestType){
       Promise.all([Recon.reject(rejectSearchRequestObj)]).then(function(values) {
 
         //scope.reconStatsDetailsSelected = data.reconStatsDetails;
+        //findCCids(scope, ccidSelected, tab);
 
-        findCCids(scope, ccidSelected, tab);
-
-        if(scope.incomingStatsDetailsSelected == undefined || (scope.incomingStatsDetailsSelected != null && scope.incomingStatsDetailsSelected.length <= 0)) {
-
-          scope.attr("emptyrows", true);
-
-        } else {
-
-          scope.attr("emptyrows", false);
-
-        }
-
-        scope.incomingDetails.headerRows.replace(scope.incomingStatsDetailsSelected);
-
-
-        scope.attr("size_ingestCcidSelected", 0);
+        scope.attr("size_incomingCcidSelected", 0);
 
         if(values != null && values.length > 0) {
           var data = values[0];
@@ -378,6 +373,8 @@ var processRejectIngestRequestOther = function(scope,requestType){
             setTimeout(function(){
               $("#messageDiv").hide();
             },3000);
+
+            fetchReconDetailsOther(scope);
           }
         } else{
 

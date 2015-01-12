@@ -10,33 +10,80 @@
         tag: 'rn-file-uploader',
         template: template,
         scope: {
-                  fileList : new can.List(),
-                  displayMessage:"display:none",
-                  fileUpload:false,
-                  uploadedfileinfo:[],
-                  isAnyFileLoaded : can.compute(function() { return this.fileList.attr('length') > 0; }),
-                  isSuccess: false,
-                  deletedFileInfo:[]
-              },
+              fileList : new can.List(),
+              displayMessage:"display:none",
+              fileUpload:false,
+              uploadedfileinfo:[],
+              isAnyFileLoaded : can.compute(function() { return this.fileList.attr('length') > 0; }),
+              isSuccess: false,
+              deletedFileInfo:[],
+            areAnyFilesToBeUploaded: false,
+            isCancelToBeEnabled: false
+
+        },
         helpers: {
                 convertToKB: function (size) {
                   return (Math.max(size/1024, 0.1).toFixed(1)  + 'KB');
                 }
         },
         events: {
-                 '.uploadFiles click': function() {
+            '{fileList} change': function(){
+                var _fileList = this.scope.fileList;
+                var _toUpload = false, _toCancel = false;
+                for (var i = 0, len = _fileList.length; i < len; i++) {
+                    if (_fileList[i].ftype === 'selectedFromLocal') {
+                        _toUpload = true;
+                        _toCancel = true;
+                    }
+                    if (_fileList[i].ftype === 'pushedToServer') {
+                        _toCancel = true;
+                    }
+                }
+                this.scope.attr('areAnyFilesToBeUploaded', _toUpload);
+                this.scope.attr('isCancelToBeEnabled', _toCancel);
+            },
+
+                '.browseFiles click': function() {
+                      $(".success").empty();
+
                     this.element.find('input[type=file]').click();
                     this.scope.attr("fileUpload" , true);
-                  },
+
+                },
                  '.fileSelect change' : function(el, ev) {
                     var files = el[0].files;
-                    this.scope.fileList.push.apply(this.scope.fileList, files);
-                    console.log(this.scope.fileList);
+                     for (var i = 0; i < files.length; i++) {
+                         files[i].ftype = 'selectedFromLocal';
+                         files[i].guid = generateUUID();
+                     }
+                     this.scope.uploadedfileinfo.push.apply(this.scope.uploadedfileinfo, files);
+
+                     function generateUUID(){
+                         var d = new Date().getTime();
+                         var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                             var r = (d + Math.random()*16)%16 | 0;
+                             d = Math.floor(d/16);
+                             return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+                         });
+                         return uuid;
+                     };
                   },
                  '.submitFiles click': function() {
-                    var self = this;
-                    var size = this.scope.attr("fileList").length;
-                    FileUpLoader.create(this.scope.attr("fileList"),function(data) {
+                     $(".success").empty();
+
+                     var self = this;
+                    var size = this.scope.attr('fileList').length;
+                     // select all the local files (recently selected) and push them into the
+                     // selectedFromLocal array so that only these files will be pushed
+                     // to the server
+                     var _fileList = this.scope.attr('fileList');
+                     var _toBeUploaded = new can.List([]);
+                     for (var i = 0; i < _fileList.length; i++) {
+                         if (_fileList[i].ftype === 'selectedFromLocal') {
+                            _toBeUploaded.push(_fileList[i]);
+                         }
+                     }
+                    FileUpLoader.create(_toBeUploaded, function(data) {
                    
                     self.scope.attr("fileUpload" , true);
                     var response = data.filePropeties[0];
@@ -47,46 +94,76 @@
                        setTimeout(function(){
                             $(".success").empty();
                         },2000)
-                       self.scope.attr('uploadedfileinfo').replace(data.filePropeties);
+
+                        // remove all selectedFromLocal files from uploadedfileinfo
+                        var _uploadedFileInfo = self.scope.attr('uploadedfileinfo');
+                        for (var i = _uploadedFileInfo.length - 1; i > -1; i--) {
+                            if (_uploadedFileInfo[i].ftype === 'selectedFromLocal') {
+                                _uploadedFileInfo.splice(i, 1);
+                            }
+                        }
+                        for (var j = 0; j < data.filePropeties.length; j++) {
+                            data.filePropeties[j].ftype = 'pushedToServer';
+                        }
+                        // todo: pushedToServer files currently do not have the fileSize attribute -- RETURN FROM SERVER
+                       self.scope.attr('uploadedfileinfo').push.apply(self.scope.attr('uploadedfileinfo'), data.filePropeties);
                        $(self.element).trigger('onSelected', data);
                     }else{
                       self.scope.attr("isSuccess", false);
                        $('.fileError').empty().html(data.responseText);
                     }
-                    console.log("Success")
                     },function(xhr) {
                       console.error("Error while loading:"+xhr);
                     });
                   },
                 '.cancelUpload click': function() {
-                    var size = this.scope.attr("fileList").length;
-                    this.scope.attr("fileList").splice(0,size);
-                     var uploadedfileinfoSize = this.scope.uploadedfileinfo.length;
-                    this.scope.uploadedfileinfo.splice(0,uploadedfileinfoSize);
+                    var _uploadedFileInfo = this.scope.attr('uploadedfileinfo');
+                    // remove only those files which have a guid (selectedFromLocal)
+                    for (var i = _uploadedFileInfo.length - 1; i > -1; i--) {
+                        if (!_uploadedFileInfo[i].isServer) {
+                            _uploadedFileInfo.splice(i, 1);
+                        }
+                    }
                 },
                 '.action-link click': function(el, ev) {
-                   var self = this;
-                   var liText = el.closest('li').find('a:eq(0)').html();
-                   var fileId= el.closest('li').find('a:eq(0)').attr('id');
-                    var index = liText.indexOf("(");
-                    var name = '';
-                    var selectedIndex = '';
-                    var deleteFile;
-                    if(index != -1) {
-                      name = liText.substring(0,index);
-                      this.scope.attr("fileList").forEach(function(file, index) {
-                        if(fileId != undefined && fileId.length >0 && (fileId == (file.fileId+''))){
-                            selectedIndex = index;
-                            deleteFile = file;
-                        }else if(file.name == name.trim()){
-                              selectedIndex = index;
-                              deleteFile = file;
+                    var self = this;
+
+                    /* start changes */
+                    var _fileId = el[0].dataset.fileid;
+                    var _fileList = this.scope.attr('fileList');
+                    var _deletedFileInfo = this.scope.attr('deletedFileInfo');
+
+                    function removeFileFromList(comparator) {
+                        for (var i = 0, len = _fileList.length; i < len; i++) {
+                            if ( comparator(_fileList[i]) ) {
+                                _deletedFileInfo.push(_fileList[i]);
+                                _uploadedFileInfo.splice(i, 1);
+                                break;
+                            }
                         }
-                      });
                     }
-                        self.scope.deletedFileInfo.push(deleteFile);
-                        this.scope.attr("fileList").splice(selectedIndex,1);
-                      
+
+                    var _uploadedFileInfo = this.scope.attr('uploadedfileinfo');
+                    if (_fileId) {
+                        // then the current file already existed on the server
+                        removeFileFromList(function (iFile) {
+                            return iFile.isServer && iFile.fileId == _fileId;
+                        });
+                    } else {
+                        var _fileMeta = el[0].dataset.filemeta;
+                        if (_fileMeta) {
+                            // it is a pushedToServer file
+                            removeFileFromList(function (iFile) {
+                                return iFile.ftype === 'pushedToServer' && (iFile.fileName + iFile.filePath) == _fileMeta;
+                            });
+                        } else {
+                            var guid = el[0].dataset.guid;
+                            removeFileFromList(function (iFile) {
+                                return iFile.ftype === 'selectedFromLocal' && iFile.guid === guid;
+                            });
+                        }
+                    }
+
                 },
                 '.downLoad-Link click': function(el, ev) {
                     var downLoadFile={};
@@ -96,7 +173,6 @@
                     file.fileId= fileId;
                     file.boundType='INBOUND';
                     downLoadFile.files.push(file);
-                    console.log(JSON.stringify(downLoadFile));
                     fileManager.downloadFile(downLoadFile,function(data){ 
                         if(data["status"]=="SUCCESS"){
                           
@@ -111,9 +187,6 @@
                         console.error("Error while downloading the file with fileId: "+fileId+xhr);
                   }); 
 
-                },
-                '{fileList} change': function(){
-                  
                 },
                 "inserted":function(){
                   //if(this.scope.clearFiles != undefined)

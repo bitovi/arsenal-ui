@@ -95,6 +95,8 @@ var proposedonAccountGrid = Grid.extend({
       proposedOnAccountData.footerrows=this.scope.footerrows;
 
       $(this.element).trigger('onSelected', proposedOnAccountData);
+
+      alignGrid("proposedOnAccountGrid");
     },
      'td input.editing blur':function(el, ev){
       var value = el.closest('td').find('.editing').val();
