@@ -1094,8 +1094,10 @@ var page = Component.extend({
 				    tempEditInvoiceData["docsId"] = invoiceData.docsId; 
 				    tempEditInvoiceData["commentsId"] = invoiceData.commentsId; 
 				    tempEditInvoiceData["invoiceAmount"] = self.scope.totalAmountVal;
-				    tempEditInvoiceData["tax"] = self.scope.tax;
 				    tempEditInvoiceData["grossTotal"] = self.scope.grossTotalStore;
+				    if(self.scope.tax == undefined && self.scope.tax != null && parseInt(self.scope.tax) > 0) {
+					   	tempEditInvoiceData["tax"] = self.scope.tax;
+					}
 				   // tempEditInvoiceData["userAdjAmt"] = "0"; 
 				   
 				   // tempEditInvoiceData["bundleId"] = $("#paymentBundleNames").val(); 
@@ -1154,25 +1156,27 @@ var page = Component.extend({
                     // make sure that you remove all files from _d_uploadedFileInfo that have just the term ftype = 'selectedFromLocal' & isServer
                     var uploadedfiles = $('rn-file-uploader-edit').data('_d_uploadedFileInfo');
 
-                    for(var i =0; i < uploadedfiles.length; i++){
-                        if (uploadedfiles[i].ftype === 'pushedToServer') {
-                            // This is the list of newly uploaded files.
-                            var tempDocument = {};
-                            tempDocument.fileName = uploadedfiles[i].fileName;
-                            tempDocument.location = uploadedfiles[i].filePath;
-                            tempDocument.status = "add";
-                            tempEditInvoiceData["invoiceDocuments"].push(tempDocument);
-                        } else if (uploadedfiles[i].isServer) {
-                            // This is the existing server file list which will be send back as-is with no change.
-                            var tempDocument = {};
-                            tempDocument.fileName = uploadedfiles[i].fileName;
-                            tempDocument.location = uploadedfiles[i].location;
-                            tempDocument.docId = uploadedfiles[i].docId;
-                            tempDocument.id = uploadedfiles[i].id;
-                            tempDocument.status = uploadedfiles[i].status;
-                            tempEditInvoiceData["invoiceDocuments"].push(tempDocument);
-                        }
-                    }
+                    if(uploadedfiles != undefined){
+	                    for(var i =0; i < uploadedfiles.length; i++){
+	                        if (uploadedfiles[i].ftype === 'pushedToServer') {
+	                            // This is the list of newly uploaded files.
+	                            var tempDocument = {};
+	                            tempDocument.fileName = uploadedfiles[i].fileName;
+	                            tempDocument.location = uploadedfiles[i].filePath;
+	                            tempDocument.status = "add";
+	                            tempEditInvoiceData["invoiceDocuments"].push(tempDocument);
+	                        } else if (uploadedfiles[i].isServer) {
+	                            // This is the existing server file list which will be send back as-is with no change.
+	                            var tempDocument = {};
+	                            tempDocument.fileName = uploadedfiles[i].fileName;
+	                            tempDocument.location = uploadedfiles[i].location;
+	                            tempDocument.docId = uploadedfiles[i].docId;
+	                            tempDocument.id = uploadedfiles[i].id;
+	                            tempDocument.status = uploadedfiles[i].status;
+	                            tempEditInvoiceData["invoiceDocuments"].push(tempDocument);
+	                        }
+	                    }
+                	}
                     /* deleting existing documents */
                     var deletedFiles = $('rn-file-uploader-edit').data('_d_deletedFileInfo');
 
@@ -1437,7 +1441,12 @@ var page = Component.extend({
 								  	 	}
 								  	},
 								  	grossTotal: function(){
-								  	 	var grossTotal = (parseFloat(this.attr("tax")) + parseFloat(this.attr("totalAmountVal")));
+								  		var grossTotal =0;
+								  		if(this.attr("tax") != undefined && this.attr("tax") != null){
+								  			grossTotal = (parseFloat(this.attr("tax")) + parseFloat(this.attr("totalAmountVal")));
+								  		}else{
+								  			grossTotal = parseFloat(this.attr("totalAmountVal"));
+								  		}
 								  	 	this.attr("grossTotalStore", grossTotal);
 								  	 	if(isNaN(grossTotal)){
 								  	 		grossTotal = 0;

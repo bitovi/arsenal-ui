@@ -180,6 +180,9 @@ var createBalanceOnAccountRequest=function(appstate){
   balancedOnAccountRequest.searchRequest=requestHelper.formGlobalRequest(appstate).searchRequest;
   balancedOnAccountRequest.searchRequest.type="BALANCE";
   balancedOnAccountRequest.searchRequest.offset=appstate.attr("offset");
+  balancedOnAccountRequest.searchRequest.limit="10";
+  balancedOnAccountRequest.searchRequest.sortBy=appstate.attr("sortBy");
+  balancedOnAccountRequest.searchRequest.sortOrder=appstate.attr("sortOrder");
   return requestHelper.formRequestDetails(balancedOnAccountRequest);
 };
 

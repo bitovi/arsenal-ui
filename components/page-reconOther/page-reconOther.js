@@ -23,11 +23,11 @@ import copy from 'components/copy-clipboard/';
 //Navigation bar definitions
 var tabNameObj = {
     incoming:{
-      name:"IncomingDetails",
+      name:"Incoming Details",
       type: "INCOMING"
     },
     other:{
-      name:"Other",
+      name:"Incoming Other",
       type: "Other"
     }
 }
@@ -54,7 +54,8 @@ var page = Component.extend({
     size_incomingCcidSelected : 0,
     incomingScrollTop: 0,
     incomingOffset: 0,
-
+    sortColumns:[],
+    sortDirection: "asc",
     scrollTop: 0,
     offset: 0,
     pagename : "reconOther",
@@ -157,6 +158,44 @@ var page = Component.extend({
            $('#copyall').trigger('click');
         });       
       },
+      ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
+          var self=this;
+           //console.log($(item[0]).attr("class"));
+          var val = $(item[0]).attr("class").split(" ");
+          var existingSortColumns =self.scope.sortColumns.attr();
+          var existingSortColumnsLen = existingSortColumns.length;
+          var existFlag = false;
+          if(existingSortColumnsLen==0){
+            self.scope.attr('sortColumns').push(val[0]);
+          } else {
+            for(var i=0;i<existingSortColumnsLen;i++){
+              /* The below condition is to selected column to be sorted in asc & dec way */
+              //console.log(val[0]+","+existingSortColumns[i] )
+              if(existingSortColumns[i] == val[0]){
+                existFlag = true;
+              }
+            }
+            if(existFlag==false){
+              self.scope.attr('sortColumns').replace([]);
+              self.scope.attr('sortColumns').push(val[0]);
+            } else {
+              var sortDirection = (self.scope.attr('sortDirection') == 'asc') ? 'desc' : 'asc';
+              self.scope.attr('sortDirection', sortDirection);
+            }
+
+          }
+
+          console.log("aaa "+self.scope.sortColumns.attr());
+           /* The below code calls {scope.appstate} change event that gets the new data for grid*/
+           /* All the neccessary parameters will be set in that event */
+           self.scope.appstate.attr('globalSearchButtonClicked', false);
+           if(self.scope.appstate.attr('globalSearch')){
+              self.scope.appstate.attr('globalSearch', false);
+            }else{
+              self.scope.appstate.attr('globalSearch', true);
+            }
+
+    },
     '.exportToExcel click':function(el,ev){
         var self = this;
         Recon.findOne(createReconOtherRequestForExportToExcel(self.scope.appstate),function(data){ 
@@ -224,12 +263,18 @@ var fetchReconIncoming = function(scope){
 
     var searchRequestObj = UserReq.formGlobalRequest(scope.appstate);
 
+    if(scope.appstate.attr('globalSearchButtonClicked')==true){
+      scope.attr("offset",0);
+      scope.attr("incomingScrollTop",0);
+      scope.sortColumns.replace([]);
+      scope.attr("sortDirection","asc");
+    }
     searchRequestObj.searchRequest["type"] = "OTHER";
     //TODO During pagination / scrolling, the below values has tobe chnaged.
     searchRequestObj.searchRequest["limit"] = "10";
     searchRequestObj.searchRequest["offset"] = "0";
-    searchRequestObj.searchRequest["sortBy"] = "COUNTRY";
-    searchRequestObj.searchRequest["sortOrder"] = "ASC";
+    searchRequestObj.searchRequest["sortBy"] = scope.sortColumns.attr().toString();
+    searchRequestObj.searchRequest["sortOrder"] = scope.sortDirection;
 
     Recon.findOne((searchRequestObj),function(data){
       if(data.status == "FAILURE"){
@@ -262,11 +307,13 @@ var fetchReconDetailsOther = function(scope){
   if(scope.appstate.attr('globalSearchButtonClicked')==true){
     scope.attr("incomingOffset",0);
     scope.attr("incomingScrollTop",0);
+    scope.sortColumns.replace([]);
+    scope.attr("sortDirection","asc");
   }
   searchRequestObj.searchRequest["limit"] = "10";
   searchRequestObj.searchRequest["offset"] = scope.incomingOffset;
-  searchRequestObj.searchRequest["sortBy"] = "COUNTRY";
-  searchRequestObj.searchRequest["sortOrder"] = "ASC";
+  searchRequestObj.searchRequest["sortBy"] = scope.sortColumns.attr().toString();
+  searchRequestObj.searchRequest["sortOrder"] = scope.sortDirection;
 
   var filterData = scope.tokenInput.attr();
   var newFilterData = [];
@@ -334,7 +381,7 @@ var processRejectIngestRequestOther = function(scope,requestType){
 
     ccidList = scope.attr("incomingCcidSelected");
     type =  scope.tabName.incoming.attr("type");
-    tab = "incoming";
+    tab = "Incoming Other";
 
 
     can.each(ccidList,

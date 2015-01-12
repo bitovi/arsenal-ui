@@ -12,7 +12,19 @@ findAll: function(params){
   		type: 'GET',
   		contentType: 'application/json'
   	});
+},
+
+findAllCountriesByLicenesor: function(params){
+
+  var getURLParams = getUtility.createGetURL(params);
+
+ 	return $.ajax({
+     url: RinsCommon.UI_SERVICE_URL +'getCountriesForLicensorCountry'+"?"+getURLParams,
+  		type: 'GET',
+  		contentType: 'application/json'
+  	});
 }
+
 }, {});
 
 export default Country;

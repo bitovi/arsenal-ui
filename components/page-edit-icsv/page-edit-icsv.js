@@ -42,15 +42,21 @@ var mandatoryField = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiv
 
 fileUpload.extend({
 	tag: 'rn-file-uploader-icsv',
-	scope: {
-		fileList: new can.List(),
-		isAnyFileLoaded : can.compute(function() { return this.fileList.attr('length') > 0; })
-	},
-	events: {
-		'inserted': function() {
-			this.scope.fileList.replace(this.scope.uploadedfileinfo);
-		}
-	}
+    scope: {
+        fileList : new can.List(),
+        uploadedfileinfo:[],
+        deletedFileInfo:[]
+    },
+    events:{
+        "{uploadedfileinfo} change":function () {
+            //Handling this using data as scope is not accessible from page-edit -invoice.
+            $('rn-file-uploader-icsv').data('_d_uploadedFileInfo', this.scope.uploadedfileinfo);
+            this.scope.fileList.replace(this.scope.uploadedfileinfo);
+        },
+        "{deletedFileInfo} change":function () {
+            $('rn-file-uploader-icsv').data('_d_deletedFileInfo', this.scope.deletedFileInfo);
+        }
+    }
 });
 
 var page = Component.extend({
@@ -109,7 +115,8 @@ var page = Component.extend({
     //invoiceid:"",
   	editpage:false,
   	formSuccessCount:1,
-  	uploadedFileInfo:[],
+    uploadedfileinfo:[],
+    deletedFileInfo:[],
   	periodType:"",
   	ajaxRequestStatus:{},
   	usdFxrateRatio:"",
@@ -783,8 +790,6 @@ var page = Component.extend({
 				 		self.scope.attr("invoicedate", (invoiceData.invoiceDate == null)?"":moment(invoiceData.invoiceDate).format("MM/DD/YYYY"));
 				 		self.scope.attr("receiveddate", (invoiceData.receivedDate == null)?"":moment(invoiceData.receivedDate).format("MM/DD/YYYY"));
 				 		self.scope.attr("invoiceduedate", (invoiceData.invoiceDueDate == null)?"":moment(invoiceData.invoiceDueDate).format("MM/DD/YYYY"));
-				 		
-						
 
 				 		if(invoiceData.invoiceCalcDueDate != ""){
 				 			self.scope.attr("calduedate",moment(invoiceData.invoiceCalcDueDate).format("MM/DD/YYYY"));
@@ -793,8 +798,6 @@ var page = Component.extend({
 				 		{
 				 			self.scope.attr("calduedate","");
 				 		}
-
-
 						self.scope.attr("tax", invoiceData.tax);
 						self.scope.attr("invoiceId",invoiceData.invId);
 				 	
@@ -802,17 +805,41 @@ var page = Component.extend({
 						$('#multipleCommentsInv').html(stache('<multiple-comments divid="usercommentsdivinv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
 		                self.scope.changeTextOnInvType();
 
+                        console.log("invoiceData "+invoiceData.invoiceDocuments.length);
 		                /*Pluck only PDF as supporting documents from the invoicedocuments*/
-						var invoicePDFDocuments = $.grep(invoiceData.invoiceDocuments, function(e) {
-							console.log(e.fileName.split('.').pop());
-							return e.fileName.split('.').pop() === "pdf";
+//						var invoicePDFDocuments = $.grep(invoiceData.invoiceDocuments, function(e) {
+//							console.log(e.fileName.split('.').pop());
+//							return e.fileName.split('.').pop() === "pdf";
+//						});
+//
+//						if (invoicePDFDocuments.length > 0) {
+//							$('#icsvFileUploader').html(stache('<rn-file-uploader-icsv uploadedfileinfo={docs}></rn-file-uploader-icsv>')({
+//								docs: invoicePDFDocuments
+//							}));
+//							}));
+//						}
+                        //TODO :  /*Pluck only PDF as supporting documents from the invoicedocuments*/
+                        //Code to display server list of files on file upload rn-file-uploader-icsv control starts
+
+
+                        var invoicePDFDocuments = $.grep(invoiceData.invoiceDocuments, function(e) {
+							console.log(e.fileName, ' is a valid file? ', /.pdf$/.test(e.fileName) || /.pdf.zip$/.test(e.fileName));
+							return /.pdf$/.test(e.fileName) || /.pdf.zip$/.test(e.fileName) ;
 						});
 
-						if (invoicePDFDocuments.length > 0) {
-							$('#icsvFileUploader').html(stache('<rn-file-uploader-icsv uploadedfileinfo={docs}></rn-file-uploader-icsv>')({
-								docs: invoicePDFDocuments
-							}));
-						}
+                        for(var j=0;j<invoicePDFDocuments.length;j++){
+                            console.log(invoicePDFDocuments.fileName);
+                            invoicePDFDocuments[j].isServer = true;
+                            invoicePDFDocuments[j].filePath = invoicePDFDocuments[j].location;
+                        }
+
+                        if(invoicePDFDocuments.length > 0){
+                            self.scope.uploadedfileinfo.replace(invoicePDFDocuments);
+                        } else {
+                            self.scope.uploadedfileinfo.replace([]);
+                        }
+                        //Code to display server list of files on file upload rn-file-uploader-icsv control ends
+
 
 		                var genObj = {regionId:self.scope.attr("regionStore")};
 
@@ -1033,27 +1060,27 @@ var page = Component.extend({
          	self.scope.attr("rowindex", rowindex + 1);
 			self.scope.createBreakline(self.scope.attr("rowindex"));
 		},
-		'rn-file-uploader-icsv onSelected': function (ele, event, val) {
-            var self = this;
-            self.scope.attr('uploadedFileInfo',val.filePropeties);
-         },
-		
+//		'rn-file-uploader-icsv onSelected': function (ele, event, val) {
+//            var self = this;
+//            self.scope.attr('uploadedFileInfo',val.filePropeties);
+//         },
+//
 		"#addInvSubmit click":function(){
 
 					 $("#invoiceform").data('bootstrapValidator').resetForm();
 					
-							   $("#invoiceform").data('bootstrapValidator').validate();
+							$("#invoiceform").data('bootstrapValidator').validate();
 							  
-				               if($("#invoiceform").data('bootstrapValidator').getInvalidFields().length > 0){
+				            if($("#invoiceform").data('bootstrapValidator').getInvalidFields().length > 0){
 									
-									$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
+							$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
 									
 						}
 				        else
 						{
 							  var self = this;
 						
-							  var editInvoiceCSVData = {};
+							   var editInvoiceCSVData = {};
 							   editInvoiceCSVData.serviceTypeId = $("#invoiceType option:selected").val();
 							   editInvoiceCSVData.invoiceNumber = self.scope.invoicenumberStore;
 							   editInvoiceCSVData.invoiceTypeId = self.scope.invoicetypeSelect;
@@ -1074,12 +1101,9 @@ var page = Component.extend({
 							   editInvoiceCSVData.invoiceDueDate = $("#invoiceduedate input[type=text]").val();
 							   editInvoiceCSVData.createdBy = UserReq.formRequestDetails().prsId;
 							   editInvoiceCSVData.periodType = periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0));  
-							   console.log(self.scope.invoiceduedate);
+
 							   editInvoiceCSVData.comments = [];
-							 
-								
-								
-									
+
 							   	/*comment start*/
 								 //  tempEditInvoiceData["comments"] = [];
 								   for(var j=0;j<self.scope.attr().invoiceContainer[0].comments.length;j++){  /*old comments*/
@@ -1104,19 +1128,57 @@ var page = Component.extend({
 									 /*comment end*/
 
 									  /*document start*/
-
-							    
 							    		editInvoiceCSVData.invoiceDocuments = [];
-							
-										for(var i =0; i < self.scope.uploadedFileInfo.length; i++){
-				      						var tempDocument = {};
-								   			tempDocument.fileName = self.scope.uploadedFileInfo[i].attr("fileName"); 
-								   			tempDocument.location = self.scope.uploadedFileInfo[i].attr("filePath");
-								   			editInvoiceCSVData.invoiceDocuments.push(tempDocument);
-							   			} 
-									
-									//if(tempDocuments.filename)
-									
+//										for(var i =0; i < self.scope.uploadedFileInfo.length; i++){
+//				      						var tempDocument = {};
+//								   			tempDocument.fileName = self.scope.uploadedFileInfo[i].attr("fileName");
+//								   			tempDocument.location = self.scope.uploadedFileInfo[i].attr("filePath");
+//								   			editInvoiceCSVData.invoiceDocuments.push(tempDocument);
+//							   			}
+
+                            //Code to send the updated list of files on file upload rn-file-uploader-icsv to backend starts
+
+                            /* adding new document */
+                            var uploadedfiles = $('rn-file-uploader-icsv').data('_d_uploadedFileInfo');
+
+                            for(var i =0; i < uploadedfiles.length; i++){
+                                if (uploadedfiles[i].ftype === 'pushedToServer') {
+                                    // This is the list of newly uploaded files.
+                                    var tempDocument = {};
+                                    tempDocument.fileName = uploadedfiles[i].fileName;
+                                    tempDocument.location = uploadedfiles[i].filePath;
+                                    tempDocument.status = "add";
+                                    editInvoiceCSVData.invoiceDocuments.push(tempDocument);
+                                } else if (uploadedfiles[i].isServer) {
+                                    // This is the existing server file list which will be send back as-is with no change.
+                                    var tempDocument = {};
+                                    tempDocument.fileName = uploadedfiles[i].fileName;
+                                    tempDocument.location = uploadedfiles[i].location;
+                                    tempDocument.docId = uploadedfiles[i].docId;
+                                    tempDocument.id = uploadedfiles[i].id;
+                                    tempDocument.status = uploadedfiles[i].status;
+                                    editInvoiceCSVData.invoiceDocuments.push(tempDocument);
+                                }
+                            }
+                            /* deleting existing documents */
+                            var deletedFiles = $('rn-file-uploader-icsv').data('_d_deletedFileInfo');
+
+                            if (typeof deletedFiles !== 'undefined') {
+                                for (var i = 0; i < deletedFiles.length; i++) {
+                                    if (deletedFiles[i].isServer) {
+                                        var tempDocument = {};
+                                        tempDocument.fileName = deletedFiles[i].fileName;
+                                        tempDocument.location = deletedFiles[i].location;
+                                        tempDocument.docId = deletedFiles[i].docId;
+                                        tempDocument.status = "delete";
+                                        tempDocument.id = deletedFiles[i].id;
+                                        editInvoiceCSVData.invoiceDocuments.push(tempDocument);
+                                        console.log(tempDocument);
+                                    }
+                                }
+                            }
+
+                            //Code to send the updated list of files on file upload rn-file-uploader-icsv to backend ends
 
 							   /*document end*/
 
@@ -1149,23 +1211,16 @@ var page = Component.extend({
 								  	 		tempArry["ccidName"] = self.scope.ccidGLStore.attr(inputContent);
 								  	 	}
 
-								  	 	
-
-								  	 	tempArry["errors"] = [];
-
-								  	 	 var tempErrLine = {};
+								  	 	  tempArry["errors"] = [];
+								  	 	  var tempErrLine = {};
 										  tempErrLine["status"] = "rwerqr";
 										  tempErrLine["errorMap"] = [];
 										  var tempErrMapLine = {};
 										  tempErrLine["errorMap"].push(tempErrMapLine);
-
 										  tempArry["errors"].push(tempErrLine);
 
-
-									   		editInvoiceCSVData.invoiceLines.push(tempArry);
-
-
-											}
+									      editInvoiceCSVData.invoiceLines.push(tempArry);
+									}
 										rowNumber++;
 									});
 
@@ -1182,9 +1237,6 @@ var page = Component.extend({
 
 								  editInvoiceCSVData.errors.push(tempErr);
 
-
-								 
-								  
 
 								  var selIndex = self.scope.invoiceselectIndex
 								  icsvmap.invoiceData.invoices[selIndex].attr(editInvoiceCSVData);
@@ -1204,7 +1256,7 @@ var page = Component.extend({
 						                 }
 						          }
 
-						          	console.log(icsvmap.invoiceData);
+						          	console.log(icsvmap.invoiceData.attr());
 					 				
 					 				icsvmap.attr("showediticsv", false);
 							}
@@ -1215,7 +1267,9 @@ var page = Component.extend({
 					 setTimeout(function(){
                           icsvmap.attr("showediticsv", false);
                       },500);
-					 
+
+                    this.scope.uploadedfileinfo.replace([]);
+                    this.scope.deletedFileInfo.replace([]);
 					 
 				},
 				'period-calendar onSelected': function (ele, event, val) {  

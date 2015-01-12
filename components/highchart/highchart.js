@@ -111,15 +111,7 @@ var highchartpage = Component.extend({
 					            borderWidth: 0
 					        },
 					        exporting: {
-					            buttons: { 
-							        exportButton: {
-							            enabled:false
-							        },
-							        printButton: {
-							            enabled:false
-							        }
-
-							    }
+					            enabled: false 
 					        },
 					        series: [{
 					            name: 'Invoice Amount',

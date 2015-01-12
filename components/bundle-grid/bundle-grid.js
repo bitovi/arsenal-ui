@@ -3,9 +3,11 @@ import ScrollingGrid from 'components/grid/examples/scrolling-grid/';
 import formats from 'utils/formats';
 import _less from './bundle-grid.less!';
 import PeriodWidgetHelper from 'utils/periodWidgetHelpers';
+import gridtemplate from './gridtemplate.stache!';
 
 var BundleGrid = ScrollingGrid.extend({
   tag: 'rn-bundle-grid',
+  template: gridtemplate,
   scope: {
     pageState: null, // passed in
     columns: [
@@ -81,6 +83,37 @@ var BundleGrid = ScrollingGrid.extend({
     }
   },
   events: {
+    'inserted': function(){
+      var self= this;
+      var tbody = self.element.find('tbody');
+      var parentObj = self.element.closest('page-payment-bundles');
+      var parentScopeVar = self.element.closest('page-payment-bundles').scope();
+      var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
+      $(tbody[0]).scrollTop(tableScrollTopVal);
+        $(tbody).on('scroll', function(ev) {
+          if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight) {
+            //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
+
+            
+            var offsetVal = parentScopeVar.attr('pbOffset');
+            //console.log(offsetVal);
+
+            /* Reset the offset value and call the webservice to fetch next set of records */
+            parentScopeVar.attr('pbOffset', (parseInt(offsetVal)+1));
+            parentScopeVar.attr('tableScrollTop', (tbody[0].scrollHeight-200));
+            parentScopeVar.appstate.attr('globalSearchButtonClicked', false);
+
+            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
+            /* All the neccessary parameters will be set in that event */
+           if(parentScopeVar.appstate.attr('globalSearch')){
+              parentScopeVar.appstate.attr('globalSearch', false);
+            }else{
+              parentScopeVar.appstate.attr('globalSearch', true);
+            }
+
+          }
+        });
+    },
     'tbody tr click': function(el, ev) {
       var bundle = el.data('row').row;
       this.scope.pageState.attr('selectedBundle', bundle);

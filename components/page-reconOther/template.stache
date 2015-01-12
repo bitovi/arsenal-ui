@@ -10,9 +10,9 @@
 
 <div class="col-lg-12 recon-container">
   <div class="export-toexcel" id="exportExcel"></div>
-  <div class="col-sm-9 form-inline" style="text-align:right;" {{isTabSelectedAs 'Other'}}></div>
+  <div class="col-sm-9 form-inline" style="text-align:right;" {{isTabSelectedAs 'Incoming Other'}}></div>
 
-  <div class="col-sm-9 btn-display-center" {{isTabSelectedAs 'IncomingDetails'}}>
+  <div class="col-sm-9 btn-display-center" {{isTabSelectedAs 'Incoming Details'}}>
     <button  class="btn btn-primary buttonSubmit btn-custom-small btn-incoming-reject" type="button"  {{isIncomingCcidsSelected 0}}>Reject</button>
     <button type="button" class="btn btn-primary buttonSubmit btn-custom-small btn-Ingest" {{isIncomingCcidsSelected 0}} >Ingest</button>
   </div>
@@ -35,12 +35,12 @@
         <div id="my-tab-content" class="tab-content">
         
         <div class="tab-pane active grid-custom-overflow" id="incomingDetails">
-          <rn-recon-grid columns="{detailGridColumns}" rows="{incomingDetails.headerRows}" footerrows="{incomingDetails.footerRows}" emptyrows="{emptyrows}" pagename="{pagename}"></rn-recon-grid>
+          <rn-recon-grid columns="{detailGridColumns}" rows="{incomingDetails.headerRows}" footerrows="{incomingDetails.footerRows}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}" emptyrows="{emptyrows}" pagename="{pagename}"></rn-recon-grid>
         </div>
 
         <!-- <div class="col-lg-12 " style="max-height: 200px; overflow-y:scroll;" id="reconstatsOtherGrid"> -->
         <div class="tab-pane grid-custom-overflow" id="reconstatsOtherGrid">
-            <rn-recon-grid columns="{incomingOtherGridColumns}" rows="{incomingOtherList}" ></rn-recon-grid>
+            <rn-recon-grid columns="{incomingOtherGridColumns}" rows="{incomingOtherList}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}" ></rn-recon-grid>
         </div>
 
       </div>
