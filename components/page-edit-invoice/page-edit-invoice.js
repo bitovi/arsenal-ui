@@ -1095,7 +1095,7 @@ var page = Component.extend({
 				    tempEditInvoiceData["commentsId"] = invoiceData.commentsId; 
 				    tempEditInvoiceData["invoiceAmount"] = self.scope.totalAmountVal;
 				    tempEditInvoiceData["grossTotal"] = self.scope.grossTotalStore;
-				    if(self.scope.tax == undefined && self.scope.tax != null && parseInt(self.scope.tax) > 0) {
+				    if(self.scope.tax != null && parseInt(self.scope.tax) > 0) {
 					   	tempEditInvoiceData["tax"] = self.scope.tax;
 					}
 				   // tempEditInvoiceData["userAdjAmt"] = "0"; 
