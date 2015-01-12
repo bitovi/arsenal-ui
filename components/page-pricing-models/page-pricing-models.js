@@ -9,6 +9,7 @@ import Grid from 'components/grid/';
 import stache from 'can/view/stache/';
 import validation from 'can/map/validations/';
 import countrylicgrid from './countrylicgrid.stache!';
+import modelsgrid from './modelsgrid.stache!';
 
 import css_bootstrapValidator from 'bootstrapValidator.css!';
 import bootstrapValidator from 'bootstrapValidator';
@@ -55,6 +56,39 @@ Grid.extend({
 });
 
 
+Grid.extend({
+  tag: 'models-grid',
+  template: modelsgrid,
+  scope: {
+    appstate:undefined,
+    columns: [
+      {
+        id: 'models',
+        title: 'Models'
+      },  
+      {
+        id: 'modeltype',
+        title: 'Models Type'
+      }
+      
+    ]
+  },
+  events:{
+    'thead th, tfoot th click': function(el, ev) {
+      var column = el.data('column').column;
+
+      if(this.scope.attr('sortedColumn') && this.scope.attr('sortedColumn').id === column.id) {
+        this.scope.attr('sortedDirection', this.scope.attr('sortedDirection') === 'asc' ? 'desc' : 'asc');
+      } else if(column.sortable) {
+        can.batch.start();
+        this.scope.attr('sortedColumn', column);
+        this.scope.attr('sortedDirection', column.defaultSortDirection || 'asc');
+        can.batch.stop();
+      }
+    }
+  }
+});
+
 
 var page = Component.extend({
   tag: 'page-pricing-models',
@@ -89,7 +123,10 @@ var page = Component.extend({
     showbottomSection:false,
     isCommentData:false,
     filterSwitchOption:"licensor",
-    maxVersion:0
+    maxVersion:0,
+    selectedModelId:"",
+    modelSumRowIndex:""
+
   
   },
   init:function(){
@@ -134,7 +171,11 @@ var page = Component.extend({
             selectedThing: options[0]
           });
 
-        $('#switcher-cont').html(stache('<rn-switcher options="{options}" selected-option="{selectedThing}"></rn-switcher>')(state));       
+        $('#switcher-cont').html(stache('<rn-switcher options="{options}" selected-option="{selectedThing}"></rn-switcher>')(state));  
+
+        commentValidation();
+
+
   	 },
     "#fetch click":function(){
       var self = this;
@@ -149,31 +190,57 @@ var page = Component.extend({
         self.scope.attr("editstate", true);
         PricingModels.findOne(UserReq.formRequestDetails(genObj),function(data){
                   var pricingmodels = data.pricingModels;
+
+                   var gridData = [];
                    for(var i =0; i < pricingmodels.length; i++){
                      
-                      self.scope.pricingModelList.push({
+                  /*    self.scope.pricingModelList.push({
                           model:pricingmodels[i].modelDescription,
                           modeltype:pricingmodels[i].modelName,  
                           version:pricingmodels[i].version,
                           modelid:pricingmodels[i].modelId
-                        });
+                        });*/
+                    
+
+                      var tempObj = {};
+
+                      tempObj.models = pricingmodels[i].modelDescription;
+                      tempObj.modeltype = pricingmodels[i].modelName;
+                     
+
+                      gridData.push(tempObj);
+
+
+
                     }
+
+                     var rows = new can.List(gridData);
+                      if(rows.length>0){
+                        $('#modelsummary').html(stache('<models-grid rows="{rows}"></models-grid>')({rows}));  
+                      }else{
+                        $('#modelsummary').html(stache('<models-grid emptyrows="{emptyrows}"></models-grid>')({emptyrows:true}));
+                      }  
+
+
+                    
+                
                 },function(xhr){
                 /*Error condition*/
               }).then(function(){
                 self.scope.attr("showbottomSection", true);
-                self.scope.attr('isCommentData',true);
-                $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:100px; margin-bottom:10px; min-height:100px; max-height:100px;"></textarea>');
+              //  self.scope.attr('isCommentData',true);
+             //   $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv" id="usercommentsdiv" style="height:100px; margin-bottom:10px; min-height:100px; max-height:100px;"></textarea>');
                 //$('#pricingmodelGrid tbody tr:nth-child(1)').trigger('click').addClass("selected");
               });
 
             $("#pmform").data('bootstrapValidator').resetForm();
             return false;
     },
-     ".pricingmodelGrid tr click":function(el){
+     "models-grid table tbody tr click":function(el){
         var self = this;
 
         var colModelDesc = el.closest('tr').find('td');
+       self.scope.attr("modelSumRowIndex", el.closest('tr')[0].rowIndex);
         var modelDescription = $(colModelDesc[0]).html();
 
         var modelType = $(colModelDesc[1]).html();
@@ -264,19 +331,42 @@ var page = Component.extend({
                   $('#pmform').bootstrapValidator('addField', 'usercommentsdiv');
                });*/
           },
-        "#version change":function(){
+        "#version change":function(el){
             var self = this;
 
+            var selectedVersion = $("#version option:selected").text();
+            var maxVersion = self.scope.attr("maxVersion");
+
+            if(selectedVersion == maxVersion){
+              $("#save").attr("disabled", false);
+            }
+            else
+            {
+              $("#save").attr("disabled", true);
+            }
+
             var filterOption = self.scope.attr("filterSwitchOption");
-            var genObj = {filterOption:filterOption, reqType:'details', modelId:self.scope.version}; 
+            var genObj = {filterOption:filterOption, reqType:'details', modelId:self.scope.selectedModelId}; 
 
            PricingModels.findOne(UserReq.formRequestDetails(genObj),function(data){
                   
-              var userComments = "";
+          /*    var userComments = "";
               if(data.pricingModelDetails.userComments != "null"){
                 userComments = data.pricingModelDetails.userComments;
-              }
-              self.scope.attr("usercommentsStore", userComments);
+              }*/
+        //      self.scope.attr("usercommentsStore", userComments);
+
+           //   var tempcommentObj = data.pricingModelDetails.comments;
+              var tempcommentObj = [  
+                                    {  
+                                       "comments":"Please approve. ",
+                                       "createdBy":2002005722,
+                                       "createdDate":"2014-12-29"
+                                    }
+                                 ]
+
+              self.scope.attr("multipleComments", tempcommentObj);
+               self.scope.attr('isCommentData',true);
            //   var tempcommentObj = data.pricingModelDetails.userComments;
            //   $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
               
@@ -356,12 +446,56 @@ var page = Component.extend({
                 }).then(function(){
                   self.scope.attr("isCommentData", true);
                   $('#pmform').bootstrapValidator('addField', 'usercommentsdiv');
+                  
+                  if(selectedVersion == maxVersion){
+                    var pmvalid = $("#pmform").data('bootstrapValidator').isValid();
+
+                    if(!pmvalid){
+                      $("#pmform").data('bootstrapValidator').validate();
+                      $("#save").attr("disabled", true);
+                    }
+                    else{
+                      $("#save").attr("disabled", false);
+                    } 
+                  }else{
+                    $("#pmform").data('bootstrapValidator').resetForm();
+                  }
+                  
+
+                  
                });
 
 
 
 
+          },
+          '.form-control, #editableText blur':function(){
+
+             var self = this;
+
+            var selectedVersion = $("#version option:selected").text();
+            var maxVersion = self.scope.attr("maxVersion");
+
+
+            if(selectedVersion == maxVersion){
+                    var pmvalid = $("#pmform").data('bootstrapValidator').isValid();
+
+                    if(!pmvalid){
+                      $("#pmform").data('bootstrapValidator').validate();
+                      $("#save").attr("disabled", true);
+                    }
+                    else{
+                      $("#save").attr("disabled", false);
+                    } 
+                  }else{
+                    $("#pmform").data('bootstrapValidator').resetForm();
+                  }
+
+                  
+
           }, 
+
+          
 
         "#addbasemodel click":function(){
         var self = this;
@@ -443,7 +577,7 @@ var page = Component.extend({
     "#save click":function(){
       var self = this;
 
-      var usercomments = (self.scope.editstate === false)?self.scope.usercommentsStore:$(".new-comments").val();
+      var usercomments = (self.scope.editstate === true)?$("#editableText").val():$("#usercomments").val();
 
       var saveRecord = {
         
@@ -454,21 +588,23 @@ var page = Component.extend({
          // "entityId":self.scope.attr("entity"),
           "trackCounts":self.scope.trackCountMinimaList.attr(),
           "createdBy":UserReq.formRequestDetails().prsId,
-          "userComments":self.scope.usercommentsStore,
+          "userComments":usercomments,
           "baseModelParameters":self.scope.baseModelParamList.attr(),
           "pricingModel":{  
              "region":self.scope.attr("regions"),
-             "modelId":self.scope.attr("modelid"),
+             "modelId":(self.scope.editstate === true)?self.scope.attr("selectedModelId"):null,
             // "commentId":9685,
-            // "comments":null,
+             "comments":null,
              "createdBy":UserReq.formRequestDetails().prsId,
              "modelDescription":self.scope.attr("modelname"),
              "modelName":self.scope.attr("pricingmodeltype"),
-             "version":self.scope.attr("version") 
+             "version": (self.scope.editstate === true)?$("#version option:selected").text():1
           }
           
         }
       }
+
+      console.log(JSON.stringify(saveRecord));
 
        PricingModels.create(UserReq.formRequestDetails(saveRecord), function(data){
                   if(data["status"]=="SUCCESS"){
@@ -478,6 +614,15 @@ var page = Component.extend({
                                  setTimeout(function(){
                                     $("#pbmessageDiv").hide();
                                  },5000);
+
+                                 var selModel = self.scope.attr("modelSumRowIndex");
+                                $("models-grid table tbody tr").eq(selModel-1).click();
+
+                                setTimeout(function(){
+                                    $("#version option:last-child").attr('selected', 'selected');
+                                 },1000);
+
+                                
                               }
                             else
                             {
@@ -501,6 +646,14 @@ function DynamicFieldValidation($option, type){
      $option.each(function(index){
             $('#pmform').bootstrapValidator(type, $(this));
       });
+}
+
+
+function commentValidation(){
+  var errfieldArr = $("#pmform").data('bootstrapValidator').getInvalidFields();
+  if((errfieldArr.length == 1) && (errfieldArr[0].id == "editableText")){
+      $("div.popover .arrow").removeAttr("style");
+  }
 }
 
 export default page;

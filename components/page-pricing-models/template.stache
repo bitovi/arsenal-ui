@@ -53,8 +53,8 @@
 	<div id="bottomsection" class="{{#if showbottomSection}}bottompartshow{{else}}bottomparthide{{/if}}">
 
 		<div class="{{#if editstate}}modelsummaryVisible col-sm-4{{else}}modelsummaryInVisible col-sm-0{{/if}}" id="modelSummaryCont">
-				<div class="modelsummary">
-					<table id="pricingmodelGrid" class="table table-condensed  pricingmodelGrid">
+				<div class="modelsummary" id="modelsummary">
+				<!--	<table id="pricingmodelGrid" class="table table-condensed  pricingmodelGrid">
 							    <thead>
 							        <tr>
 							            <th>Models</th>
@@ -70,11 +70,11 @@
 							    	</tr>
 							    	{{/each}}	
 							    </tbody>
-					</table>		    
+					</table>	-->	    
 				</div>
 		</div>
 	
-		<div class="{{#if editstate}}col-sm-8{{else}}col-sm-12{{/if}}" id="modelDetailCont">
+		<div class="{{#if editstate}}col-sm-8{{else}}col-sm-12{{/if}} modelDetailContCls" id="modelDetailCont">
 		
 			<div class="right-pb-container">
 				<legend class="scheduler-border">View/Add/Edit Pricing Model</legend>
@@ -136,7 +136,7 @@
 				 		<div class="singleField">
 						    <label for="inputEmail3" class="col-sm-4 control-label">Version:</label>
 						    <div class="col-sm-4 requiredBar">
-						    	<select  class="form-control" name="version" id="version" can-value="version">
+						    	<select  class="form-control" name="version" id="version" can-value="selectedModelId">
 							       <option value="">Select</option>
 							        {{#each pmVersion}}
 									  <option value="{{modelId}}">{{version}}</option>     
@@ -293,27 +293,31 @@
 								</div>
 							</fieldset>
 						</div>
-						<legend class="scheduler-border" style="margin-left: 10px;">Comments</legend>
 						
-						<!--{{#if editstate}}
-							<div class="col-sm-12">
-								<div class="col-sm-8" id="multipleComments" class="requiredBar">
-									{{#if isCommentData}}<multiple-comments divid="usercommentsdiv" options="{multipleComments}" divheight="100" isreadOnly="n"></multiple-comments>{{/if}}
-								</div>
-							</div>
+						
+						{{#if editstate}}
+								{{#if isCommentData}}
+								 	<legend class="scheduler-border" style="margin-left: 10px;">Comments</legend>
+									<div class="col-sm-12">
+										<div class="col-sm-8" id="multipleComments" class="requiredBar">
+											<multiple-comments divid="usercommentsdiv" options="{multipleComments}" divheight="100" isreadOnly="n"></multiple-comments>
+										</div>
+									</div>
+								{{/if}}
 							{{else}}
+							<legend class="scheduler-border" style="margin-left: 10px;">Comments</legend>
 							<div class="col-sm-12">
 								<div id="multipleComments" class="requiredBar">
 								<textarea class="form-control" id="usercomments" name="usercommentsdiv"  can-value="usercommentsStore"></textarea>
 								</div>
 							</div>
-							{{/if}} -->
+							{{/if}}
 
-							<div class="col-sm-12">
-								<div id="multipleComments" class="requiredBar">
-									<textarea class="form-control" id="usercomments" name="usercommentsdiv"  can-value="usercommentsStore"></textarea>
-								</div>
-							</div>
+							<!-- <div class="col-sm-12">
+									<div id="multipleComments" class="requiredBar">
+										<textarea class="form-control" id="usercomments" name="usercommentsdiv"  can-value="usercommentsStore"></textarea>
+									</div>
+								</div> -->
 						
 						{{#if editstate}}
 							<div  class="col-sm-4 col-sm-offset-8" >
