@@ -153,7 +153,7 @@ _.each(holes.holesReportWrapper, function(holesWrapper) {
                
                 hole.isLA = (value.laFlag == 'Y') ? true : false;
                 hole.showImage=showImage;
-                holesList.push(hole);
+                holesReport.holesList.push(hole);
               });
               holesReport.localDisplay=localDisplay;
               holesReport.displayBackGreen=displayBackGreen;
