@@ -62,7 +62,10 @@ var PaymentBundle = Model.extend({
      data = {
           bundleSearch: requestHelper.formGlobalRequest(appstate).searchRequest,
       };
-
+      data["bundleSearch"]["offset"] = appstate.attr("offset");
+      data["bundleSearch"]["limit"] = appstate.attr("limit");
+      data["bundleSearch"]["sortBy"] = appstate.sortCol.attr().toString();
+      data["bundleSearch"]["sortOrder"] = appstate.attr("sortDir");
      if(excelOutput!=false){
         data["excelOutput"]=true
      }

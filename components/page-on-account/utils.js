@@ -203,7 +203,9 @@ var onAccountUpdateRequest ={};
                       onAccountDetails.modifiedBy="2002005722";
                       onAccountDetails.modifiedDate=Date.now();
                       onAccountDetails.serviceTypeId=onAccountRows[i].serviceTypeId;
-                      onAccountUpdateRequest.onAccount.onAccountDetails.push(onAccountDetails);
+                      if(onAccountDetails.onAccountAmt != undefined && onAccountDetails.onAccountAmt >0){
+                        onAccountUpdateRequest.onAccount.onAccountDetails.push(onAccountDetails);  
+                      }
                   }
                 }
         }
@@ -218,14 +220,15 @@ var onAccountUpdateRequest ={};
     }
     
     if(documents!= null && documents.length>0){
-        for(var i=0;i<documents.length;i++){
-            var documentsObj={};
-            documentsObj.fileName=documents[0].fileName;
-            documentsObj.location=documents[0].filePath;
-            documentsObj.createdDate=Date.now();
+        //for(var i=0;i<documents.length;i++){
+            // var documentsObj={};
+            // documentsObj.fileName=documents[0].fileName;
+            // documentsObj.location=documents[0].filePath;
+            // documentsObj.createdDate=Date.now();
             //documentsObj.deleteFlag=true;
-            onAccountUpdateRequest.onAccount.documents.push(documentsObj);
-        }
+            //onAccountUpdateRequest.onAccount.documents.push(documentsObj);
+            onAccountUpdateRequest.onAccount.documents=documents;
+        //}
     }
 
     //console.log(JSON.stringify(onAccountUpdateRequest));
