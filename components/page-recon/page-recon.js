@@ -535,6 +535,21 @@ var fetchReconIngest = function(scope, load){
 
       scope.attr("load", true);
 
+      var ccidCheckbox = $("input.ccid")
+
+      for(var i=0; i<ccidCheckbox.length  ;i++) {
+
+        for(var j=0; j< scope.ingestCcidSelected.length; j++ ) {
+
+          if (scope.ingestCcidSelected[j] == ccidCheckbox[i].getAttribute("value")) {
+
+            ccidCheckbox[i].checked = true;
+
+          }
+        }
+
+      }
+
     }
 
 
