@@ -22,7 +22,7 @@
     {{/if}}
 
    
-    <img class="show-chart" src="/resources/images/rn_BundleActive@2x.png"/>
+    <img class="show-chart" src="/resources/images/charticon.png"/>
    
     <img class="excell" src="/resources/images/rn_ExcelActive@2x.png"/>
     <img class="clipboardd" src="/resources/images/rn_CopyActive@2x.png"/>
