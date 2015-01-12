@@ -361,7 +361,7 @@ var page = Component.extend({
                     if (tmpPeriod < lowestPeriod) lowestPeriod = tmpPeriod;
                     if (tmpPeriod > highestPeriod) highestPeriod = tmpPeriod;
                   }else if(period == 0){
-                    invLITemp["fiscalPeriod"] = 'null';
+                    invLITemp["fiscalPeriod"] = '';
                   }
                   contentTypeArr.push(invLITemp["contentGrpName"]);
                   countryArr.push(invLITemp["country"]);
