@@ -80,6 +80,7 @@ var BundleDetailTabs = Component.extend({
     isBundleSelectionChange: false,
     selectedBundleChanged: function(scope) {
       $("#messageDiv").hide();
+      scope.details ={};
       scope.isBundleSelectionChange = true;
       var selectedBundle = scope.pageState.selectedBundle;
       if(!selectedBundle) {
@@ -262,13 +263,17 @@ var BundleDetailTabs = Component.extend({
     '.show-chart click': function(el, ev) {
       // show the chart
       //{"requestFrom":"Licensor","licensorId":"CELAS","countryId":"GBR","fiscalPeriod":201307,"periodType":"P","contentType":"Music"}
-      if(this.scope.details.isChild){
+      if(this.scope.details.isChild && this.scope.details.contentType !== "TAX"){
         var data = this.scope.details;
         console.log("chart data");console.log(data);
         $("#highChartDetails").append(stache('<high-chart details={data}></high-chart>')({data}));
       }else{
         console.log('Data not set so not showing the chart');
-        $("#messageDiv").html("<label class='errorMessage'>Select child row to see the report</label>");
+        if (this.scope.details.contentType === "TAX") {
+          $("#messageDiv").html("<label class='errorMessage'>Reports not available for TAX</label>");
+        }else{
+          $("#messageDiv").html("<label class='errorMessage'>select child row in the details to see the report</label>");
+        }
           $("#messageDiv").show();
           setTimeout(function(){
               $("#messageDiv").hide();
