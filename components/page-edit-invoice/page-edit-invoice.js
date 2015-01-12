@@ -1094,8 +1094,10 @@ var page = Component.extend({
 				    tempEditInvoiceData["docsId"] = invoiceData.docsId; 
 				    tempEditInvoiceData["commentsId"] = invoiceData.commentsId; 
 				    tempEditInvoiceData["invoiceAmount"] = self.scope.totalAmountVal;
-				    tempEditInvoiceData["tax"] = self.scope.tax;
 				    tempEditInvoiceData["grossTotal"] = self.scope.grossTotalStore;
+				    if(self.scope.tax == undefined && self.scope.tax != null && parseInt(self.scope.tax) > 0) {
+					   	tempEditInvoiceData["tax"] = self.scope.tax;
+					}
 				   // tempEditInvoiceData["userAdjAmt"] = "0"; 
 				   
 				   // tempEditInvoiceData["bundleId"] = $("#paymentBundleNames").val(); 
@@ -1437,7 +1439,12 @@ var page = Component.extend({
 								  	 	}
 								  	},
 								  	grossTotal: function(){
-								  	 	var grossTotal = (parseFloat(this.attr("tax")) + parseFloat(this.attr("totalAmountVal")));
+								  		var grossTotal =0;
+								  		if(this.attr("tax") != undefined && this.attr("tax") != null){
+								  			grossTotal = (parseFloat(this.attr("tax")) + parseFloat(this.attr("totalAmountVal")));
+								  		}else{
+								  			grossTotal = parseFloat(this.attr("totalAmountVal"));
+								  		}
 								  	 	this.attr("grossTotalStore", grossTotal);
 								  	 	if(isNaN(grossTotal)){
 								  	 		grossTotal = 0;
