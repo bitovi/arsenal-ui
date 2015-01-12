@@ -33,18 +33,34 @@ var page = Component.extend({
     appstate: null, // will be passed in
     pageState: pageState,
     isPageSearch: undefined,
+    pbOffset: 0,
+    pbDetailOffset: 0,
+    pbLimit: 10,
+    tableScrollTop: 0,
+    sortColumns:[],
+    sortDirection: "asc",
     refreshBundles: _.debounce(function() {
+      var self=this;
       if(this.scope.isPageSearch != this.scope.appstate.globalSearch) {
 
         this.scope.appstate.attr('excelOutput',false);
+        this.scope.appstate.attr('offset',this.scope.attr('pbOffset'));
+        this.scope.appstate.attr('limit',this.scope.attr('pbLimit'));
+        this.scope.appstate.attr('sortCol',this.scope.attr('sortColumns'));
+        this.scope.appstate.attr('sortDir',this.scope.attr('sortDirection'));
 
         resetGrids(pageState);
 
         this.scope.isPageSearch  = this.scope.appstate.globalSearch;
          PaymentBundle.findAll({appstate: this.scope.appstate}).then(function(bundles) {
           can.batch.start();
-          pageState.bundles.splice(0, pageState.bundles.length)
-          pageState.bundles.replace(bundles);
+          pageState.bundles.splice(0, pageState.bundles.length);
+          if(self.scope.appstate.attr('offset')==0)
+           pageState.bundles.replace(bundles);
+          else{
+            $.merge(pageState.bundles, bundles);
+            pageState.bundles.replace(pageState.bundles);
+          }
           can.batch.stop();
         }, function(err){
           console.log(err);
@@ -71,12 +87,17 @@ var page = Component.extend({
   events: {
     'inserted': function(ev, el) {
       this.scope.appstate.attr('renderGlobalSearch', true);
-      this.scope.appstate.attr('excelOutput',false);
+      this.scope.appstate.attr('excelOutput',false); 
       this.scope.refreshBundles.apply(this);
     },
     '{scope} change': function(scope, ev, attr) {
+      var self=this;
+      if(self.scope.appstate.attr('globalSearchButtonClicked')==true){
+        self.scope.attr("pbOffset",0);
+        self.scope.attr("tableScrollTop",0);
+      }
       if(attr.substr(0, 8) === 'appstate') {
-         this.scope.refreshBundles.apply(this);
+        this.scope.refreshBundles.apply(this);
       }
     },
     //Removed the Delete bundle as its not require for top grid. It only need to be available in the bottom grid
@@ -94,6 +115,43 @@ var page = Component.extend({
     // },
     '.add-invoice click': function(el, ev) {
       commonUtils.navigateTo("invoices");
+    },
+    ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
+          var self=this;
+           //console.log($(item[0]).attr("class"));
+          var val = $(item[0]).attr("class").split(" ");
+          var existingSortColumns =self.scope.sortColumns.attr();
+          var existingSortColumnsLen = existingSortColumns.length;
+          var existFlag = false;
+          if(existingSortColumnsLen==0){
+            self.scope.attr('sortColumns').push(val[0]);
+          } else {
+            for(var i=0;i<existingSortColumnsLen;i++){
+              /* The below condition is to selected column to be sorted in asc & dec way */
+              console.log(val[0]+","+existingSortColumns[i] )
+              if(existingSortColumns[i] == val[0]){
+                existFlag = true;
+              }
+            }
+            if(existFlag==false){
+              self.scope.attr('sortColumns').replace([]);
+              self.scope.attr('sortColumns').push(val[0]);
+            } else {
+              var sortDirection = (self.scope.attr('sortDirection') == 'asc') ? 'desc' : 'asc';
+              self.scope.attr('sortDirection', sortDirection);
+            }
+
+          }
+
+          console.log("aaa "+self.scope.sortColumns.attr());
+           /* The below code calls {scope.appstate} change event that gets the new data for grid*/
+           /* All the neccessary parameters will be set in that event */
+           if(self.scope.appstate.attr('globalSearch')){
+              self.scope.appstate.attr('globalSearch', false);
+            }else{
+              self.scope.appstate.attr('globalSearch', true);
+            }
+
     },
     '.excel click': function(el, ev) {
       var self = this;
