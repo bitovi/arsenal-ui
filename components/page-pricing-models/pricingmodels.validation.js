@@ -48,7 +48,7 @@ var pricingmodelValidation = {
                     }
                 },
                 usercommentsdiv :{
-                    group:'#multipleComments',
+                    group:'multiple-comments',
                     validators: {
                         notEmpty: {
                             message: 'Comment is mandatory'
