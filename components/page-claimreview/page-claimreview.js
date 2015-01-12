@@ -36,13 +36,13 @@ Grid.extend({
         }
       },*/
       {
-        id: 'entity',
+        id: 'entityName',
         title: '<span class="open-toggle-all"></span> Licensor',
         sortable: true,
-        contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{entity}}')({entity: row.entity, isChild: row.__isChild}); }
+        contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{entityName}}')({entityName: row.entityName, isChild: row.__isChild}); }
       },
       {
-        id: 'invoiceNum',
+        id: 'invoiceNumber',
         title: 'Invoice #',
         sortable: true
       },
@@ -67,32 +67,32 @@ Grid.extend({
         sortable: true
       },
       {
-        id: 'invoiceAmt',
+        id: 'invoiceAmount',
         title: 'Invoice',
         sortable: true
       },
       {
-        id: 'orDispAmt',
+        id: 'overrepAmount',
         title: 'OverRep',
         sortable: true
       },
       {
-        id: 'liDispAmt',
+        id: 'lineDisputeAmount',
         title: 'Line Item',
         sortable: true
       },
       {
-        id: 'reconDispAmt',
+        id: 'reconAmount',
         title: 'Recon',
         sortable: true
       },
       {
-        id: 'qaAlloc',
+        id: 'oaAllocated',
         title: 'OA Allocated',
         sortable: true
       },
       {
-        id: 'cnAlloc',
+        id: 'caAllocated',
         title: 'CA Allocated',
         sortable: true
       },
@@ -102,12 +102,12 @@ Grid.extend({
         sortable: true
       },
       {
-        id: 'invPaySat',
+        id: 'invPmtSaturation',
         title: 'Inv Pymt Sat',
         sortable: true
       },
       {
-        id: 'paySat',
+        id: 'pmtSaturation',
         title: 'Pymt Sat',
         sortable: true
       },
@@ -117,12 +117,12 @@ Grid.extend({
         sortable: true
       },
       {
-        id: 'orDispPerc',
+        id: 'overrepDispPer',
         title: 'OR Dispute %',
         sortable: true
       },
       {
-        id: 'liDispPerc',
+        id: 'liDispPer',
         title: 'LI Dispute %',
         sortable: true
       },
@@ -206,7 +206,7 @@ Grid.extend({
         id: 'country',
         title: '<span class="open-toggle-all"></span> Country',
         sortable: true,
-        contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{entity}}')({entity: row.country, isChild: row.__isChild}); }
+        contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{entityName}}')({entityName: row.country, isChild: row.__isChild}); }
       },
       {
         id: 'period',
@@ -214,7 +214,7 @@ Grid.extend({
         sortable: true
       },
       {
-        id: 'entity',
+        id: 'entityName',
         title: 'Licensor',
         sortable: true,
       },
@@ -229,32 +229,32 @@ Grid.extend({
         sortable: true
       },
       {
-        id: 'invoiceAmt',
+        id: 'invoiceAmount',
         title: 'Invoice',
         sortable: true
       },
       {
-        id: 'orDispAmt',
+        id: 'overrepAmount',
         title: 'OverRep',
         sortable: true
       },
       {
-        id: 'liDispAmt',
+        id: 'lineDisputeAmount',
         title: 'Line Item',
         sortable: true
       },
       {
-        id: 'reconDispAmt',
+        id: 'reconAmount',
         title: 'Recon',
         sortable: true
       },
       {
-        id: 'qaAlloc',
+        id: 'oaAllocated',
         title: 'OA Allocated',
         sortable: true
       },
       {
-        id: 'cnAlloc',
+        id: 'caAllocated',
         title: 'CA Allocated',
         sortable: true
       },
@@ -264,12 +264,12 @@ Grid.extend({
         sortable: true
       },
       {
-        id: 'invPaySat',
+        id: 'invPmtSaturation',
         title: 'Inv Sat',
         sortable: true
       },
       {
-        id: 'paySat',
+        id: 'pmtSaturation',
         title: 'Pymt Sat',
         sortable: true
       },
@@ -279,12 +279,12 @@ Grid.extend({
         sortable: true
       },
       {
-        id: 'orDispPerc',
+        id: 'overrepDispPer',
         title: 'OR Disp %',
         sortable: true
       },
       {
-        id: 'liDispPerc',
+        id: 'liDispPer',
         title: 'LI Disp %',
         sortable: true
       }
@@ -328,10 +328,10 @@ Grid.extend({
       row.attr('__isOpen', !row.attr('__isOpen'));
       if(self.scope.is_aggregate == 1){
         $(".period").hide();
-        $(".entity").hide();
+        $(".entityName").hide();
       } else {
         $(".period").show();
-        $(".entity").show(); 
+        $(".entityName").show(); 
       }
       alignGrid('claimCountryGrid', self.scope.is_aggregate);
     },
@@ -346,10 +346,10 @@ Grid.extend({
       can.batch.stop();
       if(self.scope.is_aggregate == 1){
         $(".period").hide();
-        $(".entity").hide();
+        $(".entityName").hide();
       } else {
         $(".period").show();
-        $(".entity").show();
+        $(".entityName").show();
       }
       alignGrid('claimCountryGrid', self.scope.is_aggregate);
     }
@@ -555,6 +555,7 @@ var page = Component.extend({
           console.log("aaa "+self.scope.sortColumns.attr());
            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
            /* All the neccessary parameters will be set in that event */
+           self.scope.appstate.attr('globalSearchButtonClicked', false);
            if(self.scope.appstate.attr('globalSearch')){
               self.scope.appstate.attr('globalSearch', false);
             }else{
@@ -634,11 +635,11 @@ var page = Component.extend({
         }
         if(self.scope.attr("view") == "country-aggregate"){
           $(".period").hide();
-          $(".entity").hide();
+          $(".entityName").hide();
           
         } else {
           $(".period").show();
-          $(".entity").show();
+          $(".entityName").show();
         }
       },
      
@@ -671,6 +672,8 @@ var page = Component.extend({
               self.scope.attr("countryViewOffset",0);
               self.scope.attr("countryTableScrollTop",0);
             }
+            self.scope.sortColumns.replace([]);
+            self.scope.attr("sortDirection","asc");
           }
           /* Page is not allowed to do search by default when page is loaded */
           /* This can be checked using 'localGlobalSearch' parameter, it will be undefined when page loaded */
@@ -748,7 +751,7 @@ var page = Component.extend({
                 claimLicSearchRequest["filter"] = newFilterData;
 
                 claimLicSearchRequest["sortBy"] = self.scope.sortColumns.attr().toString();
-                claimLicSearchRequest["sortOrder"] = "ASC";
+                claimLicSearchRequest["sortOrder"] = self.scope.attr('sortDirection');
 
                 
                 //console.log("Request are "+JSON.stringify(UserReq.formRequestDetails(claimLicSearchRequest)));
@@ -848,25 +851,25 @@ var generateTableData = function(invoiceData,footerData){
             var invTemp = {};
             invTemp["entityId"] = invoiceData[i]["entityId"]+","+ invoiceData[i]["entityName"];
             invTemp["__isChild"] = false;
-            invTemp["entity"] = (invoiceData[i]["entityName"]==null)?"":invoiceData[i]["entityName"];
-            invTemp["invoiceNum"] = "";
+            invTemp["entityName"] = (invoiceData[i]["entityName"]==null)?"":invoiceData[i]["entityName"];
+            invTemp["invoiceNumber"] = "";
             invTemp["currency"] = invoiceData[i]["currency"];
             
             invTemp["period"] = "";
             invTemp["country"] = "";
             invTemp["contentType"] = "";
-            invTemp["invoiceAmt"] = CurrencyFormat(invoiceData[i]["invoiceAmount"]);
-            invTemp["orDispAmt"] = (invoiceData[i]["overrepAmount"])==null?0:invoiceData[i]["overrepAmount"];
-            invTemp["liDispAmt"] = (invoiceData[i]["lineDisputeAmount"])==null?0:invoiceData[i]["lineDisputeAmount"];
-            invTemp["reconDispAmt"] = CurrencyFormat(invoiceData[i]["reconAmount"]);
-            invTemp["qaAlloc"] = CurrencyFormat(invoiceData[i]["oaAllocated"]);
-            invTemp["cnAlloc"] = CurrencyFormat(invoiceData[i]["caAllocated"]);
+            invTemp["invoiceAmount"] = CurrencyFormat(invoiceData[i]["invoiceAmount"]);
+            invTemp["overrepAmount"] = (invoiceData[i]["overrepAmount"])==null?0:invoiceData[i]["overrepAmount"];
+            invTemp["lineDisputeAmount"] = (invoiceData[i]["lineDisputeAmount"])==null?0:invoiceData[i]["lineDisputeAmount"];
+            invTemp["reconAmount"] = CurrencyFormat(invoiceData[i]["reconAmount"]);
+            invTemp["oaAllocated"] = CurrencyFormat(invoiceData[i]["oaAllocated"]);
+            invTemp["caAllocated"] = CurrencyFormat(invoiceData[i]["caAllocated"]);
             invTemp["balance"] = "";
             invTemp["priorPaid"] = CurrencyFormat(invoiceData[i]["priorPaid"]);
-            invTemp["invPaySat"] = CurrencyFormat(invoiceData[i]["invPmtSaturation"]);
-            invTemp["paySat"] = CurrencyFormat(invoiceData[i]["pmtSaturation"]);
-            invTemp["orDispPerc"] = CurrencyFormat(invoiceData[i]["invoiceAmount"]);
-            invTemp["liDispPerc"] = CurrencyFormat(invoiceData[i]["invoiceAmount"]);
+            invTemp["invPmtSaturation"] = CurrencyFormat(invoiceData[i]["invPmtSaturation"]);
+            invTemp["pmtSaturation"] = CurrencyFormat(invoiceData[i]["pmtSaturation"]);
+            invTemp["overrepDispPer"] = CurrencyFormat(invoiceData[i]["invoiceAmount"]);
+            invTemp["liDispPer"] = CurrencyFormat(invoiceData[i]["invoiceAmount"]);
             invTemp["status"] = "";
 
             gridData.data.push(invTemp);
@@ -880,10 +883,10 @@ var generateTableData = function(invoiceData,footerData){
               for(var j=0;j<invoiceLineItems.length;j++){
                 var invLITemp={};
 
-                invLITemp["entityId"] = invTemp["entityId"]+","+  invTemp["entity"] ;
+                invLITemp["entityId"] = invTemp["entityId"]+","+  invTemp["entityName"] ;
                 invLITemp["__isChild"] = true;
-                invLITemp["entity"] = "";
-                invLITemp["invoiceNum"] = invoiceLineItems[j]["invoiceNumber"];
+                invLITemp["entityName"] = "";
+                invLITemp["invoiceNumber"] = invoiceLineItems[j]["invoiceNumber"];
                 invLITemp["currency"] = invTemp["currency"];
 
                 invLITemp["period"] = invoiceLineItems[j]["period"];
@@ -892,29 +895,29 @@ var generateTableData = function(invoiceData,footerData){
                 invLITemp["country"] = invoiceLineItems[j]["countryId"];
                 invLITemp["contentType"] = invoiceLineItems[j]["contentTypeName"];
 
-                invLITemp["invoiceAmt"] = invoiceLineItems[j]["invoiceAmount"];
+                invLITemp["invoiceAmount"] = invoiceLineItems[j]["invoiceAmount"];
 
-                invLITemp["orDispAmt"] = (invoiceLineItems[j]["overrepAmount"])==null?0:invoiceLineItems[j]["overrepAmount"];
+                invLITemp["overrepAmount"] = (invoiceLineItems[j]["overrepAmount"])==null?0:invoiceLineItems[j]["overrepAmount"];
               
-                invLITemp["liDispAmt"] = (invoiceLineItems[j]["lineDisputeAmount"])==null?0:invoiceLineItems[j]["lineDisputeAmount"];
+                invLITemp["lineDisputeAmount"] = (invoiceLineItems[j]["lineDisputeAmount"])==null?0:invoiceLineItems[j]["lineDisputeAmount"];
 
-                invLITemp["reconDispAmt"] = invoiceLineItems[j]["reconAmount"];
+                invLITemp["reconAmount"] = invoiceLineItems[j]["reconAmount"];
 
-                invLITemp["qaAlloc"] = invoiceLineItems[j]["oaAllocated"];
+                invLITemp["oaAllocated"] = invoiceLineItems[j]["oaAllocated"];
 
-                invLITemp["cnAlloc"] = invoiceLineItems[j]["caAllocated"];
+                invLITemp["caAllocated"] = invoiceLineItems[j]["caAllocated"];
 
                 invLITemp["balance"] = (invoiceLineItems[j]["balance"]==null)?0:invoiceLineItems[j]["balance"];
 
                 invLITemp["priorPaid"] = invoiceLineItems[j]["priorPaid"];
 
-                invLITemp["invPaySat"] = invoiceLineItems[j]["invPmtSaturation"];
+                invLITemp["invPmtSaturation"] = invoiceLineItems[j]["invPmtSaturation"];
                 
-                invLITemp["paySat"] = invoiceLineItems[j]["pmtSaturation"];
+                invLITemp["pmtSaturation"] = invoiceLineItems[j]["pmtSaturation"];
                 
-                invLITemp["orDispPerc"] = (invoiceLineItems[j]["overrepDispPer"]==null)?0:invoiceLineItems[j]["overrepDispPer"];
+                invLITemp["overrepDispPer"] = (invoiceLineItems[j]["overrepDispPer"]==null)?0:invoiceLineItems[j]["overrepDispPer"];
                 
-                invLITemp["liDispPerc"] = (invoiceLineItems[j]["liDispPer"]==null)?0:invoiceLineItems[j]["liDispPer"];;
+                invLITemp["liDispPer"] = (invoiceLineItems[j]["liDispPer"]==null)?0:invoiceLineItems[j]["liDispPer"];;
                 
                 invLITemp["status"] = (invoiceLineItems[j]["status"] ==null)?"":invoiceLineItems[j]["status"];
                 invTemp["status"] = invLITemp["status"];
@@ -949,7 +952,7 @@ var generateTableData = function(invoiceData,footerData){
               gridData.data[insertedId]["country"] = countryArr[0];
 
           }
-          var footerJson = {"entityId":"","__isChild":false,"entity":"Total in Regional Currency (EUR)","invoiceNum":"","currency":"","period":"","country":"","contentType":"","invoiceAmt":"350000","orDispAmt":"20000","liDispAmt":"40000","reconDispAmt":"30000","qaAlloc":"2000","cnAlloc":"2000","balance":"76","priorPaid":"0","invPaySat":"","paySat":"","orDispPerc":"","liDispPerc":"","status":""};
+          var footerJson = {"entityId":"","__isChild":false,"entityName":"Total in Regional Currency (EUR)","invoiceNumber":"","currency":"","period":"","country":"","contentType":"","invoiceAmount":"350000","overrepAmount":"20000","lineDisputeAmount":"40000","reconAmount":"30000","oaAllocated":"2000","caAllocated":"2000","balance":"76","priorPaid":"0","invPmtSaturation":"","pmtSaturation":"","overrepDispPer":"","liDispPer":"","status":""};
           //gridData.footer.push(footerJson);
          
           //console.log("footerData is "+JSON.stringify(footerData));
@@ -967,24 +970,24 @@ var generateFooterData = function(footerData){
     var footTemp ={};
     footTemp["entityId"] = "";
     footTemp["__isChild"] = false;
-    footTemp["entity"] = "Total in Regional Currency";
-    footTemp["invoiceNum"] = "";
+    footTemp["entityName"] = "Total in Regional Currency";
+    footTemp["invoiceNumber"] = "";
     footTemp["currency"] = footerData["currency"];
     footTemp["period"] = "";
     footTemp["country"] = "";
     footTemp["contentType"] = "";
-    footTemp["invoiceAmt"] = CurrencyFormat(parseInt(footerData["invoiceAmount"]));
-    footTemp["orDispAmt"] = CurrencyFormat(parseInt(footerData["overrepAmount"]));
-    footTemp["liDispAmt"] = CurrencyFormat(parseInt(footerData["lineDisputeAmount"]));
-    footTemp["reconDispAmt"] = CurrencyFormat(parseInt(footerData["reconAmount"]));
-    footTemp["qaAlloc"] = CurrencyFormat(parseInt(footerData["oaAllocated"]));
-    footTemp["cnAlloc"] = CurrencyFormat(parseInt(footerData["caAllocated"]));
+    footTemp["invoiceAmount"] = CurrencyFormat(parseInt(footerData["invoiceAmount"]));
+    footTemp["overrepAmount"] = CurrencyFormat(parseInt(footerData["overrepAmount"]));
+    footTemp["lineDisputeAmount"] = CurrencyFormat(parseInt(footerData["lineDisputeAmount"]));
+    footTemp["reconAmount"] = CurrencyFormat(parseInt(footerData["reconAmount"]));
+    footTemp["oaAllocated"] = CurrencyFormat(parseInt(footerData["oaAllocated"]));
+    footTemp["caAllocated"] = CurrencyFormat(parseInt(footerData["caAllocated"]));
     footTemp["balance"] = 0;
     footTemp["priorPaid"] = CurrencyFormat(parseInt(footerData["priorPaid"]));
-    footTemp["invPaySat"] = 0;
-    footTemp["paySat"] = 0;
-    footTemp["orDispPerc"] = 0;
-    footTemp["liDispPerc"] = 0;
+    footTemp["invPmtSaturation"] = 0;
+    footTemp["pmtSaturation"] = 0;
+    footTemp["overrepDispPer"] = 0;
+    footTemp["liDispPer"] = 0;
     footTemp["status"] = "";
 
     formatFooterData.push(footTemp);
@@ -994,24 +997,24 @@ var generateFooterData = function(footerData){
       var footLITemp={};
       footLITemp["entityId"] = "";
       footLITemp["__isChild"] = true;
-      footLITemp["entity"] = "";
-      footLITemp["invoiceNum"] = "";
+      footLITemp["entityName"] = "";
+      footLITemp["invoiceNumber"] = "";
       footLITemp["currency"] = footerLineItems[i]["currency"];
       footLITemp["period"] = "";
       footLITemp["country"] = "";
       footLITemp["contentType"] = "";
-      footLITemp["invoiceAmt"] = CurrencyFormat(parseInt(footerLineItems[i]["invoiceAmount"]));
-      footLITemp["orDispAmt"] = CurrencyFormat(parseInt(footerLineItems[i]["overrepAmount"]));
-      footLITemp["liDispAmt"] = CurrencyFormat(parseInt(footerLineItems[i]["lineDisputeAmount"]));
-      footLITemp["reconDispAmt"] = CurrencyFormat(parseInt(footerLineItems[i]["reconAmount"]));
-      footLITemp["qaAlloc"] = CurrencyFormat(parseInt(footerLineItems[i]["oaAllocated"]));
-      footLITemp["cnAlloc"] = CurrencyFormat(parseInt(footerLineItems[i]["caAllocated"]));
+      footLITemp["invoiceAmount"] = CurrencyFormat(parseInt(footerLineItems[i]["invoiceAmount"]));
+      footLITemp["overrepAmount"] = CurrencyFormat(parseInt(footerLineItems[i]["overrepAmount"]));
+      footLITemp["lineDisputeAmount"] = CurrencyFormat(parseInt(footerLineItems[i]["lineDisputeAmount"]));
+      footLITemp["reconAmount"] = CurrencyFormat(parseInt(footerLineItems[i]["reconAmount"]));
+      footLITemp["oaAllocated"] = CurrencyFormat(parseInt(footerLineItems[i]["oaAllocated"]));
+      footLITemp["caAllocated"] = CurrencyFormat(parseInt(footerLineItems[i]["caAllocated"]));
       footLITemp["balance"] = 0;
       footLITemp["priorPaid"] = CurrencyFormat(parseInt(footerLineItems[i]["priorPaid"]));
-      footLITemp["invPaySat"] = 0;
-      footLITemp["paySat"] = 0;
-      footLITemp["orDispPerc"] = 0;
-      footLITemp["liDispPerc"] = 0;
+      footLITemp["invPmtSaturation"] = 0;
+      footLITemp["pmtSaturation"] = 0;
+      footLITemp["overrepDispPer"] = 0;
+      footLITemp["liDispPer"] = 0;
       footLITemp["status"] = "";
       formatFooterData.push(footLITemp);
     }
@@ -1043,7 +1046,7 @@ function alignGrid(divId, is_aggregate){
         else 
           tdWidth = tbodyTdWidth;
 
-        /* When aggregate period is checked, 'period' & 'entity' will be hidden, so its width made 0 */
+        /* When aggregate period is checked, 'period' & 'entityName' will be hidden, so its width made 0 */
         if(is_aggregate==1){
           if(i==2 || i==3) 
             tdWidth = 0;
