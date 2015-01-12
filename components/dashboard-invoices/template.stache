@@ -30,7 +30,7 @@
           <td class="hole invoice-expected"></td>
         {{else}}
           <td class="hole">
-            {{#if showImage}}<img style="width:40px;height:40px" src="resources/images/checkMark.png"/>
+            {{#if showImage}}<img style="width:25px;height:25px" src="resources/images/checkMarkDark.png"/>
             {{else}}
               {{show}}
             {{/if}}
