@@ -70,19 +70,27 @@ Grid.extend({
 });
 
 
-
-
 fileUpload.extend({
   tag: 'rn-file-uploader-icsv-sum',
-  scope: {
-    fileList: new can.List(),
-    isAnyFileLoaded : can.compute(function() { return this.fileList.attr('length') > 0; })
-  },
-  events: {
-    'inserted': function() {
-      this.scope.fileList.replace(this.scope.uploadedfileinfo);
+    scope: {
+        fileList : new can.List(),
+        uploadedfileinfo:[],
+        deletedFileInfo:[]
+    },
+    events:{
+        "{uploadedfileinfo} change":function () {
+            // update areFilesToBeUploaded boolean
+            //Handling this using data as scope is not accessible from page-edit -invoice.
+            $('rn-file-uploader-icsv-sum').data('_d_uploadedFileInfo', this.scope.uploadedfileinfo);
+            // check if all files in uploadedfileinfo have a isServer flag
+            // then replace fileList with uploadedfileinfo
+            // this is the initial fileList setup
+            this.scope.fileList.replace(this.scope.uploadedfileinfo);
+        },
+        "{deletedFileInfo} change":function () {
+            $('rn-file-uploader-icsv-sum').data('_d_deletedFileInfo', this.scope.deletedFileInfo);
+        }
     }
-  }
 });
 
 
