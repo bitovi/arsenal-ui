@@ -66,10 +66,13 @@ fileUpload.extend({
         //console.log(JSON.stringify(this.scope.uploadedfileinfo.attr()));
       },
        "{uploadedfileinfo} change":function(){
+        $('propose-rn-file-uploader').data('_d_uploadedFileInfo', this.scope.uploadedfileinfo);
           this.scope.fileList.replace(this.scope.uploadedfileinfo);
+
       }, 
       "{deletedFileInfo} change":function(){
         //this.scope.deletedFileInfo.replace(this.scope.deletedFileInfo);
+        $('propose-rn-file-uploader').data('_d_deletedFileInfo', this.scope.deletedFileInfo);
       }
     }
  });
@@ -374,7 +377,48 @@ var page = Component.extend({
                   }
            }
 
-           var updateRequest = utils.frameUpdateRequest(self.scope.request,updatableRows,self.scope.proposedOnAccDocuments,comments,self.scope.quarters);
+              /* adding new document */
+              // make sure that you remove all files from _d_uploadedFileInfo that have just the term ftype = 'selectedFromLocal' & isServer
+              var proposedDocs=[];
+              var uploadedfiles = $('propose-rn-file-uploader').data('_d_uploadedFileInfo');
+              for(var i =0; i < uploadedfiles.length; i++){
+                  if (uploadedfiles[i].ftype === 'pushedToServer') {
+                      // This is the list of newly uploaded files.
+                      var tempDocument = {};
+                      tempDocument.fileName = uploadedfiles[i].fileName;
+                      tempDocument.location = uploadedfiles[i].filePath;
+                      tempDocument.status = "add";
+                      proposedDocs.push(tempDocument);
+                  } else if (uploadedfiles[i].isServer) {
+                      // This is the existing server file list which will be send back as-is with no change.
+                      // var tempDocument = {};
+                      // tempDocument.fileName = uploadedfiles[i].fileName;
+                      // tempDocument.location = uploadedfiles[i].location;
+                      // tempDocument.docId = uploadedfiles[i].docId;
+                      // tempDocument.id = uploadedfiles[i].id;
+                      // tempDocument.status = uploadedfiles[i].status;
+                      // proposedDocs.push(tempDocument);
+                  }
+              }
+              /* deleting existing documents */
+              var deletedFiles = $('propose-rn-file-uploader').data('_d_deletedFileInfo');
+
+              if (typeof deletedFiles !== 'undefined') {
+                  for (var i = 0; i < deletedFiles.length; i++) {
+                      if (deletedFiles[i].isServer) {
+                          var tempDocument = {};
+                          tempDocument.fileName = deletedFiles[i].fileName;
+                          tempDocument.location = deletedFiles[i].location;
+                          tempDocument.docId = deletedFiles[i].docId;
+                          tempDocument.status = "delete";
+                          tempDocument.id = deletedFiles[i].id;
+                          proposedDocs.push(tempDocument);
+                          //console.log(tempDocument);
+                      }
+                  }
+              }
+
+           var updateRequest = utils.frameUpdateRequest(self.scope.request,updatableRows,proposedDocs,comments,self.scope.quarters);
            updateRequest.searchRequest=requestHelper.formGlobalRequest(self.scope.appstate).searchRequest;
             proposedOnAccount.update(requestHelper.formRequestDetails(updateRequest),"UPDATE",function(data){
             //console.log("Update response is "+JSON.stringify(data));
@@ -489,7 +533,11 @@ var page = Component.extend({
                     else
                       $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>');
 
-                      self.scope.proposedOnAccDocuments.replace(data.onAccount.documents);
+                      var proposedDocs = data.onAccount.documents;
+                      for(var k=0;k<proposedDocs.length;k++){
+                        proposedDocs[k].isServer = true;
+                      }
+                      self.scope.proposedOnAccDocuments.replace(proposedDocs);
                     //$('#proposeuploadFile').html(stache('<propose-rn-file-uploader uploadedfileinfo={docs}></propose-rn-file-uploader>')({docs:data.documents})); 
 
                 }else{
