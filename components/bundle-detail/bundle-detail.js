@@ -29,8 +29,6 @@ import css_tokeninput from 'tokeninput.css!';
 import css_tokeninput_theme from 'tokeninput_theme.css!';
 import commonUtils from 'utils/commonUtils';
 
-import pdfjs from 'pdfjs';
-
 
 var VALIDATION_CHECK_INTERVAL = 3000;
 
@@ -77,11 +75,16 @@ var BundleDetailTabs = Component.extend({
 
 
     workflowSteps: new WorkflowStep.List([]),
-    isBundleSelectionChange: false,
+    bundleProgress:{
+      //To controll the multiple get calls when the tab changed
+      isBundleSelectionChange: false,
+      triggerValidation:false
+    },
     selectedBundleChanged: function(scope) {
       $("#messageDiv").hide();
       scope.details ={};
-      scope.isBundleSelectionChange = true;
+      scope.bundleProgress.isBundleSelectionChange = true;
+      scope.bundleProgress.triggerValidation = true;
       var selectedBundle = scope.pageState.selectedBundle;
       if(!selectedBundle) {
         return;
@@ -97,7 +100,7 @@ var BundleDetailTabs = Component.extend({
       }).then(function(steps) {
         scope.workflowSteps.replace(steps);
       });
-      scope.isBundleSelectionChange = false;
+      scope.bundleProgress.isBundleSelectionChange = false;
     },
 
     gettingDetails: false,
@@ -123,8 +126,12 @@ var BundleDetailTabs = Component.extend({
       ).then(function(bundle) {
         scope.attr('gettingDetails', false);
 
-        bundle.status === 'FAILURE' ? displayMessage("errorMessage",bundle.responseText) : scope.getNewValidations(bundle);
-        //
+        if(bundle.status === 'FAILURE'){
+          displayMessage("errorMessage",bundle.responseText)
+        }else{
+          scope.bundleProgress.triggerValidation ? scope.getNewValidations(bundle) : "";
+        }
+
 
         //<!--rdar://problem/19415830 UI-PBR: Approve/Reject/Recall/Delete should happen only from Licensor Tab-->
         if(bundle.view === 'LICENSOR'){
@@ -137,11 +144,13 @@ var BundleDetailTabs = Component.extend({
       });
     },
     getNewValidations: function(bundle) {
+      var scope = this;
+      scope.bundleProgress.triggerValidation = false;
 
       if(bundle.status != 1 && !this.appstate.userInfo.roleIds.indexOf(constants.ROLES.BM)){
         return;
       }
-      var scope = this;
+
 
       var view;
       if(bundle.bundleType === 'REGULAR_INV') {
@@ -373,8 +382,9 @@ var BundleDetailTabs = Component.extend({
       }
     },
     '{scope} selectedTab': function(scope, ev, newTab, oldTab) {
-      if(newTab && oldTab && !scope.isBundleSelectionChange) { // only when *changing* tabs
+      if(newTab && oldTab && !scope.bundleProgress.isBundleSelectionChange) { // only when *changing* tabs
         this.scope.attr('gridColumns', newTab.columns);
+        scope.bundleProgress.triggerValidation = true;
         this.scope.resetToken();
         scope.pageState.selectedBundle && scope.getNewDetails(scope.pageState.selectedBundle);
       }
