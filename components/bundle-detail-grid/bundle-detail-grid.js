@@ -4,6 +4,7 @@ import Grid from 'components/grid/';
 
 import template from './template.stache!';
 import _less from './bundle-detail-grid.less!';
+import PeriodWidgetHelper from 'utils/periodWidgetHelpers';
 
 var BundleDetailGrid = Grid.extend({
   tag: 'rn-bundle-detail-grid',
@@ -14,7 +15,7 @@ var BundleDetailGrid = Grid.extend({
       // and each of those instances is a parent row
       // each BundleDetailGroup instance has a bundleDetails (which is a List of BundleDetail model instances)
       // and each of those is a child row
-      var contentType = [],country = [],periods = [],licensors = [];
+      var contentType = [],country = [],periods = [],licensors = [],periodType="";
 
       can.batch.start();
       var rows = [];
@@ -22,6 +23,7 @@ var BundleDetailGrid = Grid.extend({
         contentType = [];
         country = [];
         periods = [];
+        periodType = "";
         licensors = [];
         rows.push(group);
         _.each(group.bundleDetails, function(detail) {
@@ -35,7 +37,12 @@ var BundleDetailGrid = Grid.extend({
           }
 
           if(detail.fiscalPeriod != undefined){
+            //Group Header row, needs the below logic
             _.contains(periods, detail.fiscalPeriod) ?  "" : periods.push(detail.fiscalPeriod);
+            periodType = detail.periodType;
+
+            //Detailed row, apply logic now only as being traversed
+            detail.attr("fiscalPeriodDisplay",PeriodWidgetHelper.getDisplayPeriod(detail.fiscalPeriod.toString(), detail.periodType));
           }
 
           if(bundle.view != undefined && bundle.view == "COUNTRY"
@@ -52,10 +59,12 @@ var BundleDetailGrid = Grid.extend({
 
         var arrSize = _.size(contentType) ;
         arrSize > 1 ? group.attr('contentGrpName', arrSize+" types of Content") : group.attr('contentGrpName',contentType[0]) ;
+
         arrSize = _.size(country) ;
         arrSize > 1 ? group.attr('country',arrSize+" Countries") : group.attr('country',country[0]) ;
+
         arrSize = _.size(periods) ;
-        arrSize > 1 ? group.attr('fiscalPeriod',"Multiple") : group.attr('fiscalPeriod',periods[0]) ;
+        arrSize > 1 ? group.attr('fiscalPeriodDisplay',"Multiple") : group.attr('fiscalPeriodDisplay',PeriodWidgetHelper.getDisplayPeriod(periods[0].toString(), periodType)) ;
 
         if(bundle.view == "COUNTRY"){
           //<rdar://problem/19396429> UI-PBR: Country tab missing licensor
@@ -63,8 +72,6 @@ var BundleDetailGrid = Grid.extend({
           arrSize > 1 ? group.attr('entityNameCnt',arrSize+" Licensors") : group.attr('entityNameCnt',licensors[0])  ;
           group.attr("view",bundle.view);
         }
-
-
 
       });
       can.batch.stop();
@@ -230,7 +237,7 @@ var BundleDetailGrid = Grid.extend({
         setTimeout(function(){
           alignGrid('bundleDetailGridDiv');
         },2000);
-      
+
     },
     '.open-toggle click': function(el, ev) {
       var row = el.closest('tr').data('row').row;
@@ -247,7 +254,7 @@ var BundleDetailGrid = Grid.extend({
       setTimeout(function(){
         alignGrid('bundleDetailGridDiv');
       },2000);
-      
+
     },
     '{rows} change': function(){
       setTimeout(function(){

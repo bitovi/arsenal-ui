@@ -42,13 +42,7 @@ var columns = {
     id: 'fiscalPeriod',
     title: 'Period',
     contents: function(row) {
-      if(row.fiscalPeriod != undefined && row.fiscalPeriod != null && row.fiscalPeriod != "") {
-        if(row.periodType === "Q") {
-          return PeriodWidgetHelper.getDisplayPeriod(row.fiscalPeriod.toString(), "Q")
-        } else {
-          return PeriodWidgetHelper.getDisplayPeriod(row.fiscalPeriod.toString(), "P")
-        }
-      }
+      return row.fiscalPeriodDisplay;
     }
   },
   'country': {
