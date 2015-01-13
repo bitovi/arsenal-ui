@@ -912,10 +912,12 @@ var page = Component.extend({
 					   tempInvoiceData["finalInvoiceAmount"] = self.scope.grossTotalStore;
 					   tempInvoiceData["periodType"] = ($("#inputMonth0").val() != "")?periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0)):null;
 					   tempInvoiceData["netTotal"] = self.scope.totalAmountVal;
-					   if(self.scope.tax == undefined && self.scope.tax != null && parseInt(self.scope.tax) > 0) {
+
+
+					   if(self.scope.tax != null && parseInt(self.scope.tax) > 0) {
 					   		tempInvoiceData["tax"] = self.scope.tax;
 						}
-
+                       console.log(typeof $("#paymentBundleNames").val());
 
 					   if(typeof $("#paymentBundleNames").val() == "undefined"){
 					   	// tempInvoiceData["bundleId"] = "";
@@ -1006,6 +1008,9 @@ var page = Component.extend({
 						});
 						self.scope.errorMsg.attr("errorCode", "0000");
 						createInvoiceData.invoices.push(tempInvoiceData);
+
+//                        console.log("tempInvoiceData",tempInvoiceData.attr());
+
 						Promise.all([Invoice.create(UserReq.formRequestDetails(createInvoiceData))]).then(function(values) {
 									if(values[0]["status"]=="SUCCESS"){
 												var msg = "Invoice number "+self.scope.invoicenumberStore+" was saved successfully."

@@ -340,8 +340,8 @@ var page = Component.extend({
                   invLITemp["fiscalPeriod"] = "";
                   invLITemp["invoiceType"] = "";
                   invLITemp["invTypeDisp"] = "";
-                  invLITemp["contentGrpName"] = (invoiceLineItems[j]["contentGrpName"]==null)?"":invoiceLineItems[j]["contentGrpName"];
-                  invLITemp["country"] = (invoiceLineItems[j]["country"]==null)?"":invoiceLineItems[j]["country"];
+                  invLITemp["contentGrpName"] = (invoiceLineItems[j]["contentGrpName"]==null)?'':invoiceLineItems[j]["contentGrpName"];
+                  invLITemp["country"] = (invoiceLineItems[j]["country"]==null)?'NO_COUNTRY':invoiceLineItems[j]["country"];
                   invLITemp["invoiceNumber"] = "";
                   invLITemp["invoiceAmount"] = (invoiceLineItems[j]["lineAmount"]==null)?0:CurrencyFormat(invoiceLineItems[j]["lineAmount"]);
                   invLITemp["invoiceDueDate"] = "";
@@ -361,21 +361,29 @@ var page = Component.extend({
                     if (tmpPeriod < lowestPeriod) lowestPeriod = tmpPeriod;
                     if (tmpPeriod > highestPeriod) highestPeriod = tmpPeriod;
                   }else if(period == 0){
-                    invLITemp["fiscalPeriod"] = 'null';
+                    invLITemp["fiscalPeriod"] = '';
                   }
                   contentTypeArr.push(invLITemp["contentGrpName"]);
                   countryArr.push(invLITemp["country"]);
+                  //modify befor epushing to griddata.
+                   if(invLITemp["country"] === 'NO_COUNTRY'){
+                       invLITemp["country"]='';
+                   }
+
                   gridData.data.push(invLITemp);
                 }
               }
 
-
-
               /*Below function is to remove the duplicate content type and find the count */
               contentTypeArr = contentTypeArr.filter( function( item, index, inputArray ) {
-                     return inputArray.indexOf(item) == index;
+                     return inputArray.indexOf(item) == index;//
               });
+              contentTypeArr = contentTypeArr.filter(function (item, index, contentTypeArr) {
+                  return contentTypeArr.indexOf("TAX") != index;
+              });
+
               if(contentTypeArr.length>1){
+
                 gridData.data[insertedId]["contentGrpName"] = contentTypeArr.length+" types of Content";
               }
               else if(contentTypeArr.length==1)
@@ -384,6 +392,10 @@ var page = Component.extend({
               /*Below function is to remove the duplicate country and find the count */
               countryArr = countryArr.filter( function( item, index, inputArray ) {
                 return inputArray.indexOf(item) == index;
+              });
+
+              countryArr = countryArr.filter(function (item, index, countryArr) {
+                  return countryArr.indexOf('NO_COUNTRY') != index;
               });
               if(countryArr.length>1){
                 gridData.data[insertedId]["country"] = countryArr.length+ " Countries";
@@ -397,7 +409,6 @@ var page = Component.extend({
                     gridData.data[insertedId]["fiscalPeriod"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType)+' - '+periodWidgetHelper.getDisplayPeriod(highestPeriod,periodType);  
                   }
                 }
-
             }
 
             var first = "true";

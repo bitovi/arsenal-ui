@@ -103,7 +103,7 @@ var BundleDetailGrid = Grid.extend({
       if(!_.some(this.scope.attr('rows'), row => row.attr('validationMessages') && row.attr('validationMessages').attr('length'))) {
        filteredColumns = _.filter(filteredColumns, column => !column.validationsOnly);
       }
-      
+
       this.scope.prefilteredColumns.attr(
         filteredColumns
       );
@@ -215,7 +215,7 @@ var BundleDetailGrid = Grid.extend({
           if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight) {
             //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
 
-            
+
             var offsetVal = parentScopeVar.attr('pbDetailOffset');
             //console.log(offsetVal);
 
@@ -264,12 +264,12 @@ function alignGrid(divId){
           tdWidth = theadTdWidth;
         else if(tfootTdWidth >= tbodyTdWidth && tfootTdWidth >= theadTdWidth)
           tdWidth = tfootTdWidth;
-        else 
+        else
           tdWidth = tbodyTdWidth;
 
         if(i==1) //For the column holding 'check box'
-            tdWidth = 35;   
-               
+            tdWidth = 35;
+
         tableWidth += tdWidth;
         cellWidthArr.push(tdWidth);
       }
