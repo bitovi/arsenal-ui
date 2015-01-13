@@ -14,10 +14,20 @@ var pricingModels = Model.extend({
 			  		contentType: 'application/json'
 		  		});
  		}
+ 		else if(params.reqType === 'modelListAndVersion'){
+ 				delete params.reqType;
+	 			return $.ajax({
+			 		url: RinsCommon.UI_SERVICE_URL +'getPricingModelList',
+			  		type: 'POST',
+			  		data: JSON.stringify(params),
+			  		dataType:'json',
+			  		contentType: 'application/json'
+		  		});
+ 		}
  		else if(params.reqType === 'details'){
  				delete params.reqType;
  				return $.ajax({
-					url: RinsCommon.UI_SERVICE_URL +'getPricingModelParameterDetails',
+					url: RinsCommon.UI_SERVICE_URL +'getPricingModelDetails',
 		 			type: 'POST',
 		  			data: JSON.stringify(params),
 		  			dataType:'json',

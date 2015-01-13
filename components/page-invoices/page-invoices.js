@@ -505,6 +505,7 @@ var page = Component.extend({
           console.log("aaa "+self.scope.sortColumns.attr());
            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
            /* All the neccessary parameters will be set in that event */
+           self.scope.appstate.attr('globalSearchButtonClicked', true);
            if(self.scope.appstate.attr('globalSearch')){
               self.scope.appstate.attr('globalSearch', false);
             }else{

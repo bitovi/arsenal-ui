@@ -98,6 +98,7 @@ var reconGrid = Grid.extend({
         }
       } else if(self.scope.attr("pagename")=="reconOther"){
         var parentScopeVar = self.element.closest('page-reconOther').scope();
+        var tabSelected = parentScopeVar.attr('tabSelected');
         var tableScrollTopVal=0;
         if(tabSelected=="Incoming Other"){
           setTimeout(function(){
