@@ -18,6 +18,9 @@ import PricingModelVersions from 'models/common/pricingModelVersions/';
 import PricingMethods from 'models/common/pricingMethods/';
 import periodCalendar from 'components/period-calendar/';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
+import Comments from 'components/multiple-comments/';
+import GridPricingBaseModel from '../pricing-model-components/grid-pricing-base-model/';
+import GridPricingTrackcounts from '../pricing-model-components/grid-pricing-trackcounts/';
 
 
 var reportConfigurationList = new can.List();
@@ -53,36 +56,56 @@ var page = Component.extend({
     displayMessage:"display:none",
     state:"Edit",
     periodValidationMsg:"",
-    modelsTemp:[{  
-            "region":"Japan",
-            "comments":null,
-            "commentId":11086,
-            "minimaCcy":null,
-            "accrualModelType":"STANDARD",
-            "accrualModelID":"301",
-            "accrualModelName":"234234",
-            "versionNo":"2"
-         },
-         {  
-            "region":"Europe",
-            "comments":null,
-            "commentId":4001,
-            "minimaCcy":null,
-            "accrualModelType":"STANDARD",
-            "accrualModelID":"36006",
-            "accrualModelName":"8% No Album Maxima",
-            "versionNo":"1"
-         },
-         {  
-            "region":"Europe",
-            "comments":null,
-            "commentId":4001,
-            "minimaCcy":null,
-            "accrualModelType":"OML",
-            "accrualModelID":"76010",
-            "accrualModelName":"8% No Album Maxima",
-            "versionNo":"2"
-         }]
+    pricingModelDetails : [],
+    baseModelParameter: [],
+    trackCounts: [],
+
+    commentList : [  
+         {  
+            "id":3670,
+            "commentId":1,
+            "type":"REFDATA",
+            "comments":"JUnitComments",
+            "createdBy":8888,
+            "createdByName":null,
+            "createdDate":"2014-11-14"
+         },
+         {  
+            "id":3673,
+            "commentId":1,
+            "type":"REFDATA",
+            "comments":"JUnitComments",
+            "createdBy":8888,
+            "createdByName":null,
+            "createdDate":"2014-11-14"
+         },
+         {  
+            "id":3777,
+            "commentId":1,
+            "type":"REFDATA",
+            "comments":"JUnitComments",
+            "createdBy":8888,
+            "createdByName":null,
+            "createdDate":"2014-11-14"
+         }],
+    
+
+      getPricingModelsOnLoad : function(modelId, versionNo) {
+        var self = this;
+        var pricingModels = self.pricingModels;
+        var pricingModelVersions = self.pricingModelVersions;
+        for( var i=0; i< pricingModels.length;i++) {
+
+          if(pricingModels[i].modelName == modelId) {
+
+            self.pageState.entityCountryDetails.attr("pricingModelVersionNo", modelId);
+            $("#entityPricingModelId :selected").text(modelId);
+            $('#entityPricingModelVersionId :selected').text(versionNo);
+
+          }
+        }
+      }
+
   },
 
   init: function(){
@@ -95,16 +118,74 @@ var page = Component.extend({
 
     Promise.all([
       Licensor.findAll(UserReq.formRequestDetails(requestObj)),
-      PricingModels.findOne(UserReq.formRequestDetails( {reqType:'modeltype'})) ,
+      PricingModels.findOne(UserReq.formRequestDetails( {reqType:'modelListAndVersion'})) ,
       PricingMethods.findOne(UserReq.formRequestDetails(requestObj))
       ]).then(function(values) {
         self.scope.attr("entities").replace(values[0]["entities"][0]);
-        licId = self.scope.attr("entities")[0].entities[0].id;
-        self.scope.attr("pricingModels").replace(values[1].modelTypes);
+        //licId = self.scope.attr("entities")[0].entities[0].id;
+        //self.scope.attr("pricingModels").replace(values[1].modelTypes);
         self.scope.attr("pricingMethods").replace(values[2].pricingMethodList);
+
+        var pricingmodelTemps  = [];
+
+        var saved = false;
+
+        var models = values[1].models;
+
+        self.scope.pricingModelDetails = values[1].models;
+
+        for(var i=0; i< models.length; i++) {
+
+          saved = false;
+
+          if(pricingmodelTemps.length > 0 ) {
+
+            for(var j = 0; j < pricingmodelTemps.length ; j++) {
+
+              if(pricingmodelTemps[j].modelName ==  models[i].accrualModelName) {
+
+                var modelVersionElement = {id : "" , value : "" };
+
+                modelVersionElement.id = models[i].accrualModelID;
+
+                modelVersionElement.value = models[i].versionNo;
+
+                pricingmodelTemps[j].modelVersion.push(modelVersionElement);
+
+                saved = true;
+
+              }
+
+            }
+
+          }
+        
+          
+        if( !saved ) {
+
+          var element = {modelName : "", modelVersion : []  };
+
+          var modelVersionElement = {id : "" , value : "" };
+
+          modelVersionElement.id = models[i].accrualModelID;
+
+          element.modelName = models[i].accrualModelName;
+
+          modelVersionElement.value = models[i].versionNo;
+
+          element.modelVersion.push(modelVersionElement);
+
+          pricingmodelTemps.push(element);
+
+        }
+      }
+
+      self.scope.attr("pricingModels").replace(pricingmodelTemps);
+  
       }).then(function(values) {
 
-        requestObj = {licensorId:licId};
+        //requestObj = {licensorId:licId};
+        requestObj = {};
         self.scope.currencies.replace(Currency.findAll(UserReq.formRequestDetails(requestObj)));
         var pricingReq  = {
           modelName:self.scope.attr("pricingModels")[0].modelName
@@ -126,8 +207,8 @@ var page = Component.extend({
             self.scope.attr("pricingModelVersions").replace(list);
           }).then(function(){
 
-            self.scope.pageState.entityCountryDetails.entityCountry.attr("entityId",self.scope.attr("entities")[0].id);
-            self.scope.pageState.entityCountryDetails.entityCountry.attr("countryId",self.scope.attr("countries")[0].id);
+            //self.scope.pageState.entityCountryDetails.entityCountry.attr("entityId",self.scope.attr("entities")[0].id);
+            //self.scope.pageState.entityCountryDetails.entityCountry.attr("countryId",self.scope.attr("countries")[0].id);
 
           });
         })
@@ -263,28 +344,40 @@ var page = Component.extend({
 
           //this.scope.currencies.replace(Currency.findAll(UserReq.formRequestDetails(requestObj)));
         },
+
         '{scope} pageState.entityCountryDetails.pricingModelVersionNo': function() {
+
           var self = this;
-          var requestObj  = {
-            modelName:this.scope.pageState.entityCountryDetails.attr("pricingModelVersionNo")
+
+          for(var i=0; i< self.scope.pricingModels.length; i++) {
+
+            if(self.scope.pricingModels[i].modelName == self.scope.pageState.entityCountryDetails.pricingModelVersionNo ) {
+
+              self.scope.attr("pricingModelVersions").replace(self.scope.pricingModels[i].modelVersion)
+
+            }
+
           }
 
-          Promise.all([
-            PricingModelVersions.findOne(UserReq.formRequestDetails(requestObj))
-            ]).then(function(values) {
-              var list = [];
-              can.each(values[0].version,
-                function( value, index ) {
-                  list.push( {
-                    "id":value
-                  });
-                }
-              );
-              self.scope.attr("pricingModelVersions").replace(list);
-            });
+          //this.scope.currencies.replace(Currency.findAll(UserReq.formRequestDetails(requestObj)));
+        },
 
-          },
-          '#fetchDetailsBtn click':function(){
+        '{baseModelParameter} change': function() {
+          var self = this;
+          console.log("here");
+          var baseModelParameter = self.scope.baseModelParameter;
+            $('#baseModelParameterDiv').html(stache('<rn-grid-pricing-base-model rows="{baseModelParameter}"></rn-grid-pricing-base-model>')({baseModelParameter}));
+        },
+
+        '{trackCounts} change': function() {
+          var self = this;
+          console.log("here");
+
+          var trackCounts = self.scope.trackCounts;
+            $('#trackCountsDiv').html(stache('<rn-grid-pricing-trackcounts rows="{trackCounts}"></rn-grid-pricing-trackcounts>')({trackCounts}));
+        },
+
+        '#fetchDetailsBtn click':function(){
 
             $(".mainLayoutId").show();
 
@@ -300,8 +393,9 @@ var page = Component.extend({
             var self = this.scope;
             CountryLicensor.findOne(UserReq.formRequestDetails(requestObj),function(data){
               loadPage(self, data);
-              this.scope.pageState.entityCountryDetails.entityCountry.attr("entityId", requestObj.entityCountryDetails.entityCountry.entityId); 
-              this.scope.pageState.entityCountryDetails.entityCountry.attr("countryId", requestObj.entityCountryDetails.entityCountry.countryId);
+              self.pageState.entityCountryDetails.entityCountry.attr("entityId", requestObj.entityCountryDetails.entityCountry.entityId);
+              $("#countryId").val(requestObj.entityCountryDetails.entityCountry.countryId);
+              self.pageState.entityCountryDetails.entityCountry.attr("invoiceCurr", data.entityCountryDetails.entityCountry.invoiceCurr);
             },function(xhr){
               console.error("Error while loading: country-Entity Details"+xhr);
             });
@@ -387,8 +481,12 @@ var page = Component.extend({
           '#pricingModelBtn click': function(){
             var self = this.scope;
             $("#viewPricingModelDiv").show();
-            var selmodelid =  self.pageState.entityCountryDetails.attr("pricingModelVersionNo");
-            var genObj = {modelId:selmodelid,reqType:'details'};
+            var selmodelid =  self.pageState.entityCountryDetails.pricingModelId;
+            
+            var entityName  = $("#licensorId :selected").text();
+            var countryId = self.pageState.entityCountryDetails.entityCountry.attr("countryId");
+
+            var genObj = {modelId:selmodelid, reqType:'details', "countryId" : countryId, "entityName" : entityName};
 
             console.log("Request is " +JSON.stringify(UserReq.formRequestDetails(genObj)));
             PricingModels.findOne(UserReq.formRequestDetails(genObj),function(data){
@@ -431,7 +529,7 @@ var page = Component.extend({
           },
           'hidden.bs.collapse':function(ele, event){
             $(ele).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
-          },
+          }
 
         }
       });
@@ -498,7 +596,10 @@ var loadPage = function(scope,data){
     data.entityCountryDetails.entityCountry.attr("status","InActive");
   }
 
-  
+  scope.pageState.entityCountryDetails.attr("pricingModelVersionNo", data.entityCountryDetails.pricingModelVersionNo);
+  scope.pageState.entityCountryDetails.attr("pricingModelId", data.entityCountryDetails.pricingModelId);
+
+  scope.getPricingModelsOnLoad(data.entityCountryDetails.pricingModelName, data.entityCountryDetails.pricingModelVersionNo);
 
   scope.pageState.entityCountryDetails.attr("entityCountry",data.entityCountryDetails.entityCountry);
 
@@ -508,6 +609,22 @@ var loadPage = function(scope,data){
 
   scope.pageState.attr("historyComments",data.entityCountryDetails.historyComments);
   scope.pageState.entityCountryDetails.attr("comment",data.entityCountryDetails.comment);
+
+  var tempcommentObj = data.entityCountryDetails.commentList;
+  //console.log("multi comments "+JSON.stringify(tempcommentObj));
+  if(tempcommentObj != undefined && tempcommentObj!=null && tempcommentObj.length > 0){
+    $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
+  } else {
+      tempcommentObj = scope.commentList;
+      $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
+  }
+
+  if(data.pricingModel.baseModelParameters != null && data.pricingModel.baseModelParameters.length > 0) {
+    scope.attr("baseModelParameter").replace(data.pricingModel.baseModelParameters);
+  }
+  if(data.pricingModel.trackCounts != null && data.pricingModel.trackCounts.length > 0) {
+    scope.attr("trackCounts").replace(data.pricingModel.trackCounts);
+  }
 
   if(data.entityCountryDetails.entityCountry.status == "A") {
     scope.attr("state","Edit");

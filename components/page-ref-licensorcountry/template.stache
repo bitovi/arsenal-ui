@@ -22,7 +22,7 @@
         <div class="col-sm-4">
           <label for="forEntity" class="col-sm-4 control-label">Licensor: </label>
           <div class="col-sm-6">
-            <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.entityId'>
+            <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.entityId' id="licensorId">
               <option value="">Select</option>
               {{#each entities}}
               <optgroup label="{{entityType}}">
@@ -37,7 +37,7 @@
           <div class="col-sm-6">
             <label for="forCountry" class="col-sm-4 control-label">Country: </label>
             <div class="col-sm-4">
-              <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.countryId'>
+              <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.countryId' id="countryId">
                 <option value="">Select</option>
                 {{#each countries}}
                 <option value="{{id}}">{{value}}</option>
@@ -74,7 +74,7 @@
               <div class="form-group">
                 <div class="col-sm-6 validFrom">
                   <label for="forValidFrom" class="col-sm-6 control-label">Valid From: </label>
-                  <div class="col-sm-4 requiredBar">
+                  <div class="col-sm-4 requiredBar" style="padding-left: 5px;">
                     <div class="calendarcls">
                       <input type='text' id="validFrom" name="validFrom" class="form-control inputMonth updateperoid"  can-value='pageState.entityCountryDetails.entityCountry.validFrom'/>
                       <period-calendar  selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
@@ -100,7 +100,8 @@
               <div class="col-sm-6">
                 <label for="forInvoiceCurr" class="col-sm-6 control-label">Invoice Currency: </label>
                 <div class="col-sm-4 requiredBarNone">
-                  <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.invoiceCurr' name="invoiceCurr" >
+                  <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.invoiceCurr' name="invoiceCurr" id="invoiceCurr">
+                    <option value="">Select</option>
                     {{#each currencies}}
                     <option value="{{id}}">{{value}}</option>
                     {{/each}}
@@ -113,7 +114,8 @@
               <div class="col-sm-6">
                 <label for="forEntityPricingModelId" class="col-sm-6 control-label"  >Pricing Model:</label>
                 <div class="col-sm-6 requiredBarNone">
-                  <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelVersionNo' name="entityPricingModelId">
+                  <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelVersionNo' name="entityPricingModelId" id="entityPricingModelId">
+                  <option value="">Select</option>
                     {{#each pricingModels}}
                     <option value="{{modelName}}">{{modelName}}</option>
                     {{/each}}
@@ -122,9 +124,10 @@
               </div>
               <div class="col-sm-6">
                 <div class="col-sm-2" style="padding-right:0px;padding-left:0px;">
-                  <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelId'  >
+                  <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelId' id="entityPricingModelVersionId" >
+                  <option value="">Select</option>
                     {{#each pricingModelVersions}}
-                    <option value="{{id}}">{{id}}</option>
+                    <option value="{{id}}">{{value}}</option>
                     {{/each}}
                   </select>
                 </div>
@@ -163,8 +166,12 @@
               <div class="col-sm-12 singleField">
                 <label for="forStatus" class="col-sm-3 control-label">Comments: </label>
                 <div class="col-sm-9 requiredBarNone">
-                  <textarea id="historyComments"  class="form-control multiple-comments-editable form-control-comments new-comments multiple-comments-editable-height" style="min-height:120px;    max-height:200px;"  can-value="pageState.historyComments" readonly=true></textarea>
-                  <textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:50px;   min-height:50px;    max-height:50px;" can-value="pageState.entityCountryDetails.comment"></textarea>
+                  <!-- <textarea id="historyComments"  class="form-control multiple-comments-editable form-control-comments new-comments multiple-comments-editable-height" style="min-height:120px;    max-height:200px;"  can-value="pageState.historyComments" readonly=true></textarea>
+                  <textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:50px;   min-height:50px;    max-height:50px;" can-value="pageState.entityCountryDetails.comment"></textarea> -->
+                  <div class="multipleComments col-sm-9 requiredBar" id="multipleComments">
+            
+                  </div>
+
                 </div>
               </div>
             </div>
@@ -174,7 +181,7 @@
               <div class="col-sm8" style="text-align:right;padding:15px;">
                 <div class="col-sm-6 ">
                   <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
-                  <button id="submitBtn" {{disableSubmit}} type="submit"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>
+                  <button id="submitBtn" {{disableSubmit}} type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>
                 </div>
               </div>
             </div>
@@ -269,7 +276,11 @@
 <div class="col-sm-12">
 <fieldset class="scheduler-border">
 <legend class="scheduler-border">Base Model parameter</legend>
-<div id="baseModelParameterDiv"></div>
+<div id="baseModelParameterDiv">
+  <div class="tab-pane active grid-custom-overflow" id="incomingDetails">
+    <rn-recon-grid columns="{detailGridColumns}" rows="{incomingDetails.headerRows}" footerrows="{incomingDetails.footerRows}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}" emptyrows="{emptyrows}" pagename="{pagename}"></rn-recon-grid>
+  </div>
+</div>
 </fieldset>
 <fieldset class="scheduler-border">
 <legend class="scheduler-border">Track Counts</legend>
