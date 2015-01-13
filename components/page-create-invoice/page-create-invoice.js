@@ -221,7 +221,7 @@ var page = Component.extend({
 	               console.log(xhr);
 	            });
 			}
-		}  	
+		}
  },
   events: {
     	"inserted": function(){
@@ -313,13 +313,24 @@ var page = Component.extend({
 			                        message: 'Please provide numeric value for Fx Rate'
 	                			},
 	                			callback: {
-			                            message: 'Please provide positive Fx Rate',
-			                            callback: function (value, validator, $field) {
-			                              if((value != "")  && (parseFloat(value) < 0)){
-			                              	return false;
-			                              }
-			                              return true;
-			                            }
+	                            callback: function (value, validator, $field) {
+  	                              if((value != "")  && (parseFloat(value) < 0)){
+                                    return {
+                                      valid: false,
+                                      message: 'Please provide positive Fx Rate'
+                                    }
+  	                              }else if (value != undefined && value.length != 0){
+                                    var decimal_validate_RE=/^\d{0,10}(\.\d{0,8})?$/;
+                                    if(!decimal_validate_RE.test(value)){
+                                      return {
+                                        valid: false,
+                                        message: 'Please provide Fx Rate in [##########.########] format'
+                                      }
+                                    }
+
+                                  }
+  	                             return true;
+	                            }
 	                    		}
 
 			                }
@@ -418,7 +429,7 @@ var page = Component.extend({
 													  	message: 'Invalid period'
 													  }
 				                              	}
-				                             	
+
 												return true;
 				                            }
 		                    		}
@@ -447,7 +458,7 @@ var page = Component.extend({
 						                              	$(".inputContent").not(':hidden').each(function(index){   /*duplicate Content type validation*/
 															if($(this).attr("id") != $field.attr("id"))
 															{
-																
+
 																var strEl = $field.attr("id");
 																var rowEl = strEl.replace(/[^0-9]/g, '');
 																var inputMonthEl = "inputMonth"+rowEl;
@@ -456,7 +467,7 @@ var page = Component.extend({
 																var strNow = $(this).attr("id");
 																var rowNow = strNow.replace(/[^0-9]/g, '');
 																var inputMonthNow = "inputMonth"+rowNow;
-																var inputCountryNow = "inputCountry"+rowNow;	
+																var inputCountryNow = "inputCountry"+rowNow;
 
 																var validMonth = (($("#"+inputMonthEl).val() != "")?($("#"+inputMonthEl).val() == $("#"+inputMonthNow).val()):false);
 																var validCountry = (($("#"+inputCountryEl).val() != "")?($("#"+inputCountryEl).val() == $("#"+inputCountryNow).val()):false);
@@ -465,11 +476,11 @@ var page = Component.extend({
 																if( ($(this).val() == $field.val()) && (validMonth ) && (validCountry) ){
 																	$field.val("");
 																	duplicateCont = true;
-															        	
+
 																    return false;
 															    }
 															}
-															
+
 														});
 
 														if(duplicateCont){
@@ -478,19 +489,19 @@ var page = Component.extend({
 													        	return {
 															            valid: false,    // or false
 															            message: 'Two invoicelines can not have same period, content type and country.'
-															    }			
+															    }
 													        }
 														    else
 														    {
 														    	return {
 															            valid: false,    // or false
 															            message: 'Two invoicelines can not have same period, adhoc type and country.'
-															    }	
-														    }  
+															    }
+														    }
 
-														} 
-														 
-												}	
+														}
+
+												}
 
 				                             return true;
 				                            }
@@ -513,7 +524,7 @@ var page = Component.extend({
 						                              	$(".inputCountry").not(':hidden').each(function(index){   /*duplicate Content type validation*/
 															if($(this).attr("id") != $field.attr("id"))
 															{
-																
+
 																var strEl = $field.attr("id");
 																var rowEl = strEl.replace(/[^0-9]/g, '');
 																var inputMonthEl = "inputMonth"+rowEl;
@@ -522,7 +533,7 @@ var page = Component.extend({
 																var strNow = $(this).attr("id");
 																var rowNow = strNow.replace(/[^0-9]/g, '');
 																var inputMonthNow = "inputMonth"+rowNow;
-																var inputContentNow = "inputContent"+rowNow;	
+																var inputContentNow = "inputContent"+rowNow;
 
 																var validContent = (($("#"+inputContentEl).val() != "")?($("#"+inputContentEl).val() == $("#"+inputContentNow).val()):false);
 																var validMonth = (($("#"+inputMonthEl).val() != "")?($("#"+inputMonthEl).val() == $("#"+inputMonthNow).val()):false);
@@ -531,11 +542,11 @@ var page = Component.extend({
 																if( ($(this).val() == $field.val()) && (validContent ) && (validMonth) ){
 																	$field.val("");
 																	duplicateCont = true;
-															        	
+
 																    return false;
 															    }
 															}
-															
+
 														});
 
 														if(duplicateCont){
@@ -544,17 +555,17 @@ var page = Component.extend({
 													        	return {
 															            valid: false,    // or false
 															            message: 'Two invoicelines can not have same period, content type and country.'
-															    }			
+															    }
 													        }
 														    else
 														    {
 														    	return {
 															            valid: false,    // or false
 															            message: 'Two invoicelines can not have same period, adhoc type and country.'
-															    }	
-														    }  
+															    }
+														    }
 
-														} 
+														}
 
 				                              }
 				                              return true;
@@ -569,7 +580,7 @@ var page = Component.extend({
 					    	}
 					    	$('*[data-bv-icon-for="'+data.field +'"]').popover('show');
 
-					    	
+
 					}).on('success.field.bv', function(e, data) {
 	        				$('*[data-bv-icon-for="'+data.field +'"]').popover('destroy');
 	        				if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]")){
@@ -707,7 +718,7 @@ var page = Component.extend({
 		".inputContent change": function(event){
 			var self = this;
          	this.scope.contentTypeStore.attr(event[0].id, event[0].value);
-         	
+
      	},
 		".inputMonth change": function(event){
          	this.scope.monthStore.attr(event[0].id, event[0].value);
@@ -838,17 +849,17 @@ var page = Component.extend({
 	          	if(($("#inputMonth0").val() == "") && (self.scope.attr("invoicetypeSelect") != "2"))
 	          		{
 	          			$("#paymentBundleNames").val("");
-	          			
+
                     	$("#paymentBundleNames").popover({"content":"Please select invoielines period", "placement":"top"});
                     	$("#paymentBundleNames").popover('show');
-                    	
+
 	                     setTimeout(function(){
 	                      	$("#paymentBundleNames").popover('destroy');
 
 	                   },2000);
 		          	}
 		          else
-		          	{	
+		          	{
 	          		  var regId = self.scope.regionStore;
 					  var newBundleNameRequest = {"paymentBundle":{}};
 		              var bundleRequest = {};
@@ -866,10 +877,10 @@ var page = Component.extend({
 		              newBundleNameRequest["paymentBundle"] = bundleRequest;
 		              //console.log(JSON.stringify(newBundleNameRequest));
 		              self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
-		          	}	
+		          	}
 
-	              
-	          } 
+
+	          }
 	      },
 
 		"#addInvSubmit click":function(){
@@ -1095,7 +1106,7 @@ var page = Component.extend({
 
 				  	 			self.scope.uploadedfileinfo.replace([]);
 
-				  	 			
+
 				  	 		},
 							'period-calendar onSelected': function (ele, event, val) {
 			       					this.scope.attr('periodchoosen', val);
@@ -1103,7 +1114,7 @@ var page = Component.extend({
 			       					$(ele).closest('.calendarcls').find('.box-modal').hide();
 			       					$(ele).blur();
 								console.log("def");
-									
+
 			   				},
 						   '.updateperoid focus':function(el){
 						   	 var self = this;
@@ -1130,14 +1141,14 @@ var page = Component.extend({
 										var validContent = (($("#"+inputContentEl).val() != "")?($("#"+inputContentEl).val() == $("#"+inputContentNow).val()):false);
 										var validCountry = (($("#"+inputCountryEl).val() != "")?($("#"+inputCountryEl).val() == $("#"+inputCountryNow).val()):false);
 
-										
+
 
 										if(($(this).val() == el[0].value) && (validContent ) && (validCountry)){
 						        			$(el).val("");
 						        			showError(el[0].id, "Two invoiceline can not have same period, content type and country");
 						        			return false;
 						        		}
-						        		
+
 						        	}
 						        	else{
 						        		removeError(el[0].id, "no");
@@ -1295,7 +1306,7 @@ var page = Component.extend({
 						if(buttonState != "no"){
 							$("#addInvSubmit").attr("disabled", false);
 						}
-						
+
 					}
 
 					function dateFormatter(datestring, currentformat){
@@ -1389,7 +1400,7 @@ var page = Component.extend({
 			          	errorStr = errorStr.replace(/,\s*$/, "");
 						var msg = errortype+": "+ errorStr;
 
-			          	return msg;		
+			          	return msg;
 					}
 
 					var getBundleDateRange = function(){
@@ -1404,25 +1415,25 @@ var page = Component.extend({
 						if(_listofDateRange.length > 0){
 
 							for(var i=0; i < _listofDateRange.length; i++){
-								
+
 								var currentID = $(_listofDateRange)[i].id;
 								var currentVal = $("#"+currentID).val();
 
 								if(FromToRange.periodType === "Q"){
-									var currentYear = currentVal.substring(2, currentVal.length);							
-									_listofDate.push(currentVal.charAt(1));	
+									var currentYear = currentVal.substring(2, currentVal.length);
+									_listofDate.push(currentVal.charAt(1));
 								}else{
-									var currentYear = currentVal.substring(3, currentVal.length);						
-									_listofDate.push(currentVal.substring(1,3));	
+									var currentYear = currentVal.substring(3, currentVal.length);
+									_listofDate.push(currentVal.substring(1,3));
 								}
-								
+
 							}
 
 							_listofDate.sort(function(a, b){return b-a});
 
 							FromToRange.fromDate = periodWidgetHelper.getFiscalPeriod(FromToRange.periodType + _listofDate[_listofDate.length - 1] + currentYear);
 							FromToRange.toDate = periodWidgetHelper.getFiscalPeriod(FromToRange.periodType + _listofDate[0] + currentYear);
-							
+
 						}else{
 							FromToRange.fromDate = periodWidgetHelper.getFiscalPeriod($("#inputMonth0").val());
 							FromToRange.toDate = periodWidgetHelper.getFiscalPeriod($("#inputMonth0").val());
