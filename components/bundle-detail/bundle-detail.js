@@ -85,6 +85,7 @@ var BundleDetailTabs = Component.extend({
       scope.details ={};
       scope.bundleProgress.isBundleSelectionChange = true;
       scope.bundleProgress.triggerValidation = true;
+
       var selectedBundle = scope.pageState.selectedBundle;
       if(!selectedBundle) {
         return;
@@ -132,6 +133,7 @@ var BundleDetailTabs = Component.extend({
           scope.bundleProgress.triggerValidation ? scope.getNewValidations(bundle) : "";
         }
 
+        canRemoveInvoice(scope);
 
         //<!--rdar://problem/19415830 UI-PBR: Approve/Reject/Recall/Delete should happen only from Licensor Tab-->
         if(bundle.view === 'LICENSOR'){
@@ -210,15 +212,8 @@ var BundleDetailTabs = Component.extend({
     validationStatus: function(options) {
       return this.pageState.selectedBundle && this.pageState.selectedBundle.attr('validationRulesTotal') > 0 ? options.fn(this.pageState.selectedBundle) : '';
     },
-    canRemoveInvoice: function(options) {
-      if(this.pageState.attr('selectedBundle.bundleType') === 'REGULAR_INV' &&
-        this.selectedRows.attr('length') > 0
-        && _.every(this.attr('selectedRows'), row => row instanceof PaymentBundleDetailGroup
-      )) {
-        return options.fn(this);
-      } else {
-        return '';
-      }
+    allowRemoveInvoices:function(){
+      return ( this.selectedRows.attr('length') > 0 ? '' : 'disabled' ) ;
     },
     canShowChart: function(options) {
       if(this.pageState.attr('selectedBundle.bundleType') === 'REGULAR_INV' &&
@@ -472,7 +467,15 @@ var displayMessage = function(className,message){
   // setTimeout(function(){
   //   $("#messageDiv").hide();
   // },constants.MESSAGE_DISPLAY_TIME);
+}
 
+var canRemoveInvoice = function(scope){
+    if(scope.pageState.selectedBundle.editable &&  scope.pageState.attr('selectedBundle.bundleType') === 'REGULAR_INV'
+     &&  ( scope.attr('selectedTab')  == null || scope.attr('selectedTab').value === 'licensor' ))  {
+      $(".remove-invoice").show();
+    } else {
+      $(".remove-invoice").hide();
+    }
 }
 
 export default BundleDetailTabs;
