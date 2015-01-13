@@ -7,7 +7,7 @@ var WorkflowStep = Model.extend({
   parseModels: 'workflowView.nodes',
   findAll: function(params) {
     return $.ajax({
-      url: URLs.INTEGRATION_SERVICE_URL + 'rinsworkflow/view',
+      url: URLs.UI_SERVICE_URL + 'view',
       type: 'POST',
       data: {
         workflowName: "PaymentBundleWorkflow",
