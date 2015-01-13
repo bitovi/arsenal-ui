@@ -207,8 +207,8 @@ var BundleDetailGrid = Grid.extend({
       //this.scope.prefilteredColumns.splice(0, this.scope.prefilteredColumns.length, ...this.scope.filterColumns.apply(this));
       var self= this;
       var tbody = self.element.find('tbody');
-      var parentObj = self.element.closest('page-payment-bundles');
-      var parentScopeVar = self.element.closest('page-payment-bundles').scope();
+      var parentObj = self.element.closest('rn-bundle-detail');
+      var parentScopeVar = self.element.closest('rn-bundle-detail').scope();
       var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
       $(tbody[0]).scrollTop(tableScrollTopVal);
         $(tbody).on('scroll', function(ev) {
@@ -216,25 +216,43 @@ var BundleDetailGrid = Grid.extend({
             //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
 
 
-            var offsetVal = parentScopeVar.attr('pbDetailOffset');
+            var offsetVal = parentScopeVar.attr('offset');
             //console.log(offsetVal);
 
             /* Reset the offset value and call the webservice to fetch next set of records */
-            parentScopeVar.attr('pbDetailOffset', (parseInt(offsetVal)+1));
+            parentScopeVar.attr('offset', (parseInt(offsetVal)+1));
             parentScopeVar.attr('tableScrollTop', (tbody[0].scrollHeight-200));
-            parentScopeVar.appstate.attr('globalSearchButtonClicked', false);
-
-            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
-            /* All the neccessary parameters will be set in that event */
-           if(parentScopeVar.appstate.attr('globalSearch')){
-              parentScopeVar.appstate.attr('globalSearch', false);
-            }else{
-              parentScopeVar.appstate.attr('globalSearch', true);
-            }
+            parentScopeVar.selectedBundleChanged(parentScopeVar);
+            //console.log("bundle info is"+JSON.stringify(parentScopeVar.pageState.selectedBundle.attr()));
 
           }
         });
-      alignGrid('payBundleDetailGrid');
+        setTimeout(function(){
+          alignGrid('bundleDetailGridDiv');
+        },2000);
+      
+    },
+    '.open-toggle click': function(el, ev) {
+      var row = el.closest('tr').data('row').row;
+      row.attr('__isOpen', !row.attr('__isOpen'));
+      alignGrid('bundleDetailGridDiv');
+    },
+    '.select-toggle-all click': function(el, ev) {
+      ev.stopPropagation();
+      var allChecked = _.every(this.scope.rows, row => row.__isChecked ? true : false);
+      can.batch.start();
+      // open parent rows if they are closed; close them if they are open
+      this.scope.rows.each(row => row.attr('__isChecked', !allChecked));
+      can.batch.stop();
+      setTimeout(function(){
+        alignGrid('bundleDetailGridDiv');
+      },2000);
+      
+    },
+    '{rows} change': function(){
+      setTimeout(function(){
+        alignGrid('bundleDetailGridDiv');
+      },2000);
     },
     '{scope.pageState} verboseGrid': function() {
       //this.scope.prefilteredColumns.splice(0, this.scope.prefilteredColumns.length, ...this.scope.filterColumns.apply(this));

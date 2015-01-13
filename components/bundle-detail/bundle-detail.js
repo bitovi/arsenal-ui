@@ -64,6 +64,9 @@ var BundleDetailTabs = Component.extend({
     paymentType: 2,
     approvalComment: '',
     details:{},
+    offset: 0,
+    limit: 10,
+    tableScrollTop: 0,
 
     havePaymentTypeAndComment: function(scope) {
       return  (this.appstate.userInfo.roleIds.indexOf(constants.ROLES.BM) > -1 ? scope.paymentType : true) &&
@@ -164,8 +167,10 @@ var BundleDetailTabs = Component.extend({
         view = 'licensor';
       }
 
+      var offset = this.attr("offset");
+      var limit = this.attr("limit");
       if(scope.pageState.selectedBundle === bundle) {
-        return bundle.getValidations(view).then(function(bundle) {
+        return bundle.getValidations(view, offset, limit).then(function(bundle) {
           if(bundle.status == 1 && bundle.validationStatus !== 5) {
             setTimeout(function() {
               scope.getNewValidations(bundle);
