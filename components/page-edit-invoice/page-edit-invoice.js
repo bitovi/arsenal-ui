@@ -764,6 +764,10 @@ var page = Component.extend({
          	this.scope.ccidGLStore.attr(event[0].id, event[0].value)
          	console.log(this.scope.ccidGLStore);
 		},
+		".ccidGLtxt change": function(el){
+			var rowindex = el[0].id.replace( /^\D+/g, '');
+			//$("ccidGL"+rowindex).val(" ");
+		},
 	
 		"{scope} currencyStore": function(){
 			var self = this;
@@ -953,7 +957,9 @@ var page = Component.extend({
 		                     
 
 		                       	if(self.scope.attr("invoicetypeSelect") == "2"){
-		                       		$("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val(invoiceData.invoiceLines[i].glAccount);
+		                       		$("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val(invoiceData.invoiceLines[i].glAccRefId);
+		                       		$("#breakrow"+rowindex+" #ccidGLtxt").attr("id","ccidGLtxt"+rowindex).val(invoiceData.invoiceLines[i].glAccNum);
+									
 									self.scope.ccidGLStore.attr("ccidGL"+rowindex, invoiceData.invoiceLines[i].glAccount);
 						 		}
 						 		else
