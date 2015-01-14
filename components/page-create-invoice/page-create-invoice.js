@@ -50,6 +50,7 @@ fileUpload.extend({
          },
    events:{
    	"{uploadedfileinfo} change":function(){
+        $('rn-file-uploader').data('_d_uploadedFileInfo', this.scope.uploadedfileinfo);
    		this.scope.fileList.replace(this.scope.uploadedfileinfo);
    		}
    }
@@ -835,8 +836,8 @@ var page = Component.extend({
 		},
 
 		'rn-file-uploader onSelected': function (ele, event, val) {
-            var self = this;
-            self.scope.attr('uploadedfileinfo',val.filePropeties);
+//            var self = this;
+//            self.scope.attr('uploadedfileinfo',val.filePropeties);
          },
 
 		"#invoiceform #paymentBundleNames change": function(){
@@ -893,7 +894,6 @@ var page = Component.extend({
 
 					   var tempInvoiceData = {};
 					   //console.log(self.scope.attr("invoicetypeSelect"));
-
 					   tempInvoiceData["invoiceNumber"] = self.scope.invoicenumberStore;
 					   tempInvoiceData["invoiceTypeId"] = $("#invoiceType option:selected").val();
 					   //if(self.scope.isAdhocStrore != undefined && self.scope.isAdhocStrore.adhoc){
@@ -947,11 +947,19 @@ var page = Component.extend({
 					   tempInvoiceData["invoiceDocuments"] = [];
 
 
+//					 	for(var i =0; i < self.scope.uploadedfileinfo.length; i++){
+//      						var tempDocument = {};
+//				   			tempDocument.fileName = self.scope.uploadedfileinfo[i].attr("fileName");
+//				   			tempDocument.location = self.scope.uploadedfileinfo[i].attr("filePath");
+//				   			tempInvoiceData["invoiceDocuments"].push(tempDocument);
+//				   		}
 
-					 	for(var i =0; i < self.scope.uploadedfileinfo.length; i++){
+                      var uploadedfiles = $('rn-file-uploader').data('_d_uploadedFileInfo');
+
+                       for(var i =0; i < uploadedfiles.length; i++){
       						var tempDocument = {};
-				   			tempDocument.fileName = self.scope.uploadedfileinfo[i].attr("fileName");
-				   			tempDocument.location = self.scope.uploadedfileinfo[i].attr("filePath");
+				   			tempDocument.fileName = uploadedfiles[i].fileName;
+				   			tempDocument.location = uploadedfiles[i].filePath;
 				   			tempInvoiceData["invoiceDocuments"].push(tempDocument);
 				   		}
 

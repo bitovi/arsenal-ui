@@ -214,7 +214,7 @@ var PaymentBundle = Model.extend({
      return self;
     });
   },
-  getValidations: function(view) {
+  getValidations: function(view, offset, limit) {
     var bundle = this;
 
     return $.ajax({
@@ -223,7 +223,9 @@ var PaymentBundle = Model.extend({
       data: {
         paymentBundle: {
           bundleId: bundle.bundleId,
-          view: view.toUpperCase()
+          view: view.toUpperCase(),
+          offset: offset,
+          limit: limit
         }
       },
       processData: false
@@ -301,7 +303,7 @@ var PaymentBundle = Model.extend({
 
       delete group.contentGrpName;
       delete group.country;
-      delete group.fiscalPeriod;
+      delete group.fiscalPeriodDisplay;
       delete group.entityNameCnt;
       delete group.view;
       delete group.validationMessages;
@@ -313,6 +315,7 @@ var PaymentBundle = Model.extend({
         delete detail.view;
         delete detail.validationMessages;
         delete detail.validationColor;
+        delete detail.fiscalPeriodDisplay;
       });
     });
 

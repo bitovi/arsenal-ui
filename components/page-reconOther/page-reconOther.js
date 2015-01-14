@@ -272,7 +272,7 @@ var fetchReconIncoming = function(scope){
     searchRequestObj.searchRequest["type"] = "OTHER";
     //TODO During pagination / scrolling, the below values has tobe chnaged.
     searchRequestObj.searchRequest["limit"] = "10";
-    searchRequestObj.searchRequest["offset"] = "0";
+    searchRequestObj.searchRequest["offset"] = scope.offset;
     searchRequestObj.searchRequest["sortBy"] = scope.sortColumns.attr().toString();
     searchRequestObj.searchRequest["sortOrder"] = scope.sortDirection;
 

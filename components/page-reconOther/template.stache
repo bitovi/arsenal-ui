@@ -40,7 +40,8 @@
 
         <!-- <div class="col-lg-12 " style="max-height: 200px; overflow-y:scroll;" id="reconstatsOtherGrid"> -->
         <div class="tab-pane grid-custom-overflow" id="reconstatsOtherGrid">
-            <rn-recon-grid columns="{incomingOtherGridColumns}" rows="{incomingOtherList}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}" ></rn-recon-grid>
+            <rn-recon-grid columns="{incomingOtherGridColumns}" rows="{incomingOtherList}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}" 
+            pagename="{pagename}"></rn-recon-grid>
         </div>
 
       </div>

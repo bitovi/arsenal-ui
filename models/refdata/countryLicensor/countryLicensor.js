@@ -16,7 +16,7 @@ var CountryLicensor = Model.extend({
 
     }else{
       return $.ajax({
-          url: RinsCommon.UI_SERVICE_URL+'getEntityCountryDetails',
+          url: RinsCommon.UI_SERVICE_URL +'getEntityCountryDetails',
           type: 'POST',
           data: JSON.stringify(params),
           dataType: 'json',

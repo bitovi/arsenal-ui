@@ -29,7 +29,7 @@
     <input type="text" class="form-control" id="tokenSearch">
   </div>
 </div>
-<div class="grid-container">
+<div class="grid-container" id="bundleDetailGridDiv">
   {{#if pageState.selectedBundle.bundleDetailsGroup.length}}
   <rn-bundle-detail-grid columns="{gridColumns}" page-state="{pageState}" selected-rows="{selectedRows}" {{#if gettingDetails}}style="display: none;"{{/if}}></rn-bundle-detail-grid>
   {{/if}}
