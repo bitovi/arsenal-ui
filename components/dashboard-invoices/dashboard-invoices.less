@@ -13,8 +13,15 @@ rn-dashboard-invoices {
 
   table.holes-report {
     width: 90%;
+    overflow: auto;
     margin: 0 auto;
     color: @dark-grey;
+
+    tbody {
+      height: 200px;
+      width: 200px;
+      overflow: auto;
+    }
 
     tr {
       height: 3em;
@@ -53,7 +60,12 @@ rn-dashboard-invoices {
         position: absolute;
         right: 0;
         bottom: 0;
-        width: 1em;
+        width: 1.3em;
+      }
+
+      .checkMark{
+        width:25px;
+        height:25px;
       }
     }
 
@@ -108,3 +120,26 @@ rn-dashboard-invoices {
   }
 
 }
+
+.checkMark{
+  width:15px;
+  height:15px;
+}
+
+.la { 
+      width: 1em;
+    }
+
+ .tableDiv{
+   overflow:scroll;
+   width:70%;
+   height:250px;
+   margin: 0px auto;
+ }
+
+ label{
+    font-family:HelveticaNeue, "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif; ;
+    font-size:12px;
+    color:#848484;
+    font-weight:normal;
+  }

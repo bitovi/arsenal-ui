@@ -10,8 +10,8 @@
       <button class="add-invoice">Add Invoices To Bundle</button>
     {{/if}}
     {{#if pageState.bundles.length}}
-    <img class="excel" src="/resources/images/rn_ExcelActive@2x.png"/>
-    <img class="clipboard" src="/resources/images/rn_CopyActive@2x.png"/>
+    <img class="excel exportToExcel" />
+    <img class="clipboard copyToClipboard" />
     {{/if}}
   </div>
 </header>

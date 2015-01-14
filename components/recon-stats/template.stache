@@ -36,12 +36,13 @@
 								<table style="width:100%">
 									<tr width="100%" style="vertical-align: top;" colspan="3">
 
-										<td width="5%">
+										<td width="1%">
 											&nbsp;&nbsp;
 										</td>
 
 										<td width="55%">
 											<div id="ingestionStatsDiv" style="display:none">
+											
 												<table id="summaryTopTable">
 													<tr>
 														<td width="50%">
@@ -50,16 +51,17 @@
 
 														<td style="width:20%;">
 															<!-- <div style="float: right;">
-																<img src="resources/images/exportExcelIcon.png" class="" id="exportExcelSum">
-				        										<img src="resources/images/copyToClipboardIcon.png" class="" id="copyToClipboardSum">
+																<img class="exportToExcel" id="exportExcelSum">
+				        										<img class="copyToClipboard" id="copyToClipboardSum">
 															</div> -->
 
 														</td>
 													</tr>
 												</table>
 
-
-												<div id="ingestionReconStats"><div>
+												<div id="ingestionStatsDivSub">
+													<div id="ingestionReconStats"><div>
+												</div>
 											</div>
 
 										</td>
@@ -81,8 +83,8 @@
 
 														<td style="float: right;">
 															<!-- <div style="display:block">
-																<img src="resources/images/exportExcelIcon.png" class="" id="exportExcel">
-				        								 		<img src="resources/images/copyToClipboardIcon.png" class="" id="copyToClipboard">
+																<img class="exportToExcel" id="exportExcel">
+				        								 		<img class="copyToClipboard" id="copyToClipboard">
 															</div> -->
 
 														</td>

@@ -895,29 +895,29 @@ var generateTableData = function(invoiceData,footerData){
                 invLITemp["country"] = invoiceLineItems[j]["countryId"];
                 invLITemp["contentType"] = invoiceLineItems[j]["contentTypeName"];
 
-                invLITemp["invoiceAmount"] = invoiceLineItems[j]["invoiceAmount"];
+                invLITemp["invoiceAmount"] = CurrencyFormat(invoiceLineItems[j]["invoiceAmount"]);
 
-                invLITemp["overrepAmount"] = (invoiceLineItems[j]["overrepAmount"])==null?0:invoiceLineItems[j]["overrepAmount"];
+                invLITemp["overrepAmount"] = (invoiceLineItems[j]["overrepAmount"])==null?0:CurrencyFormat(invoiceLineItems[j]["overrepAmount"]);
               
-                invLITemp["lineDisputeAmount"] = (invoiceLineItems[j]["lineDisputeAmount"])==null?0:invoiceLineItems[j]["lineDisputeAmount"];
+                invLITemp["lineDisputeAmount"] = (invoiceLineItems[j]["lineDisputeAmount"])==null?0:CurrencyFormat(invoiceLineItems[j]["lineDisputeAmount"]);
 
-                invLITemp["reconAmount"] = invoiceLineItems[j]["reconAmount"];
+                invLITemp["reconAmount"] = CurrencyFormat(invoiceLineItems[j]["reconAmount"]);
 
-                invLITemp["oaAllocated"] = invoiceLineItems[j]["oaAllocated"];
+                invLITemp["oaAllocated"] = CurrencyFormat(invoiceLineItems[j]["oaAllocated"]);
 
-                invLITemp["caAllocated"] = invoiceLineItems[j]["caAllocated"];
+                invLITemp["caAllocated"] = CurrencyFormat(invoiceLineItems[j]["caAllocated"]);
 
-                invLITemp["balance"] = (invoiceLineItems[j]["balance"]==null)?0:invoiceLineItems[j]["balance"];
+                invLITemp["balance"] = (invoiceLineItems[j]["balance"]==null)?0:CurrencyFormat(invoiceLineItems[j]["balance"]);
 
-                invLITemp["priorPaid"] = invoiceLineItems[j]["priorPaid"];
+                invLITemp["priorPaid"] = CurrencyFormat(invoiceLineItems[j]["priorPaid"]);
 
-                invLITemp["invPmtSaturation"] = invoiceLineItems[j]["invPmtSaturation"];
+                invLITemp["invPmtSaturation"] = CurrencyFormat(invoiceLineItems[j]["invPmtSaturation"]);
                 
-                invLITemp["pmtSaturation"] = invoiceLineItems[j]["pmtSaturation"];
+                invLITemp["pmtSaturation"] = CurrencyFormat(invoiceLineItems[j]["pmtSaturation"]);
                 
-                invLITemp["overrepDispPer"] = (invoiceLineItems[j]["overrepDispPer"]==null)?0:invoiceLineItems[j]["overrepDispPer"];
+                invLITemp["overrepDispPer"] = (invoiceLineItems[j]["overrepDispPer"]==null)?0:CurrencyFormat(invoiceLineItems[j]["overrepDispPer"]);
                 
-                invLITemp["liDispPer"] = (invoiceLineItems[j]["liDispPer"]==null)?0:invoiceLineItems[j]["liDispPer"];;
+                invLITemp["liDispPer"] = (invoiceLineItems[j]["liDispPer"]==null)?0:CurrencyFormat(invoiceLineItems[j]["liDispPer"]);
                 
                 invLITemp["status"] = (invoiceLineItems[j]["status"] ==null)?"":invoiceLineItems[j]["status"];
                 invTemp["status"] = invLITemp["status"];
@@ -1021,10 +1021,18 @@ var generateFooterData = function(footerData){
     //console.log("Formated footer data "+JSON.stringify(formatFooterData));
     return formatFooterData;
 }
-function CurrencyFormat(number)
-{
-  var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
-  return n;
+// function CurrencyFormat(number)
+// {
+//   var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+//   return n;
+// }
+function CurrencyFormat(number) {
+    if (number != undefined && $.isNumeric(number)) {
+      var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+      return n;
+    } else {
+      return 0;
+    }
 }
 function alignGrid(divId, is_aggregate){
   var colLength = $('#'+divId+' table>thead>tr>th').length;
@@ -1080,4 +1088,5 @@ function alignGrid(divId, is_aggregate){
       }
   }
 }
+  
 export default page;

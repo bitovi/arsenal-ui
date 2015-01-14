@@ -24,8 +24,8 @@
 		    	</div>
 		    	<div class="col-md-2 marginTop-10" id="searchDiv" >
 		    		<span class="pull-left">
-			    		<img src="resources/images/exportExcelIcon.png" class="exportToExcel" id="exportToExcel">
-			        	<img src="resources/images/copyToClipboardIcon.png" class="copyToClipboard" id="copyToClipboard">
+			    		<img class="exportToExcel" id="exportToExcel">
+			        	<img class="copyToClipboard" id="copyToClipboard">
 		        	</span>
 		    	</div>
 		    </div>
@@ -53,8 +53,8 @@
 		   	<li><a id = "proposedonAccount" href="#proposedonAccountDiv" data-toggle="tab">Proposed On Account</a></li>
 
 		   	<li class="pull-right marginLeft-5 marginTop-10">
-		   		<img src="resources/images/exportExcelIcon.png" class="exportToExcel" id="proposeExportToExcel">
-			    <img src="resources/images/copyToClipboardIcon.png" class="copyToClipboard" id="proposeCopyToClipboard">
+		   		<img class="exportToExcel" id="proposeExportToExcel">
+			    <img class="copyToClipboard" id="proposeCopyToClipboard">
 		   	</li>
 
 		   	<li class="pull-right marginTop-10 customLI">
