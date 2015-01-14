@@ -4,7 +4,25 @@ import RinsCommon from 'utils/urls';
 var CountryLicensor = Model.extend({
   findOne: function(params){
 
-    if(params.entityCountryDetails.entityCountry.entityId == undefined){
+    if(params.reqType === 'modelListAndVersion'){
+        delete params.reqType;
+        return $.ajax({
+          url: RinsCommon.UI_SERVICE_URL +'getPricingModelList',
+            type: 'POST',
+            data: JSON.stringify(params),
+            dataType:'json',
+            contentType: 'application/json'
+          });
+    } else if(params.reqType === 'countryLicensordetails'){
+        delete params.reqType;
+        return $.ajax({
+          url: RinsCommon.UI_SERVICE_URL +'getPricingModelDetails',
+          type: 'POST',
+            data: JSON.stringify(params),
+            dataType:'json',
+            contentType: 'application/json'
+          });
+      } else if(params.entityCountryDetails.entityCountry.entityId == undefined){
       console.log("row select:"+params.entityCountryDetails.entityCountry.id);
       return $.ajax({
           url: RinsCommon.UI_SERVICE_URL+'getEntityCountryDetailsById',
@@ -26,7 +44,7 @@ var CountryLicensor = Model.extend({
   },
   create: function(params){
    return $.ajax({
-      url: RinsCommon.UI_SERVICE_URL+'updateEntityCountryDetails',
+      url: 'http://10.249.20.99:10645/api/v1/rinsui/' +'updateEntityCountryDetails',
       type: 'POST',
       data: JSON.stringify(params),
       dataType: 'json',

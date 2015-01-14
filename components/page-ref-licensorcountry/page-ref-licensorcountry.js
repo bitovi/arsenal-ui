@@ -99,11 +99,18 @@ var page = Component.extend({
           if(pricingModels[i].modelName == modelId) {
 
             self.pageState.entityCountryDetails.attr("pricingModelVersionNo", modelId);
-            $("#entityPricingModelId :selected").text(modelId);
-            $('#entityPricingModelVersionId :selected').text(versionNo);
+            self.setSelectedValue(versionNo, "#entityPricingModelVersionId");
 
           }
         }
+      },
+
+      setSelectedValue : function(text, divId) {
+
+        $(divId+ " option").filter(function() {
+          return $(this).text() == text; 
+        }).prop('selected', true);
+
       }
 
   },
@@ -118,7 +125,7 @@ var page = Component.extend({
 
     Promise.all([
       Licensor.findAll(UserReq.formRequestDetails(requestObj)),
-      PricingModels.findOne(UserReq.formRequestDetails( {reqType:'modelListAndVersion'})) ,
+      CountryLicensor.findOne(UserReq.formRequestDetails( {reqType:'modelListAndVersion'})) ,
       PricingMethods.findOne(UserReq.formRequestDetails(requestObj))
       ]).then(function(values) {
         self.scope.attr("entities").replace(values[0]["entities"][0]);
@@ -402,7 +409,7 @@ var page = Component.extend({
 
 
           },
-          '#buttonCancel  click': function(){
+          '#buttonCancel click': function(){
 
             //form Reset
             $(".mainLayoutId").hide();
@@ -457,7 +464,7 @@ var page = Component.extend({
                 reportConfigurationList:reportConfigurationListObj,
                 pricingModelVersionNo: this.scope.pageState.entityCountryDetails.pricingModelVersionNumber,
                 pricingModelId:this.scope.pageState.entityCountryDetails.pricingModelId,
-                comment: this.scope.pageState.entityCountryDetails.comment,
+                comment: $(".new-comments").val(),
                 commentType:"ENTITY_COUNTRY"//TODO: Should be handled at server side. Not required to pass it.
               },
 
@@ -465,9 +472,23 @@ var page = Component.extend({
 
             //console.log("requestObj: "+JSON.stringify(requestObj));
             CountryLicensor.create(UserReq.formRequestDetails(requestObj), function(data){
-              if(data["status"]=="SUCCESS"){
-              //  console.log("Success :");
-                this.scope.attr("displayMessage","display:block");
+            if(data.status == "SUCCESS") {
+
+                var msg = "Country-Licensor details saved successfully";
+
+                $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
+                $("#invmessageDiv").show();
+                setTimeout(function(){
+                  $("#invmessageDiv").hide();
+                },5000);
+              } else {
+
+                  var msg = "Country-Licensor Detials was not saved successfully";
+                  $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+                  $("#invmessageDiv").show();
+                  setTimeout(function(){
+                    $("#invmessageDiv").hide();
+                  },5000);
               }
             },function(xhr){
               console.error("Failed :"+xhr);
@@ -480,20 +501,39 @@ var page = Component.extend({
           },
           '#pricingModelBtn click': function(){
             var self = this.scope;
-            $("#viewPricingModelDiv").show();
+            
             var selmodelid =  self.pageState.entityCountryDetails.pricingModelId;
             
             var entityName  = $("#licensorId :selected").text();
             var countryId = self.pageState.entityCountryDetails.entityCountry.attr("countryId");
 
-            var genObj = {modelId:selmodelid, reqType:'details', "countryId" : countryId, "entityName" : entityName};
+            var genObj = {modelId:selmodelid, reqType:'countryLicensordetails', "countryId" : countryId, "entityName" : entityName};
 
             console.log("Request is " +JSON.stringify(UserReq.formRequestDetails(genObj)));
-            PricingModels.findOne(UserReq.formRequestDetails(genObj),function(data){
+            CountryLicensor.findOne(UserReq.formRequestDetails(genObj),function(data){
               //console.log("Pricing model details "+ JSON.stringify(data.pricingModel.attr()));
+
+              if(data.pricingModel == undefined || data.pricingModel == null) {
+
+                $("#viewPricingModelDiv").hide();
+
+                var msg = "No details available";
+
+                $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
+                $("#invmessageDiv").show();
+                setTimeout(function(){
+                  $("#invmessageDiv").hide();
+                },5000);
+        
+              } else {
+
+                $("#viewPricingModelDiv").show();
+                  self.attr("displayPMDetails",true);
+              }
+
               self.attr("getPricingModelDetails",data.pricingModel);
-              self.attr("baseModelParameter").replace(data.pricingModel.baseModelParameters);
-              self.attr("trackCounts").replace(data.pricingModel.trackCounts);
+              self.attr("baseModelParameter").replace(data.pricingModel != undefined && data.pricingModel != null && data.pricingModel.baseModelParameters != null  ? data.pricingModel.baseModelParameters : []);
+              self.attr("trackCounts").replace(data.pricingModel != undefined && data.pricingModel != null && data.pricingModel.trackCounts != null  ? data.pricingModel.trackCounts : []);
 
               var tempcommentObj = data.pricingModel.pricingModel.comments;
               if(tempcommentObj!=null)
@@ -615,8 +655,7 @@ var loadPage = function(scope,data){
   if(tempcommentObj != undefined && tempcommentObj!=null && tempcommentObj.length > 0){
     $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
   } else {
-      tempcommentObj = scope.commentList;
-      $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
+      $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({}));
   }
 
   if(data.pricingModel.baseModelParameters != null && data.pricingModel.baseModelParameters.length > 0) {
