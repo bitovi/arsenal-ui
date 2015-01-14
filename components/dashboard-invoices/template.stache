@@ -6,8 +6,8 @@
 {{else}}
 <div class="export-toexcel" id="exportExcel"></div>
 <div class="col-sm-12" id="searchDiv" class="pull-right">
-        <img src="resources/images/exportExcelIcon.png" class="exportToExcell">
-        <img src="resources/images/copyToClipboardIcon.png" class="" id="copyToClipboard">
+        <img class="exportToExcel exportToExcell">
+        <img class="copyToClipboard" id="copyToClipboard">
 </div>
 <table class="holes-report">
   <thead>
