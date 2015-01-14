@@ -263,7 +263,7 @@
 									        				
 						       							{{/each}}
 												    </select>
-												    <input type="text" name="format" value="" class="ccidGL ccidGLtxt"/>
+												    <input type="text" id="ccidGLtxt" name="format" value="" class="ccidGL ccidGLtxt"/>
 												</div>
 						            	  {{else}}
 						            	 		<input type="text" class="form-control ccidGL" id="ccidGL" name="ccidGL" placeholder="" readonly="true">
