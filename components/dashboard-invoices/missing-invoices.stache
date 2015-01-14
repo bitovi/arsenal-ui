@@ -9,9 +9,9 @@
   <tbody>
     {{#missingInvoices}}
     <tr>
-      <td>{{countryId}}</td>
-      <td>{{entityName}}</td>
-      <td>{{missingParts pdfCount ccidCount}}</td>
+      <td>{{Country}}</td>
+      <td>{{Licensor}}</td>
+      <td>{{Missing}}</td>
     </tr>
     {{/missingInvoices}}
   </tbody>

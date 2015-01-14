@@ -1,3 +1,11 @@
+<div class="col-lg-12 pageTitle">
+  <div class="col-lg-3">
+    <h4>Holes Report</h4>
+  </div>
+  <div class="col-lg-9">
+    <div id="messageDiv" class="col-md-12" style="text-align:left;padding-top:5px;"></div>
+  </div>
+</div>
 <copy-clipboard> {{values}}</copy-clipboard>
 {{#showPage}}
 {{#if fetching}}
@@ -9,12 +17,13 @@
         <img src="resources/images/exportExcelIcon.png" class="exportToExcell">
         <img src="resources/images/copyToClipboardIcon.png" class="" id="copyToClipboard">
 </div>
-<table class="holes-report">
+<div class="tableDiv">
+<table class="holes-report" border="1">
   <thead>
     <tr>
       <th></th>
       {{#entities}}
-      <th class="entity" {{data 'entity'}}>{{.}}</th>
+      <th class="entity" {{data 'entity'}}><span {{popover 'entity' {.}}}>{{.}}</span></th>
       {{/entities}}
       <th class="entity">LOCAL</th>
       <th></th>
@@ -23,14 +32,14 @@
   <tbody>
     {{#holesReports}}
     <tr>
-      <th class="country" {{#if displayBackGreen}}bgcolor="#669933" {{/if}}><span {{popover holes}}>{{countryId}}</span></th>
+      <th class="country" {{#if displayBackGreen}}bgcolor="#669933" {{/if}}><span {{popover 'country' {countryId}}}>{{countryId}}</span></th>
       <!--<th class="country">{{countryId}}</th>-->
       {{#holesList}}
         {{#if isCCIDExpect}}
           <td class="hole invoice-expected"></td>
         {{else}}
           <td class="hole">
-            {{#if showImage}}<img style="width:25px;height:25px" src="resources/images/checkMarkDark.png"/>
+            {{#if showImage}}<img class="checkMark" src="resources/images/checkMarkDark.png"/>
             {{else}}
               {{show}}
             {{/if}}
@@ -55,6 +64,20 @@
     {{/holesReports}}
   </tbody>
 </table>
+
+</div>
+
+
+<div class="col-sm-3"></div>
+  <div class="col-sm-1">
+    <img class="checkMark" src="resources/images/checkMarkDark.png"/><label>: All Received </label> 
+  </div>
+  <div class="col-sm-1"><label> PDF: PDF Received</label></div>
+  <div class="col-sm-1"> <label> CCID: CCID Received </label></div>
+  <div class="col-sm-2" align="left"><img class="la" src="resources/images/rn_LegendLondonAgreement@2x.png"/><label>: London Aggrement</label></div>
+  <div class="col-sm-4"></div>
+
+
 {{/if}}
 {{else}}
 <div class="select-message">Please select parameters above for the Invoices Received report.</div>
