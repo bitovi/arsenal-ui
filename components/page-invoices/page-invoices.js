@@ -468,7 +468,7 @@ var page = Component.extend({
           }
 
           if(flag==false) {
-            $("#messageDiv").html("<label class='errorMessage'>Invoice can't be edited as its in transit</label>");
+            $("#messageDiv").html("<label class='errorMessage'>Invoice can't be edited as its in transit/paid</label>");
             $("#messageDiv").show();
             setTimeout(function(){
                 $("#messageDiv").hide();
