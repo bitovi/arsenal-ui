@@ -276,8 +276,11 @@ var page = Component.extend({
             //val == 'SUCCESS' ?  $('.jQfunhide').show():$('.jQfunhide').hide();
        },
        "#buttonCancelicsv click":function(){
+          var self = this;
 
-          commonUtils.navigateTo("invoices");
+          icsvmap.removeAttr("invoiceData");
+          self.scope.uploadedfileinfo.replace([]);
+          $('.jQfunhide').hide();
        },
        '{scope} uploadedfileinfo':function(){
           var self = this;
