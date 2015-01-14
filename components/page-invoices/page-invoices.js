@@ -446,7 +446,7 @@ var page = Component.extend({
             //this.scope.appstate.attr('page','icsv');
             commonUtils.navigateTo("icsv");
     },
-    ".rn-grid>tbody>tr td dblclick": function(item, el, ev){
+    ".rn-grid>tbody>tr:not('.child') td dblclick": function(item, el, ev){
           //var invoiceid = el.closest('tr').data('row').row.id;
           var self=this;
           var flag=false;
