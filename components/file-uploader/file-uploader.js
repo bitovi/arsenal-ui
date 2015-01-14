@@ -16,6 +16,7 @@
               uploadedfileinfo:[],
               isAnyFileLoaded : can.compute(function() { return this.fileList.attr('length') > 0; }),
               isSuccess: false,
+              isRequired: false,
               deletedFileInfo:[],
             areAnyFilesToBeUploaded: false,
             isCancelToBeEnabled: false
@@ -84,7 +85,7 @@
                          }
                      }
                     FileUpLoader.create(_toBeUploaded, function(data) {
-                   
+
                     self.scope.attr("fileUpload" , true);
                     var response = data.filePropeties[0];
                     if(response.status=='SUCCESS'){
@@ -173,9 +174,9 @@
                     file.fileId= fileId;
                     file.boundType='INBOUND';
                     downLoadFile.files.push(file);
-                    fileManager.downloadFile(downLoadFile,function(data){ 
+                    fileManager.downloadFile(downLoadFile,function(data){
                         if(data["status"]=="SUCCESS"){
-                          
+
                         }else{
                           $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
                           $("#messageDiv").show();
@@ -185,7 +186,7 @@
                         }
                   }, function(xhr) {
                         console.error("Error while downloading the file with fileId: "+fileId+xhr);
-                  }); 
+                  });
 
                 },
                 "inserted":function(){

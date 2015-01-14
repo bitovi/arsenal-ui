@@ -46,7 +46,8 @@ fileUpload.extend({
   tag: 'rn-file-uploader',
   scope: {
            fileList : new can.List(),
-           uploadedfileinfo:[]
+           uploadedfileinfo:[],
+           isRequired:true
          },
    events:{
    	"{uploadedfileinfo} change":function(){
@@ -348,13 +349,22 @@ var page = Component.extend({
 	                			callback: {
 			                            message: 'Please provide positive value for amount',
 			                            callback: function (value, validator, $field) {
-				                              if((value != "")  && (parseFloat(value) < 0)){
+                                      var inputval=value.trim();
+				                              if((inputval != "")  && (parseFloat(inputval) < 0)){
 				                              	return {
 					                                    valid: false,
 					                                    message: 'Please provide positive invoice amount'
 					                                }
-				                              }
-											return true;
+				                              }else if (inputval != "" && inputval != undefined && inputval.length != 0){
+                                        var decimal_validate_RE=/^\d{0,10}(\.\d{0,8})?$/;
+                                        if(!decimal_validate_RE.test(value)){
+                                          return {
+                                            valid: false,
+                                            message: 'Please provide invoice amount in [##########.########] format'
+                                          }
+                                        }
+                                      }
+											              return true;
 			                            }
 	                    			}
 			                	}
@@ -652,8 +662,12 @@ var page = Component.extend({
 						if((parseFloat(event[0].value) < 0) || isNaN(event[0].value)){
 
 							showError(event[0].id, "Please provide positive value for tax");
-						}
-						else{
+						}else if (event[0].value != "" && event[0].value != undefined && event[0].value.length != 0) {
+              var decimal_validate_RE=/^\d{0,10}(\.\d{0,8})?$/;
+              if(!decimal_validate_RE.test(event[0].value)){
+                showError(event[0].id, "Please provide Tax value in [##########.########] format");
+              }
+            }else{
 							removeError(event[0].id);
 						}
 					}
@@ -885,6 +899,14 @@ var page = Component.extend({
 	      },
 
 		"#addInvSubmit click":function(){
+
+          var errObj=validateMandatory();
+          if(errObj.isFailed == true){
+            var msg =showErrorDetails(errObj.errorMsgs, "Error");
+         		showMessages(msg);
+            return;
+          }
+
 					var self = this;
 					var invoiceValidatorObj = $("#invoiceform").data('bootstrapValidator');
 
@@ -1035,19 +1057,10 @@ var page = Component.extend({
 								           		}
 
 								           		if(errorMap){
-									       		 var msg =showErrorDetails(errorMap, "Warning");
-									       		 $("#invWarningMsgDiv").html("<label class='errorMessage'>"+msg+"</label>")
-									             $("#invWarningMsgDiv").show();
-									             setTimeout(function(){
-									                $("#invWarningMsgDiv").hide();
-									             },5000)
-
-										        }
-
-
-
-
-												$("#invoiceform")[0].reset();
+  									       		  var msg =showErrorDetails(errorMap, "Warning");
+  									       		  showMessages(msg);
+                              }
+                        $("#invoiceform")[0].reset();
 												$("#invoiceform").data('bootstrapValidator').resetForm();
 												$("#addInvSubmit").attr("disabled", true);
 
@@ -1340,6 +1353,25 @@ var page = Component.extend({
 						var date = new Date();
 						return (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear();
 					}
+
+          function validateMandatory(){
+            var errObj={isFailed:false,errorMsgs:[]};
+            //Upload file Validation
+            var uploadedfiles = $('rn-file-uploader').data('_d_uploadedFileInfo');
+            if(uploadedfiles == undefined || uploadedfiles.length == 0){
+              errObj.isFailed=true;
+              errObj.errorMsgs.push('Please attach atleast one supporting document');
+            }
+            return errObj;
+          }
+
+          function showMessages(msg){
+            $("#invWarningMsgDiv").html("<label class='errorMessage'>"+msg+"</label>")
+             $("#invWarningMsgDiv").show();
+             setTimeout(function(){
+                $("#invWarningMsgDiv").hide();
+             },5000)
+          }
 
 					var updatePeriodCalender = function(elementID){
 
