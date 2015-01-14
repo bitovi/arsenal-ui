@@ -46,7 +46,7 @@
 												<table id="summaryTopTable">
 													<tr>
 														<td width="50%">
-															<div>Ingestion Stats</div>
+															<div class="mid-headers">Ingestion Stats</div>
 														</td>
 
 														<td style="width:20%;">
@@ -75,7 +75,7 @@
 												<table id="summaryTopTable" style="width:100%">
 													<tr>
 														<td width="55%">
-															<div>Summary Stats</div>
+															<div class="mid-headers">Summary Stats</div>
 														</td>
 														<td width="35%">
 
