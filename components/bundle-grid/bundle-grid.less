@@ -1,11 +1,19 @@
 @import 'components/grid/grid.less';
 @import 'components/grid/examples/scrolling-grid/scrolling-grid.less';
 
+.flex-basis(@basis) {
+  -webkit-flex-basis: @basis;
+  flex-basis: @basis;
+}
 
+.flex-grow(@grow) {
+  -webkit-flex-grow: @grow;
+  flex-grow: @grow;
+}
 
 rn-bundle-grid {
   .grid-mixin();
-
+  .scrolling-grid-mixin();
 
   font-size: 10pt;
 
@@ -14,30 +22,33 @@ rn-bundle-grid {
     text-align: right;
   }
 
-  table {
-    /* You have to specify widths */
-    width: 100%;
-    tr>th, tr > td {
-      width:2%;
+  table.scrolling {
+    tbody {
+      height: 10em;
+      border-bottom: 1px solid #666;
+    }
+    tbody tr {
+      min-height: 1.5625em;
     }
 
-    thead, tbody, tfoot {
-      display: block;
+    tbody td {
+      padding: 0.3em;
     }
-    tbody {
-      max-height: 12em;
-      overflow-y: overlay;
-      overflow-x: hidden;
-    }
-    th, td {
-      white-space: nowrap;
+
+    tbody > tr:last-child {
+      border-bottom: 1px solid #bfbfbf;
+     }
+
+    tr > th, tr > td {
+      &.isHighPriority { .flex-basis(25px); }
+      &.bundleName { .flex-grow(1); .flex-basis(200px); }
+      &.paymentCcy { .flex-basis(100px); }
+      &.paymentAmt { .flex-basis(125px); }
+      &.bundleType { .flex-basis(100px); }
+      &.periodRange { .flex-basis(200px); }
+      &.region { .flex-basis(100px); }
+      &.pendingWith { .flex-basis(200px); }
+      &.pendingDays { .flex-basis(105px); }
     }
   }
 }
-#payBundleGrid {
-    background: #f4f4f4;
-    clear: both;
-    min-height: 200px;
-    overflow-x: overlay;
-    overflow-y: hidden;
-  }

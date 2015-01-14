@@ -55,12 +55,13 @@ var page = Component.extend({
          PaymentBundle.findAll({appstate: this.scope.appstate}).then(function(bundles) {
           can.batch.start();
           pageState.bundles.splice(0, pageState.bundles.length);
-          if(self.scope.appstate.attr('offset')==0)
-           pageState.bundles.replace(bundles);
-          else{
-            $.merge(pageState.bundles, bundles);
-            pageState.bundles.replace(pageState.bundles);
-          }
+          pageState.bundles.replace(bundles);
+          // if(self.scope.appstate.attr('offset')==0)
+          //  pageState.bundles.replace(bundles);
+          // else{
+          //   $.merge(pageState.bundles, bundles);
+          //   pageState.bundles.replace(pageState.bundles);
+          // }
           can.batch.stop();
         }, function(err){
           console.log(err);
@@ -87,7 +88,7 @@ var page = Component.extend({
   events: {
     'inserted': function(ev, el) {
       this.scope.appstate.attr('renderGlobalSearch', true);
-      this.scope.appstate.attr('excelOutput',false); 
+      this.scope.appstate.attr('excelOutput',false);
       this.scope.refreshBundles.apply(this);
     },
     '{scope} change': function(scope, ev, attr) {
@@ -116,43 +117,43 @@ var page = Component.extend({
     '.add-invoice click': function(el, ev) {
       commonUtils.navigateTo("invoices");
     },
-    ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
-          var self=this;
-           //console.log($(item[0]).attr("class"));
-          var val = $(item[0]).attr("class").split(" ");
-          var existingSortColumns =self.scope.sortColumns.attr();
-          var existingSortColumnsLen = existingSortColumns.length;
-          var existFlag = false;
-          if(existingSortColumnsLen==0){
-            self.scope.attr('sortColumns').push(val[0]);
-          } else {
-            for(var i=0;i<existingSortColumnsLen;i++){
-              /* The below condition is to selected column to be sorted in asc & dec way */
-              console.log(val[0]+","+existingSortColumns[i] )
-              if(existingSortColumns[i] == val[0]){
-                existFlag = true;
-              }
-            }
-            if(existFlag==false){
-              self.scope.attr('sortColumns').replace([]);
-              self.scope.attr('sortColumns').push(val[0]);
-            } else {
-              var sortDirection = (self.scope.attr('sortDirection') == 'asc') ? 'desc' : 'asc';
-              self.scope.attr('sortDirection', sortDirection);
-            }
-
-          }
-
-          console.log("aaa "+self.scope.sortColumns.attr());
-           /* The below code calls {scope.appstate} change event that gets the new data for grid*/
-           /* All the neccessary parameters will be set in that event */
-           if(self.scope.appstate.attr('globalSearch')){
-              self.scope.appstate.attr('globalSearch', false);
-            }else{
-              self.scope.appstate.attr('globalSearch', true);
-            }
-
-    },
+//     ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
+//           var self=this;
+//            //console.log($(item[0]).attr("class"));
+//           var val = $(item[0]).attr("class").split(" ");
+//           var existingSortColumns =self.scope.sortColumns.attr();
+//           var existingSortColumnsLen = existingSortColumns.length;
+//           var existFlag = false;
+//           if(existingSortColumnsLen==0){
+//             self.scope.attr('sortColumns').push(val[0]);
+//           } else {
+//             for(var i=0;i<existingSortColumnsLen;i++){
+//               /* The below condition is to selected column to be sorted in asc & dec way */
+//               console.log(val[0]+","+existingSortColumns[i] )
+//               if(existingSortColumns[i] == val[0]){
+//                 existFlag = true;
+//               }
+//             }
+//             if(existFlag==false){
+//               self.scope.attr('sortColumns').replace([]);
+//               self.scope.attr('sortColumns').push(val[0]);
+//             } else {
+//               var sortDirection = (self.scope.attr('sortDirection') == 'asc') ? 'desc' : 'asc';
+//               self.scope.attr('sortDirection', sortDirection);
+//             }
+//
+//           }
+//
+//           console.log("aaa "+self.scope.sortColumns.attr());
+//            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
+//            /* All the neccessary parameters will be set in that event */
+//            if(self.scope.appstate.attr('globalSearch')){
+//               self.scope.appstate.attr('globalSearch', false);
+//             }else{
+//               self.scope.appstate.attr('globalSearch', true);
+//             }
+//
+//     },
     '.excel click': function(el, ev) {
       var self = this;
 
