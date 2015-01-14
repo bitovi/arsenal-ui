@@ -649,7 +649,7 @@ var page = Component.extend({
           if(flag==false){
               $("#paymentBundleNames").attr("disabled","disabled");
               $("#btnSubmit").attr("disabled","disabled");
-              $("#messageDiv").html("<label class='errorMessage'>Selected rows has different Invoice Types</label>");
+              $("#messageDiv").html("<label class='errorMessage'>Selected rows are different types of invioces and cannot be added to same bundle.</label>");
               $("#messageDiv").show();
           }else {
                $("#messageDiv").hide();
