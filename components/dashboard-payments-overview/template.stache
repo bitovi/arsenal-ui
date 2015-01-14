@@ -2,8 +2,8 @@
 <div class="region-chart" {{renderBigChart}}></div>
 <h3>{{summary.percentagePaid}}% paid</h3>
 </div>
-<div class="column-container">
-<div class="column top-not-paid-countries">
+<div class="column-container" style="width:100%;height:100%">
+<div class="column top-not-paid-countries" style="width:50%;float:left">
   <h3>Top Not Paid Countries</h3>
   <ul class="chart-list country-list">
     {{#each summary.topNotPaidCountries}}
@@ -13,8 +13,10 @@
     {{/each}}
   </ul>
 </div>
-<div class="column top-not-paid-licensors">
-  <h3>Top Not Paid Licensors</h3>
+<div class="column top-not-paid-licensors" style="float:left;width:50%">
+  <div style="text-align: center;">
+    <h3>Top Not Paid Licensors</h3>
+  </div>
   <ul class="licensor-list">
     {{#each summary.topNotPaidCtyEntys}}
     <li>{{.}}</li>

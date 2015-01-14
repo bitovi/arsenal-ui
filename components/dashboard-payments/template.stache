@@ -2,7 +2,8 @@
 {{#if fetching}}
 <div class="select-message">Loading Payments report...</div>
 {{else}}
-<div class="sidebar">
+<div style="height:100%; width:100%;padding-top: 1em">
+<div class="sidebar" style="height:50%; width:30%;float:left;">
   <rn-switcher options="{tabs}" selected-option="{selectedTab}"></rn-switcher>
   <ul class="chart-list">
   {{#selectedItems}}
@@ -12,16 +13,19 @@
   {{/selectedItems}}
   </ul>
 </div>
-<div class="detail">
-  {{#if selectedItem}}
-  <rn-dashboard-payments-detail name-property="{selectedTab.detailNameProperty}" detail-items="{selectedItem.payments}"></rn-dashboard-payments-detail>
-  {{else}}
-  <rn-dashboard-payments-overview summary="{summary}" appstate="{appstate}"></rn-dashboard-payments-overview>
-  {{/if}}
-  <div class="legend">
-    <div class="paid"><div class="square"></div> Paid</div>
-    <div class="unpaid"><div class="square"></div> Unpaid</div>
-  </div>
+<div class="detail" style="height:50%; width:70%;float:left;">
+    {{#if selectedItem}}
+    <rn-dashboard-payments-detail name-property="{selectedTab.detailNameProperty}" detail-items="{selectedItem.payments}"></rn-dashboard-payments-detail>
+    {{else}}
+    <rn-dashboard-payments-overview summary="{summary}" appstate="{appstate}"></rn-dashboard-payments-overview>
+    {{/if}}
+    <div class="legend">
+      <div class="paid"><div class="square"></div> Paid</div>
+      <div class="unpaid"><div class="square"></div> Unpaid</div>
+    </div>
+</div>
+</div>
+
 </div>
 {{/if}}
 {{else}}
