@@ -960,6 +960,7 @@ var page = Component.extend({
                 var countryId = this.scope.appstate.attr()['country'];
                 var licId = this.scope.appstate.attr()['licensor'];
                 var contGrpId = this.scope.appstate.attr()['contentType'];
+                var periodType = this.scope.appstate.attr()['periodType'];
 
                 var invSearchRequest = {};
                 invSearchRequest.searchRequest = {};
@@ -972,6 +973,12 @@ var page = Component.extend({
                   invSearchRequest.searchRequest["periodTo"] = "";
                 else
                   invSearchRequest.searchRequest["periodTo"] = periodTo;
+
+                if(typeof(periodType)=="undefined")
+                  invSearchRequest.searchRequest["periodType"] = "";
+                else
+                  invSearchRequest.searchRequest["periodType"] = periodType;
+
 
                 if(typeof(serTypeId)=="undefined")
                   invSearchRequest.searchRequest["serviceTypeId"] = "";
@@ -996,7 +1003,7 @@ var page = Component.extend({
                 if(typeof(contGrpId)!="undefined")
                   invSearchRequest.searchRequest["contentGrpId"] = contGrpId;
 
-                invSearchRequest.searchRequest["periodType"] = "P";
+           //     invSearchRequest.searchRequest["periodType"] = "P";
 
                 invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
                 invSearchRequest.searchRequest["offset"] = this.scope.offset;

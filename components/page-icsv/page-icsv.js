@@ -182,7 +182,7 @@ var page = Component.extend({
                         tempObj.invoiceAmt= CurrencyFormat(tempArr[i].invoiceAmount);
                         tempObj.currency= tempArr[i].invoiceCcy;
                         var maxcommentlength = 50;
-                        if(typeof tempArr[i].comments[0].comments !== "undefined"){
+                        if((typeof tempArr[i].comments[0].comments !== "undefined") && (tempArr[i].comments[0].comments !== null)){
                             tempObj.comments= (tempArr[i].comments[0].comments.length > maxcommentlength)?tempArr[i].comments[0].comments.substring(0, maxcommentlength)+"..":tempArr[i].comments[0].comments;
                         }
 
@@ -373,8 +373,13 @@ var page = Component.extend({
 
                    tempInvoiceData["invoiceDocuments"] = [];
                    var tempDocument = {};
-                   tempDocument.fileName = tempArr[i].invoiceDocuments.fileName;
-                   tempDocument.location = tempArr[i].invoiceDocuments.location;
+                   for(var j = 0; j < tempArr[i].invoiceDocuments.length; j++){
+                      tempDocument.fileName = tempArr[i].invoiceDocuments[j].fileName;
+                      tempDocument.location = tempArr[i].invoiceDocuments[j].location;
+                   }
+
+                //   tempDocument.fileName = tempArr[i].invoiceDocuments.fileName;
+                 //  tempDocument.location = tempArr[i].invoiceDocuments.location;
 
                    tempInvoiceData["invoiceDocuments"].push(tempDocument);
                   // console.log(tempArr[i].invoiceLines.length);

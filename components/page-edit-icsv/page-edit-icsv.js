@@ -1118,7 +1118,7 @@ var page = Component.extend({
 							   		  	editInvoiceCSVData.comments.push(tempComments);
 									}
 									var tempComments = {};  /*new comments*/
-									if($("#editableText").val() != null && $("#editableText").val() != undefined && $("#editableText").val() != ""){
+									if($("#editableText").val() != null && (typeof $("#editableText").val() != "undefined") && $("#editableText").val() != ""){
 										tempComments.comments = $("#editableText").val();//self.scope.usercommentsStore;
 									   	//tempComments.id = "";
 									   	tempComments.createdBy = UserReq.formRequestDetails().prsId;
@@ -1141,25 +1141,30 @@ var page = Component.extend({
                             /* adding new document */
                             var uploadedfiles = $('rn-file-uploader-icsv').data('_d_uploadedFileInfo');
 
-                            for(var i =0; i < uploadedfiles.length; i++){
-                                if (uploadedfiles[i].ftype === 'pushedToServer') {
-                                    // This is the list of newly uploaded files.
-                                    var tempDocument = {};
-                                    tempDocument.fileName = uploadedfiles[i].fileName;
-                                    tempDocument.location = uploadedfiles[i].filePath;
-                                    tempDocument.status = "add";
-                                    editInvoiceCSVData.invoiceDocuments.push(tempDocument);
-                                } else if (uploadedfiles[i].isServer) {
-                                    // This is the existing server file list which will be send back as-is with no change.
-                                    var tempDocument = {};
-                                    tempDocument.fileName = uploadedfiles[i].fileName;
-                                    tempDocument.location = uploadedfiles[i].location;
-                                    tempDocument.docId = uploadedfiles[i].docId;
-                                    tempDocument.id = uploadedfiles[i].id;
-                                    tempDocument.status = uploadedfiles[i].status;
-                                    editInvoiceCSVData.invoiceDocuments.push(tempDocument);
-                                }
+                            if((typeof uploadedfiles !== 'undefined') &&  (uploadedfiles != null)){
+
+	                            for(var i =0; i < uploadedfiles.length; i++){
+	                                if (uploadedfiles[i].ftype === 'pushedToServer') {
+	                                    // This is the list of newly uploaded files.
+	                                    var tempDocument = {};
+	                                    tempDocument.fileName = uploadedfiles[i].fileName;
+	                                    tempDocument.location = uploadedfiles[i].filePath;
+	                                    tempDocument.status = "add";
+	                                    editInvoiceCSVData.invoiceDocuments.push(tempDocument);
+	                                } else if (uploadedfiles[i].isServer) {
+	                                    // This is the existing server file list which will be send back as-is with no change.
+	                                    var tempDocument = {};
+	                                    tempDocument.fileName = uploadedfiles[i].fileName;
+	                                    tempDocument.location = uploadedfiles[i].location;
+	                                    tempDocument.docId = uploadedfiles[i].docId;
+	                                    tempDocument.id = uploadedfiles[i].id;
+	                                    tempDocument.status = uploadedfiles[i].status;
+	                                    editInvoiceCSVData.invoiceDocuments.push(tempDocument);
+	                                }
+	                            }
                             }
+
+
                             /* deleting existing documents */
                             var deletedFiles = $('rn-file-uploader-icsv').data('_d_deletedFileInfo');
 
@@ -1244,17 +1249,23 @@ var page = Component.extend({
 
 								  var tempInvMap = icsvmap.invoiceData.invoices[selIndex].attr();
 
-								  for(var key in tempInvMap.errors.errorMap){  /*Invoice error*/
+								  if((typeof tempInvMap.errors.errorMap !== "undefined") && (tempInvMap.errors.errorMap != null)){
+										for(var key in tempInvMap.errors.errorMap){  /*Invoice error*/
 			     							console.log(tempInvMap.errors.errorMap[key]);
 			     							icsvmap.invoiceData.invoices[selIndex].errors.errorMap.attr(key, " ");
 										}
+									}	
+
+						          
 
 						          for(var j =0; j < tempInvMap.invoiceLines.length; j++){
-						                for(var key in tempInvMap.invoiceLines[j].errors.errorMap){  /*Invoiceline error*/
-						                      console.log(tempInvMap.invoiceLines[j].errors.errorMap[key]);
-						                      icsvmap.invoiceData.invoices[selIndex].invoiceLines[j].errors.errorMap.attr(key, " ");
-						                 }
-						          }
+										if((typeof tempInvMap.invoiceLines[j].errors.errorMap !== "undefined") && (tempInvMap.invoiceLines[j].errors.errorMap != null)){
+											for(var key in tempInvMap.invoiceLines[j].errors.errorMap){  /*Invoiceline error*/
+							                      console.log(tempInvMap.invoiceLines[j].errors.errorMap[key]);
+							                      icsvmap.invoiceData.invoices[selIndex].invoiceLines[j].errors.errorMap.attr(key, " ");
+							                 }
+						                } 
+						          	}
 
 						          	console.log(icsvmap.invoiceData.attr());
 					 				
