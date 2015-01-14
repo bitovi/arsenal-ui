@@ -192,6 +192,8 @@ var page = Component.extend({
 
               var summaryData = [];
 
+              self.summaryStatsData.splice(0, self.summaryStatsData.length);
+
               self.summaryStatsData.push(ingestionSummaryStats);
 
               var rows = new can.List(grid.data);
