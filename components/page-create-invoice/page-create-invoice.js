@@ -956,13 +956,14 @@ var page = Component.extend({
 
                       var uploadedfiles = $('rn-file-uploader').data('_d_uploadedFileInfo');
 
-                       for(var i =0; i < uploadedfiles.length; i++){
+                      if(uploadedfiles != undefined){
+                      	for(var i =0; i < uploadedfiles.length; i++){
       						var tempDocument = {};
 				   			tempDocument.fileName = uploadedfiles[i].fileName;
 				   			tempDocument.location = uploadedfiles[i].filePath;
 				   			tempInvoiceData["invoiceDocuments"].push(tempDocument);
 				   		}
-
+                      }
 					  tempInvoiceData["invoiceLines"] = [];
 
 					   var rowNumber = 0;

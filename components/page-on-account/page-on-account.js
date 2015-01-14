@@ -423,24 +423,26 @@ var page = Component.extend({
               // make sure that you remove all files from _d_uploadedFileInfo that have just the term ftype = 'selectedFromLocal' & isServer
               var proposedDocs=[];
               var uploadedfiles = $('propose-rn-file-uploader').data('_d_uploadedFileInfo');
-              for(var i =0; i < uploadedfiles.length; i++){
-                  if (uploadedfiles[i].ftype === 'pushedToServer') {
-                      // This is the list of newly uploaded files.
-                      var tempDocument = {};
-                      tempDocument.fileName = uploadedfiles[i].fileName;
-                      tempDocument.location = uploadedfiles[i].filePath;
-                      tempDocument.status = "add";
-                      proposedDocs.push(tempDocument);
-                  } else if (uploadedfiles[i].isServer) {
-                      // This is the existing server file list which will be send back as-is with no change.
-                      // var tempDocument = {};
-                      // tempDocument.fileName = uploadedfiles[i].fileName;
-                      // tempDocument.location = uploadedfiles[i].location;
-                      // tempDocument.docId = uploadedfiles[i].docId;
-                      // tempDocument.id = uploadedfiles[i].id;
-                      // tempDocument.status = uploadedfiles[i].status;
-                      // proposedDocs.push(tempDocument);
-                  }
+              if(uploadedfiles != undefined){
+                  for(var i =0; i < uploadedfiles.length; i++){
+                    if (uploadedfiles[i].ftype === 'pushedToServer') {
+                        // This is the list of newly uploaded files.
+                        var tempDocument = {};
+                        tempDocument.fileName = uploadedfiles[i].fileName;
+                        tempDocument.location = uploadedfiles[i].filePath;
+                        tempDocument.status = "add";
+                        proposedDocs.push(tempDocument);
+                    } else if (uploadedfiles[i].isServer) {
+                        // This is the existing server file list which will be send back as-is with no change.
+                        // var tempDocument = {};
+                        // tempDocument.fileName = uploadedfiles[i].fileName;
+                        // tempDocument.location = uploadedfiles[i].location;
+                        // tempDocument.docId = uploadedfiles[i].docId;
+                        // tempDocument.id = uploadedfiles[i].id;
+                        // tempDocument.status = uploadedfiles[i].status;
+                        // proposedDocs.push(tempDocument);
+                    }
+                }
               }
               /* deleting existing documents */
               var deletedFiles = $('propose-rn-file-uploader').data('_d_deletedFileInfo');
