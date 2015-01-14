@@ -27,21 +27,11 @@ var DashboardInvoices = Component.extend({
     */},
     fetching: false,
 
-    renderMissingInvoices: function(holes) {
+    renderMissingInvoices: function(id,from) {
+      var missingInvoices = getMissingInvoices(from,this.holesReports,id);
       // var missingInvoices = _.filter(holes, hole => hole.pdfCount < 1 || hole.ccidCount < 1);
-      // return missingInvoicesTemplate({missingInvoices}, {
-      //   missingParts: function(pdfCount, ccidCount) {
-      //     if(pdfCount() < 1 && ccidCount() < 1) {
-      //       return 'PDF + CCID';
-      //     } else if(pdfCount() < 1) {
-      //       return 'PDF';
-      //     } else if(ccidCount() < 1) {
-      //       return 'CCID';
-      //     } else {
-      //       return '?';
-      //     }
-      //   }
-      // })
+      //var missingInvoices=[];
+      return missingInvoicesTemplate({missingInvoices})
     },
 
     debouncedRefreshReport: function() {
@@ -109,8 +99,9 @@ _.each(holes.holesReportWrapper, function(holesWrapper) {
               var displayBackGreen = true;
               var holes = holesWrapper.holesReport;
               holesReport.countryId=holesWrapper.countryId;
-              holesReport.localSociety="";
-              var localSociety=holesWrapper.localSociety;
+              holesReport.localSociety="";              
+              //var localSociety=holesWrapper.localSociety;
+              var localSociety='CELAS';
               var localDisplay="";
               var checkForLocalSociety = false;
               if(typeof(localSociety) != "undefined" && localSociety != "null" && (localSociety != null) && localSociety.length >0){
@@ -119,11 +110,13 @@ _.each(holes.holesReportWrapper, function(holesWrapper) {
               }
 
            dataList.sort(function(obj1, obj2) {
-                var nameA=obj1.entityName.toLowerCase(), nameB=obj2.entityName.toLowerCase()
-               if (nameA < nameB) //sort string ascending
-                return -1 
-               if (nameA > nameB)
-                return 1
+                if(obj1.entityName != undefined && obj2.entityName != undefined){
+                  var nameA=obj1.entityName.toLowerCase(), nameB=obj2.entityName.toLowerCase();
+                   if (nameA < nameB) //sort string ascending
+                    return -1 
+                   if (nameA > nameB)
+                    return 1
+                }
                return 0 //default return value (no sorting)
               });
 
@@ -135,6 +128,8 @@ _.each(holes.holesReportWrapper, function(holesWrapper) {
                 hole.entityName=value.entityName;
                 entities.push(hole.entityName);
                 hole.isCCIDExpect=(value.isCCIDExpect == 1) ? true : false;
+                hole.pdfCount=value.pdfCount;
+                hole.ccidCount=value.ccidCount;
                 if(value.pdfCount > value.ccidCount){
                   display="PDF";
                   displayBackGreen = false;
@@ -172,7 +167,7 @@ _.each(holes.holesReportWrapper, function(holesWrapper) {
           });
   
           
-          
+          entities = entities.filter(function(n){ return n !== undefined; });
           entities = _.sortBy(entities, e => e.toUpperCase());
 
           entities = $.unique(entities);
@@ -204,8 +199,14 @@ _.each(holes.holesReportWrapper, function(holesWrapper) {
         localSociety: this.holesByCountry[c][0].localSociety
       }));
     },
-    popover: function(holes) {
-      var popoverContent = $('<div>').append(this.renderMissingInvoices(holes))[0].innerHTML;
+    popover: function(from,val,data) {
+      var id = "";
+      if(from == 'country'){
+        id = data.context.countryId;
+      }else{
+        id = data.context;
+      }
+      var popoverContent = $('<div>').append(this.renderMissingInvoices(id,from))[0].innerHTML;
       return function(span) {
         $(span).popover({
           title: 'Missing Invoices',
@@ -263,5 +264,78 @@ _.each(holes.holesReportWrapper, function(holesWrapper) {
   }
 });
 
+var getMissingInvoices=function(from,holesReports,id){
+  var holesReport = [];
+  var missingInvoices=[];
+  if(from != undefined ){
+    if(from.toUpperCase() == 'COUNTRY'){
+     holesReport = getholesReportByCountry(holesReports,id);
+     if(holesReport != undefined){
+        for(var i=0;i<holesReport.holesList.length;i++){
+          var missingInv={};
+          missingInv.Country = id;
+          missingInv.Licensor = holesReport.holesList[i].entityName;
+          missingInv.Missing = getMissing(holesReport.holesList[i].pdfCount,holesReport.holesList[i].ccidCount);
+          missingInvoices.push(missingInv);
+        }
+     }
+    }else if(from.toUpperCase() == 'ENTITY'){
+      holesReport = getHolesReportByEntity(holesReports,id);
+      if(holesReport != undefined){
+        for(var i=0;i<holesReport.length;i++){
+          var missingInv={};
+          missingInv.Country = holesReport[i].countryId;
+          missingInv.Licensor = id;
+          missingInv.Missing = getMissing(holesReport[i].pdfCount,holesReport[i].ccidCount);
+          missingInvoices.push(missingInv);
+        }
+      }
+    }
+  }else{
+    missingInvoices =[];
+  }
+  return missingInvoices;
+}
 
+var getholesReportByCountry=function(holesReports,id){
+  if(id != undefined && id.length >0){
+    for(var i=0;i<holesReports.length;i++){
+      if(id == holesReports[i].countryId){
+        return holesReports[i];
+      }
+    }
+  }else{
+    return [];
+  }
+}
+
+var getHolesReportByEntity=function(holesReports,id){
+  var holeReport=[];
+  if(id != undefined && id.length >0){
+    for(var i=0;i<holesReports.length;i++){
+      var hole={}
+      hole.countryId=holesReports[i].countryId;
+      for(var k=0;k<holesReports[i].holesList.length;k++){
+        if(id == holesReports[i].holesList[k].entityName){
+          hole.pdfCount=holesReports[i].holesList[k].pdfCount;
+          hole.ccidCount=holesReports[i].holesList[k].ccidCount;
+        }
+      }
+      holeReport.push(hole);
+    }
+  }
+  return holeReport;
+}
+
+var getMissing=function(pdfCnt,ccidCnt){
+  var missing ="";
+    if(pdfCnt < 1 && ccidCnt < 1) {
+      missing =  'PDF + CCID';
+    } else if(pdfCnt < 1) {
+      missing = 'PDF';
+    } else if(ccidCnt < 1) {
+      missing = 'CCID';
+    }
+    return missing;
+}
 export default DashboardInvoices;
