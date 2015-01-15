@@ -16,7 +16,7 @@
               uploadedfileinfo:[],
               isAnyFileLoaded : can.compute(function() { return this.fileList.attr('length') > 0; }),
               isSuccess: false,
-              isRequired: false,
+              required: false,
               deletedFileInfo:[],
             areAnyFilesToBeUploaded: false,
             isCancelToBeEnabled: false
