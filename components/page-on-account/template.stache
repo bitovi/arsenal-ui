@@ -1,4 +1,4 @@
-	{{#if showLoadingImage}}
+{{#if showLoadingImage}}
 		<div class='page_loader'>&nbsp;</div>
 	{{/if}}
 	<copy-clipboard> {{values}}</copy-clipboard>
@@ -89,7 +89,7 @@
 
 			       		<div class="col-lg-6" id="uploadFile">
 								<div class="col-sm-6 file-component-onacc-div">
-									<rn-file-uploader uploadedfileinfo="{documents}" deletedFileInfo="{deletedFileInfo}"></rn-file-uploader>
+									<rn-file-uploader-new uploadedfileinfonew="{uploadedfileinfo}"></rn-file-uploader-new>
 								</div>
 								</div>
 
@@ -135,7 +135,7 @@
 
 		       		<div class="col-lg-6" id="proposeuploadFile">
 							<div class="col-sm-6 file-component-onacc-div">
-								<propose-rn-file-uploader uploadedfileinfo="{proposedOnAccDocuments}" deletedFileInfo="{deletedFileInfo}"></propose-rn-file-uploader>
+								<propose-rn-file-uploader uploadedfileinfo="{uploadedfileinfo}" deletedFileInfo="{deletedFileInfo}"></propose-rn-file-uploader>
 							</div>
 							</div>
 

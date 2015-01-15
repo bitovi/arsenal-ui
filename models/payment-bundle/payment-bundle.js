@@ -246,8 +246,10 @@ var PaymentBundle = Model.extend({
           if(validationResponse.paymentBundle.vldtnStatus === 5) {
             if(group.invoiceId != undefined){
               var target = _.find(bundle.bundleDetailsGroup, {invoiceId: group.invoiceId});
-              target.attr('validationMessages', group.vldtnMessage);
-              target.attr('validationColor', group.vldtnBatchResultColor);
+              if(target != undefined ){
+                group.vldtnMessage == undefined ? target.attr('validationMessages', "") : target.attr('validationMessages', group.vldtnMessage);
+                group.vldtnBatchResultColor == undefined ? target.attr('validationColor', "") : target.attr('validationColor', group.vldtnBatchResultColor);
+              }
             }
           }
 

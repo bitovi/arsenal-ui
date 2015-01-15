@@ -80,13 +80,17 @@ var columns = {
     id: 'onaccountAllocatedAmt',
     title: 'OA Allocated',
     verboseOnly: true,
-    format: formats.currencyFormat
+    contents: function(row) {
+      return row.onaccountAllocatedAmt == undefined ? "" :  formats.currencyFormat(row.onaccountAllocatedAmt);
+    }
   },
   'cashadjAllocatedAmt': {
     id: 'cashadjAllocatedAmt',
     title: 'CA Allocated',
     verboseOnly: true,
-    format: formats.currencyFormat
+    contents: function(row) {
+      return row.cashadjAllocatedAmt == undefined ? "" :  formats.currencyFormat(row.cashadjAllocatedAmt);
+    }
   },
   'priorPaid': {
     id: 'priorPaid',

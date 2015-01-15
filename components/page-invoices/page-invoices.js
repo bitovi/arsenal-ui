@@ -698,7 +698,7 @@ var page = Component.extend({
           //console.log("selected Invoices are "+ self.scope.checkedRows.attr());
           var unDeletedInvoices = self.scope.unDeletedInvoices.attr();
           if(unDeletedInvoices.length > 0){
-            $("#messageDiv").html("<label class='errorMessage'>Invoice Numbers"+unDeletedInvoices.toString()+" : Cannot Delete the invoice </label>");
+            $("#messageDiv").html("<label class='errorMessage'>Invoice "+unDeletedInvoices.toString()+" cannot be deleted! </label>");
             $("#messageDiv").show();
           } else {
             $("#messageDiv").hide();

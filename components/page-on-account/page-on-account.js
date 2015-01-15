@@ -28,25 +28,27 @@ import copy from 'components/copy-clipboard/';
 import exportToExcel from 'components/export-toexcel/';
 
 fileUpload.extend({
-  tag: 'rn-file-uploader',
-  scope: {
+  tag: 'rn-file-uploader-new',
+    scope: {
         fileList : new can.List(),
         uploadedfileinfo:[],
         deletedFileInfo:[]
     },
-  events:{
-      'inserted': function (){
-        //this.scope.fileList.replace(this.scope.uploadedfileinfo);
-        //console.log(JSON.stringify(this.scope.uploadedfileinfo.attr()));
-      },
-       "{uploadedfileinfo} change":function(){
-          this.scope.fileList.replace(this.scope.uploadedfileinfo);
-      },
-      "{deletedFileInfo} change":function(){
-        //this.scope.deletedFileInfo.replace(this.scope.deletedFileInfo);
-      }
+
+    init: function(){
+    this.scope.attr('uploadedfileinfo').replace([]);
+},
+    events:{
+        "{uploadedfileinfo} change":function () {
+            //Handling this using data as scope is not accessible from page-edit -invoice.
+            $('rn-file-uploader-new').data('_d_uploadedFileInfo', this.scope.uploadedfileinfo);
+            this.scope.fileList.replace(this.scope.uploadedfileinfo);
+        },
+        "{deletedFileInfo} change":function () {
+            $('rn-file-uploader-new').data('_d_deletedFileInfo', this.scope.deletedFileInfo);
+        }
     }
- });
+});
 
 fileUpload.extend({
   tag: 'propose-rn-file-uploader',
@@ -61,10 +63,6 @@ fileUpload.extend({
 
     },
     events:{
-      'inserted': function (){
-        //this.scope.fileList.replace(this.scope.uploadedfileinfo);
-        //console.log(JSON.stringify(this.scope.uploadedfileinfo.attr()));
-      },
        "{uploadedfileinfo} change":function(){
         $('propose-rn-file-uploader').data('_d_uploadedFileInfo', this.scope.uploadedfileinfo);
           this.scope.fileList.replace(this.scope.uploadedfileinfo);
@@ -86,7 +84,6 @@ var page = Component.extend({
     request:{},
     onAccountRows:{},
     documents:[],
-    proposedOnAccDocuments:[],
     newpaymentbundlenamereq:undefined,
     tabsClicked:"@",
     paymentBundleName:"@",
@@ -102,6 +99,7 @@ var page = Component.extend({
     quarters:[],
     csvcontent:[],
     uploadedfileinfo:[],
+    uploadedfileinfonew:[],
     loadProposedONAccountPage:undefined,
     deletedFileInfo:[],
     balanceOnAccOffset: 0,
@@ -113,11 +111,15 @@ var page = Component.extend({
   },
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
+    this.scope.uploadedfileinfo.replace([]);
+    this.scope.uploadedfileinfonew.replace([]);
     this.scope.tabsClicked="NEW_ON_ACC";
     },
     events: {
       "inserted": function(){
        $("#searchDiv").show();
+       this.scope.uploadedfileinfonew.replace([]);
+       this.scope.uploadedfileinfo.replace([]);
 
        setTimeout(function(){
           $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid emptyrows="{emptyrows}"></rn-new-onaccount-grid>')({emptyrows:true}));
@@ -202,7 +204,6 @@ var page = Component.extend({
 
           }
 
-          console.log("aaa "+self.scope.sortColumns.attr());
            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
            /* All the neccessary parameters will be set in that event */
            self.scope.appstate.attr('globalSearchButtonClicked', false);
@@ -275,8 +276,11 @@ var page = Component.extend({
       "#onAccountBalance click":function(el, ev){
         ev.preventDefault();
         this.scope.tabsClicked="ON_ACC_BALANCE";
-        $('#newonAccountGrid, #newonAccountGridComps, #proposedonAccountDiv,#proposeOnAc           countGridComps, #forminlineElements,#searchDiv, #onAccountEditDeleteDiv').hide();
+
+        $('#newonAccountGrid, #newonAccountGridComps, #proposedonAccountDiv,#proposeOnAccountGridComps, #forminlineElements,#searchDiv, #onAccountEditDeleteDiv').hide();
         $('#onAccountBalanceDiv').show();
+
+
        if ($("rn-onaccount-balance-grid").find("tbody>tr").length) {
            $('rn-onaccount-balance-grid tbody tr').css("outline","0px solid #f1c8c8");
        }else{
@@ -286,14 +290,18 @@ var page = Component.extend({
       "#newonAccount click":function(el, ev){
         ev.preventDefault();
         this.scope.tabsClicked="NEW_ON_ACC";
+        this.scope.uploadedfileinfonew.replace([]);
+        this.scope.uploadedfileinfo.replace([]);
+
         $('#newonAccountGrid, #newonAccountGridComps, #forminlineElements,#searchDiv').show();
         $('#onAccountBalanceDiv, #proposedonAccountDiv,#proposeOnAccountGridComps, #onAccountEditDeleteDiv').hide();
       },
       "#proposedonAccount click":function(el, ev){
         ev.preventDefault();
         this.scope.tabsClicked="PROPOSED_ON_ACC";
-         //var emptyDocuments =[];
-        //$('#proposeuploadFile').html(stache('<propose-rn-file-uploader isAnyFileLoaded="{isAnyFileLoaded}"></propose-rn-file-uploader>')({isAnyFileLoaded:false}));
+        this.scope.uploadedfileinfonew.replace([]);
+        this.scope.uploadedfileinfo.replace([]);
+
         $('#newonAccountGrid, #onAccountBalanceDiv, #forminlineElements,#searchDiv').hide();
         $('#proposedonAccountDiv,#proposeOnAccountGridComps, #onAccountEditDeleteDiv').show();
         disableProposedSubmitButton(true);
@@ -308,6 +316,18 @@ var page = Component.extend({
         if(paymentBundleName==undefined  ||  paymentBundleName==null || paymentBundleName ==""){
             paymentBundleName = self.scope.paymentBundleNameText;
         }
+         //Add code for sending selected documens on New onaccount propose
+          var uploadedfiles = $('rn-file-uploader-new').data('_d_uploadedFileInfo');
+
+          if(uploadedfiles != undefined){
+              for(var i =0; i < uploadedfiles.length; i++){
+                  var tempDocument = {};
+                  tempDocument.fileName = uploadedfiles[i].fileName;
+                  tempDocument.location = uploadedfiles[i].filePath;
+                  documents.push(tempDocument);
+              }
+          }
+
         var createrequest = utils.frameCreateRequest(self.scope.request,self.scope.onAccountRows,self.scope.documents,self.scope.usercommentsStore,self.scope.quarters,paymentBundleName,self.scope.paymentBundleName);
         if(createrequest.onAccount.onAccountDetails.length>0){
           var request = requestHelper.formRequestDetails(createrequest);
@@ -317,7 +337,9 @@ var page = Component.extend({
                 displayMessage(data["responseText"],true);
               $("#propose").attr("disabled","disabled");
               $("#paymentBundleNames").val('');
+
               self.scope.documents.replace([]);
+              self.scope.uploadedfileinfo.replace([]);
               var request = {};
               var rows = utils.frameRows(self.scope.attr('licensorCurrencies'),self.scope.quarters);
               request.rows=rows;
@@ -582,16 +604,23 @@ var page = Component.extend({
                     else
                       $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>');
 
+
                       var proposedDocs = data.onAccount.documents;
                       for(var k=0;k<proposedDocs.length;k++){
                         proposedDocs[k].isServer = true;
                       }
-                      self.scope.proposedOnAccDocuments.replace(proposedDocs);
+
+                    if(proposedDocs.length > 0){
+                        self.scope.uploadedfileinfo.replace(proposedDocs);
+                    } else {
+                        self.scope.uploadedfileinfo.replace([]);
+                    }
+
                     //$('#proposeuploadFile').html(stache('<propose-rn-file-uploader uploadedfileinfo={docs}></propose-rn-file-uploader>')({docs:data.documents})); 
 
                 }else{
                     $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
-                     self.scope.proposedOnAccDocuments.replace('');
+                     self.scope.uploadedfileinfo.replace([]);
                      $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj:[]}));
                      self.scope.attr('bundleNamesForDisplay','');
                 }
@@ -600,7 +629,7 @@ var page = Component.extend({
                 displayMessage(data["responseText"],false);
                 $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
                 $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj:[]}));
-                self.scope.proposedOnAccDocuments.replace('');
+                self.scope.uploadedfileinfo.replace([]);
                 self.scope.attr('bundleNamesForDisplay','');
             }
         }, function(xhr) {
