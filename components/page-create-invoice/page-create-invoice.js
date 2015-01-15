@@ -43,15 +43,22 @@ var mandatoryFieldCA = ["invoicenumber",  "invoicedate", "invoiceduedate", "rece
 var mandatoryField = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
 
 fileUpload.extend({
-  tag: 'rn-file-uploader',
+  tag: 'rn-file-uploader-create',
   scope: {
            fileList : new can.List(),
            uploadedfileinfo:[],
            isRequired:true
-         },
+    },
+    init: function(){
+        this.scope.attr('fileList').replace([]);
+    },
    events:{
+    "inserted": function(){
+        this.scope.attr('uploadedfileinfo').replace([]);
+        console.log('it is not');
+    },
    	"{uploadedfileinfo} change":function(){
-        $('rn-file-uploader').data('_d_uploadedFileInfo', this.scope.uploadedfileinfo);
+        $('rn-file-uploader-create').data('_d_uploadedFileInfo', this.scope.uploadedfileinfo);
    		this.scope.fileList.replace(this.scope.uploadedfileinfo);
    		}
    }
@@ -228,6 +235,7 @@ var page = Component.extend({
   events: {
     	"inserted": function(){
     		var self = this;
+            this.scope.uploadedfileinfo.replace([]);
 			this.scope.isRequired(); /*For breakdown required field*/
 			$('#invoiceform').on('init.form.bv', function(e, data) {
 			    data.bv.disableSubmitButtons(true);
@@ -849,11 +857,6 @@ var page = Component.extend({
 			self.scope.createBreakline(self.scope.attr("rowindex"));
 		},
 
-		'rn-file-uploader onSelected': function (ele, event, val) {
-//            var self = this;
-//            self.scope.attr('uploadedfileinfo',val.filePropeties);
-         },
-
 		"#invoiceform #paymentBundleNames change": function(){
 	          var self = this;
 	          var pbval = $("#invoiceform #paymentBundleNames").val();
@@ -976,7 +979,7 @@ var page = Component.extend({
 //				   			tempInvoiceData["invoiceDocuments"].push(tempDocument);
 //				   		}
 
-                      var uploadedfiles = $('rn-file-uploader').data('_d_uploadedFileInfo');
+                      var uploadedfiles = $('rn-file-uploader-create').data('_d_uploadedFileInfo');
 
                       if(uploadedfiles != undefined){
                       	for(var i =0; i < uploadedfiles.length; i++){
@@ -1203,9 +1206,11 @@ var page = Component.extend({
 							}
 						},
 					  	init: function(){
-					   	 	var self = this;
-					   	 	var i = 1;
+					   	  var self = this;
+					   	  var i = 1;
 					      this.scope.appstate.attr("renderGlobalSearch",false);
+                          self.scope.attr('uploadedfileinfo').replace([]);
+
 
 					   	 	var genObj = {};
 					   	 	Promise.all([
@@ -1357,7 +1362,7 @@ var page = Component.extend({
           function validateMandatory(){
             var errObj={isFailed:false,errorMsgs:[]};
             //Upload file Validation
-            var uploadedfiles = $('rn-file-uploader').data('_d_uploadedFileInfo');
+            var uploadedfiles = $('rn-file-uploader-create').data('_d_uploadedFileInfo');
             if(uploadedfiles == undefined || uploadedfiles.length == 0){
               errObj.isFailed=true;
               errObj.errorMsgs.push('Please attach atleast one supporting document');

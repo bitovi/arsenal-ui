@@ -77,14 +77,16 @@ fileUpload.extend({
         uploadedfileinfo:[],
         deletedFileInfo:[]
     },
+    init: function(){
+        console.log('testinggggg');
+        this.scope.attr('uploadedfileinfo').replace([]);
+        this.scope.attr('fileList').replace([]);
+    },
     events:{
         "{uploadedfileinfo} change":function () {
             // update areFilesToBeUploaded boolean
             //Handling this using data as scope is not accessible from page-edit -invoice.
             $('rn-file-uploader-icsv-sum').data('_d_uploadedFileInfo', this.scope.uploadedfileinfo);
-            // check if all files in uploadedfileinfo have a isServer flag
-            // then replace fileList with uploadedfileinfo
-            // this is the initial fileList setup
             this.scope.fileList.replace(this.scope.uploadedfileinfo);
         },
         "{deletedFileInfo} change":function () {
@@ -126,7 +128,7 @@ var page = Component.extend({
 
     },
     init:function(){
-       this.scope.appstate.attr("renderGlobalSearch",false);
+      this.scope.appstate.attr("renderGlobalSearch",false);
       var self = this;
       self.scope.uploadedfileinfo.replace([]);
       icsvmap.removeAttr("invoiceData");
@@ -137,7 +139,7 @@ var page = Component.extend({
    events:{
       "inserted":function(){
        var self = this;
-
+       this.scope.appstate.attr("renderGlobalSearch",false);
        icsvmap.delegate("invoiceData","change", function(ev, newVal){
             //console.log(icsvmap.attr("invoiceData"));
             if(icsvmap.attr("invoiceData"))
