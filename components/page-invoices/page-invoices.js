@@ -239,6 +239,7 @@ var page = Component.extend({
         ],
         {
             theme: "facebook",
+            placeholder:"Search...",
             preventDuplicates: true,
             onResult: function (item) {
               //alert(item);
