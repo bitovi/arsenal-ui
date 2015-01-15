@@ -245,7 +245,7 @@ var PaymentBundle = Model.extend({
           // only update these if validation is done
           if(validationResponse.paymentBundle.vldtnStatus === 5) {
             if(group.invoiceId != undefined){
-              var target = _.find(bundle.bundleDetailsGroup, {invoiceId: group.invoiceId});
+              var target = _.find(bundle.bundleDetailsGroup, {key: group.key});
               if(target != undefined ){
                 group.vldtnMessage == undefined ? target.attr('validationMessages', "") : target.attr('validationMessages', group.vldtnMessage);
                 group.vldtnBatchResultColor == undefined ? target.attr('validationColor', "") : target.attr('validationColor', group.vldtnBatchResultColor);
