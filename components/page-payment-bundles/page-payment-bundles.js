@@ -23,7 +23,8 @@ var pageState = new Map({
   bundles: new PaymentBundle.List([]),
   selectedBundle: null,
   verboseGrid: true,
-  resetSelection: true
+  isPaginateReq: false,//triggers the paginate Event from bundle-grid.js
+  recordsAvailable:undefined
 });
 
 var page = Component.extend({
@@ -32,47 +33,64 @@ var page = Component.extend({
   scope: {
     appstate: null, // will be passed in
     pageState: pageState,
-    isPageSearch: undefined,
-    pbOffset: 0,
-    pbDetailOffset: 0,
-    pbLimit: 10,
-    tableScrollTop: 0,
-    sortColumns:[],
-    sortDirection: "asc",
+    isPageSearch: undefined,//To controll Gloable search
+    paginateAttr:{
+      offset: 0,
+      sortBy: [],
+      sortDirection: "asc"
+    },
     refreshBundles: _.debounce(function() {
       var self=this;
-      if(this.scope.isPageSearch != this.scope.appstate.globalSearch) {
+
+
+      if(pageState.attr("isPaginateReq")){
+
+        this.scope.paginateAttr.attr('offset',  this.scope.paginateAttr.attr('offset')+1);
 
         this.scope.appstate.attr('excelOutput',false);
-        this.scope.appstate.attr('offset',this.scope.attr('pbOffset'));
-        this.scope.appstate.attr('limit',this.scope.attr('pbLimit'));
-        this.scope.appstate.attr('sortCol',this.scope.attr('sortColumns'));
-        this.scope.appstate.attr('sortDir',this.scope.attr('sortDirection'));
 
-        resetGrids(pageState);
-
-        this.scope.isPageSearch  = this.scope.appstate.globalSearch;
-         PaymentBundle.findAll({appstate: this.scope.appstate}).then(function(bundles) {
+        PaymentBundle.loadAll({appstate: this.scope.appstate, paginate: this.scope.paginateAttr}).done(function(data) {
           can.batch.start();
-          pageState.bundles.splice(0, pageState.bundles.length);
-          pageState.bundles.replace(bundles);
-          // if(self.scope.appstate.attr('offset')==0)
-          //  pageState.bundles.replace(bundles);
-          // else{
-          //   $.merge(pageState.bundles, bundles);
-          //   pageState.bundles.replace(pageState.bundles);
-          // }
+
+          $.merge(pageState.bundles, data.paymentBundles);
+
+          pageState.bundles.replace(pageState.bundles);
+
+          pageState.attr("recordsAvailable",data.recordsAvailable);
+
           can.batch.stop();
-        }, function(err){
-          console.log(err);
         });
-      }else {
-        if(!this.scope.appstate.excelOutput){
 
-            resetGrids(pageState);
+        pageState.attr("isPaginateReq",false);
 
-          }
-    }
+
+
+      }else{
+        if(this.scope.isPageSearch != this.scope.appstate.globalSearch) {
+
+          this.scope.appstate.attr('excelOutput',false);
+          this.scope.paginateAttr.attr('offset',  0);
+
+          resetGrids(pageState);
+
+          this.scope.isPageSearch  = this.scope.appstate.globalSearch;
+          PaymentBundle.loadAll ({appstate: this.scope.appstate,paginate: this.scope.paginateAttr}).done(function(data) {
+            can.batch.start();
+            pageState.bundles.splice(0, pageState.bundles.length);
+            pageState.bundles.replace(data.paymentBundles);
+            pageState.attr("recordsAvailable",data.recordsAvailable);
+            can.batch.stop();
+          });
+        }
+        // else {
+        //   if(!this.scope.appstate.excelOutput){
+        //
+        //     resetGrids(pageState);
+        //
+        //   }
+        // }
+      }
+
     }, 200)
   },
   helpers: {
@@ -93,10 +111,11 @@ var page = Component.extend({
     },
     '{scope} change': function(scope, ev, attr) {
       var self=this;
-      if(self.scope.appstate.attr('globalSearchButtonClicked')==true){
-        self.scope.attr("pbOffset",0);
-        self.scope.attr("tableScrollTop",0);
+    
+      if(self.scope.pageState.attr("isPaginateReq")){
+        this.scope.refreshBundles.apply(this);
       }
+
       if(attr.substr(0, 8) === 'appstate') {
         this.scope.refreshBundles.apply(this);
       }
