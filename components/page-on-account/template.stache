@@ -88,7 +88,7 @@
 			       	<div class="col-lg-12 marginTop-10 lightestGrey" id='newonAccountGridComps'>
 
 			       		<div class="col-lg-6" id="uploadFile">
-								<div class="col-sm-6 file-component-div">
+								<div class="col-sm-6 file-component-onacc-div">
 									<rn-file-uploader uploadedfileinfo="{documents}" deletedFileInfo="{deletedFileInfo}"></rn-file-uploader>
 								</div>
 								</div>
@@ -134,9 +134,9 @@
 		   		<div class="col-lg-12 marginTop-10 lightestGrey" id='proposeOnAccountGridComps'>
 
 		       		<div class="col-lg-6" id="proposeuploadFile">
-							<div class="col-sm-6 file-component-div">
+							<div class="col-sm-6 file-component-onacc-div">
 								<propose-rn-file-uploader uploadedfileinfo="{proposedOnAccDocuments}" deletedFileInfo="{deletedFileInfo}"></propose-rn-file-uploader>
-		       		<div class="col-sm-6 file-component-div">
+							</div>
 							</div>
 
 		       		<div class="col-lg-6 marginTop-10">
