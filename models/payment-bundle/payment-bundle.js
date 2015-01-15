@@ -218,7 +218,7 @@ var PaymentBundle = Model.extend({
      return self;
     });
   },
-  getValidations: function(view, offset, limit) {
+  getValidations: function(view) {
     var bundle = this;
 
     return $.ajax({
@@ -227,9 +227,7 @@ var PaymentBundle = Model.extend({
       data: {
         paymentBundle: {
           bundleId: bundle.bundleId,
-          view: view.toUpperCase(),
-          offset: offset,
-          limit: limit
+          view: view.toUpperCase()
         }
       },
       processData: false
