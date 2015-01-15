@@ -478,6 +478,7 @@ var page = Component.extend({
                           tempDocument.docId = deletedFiles[i].docId;
                           tempDocument.status = "delete";
                           tempDocument.id = deletedFiles[i].id;
+                          tempDocument.inboundFileId=deletedFiles[i].fileId;
                           proposedDocs.push(tempDocument);
                           //console.log(tempDocument);
                       }

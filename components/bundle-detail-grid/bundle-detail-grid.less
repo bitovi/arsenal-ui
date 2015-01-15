@@ -2,25 +2,11 @@
 
 rn-bundle-detail-grid {
   .grid-mixin();
-  table {
-    /* You have to specify widths */
-    width: 100%;
-    tr>th, tr > td {
-      width:2%;
-    }
 
-    thead, tbody, tfoot {
-      display: block;
-    }
-    tbody {
-      max-height: 5em;
-      overflow-y: overlay;
-      overflow-x: hidden;
-    }
-    th, td {
-      white-space: nowrap;
-    }
+  tbody {
+    height: 10em;
   }
+
   th.validations, td.validations {
     text-align: center;
 

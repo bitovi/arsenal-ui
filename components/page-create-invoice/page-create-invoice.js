@@ -55,12 +55,11 @@ fileUpload.extend({
    events:{
     "inserted": function(){
         this.scope.attr('uploadedfileinfo').replace([]);
-        console.log('it is not');
     },
    	"{uploadedfileinfo} change":function(){
         $('rn-file-uploader-create').data('_d_uploadedFileInfo', this.scope.uploadedfileinfo);
    		this.scope.fileList.replace(this.scope.uploadedfileinfo);
-   		}
+     }
    }
 });
 
@@ -1273,7 +1272,7 @@ var page = Component.extend({
 										return CurrencyFormat(grossTotal);
 								  	},
 								  	setHeight: function(){
-								  	 	var vph = $(window).height()-180;
+								  	 	var vph = $(window).height()-90;
 								  	 	return 'Style="height:'+vph+'px"';
 									},
 									setMinHeightBreak: function(){

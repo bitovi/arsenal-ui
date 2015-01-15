@@ -1,18 +1,18 @@
-	{{#if showLoadingImage}}
+{{#if showLoadingImage}}
 		<div class='page_loader'>&nbsp;</div>
 	{{/if}}
 	<copy-clipboard> {{values}}</copy-clipboard>
 	<div class='errorOnAccount'> {{errorMessage}}</div>
 	<div id="messageDiv" class="col-md-12" style="position: absolute;text-align:center;padding-top:5px;"></div>
 	<div class="col-lg-12 pageTitle">
-		   <div class="col-md-3"><h3>On Account </h3></div> 
-	
+		   <div class="col-md-3"><h3>On Account </h3></div>
+
 		<!--
 	   	<div class="col-md-9">
 	   		<div class="form-inline row" id="forminlineElements">
 		    	<div class="col-md-10 marginTop-10">
 		    		   	<div class="pull-right">
-					    	
+
 					    	<span class="pull-inline">Previous Quarter: </span>
 					    	<div id="calendarclsdiv" class="calendarcls pull-inline">
 					            <input type='text' id="copyQuarter" class="form-control  updateperoid "/>
@@ -66,7 +66,7 @@
 
 		   	<li class="pull-right marginTop-10 customLI">
 		   		<div id="forminlineElements">
-			    		    	
+
 			    	<span class="pull-inline">Previous Quarter: </span>
 			    	<div id="calendarclsdiv" class="calendarcls pull-inline">
 			            <input type='text' id="copyQuarter" class="form-control  updateperoid "/>
@@ -80,17 +80,19 @@
 		</ul>
 		<!-- Tab Contents -->
 		<div id="myTabContent" class="tab-content">
-		   
+
 		   	<!-- New On Account -->
 		   	<div class="tab-pane fade in active" id="NewonAccountDiv">
 		   		<div id="newonAccountGrid"><div id="loading_img"></div></div>
-		   		
+
 			       	<div class="col-lg-12 marginTop-10 lightestGrey" id='newonAccountGridComps'>
-			       		
+
 			       		<div class="col-lg-6" id="uploadFile">
-								<rn-file-uploader-new uploadedfileinfonew="{uploadedfileinfo}"></rn-file-uploader-new>
-			       		</div>
-			       		
+								<div class="col-sm-6 file-component-onacc-div">
+									<rn-file-uploader-new uploadedfileinfonew="{uploadedfileinfo}"></rn-file-uploader-new>
+								</div>
+								</div>
+
 			       		<div class="col-lg-6 marginTop-10">
 								<!-- <label class="text-right" for="inputCountry">Bundle Name:</label> -->
 								<span class="pull-inline col-sm-2" >Bundle Name:</span>
@@ -98,24 +100,24 @@
 	                				<span class="pull-inline col-sm-10 "><create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}"></create-pb></span>
 						        <!-- </div> -->
 			       		</div>
-			       		
+
 			       		<div class="col-lg-6 marginTop-10">
-			       			<span class="col-sm-2 pull-inline">User Comments: 
+			       			<span class="col-sm-2 pull-inline">User Comments:
 			       				<!-- <label for="inputEmail3" class="control-label text-right">User Comments: </label> -->
 			       			</span>
-			       			
+
 			       		 	<span class="col-sm-10 pull-inline">
 			       		 		<textarea class="form-control" name="usercomments" id="usercomments" maxlength="1024"  can-value="usercommentsStore" style="resize:none; width:100%;"></textarea>
-								<img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "usercomments-err" style="display:none;"> 
+								<img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "usercomments-err" style="display:none;">
 			       		 	</span>
-			       		 	
+
 			       		 	<div class="col-sm-12">
 								<button type="button" id="propose" class="btn btn-primary buttonSubmit btn-custom-small pull-right">Propose</button>
 							</div>
 						</div>
 					</div>
 		   	</div>
-		  
+
 		  	<!-- On Account Balance -->
 		   	<div class="tab-pane fade" id = "onAccountBalanceDiv">
 		   		<div id="onAccountBalanceGrid"><div id="loading_img"></div></div>
@@ -123,33 +125,35 @@
 
 			<!-- Propose On Account -->
 			<div class="tab-pane fade" id="proposedonAccountDiv">
-				
-				
+
+
 		   		<div id="proposedOnAccountGrid">
 					<div id="loading_img"></div>
 		   		</div>
 
 		   		<div class="col-lg-12 marginTop-10 lightestGrey" id='proposeOnAccountGridComps'>
-			       		
+
 		       		<div class="col-lg-6" id="proposeuploadFile">
-							<propose-rn-file-uploader uploadedfileinfo="{uploadedfileinfo}" deletedFileInfo="{deletedFileInfo}"></propose-rn-file-uploader>
-		       		</div>
+							<div class="col-sm-6 file-component-onacc-div">
+								<propose-rn-file-uploader uploadedfileinfo="{uploadedfileinfo}" deletedFileInfo="{deletedFileInfo}"></propose-rn-file-uploader>
+							</div>
+							</div>
 
 		       		<div class="col-lg-6 marginTop-10">
 		       			<span class="col-sm-2">
-		       				User Comments: 
+		       				User Comments:
 		       			</span>
-		       			
+
 		       		 	<span class="col-sm-9 pull-inline">
 		       		 		<div id="multipleComments" class="col-sm-9 normalBar">
 			                    <textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;min-height:100px;max-height:100px;resize:none;"></textarea>
 			                 </div>
-							
+
 		       		 	</span>
 		       		 	<span class="col-sm-1 pull-inline">
-		       		 		<img src="resources/images/alert.png" class="field-invalid" id = "usercomments-err" style="display:none;"> 
+		       		 		<img src="resources/images/alert.png" class="field-invalid" id = "usercomments-err" style="display:none;">
 		       		 	</span>
-		       		 	
+
 		       		 	<div class="col-sm-12  marginTop-10 fontvalue">
 		       		 		<div class="col-sm-2 pull-inline">Payment Bundle:
 		       				</div>
@@ -157,20 +161,17 @@
 		       				<div class="col-sm-10 pull-inline"><div class="bundleDisplay">{{bundleNamesForDisplay}}</div>
 		       				</div>
 
-						</div>	
-						<div class="col-sm-11 pull-inline"> 
+						</div>
+						<div class="col-sm-11 pull-inline">
 	       					<button type="button" id="submitPOA" class="btn btn-primary buttonSubmit btn-custom-small pull-right">Submit</button>
 	       				</div>
-							
-						
+
+
 					</div>
 
 				</div>
 
 		   	</div>
 		</div>
-	</div>    
+	</div>
 </div>
-
-
-	
