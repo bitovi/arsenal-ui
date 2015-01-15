@@ -1,5 +1,5 @@
-<div>
-{{#if isRequired}}
+<div style="width:100%">
+{{#if required}}
   <div class="requiredContainer">
 {{/if}}
 <div class="outer">
@@ -52,7 +52,7 @@
     {{/if}}
 
 </div>
-{{#if isRequired}}
+{{#if required}}
   </div>
 {{/if}}
 </div>

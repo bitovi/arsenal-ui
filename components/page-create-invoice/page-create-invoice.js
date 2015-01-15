@@ -46,14 +46,14 @@ fileUpload.extend({
   tag: 'rn-file-uploader',
   scope: {
            fileList : new can.List(),
-           uploadedfileinfo:[],
-           isRequired:true
+           uploadedfileinfo:[]
          },
+
    events:{
    	"{uploadedfileinfo} change":function(){
         $('rn-file-uploader').data('_d_uploadedFileInfo', this.scope.uploadedfileinfo);
    		this.scope.fileList.replace(this.scope.uploadedfileinfo);
-   		}
+     }
    }
 });
 
