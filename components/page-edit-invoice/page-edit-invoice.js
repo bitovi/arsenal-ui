@@ -1195,8 +1195,9 @@ var page = Component.extend({
                                 tempDocument.docId = deletedFiles[i].docId;
                                 tempDocument.status = "delete";
                                 tempDocument.id = deletedFiles[i].id;
+                                tempDocument.inboundFileId=deletedFiles[i].fileId;
                                 tempEditInvoiceData["invoiceDocuments"].push(tempDocument);
-                                console.log(tempDocument);
+                                //console.log(tempDocument);
                             }
                         }
                     }
@@ -1269,8 +1270,8 @@ var page = Component.extend({
 												}
 
                                             // reset data for uploaded fileinfo
-                                            this.scope.uploadedfileinfo.replace([]);
-                                            this.scope.deletedFileInfo.replace([]);
+                                            self.scope.uploadedfileinfo.replace([]);
+                                            self.scope.deletedFileInfo.replace([]);
 										}
 							          	else
 							          	{
