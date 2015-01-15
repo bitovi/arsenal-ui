@@ -82,22 +82,22 @@ var BundleGrid = ScrollingGrid.extend({
   },
   events: {
     'inserted': function(el, ev) {
-      // Call super - you should do this if you extend this grid.
-      // if(_.isFunction(Grid.prototype.events['inserted'])) {
-      //   ScrollingGrid.prototype.events['inserted'].apply(this.arguments);
-      // }
 
       // we have to do this manually because scroll does not bubble
       // normally, you should not attach event handlers this way!
       var component = this;
       var tbody = this.element.find('tbody');
       var doneCallback = function() {
-        //In - Progress 
+
+        console.log(" Records Availble to sort:  "+component.scope.pageState.recordsAvailable);
+        //recordsAvailable is to know, if there is next set records available, if yes, invoke
+        if(component.scope.pageState.recordsAvailable){
+          component.scope.pageState.attr("isPaginateReq",true);
+        }
         component.scope.attr('atBottom', false);
       };
-
       $(tbody).on('scroll', function(ev) {
-        if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight) {
+        if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight - 100 ) {
           // we are at the bottom
           component.scope.attr('atBottom', true);
           component.scope.atBottomHandler.call(component, doneCallback);

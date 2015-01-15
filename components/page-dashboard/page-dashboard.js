@@ -69,7 +69,7 @@ var page = Component.extend({
   events: {
     init: function() {
       this.scope.appstate.attr('renderGlobalSearch', true);
-      this.scope.attr('selectedTab', this.scope.tabs[2]);
+      this.scope.attr('selectedTab', this.scope.tabs[0]);
     }
   }
 });

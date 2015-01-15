@@ -4,14 +4,15 @@ import can from 'can/';
 import can_define from 'can/map/define/'
 import URLs from 'utils/urls';
 import requestHelper from 'utils/request/';
+import constants from 'utils/constants';
 
 import PaymentBundleDetailGroup from './payment-bundle-detail-group';
 
 var PaymentBundle = Model.extend({
   id: 'bundleId',
-  parseModels: function(data, xhr) {
-     return (typeof (data.exportExcelFileInfo)!="object") ? data.paymentBundles:data;
-  },
+  // parseModels: function(data, xhr) {
+  //    return (typeof (data.exportExcelFileInfo)!="object") ? data:data;
+  // },
   // parseModel: function(data, xhr) { //console.log(data);
   //   var temp='';
   //    if(data.hasOwnProperty('responseCode') && typeof (data.exportExcelFileInfo)!="object") temp=data.paymentBundle;
@@ -54,18 +55,21 @@ var PaymentBundle = Model.extend({
    * @option periodType {String} ex. "P"
    * @option period {String} ex. "201303"
    */
-  findAll: function(params) {
+    loadAll: function(params) {
     var appstate = params.appstate;
     var data = {}
 
     var excelOutput = appstate.attr('excelOutput') != undefined ? appstate.attr('excelOutput') : false;
      data = {
-          bundleSearch: requestHelper.formGlobalRequest(appstate).searchRequest,
+        bundleSearch:requestHelper.formGlobalRequest(appstate).searchRequest
       };
-      data["bundleSearch"]["offset"] = appstate.attr("offset");
-      data["bundleSearch"]["limit"] = appstate.attr("limit");
-      data["bundleSearch"]["sortBy"] = appstate.sortCol.attr().toString();
-      data["bundleSearch"]["sortOrder"] = appstate.attr("sortDir");
+
+      data.bundleSearch["offset"] = params.paginate.offset;
+      data.bundleSearch["sortBy"] =  params.paginate.sortBy.attr().toString()
+      data.bundleSearch["limit"] = constants.PAGINATE_LIMIT;
+      data.bundleSearch["sortOrder"] = params.paginate.sortDirection;
+
+
      if(excelOutput!=false){
         data["excelOutput"]=true
      }

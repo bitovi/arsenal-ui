@@ -28,7 +28,6 @@ var ScrollingGrid = Grid.extend({
       var component = this;
       var tbody = this.element.find('tbody');
       var doneCallback = function() {
-        console.log(" I am here ");
         component.scope.attr('atBottom', false);
       };
 
