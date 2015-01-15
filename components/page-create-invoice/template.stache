@@ -351,83 +351,67 @@
 				</div>
 				</div>
 
+        <div>
+          <div class="col-sm-9 totalbox" style="padding-top:8px;">
+            <label class="control-label">Gross Total: </label>
+          </div>
+          <div class="col-sm-3 totalboxlabel" style="padding-top:8px;">{{netTotal}}</div>
+       </div>
+       <div>
+         <div class="col-sm-9 totalbox">
+           <label  class="control-label">Tax:</label>
+         </div>
+         <div class="col-sm-3 totalboxlabel">
+           <input type="text" name="taxAmount" id="taxAmount" class="form-control taxAmount" can-value="tax" >
+           <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "taxAmount-err" style="display:none">
+         </div>
+       </div>
+       <div>
+         <div class="col-sm-9 totalbox">
+           <label class="control-label">Tax %:</label>
+         </div>
+         <div class="col-sm-3 totalboxlabel">{{calculateTaxPercent}}</div>
+       </div>
 
-				   <div class="col-sm-12" style="height:20px;"></div>
-				   <div style="text-align:right">
-						   <div class="col-sm-9"><label class="control-label">Gross Total: </label></div>
-						   <div class="col-sm-3 total-amount">{{netTotal}}</div>
-
-						 	<!--<div class="col-sm-9"></div>
-						   <div class="col-sm-3 form-group tax-amount"></div>-->
-
-
-							  <div class="col-sm-6" >
-							  </div>
-
-							  <div class="col-sm-6 ">
-							    <label  class="col-sm-6 control-label">Tax:</label>
-							    <div class="col-sm-6 tax-amount" style="padding-left:2px;">
-							       <input type="text" name="taxAmount" id="taxAmount" class="form-control taxAmount" can-value="tax" >
-							      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "taxAmount-err" style="display:none;">
-							    </div>
-						    </div>
-
-
-
-						   <div class="col-sm-9"><label class="control-label">Tax %:</label></div>
-						   <div class="col-sm-3 taxpercent">{{calculateTaxPercent}}</div>
-
-						<div class="col-sm-12 invoice-total-container">
-						   <div class="col-sm-6"></div>
-						   <div class="col-sm-6 large-value">
-						   	<label class="control-label large-value invtotal-head">Invoice Total:</label>
-						   			<label class="invtotal-value">{{grossTotal}}</label>
-							<label class="control-label inv-total">{{currencyStore}}</label><!--Currency -->
-							</div>
-							<div class="col-sm-3 col-sm-offset-9">
-							   {{#if totalAmountVal}}
-							   		{{#if usdFxrateRatio}}
-							   			<label class="control-label">{{calculateUSD}} USD</label>
-							   		{{/if}}
-							   {{/if}}
-						    </div>
-						 </div>
-					    </div>
+			 <div style="text-align:right">
+         <div class="col-sm-12 invoice-total-container">
+			       <div class="col-sm-12" style="text-align:right">
+					   	       <label class="control-label invtotal-head">Invoice Total:</label>
+					   			   <label class="invtotal-value">{{grossTotal}}</label>
+						         <label class="control-label inv-total">{{currencyStore}}</label><!--Currency -->
+						</div>
+						<div class="col-sm-12">
+						   {{#if totalAmountVal}}
+						   		{{#if usdFxrateRatio}}
+						   			<label class="control-label">{{calculateUSD}} USD</label>
+						   		{{/if}}
+						   {{/if}}
+					  </div>
+			   </div>
+			</div>
 
 
-					    <div class="col-sm-12" style="text-align:right;padding:15px;"></div>
-
-						 {{#if showPBR}}
-						 		{{#if regionStore}}
-									<label class="col-sm-2 bundelTitle" for="inputCountry">Bundle Name:</label>
-					        			<div class="col-sm-5">
-						        			<create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}"></create-pb>
-										</div>
-				            	{{else}}
-				            		<div class="col-sm-6"></div>
-				            	{{/if}}
-					       {{else}}
-					        <label class="col-sm-2" for="inputCountry"></label>
-					        <div class="col-sm-4 ">
-
-					        </div>
-
-					       {{/if}}
-						<!--
-					       <div class="col-sm-2 ">
-					       <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
-					       </div>
-					       <div class="col-sm-1"></div>
-					       <div class="col-sm-2 ">
-					       <button id="addInvSubmit" type="submit"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>
-					       </div>
-					    -->
-
-					    <div class="col-sm-12" style="padding:15px;">
+					 <div class="col-sm-12" style="text-align:right;padding-right:0px">
+             <div class="submit-button-style">
+              {{#if showPBR}}
+              {{#if regionStore}}
+                <label class="col-sm-4 bundelTitle" for="inputCountry" style="padding-left:0px;width:30%">Bundle Name:</label>
+                 <div class="col-sm-5" style="width:70%">
+                   <create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}"></create-pb>
+                 </div>
+                 {{else}}
+                 <div class="submit-button-style"></div>
+               {{/if}}
+              {{else}}
+                <label class="col-sm-4 bundelTitle" for="inputCountry" style="padding-left:0px;width:30%">Bundle Name:</label>
+                <div class="col-sm-5" style="width:70%"></div>
+              {{/if}}
+            </div>
+             <div class="col-sm-12" style="padding:15px;width:50%">
 							<button id="addInvSubmit" type="submit"  class="btn btn-primary addInvSubmit btn-custom-big pull-right marginLeft20">Submit</button>
 							<button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled pull-right" id="buttonCancel">Cancel</button>
 						</div>
-
+          </div>
 		</div>
 
 
