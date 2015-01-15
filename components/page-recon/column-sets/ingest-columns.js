@@ -57,7 +57,7 @@ export default [
     title: 'Pub Fee',
     className: "amountColumn",
     contents: function(row) {
-      return formats.currencyFormat(row.pubfee == undefined || row.pubfee == null || row.pubfee == "" ? 0 :  row.pubfee);
+      return formats.currencyFormat(row.pubFee == undefined || row.pubFee == null || row.pubFee == "" ? 0 :  row.pubFee);
     },
     sortable: true
   },
