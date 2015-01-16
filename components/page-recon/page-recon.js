@@ -513,7 +513,7 @@ var fetchReconIngest = function(scope, load){
           scope.ingestList.headerRows.replace(scope.ingestList.headerRows);
         }
 
-        scope.reconStatsDetailsSelected = data.reconStatsDetails
+        scope.reconStatsDetailsSelected = data.reconStatsDetails;
 
         scope.currencyScope.replace(data.currency);
 

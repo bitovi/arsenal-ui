@@ -358,58 +358,15 @@ var page = Component.extend({
         }
       },
       "#proposedDelete click":function(el,ev){
-        var self = this;
-        disableEditORDeleteButtons(true);
-        var req = this.scope.request;
-        var quarters = this.scope.attr('quarters');
-        req.quarters=quarters;
-        var deletableRows = [];
-        var rows = this.scope.proposedOnAccountData.rows;
-        var footerrows = this.scope.proposedOnAccountData.footerrows;
-        // console.log('checking');
-        // console.log(rows);
-        var type = 'DELETE';
-        if(rows != undefined && rows.length >0){
-            for(var i=0;i < rows.length;i++){
-                  if(rows[i].__isChecked != undefined && rows[i].__isChecked){
-                    deletableRows.push(rows[i]);
-                    //rows.splice(i,1);
-                    //i=i-1;
-                  }
-                }
-
-         }
-          var request = utils.frameDeleteRequest(deletableRows,null,quarters);
-          proposedOnAccount.update(requestHelper.formRequestDetails(request),"DELETE",function(data){
-          //console.log("Delete response is "+JSON.stringify(data));
-          if(data["status"]=="SUCCESS"){
-              displayMessage(data["responseText"],true);
-              //req.attr('deletableRows',rows);
-              //$('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
-               self.scope.attr('loadProposedONAccountPage',Date.now());
-               self.scope.appstate.attr('globalSearchButtonClicked',true);
-              self.scope.previouslyFetchOnAccRows.replace([]);
-          }
-          else{
-            // var details = data.onAccount.onAccountDetails;
-            // if(data.onAccount.onAccountDetails != undefined && data.onAccount.onAccountDetails.length >0){
-            //    for(var i=0;i<details.length;i++){
-            //    var toBeAdded = utils.getRow(deletableRows,details[i].id);
-            //    if(toBeAdded !=null){
-            //     rows.push(toBeAdded);
-            //    }
-            //   }
-              req.attr('deletableRows',rows);
-              req.attr('footerrows',footerrows);
-              $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
-            //}
-            displayMessage(data["responseText"],false);
-          }
-
-          },function(xhr){
-            console.error("Error while Deleting: onAccount Details"+xhr);
+          $('#rejectModal').modal({
+              "backdrop" : "static"
           });
+
       },
+      '.btn-confirm-ok click': function(){
+          $('#rejectModal').modal('hide');
+          processDeleteOnAccount(this.scope,"delete");
+        },
       "#proposedEdit click":function(el,ev){
           $('#submitPOA').removeAttr("disabled");
           var req = this.scope.request;
@@ -709,6 +666,49 @@ var page = Component.extend({
       }
 });
 
+var processDeleteOnAccount  = function(scope,requestType)
+{
+    var self = scope;
+    disableEditORDeleteButtons(true);
+    var req = self.request;
+    var quarters = self.attr('quarters');
+    req.quarters=quarters;
+    var deletableRows = [];
+    var rows = self.proposedOnAccountData.rows;
+    var footerrows = self.proposedOnAccountData.footerrows;
+
+    var type = 'DELETE';
+    if(rows != undefined && rows.length >0){
+        for(var i=0;i < rows.length;i++){
+            if(rows[i].__isChecked != undefined && rows[i].__isChecked){
+                deletableRows.push(rows[i]);
+                //rows.splice(i,1);
+                //i=i-1;
+            }
+        }
+    }
+    var request = utils.frameDeleteRequest(deletableRows,null,quarters);
+    console.log("request ",request);
+    proposedOnAccount.update(requestHelper.formRequestDetails(request),"DELETE",function(data){
+        //console.log("Delete response is "+JSON.stringify(data));
+        if(data["status"]=="SUCCESS"){
+            displayMessage(data["responseText"],true);
+            self.attr('loadProposedONAccountPage',Date.now());
+            self.appstate.attr('globalSearchButtonClicked',true);
+            self.previouslyFetchOnAccRows.replace([]);
+        }
+        else{
+            req.attr('deletableRows',rows);
+            req.attr('footerrows',footerrows);
+            $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
+            displayMessage(data["responseText"],false);
+        }
+    },function(xhr){
+        console.error("Error while Deleting: onAccount Details"+xhr);
+    });
+}
+
+
 var frameRequest = function(appstate){
       var onAccountrequest = {};
       var periodFrom = appstate.attr('periodFrom');
@@ -892,6 +892,7 @@ var validateFilters=function(appstate,validateQuarter,validateStoreType,validate
      
      return "";
   }
-   
+
+
 }
 export default page;
