@@ -774,6 +774,8 @@ var page = Component.extend({
 			     ]).then(function(values) {
 		     			//console.log(values[0]);
 		     			self.scope.attr("licensor").replace([]);
+		     			self.scope.attr("currency").replace([]);
+		     			self.scope.attr("country").replace([]);
 			    		self.scope.attr("licensor").replace(values[0]["entities"]);
 			    		if(self.scope.editpage){
 				    		var invoiceData = self.scope.attr().invoiceContainer[0];
@@ -800,6 +802,7 @@ var page = Component.extend({
 			Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
 			     ]).then(function(values) {
 			     	self.scope.attr("currency").replace([]);
+			     	self.scope.attr("country").replace([]);
 				    self.scope.attr("currency").replace(values[0]);
 				    if(self.scope.editpage){
 					    var invoiceData = self.scope.attr().invoiceContainer[0];
