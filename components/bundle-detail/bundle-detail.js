@@ -240,7 +240,7 @@ var BundleDetailTabs = Component.extend({
     },
     canProceed: function() {
       this.attr('paymentType'); this.attr('approvalComment');
-      return this.havePaymentTypeAndComment(this) ? 'action' : '';
+      return this.havePaymentTypeAndComment(this) ? '' : 'disabled';
     }
   },
   events: {
@@ -338,7 +338,7 @@ var BundleDetailTabs = Component.extend({
     '.verbose-toggle click': function(el, ev) {
       this.scope.pageState.attr('verboseGrid', !this.scope.pageState.verboseGrid);
     },
-    '.approval-comment .buttons .action click': function(el, ev) {
+    '.approval-comment .btn click': function(el, ev) {
       var action = el.data('action'),
       selectedBundle = this.scope.pageState.selectedBundle,
       pageState = this.scope.pageState;

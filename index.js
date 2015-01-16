@@ -21,7 +21,6 @@ import requestHelper from 'utils/request/';
 
 // App
 import index_template from 'index.stache!';
-import less_common from 'common.less!';
 import less_index from 'index.less!';
 import token from 'models/common/token/';
 // Fixtures?

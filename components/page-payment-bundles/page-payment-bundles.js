@@ -111,7 +111,7 @@ var page = Component.extend({
     },
     '{scope} change': function(scope, ev, attr) {
       var self=this;
-    
+
       if(self.scope.pageState.attr("isPaginateReq")){
         this.scope.refreshBundles.apply(this);
       }
