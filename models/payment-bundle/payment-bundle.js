@@ -63,11 +63,12 @@ var PaymentBundle = Model.extend({
      data = {
         bundleSearch:requestHelper.formGlobalRequest(appstate).searchRequest
       };
-
-      data.bundleSearch["offset"] = params.paginate.offset;
-      data.bundleSearch["sortBy"] =  params.paginate.sortBy.attr().toString()
-      data.bundleSearch["limit"] = constants.PAGINATE_LIMIT;
-      data.bundleSearch["sortOrder"] = params.paginate.sortDirection;
+      if (params.paginate) {
+        data.bundleSearch["offset"] = params.paginate.offset;
+        data.bundleSearch["sortBy"] =  params.paginate.sortBy.attr().toString()
+        data.bundleSearch["limit"] = constants.PAGINATE_LIMIT;
+        data.bundleSearch["sortOrder"] = params.paginate.sortDirection; 
+      }
 
 
      if(excelOutput!=false){
