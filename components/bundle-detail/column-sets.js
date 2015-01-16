@@ -138,7 +138,9 @@ var columns = {
   'adhocTypeId': {
       id: 'adhocTypeId',
       title: 'AdHoc Type',
-      format: formats.formatIf(_.isNumber, formats.int, '')
+      contents: function(row) {
+        return  row.__isChild ?  row.adhocTypeName : row.adhocTypeNameDisplay;
+      }
   },
   'preview': {
     id: 'preview',

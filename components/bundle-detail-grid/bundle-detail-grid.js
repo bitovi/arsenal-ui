@@ -15,7 +15,7 @@ var BundleDetailGrid = ScrollingGrid.extend({
       // and each of those instances is a parent row
       // each BundleDetailGroup instance has a bundleDetails (which is a List of BundleDetail model instances)
       // and each of those is a child row
-      var contentType = [],country = [],periods = [],licensors = [],periodType="";
+      var contentType = [],country = [],periods = [],licensors = [],periodType="",adhocTypes= [];
 
       can.batch.start();
       var rows = [];
@@ -44,6 +44,10 @@ var BundleDetailGrid = ScrollingGrid.extend({
             //Detailed row, apply logic now only as being traversed
             detail.attr("fiscalPeriodDisplay",PeriodWidgetHelper.getDisplayPeriod(detail.fiscalPeriod.toString(), detail.periodType));
           }
+          if(detail.adhocTypeName != undefined){
+            _.contains(adhocTypes, detail.adhocTypeName) ?  "" : adhocTypes.push(detail.adhocTypeName);
+          }
+
 
           if(bundle.view != undefined && bundle.view == "COUNTRY"
               &&   detail.entityName != undefined ){
@@ -72,6 +76,14 @@ var BundleDetailGrid = ScrollingGrid.extend({
           arrSize > 1 ? group.attr('entityNameCnt',arrSize+" Licensors") : group.attr('entityNameCnt',licensors[0])  ;
           group.attr("view",bundle.view);
         }
+
+        arrSize = _.size(adhocTypes) ;
+        if(arrSize == 0){
+          group.attr('adhocTypeNameDisplay',"")
+        }else{
+          arrSize > 1 ? group.attr('adhocTypeNameDisplay', arrSize+" AdhocTypes") : group.attr('adhocTypeNameDisplay',adhocTypes[0]) ;
+        }
+
 
       });
       can.batch.stop();
