@@ -1272,7 +1272,7 @@ var page = Component.extend({
 										return CurrencyFormat(grossTotal);
 								  	},
 								  	setHeight: function(){
-								  	 	var vph = $(window).height()-90;
+								  	 	var vph = $(window).height();
 								  	 	return 'Style="height:'+vph+'px"';
 									},
 									setMinHeightBreak: function(){
