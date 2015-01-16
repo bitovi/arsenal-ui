@@ -73,6 +73,18 @@
     }
   }
 
+  thead, tfoot {
+
+    tr.child {
+
+      display: none;
+
+      &.visible {
+        display: flex;
+      }
+    }
+  }
+
   span.open-toggle,
   span.open-toggle-all {
     display: inline-block;
