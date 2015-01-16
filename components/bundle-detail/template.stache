@@ -53,12 +53,25 @@
     </select>
     {{/isBM}}
   </div>
+
   <div class="approval-comment">
+
+    {{#isBM}}
+    {{#if pageState.selectedBundle.approvable}}
+    <div class="priotity">
+      <input type="checkbox" can-value="{isBundlePrioritySet}" id  ="priotity" /><label for="priotity">Set Priority</label>
+    </div>
+     {{/if}}
+    {{/isBM}}
+
+    <div class="comments">
+
     <label>Approval Comment</label>
     <textarea can-value="{approvalComment}"></textarea>
 
       <div class="buttons allowedClass">
       {{#isBM}}
+
         {{#if pageState.selectedBundle.editable}}
           <button class="{{canProceed}}"  data-action="delete">Delete</button>
         {{/if}}
@@ -82,6 +95,7 @@
 
         {{/isBM}}
       </div>
+    </div>
   </div>
 </div>
 {{/if}}
