@@ -547,6 +547,7 @@ var page = Component.extend({
                 var proposedRequest = {};
                 proposedRequest.rows=finalRows;
                 proposedRequest.footerRows = footerRows;
+                proposedRequest.recordsAvailable = data.recordsAvailable;
                 if(proposedRequest.rows != null && proposedRequest.rows.length>0){
                     proposedRequest.quarters=self.scope.quarters;
                     disableProposedSubmitButton(true);
