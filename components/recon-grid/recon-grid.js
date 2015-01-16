@@ -94,7 +94,7 @@ var reconGrid = Grid.extend({
             alignGrid("ingested");
             tableScrollTopVal = parentScopeVar.attr('ingestedScrollTop');
             $(tbody[0]).scrollTop(tableScrollTopVal);
-          },1000);
+          },10);
         }
       } else if(self.scope.attr("pagename")=="reconOther"){
         var parentScopeVar = self.element.closest('page-reconOther').scope();
@@ -105,13 +105,13 @@ var reconGrid = Grid.extend({
             alignGrid("reconstatsOtherGrid");
             tableScrollTopVal = parentScopeVar.attr('scrollTop');
             $(tbody[0]).scrollTop(tableScrollTopVal);
-          },1000);
+          },10);
         }  else {
           setTimeout(function(){
             alignGrid("incomingDetails");
             tableScrollTopVal = parentScopeVar.attr('incomingScrollTop');
             $(tbody[0]).scrollTop(tableScrollTopVal);
-          },1000);
+          },10);
         }
       }
       
