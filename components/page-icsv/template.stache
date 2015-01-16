@@ -106,5 +106,5 @@
 </div>
 </div>
 {{#if showediticsv}}
-<page-edit-icsv appstate="{appstate}"> </page-edit-icsv>
+<page-edit-icsv appstate="{appstate}" sumfileuploadedinfo="{sumfileuploadedinfo}"> </page-edit-icsv>
 {{/if}}
