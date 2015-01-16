@@ -72,7 +72,33 @@ var page = Component.extend({
             }
           });
         }
+      },
+
+    setHeaderChkBox : function() {
+
+      var checkBoxList = $('input.selectRow');
+
+      if(checkBoxList != undefined && checkBoxList!= null && checkBoxList.length > 0) {
+
+        $('input.headerChkBox').attr("checked", true);
+
+        for(var i=0; i<checkBoxList.length; i++) {
+
+          if (checkBoxList[i].checked != true) {
+
+            $('input.headerChkBox').attr("checked", false);
+
+          }
+
+        }
+      } else {
+
+        $('input.headerChkBox').attr("checked", false);
+
       }
+
+    }
+
   },
   helpers: {
     //none
@@ -244,7 +270,40 @@ var page = Component.extend({
     },
 
     '.toggle :checkbox change': function(el, ev) {
-      refreshChekboxSelection(el,this.scope);
+      if (el[0].getAttribute('class') != 'headerChkBox') {
+        refreshChekboxSelection(el,this.scope);
+      }
+    },
+
+    '.headerChkBox  click': function(el, ev){
+
+      var checkBoxList = $('input.selectRow');
+
+      if(el[0].checked == true) {
+
+        for(var i=0; i<checkBoxList.length; i++) {
+
+          if (checkBoxList[i].checked != true) {
+
+            checkBoxList[i].click();
+
+          }
+
+        }
+
+      } else {
+
+        for(var i=0; i<checkBoxList.length; i++) {
+
+          if (checkBoxList[i].checked != false) {
+
+            checkBoxList[i].click();
+
+          }
+
+        }
+      }
+
     }
 
   }
@@ -463,6 +522,7 @@ var refreshChekboxSelection = function(el,scope){
   if(el[0].checked) {
       scope.incomingCcidSelected.push(row.dtlHdrId);
     } else {
+      $('input.headerChkBox').attr("checked", false);
       var index = _.indexOf(scope.incomingCcidSelected, row.dtlHdrId);
       (index > -1) && scope.incomingCcidSelected.splice(index, 1);
      }

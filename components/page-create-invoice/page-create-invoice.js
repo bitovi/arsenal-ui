@@ -824,6 +824,7 @@ var page = Component.extend({
               			self.scope.attr("country").replace([]);
                    		self.scope.attr("country").replace(values[0].data);
               		}else{
+              			self.scope.attr("country").replace([]);
               			showMessages(values[0].responseText);
               		}
 			});

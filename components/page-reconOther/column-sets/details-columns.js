@@ -7,8 +7,17 @@ export default [
   id: 'toggle',
   title: '',
   contents: function(row) {
+    var value = row.dtlHdrId;
+    var rejectable = false;
+
+    if(row.rejectable && row.dtlHdrType != 'PDF') {
+
+      rejectable = true;
+
+    }
+
     if(!row.isFooterRow){
-      return row.rejectable ? can.stache('<input type="checkbox"/>')() : "" ;
+      return rejectable ? can.stache('<input type="checkbox" class="selectRow" value="'+  value +'"/>')() : can.stache('<input type="checkbox" disabled/>')();
     }
   }
 },
