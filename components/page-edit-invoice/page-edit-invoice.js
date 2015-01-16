@@ -821,6 +821,8 @@ var page = Component.extend({
 		"#invoiceType change": function(){
 			this.scope.isRequired();
 			var self = this;
+            //Resetting the region
+            self.scope.attr("regionStore",'');
 			$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
 				if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
 					$(this).remove();
