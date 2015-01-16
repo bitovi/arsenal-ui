@@ -344,40 +344,36 @@
 				</div>
 				</div>
 
-
-				   <div class="col-sm-12" style="height:20px;"></div>
-				   <div style="text-align:right">
-						   <div class="col-sm-9"><label class="control-label">Gross Total: </label></div>
-						   <div class="col-sm-3 total-amount">{{netTotal}}</div>
-
-						 	<!--<div class="col-sm-9"></div>
-						   <div class="col-sm-3 form-group tax-amount"></div>-->
-
-
-							  <div class="col-sm-6" >
+        <div>
+          <div class="col-sm-9 totalbox" style="padding-top:8px;">
+            <label class="control-label">Gross Total: </label>
+          </div>
+          <div class="col-sm-3 totalboxlabel" style="padding-top:8px;">{{netTotal}}</div>
+       </div>
+       <div>
+         <div class="col-sm-9 totalbox">
+           <label  class="control-label">Tax:</label>
 							  </div>
-
-							  <div class="col-sm-6 ">
-							    <label  class="col-sm-6 control-label">Tax:</label>
-							    <div class="col-sm-6 tax-amount" style="padding-left:2px;">
+         <div class="col-sm-3 totalboxlabel">
 							       <input type="text" name="taxAmount" id="taxAmount" class="form-control taxAmount" can-value="tax" >
-							      <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "taxAmount-err" style="display:none;">
+           <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "taxAmount-err" style="display:none">
+         </div>
+       </div>
+       <div>
+         <div class="col-sm-9 totalbox">
+           <label class="control-label">Tax %:</label>
 							    </div>
+         <div class="col-sm-3 totalboxlabel">{{calculateTaxPercent}}</div>
 						    </div>
 
-
-
-						   <div class="col-sm-9"><label class="control-label">Tax %:</label></div>
-						   <div class="col-sm-3 taxpercent">{{calculateTaxPercent}}</div>
-
+			 <div style="text-align:right">
 						<div class="col-sm-12 invoice-total-container">
-						   <div class="col-sm-6"></div>
-						   <div class="col-sm-6 large-value">
-						   	<label class="control-label large-value invtotal-head">Invoice Total:</label>
+			       <div class="col-sm-12" style="text-align:right">
+					   	       <label class="control-label invtotal-head">Invoice Total:</label>
 						   			<label class="invtotal-value">{{grossTotal}}</label>
 							<label class="control-label inv-total">{{currencyStore}}</label><!--Currency -->
 							</div>
-							<div class="col-sm-3 col-sm-offset-9">
+						<div class="col-sm-12">
 							   {{#if totalAmountVal}}
 							   		{{#if usdFxrateRatio}}
 							   			<label class="control-label">{{calculateUSD}} USD</label>
@@ -387,21 +383,14 @@
 						 </div>
 					    </div>
 
-				  <div class="col-sm-12">
-					    <div class="col-sm-12" style="text-align:right;padding:15px;">
 
-
-					        <label class="col-sm-2" for="inputCountry"></label>
-					        <div class="col-sm-4 ">
+					 <div class="col-sm-12" style="text-align:right;padding-right:0px">
+             <div class="submit-button-style">
 
 					        </div>
-
-
-
-					        <div class="col-sm-6 ">
-					        <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="icsvEditCancel">Cancel</button>
+             <div class="col-sm-12" style="padding:15px;width:50%">
+							<button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="icsvEditCancel">Cancel</button>
 					        <button id="addInvSubmit" type="submit"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Validate</button>
-					        </div>
 					    </div>
 					 </div>
 

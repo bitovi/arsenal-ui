@@ -815,6 +815,9 @@ var page = Component.extend({
 		"#invoiceType change": function(){
 			this.scope.isRequired();
 			var self = this;
+            //Resetting the Region
+            self.scope.attr("regionStore",'');
+
 			$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
 				if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
 					$(this).remove();
@@ -1272,7 +1275,7 @@ var page = Component.extend({
 										return CurrencyFormat(grossTotal);
 								  	},
 								  	setHeight: function(){
-								  	 	var vph = $(window).height()-90;
+								  	 	var vph = $(window).height();
 								  	 	return 'Style="height:'+vph+'px"';
 									},
 									setMinHeightBreak: function(){

@@ -1,11 +1,10 @@
 <copy-clipboard> {{values}}</copy-clipboard>
-<div class="col-lg-12 pageTitle">
-  <div class="col-lg-3">
+<div class="col-lg-12 pageTitle" style="padding-bottom: 0px !important;">
+  <div class="col-lg-3" style="float:left;height:40px">
     <h3>Search Invoice</h3>
   </div>
-  <div class="col-lg-9">
-    <div id="messageDiv" class="col-md-12" style="text-align:left;padding-top:5px;"></div>
-  </div>
+  <div class="col-lg-9" style="float:left">
+    <div id="messageDiv" class="col-md-12" ></div>
 </div>
 
 <div class="col-lg-12 invoiceContainer">
@@ -23,22 +22,22 @@
         <img class="copyToClipboard" id="copyToClipboard">
     </div>
 
-    <div id="loading_img"></div> 
-    <div id="invoiceGrid"></div>
+    <div id="loading_img"></div>
+    <div id="invoiceGrid" style="height:100%;"></div>
 
-    <div id="attachDocumentDiv"> <!-- Attach Document Placeholder start --->
+    <div id="attachDocumentDiv">
         <div class="col-sm-12" style="border-bottom: 1px solid #ddd;padding: 0px;">
           <div class="col-sm-11" >
             <h4> Attach Document</h4>
           </div>
           <div class="col-sm-1" style="padding-top: 10px;text-align: right;" id="attachDocClose">
-            <a href="javascript:void(0)">X</a> 
+            <a href="javascript:void(0)">X</a>
           </div>
         </div>
-        <div id="fileUploaderDiv" class="col-sm-12" style="padding-top: 10px;">
-            <rn-file-uploader uploadedfileinfo="{fileinfo}"></rn-file-uploader>
+        <div id="fileUploaderDiv" class="col-sm-12 file-component-div" style="padding-top: 10px;">
+        <rn-file-uploader uploadedfileinfo="{fileinfo}"></rn-file-uploader>
         </div>
-    </div><!-- Attach Document Placeholder ends --->
+    </div>
 </div>
 
 <div class="export-toexcel" id="exportExcels"></div>

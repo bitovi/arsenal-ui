@@ -245,9 +245,11 @@ var PaymentBundle = Model.extend({
           // only update these if validation is done
           if(validationResponse.paymentBundle.vldtnStatus === 5) {
             if(group.invoiceId != undefined){
-              var target = _.find(bundle.bundleDetailsGroup, {invoiceId: group.invoiceId});
-              target.attr('validationMessages', group.vldtnMessage);
-              target.attr('validationColor', group.vldtnBatchResultColor);
+              var target = _.find(bundle.bundleDetailsGroup, {key: group.key});
+              if(target != undefined ){
+                group.vldtnMessage == undefined ? target.attr('validationMessages', "") : target.attr('validationMessages', group.vldtnMessage);
+                group.vldtnBatchResultColor == undefined ? target.attr('validationColor', "") : target.attr('validationColor', group.vldtnBatchResultColor);
+              }
             }
           }
 
@@ -279,9 +281,6 @@ var PaymentBundle = Model.extend({
 
       return bundle;
     });
-  },
-  getPreview: function(params) {
-
   },
   moveInWorkflow: function(params) {
     if(['approve', 'reject', 'recall', 'delete'].indexOf(params.action) < 0) {
@@ -336,6 +335,10 @@ var PaymentBundle = Model.extend({
       comments: params.approvalComment,
       paymentOption: params.paymentOption
     });
+
+    if(params.priority != undefined ) {
+      bundleData["priority"] = params.priority;
+    } 
 
     var requestData = {
       paymentBundle: bundleData

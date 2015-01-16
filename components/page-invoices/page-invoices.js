@@ -118,7 +118,7 @@ Grid.extend({
           if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight) {
             //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
 
-            
+
             var offsetVal = parentScopeVar.attr('offset');
             //console.log(offsetVal);
 
@@ -275,7 +275,7 @@ var page = Component.extend({
          $('copy-clipboard').slideDown(function(){
            $('body').css('overflow','hidden');
            $('#copyall').trigger('click');
-        });       
+        });
       },
     "{tokenInput} change": function(){
           var self= this;
@@ -407,7 +407,7 @@ var page = Component.extend({
               if(lowestPeriod != undefined && highestPeriod != undefined){
                   gridData.data[insertedId]["fiscalPeriod"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType);
                   if(lowestPeriod != highestPeriod){
-                    gridData.data[insertedId]["fiscalPeriod"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType)+' - '+periodWidgetHelper.getDisplayPeriod(highestPeriod,periodType);  
+                    gridData.data[insertedId]["fiscalPeriod"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType)+' - '+periodWidgetHelper.getDisplayPeriod(highestPeriod,periodType);
                   }
                 }
             }
@@ -469,7 +469,7 @@ var page = Component.extend({
           }
 
           if(flag==false) {
-            $("#messageDiv").html("<label class='errorMessage'>Invoice can't be edited as its in transit/paid</label>");
+            $("#messageDiv").html("<label class='errorMessage' style='padding:6px 15px !important'>Invoice can't be edited as its in transit/paid</label>");
             $("#messageDiv").show();
             setTimeout(function(){
                 $("#messageDiv").hide();
@@ -534,7 +534,7 @@ var page = Component.extend({
 
           invIdArr.push(invoiceData[i]["invId"]);
           if(flag==false)
-            unDelInvIdArr.push(invoiceData[i]["invId"]);  
+            unDelInvIdArr.push(invoiceData[i]["invId"]);
         }
 
         self.scope.attr('checkedRows').replace(invIdArr);
@@ -550,7 +550,7 @@ var page = Component.extend({
       var row = item.closest('tr').data('row').row;
       var invoiceType = row.invoiceType;
       var bundleStatus = row.status;
-    
+
      $('.select-toggle-all').prop("checked", false);
 
       /* An invoice can be deleted only if it satisfies the below criteria */
@@ -650,7 +650,7 @@ var page = Component.extend({
           if(flag==false){
               $("#paymentBundleNames").attr("disabled","disabled");
               $("#btnSubmit").attr("disabled","disabled");
-              $("#messageDiv").html("<label class='errorMessage'>Selected rows are different types of invioces and cannot be added to same bundle.</label>");
+              $("#messageDiv").html("<label class='errorMessage' style='padding:6px 15px !important'>Selected rows are different types of invioces and cannot be added to same bundle.</label>");
               $("#messageDiv").show();
           }else {
                $("#messageDiv").hide();
@@ -698,7 +698,7 @@ var page = Component.extend({
           //console.log("selected Invoices are "+ self.scope.checkedRows.attr());
           var unDeletedInvoices = self.scope.unDeletedInvoices.attr();
           if(unDeletedInvoices.length > 0){
-            $("#messageDiv").html("<label class='errorMessage'>Invoice "+unDeletedInvoices.toString()+" cannot be deleted! </label>");
+            $("#messageDiv").html("<label class='errorMessage' style='padding:6px 15px !important'>Invoice "+unDeletedInvoices.toString()+" cannot be deleted! </label>");
             $("#messageDiv").show();
           } else {
             $("#messageDiv").hide();
@@ -709,7 +709,7 @@ var page = Component.extend({
             Invoice.update(UserReq.formRequestDetails(invoiceDelete),"invoiceDelete",function(data){
               console.log("Delete response is "+JSON.stringify(data));
               if(data["status"]=="SUCCESS"){
-                 $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
+                 $("#messageDiv").html("<label class='successMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>")
                  $("#messageDiv").show();
                  setTimeout(function(){
                     $("#messageDiv").hide();
@@ -723,7 +723,7 @@ var page = Component.extend({
                   },2000);
               }
               else{
-                $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                $("#messageDiv").html("<label class='errorMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>");
                 $("#messageDiv").show();
                 setTimeout(function(){
                     $("#messageDiv").hide();
@@ -738,7 +738,7 @@ var page = Component.extend({
       "#paymentBundleNames change": function(){
           var self = this;
           var pbval = $("#paymentBundleNames").val();
-          
+
           if(pbval=="createB"){
 
                 var bundleStateObj = self.scope.bundleState;
@@ -750,7 +750,7 @@ var page = Component.extend({
                     break;
                   }
                 }
-                if(unbundleStatus)  
+                if(unbundleStatus)
                 {
                     var regId = self.scope.appstate.attr('region');
                     var periodFrom = self.scope.appstate.attr('periodFrom');
@@ -794,7 +794,7 @@ var page = Component.extend({
                   else
                   {
                     $("#paymentBundleNames").val("");
-                    $("#messageDiv").html("<label class='errorMessage'>Only unbundled invoices can be bundled</label>");
+                    $("#messageDiv").html("<label class='errorMessage' style='padding:6px 15px !important'>Only unbundled invoices can be bundled</label>");
                     $("#messageDiv").show();
                      setTimeout(function(){
                       $("#messageDiv").hide();
@@ -831,7 +831,7 @@ var page = Component.extend({
               console.log("Reponse is "+JSON.stringify(data));
               $("#attachDocumentDiv").hide();
               if(data["status"]=="SUCCESS"){
-                   $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
+                   $("#messageDiv").html("<label class='successMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>")
                    $("#messageDiv").show();
                    setTimeout(function(){
                       $("#messageDiv").hide();
@@ -845,7 +845,7 @@ var page = Component.extend({
                     },2000);
                 }
                 else{
-                  $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                  $("#messageDiv").html("<label class='errorMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>");
                   $("#messageDiv").show();
                   setTimeout(function(){
                       $("#messageDiv").hide();
@@ -865,7 +865,7 @@ var page = Component.extend({
             if(invoiceData.length > 0 && selInvoices.indexOf(invId)>-1) {
                 /* The below condition is to check if an invoice is already Bundled */
                 if(paymentState!=0){
-                  $("#messageDiv").html("<label class='errorMessage'>Only unbundled invoices can be bundled</label>")
+                  $("#messageDiv").html("<label class='errorMessage' style='padding:6px 15px !important'>Only unbundled invoices can be bundled</label>")
                   $("#messageDiv").show();
                    setTimeout(function(){
                       $("#messageDiv").hide();
@@ -905,7 +905,7 @@ var page = Component.extend({
           BundleNamesModel.create(UserReq.formRequestDetails(overAllBundleRequest),function(data){
               console.log("passing params is "+JSON.stringify(data));
               if(data["status"]=="SUCCESS"){
-               $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>")
+               $("#messageDiv").html("<label class='successMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>")
                $("#messageDiv").show();
                setTimeout(function(){
                   $("#messageDiv").hide();
@@ -919,7 +919,7 @@ var page = Component.extend({
                },2000);
               }
               else{
-                $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>")
+                $("#messageDiv").html("<label class='errorMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>")
                 $("#messageDiv").show();
                  setTimeout(function(){
                     $("#messageDiv").hide();
@@ -1037,13 +1037,13 @@ var page = Component.extend({
                             $("#loading_img").hide();
                           }
                       }else{
-                        $("#messageDiv").html("<label class='successMessage'>"+data["responseText"]+"</label>");
+                        $("#messageDiv").html("<label class='successMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>");
                         $("#messageDiv").show();
                         setTimeout(function(){
                             $("#messageDiv").hide();
                         },4000);
 
-                        self.scope.checkedRows.replace([]); //Reset Checked rows scope variable  
+                        self.scope.checkedRows.replace([]); //Reset Checked rows scope variable
                         if(parseInt(invSearchRequest.searchRequest["offset"])==0){
                           self.scope.allInvoicesMap.replace(data);
                         } else{
@@ -1054,7 +1054,7 @@ var page = Component.extend({
                       }
                     } else {
                       $("#loading_img").hide();
-                      $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                      $("#messageDiv").html("<label class='errorMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>");
                       $("#messageDiv").show();
                       setTimeout(function(){
                           $("#messageDiv").hide();
@@ -1105,12 +1105,12 @@ function alignGrid(divId){
           tdWidth = theadTdWidth;
         else if(tfootTdWidth >= tbodyTdWidth && tfootTdWidth >= theadTdWidth)
           tdWidth = tfootTdWidth;
-        else 
+        else
           tdWidth = tbodyTdWidth;
 
         if(i==1) //For the column holding 'check box'
-            tdWidth = 35;   
-               
+            tdWidth = 35;
+
         tableWidth += tdWidth;
         cellWidthArr.push(tdWidth);
       }

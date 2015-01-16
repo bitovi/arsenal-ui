@@ -345,10 +345,21 @@ var page = Component.extend({
 			                        message: 'Please provide numeric value for Fx Rate'
 	                			},
 	                			callback: {
-			                            message: 'Please provide positive Fx Rate',
 			                            callback: function (value, validator, $field) {
 			                              if((value != "")  && (parseFloat(value) < 0)){
-			                              	return false;
+                                    return {
+                                      valid: false,
+                                      message: 'Please provide positive Fx Rate'
+                                    }
+  	                              }else if (value != undefined && value.length != 0){
+                                    var decimal_validate_RE=/^\d{0,10}(\.\d{0,8})?$/;
+                                    if(!decimal_validate_RE.test(value)){
+                                      return {
+                                        valid: false,
+                                        message: 'Please provide Fx Rate in [##########.########] format'
+                                      }
+                                    }
+
 			                              }
 			                              return true;
 			                            }
@@ -368,11 +379,20 @@ var page = Component.extend({
 	                			callback: {
 			                            message: 'Please provide positive value for amount',
 			                            callback: function (value, validator, $field) {
-				                              if((value != "")  && (parseFloat(value) < 0)){
+                                      var inputval=value.trim();
+				                              if((inputval != "")  && (parseFloat(inputval) < 0)){
 				                              	return {
 					                                    valid: false,
 					                                    message: 'Please provide positive invoice amount'
 					                                }
+				                              }else if (inputval != "" && inputval != undefined && inputval.length != 0){
+                                        var decimal_validate_RE=/^\d{0,10}(\.\d{0,8})?$/;
+                                        if(!decimal_validate_RE.test(value)){
+                                          return {
+                                            valid: false,
+                                            message: 'Please provide invoice amount in [##########.########] format'
+                                          }
+                                        }
 				                              }
 											return true;
 			                            }
@@ -673,8 +693,12 @@ var page = Component.extend({
 						if((parseFloat(event[0].value) < 0) || isNaN(event[0].value)){
 
 							showError(event[0].id, "Please provide positive value for tax");
+						}else if (event[0].value != "" && event[0].value != undefined && event[0].value.length != 0) {
+              var decimal_validate_RE=/^\d{0,10}(\.\d{0,8})?$/;
+              if(!decimal_validate_RE.test(event[0].value)){
+                showError(event[0].id, "Please provide Tax value in [##########.########] format");
 						}
-						else{
+            }else{
 							removeError(event[0].id);
 						}
 					}
@@ -821,6 +845,8 @@ var page = Component.extend({
 		"#invoiceType change": function(){
 			this.scope.isRequired();
 			var self = this;
+            //Resetting the region
+            self.scope.attr("regionStore",'');
 			$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
 				if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
 					$(this).remove();
@@ -1076,6 +1102,14 @@ var page = Component.extend({
 	      },
 
 		"#addInvSubmit click":function(){
+
+          var errObj=validateMandatory();
+          if(errObj.isFailed == true){
+            var msg =showErrorDetails(errObj.errorMsgs, "Error");
+         		showMessages(msg);
+            return;
+          }
+
 					var self = this;
 					var invoiceValidatorObj = $("#invoiceform").data('bootstrapValidator');
 
@@ -1461,7 +1495,7 @@ var page = Component.extend({
 										return CurrencyFormat(grossTotal);
 								  	},
 								  	setHeight: function(){
-								  	 	var vph = $(window).height()-180;
+								  	 	var vph = $(window).height();
 								  	 	return 'Style="height:'+vph+'px"';
 									},
 									setMinHeightBreak: function(){
@@ -1546,7 +1580,24 @@ var page = Component.extend({
 						return (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear();
 					}
 
+          function validateMandatory(){
+            var errObj={isFailed:false,errorMsgs:[]};
+            //Upload file Validation
+            var uploadedfiles = $('rn-file-uploader-create').data('_d_uploadedFileInfo');
+            if(uploadedfiles == undefined || uploadedfiles.length == 0){
+              errObj.isFailed=true;
+              errObj.errorMsgs.push('Please attach atleast one supporting document');
+            }
+            return errObj;
+          }
 
+          function showMessages(msg){
+            $("#invWarningMsgDiv").html("<label class='errorMessage'>"+msg+"</label>")
+             $("#invWarningMsgDiv").show();
+             setTimeout(function(){
+                $("#invWarningMsgDiv").hide();
+             },5000)
+          }
 
 					var updatePeriodCalender = function(elementID){
 
