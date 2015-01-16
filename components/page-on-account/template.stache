@@ -97,16 +97,16 @@
 								<!-- <label class="text-right" for="inputCountry">Bundle Name:</label> -->
 								<span class="pull-inline col-sm-2" >Bundle Name:</span>
 						        <!-- <div class="col-sm-6 requiredBar text-left"> -->
-	                				<span class="pull-inline col-sm-10 "><create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}"></create-pb></span>
+	                				<span class="pull-inline col-sm-10 newOnAccBundle"><create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}"></create-pb></span>
 						        <!-- </div> -->
 			       		</div>
 
 			       		<div class="col-lg-6 marginTop-10">
-			       			<span class="col-sm-2 pull-inline">User Comments:
+			       			<span class="col-sm-3 pull-inline">User Comments:
 			       				<!-- <label for="inputEmail3" class="control-label text-right">User Comments: </label> -->
 			       			</span>
 
-			       		 	<span class="col-sm-10 pull-inline">
+			       		 	<span class="col-sm-9 pull-inline">
 			       		 		<textarea class="form-control" name="usercomments" id="usercomments" maxlength="1024"  can-value="usercommentsStore" style="resize:none; width:100%;"></textarea>
 								<img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "usercomments-err" style="display:none;">
 			       		 	</span>
@@ -140,7 +140,7 @@
 							</div>
 
 		       		<div class="col-lg-6 marginTop-10">
-		       			<span class="col-sm-2">
+		       			<span class="col-sm-3">
 		       				User Comments:
 		       			</span>
 
@@ -155,14 +155,14 @@
 		       		 	</span>
 
 		       		 	<div class="col-sm-12  marginTop-10 fontvalue">
-		       		 		<div class="col-sm-2 pull-inline">Payment Bundle:
+		       		 		<div class="col-sm-3 pull-inline">Payment Bundle:
 		       				</div>
 
-		       				<div class="col-sm-10 pull-inline"><div class="bundleDisplay">{{bundleNamesForDisplay}}</div>
+		       				<div class="col-sm-9 pull-inline"><div class="bundleDisplay">{{bundleNamesForDisplay}}</div>
 		       				</div>
 
 						</div>
-						<div class="col-sm-11 pull-inline">
+						<div class="col-sm-11 push-right">
 	       					<button type="button" id="submitPOA" class="btn btn-primary buttonSubmit btn-custom-small pull-right">Submit</button>
 	       				</div>
 

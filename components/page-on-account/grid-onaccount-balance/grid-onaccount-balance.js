@@ -62,7 +62,7 @@ var OnAccountBalance = Grid.extend({
 
           var balanceColumn={
             id:'onAccountBalance',
-            title:'onAccount Balance'
+            title:'OnAccount Balance'
           };
           self.scope.columns.push(balanceColumn);
 
