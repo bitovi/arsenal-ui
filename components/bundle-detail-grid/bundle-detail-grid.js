@@ -1,12 +1,12 @@
 import _ from 'lodash';
 import $ from 'jquery';
-import Grid from 'components/grid/';
+import ScrollingGrid from 'components/grid/examples/scrolling-grid/';
 
 import template from './template.stache!';
 import _less from './bundle-detail-grid.less!';
 import PeriodWidgetHelper from 'utils/periodWidgetHelpers';
 
-var BundleDetailGrid = Grid.extend({
+var BundleDetailGrid = ScrollingGrid.extend({
   tag: 'rn-bundle-detail-grid',
   template: template,
   scope: {
@@ -124,7 +124,7 @@ var BundleDetailGrid = Grid.extend({
       return _.map(this.attr('prefilteredColumns'), column => options.fn({column}));
     },
     filteredRows: function (options) {
-      return Grid.prototype.helpers.filteredRows.apply(this, arguments);
+      return ScrollingGrid.prototype.helpers.filteredRows.apply(this, arguments);
     },
     footerRows: function(options) {
       // By default, rows are a bit more complex.
