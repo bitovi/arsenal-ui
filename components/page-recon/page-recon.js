@@ -8,7 +8,7 @@ import RinsCommon from 'utils/urls';
 import UserReq from 'utils/request/';
 import reconGrid from  'components/recon-grid/';
 import ingestedColumns from './column-sets/ingest-columns';
-import detailsColumns from './column-sets/details-columns';
+//import detailsColumns from './column-sets/details-columns';
 import Recon from 'models/recon/';
 
 import tokeninput from 'tokeninput';
@@ -41,7 +41,7 @@ var page = Component.extend({
     tabSelected :tabNameObj.ingest.name,
     tabName:tabNameObj,
     ingestGridColumns: ingestedColumns,
-    detailGridColumns: detailsColumns,
+    //detailGridColumns: detailsColumns,
     ingestList:{
       headerRows: new can.List(),
       footerRows: new can.List()
