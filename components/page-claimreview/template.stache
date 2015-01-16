@@ -3,7 +3,7 @@
     <h3>Claim Review </h3>
 </div>
 <div id="chartContainer" class="col-lg-12">
-	<div id="messageDiv" class="col-md-12" style="position: absolute;text-align:center;padding-top:5px;"></div>
+	<div id="messageDiv" class="col-md-12"></div>
 	<div id="highChartDetails" class="highcharts_Overlay highcharts_Hide"></div>
 </div>
 
@@ -17,12 +17,6 @@
     	</select>-->
     </div>
 
-    <div class="col-sm-4" id="searchDiv" style="">
-        <input type="text" class="form-control" id="tokenSearch">
-        <img src="resources/images/charticon.png" class="" id="highChart">
-        <img class="exportToExcel" id="exportExcel">
-        <img class="copyToClipboard" id="copyToClipboard">
-    </div>
     <div class="col-lg-12">
 	    <ul id="myTabs" class="nav nav-tabs">
 		   <li class="active">
@@ -32,7 +26,15 @@
 		   </li>
 		   <li><a id="couView" href="#countryView" data-toggle="tab">Country</a></li>
 		   <!--<li id="aggregate" class="hide" style="padding:10px;"><input id="chkAggregate" type="checkbox"> Aggregate period</li>-->
-		   <span id="aggregate" class="hide"><input id="chkAggregate" type="checkbox"> Aggregate period</span>
+		   <div id="aggregate" class="hide"><input id="chkAggregate" type="checkbox"> Aggregate period</div>
+		   	<li class="pull-right marginTop-10 customLI">
+		   	<div id="searchDiv">
+		   		<input type="text" class="form-control" id="tokenSearch">
+		        <img src="resources/images/charticon.png" class="" id="highChart">
+		        <img class="exportToExcel" id="exportExcel">
+		        <img class="copyToClipboard" id="copyToClipboard">
+		    </div>
+		   	</li>
 		</ul>
 
 		<div id="myTabContent" class="tab-content">

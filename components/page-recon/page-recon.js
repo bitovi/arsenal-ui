@@ -20,6 +20,7 @@ import FileManager from 'utils/fileManager/';
 
 import stache from 'can/view/stache/';
 import exportToExcel from 'components/export-toexcel/';
+import copy from 'components/copy-clipboard/';
 
 //Navigation bar definitions
 var tabNameObj = {
@@ -298,6 +299,13 @@ var page = Component.extend({
             }
 
     },
+    '#copyToClipboard click':function(){  console.log($('#myTabs').next('.tab-content').find('.tab-pane:visible table:visible').clone(true));
+         $('#clonetable').empty().html($('#ingested').find('table:visible').clone(true).attr('id','dynamic'));
+         $('copy-clipboard').slideDown(function(){
+           $('body').css('overflow','hidden');
+           $('#copyall').trigger('click');
+        });       
+      },
    '.exportToExcel click':function(el,ev){
        
         var self = this;

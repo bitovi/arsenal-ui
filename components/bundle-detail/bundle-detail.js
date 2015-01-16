@@ -86,6 +86,7 @@ var BundleDetailTabs = Component.extend({
       scope.details ={};
       scope.bundleProgress.isBundleSelectionChange = true;
       scope.bundleProgress.triggerValidation = true;
+      scope.appstate.excelOutput = false;
 
       var selectedBundle = scope.pageState.selectedBundle;
       if(!selectedBundle) {

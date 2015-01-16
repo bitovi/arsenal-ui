@@ -180,7 +180,7 @@ var page = Component.extend({
 
       if(this.scope.appstate.excelOutput ) {
 
-         PaymentBundle.findOne({appstate: this.scope.appstate}).then(function(data) {
+         PaymentBundle.loadAll({appstate: this.scope.appstate}).then(function(data) {
             if(data["status"]=="0000"){
                 $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
            }
