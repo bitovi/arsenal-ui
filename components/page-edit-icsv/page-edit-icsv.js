@@ -120,6 +120,7 @@ var page = Component.extend({
   	periodType:"",
   	ajaxRequestStatus:{},
   	usdFxrateRatio:"",
+  	sumfileuploadedinfo:[],
     isRequired: function(){
   	 		if(this.attr("invoicetypeSelect") != "2"){  /*Adhoc*/
   	 				$(".breakdownCountry").addClass("requiredBar");
@@ -658,6 +659,8 @@ var page = Component.extend({
 						}
 
 
+
+
 				},
 			".form-control keyup": function(event){
 
@@ -842,17 +845,21 @@ var page = Component.extend({
 //						}
                         //TODO :  /*Pluck only PDF as supporting documents from the invoicedocuments*/
                         //Code to display server list of files on file upload rn-file-uploader-icsv control starts
+                        console.log(self.scope.attr("sumfileuploadedinfo"));
 
+                        /* Below code needed to extract PDF file only*/
 
-                        var invoicePDFDocuments = $.grep(invoiceData.invoiceDocuments, function(e) {
+                     /*   var invoicePDFDocuments = $.grep(invoiceData.invoiceDocuments, function(e) {  
 							console.log(e.fileName, ' is a valid file? ', /.pdf$/.test(e.fileName) || /.pdf.zip$/.test(e.fileName));
 							return /.pdf$/.test(e.fileName) || /.pdf.zip$/.test(e.fileName) ;
-						});
+						});*/
+
+						var invoicePDFDocuments = self.scope.attr("sumfileuploadedinfo");	
 
                         for(var j=0;j<invoicePDFDocuments.length;j++){
                             console.log(invoicePDFDocuments.fileName);
                             invoicePDFDocuments[j].isServer = true;
-                            invoicePDFDocuments[j].filePath = invoicePDFDocuments[j].location;
+                            invoicePDFDocuments[j].filePath = invoicePDFDocuments[j].filePath;
                         }
 
                         if(invoicePDFDocuments.length > 0){
@@ -1095,7 +1102,7 @@ var page = Component.extend({
           if(errObj.isFailed == true){
             var msg =showErrorDetails(errObj.errorMsgs, "Error");
          		showMessages(msg);
-            return;
+            return false;
           }
 
 					 $("#invoiceform").data('bootstrapValidator').resetForm();
@@ -1563,7 +1570,7 @@ function getCurrentDate(){
           function validateMandatory(){
             var errObj={isFailed:false,errorMsgs:[]};
             //Upload file Validation
-            var uploadedfiles = $('rn-file-uploader-create').data('_d_uploadedFileInfo');
+            var uploadedfiles = $('rn-file-uploader-icsv').data('_d_uploadedFileInfo');
             if(uploadedfiles == undefined || uploadedfiles.length == 0){
               errObj.isFailed=true;
               errObj.errorMsgs.push('Please attach atleast one supporting document');
@@ -1638,5 +1645,17 @@ var updateContentType = function(element) {
 	}
 
 }
+
+var showErrorDetails = function(errormap, errortype){
+		var errorStr = "";
+      	for(var key in errormap){
+      		errorStr += errormap[key]+", ";
+      		//console.log(key);
+      	}
+      	errorStr = errorStr.replace(/,\s*$/, "");
+		var msg = errortype+": "+ errorStr;
+
+      	return msg;
+	}
 
 export default page;
