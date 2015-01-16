@@ -67,7 +67,7 @@ var PaymentBundle = Model.extend({
         data.bundleSearch["offset"] = params.paginate.offset;
         data.bundleSearch["sortBy"] =  params.paginate.sortBy.attr().toString()
         data.bundleSearch["limit"] = constants.PAGINATE_LIMIT;
-        data.bundleSearch["sortOrder"] = params.paginate.sortDirection; 
+        data.bundleSearch["sortOrder"] = params.paginate.sortDirection;
       }
 
 
@@ -306,6 +306,7 @@ var PaymentBundle = Model.extend({
       delete group.contentGrpName;
       delete group.country;
       delete group.fiscalPeriodDisplay;
+      delete group.adhocTypeNameDisplay;
       delete group.entityNameCnt;
       delete group.view;
       delete group.validationMessages;
@@ -339,7 +340,7 @@ var PaymentBundle = Model.extend({
 
     if(params.priority != undefined ) {
       bundleData["priority"] = params.priority;
-    } 
+    }
 
     var requestData = {
       paymentBundle: bundleData

@@ -7,7 +7,7 @@
   </div>
   <div class="bundle-list-actions">
     {{#if pageState.selectedBundle.editable}}
-      <button class="add-invoice">Add Invoices To Bundle</button>
+      <button class="btn btn-custom-xs add-invoice">Add Invoices To Bundle</button>
     {{/if}}
     {{#if pageState.bundles.length}}
     <img class="excel exportToExcel" />

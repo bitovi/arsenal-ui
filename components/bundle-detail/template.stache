@@ -15,7 +15,7 @@
   {{/validationStatus}}
   {{/if}}
   <div class="bundle-detail-actions">
-    <button class="remove-invoice action-sm" {{allowRemoveInvoices}}>Remove Invoice From Bundle</button>
+    <button class="btn btn-custom-xs remove-invoice" {{allowRemoveInvoices}}>Remove Invoice From Bundle</button>
 
     <img class="show-chart" src="/resources/images/charticon.png"/>
 
@@ -59,7 +59,7 @@
     {{#isBM}}
     {{#if pageState.selectedBundle.approvable}}
     <div class="priotity">
-      <input type="checkbox" can-value="{isBundlePrioritySet}" id  ="priotity" /><label for="priotity">Set Priority</label>
+      <input type="checkbox" can-value="{isBundlePrioritySet}" id  ="priotity" />&nbsp;<label for="priotity">Set Priority</label>
     </div>
      {{/if}}
     {{/isBM}}
@@ -67,30 +67,32 @@
     <div class="comments">
 
     <label>Approval Comment</label>
-    <textarea can-value="{approvalComment}"></textarea>
+    <div class="requiredBar">
+      <textarea can-value="{approvalComment}"></textarea>
+    </div>
 
       <div class="buttons allowedClass">
       {{#isBM}}
 
         {{#if pageState.selectedBundle.editable}}
-          <button class="{{canProceed}}"  data-action="delete">Delete</button>
+          <button class="btn btn-custom-small" {{canProceed}}  data-action="delete">Delete</button>
         {{/if}}
 
         {{#if pageState.selectedBundle.recallable}}
-          <button class="{{canProceed}}"  data-action="recall">Recall</button>
+          <button class="btn btn-custom-small" {{canProceed}} data-action="recall">Recall</button>
         {{/if}}
 
         {{#if pageState.selectedBundle.approvable}}
-          <button class="{{canProceed}}" data-action="approve">Propose</button>
+          <button class="btn btn-custom-small" {{canProceed}} data-action="approve">Propose</button>
         {{/if}}
       {{else}}
         {{#if pageState.selectedBundle.recallable}}
-          <button class="{{canProceed}}"  data-action="recall">Recall</button>
+          <button class="btn btn-custom-small" {{canProceed}} data-action="recall">Recall</button>
         {{/if}}
 
         {{#if pageState.selectedBundle.approvable}}
-          <button class="{{canProceed}}" data-action="reject">Reject</button>
-          <button class="{{canProceed}}" data-action="approve">Approve</button>
+          <button class="btn btn-custom-small" {{canProceed}} data-action="reject">Reject</button>
+          <button class="btn btn-custom-small" {{canProceed}} data-action="approve">Approve</button>
         {{/if}}
 
         {{/isBM}}

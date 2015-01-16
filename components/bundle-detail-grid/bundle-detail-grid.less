@@ -1,18 +1,57 @@
 @import 'components/grid/grid.less';
+@import 'components/grid/examples/scrolling-grid/scrolling-grid.less';
+
+.flex-basis(@basis) {
+  -webkit-flex-basis: @basis;
+  flex-basis: @basis;
+}
+
+.flex-grow(@grow) {
+  -webkit-flex-grow: @grow;
+  flex-grow: @grow;
+}
+
 
 rn-bundle-detail-grid {
   .grid-mixin();
+  .scrolling-grid-mixin();
 
-  tbody {
-    height: 10em;
-  }
+  font-size: 10pt;
 
-  th.validations, td.validations {
-    text-align: center;
+  table.scrolling {
+    tbody {
+      height: 10em;
+      border-bottom: 1px solid #666;
+    }
+    tbody tr {
+      min-height: 1.5625em;
+    }
 
-    img {
-      height: 14px;
-      margin-top: -4px;
+
+    tr > th, tr > td {
+      padding: .3em .5em;
+      &.toggle { .flex-basis(75px); }
+      &.validations { .flex-basis(75px); }
+      &.licensor { .flex-basis(150px); }
+      &.invoiceNumber {  .flex-grow(1); .flex-basis(350px); }
+      &.paymentCcy { .flex-basis(120px); }
+      &.fiscalPeriod {.flex-basis(175px); }
+      &.country { .flex-basis(120px); }
+      &.contentGrpName { .flex-basis(205px); }
+      &.lineAmt { .flex-basis(150px); }
+      &.orDispAmt { .flex-basis(150px); }
+      &.liDispAmt { .flex-basis(150px); }
+      &.reconAmt { .flex-basis(150px); }
+      &.onaccountAllocatedAmt { .flex-grow(1); .flex-basis(150px); }
+      &.cashadjAllocatedAmt { .flex-basis(150px); }
+      &.priorPaid { .flex-basis(150px); }
+      &.paymentAmt { .flex-basis(150px); }
+      &.invoicePaymentSaturation { .flex-basis(150px); }
+      &.invoiceSaturation { .flex-basis(150px); }
+      &.paymentSaturation { .flex-basis(150px); }
+      &.preview { .flex-basis(75px); }
+      &.adhocTypeId { .flex-basis(200px); }
+
     }
   }
 

@@ -11,9 +11,9 @@ var columns = {
   },
   'validations': {
     id: 'validations',
-    title: '<img src="/resources/images/rn_WarningActive@2x.png"/>',
+    title: '<img src="/resources/images/rn_WarningSelected.png"/>',
     contents: function(row) {
-      return stache('{{#if validationMessages.length}}<img src="/resources/images/rn_WarningSelected@2x.png" {{data \'row\'}}/>{{/if}}')(row);
+      return stache('{{#if validationMessages.length}}<img src="/resources/images/rn_WarningSelected.png" {{data \'row\'}}/>{{/if}}')(row);
     },
     validationsOnly: true
   },
@@ -138,11 +138,13 @@ var columns = {
   'adhocTypeId': {
       id: 'adhocTypeId',
       title: 'AdHoc Type',
-      format: formats.formatIf(_.isNumber, formats.int, '')
+      contents: function(row) {
+        return  row.__isChild ?  row.adhocTypeName : row.adhocTypeNameDisplay;
+      }
   },
   'preview': {
     id: 'preview',
-    title: 'Preview',
+    title: '',
     contents: row => row.__isChild || row.isFooterRow ? '' : stache('<img src="/resources/images/rn_VisibleSelected.png"/>')(row)
   }
 };
