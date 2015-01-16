@@ -436,9 +436,8 @@ var page = Component.extend({
         if(this.scope.details.isChild){
           var data = this.scope.details;
              $("#highChartDetails").append(stache('<high-chart details={data}></high-chart>')({data}));
-        }else{
-          console.log('Data not set so not showing the chart');
-          $("#messageDiv").html("<label class='errorMessage'>Select child row to see the report</label>");
+        }else{          
+          $("#messageDiv").html("<label class='errorMessage'>Please select Invoice from child row to see Historical Trends</label>");
           $("#messageDiv").show();
           setTimeout(function(){
               $("#messageDiv").hide();
@@ -474,7 +473,6 @@ var page = Component.extend({
       },
       "#couView click": function(el, ev){
           var self = this;
-
           $("#aggregate").removeClass("hide");
           self.scope.attr('view',"country");
           ev.preventDefault();
@@ -646,8 +644,19 @@ var page = Component.extend({
 
       '.exportToExcel click':function(el,ev){
           var self = this;
-          if(this.scope.appstate.attr('excelOutput')==undefined || !this.scope.appstate.attr('excelOutput'))
+          var tableRowCount=$(".rn-grid > tbody > tr").length;
+          
+          if(tableRowCount > 0){
+            if( this.scope.appstate.attr('excelOutput')==undefined || !this.scope.appstate.attr('excelOutput'))
             self.scope.appstate.attr("excelOutput",true);
+          }else{
+            $("#loading_img").hide();
+                        $("#messageDiv").html("<label class='errorMessage'>Data Not Available</label>");
+                        $("#messageDiv").show();
+                        setTimeout(function(){
+                            $("#messageDiv").hide();
+                        },4000);
+          }
           
       },
       '#copyToClipboard click':function(){  console.log($('#myTabs').next('.tab-content').find('.tab-pane:visible table:visible').clone(true));
@@ -765,11 +774,13 @@ var page = Component.extend({
                           $('#exportExcel').html(stache('<export-toexcel csv={values}></export-toexcel>')({values}));
                            self.scope.appstate.attr("excelOutput",false);
                         }else{
+                          /*
                           $("#messageDiv").html("<label class='successMessage'>"+values["responseText"]+"</label>");
                           $("#messageDiv").show();
                           setTimeout(function(){
                               $("#messageDiv").hide();
                           },4000);
+                          */
                           if(parseInt(claimLicSearchRequest["offset"])==0){
                             self.scope.allClaimLicensorMap.replace(values);
                           } else{
@@ -799,11 +810,13 @@ var page = Component.extend({
                           $('#exportExcel').html(stache('<export-toexcel csv={values}></export-toexcel>')({values}));
                            self.scope.appstate.attr("excelOutput",false);
                         }else{
+                          /*
                           $("#messageDiv").html("<label class='successMessage'>"+values["responseText"]+"</label>");
                           $("#messageDiv").show();
                           setTimeout(function(){
                               $("#messageDiv").hide();
                           },4000);
+                          */
                           if(parseInt(claimLicSearchRequest["offset"])==0){
                             self.scope.allClaimCountryMap.replace(values);
                           } else{

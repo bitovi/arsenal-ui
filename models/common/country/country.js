@@ -23,6 +23,16 @@ findAllCountriesByLicenesor: function(params){
   		type: 'GET',
   		contentType: 'application/json'
   	});
+},
+
+findCountriesForRegLicCurr:function(params){
+  var getURLParams = getUtility.createGetURL(params);
+
+  return $.ajax({
+     url: RinsCommon.UI_SERVICE_URL +'getCountriesForRegLicCurr'+"?"+getURLParams,
+      type: 'GET',
+      contentType: 'application/json'
+    });
 }
 
 }, {});
