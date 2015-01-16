@@ -1,4 +1,5 @@
 <h2>Inbox {{inboxItemCount}}</h2>
-<rn-inbox-grid rows="{inboxRows}"></rn-inbox-grid>
+
+<div class="setMaxHeight"><rn-inbox-grid rows="{inboxRows}"></rn-inbox-grid></div>
 <h2>Outbox</h2>
-<rn-outbox-grid rows="{outboxRows}"></rn-outbox-grid>
+<div class="setMaxHeight"><rn-outbox-grid rows="{outboxRows}"></rn-outbox-grid></div>
