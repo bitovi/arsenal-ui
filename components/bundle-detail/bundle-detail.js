@@ -63,6 +63,7 @@ var BundleDetailTabs = Component.extend({
     aggregatePeriod: false,
     paymentType: 2,
     approvalComment: '',
+    isBundlePrioritySet:false,
     details:{},
 
     havePaymentTypeAndComment: function(scope) {
@@ -357,10 +358,17 @@ var BundleDetailTabs = Component.extend({
           paymentOption: this.scope.paymentType
         });
       } else {
+
+        var bundlePriority = undefined;
+        if(this.scope.appstate.userInfo.roleIds.indexOf(constants.ROLES.BM) > -1 ){
+          this.scope.isBundlePrioritySet ? bundlePriority = "Y" : bundlePriority = "N";
+        }
+
         selectedBundle.moveInWorkflow({
           action: action,
           approvalComment: this.scope.approvalComment,
-          paymentOption: this.scope.paymentType
+          paymentOption: this.scope.paymentType,
+          priority:bundlePriority
         }).then(function(response) {
           if(response.status === 'SUCCESS') {
             //Alert.displayAlert(response.responseText, 'success' );
@@ -436,6 +444,7 @@ var resetSelectedBundle = function(scope){
   can.batch.start();
   // clear out selectedRows
   scope.selectedRows.splice(0, scope.selectedRows.length);
+  scope.attr("isBundlePrioritySet", false);
 
   // change the columns to be correct
   var tabs = [],
