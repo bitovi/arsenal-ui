@@ -39,8 +39,7 @@
 
 <table class="holes-report " border="1">
   <thead>
-    <tr>
-      <th></th>
+    <tr>     
       {{#entities}}
       <th class="entity" {{data 'entity'}}><span {{popover 'entity' {.}}}>{{.}}</span></th>
       {{/entities}}
