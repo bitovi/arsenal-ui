@@ -86,6 +86,7 @@ var BundleDetailTabs = Component.extend({
       scope.details ={};
       scope.bundleProgress.isBundleSelectionChange = true;
       scope.bundleProgress.triggerValidation = true;
+      scope.appstate.excelOutput = false;
 
       var selectedBundle = scope.pageState.selectedBundle;
       if(!selectedBundle) {
@@ -135,6 +136,19 @@ var BundleDetailTabs = Component.extend({
         }
 
         canRemoveInvoice(scope);
+
+        var commentsCollected = '';
+        _.each(bundle.approvalComments, function(commentsObj) {
+
+          commentsCollected = commentsCollected + commentsObj.comments +"\n"+ commentsObj.createdByName +": "+commentsObj.createdDate;
+          commentsCollected = commentsCollected + "\n------------------------\n"
+
+        });
+
+        if(commentsCollected !== ''){
+          $(".previousComments").val(commentsCollected);
+        }
+
 
         //<!--rdar://problem/19415830 UI-PBR: Approve/Reject/Recall/Delete should happen only from Licensor Tab-->
         if(bundle.view === 'LICENSOR'){
@@ -239,7 +253,7 @@ var BundleDetailTabs = Component.extend({
     },
     canProceed: function() {
       this.attr('paymentType'); this.attr('approvalComment');
-      return this.havePaymentTypeAndComment(this) ? 'action' : '';
+      return this.havePaymentTypeAndComment(this) ? '' : 'disabled';
     }
   },
   events: {
@@ -337,7 +351,7 @@ var BundleDetailTabs = Component.extend({
     '.verbose-toggle click': function(el, ev) {
       this.scope.pageState.attr('verboseGrid', !this.scope.pageState.verboseGrid);
     },
-    '.approval-comment .buttons .action click': function(el, ev) {
+    '.approval-comment .btn click': function(el, ev) {
       var action = el.data('action'),
       selectedBundle = this.scope.pageState.selectedBundle,
       pageState = this.scope.pageState;
@@ -396,6 +410,8 @@ var BundleDetailTabs = Component.extend({
       this.scope.selectedBundleChanged(this.scope);
       var self = this;
 
+
+
       $("#tokenSearch").tokenInput([
         {id: 1, name: "Search"} //This is needed
         ],
@@ -417,6 +433,7 @@ var BundleDetailTabs = Component.extend({
             self.scope.refreshTokenInput(item,"Delete");
           }
         });
+
 
     },
     '{scope} pageState.selectedBundle': function(scope) {
@@ -445,6 +462,10 @@ var resetSelectedBundle = function(scope){
   // clear out selectedRows
   scope.selectedRows.splice(0, scope.selectedRows.length);
   scope.attr("isBundlePrioritySet", false);
+
+  $(".previousComments").val();
+  $(".previousComments").hide();
+
 
   // change the columns to be correct
   var tabs = [],

@@ -115,7 +115,7 @@ Grid.extend({
       var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
       $(tbody[0]).scrollTop(tableScrollTopVal);
         $(tbody).on('scroll', function(ev) {
-        if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight-1) {
+          if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight-1  && parentScopeVar.recordsAvailable) {
             //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
 
 
@@ -172,6 +172,7 @@ var page = Component.extend({
     newpaymentbundlenamereq:undefined,
     tableScrollTop: 0,
     offset: 0,
+    recordsAvailable:'@',
     fileinfo:[],
     excelOutput:[],
     bundleState:{},
@@ -1051,7 +1052,7 @@ var page = Component.extend({
                               $("#messageDiv").hide();
                           },4000);
                         }
-
+                        self.scope.attr('recordsAvailable',data.recordsAvailable);
                         self.scope.checkedRows.replace([]); //Reset Checked rows scope variable
                         if(parseInt(invSearchRequest.searchRequest["offset"])==0){
                           self.scope.allInvoicesMap.replace(data);

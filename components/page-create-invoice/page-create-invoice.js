@@ -774,6 +774,8 @@ var page = Component.extend({
 			     ]).then(function(values) {
 		     			//console.log(values[0]);
 		     			self.scope.attr("licensor").replace([]);
+		     			self.scope.attr("currency").replace([]);
+		     			self.scope.attr("country").replace([]);
 			    		self.scope.attr("licensor").replace(values[0]["entities"]);
 			    		if(self.scope.editpage){
 				    		var invoiceData = self.scope.attr().invoiceContainer[0];
@@ -781,12 +783,12 @@ var page = Component.extend({
 			    		}
 			    });
 
-			 Country.findAll(UserReq.formRequestDetails(genObj),function(data){
-			 			self.scope.attr("country").replace([]);
-                  		self.scope.attr("country").replace(data);
-		                },function(xhr){
-		                /*Error condition*/
-		        });
+			 // Country.findAll(UserReq.formRequestDetails(genObj),function(data){
+			 // 			self.scope.attr("country").replace([]);
+    //               		self.scope.attr("country").replace(data);
+		  //               },function(xhr){
+		  //               /*Error condition*/
+		  //       });
 
 
 		//	var requestObj = self.scope.createPBRequest();
@@ -800,6 +802,7 @@ var page = Component.extend({
 			Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
 			     ]).then(function(values) {
 			     	self.scope.attr("currency").replace([]);
+			     	self.scope.attr("country").replace([]);
 				    self.scope.attr("currency").replace(values[0]);
 				    if(self.scope.editpage){
 					    var invoiceData = self.scope.attr().invoiceContainer[0];
@@ -810,6 +813,21 @@ var page = Component.extend({
 		"{scope} currencyStore": function(){
 			var self = this;
 			self.scope.getFxrate();
+			var genObj = {regionId:self.scope.attr("regionStore"),
+						  entityId:self.scope.attr("licensorStore"),
+						  currency:self.scope.attr("currencyStore")
+						};
+
+			Promise.all([Country.findCountriesForRegLicCurr(UserReq.formRequestDetails(genObj))
+			     ]).then(function(values) {
+			     	if(values[0].status == 'SUCCESS'){
+              			self.scope.attr("country").replace([]);
+                   		self.scope.attr("country").replace(values[0].data);
+              		}else{
+              			self.scope.attr("country").replace([]);
+              			showMessages(values[0].responseText);
+              		}
+			});
 		},
 
 		"#invoiceType change": function(){

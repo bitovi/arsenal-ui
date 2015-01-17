@@ -346,7 +346,7 @@ prepareRowsForDisplay:function(onAccountDetails,quarters){
           for(var k=0;k<quarters.length;k++){
              if(periodMap.hasOwnProperty(quarters[k])){
               addToRow = true;
-              row[quarters[k]]=periodMap[quarters[k]];
+              row[quarters[k]]=utils.currencyFormat(periodMap[quarters[k]]);
               }
            }
           if(addToRow){
@@ -364,7 +364,7 @@ prepareRowsForDisplay:function(onAccountDetails,quarters){
     for(var k=0;k<quarters.length;k++){
        if(periodMap.hasOwnProperty(quarters[k])){
         addToRow = true;
-        row[quarters[k]]=periodMap[quarters[k]];
+        row[quarters[k]]=utils.currencyFormat(periodMap[quarters[k]]);
         }
      }
     if(addToRow){
@@ -492,7 +492,7 @@ prepareOnAccountRowsForDisplay:function(onAccountDetails,quarters){
           for(var k=0;k<quarters.length;k++){
              if(periodMap.hasOwnProperty(quarters[k])){
               addToRow = true;
-              row[quarters[k]]=periodMap[quarters[k]];
+              row[quarters[k]]=utils.currencyFormat(periodMap[quarters[k]]);
               }
            }
           if(addToRow){
@@ -514,7 +514,7 @@ prepareOnAccountRowsForDisplay:function(onAccountDetails,quarters){
     for(var k=0;k<quarters.length;k++){
        if(periodMap.hasOwnProperty(quarters[k])){
         addToRow = true;
-        row[quarters[k]]=periodMap[quarters[k]];
+        row[quarters[k]]=utils.currencyFormat(periodMap[quarters[k]]);
         }
      }
     if(addToRow){

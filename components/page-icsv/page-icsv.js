@@ -117,6 +117,7 @@ var page = Component.extend({
       periodFromForPaymentBundle:"",
       periodToForPaymentBundle:"",
       fetchPB:"@",
+      sumfileuploadedinfo:[],
       createPBRequest: function(){
         var bundleNamesRequest = {"bundleSearch":{}};
           //console.log("fsdfsdfsdf "+JSON.stringify(this.attr('appstate')));
@@ -161,16 +162,22 @@ var page = Component.extend({
 
                               var errString = "";
 
-                              for(var key in tempArr[i].errors.errorMap){  /*Invoice error*/
-                                     if(tempArr[i].errors.errorMap[key].trim())
-                                     errString += tempArr[i].errors.errorMap[key]+", ";
-                              }
+                              if((tempArr[i].errors != "undefined") && (tempArr[i].errors != null))
+                                {
+                                    for(var key in tempArr[i].errors.errorMap){  /*Invoice error*/
+                                           if(tempArr[i].errors.errorMap[key].trim())
+                                           errString += tempArr[i].errors.errorMap[key]+", ";
+                                    }
+                                }    
+
 
                               for(var j =0; j < tempArr[i].invoiceLines.length; j++){
+                                if((tempArr[i].invoiceLines[j].errors != "undefined") && (tempArr[i].invoiceLines[j].errors != null)){
                                     for(var key in tempArr[i].invoiceLines[j].errors.errorMap){  /*Invoiceline error*/
                                          if(tempArr[i].invoiceLines[j].errors.errorMap[key].trim())
                                          errString += tempArr[i].invoiceLines[j].errors.errorMap[key]+", ";
                                      }
+                                  }   
                               }
                               errString = errString.replace(/,\s*$/, "");
 
@@ -273,7 +280,8 @@ var page = Component.extend({
       'rn-file-uploader-icsv-sum onSelected': function (ele, event, val) {
             var self = this;
             self.scope.attr('uploadedfileinfo',val.filePropeties);
-            //console.log(JSON.stringify(self.scope.attr('uploadedFileInfo')));
+            self.scope.attr('sumfileuploadedinfo', val.filePropeties);
+            console.log(JSON.stringify(self.scope.attr('sumfileuploadedinfo')));
             //$('.jQfunhide').show();
             //val == 'SUCCESS' ?  $('.jQfunhide').show():$('.jQfunhide').hide();
        },
@@ -307,6 +315,11 @@ var page = Component.extend({
                     if(messages.length >0){
                       errorMess = errorMess+" : "+fatalErrorList[0].errorMessages[0]+" "+fatalErrorList[0].csvFileName+" at lineNumber "+fatalErrorList[0].lineNumber;
                       self.scope.attr('errorMessage',errorMess);
+                      setTimeout(function(){
+                        self.scope.attr('errorMessage',"");
+                     },3000);
+
+
                     }
                   }else{
                     self.scope.attr('errorMessage',data.errorDesc);
@@ -381,12 +394,13 @@ var page = Component.extend({
                    for(var j = 0; j < tempArr[i].invoiceDocuments.length; j++){
                       tempDocument.fileName = tempArr[i].invoiceDocuments[j].fileName;
                       tempDocument.location = tempArr[i].invoiceDocuments[j].location;
+                      tempInvoiceData["invoiceDocuments"].push(tempDocument);
                    }
 
                 //   tempDocument.fileName = tempArr[i].invoiceDocuments.fileName;
                  //  tempDocument.location = tempArr[i].invoiceDocuments.location;
 
-                   tempInvoiceData["invoiceDocuments"].push(tempDocument);
+                  
                   // console.log(tempArr[i].invoiceLines.length);
 
 
@@ -446,11 +460,11 @@ var page = Component.extend({
                                         var responseInvoiceArr = values[0].invoices;
                                         icsvmap.invoiceData.attr("invoices", responseInvoiceArr);  /*updating icsv map with invoice response*/
 
-                                        if(values[0].responseCode == "IN1022"){  /* Contact support team error*/
+                                      
                                           var msg = values[0].responseText;
                                           $("#invcsvmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
                                           $("#invcsvmessageDiv").show();
-                                        }
+                                       
                                     }
                                 });
       },

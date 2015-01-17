@@ -7,8 +7,17 @@ export default [
     id: 'toggle',
     title: '',
     contents: function(row) {
-      if(row.isFooterRow == undefined){
-        return (row.ccidId == null || row.ccidId == "0" || row.status == "Paid") ? "": can.stache('<input type="checkbox" class="ccid" value="' + row.dtlHdrId +'"/>' )() ;
+      var value = row.dtlHdrId;
+      var rejectableVal = false;
+
+      if(row.rejectable && row.dtlHdrType != 'PDF') { 
+
+        rejectableVal = true;
+
+      }
+
+      if(!row.isFooterRow){
+        return rejectableVal ? can.stache('<input type="checkbox" class="selectRow" value="'+  value +'"/>')() : can.stache('<input type="checkbox" disabled/>')();
       }
     }
   },

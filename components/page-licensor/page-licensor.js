@@ -968,7 +968,7 @@ var page = Component.extend({
           ]).then(function(data) {
             if(data[0].status == "SUCCESS") {
 
-                var msg = "Entity Detials saved successfully";
+                var msg = "Entity Details saved successfully";
 
                 $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
                 $("#invmessageDiv").show();
@@ -977,7 +977,7 @@ var page = Component.extend({
                 },5000);
             } else {
 
-                var msg = "Entity Detials was not saved successfully";
+                var msg = "Entity Details was not saved successfully";
                 $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
                 $("#invmessageDiv").show();
                 setTimeout(function(){
@@ -1024,7 +1024,7 @@ var page = Component.extend({
 
                 var genObj = {};
 
-                var msg = "Entity Detials added successfully";
+                var msg = "Entity Details added successfully";
 
                 $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
                 $("#invmessageDiv").show();
@@ -1044,7 +1044,7 @@ var page = Component.extend({
 
             } else {
 
-                var msg = "Entity Detials was not added successfully";
+                var msg = "Entity Details was not added successfully";
                 $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
                 $("#invmessageDiv").show();
                 setTimeout(function(){
@@ -1910,13 +1910,26 @@ var page = Component.extend({
             
         Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
-          self.scope.populateAnalyticsPage(values);
+          if(values[0].status == "SUCCESS") {
+            self.scope.populateAnalyticsPage(values);
 
-          $("#loading_img").hide();
+            $("#loading_img").hide();
 
-          self.scope.reValidateFiledsonLoad();
+            self.scope.reValidateFiledsonLoad();
 
-          //$('#entityLicensorBottom').bootstrapValidator('validate');
+            //$('#entityLicensorBottom').bootstrapValidator('validate');
+          } else {
+
+            var msg = "No data fetched";
+                $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+                $("#invmessageDiv").show();
+                setTimeout(function(){
+                  $("#invmessageDiv").hide();
+                },5000);
+
+            $("#loading_img").hide();
+
+          }
             
         });
     },

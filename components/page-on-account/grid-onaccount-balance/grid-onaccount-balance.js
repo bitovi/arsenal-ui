@@ -48,6 +48,7 @@ var OnAccountBalance = Grid.extend({
   events: {
     'inserted': function(ev) {
        var self = this;
+       var recordsAvailable=false;
        //console.log("inserted "+JSON.stringify(self.scope.request.searchRequest.attr()));
        if(self.scope.request != null && self.scope.request != undefined && self.scope.request.quarters != null && self.scope.request.quarters != undefined){
          var quarters = self.scope.request.quarters;
@@ -62,7 +63,7 @@ var OnAccountBalance = Grid.extend({
 
           var balanceColumn={
             id:'onAccountBalance',
-            title:'onAccount Balance'
+            title:'OnAccount Balance'
           };
           self.scope.columns.push(balanceColumn);
 
@@ -75,6 +76,7 @@ var OnAccountBalance = Grid.extend({
                       if(data["status"]=="SUCCESS"){
                         if(data.onAccount != undefined && data.onAccount.onAccountDetails != undefined && data.onAccount.onAccountDetails.length==0){
                           self.scope.attr('emptyrows',true);
+                          recordsAvailable=data.recordsAvailable;
                         }else{
                           var detailRows = utils.prepareRowsForDisplay(data.onAccount.onAccountDetails,quarters);
                           var footerRows=[];
@@ -109,7 +111,7 @@ var OnAccountBalance = Grid.extend({
       var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
       $(tbody[0]).scrollTop(tableScrollTopVal);
         $(tbody).on('scroll', function(ev) {
-          if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight) {
+          if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight && recordsAvailable) {
             //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
 
             

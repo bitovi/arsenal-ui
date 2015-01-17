@@ -19,7 +19,7 @@
     color: @font-color;
   }
 
-  thead, tbody {
+  thead, tbody,tfoot {
     display: block;
 
     tr {
@@ -68,7 +68,19 @@
       display: none;
 
       &.visible {
-        display: table-row;
+        display: flex;
+      }
+    }
+  }
+
+  thead, tfoot {
+
+    tr.child {
+
+      display: none;
+
+      &.visible {
+        display: flex;
       }
     }
   }

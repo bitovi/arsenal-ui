@@ -1583,7 +1583,7 @@ var page = Component.extend({
           function validateMandatory(){
             var errObj={isFailed:false,errorMsgs:[]};
             //Upload file Validation
-            var uploadedfiles = $('rn-file-uploader-create').data('_d_uploadedFileInfo');
+            var uploadedfiles = $('rn-file-uploader-edit').data('_d_uploadedFileInfo');
             if(uploadedfiles == undefined || uploadedfiles.length == 0){
               errObj.isFailed=true;
               errObj.errorMsgs.push('Please attach atleast one supporting document');

@@ -52,7 +52,7 @@ h3 {
 }
 .pageTitle {
   padding-top: 10px !important;
-  padding-bottom: 10px !important;
+  /*padding-bottom: 10px !important;*/
 }
 .btn[disabled]{
   color: #ddd !important;
@@ -138,6 +138,45 @@ input.datetimePickerCal{
   .bottomContainer{
     margin: 15px 35px 15px 35px;
   }
+
+  .btn-custom-xs.active {
+    color: rgba(255, 255, 255, 0.75);
+  }
+  .btn-custom-xs {
+    color: #ffffff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    background-color: #1581F4;
+    background-image: -moz-linear-gradient(top, #1581F4, #63ADF1);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#1581F4), to(#63ADF1));
+    background-image: -webkit-linear-gradient(top, #1581F4, #63ADF1);
+    background-image: -o-linear-gradient(top, #1581F4, #63ADF1);
+    background-image: linear-gradient(to bottom, #1581F4, #63ADF1);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff00aaff', GradientType=0);
+    border-color: #0A66CB #0A66CB #0A66CB;
+    //border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    *background-color: #1581F4;
+    /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+    border-radius:6px !important;
+    padding: 1px 22px !important;
+  }
+  .btn-custom-xs:hover,
+  .btn-custom-xs:focus,
+  .btn-custom-xs:active,
+  .btn-custom-xs.active,
+  .btn-custom-xs.disabled,
+  .btn-custom-xs[disabled] {
+    color: #ffffff;
+    background-color: #00aaff;
+    *background-color: #0099e6;
+  }
+  .btn-custom-xs:active,
+  .btn-custom-xs.active {
+    background-color: #0088cc ;
+  }
+
 
 
   .btn-custom-small.active {
@@ -310,4 +349,10 @@ input.datetimePickerCal{
       content: url("/resources/images/rn_CopySelected@2x.png");
       cursor: pointer;
     }
+  }
+
+  .requiredBar{
+    border-left: 2px solid #d24849;
+    padding-left: 2px;
+    box-sizing: none;
   }
