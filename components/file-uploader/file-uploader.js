@@ -49,6 +49,7 @@
 
                     this.element.find('input[type=file]').click();
                     this.scope.attr("fileUpload" , true);
+                    //$(this.element).trigger('change');
 
                 },
                  '.fileSelect change' : function(el, ev) {
@@ -58,6 +59,8 @@
                          files[i].guid = generateUUID();
                      }
                      this.scope.uploadedfileinfo.push.apply(this.scope.uploadedfileinfo, files);
+                       // clearing the input value.                   
+                      this.element.find('input[type=file]').val(null);
 
                      function generateUUID(){
                          var d = new Date().getTime();
@@ -174,6 +177,7 @@
                     file.fileId= fileId;
                     file.boundType='INBOUND';
                     downLoadFile.files.push(file);
+                    console.log(JSON.stringify(downLoadFile));
                     fileManager.downloadFile(downLoadFile,function(data){
                         if(data["status"]=="SUCCESS"){
 
