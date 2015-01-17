@@ -247,8 +247,10 @@ _.each(holes.holesReportWrapper, function(holesWrapper) {
     '#copyToClipboard click':function(){  
         $('#clonetable').empty().html($('.dashboard-container').find('table:visible').clone(true).attr('id','dynamic'));
          $('copy-clipboard').slideDown(function(){
-           $('body').css('overflow','hidden');
+           $('body').css('overflow','scroll');
            $('#copyall').trigger('click');
+           $('copy-clipboard').addClass('wrapCopyToClipboard');
+           $("#clonetable").css("position","relative");
         });       
       },
     '{scope.appstate} change': function() {
