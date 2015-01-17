@@ -112,6 +112,7 @@
                         // todo: pushedToServer files currently do not have the fileSize attribute -- RETURN FROM SERVER
                        self.scope.attr('uploadedfileinfo').push.apply(self.scope.attr('uploadedfileinfo'), data.filePropeties);
                        $(self.element).trigger('onSelected', data);
+                       $(self.element).trigger('filesUploaded');
                     }else{
                       self.scope.attr("isSuccess", false);
                        $('.fileError').empty().html(data.responseText);

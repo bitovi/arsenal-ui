@@ -36,6 +36,26 @@ import exportToExcel from 'components/export-toexcel/';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
 import copy from 'components/copy-clipboard/';
 
+
+fileUpload.extend({
+  tag: 'rn-file-uploader',
+  scope: {
+        fileList : new can.List(),
+        displayMessage:"display:none",
+        fileUpload:false,
+        uploadedfileinfo:[],
+        deletedFileInfo:[],
+        isAnyFileLoaded : can.compute(function() { return this.fileList.attr('length') > 0; }),
+        isSuccess: false,
+
+    },
+    events:{
+       "{uploadedfileinfo} change":function(){
+          this.scope.fileList.replace(this.scope.uploadedfileinfo);
+      }
+    }
+ });
+
 /* Extend grid with the columns */
 Grid.extend({
   tag: 'rn-grid-invoice',
@@ -814,25 +834,25 @@ var page = Component.extend({
       '#attachDocClose click': function(){
           $("#attachDocumentDiv").hide();
       },
-      "{fileinfo} change": function(){
+      'rn-file-uploader filesUploaded': function(ele, event){
         /* uploadedfileinfo & fileinfo are two way binded. Refer template.stache <rn-file-uploader uploadedfileinfo="{fileinfo}"></rn-file-uploader>*/
         /* When the uploadedfileinfo in rn-file-uploader component, fileinfo in this component updated and change event triggered */
-          console.log("updated file info "+JSON.stringify(this.scope.fileinfo.attr()));
+          //console.log("updated file info "+JSON.stringify(this.scope.fileinfo.attr()));
           var self = this;
           var fileInfo = self.scope.fileinfo.attr();
           var selectedInvoice = self.scope.checkedRows.attr();
           var attachReq = {"searchRequest":{"ids":[], "document":[]}};
           attachReq["searchRequest"]["ids"] = selectedInvoice;
-          if(fileInfo.length >0){
+          if(fileInfo != undefined && fileInfo.length >0){
             for(var i=0;i<fileInfo.length;i++){
               var temp = {};
-              temp["fileName"] = fileInfo[i]["fileName"];
-              temp["location"] = fileInfo[i]["filePath"];
+              temp["fileName"] = fileInfo[i].fileName;
+              temp["location"] = fileInfo[i].filePath;
               attachReq["searchRequest"]["document"].push(temp);
             }
-            console.log("Attach request are "+JSON.stringify(UserReq.formRequestDetails(attachReq)));
+            //console.log("Attach request are "+JSON.stringify(UserReq.formRequestDetails(attachReq)));
             MassFileUpLoader.create(UserReq.formRequestDetails(attachReq),function(data){
-              console.log("Reponse is "+JSON.stringify(data));
+              //console.log("Reponse is "+JSON.stringify(data));
               $("#attachDocumentDiv").hide();
               if(data["status"]=="SUCCESS"){
                 if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
