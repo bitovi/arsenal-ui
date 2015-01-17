@@ -115,12 +115,11 @@ Grid.extend({
       var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
       $(tbody[0]).scrollTop(tableScrollTopVal);
         $(tbody).on('scroll', function(ev) {
-          if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight  && parentScopeVar.recordsAvailable) {
+          if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight-1  && parentScopeVar.recordsAvailable) {
             //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
 
 
             var offsetVal = parentScopeVar.attr('offset');
-            //console.log(offsetVal);
 
             /* Reset the offset value and call the webservice to fetch next set of records */
             parentScopeVar.attr('offset', (parseInt(offsetVal)+1));
@@ -234,6 +233,8 @@ var page = Component.extend({
     "inserted": function(){
 
         var self = this;
+
+        setHeightOnLoad();
 
         $("#tokenSearch").tokenInput([
             {id: 1, name: "Search"} //This is needed
@@ -710,18 +711,20 @@ var page = Component.extend({
             Invoice.update(UserReq.formRequestDetails(invoiceDelete),"invoiceDelete",function(data){
               console.log("Delete response is "+JSON.stringify(data));
               if(data["status"]=="SUCCESS"){
-                 $("#messageDiv").html("<label class='successMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>")
-                 $("#messageDiv").show();
-                 setTimeout(function(){
-                    $("#messageDiv").hide();
-                    self.scope.checkedRows.replace([]);
-                     /* The below calls {scope.appstate} change event that gets the new data for grid*/
-                     if(self.scope.appstate.attr('globalSearch')){
-                        self.scope.appstate.attr('globalSearch', false);
-                      }else{
-                        self.scope.appstate.attr('globalSearch', true);
-                      }
-                  },2000);
+                if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
+                   $("#messageDiv").html("<label class='successMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>")
+                   $("#messageDiv").show();
+                   setTimeout(function(){
+                      $("#messageDiv").hide();
+                      self.scope.checkedRows.replace([]);
+                       /* The below calls {scope.appstate} change event that gets the new data for grid*/
+                       if(self.scope.appstate.attr('globalSearch')){
+                          self.scope.appstate.attr('globalSearch', false);
+                        }else{
+                          self.scope.appstate.attr('globalSearch', true);
+                        }
+                    },2000);
+                }
               }
               else{
                 $("#messageDiv").html("<label class='errorMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>");
@@ -832,6 +835,7 @@ var page = Component.extend({
               console.log("Reponse is "+JSON.stringify(data));
               $("#attachDocumentDiv").hide();
               if(data["status"]=="SUCCESS"){
+                if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
                    $("#messageDiv").html("<label class='successMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>")
                    $("#messageDiv").show();
                    setTimeout(function(){
@@ -844,6 +848,7 @@ var page = Component.extend({
                           self.scope.appstate.attr('globalSearch', true);
                         }
                     },2000);
+                  }
                 }
                 else{
                   $("#messageDiv").html("<label class='errorMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>");
@@ -906,18 +911,20 @@ var page = Component.extend({
           BundleNamesModel.create(UserReq.formRequestDetails(overAllBundleRequest),function(data){
               console.log("passing params is "+JSON.stringify(data));
               if(data["status"]=="SUCCESS"){
-               $("#messageDiv").html("<label class='successMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>")
-               $("#messageDiv").show();
-               setTimeout(function(){
-                  $("#messageDiv").hide();
-                  self.scope.checkedRows.replace([]);
-                   /* The below calls {scope.appstate} change event that gets the new data for grid*/
-                   if(self.scope.appstate.attr('globalSearch')){
-                      self.scope.appstate.attr('globalSearch', false);
-                    }else{
-                      self.scope.appstate.attr('globalSearch', true);
-                    }
-               },2000);
+                if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
+                 $("#messageDiv").html("<label class='successMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>")
+                 $("#messageDiv").show();
+                 setTimeout(function(){
+                    $("#messageDiv").hide();
+                    self.scope.checkedRows.replace([]);
+                     /* The below calls {scope.appstate} change event that gets the new data for grid*/
+                     if(self.scope.appstate.attr('globalSearch')){
+                        self.scope.appstate.attr('globalSearch', false);
+                      }else{
+                        self.scope.appstate.attr('globalSearch', true);
+                      }
+                 },2000);
+               }
               }
               else{
                 $("#messageDiv").html("<label class='errorMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>")
@@ -1009,7 +1016,7 @@ var page = Component.extend({
 
                 invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
                 invSearchRequest.searchRequest["offset"] = this.scope.offset;
-                invSearchRequest.searchRequest["limit"] = "10";
+                invSearchRequest.searchRequest["limit"] = "15";
 
                 var filterData = self.scope.tokenInput.attr();
                 var newFilterData = [];
@@ -1038,11 +1045,13 @@ var page = Component.extend({
                             $("#loading_img").hide();
                           }
                       }else{
-                        $("#messageDiv").html("<label class='successMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>");
-                        $("#messageDiv").show();
-                        setTimeout(function(){
-                            $("#messageDiv").hide();
-                        },4000);
+                        if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
+                          $("#messageDiv").html("<label class='successMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>");
+                          $("#messageDiv").show();
+                          setTimeout(function(){
+                              $("#messageDiv").hide();
+                          },4000);
+                        }
                         self.scope.attr('recordsAvailable',data.recordsAvailable);
                         self.scope.checkedRows.replace([]); //Reset Checked rows scope variable
                         if(parseInt(invSearchRequest.searchRequest["offset"])==0){
@@ -1075,6 +1084,18 @@ var page = Component.extend({
   }
 });
 
+
+function setHeightOnLoad(){
+//  $('#invoiceGrid').css("height","auto");
+  /*var gridHeight=$('#invoiceGrid').height()+100;
+  $('#invoiceGrid').css('min-height',gridHeight);
+  $('#invoiceGrid').css('height',0);
+  $('#invoiceGrid').css('overflow-y','hidden');
+  $('.invoiceContainer').css('min-height',gridHeight);
+  $('.invoiceContainer').css('height',0);
+  $('.invoiceContainer').css('overflow-y','hidden');*/
+
+}
 
 var invoiceExportToExcel=function(appstate){
     var invoiceRequest={};
