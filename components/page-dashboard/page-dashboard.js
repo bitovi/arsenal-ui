@@ -69,6 +69,10 @@ var page = Component.extend({
   events: {
     init: function() {
       this.scope.appstate.attr('renderGlobalSearch', true);
+      if(this.scope.appstate.attr('DISPLAY_HOLES_REPORT')){
+        this.scope.attr('selectedTab', this.scope.tabs[1]);
+        this.scope.appstate.attr('DISPLAY_HOLES_REPORT','');
+      }else
       this.scope.attr('selectedTab', this.scope.tabs[0]);
     }
   }
