@@ -33,6 +33,7 @@ appstate.bind('page', function(ev, newVal, oldVal) {
 
   System.import('components/page-' + newVal + '/').then(function(pageComponent) {
     var template = '<page-' + newVal + ' appstate=  "{appstate}"></page-' + newVal + '>';
+    $("#page").css("height",$(window).height()-250); //set the page height to support 100% height. 55 is the menu height
     $('#page').html(can.stache(template)({appstate: appstate}));
   }).catch(function(ex) {
     // TODO: Do something more intelligent with miss cases, like defaulting to the Dashboard.
