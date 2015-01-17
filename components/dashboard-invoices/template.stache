@@ -5,35 +5,53 @@
   <div class="col-lg-9">
     <div id="messageDiv" class="col-md-12" style="text-align:left;padding-top:5px;"></div>
   </div>
+  <div class="col-lg-9 imgBlock" id="searchDiv" >
+        <img class="exportToExcel exportToExcell">
+        <img class="copyToClipboard" id="copyToClipboard">
+</div>
 </div>
 <copy-clipboard> {{values}}</copy-clipboard>
+<div class="export-toexcel" id="exportExcel"></div>
+
 {{#showPage}}
 {{#if fetching}}
 <div class="select-message">Fetching report...</div>
 <div id="messageDiv" class="col-md-12" style="text-align:center;padding-top:5px;"></div>
 {{else}}
-<div class="export-toexcel" id="exportExcel"></div>
-<div class="col-sm-12" id="searchDiv" class="pull-right">
-        <img class="exportToExcel exportToExcell">
-        <img class="copyToClipboard" id="copyToClipboard">
-</div>
+
+
 <div class="tableDiv">
-<table class="holes-report" border="1">
+
+<table class="holes-reports-country" border="1">
   <thead>
     <tr>
-      <th></th>
-      {{#entities}}
-      <th class="entity" {{data 'entity'}}><span {{popover 'entity' {.}}}>{{.}}</span></th>
-      {{/entities}}
-      <th class="entity">LOCAL</th>
       <th></th>
     </tr>
   </thead>
   <tbody>
     {{#holesReports}}
     <tr>
-      <th class="country" {{#if displayBackGreen}}bgcolor="#669933" {{/if}}><span {{popover 'country' {countryId}}}>{{countryId}}</span></th>
-      <!--<th class="country">{{countryId}}</th>-->
+      <td class="country" {{#if displayBackGreen}}bgcolor="#669933" {{/if}}><span {{popover 'country' {countryId}}}>{{countryId}}</span></td>
+    </tr>
+    {{/holesReports}}
+  </tbody>
+</table>
+
+<table class="holes-report " border="1">
+  <thead>
+    <tr>
+      <th></th>
+      {{#entities}}
+      <th class="entity" {{data 'entity'}}><span {{popover 'entity' {.}}}>{{.}}</span></th>
+      {{/entities}}
+       <th class="entity">LOCAL</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#holesReports}}
+    <tr>
+      
       {{#holesList}}
         {{#if isCCIDExpect}}
           <td class="hole invoice-expected"></td>
@@ -64,6 +82,7 @@
     {{/holesReports}}
   </tbody>
 </table>
+
 
 </div>
 

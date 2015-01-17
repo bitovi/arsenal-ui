@@ -12,10 +12,143 @@ rn-dashboard-invoices {
   }
 
   table.holes-report {
-    width: 90%;
+    width: 100%;
     overflow: auto;
     margin: 0 auto;
     color: @dark-grey;
+    z-index: -1;
+    display:inline-block;
+    padding-left:68px;
+    border: 0px solid grey;
+
+    tbody {
+      height: 200px;
+      width: 200px;
+      overflow: auto;
+    }
+
+    tr {
+      height: 3em;
+    }
+
+    th {
+      font-weight: normal;
+      padding: .25em .5em;
+      color: @dark-grey;
+      width: 1%;
+    }
+
+    td {
+      border: 1px solid @border-grey;
+      position: relative;
+      background-color: white;
+
+      &.invoice-expected {
+        background-color: @medium-grey;
+      }
+
+      .circle {
+        margin: 0 auto;
+        background-color: green;
+        width: 1em;
+        height: .5em;
+
+        &.top {
+          border-radius: .5em .5em 0 0;
+        }
+        &.bottom {
+          border-radius: 0 0 .5em .5em;
+        }
+      }
+
+      .la {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 1.3em;
+      }
+
+      .checkMark{
+        width:25px;
+        height:25px;
+      }
+    }
+
+    .entity, .hole{
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .country {
+      text-align: center;
+      width: 5em;
+
+      // span {
+      //   display: inline-block;
+      //   width: 50px;
+
+      //   padding: .25em;
+      //   background: @medium-grey;
+      //   border-radius: .5em;
+      // }
+    }
+
+    .local-society {
+      padding-left: 1em;
+
+    }
+  }
+
+  table.holes-reports-country {
+    
+    overflow: auto;
+    margin: 0 auto;
+    color: @dark-grey;
+    position: absolute;
+    display: inline-table;
+    z-index: 100;
+
+    tbody {
+      height: 200px;
+      width: 200px;
+      overflow: auto;
+    }
+
+    tr {
+      height: 3em;
+    }
+
+    th {
+      background-color: #f6f6f6;
+      width:88%;
+    }
+
+    td {
+      font-weight: normal;
+      padding: .25em .5em;
+      color: @dark-grey;
+    }
+
+    .entity, .hole{
+      text-align: center;
+    }
+
+    .country {
+      text-align: center;
+      width: 5em;
+    }
+  }
+
+  table.holes-reports-local {
+   
+    width: 100px;
+    overflow: auto;
+    margin: 0 auto;
+    color: @dark-grey;
+
+    position: absolute;
+    display: inline-table;
+    z-index: 100;
 
     tbody {
       height: 200px;
@@ -73,20 +206,6 @@ rn-dashboard-invoices {
       text-align: center;
     }
 
-    .country {
-      text-align: center;
-      width: 5em;
-
-      // span {
-      //   display: inline-block;
-      //   width: 50px;
-
-      //   padding: .25em;
-      //   background: @medium-grey;
-      //   border-radius: .5em;
-      // }
-    }
-
     .local-society {
       padding-left: 1em;
 
@@ -135,6 +254,7 @@ rn-dashboard-invoices {
    width:70%;
    height:250px;
    margin: 0px auto;
+   position: relative;
  }
 
  label{
@@ -142,4 +262,20 @@ rn-dashboard-invoices {
     font-size:12px;
     color:#848484;
     font-weight:normal;
+  }
+
+  .imgBlock{
+    text-align: right;
+    padding-right: 15%;
+    padding-top: 10px;
+  }
+
+  .wrapCopyToClipboard{
+    overflow: auto !important;
+    width: 0% !important;
+    z-index: 101;
+  }
+
+  copy-clipboard #clonetable table{
+    width: auto !important;
   }
