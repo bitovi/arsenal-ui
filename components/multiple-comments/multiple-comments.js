@@ -33,7 +33,13 @@ var comments = Component.extend({
               $(textAreactrl).addClass("multiple-comments-editable").addClass("form-control-comments old-comments");
               $(textAreactrl).attr('readonly', 'readonly');
               if(val.createdDate != null){
-                $(textAreactrl).val(val.comments + "\n-" + val.createdBy + " on " + val.createdDate);
+                if((val.createdByName != null) && (typeof val.createdByName != "undefined")){
+                //  $(textAreactrl).val(val.comments + "\n-" + val.createdByName + " on " + val.createdDate);
+                  $(textAreactrl).val(val.createdDate +"  "+ val.createdByName + "\n" + val.comments);
+                }else{
+                  $(textAreactrl).val(val.createdDate + "\n" + val.comments);
+                } 
+                
               }
               else
               {
