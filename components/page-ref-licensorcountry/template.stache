@@ -160,7 +160,7 @@
               <div class="col-sm-12">
                 <div class="col-sm-3"></div>
                 <div class="col-sm-4">
-                  <label class="checkbox"><input type="checkbox" can-value="pageState.entityCountryDetails.entityCountry.laEnabled">London Agreement</label>
+                  <label class="checkbox"><input type="checkbox" can-value="pageState.entityCountryDetails.entityCountry.laEnabled" class="laCheckBox">London Agreement</label>
                 </div>
                 <div class="col-sm-6"></div>
               </div>

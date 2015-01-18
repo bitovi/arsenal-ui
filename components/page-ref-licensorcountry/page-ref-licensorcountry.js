@@ -636,6 +636,16 @@ var loadPage = function(scope,data){
     data.entityCountryDetails.entityCountry.attr("status","InActive");
   }
 
+  if(data.entityCountryDetails.entityCountry.laEnabled != null && data.entityCountryDetails.entityCountry.laEnabled == "Y") {
+
+    $(".laCheckBox").prop("checked",true);
+
+  } else {
+
+    $(".laCheckBox").prop("checked",false);
+
+  }
+
   scope.pageState.entityCountryDetails.attr("pricingModelVersionNo", data.entityCountryDetails.pricingModelVersionNo);
   scope.pageState.entityCountryDetails.attr("pricingModelId", data.entityCountryDetails.pricingModelId);
 
@@ -658,10 +668,10 @@ var loadPage = function(scope,data){
       $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({}));
   }
 
-  if(data.pricingModel.baseModelParameters != null && data.pricingModel.baseModelParameters.length > 0) {
+  if( data.pricingModel!= null && data.pricingModel.baseModelParameters != null && data.pricingModel.baseModelParameters.length > 0) {
     scope.attr("baseModelParameter").replace(data.pricingModel.baseModelParameters);
   }
-  if(data.pricingModel.trackCounts != null && data.pricingModel.trackCounts.length > 0) {
+  if( data.pricingModel!= null data.pricingModel.trackCounts != null && data.pricingModel.trackCounts.length > 0) {
     scope.attr("trackCounts").replace(data.pricingModel.trackCounts);
   }
 
