@@ -636,6 +636,16 @@ var loadPage = function(scope,data){
     data.entityCountryDetails.entityCountry.attr("status","InActive");
   }
 
+  if(data.entityCountryDetails.entityCountry.laEnabled != null && data.entityCountryDetails.entityCountry.laEnabled == "Y") {
+
+    $(".laCheckBox").prop("checked",true);
+
+  } else {
+
+    $(".laCheckBox").prop("checked",true);
+
+  }
+
   scope.pageState.entityCountryDetails.attr("pricingModelVersionNo", data.entityCountryDetails.pricingModelVersionNo);
   scope.pageState.entityCountryDetails.attr("pricingModelId", data.entityCountryDetails.pricingModelId);
 
