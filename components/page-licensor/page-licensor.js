@@ -1121,9 +1121,13 @@ var page = Component.extend({
 
       for(var i=0; i< this.bootstrapValidParams.length; i++) {
 
-        $("#entityLicensorBottom").data("bootstrapValidator").revalidateField(this.bootstrapValidParams[i]);
+        isValid = $("#entityLicensorBottom").data("bootstrapValidator").revalidateField(this.bootstrapValidParams[i]);
 
-        isValid = $("#entityLicensorBottom").data("bootstrapValidator").revalidateField("sapVendor").$invalidFields.length > 0 ? false : true;
+        if(isValid) {
+
+          isValid = $("#entityLicensorBottom").data("bootstrapValidator").revalidateField("sapVendor").$invalidFields.length > 0 ? false : true;
+
+        }
 
       }
 
@@ -1296,7 +1300,7 @@ var page = Component.extend({
                       message: 'Contact Email is mandatory'
                   },
                   regexp: {
-                      regexp: /^[a-zA-Z0-9_\- ]*@[a-zA-Z0-9_\- ]*.[a-zA-Z0-9_\- ]*$/i,
+                      regexp: /^[a-zA-Z0-9_\- ]*@[a-zA-Z0-9_\- ]*[.[a-zA-Z0-9_\- ]*]*$/i,
                       message: 'Please provide valid characters'
                   },
                   callback: {

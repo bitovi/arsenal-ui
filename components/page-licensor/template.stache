@@ -430,7 +430,7 @@
 		
 
 		<div class="col-sm-12 col-sm-offset-10 buttonsBottom">
-			<button type="button" id="buttonsubmit" name="Submit" class="btn submitButton btn-custom-small" style="margin-left:10px;">Submit</button>
+			<button type="button" id="buttonsubmit" name="SubmitPage" class="btn submitButton btn-custom-small" style="margin-left:10px;">Submit</button>
 			<button type="button" id="buttonreset" name="Reset" class="btn cancelButton btn-custom-small-cancel " style="margin-left:10px;">Cancel</button>
 		</div>
 
