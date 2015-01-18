@@ -5,72 +5,79 @@
 	<div class="col-sm-12" id="entityDetailsTab">
 
 
-		<div class="col-sm-6">
+		<div class="col-sm-12">
 			
 			    <div id="entityDetails">
 
-			    <form id="entityLicensorTop">
+				    <form id="entityLicensorTop">
 
-					<div class="col-sm-12" id="spaceBar"></div>
-			    	<div class="col-sm-4" id="entityDetailsHeading">Entity Details</div>
+						<div class="col-sm-12" id="spaceBar"></div>
+				    	<div class="col-sm-4" id="entityDetailsHeading">Entity Details</div>
 
-			    	<div class="cols-sm-6">
-						<div id="invmessageDiv" role="alert"></div>
-					</div>
+				    	<div class="col-sm-6 col-sm-offset-1">
+							<div id="invmessageDiv" role="alert"></div>
+						</div>
 
-			    	<div class="col-sm-12"></div>
+				    	<div class="col-sm-12"></div>
 
-			    		<div class="col-sm-8 col-sm-offset-1">
+				    	<div class="col-sm-12">
 
-				    		<div class="col-sm-12">
+					    	<div class="col-sm-6">
 
-				    			<div class="col-sm-2 small-headers">
-				    				<label>Entity:</label>
-								</div>
-				    			<div class="col-sm-4 form-group requiredBar">
-				    			
-				    			{{getselectedEntity selectedEntity}}
-					    			<select id="licensorsFilter" name="licensorsFilter" can-value="selectedEntity" class="form-control resizeBox licensors">
-					    				<optgroup>
-							               
-							                <option value="">Select</option>
-							              
-							             </optgroup>
-							           	{{#each licensors}}
-							             <optgroup label="{{entityType}}">
-							               {{#each entities}}
-							                <option id="{{id}}">{{value}}</option>
-							               {{/each}}
-							             </optgroup>
-							           	{{/each}}
-									</select>
+					    		<div class="col-sm-8" style="margin-left: 40px;">
 
-								</div>
+						    		<div class="col-sm-12">
 
-								<div class="col-sm-3">
+						    			<div class="col-sm-2 small-headers">
+						    				<label>Entity:</label>
+										</div>
+						    			<div class="col-sm-4 form-group requiredBar">
+						    			
+						    			{{getselectedEntity selectedEntity}}
+							    			<select id="licensorsFilter" name="licensorsFilter" can-value="selectedEntity" class="form-control resizeBox licensors">
+							    				<optgroup>
+									               
+									                <option value="">Select</option>
+									              
+									             </optgroup>
+									           	{{#each licensors}}
+									             <optgroup label="{{entityType}}">
+									               {{#each entities}}
+									                <option id="{{id}}">{{value}}</option>
+									               {{/each}}
+									             </optgroup>
+									           	{{/each}}
+											</select>
 
-									<button type="button" id="analyticsAdd"  name="analyticsAdd"
-										class="btn buttonSubmit btn-custom-small" style="margin-left:15px;">Add</button>
-									
+										</div>
 
-				    			</div>
+										<div class="col-sm-3">
 
-				    			<div class="col-sm-2">
+											<button type="button" id="analyticsAdd"  name="analyticsAdd"
+												class="btn buttonSubmit btn-custom-small" style="margin-left:15px;">Add</button>
+											
 
-				    					<button type="button" id="analyticsFetch"  name="analyticsFetch"
-											class="btn buttonSubmit btn-custom-small" style="margin-left:-12px;">Fetch</button>
-									
-				    			</div>
+						    			</div>
 
+						    			<div class="col-sm-2">
 
-			    			</div>
-
-			    		</div>
-
-			    		
+						    					<button type="button" id="analyticsFetch"  name="analyticsFetch"
+													class="btn buttonSubmit btn-custom-small" style="margin-left:-12px;">Fetch</button>
+											
+						    			</div>
 
 
-			    </form>		
+					    			</div>
+
+					    		</div>
+					    	
+					    	</div>
+
+				    	</div>
+				    		
+
+
+				    </form>		
 
 			    	</div>
 
@@ -430,7 +437,7 @@
 		
 
 		<div class="col-sm-12 col-sm-offset-10 buttonsBottom">
-			<button type="button" id="buttonsubmit" name="Submit" class="btn submitButton btn-custom-small" style="margin-left:10px;">Submit</button>
+			<button type="button" id="buttonsubmit" name="SubmitPage" class="btn submitButton btn-custom-small" style="margin-left:10px;">Submit</button>
 			<button type="button" id="buttonreset" name="Reset" class="btn cancelButton btn-custom-small-cancel " style="margin-left:10px;">Cancel</button>
 		</div>
 
