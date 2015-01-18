@@ -6,6 +6,7 @@ import Grid from 'components/grid/';
 import stache from 'can/view/stache/';
 import utils from 'components/page-on-account/utils';
 import UserReq from 'utils/request/';
+import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 var proposedonAccountGrid = Grid.extend({
   tag: 'rn-proposed-onaccount-grid',
@@ -108,7 +109,7 @@ var proposedonAccountGrid = Grid.extend({
       var column = el.closest('td').data('column').column;
 
       var row = el.closest('tr').data('row').row;
-      row.attr(column.title,value);
+      row.attr(periodWidgetHelper.getFiscalPeriod(column.title),utils.currencyFormat(value));
 
       //putting the rows to the page from grid component
       var proposedOnAccountData={};
@@ -130,14 +131,15 @@ var proposedonAccountGrid = Grid.extend({
                  var quarters = self.scope.request.quarters;
                 for(var i=0;i<quarters.length;i++){
                   var column={
-                    id:quarters[i],
+                    //id:quarters[i],
+                    id:periodWidgetHelper.getFiscalPeriod(quarters[i]),
                     title:quarters[i],
                     editable:true,
                       getEditingValue: function(row,title) {
-                        return row.attr(title);
+                        return row.attr(periodWidgetHelper.getFiscalPeriod(title));
                       },
                       setValue: function(row, newValue,title) {
-                        row.attr(title,newValue);
+                        row.attr(periodWidgetHelper.getFiscalPeriod(title),newValue);
                       }
                   };
                   self.scope.columns.push(column);
