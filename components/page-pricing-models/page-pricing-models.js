@@ -193,10 +193,7 @@ var page = Component.extend({
 
         $("#save").attr("disabled", true);
 
-
-
-
-  	 },
+    },
     "#fetch click":function(){
       var self = this;
        clearOldEditData(self);
@@ -239,7 +236,17 @@ var page = Component.extend({
                 /*Error condition*/
               }).then(function(){
                 self.scope.attr("showbottomSection", true);
-                handleMsg("show", "Please click on pricing model row to view/edit.");
+                $("models-grid table tbody tr:eq(0)").click();
+                  setTimeout(function(){
+                        var maxversion = $("#version option:last-child").val();
+                        $("#version").val(maxversion);
+                        if($.isNumeric(maxversion)){
+                          $("#version").trigger('change');
+                        }  
+                        
+                    },1000);
+                
+             //   handleMsg("show", "Please click on pricing model row to view/edit.");
                 $('#pmform').bootstrapValidator('addField', 'version');
                 $('#pmform').bootstrapValidator('addField', 'pricingmodeltype');
                 $('#pmform').bootstrapValidator('addField', 'modelname');
@@ -264,6 +271,14 @@ var page = Component.extend({
         if(self.scope.attr("modelSumRowIndex") != el.closest('tr')[0].rowIndex){
           handleMsg("hide");
           clearOldEditData(self);
+           setTimeout(function(){
+              var maxversion = $("#version option:last-child").val();
+              $("#version").val(maxversion);
+              if($.isNumeric(maxversion)){
+                $("#version").trigger('change');
+              }  
+              
+          },1000);
         }
 
        self.scope.attr("modelSumRowIndex", el.closest('tr')[0].rowIndex);
@@ -420,7 +435,11 @@ var page = Component.extend({
                 
                  if(selectedVersion == maxVersion){
 
-                    setTimeout(function(){ $("#pmform").data('bootstrapValidator').validate(); }, 1000);
+                    setTimeout(function(){ $("#pmform").data('bootstrapValidator').validate();
+                     $(".popover").hide(); 
+
+
+                    }, 1000);
                    
 
                     var pmvalid = $("#pmform").data('bootstrapValidator').isValid();
@@ -507,7 +526,20 @@ var page = Component.extend({
         $("button#add").attr("disabled", true);
       }
     },
-    "#add click":function(){
+
+    "{scope.regionStore} change":function(){
+      var self = this;
+      
+      setTimeout(function(){
+          $("#regions").val("Europe");
+          $("button#fetch").attr("disabled", false);
+          $("button#add").attr("disabled", false);
+          self.scope.attr("regions", "Europe");
+          $("button#fetch").click();
+      }, 200);
+    },
+
+   "#add click":function(){
         var self = this;  
 
         self.scope.attr("showbottomSection", true);
