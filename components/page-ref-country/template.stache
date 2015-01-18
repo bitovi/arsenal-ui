@@ -191,7 +191,7 @@
 
             <div class="col-sm-12" style="text-align:center;padding:15px;">
               <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
-              <button id="submitBtn" {{disableSubmit}} type="submit"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>
+              <button id="submitBtn" {{disableSubmit}} type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>
             </div>
         </div>
         <!-- LEFT Layout END-->
