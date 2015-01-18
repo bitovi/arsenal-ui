@@ -10,7 +10,7 @@ export default [
       var value = row.dtlHdrId;
       var rejectableVal = false;
 
-      if(row.rejectable && row.dtlHdrType == 'PDF') { //if(row.rejectable && row.dtlHdrType != 'PDF') { 
+      if(row.rejectable && row.dtlHdrType != 'PDF') { 
 
         rejectableVal = true;
 

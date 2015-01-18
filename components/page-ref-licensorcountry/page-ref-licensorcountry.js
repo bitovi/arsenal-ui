@@ -642,7 +642,7 @@ var loadPage = function(scope,data){
 
   } else {
 
-    $(".laCheckBox").prop("checked",true);
+    $(".laCheckBox").prop("checked",false);
 
   }
 
@@ -668,10 +668,10 @@ var loadPage = function(scope,data){
       $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({}));
   }
 
-  if(data.pricingModel.baseModelParameters != null && data.pricingModel.baseModelParameters.length > 0) {
+  if( data.pricingModel!= null && data.pricingModel.baseModelParameters != null && data.pricingModel.baseModelParameters.length > 0) {
     scope.attr("baseModelParameter").replace(data.pricingModel.baseModelParameters);
   }
-  if(data.pricingModel.trackCounts != null && data.pricingModel.trackCounts.length > 0) {
+  if( data.pricingModel!= null data.pricingModel.trackCounts != null && data.pricingModel.trackCounts.length > 0) {
     scope.attr("trackCounts").replace(data.pricingModel.trackCounts);
   }
 
