@@ -115,6 +115,7 @@ var page = Component.extend({
     this.scope.attr("emptyrows", false);
     this.scope.ingestList.headerRows.splice(0, this.scope.ingestList.headerRows.length);
     this.scope.ingestList.footerRows.splice(0,this.scope.ingestList.footerRows.length);
+    this.scope.attr("ingestCcidSelected").splice(0, this.scope.attr("ingestCcidSelected").length);
     // this.scope.attr("isGlobalSearchIngested",this.scope.appstate.attr("globalSearch"));
     // console.log(" ")
     // fetchReconIngest(this.scope);
@@ -158,7 +159,8 @@ var page = Component.extend({
         //console.log(this.scope.tokenInput);
         /* The below code calls {scope.appstate} change event that gets the new data for grid*/
         /* All the neccessary parameters will be set in that event */
-        commonUtils.triggerGlobalSearch();
+        //commonUtils.triggerGlobalSearch();
+        fetchReconIngest(self.scope, false);
       },
     ".downloadLink.badLines click": function(item, el, ev){
       var self=this.scope;
@@ -477,6 +479,8 @@ var fetchReconIngest = function(scope, load){
   var searchRequestObj = UserReq.formGlobalRequest(scope.appstate);
   searchRequestObj.searchRequest["type"] =  scope.tabName.ingest.attr("type");
   //TODO During pagination / scrolling, the below values has tobe chnaged.
+
+  scope.attr("ingestCcidSelected").splice(0, scope.attr("ingestCcidSelected").length);
 
   if(scope.appstate.attr('globalSearchButtonClicked')==true){
       scope.attr("ingestedOffset",0);
