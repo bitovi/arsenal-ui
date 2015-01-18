@@ -444,62 +444,8 @@ var page = Component.extend({
 
 
           },
-         /* '#editableText keypress':function(){
-
-            var self = this;
-
-            var selectedVersion = $("#version option:selected").text();
-            var maxVersion = self.scope.attr("maxVersion");
-
-
-            if(selectedVersion == maxVersion){
-                    var pmvalid = $("#pmform").data('bootstrapValidator').isValid();
-
-                    if(!pmvalid){
-                      $("#pmform").data('bootstrapValidator').validate();
-                      $("#save").attr("disabled", true);
-                    }
-                    else{
-                      $("#save").attr("disabled", false);
-                    } 
-                  }else{
-                    $("#pmform").data('bootstrapValidator').resetForm();
-                  }
-
-                  
-
-          },*/
-        '#editableText, .form-control change':function(el){
-
-        //  console.log(el);
-
-       /*     var self = this;
-
-            var selectedVersion = $("#version option:selected").text();
-            var maxVersion = self.scope.attr("maxVersion");
-
-            if(self.scope.editstate == false){
-              selectedVersion =  1;
-              maxVersion  = 1;
-            }
-
-
-            if(selectedVersion == maxVersion){
-                    var pmvalid = $("#pmform").data('bootstrapValidator').isValid();
-                    $("#pmform").data('bootstrapValidator').validate();
-                    $("#pmform").data('bootstrapValidator').resetForm();
-
-
-                    if(!pmvalid){
-                      $("#pmform").data('bootstrapValidator').validateField(el[0].name);
-                      $("#save").attr("disabled", true);
-                    }
-                    else{
-                      $("#save").attr("disabled", false);
-                    } 
-                  } */
-
-          }, 
+         
+        
           
 
           'shown.bs.popover':function(){
@@ -628,7 +574,7 @@ var page = Component.extend({
 
        PricingModels.create(UserReq.formRequestDetails(saveRecord), function(data){
                   if(data["status"]=="SUCCESS"){
-                              var msg = "Pricing model was saved successfully."
+                              var msg = data["responseText"];
                               $("#pbmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
                               $("#pbmessageDiv").css("display", "block");
                               
@@ -650,7 +596,7 @@ var page = Component.extend({
                               }
                             else
                             {
-                                var msg = "Pricing model not was saved successfully."
+                                var msg = data["responseText"];
                                 $("#pbmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
                                 $("#pbmessageDiv").show();
                                 setTimeout(function(){
