@@ -331,7 +331,8 @@ prepareRowsForDisplay:function(onAccountDetails,quarters){
       var entityId = onAccountDetails[i].entityId;
       var currency = onAccountDetails[i].currencyCode;
       var contentType = onAccountDetails[i].contentGroupName;
-       var period = this.getDisplayPeriod(onAccountDetails[i].fiscalPeriod);
+       //var period = this.getDisplayPeriod(onAccountDetails[i].fiscalPeriod);
+       var period = onAccountDetails[i].fiscalPeriod;
       if(entityId==previousEntityId && currency == previousCurrency && contentType==previousContentType){
         if(i==0){
           row = this.createRow(onAccountDetails[i],false,row)
@@ -344,9 +345,10 @@ prepareRowsForDisplay:function(onAccountDetails,quarters){
         if(i!=0){
           var addToRow = false;
           for(var k=0;k<quarters.length;k++){
-             if(periodMap.hasOwnProperty(quarters[k])){
+            var fiscalPeriod = this.getFiscalPeriod(quarters[k]);
+             if(periodMap.hasOwnProperty(fiscalPeriod)){
               addToRow = true;
-              row[quarters[k]]=utils.currencyFormat(periodMap[quarters[k]]);
+              row[fiscalPeriod]=utils.currencyFormat(periodMap[fiscalPeriod]);
               }
            }
           if(addToRow){
@@ -362,9 +364,10 @@ prepareRowsForDisplay:function(onAccountDetails,quarters){
     }
     var addToRow = false;
     for(var k=0;k<quarters.length;k++){
-       if(periodMap.hasOwnProperty(quarters[k])){
+      var fiscalPeriod = this.getFiscalPeriod(quarters[k]);
+       if(periodMap.hasOwnProperty(fiscalPeriod)){
         addToRow = true;
-        row[quarters[k]]=utils.currencyFormat(periodMap[quarters[k]]);
+        row[fiscalPeriod]=utils.currencyFormat(periodMap[fiscalPeriod]);
         }
      }
     if(addToRow){
@@ -406,6 +409,15 @@ getDisplayPeriod: function(quarter){
     var period = quarter.substring(quarter.length, quarter.length-2);
     return (quarters[period]+'FY'+year.substring(year.length, year.length-2));  
   },
+  getFiscalPeriod: function (period){
+    if(period==undefined){
+      return "";
+    }else if(period.indexOf('Q') > -1 ){
+      return this.getPeriodForQuarter(period);
+    }else{
+      return null;
+    }
+  },
   createFooterRow:function(onAccountFooter){
     var summaryRows=[];
     var detailRows=[];
@@ -428,7 +440,8 @@ getDisplayPeriod: function(quarter){
         if(i==0){
             footerRow = this.createNewFooterRow(footerRow[i],false,footerRow,parent)
         }else{
-            var period = this.getDisplayPeriod(footerData[i].fiscalPeriod);
+            //var period = this.getDisplayPeriod(footerData[i].fiscalPeriod);
+            var period = footerData[i].fiscalPeriod;
           footerRow[period]=utils.currencyFormat(footerData[i].onAccountAmt);
           //footerRow[footerData[i].fiscalPeriod]=utils.currencyFormat(footerData[i].onAccountAmt);
         }
@@ -460,8 +473,8 @@ getDisplayPeriod: function(quarter){
   footerRow["cashAdjust"]=utils.currencyFormat(footerData.entityCashAdjAmtTotal);
   footerRow["tfooter"]=true;
   footerRow['Total']= utils.currencyFormat(footerData.onAccountAmtTotal);
-  var period = this.getDisplayPeriod(footerData.fiscalPeriod);
-  footerRow[period]=utils.currencyFormat(footerData.onAccountAmt);
+  //var period = this.getDisplayPeriod(footerData.fiscalPeriod);
+  footerRow[footerData.fiscalPeriod]=utils.currencyFormat(footerData.onAccountAmt);
   return footerRow;
 },
 prepareOnAccountRowsForDisplay:function(onAccountDetails,quarters){
@@ -477,7 +490,7 @@ prepareOnAccountRowsForDisplay:function(onAccountDetails,quarters){
       var entityId = onAccountDetails[i].entityId;
       var currency = onAccountDetails[i].currencyCode;
       var contentType = onAccountDetails[i].contentGroupName;
-      var period = this.getDisplayPeriod(onAccountDetails[i].fiscalPeriod);
+      var period = onAccountDetails[i].fiscalPeriod;
       if(entityId==previousEntityId && currency == previousCurrency && contentType==previousContentType){
         if(i==0){
           row = this.createRow(onAccountDetails[i],false,row)
@@ -490,9 +503,10 @@ prepareOnAccountRowsForDisplay:function(onAccountDetails,quarters){
         if(i!=0){
           var addToRow = false;
           for(var k=0;k<quarters.length;k++){
-             if(periodMap.hasOwnProperty(quarters[k])){
+            var fiscalPeriod = this.getFiscalPeriod(quarters[k]);
+             if(periodMap.hasOwnProperty(fiscalPeriod)){
               addToRow = true;
-              row[quarters[k]]=utils.currencyFormat(periodMap[quarters[k]]);
+              row[fiscalPeriod]=utils.currencyFormat(periodMap[fiscalPeriod]);
               }
            }
           if(addToRow){
@@ -512,9 +526,10 @@ prepareOnAccountRowsForDisplay:function(onAccountDetails,quarters){
     }
     var addToRow = false;
     for(var k=0;k<quarters.length;k++){
-       if(periodMap.hasOwnProperty(quarters[k])){
+      var fiscalPeriod = this.getFiscalPeriod(quarters[k]);
+       if(periodMap.hasOwnProperty(fiscalPeriod)){
         addToRow = true;
-        row[quarters[k]]=utils.currencyFormat(periodMap[quarters[k]]);
+        row[fiscalPeriod]=utils.currencyFormat(periodMap[fiscalPeriod]);
         }
      }
     if(addToRow){
@@ -587,6 +602,9 @@ getProposedOnAccRows:function(quarters,data){
 currencyFormat : function (number)
   {
     if(number != undefined && $.isNumeric(number)){
+      if(typeof(number) == 'string'){
+        number = Number(number);
+      }
       var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
       return n;
     }else{

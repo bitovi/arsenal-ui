@@ -11,6 +11,7 @@ import Grid from 'components/grid/';
 import stache from 'can/view/stache/';
 import utils from 'components/page-on-account/utils';
 import requestHelper from 'utils/request/';
+import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 var OnAccountBalance = Grid.extend({
   tag: 'rn-onaccount-balance-grid',
@@ -55,7 +56,8 @@ var OnAccountBalance = Grid.extend({
 
          for(var i=0;i<quarters.length;i++){
           var column={
-            id:quarters[i],
+            //id:quarters[i],
+            id:periodWidgetHelper.getFiscalPeriod(quarters[i]),
             title:quarters[i]
           };
           self.scope.columns.push(column);
