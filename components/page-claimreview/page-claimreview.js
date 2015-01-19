@@ -600,7 +600,7 @@ var page = Component.extend({
         var footerData = self.scope.attr().allClaimLicensorMap[0].footer;
         //var currencyType = $("#currencyType").val();
         //console.log("invoice data is sss  "+JSON.stringify(invoiceData));
-        if(invoiceData!="null" && invoiceData.length!=0){
+        if(invoiceData != undefined && invoiceData!="null" && invoiceData.length!=0){
           var  gridData = generateTableData(invoiceData,footerData);
           //console.log("grid data for "+currencyType+" currency is "+JSON.stringify(gridData));
           var rows = new can.List(gridData.data);
@@ -624,7 +624,7 @@ var page = Component.extend({
         var sortDir = self.scope.attr('sortDirection');
         //var currencyType = $("#currencyType").val();
         //console.log("invoice data is sss  "+JSON.stringify(invoiceData));
-        if(invoiceData!=null && invoiceData.length!=0){
+        if(invoiceData != undefined && invoiceData!=null && invoiceData.length!=0){
           var  gridData = generateTableData(invoiceData,footerData);
           //console.log("grid data for "+currencyType+" currency is "+JSON.stringify(gridData));
           var rows = new can.List(gridData.data); 
