@@ -59,6 +59,7 @@ var page = Component.extend({
     trackCounts: [],
     societyModelMapping:[],
     revisionHistory:[],
+    selectedperiod:[],
     displayMessage:"display:none",
     state:"Edit"
   },
@@ -193,10 +194,10 @@ var page = Component.extend({
         }
       }).on('error.field.bv', function(e, data) {
           $('*[data-bv-icon-for="'+data.field +'"]').popover('show');
-
+      $('#submitBtn').prop('disabled',true);
       }).on('success.field.bv', function(e, data) {
           data.bv.disableSubmitButtons(false);
-
+      $('#submitBtn').prop('disabled',false);
       });
 
     },
@@ -511,6 +512,25 @@ var page = Component.extend({
       });
 
 
+    },
+    '{selectedperiod} change':function(val){ 
+
+       var periodValue = val[0].value;
+       console.log(periodValue);
+
+       if(val[0].which == "validFrom"){ 
+
+         $("input[name='validFrom']").val(periodValue);
+
+         $("input[name='validFrom']").on('change', function(e) {
+           // Revalidate the date when user change it
+           $('#countryForm').bootstrapValidator('revalidateField', 'validFrom');
+         });
+
+       }
+       $('input[name=validFrom]').change();
+
+       //val[0].which=='periodFrom' ? this.scope.periodFrom.replace(val[0].value):this.scope.periodTo.replace(val[0].value);
     },
     '#accModelSel change': function(el, ev) {
       var self=this.scope;

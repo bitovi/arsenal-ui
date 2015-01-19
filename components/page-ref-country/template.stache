@@ -55,7 +55,7 @@
                   <label for="forValidFrom" class="col-sm-5 control-label small-headers">Valid From: </label>
                   <div class="col-sm-7 requiredBar calendarcls">
                     <input type='text' id="validFrom" class="validFrom form-control updatePeroid" name="validFrom" place-holder="Select Period" can-value='pageState.countryDetails.country.validFrom'/>
-                    <period-calendar appstate="{appstate}"></period-calendar>
+                    <period-calendar selectedperiod={selectedperiod} appstate="{appstate}"></period-calendar>
                   </div>
                 </div>
                  <div class="col-sm-2"></div>
