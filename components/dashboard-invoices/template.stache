@@ -43,8 +43,7 @@
       {{#entities}}
       <th class="entity" {{data 'entity'}}><span {{popover 'entity' {.}}}>{{.}}</span></th>
       {{/entities}}
-       <th class="entity">LOCAL</th>
-      <th></th>
+       <th class="entity">LOCAL</th>      
     </tr>
   </thead>
   <tbody>
@@ -71,11 +70,6 @@
         <td></td>
       {{/if}}
 
-       {{#if localSociety}}
-        <td class="hole">{{localSociety}}</td>
-      {{else}}
-        <td></td>
-      {{/if}}
 
     </tr>
     {{/holesReports}}
@@ -83,6 +77,26 @@
 </table>
 
 
+
+
+<table class="holes-reports-local" border="1">
+  <thead>
+    <tr>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#holesReports}}
+    <tr>
+      {{#if localSociety}}
+        <td class="hole">{{localSociety}}</td>
+      {{else}}
+        <td></td>
+      {{/if}}
+    </tr>
+    {{/holesReports}}
+  </tbody>
+</table>
 </div>
 
 
