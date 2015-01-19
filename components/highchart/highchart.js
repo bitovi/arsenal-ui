@@ -129,6 +129,7 @@ var highchartpage = Component.extend({
 						console.log('high chart did not return any data');
 						$("#highChartDetails").addClass("highcharts_Hide");
 						 $("#messageDiv").html("<label class='errorMessage'>Data not available</label>");
+						 $("#chartContainer").removeClass('highcharts_Overlay');
 			             $("#messageDiv").show();
 			             setTimeout(function(){
 			                $("#messageDiv").hide();
