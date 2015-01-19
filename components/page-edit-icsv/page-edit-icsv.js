@@ -1518,7 +1518,7 @@ var page = Component.extend({
 				setMinHeightBreak: function(){
 
 			  	 	var vph = 282;
-					return 'Style="min-height:'+vph+'px;"';
+					return 'Style="height:'+vph+'px;overflow-y:auto;"';
 				},
 				calculateUSD:function(){
 
