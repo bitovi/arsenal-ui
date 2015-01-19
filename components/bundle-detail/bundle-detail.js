@@ -285,6 +285,7 @@ var BundleDetailTabs = Component.extend({
       if(this.scope.details.isChild && this.scope.details.contentType !== "TAX"){
         var data = this.scope.details;
         console.log("chart data");console.log(data);
+        $("#chartContainer").addClass("highcharts_Overlay");
         $("#highChartDetails").append(stache('<high-chart details={data}></high-chart>')({data}));
       }else{
         console.log('Data not set so not showing the chart');
@@ -301,7 +302,8 @@ var BundleDetailTabs = Component.extend({
     },
     '#highChartDetails mousedown': function(item, el, ev){
       if(el.toElement.id == 'close'){
-        $("#highChartDetails").addClass("highcharts_Hide")
+        $("#highChartDetails").addClass("highcharts_Hide");
+        $("#chartContainer").removeClass('highcharts_Overlay');
       }else{
         $(item[0]).addClass("draggable").parents().on('mousemove', function(e) {
           $('.draggable').offset({
