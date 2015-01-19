@@ -787,7 +787,7 @@ var page = Component.extend({
                               $("#messageDiv").hide();
                           },4000);
                           */
-                          self.attr('licensorRecordsAvailable',values.recordsAvailable);
+                          self.scope.attr('licensorRecordsAvailable',values.recordsAvailable);
                           if(parseInt(claimLicSearchRequest["offset"])==0){
                             self.scope.allClaimLicensorMap.replace(values);
                           } else{
@@ -824,7 +824,7 @@ var page = Component.extend({
                               $("#messageDiv").hide();
                           },4000);
                           */
-                          self.attr('countryRecordsAvailable',values.recordsAvailable);
+                          self.scope.attr('countryRecordsAvailable',values.recordsAvailable);
                           if(parseInt(claimLicSearchRequest["offset"])==0){
                             self.scope.allClaimCountryMap.replace(values);
                           } else{
