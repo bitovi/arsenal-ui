@@ -433,7 +433,10 @@ var page = Component.extend({
         
     	},
     	"#highChart click":function(){
+        
         if(this.scope.details.isChild){
+          $("#messageDiv").hide();
+          $("#chartContainer").addClass("highcharts_Overlay");
           var data = this.scope.details;
              $("#highChartDetails").append(stache('<high-chart details={data}></high-chart>')({data}));
         }else{          
@@ -446,7 +449,8 @@ var page = Component.extend({
     	},
       "#highChartDetails mousedown": function(item, el, ev){
         if(el.toElement.id == 'close'){
-          $("#highChartDetails").addClass("highcharts_Hide")
+          $("#highChartDetails").addClass("highcharts_Hide");
+          $("#chartContainer").removeClass('highcharts_Overlay');
         }else{
              $(item[0]).addClass("draggable").parents().on('mousemove', function(e) {
               $('.draggable').offset({
