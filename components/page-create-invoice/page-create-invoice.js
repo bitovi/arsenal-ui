@@ -1111,12 +1111,16 @@ var page = Component.extend({
   									       		  var msg =showErrorDetails(errorMap, "Warning");
   									       		  showMessages(msg);
                               }
-                        $("#invoiceform")[0].reset();
+                        					$("#invoiceform")[0].reset();
 												$("#invoiceform").data('bootstrapValidator').resetForm();
 												$("#addInvSubmit").attr("disabled", true);
 
 												self.scope.attr("totalAmountVal", 0);
 												self.scope.attr("tax", 0);
+												self.scope.attr("showPBR", true);
+												self.scope.attr("regionStore", "");
+												
+
 
 												$("[id^=breakrow]").each(function(index){  /*removing added row in break down.*/
 												if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){

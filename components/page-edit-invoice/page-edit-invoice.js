@@ -898,7 +898,7 @@ var page = Component.extend({
 				 		$("#receiveddate input[type=text]").val(moment(invoiceData.receivedDate).format("MM/DD/YYYY"));
 				 		self.scope.attr("invoiceduedate", moment(invoiceData.invoiceDueDate).format("MM/DD/YYYY"));
 				 		$("#invoiceduedate input[type=text]").val(moment(invoiceData.invoiceDueDate).format("MM/DD/YYYY"));
-				 		if(invoiceData.invoiceCalcDueDate != ""){
+				 		if((invoiceData.invoiceCalcDueDate != "") &&  (invoiceData.invoiceCalcDueDate != null)){
 				 			self.scope.attr("calduedate",moment(invoiceData.invoiceCalcDueDate).format("MM/DD/YYYY"));
 				 		}
 				 		else
