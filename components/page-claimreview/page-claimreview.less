@@ -53,7 +53,10 @@ rn-claim-licensor-grid, rn-claim-country-grid{
 	              text-decoration: none;
 	              color: white;
 	              margin-right: 0px;
-	              background-color: @middle-grey;
+	              background: -webkit-linear-gradient(#7e7e84, #848484, #b0b0b5); /* For Safari 5.1 to 6.0 */
+				  background: -o-linear-gradient(#7e7e84, #848484, #b0b0b5); /* For Opera 11.1 to 12.0 */
+				  background: -moz-linear-gradient(#7e7e84, #848484, #b0b0b5); /* For Firefox 3.6 to 15 */
+				  background: linear-gradient(#7e7e84, #848484, #b0b0b5); /* Standard syntax */
 	          }
 	    }
 	    li.active {
@@ -72,7 +75,7 @@ rn-claim-licensor-grid, rn-claim-country-grid{
 
 .claimReviewContainer{
 	border: 0px !important;
-	padding:0px 10px 10px 10px; 
+	padding:0px 10px 10px 0px; 
 
 	
     #aggregate {

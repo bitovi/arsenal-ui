@@ -1,4 +1,4 @@
-@deselected-background: linear-gradient(to bottom, #7e7e83, #afafb4);
+@deselected-background: linear-gradient(to bottom, #7e7e84, #848484, #b0b0b5);
 @selected-background: linear-gradient(to bottom, #1581f4, #63adf1);
 
 @border-radius: .5em;
@@ -27,7 +27,10 @@ rn-switcher {
 
       border: 1px solid #848484;
       /*border-left-width: 0px;*/
-      background: @deselected-background;
+      background: -webkit-linear-gradient(#7e7e84, #848484, #b0b0b5); /* For Safari 5.1 to 6.0 */
+      background: -o-linear-gradient(#7e7e84, #848484, #b0b0b5); /* For Opera 11.1 to 12.0 */
+      background: -moz-linear-gradient(#7e7e84, #848484, #b0b0b5); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#7e7e84, #848484, #b0b0b5); /* Standard syntax */
 
       &:first-child {
         /*border-left-width: 1px;*/
@@ -59,7 +62,10 @@ rn-switcher.tabs {
   ul.switcher > li {
     display: inline-block;
     color: white;
-    background: @middle-grey;
+    background: -webkit-linear-gradient(#7e7e84, #848484, #b0b0b5); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#7e7e84, #848484, #b0b0b5); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#7e7e84, #848484, #b0b0b5); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#7e7e84, #848484, #b0b0b5); /* Standard syntax */
     padding: .5em 1em;
 
     border-color: @dark-grey;
