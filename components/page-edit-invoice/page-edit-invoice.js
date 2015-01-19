@@ -928,15 +928,23 @@ var page = Component.extend({
 
                         self.scope.attr("invselectedbundle", invoiceData.bundleId);
 
-		                var genObj = {regionId:self.scope.attr("regionStore")};
+		                var genObj = {
+			                			regionId:invoiceData.regionId,
+							  			entityId:invoiceData.entityId,
+							  			currency:invoiceData.invoiceCcy
+									};
 
-		                Country.findAll(UserReq.formRequestDetails(genObj),function(data){
-		                		self.scope.attr("country").replace([]);
-		                  		self.scope.attr("country").replace(data);
-		                  		self.scope.ajaxRequestStatus.attr("countryLoaded", true);
-								},function(xhr){
-				                /*Error condition*/
-				        }).then(function(){
+							Promise.all([Country.findCountriesForRegLicCurr(UserReq.formRequestDetails(genObj))
+						     ]).then(function(values) {
+						     	if(values[0].status == 'SUCCESS'){
+			              			self.scope.attr("country").replace([]);
+			                   		self.scope.attr("country").replace(values[0].data);
+			                   		self.scope.ajaxRequestStatus.attr("countryLoaded", true);
+			              		}else{
+			              			self.scope.attr("country").replace([]);
+			              			showMessages(values[0].responseText);
+			              		}
+							}).then(function(){
 
 				        	var $template = $('#breakrowTemplate');
 
