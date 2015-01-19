@@ -146,7 +146,7 @@ Grid.extend({
       var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
       $(tbody[0]).scrollTop(tableScrollTopVal);
         $(tbody).on('scroll', function(ev) {
-          if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight) {
+          if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight && parentScopeVar.licensorRecordsAvailable) {
             //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
 
             
@@ -298,7 +298,7 @@ Grid.extend({
       var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
       $(tbody[0]).scrollTop(tableScrollTopVal);
         $(tbody).on('scroll', function(ev) {
-          if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight) {
+          if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight && parentScopeVar.countryRecordsAvailable) {
             //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
 
             
@@ -373,6 +373,8 @@ var page = Component.extend({
     details:{},
     view:"licensor",
 	  tokenInput: [],
+    countryRecordsAvailable:'@',
+    licensorRecordsAvailable:'@',
     is_aggregate:0,
     refreshTokenInput: function(val, type){
       //console.log("val is "+JSON.stringify(val));
@@ -785,6 +787,7 @@ var page = Component.extend({
                               $("#messageDiv").hide();
                           },4000);
                           */
+                          self.attr('licensorRecordsAvailable',values.recordsAvailable);
                           if(parseInt(claimLicSearchRequest["offset"])==0){
                             self.scope.allClaimLicensorMap.replace(values);
                           } else{
@@ -821,6 +824,7 @@ var page = Component.extend({
                               $("#messageDiv").hide();
                           },4000);
                           */
+                          self.attr('countryRecordsAvailable',values.recordsAvailable);
                           if(parseInt(claimLicSearchRequest["offset"])==0){
                             self.scope.allClaimCountryMap.replace(values);
                           } else{

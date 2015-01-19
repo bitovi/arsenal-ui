@@ -155,7 +155,6 @@ Grid.extend({
             }
           }
         });
-
       alignGrid('invoiceGrid');
     },
     '.open-toggle click': function(el, ev) {
@@ -218,7 +217,23 @@ var page = Component.extend({
 
         }
         //console.log(type+"&&"+JSON.stringify(this.attr('tokenInput')));
-     }
+     },
+
+     getSelectedValue : function(text, divId) {
+
+      var obj = $(divId+ " td");
+
+      for(var i=1; i< obj.length; i++) {
+
+        if(obj.getAttibute('value') !=null && $obj.getAttibute('value') !=undefined && $obj.getAttibute('value') == text) {
+
+          $(divId+' table>tbody>tr:nth-child('+i+')').addClass("highlight");
+
+        }
+
+      }
+    }
+
   },
   init: function(){
     //console.log("inside init");
@@ -246,7 +261,8 @@ var page = Component.extend({
         },
         newPBnameRequest: function(){
           return this.attr("newpaymentbundlenamereq");
-        }
+        },
+        
     },
   events: {
 
@@ -282,7 +298,17 @@ var page = Component.extend({
         /* Bundle Names is selectable only when any row is selected */
         $('#paymentBundleNames').prop('disabled', 'disabled');
         $('#invoiceGrid').html(stache('<rn-grid-invoice emptyrows="{emptyrows}"></rn-grid-invoice>')({emptyrows:true}));
+        if (self.scope.appstate.attr("invSearchPervHist") != undefined && self.scope.appstate.attr("invSearchPervHist") != null ) {
+
+          self.scope.appstate.attr('globalSearch', true);
+          self.scope.attr("localGlobalSearch", false);
+          self.scope.attr("appstate", self.scope.appstate.attr("invSearchPervHist"));
+          getAllInvoices(self.scope);
+          //self.scope.appstate.attr("invSearchPervHist", null);
+
+        }
     },
+
     '#exportExcel click':function(){
           var self= this;
           self.scope.excelOutput.attr('flag',true);
@@ -314,6 +340,10 @@ var page = Component.extend({
         var self = this;
         var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
         var footerData = this.scope.attr().allInvoicesMap[0].footer;
+
+
+
+
         //console.log("Status code "+JSON.stringify(StatusCodes));
         //console.log("dsada "+JSON.stringify(invoiceData));
         var gridData = {"data":[],"footer":[]};
@@ -454,10 +484,20 @@ var page = Component.extend({
           var sortDir = self.scope.attr('sortDirection');
           $("#loading_img").hide();
           $('#invoiceGrid').html(stache('<rn-grid-invoice rows="{rows}" footerrows="{footerrows}" sortcolumnnames="{sortcolumnnames}" sortdir="{sortdir}" emptyrows="{emptyrows}"></rn-grid-invoice>')({rows, footerrows, sortcolumnnames:sortedColumns, sortdir:sortDir, emptyrows:false}));
+          
+          if (self.scope.appstate.attr("invSearchPervHist") != undefined && self.scope.appstate.attr("invSearchPervHist") != null ) {
+
+            self.scope.appstate.attr("invSearchPervHist", null);
+            var obj = self.scope.getSelectedValue(self.scope.appstate.attr("invoiceId"), "#invoiceGrid");
+            
+
+          } 
+
         } else {
           $("#loading_img").hide();
           $('#invoiceGrid').html(stache('<rn-grid-invoice emptyrows="{emptyrows}"></rn-grid-invoice>')({emptyrows:true}));
         }
+        
 
     },
      "#btnAdd click": function(){
@@ -478,6 +518,8 @@ var page = Component.extend({
           var statusId = row.statusId;
           var paymentState = row.paymentState;
           var invoiceno = row.invoiceNumber;
+          self.scope.appstate.attr("invSearchPervHist", self.scope.appstate);
+          self.scope.appstate.attr("invoiceId", row.invId);
           //console.log("row is "+JSON.stringify(row));
 
           /* An invoice can be Edited only if it satisfies the below criteria */
@@ -967,143 +1009,152 @@ var page = Component.extend({
       '{scope.appstate} change': function() {
           var self=this;
 
-          /* When fetch button is clicked the first set of records should be brought */
-          /* Reset the offset to 0 only when global search Fetch button is clicked */
-          /* In the case of scroll, globalSearchButtonClicked attr will be false */
-          if(self.scope.appstate.attr('globalSearchButtonClicked')==true){
-            self.scope.attr("offset",0);
-            self.scope.attr("tableScrollTop",0);
-          }
+          getAllInvoices(self.scope);
 
-          /* Page is not allowed to do search by default when page is loaded */
-          /* This can be checked using 'localGlobalSearch' parameter, it will be undefined when page loaded */
-          if(this.scope.attr("localGlobalSearch") != undefined){
-              if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch')) {
-                this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
-                $("#loading_img").show();
-
-                var periodFrom = this.scope.appstate.attr('periodFrom');
-                var periodTo = this.scope.appstate.attr('periodTo');
-                var serTypeId = this.scope.appstate.attr('storeType');
-                var regId = this.scope.appstate.attr('region');
-                var countryId = this.scope.appstate.attr()['country'];
-                var licId = this.scope.appstate.attr()['licensor'];
-                var contGrpId = this.scope.appstate.attr()['contentType'];
-                var periodType = this.scope.appstate.attr()['periodType'];
-
-                var invSearchRequest = {};
-                invSearchRequest.searchRequest = {};
-                if(typeof(periodFrom)=="undefined")
-                  invSearchRequest.searchRequest["periodFrom"] = "";
-                else
-                  invSearchRequest.searchRequest["periodFrom"] = periodFrom;
-
-                if(typeof(periodTo)=="undefined")
-                  invSearchRequest.searchRequest["periodTo"] = "";
-                else
-                  invSearchRequest.searchRequest["periodTo"] = periodTo;
-
-                if(typeof(periodType)=="undefined")
-                  invSearchRequest.searchRequest["periodType"] = "";
-                else
-                  invSearchRequest.searchRequest["periodType"] = periodType;
-
-
-                if(typeof(serTypeId)=="undefined")
-                  invSearchRequest.searchRequest["serviceTypeId"] = "";
-                else
-                  invSearchRequest.searchRequest["serviceTypeId"] = serTypeId['id'];
-
-                if(typeof(regId)=="undefined")
-                  invSearchRequest.searchRequest["regionId"] = "";
-                else
-                  invSearchRequest.searchRequest["regionId"] = regId['id'];
-
-                invSearchRequest.searchRequest["country"] = [];
-                if(typeof(countryId)!="undefined")
-                  //invSearchRequest.searchRequest["country"].push(countryId['value']);
-                  invSearchRequest.searchRequest["country"]=countryId;
-
-                invSearchRequest.searchRequest["entityId"] = [];
-                if(typeof(licId)!="undefined")
-                  invSearchRequest.searchRequest["entityId"] = licId;
-
-                invSearchRequest.searchRequest["contentGrpId"] = [];
-                if(typeof(contGrpId)!="undefined")
-                  invSearchRequest.searchRequest["contentGrpId"] = contGrpId;
-
-           //     invSearchRequest.searchRequest["periodType"] = "P";
-
-                invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
-                invSearchRequest.searchRequest["offset"] = this.scope.offset;
-                invSearchRequest.searchRequest["limit"] = "15";
-
-                var filterData = self.scope.tokenInput.attr();
-                var newFilterData = [];
-                if(filterData.length>0){
-                  for(var p=0;p<filterData.length;p++)
-                    newFilterData.push(filterData[p]["name"]);
-                }
-                invSearchRequest.searchRequest["filter"] = newFilterData;
-
-                invSearchRequest.searchRequest["sortBy"] = self.scope.sortColumns.attr().toString();
-                invSearchRequest.searchRequest["sortOrder"] = self.scope.attr('sortDirection');
-
-                /*This parameter is to generating the excel output*/
-                if(self.scope.excelOutput.attr('flag'))invSearchRequest["excelOutput"] = true;
-
-                console.log("Request are "+JSON.stringify(UserReq.formRequestDetails(invSearchRequest)));
-
-
-                GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){
-                    //console.log("response is "+JSON.stringify(data.attr()));
-                    if(data["status"]=="SUCCESS"){
-                      if(self.scope.excelOutput.attr('flag')){//when user clicks export to excel icon this block will run otherwise its goes to normal else conditon
-                         if(data["status"]=="SUCCESS"){
-                            $('#exportExcels').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
-                            self.scope.excelOutput.attr('flag',false);
-                            $("#loading_img").hide();
-                          }
-                      }else{
-                        if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
-                          $("#messageDiv").html("<label class='successMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>");
-                          $("#messageDiv").show();
-                          setTimeout(function(){
-                              $("#messageDiv").hide();
-                          },4000);
-                        }
-                        self.scope.attr('recordsAvailable',data.recordsAvailable);
-                        self.scope.checkedRows.replace([]); //Reset Checked rows scope variable
-                        if(parseInt(invSearchRequest.searchRequest["offset"])==0){
-                          self.scope.allInvoicesMap.replace(data);
-                        } else{
-                          //self.scope.allInvoicesMap[0].invoices.push(data.invoices);
-                          $.merge(self.scope.allInvoicesMap[0].invoices, data.invoices);
-                          self.scope.allInvoicesMap.replace(self.scope.allInvoicesMap);
-                        }
-                      }
-                    } else {
-                      $("#loading_img").hide();
-                      $("#messageDiv").html("<label class='errorMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>");
-                      $("#messageDiv").show();
-                      setTimeout(function(){
-                          $("#messageDiv").hide();
-                      },4000);
-                    }
-                },function(xhr){
-                  console.error("Error while loading: bundleNames"+xhr);
-                });
-              }
-
-          } else {
-            if(this.scope.appstate.attr('globalSearch')==undefined)
-              this.scope.appstate.attr('globalSearch',true);
-            this.scope.attr("localGlobalSearch", this.scope.appstate.attr('globalSearch'));
-          }
+          
       }
   }
 });
 
+
+function getAllInvoices(self) {
+
+  /* When fetch button is clicked the first set of records should be brought */
+  /* Reset the offset to 0 only when global search Fetch button is clicked */
+  /* In the case of scroll, globalSearchButtonClicked attr will be false */
+  if(self.appstate.attr('globalSearchButtonClicked')==true){
+    self.attr("offset",0);
+    self.attr("tableScrollTop",0);
+  }
+
+  /* Page is not allowed to do search by default when page is loaded */
+  /* This can be checked using 'localGlobalSearch' parameter, it will be undefined when page loaded */
+  if(self.attr("localGlobalSearch") != undefined){
+      if(self.attr("localGlobalSearch") != self.appstate.attr('globalSearch')) {
+        self.attr("localGlobalSearch",self.appstate.attr('globalSearch'));
+        $("#loading_img").show();
+
+        var periodFrom = self.appstate.attr('periodFrom');
+        var periodTo = self.appstate.attr('periodTo');
+        var serTypeId = self.appstate.attr('storeType');
+        var regId = self.appstate.attr('region');
+        var countryId = self.appstate.attr()['country'];
+        var licId = self.appstate.attr()['licensor'];
+        var contGrpId = self.appstate.attr()['contentType'];
+        var periodType = self.appstate.attr()['periodType'];
+
+        var invSearchRequest = {};
+        invSearchRequest.searchRequest = {};
+        if(typeof(periodFrom)=="undefined")
+          invSearchRequest.searchRequest["periodFrom"] = "";
+        else
+          invSearchRequest.searchRequest["periodFrom"] = periodFrom;
+
+        if(typeof(periodTo)=="undefined")
+          invSearchRequest.searchRequest["periodTo"] = "";
+        else
+          invSearchRequest.searchRequest["periodTo"] = periodTo;
+
+        if(typeof(periodType)=="undefined")
+          invSearchRequest.searchRequest["periodType"] = "";
+        else
+          invSearchRequest.searchRequest["periodType"] = periodType;
+
+
+        if(typeof(serTypeId)=="undefined")
+          invSearchRequest.searchRequest["serviceTypeId"] = "";
+        else
+          invSearchRequest.searchRequest["serviceTypeId"] = serTypeId['id'];
+
+        if(typeof(regId)=="undefined")
+          invSearchRequest.searchRequest["regionId"] = "";
+        else
+          invSearchRequest.searchRequest["regionId"] = regId['id'];
+
+        invSearchRequest.searchRequest["country"] = [];
+        if(typeof(countryId)!="undefined")
+          //invSearchRequest.searchRequest["country"].push(countryId['value']);
+          invSearchRequest.searchRequest["country"]=countryId;
+
+        invSearchRequest.searchRequest["entityId"] = [];
+        if(typeof(licId)!="undefined")
+          invSearchRequest.searchRequest["entityId"] = licId;
+
+        invSearchRequest.searchRequest["contentGrpId"] = [];
+        if(typeof(contGrpId)!="undefined")
+          invSearchRequest.searchRequest["contentGrpId"] = contGrpId;
+
+   //     invSearchRequest.searchRequest["periodType"] = "P";
+
+        invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
+        invSearchRequest.searchRequest["offset"] = self.offset;
+        invSearchRequest.searchRequest["limit"] = "15";
+
+        var filterData = self.tokenInput.attr();
+        var newFilterData = [];
+        if(filterData.length>0){
+          for(var p=0;p<filterData.length;p++)
+            newFilterData.push(filterData[p]["name"]);
+        }
+        invSearchRequest.searchRequest["filter"] = newFilterData;
+
+        invSearchRequest.searchRequest["sortBy"] = self.sortColumns.attr().toString();
+        invSearchRequest.searchRequest["sortOrder"] = self.attr('sortDirection');
+
+        /*This parameter is to generating the excel output*/
+        if(self.excelOutput.attr('flag'))invSearchRequest["excelOutput"] = true;
+
+        console.log("Request are "+JSON.stringify(UserReq.formRequestDetails(invSearchRequest)));
+
+
+        GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){
+            //console.log("response is "+JSON.stringify(data.attr()));
+            if(data["status"]=="SUCCESS"){
+              if(self.excelOutput.attr('flag')){//when user clicks export to excel icon this block will run otherwise its goes to normal else conditon
+                 if(data["status"]=="SUCCESS"){
+                    $('#exportExcels').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
+                    self.excelOutput.attr('flag',false);
+                    $("#loading_img").hide();
+                  }
+              }else{
+                if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
+                  $("#messageDiv").html("<label class='successMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>");
+                  $("#messageDiv").show();
+                  setTimeout(function(){
+                      $("#messageDiv").hide();
+                  },4000);
+                }
+                self.attr('recordsAvailable',data.recordsAvailable);
+                self.checkedRows.replace([]); //Reset Checked rows scope variable
+                if(parseInt(invSearchRequest.searchRequest["offset"])==0){
+                  self.allInvoicesMap.replace(data);
+                } else{
+                  //self.scope.allInvoicesMap[0].invoices.push(data.invoices);
+                  $.merge(self.allInvoicesMap[0].invoices, data.invoices);
+                  self.allInvoicesMap.replace(self.allInvoicesMap);
+                }
+                //$("rn-grid-invoice td").invoiceId
+              }
+            } else {
+              $("#loading_img").hide();
+              $("#messageDiv").html("<label class='errorMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>");
+              $("#messageDiv").show();
+              setTimeout(function(){
+                  $("#messageDiv").hide();
+              },4000);
+            }
+        },function(xhr){
+          console.error("Error while loading: bundleNames"+xhr);
+        });
+      }
+
+  } else {
+    if(self.appstate.attr('globalSearch')==undefined)
+      self.appstate.attr('globalSearch',true);
+      self.attr("localGlobalSearch", self.appstate.attr('globalSearch'));
+  }
+
+};
 
 function setHeightOnLoad(){
 //  $('#invoiceGrid').css("height","auto");
@@ -1123,7 +1174,7 @@ var invoiceExportToExcel=function(appstate){
     invoiceRequest.searchRequest.type="invoices";
     //invoiceRequest.excelOutput=true;
     return UserReq.formRequestDetails(invoiceRequest);
-};
+}
 
 function CurrencyFormat(number)
 {

@@ -869,16 +869,24 @@ var page = Component.extend({
                         }
                         //Code to display server list of files on file upload rn-file-uploader-icsv control ends
 
+                        	
+		                var genObj = {
+			                			regionId:invoiceData.regionId,
+							  			entityId:invoiceData.entityId,
+							  			currency:invoiceData.invoiceCcy
+									};
 
-		                var genObj = {regionId:self.scope.attr("regionStore")};
-
-		                Country.findAll(UserReq.formRequestDetails(genObj),function(data){
-		                		self.scope.attr("country").replace([]);
-		                  		self.scope.attr("country").replace(data);
-		                  		self.scope.ajaxRequestStatus.attr("countryLoaded", true);
-								},function(xhr){
-				                /*Error condition*/
-				        }).then(function(){
+							Promise.all([Country.findCountriesForRegLicCurr(UserReq.formRequestDetails(genObj))
+						     ]).then(function(values) {
+						     	if(values[0].status == 'SUCCESS'){
+			              			self.scope.attr("country").replace([]);
+			                   		self.scope.attr("country").replace(values[0].data);
+			                   		self.scope.ajaxRequestStatus.attr("countryLoaded", true);
+			              		}else{
+			              			self.scope.attr("country").replace([]);
+			              			showMessages(values[0].responseText);
+			              		}
+							}).then(function(){
 
 				        	var $template = $('#breakrowTemplate');
 

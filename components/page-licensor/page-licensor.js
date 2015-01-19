@@ -1488,13 +1488,13 @@ var page = Component.extend({
           genObj.id = defaultEntity.id;
           genObj.licensorName =  defaultEntity.value;
 
-          //self.scope.attr("selectedEntity", genObj.licensorName);
+          self.scope.attr("selectedEntity", genObj.licensorName);
 
-          //Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
+          Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
-            //self.scope.populateAnalyticsPage(values);
+            self.scope.populateAnalyticsPage(values);
             
-          //});
+          });
 
       });
 
