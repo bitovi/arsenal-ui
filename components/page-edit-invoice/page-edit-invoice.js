@@ -1060,11 +1060,6 @@ var page = Component.extend({
 			self.scope.createBreakline(self.scope.attr("rowindex"));
 		},
 
-		'rn-file-uploader-edit onSelected': function (ele, event, val) {
-            // var self = this;
-            // self.scope.attr('uploadedfileinfo',val.filePropeties);
-         },
-
 		"#invoiceform #paymentBundleNames change": function(){
 	           var self = this;
 	          var pbval = $("#invoiceform #paymentBundleNames").val();
@@ -1107,6 +1102,38 @@ var page = Component.extend({
 
 
 	          }
+	      },
+	      'rn-file-uploader-edit onSelected': function(ele, event){
+	     
+	     	var self = this;
+	     	
+	     	var errObj=validateMandatory();
+          	if(errObj.isFailed == false){
+           	 	$("#addInvSubmit").attr("disabled", false);
+          	}else{
+          		$("#addInvSubmit").attr("disabled", true);
+          	}
+
+          	if(!self.scope.editpage){
+				var requireField = (self.scope.attr("invoicetypeSelect") == "2")? mandatoryFieldAdhoc: (self.scope.attr("invoicetypeSelect") == "3") ? mandatoryFieldCA  : mandatoryField;
+
+				for(var i= 0; i < requireField.length; i++){
+					if(!$("#invoiceform").data('bootstrapValidator').isValidField(requireField[i])){
+						 $("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
+						 if(requireField[i] == "receiveddate"){
+						 	$('#invoiceform').bootstrapValidator('revalidateField', 'receiveddate'); /*revalidating this field. It initialized with currentdate*/
+						 }
+						 break;
+					}
+
+				}
+			}
+			if(self.scope.editpage){
+				if(!$("#invoiceform").data('bootstrapValidator').isValid()){
+					$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
+				}
+		   }
+                      	
 	      },
 
 		"#addInvSubmit click":function(){
