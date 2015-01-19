@@ -917,7 +917,16 @@ var page = Component.extend({
 
 	          }
 	      },
-
+	      'rn-file-uploader-create onSelected': function(ele, event){
+	     
+	     	var errObj=validateMandatory();
+          	if(errObj.isFailed == false){
+           	 	$("#addInvSubmit").attr("disabled", false);
+          	}else{
+          		$("#addInvSubmit").attr("disabled", true);
+          	}
+                      	
+	      },
 		"#addInvSubmit click":function(){
 
           var errObj=validateMandatory();
