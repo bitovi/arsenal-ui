@@ -79,7 +79,7 @@ var page = Component.extend({
   	AmountStore:{},
  	totalAmountVal:0,
   	calduedate:0,
-  	tax:0,
+  	tax:"",
   	taxStore:{},
   	isAdhocStrore:{"ccidGL":"CCID Filename", "contentAdhoc":"Content Type"},
   	editcommentArr:[],
@@ -823,7 +823,11 @@ var page = Component.extend({
 				 		{
 				 			self.scope.attr("calduedate","");
 				 		}
-						self.scope.attr("tax", invoiceData.tax);
+
+						self.scope.attr("tax", "");
+				 		if(invoiceData.tax != null){
+				 			self.scope.attr("tax", invoiceData.tax);
+				 		}
 						self.scope.attr("invoiceId",invoiceData.invId);
 
 						var tempcommentObj = invoiceData.comments;
@@ -1165,7 +1169,7 @@ var page = Component.extend({
 							   editInvoiceCSVData.fxRate = self.scope.fxrateStore;
 							   editInvoiceCSVData.notes = self.scope.licnotesStore;
 							   editInvoiceCSVData.invoiceAmount = self.scope.totalAmountVal;
-							   editInvoiceCSVData.tax = self.scope.tax;
+							   //editInvoiceCSVData.tax = self.scope.tax;
 							   editInvoiceCSVData.grossTotal = self.scope.grossTotalStore;
 							   editInvoiceCSVData.netTotal = self.scope.totalAmountVal;
 							   editInvoiceCSVData.receivedDate = $("#receiveddate input[type=text]").val();
@@ -1174,6 +1178,11 @@ var page = Component.extend({
 							   editInvoiceCSVData.invoiceDueDate = $("#invoiceduedate input[type=text]").val();
 							   editInvoiceCSVData.createdBy = UserReq.formRequestDetails().prsId;
 							   editInvoiceCSVData.periodType = periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0));
+
+
+							   if(self.scope.tax != null && self.scope.tax!= undefined &&  self.scope.tax.length>0) {
+								   	editInvoiceCSVData["tax"] = self.scope.tax;
+								}
 
 							   editInvoiceCSVData.comments = [];
 
@@ -1482,8 +1491,12 @@ var page = Component.extend({
 
 			  	},
 			  	calculateTaxPercent: function(){
-			  	 	this.attr("taxStore", this.attr("tax"));
-			  	 	var percent = (this.attr("tax")/this.attr("totalAmountVal"))*100;
+			  		var tax = 0;
+			  		if(this.attr("tax").length>0){
+			  			tax = Number(this.attr("tax"));
+			  		}
+			  	 	this.attr("taxStore", tax);
+			  	 	var percent = (tax/this.attr("totalAmountVal"))*100;
 			  	 	if(!isFinite(percent))
 			  	 	return ""
 			  	 	else
@@ -1500,15 +1513,16 @@ var page = Component.extend({
 			  	 	}
 			  	},
 			  	grossTotal: function(){
-
-
+			  		var tax = 0;
+			  		if(this.attr("tax").length>0){
+			  			tax = Number(this.attr("tax"));
+			  		}
 			  	// 	console.log(this.attr("totalAmountVal"));
-			  	 	var grossTotal = (parseFloat(this.attr("tax")) + parseFloat(this.attr("totalAmountVal")));
+			  	 	var grossTotal = (parseFloat(tax) + parseFloat(this.attr("totalAmountVal")));
 			  	 	this.attr("grossTotalStore", grossTotal);
 			  	 	if(isNaN(grossTotal)){
 			  	 		grossTotal = 0;
 			  	 	}
-
 			  	 	return CurrencyFormat(grossTotal);
 			  	},
 			  	setHeight: function(){
