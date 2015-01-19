@@ -221,13 +221,17 @@ var page = Component.extend({
 
      getSelectedValue : function(text, divId) {
 
-      var obj = $(divId+ " td");
+      var obj = $(divId+ " input");
 
       for(var i=1; i< obj.length; i++) {
 
-        if(obj.getAttibute('value') !=null && $obj.getAttibute('value') !=undefined && $obj.getAttibute('value') == text) {
+        var ele = obj[i];
 
-          $(divId+' table>tbody>tr:nth-child('+i+')').addClass("highlight");
+        if(ele.getAttribute("value") !=null && ele.getAttribute("value") !=undefined && ele.getAttribute("value") == text.toString()) {
+
+          ($(divId+' table>tbody>tr.visible')[i-1]).setAttribute("class" , "visible highlight");
+
+          return i;
 
         }
 
@@ -488,10 +492,18 @@ var page = Component.extend({
           if (self.scope.appstate.attr("invSearchPervHist") != undefined && self.scope.appstate.attr("invSearchPervHist") != null ) {
 
             self.scope.appstate.attr("invSearchPervHist", null);
-            var obj = self.scope.getSelectedValue(self.scope.appstate.attr("invoiceId"), "#invoiceGrid");
+            self.scope.getSelectedValue(self.scope.appstate.attr("invoiceId"), "#invoiceGrid");
             
 
-          } 
+          } else {
+
+            if(self.scope.appstate.attr("invoiceId") != null || self.scope.appstate.attr("invoiceId") != undefined) {
+              //var i = self.scope.getSelectedValue(self.scope.appstate.attr("invoiceId"), "#invoiceGrid");
+              $('#invoiceGrid table>tbody>tr.highlight').removeClass("highlight");
+            }
+            self.scope.appstate.attr("invoiceId", null);
+
+          }
 
         } else {
           $("#loading_img").hide();

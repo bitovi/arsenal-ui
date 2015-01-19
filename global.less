@@ -356,3 +356,45 @@ input.datetimePickerCal{
     padding-left: 2px;
     box-sizing: none;
   }
+
+   @light-grey2: #f6f6f6; //#ececec;
+    @middle-grey: hsl(0, 0%, 50%);
+    @dark-grey: hsl(0, 0%, 25%);
+    @header-background: linear-gradient(to top, #7e7e83, #afafb4);
+  .nav{
+    padding-left: 8px !important;
+  }
+  .nav-tabs > li > a{
+    border:0;
+  }
+  .nav-tabs {
+    border-bottom: 1px solid #c6c6c6;
+  } 
+  #myTabs {
+      li {
+
+            margin-left: 0.25em;
+            margin-bottom: -2px;
+            border-radius: 4px 4px 0 0;
+            a {
+                text-decoration: none;
+                color: #ffffff;
+                margin-right: 0px;
+                background: @header-background;
+            }
+      }
+      li.active {
+          border:0;
+          a {
+              text-decoration: none;
+              background: @light-grey2; 
+              color: #3d3d3d;
+          }
+      }
+    }
+   .tab-content {
+    padding: 10px;
+    background-color: @light-grey2;
+    overflow: hidden;
+    padding-bottom: 3em;
+  }
