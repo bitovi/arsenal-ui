@@ -113,7 +113,7 @@ var page = Component.extend({
   	AmountStore:{},
  	totalAmountVal:0,
   	calduedate:0,
-  	tax:0,
+  	tax:"",
   	taxStore:{},
   	isAdhocStrore:{"ccidGL":"CCID Filename", "contentAdhoc":"Content Type"},
   	editcommentArr:[],
@@ -905,7 +905,12 @@ var page = Component.extend({
 				 		{
 				 			self.scope.attr("calduedate","");
 				 		}
-						self.scope.attr("tax", invoiceData.tax);
+
+				 		self.scope.attr("tax", "");
+				 		if(invoiceData.tax != null){
+				 			self.scope.attr("tax", invoiceData.tax);
+				 		}
+						
 						self.scope.attr("invoiceId",invoiceData.invId);
 
 						var tempcommentObj = invoiceData.comments;
@@ -1170,7 +1175,7 @@ var page = Component.extend({
 				    tempEditInvoiceData["commentsId"] = invoiceData.commentsId;
 				    tempEditInvoiceData["invoiceAmount"] = self.scope.totalAmountVal;
 				    tempEditInvoiceData["grossTotal"] = self.scope.grossTotalStore;
-				    if(self.scope.tax != null && parseInt(self.scope.tax) > 0) {
+				    if(self.scope.tax != null && self.scope.tax!= undefined &&  self.scope.tax.length>0) {
 					   	tempEditInvoiceData["tax"] = self.scope.tax;
 					}
 				   // tempEditInvoiceData["userAdjAmt"] = "0";
@@ -1500,8 +1505,12 @@ var page = Component.extend({
 
 								  	},
 								  	calculateTaxPercent: function(){
-								  	 	this.attr("taxStore", this.attr("tax"));
-								  	 	var percent = (this.attr("tax")/this.attr("totalAmountVal"))*100;
+								  		var tax = 0;
+								  		if(this.attr("tax").length>0){
+								  			tax = Number(this.attr("tax"));
+								  		}
+								  	 	this.attr("taxStore", tax);
+								  	 	var percent = (tax/this.attr("totalAmountVal"))*100;
 								  	 	if(!isFinite(percent))
 								  	 	return ""
 								  	 	else
@@ -1517,12 +1526,11 @@ var page = Component.extend({
 								  	 	}
 								  	},
 								  	grossTotal: function(){
-								  		var grossTotal =0;
-								  		if(this.attr("tax") != undefined && this.attr("tax") != null){
-								  			grossTotal = (parseFloat(this.attr("tax")) + parseFloat(this.attr("totalAmountVal")));
-								  		}else{
-								  			grossTotal = parseFloat(this.attr("totalAmountVal"));
+								  		var tax = 0;
+								  		if(this.attr("tax").length>0){
+								  			tax = Number(this.attr("tax"));
 								  		}
+										var grossTotal = (parseFloat(tax) + parseFloat(this.attr("totalAmountVal")));
 								  	 	this.attr("grossTotalStore", grossTotal);
 								  	 	if(isNaN(grossTotal)){
 								  	 		grossTotal = 0;

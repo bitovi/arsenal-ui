@@ -85,7 +85,7 @@ var page = Component.extend({
   	AmountStore:{},
  	totalAmountVal:0,
   	calduedate:0,
-  	tax:0,
+  	tax:"",
   	taxStore:{},
   	isAdhocStrore:{"ccidGL":"CCID Filename", "contentAdhoc":"Content Type"},
   	editcommentArr:[],
@@ -987,7 +987,7 @@ var page = Component.extend({
 					   tempInvoiceData["netTotal"] = self.scope.totalAmountVal;
 
 
-					   if(self.scope.tax != null && parseInt(self.scope.tax) > 0) {
+					   if(self.scope.tax != null && self.scope.tax!= undefined &&  self.scope.tax.length>0) {
 					   		tempInvoiceData["tax"] = self.scope.tax;
 						}
                        console.log(typeof $("#paymentBundleNames").val());
@@ -1116,7 +1116,7 @@ var page = Component.extend({
 												$("#addInvSubmit").attr("disabled", true);
 
 												self.scope.attr("totalAmountVal", 0);
-												self.scope.attr("tax", 0);
+												self.scope.attr("tax", "");
 												self.scope.attr("showPBR", true);
 												self.scope.attr("regionStore", "");
 												
@@ -1171,7 +1171,7 @@ var page = Component.extend({
 								$("#addInvSubmit").attr("disabled", true);
 
 								self.scope.attr("totalAmountVal", 0);
-								self.scope.attr("tax", 0);
+								self.scope.attr("tax", "");
 
 								$("[id^=breakrow]").each(function(index){  /*removing added row in break down.*/
 								if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
@@ -1300,10 +1300,15 @@ var page = Component.extend({
 
 								  	},
 								  	calculateTaxPercent: function(){
-								  	 	this.attr("taxStore", this.attr("tax"));
-								  	 	var percent = (this.attr("tax")/this.attr("totalAmountVal"))*100;
+								  		var tax = 0;
+								  		if(this.attr("tax").length>0){
+								  			tax = Number(this.attr("tax"));
+								  		}
+
+								  	 	this.attr("taxStore", tax);
+								  	 	var percent = (tax/this.attr("totalAmountVal"))*100;
 								  	 	if(!isFinite(percent))
-								  	 	return ""
+								  	 	return "";
 								  	 	else
 								  	 	return percent.toFixed(2)+"%"; //Round to Two decimal only
 								  	},
@@ -1317,7 +1322,11 @@ var page = Component.extend({
 								  	 	}
 								  	},
 								  	grossTotal: function(){
-								  	 	var grossTotal = (parseFloat(this.attr("tax")) + parseFloat(this.attr("totalAmountVal")));
+								  		var tax = 0;
+								  		if(this.attr("tax").length>0){
+								  			tax = Number(this.attr("tax"));
+								  		}
+								  	 	var grossTotal = (parseFloat(tax) + parseFloat(this.attr("totalAmountVal")));
 								  	 	this.attr("grossTotalStore", grossTotal);
 								  	 	if(isNaN(grossTotal)){
 								  	 		grossTotal = 0;
