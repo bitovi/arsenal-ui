@@ -671,7 +671,7 @@ var loadPage = function(scope,data){
   if( data.pricingModel!= null && data.pricingModel.baseModelParameters != null && data.pricingModel.baseModelParameters.length > 0) {
     scope.attr("baseModelParameter").replace(data.pricingModel.baseModelParameters);
   }
-  if( data.pricingModel!= null data.pricingModel.trackCounts != null && data.pricingModel.trackCounts.length > 0) {
+  if( data.pricingModel!= null && data.pricingModel.trackCounts != null && data.pricingModel.trackCounts.length > 0) {
     scope.attr("trackCounts").replace(data.pricingModel.trackCounts);
   }
 
