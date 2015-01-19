@@ -217,7 +217,23 @@ var page = Component.extend({
 
         }
         //console.log(type+"&&"+JSON.stringify(this.attr('tokenInput')));
-     }
+     },
+
+     getSelectedValue : function(text, divId) {
+
+      var obj = $(divId+ " td");
+
+      for(var i=1; i< obj.length; i++) {
+
+        if(obj.getAttibute('value') !=null && $obj.getAttibute('value') !=undefined && $obj.getAttibute('value') == text) {
+
+          $(divId+' table>tbody>tr:nth-child('+i+')').addClass("highlight");
+
+        }
+
+      }
+    }
+
   },
   init: function(){
     //console.log("inside init");
@@ -245,7 +261,8 @@ var page = Component.extend({
         },
         newPBnameRequest: function(){
           return this.attr("newpaymentbundlenamereq");
-        }
+        },
+        
     },
   events: {
 
@@ -287,10 +304,11 @@ var page = Component.extend({
           self.scope.attr("localGlobalSearch", false);
           self.scope.attr("appstate", self.scope.appstate.attr("invSearchPervHist"));
           getAllInvoices(self.scope);
-          self.scope.appstate.attr("invSearchPervHist", null);
+          //self.scope.appstate.attr("invSearchPervHist", null);
 
         }
     },
+
     '#exportExcel click':function(){
           var self= this;
           self.scope.excelOutput.attr('flag',true);
@@ -322,6 +340,10 @@ var page = Component.extend({
         var self = this;
         var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
         var footerData = this.scope.attr().allInvoicesMap[0].footer;
+
+
+
+
         //console.log("Status code "+JSON.stringify(StatusCodes));
         //console.log("dsada "+JSON.stringify(invoiceData));
         var gridData = {"data":[],"footer":[]};
@@ -462,10 +484,20 @@ var page = Component.extend({
           var sortDir = self.scope.attr('sortDirection');
           $("#loading_img").hide();
           $('#invoiceGrid').html(stache('<rn-grid-invoice rows="{rows}" footerrows="{footerrows}" sortcolumnnames="{sortcolumnnames}" sortdir="{sortdir}" emptyrows="{emptyrows}"></rn-grid-invoice>')({rows, footerrows, sortcolumnnames:sortedColumns, sortdir:sortDir, emptyrows:false}));
+          
+          if (self.scope.appstate.attr("invSearchPervHist") != undefined && self.scope.appstate.attr("invSearchPervHist") != null ) {
+
+            self.scope.appstate.attr("invSearchPervHist", null);
+            var obj = self.scope.getSelectedValue(self.scope.appstate.attr("invoiceId"), "#invoiceGrid");
+            
+
+          } 
+
         } else {
           $("#loading_img").hide();
           $('#invoiceGrid').html(stache('<rn-grid-invoice emptyrows="{emptyrows}"></rn-grid-invoice>')({emptyrows:true}));
         }
+        
 
     },
      "#btnAdd click": function(){
@@ -487,6 +519,7 @@ var page = Component.extend({
           var paymentState = row.paymentState;
           var invoiceno = row.invoiceNumber;
           self.scope.appstate.attr("invSearchPervHist", self.scope.appstate);
+          self.scope.appstate.attr("invoiceId", row.invId);
           //console.log("row is "+JSON.stringify(row));
 
           /* An invoice can be Edited only if it satisfies the below criteria */
@@ -1100,6 +1133,7 @@ function getAllInvoices(self) {
                   $.merge(self.allInvoicesMap[0].invoices, data.invoices);
                   self.allInvoicesMap.replace(self.allInvoicesMap);
                 }
+                //$("rn-grid-invoice td").invoiceId
               }
             } else {
               $("#loading_img").hide();
