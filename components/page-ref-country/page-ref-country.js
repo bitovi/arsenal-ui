@@ -23,6 +23,7 @@ import Currency from 'models/common/currency/';
 import RefCountry from 'models/refdata/country/';
 import PricingModels from 'models/pricing-models/';
 import PricingMethods from 'models/common/pricingMethods/';
+import CountryLicensor from 'models/refdata/countryLicensor/';
 
 
 var reportConfigurationList = new can.List();
@@ -566,11 +567,30 @@ var page = Component.extend({
       var self = this.scope;
       var selmodelid = self.attr("selectedModelId").toString();
       var country = self.pageState.countryDetails.country.attr("countryId");
-      var genObj = {modelId:selmodelid,reqType:'details', countryId:country};
+      var genObj = {modelId:selmodelid,reqType:'countryLicensordetails', countryId:country};
 
       console.log("Request is " +JSON.stringify(UserReq.formRequestDetails(genObj)));
-      PricingModels.findOne(UserReq.formRequestDetails(genObj),function(data){
+      CountryLicensor.findOne(UserReq.formRequestDetails(genObj),function(data){
           //console.log("Pricing model details "+ JSON.stringify(data.pricingModel.attr()));
+
+          if(data.pricingModel == undefined || data.pricingModel == null) {
+
+            $("#viewPricingModelDiv").hide();
+
+            var msg = "No details available";
+
+            $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
+            $("#invmessageDiv").show();
+            setTimeout(function(){
+              $("#invmessageDiv").hide();
+            },5000);
+    
+          } else {
+
+            $("#viewPricingModelDiv").show();
+              
+          }
+
           self.attr("getPricingModelDetails",data.pricingModel);
           self.attr("baseModelParameter").replace(data.pricingModel.baseModelParameters);
           self.attr("trackCounts").replace(data.pricingModel.trackCounts);

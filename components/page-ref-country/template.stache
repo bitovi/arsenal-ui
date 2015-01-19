@@ -7,9 +7,12 @@
       </div>
       <div class="col-sm-4">
         <!-- TODO - Keep the message outside -->
-        <div style="{{displayMessage}}" class="alert-success alert-dimension" role="alert">
+        <!-- <div style="{{displayMessage}}" class="alert-success alert-dimension" role="alert">
           <a href="#" class="close" data-dismiss="alert">&times;</a>
           New Country Details Changes Saved Successfully.
+        </div> -->
+        <div class="cols-sm-4">
+          <div id="invmessageDiv" role="alert"></div>
         </div>
 
       </div>
@@ -239,38 +242,41 @@
               </div>
             </div>
             <div class="col-sm-12" style="padding-top: 10px;">
-              <div class="col-sm-5 form-group">
-                <div class="singleField">
-                    <label for="" class="col-sm-6 control-label small-headers">Country:</label>
-                    <div class="col-sm-6">
-                      <span>{{getPricingModelDetails.country}}</span>
+                <div class="col-sm-5 form-group">
+                  <div class="singleField">
+                      <label for="" class="col-sm-6 control-label small-headers">Country:</label>
+                      <div class="col-sm-6">
+                        <span>{{getPricingModelDetails.country}}</span>
+                      </div>
                     </div>
-                  </div>
-               </div>
-              <div class="col-sm-7 form-group">
-                <div class="singleField">
-                    <label for="" class="col-sm-6 control-label small-headers">Entity:</label>
-                    <div class="col-sm-6">
-                        <span>{{getPricingModelDetails.entity}}</span>
+                 </div>
+                <div class="col-sm-7 form-group">
+                  <div class="singleField">
+                      <label for="" class="col-sm-6 control-label small-headers">Entity:</label>
+                      <div class="col-sm-6">
+                          <span>{{getPricingModelDetails.entity}}</span>
+                      </div>
                     </div>
-                  </div>
+                </div>
               </div>
-              <div class="col-sm-5 form-group">
-                <div class="singleField">
-                    <label for="inputEmail3" class="col-sm-6 control-label small-headers">Pricing Model:</label>
-                    <div class="col-sm-6">
-                      <span>{{getPricingModelDetails.pricingModel.modelName}}</span>     
-                    </select>
+              <div class="col-sm-12" style="padding-top: 10px;">
+                <div class="col-sm-5 form-group">
+                  <div class="singleField">
+                      <label for="inputEmail3" class="col-sm-6 control-label small-headers">Pricing Model:</label>
+                      <div class="col-sm-6">
+                        <span>{{getPricingModelDetails.pricingModel.modelName}}</span>     
+                      </select>
+                      </div>
                     </div>
-                  </div>
-               </div>
-              <div class="col-sm-7 form-group">
-                <div class="singleField">
-                    <label for="inputEmail3" class="col-sm-6 control-label small-headers">Model Name:</label>
-                    <div class="col-sm-6">
-                        <span>{{getPricingModelDetails.pricingModel.modelDescription}}</span> 
+                 </div>
+                <div class="col-sm-7 form-group">
+                  <div class="singleField">
+                      <label for="inputEmail3" class="col-sm-6 control-label small-headers">Model Name:</label>
+                      <div class="col-sm-6">
+                          <span>{{getPricingModelDetails.pricingModel.modelDescription}}</span> 
+                      </div>
                     </div>
-                  </div>
+                </div>
               </div>
               <div class="col-sm-12">
                 <fieldset class="scheduler-border">
