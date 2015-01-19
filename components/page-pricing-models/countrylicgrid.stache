@@ -16,7 +16,7 @@
     {{/filteredRows}}
 
     {{#if emptyrows}}
-        <tr><td style="text-align:center;background:#fff;color:#000;height:150px" colspan="{{#getColumnLength}}">Data Not Available</td</tr>
+        <tr><td style="text-align:center;background:#fff;color:#000;" colspan="{{#getColumnLength}}">Data Not Available</td</tr>
       {{/if}}
   </tbody>
  </table>
