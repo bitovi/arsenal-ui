@@ -38,6 +38,10 @@ var DashboardApprovals = Component.extend({
         self.scope.outboxRows.replace(approvals);
       });
 
+    },
+    "tbody>tr td dblclick": function(item, el, ev){
+        var self = this;
+        self.scope.appstate.attr('page','payment-bundles');
     }
   }
 });

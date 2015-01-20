@@ -108,11 +108,13 @@ var BundleDetailTabs = Component.extend({
 
       scope.getNewDetails(selectedBundle)
       .then(function(bundle) {
-        return WorkflowStep.findAll({
+        return WorkflowStep.loadWorkFlowView({
           workflowInstanceId: bundle.approvalId
         });
-      }).then(function(steps) {
-        scope.workflowSteps.replace(steps);
+      }).done(function(steps) {
+        console.log(JSON.stringify(steps.workflowView.nodes))
+        scope.workflowSteps.splice(0, scope.workflowSteps.length);
+        scope.workflowSteps.replace(steps.workflowView.nodes);
       });
       scope.bundleProgress.isBundleSelectionChange = false;
     },
