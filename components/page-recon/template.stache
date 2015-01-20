@@ -1,10 +1,20 @@
 <copy-clipboard> {{values}}</copy-clipboard>
-<div class="col-lg-12 pageTitle">
+<!--<div class="col-lg-12 pageTitle">
   <div class="col-lg-4">
     <h3>Recon Stats</h3>
   </div>
   <div class="col-lg-4 messageDiv">
     <div id="messageDiv" class="col-md-12" style="text-align:center;"></div>
+  </div>
+</div>-->
+<div class="div-warn-container" style="padding-left: 10px;padding-right: 10px;">
+  <div class="row pagetitle-div-parent">
+    <div class="col-sm-5 pageTitleInv">
+      <div class="pageHead">Recon Stats</div>
+    </div>
+  </div>
+  <div class="col-sm-7 div-warn-parent">
+    <div id="messageDiv" class="center" role="alert"></div>
   </div>
 </div>
 
@@ -24,11 +34,11 @@
 
 </div>
 
-    
-    <div class="tab-pane active grid-custom-overflow" id="ingested" >
+
+    <div class="tab-pane active grid-custom-overflow" id="ingested" style="padding-left: 10px;padding-right: 10px;">
         <rn-recon-grid columns="{ingestGridColumns}" rows="{ingestList.headerRows}" footerrows="{ingestList.footerRows}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}" emptyrows="{emptyrows}" pagename="{pagename}"></rn-recon-grid>
     </div>
-            
+
 
 		<!-- Recon Stats -->
 		<recon-stats loadrefresh="true" {{isTabSelectedAs 'Ingested'}}></recon-stats>

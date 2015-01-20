@@ -1,13 +1,22 @@
 <copy-clipboard> {{values}}</copy-clipboard>
-<div class="col-lg-12 pageTitle">
+<!--<div class="col-lg-12 pageTitle">
   <div class="col-lg-4">
     <h3>Recon Other</h3>
   </div>
   <div class="col-lg-4">
     <div id="messageDiv" class="col-md-12" style="text-align:center;padding-top:5px;"></div>
   </div>
+</div>-->
+<div class="div-warn-container" style="padding-left: 10px;padding-right: 10px;">
+  <div class="row pagetitle-div-parent">
+    <div class="col-sm-5 pageTitleInv">
+      <div class="pageHead">Recon Other</div>
+    </div>
+  </div>
+  <div class="col-sm-7 div-warn-parent" style="padding-top: 6px;">
+    <div id="messageDiv" class="center" role="alert"></div>
+  </div>
 </div>
-
 <div class="col-lg-12 recon-container">
   <div class="export-toexcel" id="exportExcel"></div>
   <div class="col-sm-9 form-inline" style="text-align:right;" {{isTabSelectedAs 'Incoming Other'}}></div>
@@ -33,14 +42,14 @@
       </ul>
 
         <div id="my-tab-content" class="tab-content">
-        
+
         <div class="tab-pane active grid-custom-overflow" id="incomingDetails">
           <rn-recon-grid columns="{detailGridColumns}" rows="{incomingDetails.headerRows}" footerrows="{incomingDetails.footerRows}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}" emptyrows="{emptyrows}" pagename="{pagename}"></rn-recon-grid>
         </div>
 
         <!-- <div class="col-lg-12 " style="max-height: 200px; overflow-y:scroll;" id="reconstatsOtherGrid"> -->
         <div class="tab-pane grid-custom-overflow" id="reconstatsOtherGrid">
-            <rn-recon-grid columns="{incomingOtherGridColumns}" rows="{incomingOtherList}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}" 
+            <rn-recon-grid columns="{incomingOtherGridColumns}" rows="{incomingOtherList}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}"
             pagename="{pagename}"></rn-recon-grid>
         </div>
 
