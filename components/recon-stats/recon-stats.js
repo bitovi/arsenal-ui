@@ -161,11 +161,11 @@ var page = Component.extend({
                 var ingestionArr = {};
 
                 ingestionArr["disputeType"] = ingestionStats[i]["disputeType"];
-                ingestionArr["noOfRecords"] = (formats.numberFormat(ingestionStats[i]["noOfRecords"])).toString().split(".")[0];
-                ingestionArr["recordsPercentage"] = ingestionStats[i]["recordsPercentage"] == "0" ? "0.00" : ingestionStats[i]["recordsPercentage"];
-                ingestionArr["noOfAdamIds"] = (formats.numberFormat(ingestionStats[i]["noOfAdamIds"])).toString().split(".")[0];
-                ingestionArr["totalPubFee"] = formats.currencyFormat(ingestionStats[i]["totalPubFee"] != "" ? ingestionStats[i]["totalPubFee"] : "0");
-                ingestionArr["pubFeePercentage"] = ingestionStats[i]["pubFeePercentage"] == "0" ? "0.00" : ingestionStats[i]["pubFeePercentage"];
+                ingestionArr["noOfRecords"] = (formats.numberFormatDecimal(ingestionStats[i]["noOfRecords"], 1)).toString().split(".")[0];
+                ingestionArr["recordsPercentage"] = ingestionStats[i]["recordsPercentage"] == "0" ? "0.0" : ingestionStats[i]["recordsPercentage"];
+                ingestionArr["noOfAdamIds"] = (formats.numberFormatDecimal(ingestionStats[i]["noOfAdamIds"], 1)).toString().split(".")[0];
+                ingestionArr["totalPubFee"] = formats.currencyFormatDecimal(ingestionStats[i]["totalPubFee"] != "" ? ingestionStats[i]["totalPubFee"] : "0", 1);
+                ingestionArr["pubFeePercentage"] = ingestionStats[i]["pubFeePercentage"] == "0" ? "0.0" : ingestionStats[i]["pubFeePercentage"];
 
                 grid.data.push(ingestionArr);
 
@@ -178,17 +178,17 @@ var page = Component.extend({
               ingestionSummaryStats.overRepDispute = data.summaryStats.overRepDispute;
 
 
-              ingestionSummaryStats.noOfReconRecords = (formats.numberFormat(data.summaryStats.noOfReconRecords).toString()).split(".")[0];
+              ingestionSummaryStats.noOfReconRecords = (formats.numberFormatDecimal(data.summaryStats.noOfReconRecords).toString()).split(".")[0];
 
-              ingestionSummaryStats.reconAmount = formats.currencyFormat(data.summaryStats.reconAmount);
+              ingestionSummaryStats.reconAmount = formats.currencyFormatDecimal(data.summaryStats.reconAmount, 1);
 
-              ingestionSummaryStats.lineItemDispute = formats.currencyFormat(data.summaryStats.lineItemDispute);
+              ingestionSummaryStats.lineItemDispute = formats.currencyFormatDecimal(data.summaryStats.lineItemDispute, 1);
 
-              ingestionSummaryStats.totalPubFee = formats.currencyFormat(data.summaryStats.totalPubFee);
+              ingestionSummaryStats.totalPubFee = formats.currencyFormatDecimal(data.summaryStats.totalPubFee, 1);
 
-              ingestionSummaryStats.recommendedPayment = formats.currencyFormat(data.summaryStats.recommendedPayment);
+              ingestionSummaryStats.recommendedPayment = formats.currencyFormatDecimal(data.summaryStats.recommendedPayment, 1);
 
-              ingestionSummaryStats.actualPayment = formats.currencyFormat(data.summaryStats.actualPayment == "" ? 0 : data.summaryStats.actualPayment);
+              ingestionSummaryStats.actualPayment = formats.currencyFormatDecimal(data.summaryStats.actualPayment == "" ? 0 : data.summaryStats.actualPayment, 1);
 
               var summaryData = [];
 

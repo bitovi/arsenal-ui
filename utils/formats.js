@@ -31,6 +31,27 @@ var formats = {
     }
 
   },
+  numberFormatDecimal: function (numberVal, decimal)
+  {
+    if(isNaN(numberVal) && (numberVal == "" || numberVal == null)){
+      return "";
+    }else  {
+      var n = numberVal.toFixed(decimal).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+    return n;
+    }
+
+  },
+  currencyFormatDecimal: function (numberVal, decimal)
+  {
+    if(isNaN(numberVal) && (numberVal == "" || numberVal == null)){
+      return "";
+    }else  {
+      var n =  formats.number(numberVal).toFixed(decimal);
+      return n.replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+    }
+    //var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+    //return n;
+  },
   formatIf: function(test, format, elseValue) {
     return value => test.call(null, value) ? format(value) : elseValue
   },
