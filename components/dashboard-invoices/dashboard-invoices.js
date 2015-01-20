@@ -29,8 +29,6 @@ var DashboardInvoices = Component.extend({
 
     renderMissingInvoices: function(id,from) {
       var missingInvoices = getMissingInvoices(from,this.holesReports,id);
-      // var missingInvoices = _.filter(holes, hole => hole.pdfCount < 1 || hole.ccidCount < 1);
-      //var missingInvoices=[];
       return missingInvoicesTemplate({missingInvoices})
     },
 
@@ -66,29 +64,6 @@ var DashboardInvoices = Component.extend({
             }, 2000);
           }*/
         } else {
-
-          // var holes = holes.holesReportWrapper[0].holesReport;
-
-          // _.each(holes, function(hole) {
-          //   if (entities.indexOf(hole.entityName) < 0) {
-          //     entities.push(hole.entityName);
-          //   }
-
-          //   if (!holesByCountry[hole.countryId]) {
-          //     holesByCountry[hole.countryId] = [];
-          //   }
-
-          //   holesByCountry[hole.countryId].push(hole);
-          // });
-
-          // entities = _.sortBy(entities, e => e.toUpperCase());
-
-          // can.batch.start();
-          // self.attr('entities', entities);
-          // self.attr('holesByCountry', holesByCountry);
-          // can.batch.stop();
-
-          //var holes = holes.holesReportWrapper[0].holesReport;
           var holesReports=[];
           var entities=[];
 
@@ -100,8 +75,8 @@ _.each(holes.holesReportWrapper, function(holesWrapper) {
               var holes = holesWrapper.holesReport;
               holesReport.countryId=holesWrapper.countryId;
               holesReport.localSociety="";              
-              //var localSociety=holesWrapper.localSociety;
-              var localSociety='CELAS';
+              var localSociety=holesWrapper.localSociety;
+              //var localSociety='CELAS';
               var localDisplay="";
               var checkForLocalSociety = false;
               if(typeof(localSociety) != "undefined" && localSociety != "null" && (localSociety != null) && localSociety.length >0){
@@ -152,17 +127,6 @@ _.each(holes.holesReportWrapper, function(holesWrapper) {
               });
               holesReport.localDisplay=localDisplay;
               holesReport.displayBackGreen=displayBackGreen;
-
-              // holesList.sort(function(obj1, obj2) {
-              //   var nameA=obj1.entityName.toLowerCase(), nameB=obj2.entityName.toLowerCase()
-              //  if (nameA < nameB) //sort string ascending
-              //   return -1 
-              //  if (nameA > nameB)
-              //   return 1
-              //  return 0 //default return value (no sorting)
-              // });
-
-              //holesReport.holesList=holesList;
               holesReports.push(holesReport);
           });
   
