@@ -1,9 +1,8 @@
 import $ from 'jquery';
 import highcharts from 'highcharts';
 import Component from 'can/component/';
-
 import chartDefaults from 'utils/chartDefaults';
-
+import formats from 'utils/formats';
 import template from './template.stache!';
 import _less from './dashboard-payments-overview.less!';
 
@@ -12,12 +11,15 @@ var DashboardPaymentsOverview = Component.extend({
   template: template,
   scope: {
     appstate: null,
-    summary: null
+    summary: null,
+    percent: null
   },
   helpers: {
     renderBigChart: function() {
-      var scope = this,
-          value = this.attr('summary').percentagePaid;
+      var self = this;
+      var value1 = this.attr('summary').percentagePaid;
+      var value = formats.formatIfValue(value1,_.isNumber, formats.decimalAsPercent, '0%');
+      this.attr('percent',value);
 
       return function(div) {
         var chartConfig = can.extend({}, chartDefaults.singleBarChart, {

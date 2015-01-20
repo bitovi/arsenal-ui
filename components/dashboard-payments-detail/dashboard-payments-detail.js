@@ -50,6 +50,7 @@ var DashboardPaymentsDetail = Component.extend({
       });
     },
     popover: function(item) {
+      console.log('item '+item);
       var popoverContent = $('<div>').append(popoverTemplate({
         localCurrency: 'XXX',
         globalCurrency: 'XXX',

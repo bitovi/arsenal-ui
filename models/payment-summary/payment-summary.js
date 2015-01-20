@@ -10,6 +10,7 @@ var PaymentSummary = Model.extend({
     var data = {
       searchRequest: requestHelper.formGlobalRequest(appstate).searchRequest
     };
+//      console.log('searchRequest',data);
 
     return $.ajax({
       url: URLs.DOMAIN_SERVICE_URL + 'dashboard/payments',
