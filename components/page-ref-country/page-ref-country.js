@@ -553,7 +553,10 @@ var page = Component.extend({
       //console.log("sel model id "+selModelId)
       self.attr("selectedModelId",selModelId);
     },
-    '.society click': function(){
+    '.society click': function(el, ev){
+
+        var self = this;
+        self.scope.appstate.attr("licensorName", (el[0].getElementsByTagName("a")).length > 0 ?  ((el[0].getElementsByTagName("a"))[0]).getAttribute("value") : "") ;
         commonUtils.navigateTo("licensor");
         // this.scope.appstate.attr('page','licensor');
     },
@@ -562,12 +565,12 @@ var page = Component.extend({
         var row = item.closest('tr').data('row').row;
         var entity = row.society;
 
-        var selmodelid = self.attr("selectedModelId").toString();
+        var selmodelid = (item.closest("a")[0]).getAttribute("value");
         var country = self.pageState.countryDetails.country.attr("countryId");
-        var genObj = {modelId:selmodelid,reqType:'details', countryId:country, entityName:entity};
+        var genObj = {modelId:selmodelid,reqType:'countryLicensordetails', countryId:country, entityName:entity};
 
         console.log("Request is " +JSON.stringify(UserReq.formRequestDetails(genObj)));
-        PricingModels.findOne(UserReq.formRequestDetails(genObj),function(data){
+        CountryLicensor.findOne(UserReq.formRequestDetails(genObj),function(data){
             //console.log("Pricing model details "+ JSON.stringify(data.pricingModel.attr()));
             self.attr("getPricingModelDetails",data.pricingModel);
             self.attr("baseModelParameter").replace(data.pricingModel.baseModelParameters);
