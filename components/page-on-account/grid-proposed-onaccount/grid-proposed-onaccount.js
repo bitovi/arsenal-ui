@@ -26,11 +26,11 @@ var proposedonAccountGrid = Grid.extend({
           }
         }
       },
-            
+
       {
         id: 'Licensor',
         title: 'Licensor',
-        contents: function(row) { 
+        contents: function(row) {
             if(row.attr('tfooter')){
             return  stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{Licensor}}')({Licensor: row.Licensor, isChild: row.__isChild});;
           }
@@ -38,7 +38,7 @@ var proposedonAccountGrid = Grid.extend({
          }
       },
       {
-     
+
        id: 'Currency',
         title: 'Currency'
       },
@@ -53,7 +53,7 @@ var proposedonAccountGrid = Grid.extend({
      bundleNames:[],
      quarters:[],
      test:[]
-    
+
   },
   init :function()
   {
@@ -64,7 +64,7 @@ var proposedonAccountGrid = Grid.extend({
   helpers: {
     cellContents:function(row, column){
       if(column.editable && row.__isChecked && row.__isEditable) {
-        return stache('<input class="editing" value="{{value}}"/>')({value: column.getEditingValue(row,column.title)});
+        return stache('<input value="{{value}}" tabindex="0" class="editing form-control" style="width:130px;padding: 4px !important;"/>')({value: column.getEditingValue(row,column.title)});
       } else {
         return Grid.prototype.helpers.cellContents.call(this, row, column);
       }
@@ -77,10 +77,10 @@ var proposedonAccountGrid = Grid.extend({
 
       if(el[0].checked) {
         //console.log('checked:'+row.checkbox);
-        row.attr('__isChecked', true); 
+        row.attr('__isChecked', true);
         this.scope.checkedRows.push(row);
       } else {
-        row.attr('__isChecked', false); 
+        row.attr('__isChecked', false);
           var indexToBeDeleted;
           this.scope.checkedRows.each(function(value, key) {
             if(row == value){
@@ -89,7 +89,7 @@ var proposedonAccountGrid = Grid.extend({
           });
           this.scope.checkedRows.splice(indexToBeDeleted,1);
       }
-      
+
       var proposedOnAccountData={};
       proposedOnAccountData.rows=this.scope.rows;
       proposedOnAccountData.checkedRows=this.scope.checkedRows;
@@ -105,6 +105,14 @@ var proposedonAccountGrid = Grid.extend({
           el.addClass('invalid');
           return;
         }
+        if (value != "" && value != undefined && value.length != 0){
+          var decimal_validate_RE=/^\d{0,10}(\.\d{0,8})?$/;
+          if(!decimal_validate_RE.test(value)){
+            el.addClass('invalid');
+            el.closest('td').find('.editing').attr('title',"Please provide onAccount amount in [##########.########] format");
+            return;
+          }
+        }
       var element = el.closest('td').find('.editing');
       var column = el.closest('td').data('column').column;
 
@@ -115,11 +123,11 @@ var proposedonAccountGrid = Grid.extend({
       var proposedOnAccountData={};
       proposedOnAccountData.rows=this.scope.rows;
       proposedOnAccountData.checkedRows=this.scope.checkedRows;
-    
+
       $(this.element).trigger('save', proposedOnAccountData);
-      //Row got updated to the page to the grid component    
+      //Row got updated to the page to the grid component
     },
-    "inserted": function(){ 
+    "inserted": function(){
               var self = this;
               if(self.scope.request != null && self.scope.request != undefined && self.scope.request.quarters != null){
                  var rows = self.scope.request.rows;
@@ -156,7 +164,7 @@ var proposedonAccountGrid = Grid.extend({
                     }
 
                   self.scope.quarters.replace(quarters);
-                 
+
                if(type == 'DELETE'&& deletableRows != undefined && deletableRows.length >0){
                   self.scope.rows.replace(deletableRows);
                   self.scope.footerrows.replace(footerrows);
@@ -172,7 +180,7 @@ var proposedonAccountGrid = Grid.extend({
                     self.scope.rows.replace(self.scope.request.rows);
                     self.scope.footerrows.replace(self.scope.request.footerRows);
                }
-         
+
            }
 
           var tbody = self.element.find('tbody');
@@ -183,7 +191,7 @@ var proposedonAccountGrid = Grid.extend({
               if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight && (self.scope.request!= undefined && self.scope.request.recordsAvailable)) {
                 //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
 
-                
+
                 var offsetVal = parentScopeVar.attr('proposeOnAccOffset');
                 //console.log(offsetVal);
 
@@ -204,7 +212,7 @@ var proposedonAccountGrid = Grid.extend({
 
           alignGrid('proposedOnAccountGrid');
       }
-        
+
   }
 });
 
@@ -225,12 +233,12 @@ function alignGrid(divId){
           tdWidth = theadTdWidth;
         else if(tfootTdWidth >= tbodyTdWidth && tfootTdWidth >= theadTdWidth)
           tdWidth = tfootTdWidth;
-        else 
+        else
           tdWidth = tbodyTdWidth;
 
         if(i==1) //For the column holding 'check box'
-            tdWidth = 35;   
-               
+            tdWidth = 35;
+
         tableWidth += tdWidth;
         cellWidthArr.push(tdWidth);
       }

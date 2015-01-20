@@ -36,9 +36,9 @@ var newOnAccountGrid = Grid.extend({
     quarters:[]
   },
    helpers: {
-    cellContents: function(row, column) {    
-      if(column.editable && row.__isChild) { 
-        return stache('<input class="editing" value="{{value}}" tabindex="0"/>')({value: column.getEditingValue(row,column.title)});
+    cellContents: function(row, column) {
+      if(column.editable && row.__isChild) {
+        return stache('<input value="{{value}}" tabindex="0" class="editing form-control" style="width:130px;padding: 4px !important;"/>')({value: column.getEditingValue(row,column.title)});
       } else {
         if(column.title == 'Total' && row.__isChild && column.getEditingValue(row,column.id) != null)
         {
@@ -50,11 +50,11 @@ var newOnAccountGrid = Grid.extend({
   },
   init: function(){
 
-    
+
     },
     events:{
       'inserted': function () {  
-          
+
     var self = this;
 
         if(self.scope.request != null || self.scope.request != undefined){
@@ -75,7 +75,7 @@ var newOnAccountGrid = Grid.extend({
                 };
                 self.scope.columns.push(column);
               }
-              
+
               var totalcolumn={
                   id:'total',
                   title:'Total',
@@ -96,6 +96,7 @@ var newOnAccountGrid = Grid.extend({
         },
       "{rows} change": function(){
         $(this.element).trigger('rowsForCopyOnAccount', this.scope.rows);
+
       },
       'td input.editing blur':function(el, ev){
         ev.preventDefault();
@@ -103,6 +104,14 @@ var newOnAccountGrid = Grid.extend({
           if(isNaN(value)){
             el.addClass('invalid');
             return;
+          }
+          if (value != "" && value != undefined && value.length != 0){
+            var decimal_validate_RE=/^\d{0,10}(\.\d{0,8})?$/;
+            if(!decimal_validate_RE.test(value)){
+              el.addClass('invalid');
+              el.closest('td').find('.editing').attr('title',"Please provide onAccount amount in [##########.########] format");
+              return;
+            }
           }
         var element = el.closest('td').find('.editing');
         var column = el.closest('td').data('column').column;
@@ -118,7 +127,7 @@ var newOnAccountGrid = Grid.extend({
         var mainRows={};
         mainRows.rows=this.scope.rows;
         $(this.element).trigger('onSelected', mainRows);
-        //Row got updated to the page to the grid component  
+        //Row got updated to the page to the grid component
       }
       // 'td input keydown':function(el, ev){
       //   ev.preventDefault();
@@ -131,4 +140,3 @@ var newOnAccountGrid = Grid.extend({
 });
 
 export default newOnAccountGrid;
-
