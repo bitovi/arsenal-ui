@@ -1,6 +1,7 @@
 import Component from 'can/component/';
 import template from './template.stache!';
 import styles from './multiple-comments.less!';
+import moment from 'moment';
 
 
 var comments = Component.extend({
@@ -33,11 +34,11 @@ var comments = Component.extend({
               $(textAreactrl).addClass("multiple-comments-editable").addClass("form-control-comments old-comments");
               $(textAreactrl).attr('readonly', 'readonly');
               if(val.createdDate != null){
+                 var createdDateFormat = moment(val.createdDate).format("Do MMM, YYYY");   
                 if((val.createdByName != null) && (typeof val.createdByName != "undefined")){
-                //  $(textAreactrl).val(val.comments + "\n-" + val.createdByName + " on " + val.createdDate);
-                  $(textAreactrl).val(val.createdDate +"  "+ val.createdByName + "\n" + val.comments);
+                    $(textAreactrl).val(val.createdByName +"    "+createdDateFormat+ "\n" + val.comments);
                 }else{
-                  $(textAreactrl).val(val.createdDate + "\n" + val.comments);
+                    $(textAreactrl).val(createdDateFormat + "\n" + val.comments);
                 } 
                 
               }

@@ -67,6 +67,7 @@ var page = Component.extend({
     sortColumns:[],
     sortDirection: "asc",
     load : true,
+    recordsAvailable : true,
 
     reconStatsDetailsSelected : [],
 
@@ -109,6 +110,7 @@ var page = Component.extend({
     isTabSelectedAs:function(tabName){
       return 'style="display:' + ( this.attr("tabSelected") == tabName  ? 'block' : 'none') + '"';
     }
+
   },
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
@@ -169,7 +171,13 @@ var page = Component.extend({
           "fileId":row.badFileId,
           "boundType":row.badFileType
       }
-      FileManager.downloadFile(request);
+      FileManager.findOne({request}, function(values) {
+        
+        download("sample.csv", values[0].responseText);
+
+      }, function(xhr) {
+          // handle errors
+      });
     },
     ".downloadLink.fileName click": function(item, el, ev){
       var self=this.scope;
@@ -193,7 +201,12 @@ var page = Component.extend({
 
       console.log(JSON.stringify(request));
 
-      FileManager.downloadFile(request);
+      Promise.all([FileManager.findAll(request)]).then(function(values) {
+    
+        download("sampleFile" , values[0].responseText);
+
+      });
+      
 
     },
     ".downloadLink.liDispAmt click": function(item, el, ev){
@@ -480,7 +493,9 @@ var fetchReconIngest = function(scope, load){
   searchRequestObj.searchRequest["type"] =  scope.tabName.ingest.attr("type");
   //TODO During pagination / scrolling, the below values has tobe chnaged.
 
-  scope.attr("ingestCcidSelected").splice(0, scope.attr("ingestCcidSelected").length);
+  if(load) {
+    scope.attr("ingestCcidSelected").splice(0, scope.attr("ingestCcidSelected").length);
+  }
 
   if(scope.appstate.attr('globalSearchButtonClicked')==true){
       scope.attr("ingestedOffset",0);
@@ -525,7 +540,7 @@ var fetchReconIngest = function(scope, load){
           $.merge(scope.ingestList.headerRows, data.reconStatsDetails);
           scope.ingestList.headerRows.replace(scope.ingestList.headerRows);
         }
-
+        scope.recordsAvailable = data.recordsAvailable;
         scope.reconStatsDetailsSelected = data.reconStatsDetails;
 
         scope.currencyScope.replace(data.currency);
@@ -572,7 +587,7 @@ var fetchReconIngest = function(scope, load){
   }).then(function(values){
 
     if(load) {
-      var ccidCheckbox = $("input.ccid")
+      var ccidCheckbox = $("input.selectRow");
 
       for(var i=0; i<ccidCheckbox.length  ;i++) {
 
@@ -586,7 +601,7 @@ var fetchReconIngest = function(scope, load){
 
       scope.attr("load", true);
 
-      var ccidCheckbox = $("input.ccid")
+      var ccidCheckbox = $("input.selectRow");
 
       for(var i=0; i<ccidCheckbox.length  ;i++) {
 
@@ -740,6 +755,24 @@ var findCCids =  function(scope, ccidSelected, tab) {
 
   }
 
+};
+
+var linkDownload = function(a, filename, request) {
+
+  var contentType =  'data:application/csv;charset=utf-8,';
+
+  var uriContent = contentType + escape();
+  a.setAttribute('href', uriContent);
+  a.setAttribute('download', filename);
+
+};
+
+function download(filename, content) {
+  var a = document.createElement('a');
+  linkDownload(a, filename, content);
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 
 

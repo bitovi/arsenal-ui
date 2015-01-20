@@ -137,8 +137,12 @@ var PaymentBundle = Model.extend({
     }else{
         var paymentOption = params.paymentType,
             view = params.view.toUpperCase(),
-            bundleId = params.bundleID,
-            filter = params.filter;
+            bundleId = params.bundleID;
+
+            var filterFormatted = [];
+            _.each(params.filterData, function(obj) {
+              filterFormatted.push(obj.name);
+            });
 
         // TODO: when infrastructure gets set up, fix this.
         data = {
@@ -148,7 +152,7 @@ var PaymentBundle = Model.extend({
             view
           },
          bundleSearch: {
-           filter
+           filter: filterFormatted
           }
         };
 
@@ -194,11 +198,6 @@ var PaymentBundle = Model.extend({
   getDetails: function(params) {
     var self = this;
 
-    var filterFormatted = [];
-    _.each(params.filterData, function(obj) {
-      filterFormatted.push(obj.name);
-    });
-
     params["bundleID"] = self.bundleId;
 
     return PaymentBundle.findOne(params).then(function(bundle) {
@@ -215,11 +214,16 @@ var PaymentBundle = Model.extend({
           // merge all those new properties into this one
           bundle.hasOwnProperty('recordsAvailable') ? params.paginate.attr("recordsAvailable",bundle.recordsAvailable):"";
 
-          console.log(params.paginate.attr("offset") + ", Inside : "+params.paginate.attr("recordsAvailable"));
+          //console.log(params.paginate.attr("offset") + ", Inside : "+params.paginate.attr("recordsAvailable"));
           bundle = bundle.hasOwnProperty('responseCode') ? bundle.paymentBundle : bundle;
-          self.attr(bundle.attr());
-          self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
-          self.attr('bundleFooter', transformFooter(bundle.bdlFooter));
+          if(params.paginate.offset > 0){
+            self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
+          }else{
+            self.attr(bundle.attr());
+            self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
+            self.attr('bundleFooter', transformFooter(bundle.bdlFooter));
+          }
+
 
         }
       can.batch.stop();

@@ -59,7 +59,7 @@ var paginateAttr =   new Map({
   sortDirection: "asc",
   recordsAvailable: false,
   paginateRequest:false,// to know the paginateRequest is needed.
-  isInProgress:false
+  isInProgress:false//Local attr to track the Paginate is in progress
 });
 
 var BundleDetailTabs = Component.extend({
@@ -108,11 +108,13 @@ var BundleDetailTabs = Component.extend({
 
       scope.getNewDetails(selectedBundle)
       .then(function(bundle) {
-        return WorkflowStep.findAll({
+        return WorkflowStep.loadWorkFlowView({
           workflowInstanceId: bundle.approvalId
         });
-      }).then(function(steps) {
-        scope.workflowSteps.replace(steps);
+      }).done(function(steps) {
+        console.log(JSON.stringify(steps.workflowView.nodes))
+        scope.workflowSteps.splice(0, scope.workflowSteps.length);
+        scope.workflowSteps.replace(steps.workflowView.nodes);
       });
       scope.bundleProgress.isBundleSelectionChange = false;
     },
@@ -125,6 +127,7 @@ var BundleDetailTabs = Component.extend({
         this.bottomGridPaginateAttr.attr("paginateRequest",false);
         var offset = this.bottomGridPaginateAttr.attr("offset") + 1;
         this.bottomGridPaginateAttr.attr("offset",offset);
+        this.bundleProgress.triggerValidation = false;
       }else{
         //first time request, by setting this, the grid details will not be shown.
         this.attr('gettingDetails', true);
@@ -162,7 +165,7 @@ var BundleDetailTabs = Component.extend({
         if(bundle.status === 'FAILURE'){
           displayMessage("errorMessage",bundle.responseText)
         }else{
-          //scope.bundleProgress.triggerValidation ? scope.getNewValidations(bundle) : "";
+          scope.bundleProgress.triggerValidation ? scope.getNewValidations(bundle) : "";
         }
 
         canRemoveInvoice(scope);

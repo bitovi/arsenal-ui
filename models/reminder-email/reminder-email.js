@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import Model from 'can/model/';
 import URLs from 'utils/urls';
 
@@ -7,22 +6,9 @@ var ReminderEmail = Model.extend({
     return $.ajax({
       url: URLs.EMAIL_SERVICE_URL + 'sendEmail',
       type: 'POST',
-      data: {
-        "emailType": "reminder",
-        "mailingList": {
-          "roleId": [ "1" ],
-          "cc": null,
-          "bcc": null,
-          "sender": "abcd@apple.com",
-          "senderName": null
-        },
-        "dynamicContents": {
-          "Subject": "Reminder for " + params.approval.description,
-          "paymentBundle": params.approval.description,
-          "noOfDaysPending": params.approval.daysPending
-        },
-        "attachments" : null
-      }
+      datatype:'json',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify(params)
     })
   }
 }, {});

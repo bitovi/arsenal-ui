@@ -134,7 +134,7 @@ var page = Component.extend({
 
               var data = values[0];
 
-              loadRefreshStats(data,self);
+              self.loadRefreshStats(data,self);
               
 
             },function(xhr){

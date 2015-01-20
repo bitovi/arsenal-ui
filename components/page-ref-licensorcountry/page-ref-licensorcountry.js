@@ -401,8 +401,8 @@ var page = Component.extend({
             CountryLicensor.findOne(UserReq.formRequestDetails(requestObj),function(data){
               loadPage(self, data);
               self.pageState.entityCountryDetails.entityCountry.attr("entityId", requestObj.entityCountryDetails.entityCountry.entityId);
-              $("#countryId").val(requestObj.entityCountryDetails.entityCountry.countryId);
               self.pageState.entityCountryDetails.entityCountry.attr("invoiceCurr", data.entityCountryDetails.entityCountry.invoiceCurr);
+              $("#countryId").val(requestObj.entityCountryDetails.entityCountry.countryId);
             },function(xhr){
               console.error("Error while loading: country-Entity Details"+xhr);
             });
@@ -630,7 +630,7 @@ var loadPage = function(scope,data){
   }
 
   var status = data.entityCountryDetails.entityCountry.attr("status");
-  if(status == "A"){
+  if(status == "Active"){
     data.entityCountryDetails.entityCountry.attr("status","Active");
   }else{
     data.entityCountryDetails.entityCountry.attr("status","InActive");
@@ -675,7 +675,7 @@ var loadPage = function(scope,data){
     scope.attr("trackCounts").replace(data.pricingModel.trackCounts);
   }
 
-  if(data.entityCountryDetails.entityCountry.status == "A") {
+  if(data.entityCountryDetails.entityCountry.status == "Active") {
     scope.attr("state","Edit");
   }else{
     scope.attr("state","Read");
