@@ -1,11 +1,23 @@
 @import 'components/grid/grid.less';
+@import 'components/grid/examples/scrolling-grid/scrolling-grid.less';
 
 @step-border-color: #c6c6c6;
 @approved-color: #d0e3c3;
 @light-border: 1px solid hsl(0, 0%, 75%);
 
+.flex-basis(@basis) {
+  -webkit-flex-basis: @basis;
+  flex-basis: @basis;
+}
+
+.flex-grow(@grow) {
+  -webkit-flex-grow: @grow;
+  flex-grow: @grow;
+}
+
 rn-inbox-grid, rn-outbox-grid {
   .grid-mixin();
+  .scrolling-grid-mixin();
 
   tbody td {
     padding: .5em 1em;
@@ -39,5 +51,34 @@ rn-inbox-grid, rn-outbox-grid {
 
   button.remind {
     float: right;
+  }
+
+  table.scrolling {
+    tbody {
+      height: 10em;
+      border-bottom: 1px solid #666;
+    }
+    tbody tr {
+      min-height: 1.5625em;
+    }
+
+    tbody td {
+      padding: 0.3em;
+    }
+
+    tbody > tr:last-child {
+      border-bottom: 1px solid #bfbfbf;
+     }
+
+    tr > th, tr > td {
+      &.type { .flex-basis(75px); }
+      &.description { .flex-grow(1); .flex-basis(100px); }
+      &.region { .flex-basis(100px); }
+      &.createdBy { .flex-basis(100px); }
+      &.previousApprover { .flex-basis(200px); }
+      &.comments { .flex-basis(225px); }
+      &.pendingDays { .flex-basis(100px); }
+      &.approvalStage { .flex-basis(100px); }
+    }
   }
 }

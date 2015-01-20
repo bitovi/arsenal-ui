@@ -1,11 +1,11 @@
-import Grid from '../grid/';
+import ScrollingGrid from 'components/grid/examples/scrolling-grid/';
 import stache from 'can/view/stache/';
 import formats from 'utils/formats';
 import _less from './outbox-grid.less!';
 
 import EmailConfirmModal from 'components/email-confirm-modal/';
 
-var OutboxGrid = Grid.extend({
+var OutboxGrid = ScrollingGrid.extend({
   tag: 'rn-outbox-grid',
   scope: {
     columns: [{

@@ -1,10 +1,10 @@
 import _ from 'lodash';
-import Grid from '../grid/';
 import stache from 'can/view/stache/';
 import formats from 'utils/formats';
 import _less from './inbox-grid.less!';
+import ScrollingGrid from 'components/grid/examples/scrolling-grid/';
 
-var InboxGrid = Grid.extend({
+var InboxGrid = ScrollingGrid.extend({
   tag: 'rn-inbox-grid',
   scope: {
     columns: [{
