@@ -59,7 +59,7 @@ var paginateAttr =   new Map({
   sortDirection: "asc",
   recordsAvailable: false,
   paginateRequest:false,// to know the paginateRequest is needed.
-  isInProgress:false
+  isInProgress:false//Local attr to track the Paginate is in progress
 });
 
 var BundleDetailTabs = Component.extend({

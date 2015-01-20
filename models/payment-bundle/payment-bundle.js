@@ -215,11 +215,16 @@ var PaymentBundle = Model.extend({
           // merge all those new properties into this one
           bundle.hasOwnProperty('recordsAvailable') ? params.paginate.attr("recordsAvailable",bundle.recordsAvailable):"";
 
-          console.log(params.paginate.attr("offset") + ", Inside : "+params.paginate.attr("recordsAvailable"));
+          //console.log(params.paginate.attr("offset") + ", Inside : "+params.paginate.attr("recordsAvailable"));
           bundle = bundle.hasOwnProperty('responseCode') ? bundle.paymentBundle : bundle;
-          self.attr(bundle.attr());
-          self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
-          self.attr('bundleFooter', transformFooter(bundle.bdlFooter));
+          if(params.paginate.offset > 0){
+            self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
+          }else{
+            self.attr(bundle.attr());
+            self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
+            self.attr('bundleFooter', transformFooter(bundle.bdlFooter));
+          }
+
 
         }
       can.batch.stop();
