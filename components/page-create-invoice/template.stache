@@ -1,22 +1,14 @@
 <form class="form-horizontal"  id="invoiceform" role="form">
 <div class="container-fluid create-invoice">
-  <div class="row">
-    <div class="col-sm-5 pageTitleInv">
-		    {{#if editpage}}
-			    <div class="pageHead">Edit Invoice</div>
-			{{else}}
-			     <div class="pageHead">Invoice Entry</div>
-		  	{{/if}}
-	</div>
-	<div class="col-sm-7">
-
-		  <div id="invmessageDiv" role="alert">
-
-		   </div>
-		   <div id="invWarningMsgDiv" role="alert">
-
-		   </div>
-	</div>
+  <div class="div-warn-container" style="padding-top: 0px;!important">
+    <div class="row pagetitle-div-parent" style="padding-top: 0px;!important">
+      <div class="col-sm-5 pageTitle">
+        <div class="pageHead">Invoice Entry</div>
+      </div>
+    </div>
+    <div class="col-sm-7 pagetitle-div-parent">
+      <div id="invmessageDiv" class="center" role="alert"></div>
+    </div>
   </div>
 
 		<div class="row">

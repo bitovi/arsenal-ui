@@ -853,12 +853,12 @@ var page = Component.extend({
 
                         /* Below code needed to extract PDF file only*/
 
-                     /*   var invoicePDFDocuments = $.grep(invoiceData.invoiceDocuments, function(e) {  
+                     /*   var invoicePDFDocuments = $.grep(invoiceData.invoiceDocuments, function(e) {
 							console.log(e.fileName, ' is a valid file? ', /.pdf$/.test(e.fileName) || /.pdf.zip$/.test(e.fileName));
 							return /.pdf$/.test(e.fileName) || /.pdf.zip$/.test(e.fileName) ;
 						});*/
 
-						var invoicePDFDocuments = self.scope.attr("sumfileuploadedinfo");	
+						var invoicePDFDocuments = self.scope.attr("sumfileuploadedinfo");
 
                         for(var j=0;j<invoicePDFDocuments.length;j++){
                             console.log(invoicePDFDocuments.fileName);
@@ -873,7 +873,7 @@ var page = Component.extend({
                         }
                         //Code to display server list of files on file upload rn-file-uploader-icsv control ends
 
-                        	
+
 		                var genObj = {
 			                			regionId:invoiceData.regionId,
 							  			entityId:invoiceData.entityId,
@@ -1104,9 +1104,9 @@ var page = Component.extend({
 			self.scope.createBreakline(self.scope.attr("rowindex"));
 		},
 	      'rn-file-uploader-icsv onSelected': function(ele, event){
-	     
+
 	     	var self = this;
-	     	
+
 	     	var errObj=validateMandatory();
           	if(errObj.isFailed == false){
            	 	$("#addInvSubmit").attr("disabled", false);
@@ -1133,7 +1133,7 @@ var page = Component.extend({
 					$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
 				}
 		   }
-                      	
+
 	      },
 		"#addInvSubmit click":function(){
 
@@ -1628,10 +1628,10 @@ function getCurrentDate(){
           }
 
           function showMessages(msg){
-            $("#invWarningMsgDiv").html("<label class='errorMessage'>"+msg+"</label>")
-             $("#invWarningMsgDiv").show();
+            $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
+             $("#invmessageDiv").show();
              setTimeout(function(){
-                $("#invWarningMsgDiv").hide();
+                $("#invmessageDiv").hide();
              },5000)
           }
 

@@ -910,7 +910,7 @@ var page = Component.extend({
 				 		if(invoiceData.tax != null){
 				 			self.scope.attr("tax", invoiceData.tax);
 				 		}
-						
+
 						self.scope.attr("invoiceId",invoiceData.invId);
 
 						var tempcommentObj = invoiceData.comments;
@@ -1109,9 +1109,9 @@ var page = Component.extend({
 	          }
 	      },
 	      'rn-file-uploader-edit onSelected': function(ele, event){
-	     
+
 	     	var self = this;
-	     	
+
 	     	var errObj=validateMandatory();
           	if(errObj.isFailed == false){
            	 	$("#addInvSubmit").attr("disabled", false);
@@ -1138,7 +1138,7 @@ var page = Component.extend({
 					$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
 				}
 		   }
-                      	
+
 	      },
 
 		"#addInvSubmit click":function(){
@@ -1336,10 +1336,10 @@ var page = Component.extend({
 
 								           		if(errorMap){
 										       		 var msg =showErrorDetails(errorMap, "Warning");
-										       		 $("#invWarningMsgDiv").html("<label class='errorMessage'>"+msg+"</label>")
-										             $("#invWarningMsgDiv").show();
+										       		 $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
+										             $("#invmessageDiv").show();
 										             setTimeout(function(){
-										                $("#invWarningMsgDiv").hide();
+										                $("#invmessageDiv").hide();
 										             },5000)
 												}
 
@@ -1635,10 +1635,10 @@ var page = Component.extend({
           }
 
           function showMessages(msg){
-            $("#invWarningMsgDiv").html("<label class='errorMessage'>"+msg+"</label>")
-             $("#invWarningMsgDiv").show();
+            $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
+             $("#invmessageDiv").show();
              setTimeout(function(){
-                $("#invWarningMsgDiv").hide();
+                $("#invmessageDiv").hide();
              },5000)
           }
 

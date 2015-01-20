@@ -918,9 +918,9 @@ var page = Component.extend({
 	          }
 	      },
 	      'rn-file-uploader-create onSelected': function(ele, event){
-	     
+
 	     	var self = this;
-	     	
+
 	     	var errObj=validateMandatory();
           	if(errObj.isFailed == false){
            	 	$("#addInvSubmit").attr("disabled", false);
@@ -947,7 +947,7 @@ var page = Component.extend({
 					$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
 				}
 		   }
-                      	
+
 	      },
 		"#addInvSubmit click":function(){
 
@@ -1119,7 +1119,7 @@ var page = Component.extend({
 												self.scope.attr("tax", "");
 												self.scope.attr("showPBR", true);
 												self.scope.attr("regionStore", "");
-												
+
 
 
 												$("[id^=breakrow]").each(function(index){  /*removing added row in break down.*/
@@ -1432,10 +1432,10 @@ var page = Component.extend({
           }
 
           function showMessages(msg){
-            $("#invWarningMsgDiv").html("<label class='errorMessage'>"+msg+"</label>")
-             $("#invWarningMsgDiv").show();
+            $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
+             $("#invmessageDiv").show();
              setTimeout(function(){
-                $("#invWarningMsgDiv").hide();
+                $("#invmessageDiv").hide();
              },5000)
           }
 
