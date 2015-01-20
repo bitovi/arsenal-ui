@@ -880,8 +880,8 @@ var generateTableData = function(invoiceData,footerData){
             invTemp["country"] = "";
             invTemp["contentType"] = "";
             invTemp["invoiceAmount"] = CurrencyFormat(invoiceData[i]["invoiceAmount"]);
-            invTemp["overrepAmount"] = (invoiceData[i]["overrepAmount"])==null?0:invoiceData[i]["overrepAmount"];
-            invTemp["lineDisputeAmount"] = (invoiceData[i]["lineDisputeAmount"])==null?0:invoiceData[i]["lineDisputeAmount"];
+            invTemp["overrepAmount"] = (invoiceData[i]["overrepAmount"])==null?0.00:CurrencyFormat(invoiceData[i]["overrepAmount"]);
+            invTemp["lineDisputeAmount"] = (invoiceData[i]["lineDisputeAmount"])==null?0.00:CurrencyFormat(invoiceData[i]["lineDisputeAmount"]);
             invTemp["reconAmount"] = CurrencyFormat(invoiceData[i]["reconAmount"]);
             invTemp["oaAllocated"] = CurrencyFormat(invoiceData[i]["oaAllocated"]);
             invTemp["caAllocated"] = CurrencyFormat(invoiceData[i]["caAllocated"]);
@@ -918,9 +918,9 @@ var generateTableData = function(invoiceData,footerData){
 
                 invLITemp["invoiceAmount"] = CurrencyFormat(invoiceLineItems[j]["invoiceAmount"]);
 
-                invLITemp["overrepAmount"] = (invoiceLineItems[j]["overrepAmount"])==null?0:CurrencyFormat(invoiceLineItems[j]["overrepAmount"]);
+                invLITemp["overrepAmount"] = (invoiceLineItems[j]["overrepAmount"])==null?0.00:CurrencyFormat(invoiceLineItems[j]["overrepAmount"]);
               
-                invLITemp["lineDisputeAmount"] = (invoiceLineItems[j]["lineDisputeAmount"])==null?0:CurrencyFormat(invoiceLineItems[j]["lineDisputeAmount"]);
+                invLITemp["lineDisputeAmount"] = (invoiceLineItems[j]["lineDisputeAmount"])==null?0.00:CurrencyFormat(invoiceLineItems[j]["lineDisputeAmount"]);
 
                 invLITemp["reconAmount"] = CurrencyFormat(invoiceLineItems[j]["reconAmount"]);
 
@@ -936,11 +936,11 @@ var generateTableData = function(invoiceData,footerData){
                 
                 invLITemp["pmtSaturation"] = CurrencyFormat(invoiceLineItems[j]["pmtSaturation"]);
                 
-                invLITemp["overrepDispPer"] = (invoiceLineItems[j]["overrepDispPer"]==null)?0:CurrencyFormat(invoiceLineItems[j]["overrepDispPer"]);
+                invLITemp["overrepDispPer"] = (invoiceLineItems[j]["overrepDispPer"]==null)?0.00:CurrencyFormat(invoiceLineItems[j]["overrepDispPer"]);
                 
-                invLITemp["liDispPer"] = (invoiceLineItems[j]["liDispPer"]==null)?0:CurrencyFormat(invoiceLineItems[j]["liDispPer"]);
+                invLITemp["liDispPer"] = (invoiceLineItems[j]["liDispPer"]==null)?0.00:CurrencyFormat(invoiceLineItems[j]["liDispPer"]);
                 
-                invLITemp["status"] = (invoiceLineItems[j]["status"] ==null)?"":invoiceLineItems[j]["status"];
+                invLITemp["status"] = getInvoiceStatus(invoiceLineItems[j]["status"]);
                 invTemp["status"] = invLITemp["status"];
                 contentTypeArr.push(invLITemp["contentType"]);
                 countryArr.push(invLITemp["country"]);
@@ -1005,10 +1005,10 @@ var generateFooterData = function(footerData){
     footTemp["caAllocated"] = CurrencyFormat(parseInt(footerData["caAllocated"]));
     footTemp["balance"] = 0;
     footTemp["priorPaid"] = CurrencyFormat(parseInt(footerData["priorPaid"]));
-    footTemp["invPmtSaturation"] = 0;
-    footTemp["pmtSaturation"] = 0;
-    footTemp["overrepDispPer"] = 0;
-    footTemp["liDispPer"] = 0;
+    footTemp["invPmtSaturation"] = 0.00;
+    footTemp["pmtSaturation"] = 0.00;
+    footTemp["overrepDispPer"] = 0.00;
+    footTemp["liDispPer"] = 0.00;
     footTemp["status"] = "";
 
     formatFooterData.push(footTemp);
@@ -1030,12 +1030,12 @@ var generateFooterData = function(footerData){
       footLITemp["reconAmount"] = CurrencyFormat(parseInt(footerLineItems[i]["reconAmount"]));
       footLITemp["oaAllocated"] = CurrencyFormat(parseInt(footerLineItems[i]["oaAllocated"]));
       footLITemp["caAllocated"] = CurrencyFormat(parseInt(footerLineItems[i]["caAllocated"]));
-      footLITemp["balance"] = 0;
+      footLITemp["balance"] = 0.00;
       footLITemp["priorPaid"] = CurrencyFormat(parseInt(footerLineItems[i]["priorPaid"]));
-      footLITemp["invPmtSaturation"] = 0;
-      footLITemp["pmtSaturation"] = 0;
-      footLITemp["overrepDispPer"] = 0;
-      footLITemp["liDispPer"] = 0;
+      footLITemp["invPmtSaturation"] = 0.00;
+      footLITemp["pmtSaturation"] = 0.00;
+      footLITemp["overrepDispPer"] = 0.00;
+      footLITemp["liDispPer"] = 0.00;
       footLITemp["status"] = "";
       formatFooterData.push(footLITemp);
     }
@@ -1054,6 +1054,19 @@ function CurrencyFormat(number) {
     } else {
       return 0;
     }
+}
+function getInvoiceStatus(invStatus){
+//     Invoice Status 
+// 0 - unpaid (payment amount is zero)
+// 1 - partial
+// 5 - paid (invoice completely paid out)
+// 8 - temporarily inactive or invoice not yet available to RINS processes
+// 9 - deleted ;
+var status ="";
+  if(invStatus != undefined && invStatus != null){
+    status = (invStatus == 5) ? "Closed":"Open";
+  }
+  return status;
 }
 function alignGrid(divId, is_aggregate){
   var colLength = $('#'+divId+' table>thead>tr>th').length;

@@ -324,7 +324,7 @@ var page = Component.extend({
                   var tempDocument = {};
                   tempDocument.fileName = uploadedfiles[i].fileName;
                   tempDocument.location = uploadedfiles[i].filePath;
-                  documents.push(tempDocument);
+                  self.scope.documents.push(tempDocument);
               }
           }
 
