@@ -61,7 +61,7 @@ var EmailConfirmModal = can.Component.extend({
                   //success or fail
               }
               else{
-                var msg = "Reminder was not sent successfully."
+                var msg = "Reminder was not sent."
                 $("#messageDiv").html("<label class='errorMessage'>"+msg+"</label>")
                 $("#messageDiv").show();
                 setTimeout(function(){
