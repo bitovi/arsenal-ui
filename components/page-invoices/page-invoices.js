@@ -907,7 +907,7 @@ var page = Component.extend({
             //console.log("Attach request are "+JSON.stringify(UserReq.formRequestDetails(attachReq)));
             MassFileUpLoader.create(UserReq.formRequestDetails(attachReq),function(data){
               //console.log("Reponse is "+JSON.stringify(data));
-              $("#attachDocumentDiv").hide();
+             // $("#attachDocumentDiv").hide();
               if(data["status"]=="SUCCESS"){
                 if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
                    $("#messageDiv").html("<label class='successMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>")
