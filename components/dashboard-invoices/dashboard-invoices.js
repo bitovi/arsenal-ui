@@ -209,13 +209,15 @@ _.each(holes.holesReportWrapper, function(holesWrapper) {
           self.scope.appstate.attr("excelOutput",true);
     },
     '#copyToClipboard click':function(){  
-        $('#clonetable').empty().html($('.dashboard-container').find('table:visible').clone(true).attr('id','dynamic'));
-         $('copy-clipboard').slideDown(function(){
-           $('body').css('overflow','scroll');
+
+      var tableClone = $('.dashboard-container').find('table:visible').clone(true);
+
+        $('#clonetable').empty().html(tableClone).attr('id','dynamic');
+          $('copy-clipboard').slideDown(function(){
+           $('body').css('overflow','hidden');
            $('#copyall').trigger('click');
-           $('copy-clipboard').addClass('wrapCopyToClipboard');
-           $("#clonetable").css("position","relative");
-        });       
+           tableClone = "";
+        }); 
       },
     '{scope.appstate} change': function() {
       var self = this;

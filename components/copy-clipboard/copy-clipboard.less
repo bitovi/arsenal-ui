@@ -5,12 +5,12 @@ copy-clipboard{
 	left: 0px;
 	min-width: 100%;
 	height: 100%;
-	z-index: 20;
+	z-index: 1000;
 	background: rgba(0, 0, 0, 0.8);
 	transition: all 0.5s;
 	overflow: hidden;
 	.copyclipboard{
-		min-width: 1200px;
+		width: 1200px;
 		height: 500px;
 		position: absolute;
 		top: 50%;
@@ -24,6 +24,7 @@ copy-clipboard{
 		outline: 0;
 		-webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
 		box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+		overflow: scroll;
 	}
 	.title{
 		font-size: 12px;
