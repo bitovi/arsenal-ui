@@ -11,6 +11,7 @@ var BundleDetailGrid = ScrollingGrid.extend({
   template: template,
   scope: {
     paginateAttr:null,//passed in value
+    localOffsetTracker:0,
     makeRowsFromBundle: function(bundle) {
       // so the bundle has a bundleDetailsGroup (which is a List of BundleDetailGroup model instances)
       // and each of those instances is a parent row
@@ -186,18 +187,21 @@ var BundleDetailGrid = ScrollingGrid.extend({
   },
   events: {
     '{scope.pageState} selectedBundle': function(scope, ev, newBundle) {
+      this.scope.localOffsetTracker = 0;
       this.scope.rows.splice(0, this.scope.rows.length, ...(newBundle ? this.scope.makeRowsFromBundle(newBundle) : []));
       this.scope.aggregateRows.splice(0, this.scope.aggregateRows.length, ...(newBundle ? this.scope.makeAggregateRowsFromBundle(newBundle) : []));
     },
     '{scope.pageState.selectedBundle.bundleDetailsGroup} length': function() {
 
-      if(this.scope.paginateAttr.attr("offset") > 0){
-
-        $.merge(this.scope.rows, this.scope.makeRowsFromBundle(this.scope.pageState.selectedBundle));
-        this.scope.rows.replace(this.scope.rows);
+      if(this.scope.paginateAttr.attr("offset") > 0) {
+          if(this.scope.paginateAttr.attr("offset") != this.scope.localOffsetTracker){
+            this.scope.localOffsetTracker = this.scope.paginateAttr.attr("offset")
+            $.merge(this.scope.rows, this.scope.makeRowsFromBundle(this.scope.pageState.selectedBundle));
+            this.scope.rows.replace(this.scope.rows);
+          }
 
       }else{
-
+        this.scope.localOffsetTracker = 0;
         this.scope.rows.splice(0, this.scope.rows.length, ...this.scope.makeRowsFromBundle(this.scope.pageState.selectedBundle));
         this.scope.aggregateRows.splice(0, this.scope.aggregateRows.length, ...this.scope.makeAggregateRowsFromBundle(this.scope.pageState.selectedBundle));
       }
@@ -239,11 +243,12 @@ var BundleDetailGrid = ScrollingGrid.extend({
       var tbody = this.element.find('tbody');
       var doneCallback = function() {
 
-        console.log(" I hav trigerred"+component.scope.paginateAttr.recordsAvailable);
+        console.log(" is Bottom grid data Available :"+component.scope.paginateAttr.recordsAvailable);
 
         //recordsAvailable is to know, if there is next set records available, if yes, invoke
-        if(component.scope.paginateAttr.recordsAvailable){
+        if(!component.scope.paginateAttr.isInProgress && component.scope.paginateAttr.recordsAvailable){
           component.scope.paginateAttr.attr("paginateRequest",true);
+
         }
         component.scope.attr('atBottom', false);
       };

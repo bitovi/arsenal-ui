@@ -24,7 +24,7 @@ import index_template from 'index.stache!';
 import less_index from 'index.less!';
 import token from 'models/common/token/';
 // Fixtures?
-import _fixtures from 'models/fixtures/';
+//import _fixtures from 'models/fixtures/';
 
 appstate.bind('page', function(ev, newVal, oldVal) {
   newVal = newVal || appstate.constuctor.prototype.defaults.page;

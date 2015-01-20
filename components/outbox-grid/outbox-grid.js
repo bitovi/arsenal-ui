@@ -7,6 +7,7 @@ import EmailConfirmModal from 'components/email-confirm-modal/';
 
 var OutboxGrid = Grid.extend({
   tag: 'rn-outbox-grid',
+  appstate:undefined,
   scope: {
     columns: [{
       id: 'type',
