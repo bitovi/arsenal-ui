@@ -266,7 +266,7 @@ var page = Component.extend({
         newPBnameRequest: function(){
           return this.attr("newpaymentbundlenamereq");
         },
-        
+
     },
   events: {
 
@@ -488,12 +488,12 @@ var page = Component.extend({
           var sortDir = self.scope.attr('sortDirection');
           $("#loading_img").hide();
           $('#invoiceGrid').html(stache('<rn-grid-invoice rows="{rows}" footerrows="{footerrows}" sortcolumnnames="{sortcolumnnames}" sortdir="{sortdir}" emptyrows="{emptyrows}"></rn-grid-invoice>')({rows, footerrows, sortcolumnnames:sortedColumns, sortdir:sortDir, emptyrows:false}));
-          
+
           if (self.scope.appstate.attr("invSearchPervHist") != undefined && self.scope.appstate.attr("invSearchPervHist") != null ) {
 
             self.scope.appstate.attr("invSearchPervHist", null);
             self.scope.getSelectedValue(self.scope.appstate.attr("invoiceId"), "#invoiceGrid");
-            
+
 
           } else {
 
@@ -509,7 +509,7 @@ var page = Component.extend({
           $("#loading_img").hide();
           $('#invoiceGrid').html(stache('<rn-grid-invoice emptyrows="{emptyrows}"></rn-grid-invoice>')({emptyrows:true}));
         }
-        
+
 
     },
      "#btnAdd click": function(){
@@ -1023,7 +1023,7 @@ var page = Component.extend({
 
           getAllInvoices(self.scope);
 
-          
+
       }
   }
 });
@@ -1100,7 +1100,7 @@ function getAllInvoices(self) {
 
         invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
         invSearchRequest.searchRequest["offset"] = self.offset;
-        invSearchRequest.searchRequest["limit"] = "15";
+        invSearchRequest.searchRequest["limit"] = "30";
 
         var filterData = self.tokenInput.attr();
         var newFilterData = [];
