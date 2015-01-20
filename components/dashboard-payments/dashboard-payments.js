@@ -8,6 +8,7 @@ import DashboardPaymentsOverview from 'components/dashboard-payments-overview/';
 import DashboardPaymentsDetail from 'components/dashboard-payments-detail/';
 
 import PaymentSummary from 'models/payment-summary/';
+import HolesReport from 'models/holes-report/';
 
 import template from './template.stache!';
 import styles from './dashboard-payments.less!';
@@ -34,9 +35,7 @@ var DashboardPayments = Component.extend({
       detailNameProperty: 'ctry'
     }],
     selectedTab: null, // set on insert
-
     selectedItem: null,
-
     debouncedRefreshReport: function() {
       var self = this;
       if(refreshTimeoutID) {
@@ -49,6 +48,7 @@ var DashboardPayments = Component.extend({
     refreshReport: function() {
       var self = this;
       this.attr('fetching', true);
+
       return PaymentSummary.findOne({appstate: self.appstate}).then(function(summary) {
         self.attr('summary', summary);
         self.attr('fetching', false);
@@ -66,6 +66,7 @@ var DashboardPayments = Component.extend({
     selectedItems: function(options) {
       var scope = this;
       var items = scope.summary[scope.attr('selectedTab').value];
+      console.log("item",items);
       return _.map(items, function(item) {
         return options.fn({
           item: item,
@@ -98,6 +99,7 @@ var DashboardPayments = Component.extend({
       this.scope.attr('selectedItem', null);
     },
     '.sidebar .chart-list li click': function(el, ev) {
+      console.log('Clicked');
       var item = el.data('item').item;
       this.scope.attr('selectedItem', item);
     }

@@ -102,4 +102,5 @@ fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'dashboard/holesreport', function(re
 fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'workflow/analytics/inbox', '/models/fixtures/inbox.json');
 fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'workflow/analytics/outbox', '/models/fixtures/outbox.json');
 */
-fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'dashboard/payments', '/models/fixtures/payment-summary.json');
+//Removed Fixture for dashboard payments
+//fixture('POST ' + URLs.DOMAIN_SERVICE_URL + 'dashboard/payments', '/models/fixtures/payment-summary.json');
