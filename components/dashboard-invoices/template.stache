@@ -76,9 +76,6 @@
   </tbody>
 </table>
 
-
-
-
 <table class="holes-reports-local" border="1">
   <thead>
     <tr>
@@ -97,6 +94,7 @@
     {{/holesReports}}
   </tbody>
 </table>
+
 </div>
 
 
