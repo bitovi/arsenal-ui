@@ -67,6 +67,7 @@ var page = Component.extend({
     sortColumns:[],
     sortDirection: "asc",
     load : true,
+    recordsAvailable : true,
 
     reconStatsDetailsSelected : [],
 
@@ -539,7 +540,7 @@ var fetchReconIngest = function(scope, load){
           $.merge(scope.ingestList.headerRows, data.reconStatsDetails);
           scope.ingestList.headerRows.replace(scope.ingestList.headerRows);
         }
-
+        scope.recordsAvailable = data.recordsAvailable;
         scope.reconStatsDetailsSelected = data.reconStatsDetails;
 
         scope.currencyScope.replace(data.currency);
