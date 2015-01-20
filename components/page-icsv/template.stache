@@ -1,5 +1,5 @@
 <div class="container-fluid icsv-invoice" {{showediticsvmain}}>
-	<div class="row">
+	<!--<div class="row">
 		<div class="col-sm-5 pageTitle">
 			<h3>Add New Invoices from iCSV</h3>
 		</div>
@@ -10,12 +10,24 @@
 			</div>
 		</div>
 		<div class="col-sm-12 lineDividerInvoice removeH"></div>
+	</div> -->
+	<div class="div-warn-container">
+		<div class="row pagetitle-div-parent">
+			<div class="col-sm-5 pageTitleInv">
+				<div class="pageHead">Add New Invoices from iCSV</div>
+			</div>
+		</div>
+		<div class="col-sm-7 pagetitle-div-parent">
+			<div id="invcsvmessageDiv" class="center" role="alert"></div>
+		</div>
 	</div>
+
 	<div class="row">
 		<!--div class="col-sm-12">
 			<div class="col-sm-6"></div>
 
 	</div-->
+	<div class="col-sm-12 lineDividerInvoice removeH"></div>
 	<div class="col-sm-12" style="padding:0px;min-height:0px;background: #f4f4f4;">
 		<div class="col-sm-6" id="uploadsummary">
 			<label class="fontSize14"> iCSV Files (CSVs and PDFs)</label>
