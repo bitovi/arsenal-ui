@@ -137,8 +137,12 @@ var PaymentBundle = Model.extend({
     }else{
         var paymentOption = params.paymentType,
             view = params.view.toUpperCase(),
-            bundleId = params.bundleID,
-            filter = params.filter;
+            bundleId = params.bundleID;
+
+            var filterFormatted = [];
+            _.each(params.filterData, function(obj) {
+              filterFormatted.push(obj.name);
+            });
 
         // TODO: when infrastructure gets set up, fix this.
         data = {
@@ -148,9 +152,17 @@ var PaymentBundle = Model.extend({
             view
           },
          bundleSearch: {
-           filter
+           filter: filterFormatted
           }
         };
+
+        if (params.paginate) {
+          data.bundleSearch["offset"] = params.paginate.offset;
+          data.bundleSearch["sortBy"] =  params.paginate.sortBy.attr().toString()
+          data.bundleSearch["limit"] = constants.PAGINATE_LIMIT;
+          data.bundleSearch["sortOrder"] = params.paginate.sortDirection;
+        }
+
         var excelOutput = appstate.attr('excelOutput') != undefined ? appstate.attr('excelOutput') : false;
         if(excelOutput!=false){
           data["excelOutput"]=true
@@ -183,38 +195,38 @@ var PaymentBundle = Model.extend({
       }
     }
   },
-  getDetails: function(appstate, view, paymentType,filterData) {
+  getDetails: function(params) {
     var self = this;
 
-    var filterFormatted = [];
-    _.each(filterData, function(obj) {
-      filterFormatted.push(obj.name);
-    });
+    params["bundleID"] = self.bundleId;
 
-    return PaymentBundle.findOne({
-      appstate,
-      bundleID: self.bundleId,
-      paymentType,
-      view,
-      filter:filterFormatted
-    }).then(function(bundle) {
-      if(bundle.status == "FAILURE" ){
+    return PaymentBundle.findOne(params).then(function(bundle) {
 
-        can.batch.start();
-        self.attr('status',bundle.status);
-        self.attr('responseText',bundle.responseText);
-        can.batch.stop();
+      can.batch.start();
+        if(bundle.status == "FAILURE" ){
 
-      }else{
-        bundle = bundle.hasOwnProperty('responseCode') ? bundle.paymentBundle : bundle;
 
-        // merge all those new properties into this one
-        can.batch.start();
-        self.attr(bundle.attr());
-        self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
-        self.attr('bundleFooter', transformFooter(bundle.bdlFooter));
-        can.batch.stop();
-     }
+          self.attr('status',bundle.status);
+          self.attr('responseText',bundle.responseText);
+
+
+        }else{
+          // merge all those new properties into this one
+          bundle.hasOwnProperty('recordsAvailable') ? params.paginate.attr("recordsAvailable",bundle.recordsAvailable):"";
+
+          //console.log(params.paginate.attr("offset") + ", Inside : "+params.paginate.attr("recordsAvailable"));
+          bundle = bundle.hasOwnProperty('responseCode') ? bundle.paymentBundle : bundle;
+          if(params.paginate.offset > 0){
+            self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
+          }else{
+            self.attr(bundle.attr());
+            self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
+            self.attr('bundleFooter', transformFooter(bundle.bdlFooter));
+          }
+
+
+        }
+      can.batch.stop();
 
      return self;
     });

@@ -10,6 +10,8 @@ var BundleDetailGrid = ScrollingGrid.extend({
   tag: 'rn-bundle-detail-grid',
   template: template,
   scope: {
+    paginateAttr:null,//passed in value
+    localOffsetTracker:0,
     makeRowsFromBundle: function(bundle) {
       // so the bundle has a bundleDetailsGroup (which is a List of BundleDetailGroup model instances)
       // and each of those instances is a parent row
@@ -185,12 +187,25 @@ var BundleDetailGrid = ScrollingGrid.extend({
   },
   events: {
     '{scope.pageState} selectedBundle': function(scope, ev, newBundle) {
+      this.scope.localOffsetTracker = 0;
       this.scope.rows.splice(0, this.scope.rows.length, ...(newBundle ? this.scope.makeRowsFromBundle(newBundle) : []));
       this.scope.aggregateRows.splice(0, this.scope.aggregateRows.length, ...(newBundle ? this.scope.makeAggregateRowsFromBundle(newBundle) : []));
     },
     '{scope.pageState.selectedBundle.bundleDetailsGroup} length': function() {
-      this.scope.rows.splice(0, this.scope.rows.length, ...this.scope.makeRowsFromBundle(this.scope.pageState.selectedBundle));
-      this.scope.aggregateRows.splice(0, this.scope.aggregateRows.length, ...this.scope.makeAggregateRowsFromBundle(this.scope.pageState.selectedBundle));
+
+      if(this.scope.paginateAttr.attr("offset") > 0) {
+          if(this.scope.paginateAttr.attr("offset") != this.scope.localOffsetTracker){
+            this.scope.localOffsetTracker = this.scope.paginateAttr.attr("offset")
+            $.merge(this.scope.rows, this.scope.makeRowsFromBundle(this.scope.pageState.selectedBundle));
+            this.scope.rows.replace(this.scope.rows);
+          }
+
+      }else{
+        this.scope.localOffsetTracker = 0;
+        this.scope.rows.splice(0, this.scope.rows.length, ...this.scope.makeRowsFromBundle(this.scope.pageState.selectedBundle));
+        this.scope.aggregateRows.splice(0, this.scope.aggregateRows.length, ...this.scope.makeAggregateRowsFromBundle(this.scope.pageState.selectedBundle));
+      }
+
     },
     'tbody tr click': function(el, ev) {
       if(ev.target.classList.contains('open-toggle')) {
@@ -223,6 +238,28 @@ var BundleDetailGrid = ScrollingGrid.extend({
     },
     'inserted': function() {
       this.scope.filterColumns.apply(this);
+
+      var component = this;
+      var tbody = this.element.find('tbody');
+      var doneCallback = function() {
+
+        console.log(" is Bottom grid data Available :"+component.scope.paginateAttr.recordsAvailable);
+
+        //recordsAvailable is to know, if there is next set records available, if yes, invoke
+        if(!component.scope.paginateAttr.isInProgress && component.scope.paginateAttr.recordsAvailable){
+          component.scope.paginateAttr.attr("paginateRequest",true);
+
+        }
+        component.scope.attr('atBottom', false);
+      };
+      $(tbody).on('scroll', function(ev) {
+        if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight - 100 ) {
+          // we are at the bottom
+          component.scope.attr('atBottom', true);
+          component.scope.atBottomHandler.call(component, doneCallback);
+        }
+      });
+
     },
     '{scope.pageState} verboseGrid': function() {
       this.scope.filterColumns.apply(this);

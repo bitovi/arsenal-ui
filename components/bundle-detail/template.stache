@@ -31,7 +31,7 @@
 </div>
 <div class="grid-container" id="bundleDetailGridDiv">
   {{#if pageState.selectedBundle.bundleDetailsGroup.length}}
-  <rn-bundle-detail-grid columns="{gridColumns}" page-state="{pageState}" selected-rows="{selectedRows}" {{#if gettingDetails}}style="display: none;"{{/if}}></rn-bundle-detail-grid>
+  <rn-bundle-detail-grid columns="{gridColumns}" page-state="{pageState}" selected-rows="{selectedRows}" paginate-attr={bottomGridPaginateAttr} {{#if gettingDetails}}style="display: none;"{{/if}}></rn-bundle-detail-grid>
   {{/if}}
 </div>
 {{#if pageState.selectedBundle.bundleDetailsGroup.length}}
