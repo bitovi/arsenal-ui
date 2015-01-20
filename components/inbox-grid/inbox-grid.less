@@ -18,6 +18,10 @@
 rn-inbox-grid, rn-outbox-grid {
   .grid-mixin();
   .scrolling-grid-mixin();
+  
+  tbody{
+    overflow-y: overlay;
+  }
 
   tbody td {
     padding: .5em 1em;
