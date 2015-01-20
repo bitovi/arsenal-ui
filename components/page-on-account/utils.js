@@ -85,13 +85,13 @@ var onAccountCreateRequest ={};
     }
     
     if(documents!= null && documents.length>0){
-        for(var i=0;i<documents.length;i++){
-            var documentsObj={};
-            documentsObj.fileName=documents[i].fileName;
-            documentsObj.location=documents[i].filePath;
-            documentsObj.createdDate=Date.now();
-            onAccountCreateRequest.onAccount.documents.push(documentsObj);
-        }
+        // for(var i=0;i<documents.length;i++){
+        //     var documentsObj={};
+        //     documentsObj.fileName=documents[i].fileName;
+        //     documentsObj.location=documents[i].filePath;
+        //     documentsObj.createdDate=Date.now();
+            onAccountCreateRequest.onAccount.documents=documents.attr();
+        // }
     }
 
     //console.log('onAccountCreateRequest');
