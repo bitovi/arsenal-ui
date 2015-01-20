@@ -148,7 +148,8 @@ frameDeleteRequest:function(rowsToBedeleted,comments,quarters){
             onAccountDetail.status="I";
 
             for(var k=0;k<quarters.length;k++){
-              var periodVal = rowsToBedeleted[i][quarters[k]]+'';
+              var fiscalPeriod = this.getFiscalPeriod(quarters[k]);
+              var periodVal = rowsToBedeleted[i][fiscalPeriod]+'';
               if(periodVal != undefined && periodVal.length > 0 && periodVal != "undefined"){
                 var copyiedObj = jQuery.extend({}, onAccountDetail);
                 copyiedObj.fiscalPeriod = this.getPeriodForQuarter(quarters[k]);
