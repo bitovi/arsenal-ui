@@ -1,10 +1,20 @@
 <copy-clipboard> {{values}}</copy-clipboard>
-<div class="col-lg-12 pageTitle">
+<!--<div class="col-lg-12 pageTitle">
     <h3>Claim Review </h3>
 </div>
 <div id="chartContainer" class="col-lg-12">
 	<div id="messageDiv" class="col-md-12"></div>
 	<div id="highChartDetails" class="highcharts_Hide"></div>
+</div> -->
+<div class="div-warn-container" style="padding-left: 10px;padding-right: 10px;">
+  <div class="row pagetitle-div-parent">
+    <div class="col-sm-5 pageTitleInv">
+      <div class="pageHead">Claim Review</div>
+    </div>
+  </div>
+  <div class="col-sm-7 div-warn-parent">
+    <div id="messageDiv" class="center" role="alert"></div>
+  </div>
 </div>
 
 <div class="col-lg-12 claimReviewContainer">
@@ -38,7 +48,7 @@
 		</ul>
 
 		<div id="myTabContent" class="tab-content">
-		   <div id="loading_img"></div> 
+		   <div id="loading_img"></div>
 		   <div class="tab-pane fade in active" id="licensorView">
 		      <div id="claimLicencorGrid" class="claimReview"></div>
 		   </div>
