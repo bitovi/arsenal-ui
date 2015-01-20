@@ -27,7 +27,7 @@ var reconGrid = Grid.extend({
         var tableScrollTopVal = parentScopeVar.attr('ingestedScrollTop');
         $(tbody[0]).scrollTop(tableScrollTopVal);
           $(tbody).on('scroll', function(ev) {
-            if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight) {
+            if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight && parentScopeVar.recordsAvailable) {
               //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
               
               var tabSelected = parentScopeVar.attr('tabSelected');
@@ -54,7 +54,7 @@ var reconGrid = Grid.extend({
           var tableScrollTopVal = parentScopeVar.attr('scrollTop');
           $(tbody[0]).scrollTop(tableScrollTopVal);
           $(tbody).on('scroll', function(ev) {
-            if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight) {
+            if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight && parentScopeVar.recordsAvailable) {
               //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
               
               var tabSelected = parentScopeVar.attr('tabSelected');
