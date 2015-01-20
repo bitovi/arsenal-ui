@@ -125,6 +125,7 @@ var BundleDetailTabs = Component.extend({
         this.bottomGridPaginateAttr.attr("paginateRequest",false);
         var offset = this.bottomGridPaginateAttr.attr("offset") + 1;
         this.bottomGridPaginateAttr.attr("offset",offset);
+        this.bundleProgress.triggerValidation = false;
       }else{
         //first time request, by setting this, the grid details will not be shown.
         this.attr('gettingDetails', true);
@@ -162,7 +163,7 @@ var BundleDetailTabs = Component.extend({
         if(bundle.status === 'FAILURE'){
           displayMessage("errorMessage",bundle.responseText)
         }else{
-          //scope.bundleProgress.triggerValidation ? scope.getNewValidations(bundle) : "";
+          scope.bundleProgress.triggerValidation ? scope.getNewValidations(bundle) : "";
         }
 
         canRemoveInvoice(scope);
