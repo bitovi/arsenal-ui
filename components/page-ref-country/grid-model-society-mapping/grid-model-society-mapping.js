@@ -12,14 +12,14 @@ var GridSocietyModelMapping = Grid.extend({
         id: 'society',
         title: 'Society',
         contents: function(row){
-          return "<a href='javascript:void(0)' class='society'>"+row.society+"</a>";
+          return "<a href='javascript:void(0)' class='society' value='" + row.society + "'>"+row.society+"</a>";
         }
       },
       {
         id: 'model',
         title: 'Model',
         contents: function(row){
-          return "<a href='javascript:void(0)' class='pricingModel'>"+row.model+"</a>";
+          return "<a href='javascript:void(0)' class='pricingModel' value='" + row.modelId +"' >"+row.model+"</a>";
         }
       },
       {
