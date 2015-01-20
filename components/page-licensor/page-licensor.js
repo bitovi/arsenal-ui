@@ -1485,8 +1485,18 @@ var page = Component.extend({
 
           var genObj = {"id" : "" , "licensorName":""};
 
-          genObj.id = defaultEntity.id;
-          genObj.licensorName =  defaultEntity.value;
+          if(self.scope.appstate.attr("licensorName") != null && self.scope.appstate.attr("licensorName") != undefined) {
+
+            genObj.licensorName =  self.scope.appstate.attr("licensorName");
+            self.scope.appstate.attr("licensorName", null);
+
+          }
+          else {
+
+            genObj.id = defaultEntity.id;
+            genObj.licensorName =  defaultEntity.value;
+
+          }
 
           self.scope.attr("selectedEntity", genObj.licensorName);
 
