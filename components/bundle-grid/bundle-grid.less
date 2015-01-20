@@ -17,8 +17,7 @@ rn-bundle-grid {
 
   font-size: 10pt;
 
-
-  .paymentAmt, .pendingDays{
+  .paymentAmt {
     text-align: right;
   }
 
@@ -48,7 +47,9 @@ rn-bundle-grid {
       &.periodRange { .flex-basis(200px); }
       &.region { .flex-basis(100px); }
       &.pendingWith { .flex-basis(200px); }
-      &.pendingDays { .flex-basis(105px); }
+      &.pendingDays { .flex-basis(105px);
+            white-space: nowrap;
+            padding-right: 1.5em;text-align: right;}
     }
   }
 }
