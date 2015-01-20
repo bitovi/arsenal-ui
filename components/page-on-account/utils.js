@@ -183,13 +183,14 @@ var onAccountUpdateRequest ={};
                   var fiscalPeriod = this.getFiscalPeriod(quarters[k]);
                    if(Number(onAccountRows[i][fiscalPeriod]) != 0){
                       var onAccountDetails={};
+                      //var amount=onAccountRows[i][fiscalPeriod];
                       //onAccountDetails.id=onAccountRows[i].id;
                       onAccountDetails.bundleId=onAccountRows[i].bundleId;
                       onAccountDetails.bundleName=onAccountRows[i].bundleName;
                       onAccountDetails.currencyCode=onAccountRows[i].Currency;
                       //var period = this.getPeriodForQuarter(quarters[k]);
                       onAccountDetails.fiscalPeriod=fiscalPeriod+'';
-                      onAccountDetails.onAccountAmt=onAccountRows[i][fiscalPeriod];
+                      //onAccountDetails.onAccountAmt=onAccountRows[i][fiscalPeriod];
                       onAccountDetails.commentId=onAccountRows[i].commentId;
                       onAccountDetails.docId=onAccountRows[i].docId;
                       onAccountDetails.countryId=''; 
@@ -205,8 +206,12 @@ var onAccountUpdateRequest ={};
                       onAccountDetails.modifiedBy="2002005722";
                       onAccountDetails.modifiedDate=Date.now();
                       onAccountDetails.serviceTypeId=onAccountRows[i].serviceTypeId;
-                      if(onAccountDetails.onAccountAmt != undefined && onAccountDetails.onAccountAmt >0){
-                        onAccountUpdateRequest.onAccount.onAccountDetails.push(onAccountDetails);  
+                      if(onAccountRows[i][fiscalPeriod] != undefined){
+                        var amount = Number(onAccountRows[i][fiscalPeriod].replace(/,/g,''));
+                        if(amount >0){
+                          onAccountDetails.onAccountAmt=amount;
+                          onAccountUpdateRequest.onAccount.onAccountDetails.push(onAccountDetails);    
+                        } 
                       }
                   }
                 }
