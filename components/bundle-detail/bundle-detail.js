@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import Component from 'can/component/';
 import List from 'can/list/';
+import Map from 'can/map/';
 import stache from 'can/view/stache/';
 
 import PaymentBundleDetailGroup from 'models/payment-bundle/payment-bundle-detail-group';
@@ -49,8 +50,17 @@ var bundleTypeColumnSets = {
   'ADHOC_INV': columnSets.adHoc,
 };
 
+
 var tokenInput = [];
 
+var paginateAttr =   new Map({
+  offset: 0,
+  sortBy: [],
+  sortDirection: "asc",
+  recordsAvailable: false,
+  paginateRequest:false,// to know the paginateRequest is needed.
+  isInProgress:false
+});
 
 var BundleDetailTabs = Component.extend({
   tag: 'rn-bundle-detail',
@@ -63,6 +73,7 @@ var BundleDetailTabs = Component.extend({
     aggregatePeriod: false,
     paymentType: 2,
     approvalComment: '',
+    bottomGridPaginateAttr: paginateAttr,
     isBundlePrioritySet:false,
     details:{},
 
@@ -108,6 +119,18 @@ var BundleDetailTabs = Component.extend({
 
     gettingDetails: false,
     getNewDetails: function(bundle) {
+
+      if(this.bottomGridPaginateAttr.attr("paginateRequest")){
+        //By setting the paginateRequest to false confirms the request is completed.
+        this.bottomGridPaginateAttr.attr("paginateRequest",false);
+        var offset = this.bottomGridPaginateAttr.attr("offset") + 1;
+        this.bottomGridPaginateAttr.attr("offset",offset);
+      }else{
+        //first time request, by setting this, the grid details will not be shown.
+        this.attr('gettingDetails', true);
+        this.bottomGridPaginateAttr.attr("offset",0);
+      }
+
       var scope = this;
 
       var view;
@@ -120,19 +143,26 @@ var BundleDetailTabs = Component.extend({
         view = 'licensor';
       }
 
-      this.attr('gettingDetails', true);
-      return bundle.getDetails(
-        this.appstate,
-        view,
-        this.paymentType,
-        tokenInput
+
+
+      var params = {
+        appstate: this.appstate,
+        view: view,
+        paymentType: this.paymentType,
+        filterData: tokenInput,
+        paginate: this.bottomGridPaginateAttr
+      };
+
+      return bundle.getDetails(params
       ).then(function(bundle) {
+
         scope.attr('gettingDetails', false);
+        scope.bottomGridPaginateAttr.attr("isInProgress",false);
 
         if(bundle.status === 'FAILURE'){
           displayMessage("errorMessage",bundle.responseText)
         }else{
-          scope.bundleProgress.triggerValidation ? scope.getNewValidations(bundle) : "";
+          //scope.bundleProgress.triggerValidation ? scope.getNewValidations(bundle) : "";
         }
 
         canRemoveInvoice(scope);
@@ -450,6 +480,15 @@ var BundleDetailTabs = Component.extend({
     '.preview click': function(el, ev) {
       var row = el.closest('tr').data('row').row;
       Preview.invoicePreview(row.invoiceId);
+    },
+    '{scope.bottomGridPaginateAttr} change': function() {
+      //console.log("change event: "+this.scope.bottomGridPaginateAttr.paginateRequest+", othje:"+this.scope.bottomGridPaginateAttr.recordsAvailable);
+      if(!this.scope.bottomGridPaginateAttr.attr("isInProgress") && this.scope.bottomGridPaginateAttr.paginateRequest){
+        //console.log("change event: "+this.scope.bottomGridPaginateAttr.recordsAvailable);
+        this.scope.bottomGridPaginateAttr.attr("isInProgress",true);
+        this.scope.getNewDetails(this.scope.pageState.selectedBundle);
+      }
+
     }
   }
 });

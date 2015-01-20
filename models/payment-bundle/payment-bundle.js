@@ -151,6 +151,14 @@ var PaymentBundle = Model.extend({
            filter
           }
         };
+
+        if (params.paginate) {
+          data.bundleSearch["offset"] = params.paginate.offset;
+          data.bundleSearch["sortBy"] =  params.paginate.sortBy.attr().toString()
+          data.bundleSearch["limit"] = constants.PAGINATE_LIMIT;
+          data.bundleSearch["sortOrder"] = params.paginate.sortDirection;
+        }
+
         var excelOutput = appstate.attr('excelOutput') != undefined ? appstate.attr('excelOutput') : false;
         if(excelOutput!=false){
           data["excelOutput"]=true
@@ -183,38 +191,38 @@ var PaymentBundle = Model.extend({
       }
     }
   },
-  getDetails: function(appstate, view, paymentType,filterData) {
+  getDetails: function(params) {
     var self = this;
 
     var filterFormatted = [];
-    _.each(filterData, function(obj) {
+    _.each(params.filterData, function(obj) {
       filterFormatted.push(obj.name);
     });
 
-    return PaymentBundle.findOne({
-      appstate,
-      bundleID: self.bundleId,
-      paymentType,
-      view,
-      filter:filterFormatted
-    }).then(function(bundle) {
-      if(bundle.status == "FAILURE" ){
+    params["bundleID"] = self.bundleId;
 
-        can.batch.start();
-        self.attr('status',bundle.status);
-        self.attr('responseText',bundle.responseText);
-        can.batch.stop();
+    return PaymentBundle.findOne(params).then(function(bundle) {
 
-      }else{
-        bundle = bundle.hasOwnProperty('responseCode') ? bundle.paymentBundle : bundle;
+      can.batch.start();
+        if(bundle.status == "FAILURE" ){
 
-        // merge all those new properties into this one
-        can.batch.start();
-        self.attr(bundle.attr());
-        self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
-        self.attr('bundleFooter', transformFooter(bundle.bdlFooter));
-        can.batch.stop();
-     }
+
+          self.attr('status',bundle.status);
+          self.attr('responseText',bundle.responseText);
+
+
+        }else{
+          // merge all those new properties into this one
+          bundle.hasOwnProperty('recordsAvailable') ? params.paginate.attr("recordsAvailable",bundle.recordsAvailable):"";
+
+          console.log(params.paginate.attr("offset") + ", Inside : "+params.paginate.attr("recordsAvailable"));
+          bundle = bundle.hasOwnProperty('responseCode') ? bundle.paymentBundle : bundle;
+          self.attr(bundle.attr());
+          self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
+          self.attr('bundleFooter', transformFooter(bundle.bdlFooter));
+
+        }
+      can.batch.stop();
 
      return self;
     });
