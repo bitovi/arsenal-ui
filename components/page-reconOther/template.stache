@@ -13,7 +13,7 @@
       <div class="pageHead">Recon Other</div>
     </div>
   </div>
-  <div class="col-sm-7 pagetitle-div-parent" style="padding-top: 6px;">
+  <div class="col-sm-7 div-warn-parent" style="padding-top: 6px;">
     <div id="messageDiv" class="center" role="alert"></div>
   </div>
 </div>

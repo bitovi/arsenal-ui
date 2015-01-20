@@ -13,7 +13,7 @@
       <div class="pageHead">Recon Stats</div>
     </div>
   </div>
-  <div class="col-sm-7 pagetitle-div-parent">
+  <div class="col-sm-7 div-warn-parent">
     <div id="messageDiv" class="center" role="alert"></div>
   </div>
 </div>

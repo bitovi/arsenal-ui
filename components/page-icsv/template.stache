@@ -17,7 +17,7 @@
 				<div class="pageHead">Add New Invoices from iCSV</div>
 			</div>
 		</div>
-		<div class="col-sm-7 pagetitle-div-parent">
+		<div class="col-sm-7 div-warn-parent">
 			<div id="invcsvmessageDiv" class="center" role="alert"></div>
 		</div>
 	</div>
