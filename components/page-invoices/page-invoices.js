@@ -131,8 +131,9 @@ Grid.extend({
     'inserted': function(){
       var self= this;
       var tbody = self.element.find('tbody');
-      $(tbody).css('min-Height',getTableBodyHeight('invoiceGrid',90));
-      $(tbody).css('max-Height',getTableBodyHeight('invoiceGrid',90));
+      var getTblBodyHght=getTableBodyHeight('invoiceGrid',90);
+      $(tbody).css('min-Height',getTblBodyHght);
+      $(tbody).css('max-Height',getTblBodyHght);
       var parentScopeVar = self.element.closest('page-invoices').scope();
       var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
       $(tbody[0]).scrollTop(tableScrollTopVal);
