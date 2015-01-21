@@ -59,6 +59,7 @@ var page = Component.extend({
     pricingModelDetails : [],
     baseModelParameter: [],
     trackCounts: [],
+    refreshEntityId : true,
 
     commentList : [  
          {  
@@ -339,16 +340,19 @@ var page = Component.extend({
 
         '{scope} pageState.entityCountryDetails.entityCountry.entityId': function() {
 
-           $('#fetchDetailsBtn').attr("disabled", true)
           var self = this;
 
-          var requestObj = {entityId:self.scope.pageState.entityCountryDetails.entityCountry.entityId};
-          Promise.all([Country.findAllCountriesByLicenesor(UserReq.formRequestDetails(requestObj))]).then(function(values) {
-             $('#fetchDetailsBtn').attr("disabled", false)   
-            self.scope.attr("countries").replace(values[0].data);
+          if(self.scope.attr("refreshEntityId")) {
+            $('#fetchDetailsBtn').attr("disabled", true);
+            
 
-          });
+            var requestObj = {entityId:self.scope.pageState.entityCountryDetails.entityCountry.entityId};
+            Promise.all([Country.findAllCountriesByLicenesor(UserReq.formRequestDetails(requestObj))]).then(function(values) {
+               $('#fetchDetailsBtn').attr("disabled", false)   
+              self.scope.attr("countries").replace(values[0].data);
 
+            });
+          }
           //this.scope.currencies.replace(Currency.findAll(UserReq.formRequestDetails(requestObj)));
         },
 
@@ -400,9 +404,11 @@ var page = Component.extend({
             var self = this.scope;
             CountryLicensor.findOne(UserReq.formRequestDetails(requestObj),function(data){
               loadPage(self, data);
+              self.attr("refreshEntityId", false);
               self.pageState.entityCountryDetails.entityCountry.attr("entityId", requestObj.entityCountryDetails.entityCountry.entityId);
               self.pageState.entityCountryDetails.entityCountry.attr("invoiceCurr", data.entityCountryDetails.entityCountry.invoiceCurr);
               $("#countryId").val(requestObj.entityCountryDetails.entityCountry.countryId);
+              self.attr("refreshEntityId", true);
             },function(xhr){
               console.error("Error while loading: country-Entity Details"+xhr);
             });
@@ -630,7 +636,7 @@ var loadPage = function(scope,data){
   }
 
   var status = data.entityCountryDetails.entityCountry.attr("status");
-  if(status == "Active"){
+  if(status == "A"){
     data.entityCountryDetails.entityCountry.attr("status","Active");
   }else{
     data.entityCountryDetails.entityCountry.attr("status","InActive");
