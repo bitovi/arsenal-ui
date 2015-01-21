@@ -6,7 +6,7 @@ rn-grid-invoice {
   table {
     /* You have to specify widths */
     width: 100%;
-    height:100%;
+    //height:100%;
 
     tr>th, tr > td {
       width:2%;
@@ -19,11 +19,11 @@ rn-grid-invoice {
 	  display: block;
 	}
 	tbody {
-    height:85%;
-	  max-height: 100%;
+    //height:85%;
+	  //max-height: 100%;
 	  overflow-y: overlay;
 	  overflow-x: hidden;
-    border: 1px solid #a1a1a1;
+    //border: 1px solid #a1a1a1;
     border-bottom: 0;
 	}
   thead {
@@ -44,12 +44,64 @@ rn-grid-invoice {
 
 }
 
+.button-ctrls{
+  height: 35px;
+  padding-top: 2px;
+  text-align: center;
+
+  #searchDiv > *{
+    float:left;
+    margin:0px 5px 0px 0px;
+  }
+
+  #searchDiv {
+    float:right;
+    width:25%;
+    padding-top:4px;
+    padding-right: 0px;
+  }
+
+  .vertical-line{
+    width: 1px !important; /* Line width */
+    background-color: black; /* Line color */
+    height: 70%; /* Override in-line if you want specific height. */
+
+  }
+
+  .center {
+    margin: 0 auto;
+    //position: relative;
+
+    padding-right: 10px;
+    //float:left;
+    width: 100%;
+    position: absolute;
+    //display:inline-block;
+    height:35px
+  }
+
+  ul.token-input-list-facebook{
+    width:80% !important;
+    height: 20px !important;
+    border-radius: 4px;
+    border-color: #C6C6C6;
+  }
+
+  input#token-input-tokenSearch{
+    padding-top: 0px;
+  }
+
+  .buttonSubmit{
+    margin-left:10px;
+  }
+}
+
 .invoiceContainer{
 	border: 0px !important;
 	padding:0px;
 	position: relative;
-  min-height: 90%;
-  height:90%;
+  min-height: 100%;
+  height:100%;
 
 	.pageTitle{
 	  padding-left: 75px;
@@ -66,30 +118,17 @@ rn-grid-invoice {
 		display:none;
 		width: 100%;
 	}
-	#searchDiv > *{
-		float:left;
-		margin:0px 5px 0px 0px;
-	}
 
-	ul.token-input-list-facebook{
-		width:80% !important;
-		height: 20px !important;
-		border-radius: 4px;
-		border-color: #C6C6C6;
-	}
-
-  input#token-input-tokenSearch{
-    padding-top: 0px;
-  }
 
 	#invoiceGrid {
 		background: #f4f4f4;
 		clear: both;
-		min-height: 100%;
-    height:100%;
 		overflow-x: scroll;
 		overflow-y: scroll;
     border-radius: 5px;
+    border:1px solid #97979C;
+    border-top:0px;
+    border-bottom:0px;
 		.invoiceAmt {
 			text-align: right;
 		}

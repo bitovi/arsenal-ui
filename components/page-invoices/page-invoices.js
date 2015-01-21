@@ -131,14 +131,14 @@ Grid.extend({
     'inserted': function(){
       var self= this;
       var tbody = self.element.find('tbody');
+      $(tbody).css('min-Height',getTableBodyHeight('invoiceGrid',90));
+      $(tbody).css('max-Height',getTableBodyHeight('invoiceGrid',90));
       var parentScopeVar = self.element.closest('page-invoices').scope();
       var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
       $(tbody[0]).scrollTop(tableScrollTopVal);
         $(tbody).on('scroll', function(ev) {
           if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight-1  && parentScopeVar.recordsAvailable) {
             //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
-
-
             var offsetVal = parentScopeVar.attr('offset');
 
             /* Reset the offset value and call the webservice to fetch next set of records */
@@ -273,8 +273,6 @@ var page = Component.extend({
     "inserted": function(){
 
         var self = this;
-
-        setHeightOnLoad();
 
         $("#tokenSearch").tokenInput([
             {id: 1, name: "Search"} //This is needed
@@ -545,7 +543,7 @@ var page = Component.extend({
           }
 
           if(flag==false) {
-            $("#messageDiv").html("<label class='errorMessage' style='padding:6px 15px !important'>Invoice can't be edited as its in transit/paid</label>");
+            $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>Invoice can't be edited as its in transit/paid</label>");
             $("#messageDiv").show();
             setTimeout(function(){
                 $("#messageDiv").hide();
@@ -726,7 +724,7 @@ var page = Component.extend({
           if(flag==false){
               $("#paymentBundleNames").attr("disabled","disabled");
               $("#btnSubmit").attr("disabled","disabled");
-              $("#messageDiv").html("<label class='errorMessage' style='padding:6px 15px !important'>Selected rows are different types of invioces and cannot be added to same bundle.</label>");
+              $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>Selected rows are different types of invioces and cannot be added to same bundle.</label>");
               $("#messageDiv").show();
           }else {
                $("#messageDiv").hide();
@@ -774,7 +772,7 @@ var page = Component.extend({
           //console.log("selected Invoices are "+ self.scope.checkedRows.attr());
           var unDeletedInvoices = self.scope.unDeletedInvoices.attr();
           if(unDeletedInvoices.length > 0){
-            $("#messageDiv").html("<label class='errorMessage' style='padding:6px 15px !important'>Invoice "+unDeletedInvoices.toString()+" cannot be deleted! </label>");
+            $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>Invoice "+unDeletedInvoices.toString()+" cannot be deleted! </label>");
             $("#messageDiv").show();
           } else {
             $("#messageDiv").hide();
@@ -786,7 +784,7 @@ var page = Component.extend({
               console.log("Delete response is "+JSON.stringify(data));
               if(data["status"]=="SUCCESS"){
                 if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
-                   $("#messageDiv").html("<label class='successMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>")
+                   $("#messageDiv").html("<label class='successMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>")
                    $("#messageDiv").show();
                    setTimeout(function(){
                       $("#messageDiv").hide();
@@ -801,7 +799,7 @@ var page = Component.extend({
                 }
               }
               else{
-                $("#messageDiv").html("<label class='errorMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>");
+                $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>");
                 $("#messageDiv").show();
                 setTimeout(function(){
                     $("#messageDiv").hide();
@@ -872,7 +870,7 @@ var page = Component.extend({
                   else
                   {
                     $("#paymentBundleNames").val("");
-                    $("#messageDiv").html("<label class='errorMessage' style='padding:6px 15px !important'>Only unbundled invoices can be bundled</label>");
+                    $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>Only unbundled invoices can be bundled</label>");
                     $("#messageDiv").show();
                      setTimeout(function(){
                       $("#messageDiv").hide();
@@ -910,7 +908,7 @@ var page = Component.extend({
              // $("#attachDocumentDiv").hide();
               if(data["status"]=="SUCCESS"){
                 if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
-                   $("#messageDiv").html("<label class='successMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>")
+                   $("#messageDiv").html("<label class='successMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>")
                    $("#messageDiv").show();
                    setTimeout(function(){
                       $("#messageDiv").hide();
@@ -925,7 +923,7 @@ var page = Component.extend({
                   }
                 }
                 else{
-                  $("#messageDiv").html("<label class='errorMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>");
+                  $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>");
                   $("#messageDiv").show();
                   setTimeout(function(){
                       $("#messageDiv").hide();
@@ -945,7 +943,7 @@ var page = Component.extend({
             if(invoiceData.length > 0 && selInvoices.indexOf(invId)>-1) {
                 /* The below condition is to check if an invoice is already Bundled */
                 if(paymentState!=0){
-                  $("#messageDiv").html("<label class='errorMessage' style='padding:6px 15px !important'>Only unbundled invoices can be bundled</label>")
+                  $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>Only unbundled invoices can be bundled</label>")
                   $("#messageDiv").show();
                    setTimeout(function(){
                       $("#messageDiv").hide();
@@ -986,7 +984,7 @@ var page = Component.extend({
               console.log("passing params is "+JSON.stringify(data));
               if(data["status"]=="SUCCESS"){
                 if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
-                 $("#messageDiv").html("<label class='successMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>")
+                 $("#messageDiv").html("<label class='successMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>")
                  $("#messageDiv").show();
                  setTimeout(function(){
                     $("#messageDiv").hide();
@@ -1001,7 +999,7 @@ var page = Component.extend({
                }
               }
               else{
-                $("#messageDiv").html("<label class='errorMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>")
+                $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>")
                 $("#messageDiv").show();
                  setTimeout(function(){
                     $("#messageDiv").hide();
@@ -1131,7 +1129,7 @@ function getAllInvoices(self) {
                   }
               }else{
                 if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
-                  $("#messageDiv").html("<label class='successMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>");
+                  $("#messageDiv").html("<label class='successMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>");
                   $("#messageDiv").show();
                   setTimeout(function(){
                       $("#messageDiv").hide();
@@ -1150,7 +1148,7 @@ function getAllInvoices(self) {
               }
             } else {
               $("#loading_img").hide();
-              $("#messageDiv").html("<label class='errorMessage' style='padding:6px 15px !important'>"+data["responseText"]+"</label>");
+              $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>");
               $("#messageDiv").show();
               setTimeout(function(){
                   $("#messageDiv").hide();
@@ -1169,17 +1167,6 @@ function getAllInvoices(self) {
 
 };
 
-function setHeightOnLoad(){
-//  $('#invoiceGrid').css("height","auto");
-  /*var gridHeight=$('#invoiceGrid').height()+100;
-  $('#invoiceGrid').css('min-height',gridHeight);
-  $('#invoiceGrid').css('height',0);
-  $('#invoiceGrid').css('overflow-y','hidden');
-  $('.invoiceContainer').css('min-height',gridHeight);
-  $('.invoiceContainer').css('height',0);
-  $('.invoiceContainer').css('overflow-y','hidden');*/
-
-}
 
 var invoiceExportToExcel=function(appstate){
     var invoiceRequest={};
@@ -1194,6 +1181,28 @@ function CurrencyFormat(number)
   var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
   return n;
 }
+
+/*
+  The below method will calculate the height for the given element.
+  This will take the current Y position of the given element and
+  from that postion it will find out the available space on the page.
+  And will return the percentage height. If the user want to give 50% of the availble
+  space in the page to a component then he need to pass 50 as paramenter
+  along with the element id.
+*/
+
+function getTableBodyHeight(element,requireHghtPercent){
+  var offset = $('#'+element).offset();
+  var posYOfelement = offset.top - $(window).scrollTop();
+  var windowHeight=$(window).height();
+  var heightRemain=windowHeight-posYOfelement;
+  var percentHeight=heightRemain*(requireHghtPercent/100);
+  var tableHeadheight=$('#'+element+' table>thead').height();
+  var tableFootheight=$('#'+element+' table>tfoot').height();
+  var tableBodyHeight=percentHeight-(tableHeadheight+tableFootheight+30); //30 pixel left out for the bottom space
+  return tableBodyHeight;
+}
+
 function alignGrid(divId){
   var colLength = $('#'+divId+' table>thead>tr>th').length;
   var rowLength = $('#'+divId+' table>tbody>tr').length;
