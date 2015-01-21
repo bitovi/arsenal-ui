@@ -16,6 +16,8 @@ import BundleNamesModel from 'models/payment/bundleNames/';
 import MassFileUpLoader from 'models/mass-file-upload/';
 import invoicemap from 'models/sharedMap/invoice';
 import commonUtils from 'utils/commonUtils';
+import gridUtils from 'utils/gridUtil';
+
 
 import bootstrapmultiselect from 'bootstrap-multiselect';
 import css_bootstrapmultiselect from 'bootstrap-multiselect.css!';
@@ -131,7 +133,7 @@ Grid.extend({
     'inserted': function(){
       var self= this;
       var tbody = self.element.find('tbody');
-      var getTblBodyHght=getTableBodyHeight('invoiceGrid',90);
+      var getTblBodyHght=gridUtils.getTableBodyHeight('invoiceGrid',90);
       $(tbody).css('min-Height',getTblBodyHght);
       $(tbody).css('max-Height',getTblBodyHght);
       var parentScopeVar = self.element.closest('page-invoices').scope();
@@ -1188,26 +1190,6 @@ function CurrencyFormat(number)
   return n;
 }
 
-/*
-  The below method will calculate the height for the given element.
-  This will take the current Y position of the given element and
-  from that postion it will find out the available space on the page.
-  And will return the percentage height. If the user want to give 50% of the availble
-  space in the page to a component then he need to pass 50 as paramenter
-  along with the element id.
-*/
-
-function getTableBodyHeight(element,requireHghtPercent){
-  var offset = $('#'+element).offset();
-  var posYOfelement = offset.top - $(window).scrollTop();
-  var windowHeight=$(window).height();
-  var heightRemain=windowHeight-posYOfelement;
-  var percentHeight=heightRemain*(requireHghtPercent/100);
-  var tableHeadheight=$('#'+element+' table>thead').height();
-  var tableFootheight=$('#'+element+' table>tfoot').height();
-  var tableBodyHeight=percentHeight-(tableHeadheight+tableFootheight+30); //30 pixel left out for the bottom space
-  return tableBodyHeight;
-}
 
 function alignGrid(divId){
   var colLength = $('#'+divId+' table>thead>tr>th').length;
