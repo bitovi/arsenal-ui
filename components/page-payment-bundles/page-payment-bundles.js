@@ -22,7 +22,7 @@ import copy from 'components/copy-clipboard/';
 var pageState = new Map({
   bundles: new PaymentBundle.List([]),
   selectedBundle: null,
-  verboseGrid: true,
+  verboseGrid: false,
   isPaginateReq: false,//triggers the paginate Event from bundle-grid.js
   recordsAvailable:undefined
 });

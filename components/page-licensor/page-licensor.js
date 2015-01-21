@@ -32,7 +32,7 @@ Grid.extend({
   scope: {
     appstate:undefined,
     columns: [
-      
+
       {
         id: 'countryID',
         title: 'Country'
@@ -65,7 +65,7 @@ Grid.extend({
     appstate:undefined,
 
     columns: [
-      
+
       {
         id: 'id',
         title: 'ID'
@@ -90,7 +90,7 @@ Grid.extend({
         id: 'commentText',
         title: 'Comments'
       }
-      
+
 
     ]
   }
@@ -104,12 +104,12 @@ var page = Component.extend({
 
     tabSelected :"",
     licensors : [],
-    
-    licDetails : lDetails,    
-    
+
+    licDetails : lDetails,
+
     countries : [],
     reportTypes : [],
-    
+
     reqCountries : [],
     reqReportTypes : [],
 
@@ -167,10 +167,10 @@ var page = Component.extend({
     rptConfigurationPerCountry : {
 
       repconf : []
-      
+
     },
 
-    reportConfMap  : {},      
+    reportConfMap  : {},
 
     mapCurrentCountryReportConf : function () {
 
@@ -282,11 +282,11 @@ var page = Component.extend({
           }
 
         }
-        
+
       }
 
-      self.repConfValuesExists = true;        
-    
+      self.repConfValuesExists = true;
+
     },
 
     getExistCountryReportConf : function(country) {
@@ -303,7 +303,7 @@ var page = Component.extend({
       return [];
 
     },
-    
+
     getReportConf : function() {
 
       var self = this;
@@ -363,7 +363,7 @@ var page = Component.extend({
           elementArr[j++] = element;
 
         }
-        
+
 
       }
 
@@ -381,7 +381,7 @@ var page = Component.extend({
         element.licensorId = this.contactDetails[i].licensorId;
 
         elementArr[j++] = element;
-          
+
       }
 
       return elementArr;
@@ -392,14 +392,14 @@ var page = Component.extend({
 
       return $("textarea.multiple-comments-editable-height").val();
     },
-    
-    
+
+
     removeRows : function(type, value) {
 
       var self = this;
 
       if(type == "exists") {
-      
+
         for(var j=0; j<self.contactDetails.length; j++) {
 
             if( value == self.contactDetails[j].id) {
@@ -409,11 +409,11 @@ var page = Component.extend({
             }
 
           }
-       
+
 
       } else {
 
-        
+
           for(var j=0; j<self.newContactDetails.data.length; j++) {
 
             if( value == self.newContactDetails.data[j].name) {
@@ -428,7 +428,7 @@ var page = Component.extend({
 
           }
 
-        
+
 
       }
 
@@ -436,7 +436,7 @@ var page = Component.extend({
 
     disableTabs : function() {
 
-      
+
 
       $('.countryModelLabel').hide();
 
@@ -489,7 +489,7 @@ var page = Component.extend({
 
       self.clearContactDetails();
 
-      
+
       self.editable = "";
 
       var countryModelObj = values[0].licensorDetails.commentList;
@@ -505,7 +505,7 @@ var page = Component.extend({
       if(self.invoiceType != null) {
 
         $("#invoiceType").val(self.invoiceType);
-      
+
       } else {
 
         $("#invoiceType").val("Select");
@@ -554,7 +554,7 @@ var page = Component.extend({
 
       }
 
-      
+
       /**  Revision History  **/
       if(self.licDetails.data.revisionHistories != null) {
         for(var i=0; i<self.licDetails.data.revisionHistories.length; i++) {
@@ -564,7 +564,7 @@ var page = Component.extend({
           if(self.licDetails.data.revisionHistories[i].countryName == null) {
             self.licDetails.data.revisionHistories[i]._data.countryName = "";
             self.licDetails.data.revisionHistories[i].countryName = "";
-          }  
+          }
 
           if(self.licDetails.data.revisionHistories[i].entity == null) {
             self.licDetails.data.revisionHistories[i]._data.entity = "";
@@ -581,17 +581,20 @@ var page = Component.extend({
             self.licDetails.data.revisionHistories[i]._data.status = "";
           }
 
-          
+
           if(self.licDetails.data.revisionHistories[i].validTo == null) {
             self.licDetails.data.revisionHistories[i].validTo = "";
             self.licDetails.data.revisionHistories[i]._data.validTo = "";
           }
 
           if(self.licDetails.data.revisionHistories[i].commentText == null) {
-            self.licDetails.data.revisionHistories[i].commentText = self.licDetails.data.revisionHistories[i].commentList.length != null ? self.licDetails.data.revisionHistories[i].commentList[0].comments : "";
-            self.licDetails.data.revisionHistories[i]._data.commentText = self.licDetails.data.revisionHistories[i].commentList.length != null ? self.licDetails.data.revisionHistories[i].commentList[0].comments : "";
-          } 
-          
+
+            var commentListLength = self.licDetails.data.revisionHistories[i].commentList.length;
+
+            self.licDetails.data.revisionHistories[i].commentText = commentListLength != null && commentListLength > 1  ? self.licDetails.data.revisionHistories[i].commentList[0].comments : "";
+            self.licDetails.data.revisionHistories[i]._data.commentText =  commentListLength != null && commentListLength > 1  ? self.licDetails.data.revisionHistories[i].commentList[0].comments : "";
+          }
+
         }
       }
 
@@ -601,9 +604,9 @@ var page = Component.extend({
 
       /**  Country Model Mapping  **/
       if(rows != null && rows.length > 0) {
-      
+
         $('#countryModelMapping').html(stache('<rn-grid-countrymodelmapping rows="{rows}"></rn-grid-countrymodelmapping>')({rows}));
-      
+
       } else {
 
         $('#countryModelMapping').html(stache('<rn-grid-countrymodelmapping emptyrows="{emptyrows}"></rn-grid-countrymodelmapping>')({emptyrows:true}));
@@ -620,22 +623,22 @@ var page = Component.extend({
         self.revisionHistory = self.licDetails.data.revisionHistories;
 
         rows = self.licDetails.data.revisionHistories;
-        
+
       }
 
       $(".revHistCollapser").show();
 
       if(rows != null && rows.length > 0) {
-         
+
           $('#revisionHistory').html(stache('<rn-grid-revisionhistory rows="{rows}"></rn-grid-revisionhistory>')({rows}));
-        
+
         } else {
 
           $('#revisionHistory').html(stache('<rn-grid-revisionhistory emptyrows="{emptyrows}"></rn-grid-revisionhistory>')({emptyrows:true}));
 
         }
 
-      
+
 
       var countries = [];
 
@@ -646,7 +649,7 @@ var page = Component.extend({
           var country = {};
 
           var name = self.licDetails.data.countries[i];
-          
+
           country.name = self.licDetails.data.countries[i];
           //country.selected = true;
 
@@ -672,11 +675,11 @@ var page = Component.extend({
       }
 
       if(self.reportTypes == null || self.countries == null) {
-        
+
           $("$repConfigurationTab").hide();
 
       }
-      
+
       //self.scope.countries.data.push(countries);
 
       self.licDetails.data.cs=self.countries;
@@ -684,7 +687,7 @@ var page = Component.extend({
       self.licDetails.data.rt=self.reportTypes;
 
       for(var i=0; i<self.licDetails.data.contactDetails.length; i++) {
-      
+
         var contactDetails = {};
 
         contactDetails.contactName = self.licDetails.data.contactDetails[i].contactName;
@@ -699,7 +702,7 @@ var page = Component.extend({
 
       }
 
-            
+
       $('.societyContactsTab').show();
 
       $('#multipleComments').show();
@@ -756,9 +759,9 @@ var page = Component.extend({
         var self = this;
 
         self.reqReportTypes.splice(0,self.reqReportTypes.length);
-        
+
         $("input.reportBox").prop('checked', false);
-        
+
         self.submitAllReports = false;
 
     },
@@ -768,13 +771,13 @@ var page = Component.extend({
         var self = this;
 
         self.reqCountries.splice(0,self.reqCountries.length);
-        
+
         self.reqReportTypes.splice(0,self.reqReportTypes.length);
 
         self.countries.splice(0,self.countries.length);
 
         self.reportTypes.splice(0,self.reportTypes.length);
-        
+
 
         $("input.countryBox").prop('checked', false);
         $("input.reportBox").prop('checked', false);
@@ -806,7 +809,7 @@ var page = Component.extend({
 
               }
 
-          } 
+          }
 
         }
 
@@ -832,9 +835,9 @@ var page = Component.extend({
       ($("input#email")[$("input#email").length -1]).setAttribute("name", "contactEmail[]");
 
       var $options = $(".societyContacts").find('[name="contactName[]"], [name="contactEmail[]"]');
-      
+
       DynamicFieldValidation($options, 'addField', $('#entityLicensorBottom'));
-      
+
     },
 
     submitAnalytics : function() {
@@ -876,7 +879,7 @@ var page = Component.extend({
             //return;
 
         //}
-      
+
 
         var comments = self.getEditableComments();
 
@@ -884,7 +887,7 @@ var page = Component.extend({
 
         //Todays changes
 
-        var periodFrom = $(".periodFromInput").val();;  
+        var periodFrom = $(".periodFromInput").val();;
 
         var periodTo = $(".periodToInput").val();
 
@@ -899,7 +902,7 @@ var page = Component.extend({
           periodTo = PeriodWidgetHelper.getFiscalPeriod(periodTo.toString());
 
         }
-        
+
 
         if (comments == "") {
 
@@ -952,7 +955,7 @@ var page = Component.extend({
           reLicencorDetails.licensorDetails.invoiceDetailType = invoiceType;
           //reLicencorDetails.licensorDetails.revisionHistories = [];
           //reLicencorDetails.licensorDetails.reportConf = reportConf;
-            
+
           reLicencorDetails.licensorDetails.sapVendorNo = self.licDetails.data.sapVendorNo;
           reLicencorDetails.licensorDetails.validFrom = periodFrom;
           reLicencorDetails.licensorDetails.validTo = periodTo;
@@ -984,9 +987,9 @@ var page = Component.extend({
                   $("#invmessageDiv").hide();
                 },5000);
             }
-          
+
           });
- 
+
         } else {
 
           var reLicencorDetails = {};
@@ -1002,11 +1005,11 @@ var page = Component.extend({
           reLicencorDetails.licensorDetails.uploadedFilesToSFTP = self.licDetails.data.uploadedFilesToSFTP;
 
           reLicencorDetails.licensorDetails.licensorId = "0";
-          
+
           reLicencorDetails.licensorDetails.commentTxt = comments;
           reLicencorDetails.licensorDetails.accountName = self.licDetails.data.accountName;
           reLicencorDetails.licensorDetails.invoiceDetailType = invoiceType;
-          
+
           reLicencorDetails.licensorDetails.sapVendorNo = self.licDetails.data.sapVendorNo;
 
           reLicencorDetails.licensorDetails.validFrom = periodFrom;
@@ -1036,10 +1039,10 @@ var page = Component.extend({
 
                   self.licensors.replace(values[0].entities[0]);
 
-                  self.attr("selectedEntity", sEntity); 
+                  self.attr("selectedEntity", sEntity);
 
                   $("#licensorsFilter").val(sEntity);
-      
+
                 });
 
             } else {
@@ -1052,7 +1055,7 @@ var page = Component.extend({
                 },5000);
 
             }
-          
+
           });
         }
 
@@ -1073,11 +1076,11 @@ var page = Component.extend({
           var element = {country : "", reports : ""};
 
           var dReport = [];
-          
+
           dReport =repConf[i].reports;
 
           for(var j=0; j<dReport.length ; j++) {
-            
+
                element.reports += dReport[j] + ", ";
 
           }
@@ -1117,7 +1120,7 @@ var page = Component.extend({
 
     reValidateFiledsonLoad : function() {
 
-      var isValid = true; 
+      var isValid = true;
 
       for(var i=0; i< this.bootstrapValidParams.length; i++) {
 
@@ -1187,7 +1190,7 @@ var page = Component.extend({
                   regexp: {
                       regexp: /^[a-zA-Z0-9_\- ]*$/i,
                       message: 'Please provide valid characters'
-                  }                  
+                  }
               }
           },
           invoiceName: {
@@ -1334,13 +1337,13 @@ var page = Component.extend({
                         }
                         return true;
                       }
-                  }                 
+                  }
              }
          }
 
         }
-      }).on('error.field.bv', function(e, data) {       
-        
+      }).on('error.field.bv', function(e, data) {
+
           //$('*[data-bv-icon-for="'+data.field +'"]').popover('show');
 
           //setTimeout(function(){
@@ -1384,23 +1387,23 @@ var page = Component.extend({
           }
         }
 
-      }).on('error.field.bv', function(e, data) {       
-          
+      }).on('error.field.bv', function(e, data) {
+
             $('*[data-bv-icon-for="'+data.field +'"]').popover('show');
 
       });
 
      }
-    
+
 
   },
 
   init: function(){
 
     var self = this;
-    
+
     self.scope.appstate.attr("renderGlobalSearch", false);
-  
+
   },
 
   helpers:  {
@@ -1503,33 +1506,33 @@ var page = Component.extend({
           Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
             self.scope.populateAnalyticsPage(values);
-            
+
           });
 
       });
 
- 
+
       Promise.all([Analytics.getInvoiceDetails(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
           self.scope.invoiceTypeList.replace(values[0].invoiceDetailTypes);
           self.scope.populateInvoiceTypes();
-          
+
       });
-     
+
       self.scope.loadBootStrapPlugin();
 
 
     },
 
-    '.updatePeroid focus':function(el){ 
-       $(el).closest('.calendarcls').find('.box-modal').show().trigger( "focus" ); 
+    '.updatePeroid focus':function(el){
+       $(el).closest('.calendarcls').find('.box-modal').show().trigger( "focus" );
     },
 
-    '{selectedperiod} change':function(val){ 
+    '{selectedperiod} change':function(val){
 
        var periodValue = val[0].value;
 
-       if(val[0].which == "periodFrom"){ 
+       if(val[0].which == "periodFrom"){
 
          $("input[name='periodFromInp']").val(periodValue);
 
@@ -1553,15 +1556,15 @@ var page = Component.extend({
        val[0].which=='periodFrom' ? this.scope.periodFrom.replace(val[0].value):this.scope.periodTo.replace(val[0].value);
     },
 
-     
-     '{periodFrom} change': function(el, ev) {   
+
+     '{periodFrom} change': function(el, ev) {
          var comp ='from';
          showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0],comp);
      },
-     '{periodTo} change': function(el, ev) { 
+     '{periodTo} change': function(el, ev) {
           var comp ='to';
           showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0],comp);
-          
+
      },
 
      ".validateInput change" : function() {
@@ -1591,7 +1594,7 @@ var page = Component.extend({
 
               }
 
-              
+
           });
         }
 
@@ -1646,7 +1649,7 @@ var page = Component.extend({
           });
 
           self.scope.submitAllCountires = true;
-        
+
         } else {
 
           $("input.countryBox").prop('checked', false);
@@ -1674,7 +1677,7 @@ var page = Component.extend({
               $("rn-grid-revisionhistory").show();
 
           } else {
-          
+
             $("rn-grid-revisionhistory").hide();
 
           }
@@ -1684,7 +1687,7 @@ var page = Component.extend({
 
         }
 
-      
+
     },
 
     ".remove click" : function(el, ev){
@@ -1719,7 +1722,7 @@ var page = Component.extend({
             var element = {};
 
             element.name = id.attr("value");
-            
+
             self.scope.reqCountries.push(id.attr("value"));
 
             id.attr("val", "true");
@@ -1761,7 +1764,7 @@ var page = Component.extend({
       var self = this;
 
       self.scope.addRow();
-  
+
     },
 
     ".countryReportColumn div dblclick" : function (el, ev)  {
@@ -1780,7 +1783,7 @@ var page = Component.extend({
 
       }
 
-      
+
 
       var country = el.closest('div')[0].innerHTML;
       var reportConf = self.scope.getExistCountryReportConf(country);
@@ -1790,7 +1793,7 @@ var page = Component.extend({
         var obj = el.closest('div')[0];
         country = obj.childNodes[0].getAttribute("value");
         obj.childNodes[0].checked = true;
-        
+
       } else {
 
         var countryBox = $('input.countryBox');
@@ -1812,7 +1815,7 @@ var page = Component.extend({
       self.scope.latestSelectedCountry = country;
 
       var reportBox = $("input.reportBox");
-      
+
       for(var i=0; i < reportConf.length; i++) {
 
         for(var j=0; j<reportBox.length; j++) {
@@ -1827,7 +1830,7 @@ var page = Component.extend({
 
       }
 
-    }, 
+    },
 
     ".applyAllSelected click" : function(el, ev){
       this.scope.mapCurrentCountryReportConf();
@@ -1858,7 +1861,7 @@ var page = Component.extend({
           Promise.all([Analytics.findById(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
             self.scope.populateAnalyticsPage(values, "getHistroy");
-            
+
           });
     },
 
@@ -1884,7 +1887,7 @@ var page = Component.extend({
         var self = this;
 
         self.scope.mode = "fetch";
-        
+
         //clear elements
 
         $("#loading_img").show();
@@ -1917,11 +1920,11 @@ var page = Component.extend({
         self.scope.clearRepConfDetails();
 
         self.scope.disableTabs();
-      
-        
+
+
         var genObj = {"licensorName" : entityName};
 
-            
+
         Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
           if(values[0].status == "SUCCESS") {
@@ -1944,7 +1947,7 @@ var page = Component.extend({
             $("#loading_img").hide();
 
           }
-            
+
         });
     },
 
@@ -1971,7 +1974,7 @@ var page = Component.extend({
       $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{commentObj}" divheight="100" isreadOnly="n"></multiple-comments>'));
 
       $('#entityGrid').show();
-    
+
       $('.societyContactsTab').show();
 
       $('.buttonsBottom').show();
@@ -2001,8 +2004,8 @@ var page = Component.extend({
       $("#entityDetailsTab").removeClass("opaqueClass");
 
       this.scope.mapExistCountryReportConf();
-      
-        
+
+
     },
 
     '.closeConfirmBox click' : function() {
@@ -2012,7 +2015,7 @@ var page = Component.extend({
 
       $("#entityDetailsTab").removeClass("opaqueClass");
       $(".confirmationReportConfig").hide();
-        
+
     },
 
     '#bccancel click' : function() {
@@ -2022,7 +2025,7 @@ var page = Component.extend({
 
       $("#entityDetailsTab").removeClass("opaqueClass");
       $(".confirmationReportConfig").hide();
-        
+
     },
 
     '.deleteCheckBoxNCD click' : function(el, ev) {
@@ -2050,10 +2053,10 @@ var page = Component.extend({
 });
 
 
-var showErrorMsg = function(periodFrom,periodTo,whichcomp){ 
+var showErrorMsg = function(periodFrom,periodTo,whichcomp){
        var showFlg=false;
        var from = periodFrom,to =  periodTo;
-       if(from!=undefined &&  to!=undefined){ 
+       if(from!=undefined &&  to!=undefined){
             from = from.slice(-2);
             to = to.slice(-2);
            if(parseInt(periodFrom.substr(0,4)) >  parseInt(periodTo.substr(0,4)))showFlg=true;
