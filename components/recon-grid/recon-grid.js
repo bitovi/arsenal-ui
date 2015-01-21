@@ -100,7 +100,7 @@ var reconGrid = Grid.extend({
         var parentScopeVar = self.element.closest('page-reconOther').scope();
         var tabSelected = parentScopeVar.attr('tabSelected');
         var tableScrollTopVal=0;
-        if(tabSelected=="Incoming Other"){
+        if(tabSelected=="Other"){
           setTimeout(function(){
             alignGrid("reconstatsOtherGrid");
             tableScrollTopVal = parentScopeVar.attr('scrollTop');
