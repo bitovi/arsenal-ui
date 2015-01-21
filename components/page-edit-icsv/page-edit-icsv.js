@@ -362,7 +362,7 @@ var page = Component.extend({
 				                                }
 				                              }else if (inputval != "" && inputval != undefined && inputval.length != 0){
                                         var decimal_validate_RE=/^\d{0,10}(\.\d{0,8})?$/;
-                                        if(!decimal_validate_RE.test(value)){
+                                        if(!decimal_validate_RE.test(inputval)){
                                           return {
                                             valid: false,
                                             message: 'Please provide invoice amount in [##########.########] format'
