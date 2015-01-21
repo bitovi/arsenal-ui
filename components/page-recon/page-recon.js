@@ -621,29 +621,30 @@ var fetchReconIngest = function(scope, load){
           console.error("Footer rows doesn't exists in the response");
         }
 
-      if (data.summary!== null) {
-        var footerLine= {
-          "__isChild": true,
-          "ccy":"EUR",
-          "pubfee": data.summary.totalPubFee,
-          "reconAmt": data.summary.totalRecon,
-          "liDispAmt": data.summary.totalLi,
-          "copConAmt": data.summary.totalCopCon,
-          "unMatchedAmt": data.summary.totalUnMatched,
-          "badLines": data.summary.totalBadLines,
-          "ccidId":"",
-          "entityName":"",
-          "countryId":"",
-          "contType":"",
-          "fiscalPeriod":"",
-          "ingstdDate":"",
-          "invFileName":"",
-          "status":"",
-          "isFooterRow":true
-        };
-      }
+        scope.ingestList.footerRows.splice(0, scope.ingestList.footerRows.length);
+        if (data.summary!== null) {
+          var footerLine= {
+            "__isChild": true,
+            "ccy":"EUR",
+            "pubFee": data.summary.totalPubFee,
+            "reconAmt": data.summary.totalRecon,
+            "liDispAmt": data.summary.totalLi,
+            "copConAmt": data.summary.totalCopCon,
+            "unMatchedAmt": data.summary.totalUnMatched!= undefined && data.summary.totalUnMatched!= null ? data.summary.totalUnMatched : 0.00,
+            "badLines": data.summary.totalBadLines,
+            "ccidId":"",
+            "entityName":"",
+            "countryId":"",
+            "contType":"",
+            "fiscalPeriod":"",
+            "ingstdDate":"",
+            "invFileName":"",
+            "status":"",
+            "isFooterRow":true
+          };
+          scope.ingestList.footerRows.replace(footerLine);
+        }
 
-        scope.ingestList.footerRows.replace(footerLine);
       }
     }
 
@@ -739,11 +740,12 @@ var fetchReconDetails = function(scope){
 
       scope.incomingStatsDetailsSelected = data.reconStatsDetails;
 
+      scope.ingestList.footerRows.splice(0, scope.ingestList.footerRows.length);
       if (data.summary!== null) {
         var footerLine= {
           "__isChild": true,
           "ccy":"EUR",
-          "pubfee": data.summary.totalPubFee,
+          "pubFee": data.summary.totalPubFee,
           "reconAmt": data.summary.totalRecon,
           "liDispAmt": data.summary.totalLi ,
           "copConAmt":data.summary.totalCopCon,
