@@ -356,22 +356,22 @@ var page = Component.extend({
 	                			callback: {
 			                            message: 'Please provide positive value for amount',
 			                            callback: function (value, validator, $field) {
-                                      var inputval=value.trim();
-				                              if((inputval != "")  && (parseFloat(inputval) < 0)){
-				                              	return {
-					                                    valid: false,
-					                                    message: 'Please provide positive invoice amount'
-					                                }
-				                              }else if (inputval != "" && inputval != undefined && inputval.length != 0){
-                                        var decimal_validate_RE=/^\d{0,10}(\.\d{0,8})?$/;
-                                        if(!decimal_validate_RE.test(value)){
-                                          return {
-                                            valid: false,
-                                            message: 'Please provide invoice amount in [##########.########] format'
-                                          }
-                                        }
-                                      }
-											              return true;
+			                                      var inputval=value.trim();
+							                              if((inputval != "")  && (parseFloat(inputval) < 0)){
+							                              	return {
+								                                    valid: false,
+								                                    message: 'Please provide positive invoice amount'
+								                                }
+							                              }else if (inputval != "" && inputval != undefined && inputval.length != 0){
+			                                        var decimal_validate_RE=/^\d{0,10}(\.\d{0,8})?$/;
+			                                        if(!decimal_validate_RE.test(inputval)){
+			                                          return {
+			                                            valid: false,
+			                                            message: 'Please provide invoice amount in [##########.########] format'
+			                                          }
+			                                        }
+			                                      }
+											return true;
 			                            }
 	                    			}
 			                	}
@@ -1301,7 +1301,8 @@ var page = Component.extend({
 								  	},
 								  	calculateTaxPercent: function(){
 								  		var tax = 0;
-								  		if(this.attr("tax").length>0){
+								  		
+								  		if((this.attr("tax").length>0) || (this.attr("tax") > 0)){
 								  			tax = Number(this.attr("tax"));
 								  		}
 

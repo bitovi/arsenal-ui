@@ -14,9 +14,12 @@ rn-claim-licensor-grid, rn-claim-country-grid{
 		  display: block;
 		}
 		tbody {
-		  max-height: 12em;
+		  height: 400px	;
+		  max-height: 600px;
 		  overflow-y: overlay;
 		  overflow-x: hidden;
+	      border: 1px solid #a1a1a1;
+	      border-bottom: 0;
 		}
 		th, td {
 		  white-space: nowrap;
@@ -67,8 +70,8 @@ rn-claim-licensor-grid, rn-claim-country-grid{
 	}
 	#licensorView, #countryView {
 		min-height: 200px;
-		padding: 10px;
-	    border-top:1px solid #808080;
+		/*padding: 10px;
+	    border-top:1px solid #808080;*/
 	    background-color: #F8F8F8;
 	    overflow: hidden;
 	}
@@ -106,7 +109,12 @@ rn-claim-licensor-grid, rn-claim-country-grid{
 .marginTop-10{
     margin-top:10px;
   }
-
+.tab-content{
+	padding-bottom: 1em ; 
+}
+.paddingLeft0{
+	padding-left:0 !important;
+}
 /*#messageDiv{
 	position: absolute;
 	text-align:center;

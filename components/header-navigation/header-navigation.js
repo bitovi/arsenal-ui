@@ -6,6 +6,7 @@ import roles from 'models/roles/';
 import GlobalParameterBar from 'components/global-parameter-bar/';
 import Bookmark from 'components/bookmark/';
 import UserReq from 'utils/request/';
+import RinsCommon from 'utils/urls';
 
 var headerNavigation = Component.extend({
     tag: 'header-navigation',
@@ -147,7 +148,11 @@ var changeMenu = function(mainmenu_txt){
                 $.each(el.submenu,function(i,el){
                     if(i==0) addcls ='';//submenuactive
                     else addcls ='';
-                    temp+='<li {{isActive '+el.id+'}}><a  class="'+addcls+'" href="/'+el.id+'">'+el.value+'</a></li>';
+                    if(el.url != undefined){
+                      temp+='<li {{isActive '+el.id+'}}><a  class="'+addcls+'" href="'+el.url+'" target="_blank">'+el.value+'</a></li>';
+                    } else {
+                      temp+='<li {{isActive '+el.id+'}}><a  class="'+addcls+'" href="'+el.id+'">'+el.value+'</a></li>';
+                    }
                });
               }
             }
@@ -208,11 +213,11 @@ var  menu =[
   "id": "approvals",
   "value": "Approvals",
    "submenu": [
- {"value": "Accrual Journal Voucher", "id": "accrualjournalvoucher","screenId":11},
-    {"value": "Accrual Details", "id": "accrualdetails","screenId":12},
-  {"value": "Accruals Aging Report", "id": "accrualsagingreport","screenId":13},
-{"value": "Accrual Trueup", "id": "accrualtrueup","screenId":14},
-    {"value": "Accrual Analysis", "id": "accrualanalysis","screenId":15}
+ {"value": "Accrual Journal Voucher", "id": "accrualjournalvoucher","screenId":11, "url":RinsCommon.RINS_OLD_URL+"accrualJV"},
+    {"value": "Accrual Details", "id": "accrualdetails","screenId":12, "url":RinsCommon.RINS_OLD_URL+"accrualDetails"},
+  {"value": "Accruals Aging Report", "id": "accrualsagingreport","screenId":13, "url":RinsCommon.RINS_OLD_URL+"accrualsAgingReport"},
+{"value": "Accrual Trueup", "id": "accrualtrueup","screenId":14, "url":RinsCommon.RINS_OLD_URL+"accrualTrueUp"},
+    {"value": "Accrual Analysis", "id": "accrualanalysis","screenId":15, "url":RinsCommon.RINS_OLD_URL+"accrualAnalysis"}
    ]
 },{
   "id": "invoices",
@@ -222,7 +227,7 @@ var  menu =[
       {"value": "iCSV Entry", "id": "icsv","screenId":4},
     {"value": "Search Invoice", "id": "invoices","screenId":5},
   {"value": "Recon Stats", "id": "recon","screenId":7},
-{"value": "Recon Stats Other", "id": "reconOther","screenId":8},
+{"value": "Incoming Other", "id": "reconOther","screenId":8},
       {"value": "On Account", "id": "on-account","screenId":9}
    ]
 },{
@@ -242,30 +247,30 @@ var  menu =[
  {"value": "Analytics", "id": "analytic","screenId":20},
       {"value": "Payment Bundle Review", "id": "payment-bundles","screenId":21},
     {"value": "Claim Review", "id": "claimreview","screenId":22},
-  {"value": "Global Revenue", "id": "globalrevenue","screenId":23},
+  {"value": "Global Revenue", "id": "globalrevenue","screenId":23, "url":RinsCommon.RINS_OLD_URL+"globalRevenue"},
       /*{"value": "Monthly Billings Reconciliation", "id": "monthlybillingsreconciliation"},*/
-    {"value": "Unclaimed Summary", "id": "unclaimedsummary","screenId":24},
+    {"value": "Unclaimed Summary", "id": "unclaimedsummary","screenId":24, "url":RinsCommon.RINS_OLD_URL+"unClaimedSummary"},
    ]
 },{
   "id": "system",
   "value": "System",
    "submenu": [
- {"value": "Job Statistics", "id": "jobstatistics","screenId":25},
-      {"value": "Report Downloads", "id": "reportdownloads","screenId":26}
+ {"value": "Job Statistics", "id": "jobstatistics","screenId":25, "url":RinsCommon.RINS_OLD_URL+"jobStatistics"},
+      {"value": "Report Downloads", "id": "reportdownloads","screenId":26, "url":RinsCommon.RINS_OLD_URL+"reportDownloads"}
    ]
 },{
   "id": "approvalhistory",
   "value": "Approval History",
    "submenu": [
-    {"value": "Accrual", "id": "accrual","screenId":27},
+    {"value": "Accrual", "id": "accrual","screenId":27, "url":RinsCommon.RINS_OLD_URL+"accrualApprovalHistory"},
     {"value": "Ref Data", "id": "refdata","screenId":28},
-    {"value": "Recon/Payment", "id": "reconpayment","screenId":29},
-    {"value": "Sales Report", "id": "salesreport","screenId":30},
+    {"value": "Recon/Payment", "id": "reconpayment","screenId":29, "url":RinsCommon.RINS_OLD_URL+"reconPaymentHistory"},
+    {"value": "Sales Report", "id": "salesreport","screenId":30, "url":RinsCommon.RINS_OLD_URL+"salesReportHistory"},
       /*{"value": "Payment Report", "id": "paymentreport"},
       {"value": "Unclaimed Report", "id": "unclaimedreport"},*/
     {"value": "On Account", "id": "onaccount","screenId":31},
-    {"value": "Dispute Report", "id": "disputereport","screenId":32},
-    {"value": "Accrual Rerun", "id": "accrualrerun","screenId":33},
+    {"value": "Dispute Report", "id": "disputereport","screenId":32, "url":RinsCommon.RINS_OLD_URL+"lineItemHistory"},
+    {"value": "Accrual Rerun", "id": "accrualrerun","screenId":33, "url":RinsCommon.RINS_OLD_URL+"accrualRerunHistory"},
    ]
 }];
 export default headerNavigation;

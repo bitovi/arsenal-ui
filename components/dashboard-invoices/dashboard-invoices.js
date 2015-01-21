@@ -13,6 +13,8 @@ import styles from './dashboard-invoices.less!';
 
 import exportToExcel from 'components/export-toexcel/';
 import copy from 'components/copy-clipboard/';
+import Licensor from 'models/common/licensor/';
+import UserReq from 'utils/request/';
 
 var refreshTimeoutID;
 
@@ -64,84 +66,37 @@ var DashboardInvoices = Component.extend({
             }, 2000);
           }*/
         } else {
-          var holesReports=[];
-          var entities=[];
+          var licensorObj = [];
+          var selectlicIds = self.appstate.licensor;
+          var entityIds = [];
+          var licMap = new Array();
+          var genObj = {regionId:self.appstate.region.id};
+              Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))
+              ]).then(function(values) {
+                var entity= values[0]["entities"];
+                 for(var i=0; i<entity.length;i++){
+                    if(entity[i].entityType=='Licensor'){
+                      licensorObj=entity[i].entities;
+                    }
+                 }
+                 _.each(licensorObj, function(licObject) {
+                  licMap[licObject.id]=licObject.value;
+                  });
+                
+                if(selectlicIds == undefined || (selectlicIds != undefined && selectlicIds[0] == "-1")){
+                    _.each(licensorObj,function(licId){
+                          entityIds.push(licId.id);
+                    });
+                  }else{
+                        entityIds=selectlicIds.attr();
+                  }
 
-_.each(holes.holesReportWrapper, function(holesWrapper) {
-          var holesReport={};
-          var dataList = holesWrapper.holesReport.attr();
-              holesReport.holesList=[];
-              var displayBackGreen = true;
-              var holes = holesWrapper.holesReport;
-              holesReport.countryId=holesWrapper.countryId;
-              holesReport.localSociety="";              
-              var localSociety=holesWrapper.localSociety;
-              //var localSociety='CELAS';
-              var localDisplay="";
-              var checkForLocalSociety = false;
-              if(typeof(localSociety) != "undefined" && localSociety != "null" && (localSociety != null) && localSociety.length >0){
-                holesReport.localSociety = localSociety;
-                checkForLocalSociety = true;
-              }
-
-           dataList.sort(function(obj1, obj2) {
-                if(obj1.entityName != undefined && obj2.entityName != undefined){
-                  var nameA=obj1.entityName.toLowerCase(), nameB=obj2.entityName.toLowerCase();
-                   if (nameA < nameB) //sort string ascending
-                    return -1 
-                   if (nameA > nameB)
-                    return 1
-                }
-               return 0 //default return value (no sorting)
+                    can.batch.start();
+                    self.attr('entities', geEntities(entityIds,licMap));
+                    //self.attr('holesByCountry', holesByCountry);
+                    self.attr('holesReports',getHolesReport(entityIds,licMap,holes));
+                    can.batch.stop();
               });
-
-          _.each(dataList, function(value) {
-                var hole={};
-                var display='';
-                var showImage=false;
-                hole.entityId=value.entityId;
-                hole.entityName=value.entityName;
-                entities.push(hole.entityName);
-                hole.isCCIDExpect=(value.isCCIDExpect == 1) ? true : false;
-                hole.pdfCount=value.pdfCount;
-                hole.ccidCount=value.ccidCount;
-                if(value.pdfCount > value.ccidCount){
-                  display="PDF";
-                  displayBackGreen = false;
-                }else if(value.pdfCount < value.ccidCount){
-                  display="CCID";
-                  displayBackGreen = false;
-                }else{
-                  showImage=true;
-                }
-
-                hole.show = display;
-
-                if(checkForLocalSociety && localSociety == value.entityName){
-                  localDisplay = display;
-                }
-               
-                hole.isLA = (value.laFlag == 'Y') ? true : false;
-                hole.showImage=showImage;
-                holesReport.holesList.push(hole);
-              });
-              holesReport.localDisplay=localDisplay;
-              holesReport.displayBackGreen=displayBackGreen;
-              holesReports.push(holesReport);
-          });
-  
-          
-          entities = entities.filter(function(n){ return n !== undefined; });
-          entities = _.sortBy(entities, e => e.toUpperCase());
-
-          entities = $.unique(entities);
-          can.batch.start();
-          self.attr('entities', entities);
-          self.attr('holesByCountry', holesByCountry);
-          self.attr('holesReports',holesReports);
-          can.batch.stop();
-
-
         }
         self.attr('fetching', false);
       });
@@ -277,6 +232,88 @@ var getholesReportByCountry=function(holesReports,id){
   }
 }
 
+var getHolesReport=function(selectedIds,licensorMap,holes){
+    var holesReports=[];
+    var entities=[];
+    _.each(holes.holesReportWrapper, function(holesWrapper) {
+          var holesReport={};
+          var dataList = holesWrapper.holesReport.attr();
+          var localSociety=holesWrapper.localSociety;
+          holesReport.countryId=holesWrapper.countryId;
+          holesReport.localSociety="";              
+          
+          // var localDisplay="";
+          // var checkForLocalSociety = false;
+          // if(typeof(localSociety) != "undefined" && localSociety != "null" && (localSociety != null) && localSociety.length >0){
+          //   holesReport.localSociety = localSociety;
+          //   checkForLocalSociety = true;
+          // }
+          holesReports.push(getEntityDataList(selectedIds,holesWrapper.holesReport.attr(),holesReport,localSociety,licensorMap));
+      });
+    return holesReports;
+}
+
+var getEntityDataList=function(entityIds,dataList,holesReport,localSociety,licensorMap){
+  var holesList=[];
+  var displayBackGreen = true;
+  var localDisplay="";
+  var checkForLocalSociety = false;
+  if(typeof(localSociety) != "undefined" && localSociety != "null" && (localSociety != null) && localSociety.length >0){
+    holesReport.localSociety = localSociety;
+    checkForLocalSociety = true;
+  }
+  _.each(entityIds, function(id) {
+    var hole={};
+    var display='';
+    var showImage=false;
+    hole.entityId=id;
+    hole.entityName=licensorMap[id];
+    var obj = _.find(dataList, function(value) {
+         return value.entityId == id;
+       });
+    if(obj != undefined){
+        hole.isCCIDExpect=(obj.isCCIDExpect == 1) ? true : false;
+        hole.pdfCount=obj.pdfCount;
+        hole.ccidCount=obj.ccidCount;
+        if(obj.pdfCount > obj.ccidCount){
+          display="PDF";
+          displayBackGreen = false;
+        }else if(obj.pdfCount < obj.ccidCount){
+          display="CCID";
+          displayBackGreen = false;
+        }else{
+          showImage=true;
+        }
+
+        hole.show = display;
+
+        if(checkForLocalSociety && localSociety == obj.entityName){
+          localDisplay = display;
+        }
+       
+        hole.isLA = (obj.laFlag == 'Y') ? true : false;
+        hole.showImage=showImage;
+    }
+    holesList.push(hole);
+  });
+
+   holesList.sort(function(obj1, obj2) {
+        if(obj1.entityName != undefined && obj2.entityName != undefined){
+          var nameA=obj1.entityName.toLowerCase(), nameB=obj2.entityName.toLowerCase();
+           if (nameA < nameB) //sort string ascending
+            return -1 
+           if (nameA > nameB)
+            return 1
+        }
+       return 0 //default return value (no sorting)
+      });
+    holesReport.holesList=holesList;
+    holesReport.localDisplay=localDisplay;
+    holesReport.displayBackGreen=displayBackGreen;
+
+  return holesReport;
+
+}
 var getHolesReportByEntity=function(holesReports,id){
   var holeReport=[];
   if(id != undefined && id.length >0){
@@ -293,6 +330,18 @@ var getHolesReportByEntity=function(holesReports,id){
     }
   }
   return holeReport;
+}
+
+var geEntities=function(entityIds,licensorMap){
+  var entities=[];
+  _.each(entityIds,function(entityId){
+      entities.push(licensorMap[entityId]);
+  });
+  entities = entities.filter(function(n){ return n !== undefined; });
+  entities = _.sortBy(entities, e => e.toUpperCase());
+  entities = $.unique(entities);
+
+  return entities
 }
 
 var getMissing=function(pdfCnt,ccidCnt){

@@ -139,6 +139,8 @@ Grid.extend({
         $(tbody).on('scroll', function(ev) {
           if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight-1  && parentScopeVar.recordsAvailable) {
             //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
+
+
             var offsetVal = parentScopeVar.attr('offset');
 
             /* Reset the offset value and call the webservice to fetch next set of records */
@@ -192,6 +194,7 @@ var page = Component.extend({
     tableScrollTop: 0,
     offset: 0,
     recordsAvailable:'@',
+    totalRecordCount:'@',
     fileinfo:[],
     excelOutput:[],
     bundleState:{},
@@ -469,6 +472,7 @@ var page = Component.extend({
             var first = "true";
             var regCcyTemp = {"invId":"", "__isChild":false, "entityName":"Total in Regional Currency", "invoiceType":"", "invTypeDisp":"", "contentGrpName":"", "country":"", "invoiceNumber":"","invoiceAmount":"", "invoiceDueDate":"", "invoiceCcy":"", "status":"", "bundleName":"", "comments":""};
             regCcyTemp["invoiceAmount"] = CurrencyFormat(footerData["regAmtTot"]);
+            regCcyTemp["invoiceNumber"] = self.scope.attr('totalRecordCount') + " Invoices";
             regCcyTemp["invoiceCcy"] = footerData["regCcy"];
             gridData["footer"].push(regCcyTemp);
             for(var obj in footerData["amtCcyMap"]){
@@ -511,12 +515,12 @@ var page = Component.extend({
 
     },
      "#btnAdd click": function(){
-            //this.scope.appstate.attr('page','create-invoice');
+            //this.scope.appstate.attr('page','create-invoice');
             commonUtils.navigateTo("create-invoice");
-            invoicemap.attr('invoiceid','');
+            invoicemap.attr('invoiceid','');
     },
     "#btnAddFromiCSV click": function(){
-            //this.scope.appstate.attr('page','icsv');
+            //this.scope.appstate.attr('page','icsv');
             commonUtils.navigateTo("icsv");
     },
     ".rn-grid>tbody>tr:not('.child') td dblclick": function(item, el, ev){
@@ -538,7 +542,7 @@ var page = Component.extend({
               invoicemap.attr('invoiceid',invoiceid);
               flag=true;
               //commonUtils.navigateTo("edit-invoice");
-              self.scope.appstate.attr('page','edit-invoice');
+              self.scope.appstate.attr('page','edit-invoice');
             }
           }
 
@@ -905,9 +909,9 @@ var page = Component.extend({
             //console.log("Attach request are "+JSON.stringify(UserReq.formRequestDetails(attachReq)));
             MassFileUpLoader.create(UserReq.formRequestDetails(attachReq),function(data){
               //console.log("Reponse is "+JSON.stringify(data));
-             // $("#attachDocumentDiv").hide();
+              $("#attachDocumentDiv").hide();
               if(data["status"]=="SUCCESS"){
-                if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
+
                    $("#messageDiv").html("<label class='successMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>")
                    $("#messageDiv").show();
                    setTimeout(function(){
@@ -920,7 +924,7 @@ var page = Component.extend({
                           self.scope.appstate.attr('globalSearch', true);
                         }
                     },2000);
-                  }
+
                 }
                 else{
                   $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>");
@@ -1136,6 +1140,7 @@ function getAllInvoices(self) {
                   },4000);
                 }
                 self.attr('recordsAvailable',data.recordsAvailable);
+                self.attr('totalRecordCount', data.totRecCnt);
                 self.checkedRows.replace([]); //Reset Checked rows scope variable
                 if(parseInt(invSearchRequest.searchRequest["offset"])==0){
                   self.allInvoicesMap.replace(data);

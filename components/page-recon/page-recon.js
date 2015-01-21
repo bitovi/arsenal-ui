@@ -94,6 +94,31 @@ var page = Component.extend({
 
     addRefresh : function(refresh){
       this.attr("reconRefresh").push(refresh);
+    },
+
+    setHeaderChkBox : function() {
+
+      var checkBoxList = $('input.selectRow');
+
+      if(checkBoxList != undefined && checkBoxList!= null && checkBoxList.length > 0) {
+
+        $('input.headerChkBox').attr("checked", true);
+
+        for(var i=0; i<checkBoxList.length; i++) {
+
+          if (checkBoxList[i].checked != true) {
+
+            $('input.headerChkBox').attr("checked", false);
+
+          }
+
+        }
+      } else {
+
+        $('input.headerChkBox').attr("checked", false);
+
+      }
+
     }
 
   },
@@ -201,12 +226,20 @@ var page = Component.extend({
 
       console.log(JSON.stringify(request));
 
-      Promise.all([FileManager.findAll(request)]).then(function(values) {
-    
-        download("sampleFile" , values[0].responseText);
+      FileManager.findOne(request);
 
-      });
-      
+     //Promise.all([FileManager.findOne(request)]).then(function(values) {
+    
+       //download("sampleFile" , values[0].responseText);
+
+    //});
+      //FileManager.findOne({request}, function(values) {
+        
+        //download("sample.csv", values[0].responseText);
+
+      //}, function(xhr) {
+          // handle errors
+      //});
 
     },
     ".downloadLink.liDispAmt click": function(item, el, ev){
@@ -222,7 +255,9 @@ var page = Component.extend({
       FileManager.downloadFile(request);
     },
     '.toggle :checkbox change': function(el, ev) {
+      if (el[0].getAttribute('class') != 'headerChkBox') {
         refreshChekboxSelection(el,this.scope);
+      }
     },
     '.btn-Ingest click': function() {
       processRejectIngestRequest(this.scope,"ingest");
@@ -255,6 +290,36 @@ var page = Component.extend({
     '.btn-confirm-ok click': function(){
       $('#rejectModal').modal('hide');
       processRejectIngestRequest(this.scope,"reject");
+    },
+    '.headerChkBox  click': function(el, ev){
+
+      var checkBoxList = $('input.selectRow');
+
+      if(el[0].checked == true) {
+
+        for(var i=0; i<checkBoxList.length; i++) {
+
+          if (checkBoxList[i].checked != true) {
+
+            checkBoxList[i].click();
+
+          }
+
+        }
+
+      } else {
+
+        for(var i=0; i<checkBoxList.length; i++) {
+
+          if (checkBoxList[i].checked != false) {
+
+            checkBoxList[i].click();
+
+          }
+
+        }
+      }
+
     },
     '{scope.appstate} change': function() {
       this.scope.appstate.attr("renderGlobalSearch",true);
@@ -556,29 +621,30 @@ var fetchReconIngest = function(scope, load){
           console.error("Footer rows doesn't exists in the response");
         }
 
-      if (data.summary!== null) {
-        var footerLine= {
-          "__isChild": true,
-          "ccy":"EUR",
-          "pubfee": data.summary.totalPubFee,
-          "reconAmt": data.summary.totalRecon,
-          "liDispAmt": data.summary.totalLi,
-          "copConAmt": data.summary.totalCopCon,
-          "unMatchedAmt": data.summary.totalUnMatched,
-          "badLines": data.summary.totalBadLines,
-          "ccidId":"",
-          "entityName":"",
-          "countryId":"",
-          "contType":"",
-          "fiscalPeriod":"",
-          "ingstdDate":"",
-          "invFileName":"",
-          "status":"",
-          "isFooterRow":true
-        };
-      }
+        scope.ingestList.footerRows.splice(0, scope.ingestList.footerRows.length);
+        if (data.summary!== null) {
+          var footerLine= {
+            "__isChild": true,
+            "ccy":"EUR",
+            "pubFee": data.summary.totalPubFee,
+            "reconAmt": data.summary.totalRecon,
+            "liDispAmt": data.summary.totalLi,
+            "copConAmt": data.summary.totalCopCon,
+            "unMatchedAmt": data.summary.totalUnMatched!= undefined && data.summary.totalUnMatched!= null ? data.summary.totalUnMatched : 0.00,
+            "badLines": data.summary.totalBadLines,
+            "ccidId":"",
+            "entityName":"",
+            "countryId":"",
+            "contType":"",
+            "fiscalPeriod":"",
+            "ingstdDate":"",
+            "invFileName":"",
+            "status":"",
+            "isFooterRow":true
+          };
+          scope.ingestList.footerRows.replace(footerLine);
+        }
 
-        scope.ingestList.footerRows.replace(footerLine);
       }
     }
 
@@ -597,6 +663,8 @@ var fetchReconIngest = function(scope, load){
 
       var ccids = scope.ingestCcidSelected;
       scope.reconRefresh[0].loadRefreshStats(dataLowerGrid, scope.reconRefresh[0]);
+      scope.setHeaderChkBox();
+
     } else {
 
       scope.attr("load", true);
@@ -615,6 +683,7 @@ var fetchReconIngest = function(scope, load){
         }
 
       }
+      scope.setHeaderChkBox();
 
     }
 
@@ -671,11 +740,12 @@ var fetchReconDetails = function(scope){
 
       scope.incomingStatsDetailsSelected = data.reconStatsDetails;
 
+      scope.ingestList.footerRows.splice(0, scope.ingestList.footerRows.length);
       if (data.summary!== null) {
         var footerLine= {
           "__isChild": true,
           "ccy":"EUR",
-          "pubfee": data.summary.totalPubFee,
+          "pubFee": data.summary.totalPubFee,
           "reconAmt": data.summary.totalRecon,
           "liDispAmt": data.summary.totalLi ,
           "copConAmt":data.summary.totalCopCon,
@@ -710,6 +780,7 @@ var refreshChekboxSelection = function(el,scope){
     if(el[0].checked) {
       scope.ingestCcidSelected.push(row.dtlHdrId);
     } else {
+      $('input.headerChkBox').attr("checked", false);
       var index = _.indexOf(scope.ingestCcidSelected, row.dtlHdrId);
       (index > -1) && scope.ingestCcidSelected.splice(index, 1);
     }

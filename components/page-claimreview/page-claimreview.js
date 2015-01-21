@@ -750,7 +750,7 @@ var page = Component.extend({
                 else 
                   claimLicSearchRequest["offset"] = this.scope.countryViewOffset;
 
-                claimLicSearchRequest["limit"] = "10";
+                claimLicSearchRequest["limit"] = this.scope.appstate.attr("fetchSize");
 
                 if(self.scope.appstate.attr('excelOutput')) claimLicSearchRequest["excelOutput"] = true;
 

@@ -23,11 +23,11 @@ import copy from 'components/copy-clipboard/';
 //Navigation bar definitions
 var tabNameObj = {
     incoming:{
-      name:"Incoming Details",
+      name:"Invoices",
       type: "INCOMING"
     },
     other:{
-      name:"Incoming Other",
+      name:"Other",
       type: "Other"
     }
 }
@@ -335,6 +335,15 @@ var fetchReconIncoming = function(scope){
     searchRequestObj.searchRequest["sortBy"] = scope.sortColumns.attr().toString();
     searchRequestObj.searchRequest["sortOrder"] = scope.sortDirection;
 
+    var filterData = scope.tokenInput.attr();
+    var newFilterData = [];
+    if(filterData.length>0){
+      for(var p=0;p<filterData.length;p++)
+        newFilterData.push(filterData[p]["name"]);
+    }
+
+    searchRequestObj.searchRequest["filter"] = newFilterData;
+
     Recon.findOne((searchRequestObj),function(data){
       if(data.status == "FAILURE"){
         $("#messageDiv").html("<label class='errorMessage'>"+data.responseText+"</label>");
@@ -379,7 +388,7 @@ var fetchReconDetailsOther = function(scope){
   if(filterData.length>0){
     for(var p=0;p<filterData.length;p++)
       newFilterData.push(filterData[p]["name"]);
-    }
+  }
 
   searchRequestObj.searchRequest["filter"] = newFilterData;
 

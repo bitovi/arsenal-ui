@@ -30,7 +30,7 @@
     	</select>-->
     </div>
 
-    <div class="col-lg-12">
+    <div class="col-lg-12 paddingLeft0">
 	    <ul id="myTabs" class="nav nav-tabs">
 		   <li class="active">
 		      <a id="licView" href="#licensorView" data-toggle="tab">

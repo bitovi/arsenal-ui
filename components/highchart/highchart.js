@@ -55,15 +55,15 @@ var highchartpage = Component.extend({
 						        marginBottom: 25,
 						        events: {
 						            load: function() {
-						                this.renderer.image('resources/images/delete.png', 50, 10, 28, 28)
+						                this.renderer.image('resources/images/rn_RemoveFile@2x.png', 10, 10, 20, 20)
 						                .css({
 						                    cursor: 'pointer',
 						                    position: 'relative',
-						                    "margin-left": "-10px",
+						                    "margin-left": "0px",
 						                    opacity: 0.75
 						                }).attr({
 						                    id: 'close',
-						                    zIndex: -100
+						                    zIndex: -10
 						                }).add();
 						            }
 						        }
@@ -78,6 +78,9 @@ var highchartpage = Component.extend({
 					           // text: 'Source: WorldClimate.com',
 					            x: -20
 					        },
+					        credits: {
+    						  enabled: false
+  							},
 					        xAxis: {
 					            title: {
 						                    text: 'Period',
@@ -90,7 +93,7 @@ var highchartpage = Component.extend({
 					        },
 					        yAxis: {
 					            title: {
-					                text: 'Amount in '
+					                text: 'Amount in USD'
 					            },
 					            plotLines: [{
 					                value: 0,
@@ -100,7 +103,7 @@ var highchartpage = Component.extend({
 					        },
 					        tooltip: {
 					        	formatter: function () {
-									return '<b>' + this.series.name + '</b><br/>' + this.x + ': ' + this.y;
+									return '<b>' + this.series.name + '</b><br/>' + this.x + ': ' + currencyFormat(this.y);
 								},
 					            valueSuffix: ''
 					        },
@@ -170,5 +173,18 @@ function prepareCanMap(object){
 	//console.log("chart data:"+highChartdata["LINE_ITEM_AMOUNT"]);
 	return highChartdata;
 }
+
+function currencyFormat(number)
+  {
+    if(number != undefined && $.isNumeric(number)){
+      if(typeof(number) == 'string'){
+        number = Number(number);
+      }
+      var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+      return n;
+    }else{
+      return 0;
+    }
+  }
 
 export default highchartpage;

@@ -11,17 +11,17 @@ var WorkflowDisplay = Component.extend({
   },
   helpers: {
     approvedClass: function(step) {
-      return step.state === 'APPROVE' ? 'approved' : 'not-approved';
+      return step.state === 'APPROVED' ? 'approved' : 'not-approved';
     },
     past: function(step, options) {
-      return step.state === 'APPROVE' ? options.fn(this) : '';
+      return step.state === 'APPROVED' ? options.fn(this) : '';
     },
     current: function(step, options) {
       var i = 0,
           iteratingStep;
       do {
         iteratingStep = this.attr('steps')[i];
-      } while(iteratingStep === 'APPROVE');
+      } while(iteratingStep === 'APPROVED');
       return iteratingStep === step ? options.fn(this) : '';
     },
     future: function(step, options) {
@@ -29,7 +29,7 @@ var WorkflowDisplay = Component.extend({
       iteratingStep;
       do {
         iteratingStep = this.attr('steps')[i];
-      } while(iteratingStep === 'APPROVE');
+      } while(iteratingStep === 'APPROVED');
       return iteratingStep !== step ? options.fn(this) : '';
     },
     notLastArrow: function(step, options) {

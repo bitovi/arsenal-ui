@@ -260,8 +260,8 @@ var PaymentBundle = Model.extend({
             if(group.invoiceId != undefined){
               var target = _.find(bundle.bundleDetailsGroup, {key: group.key});
               if(target != undefined ){
-                group.vldtnMessage == undefined ? target.attr('validationMessages', "") : target.attr('validationMessages', group.vldtnMessage);
-                group.vldtnBatchResultColor == undefined ? target.attr('validationColor', "") : target.attr('validationColor', group.vldtnBatchResultColor);
+                // group.vldtnMessage == undefined ? target.attr('validationMessages', "") : target.attr('validationMessages', group.vldtnMessage);
+                // group.vldtnBatchResultColor == undefined ? target.attr('validationColor', "") : target.attr('validationColor', group.vldtnBatchResultColor);
               }
             }
           }
@@ -272,8 +272,8 @@ var PaymentBundle = Model.extend({
             if(validationResponse.paymentBundle.vldtnStatus === 5) {
               if(target != undefined ){
                 var lineTarget = _.find(target.bundleDetails, {bndlLineId: detail.bndlLineId});
-                lineTarget.attr('validationMessages', detail.vldtnMessage);
-                detail.vldtnBatchResultColor != undefined  ?  lineTarget.attr('validationColor', detail.vldtnBatchResultColor ) :  lineTarget.attr('validationColor', "" );
+                // lineTarget.attr('validationMessages', detail.vldtnMessage);
+                // detail.vldtnBatchResultColor != undefined  ?  lineTarget.attr('validationColor', detail.vldtnBatchResultColor ) :  lineTarget.attr('validationColor', "" );
               }
             }
 
