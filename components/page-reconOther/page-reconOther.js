@@ -23,11 +23,11 @@ import copy from 'components/copy-clipboard/';
 //Navigation bar definitions
 var tabNameObj = {
     incoming:{
-      name:"Incoming Details",
+      name:"Invoices",
       type: "INCOMING"
     },
     other:{
-      name:"Incoming Other",
+      name:"Other",
       type: "Other"
     }
 }

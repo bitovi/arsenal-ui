@@ -201,12 +201,20 @@ var page = Component.extend({
 
       console.log(JSON.stringify(request));
 
-      Promise.all([FileManager.findAll(request)]).then(function(values) {
-    
-        download("sampleFile" , values[0].responseText);
+      FileManager.findOne(request);
 
-      });
-      
+     //Promise.all([FileManager.findOne(request)]).then(function(values) {
+    
+       //download("sampleFile" , values[0].responseText);
+
+    //});
+      //FileManager.findOne({request}, function(values) {
+        
+        //download("sample.csv", values[0].responseText);
+
+      //}, function(xhr) {
+          // handle errors
+      //});
 
     },
     ".downloadLink.liDispAmt click": function(item, el, ev){

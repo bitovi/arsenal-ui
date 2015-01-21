@@ -222,7 +222,7 @@ var  menu =[
       {"value": "iCSV Entry", "id": "icsv","screenId":4},
     {"value": "Search Invoice", "id": "invoices","screenId":5},
   {"value": "Recon Stats", "id": "recon","screenId":7},
-{"value": "Recon Stats Other", "id": "reconOther","screenId":8},
+{"value": "Incoming Other", "id": "reconOther","screenId":8},
       {"value": "On Account", "id": "on-account","screenId":9}
    ]
 },{
