@@ -264,6 +264,9 @@ var BundleDetailGrid = ScrollingGrid.extend({
     '{scope.pageState} verboseGrid': function() {
       this.scope.filterColumns.apply(this);
     },
+    '{scope.columns} length': function() {
+      this.scope.filterColumns.apply(this);
+    },
     '{scope} columns': function() {
       this.scope.filterColumns.apply(this);
     }

@@ -93,7 +93,7 @@ var BundleDetailTabs = Component.extend({
       triggerValidation:false
     },
     selectedBundleChanged: function(scope) {
-      $("#messageDiv").hide();
+
       scope.details ={};
       scope.bundleProgress.isBundleSelectionChange = true;
       scope.bundleProgress.triggerValidation = true;
@@ -112,7 +112,7 @@ var BundleDetailTabs = Component.extend({
           workflowInstanceId: bundle.approvalId
         });
       }).done(function(steps) {
-        console.log(JSON.stringify(steps.workflowView.nodes))
+        //console.log(JSON.stringify(steps.workflowView.nodes))
         scope.workflowSteps.splice(0, scope.workflowSteps.length);
         scope.workflowSteps.replace(steps.workflowView.nodes);
       });
@@ -506,7 +506,7 @@ var resetSelectedBundle = function(scope){
   // clear out selectedRows
   scope.selectedRows.splice(0, scope.selectedRows.length);
   scope.attr("isBundlePrioritySet", false);
-
+  $("#messageDiv").hide();
   $(".previousComments").val();
   $(".previousComments").hide();
 
@@ -524,7 +524,8 @@ var resetSelectedBundle = function(scope){
   }
   scope.tabs.splice(0, scope.tabs.length, ...tabs);
   scope.attr('selectedTab', scope.tabs.length ? scope.tabs[0] : null);
-  scope.gridColumns.splice(0, scope.gridColumns.length, ...columns);
+  scope.gridColumns.splice(0, scope.gridColumns.length);
+  scope.gridColumns.attr(columns);
 
   // clear out the workflow steps
   scope.workflowSteps.splice(0, scope.workflowSteps.length);
@@ -541,6 +542,7 @@ var displayMessage = function(className,message){
   // setTimeout(function(){
   //   $("#messageDiv").hide();
   // },constants.MESSAGE_DISPLAY_TIME);
+
 }
 
 var canRemoveInvoice = function(scope){
