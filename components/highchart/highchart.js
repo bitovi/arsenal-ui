@@ -103,7 +103,7 @@ var highchartpage = Component.extend({
 					        },
 					        tooltip: {
 					        	formatter: function () {
-									return '<b>' + this.series.name + '</b><br/>' + currencyFormat(this.x) + ': ' + currencyFormat(this.y);
+									return '<b>' + this.series.name + '</b><br/>' + this.x + ': ' + currencyFormat(this.y);
 								},
 					            valueSuffix: ''
 					        },
