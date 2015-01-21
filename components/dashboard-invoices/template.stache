@@ -97,6 +97,53 @@
 
 </div>
 
+<div class="copytoclipboardContainer">
+  <table class="holes-report " border="1">
+  <thead>
+    <tr> 
+     <th></th>
+      {{#entities}}
+      <th class="entity" {{data 'entity'}}><span {{popover 'entity' {.}}}>{{.}}</span></th>
+      {{/entities}}
+       <th class="entity">LOCAL</th>    
+        <th></th>  
+    </tr>
+  </thead>
+  <tbody>
+    {{#holesReportsCC}}
+    <tr>      
+     <td class="country" {{#if displayBackGreen}}bgcolor="#669933" {{/if}}>{{countryId}}</td>
+      {{#holesList}}      
+        {{#if isCCIDExpect}}
+          <td class="hole invoice-expected"></td>
+        {{else}}
+          <td class="hole">
+            {{#if showImage}}<img class="checkMark" src="resources/images/checkMarkDark.png"/>
+            {{else}}
+              {{show}}
+            {{/if}}
+          {{#if isLA}}<img class="la" src="resources/images/rn_LegendLondonAgreement@2x.png"/>{{/if}}
+          </td>
+        {{/if}}
+      {{/holesList}}
+
+      {{#if localDisplay}}
+        <td class="hole">{{localDisplay}}</td>
+      {{else}}
+        <td></td>
+      {{/if}}
+      {{#if localSociety}}
+        <td class="hole">{{localSociety}}</td>
+      {{else}}
+        <td></td>
+      {{/if}}
+    </tr>
+    {{/holesReportsCC}}
+  </tbody>
+</table>
+</div>
+
+
 
 <div class="col-sm-3"></div>
   <div class="col-sm-1">
