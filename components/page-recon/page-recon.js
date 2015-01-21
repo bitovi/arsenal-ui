@@ -94,6 +94,31 @@ var page = Component.extend({
 
     addRefresh : function(refresh){
       this.attr("reconRefresh").push(refresh);
+    },
+
+    setHeaderChkBox : function() {
+
+      var checkBoxList = $('input.selectRow');
+
+      if(checkBoxList != undefined && checkBoxList!= null && checkBoxList.length > 0) {
+
+        $('input.headerChkBox').attr("checked", true);
+
+        for(var i=0; i<checkBoxList.length; i++) {
+
+          if (checkBoxList[i].checked != true) {
+
+            $('input.headerChkBox').attr("checked", false);
+
+          }
+
+        }
+      } else {
+
+        $('input.headerChkBox').attr("checked", false);
+
+      }
+
     }
 
   },
@@ -230,7 +255,9 @@ var page = Component.extend({
       FileManager.downloadFile(request);
     },
     '.toggle :checkbox change': function(el, ev) {
+      if (el[0].getAttribute('class') != 'headerChkBox') {
         refreshChekboxSelection(el,this.scope);
+      }
     },
     '.btn-Ingest click': function() {
       processRejectIngestRequest(this.scope,"ingest");
@@ -263,6 +290,36 @@ var page = Component.extend({
     '.btn-confirm-ok click': function(){
       $('#rejectModal').modal('hide');
       processRejectIngestRequest(this.scope,"reject");
+    },
+    '.headerChkBox  click': function(el, ev){
+
+      var checkBoxList = $('input.selectRow');
+
+      if(el[0].checked == true) {
+
+        for(var i=0; i<checkBoxList.length; i++) {
+
+          if (checkBoxList[i].checked != true) {
+
+            checkBoxList[i].click();
+
+          }
+
+        }
+
+      } else {
+
+        for(var i=0; i<checkBoxList.length; i++) {
+
+          if (checkBoxList[i].checked != false) {
+
+            checkBoxList[i].click();
+
+          }
+
+        }
+      }
+
     },
     '{scope.appstate} change': function() {
       this.scope.appstate.attr("renderGlobalSearch",true);
@@ -605,6 +662,8 @@ var fetchReconIngest = function(scope, load){
 
       var ccids = scope.ingestCcidSelected;
       scope.reconRefresh[0].loadRefreshStats(dataLowerGrid, scope.reconRefresh[0]);
+      scope.setHeaderChkBox();
+
     } else {
 
       scope.attr("load", true);
@@ -623,6 +682,7 @@ var fetchReconIngest = function(scope, load){
         }
 
       }
+      scope.setHeaderChkBox();
 
     }
 
@@ -718,6 +778,7 @@ var refreshChekboxSelection = function(el,scope){
     if(el[0].checked) {
       scope.ingestCcidSelected.push(row.dtlHdrId);
     } else {
+      $('input.headerChkBox').attr("checked", false);
       var index = _.indexOf(scope.ingestCcidSelected, row.dtlHdrId);
       (index > -1) && scope.ingestCcidSelected.splice(index, 1);
     }
