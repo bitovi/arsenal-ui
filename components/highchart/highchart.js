@@ -93,7 +93,7 @@ var highchartpage = Component.extend({
 					        },
 					        yAxis: {
 					            title: {
-					                text: 'Amount in '
+					                text: 'Amount in USD'
 					            },
 					            plotLines: [{
 					                value: 0,
