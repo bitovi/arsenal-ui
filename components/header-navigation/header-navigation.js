@@ -247,9 +247,9 @@ var  menu =[
  {"value": "Analytics", "id": "analytic","screenId":20},
       {"value": "Payment Bundle Review", "id": "payment-bundles","screenId":21},
     {"value": "Claim Review", "id": "claimreview","screenId":22},
-  {"value": "Global Revenue", "id": "globalrevenue","screenId":23},
+  {"value": "Global Revenue", "id": "globalrevenue","screenId":23, "url":RinsCommon.RINS_OLD_URL+"globalRevenue"},
       /*{"value": "Monthly Billings Reconciliation", "id": "monthlybillingsreconciliation"},*/
-    {"value": "Unclaimed Summary", "id": "unclaimedsummary","screenId":24},
+    {"value": "Unclaimed Summary", "id": "unclaimedsummary","screenId":24, "url":RinsCommon.RINS_OLD_URL+"unClaimedSummary"},
    ]
 },{
   "id": "system",
