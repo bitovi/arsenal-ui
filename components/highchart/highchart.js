@@ -103,7 +103,7 @@ var highchartpage = Component.extend({
 					        },
 					        tooltip: {
 					        	formatter: function () {
-									return '<b>' + this.series.name + '</b><br/>' + this.x + ': ' + this.y;
+									return '<b>' + this.series.name + '</b><br/>' + currencyFormat(this.x) + ': ' + currencyFormat(this.y);
 								},
 					            valueSuffix: ''
 					        },
@@ -173,5 +173,18 @@ function prepareCanMap(object){
 	//console.log("chart data:"+highChartdata["LINE_ITEM_AMOUNT"]);
 	return highChartdata;
 }
+
+function currencyFormat(number)
+  {
+    if(number != undefined && $.isNumeric(number)){
+      if(typeof(number) == 'string'){
+        number = Number(number);
+      }
+      var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+      return n;
+    }else{
+      return 0;
+    }
+  }
 
 export default highchartpage;
