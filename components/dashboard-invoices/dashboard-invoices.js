@@ -22,6 +22,7 @@ var DashboardInvoices = Component.extend({
   scope: {
     entities: [],
     holesReports:[],
+    holesReportsCC:[],
     holesByCountry: {/*
       AUT: [hole, hole, hole],
     */},
@@ -65,6 +66,7 @@ var DashboardInvoices = Component.extend({
           }*/
         } else {
           var holesReports=[];
+          var holesReportsCC = [];
           var entities=[];
 
 _.each(holes.holesReportWrapper, function(holesWrapper) {
@@ -128,6 +130,7 @@ _.each(holes.holesReportWrapper, function(holesWrapper) {
               holesReport.localDisplay=localDisplay;
               holesReport.displayBackGreen=displayBackGreen;
               holesReports.push(holesReport);
+              //holesReportsCC.push(holesReport);
           });
   
           
@@ -139,6 +142,7 @@ _.each(holes.holesReportWrapper, function(holesWrapper) {
           self.attr('entities', entities);
           self.attr('holesByCountry', holesByCountry);
           self.attr('holesReports',holesReports);
+          self.attr('holesReportsCC',holesReports);
           can.batch.stop();
 
 
@@ -210,13 +214,12 @@ _.each(holes.holesReportWrapper, function(holesWrapper) {
     },
     '#copyToClipboard click':function(){  
 
-      var tableClone = $('.dashboard-container').find('table:visible').clone(true);
-
-        $('#clonetable').empty().html(tableClone).attr('id','dynamic');
+      var tableClone = $('.dashboard-container').find('.copytoclipboardContainer').clone(true);
+          $('#clonetable').empty().html(tableClone).attr('id','dynamic');
           $('copy-clipboard').slideDown(function(){
            $('body').css('overflow','hidden');
            $('#copyall').trigger('click');
-           tableClone = "";
+           
         }); 
       },
     '{scope.appstate} change': function() {
