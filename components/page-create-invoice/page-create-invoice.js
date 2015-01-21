@@ -1301,7 +1301,8 @@ var page = Component.extend({
 								  	},
 								  	calculateTaxPercent: function(){
 								  		var tax = 0;
-								  		if(this.attr("tax").length>0){
+								  		
+								  		if((this.attr("tax").length>0) || (this.attr("tax") > 0)){
 								  			tax = Number(this.attr("tax"));
 								  		}
 
