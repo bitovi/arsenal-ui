@@ -2,7 +2,7 @@ import Model from 'can/model/';
 import Urls from 'utils/urls';
 
 var fileManager  = {
-  downloadFile: function(params){
+  findOne: function(params){
     //console.log(JSON.stringify(params));
     // window.location.href = Urls.FILE_MANAGER_SERVICE_URL +'downloadFileUI/'+params.fileId+'/'+params.boundType;
     return $.ajax({

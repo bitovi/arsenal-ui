@@ -5,7 +5,7 @@ import periodHelper from 'utils/periodWidgetHelpers';
 export default [
   {
     id: 'toggle',
-    title: '',
+    title: '<input type="checkbox" class="headerChkBox"/>',
     contents: function(row) {
       var value = row.dtlHdrId;
       var rejectableVal = false;

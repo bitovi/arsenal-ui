@@ -13,7 +13,7 @@
           <ul class="nav navbar-nav" id='homemenu'>
             <li name='Dashboard' {{isActive 'dashboard'}}><a href="/dashboard" id='dashboard'>Dashboard</a></li>
             <li name='Approvals'> <a href="#">Approvals</a></li>
-            <li name='Invoices' class="dropdown"><a>Invoices</a></li>
+            <li name='Invoices' class="dropdown"><a href="#">Invoices</a></li>
             <li name='Reference' class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference</a></li>
             <li name='Analytics' class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Analytics</a></li>
             <li name='System' class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">System</a></li>
