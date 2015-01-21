@@ -55,15 +55,15 @@ var highchartpage = Component.extend({
 						        marginBottom: 25,
 						        events: {
 						            load: function() {
-						                this.renderer.image('resources/images/delete.png', 50, 10, 28, 28)
+						                this.renderer.image('resources/images/rn_RemoveFile@2x.png', 10, 10, 20, 20)
 						                .css({
 						                    cursor: 'pointer',
 						                    position: 'relative',
-						                    "margin-left": "-10px",
+						                    "margin-left": "0px",
 						                    opacity: 0.75
 						                }).attr({
 						                    id: 'close',
-						                    zIndex: -100
+						                    zIndex: -10
 						                }).add();
 						            }
 						        }
@@ -78,6 +78,9 @@ var highchartpage = Component.extend({
 					           // text: 'Source: WorldClimate.com',
 					            x: -20
 					        },
+					        credits: {
+    						  enabled: false
+  							},
 					        xAxis: {
 					            title: {
 						                    text: 'Period',
