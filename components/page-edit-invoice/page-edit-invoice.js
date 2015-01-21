@@ -1344,7 +1344,7 @@ var page = Component.extend({
 												}
 
                                             // reset data for uploaded fileinfo
-                                            self.scope.uploadedfileinfo.replace([]);
+                                         //   self.scope.uploadedfileinfo.replace([]); /*not needed for edit invoice*/
                                             self.scope.deletedFileInfo.replace([]);
 										}
 							          	else
@@ -1506,7 +1506,7 @@ var page = Component.extend({
 								  	},
 								  	calculateTaxPercent: function(){
 								  		var tax = 0;
-								  		if(this.attr("tax").length>0){
+								  		if((this.attr("tax").length>0) || (this.attr("tax") > 0)){
 								  			tax = Number(this.attr("tax"));
 								  		}
 								  	 	this.attr("taxStore", tax);

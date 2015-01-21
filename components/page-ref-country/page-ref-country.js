@@ -115,6 +115,7 @@ var page = Component.extend({
 
     "inserted": function(){
       var self = this;
+      $(".multicomments-required").hide();
 
       $('#grid-society-model').append(stache('<rn-grid rows="{reportConfigurationList}"></rn-grid>')({reportConfigurationList}));
       $('#grid-revision-history').append(stache('<rn-grid-revision-history rows="{revisionHistory}"></rn-grid-revision-history>')({revisionHistory}));
@@ -671,6 +672,16 @@ var page = Component.extend({
         var formatValidTo = "";
       var comments = $(".new-comments").val();
 
+      if(comments != null && comments == "") {
+
+        $(".multicomments-required").show();
+        setTimeout(function(){
+          $(".multicomments-required").hide();
+        },2000);
+        return;
+
+      }
+
       var requestObj  = {
           countryDetails  :{
             id: self.pageState.countryDetails.country.id,
@@ -705,10 +716,13 @@ var page = Component.extend({
       RefCountry.create(UserReq.formRequestDetails(requestObj),function(data){
         console.log("Response is "+ JSON.stringify(data));
         if(data.status=="SUCCESS"){
-          self.attr("displayMessage","display:block");
+          var msg = "Country details saved successfully";
+
+          $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
+          $("#invmessageDiv").show();
           setTimeout(function(){
-                self.attr("displayMessage","display:none");
-          },4000);
+            $("#invmessageDiv").hide();
+          },5000);
         }
       });
 
