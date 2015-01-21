@@ -1100,7 +1100,8 @@ function getAllInvoices(self) {
 
         invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
         invSearchRequest.searchRequest["offset"] = self.offset;
-        invSearchRequest.searchRequest["limit"] = "30";
+        invSearchRequest.searchRequest["limit"] = self.appstate.attr("fetchSize");
+        //console.log("#####this.appstate.attr(fetchSize)",self.appstate.attr("fetchSize"));
 
         var filterData = self.tokenInput.attr();
         var newFilterData = [];

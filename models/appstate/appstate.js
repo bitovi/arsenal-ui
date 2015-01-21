@@ -50,7 +50,8 @@ var stateDefaults = {
   filled: false,
   renderGlobalSearch:true,
   globalSearch:undefined,
-  csrfToken:undefined
+  csrfToken:undefined,
+  fetchSize:30 //default fetch size. This will be overrided in index.js based on the browser size that the user is using.
 };
 
 var firstPage = 'dashboard';
