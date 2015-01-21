@@ -69,7 +69,7 @@
     <label>Approval Comment</label>
     <div class="requiredBar">
       <textarea class="previousComments" rows="5" readonly></textarea>
-      <textarea can-value="{approvalComment}" placeholder="Enter your comments here ..."  style='border-top: none;'></textarea>
+      <textarea can-value="{approvalComment}"  style='border-top: none;'></textarea>
     </div>
 
       <div class="buttons allowedClass">

@@ -3,6 +3,7 @@ import Component from 'can/component/';
 import List from 'can/list/';
 import Map from 'can/map/';
 import stache from 'can/view/stache/';
+import moment from 'moment';
 
 import PaymentBundleDetailGroup from 'models/payment-bundle/payment-bundle-detail-group';
 import PaymentBundleDetail from 'models/payment-bundle/payment-bundle-detail';
@@ -173,8 +174,10 @@ var BundleDetailTabs = Component.extend({
         var commentsCollected = '';
         _.each(bundle.approvalComments, function(commentsObj) {
 
-          commentsCollected = commentsCollected + commentsObj.comments +"\n"+ commentsObj.createdByName +": "+commentsObj.createdDate;
-          commentsCollected = commentsCollected + "\n------------------------\n"
+          var createdDateFormat = moment(commentsObj.createdDate).format("Do MMM, YYYY");   
+
+          commentsCollected = commentsCollected + commentsObj.createdByName +"     "+createdDateFormat+"\n"+commentsObj.comments;
+          commentsCollected = commentsCollected + "\n";
 
         });
 
