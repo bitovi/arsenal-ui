@@ -192,6 +192,7 @@ var page = Component.extend({
     tableScrollTop: 0,
     offset: 0,
     recordsAvailable:'@',
+    totalRecordCount:'@',
     fileinfo:[],
     excelOutput:[],
     bundleState:{},
@@ -471,6 +472,7 @@ var page = Component.extend({
             var first = "true";
             var regCcyTemp = {"invId":"", "__isChild":false, "entityName":"Total in Regional Currency", "invoiceType":"", "invTypeDisp":"", "contentGrpName":"", "country":"", "invoiceNumber":"","invoiceAmount":"", "invoiceDueDate":"", "invoiceCcy":"", "status":"", "bundleName":"", "comments":""};
             regCcyTemp["invoiceAmount"] = CurrencyFormat(footerData["regAmtTot"]);
+            regCcyTemp["invoiceNumber"] = self.scope.attr('totalRecordCount') + " Invoices";
             regCcyTemp["invoiceCcy"] = footerData["regCcy"];
             gridData["footer"].push(regCcyTemp);
             for(var obj in footerData["amtCcyMap"]){
@@ -1138,6 +1140,7 @@ function getAllInvoices(self) {
                   },4000);
                 }
                 self.attr('recordsAvailable',data.recordsAvailable);
+                self.attr('totalRecordCount', data.totRecCnt);
                 self.checkedRows.replace([]); //Reset Checked rows scope variable
                 if(parseInt(invSearchRequest.searchRequest["offset"])==0){
                   self.allInvoicesMap.replace(data);
