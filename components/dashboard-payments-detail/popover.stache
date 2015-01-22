@@ -4,7 +4,7 @@
     <li class="total">
       <div class="color"><div class="square">&nbsp;</div></div>
       <div class="category">Total unpaid:</div>
-      <div class="percent">{{formatPercent item.totBalPrcnt}}</div>
+      <div class="percent">{{item.totBalPrcnt}}%</div>
       <div class="numbers">
         <span class="local">{{item.totBalAmt}}</span>
         <span class="global">{{item.totBalGblCcy}}</span>
@@ -18,7 +18,7 @@
     <li class="recon">
       <div class="color"><div class="square">&nbsp;</div></div>
       <div class="category">Unpaid:</div>
-      <div class="percent">{{formatPercent item.reconPrcnt}}</div>
+      <div class="percent">{{item.reconPrcnt}}%</div>
       <div class="numbers">
         <span class="local">{{item.reconAmt}}</span>
         <span class="global">{{item.reconGblCcy}}</span>
@@ -32,7 +32,7 @@
     <li class="li">
       <div class="color"><div class="square">&nbsp;</div></div>
       <div class="category">Line item disputes:</div>
-      <div class="percent">{{formatPercent item.liPrcnt}}</div>
+      <div class="percent">{{item.liPrcnt}}%</div>
       <div class="numbers">
         <span class="local">{{item.liAmt}}</span>
         <span class="global">{{item.liGblCcy}}</span>
