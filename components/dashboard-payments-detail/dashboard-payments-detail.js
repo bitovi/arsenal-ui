@@ -13,6 +13,12 @@ import _less from './dashboard-payments-detail.less!';
 import _popover_less from './popover.less!';
 
 var columnChartHelper = function(item, div) {
+
+//    var reconPercent = formats.formatIfValue(item.reconPrcn,_.isNumber, formats.decimalAsPercent, '0%');
+//    var liPrcnt = formats.formatIfValue(item.liPrcnt,_.isNumber, formats.decimalAsPercent, '0%');
+//    var orPrcnt = formats.formatIfValue(item.orPrcnt,_.isNumber, formats.decimalAsPercent, '0%');
+
+
   var chartConfig = can.extend({}, chartDefaults.singleStackedColumnChart, {
     series: [{
       data: [item.reconPrcnt]
@@ -49,11 +55,15 @@ var DashboardPaymentsDetail = Component.extend({
         });
       });
     },
+    formatNumbers: function(num){
+        var formatted = formats.currencyFormatDecimal(num, 1);
+        return formatted;
+    },
     popover: function(item) {
-      console.log('item '+item);
+
       var popoverContent = $('<div>').append(popoverTemplate({
-        localCurrency: 'XXX',
-        globalCurrency: 'XXX',
+        localCurrency: item.gblCcy,
+        globalCurrency: item.rgnCcy,
         item: item
       }, {
         formatPercent: val => formats.percent(val())
@@ -70,6 +80,9 @@ var DashboardPaymentsDetail = Component.extend({
     },
   },
   events: {
+    'inserted':function(){
+
+     },
     'li click': function(el, ev) {
       var popoverID = el.attr('aria-describedby');
       var chart = $('#' + popoverID).find('.column-chart');
