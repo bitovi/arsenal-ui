@@ -1,4 +1,5 @@
 import appstate from 'models/appstate/';
+import constants from 'utils/constants';
 
 var rinsCommonUtils = {
   triggerGlobalSearch:function (){
@@ -12,7 +13,23 @@ var rinsCommonUtils = {
     appstate.attr('page', page);
     appstate.attr('navigationRequired', true);
     appstate.attr('navigationRequired', false);
+  },
+  displayUIMessage : function(statusCode,message){
+
+    var className = 'errorMessage';
+    if(statusCode === '0000'){
+      className= 'successMessage';
+    }
+
+    $("#messageDiv").html("<label class='"+className+"' style='padding: 0px 15px;'>"+message+"</label>")
+    $("#messageDiv").show();
+
+    setTimeout(function(){
+      $("#messageDiv").hide();
+    },constants.MESSAGE_DISPLAY_TIME);
   }
+
+
 };
 
 

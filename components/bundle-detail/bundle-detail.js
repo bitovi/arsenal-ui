@@ -164,7 +164,7 @@ var BundleDetailTabs = Component.extend({
         scope.bottomGridPaginateAttr.attr("isInProgress",false);
 
         if(bundle.status === 'FAILURE'){
-          displayMessage("errorMessage",bundle.responseText)
+          commonUtils.displayUIMessage( bundle.responseCode, bundle.responseText);
         }else{
           scope.bundleProgress.triggerValidation ? scope.getNewValidations(bundle) : "";
         }
@@ -174,7 +174,7 @@ var BundleDetailTabs = Component.extend({
         var commentsCollected = '';
         _.each(bundle.approvalComments, function(commentsObj) {
 
-          var createdDateFormat = moment(commentsObj.createdDate).format("Do MMM, YYYY");   
+          var createdDateFormat = moment(commentsObj.createdDate).format("Do MMM, YYYY");
 
           commentsCollected = commentsCollected + commentsObj.createdByName +"     "+createdDateFormat+"\n"+commentsObj.comments;
           commentsCollected = commentsCollected + "\n";
@@ -326,14 +326,10 @@ var BundleDetailTabs = Component.extend({
       }else{
         console.log('Data not set so not showing the chart');
         if (this.scope.details.contentType === "TAX") {
-          $("#messageDiv").html("<label class='errorMessage'>Reports not available for TAX</label>");
+          commonUtils.displayUIMessage( '0001', "Reports not available for TAX");
         }else{
-          $("#messageDiv").html("<label class='errorMessage'>select child row in the details to see the report</label>");
+          commonUtils.displayUIMessage( '0001', "select child row in the details to see the report");
         }
-          $("#messageDiv").show();
-          setTimeout(function(){
-              $("#messageDiv").hide();
-        },4000);
       }
     },
     '#highChartDetails mousedown': function(item, el, ev){
@@ -425,7 +421,7 @@ var BundleDetailTabs = Component.extend({
           if(response.status === 'SUCCESS') {
             //Alert.displayAlert(response.responseText, 'success' );
 
-            displayMessage("successMessage",response.responseText);
+            commonUtils.displayUIMessage( response.responseCode, response.responseText);
 
             // un-select the selected bundle (we're done here)
             pageState.attr('selectedBundle', null);
@@ -533,18 +529,6 @@ var resetSelectedBundle = function(scope){
   // clear out the workflow steps
   scope.workflowSteps.splice(0, scope.workflowSteps.length);
   can.batch.stop();
-
-}
-
-var displayMessage = function(className,message){
-  $("#messageDiv").html("<label class='"+className+"' style='padding: 0px 15px;'>"+message+"</label>")
-  $("#messageDiv").show();
-
-  //<rdar://problem/19301217> UI - PBR - Approval Succesful message missing
-  //TOOD: Tem disabled the message., which need to reset before going to UAT
-  // setTimeout(function(){
-  //   $("#messageDiv").hide();
-  // },constants.MESSAGE_DISPLAY_TIME);
 
 }
 

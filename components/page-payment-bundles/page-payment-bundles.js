@@ -50,15 +50,22 @@ var page = Component.extend({
         this.scope.appstate.attr('excelOutput',false);
 
         PaymentBundle.loadAll({appstate: this.scope.appstate, paginate: this.scope.paginateAttr}).done(function(data) {
-          can.batch.start();
 
-          $.merge(pageState.bundles, data.paymentBundles);
+          if(data.responseCode === '0000'){
 
-          pageState.bundles.replace(pageState.bundles);
+            can.batch.start();
 
-          pageState.attr("recordsAvailable",data.recordsAvailable);
+            $.merge(pageState.bundles, data.paymentBundles);
 
-          can.batch.stop();
+            pageState.bundles.replace(pageState.bundles);
+
+            pageState.attr("recordsAvailable",data.recordsAvailable);
+
+            can.batch.stop();
+          }else{
+            commonUtils.displayUIMessage( data.responseCode, data.responseText);
+          }
+
         });
 
         pageState.attr("isPaginateReq",false);
@@ -75,12 +82,20 @@ var page = Component.extend({
 
           this.scope.isPageSearch  = this.scope.appstate.globalSearch;
           PaymentBundle.loadAll ({appstate: this.scope.appstate,paginate: this.scope.paginateAttr}).done(function(data) {
-            can.batch.start();
-            pageState.bundles.splice(0, pageState.bundles.length);
-            pageState.bundles.replace(data.paymentBundles);
-            pageState.attr("recordsAvailable",data.recordsAvailable);
-            can.batch.stop();
+
+            if(data.responseCode === '0000'){
+              can.batch.start();
+              pageState.bundles.splice(0, pageState.bundles.length);
+              pageState.bundles.replace(data.paymentBundles);
+              pageState.attr("recordsAvailable",data.recordsAvailable);
+              can.batch.stop();
+            }else{
+              commonUtils.displayUIMessage( data.responseCode, data.responseText);
+            }
+
           });
+
+
         }
         // else {
         //   if(!this.scope.appstate.excelOutput){
@@ -210,8 +225,9 @@ var resetGrids = function(pageState){
   pageState.bundles.splice(0, pageState.bundles.length);
   pageState.attr('selectedBundle', null);
   can.batch.stop();
-
-
 }
+
+
+
 
 export default page;
