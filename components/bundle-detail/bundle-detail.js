@@ -533,7 +533,7 @@ var resetSelectedBundle = function(scope){
 }
 
 var canRemoveInvoice = function(scope){
-    if(scope.pageState.selectedBundle.editable &&  scope.pageState.attr('selectedBundle.bundleType') === 'REGULAR_INV'
+    if(scope.pageState.selectedBundle != null && scope.pageState.selectedBundle.editable &&  scope.pageState.attr('selectedBundle.bundleType') === 'REGULAR_INV'
      &&  ( scope.attr('selectedTab')  == null || scope.attr('selectedTab').value === 'licensor' ))  {
       $(".remove-invoice").show();
     } else {

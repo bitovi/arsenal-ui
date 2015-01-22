@@ -135,19 +135,6 @@ var page = Component.extend({
         this.scope.refreshBundles.apply(this);
       }
     },
-    //Removed the Delete bundle as its not require for top grid. It only need to be available in the bottom grid
-    // '.delete-bundle click': function(el, ev) {
-    //   if(!this.scope.pageState.selectedBundle) {
-    //     return;
-    //   }
-    //
-    //   PbrDeleteConfirmModal.displayModal(this.scope.pageState.selectedBundle, {
-    //     action: 'delete',
-    //     approvalComment: '',
-    //     paymentOption: 1
-    //   });
-    //   this.scope.attr('selectedBundle', null);
-    // },
     '.add-invoice click': function(el, ev) {
       commonUtils.navigateTo("invoices");
     },
