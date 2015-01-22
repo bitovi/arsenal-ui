@@ -18,17 +18,6 @@ rn-outbox-grid {
   tbody{
     overflow-y: overlay;
   }
-  	.remind  {
-
-		background-color: #1581F4;
-		background-image: -moz-linear-gradient(top, #1581f4, #63adf1);
-		background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#1581f4), to(#63adf1));
-		background-image: -o-linear-gradient(top, #1581f4, #63adf1);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff00aaff', GradientType=0);
-		border-color: #0A66CB #0A66CB #0A66CB;
-		color: buttontext;
-
-  	}
 
   	table.scrolling {
 	    tbody {
@@ -49,10 +38,10 @@ rn-outbox-grid {
 
 	    tr > th, tr > td {
 	      &.type { .flex-basis(75px); }
-	      &.description { .flex-grow(1); .flex-basis(100px); }
+	      &.description { .flex-basis(400px); }
 	      &.region { .flex-basis(100px); }
-	      &.comments { .flex-basis(325px); }
-	      &.pendingDays { .flex-basis(100px); }
+	      &.comments { .flex-grow(1); .flex-basis(325px); }
+	      &.pendingDays { .flex-basis(75px); }
 	      &.currentlyWith  { .flex-basis(200px); }
 	      &.approvalStage { .flex-basis(100px); }
 	    }

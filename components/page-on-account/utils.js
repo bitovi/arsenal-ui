@@ -129,8 +129,8 @@ frameDeleteRequest:function(rowsToBedeleted,comments,quarters){
         for(var i=0; i < rowsToBedeleted.length;i++){
             var onAccountDetail={};
             //onAccountDetails.id=rowsToBedeleted[i].id;
-            onAccountDetails.bundleId=rowsToBedeleted[i].bundleId;
-            onAccountDetails.bundleName=rowsToBedeleted[i].bundleName;
+            onAccountDetail.bundleId=rowsToBedeleted[i].bundleId;
+            onAccountDetail.bundleName=rowsToBedeleted[i].bundleName;
             onAccountDetail.currencyCode=rowsToBedeleted[i].Currency;
             //onAccountDetail.fiscalPeriod="";
             //onAccountDetails.onAccountAmt="";
