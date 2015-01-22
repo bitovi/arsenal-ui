@@ -55,7 +55,7 @@ var PaymentBundle = Model.extend({
    * @option periodType {String} ex. "P"
    * @option period {String} ex. "201303"
    */
-    loadAll: function(params) {
+  loadAll: function(params) {
     var appstate = params.appstate;
     var data = {}
 
@@ -96,6 +96,21 @@ var PaymentBundle = Model.extend({
       data: requestObj,
       processData: false
     })
+  },
+  downloadALL:function(bundleId){
+    var requestObj = {
+      bundleSearch:{
+        ids:[bundleId]
+      }
+    }
+
+    return $.ajax({
+      url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/downloadInvoiceFiles',
+      type: 'POST',
+      data: requestObj,
+      processData: false
+    })
+
   },
   findOne: function(params) {
     var appstate = params.appstate;

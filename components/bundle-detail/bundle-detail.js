@@ -452,6 +452,9 @@ var BundleDetailTabs = Component.extend({
     '{scope} preferredCurr': function(){
       this.scope.getNewDetails(this.scope.pageState.selectedBundle);
     },
+    '.btn-download click': function() {
+      PaymentBundle.downloadALL(this.scope.pageState.selectedBundle.bundleId);
+    },
     'inserted': function() {
       this.scope.selectedBundleChanged(this.scope);
       var self = this;

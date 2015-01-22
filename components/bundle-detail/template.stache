@@ -35,6 +35,7 @@
       <option value="EUR">EUR</option>
     </select>
   </div>
+  <button class="btn btn-custom-xs btn-download">Download</button>
 </div>
 <div class="grid-container" id="bundleDetailGridDiv">
   {{#if pageState.selectedBundle.bundleDetailsGroup.length}}
