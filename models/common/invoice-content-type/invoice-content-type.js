@@ -1,10 +1,10 @@
 import Model from 'can/model/';
 import RinsCommon from 'utils/urls';
 
-var ContentType = Model.extend({
+var InvoiceContentType = Model.extend({
 	findAll: function(params){
 	 	return $.ajax({
-	 		url: RinsCommon.UI_SERVICE_URL +'getContentTypes',
+	 		url: RinsCommon.UI_SERVICE_URL +'getInvoiceContentTypes',
 	  		type: 'GET',
 	  		//data: JSON.stringify(params),
 	  		//dataType:'json',
@@ -16,4 +16,4 @@ var ContentType = Model.extend({
 
 /* able to get data in ajax done function*/
 
-export default ContentType;
+export default InvoiceContentType;

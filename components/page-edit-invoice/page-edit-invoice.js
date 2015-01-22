@@ -20,7 +20,7 @@ import periodCalendar from 'components/period-calendar/';
 
 import invoicemap from 'models/sharedMap/invoice';
 import InvoiceType from 'models/common/invoice-type/';
-import ContentType from 'models/common/content-type/';
+import ContentType from 'models/common/invoice-content-type/';
 import Licensor from 'models/common/licensor/';
 import Currency from 'models/common/currency/';
 import Country from 'models/common/country/';
