@@ -257,6 +257,34 @@ var page = Component.extend({
     '.toggle :checkbox change': function(el, ev) {
       if (el[0].getAttribute('class') != 'headerChkBox') {
         refreshChekboxSelection(el,this.scope);
+      } else {
+        var checkBoxList = $('input.selectRow');
+
+      if(el[0].checked == true) {
+
+        for(var i=0; i<checkBoxList.length; i++) {
+
+          if (checkBoxList[i].checked != true) {
+
+            checkBoxList[i].click();
+
+          }
+
+        }
+
+      } else {
+
+        for(var i=0; i<checkBoxList.length; i++) {
+
+          if (checkBoxList[i].checked != false) {
+
+            checkBoxList[i].click();
+
+          }
+
+        }
+      }
+
       }
     },
     '.btn-Ingest click': function() {
@@ -291,36 +319,7 @@ var page = Component.extend({
       $('#rejectModal').modal('hide');
       processRejectIngestRequest(this.scope,"reject");
     },
-    '.headerChkBox  click': function(el, ev){
-
-      var checkBoxList = $('input.selectRow');
-
-      if(el[0].checked == true) {
-
-        for(var i=0; i<checkBoxList.length; i++) {
-
-          if (checkBoxList[i].checked != true) {
-
-            checkBoxList[i].click();
-
-          }
-
-        }
-
-      } else {
-
-        for(var i=0; i<checkBoxList.length; i++) {
-
-          if (checkBoxList[i].checked != false) {
-
-            checkBoxList[i].click();
-
-          }
-
-        }
-      }
-
-    },
+    
     '{scope.appstate} change': function() {
       this.scope.appstate.attr("renderGlobalSearch",true);
       if(this.scope.isGlobalSearchIngested != this.scope.appstate.attr('globalSearch')){
@@ -782,7 +781,7 @@ var refreshChekboxSelection = function(el,scope){
     } else {
       $('input.headerChkBox').attr("checked", false);
       var index = _.indexOf(scope.ingestCcidSelected, row.dtlHdrId);
-      (index > -1) && scope.ingestCcidSelected.splice(index, 1);
+      (index > -1) && scope.attr("ingestCcidSelected").splice(index, 1);
     }
     scope.attr("size_ingestCcidSelected" ,_.size(scope.attr("ingestCcidSelected")));
   }else{

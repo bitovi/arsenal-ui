@@ -442,12 +442,20 @@ var page = Component.extend({
               entityCountry_data.laEnabled = "N";
             }
 
-             var periodFP = periodWidgetHelper.getFiscalPeriod(entityCountry_data.validFrom);
+             var periodFP = "0";
+
+            if(periodFP!= undefined && periodFP != null) {
+              periodFP = periodWidgetHelper.getFiscalPeriod(entityCountry_data.validFrom);
+            }
 
 
              entityCountry_data.validFrom = periodFP;
 
-             periodFP = periodWidgetHelper.getFiscalPeriod(entityCountry_data.validTo);
+             periodFP = "0";
+
+            if(periodFP!= undefined && periodFP != null) {
+              periodFP = periodWidgetHelper.getFiscalPeriod(entityCountry_data.validTo);
+            }
 
              entityCountry_data.validTo = periodFP;
 
@@ -642,15 +650,7 @@ var loadPage = function(scope,data){
     data.entityCountryDetails.entityCountry.attr("status","InActive");
   }
 
-  if(data.entityCountryDetails.entityCountry.laEnabled != null && data.entityCountryDetails.entityCountry.laEnabled == "Y") {
-
-    $(".laCheckBox").prop("checked",true);
-
-  } else {
-
-    $(".laCheckBox").prop("checked",false);
-
-  }
+  
 
   scope.pageState.entityCountryDetails.attr("pricingModelVersionNo", data.entityCountryDetails.pricingModelVersionNo);
   scope.pageState.entityCountryDetails.attr("pricingModelId", data.entityCountryDetails.pricingModelId);
@@ -662,7 +662,8 @@ var loadPage = function(scope,data){
   scope.pageState.entityCountryDetails.attr("pricingModelVersionNumber", data.entityCountryDetails.pricingModelVersionNo);
 
   $('#validFrom').trigger("change");
-
+  $('#validTo').trigger("change");
+  
   scope.pageState.attr("historyComments",data.entityCountryDetails.historyComments);
   scope.pageState.entityCountryDetails.attr("comment",data.entityCountryDetails.comment);
 
@@ -687,7 +688,17 @@ var loadPage = function(scope,data){
     scope.attr("state","Read");
   }
 
+  if(data.entityCountryDetails.entityCountry.laEnabled != null && data.entityCountryDetails.entityCountry.laEnabled == "Y") {
 
+    $(".laCheckBox").click();
+
+  } else {
+
+    if($(".laCheckBox").attr(checked)) {
+      $(".laCheckBox").click();
+    }
+
+  }
 }
 
 var validatePeriods = function(scope) {
