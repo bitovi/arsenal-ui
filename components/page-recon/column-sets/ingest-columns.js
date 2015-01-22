@@ -64,7 +64,7 @@ export default [
   {
     id: 'pubFee',
     title: 'Pub Fee',
-    className: "amountColumn",
+    //className: "amountColumn",
     contents: function(row) {
       return formats.currencyFormat(row.pubFee == undefined || row.pubFee == null || row.pubFee == "" ? 0 :  row.pubFee);
     },
@@ -73,7 +73,7 @@ export default [
   {
     id: 'reconAmt',
     title: 'Recon',
-    className: "amountColumn",
+    //className: "amountColumn",
     format: formats.currencyFormat,
     sortable: true
   },
@@ -81,7 +81,7 @@ export default [
     id: 'liDispAmt',
     title: 'Line Item Dispute',
     format: formats.currencyFormat,
-    className: "amountColumn",
+    //className: "amountColumn",
     contents: function(row) {
       if(row.isFooterRow){
         return formats.currencyFormat(row.liDispAmt);
@@ -94,14 +94,14 @@ export default [
   {
     id: 'copConAmt',
     title: 'Cop Con',
-    className: "amountColumn",
+    //className: "amountColumn",
     format: formats.currencyFormat,
     sortable: true
   },
   {
     id: 'unMatchedAmt',
     title: 'Unmatched',
-    className: "amountColumn",
+    //className: "amountColumn",
     contents: function(row) {
       return formats.currencyFormat(row.unMatchedAmt == undefined || row.unMatchedAmt == null || row.unMatchedAmt == "" ? 0 :  row.unMatchedAmt);
     },
@@ -110,7 +110,7 @@ export default [
   {
     id: 'badLines',
     title: 'Bad Lines',
-    className: "amountColumn",
+    //className: "amountColumn",
     contents: function(row) {
       if(row.isFooterRow){
         return formats.currencyFormat(row.badLines);

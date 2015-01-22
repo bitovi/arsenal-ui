@@ -222,7 +222,7 @@
 
 						        	</td>
 						            <td class="form-group">
-						            	<div class="breakdownPeriod calendarcls">
+						            	<div class="breakdownPeriod calendarcls requiredBar">
 						            		<input type='text' id="inputMonth0" name="inputMonth[]" class="updateperoid form-control inputMonth"/>
 						            		<period-calendar selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
 							        	</div>
@@ -293,7 +293,7 @@
 						        		</div>
 						        	</td>
 						            <td class="form-group">
-						            	<div class="breakdownPeriod calendarcls">
+						            	<div class="breakdownPeriod calendarcls requiredBar">
 						           		<input type='text' id="inputMonth" name="inputMonth[]" class="updateperoid form-control inputMonth"/>
 							        	</div>
 							        </td>
