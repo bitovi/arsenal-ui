@@ -18,6 +18,7 @@ import PbrRemoveGroupsModal from 'components/pbr-remove-groups-modal/';
 import Alert from 'components/alert/';
 import highchartpage from 'components/highchart/';
 import Preview from 'components/pbr-preview/';
+import Currency from 'models/common/currency/';
 
 import columnSets from './column-sets';
 import constants from 'utils/constants';
@@ -78,7 +79,7 @@ var BundleDetailTabs = Component.extend({
     bottomGridPaginateAttr: paginateAttr,
     isBundlePrioritySet:false,
     details:{},
-
+    regionCurr:[],
     havePaymentTypeAndComment: function(scope) {
       return  (this.appstate.userInfo.roleIds.indexOf(constants.ROLES.BM) > -1 ? scope.paymentType : true) &&
       scope.approvalComment.trim().length;
@@ -460,7 +461,6 @@ var BundleDetailTabs = Component.extend({
       var self = this;
 
 
-
       $("#tokenSearch").tokenInput([
         {id: 1, name: "Search"} //This is needed
         ],
@@ -525,6 +525,15 @@ var resetSelectedBundle = function(scope){
   $(".previousComments").hide();
   scope.attr("approvalComment", '');
 
+  var region = scope.appstate.attr('region') != undefined ? scope.appstate.attr('region').id : "";
+
+  Currency.getCurrByRegion(region).done(function(regions) {
+
+    console.log("regions :"+regions);
+
+    scope.regionCurr.splice(0, scope.regionCurr.length, ...regions);
+
+  });
 
   canRemoveInvoice(scope);
   // change the columns to be correct
