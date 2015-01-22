@@ -232,10 +232,31 @@ rn-grid-ingestionstats, #summaryStatsDiv{
 #ingestionStatsDivSub {
   width: 95% !important;
   height: 220px;
-  overflow: auto;
   width: 100%;
 }
 
 table.rn-grid-ingestionstats {
   width: 100%;
 }
+
+rn-grid-ingestionstats{
+  table{
+    width: 100%;
+    tr>th, tr > td {
+      white-space: nowrap;
+    }
+    tr{
+      width:100%;
+    }
+    thead, tbody {
+      display: block;
+    }
+    tbody{
+        max-height: 14em;
+        overflow-y: overlay;
+        overflow-x: hidden;
+    }
+  }
+}
+
+

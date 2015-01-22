@@ -200,6 +200,11 @@ var page = Component.extend({
 
               $('#ingestionReconStats').html(stache('<rn-grid-ingestionstats rows="{rows}"></rn-grid-ingestionstats>')({rows}));
 
+              setTimeout(function(){
+                alignGridStats('ingestionReconStats');
+              },10);
+              
+
               $('.statsTable').show();
               $('#ingestionStatsDiv').show();
               $('#summaryStatsDiv').show();
@@ -231,5 +236,54 @@ var page = Component.extend({
 
 });
 
+function alignGridStats(divId){
+  var colLength = $('#'+divId+' table>thead>tr>th').length;
+  var rowLength = $('#'+divId+' table>tbody>tr').length;
+  var divWidth = $('#'+divId).outerWidth();
+  var tableWidth = 0;
+  var tdWidth, cellWidthArr = [];
+  if(rowLength>0){
+    $('#'+divId+' table').css("width",divWidth);
+      for(var i=1;i<=colLength;i++){
+        var theadTdWidth = $('#'+divId+' table>thead>tr>th:nth-child('+i+')').outerWidth();
+        var tbodyTdWidth = $('#'+divId+' table>tbody>tr>td:nth-child('+i+')').outerWidth();
+        var tfootTdWidth = $('#'+divId+' table>tfoot>tr>td:nth-child('+i+')').outerWidth();
+
+        if(theadTdWidth >= tbodyTdWidth && theadTdWidth >= tfootTdWidth)
+          tdWidth = theadTdWidth;
+        else if(tfootTdWidth >= tbodyTdWidth && tfootTdWidth >= theadTdWidth)
+          tdWidth = tfootTdWidth;
+        else 
+          tdWidth = tbodyTdWidth;
+
+        if(i==1)
+          tdWidth = 35;
+        
+        tableWidth += tdWidth;
+        cellWidthArr.push(tdWidth);
+      }
+
+      if(tableWidth < divWidth){
+        var moreWidth = (divWidth-tableWidth)/colLength;
+        for(var j=1;j<=cellWidthArr.length;j++){
+          var width = cellWidthArr[j-1]+moreWidth;
+
+          $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
+          $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width);
+          $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
+        }
+        $('#'+divId+' table').css("width",divWidth);
+      } else {
+        for(var j=1;j<=cellWidthArr.length;j++){
+          var width = cellWidthArr[j-1];
+          $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
+          $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width);
+          $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
+
+        }
+        $('#'+divId+' table').css("width",tableWidth);
+      }
+  }
+}
 
 export default page;
