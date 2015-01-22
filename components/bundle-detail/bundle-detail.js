@@ -389,6 +389,7 @@ var BundleDetailTabs = Component.extend({
       var action = el.data('action'),
       selectedBundle = this.scope.pageState.selectedBundle,
       pageState = this.scope.pageState;
+      self = this.scope;
 
       if(!this.scope.havePaymentTypeAndComment(this.scope)) {
         return;
@@ -402,8 +403,8 @@ var BundleDetailTabs = Component.extend({
 
         PbrDeleteConfirmModal.displayModal(selectedBundle, {
           action: action,
-          approvalComment: this.scope.approvalComment,
-          paymentOption: this.scope.paymentType
+          approvalComment: self.approvalComment,
+          paymentOption: self.paymentType
         });
       } else {
 
@@ -418,16 +419,24 @@ var BundleDetailTabs = Component.extend({
           paymentOption: this.scope.paymentType,
           priority:bundlePriority
         }).then(function(response) {
+
+          commonUtils.displayUIMessage( response.responseCode, response.responseText);
           if(response.status === 'SUCCESS') {
             //Alert.displayAlert(response.responseText, 'success' );
 
-            commonUtils.displayUIMessage( response.responseCode, response.responseText);
-
             // un-select the selected bundle (we're done here)
             pageState.attr('selectedBundle', null);
-            // remove it from the list of bundles too, since the user can't act on it anymore
-            var index = pageState.bundles.indexOf(selectedBundle);
-            pageState.bundles.splice(index, 1);
+
+            //if the ROLE is FC, remove the bundle from the top grid
+            if(self.appstate.userInfo.roleIds.indexOf(constants.ROLES.FC) > -1 ){
+              // remove it from the list of bundles too, since the user can't act on it anymore
+              var index = pageState.bundles.indexOf(selectedBundle);
+              pageState.bundles.splice(index, 1);
+            }else{
+              //else the ROLE is not FC, reload the bottom grid
+              self.selectedBundleChanged(self);
+            }
+
           }
         });
       }
