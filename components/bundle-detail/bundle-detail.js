@@ -73,6 +73,7 @@ var BundleDetailTabs = Component.extend({
     selectedTab: null,
     aggregatePeriod: false,
     paymentType: 2,
+    preferredCurr:'',
     approvalComment: '',
     bottomGridPaginateAttr: paginateAttr,
     isBundlePrioritySet:false,
@@ -106,6 +107,8 @@ var BundleDetailTabs = Component.extend({
       }
 
       resetSelectedBundle(scope);
+
+
 
       scope.getNewDetails(selectedBundle)
       .then(function(bundle) {
@@ -147,14 +150,13 @@ var BundleDetailTabs = Component.extend({
         view = 'licensor';
       }
 
-
-
       var params = {
         appstate: this.appstate,
         view: view,
         paymentType: this.paymentType,
         filterData: tokenInput,
-        paginate: this.bottomGridPaginateAttr
+        paginate: this.bottomGridPaginateAttr,
+        preferredCcy: this.preferredCurr
       };
 
       return bundle.getDetails(params
@@ -168,8 +170,6 @@ var BundleDetailTabs = Component.extend({
         }else{
           scope.bundleProgress.triggerValidation ? scope.getNewValidations(bundle) : "";
         }
-
-        canRemoveInvoice(scope);
 
         var commentsCollected = '';
         _.each(bundle.approvalComments, function(commentsObj) {
@@ -370,9 +370,6 @@ var BundleDetailTabs = Component.extend({
           console.log(err);
         });
       }
-
-
-
     },
     '.clipboardd click': function(el, ev) {
       // copy data to the clipboard
@@ -452,6 +449,9 @@ var BundleDetailTabs = Component.extend({
         scope.pageState.selectedBundle && scope.getNewDetails(scope.pageState.selectedBundle);
       }
     },
+    '{scope} preferredCurr': function(){
+      this.scope.getNewDetails(this.scope.pageState.selectedBundle);
+    },
     'inserted': function() {
       this.scope.selectedBundleChanged(this.scope);
       var self = this;
@@ -522,6 +522,8 @@ var resetSelectedBundle = function(scope){
   $(".previousComments").hide();
   scope.attr("approvalComment", '');
 
+
+  canRemoveInvoice(scope);
   // change the columns to be correct
   var tabs = [],
   columns;

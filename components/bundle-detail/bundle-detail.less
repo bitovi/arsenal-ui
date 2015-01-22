@@ -18,13 +18,19 @@ rn-bundle-detail {
 
     .tokenData {
       float: right;
-      margin: .1em 1em 0 1em;
+      margin: .5em 0.5em 0.5em 0.5em;
 
       ul.token-input-list-facebook{
-        height: 25px !important;
+        width:350px !important;
+        height: 20px !important;
         border-radius: 4px;
         border-color: #C6C6C6;
       }
+
+      input#token-input-tokenSearch{
+        padding-top: 0px;
+      }
+
     }
   }
 
@@ -43,6 +49,12 @@ rn-bundle-detail {
     margin-left: 1em;
   }
 
+  .currencies {
+    display: inline-block;
+    float: right;
+    margin: .5em 0.5em 0 0.5em;
+  }
+
 
 
   .bundle-detail-actions {
@@ -56,9 +68,6 @@ rn-bundle-detail {
       position: relative;
       top: -2px;
     }
-
-
-
   }
 
   .grid-container {

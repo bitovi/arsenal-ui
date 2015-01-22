@@ -28,6 +28,13 @@
   <div class="tokenData">
     <input type="text" class="form-control" id="tokenSearch">
   </div>
+  <div class="currencies">
+    <span>Currency</span>
+    <select can-value={preferredCurr}>
+      <option value="">None</option>
+      <option value="EUR">EUR</option>
+    </select>
+  </div>
 </div>
 <div class="grid-container" id="bundleDetailGridDiv">
   {{#if pageState.selectedBundle.bundleDetailsGroup.length}}

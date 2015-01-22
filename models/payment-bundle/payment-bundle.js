@@ -137,7 +137,8 @@ var PaymentBundle = Model.extend({
     }else{
         var paymentOption = params.paymentType,
             view = params.view.toUpperCase(),
-            bundleId = params.bundleID;
+            bundleId = params.bundleID,
+            preferredCcy = params.preferredCcy;
 
             var filterFormatted = [];
             _.each(params.filterData, function(obj) {
@@ -149,7 +150,8 @@ var PaymentBundle = Model.extend({
           paymentBundle: {
             bundleId,
             paymentOption,
-            view
+            view,
+
           },
          bundleSearch: {
            filter: filterFormatted
