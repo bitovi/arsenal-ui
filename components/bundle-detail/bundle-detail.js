@@ -176,7 +176,7 @@ var BundleDetailTabs = Component.extend({
 
           var createdDateFormat = moment(commentsObj.createdDate).format("Do MMM, YYYY");
 
-          commentsCollected = commentsCollected + commentsObj.createdByName +"     "+createdDateFormat+"\n"+commentsObj.comments;
+          commentsCollected = commentsCollected + "-- " + commentsObj.createdByName +" on "+createdDateFormat+" --"+"\n"+commentsObj.comments;
           commentsCollected = commentsCollected + "\n";
 
         });

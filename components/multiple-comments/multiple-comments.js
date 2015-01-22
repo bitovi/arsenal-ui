@@ -36,7 +36,7 @@ var comments = Component.extend({
               if(val.createdDate != null){
                  var createdDateFormat = moment(val.createdDate).format("Do MMM, YYYY");   
                 if((val.createdByName != null) && (typeof val.createdByName != "undefined")){
-                    $(textAreactrl).val(val.createdByName +"        "+createdDateFormat+ "\n" + val.comments);
+                    $(textAreactrl).val("-- "+val.createdByName +" on "+createdDateFormat+" --"+ "\n" + val.comments);
                 }else{
                     $(textAreactrl).val(createdDateFormat + "\n" + val.comments);
                 } 
