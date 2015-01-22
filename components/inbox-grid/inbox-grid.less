@@ -64,6 +64,7 @@ rn-inbox-grid, rn-outbox-grid {
     }
     tbody tr {
       min-height: 1.5625em;
+      cursor: pointer;
     }
 
     tbody td {
@@ -76,12 +77,12 @@ rn-inbox-grid, rn-outbox-grid {
 
     tr > th, tr > td {
       &.type { .flex-basis(75px); }
-      &.description { .flex-grow(1); .flex-basis(100px); }
+      &.description { .flex-basis(400px); }
       &.region { .flex-basis(100px); }
       &.createdBy { .flex-basis(100px); }
-      &.previousApprover { .flex-basis(200px); }
-      &.comments { .flex-basis(225px); }
-      &.pendingDays { .flex-basis(100px); }
+      &.previousApprover { .flex-basis(130px); }
+      &.comments { .flex-grow(1); .flex-basis(225px); }
+      &.pendingDays { .flex-basis(75px); }
       &.approvalStage { .flex-basis(100px); }
     }
   }

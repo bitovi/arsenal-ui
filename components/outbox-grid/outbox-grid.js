@@ -29,7 +29,7 @@ var OutboxGrid = ScrollingGrid.extend({
       id: 'currentlyWith',
       title: 'Currently With',
       contents: function(row) {
-        return stache('<span class="name">{{previousApprover}}</span><button class="remind">Remind</button>')(row);
+        return stache('<span class="name">{{previousApprover}}</span><button class="remind btn btn-primary btn-custom-small">Remind</button>')(row);
       }
     }, {
       id: 'approvalStage',
