@@ -413,6 +413,7 @@ var BundleDetailTabs = Component.extend({
           this.scope.isBundlePrioritySet ? bundlePriority = "Y" : bundlePriority = "N";
         }
 
+
         selectedBundle.moveInWorkflow({
           action: action,
           approvalComment: this.scope.approvalComment,
@@ -421,18 +422,20 @@ var BundleDetailTabs = Component.extend({
         }).then(function(response) {
 
           commonUtils.displayUIMessage( response.responseCode, response.responseText);
+
           if(response.status === 'SUCCESS') {
             //Alert.displayAlert(response.responseText, 'success' );
 
-            // un-select the selected bundle (we're done here)
-            pageState.attr('selectedBundle', null);
-
             //if the ROLE is FC, remove the bundle from the top grid
             if(self.appstate.userInfo.roleIds.indexOf(constants.ROLES.FC) > -1 ){
+              // un-select the selected bundle (we're done here)
+              pageState.attr('selectedBundle', null);
               // remove it from the list of bundles too, since the user can't act on it anymore
               var index = pageState.bundles.indexOf(selectedBundle);
               pageState.bundles.splice(index, 1);
             }else{
+              //selectedBundle.attr("pendingWith", );
+
               //else the ROLE is not FC, reload the bottom grid
               self.selectedBundleChanged(self);
             }
@@ -517,7 +520,7 @@ var resetSelectedBundle = function(scope){
   $("#messageDiv").hide();
   $(".previousComments").val();
   $(".previousComments").hide();
-
+  scope.attr("approvalComment", '');
 
   // change the columns to be correct
   var tabs = [],
