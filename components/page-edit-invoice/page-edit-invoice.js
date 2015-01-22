@@ -38,7 +38,7 @@ import commonUtils from 'utils/commonUtils';
 
 //import Invoice from 'models/invoice/';
 
-var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "licensor", "currency", "inputContent[]"];
+var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]"];
 var mandatoryField = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
 
 fileUpload.extend({
@@ -158,10 +158,10 @@ var page = Component.extend({
 	isRequired: function(){
   	 		if(this.attr("invoicetypeSelect") != "2"){  /*Adhoc*/
  				$(".breakdownCountry").addClass("requiredBar");
- 				$(".breakdownPeriod").addClass("requiredBar");
+ 				
 			}else{
   	 			$(".breakdownCountry").removeClass("requiredBar");
-  	 			$(".breakdownPeriod").removeClass("requiredBar");
+  	 			
   	 		}
 		},
 
@@ -529,7 +529,7 @@ var page = Component.extend({
 				                    callback: {
 				                            //message: 'Period is mandatory',
 				                            callback: function (value, validator, $field) {
-				                            	if((value == "") && (self.scope.attr("invoicetypeSelect") != "2")){
+				                            	if(value == ""){
 				                              	   	return {
 				                              	   		valid: false,
 				                              	   		message: 'Period is mandatory'
