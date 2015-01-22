@@ -51,12 +51,12 @@
                  <div class="col-sm-2"></div>
             </div>
             <div class="form-group">
-               <div class="col-sm-10" id="periodFromcontainer">
+                 <div class="col-sm-10" id="periodFromcontainer">
                   <label for="forValidFrom" class="col-sm-5 control-label small-headers">Valid From: </label>
-                  <div class="col-sm-7 requiredBar calendarcls">
+                  <div class="col-sm-4 requiredBar calendarcls">
                     <input type='text' id="validFrom" class="validFrom form-control updatePeroid" name="validFrom" place-holder="Select Period" can-value='pageState.countryDetails.country.validFrom'/>
                     <period-calendar selectedperiod={selectedperiod} appstate="{appstate}"></period-calendar>
-                  </div>
+                  </div><div class="col-sm-3"><div class='period-invalid'> Invalid Period !</div></div>
                 </div>
                  <div class="col-sm-2"></div>
             </div>
@@ -65,7 +65,7 @@
                   <label for="forValidTo" class="col-sm-5 control-label small-headers">Valid To: </label>
                   <div class="col-sm-7 normalBar calendarcls">
                     <input type='text' id="validTo" class="validTo form-control updatePeroid" place-holder="Select Period" can-value='pageState.countryDetails.country.validTo'/>
-                    <period-calendar appstate="{appstate}"></period-calendar>
+                    <period-calendar selectedperiod={selectedperiod} appstate="{appstate}"></period-calendar>
                   </div>
                 </div>
                  <div class="col-sm-2"></div>
@@ -183,14 +183,13 @@
             </div>
 
             <div class="form-group">
-              <div class="col-sm-10 multicomments-required"> Enter comments !</div>
-               <div class="col-sm-10">
+               <div class="col-sm-7">
                   <label for="forStatus" class="col-sm-5 control-label small-headers">Comments: </label>
-                  <div id="multipleComments" class="col-sm-7 normalBar">
+                  <div id="multipleComments" class="col-sm-5 normalBar">
                     <textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>
                   </div>
                 </div>
-                 <div class="col-sm-2"></div>
+                 <div class="col-sm-2 multicomments-required"> Enter comments !</div>
             </div>
 
             <div class="col-sm-12" style="text-align:center;padding:15px;">

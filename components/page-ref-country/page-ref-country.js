@@ -61,7 +61,9 @@ var page = Component.extend({
     revisionHistory:[],
     selectedperiod:[],
     displayMessage:"display:none",
-    state:"Edit"
+    state:"Edit",
+    validFrom: [],
+    validTo : []
   },
 
   init: function(){
@@ -203,7 +205,7 @@ var page = Component.extend({
 
     },
     '.updatePeroid focus':function(el){
-       $(el).closest('.calendarcls').find('.box-modal').show().trigger( "focus" );
+        $(el).closest('.calendarcls').find('.box-modal').show().trigger( "focus" );
      },
     "#grid-revision-history table>tbody>tr click": function(item, el, ev){
         //var invoiceid = el.closest('tr').data('row').row.id;
@@ -241,6 +243,7 @@ var page = Component.extend({
           else {
             var formatValidFrom = PeriodHelper.getDisplayPeriod(validFrom, "P");
             self.pageState.countryDetails.country.attr("validFrom",formatValidFrom);
+            self.validFrom.replace(formatValidFrom);
           }
 
           if(data.countryDetails.attr("validTo")!=0)
@@ -253,6 +256,7 @@ var page = Component.extend({
           else {
             var formatValidTo = PeriodHelper.getDisplayPeriod(validTo,"P");
             self.pageState.countryDetails.country.attr("validTo",formatValidTo);
+            self.validTo.replace(formatValidTo);
           }
 
           self.attr("localSocietyNames").replace(data.countryDetails.localSocietyNames);
@@ -388,6 +392,7 @@ var page = Component.extend({
         else {
           var formatValidFrom = PeriodHelper.getDisplayPeriod(validFrom,"P");
           self.pageState.countryDetails.country.attr("validFrom",formatValidFrom);
+          //self.validFrom.replace(formatValidFrom);
         }
 
         if(data.countryDetails.attr("validTo")!=0)
@@ -400,6 +405,7 @@ var page = Component.extend({
         else {
           var formatValidTo = PeriodHelper.getDisplayPeriod(validTo,"P");
           self.pageState.countryDetails.country.attr("validTo",formatValidTo);
+          //self.validTo.replace(formatValidTo);
         }
 
         self.attr("localSocietyNames").replace(data.countryDetails.localSocietyNames);
@@ -531,8 +537,17 @@ var page = Component.extend({
        }
        $('input[name=validFrom]').change();
 
-       //val[0].which=='periodFrom' ? this.scope.periodFrom.replace(val[0].value):this.scope.periodTo.replace(val[0].value);
+       //val[0].which=='validFrom' ? this.scope.validFrom.replace(val[0].value):this.scope.validTo.replace(val[0].value);
     },
+    '{validFrom} change': function(el, ev) {
+         var comp ='from';
+         //showErrorMsg(this.scope.attr('validFrom')[0],this.scope.attr('validTo')[0],comp);
+     },
+     '{validTo} change': function(el, ev) {
+          var comp ='to';
+          //showErrorMsg(this.scope.attr('validFrom')[0],this.scope.attr('validTo')[0],comp);
+
+     },
     '#accModelSel change': function(el, ev) {
       var self=this.scope;
       var selected = $(el[0].selectedOptions).data('accModel');
@@ -731,5 +746,38 @@ var page = Component.extend({
   }
 });
 
+var showErrorMsg = function(periodFrom,periodTo,whichcomp){
+
+        if(whichcomp=='from'){
+          var _root = $('#ref-period-container');
+          //_root.find('#periodTo').val('');
+          _root.find('.period-calendar .period li a').removeClass('disabled period-active');
+          if(periodFrom.charAt(0)=='Q'){
+            _root.find('.period-calendar .q1 li').not(":first").find('a').addClass('disabled');
+            _root.find('.period-calendar .q2 li').not(":first").find('a').addClass('disabled');
+            _root.find('.period-calendar .q3 li').not(":first").find('a').addClass('disabled');
+            _root.find('.period-calendar .q4 li').not(":first").find('a').addClass('disabled');
+          }else{
+            _root.find('.period-calendar .q1 li').first().find('a').addClass('disabled');
+            _root.find('.period-calendar .q2 li').first().find('a').addClass('disabled');
+            _root.find('.period-calendar .q3 li').first().find('a').addClass('disabled');
+            _root.find('.period-calendar .q4 li').first().find('a').addClass('disabled');
+          }
+        }
+
+        var showFlg=false;
+        var from = periodFrom,to =  periodTo;
+        if(from!=undefined &&  to!=undefined){
+          from = from.split('FY');
+          to = to.split('FY');   //console.log(from[1].slice(-2)+'--------'+ to[1].slice(-2));
+          if(from[1].slice(-2) > to[1].slice(-2)) showFlg=true;
+          if(from[1].slice(-2) >= to[1].slice(-2) && from[0].charAt(0)!=to[0].charAt(0) )showFlg=true;
+          if(from[1].slice(-2) >= to[1].slice(-2) && parseInt(from[0].substring(1,3)) > parseInt(to[0].substring(1,3)))showFlg=true;
+        }
+        if(showFlg==true){ $('.period-invalid').show(); return false;}else {showFlg=false; $('.period-invalid').hide();}
+    }
+
+
+  
 
 export default page;
