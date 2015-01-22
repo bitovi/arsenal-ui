@@ -5,14 +5,14 @@
   @light-border: 1px solid hsl(0, 0%, 75%);
   @border-radius: 0px; /* Removing Rounded corner */
 
-  @row-hover-outline: 3px solid #d3f0fe;
+  @row-hover-outline: 2px solid #1581F4; // Old color   3px solid #d3f0fe; //
 
   @header-background: linear-gradient(to top, #7e7e83, #afafb4);
   @parent-background: #e4e4e4;
   @child-background: #f6f6f6;
   @selected-background: #d3f0fe;
-  @odd-row-background:#D7D7D7;
-  @even-row-background:#F3F3F3;
+  @odd-row-background:#F9F9F9;//#D7D7D7;
+  @even-row-background:#F0F0F0;//#F3F3F3;
 
   @font-color: hsl(0, 0%, 0%);
 
@@ -43,13 +43,13 @@
           border-bottom: @light-border;
         }
 
-        td:first-child, th:first-child {
+        /*td:first-child, th:first-child {
           border-bottom-left-radius: @border-radius;
         }
 
         td:last-child, th:last-child {
           border-bottom-right-radius: @border-radius;
-        }
+        }*/
       }
     }
   }
