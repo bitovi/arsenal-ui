@@ -19,6 +19,13 @@ var copyClipboard = Component.extend({
             $('body').css('overflow','auto');
        });
     },
+    '{document} keyup' : function(el,ev){
+      if (ev.keyCode == 27){
+        $('copy-clipboard').slideUp(function(){
+            $('body').css('overflow','auto');
+       });
+      }
+    },
     '#copyall click':function(){
         var el = $('#clonetable'), range, sel;
         function selectElementContents(el) {
