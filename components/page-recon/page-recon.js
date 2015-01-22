@@ -152,7 +152,7 @@ var page = Component.extend({
       this.scope.attr("tabSelected", $('.nav-tabs .active').text());
       this.scope.appstate.attr("renderGlobalSearch",true);
       //Load when the list is empty
-      if(_.size(this.scope.ingestList.headerRows) == 0 || _.size(this.scope.incomingDetails.headerRows) == 0 ){
+      if(_.size(this.scope.ingestList.headerRows) == 0 ){
         commonUtils.triggerGlobalSearch();
       }
     },
@@ -326,8 +326,6 @@ var page = Component.extend({
         this.scope.attr("isGlobalSearchIngested",this.scope.appstate.attr("globalSearch"));
         if(this.scope.tabSelected == this.scope.tabName.ingest.attr("name")){
           fetchReconIngest(this.scope, this.scope.load);
-        }else{
-          fetchReconDetails(this.scope);
         }
       }
     },
@@ -690,89 +688,6 @@ var fetchReconIngest = function(scope, load){
   });
 }
 
-
-
-var fetchReconDetails = function(scope){
-
-  var searchRequestObj = UserReq.formGlobalRequest(scope.appstate);
-  searchRequestObj.searchRequest["type"] = scope.tabName.incoming.attr("type");;
-  //TODO During pagination / scrolling, the below values has tobe chnaged.
-
-  if(scope.appstate.attr('globalSearchButtonClicked')==true){
-      scope.attr("incomingOffset",0);
-      scope.attr("incomingScrollTop",0);
-  }
-  searchRequestObj.searchRequest["limit"] = "10";
-  searchRequestObj.searchRequest["offset"] = scope.incomingOffset;
-  searchRequestObj.searchRequest["sortBy"] = "COUNTRY";
-  searchRequestObj.searchRequest["sortOrder"] = "ASC";
-
-  var filterData = scope.tokenInput.attr();
-  var newFilterData = [];
-  if(filterData.length>0){
-    for(var p=0;p<filterData.length;p++)
-      newFilterData.push(filterData[p]["name"]);
-    }
-
-  searchRequestObj.searchRequest["filter"] = newFilterData;
-
-  Recon.findOne((searchRequestObj),function(data){
-    if(data.status == "FAILURE"){
-      displayErrorMessage(data.responseText,"Failed to load the Recondetails:");
-    }else  {
-
-      if(data.reconStatsDetails == undefined || (data.reconStatsDetails != null && data.reconStatsDetails.length <= 0)) {
-
-        scope.attr("emptyrows", true);
-
-      } else {
-
-        scope.attr("emptyrows", false);
-
-      }   
-      if(searchRequestObj.searchRequest["offset"]==0)
-        scope.incomingDetails.headerRows.replace(data.reconStatsDetails);
-      else {
-        $.merge(scope.incomingDetails.headerRows, data.reconStatsDetails);
-        scope.incomingDetails.headerRows.replace(scope.incomingDetails.headerRows);
-      }
-
-      scope.incomingStatsDetailsSelected = data.reconStatsDetails;
-
-      scope.ingestList.footerRows.splice(0, scope.ingestList.footerRows.length);
-      if (data.summary!== null) {
-        var footerLine= {
-          "__isChild": true,
-          "ccy":"EUR",
-          "pubFee": data.summary.totalPubFee,
-          "reconAmt": data.summary.totalRecon,
-          "liDispAmt": data.summary.totalLi ,
-          "copConAmt":data.summary.totalCopCon,
-          "unMatchedAmt": data.summary.totalUnMatched,
-          "badLines": data.summary.totalBadLines,
-          "ccidId":"",
-          "entityName":"",
-          "countryId":"",
-          "contType":"",
-          "fiscalPeriod":"",
-          "rcvdDate":"",
-          "invFileName":"",
-          "status":"",
-          "isFooterRow":true
-        };
-        scope.incomingDetails.footerRows.replace(footerLine);  
-      }
-      
-    }
-  },function(xhr){
-    console.error("Error while loading: fetchReconDetails"+xhr);
-  });
-}
-
-
-
-
-
 var refreshChekboxSelection = function(el,scope){
   var row = el.closest('tr').data('row').row;
   if(scope.tabSelected == scope.tabName.ingest.attr("name")){
@@ -784,47 +699,7 @@ var refreshChekboxSelection = function(el,scope){
       (index > -1) && scope.attr("ingestCcidSelected").splice(index, 1);
     }
     scope.attr("size_ingestCcidSelected" ,_.size(scope.attr("ingestCcidSelected")));
-  }else{
-
-    if(el[0].checked) {
-      scope.incomingCcidSelected.push(row.dtlHdrId);
-    } else {
-      var index = _.indexOf(scope.incomingCcidSelected, row.dtlHdrId);
-      (index > -1) && scope.incomingCcidSelected.splice(index, 1);
-     }
-    scope.attr("size_incomingCcidSelected" ,_.size(scope.attr("incomingCcidSelected")));
-
   }
-};
-
-var findCCids =  function(scope, ccidSelected, tab) {
-
-  var found = false;
-
-  var detailsList = [];
-
-  detailsList = scope.incomingStatsDetailsSelected;
-
-  for( var i=0; i< detailsList.length ; i++) {
-
-    //alert('Here');
-    if(ccidSelected.indexOf(detailsList[i].dtlHdrId) >= 0) {
-
-      detailsList.splice(i,1);
-      found = true;
-
-      scope.incomingStatsDetailsSelected.replace(detailsList);
-      break;
-
-    }
-  }
-
-  if(found) {
-
-    findCCids(scope, ccidSelected);
-
-  }
-
 };
 
 var linkDownload = function(a, filename, request) {
