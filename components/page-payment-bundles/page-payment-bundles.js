@@ -191,18 +191,18 @@ var page = Component.extend({
     '.excel click': function(el, ev) {
       var self = this;
 
-      self.scope.appstate.attr('excelOutput', true);
+      // self.scope.appstate.attr('excelOutput', true);
 
-      if(this.scope.appstate.excelOutput ) {
+      // if(this.scope.appstate.excelOutput ) {
 
-         PaymentBundle.loadAll({appstate: this.scope.appstate}).then(function(data) {
-            if(data["status"]=="0000"){
-                $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
-           }
-         },function(err){
-            console.log(err);
-        });
-       }
+      //    PaymentBundle.loadAll({appstate: this.scope.appstate}).then(function(data) {
+      //       if(data["status"]=="0000"){
+      //           $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
+      //      }
+      //    },function(err){
+      //       console.log(err);
+      //   });
+      //  }
 
     },
     '.clipboard click': function(el, ev) {

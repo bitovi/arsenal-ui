@@ -38,7 +38,7 @@ import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 //import Invoice from 'models/invoice/';
 
-var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "licensor", "currency", "inputContent[]"];
+var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]"];
 var mandatoryFieldCA = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]"];
 var mandatoryField = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
 
@@ -128,14 +128,12 @@ var page = Component.extend({
 	isRequired: function(){
   	 		if(this.attr("invoicetypeSelect") != "2" && this.attr("invoicetypeSelect") != "3"){  /*Adhoc*/
  				$(".breakdownCountry").addClass("requiredBar");
- 				$(".breakdownPeriod").addClass("requiredBar");
+ 				
  			}else if(this.attr("invoicetypeSelect") == "3"){
  						$(".breakdownCountry").removeClass("requiredBar");
- 						$(".breakdownPeriod").addClass("requiredBar");
-	  	 			} else {
+ 					} else {
 	  	 				$(".breakdownCountry").removeClass("requiredBar");
-	  	 				$(".breakdownPeriod").removeClass("requiredBar");
-  	 				}
+	  	 			}
 		},
 	createBreakline: function(rowindex){
 			var self = this;
@@ -433,7 +431,7 @@ var page = Component.extend({
 				                    callback: {
 				                            //message: 'Period is mandatory',
 				                            callback: function (value, validator, $field) {
-				                            	if((value == "") && (self.scope.attr("invoicetypeSelect") != "2")){
+				                            	if(value == ""){
 				                              	   	return {
 				                              	   		valid: false,
 				                              	   		message: 'Period is mandatory'
@@ -1140,17 +1138,41 @@ var page = Component.extend({
 								  	 	   }
 								          else
 								           {
+								           		
 								           		if(values[0].invoices[0].errors)
 								           		{
 								           			var errorMap = values[0].invoices[0].errors.errorMap;
 								           		}
 
+								           		var errorInvLineMsg = "";
+
+								           		for(var i = 0; i < values[0].invoices[0].invoiceLines.length; i++){
+
+								           			if(values[0].invoices[0].invoiceLines[i].errors)
+								           			{
+								           				var errorInvLineMap = values[0].invoices[0].invoiceLines[i].errors.errorMap;
+								           				var ermsg = showErrorDetails(errorInvLineMap);
+								           				errorInvLineMsg += ermsg;
+								           			}
+												}
+
+
+									       		var msg = "";
 
 									       		if(errorMap){
-									       			var msg = showErrorDetails(errorMap, "Error");
+									       			 msg += showErrorDetails(errorMap);
 										        }
-									          	else{
-									          			var msg = values[0].responseText;
+									          	
+									          	if(errorInvLineMsg != ""){
+									          		if(msg != ""){
+									          			msg += "<br>";
+									          		}
+									          		msg += errorInvLineMsg;
+									          	}
+
+									          	if(!errorMap && (errorInvLineMsg == ""))
+									          	{
+									          		msg += values[0].responseText;
 									          	}
 
 												$("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
@@ -1511,7 +1533,12 @@ var page = Component.extend({
 			          		//console.log(key);
 			          	}
 			          	errorStr = errorStr.replace(/,\s*$/, "");
-						var msg = errortype+": "+ errorStr;
+			          	if(errortype){
+			          		var msg = errortype+": "+ errorStr;
+			          	}else{
+			          		var msg = errorStr;
+			          	}
+						
 
 			          	return msg;
 					}
