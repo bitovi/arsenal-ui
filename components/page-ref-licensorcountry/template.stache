@@ -85,7 +85,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-sm-6"></div>
+                <div class="col-sm-6"><div class='period-invalid'> Invalid Period !</div></div>
               </div>
               <div class="form-group">
                 <div class="col-sm-6 ">
@@ -172,10 +172,9 @@
                 <div class="col-sm-9 requiredBarNone">
                   <!-- <textarea id="historyComments"  class="form-control multiple-comments-editable form-control-comments new-comments multiple-comments-editable-height" style="min-height:120px;    max-height:200px;"  can-value="pageState.historyComments" readonly=true></textarea>
                   <textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:50px;   min-height:50px;    max-height:50px;" can-value="pageState.entityCountryDetails.comment"></textarea> -->
-                  <div class="multipleComments col-sm-9 requiredBar" id="multipleComments">
-            
+                  <div class="multipleComments col-sm-8 requiredBar" id="multipleComments">
                   </div>
-
+                  <div class="col-sm-4 multicomments-required"> Enter comments !</div>
                 </div>
               </div>
             </div>
