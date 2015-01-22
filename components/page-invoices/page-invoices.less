@@ -11,11 +11,18 @@ rn-grid-invoice {
     tr>th, tr > td {
       width:2%;
     }
-	tr.highlight {
-		background: #E1E0E0;
+
+  tr.highlight{
+		background: #d3f0fe !important;
 	}
 
-    thead, tbody, tfoot {
+  tr.selected {
+    background: #d3f0fe !important;
+  }
+
+
+
+  thead, tbody, tfoot {
 	  display: block;
 	}
 	tbody {
@@ -25,6 +32,11 @@ rn-grid-invoice {
 	  overflow-x: hidden;
     //border: 1px solid #a1a1a1;
     border-bottom: 0;
+
+    tr:hover {
+      outline: none;
+    }
+
 	}
   thead {
     border-top-left-radius: 4px;
@@ -37,11 +49,24 @@ rn-grid-invoice {
 	th, td {
 	  white-space: nowrap;
 	}
+
   }
   .entity, .invoiceTypeDisp, .contentType, .country, .invoiceNum, .dueDate, .currency, .status, .bundleName, .comments{
   	text-align: left !important;
   }
 
+  .odd-row{
+    background: #FFF;
+  }
+
+  .even-row{
+    background: #CCC
+  }
+
+}
+
+.table-cell-color{
+  background-color: blue;
 }
 
 .button-ctrls{
@@ -63,8 +88,10 @@ rn-grid-invoice {
 
   .vertical-line{
     width: 1px !important; /* Line width */
-    background-color: black; /* Line color */
-    height: 70%; /* Override in-line if you want specific height. */
+    background-color: #97979C; /* Line color */
+    height: 26px; /* Override in-line if you want specific height. */
+    display: inline-block;
+    vertical-align: middle;
 
   }
 

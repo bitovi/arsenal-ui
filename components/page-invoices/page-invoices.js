@@ -99,12 +99,12 @@ Grid.extend({
         title: 'Invoice No'
       },
       {
-        id: 'invoiceAmount',
-        title: 'Invoice Amount'
-      },
-      {
         id: 'invoiceCcy',
         title: 'Currency'
+      },
+      {
+        id: 'invoiceAmount',
+        title: 'Invoice Amount'
       },
       {
         id: 'invoiceDueDate',
@@ -122,7 +122,8 @@ Grid.extend({
         id: 'comments',
         title: 'User comments'
       }
-    ]
+    ],
+    strippedGrid:true
   },
   helpers: {
     tableClass: function() {
@@ -162,6 +163,13 @@ Grid.extend({
         });
       alignGrid('invoiceGrid');
     },
+
+    'tbody tr click': function(el, ev) {
+      $(el).parent().find('tr').removeClass("selected");
+      $(el).parent().find('tr').removeClass("highlight");
+      $(el).addClass("selected");
+    },
+
     '.open-toggle click': function(el, ev) {
       var row = el.closest('tr').data('row').row;
       row.attr('__isOpen', !row.attr('__isOpen'));
@@ -357,12 +365,13 @@ var page = Component.extend({
         var gridData = {"data":[],"footer":[]};
         var currencyList = {};
         if(invoiceData!=null && invoiceData.length!=0){
-          console.log("here");
+
           for(var i=0;i<invoiceData.length;i++){
               var invTemp = {};
               invTemp["invId"] = invoiceData[i]["invId"];
               invTemp["__isChild"] = false;
               invTemp["__isChecked"] = false;
+              invTemp["__isOddRow"] = false;
               invTemp["entityName"] = (invoiceData[i]["entityName"]==null)?"":invoiceData[i]["entityName"];
               invTemp["fiscalPeriod"] = "";
               invTemp["invoiceType"] = (invoiceData[i]["invoiceType"]==null)?"":invoiceData[i]["invoiceType"];
@@ -380,6 +389,11 @@ var page = Component.extend({
               invTemp["comments"] = (invoiceData[i]["notes"]==null || invoiceData[i]["notes"].length==0)?"":invoiceData[i]["notes"];
               invTemp["invoiceAmount"] = CurrencyFormat(invTemp["invoiceAmount"]); //This is to format the amount with commas
 
+              //This line is added for grid alternative coloring.
+              //we need to set the flag called isOddRow based on the loop index.
+              if(i%2 != 0){
+                invTemp["__isOddRow"] = true;
+              }
 
               gridData.data.push(invTemp);
               var insertedId = gridData.data.length-1;
@@ -397,6 +411,7 @@ var page = Component.extend({
                   invLITemp["invId"] = "";
                   invLITemp["__isChild"] = true;
                   invLITemp["__isChecked"] = false;
+                  invLITemp["__isOddRow"] = false;
                   invLITemp["entityName"] = "";
                   invLITemp["fiscalPeriod"] = "";
                   invLITemp["invoiceType"] = "";
@@ -1237,5 +1252,6 @@ function alignGrid(divId){
         $('#'+divId+' table').css("width",tableWidth);
       }
   }
+
 }
 export default page;
