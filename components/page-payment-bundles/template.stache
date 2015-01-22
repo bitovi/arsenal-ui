@@ -19,7 +19,7 @@
       <button class="btn btn-custom-xs add-invoice">Add Invoices To Bundle</button>
     {{/if}}
     {{#if pageState.bundles.length}}
-    <img class="excel exportToExcel" />
+    <!-- <img class="excel exportToExcel" /> -->
     <img class="clipboard copyToClipboard" />
     {{/if}}
   </div>
