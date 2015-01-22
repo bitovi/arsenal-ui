@@ -4,18 +4,18 @@
   <li class="step {{approvedClass .}}" {{data 'step'}}>
     <img
       class="person-icon"
-      {{#past .}}src="/resources/images/rn_WorkflowTypePerson_completed@2x.png"{{/past}}
-      {{#current .}}src="/resources/images/rn_WorkflowTypePerson_current@2x.png"{{/current}}
-      {{#future .}}src="/resources/images/rn_WorkflowTypePerson_future@2x.png"{{/future}}
+      {{#past .}}src="/resources/images/rn_WorkflowTypePerson_completed.png"{{/past}}
+      {{#current .}}src="/resources/images/rn_WorkflowTypePerson_current.png"{{/current}}
+      {{#future .}}src="/resources/images/rn_WorkflowTypePerson_future.png"{{/future}}
     />
-    <div class="actor">{{actorName}}</div>
+    <div class="actor">{{#if actorName}}{{actorName}}{{#else}}&nbsp;{{/if}}</div>
     <div class="step-name">{{stepName}}</div>
     <div class="recieved">
-      <img src="/resources/images/rn_InboxActive@2x.png"/>
+      <img src="/resources/images/rn_InboxActive.png"/>
       {{#unless state}}<span>{{modified}}</span>{{/unless}}
     </div>
     <div class="sent">
-      <img src="/resources/images/rn_SentActive@2x.png"/>
+      <img src="/resources/images/rn_SentActive.png"/>
       {{#if state}}<span>{{modified}}</span>{{/if}}
     </div>
   </li>
