@@ -60,6 +60,8 @@ var page = Component.extend({
     baseModelParameter: [],
     trackCounts: [],
     refreshEntityId : true,
+    validFrom: [],
+    validTo : [],
 
     commentList : [  
          {  
@@ -241,6 +243,7 @@ var page = Component.extend({
         "inserted": function(){
 
           $(".mainLayoutId").hide();
+          $(".multicomments-required").hide();
 
           var self = this;
 
@@ -436,6 +439,18 @@ var page = Component.extend({
           '#submitBtn click': function(){
             var entityCountry_data  = this.scope.pageState.entityCountryDetails.attr("entityCountry")._data;
 
+            var comments = $(".new-comments").val();
+
+            if(comments != null && comments == "") {
+
+              $(".multicomments-required").show();
+              setTimeout(function(){
+                $(".multicomments-required").hide();
+              },2000);
+              return;
+
+            }
+
             if(entityCountry_data.laEnabled){
               entityCountry_data.laEnabled = "Y";
             }else{
@@ -578,6 +593,15 @@ var page = Component.extend({
             //console.log(" I am here "+$("#validFrom").val());
 
           },
+          '{validFrom} change': function(el, ev) {
+               var comp ='from';
+               showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0],comp);
+           },
+           '{validTo} change': function(el, ev) {
+                var comp ='to';
+                showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0],comp);
+
+           },
           'shown.bs.collapse':function(ele, event){
             $(ele).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
           },
@@ -694,7 +718,7 @@ var loadPage = function(scope,data){
 
   } else {
 
-    if($(".laCheckBox").attr(checked)) {
+    if($(".laCheckBox").attr("checked")) {
       $(".laCheckBox").click();
     }
 
