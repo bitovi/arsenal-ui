@@ -28,6 +28,7 @@ var Grid = Component.extend({
     allOpen: false,
     sortedColumn: null,
     sortedDirection: null, // should be 'asc' or 'desc'
+    strippedGrid:false
   },
   helpers: {
     tableClass: function() {
@@ -98,24 +99,45 @@ var Grid = Component.extend({
         return !!row.attr('__isOpen');
       };
 
+      var isOddRowChk = function(row) {
+        // by default, just looking for __isOddRow = true
+        return !!row.attr('__isOddRow');
+      };
+
       var out = [],
           childRowsAreVisible = false;
       can.__reading(this.rows, 'change'); // TODO: figure out if there's a better way to do this.
                                           // Note for others - don't use can.__reading yourself!
       return _.map(this.rows, function(row) {
         var isChild = isRowAChild(row);
-
+        var isOddRow=false;
+        var isStrippedGrid=false;
         // if the row is a parent and isn't open, its children shouldn't be visible -
         // this flag is only true for the children of an open parent row
         if(!isChild) {
           childRowsAreVisible = isRowOpen(row);
         }
 
+        if(!isChild && isOddRowChk(row)){
+          isOddRow=true;
+        }
+
+        //if stripped grid parameter enables and if it is not a child record then
+        //set true to isStrippedGrid. This check will disable to apply the bg color to child
+        //rows
+        if(options.context.attr('strippedGrid') && !isChild){
+          isStrippedGrid=true;
+        }
+
+        //console.log(this);
+        //console.log("Testing ssdfsfsdf",row.attr("invId"),isChild,isOddRow);
         return options.fn({
           row: row,
           isOpen: isChild ? false : isRowOpen(row), // child rows are never open
           isChild: isChild,
-          isVisible: isChild ? childRowsAreVisible : true // parent rows are always visible
+          isVisible: isChild ? childRowsAreVisible : true, // parent rows are always visible
+          isOddRow:isOddRow,
+          isStrippedGd:isStrippedGrid
         });
       });
     },
