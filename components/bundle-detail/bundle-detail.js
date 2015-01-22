@@ -73,6 +73,7 @@ var BundleDetailTabs = Component.extend({
     selectedTab: null,
     aggregatePeriod: false,
     paymentType: 2,
+    preferredCurr:'',
     approvalComment: '',
     bottomGridPaginateAttr: paginateAttr,
     isBundlePrioritySet:false,
@@ -106,6 +107,8 @@ var BundleDetailTabs = Component.extend({
       }
 
       resetSelectedBundle(scope);
+
+
 
       scope.getNewDetails(selectedBundle)
       .then(function(bundle) {
@@ -147,14 +150,13 @@ var BundleDetailTabs = Component.extend({
         view = 'licensor';
       }
 
-
-
       var params = {
         appstate: this.appstate,
         view: view,
         paymentType: this.paymentType,
         filterData: tokenInput,
-        paginate: this.bottomGridPaginateAttr
+        paginate: this.bottomGridPaginateAttr,
+        preferredCcy: this.preferredCurr
       };
 
       return bundle.getDetails(params
@@ -168,8 +170,6 @@ var BundleDetailTabs = Component.extend({
         }else{
           scope.bundleProgress.triggerValidation ? scope.getNewValidations(bundle) : "";
         }
-
-        canRemoveInvoice(scope);
 
         var commentsCollected = '';
         _.each(bundle.approvalComments, function(commentsObj) {
@@ -370,9 +370,6 @@ var BundleDetailTabs = Component.extend({
           console.log(err);
         });
       }
-
-
-
     },
     '.clipboardd click': function(el, ev) {
       // copy data to the clipboard
@@ -413,6 +410,7 @@ var BundleDetailTabs = Component.extend({
           this.scope.isBundlePrioritySet ? bundlePriority = "Y" : bundlePriority = "N";
         }
 
+
         selectedBundle.moveInWorkflow({
           action: action,
           approvalComment: this.scope.approvalComment,
@@ -421,18 +419,20 @@ var BundleDetailTabs = Component.extend({
         }).then(function(response) {
 
           commonUtils.displayUIMessage( response.responseCode, response.responseText);
+
           if(response.status === 'SUCCESS') {
             //Alert.displayAlert(response.responseText, 'success' );
 
-            // un-select the selected bundle (we're done here)
-            pageState.attr('selectedBundle', null);
-
             //if the ROLE is FC, remove the bundle from the top grid
             if(self.appstate.userInfo.roleIds.indexOf(constants.ROLES.FC) > -1 ){
+              // un-select the selected bundle (we're done here)
+              pageState.attr('selectedBundle', null);
               // remove it from the list of bundles too, since the user can't act on it anymore
               var index = pageState.bundles.indexOf(selectedBundle);
               pageState.bundles.splice(index, 1);
             }else{
+              //selectedBundle.attr("pendingWith", );
+
               //else the ROLE is not FC, reload the bottom grid
               self.selectedBundleChanged(self);
             }
@@ -448,6 +448,12 @@ var BundleDetailTabs = Component.extend({
         this.scope.resetToken();
         scope.pageState.selectedBundle && scope.getNewDetails(scope.pageState.selectedBundle);
       }
+    },
+    '{scope} preferredCurr': function(){
+      this.scope.getNewDetails(this.scope.pageState.selectedBundle);
+    },
+    '.btn-download click': function() {
+      PaymentBundle.downloadALL(this.scope.pageState.selectedBundle.bundleId);
     },
     'inserted': function() {
       this.scope.selectedBundleChanged(this.scope);
@@ -517,8 +523,10 @@ var resetSelectedBundle = function(scope){
   $("#messageDiv").hide();
   $(".previousComments").val();
   $(".previousComments").hide();
+  scope.attr("approvalComment", '');
 
 
+  canRemoveInvoice(scope);
   // change the columns to be correct
   var tabs = [],
   columns;

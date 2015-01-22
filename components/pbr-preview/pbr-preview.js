@@ -23,25 +23,6 @@ var PbrPreview = can.Component.extend({
       this.element.find('.modal').modal({keyboard: true, backdrop: false});
 
 
-    },
-    '.cancel click': function(el, ev) {
-      this.element.find('.modal').modal('hide');
-      this.element.remove();
-    },
-    '.submit click': function(el, ev) {
-      var self = this;
-      this.scope.bundle.moveInWorkflow(this.scope.params).then(function(result) {
-        if(result.status === 'SUCCESS') {
-          self.scope.bundle.destroy();
-          self.element.find('.modal').modal('hide');
-          self.element.remove();
-          Alert.displayAlert(result.responseText, 'success');
-        }else{
-          self.element.find('.modal').modal('hide');
-          self.element.remove();
-        }
-      });
-
     }
   }
 });
