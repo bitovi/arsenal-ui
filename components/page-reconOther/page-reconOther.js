@@ -567,6 +567,15 @@ var findCCids =  function(scope, ccidSelected, tab) {
 
   }
 
-}
+};
+
+var createIncomingReconRequestForExportToExcel=function(appstate){
+    var IncomingReconRequest={};
+    IncomingReconRequest.searchRequest=UserReq.formGlobalRequest(appstate).searchRequest;
+    IncomingReconRequest.searchRequest.type="INCOMING";
+    IncomingReconRequest.excelOutput=true;
+    console.log(JSON.stringify(IncomingReconRequest));
+    return UserReq.formRequestDetails(IncomingReconRequest);
+  };
 
 export default page;

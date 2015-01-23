@@ -27,10 +27,6 @@ var tabNameObj = {
     ingest:{
       name:"Ingested",
       type: "INGESTED"
-    },
-    incoming:{
-      name:"Incoming Details",
-      type: "INCOMING"
     }
 }
 
@@ -47,22 +43,15 @@ var page = Component.extend({
       headerRows: new can.List(),
       footerRows: new can.List()
     },
-    incomingDetails: {
-      headerRows: new can.List(),
-      footerRows: new can.List()
-    },
+    
     ingestCcidSelected:[],
-    incomingCcidSelected:[],
     size_ingestCcidSelected:0,
-    size_incomingCcidSelected:0,
     currencyScope:[],
     currencyList:[],
     reconRefresh : [],
     emptyrows : true,
     ingestedScrollTop: 0,
-    incomingScrollTop: 0,
     ingestedOffset: 0,
-    incomingOffset: 0,
     pagename : "recon",
     sortColumns:[],
     sortDirection: "asc",
@@ -70,8 +59,6 @@ var page = Component.extend({
     recordsAvailable : true,
 
     reconStatsDetailsSelected : [],
-
-    incomingStatsDetailsSelected : [],
 
     //bottomgrid
     refreshStatsReq:undefined,
@@ -128,10 +115,7 @@ var page = Component.extend({
       //if the size of the list is greater than 0, enables the Reject button
       return ( this.attr("size_ingestCcidSelected") == ref ? 'disabled' : '' ) ;
     },
-    isIncomingCcidsSelected:function(ref){
-      //if the size of the list is greater than 0, enables the Reject button
-      return ( this.attr("size_incomingCcidSelected") == ref ? 'disabled' : '' ) ;
-    },
+    
     isTabSelectedAs:function(tabName){
       return 'style="display:' + ( this.attr("tabSelected") == tabName  ? 'block' : 'none') + '"';
     }
@@ -297,13 +281,7 @@ var page = Component.extend({
       });
 
     },
-    '.btn-incoming-reject click': function() {
-
-      $('#rejectModal').modal({
-        "backdrop" : "static"
-      });
-
-    },
+    
     '.btn-holesReport click': function() {
       commonUtils.navigateTo("dashboard");
       this.scope.appstate.attr('DISPLAY_HOLES_REPORT',true);
@@ -405,23 +383,7 @@ var page = Component.extend({
                 }, function(xhr) {
                       console.error("Error while loading: onAccount balance Details"+xhr);
                 } ); 
-         }else if(self.scope.tabSelected=="Incoming Details"){
-              Recon.findOne(createIngestedReconRequestForExportToExcel(self.scope.appstate),function(data){ 
-                console.log(data);
-                      if(data["status"]=="SUCCESS"){
-                        $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
-                      }else{
-                        $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-                        $("#messageDiv").show();
-                        setTimeout(function(){
-                            $("#messageDiv").hide();
-                        },2000)
-                        self.scope.attr('emptyrows',true);
-                      }
-                }, function(xhr) {
-                      console.error("Error while loading: onAccount balance Details"+xhr);
-                } ); 
-         }    
+         }  
        }
    }
 });
@@ -436,14 +398,7 @@ var createIngestedReconRequestForExportToExcel=function(appstate){
     return UserReq.formRequestDetails(IngestedReconRequest);
   };
 
-var createIncomingReconRequestForExportToExcel=function(appstate){
-    var IncomingReconRequest={};
-    IncomingReconRequest.searchRequest=UserReq.formGlobalRequest(appstate).searchRequest;
-    IncomingReconRequest.searchRequest.type="INCOMING";
-    IncomingReconRequest.excelOutput=true;
-    console.log(JSON.stringify(IncomingReconRequest));
-    return UserReq.formRequestDetails(IncomingReconRequest);
-  };
+
 
 var processRejectIngestRequest = function(scope,requestType){
     var ccidList ;
@@ -455,10 +410,6 @@ var processRejectIngestRequest = function(scope,requestType){
       ccidList = scope.attr("ingestCcidSelected");
       type =  scope.tabName.ingest.attr("type");
       tab = "ingest";
-    }else{
-      ccidList = scope.attr("incomingCcidSelected");
-      type =  scope.tabName.incoming.attr("type");
-      tab = "incoming";
     }
 
     can.each(ccidList,
@@ -490,8 +441,6 @@ var processRejectIngestRequest = function(scope,requestType){
             if(tab == "ingest") {
               scope.reconRefresh[0].summaryStatsData.splice(0,1);
               scope.attr("ingestCcidSelected").splice(0, scope.attr("ingestCcidSelected").length);
-            } else {
-              scope.attr("incomingCcidSelected").splice(0, scope.attr("incomingCcidSelected").length);
             }
             
             $('.statsTable').hide();
