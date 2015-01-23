@@ -107,7 +107,8 @@ var page = Component.extend({
     tableScrollTop: 0,
     sortColumns:[],
     sortDirection: "asc",
-    previouslyFetchOnAccRows:[]
+    previouslyFetchOnAccRows:[],
+    cancelnewbundlereq:'@'
   },
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
@@ -347,7 +348,9 @@ var page = Component.extend({
               request.quarters=self.scope.quarters;   
               $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
               $('#usercomments').val("");
+              self.scope.attr('cancelnewbundlereq',true);
               self.scope.attr('onAccountRows',rows);
+              disablePropose(true);
             }else{
                   displayMessage(data["responseText"],false);
                 }

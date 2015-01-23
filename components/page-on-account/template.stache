@@ -108,7 +108,7 @@
 								<!-- <label class="text-right" for="inputCountry">Bundle Name:</label> -->
 								<span class="pull-inline col-sm-2" >Bundle Name:</span>
 						        <!-- <div class="col-sm-6 requiredBar text-left"> -->
-	                				<span class="pull-inline col-sm-10 newOnAccBundle"><create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}"></create-pb></span>
+	                				<span class="pull-inline col-sm-10 newOnAccBundle" id="paymentBundle"><create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}" cancelnewbundlereq="{{cancelnewbundlereq}}"></create-pb></span>
 						        <!-- </div> -->
 			       		</div>
 
