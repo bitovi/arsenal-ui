@@ -309,7 +309,7 @@ var page = Component.extend({
             onDelete: function (item) {
                  self.scope.refreshTokenInput(item,"Delete");
             }
-        });
+        }); 
 
         /* Bundle Names is selectable only when any row is selected */
         $('#paymentBundleNames').prop('disabled', 'disabled');
