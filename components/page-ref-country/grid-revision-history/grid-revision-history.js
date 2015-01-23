@@ -47,8 +47,16 @@ var GridRevisionHistory = Grid.extend({
         }
       },
       {
-        id: 'comment',
-        title: 'Comments'
+        id: 'commentText',
+        title: 'Comments',
+        contents: function(row) {
+          if(row.commentList != undefined && row.commentList != null && row.commentList.length > 0 ) {
+            return row.commentList[0].comments;
+          } else {
+            return "";
+          }
+          
+        }
       }
     ]
   }
