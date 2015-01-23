@@ -59,6 +59,7 @@ var page = Component.extend({
     scrollTop: 0,
     offset: 0,
     pagename : "reconOther",
+    load : true,
 
     refreshTokenInput: function(val, type){
       var self = this;
@@ -247,7 +248,7 @@ var page = Component.extend({
           fetchReconIncoming(this.scope);
         }else{
           this.scope.attr("size_incomingCcidSelected", 0);
-          fetchReconDetailsOther(this.scope);
+          fetchReconDetailsOther(this.scope, this.scope.load);
         }
         
       }
@@ -365,7 +366,7 @@ var fetchReconIncoming = function(scope){
 
 };
 
-var fetchReconDetailsOther = function(scope){
+var fetchReconDetailsOther = function(scope, load){
 
   var searchRequestObj = UserReq.formGlobalRequest(scope.appstate);
   searchRequestObj.searchRequest["type"] = scope.tabName.incoming.attr("type");
@@ -397,6 +398,9 @@ var fetchReconDetailsOther = function(scope){
       displayErrorMessage(data.responseText,"Failed to load the Recondetails:");
     }else  {
 
+      if(load) {
+        scope.attr("incomingCcidSelected").splice(0, scope.attr("incomingCcidSelected").length);
+      }
       if(data.reconStatsDetails == undefined || (data.reconStatsDetails != null && data.reconStatsDetails.length <= 0)) {
 
         scope.attr("emptyrows", true);
@@ -438,6 +442,43 @@ var fetchReconDetailsOther = function(scope){
     }
   },function(xhr){
     console.error("Error while loading: fetchReconDetailsOther"+xhr);
+  }).then(function(values){
+
+    if(load) {
+      var ccidCheckbox = $("input.selectRow");
+
+      for(var i=0; i<ccidCheckbox.length  ;i++) {
+
+        ccidCheckbox[i].click();
+
+      }
+
+      var ccids = scope.incomingCcidSelected;
+      scope.setHeaderChkBox();
+
+    } else {
+
+      scope.attr("load", true);
+
+      var ccidCheckbox = $("input.selectRow");
+
+      for(var i=0; i<ccidCheckbox.length  ;i++) {
+
+        for(var j=0; j< scope.incomingCcidSelected.length; j++ ) {
+
+          if (scope.incomingCcidSelected[j] == ccidCheckbox[i].getAttribute("value")) {
+
+            ccidCheckbox[i].checked = true;
+
+          }
+        }
+
+      }
+      scope.setHeaderChkBox();
+
+    }
+
+
   });
 };
 
@@ -471,8 +512,7 @@ var processRejectIngestRequestOther = function(scope,requestType){
       Promise.all([Recon.reject(rejectSearchRequestObj)]).then(function(values) {
 
         //scope.reconStatsDetailsSelected = data.reconStatsDetails;
-        //findCCids(scope, ccidSelected, tab);
-
+        
         scope.attr("size_incomingCcidSelected", 0);
 
         if(values != null && values.length > 0) {
@@ -489,7 +529,7 @@ var processRejectIngestRequestOther = function(scope,requestType){
               $("#messageDiv").hide();
             },3000);
 
-            fetchReconDetailsOther(scope);
+            fetchReconDetailsOther(scope, false);
           }
         } else{
 
@@ -526,6 +566,17 @@ var processRejectIngestRequestOther = function(scope,requestType){
     }
 };
 
+var displayErrorMessage = function(message,log){
+
+  $("#messageDiv").html("<label class='errorMessage'>"+message+"</label>");
+  $("#messageDiv").show();
+  setTimeout(function(){
+    $("#messageDiv").hide();
+  },4000);
+  console.error(log+message);
+
+};
+
 var refreshChekboxSelection = function(el,scope){
   var row = el.closest('tr').data('row').row;
   if(el[0].checked) {
@@ -533,40 +584,20 @@ var refreshChekboxSelection = function(el,scope){
     } else {
       $('input.headerChkBox').attr("checked", false);
       var index = _.indexOf(scope.incomingCcidSelected, row.dtlHdrId);
-      (index > -1) && scope.incomingCcidSelected.splice(index, 1);
+      (index > -1) && scope.attr("incomingCcidSelected").splice(index, 1);
      }
     scope.attr("size_incomingCcidSelected" ,_.size(scope.attr("incomingCcidSelected")));
 
 };
 
-var findCCids =  function(scope, ccidSelected, tab) {
 
-  var found = false;
-
-  var detailsList = [];
-
-  detailsList = scope.incomingStatsDetailsSelected;
-
-  for( var i=0; i< detailsList.length ; i++) {
-
-    //alert('Here');
-    if(ccidSelected.indexOf(detailsList[i].dtlHdrId) >= 0) {
-
-      detailsList.splice(i,1);
-      found = true;
-
-      scope.incomingStatsDetailsSelected.replace(detailsList);
-      break;
-
-    }
-  }
-
-  if(found) {
-
-    findCCids(scope, ccidSelected);
-
-  }
-
-}
+var createIncomingReconRequestForExportToExcel=function(appstate){
+    var IncomingReconRequest={};
+    IncomingReconRequest.searchRequest=UserReq.formGlobalRequest(appstate).searchRequest;
+    IncomingReconRequest.searchRequest.type="INCOMING";
+    IncomingReconRequest.excelOutput=true;
+    console.log(JSON.stringify(IncomingReconRequest));
+    return UserReq.formRequestDetails(IncomingReconRequest);
+  };
 
 export default page;

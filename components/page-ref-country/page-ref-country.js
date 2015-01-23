@@ -238,7 +238,7 @@ var page = Component.extend({
           else
             var validFrom = "0";
 
-          if(validFrom == "0")
+          if(validFrom == undefined || validFrom == null || validFrom == "0")
             self.pageState.countryDetails.country.attr("validFrom","");
           else {
             var formatValidFrom = PeriodHelper.getDisplayPeriod(validFrom, "P");
@@ -251,7 +251,7 @@ var page = Component.extend({
           else
             var validTo = "0";
 
-          if(validTo == "0")
+          if(validTo == undefined || validTo == null|| validTo == "0" )
             self.pageState.countryDetails.country.attr("validTo","");
           else {
             var formatValidTo = PeriodHelper.getDisplayPeriod(validTo,"P");
@@ -387,7 +387,7 @@ var page = Component.extend({
         else
           var validFrom = "0";
 
-        if(validFrom == "0")
+        if(validFrom == undefined || validFrom == null || validFrom == "0")
           self.pageState.countryDetails.country.attr("validFrom","");
         else {
           var formatValidFrom = PeriodHelper.getDisplayPeriod(validFrom,"P");
@@ -400,7 +400,7 @@ var page = Component.extend({
         else
           var validTo = "0";
 
-        if(validTo == "0")
+        if(validTo == undefined || validTo == null || validTo == "0")
           self.pageState.countryDetails.country.attr("validTo","");
         else {
           var formatValidTo = PeriodHelper.getDisplayPeriod(validTo,"P");
@@ -681,7 +681,7 @@ var page = Component.extend({
       var validFrom = $("#validFrom").val();
       var formatValidFrom = PeriodHelper.getFiscalPeriod(validFrom);
       var validTo = $("#validTo").val();
-      if(validTo!="")
+      if(validTo != null && validTo != undefined && validTo!="")
         var formatValidTo = PeriodHelper.getFiscalPeriod(validTo);
       else
         var formatValidTo = "";

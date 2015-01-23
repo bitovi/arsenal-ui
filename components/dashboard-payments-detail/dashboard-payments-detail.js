@@ -74,7 +74,7 @@ var DashboardPaymentsDetail = Component.extend({
           content: popoverContent,
           html: true,
           trigger: 'click',
-          placement: 'left'
+          placement: 'right'
         });
       };
     },
@@ -83,13 +83,18 @@ var DashboardPaymentsDetail = Component.extend({
     'inserted':function(){
 
      },
-    'li click': function(el, ev) {
-      var popoverID = el.attr('aria-describedby');
-      var chart = $('#' + popoverID).find('.column-chart');
-      chart.empty();
-      columnChartHelper(el.data('item').item, chart[0]);
+    '.chart-list>li, .country-list>li click': function(el, ev) {
+          var popoverID = el.attr('aria-describedby');
+          var chart = $('#' + popoverID).find('.column-chart');
+          chart.empty();
+          columnChartHelper(el.data('item').item, chart[0]);
+      },
+      'li.total div.category>a click':function(el, ev){
+          var self = this;
+          self.scope.appstate.attr('page','claimreview');
+      }
+
     }
-  }
 });
 
 export default DashboardPaymentsDetail;
