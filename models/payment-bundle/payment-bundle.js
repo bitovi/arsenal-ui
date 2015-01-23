@@ -117,16 +117,19 @@ var PaymentBundle = Model.extend({
     if(params.appstate.excelOutput){
        var excelOutput = appstate.attr('excelOutput') != undefined ? appstate.attr('excelOutput') : false;
        var paymentOption = appstate.paymentOption,
-            view = appstate.view.toUpperCase(),
-            bundleId = appstate.bundleId;
+            view =  params.view.toUpperCase(),
+            bundleId = appstate.bundleId,
+            preferredCcy = params.preferredCcy;
 
        var data = {
            paymentBundle: {
               bundleId,
               paymentOption,
-              view
+              view,
+              preferredCcy,
+              periodType: params.appstate.periodType
             },
-            bundleSearch: requestHelper.formGlobalRequest(appstate).searchRequest,
+            bundleSearch: requestHelper.formGlobalRequest(appstate).searchRequest
        };
        if(excelOutput!=false){
           data["excelOutput"]=true
@@ -155,6 +158,7 @@ var PaymentBundle = Model.extend({
             bundleId = params.bundleID,
             preferredCcy = params.preferredCcy;
 
+
             var filterFormatted = [];
             _.each(params.filterData, function(obj) {
               filterFormatted.push(obj.name);
@@ -166,7 +170,8 @@ var PaymentBundle = Model.extend({
             bundleId,
             paymentOption,
             view,
-
+            preferredCcy,
+            periodType: params.appstate.periodType
           },
          bundleSearch: {
            filter: filterFormatted
