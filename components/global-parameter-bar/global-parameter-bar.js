@@ -60,6 +60,14 @@ var GlobalParameterBar = Component.extend({
         }
         appstate[prop].replace(changes[prop]);
       });
+
+      if(changes.isdefault){
+        appstate.attr({
+          defaultPeriodFrom: changes.defaultPeriodFrom,
+          defaultPeriodTo: changes.defaultPeriodTo,
+          defaultPeriodType: changes.defaultPeriodType
+        });
+      }
       can.batch.stop();
     }
   },
@@ -266,16 +274,20 @@ var GlobalParameterBar = Component.extend({
 
     },
     '{scope.appstate} page': function() {
-      if (this.scope.appstate.attr('page') == 'on-account' && this.scope.appstate.attr('periodType') != 'Q') {
+      var self = this;
+      if (self.scope.appstate.attr('page') == 'on-account' && self.scope.appstate.attr('periodType') != 'Q') {
         var quart = getDefaultPeriodFrom('ONACCOUNT');
         $('#periodFrom').val(quart);
         $('#periodTo').val(quart);
-        // this.scope.appstate.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(quart));
-        // this.scope.appstate.attr('periodTo', periodWidgetHelper.getFiscalPeriod(quart));
-        // this.scope.appstate.attr('periodType', 'Q');
-        this.scope.changesToApply.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(quart));
-        this.scope.changesToApply.attr('periodTo', periodWidgetHelper.getFiscalPeriod(quart));
-        this.scope.changesToApply.attr('periodType', 'Q');
+        self.scope.changesToApply.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(quart));
+        self.scope.changesToApply.attr('periodTo', periodWidgetHelper.getFiscalPeriod(quart));
+        self.scope.changesToApply.attr('periodType', 'Q');
+
+        self.scope.changesToApply.attr('defaultPeriodFrom', self.scope.changesToApply.periodFrom);
+        self.scope.changesToApply.attr('defaultPeriodTo', self.scope.changesToApply.periodTo);
+        self.scope.changesToApply.attr('defaultPeriodType', 'Q');
+        self.scope.changesToApply.attr('isdefault', true);
+        self.scope.applyChanges(self.scope.changesToApply, self.scope.appstate);
       }
     },
     "#periodFrom blur":function(el,ev){
@@ -474,6 +486,16 @@ var GlobalParameterBar = Component.extend({
               self.scope.changesToApply.attr('contentType').replace(["-1"]);
             else
               self.scope.changesToApply.attr('contentType').replace(formatContentType);
+
+              //default data to fetch the default data for all the grid
+            self.scope.appstate.attr('defaultPeriodFrom', self.scope.changesToApply.periodFrom);
+            self.scope.appstate.attr('defaultPeriodType', self.scope.changesToApply.periodType);
+            self.scope.appstate.attr('defaultPeriodTo', self.scope.changesToApply.periodTo);
+            self.scope.appstate.attr('defaultStoreType', self.scope.changesToApply.storeType);
+            self.scope.appstate.attr('defaultRegion', self.scope.changesToApply.region);
+            self.scope.appstate.attr('defaultcountry', self.scope.changesToApply.country);
+            self.scope.appstate.attr('defaultlicensor', self.scope.changesToApply.licensor);
+            self.scope.appstate.attr('defaultcontentType', self.scope.changesToApply.contentType);
 
             self.scope.applyChanges(self.scope.changesToApply, self.scope.appstate);
             //console.log("APpp state & ChangesTOAPPLY is "+JSON.stringify(self.scope.appstate.attr())+","+JSON.stringify(self.scope.changesToApply.attr()));

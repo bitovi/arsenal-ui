@@ -81,6 +81,7 @@ var page = Component.extend({
   scope: {
     appstate:undefined,
     localGlobalSearch:undefined,
+    defaultRequest:{},
     request:{},
     onAccountRows:{},
     documents:[],
@@ -108,22 +109,31 @@ var page = Component.extend({
     sortColumns:[],
     sortDirection: "asc",
     previouslyFetchOnAccRows:[],
-    cancelnewbundlereq:'@'
+    cancelnewbundlereq:'@',
+    populateDefaultData:'@'
   },
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
     this.scope.uploadedfileinfo.replace([]);
     this.scope.uploadedfileinfonew.replace([]);
-    this.scope.tabsClicked="NEW_ON_ACC";
+    this.scope.tabsClicked="ON_ACC_BALANCE";
     },
     events: {
       "inserted": function(){
+        var self = this;
        $("#searchDiv").show();
-       this.scope.uploadedfileinfonew.replace([]);
-       this.scope.uploadedfileinfo.replace([]);
+       self.scope.uploadedfileinfonew.replace([]);
+       self.scope.uploadedfileinfo.replace([]);
+
+       if(self.scope.tabsClicked=="ON_ACC_BALANCE"){
+          $('#newonAccountGrid, #newonAccountGridComps, #proposedonAccountDiv,#proposeOnAccountGridComps, #forminlineElements,#searchDiv, #onAccountEditDeleteDiv').hide();
+       }
+       
+        var defaultRequest=setTheDefaultParameters(self.scope.appstate);
+        self.scope.attr('defaultRequest',defaultRequest);
 
        setTimeout(function(){
-          $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid emptyrows="{emptyrows}"></rn-new-onaccount-grid>')({emptyrows:true}));
+        $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={defaultRequest}></rn-onaccount-balance-grid>')({defaultRequest})); 
        }, 10);
           disablePropose(true);
           disableCopyOnAccount(true);
@@ -285,7 +295,7 @@ var page = Component.extend({
        if ($("rn-onaccount-balance-grid").find("tbody>tr").length) {
            $('rn-onaccount-balance-grid tbody tr').css("outline","0px solid #f1c8c8");
        }else{
-           $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid emptyrows={emptyrows}></rn-onaccount-balance-grid>')({emptyrows:true}));
+           $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={defaultRequest}></rn-onaccount-balance-grid>')({defaultRequest}));
        }
       },
       "#newonAccount click":function(el, ev){
@@ -296,20 +306,34 @@ var page = Component.extend({
 
         $('#newonAccountGrid, #newonAccountGridComps, #forminlineElements,#searchDiv').show();
         $('#onAccountBalanceDiv, #proposedonAccountDiv,#proposeOnAccountGridComps, #onAccountEditDeleteDiv').hide();
+
+        if ($("rn-new-onaccount-grid").find("tbody>tr").length) {
+           $('rn-new-onaccount-grid tbody tr').css("outline","0px solid #f1c8c8");
+       }else{
+          $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid emptyrows="{emptyrows}"></rn-new-onaccount-grid>')({emptyrows:true}));
+       }
+
+        
       },
       "#proposedonAccount click":function(el, ev){
+        var self = this;
         ev.preventDefault();
-        this.scope.tabsClicked="PROPOSED_ON_ACC";
-        this.scope.uploadedfileinfonew.replace([]);
-        this.scope.uploadedfileinfo.replace([]);
+        self.scope.tabsClicked="PROPOSED_ON_ACC";
+        self.scope.uploadedfileinfonew.replace([]);
+        self.scope.uploadedfileinfo.replace([]);
 
         $('#newonAccountGrid, #onAccountBalanceDiv, #forminlineElements,#searchDiv').hide();
         $('#proposedonAccountDiv,#proposeOnAccountGridComps, #onAccountEditDeleteDiv').show();
         disableProposedSubmitButton(true);
         disableEditORDeleteButtons(true);
-       if (!$("rn-proposed-onaccount-grid").find("tbody>tr").length) {
-         $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
-       }
+
+        self.scope.attr('populateDefaultData',true);
+        self.scope.appstate.attr('globalSearchButtonClicked',true);
+        self.scope.attr('loadProposedONAccountPage',Date.now());
+        
+       // if (!$("rn-proposed-onaccount-grid").find("tbody>tr").length) {
+       //   $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
+       // }
       },
       "#propose click":function(el,ev){
         var self = this;
@@ -529,13 +553,20 @@ var page = Component.extend({
           self.scope.appstate.attr("offset", self.scope.attr('proposeOnAccOffset'));
           self.scope.appstate.attr("sortBy", self.scope.sortColumns.attr().toString());
           self.scope.appstate.attr("sortOrder", self.scope.attr('sortDirection'));
-          proposedOnAccount.findOne(createProposedOnAccountRequest(self.scope.appstate),function(data){
+          var appstate = self.scope.appstate;
+          var quarters = self.scope.quarters;
+          if(self.scope.populateDefaultData){
+            appstate = self.scope.defaultRequest.appstate;
+            quarters = self.scope.defaultRequest.quarters;
+          }
+
+          proposedOnAccount.findOne(createProposedOnAccountRequest(appstate),function(data){
             self.scope.attr('showLoadingImage',false);
             if(data["status"]=="SUCCESS"){
                /* The below calls {scope.appstate} change event that gets the new data for grid*/
                 //var returnValue = utils.getProposedOnAccRows(quarters,data);
 
-                var returnValue = utils.prepareOnAccountRowsForDisplay(data.onAccount.onAccountDetails,self.scope.quarters);
+                var returnValue = utils.prepareOnAccountRowsForDisplay(data.onAccount.onAccountDetails,quarters);
                 var finalRows = returnValue['ROWS'];
                 if(self.scope.attr('proposeOnAccOffset') > 0){
                   finalRows = self.scope.previouslyFetchOnAccRows.concat(returnValue['ROWS']);
@@ -587,6 +618,7 @@ var page = Component.extend({
                      self.scope.attr('bundleNamesForDisplay','');
                 }
                 self.scope.previouslyFetchOnAccRows.replace(finalRows);
+                self.scope.attr('populateDefaultData',false);
             } else{
                 displayMessage(data["responseText"],false);
                 $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
@@ -857,6 +889,23 @@ var createBalanceOnAccountRequestForExportToExcel=function(appstate){
     balancedOnAccountRequest.searchRequest.sortBy=appstate.attr("sortBy");
     balancedOnAccountRequest.searchRequest.sortOrder=appstate.attr("sortOrder");
     return requestHelper.formRequestDetails(balancedOnAccountRequest);
+  };
+
+  var setTheDefaultParameters=function(appstate){
+      var defaultRequest={};
+      defaultRequest.appstate={};
+      var periodFrom=periodWidgetHelper.getDisplayPeriod(appstate.defaultPeriodFrom,appstate.defaultPeriodType);
+      var periodTo = periodWidgetHelper.getDisplayPeriod(appstate.defaultPeriodTo,appstate.defaultPeriodType);
+      defaultRequest.quarters = utils.getQuarter(periodFrom,periodTo);
+      defaultRequest.appstate.periodFrom = appstate.defaultPeriodFrom;
+      defaultRequest.appstate.periodType = appstate.defaultPeriodType;
+      defaultRequest.appstate.periodTo = appstate.defaultPeriodTo;
+      defaultRequest.appstate.storeType = appstate.defaultStoreType;
+      defaultRequest.appstate.country = appstate.defaultcountry;
+      defaultRequest.appstate.licensor = appstate.defaultlicensor;
+      defaultRequest.appstate.contentType = appstate.defaultcontentType;
+      defaultRequest.appstate.region = appstate.defaultRegion;
+      return defaultRequest;
   };
 
 var validateFilters=function(appstate,validateQuarter,validateStoreType,validateRegion,validateLicensor,validateContentType){
