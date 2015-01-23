@@ -8,7 +8,6 @@ var BundleGrid = ScrollingGrid.extend({
   tag: 'rn-bundle-grid',
   scope: {
     pageState: null, // passed in
-    strippedGrid:true,
     columns: [
     {
       id: 'isHighPriority',
