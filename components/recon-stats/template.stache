@@ -41,12 +41,12 @@
 										</td>
 
 										<td width="55%">
-											<div id="ingestionStatsDiv" style="display:none">
+											<fieldset id="ingestionStatsDiv" style="display:none">
 											
 												<table id="summaryTopTable">
 													<tr>
 														<td width="50%">
-															<div class="mid-headers">Ingestion Stats</div>
+															<legend class="mid-headers">Ingestion Stats</legend>
 														</td>
 
 														<td style="width:20%;">
@@ -62,7 +62,7 @@
 												<div id="ingestionStatsDivSub">
 													<div id="ingestionReconStats"><div>
 												</div>
-											</div>
+											</fieldset>
 
 										</td>
 

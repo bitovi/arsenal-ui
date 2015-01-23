@@ -3,7 +3,7 @@
   <ul class="unpaid-details">
     <li class="total">
       <div class="color"><div class="square">&nbsp;</div></div>
-      <div class="category">Total unpaid:</div>
+      <div class="category"><a href="#">Total unpaid:</a></div>
       <div class="percent">{{item.totBalPrcnt}}%</div>
       <div class="numbers">
         <span class="local">{{item.totBalAmt}}</span>
