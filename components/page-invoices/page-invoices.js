@@ -309,7 +309,7 @@ var page = Component.extend({
             onDelete: function (item) {
                  self.scope.refreshTokenInput(item,"Delete");
             }
-        }); 
+        });
 
         /* Bundle Names is selectable only when any row is selected */
         $('#paymentBundleNames').prop('disabled', 'disabled');
@@ -371,7 +371,7 @@ var page = Component.extend({
               invTemp["invId"] = invoiceData[i]["invId"];
               invTemp["__isChild"] = false;
               invTemp["__isChecked"] = false;
-              invTemp["__isOddRow"] = false;
+              //invTemp["__isOddRow"] = false;
               invTemp["entityName"] = (invoiceData[i]["entityName"]==null)?"":invoiceData[i]["entityName"];
               invTemp["fiscalPeriod"] = "";
               invTemp["invoiceType"] = (invoiceData[i]["invoiceType"]==null)?"":invoiceData[i]["invoiceType"];
@@ -391,9 +391,9 @@ var page = Component.extend({
 
               //This line is added for grid alternative coloring.
               //we need to set the flag called isOddRow based on the loop index.
-              if(i%2 != 0){
+              /*if(i%2 != 0){
                 invTemp["__isOddRow"] = true;
-              }
+              }*/
 
               gridData.data.push(invTemp);
               var insertedId = gridData.data.length-1;
@@ -411,7 +411,7 @@ var page = Component.extend({
                   invLITemp["invId"] = "";
                   invLITemp["__isChild"] = true;
                   invLITemp["__isChecked"] = false;
-                  invLITemp["__isOddRow"] = false;
+                  //invLITemp["__isOddRow"] = false;
                   invLITemp["entityName"] = "";
                   invLITemp["fiscalPeriod"] = "";
                   invLITemp["invoiceType"] = "";

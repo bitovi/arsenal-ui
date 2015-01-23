@@ -20,6 +20,7 @@ import highchartpage from 'components/highchart/';
 
 import exportToExcel from 'components/export-toexcel/';
 import copy from 'components/copy-clipboard/';
+import gridUtils from 'utils/gridUtil';
 
 /* Extend grid with the columns */
 Grid.extend({
@@ -142,6 +143,9 @@ Grid.extend({
     'inserted': function(){
       var self= this;
       var tbody = self.element.find('tbody');
+      var getTblBodyHght=gridUtils.getTableBodyHeight('claimLicencorGrid',100);
+      $(tbody).css('min-Height',getTblBodyHght);
+      $(tbody).css('max-Height',getTblBodyHght);
       var parentScopeVar = self.element.closest('page-claimreview').scope();
       var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
       $(tbody[0]).scrollTop(tableScrollTopVal);
@@ -149,7 +153,7 @@ Grid.extend({
           if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight && parentScopeVar.licensorRecordsAvailable) {
             //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
 
-            
+
             var offsetVal = parentScopeVar.attr('licensorViewOffset');
             //console.log(offsetVal);
 
@@ -294,6 +298,9 @@ Grid.extend({
     'inserted': function(){
       var self= this;
       var tbody = self.element.find('tbody');
+      var getTblBodyHght=gridUtils.getTableBodyHeight('claimLicencorGrid',100);
+      $(tbody).css('min-Height',getTblBodyHght);
+      $(tbody).css('max-Height',getTblBodyHght);
       var parentScopeVar = self.element.closest('page-claimreview').scope();
       var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
       $(tbody[0]).scrollTop(tableScrollTopVal);
@@ -301,7 +308,7 @@ Grid.extend({
           if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight && parentScopeVar.countryRecordsAvailable) {
             //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
 
-            
+
             var offsetVal = parentScopeVar.attr('countryViewOffset');
             //console.log(offsetVal);
 
@@ -331,7 +338,7 @@ Grid.extend({
         $(".entityName").hide();
       } else {
         $(".period").show();
-        $(".entityName").show(); 
+        $(".entityName").show();
       }
       alignGrid('claimCountryGrid', self.scope.is_aggregate);
     },
@@ -403,7 +410,7 @@ var page = Component.extend({
   init: function(){
 	 //console.log('inside Claim Review');
    this.scope.appstate.attr("renderGlobalSearch",true);
-	 
+
     },
     events: {
     	"inserted": function(){
@@ -432,16 +439,16 @@ var page = Component.extend({
         });
 
         $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid emptyrows="{emptyrows}"></rn-claim-licensor-grid>')({emptyrows:true}));
-        
+
     	},
     	"#highChart click":function(){
-        
+
         if(this.scope.details.isChild){
           $("#messageDiv").hide();
           //$("#chartContainer").addClass("highcharts_Overlay");
           var data = this.scope.details;
              $("#highChartDetails").append(stache('<high-chart details={data}></high-chart>')({data}));
-        }else{          
+        }else{
           $("#messageDiv").html("<label class='errorMessage'>Please select Invoice from child row to see Historical Trends</label>");
           $("#messageDiv").show();
           setTimeout(function(){
@@ -490,7 +497,7 @@ var page = Component.extend({
           }
       },
       '#chkAggregate change': function(item, el, ev) {
-        var self = this;    
+        var self = this;
         //console.log("here");
         if($("#chkAggregate").is(":checked")){
             self.scope.attr("view","country-aggregate");
@@ -555,7 +562,7 @@ var page = Component.extend({
             }
 
           }
-           
+
           console.log("aaa "+self.scope.sortColumns.attr());
            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
            /* All the neccessary parameters will be set in that event */
@@ -564,7 +571,7 @@ var page = Component.extend({
               self.scope.appstate.attr('globalSearch', false);
             }else{
               self.scope.appstate.attr('globalSearch', true);
-            }   
+            }
       },
       "{tokenInput} change": function(){
         var self = this;
@@ -627,10 +634,10 @@ var page = Component.extend({
         if(invoiceData != undefined && invoiceData!=null && invoiceData.length!=0){
           var  gridData = generateTableData(invoiceData,footerData);
           //console.log("grid data for "+currencyType+" currency is "+JSON.stringify(gridData));
-          var rows = new can.List(gridData.data); 
+          var rows = new can.List(gridData.data);
           var footerrows = new can.List(gridData.footer);
           var is_aggregate = self.scope.attr("is_aggregate");
-          
+
           $("#loading_img").hide();
           $('#claimCountryGrid').html(stache('<rn-claim-country-grid rows="{rows}" footerrows="{footerrows}" sortcolumnnames="{sortcolumnnames}" sortdir="{sortdir}" emptyrows="{emptyrows}" is_aggregate="{{is_aggregate}}"></rn-claim-country-grid>')({rows, footerrows, sortcolumnnames:sortedColumns, sortdir:sortDir, emptyrows:false, is_aggregate}));
         } else {
@@ -640,18 +647,18 @@ var page = Component.extend({
         if(self.scope.attr("view") == "country-aggregate"){
           $(".period").hide();
           $(".entityName").hide();
-          
+
         } else {
           $(".period").show();
           $(".entityName").show();
         }
       },
-     
+
 
       '.exportToExcel click':function(el,ev){
           var self = this;
           var tableRowCount=$(".rn-grid > tbody > tr").length;
-          
+
           if(tableRowCount > 0){
             if( this.scope.appstate.attr('excelOutput')==undefined || !this.scope.appstate.attr('excelOutput'))
             self.scope.appstate.attr("excelOutput",true);
@@ -663,14 +670,14 @@ var page = Component.extend({
                             $("#messageDiv").hide();
                         },4000);
           }
-          
+
       },
       '#copyToClipboard click':function(){  console.log($('#myTabs').next('.tab-content').find('.tab-pane:visible table:visible').clone(true));
          $('#clonetable').empty().html($('#myTabs').next('.tab-content').find('.tab-pane:visible table:visible').clone(true).attr('id','dynamic'));
          $('copy-clipboard').slideDown(function(){
            $('body').css('overflow','hidden');
            $('#copyall').trigger('click');
-        });       
+        });
       },
       '{scope.appstate} change': function() {
           var self=this;
@@ -727,7 +734,7 @@ var page = Component.extend({
                   claimLicSearchRequest["regionId"] = "";
                 else
                   claimLicSearchRequest["regionId"] = regId['id'];
-                
+
                 claimLicSearchRequest["country"] = [];
                 if(typeof(countryId)!="undefined")
                   //claimLicSearchRequest.searchRequest["country"].push(countryId['value']);
@@ -747,7 +754,7 @@ var page = Component.extend({
 
                 if(tabView=="licensor")
                   claimLicSearchRequest["offset"] = this.scope.licensorViewOffset;
-                else 
+                else
                   claimLicSearchRequest["offset"] = this.scope.countryViewOffset;
 
                 claimLicSearchRequest["limit"] = this.scope.appstate.attr("fetchSize");
@@ -756,7 +763,7 @@ var page = Component.extend({
 
                 claimLicSearchRequest["view"] = self.scope.attr('view');
                 claimLicSearchRequest["gridName"] = (tabView === "licensor")? "CR_LICENSOR_VIEW":"CR_COUNTRY_VIEW";
-                
+
                 var filterData = self.scope.tokenInput.attr();
                 var newFilterData = [];
                 if(filterData.length>0){
@@ -768,7 +775,7 @@ var page = Component.extend({
                 claimLicSearchRequest["sortBy"] = self.scope.sortColumns.attr().toString();
                 claimLicSearchRequest["sortOrder"] = self.scope.attr('sortDirection');
 
-                
+
                 //console.log("Request are "+JSON.stringify(UserReq.formRequestDetails(claimLicSearchRequest)));
                 console.log("Request are "+JSON.stringify(claimLicSearchRequest));
                 if(tabView=="licensor"){
@@ -851,7 +858,7 @@ var page = Component.extend({
           } else {
             if(this.scope.appstate.attr('globalSearch')==undefined)
               this.scope.appstate.attr('globalSearch',true);
-            
+
             this.scope.attr("localGlobalSearch", this.scope.appstate.attr('globalSearch'));
           }
       }
@@ -860,14 +867,14 @@ var page = Component.extend({
 
 /* generateTableData - This function is used to convert the reponse json in to a format accepted by Grid */
 /* This function calls 'generateFooterData' function to format the footer data accepted by grid */
-/* Two parameters 
-   "invoiceData" - holds the data for Table body, 
-    "footerData" - holds the data for Table footer, 
+/* Two parameters
+   "invoiceData" - holds the data for Table body,
+    "footerData" - holds the data for Table footer,
 */
 var generateTableData = function(invoiceData,footerData){
   //console.log("invoiceData is "+JSON.stringify(invoiceData));
   var gridData = {"data":[], "footer":[]};
-        
+
         for(var i=0;i<invoiceData.length;i++){
             var invTemp = {};
             invTemp["entityId"] = invoiceData[i]["entityId"]+","+ invoiceData[i]["entityName"];
@@ -875,7 +882,7 @@ var generateTableData = function(invoiceData,footerData){
             invTemp["entityName"] = (invoiceData[i]["entityName"]==null)?"":invoiceData[i]["entityName"];
             invTemp["invoiceNumber"] = "";
             invTemp["currency"] = invoiceData[i]["currency"];
-            
+
             invTemp["period"] = "";
             invTemp["country"] = "";
             invTemp["contentType"] = "";
@@ -919,7 +926,7 @@ var generateTableData = function(invoiceData,footerData){
                 invLITemp["invoiceAmount"] = CurrencyFormat(invoiceLineItems[j]["invoiceAmount"]);
 
                 invLITemp["overrepAmount"] = (invoiceLineItems[j]["overrepAmount"])==null?0.00:CurrencyFormat(invoiceLineItems[j]["overrepAmount"]);
-              
+
                 invLITemp["lineDisputeAmount"] = (invoiceLineItems[j]["lineDisputeAmount"])==null?0.00:CurrencyFormat(invoiceLineItems[j]["lineDisputeAmount"]);
 
                 invLITemp["reconAmount"] = CurrencyFormat(invoiceLineItems[j]["reconAmount"]);
@@ -933,13 +940,13 @@ var generateTableData = function(invoiceData,footerData){
                 invLITemp["priorPaid"] = CurrencyFormat(invoiceLineItems[j]["priorPaid"]);
 
                 invLITemp["invPmtSaturation"] = CurrencyFormat(invoiceLineItems[j]["invPmtSaturation"]);
-                
+
                 invLITemp["pmtSaturation"] = CurrencyFormat(invoiceLineItems[j]["pmtSaturation"]);
-                
+
                 invLITemp["overrepDispPer"] = (invoiceLineItems[j]["overrepDispPer"]==null)?0.00:CurrencyFormat(invoiceLineItems[j]["overrepDispPer"]);
-                
+
                 invLITemp["liDispPer"] = (invoiceLineItems[j]["liDispPer"]==null)?0.00:CurrencyFormat(invoiceLineItems[j]["liDispPer"]);
-                
+
                 invLITemp["status"] = getInvoiceStatus(invoiceLineItems[j]["status"]);
                 invTemp["status"] = invLITemp["status"];
                 contentTypeArr.push(invLITemp["contentType"]);
@@ -975,7 +982,7 @@ var generateTableData = function(invoiceData,footerData){
           }
           var footerJson = {"entityId":"","__isChild":false,"entityName":"Total in Regional Currency (EUR)","invoiceNumber":"","currency":"","period":"","country":"","contentType":"","invoiceAmount":"350000","overrepAmount":"20000","lineDisputeAmount":"40000","reconAmount":"30000","oaAllocated":"2000","caAllocated":"2000","balance":"76","priorPaid":"0","invPmtSaturation":"","pmtSaturation":"","overrepDispPer":"","liDispPer":"","status":""};
           //gridData.footer.push(footerJson);
-         
+
           //console.log("footerData is "+JSON.stringify(footerData));
           var formatFooterData = generateFooterData(footerData);
           gridData.footer = formatFooterData;
@@ -987,7 +994,7 @@ var generateTableData = function(invoiceData,footerData){
 /* One parameter "footerData" - holds the footer data */
 var generateFooterData = function(footerData){
     //console.log("footerData is "+JSON.stringify(footerData));
-    var formatFooterData = []; 
+    var formatFooterData = [];
     var footTemp ={};
     footTemp["entityId"] = "";
     footTemp["__isChild"] = false;
@@ -1056,7 +1063,7 @@ function CurrencyFormat(number) {
     }
 }
 function getInvoiceStatus(invStatus){
-//     Invoice Status 
+//     Invoice Status
 // 0 - unpaid (payment amount is zero)
 // 1 - partial
 // 5 - paid (invoice completely paid out)
@@ -1085,15 +1092,15 @@ function alignGrid(divId, is_aggregate){
           tdWidth = theadTdWidth;
         else if(tfootTdWidth >= tbodyTdWidth && tfootTdWidth >= theadTdWidth)
           tdWidth = tfootTdWidth;
-        else 
+        else
           tdWidth = tbodyTdWidth;
 
         /* When aggregate period is checked, 'period' & 'entityName' will be hidden, so its width made 0 */
         if(is_aggregate==1){
-          if(i==2 || i==3) 
+          if(i==2 || i==3)
             tdWidth = 0;
         }
-        
+
         tableWidth += tdWidth;
         cellWidthArr.push(tdWidth);
       }
@@ -1103,7 +1110,7 @@ function alignGrid(divId, is_aggregate){
         for(var j=1;j<=cellWidthArr.length;j++){
           var width = Math.round(cellWidthArr[j-1]+moreWidth);
           if(is_aggregate==1){
-            if(j==2 || j==3) 
+            if(j==2 || j==3)
               width = 0;
           }
           $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
@@ -1122,5 +1129,5 @@ function alignGrid(divId, is_aggregate){
       }
   }
 }
-  
+
 export default page;
