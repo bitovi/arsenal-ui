@@ -116,7 +116,7 @@ var PaymentBundle = Model.extend({
     var appstate = params.appstate;
     if(params.appstate.excelOutput){
        var excelOutput = appstate.attr('excelOutput') != undefined ? appstate.attr('excelOutput') : false;
-       var paymentOption = appstate.paymentOption,
+       var paymentOption = params.paymentType,
             view =  params.view.toUpperCase(),
             bundleId = appstate.bundleId,
             preferredCcy = params.preferredCcy;
