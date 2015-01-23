@@ -37,7 +37,7 @@
       {{/each}}
     </select>
   </div>
-  <button class="btn btn-custom-xs btn-download">Download</button>
+  <span class="glyphicon glyphicon-download-alt btn-download" aria-hidden="true"></span>
 </div>
 <div class="grid-container" id="bundleDetailGridDiv">
   {{#if pageState.selectedBundle.bundleDetailsGroup.length}}
