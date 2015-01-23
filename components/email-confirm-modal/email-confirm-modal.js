@@ -24,33 +24,34 @@ var EmailConfirmModal = can.Component.extend({
       this.element.remove();
     },
     '.submit click': function(el, ev) {
-     
-     var approvalObj = {"emailDetails":[  
-        {  
-           "emailType":"reminder",
-           "mailingList":{  
-              "groupId":null,
-              "roleId":null,
-              "to":[  
-                 "abc@apple.com"
-              ],
-              "bcc":null,
-              "cc":null
-           },
-           "attachments" : null,
-           "dynamicContents": {
-            "Subject": "Reminder for " + this.scope.approval.description,
-            "paymentBundle": this.scope.approval.description,
-            "noOfDaysPending": this.scope.approval.daysPending
-          }
-        }
-     ]};
-      
-      Promise.all([ReminderEmail.create(UserReq.formRequestDetails(approvalObj))]).then(function(values) {
 
+      var approvalObj = {"emailDetails":[  
+          {  
+             "emailType":"bundle_reminder",
+             "mailingList":{  
+                "groupId":null,
+                "roleId":null,
+                "to":[],  
+                     /*[] Currently do not have source to get emailid. Mentioned in radar:19529991*/
+                "bcc":null,
+                "cc":null
+             },
+             "attachments" : null,
+             "dynamicContents": {
+              "PAYMENT_BUNDLE_NAME": this.scope.approval.description,
+              "GROUP_NAME": this.scope.approval.pendingGroup,
+              "PENDING_DAYS": this.scope.approval.pendingDays
+            }
+          }
+       ]};
+      
+          
+        
+        Promise.all([ReminderEmail.create(UserReq.formRequestDetails(approvalObj))]).then(function(values) {
+       
         if((typeof values[0] === "defined") && (values[0]["status"]=="SUCCESS")){
 
-               var msg = "Reminder was sent successfully."
+                var msg = "Reminder was sent successfully."
                 $("#messageDiv").html("<label class='successMessage'>"+msg+"</label>")
                 $("#messageDiv").show();
                 setTimeout(function(){
@@ -70,8 +71,9 @@ var EmailConfirmModal = can.Component.extend({
 
               }
         
-
       });
+
+       
 
       this.element.find('.modal').modal('hide');
       this.element.remove();
