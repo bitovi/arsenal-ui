@@ -432,7 +432,9 @@ var BundleDetailTabs = Component.extend({
           action: action,
           approvalComment: this.scope.approvalComment,
           paymentOption: this.scope.paymentType,
-          priority:bundlePriority
+          priority:bundlePriority,
+          preferredCcy: this.preferredCurr
+
         }).then(function(response) {
 
           commonUtils.displayUIMessage( response.responseCode, response.responseText);
