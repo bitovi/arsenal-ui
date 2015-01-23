@@ -527,11 +527,10 @@ var resetSelectedBundle = function(scope){
 
   var region = scope.appstate.attr('region') != undefined ? scope.appstate.attr('region').id : "";
 
-  Currency.getCurrByRegion(region).done(function(regions) {
+  Currency.getCurrByRegion(region).done(function(curr) {
 
-    console.log("regions :"+regions);
 
-    scope.regionCurr.splice(0, scope.regionCurr.length, ...regions);
+    scope.regionCurr.splice(0, scope.regionCurr.length, ...curr.data);
 
   });
 
