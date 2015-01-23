@@ -99,7 +99,6 @@ var DashboardPayments = Component.extend({
       this.scope.attr('selectedItem', null);
     },
     '.sidebar .chart-list li click': function(el, ev) {
-      console.log('Clicked');
       var item = el.data('item').item;
       this.scope.attr('selectedItem', item);
     }

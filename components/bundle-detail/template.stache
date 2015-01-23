@@ -32,10 +32,12 @@
     <span>Currency</span>
     <select can-value={preferredCurr}>
       <option value="">None</option>
-      <option value="EUR">EUR</option>
+      {{#each regionCurr}}
+      <option>{{value}}</option>
+      {{/each}}
     </select>
   </div>
-  <button class="btn btn-custom-xs btn-download">Download</button>
+  <span class="glyphicon glyphicon-download-alt btn-download" aria-hidden="true"></span>
 </div>
 <div class="grid-container" id="bundleDetailGridDiv">
   {{#if pageState.selectedBundle.bundleDetailsGroup.length}}
