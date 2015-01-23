@@ -118,15 +118,13 @@ var PaymentBundle = Model.extend({
        var excelOutput = appstate.attr('excelOutput') != undefined ? appstate.attr('excelOutput') : false;
        var paymentOption = params.paymentType,
             view =  params.view.toUpperCase(),
-            bundleId = appstate.bundleId,
-            preferredCcy = params.preferredCcy;
+            bundleId = appstate.bundleId;
 
        var data = {
            paymentBundle: {
               bundleId,
               paymentOption,
               view,
-              preferredCcy,
               periodType: params.appstate.periodType
             },
             bundleSearch: requestHelper.formGlobalRequest(appstate).searchRequest
@@ -134,6 +132,10 @@ var PaymentBundle = Model.extend({
        if(excelOutput!=false){
           data["excelOutput"]=true
        }
+       if(params.preferredCcy !== ""){
+         data.paymentBundle["preferredCcy"]=params.preferredCcy;
+       }
+
 
        if(appstate.attr('detail')){
          appstate.attr('detail',false);
@@ -155,8 +157,7 @@ var PaymentBundle = Model.extend({
     }else{
         var paymentOption = params.paymentType,
             view = params.view.toUpperCase(),
-            bundleId = params.bundleID,
-            preferredCcy = params.preferredCcy;
+            bundleId = params.bundleID;
 
 
             var filterFormatted = [];
@@ -170,7 +171,6 @@ var PaymentBundle = Model.extend({
             bundleId,
             paymentOption,
             view,
-            preferredCcy,
             periodType: params.appstate.periodType
           },
          bundleSearch: {
@@ -178,10 +178,14 @@ var PaymentBundle = Model.extend({
           }
         };
 
+        if(params.preferredCcy !== ""){
+          data.paymentBundle["preferredCcy"]=params.preferredCcy;
+        }
+
         if (params.paginate) {
           data.bundleSearch["offset"] = params.paginate.offset;
           data.bundleSearch["sortBy"] =  params.paginate.sortBy.attr().toString()
-          data.bundleSearch["limit"] = constants.PAGINATE_LIMIT;
+          data.bundleSearch["limit"] = 2;
           data.bundleSearch["sortOrder"] = params.paginate.sortDirection;
         }
 
@@ -240,6 +244,7 @@ var PaymentBundle = Model.extend({
           bundle = bundle.hasOwnProperty('responseCode') ? bundle.paymentBundle : bundle;
           if(params.paginate.offset > 0){
             self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
+            self.attr('bundleFooter', transformFooter(bundle.bdlFooter));
           }else{
             self.attr(bundle.attr());
             self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
@@ -375,6 +380,11 @@ var PaymentBundle = Model.extend({
     if(params.priority != undefined ) {
       bundleData["priority"] = params.priority;
     }
+
+    if(params.action !== 'delete' &&  params.preferredCcy !== ""){
+      bundleData["preferredCcy"] = params.preferredCcy;
+    }
+
 
     var requestData = {
       paymentBundle: bundleData
