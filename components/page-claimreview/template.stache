@@ -6,9 +6,9 @@
 	<div id="messageDiv" class="col-md-12"></div>
 	<div id="highChartDetails" class="highcharts_Hide"></div>
 </div> -->
-<div class="div-warn-container" style="padding-left: 10px;padding-right: 10px;">
+<div class="div-warn-container" style="height:40px;">
   <div class="row pagetitle-div-parent">
-    <div class="col-sm-5 pageTitleInv">
+    <div class="col-sm-5 pageTitle" style="padding-left: 30px;">
       <div class="pageHead">Claim Review</div>
     </div>
   </div>
@@ -30,7 +30,7 @@
     	</select>-->
     </div>
 
-    <div class="col-lg-12 paddingLeft0">
+    <div class="col-lg-12 /*paddingLeft0*/">
 	    <ul id="myTabs" class="nav nav-tabs">
 		   <li class="active">
 		      <a id="licView" href="#licensorView" data-toggle="tab">
