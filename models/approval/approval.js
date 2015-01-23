@@ -6,7 +6,7 @@ var Approval = can.Model.extend({
 
   findAll: function(params) {
     return $.ajax({
-      url: URLs.UI_SERVICE_URL + (params.mailbox || 'inbox'),
+      url: URLs.INTEGRATION_SERVICE_URL + (params.mailbox || 'inbox'),
       type: 'POST',
       data: {
         comment: params.comment || null,

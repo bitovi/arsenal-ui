@@ -37,6 +37,7 @@ appstate.bind('page', function(ev, newVal, oldVal) {
       appstate.attr("fetchSize",55);
     }
     $('#page').html(can.stache(template)({appstate: appstate}));
+    $(window).scrollTop(0);
   }).catch(function(ex) {
     // TODO: Do something more intelligent with miss cases, like defaulting to the Dashboard.
     $('#page').html('<p class="error">Invalid page!</p>');

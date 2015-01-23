@@ -18,14 +18,14 @@
 </div>
 <div class="button-ctrls">
   <div class="center">
-    <button id="btnDelete" class="btn btn-primary buttonSubmit btn-custom-small" type="button" disabled>Delete</button>
-    <button type="button" class="btn btn-primary buttonSubmit btn-custom-small" style="margin-left:10px;" id="btnAdd">Add</button>
+    <button type="button" class="btn btn-primary buttonSubmit btn-custom-small" style="margin-left:0px;" id="btnAdd">Add</button>
     <button type="button" class="btn btn-primary buttonSubmit btn-custom-small" style="margin-left:10px;" id="btnAddFromiCSV">Add from ICSV</button>
-  <!--  <div class="vertical-line "></div> -->
-    <button id="btnAttach" type="button" class="btn btn-primary buttonSubmit btn-custom-small" style="margin-left:10px;" disabled>Attach</button>
+    <div class="vertical-line" style="margin-left:10px;"></div>
+    <button id="btnDelete" class="btn btn-primary buttonSubmit btn-custom-small" style="margin-left:10px;" type="button" disabled>Delete</button>
+    <button id="btnAttach" type="button" class="btn btn-primary buttonSubmit btn-custom-small"  disabled>Attach</button>
   </div>
   <div class="col-sm-7" id="searchDiv">
-    <input type="text" class="form-control" id="tokenSearch" >
+    <input type="text" class="form-control" id="tokenSearch" style="height: 20px !important;" >
     <img class="exportToExcel" id="exportExcel" style="padding-top: 1px;height:18px;width:18px;">
     <img class="copyToClipboard" id="copyToClipboard" style="padding-top: 1px;height:18px;width:18px;">
   </div>

@@ -19,6 +19,7 @@ var DashboardPaymentsOverview = Component.extend({
       var self = this;
       var value1 = this.attr('summary').percentagePaid;
       var value = formats.formatIfValue(value1,_.isNumber, formats.decimalAsPercent, '0%');
+      console.log('value',value);
       this.attr('percent',value);
 
       return function(div) {
