@@ -55,13 +55,9 @@
 	   <div class="export-toexcel" id="exportExcel"></div>
 	    <!-- Tab Details -->
 	    <ul id="myTabs" class="nav nav-tabs">
-		   	<li class="active">
-		      	<a id = "newonAccount" href="#NewonAccountDiv" data-toggle="tab">
-		        	New On Account
-		      	</a>
-		   	</li>
-		   	<li><a id = "onAccountBalance" href="#onAccountBalanceDiv" data-toggle="tab">On Account Balance</a></li>
+		   	<li class="active"><a id = "onAccountBalance" href="#onAccountBalanceDiv" data-toggle="tab">On Account Balance</a></li>
 		   	<li><a id = "proposedonAccount" href="#proposedonAccountDiv" data-toggle="tab">Proposed On Account</a></li>
+		   	<li><a id = "newonAccount" href="#NewonAccountDiv" data-toggle="tab">New On Account</a></li>
 
 		   	<li class="pull-right marginLeft-5 marginTop-10">
 		   		<img class="exportToExcel" id="proposeExportToExcel">
@@ -93,7 +89,7 @@
 		<div id="myTabContent" class="tab-content">
 
 		   	<!-- New On Account -->
-		   	<div class="tab-pane fade in active" id="NewonAccountDiv">
+		   	<div class="tab-pane fade" id="NewonAccountDiv">
 		   		<div id="newonAccountGrid"><div id="loading_img"></div></div>
 
 			       	<div class="col-lg-12 marginTop-10 lightestGrey" id='newonAccountGridComps'>
@@ -108,7 +104,7 @@
 								<!-- <label class="text-right" for="inputCountry">Bundle Name:</label> -->
 								<span class="pull-inline col-sm-2" >Bundle Name:</span>
 						        <!-- <div class="col-sm-6 requiredBar text-left"> -->
-	                				<span class="pull-inline col-sm-10 newOnAccBundle" id="paymentBundle"><create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}" cancelnewbundlereq="{{cancelnewbundlereq}}"></create-pb></span>
+	                				<span class="pull-inline col-sm-10 newOnAccBundle requiredBar" id="paymentBundle"><create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}" cancelnewbundlereq="{{cancelnewbundlereq}}"></create-pb></span>
 						        <!-- </div> -->
 			       		</div>
 
@@ -130,7 +126,7 @@
 		   	</div>
 
 		  	<!-- On Account Balance -->
-		   	<div class="tab-pane fade" id = "onAccountBalanceDiv">
+		   	<div class="tab-pane fade in active" id = "onAccountBalanceDiv">
 		   		<div id="onAccountBalanceGrid"><div id="loading_img"></div></div>
 			</div>
 
