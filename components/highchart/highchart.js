@@ -46,6 +46,7 @@ var highchartpage = Component.extend({
    	    	  var servicedata = values[0].historicalTrends;
    	    	   		if(values[0].historicalTrends.length){
    	    	   			highChartdata = prepareCanMap(values[0].historicalTrends);
+   	    	   			$("#chartContainer").addClass("highcharts_Overlay");
    	    	   			$("#highChartDetails").removeClass("highcharts_Hide");
 			    		$('#highChartDetails').highcharts({
 			    			chart: {
@@ -132,7 +133,7 @@ var highchartpage = Component.extend({
 						console.log('high chart did not return any data');
 						$("#highChartDetails").addClass("highcharts_Hide");
 						 $("#messageDiv").html("<label class='errorMessage'>Data not available</label>");
-						 $("#chartContainer").removeClass('highcharts_Overlay');
+						 //$("#chartContainer").removeClass('highcharts_Overlay');
 			             $("#messageDiv").show();
 			             setTimeout(function(){
 			                $("#messageDiv").hide();

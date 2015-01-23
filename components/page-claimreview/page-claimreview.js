@@ -438,7 +438,7 @@ var page = Component.extend({
         
         if(this.scope.details.isChild){
           $("#messageDiv").hide();
-          $("#chartContainer").addClass("highcharts_Overlay");
+          //$("#chartContainer").addClass("highcharts_Overlay");
           var data = this.scope.details;
              $("#highChartDetails").append(stache('<high-chart details={data}></high-chart>')({data}));
         }else{          

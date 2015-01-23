@@ -322,7 +322,7 @@ var BundleDetailTabs = Component.extend({
       if(this.scope.details.isChild && this.scope.details.contentType !== "TAX"){
         var data = this.scope.details;
         console.log("chart data");console.log(data);
-        $("#chartContainer").addClass("highcharts_Overlay");
+        //$("#chartContainer").addClass("highcharts_Overlay");
         $("#highChartDetails").append(stache('<high-chart details={data}></high-chart>')({data}));
       }else{
         console.log('Data not set so not showing the chart');
