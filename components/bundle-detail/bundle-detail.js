@@ -361,7 +361,7 @@ var BundleDetailTabs = Component.extend({
       self.scope.appstate.attr('detail', true);
       if(this.scope.appstate.excelOutput ) {
         var view;
-        if(bundle.bundleType === 'REGULAR_INV') {
+        if(this.scope.pageState.selectedBundle.bundleType === 'REGULAR_INV') {
           view = this.scope.attr('selectedTab').value;
           if(view === 'country' && this.attr('aggregatePeriod')) {
             view = 'aggregated';
