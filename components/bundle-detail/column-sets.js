@@ -125,7 +125,6 @@ var columns = {
         }else{
           return formats.formatIfValue(row.paymentSaturation,_.isNumber, formats.decimalAsPercent, '0%');
         }
-
     }
   },
  'invoicePaymentSaturation': {
