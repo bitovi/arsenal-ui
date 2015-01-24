@@ -246,7 +246,7 @@ var GlobalParameterBar = Component.extend({
       setTimeout(function(){
         if($("input[name='selAllContentType']").prop("checked"))
         {
-          self.scope.changesToApply.attr('contentType', ["-1"]);
+          this.scope.allContentTypes.attr().lenght() > 1 ? self.scope.changesToApply.attr('contentType', ["-1"]) : "";
         }
         else if($(el[0]).val() == null)
         {
