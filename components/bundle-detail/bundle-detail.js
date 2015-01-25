@@ -360,7 +360,23 @@ var BundleDetailTabs = Component.extend({
       self.scope.appstate.attr('excelOutput', true);
       self.scope.appstate.attr('detail', true);
       if(this.scope.appstate.excelOutput ) {
-        PaymentBundle.findOne({appstate: this.scope.appstate}).then(function(data) {
+        var view;
+        if(this.scope.pageState.selectedBundle.bundleType === 'REGULAR_INV') {
+          view = this.scope.attr('selectedTab').value;
+          if(view === 'country' && this.attr('aggregatePeriod')) {
+            view = 'aggregated';
+          }
+        } else {
+          view = 'licensor';
+        }
+
+        var params = {
+          appstate: this.scope.appstate,
+          view: view,
+          paymentType: this.scope.paymentType,
+          preferredCcy: this.scope.preferredCurr
+        };
+        PaymentBundle.findOne(params).then(function(data) {
           console.log(data);
          if (data != undefined && data["status"] == "SUCCESS" && data["exportExcelFileInfo"] != null) {
             self.scope.appstate.attr("excelOutput",false);
@@ -416,7 +432,9 @@ var BundleDetailTabs = Component.extend({
           action: action,
           approvalComment: this.scope.approvalComment,
           paymentOption: this.scope.paymentType,
-          priority:bundlePriority
+          priority:bundlePriority,
+          preferredCcy: this.preferredCurr
+
         }).then(function(response) {
 
           commonUtils.displayUIMessage( response.responseCode, response.responseText);
@@ -524,6 +542,7 @@ var resetSelectedBundle = function(scope){
   $(".previousComments").val();
   $(".previousComments").hide();
   scope.attr("approvalComment", '');
+  scope.attr("preferredCurr", '');
 
   var region = scope.appstate.attr('region') != undefined ? scope.appstate.attr('region').id : "";
 

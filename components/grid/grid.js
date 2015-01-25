@@ -99,13 +99,8 @@ var Grid = Component.extend({
         return !!row.attr('__isOpen');
       };
 
-      var isOddRowChk = function(row) {
-        // by default, just looking for __isOddRow = true
-        return !!row.attr('__isOddRow');
-      };
-
-      var out = [],
-          childRowsAreVisible = false;
+      var out = [],parentRowIndex=-1,
+      childRowsAreVisible = false;
       can.__reading(this.rows, 'change'); // TODO: figure out if there's a better way to do this.
                                           // Note for others - don't use can.__reading yourself!
       return _.map(this.rows, function(row) {
@@ -116,10 +111,8 @@ var Grid = Component.extend({
         // this flag is only true for the children of an open parent row
         if(!isChild) {
           childRowsAreVisible = isRowOpen(row);
-        }
-
-        if(!isChild && isOddRowChk(row)){
-          isOddRow=true;
+          parentRowIndex++;
+          if( parentRowIndex % 2 != 0){isOddRow=true;}
         }
 
         //if stripped grid parameter enables and if it is not a child record then

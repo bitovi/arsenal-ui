@@ -67,7 +67,7 @@ fileUpload.extend({
         $('propose-rn-file-uploader').data('_d_uploadedFileInfo', this.scope.uploadedfileinfo);
           this.scope.fileList.replace(this.scope.uploadedfileinfo);
 
-      }, 
+      },
       "{deletedFileInfo} change":function(){
         //this.scope.deletedFileInfo.replace(this.scope.deletedFileInfo);
         $('propose-rn-file-uploader').data('_d_deletedFileInfo', this.scope.deletedFileInfo);
@@ -128,12 +128,12 @@ var page = Component.extend({
        if(self.scope.tabsClicked=="ON_ACC_BALANCE"){
           $('#newonAccountGrid, #newonAccountGridComps, #proposedonAccountDiv,#proposeOnAccountGridComps, #forminlineElements,#searchDiv, #onAccountEditDeleteDiv').hide();
        }
-       
+
         var defaultRequest=setTheDefaultParameters(self.scope.appstate);
         self.scope.attr('defaultRequest',defaultRequest);
 
        setTimeout(function(){
-        $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={defaultRequest}></rn-onaccount-balance-grid>')({defaultRequest})); 
+        $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={defaultRequest}></rn-onaccount-balance-grid>')({defaultRequest}));
        }, 10);
           disablePropose(true);
           disableCopyOnAccount(true);
@@ -155,12 +155,12 @@ var page = Component.extend({
                 hidethePeriods();
             }
         },
-      '#proposeCopyToClipboard click':function(){ 
+      '#proposeCopyToClipboard click':function(){
          $('#clonetable').empty().html($('.copyToClipboard').closest('#myTabs').next('.tab-content').find('.tab-pane:visible table:visible').clone(true).attr('id','dynamic'));
          $('copy-clipboard').slideDown(function(){
            $('body').css('overflow','hidden');
            $('#copyall').trigger('click');
-        });       
+        });
       },
       "#paymentBundleNames change": function(){
           var self = this;
@@ -227,7 +227,7 @@ var page = Component.extend({
     },
       '{scope.appstate} change': function() {
          var self = this;
-         self.scope.attr('errorMessage',''); 
+         self.scope.attr('errorMessage','');
          if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch')){
             this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
             var genObj = {};
@@ -242,7 +242,7 @@ var page = Component.extend({
             request.quarters=quarters;
             if(self.scope.tabsClicked=="NEW_ON_ACC"){
                   message = validateFilters(self.scope.appstate,true,true,true,true,true);
-                  self.scope.attr('errorMessage',message); 
+                  self.scope.attr('errorMessage',message);
                   if(message.length == 0){
                     //console.log("inside NEW_ON_ACC");
                     $('#newonAccountGrid, #newonAccountGridComps').show();
@@ -265,7 +265,7 @@ var page = Component.extend({
                 }
             } else if(self.scope.tabsClicked=="ON_ACC_BALANCE"){
               message = validateFilters(self.scope.appstate,true,false,false,false,false);
-              self.scope.attr('errorMessage',message); 
+              self.scope.attr('errorMessage',message);
               self.scope.appstate.attr("offset", self.scope.attr('balanceOnAccOffset'));
               self.scope.appstate.attr("sortBy", self.scope.sortColumns.attr().toString());
               self.scope.appstate.attr("sortOrder", self.scope.attr('sortDirection'));
@@ -273,16 +273,16 @@ var page = Component.extend({
               if(message.length == 0){
                 //request.searchRequest["type"] = "BALANCE";
                   request.appstate=this.scope.appstate;
-                 $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={request}></rn-onaccount-balance-grid>')({request})); 
-                }    
+                 $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={request}></rn-onaccount-balance-grid>')({request}));
+                }
               } else if(self.scope.tabsClicked=="PROPOSED_ON_ACC"){
                   message = validateFilters(self.scope.appstate,true,false,false,false,false);
-                  self.scope.attr('errorMessage',message); 
+                  self.scope.attr('errorMessage',message);
                   if(message.length == 0){
                       self.scope.attr('loadProposedONAccountPage',Date.now());
                   }
                 }
-          }       
+          }
       },
       "#onAccountBalance click":function(el, ev){
         ev.preventDefault();
@@ -313,7 +313,7 @@ var page = Component.extend({
           $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid emptyrows="{emptyrows}"></rn-new-onaccount-grid>')({emptyrows:true}));
        }
 
-        
+
       },
       "#proposedonAccount click":function(el, ev){
         var self = this;
@@ -330,7 +330,7 @@ var page = Component.extend({
         self.scope.attr('populateDefaultData',true);
         self.scope.appstate.attr('globalSearchButtonClicked',true);
         self.scope.attr('loadProposedONAccountPage',Date.now());
-        
+
        // if (!$("rn-proposed-onaccount-grid").find("tbody>tr").length) {
        //   $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
        // }
@@ -369,7 +369,7 @@ var page = Component.extend({
               var request = {};
               var rows = utils.frameRows(self.scope.attr('licensorCurrencies'),self.scope.quarters);
               request.rows=rows;
-              request.quarters=self.scope.quarters;   
+              request.quarters=self.scope.quarters;
               $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
               $('#usercomments').val("");
               self.scope.attr('cancelnewbundlereq',true);
@@ -412,7 +412,7 @@ var page = Component.extend({
         var self = this;
         var comments = $(".new-comments").val();
         //Remove this for domain services
-     
+
            var updatableRows = [];
           var req = self.scope.request;
           var type = 'EDIT';
@@ -542,14 +542,14 @@ var page = Component.extend({
       },
       "{scope} loadProposedONAccountPage": function(){
           var self = this;
-          //var quarters = self.scope.quarters;         
+          //var quarters = self.scope.quarters;
           self.scope.attr('showLoadingImage',true);
           if(self.scope.appstate.attr('globalSearchButtonClicked')==true){
             self.scope.attr("proposeOnAccOffset",0);
             self.scope.attr("tableScrollTop",0);
             self.scope.sortColumns.replace([]);
             self.scope.attr('sortDirection','asc');
-          }  
+          }
           self.scope.appstate.attr("offset", self.scope.attr('proposeOnAccOffset'));
           self.scope.appstate.attr("sortBy", self.scope.sortColumns.attr().toString());
           self.scope.appstate.attr("sortOrder", self.scope.attr('sortDirection'));
@@ -570,7 +570,7 @@ var page = Component.extend({
                 var finalRows = returnValue['ROWS'];
                 if(self.scope.attr('proposeOnAccOffset') > 0){
                   finalRows = self.scope.previouslyFetchOnAccRows.concat(returnValue['ROWS']);
-                } 
+                }
                 //var finalRows = self.scope.previouslyFetchOnAccRows.concat(returnValue['ROWS']);
 
                 var footerRows = utils.createFooterRow(data.onAccount.onAccountFooter);
@@ -609,7 +609,7 @@ var page = Component.extend({
                         self.scope.uploadedfileinfo.replace([]);
                     }
 
-                    //$('#proposeuploadFile').html(stache('<propose-rn-file-uploader uploadedfileinfo={docs}></propose-rn-file-uploader>')({docs:data.documents})); 
+                    //$('#proposeuploadFile').html(stache('<propose-rn-file-uploader uploadedfileinfo={docs}></propose-rn-file-uploader>')({docs:data.documents}));
 
                 }else{
                     $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
@@ -637,10 +637,10 @@ var page = Component.extend({
          // console.log("docu changed "+JSON.stringify(this.scope.documents.attr()));
       },
       '.exportToExcel click':function(el,ev){
-       
+
         var self = this;
        if(self.scope.tabsClicked=="ON_ACC_BALANCE"){
-              onAccountBalance.findOne(createBalanceOnAccountRequestForExportToExcel(self.scope.appstate),function(data){ 
+              onAccountBalance.findOne(createBalanceOnAccountRequestForExportToExcel(self.scope.appstate),function(data){
                       if(data["status"]=="SUCCESS"){
                         $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
                       }else{
@@ -653,12 +653,12 @@ var page = Component.extend({
                       }
                 }, function(xhr) {
                       console.error("Error while loading: onAccount balance Details"+xhr);
-                } ); 
+                } );
          } else if(self.scope.tabsClicked=="PROPOSED_ON_ACC"){
             //createProposedOnAccountRequestForExportToExcel
 
 
-               proposedOnAccount.findOne(createProposedOnAccountRequestForExportToExcel(self.scope.appstate),function(data){ 
+               proposedOnAccount.findOne(createProposedOnAccountRequestForExportToExcel(self.scope.appstate),function(data){
                       if(data["status"]=="SUCCESS"){
                         $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
                       }else{
@@ -671,7 +671,7 @@ var page = Component.extend({
                       }
                 }, function(xhr) {
                       console.error("Error while loading: onAccount balance Details"+xhr);
-                } ); 
+                } );
 
 
          }
@@ -832,7 +832,7 @@ var displayMessage=function(message,isSuccess){
     $("#messageDiv").html("<label class='successMessage'>"+message+"</label>");
   }else{
       $("#messageDiv").html("<label class='errorMessage'>"+message+"</label>");
-  } 
+  }
   $("#messageDiv").show();
   setTimeout(function(){
       $("#messageDiv").hide();
@@ -943,7 +943,7 @@ var validateFilters=function(appstate,validateQuarter,validateStoreType,validate
       }else if(validateContentType && (contGrpId.attr().length >1  || contGrpId[0] == "-1")){
         return "Please select single contentType !";
       }
-     
+
      return "";
   }
 

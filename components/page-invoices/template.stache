@@ -8,11 +8,11 @@
 </div> -->
 <div class="div-warn-container" style="height:40px;">
   <div class="row pagetitle-div-parent" style="height:40px;">
-    <div class="col-sm-5 pageTitleInv" style="padding-top: 5px;">
+    <div class="col-sm-5" style="padding-top: 5px;padding-left: 0px;">
       <div class="pageHead">Search Invoice</div>
     </div>
   </div>
-  <div class="col-sm-7 div-warn-parent" style="padding-top: 6px;">
+  <div class="col-sm-7 div-warn-parent" style="padding-top: 6px;height:40px;">
     <div id="messageDiv" class="center" role="alert"></div>
   </div>
 </div>

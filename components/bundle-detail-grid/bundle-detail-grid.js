@@ -199,12 +199,11 @@ var BundleDetailGrid = ScrollingGrid.extend({
             $.merge(this.scope.rows, this.scope.makeRowsFromBundle(this.scope.pageState.selectedBundle));
             this.scope.rows.replace(this.scope.rows);
           }
-
       }else{
         this.scope.localOffsetTracker = 0;
         this.scope.rows.splice(0, this.scope.rows.length, ...this.scope.makeRowsFromBundle(this.scope.pageState.selectedBundle));
-        this.scope.aggregateRows.splice(0, this.scope.aggregateRows.length, ...this.scope.makeAggregateRowsFromBundle(this.scope.pageState.selectedBundle));
       }
+      this.scope.aggregateRows.splice(0, this.scope.aggregateRows.length, ...this.scope.makeAggregateRowsFromBundle(this.scope.pageState.selectedBundle));
 
     },
     'tbody tr click': function(el, ev) {

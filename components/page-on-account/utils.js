@@ -6,7 +6,7 @@ getQuarter:function(periodFrom,periodTO){
     var qFrom = periodFrom.substring(1, 2);
     var qTo = periodTO.substring(1, 2);
     var yearFrom = periodFrom.substring(periodFrom.length, periodFrom.length-2);
-    var yearTo = periodTO.substring(periodTO.length, periodTO.length-2);  
+    var yearTo = periodTO.substring(periodTO.length, periodTO.length-2);
     if(qFrom == qTo && yearFrom == yearTo){
         var sam = "Q"+qFrom+"FY"+yearFrom;
         obj.push(sam);
@@ -15,15 +15,15 @@ getQuarter:function(periodFrom,periodTO){
          for(var i=yearFrom;i<=yearTo;i++){
              var quarterTo = qTo;
              if(i != yearTo){
-                quarterTo = 4;  
+                quarterTo = 4;
              }
               if(count>0){
-               qFrom =1;  
+               qFrom =1;
              }
              for(var j = qFrom ; j <= quarterTo; j++){
                 obj.push("Q"+j+"FY"+i);
             }
-            count = count+1;  
+            count = count+1;
          }
     }else{
         for(var i = qFrom ; i <= qTo; i++){
@@ -66,13 +66,13 @@ var onAccountCreateRequest ={};
                       var period = this.getPeriodForQuarter(quarters[k]);
                       onAccountDetails.fiscalPeriod=period+'';
                       onAccountDetails.onAccountAmt=rows[i][quarters[k]];
-                      onAccountCreateRequest.onAccount.onAccountDetails.push(onAccountDetails);  
-                    }    
+                      onAccountCreateRequest.onAccount.onAccountDetails.push(onAccountDetails);
+                    }
                 }
            }else{
             licensorName=rows[i].licensor;
            }
-           
+
         }
      }
 
@@ -81,9 +81,9 @@ var onAccountCreateRequest ={};
         commentobj.comments=comments;
         commentobj.createdBy="2002005722";
         commentobj.createdDate=Date.now();
-        onAccountCreateRequest.onAccount.comments.push(commentobj);    
+        onAccountCreateRequest.onAccount.comments.push(commentobj);
     }
-    
+
     if(documents!= null && documents.length>0){
         // for(var i=0;i<documents.length;i++){
         //     var documentsObj={};
@@ -170,7 +170,7 @@ var onAccountUpdateRequest ={};
     onAccountUpdateRequest.onAccount.bundleId="";
     onAccountUpdateRequest.onAccount.bundleName="";
 
- 
+
     onAccountUpdateRequest.onAccount.onAccountDetails=[];
     onAccountUpdateRequest.onAccount.comments=[];
     onAccountUpdateRequest.onAccount.documents=[];
@@ -193,9 +193,9 @@ var onAccountUpdateRequest ={};
                       //onAccountDetails.onAccountAmt=onAccountRows[i][fiscalPeriod];
                       onAccountDetails.commentId=onAccountRows[i].commentId;
                       onAccountDetails.docId=onAccountRows[i].docId;
-                      onAccountDetails.countryId=''; 
+                      onAccountDetails.countryId='';
                       if(onAccountRows[i].countryId != undefined){
-                        onAccountDetails.countryId=onAccountRows[i].countryId;  
+                        onAccountDetails.countryId=onAccountRows[i].countryId;
                       }
                       onAccountDetails.entityId=onAccountRows[i].entityId;
                       onAccountDetails.entityName=onAccountRows[i].Licensor;
@@ -210,8 +210,8 @@ var onAccountUpdateRequest ={};
                         var amount = Number(onAccountRows[i][fiscalPeriod].replace(/,/g,''));
                         if(amount >0){
                           onAccountDetails.onAccountAmt=amount;
-                          onAccountUpdateRequest.onAccount.onAccountDetails.push(onAccountDetails);    
-                        } 
+                          onAccountUpdateRequest.onAccount.onAccountDetails.push(onAccountDetails);
+                        }
                       }
                   }
                 }
@@ -223,9 +223,9 @@ var onAccountUpdateRequest ={};
         commentobj.comments=comments;
         commentobj.createdBy="2002005722";
         commentobj.createdDate=Date.now();
-        onAccountUpdateRequest.onAccount.comments.push(commentobj);    
+        onAccountUpdateRequest.onAccount.comments.push(commentobj);
     }
-    
+
     if(documents!= null && documents.length>0){
         //for(var i=0;i<documents.length;i++){
             // var documentsObj={};
@@ -310,7 +310,7 @@ frameRows:function(data,quarters){
         var childrow ={};
         childrow.licensor="";
         childrow.entityId=currencies[k].id;
-        childrow.currency=currencies[k].value;  
+        childrow.currency=currencies[k].value;
         for(var z=0;z<quarters.length;z++){
             childrow[quarters[z]]=0;
           }
@@ -359,8 +359,8 @@ prepareRowsForDisplay:function(onAccountDetails,quarters){
               }
            }
           if(addToRow){
-            rows.push(row);  
-          } 
+            rows.push(row);
+          }
         }
         row=this.createRow(onAccountDetails[i],true,"");
         periodMap[period]=onAccountDetails[i].onAccountAmt;
@@ -378,8 +378,8 @@ prepareRowsForDisplay:function(onAccountDetails,quarters){
         }
      }
     if(addToRow){
-      rows.push(row);  
-    } 
+      rows.push(row);
+    }
   }
    return rows;
 },
@@ -414,7 +414,7 @@ getDisplayPeriod: function(quarter){
   }
     var year = quarter.substring(0, 4);
     var period = quarter.substring(quarter.length, quarter.length-2);
-    return (quarters[period]+'FY'+year.substring(year.length, year.length-2));  
+    return (quarters[period]+'FY'+year.substring(year.length, year.length-2));
   },
   getFiscalPeriod: function (period){
     if(period==undefined){
@@ -429,7 +429,7 @@ getDisplayPeriod: function(quarter){
     var summaryRows=[];
     var detailRows=[];
     if(onAccountFooter.onAccountFooterSummary != undefined && onAccountFooter.onAccountFooterSummary.length >0){
-      summaryRows = this.getFooterRow(onAccountFooter.onAccountFooterSummary,true);  
+      summaryRows = this.getFooterRow(onAccountFooter.onAccountFooterSummary,true);
     }
      if(onAccountFooter.onAccountFooterDetails != undefined && onAccountFooter.onAccountFooterDetails.length >0){
       detailRows=this.getFooterRow(onAccountFooter.onAccountFooterDetails,false);
@@ -466,7 +466,7 @@ getDisplayPeriod: function(quarter){
   createNewFooterRow:function(footerData,newRow,footerRow,isParent){
   if(newRow){
     footerRow={};
-  } 
+  }
   if(isParent){
     footerRow["Licensor"]= "Total in Regional currency";
     footerRow["__isChild"]=false;
@@ -517,8 +517,8 @@ prepareOnAccountRowsForDisplay:function(onAccountDetails,quarters){
               }
            }
           if(addToRow){
-            rows.push(row);  
-          } 
+            rows.push(row);
+          }
           //rows.push(row);
         }
         row=this.createRow(onAccountDetails[i],true,"");
@@ -540,8 +540,8 @@ prepareOnAccountRowsForDisplay:function(onAccountDetails,quarters){
         }
      }
     if(addToRow){
-      rows.push(row);  
-    } 
+      rows.push(row);
+    }
   }
    var returnValue = new Array();
       returnValue['ROWS']=rows;
@@ -550,7 +550,7 @@ prepareOnAccountRowsForDisplay:function(onAccountDetails,quarters){
         returnValue['BUNDLE_NAMES']='Multiple';
       }else{
         returnValue['BUNDLE_NAMES']=arr.toString();
-      } 
+      }
       return returnValue;
    //return rows;
 },
@@ -603,7 +603,7 @@ getProposedOnAccRows:function(quarters,data){
         returnValue['BUNDLE_NAMES']='Multiple';
       }else{
         returnValue['BUNDLE_NAMES']=bundleNames;
-      } 
+      }
       return returnValue;
     },
 currencyFormat : function (number)
@@ -619,7 +619,7 @@ currencyFormat : function (number)
     }
   }
 
-    
+
 };
 
 export default utils;

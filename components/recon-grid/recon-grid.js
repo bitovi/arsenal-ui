@@ -58,6 +58,7 @@ var reconGrid = Grid.extend({
               //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
               
               var tabSelected = parentScopeVar.attr('tabSelected');
+              parentScopeVar.attr("load", false);
               if(tabSelected=="Incoming Other") {
               /* Reset the offset value and call the webservice to fetch next set of records */
                 var offsetVal = parentScopeVar.attr('offset');
