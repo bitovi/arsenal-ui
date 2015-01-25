@@ -272,7 +272,6 @@ var getEntityDataList=function(entityIds,dataList,holesReport,localSociety,licen
          return value.entityId == id;
        });
     if(obj != undefined){
-        hole.isCCIDExpect=(obj.isCCIDExpect == 1) ? true : false;
         hole.pdfCount=obj.pdfCount;
         hole.ccidCount=obj.ccidCount;
         if(obj.pdfCount > obj.ccidCount){
@@ -281,8 +280,10 @@ var getEntityDataList=function(entityIds,dataList,holesReport,localSociety,licen
         }else if(obj.pdfCount < obj.ccidCount){
           display="CCID";
           displayBackGreen = false;
-        }else{
+        }else if(obj.pdfCount>0 && obj.ccidCount>0){
           showImage=true;
+        }else{
+          displayBackGreen = false;
         }
 
         hole.show = display;
@@ -293,6 +294,8 @@ var getEntityDataList=function(entityIds,dataList,holesReport,localSociety,licen
        
         hole.isLA = (obj.laFlag == 'Y') ? true : false;
         hole.showImage=showImage;
+    }else{
+      hole.isLicensorInvalidForCountry=true;
     }
     holesList.push(hole);
   });
@@ -309,7 +312,7 @@ var getEntityDataList=function(entityIds,dataList,holesReport,localSociety,licen
       });
     holesReport.holesList=holesList;
     holesReport.localDisplay=localDisplay;
-    holesReport.displayBackGreen=displayBackGreen;
+    holesReport.displayBackGreen=(displayBackGreen)?true:undefined;
 
   return holesReport;
 
@@ -348,9 +351,9 @@ var getMissing=function(pdfCnt,ccidCnt){
   var missing ="";
     if(pdfCnt < 1 && ccidCnt < 1) {
       missing =  'PDF + CCID';
-    } else if(pdfCnt < 1) {
+    } else if(pdfCnt < ccidCnt) {
       missing = 'PDF';
-    } else if(ccidCnt < 1) {
+    } else if(ccidCnt < pdfCnt) {
       missing = 'CCID';
     }
     return missing;
