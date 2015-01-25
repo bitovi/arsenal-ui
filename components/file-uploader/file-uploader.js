@@ -179,7 +179,7 @@
                     file.boundType='INBOUND';
                     downLoadFile.files.push(file);
                     console.log(JSON.stringify(downLoadFile));
-                    fileManager.downloadFile(downLoadFile,function(data){
+                    fileManager.findOne(file,function(data){
                         if(data["status"]=="SUCCESS"){
 
                         }else{
