@@ -208,6 +208,7 @@ var page = Component.extend({
     totalRecordCount:'@',
     fileinfo:[],
     excelOutput:[],
+    cancelnewbundlereq:'@',
     bundleState:{},
     refreshTokenInput: function(val, type){
       //console.log("val is "+JSON.stringify(val));
@@ -1012,6 +1013,7 @@ var page = Component.extend({
                     $("#messageDiv").hide();
                     self.scope.checkedRows.replace([]);
                      /* The below calls {scope.appstate} change event that gets the new data for grid*/
+                     self.scope.attr('cancelnewbundlereq',true);
                      if(self.scope.appstate.attr('globalSearch')){
                         self.scope.appstate.attr('globalSearch', false);
                       }else{
