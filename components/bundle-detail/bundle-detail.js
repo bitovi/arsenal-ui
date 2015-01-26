@@ -188,7 +188,7 @@ var BundleDetailTabs = Component.extend({
 
 
         //set the paymentOption which is shared by service
-        scope.attr('paymentType',bundle.paymentOption);
+        bundle.paymentOption != undefined ? scope.attr('paymentType',bundle.paymentOption) : scope.attr('paymentType', 2);
 
 
 
