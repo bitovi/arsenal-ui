@@ -296,6 +296,11 @@ var BundleDetailTabs = Component.extend({
     canProceed: function() {
       this.attr('paymentType'); this.attr('approvalComment');
       return this.havePaymentTypeAndComment(this) ? '' : 'disabled';
+    },
+    paymentOptionEditable: function() {
+      this.attr('paymentType');
+      var bundle = this.pageState.selectedBundle;
+      return (bundle != undefined && bundle.status == 1 && bundle.editable) ? '' : 'disabled';
     }
   },
   events: {

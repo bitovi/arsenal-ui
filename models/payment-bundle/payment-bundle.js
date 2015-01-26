@@ -185,7 +185,7 @@ var PaymentBundle = Model.extend({
         if (params.paginate) {
           data.bundleSearch["offset"] = params.paginate.offset;
           data.bundleSearch["sortBy"] =  params.paginate.sortBy.attr().toString()
-          data.bundleSearch["limit"] = 2;
+          data.bundleSearch["limit"] = constants.PAGINATE_LIMIT;
           data.bundleSearch["sortOrder"] = params.paginate.sortDirection;
         }
 
