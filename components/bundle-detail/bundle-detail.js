@@ -187,6 +187,11 @@ var BundleDetailTabs = Component.extend({
         }
 
 
+        //set the paymentOption which is shared by service
+        bundle.paymentOption != undefined ? scope.attr('paymentType',bundle.paymentOption) : scope.attr('paymentType', 2);
+
+
+
         //<!--rdar://problem/19415830 UI-PBR: Approve/Reject/Recall/Delete should happen only from Licensor Tab-->
         if(bundle.view === 'LICENSOR'){
           $(".allowedClass").show();
