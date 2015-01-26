@@ -13,7 +13,7 @@ var BundleGrid = ScrollingGrid.extend({
       id: 'isHighPriority',
       title: '!', // needs to change
       contents: function(row) {
-        return row.isHighPriority ? '!' : ''
+        return row.priority == 'Y' ? '!' : ''
       }
     },
     {

@@ -29,9 +29,9 @@ var PaymentBundle = Model.extend({
   model: function(data) {
     // TODO: periodFrom, periodTo, paymentCurrency, and region probably need some more handling.
     // Apparently isHighPriority isn't coming back from the services anymore?
-    if(data.hasOwnProperty('isHighPriority')) {
-      data.isHighPriority = (data.isHighPriority === 'Y');
-    }
+    // if(data.hasOwnProperty('priority')) {
+    //   data.isHighPriority = (data.priority === 'Y');
+    // }
     if(data.hasOwnProperty('editable')) {
       data.editable = !!data.editable;
     }
