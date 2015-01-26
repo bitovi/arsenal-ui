@@ -208,6 +208,7 @@ var page = Component.extend({
     totalRecordCount:'@',
     fileinfo:[],
     excelOutput:[],
+    cancelnewbundlereq:'@',
     bundleState:{},
     refreshTokenInput: function(val, type){
       //console.log("val is "+JSON.stringify(val));
@@ -1002,20 +1003,21 @@ var page = Component.extend({
           BundleNamesModel.create(UserReq.formRequestDetails(overAllBundleRequest),function(data){
               console.log("passing params is "+JSON.stringify(data));
               if(data["status"]=="SUCCESS"){
-                if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
+                //if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
                  $("#messageDiv").html("<label class='successMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>")
                  $("#messageDiv").show();
                  setTimeout(function(){
                     $("#messageDiv").hide();
                     self.scope.checkedRows.replace([]);
                      /* The below calls {scope.appstate} change event that gets the new data for grid*/
+                     self.scope.attr('cancelnewbundlereq',true);
                      if(self.scope.appstate.attr('globalSearch')){
                         self.scope.appstate.attr('globalSearch', false);
                       }else{
                         self.scope.appstate.attr('globalSearch', true);
                       }
                  },2000);
-               }
+               //}
               }
               else{
                 $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>")

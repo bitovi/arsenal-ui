@@ -31,7 +31,7 @@
   <tbody>
     {{#holesReports}}
     <tr>
-      <td class="country" {{#if displayBackGreen}}bgcolor="#669933" {{/if}}><span {{popover 'country' {countryId}}}>{{countryId}}</span></td>
+      <td class="country" {{#if displayBackGreen}}bgcolor="#669933" {{/if}}><span {{popover 'country' {countryId}}}>{{countryId}}{{displayBackGreen}}</span></td>
     </tr>
     {{/holesReports}}
   </tbody>
@@ -51,7 +51,7 @@
     <tr>
       
       {{#holesList}}
-        {{#if isCCIDExpect}}
+        {{#if isLicensorInvalidForCountry}}
           <td class="hole invoice-expected"></td>
         {{else}}
           <td class="hole">
@@ -114,7 +114,7 @@
     <tr>      
      <td class="country" {{#if displayBackGreen}}bgcolor="#669933" {{/if}}>{{countryId}}</td>
       {{#holesList}}      
-        {{#if isCCIDExpect}}
+        {{#if isLicensorInvalidForCountry}}
           <td class="hole invoice-expected"></td>
         {{else}}
           <td class="hole">
