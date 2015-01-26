@@ -254,11 +254,8 @@ var page = Component.extend({
 
   },
   init: function(){
-    //console.log("inside init");
     var self = this;
-    setTimeout(function(){
-      self.scope.appstate.attr("renderGlobalSearch",true);
-    },1000);
+    self.scope.appstate.attr("renderGlobalSearch",true);
   },
   helpers: {
         createPBRequest: function(){
