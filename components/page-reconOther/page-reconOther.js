@@ -54,6 +54,8 @@ var page = Component.extend({
     size_incomingCcidSelected : 0,
     incomingScrollTop: 0,
     incomingOffset: 0,
+    recordsAvailable:'@',
+    totalRecordCount:'@',
     sortColumns:[],
     sortDirection: "asc",
     scrollTop: 0,
@@ -127,6 +129,7 @@ var page = Component.extend({
 
     "inserted": function(){
         var self = this;
+        var tbody = self.element.find('tbody');
 
         $("#tokenSearch").tokenInput([
           {id: 1, name: "Search"} //This is needed
@@ -245,6 +248,7 @@ var page = Component.extend({
       if(this.scope.isGlobalSearch != this.scope.appstate.attr('globalSearch')){
         this.scope.attr("isGlobalSearch",this.scope.appstate.attr("globalSearch"));
         if(this.scope.tabSelected == this.scope.tabName.other.attr("name")){
+          $("#loading_img").show();
           fetchReconIncoming(this.scope);
         }else{
           this.scope.attr("size_incomingCcidSelected", 0);
@@ -346,6 +350,7 @@ var fetchReconIncoming = function(scope){
     searchRequestObj.searchRequest["filter"] = newFilterData;
 
     Recon.findOne((searchRequestObj),function(data){
+      $("#loading_img").hide();
       if(data.status == "FAILURE"){
         $("#messageDiv").html("<label class='errorMessage'>"+data.responseText+"</label>");
         $("#messageDiv").show();
@@ -355,7 +360,14 @@ var fetchReconIncoming = function(scope){
         console.error("Failed to load the Recon incoming other :"+data.responseText);
 
       }else  {
-        scope.incomingOtherList.replace(data.reconStatsDetails);
+        if(searchRequestObj.searchRequest["offset"]==0)
+          scope.incomingOtherList.replace(data.reconStatsDetails);
+        else {
+          $.merge(scope.incomingOtherList, data.reconStatsDetails);
+          scope.incomingOtherList.replace(scope.incomingOtherList);
+        }
+        scope.recordsAvailable = data.recordsAvailable;
+        scope.totalRecordCount = data.totRecCnt;
       }
 
     },function(xhr){
