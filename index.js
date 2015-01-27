@@ -102,7 +102,8 @@ $(document).ajaxComplete(function(ev, xhr, options) {
 
   if(error) {
     var url = options.url.substr(options.url.indexOf('/', 8)); // the "8" offset avoids https://
-    Alert.displayAlert(url + ': ' + error, 'warning');
+    console.error(url + ': ' + error, 'warning');
+  //  Alert.displayAlert(url + ': ' + error, 'warning');
   }
 });
 

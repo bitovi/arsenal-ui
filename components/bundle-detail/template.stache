@@ -55,10 +55,10 @@
   <div class="payment-option">
     {{#isBM}}
     <label>Payment Option</label>
-    <select can-value="{paymentType}">
+    <select {{paymentOptionEditable}} can-value="{paymentType}">
       <option value="1">Payment - In Full</option>
-      <option value="3">Payment LI Disputes</option>
       <option value="2">Payment Recon Amount</option>
+      <option value="3">Payment LI Disputes</option>
       <option value="4">Payment Over Rep Disputes</option>
     </select>
     {{/isBM}}
