@@ -793,6 +793,44 @@ var page = Component.extend({
 			//$("ccidGL"+rowindex).val(" ");
 		},
 
+		"#currency change": function(){
+			var self = this;
+			var genObj = {
+			   regionId:self.scope.attr("regionStore"),
+			  entityId:self.scope.attr("licensorStore"),
+			  currency:self.scope.attr("currencyStore")
+			};
+
+			Promise.all([Country.findCountriesForRegLicCurr(UserReq.formRequestDetails(genObj))
+			     ]).then(function(values) {
+			     	if(values[0].status == 'SUCCESS'){
+              			self.scope.attr("country").replace([]);
+                   		self.scope.attr("country").replace(values[0].data);
+
+                   		  var countryDD = $('.inputCountry');
+				            countryDD.options = function(data) {
+				                var self = this;
+				                //var option = $('<option>').text("Select").val("");
+				                //    data.push(option);
+				                $.each(data, function(key, value) {
+				                    var option = $('<option>').text(value.value).val(value.id);
+				                    data.push(option);
+				                });
+				                self.html(data);
+				            }
+				            countryDD.options(values[0].data);
+
+              		}else{
+              			self.scope.attr("country").replace([]);
+              			 	var countryDD = $('.inputCountry');
+				         	countryDD.empty();
+				         	countryDD.html($('<option>').text("Select"));
+				           
+							showMessages(values[0].responseText);
+	              		}
+				});
+			},
+
 		"{scope} currencyStore": function(){
 			var self = this;
 			self.scope.getFxrate();
@@ -859,6 +897,11 @@ var page = Component.extend({
   	 		});
 			this.scope.attr("totalAmountVal", 0);
 			self.scope.changeTextOnInvType();
+			if(self.scope.attr("invoicetypeSelect") == "3"){
+				$("#paymentBundleNames").attr("disabled","disabled");
+			} else{
+				 $("#paymentBundleNames").removeAttr("disabled");
+			}
 		},
          "{AmountStore} change": function() {
          		var self = this;

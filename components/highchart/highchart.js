@@ -38,6 +38,9 @@ var highchartpage = Component.extend({
     		     genObj["licensorId"]=chartdata.licensorId;
     		     genObj["countryId"]=chartdata.countryId;
     		     genObj["fiscalPeriod"]=chartdata.fiscalPeriod;
+    		     if(chartdata.fiscalPeriod.indexOf("P") > -1  || chartdata.fiscalPeriod.indexOf("Q") > -1){
+					genObj["fiscalPeriod"]=periodWidgetHelper.getFiscalPeriod(chartdata.fiscalPeriod);
+    		     }
     		     genObj["periodType"]=chartdata.periodType;
     		     genObj["contentType"]=chartdata.contentType;
     		     console.log(" Data passed to service to fetch charts "+JSON.stringify(genObj));

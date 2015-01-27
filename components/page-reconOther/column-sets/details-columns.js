@@ -58,7 +58,11 @@ export default [
   id: 'invFileName',
   title: 'File Name',
   contents: function(row) {
-    return can.stache('<a class="downloadLink fileName" href="#download">'+row.invFileName+'</a>')();
+    if(row.invFileName != undefined && row.invFileName != null){
+      return can.stache('<a class="downloadLink fileName" href="#download">'+row.invFileName+'</a>')();  
+    }else{
+      return "null";
+    }
   },
   sortable: true
 },
