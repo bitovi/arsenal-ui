@@ -134,9 +134,10 @@ Grid.extend({
     'inserted': function(){
       var self= this;
       var tbody = self.element.find('tbody');
+      //setting tbody height which determines the page height- start
       var getTblBodyHght=gridUtils.getTableBodyHeight('invoiceGrid',90);
-      $(tbody).css('min-Height',getTblBodyHght);
-      $(tbody).css('max-Height',getTblBodyHght);
+      gridUtils.setElementHeight(tbody,getTblBodyHght,getTblBodyHght);
+      //setting tbody height - end
       var parentScopeVar = self.element.closest('page-invoices').scope();
       var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
       $(tbody[0]).scrollTop(tableScrollTopVal);

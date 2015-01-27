@@ -244,7 +244,6 @@ var page = Component.extend({
                   message = validateFilters(self.scope.appstate,true,true,true,true,true);
                   self.scope.attr('errorMessage',message);
                   if(message.length == 0){
-                    //console.log("inside NEW_ON_ACC");
                     $('#newonAccountGrid, #newonAccountGridComps').show();
                     genObj["licensorId"]=request.searchRequest.entityId.toString();
                     genObj["regionId"]=request.searchRequest.regionId;

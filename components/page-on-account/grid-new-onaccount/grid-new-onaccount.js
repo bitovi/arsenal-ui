@@ -7,6 +7,7 @@ import utils from 'components/page-on-account/utils';
 import _less from './grid-new-onaccount.less!';
 import Grid from 'components/grid/';
 import template from './template.stache!';
+import gridUtils from 'utils/gridUtil';
 
 var newOnAccountGrid = Grid.extend({
   tag: 'rn-new-onaccount-grid',
@@ -55,8 +56,12 @@ var newOnAccountGrid = Grid.extend({
     events:{
       'inserted': function () {  
 
-    var self = this;
-
+        var self = this;
+      var tbody = self.element.find('tbody');
+      //setting tbody height which determines the page height- start
+      var getTblBodyHght=gridUtils.getTableBodyHeight('onAccountBalanceGrid',50);
+      gridUtils.setElementHeight(tbody,getTblBodyHght,getTblBodyHght);
+      //setting tbody height - end
         if(self.scope.request != null || self.scope.request != undefined){
 
              var quarters = self.scope.request.quarters;

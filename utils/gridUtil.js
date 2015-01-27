@@ -18,6 +18,13 @@ var gridUtil = {
     var tableFootheight=$('#'+element+' table>tfoot').height();
     var tableBodyHeight=percentHeight-(tableHeadheight+tableFootheight+30); //30 pixel left out for the bottom space
     return tableBodyHeight;
+  },
+
+  setElementHeight:function (obj,minHeight,maxHeight){
+    if(typeof obj != undefined){
+      $(obj).css('min-Height',minHeight);
+      $(obj).css('max-Height',maxHeight);
+    }
   }
 };
 export default gridUtil;

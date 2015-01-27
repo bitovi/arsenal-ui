@@ -4,7 +4,7 @@
  rn-proposed-onaccount-grid {
   .grid-mixin();
     table {
-   
+
     width: 100%;
     tr>th, tr > td {
       width:2%;
@@ -14,9 +14,11 @@
       display: block;
     }
     tbody {
-      max-height: 8em;
+      //max-height: 8em;
       overflow-y: overlay;
       overflow-x: hidden;
+      border-left: 1px solid #a1a1a1;
+      border-right: 1px solid #a1a1a1;
     }
     th, td {
       white-space: nowrap;
@@ -39,7 +41,7 @@
       }
     }
   }
-  
+
 }
 /*
 #proposedonAccountGrid .rn-grid td input[type="checkbox"]{
@@ -77,13 +79,13 @@ rn-proposed-onaccount-grid thead th{
 }
 
 .quarter {
-    width: 10%; 
+    width: 10%;
      box-sizing: border-box;
      -webkit-box-sizing:border-box;
      -moz-box-sizing: border-box;
 }
 .quarter  input[type="text"] {
-     width: 100%; 
+     width: 100%;
      box-sizing: border-box;
      -webkit-box-sizing:border-box;
      -moz-box-sizing: border-box;

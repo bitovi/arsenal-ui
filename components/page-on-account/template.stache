@@ -33,10 +33,10 @@
 
 
 	</div>-->
-
-	<div class="div-warn-container" style="padding-left: 10px;padding-right: 10px;">
+<div class="col-lg-12 page-container">
+	<div class="div-warn-container">
 		<div class="row pagetitle-div-parent">
-			<div class="col-sm-5 pageTitleInv">
+			<div class="col-sm-5" style="padding-left: 0px;">
 				<div class="pageHead">On Account</div>
 			</div>
 		</div>
@@ -47,11 +47,11 @@
 
 	<div id="honAccount" class="overlay hide" ></div>
 
-	<div class="col-lg-12 claimContainer>
+	<div class="col-lg-12 claimContainer">
 	    <div id="invoiceTypeError" class="col-md-12"></div>
 	</div>
 
-    <div class="col-lg-12 paddingLeft0">
+    <div class="col-lg-12 paddingLeft0" style="padding-top: 6px;">
 	   <div class="export-toexcel" id="exportExcel"></div>
 	    <!-- Tab Details -->
 	    <ul id="myTabs" class="nav nav-tabs">
@@ -199,5 +199,4 @@
       </div>
     </div>
   </div>
-</div>
 </div>
