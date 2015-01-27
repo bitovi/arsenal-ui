@@ -24,11 +24,11 @@
 
 					    	<div class="col-sm-6">
 
-					    		<div class="col-sm-8" style="margin-left: 40px;">
+					    		<div class="col-sm-9" style="margin-left: 0px">
 
-						    		<div class="col-sm-12">
+						    		<!-- <div class="col-sm-12"> -->
 
-						    			<div class="col-sm-2 small-headers align-left">
+						    			<div class="col-sm-3 small-headers align-left" style="text-align:right">
 						    				<label>Entity:</label>
 										</div>
 						    			<div class="col-sm-4 form-group requiredBar">
@@ -67,7 +67,7 @@
 						    			</div>
 
 
-					    			</div>
+					    			<!-- </div> -->
 
 					    		</div>
 					    	
@@ -101,7 +101,7 @@
 	    				<div class="col-sm-12" id="spaceBar"></div>
 	    		
 		    			<div class="col-sm-11 col-sm-offset-0">
-		    				<div class="col-sm-4 textalignright small-headers align-left">
+		    				<div class="col-sm-3 textalignright small-headers align-left">
 			    				<label>Licensor:</label>
 							</div>
 			    			<div class="col-sm-4 form-group requiredBar">
@@ -112,7 +112,7 @@
 					
 
 		    			<div class="col-sm-11 col-sm-offset-0 status">
-		    				<div class="col-sm-4 textalignright small-headers align-left">
+		    				<div class="col-sm-3 textalignright small-headers align-left">
 			    				<label>Status:</label>
 							</div>
 			    			<div class="col-sm-4 inputPadding" can-value="licDetails.data.status">
@@ -125,7 +125,7 @@
 					
 		    			{{getPeriodFromVal}}
 		    			<div class="col-sm-11 col-sm-offset-0">
-		    				<div class="col-sm-4 textalignright small-headers align-left">
+		    				<div class="col-sm-3 textalignright small-headers align-left">
 			    				<label>Valid From:</label>
 							</div>
 			    			<div class="col-sm-4 form-group requiredBar" id="periodFromcontainer">
@@ -143,7 +143,7 @@
 					
 
 						<div class="col-sm-11 col-sm-offset-0">
-		    				<div class="col-sm-4 textalignright small-headers align-left">
+		    				<div class="col-sm-3 textalignright small-headers align-left">
 			    				<label>Valid To:</label>
 							</div>
 			    			<div class="col-sm-4 inputPadding" id="periodTocontainer">
@@ -160,7 +160,7 @@
 		    							
 
 						<div class="col-sm-11 col-sm-offset-0 form-group">
-		    				<div class="col-sm-4 textalignright small-headers align-left">
+		    				<div class="col-sm-3 textalignright small-headers align-left">
 			    				<label>Account Name:</label>
 							</div>
 			    			<div class="col-sm-4 requiredBar">
@@ -171,7 +171,7 @@
 						<div class="col-sm-12" id="spaceBar5px"></div>
 
 						<div class="col-sm-11 col-sm-offset-0 form-group">
-		    				<div class="col-sm-4 textalignright small-headers align-left">
+		    				<div class="col-sm-3 textalignright small-headers align-left">
 			    				<label>Invoice Type:</label>
 							</div>
 			    			<div class="col-sm-4 requiredBar">
@@ -195,7 +195,7 @@
 
 		    			<div class="col-sm-11 col-sm-offset-0 form-group RepSplit">
 
-		    				<div class="col-sm-4 textalignright small-headers align-left">
+		    				<div class="col-sm-3 textalignright small-headers align-left">
 			    				<label>Representation Split:</label>
 							</div>
 			    			<div class="col-sm-4 inputPadding">
@@ -208,7 +208,7 @@
 
 		    			<div class="col-sm-11 col-sm-offset-0 form-group">
 
-		    				<div class="col-sm-4 textalignright small-headers align-left">
+		    				<div class="col-sm-3 textalignright small-headers align-left">
 			    				<label>SAP vendor#:</label>
 							</div>
 			    			<div class="col-sm-4 requiredBar">
@@ -221,7 +221,7 @@
 
 		    			<div class="col-sm-11 col-sm-offset-0 form-group paymentTerms">
 
-		    				<div class="col-sm-4 textalignright small-headers align-left">
+		    				<div class="col-sm-3 textalignright small-headers align-left">
 			    				<label>Payment Terms(Days):</label>
 							</div>
 			    			<div class="col-sm-4 inputPadding">
@@ -233,7 +233,7 @@
 
 		    			<div class="col-sm-11 col-sm-offset-0 uploadedFTP">
 
-		    				<div class="col-sm-4 textalignright small-headers align-left">
+		    				<div class="col-sm-3 textalignright small-headers align-left">
 			    				<label>Uploaded Files to sFTP: </label>
 							</div>
 			    			<div class="col-sm-4 inputPadding">
@@ -244,13 +244,13 @@
 
 		    			
 
-		    			<div class="col-sm-12 col-sm-offset-0 form-group" style="padding: 0px;">
+		    			<div class="col-sm-11 col-sm-offset-0 form-group" style="padding: 0px;">
 		    				<div class="col-sm-12 multicomments-required"> Enter comments !</div>
 
-		    				<div class="col-sm-4 textalignright small-headers align-left1">
+		    				<div class="col-sm-3 textalignright small-headers align-left1" style="padding-right: 40px;">
 			    				<label>Comments:</label>
 							</div>
-			    			<div class="multipleComments col-sm-8 requiredBar" id="multipleComments" style="padding: 0px;">
+			    			<div class="multipleComments col-sm-9 requiredBar" id="multipleComments" style="padding: 0px;margin-left: -15px;">
 						
 							</div>
 
