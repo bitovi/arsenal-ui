@@ -455,6 +455,9 @@ var page = Component.extend({
       $('.buttonsBottom').hide();
 
       $('.status').hide();
+      
+      $(".multicomments-required").hide();
+
 
     },
 
@@ -1887,7 +1890,6 @@ var page = Component.extend({
         var self = this;
 
         self.scope.mode = "fetch";
-
         //clear elements
 
         $("#loading_img").show();
