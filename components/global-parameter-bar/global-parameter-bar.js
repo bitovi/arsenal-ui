@@ -176,6 +176,9 @@ var GlobalParameterBar = Component.extend({
             $("input[name='selAllLicensor']").closest('li').hide();
           else
             $("input[name='selAllLicensor']").closest('li').show();
+          
+          self.scope.changesToApply.attr('licensor', ["-1"]);
+          self.scope.changesToApply.attr('country', ["ALL"]);
         });
       } else {
         self.scope.countries.replace([]);
