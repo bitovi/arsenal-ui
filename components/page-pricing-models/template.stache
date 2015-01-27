@@ -24,22 +24,13 @@
 					    </div>
 				  	</div>
 				 </div>
-				 
-				
-				<div class="col-sm-1" id="switcher-cont"></div>
-			 	
 
-				<div class="col-sm-6 marginLeft20">
-		 			<button id="fetch" class="btn btn-primary btn-custom-big marginLeft20" disabled>Fetch</button>
+				<div class="col-sm-2">
+		 			<button id="fetch" class="btn btn-primary btn-custom-big" disabled>Fetch</button>
 		 			<button id="add"  class="btn btn-primary btn-custom-big" disabled>Add</button>
 			 	</div>
 
-			 	
-				
-
-		 		
-			 	
-
+			 	<div class="col-sm-2" id="switcher-cont"></div>
 			 
 		</div>
 	 </div>

@@ -14,13 +14,24 @@
       <div id="messageDiv" class="center" role="alert"></div>
     </div>
   </div>
-  <div class="bundle-list-actions">
+  <div class="col-sm-12 bundle-list-actions">
     {{#if pageState.selectedBundle.editable}}
-      <button class="btn btn-custom-xs add-invoice">Add Invoices To Bundle</button>
+      <div class="col-sm-6">
+        <button class="btn btn-custom-xs add-invoice">Add Invoices To Bundle</button> | 
+        <button class="btn btn-custom-xs ">Remove Inovices From Bundle</button>
+      </div>
     {{/if}}
     {{#if pageState.bundles.length}}
-    <!-- <img class="excel exportToExcel" /> -->
-    <img class="clipboard copyToClipboard" />
+    
+    {{#if pageState.selectedBundle.editable}}
+      <div class="col-sm-6">
+    {{#else}}
+      <div class="col-sm-12">
+    {{/if}}
+    
+        <!-- <img class="excel exportToExcel" /> -->
+        <img class="clipboard copyToClipboard" />
+      </div>
     {{/if}}
   </div>
 
