@@ -345,6 +345,8 @@ var page = Component.extend({
           //console.log(JSON.stringify(self.scope.tokenInput.attr()));
            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
           /* All the neccessary parameters will be set in that event */
+         
+          self.scope.attr("offset", 0);  /* Search criteria changes. So making offset 0 */
          if(self.scope.appstate.attr('globalSearch')){
             self.scope.appstate.attr('globalSearch', false);
           }else{
@@ -786,6 +788,8 @@ var page = Component.extend({
       "#inputAnalyze change": function(){
               var self=this;
 
+               self.scope.attr("offset", 0);  /* Search criteria changes. So making offset 0 */
+
               /* The below code calls {scope.appstate} change event that gets the new data for grid*/
               /* All the neccessary parameters will be set in that event */
              if(self.scope.appstate.attr('globalSearch')){
@@ -1174,6 +1178,7 @@ function getAllInvoices(self) {
                   $.merge(self.allInvoicesMap[0].invoices, data.invoices);
                   self.allInvoicesMap.replace(self.allInvoicesMap);
                 }
+               // self.allInvoicesMap.replace(data);
                 //$("rn-grid-invoice td").invoiceId
               }
             } else {
