@@ -40,7 +40,7 @@ var GridSocietyModelMapping = Grid.extend({
         id: 'validTo',
         title: 'Valid To',
         contents: function(row) {
-          if(row.validTo == null)
+          if(row.validTo == null || row.validTo == "0" )
             return "";
           else
           return row.validTo;
