@@ -21,6 +21,7 @@ import highchartpage from 'components/highchart/';
 import exportToExcel from 'components/export-toexcel/';
 import copy from 'components/copy-clipboard/';
 import gridUtils from 'utils/gridUtil';
+import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 /* Extend grid with the columns */
 Grid.extend({
@@ -54,7 +55,7 @@ Grid.extend({
       },
       {
         id: 'period',
-        title: 'Period',
+        title: 'Period Range',
         sortable: true
       },
       {
@@ -214,7 +215,7 @@ Grid.extend({
       },
       {
         id: 'period',
-        title: 'Period',
+        title: 'Period Range',
         sortable: true
       },
       {
@@ -906,7 +907,12 @@ var generateTableData = function(invoiceData,footerData){
             //console.log("jfsdhfjshj is "+invoiceData[i]["claimReviewLicDetails"]);
             var invoiceLineItems = invoiceData[i]["reviewDetails"];
 
-            var contentTypeArr = [], countryArr = [];
+            var contentTypeArr = [], countryArr = [] , invoiceNumberArr = [];
+             var lowestPeriod = 0;
+              var highestPeriod = 0;
+              var tmpPeriod = 0;
+              var periodType = 'P';
+
             if(invoiceLineItems.length > 0){
               for(var j=0;j<invoiceLineItems.length;j++){
                 var invLITemp={};
@@ -917,7 +923,9 @@ var generateTableData = function(invoiceData,footerData){
                 invLITemp["invoiceNumber"] = invoiceLineItems[j]["invoiceNumber"];
                 invLITemp["currency"] = invTemp["currency"];
 
-                invLITemp["period"] = invoiceLineItems[j]["period"];
+                var period = invoiceLineItems[j]["period"];
+
+                invLITemp["period"] = "";
                 invTemp["period"] = invoiceLineItems[j]["period"];
 
                 invLITemp["country"] = invoiceLineItems[j]["countryId"];
@@ -949,8 +957,24 @@ var generateTableData = function(invoiceData,footerData){
 
                 invLITemp["status"] = getInvoiceStatus(invoiceLineItems[j]["status"]);
                 invTemp["status"] = invLITemp["status"];
+
+                if(period != undefined && period > 0){
+                    invLITemp["period"] = periodWidgetHelper.getDisplayPeriod(period,periodType);
+                    if(lowestPeriod==0 && highestPeriod == 0){
+                      lowestPeriod=Number(period);
+                      highestPeriod=Number(period);
+                    }
+                    tmpPeriod = Number(period);
+                    if (tmpPeriod < lowestPeriod) lowestPeriod = tmpPeriod;
+                    if (tmpPeriod > highestPeriod) highestPeriod = tmpPeriod;
+                  }else if(period == 0){
+                    invLITemp["period"] = '';
+                  }
+
+
                 contentTypeArr.push(invLITemp["contentType"]);
                 countryArr.push(invLITemp["country"]);
+                invoiceNumberArr.push(invLITemp["invoiceNumber"]);
                 gridData.data.push(invLITemp);
               }
 
@@ -979,6 +1003,18 @@ var generateTableData = function(invoiceData,footerData){
             else if(countryArr.length==1)
               gridData.data[insertedId]["country"] = countryArr[0];
 
+            if(lowestPeriod != undefined && highestPeriod != undefined){
+                  gridData.data[insertedId]["period"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType);
+                  if(lowestPeriod != highestPeriod){
+                    gridData.data[insertedId]["period"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType)+' - '+periodWidgetHelper.getDisplayPeriod(highestPeriod,periodType);
+                  }
+                }
+
+
+            invoiceNumberArr = $.unique(invoiceNumberArr);
+             if(invoiceNumberArr.length==1){
+              gridData.data[insertedId]["invoiceNumber"] = invoiceNumberArr[0];
+             }
           }
           var footerJson = {"entityId":"","__isChild":false,"entityName":"Total in Regional Currency (EUR)","invoiceNumber":"","currency":"","period":"","country":"","contentType":"","invoiceAmount":"350000","overrepAmount":"20000","lineDisputeAmount":"40000","reconAmount":"30000","oaAllocated":"2000","caAllocated":"2000","balance":"76","priorPaid":"0","invPmtSaturation":"","pmtSaturation":"","overrepDispPer":"","liDispPer":"","status":""};
           //gridData.footer.push(footerJson);
