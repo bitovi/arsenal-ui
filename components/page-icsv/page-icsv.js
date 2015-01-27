@@ -65,7 +65,8 @@ Grid.extend({
         id: 'comments',
         title: 'User comments'
       }
-    ]
+    ],
+    strippedGrid:true
   }
 });
 
@@ -91,6 +92,20 @@ fileUpload.extend({
         },
         "{deletedFileInfo} change":function () {
             $('rn-file-uploader-icsv-sum').data('_d_deletedFileInfo', this.scope.deletedFileInfo);
+        },
+        '.cancelUpload click': function() {
+            var _uploadedFileInfo = this.scope.attr('uploadedfileinfo');
+            // remove only those files which have a guid (selectedFromLocal)
+            for (var i = _uploadedFileInfo.length - 1; i > -1; i--) {
+                if (!_uploadedFileInfo[i].isServer) {
+                    _uploadedFileInfo.splice(i, 1);
+                }
+            }
+
+             var parentScopeVar = this.element.closest('page-icsv').scope();
+             parentScopeVar.attr("errorMessage", "");
+          
+
         }
     }
 });
