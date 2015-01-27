@@ -720,6 +720,7 @@ var page = Component.extend({
           }
 
           var flag=true;
+          var cashAdj=false;
           var invTypeArr =[];
           var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
           self.scope.attr('checkedRows').each(function(value, key) {
@@ -738,8 +739,10 @@ var page = Component.extend({
                   flag=false;
               }
             }
-            if(invTypeArr[z] == "Cash Adjustments")
-              flag=false;
+            if(invTypeArr[z] == "CASHADJ_INV"){
+              cashAdj=true;
+            }
+              
           }
 
           if(flag==false){
@@ -747,7 +750,11 @@ var page = Component.extend({
               $("#btnSubmit").attr("disabled","disabled");
               $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>Selected rows are different types of invioces and cannot be added to same bundle.</label>");
               $("#messageDiv").show();
-          }else {
+          }else if(cashAdj){
+              $("#paymentBundleNames").attr("disabled","disabled");
+              $("#btnSubmit").attr("disabled","disabled");
+              $("#messageDiv").hide();
+          } else {
                $("#messageDiv").hide();
               if(self.scope.attr('checkedRows').length > 0){
                   $("#btnSubmit").removeAttr("disabled");
