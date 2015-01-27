@@ -7,6 +7,7 @@ import stache from 'can/view/stache/';
 import utils from 'components/page-on-account/utils';
 import UserReq from 'utils/request/';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
+import gridUtils from 'utils/gridUtil';
 
 var proposedonAccountGrid = Grid.extend({
   tag: 'rn-proposed-onaccount-grid',
@@ -129,6 +130,12 @@ var proposedonAccountGrid = Grid.extend({
     },
     "inserted": function(){
               var self = this;
+              var tbody = self.element.find('tbody');
+              //setting tbody height which determines the page height- start
+              var getTblBodyHght=gridUtils.getTableBodyHeight('onAccountBalanceGrid',50);
+              gridUtils.setElementHeight(tbody,getTblBodyHght,getTblBodyHght);
+              console.log("Pete Test ************",getTblBodyHght);
+              //setting tbody height - end
               if(self.scope.request != null && self.scope.request != undefined && self.scope.request.quarters != null){
                  var rows = self.scope.request.rows;
                  var deletableRows = self.scope.request.deletableRows;
@@ -183,7 +190,6 @@ var proposedonAccountGrid = Grid.extend({
 
            }
 
-          var tbody = self.element.find('tbody');
           var parentScopeVar = self.element.closest('page-on-account').scope();
           var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
           $(tbody[0]).scrollTop(tableScrollTopVal);

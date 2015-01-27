@@ -12,6 +12,7 @@ import stache from 'can/view/stache/';
 import utils from 'components/page-on-account/utils';
 import requestHelper from 'utils/request/';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
+import gridUtils from 'utils/gridUtil';
 
 var OnAccountBalance = Grid.extend({
   tag: 'rn-onaccount-balance-grid',
@@ -21,7 +22,7 @@ var OnAccountBalance = Grid.extend({
       {
         id: 'Licensor',
         title: 'Licensor',
-        contents: function(row) { 
+        contents: function(row) {
             if(row.attr('tfooter')){
             return  stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{Licensor}}')({Licensor: row.Licensor, isChild: row.__isChild});;
           }
@@ -43,7 +44,7 @@ var OnAccountBalance = Grid.extend({
   },
   init: function(){
 
-    
+
 
     },
   events: {
@@ -87,11 +88,11 @@ var OnAccountBalance = Grid.extend({
                           }
                           if(detailRows != undefined && detailRows.length==0){
                             self.scope.attr('emptyrows',true);
-                          }else{ 
+                          }else{
                            self.scope.rows.replace(detailRows);
                            if(footerRows != undefined && footerRows.length>0){
                              self.scope.footerrows.replace(footerRows);
-                           } 
+                           }
                           }
                         }
                       }else{
@@ -104,11 +105,15 @@ var OnAccountBalance = Grid.extend({
                       }
                 }, function(xhr) {
                       console.error("Error while loading: onAccount balance Details"+xhr);
-                } ); 
-             
-              
+                } );
+
+
        }
        var tbody = self.element.find('tbody');
+       //setting tbody height which determines the page height- start
+       var getTblBodyHght=gridUtils.getTableBodyHeight('onAccountBalanceGrid',97);
+       gridUtils.setElementHeight(tbody,getTblBodyHght,getTblBodyHght);
+       //setting tbody height - end
       var parentScopeVar = self.element.closest('page-on-account').scope();
       var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
       $(tbody[0]).scrollTop(tableScrollTopVal);
@@ -116,7 +121,7 @@ var OnAccountBalance = Grid.extend({
           if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight && recordsAvailable) {
             //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
 
-            
+
             var offsetVal = parentScopeVar.attr('balanceOnAccOffset');
             //console.log(offsetVal);
 
@@ -137,7 +142,7 @@ var OnAccountBalance = Grid.extend({
       setTimeout(function(){
         alignGrid('onAccountBalanceGrid');
       },2000);
-      
+
     }
   }
 });
@@ -207,9 +212,9 @@ function alignGrid(divId){
           tdWidth = theadTdWidth;
         else if(tfootTdWidth >= tbodyTdWidth && tfootTdWidth >= theadTdWidth)
           tdWidth = tfootTdWidth;
-        else 
-          tdWidth = tbodyTdWidth; 
-        
+        else
+          tdWidth = tbodyTdWidth;
+
         if(i==1)
            tdWidth = 225;
         tableWidth += tdWidth;
