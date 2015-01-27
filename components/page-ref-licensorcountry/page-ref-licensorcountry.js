@@ -132,6 +132,12 @@ var page = Component.extend({
       PricingMethods.findOne(UserReq.formRequestDetails(requestObj))
       ]).then(function(values) {
         self.scope.attr("entities").replace(values[0]["entities"][0]);
+
+        self.scope.attr("onload", true);
+
+        var licensor  = self.scope.attr("entities")[0].entities[0].id;
+
+        self.scope.pageState.entityCountryDetails.entityCountry.attr("entityId", licensor);
         //licId = self.scope.attr("entities")[0].entities[0].id;
         //self.scope.attr("pricingModels").replace(values[1].modelTypes);
         self.scope.attr("pricingMethods").replace(values[2].pricingMethodList);
@@ -351,8 +357,16 @@ var page = Component.extend({
 
             var requestObj = {entityId:self.scope.pageState.entityCountryDetails.entityCountry.entityId};
             Promise.all([Country.findAllCountriesByLicenesor(UserReq.formRequestDetails(requestObj))]).then(function(values) {
-               $('#fetchDetailsBtn').attr("disabled", false)   
+              $('#fetchDetailsBtn').attr("disabled", false);  
               self.scope.attr("countries").replace(values[0].data);
+              if(self.scope.attr("onload")) {
+
+                self.scope.attr("onload", false);
+                $("#countryId").val(values[0].data[0].id);
+                self.scope.pageState.entityCountryDetails.entityCountry.attr("countryId", values[0].data[0].id);
+                $('#fetchDetailsBtn').click();
+
+              }
 
             });
           }

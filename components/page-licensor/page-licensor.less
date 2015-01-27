@@ -10,9 +10,20 @@
 
   }
 
+  .col-sm-4.textalignright.small-headers.align-left {
+    margin-left: -25px;
+  }
+
+  .col-sm-4.textalignright.small-headers.align-left1 {
+    margin-left: -40px;
+  }
+
   .formInputs {
     width:80%;
     padding-left:5px;
+  }
+  .mid-headers {
+    font-size: 14px !important;
   }
 
   .col-sm-12.status {
@@ -90,7 +101,7 @@
 
   .col-sm-12.societyContacts {
     height: 100px;
-    width: 97%;
+    width: 99%;
     overflow: auto;
     padding-right: 0px;
   }
@@ -106,7 +117,7 @@
   }
 
   div .repConfFooter {
-    width: 97%;
+    width: 101%;
     height: 2.00em;
     padding: 0px;
     vertical-align: top;
@@ -141,7 +152,7 @@
   }
 
   .adjustHeight {
-    height: 60px;
+    height: 30px;
     display: block;
   }
 
@@ -188,6 +199,7 @@
 
   table.rn-grid-revisionhistory {
     width: 100%;
+    height: 100%;
   }
 
   .col-sm-12.padding0px {
@@ -207,9 +219,8 @@
 
   div#countryModelMapping {
 
-      width: 100%;
+      width: 95%;
       max-height:6.250em;
-      overflow: auto;
       padding: 0px;
       padding-left: 5%;
 
@@ -219,17 +230,15 @@
 
       width: 97%;
       max-height: 6.250em;
-      overflow-y: scroll;
       padding: 0px;
-      overflow-x: hidden;
       padding-left: 15px;
   }
 
   div.repConfiguration {
 
       width:97%;
-      height:8.50em;
-      overflow: auto;
+      /*height:8.50em;*/
+      /*overflow: auto;*/
       padding: 0px;
       padding-left:15px;
       vertical-align : top;
@@ -606,4 +615,63 @@
         
       }
 
+      rn-grid-revisionhistory{
+        table{
+          width: 100%;
+          tr>th, tr > td {
+            white-space: nowrap;
+          }
+          tr{
+            width:100%;
+          }
+          thead, tbody {
+            display: block;
+          }
+          tbody{
+              max-height: 5em;
+              overflow-y: overlay;
+              overflow-x: hidden;
+          }
+        }
+      }
+
+      rn-grid-countrymodelmapping{
+        table{
+          width: 100%;
+          tr>th, tr > td {
+            white-space: nowrap;
+          }
+          tr{
+            width:100%;
+          }
+          thead, tbody {
+            display: block;
+          }
+          tbody{
+              max-height: 5em;
+              overflow-y: overlay;
+              overflow-x: hidden;
+          }
+        }
+      }
+
+      .repConfiguration{
+        table{
+          width: 100%;
+          tr>th, tr > td {
+            white-space: nowrap;
+          }
+          tr{
+            width:100%;
+          }
+          thead, tbody {
+            display: block;
+          }
+          tbody{
+              max-height: 8.5em;
+              overflow-y: overlay;
+              overflow-x: hidden;
+          }
+        }
+      }
 }

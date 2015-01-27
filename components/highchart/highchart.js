@@ -8,6 +8,7 @@ import highcharts from 'highcharts';
 import exporting from 'exporting';
 
 import UserReq from 'utils/request/';
+import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 import HighChart from 'models/highchart/';
 
@@ -37,6 +38,9 @@ var highchartpage = Component.extend({
     		     genObj["licensorId"]=chartdata.licensorId;
     		     genObj["countryId"]=chartdata.countryId;
     		     genObj["fiscalPeriod"]=chartdata.fiscalPeriod;
+    		     if(chartdata.fiscalPeriod.indexOf("P") > -1  || chartdata.fiscalPeriod.indexOf("Q") > -1){
+					genObj["fiscalPeriod"]=periodWidgetHelper.getFiscalPeriod(chartdata.fiscalPeriod);
+    		     }
     		     genObj["periodType"]=chartdata.periodType;
     		     genObj["contentType"]=chartdata.contentType;
     		     console.log(" Data passed to service to fetch charts "+JSON.stringify(genObj));
@@ -94,7 +98,7 @@ var highchartpage = Component.extend({
 					        },
 					        yAxis: {
 					            title: {
-					                text: 'Amount in USD'
+					                text: 'Amount'
 					            },
 					            plotLines: [{
 					                value: 0,
@@ -104,9 +108,8 @@ var highchartpage = Component.extend({
 					        },
 					        tooltip: {
 					        	formatter: function () {
-									return '<b>' + this.series.name + '</b><br/>' + this.x + ': ' + currencyFormat(this.y);
-								},
-					            valueSuffix: ''
+									return '<b>' + this.series.name + '</b><br/>' + this.x + ': ' + currencyFormat(this.y) +' USD';
+								}
 					        },
 					        legend: {
 					            layout: 'vertical',
@@ -143,15 +146,22 @@ var highchartpage = Component.extend({
 						// 	containment: 'document'
 						// });
 			 });
-    	}
+    	},
+    	'{document} keyup' : function(el,ev){
+	      if (ev.keyCode == 27){
+	        $("#highChartDetails").addClass("highcharts_Hide");
+        	$("#chartContainer").removeClass('highcharts_Overlay');
+	      }
+	    }
     },
     "#myImage click ":function(){
     	$("#highChartDetails").addClass("highcharts_Hide");
-    }
+    }    
 });
 
 
 function prepareCanMap(object){
+	console.log(object);
 	console.log("inside prepare map ----"+object.length);
 	var highChartdata = new Array();
 	var periodList=[];
@@ -159,9 +169,9 @@ function prepareCanMap(object){
 	var overRepAmountList = [];
 	var lineItemAmountList = [];
 	for(var i=0; i<object.length;i++){
-		var obj = object[i];
+		var obj = object[i]; 
 		console.log("Inside for loop :"+obj.fiscalPeriod);
-		 periodList[i]=obj.fiscalPeriod;
+		 periodList[i] = periodWidgetHelper.getDisplayPeriod(obj.fiscalPeriod, "P");//obj.fiscalPeriod;
 		 invoiceAmountList[i] = obj.invoiceAmount;
 		 overRepAmountList[i] = obj.overRepAmount;
 		 lineItemAmountList[i] = obj.lineItemsAmount;
