@@ -134,7 +134,6 @@ var proposedonAccountGrid = Grid.extend({
               //setting tbody height which determines the page height- start
               var getTblBodyHght=gridUtils.getTableBodyHeight('onAccountBalanceGrid',50);
               gridUtils.setElementHeight(tbody,getTblBodyHght,getTblBodyHght);
-              console.log("Pete Test ************",getTblBodyHght);
               //setting tbody height - end
               if(self.scope.request != null && self.scope.request != undefined && self.scope.request.quarters != null){
                  var rows = self.scope.request.rows;

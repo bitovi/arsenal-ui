@@ -39,13 +39,26 @@ var newOnAccountGrid = Grid.extend({
    helpers: {
     cellContents: function(row, column) {
       if(column.editable && row.__isChild) {
-        return stache('<input value="{{value}}" tabindex="0" class="editing form-control" style="width:130px;padding: 4px !important;"/>')({value: column.getEditingValue(row,column.title)});
+        return stache('<div style="float: right;text-align: right;" valign="middle"><input value="{{value}}" tabindex="0" class="editing form-control" style="width:130px;padding: 4px !important;text-align: right;"/></div>')({value: column.getEditingValue(row,column.title)});
       } else {
         if(column.title == 'Total' && row.__isChild && column.getEditingValue(row,column.id) != null)
         {
           return column.getEditingValue(row,column.id);
         }
         return Grid.prototype.helpers.cellContents.call(this, row, column);
+      }
+    },
+    columnClass: function(column) {
+      if(column.id == 'toggle'){
+        return "col-toggle-width";
+      }else if(column.id == 'licensor'){
+        return "col-lic-width";
+      }else if(column.id == 'currency'){
+        return "col-currency-width";
+      }else if(column.id == 'total'){
+        return "col-total-width";
+      }else {
+        return "col-others-width";
       }
     }
   },
