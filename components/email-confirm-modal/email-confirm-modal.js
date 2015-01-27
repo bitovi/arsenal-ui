@@ -25,11 +25,12 @@ var EmailConfirmModal = can.Component.extend({
     },
     '.submit click': function(el, ev) {
 
+//      console.log('this.scope.approval',this.scope.approval);
       var approvalObj = {"emailDetails":[  
           {  
              "emailType":"bundle_reminder",
              "mailingList":{  
-                "groupId":null,
+                "groupId":this.scope.approval.pendingGroupId,
                 "roleId":null,
                 "to":[],  
                      /*[] Currently do not have source to get emailid. Mentioned in radar:19529991*/
@@ -48,7 +49,7 @@ var EmailConfirmModal = can.Component.extend({
           
         
         Promise.all([ReminderEmail.create(UserReq.formRequestDetails(approvalObj))]).then(function(values) {
-       
+
         if((typeof values[0] === "defined") && (values[0]["status"]=="SUCCESS")){
 
                 var msg = "Reminder was sent successfully."
@@ -72,9 +73,6 @@ var EmailConfirmModal = can.Component.extend({
               }
         
       });
-
-       
-
       this.element.find('.modal').modal('hide');
       this.element.remove();
     }
