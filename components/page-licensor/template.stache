@@ -330,24 +330,23 @@
 					    				</tr>
 				    				 
 				    				</tbody>
+				    				<tfoot>
+				    				 <tr>
+				    				  <td  colspan="3">
+				    					<button type="button" id="applyAllSelected" name="applyAll" class="btn buttonSubmit btn-custom-small3px  applyAllSelected" style="margin-left:80%;">Apply Selected</button>
+				    				 	</td>
+				    				 </tr>
+				    				</tfoot>
 
 			    				</table>
 
 			    			</div>
-			    			<div class="col-sm-12 repConf">
-			    				<div class="col-sm-12 repConfFooter" style="padding:2px">
-				    				<div class="col-sm-6 col-sm-offset-7">
-
-				    					<button type="button" id="applyAllSelected" name="applyAll" class="btn buttonSubmit btn-custom-small3px  applyAllSelected" style="margin-left:10px;">Apply Selected</button>
-										
-				    				</div>
-				    			</div>
-				    		</div>
+			    			
 				    	</div>
 		    		
 
 		    			<div class="societyContactsTab">
-			    			<div class="col-sm-12" style="margin-top: -10px;">
+			    			<div class="col-sm-12" style="margin-top: 5px;">
 								<label class="mid-headers">Society Contacts:</label>
 							</div>
 			    		
@@ -380,7 +379,14 @@
 				    							{{contactEmail}}
 				    						</td>
 				    					</tr>
-				    				 {{/each}}
+				    				{{/each}}
+
+				    				{{#if contactDetailsNoExists}}
+				    					<tr class="contactDetails">
+				    						<td colspan="3">No records found</td>
+				    					</tr>
+			    					{{/if}}
+			    					
 				    				 {{#each newContactDetails.data}}
 				    					<tr class="newcontactDetails{{newCountryCounter}}">
 				    						<td class="deleteCheckBox ">
