@@ -192,25 +192,44 @@ var page = Component.extend({
       var self=this.scope;
       var row = item.closest('tr').data('row').row;
 
-      var request = {
-            "files":[
-              {
+      // var request = {
+      //       "files":[
+      //         {
 
-              }
-            ]
-      }
+      //         }
+      //       ]
+      // }
 
-      if(row.invFileId == 0 || row.invFileId == "" || row.invFileId == null){
-        request.files[0]["filePath"] = row.filePath;
-        request.files[0]["fileName"] = row.invFileName;
-      }else{
-        request.files[0]["fileId"] = row.invFileId;
-        request.files[0]["boundType"] = row.invFileType;
-      }
+      // if(row.invFileId == 0 || row.invFileId == "" || row.invFileId == null){
+      //   request.files[0]["filePath"] = row.filePath;
+      //   request.files[0]["fileName"] = row.invFileName;
+      // }else{
+      //   request.files[0]["fileId"] = row.invFileId;
+      //   request.files[0]["boundType"] = row.invFileType;
+      // }
 
-      console.log(JSON.stringify(request));
+      // console.log(JSON.stringify(request));
 
-      FileManager.findOne(request);
+      var file={};
+      file.fileId= row.invFileId;
+      file.boundType='INBOUND';
+
+      //FileManager.findOne(request);
+
+      FileManager.findOne(file,function(data){
+          if(data["status"]=="SUCCESS"){
+
+          }else{
+            $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+            $("#messageDiv").show();
+            setTimeout(function(){
+                $("#messageDiv").hide();
+            },2000)
+          }
+    }, function(xhr) {
+          console.error("Error while downloading the file with fileId: "+fileId+xhr);
+    });
+
 
      //Promise.all([FileManager.findOne(request)]).then(function(values) {
     
