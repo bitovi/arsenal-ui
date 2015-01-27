@@ -810,7 +810,7 @@ var page = Component.extend({
 				 		self.scope.attr("licnotesStore", invoiceData.notes);
 
 				 		self.scope.attr("invoicedate", (invoiceData.invoiceDate == null)?"":moment(invoiceData.invoiceDate).format("MM/DD/YYYY"));
-				 		self.scope.attr("receiveddate", (invoiceData.receivedDate == null)?"":moment(invoiceData.receivedDate).format("MM/DD/YYYY"));
+				 		self.scope.attr("receiveddate", (invoiceData.receivedDate == null)?moment().format("MM/DD/YYYY"):moment(invoiceData.receivedDate).format("MM/DD/YYYY"));
 				 		self.scope.attr("invoiceduedate", (invoiceData.invoiceDueDate == null)?"":moment(invoiceData.invoiceDueDate).format("MM/DD/YYYY"));
 
 				 		if(invoiceData.invoiceCalcDueDate != ""){

@@ -1,6 +1,6 @@
 <div class="">
 	<div class="col-sm-5 fontSize">
-	<label class="fontSize14" style='margin-left:-160px;'>iCSV Add Summary</label>
+	<label class="fontSizeMedium" style='margin-left:-160px;'>iCSV Add Summary</label>
 				<div class="addSummaryClass">
 
 
@@ -45,7 +45,7 @@
 			<div class="addSummaryClassLabel">
 				&nbsp;
 			</div>
-             <label class="fontSize invoiceTotal">
+             <label class="fontSizeMedium invoiceTotal">
 				<label class="col-sm-1">
 					&nbsp;
 				</label>
