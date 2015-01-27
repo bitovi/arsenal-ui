@@ -109,7 +109,7 @@ var columns = {
     contents: function(row) {
       if(row.isFooterRow)
         {
-          return row.view == "LICENSOR" ? "Pymt Sat: "+formats.formatIfValue(row.paymentSaturation,_.isNumber, formats.decimalAsPercent, '0%'): "";
+          return row.view == "COUNTRY" ? "Pymt Sat: " : "";
         }else{
           return formats.formatIfValue(row.invoiceSaturation,_.isNumber, formats.decimalAsPercent, '0%');
         }
@@ -121,7 +121,7 @@ var columns = {
     contents: function(row) {
       if(row.isFooterRow)
         {
-          return row.view == "COUNTRY" ? "Pymt Sat: "+formats.formatIfValue(row.paymentSaturation,_.isNumber, formats.decimalAsPercent, '0%'): "";
+          return row.view == "COUNTRY" ? formats.formatIfValue(row.paymentSaturation,_.isNumber, formats.decimalAsPercent, '0%'): "";
         }else{
           return formats.formatIfValue(row.paymentSaturation,_.isNumber, formats.decimalAsPercent, '0%');
         }

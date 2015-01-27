@@ -22,19 +22,26 @@ rn-bundle-grid {
   }
 
   table.scrolling {
-    padding-left: .3em;
-    padding-right:.5em;
+
     tbody {
       height: 10em;
+      border-bottom: 0;
     // border-bottom: 1px solid #666;
     }
     tbody tr {
       min-height: 1.5625em;
     }
 
+    tr.highlight{
+      background: #d3f0fe !important;
+    }
+
+    tr.selected {
+      background: #d3f0fe !important;
+    }
 
     tbody > tr:last-child {
-      border-bottom: 1px solid #bfbfbf;
+        //border-bottom: 1px solid #bfbfbf;
      }
 
     tr > th, tr > td {

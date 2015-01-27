@@ -12,6 +12,7 @@ var BundleDetailGrid = ScrollingGrid.extend({
   scope: {
     paginateAttr:null,//passed in value
     localOffsetTracker:0,
+    strippedGrid:true,
     makeRowsFromBundle: function(bundle) {
       // so the bundle has a bundleDetailsGroup (which is a List of BundleDetailGroup model instances)
       // and each of those instances is a parent row

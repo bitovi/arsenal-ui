@@ -61,18 +61,17 @@
       <option value="3">Payment LI Disputes</option>
       <option value="4">Payment Over Rep Disputes</option>
     </select>
+
+    {{#if pageState.selectedBundle.approvable}}
+      <div class="priority">
+        <input type="checkbox" can-value="{isBundlePrioritySet}" id="priority" />&nbsp;<label for="priority">Set Priority</label>
+      </div>
+    {{/if}}
+
     {{/isBM}}
   </div>
 
   <div class="approval-comment">
-
-    {{#isBM}}
-    {{#if pageState.selectedBundle.approvable}}
-    <div class="priotity">
-      <input type="checkbox" can-value="{isBundlePrioritySet}" id="priotity" />&nbsp;<label for="priotity">Set Priority</label>
-    </div>
-     {{/if}}
-    {{/isBM}}
 
     <div class="comments">
 
