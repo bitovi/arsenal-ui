@@ -29,8 +29,6 @@
 							<div width="100%>
 
 								<!-- todo export buttons -->
-
-								<div class="spaceDiv">&nbsp;</div>
 								<div class="spaceDiv">&nbsp;</div>
 
 								<table style="width:100%">
@@ -69,7 +67,7 @@
 
 								 <!-- can js insert -->
 
-										<td width="35%" class="summaryStatsTab">
+										<td width="30%" class="summaryStatsTab">
 
 											<div id="summaryStatsDiv" style="display:none">
 												<table id="summaryTopTable" style="width:100%">
@@ -209,6 +207,9 @@
 
 
 
+										</td>
+										<td width="5%">
+											&nbsp;&nbsp;
 										</td>
 
 									</tr>

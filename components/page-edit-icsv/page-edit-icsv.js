@@ -1086,8 +1086,12 @@ var page = Component.extend({
   	 			});
 
 			this.scope.attr("totalAmountVal", 0);
-
 			self.scope.changeTextOnInvType();
+			if(self.scope.attr("invoicetypeSelect") == "3"){
+				$("#paymentBundleNames").attr("disabled","disabled");
+			} else{
+				 $("#paymentBundleNames").removeAttr("disabled");
+			}
 
 		},
          "{AmountStore} change": function() {
