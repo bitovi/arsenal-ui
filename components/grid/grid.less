@@ -24,7 +24,7 @@
     border-radius:0;
     color: @font-color;
 
-    /* getting border radius to work right 
+    /* getting border radius to work right
     thead:first-child, tbody:first-child {
       & > tr:first-of-type {
         td:first-child, th:first-child {
@@ -58,22 +58,27 @@ thead{
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
-  
+
   thead, tfoot {
     background: @header-background;
     color: white;
-  
+
     th, td {
       font-weight: normal;
 
       height: 1.5em;
       padding: .3em .5em .3em .5em;
       //border-right: @dark-border;
+      border-right: 1px solid #868080;
       //border-top: @dark-border;
-      border-bottom: @dark-border;
+      border-bottom: @light-border;
+
 
       &:first-child {
         //border-left: @dark-border;
+      }
+      &:last-child {
+        border-right: 0px solid #868080;
       }
 
       & .sort-arrow {
@@ -96,7 +101,7 @@ thead{
   tbody {
 
     background: #F6F6F6+ !important;
-
+    border-bottom: @light-border;
       tr {
 
         height : 1.5625em;
@@ -106,14 +111,14 @@ thead{
           padding-left : 0.5625em;
           padding-top  : 0em;
           padding-bottom : 0em;
-          border-right: 1px solid hsl(0, 0%, 75%);
+          border-right: @light-border;
           border-bottom: 1px solid #FFFFFF !important;
 
           &:first-child {
-            border-left: 1px solid hsl(0, 0%, 75%);
+            border-left: @light-border;
           }
           &:last-child {
-            border-right: 1px solid hsl(0, 0%, 75%);
+            border-right: @light-border;
           }
 
         }

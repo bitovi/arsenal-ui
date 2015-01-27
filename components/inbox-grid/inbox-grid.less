@@ -18,14 +18,14 @@
 rn-inbox-grid, rn-outbox-grid {
   .grid-mixin();
   .scrolling-grid-mixin();
-  
+
   tbody{
     overflow-y: overlay;
   }
 
   tbody td {
     padding: .5em 1em;
-    border-bottom: @light-border;
+  //  border-bottom: @light-border;
 
     &.approvalStage {
       padding-top: 1em;
@@ -60,7 +60,7 @@ rn-inbox-grid, rn-outbox-grid {
   table.scrolling {
     tbody {
       height: 10em;
-      border-bottom: 1px solid #666;
+      //border-bottom: 1px solid #666;
     }
     tbody tr {
       min-height: 1.5625em;
@@ -72,7 +72,7 @@ rn-inbox-grid, rn-outbox-grid {
     }
 
     tbody > tr:last-child {
-      border-bottom: 1px solid #bfbfbf;
+      //border-bottom: 1px solid #bfbfbf;
      }
 
     tr > th, tr > td {
