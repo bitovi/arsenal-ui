@@ -24,7 +24,7 @@
     border-radius:0;
     color: @font-color;
 
-    /* getting border radius to work right */
+    /* getting border radius to work right 
     thead:first-child, tbody:first-child {
       & > tr:first-of-type {
         td:first-child, th:first-child {
@@ -51,23 +51,29 @@
           border-bottom-right-radius: @border-radius;
         }
       }
-    }
+    }*/
   }
 
+thead{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+  
   thead, tfoot {
     background: @header-background;
     color: white;
+  
     th, td {
       font-weight: normal;
 
       height: 1.5em;
       padding: .3em .5em .3em .5em;
-      border-right: @dark-border;
-      border-top: @dark-border;
+      //border-right: @dark-border;
+      //border-top: @dark-border;
       border-bottom: @dark-border;
 
       &:first-child {
-        border-left: @dark-border;
+        //border-left: @dark-border;
       }
 
       & .sort-arrow {
