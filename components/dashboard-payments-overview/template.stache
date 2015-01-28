@@ -1,6 +1,6 @@
-<h3>Payments in {{appstate.region.value}}</h3>
+<div style="width:100%"><h3 class="pay-overview-heading">Payments in {{appstate.region.value}}</h3></div>
 <div class="region-chart" {{renderBigChart}}></div>
-<h3>{{percent}} paid</h3>
+<h3>{{percent}}% paid</h3>
 </div>
 <div class="column-container" style="width:100%;height:100%">
 <div class="column top-not-paid-countries" style="width:50%;float:left">
@@ -17,9 +17,16 @@
   <div style="text-align: right;">
     <h3>Top Not Paid Licensors</h3>
   </div>
-  <ul class="licensor-list" style="text-align: center;">
+  <!--<ul class="licensor-list" style="text-align: center;">
     {{#each summary.topNotPaidCtyEntys}}
     <li>{{.}}</li>
+    {{/each}}
+  </ul>-->
+  <ul class="chart-list licensor-list">
+    {{#each summary.topNotPaidEntities}}
+    <li>
+      <rn-payment-chart text="{{entyName}}" value="{totBalPrcnt}"></rn-payment-chart>
+    </li>
     {{/each}}
   </ul>
 </div>

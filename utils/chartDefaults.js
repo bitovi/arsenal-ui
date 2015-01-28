@@ -2,11 +2,11 @@ var chartDefaults = {
   singleBarChart: {
     chart: {
       type: 'bar',
-      backgroundColor: '#d24849',
+      backgroundColor: '#BDBDBD', //setting this as the standard color.Override if you want it in local implentaion
       margin: [0, 0, 0, 0],
       spacing: [0, 0, 0, 0]
     },
-    colors: ['#4D4D4D'],
+    colors: ['#BCF5A9'],
     yAxis: {
       min: 0,
       max: 100,
@@ -45,7 +45,7 @@ var chartDefaults = {
       margin: [0, 0, 0, 0],
       spacing: [0, 0, 0, 0]
     },
-    colors: ['#DD8888', '#DD4444', '#DD0000'],
+    colors: ['#C63838', '#CC4C4C', '#D26060'],
     yAxis: {
       min: 0,
       gridLineWidth: 0

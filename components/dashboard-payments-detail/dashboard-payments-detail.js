@@ -89,12 +89,17 @@ var DashboardPaymentsDetail = Component.extend({
           chart.empty();
           columnChartHelper(el.data('item').item, chart[0]);
       },
-      'li.total div.category>a click':function(el, ev){
+      /*'li.total div.category>a click':function(el, ev){
           var self = this;
           self.scope.appstate.attr('page','claimreview');
+      }*/
+      'table#UnpaidPopup a.claim-link click':function(el,ev){
+        var self = this;
+        self.scope.appstate.attr('page','claimreview');
       }
 
     }
 });
+
 
 export default DashboardPaymentsDetail;
