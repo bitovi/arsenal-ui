@@ -754,7 +754,7 @@ var page = Component.extend({
 						Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))
 						     ]).then(function(values) {
 						     	self.scope.attr("licensor").replace([]);
-							    self.scope.attr("licensor").replace(values[0]["entities"][0]);
+							    self.scope.attr("licensor").replace(values[0]["entities"]);
 							    var invoiceData = self.scope.attr().invoiceContainer[0];
 							     self.scope.attr("licensorStore", invoiceData.entityId);
 							     self.scope.ajaxRequestStatus.attr("licensorLoaded", true);
