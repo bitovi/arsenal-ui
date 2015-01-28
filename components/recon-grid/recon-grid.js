@@ -59,7 +59,7 @@ var reconGrid = Grid.extend({
               
               var tabSelected = parentScopeVar.attr('tabSelected');
               parentScopeVar.attr("load", false);
-              if(tabSelected=="Incoming Other") {
+              if(tabSelected=="Other") {
               /* Reset the offset value and call the webservice to fetch next set of records */
                 var offsetVal = parentScopeVar.attr('offset');
                 parentScopeVar.attr('offset', (parseInt(offsetVal)+1));

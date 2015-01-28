@@ -25,8 +25,11 @@ rn-bundle-grid {
 
     tbody {
       height: 10em;
-      border-bottom: 0;
+      //border-bottom: 0;
     // border-bottom: 1px solid #666;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+
     }
     tbody tr {
       min-height: 1.5625em;
@@ -45,7 +48,6 @@ rn-bundle-grid {
      }
 
     tr > th, tr > td {
-      padding: .3em .5em;
       &.isHighPriority { .flex-basis(25px); }
       &.bundleName { .flex-grow(1); .flex-basis(200px); }
       &.paymentCcy { .flex-basis(100px); }

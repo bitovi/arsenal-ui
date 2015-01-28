@@ -582,6 +582,24 @@ var page = Component.extend({
           if(self.licDetails.data.revisionHistories[i].status == null) {
             self.licDetails.data.revisionHistories[i].status = "";
             self.licDetails.data.revisionHistories[i]._data.status = "";
+          } else {
+
+            if(self.licDetails.data.revisionHistories[i].status == 'A' ) {
+
+              self.licDetails.data.revisionHistories[i].status = "Active";
+              self.licDetails.data.revisionHistories[i]._data.status = "Active";
+            } 
+            if(self.licDetails.data.revisionHistories[i].status == 'I' ) {
+
+              self.licDetails.data.revisionHistories[i].status = "Inctive";
+              self.licDetails.data.revisionHistories[i]._data.status = "Inactive";
+            } 
+            if(self.licDetails.data.revisionHistories[i].status == 'N' ) {
+
+              self.licDetails.data.revisionHistories[i].status = "";
+              self.licDetails.data.revisionHistories[i]._data.status = "";
+            } 
+
           }
 
 

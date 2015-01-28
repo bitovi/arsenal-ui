@@ -3,14 +3,14 @@
 
   @dark-border: 1px solid hsl(0, 0%, 40%);
   @light-border: 1px solid hsl(0, 0%, 75%);
-  @border-radius: 0px; /* Removing Rounded corner */
+  @border-radius: 5px; /* Removing Rounded corner */
 
   @row-hover-outline: 2px solid #1581F4; // Old color   3px solid #d3f0fe; //
 
   @header-background: linear-gradient(to top, #7e7e83, #afafb4);
   @parent-background: #e4e4e4;
   @child-background: #f6f6f6;
-  @selected-background: #d3f0fe;
+  @selected-background: #d3f0fe !important;
   @odd-row-background:#F0F0F0;//#D7D7D7;
   @even-row-background:#F9F9F9;//#F3F3F3;
 
@@ -24,7 +24,7 @@
     border-radius:0;
     color: @font-color;
 
-    /* getting border radius to work right 
+    /* getting border radius to work right
     thead:first-child, tbody:first-child {
       & > tr:first-of-type {
         td:first-child, th:first-child {
@@ -55,25 +55,36 @@
   }
 
 thead{
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border-top-left-radius: @border-radius;
+    border-top-right-radius: @border-radius;
 }
-  
+
+tfoot{
+  border-bottom-left-radius: @border-radius;
+  border-bottom-right-radius: @border-radius;
+}
+
   thead, tfoot {
     background: @header-background;
     color: white;
-  
+
+
     th, td {
       font-weight: normal;
 
       height: 1.5em;
       padding: .3em .5em .3em .5em;
       //border-right: @dark-border;
+      border-right: 1px solid #868080;
       //border-top: @dark-border;
-      border-bottom: @dark-border;
+      border-bottom: @light-border;
+
 
       &:first-child {
         //border-left: @dark-border;
+      }
+      &:last-child {
+        border-right: 0px solid #868080;
       }
 
       & .sort-arrow {
@@ -96,7 +107,7 @@ thead{
   tbody {
 
     background: #F6F6F6+ !important;
-
+    border-bottom: @light-border;
       tr {
 
         height : 1.5625em;
@@ -104,16 +115,16 @@ thead{
 
           padding-right: 0.5625em;
           padding-left : 0.5625em;
-          padding-top  : 0em;
-          padding-bottom : 0em;
-          border-right: 1px solid hsl(0, 0%, 75%);
-          border-bottom: 1px solid #FFFFFF !important;
+          padding-top  : 0.2em;
+          padding-bottom : 0.2em;
+          border-right: @light-border;
+          //border-bottom: 1px solid #FFFFFF !important;
 
           &:first-child {
-            border-left: 1px solid hsl(0, 0%, 75%);
+            border-left: 1px solid #FFFFFF !important;
           }
           &:last-child {
-            border-right: 1px solid hsl(0, 0%, 75%);
+            border-right: 1px solid #FFFFFF !important;
           }
 
         }
@@ -123,7 +134,7 @@ thead{
 
   tbody {
     tr.selected {
-      background: @selected-background;
+      background: @selected-background !important;
     }
 
     tr.even-row {
@@ -175,7 +186,7 @@ thead{
 
   .child.visible {
     background:#fff;
-    border:1px solid #bfbfbf;
+    //border:1px solid #bfbfbf;
 
     &.selected {
       background: @selected-background;

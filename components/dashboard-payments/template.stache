@@ -13,7 +13,11 @@
   {{/selectedItems}}
   </ul>
 </div>
-<div class="detail" style="height:50%; width:70%;float:left;">
+<div class="detail" style="height:50%; width:70%;float:left;padding-top: 0px;">
+  <div class="legend">
+    <div class="paid"><div class="square"></div> Paid</div>
+    <div class="unpaid"><div class="square"></div> Unpaid</div>
+  </div>
     {{#if selectedItem}}
     <div style="width:44%">
     <rn-dashboard-payments-detail name-property="{selectedTab.detailNameProperty}" detail-items="{selectedItem.payments}" appstate="{appstate}"></rn-dashboard-payments-detail>
@@ -21,10 +25,7 @@
     {{else}}
     <rn-dashboard-payments-overview summary="{summary}" appstate="{appstate}"></rn-dashboard-payments-overview>
     {{/if}}
-    <div class="legend  col-md-2 col-md-offset-2">
-      <div class="paid"><div class="square"></div> Paid</div>
-      <div class="unpaid"><div class="square"></div> Unpaid</div>
-    </div>
+
 </div>
 </div>
 

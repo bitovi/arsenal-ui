@@ -10,21 +10,35 @@
 rn-bundle-detail {
   display: block;
   margin-top: .5em;
-  border-top: 1px solid @dark-grey;
+  border-top: 1px solid @light-grey;
 
   .top-controls {
-    background: #ececec;
-    padding-top: 1em;
+    //padding-top: 1em;
+
 
     .tokenData {
       float: right;
       margin: .5em 0.5em 0.5em 0.5em;
 
       ul.token-input-list-facebook{
-        width:350px !important;
-        height: 20px !important;
+        width: 300px !important;
+        height: 22px !important;
         border-radius: 4px;
         border-color: #C6C6C6;
+      }
+
+      li.token-input-selected-token-facebook{
+        padding-bottom:0px;
+        padding-top:0px;
+        border-top-width: 0px;
+        margin-top: 2px;
+        text-align:center;
+      }
+
+      li.token-input-token-facebook {
+        height: 16px !important;
+        padding-top:0px;
+        margin-top: 2px;
       }
 
       input#token-input-tokenSearch{
@@ -65,7 +79,7 @@ rn-bundle-detail {
   .bundle-detail-actions {
     display: inline-block;
     float: right;
-    margin: .5em 1em 0 1em;
+    margin: .5em 1em 0 0.5em;
 
     .verbose-toggle {
       height: 14px;
@@ -78,8 +92,10 @@ rn-bundle-detail {
 
   .grid-container {
     background-color: @light-grey;
-    border-top: 1px solid @dark-grey;
-    padding-top: .25em;
+    padding: 10px;
+    border-bottom:  1px solid#c6c6c6;
+    border-top: 1px solid#c6c6c6;
+    background-color: #f6f6f6;
 
     background: #f4f4f4;
     clear: both;
@@ -89,8 +105,9 @@ rn-bundle-detail {
   }
 
   .grand-total {
-    margin: 0.5em 2em 0 0;
+    margin: 0em 2em 0 0;
     text-align: right;
+    background-color: @light-grey;
 
     h3 {
       font-weight: bold;
@@ -108,7 +125,9 @@ rn-bundle-detail {
     display: -webkit-flex;
     display: flex;
     background-color: @light-grey;
-    padding-top: 0.5em;
+    border-radius: 5px;
+
+    //padding-top: 0.5em;
 
     & > * {
       display: block;

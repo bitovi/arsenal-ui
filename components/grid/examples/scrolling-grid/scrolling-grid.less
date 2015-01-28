@@ -2,7 +2,7 @@
 
   @dark-border: 1px solid hsl(0, 0%, 40%);
   @light-border: 1px solid hsl(0, 0%, 75%);
-  @border-radius: 8px;
+  @border-radius: 5px;
 
   @header-background: linear-gradient(to top, #7e7e83, #afafb4);
 
@@ -12,9 +12,9 @@
 
   & > table {
     width: 100%;
-    border-radius: 8px;
+    border-radius: 5px;
     border-spacing: 0;
-    //border: @dark-border;
+    border-bottm: @light-border;
 
     color: @font-color;
   }
@@ -37,6 +37,8 @@
     height: 20em;
     overflow-y: overlay;
     overflow-x: hidden;
+    border-left:@light-border;
+    border-right:@light-border;
   }
 
   thead, tfoot {
@@ -57,11 +59,13 @@
     //border-top: @light-border;
     &:first-child {
       border-top: none;
+      //border-left:  0px solid #868080;
     }
 
-    td {
-      padding: 1em;
-    }
+  
+    // td {
+    //   padding: 1em;
+    // }
 
     &.child {
       display: none;
