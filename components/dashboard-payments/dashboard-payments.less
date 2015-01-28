@@ -2,8 +2,8 @@
 @medium-grey: #ececec;
 @border-grey: #dddddd;
 
-@bar-color: #4d4d4d;
-@value-color: #d24849;
+@bar-color: #81ED6A;
+@value-color: #BDBDBD;
 
 rn-dashboard-payments {
   color: @dark-grey;
@@ -20,6 +20,7 @@ rn-dashboard-payments {
     padding: .5em 0;
     position: relative;
     list-style: none;
+    padding-top: 0.2em;
 
     &.selected {
       background-color: @medium-grey;
@@ -30,7 +31,7 @@ rn-dashboard-payments {
         top: 0;
         right: 2px;
         bottom: 0;
-        padding: 1em 0;
+        padding: 0.7em 0;
         line-height: 1em;
       }
     }
@@ -70,10 +71,20 @@ rn-dashboard-payments {
     flex: 3 0;
     padding: 1em;
 
+    .pay-overview-heading{
+      padding-top: 41px;
+      margin: 0 auto;
+      text-align: center;
+      width: 50%;
+    }
+
     .legend {
       border: 1px solid @border-grey;
       width: 150px;
-      margin-top: 2em;
+      float: right;
+      padding-top: 0px;
+      height: 60px;
+      margin-bottom: 6px;
 
       & > div {
         margin: .5em;

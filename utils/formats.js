@@ -61,6 +61,17 @@ var formats = {
     }else{
       return test.call(null, valuePassed) ? format(valuePassed) : elseValue;
     }
+  },
+  formatToFixedDecimalAspercent: function(valuePassed,test, decimalplace, elseValue,isPercentVal){
+    if(test.call(null, valuePassed)){
+      var convertVal=formats.number(valuePassed);
+      if(!isPercentVal){
+        convertVal=convertVal*100;
+      }
+      return convertVal.toFixed(decimalplace);
+    }else{
+      return elseValue;
+    }
   }
 };
 
