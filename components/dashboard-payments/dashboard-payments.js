@@ -12,6 +12,7 @@ import HolesReport from 'models/holes-report/';
 
 import template from './template.stache!';
 import styles from './dashboard-payments.less!';
+import gridUtils from 'utils/gridUtil';
 
 var refreshTimeoutID;
 
@@ -48,10 +49,12 @@ var DashboardPayments = Component.extend({
     refreshReport: function() {
       var self = this;
       this.attr('fetching', true);
+      $('#parentcontainer').css('height',$(window).height());
 
       return PaymentSummary.findOne({appstate: self.appstate}).then(function(summary) {
         self.attr('summary', summary);
         self.attr('fetching', false);
+        $('#parentcontainer').css('height',gridUtils.getTableBodyHeight('parentcontainer',96));
       });
     }
   },
@@ -84,6 +87,9 @@ var DashboardPayments = Component.extend({
       if(this.scope.appstate.filled) {
         this.scope.debouncedRefreshReport(this.scope);
       }
+      //intially set the div height equal to window height.
+      //var windowHeight=$(window).height();
+    //  $('#parentcontainer').css('height',$(window).height());
     },
     '{scope.appstate} change': function() {
       var self = this;
