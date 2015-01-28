@@ -78,7 +78,7 @@
               <div class="form-group">
                 <div class="col-sm-6 validFrom">
                   <label for="forValidFrom" class="col-sm-6 control-label">Valid From: </label>
-                  <div class="col-sm-4 requiredBar" style="padding-left: 5px;">
+                  <div class="col-sm-4 requiredBar" style="padding-left: 1px;">
                     <div class="calendarcls">
                       <input type='text' id="validFrom" name="validFrom" class="form-control inputMonth updateperoid"  can-value='pageState.entityCountryDetails.entityCountry.validFrom'/>
                       <period-calendar  selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
@@ -173,7 +173,7 @@
                 <div class="col-sm-9 requiredBarNone">
                   <!-- <textarea id="historyComments"  class="form-control multiple-comments-editable form-control-comments new-comments multiple-comments-editable-height" style="min-height:120px;    max-height:200px;"  can-value="pageState.historyComments" readonly=true></textarea>
                   <textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:50px;   min-height:50px;    max-height:50px;" can-value="pageState.entityCountryDetails.comment"></textarea> -->
-                  <div class="multipleComments col-sm-8 requiredBar" id="multipleComments">
+                  <div class="multipleComments col-sm-8 requiredBar" id="multipleComments" style="padding-left: 17px;">
                   </div>
                   <div class="col-sm-4 multicomments-required"> Enter comments !</div>
                 </div>

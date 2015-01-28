@@ -181,21 +181,17 @@
               </div>
               <div class="col-sm-2"></div>
             </div>
-
+            <div class="col-sm-12 multicomments-required"> <div class="col-sm-1"></div><div class="col-sm-8">Enter comments !</div></div>
             <div class="form-group">
                <div class="col-sm-12" id="refCountryComments">
                   <label for="forStatus" class="col-sm-4 control-label small-headers">Comments: </label>
-                  <div id="multipleComments" class="col-sm-8 normalBar">
+                  <div id="multipleComments" class="col-sm-8 normalBar requiredBar">
                     <textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>
                   </div>
                 </div>
-                 <div class="col-sm-2 multicomments-required"> Enter comments !</div>
             </div>
 
-            <div class="col-sm-12" style="text-align:right;padding:15px;padding-right: 32px;">
-              <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
-              <button id="submitBtn" {{disableSubmit}} type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>
-            </div>
+            
         </div>
         <!-- LEFT Layout END-->
 
@@ -299,4 +295,9 @@
       </div> <!-- Main Layout END-->
     </form> 
   </div>
+</div>
+
+<div class="col-sm-12 buttonsPlaceHolder" style="text-align:right;padding:15px;padding-right: 32px;">
+  <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
+  <button id="submitBtn" {{disableSubmit}} type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>
 </div>

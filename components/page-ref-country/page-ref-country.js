@@ -118,6 +118,7 @@ var page = Component.extend({
     "inserted": function(){
       var self = this;
       $(".multicomments-required").hide();
+      $(".buttonsPlaceHolder").hide();
 
       $('#grid-society-model').append(stache('<rn-grid rows="{reportConfigurationList}"></rn-grid>')({reportConfigurationList}));
       $('#grid-revision-history').append(stache('<rn-grid-revision-history rows="{revisionHistory}"></rn-grid-revision-history>')({revisionHistory}));
@@ -359,6 +360,7 @@ var page = Component.extend({
     '#fetchDetailsBtn click':function(){
       var self = this.scope;
       $("#loading_img").show();
+      $(".buttonsPlaceHolder").hide();
       //console.log(this.scope.pageState.attr("countryId"));
       var countryId;
       if(self.pageState.countryDetails.country.attr("countryId")=="")
@@ -508,6 +510,7 @@ var page = Component.extend({
 
         $("#loading_img").hide();
         $(".main-layout").show();
+        $(".buttonsPlaceHolder").show();
         if(data.countryDetails.status == "A") {
           self.attr("state","Edit");
         }else{
@@ -663,7 +666,7 @@ var page = Component.extend({
 
       //form Reset
       var self = this.scope;
-      societyModelMapping.replace([]);
+      self.societyModelMapping.replace([]);
       revisionHistory.replace([]);
 
       var resetObject = {
@@ -673,6 +676,8 @@ var page = Component.extend({
       self.pageState.countryDetails.attr("country",resetObject);
       self.pageState.countryDetails.attr("comment","");
       self.attr("state","Read");
+      $(".main-layout").hide();
+      $(".buttonsPlaceHolder").hide();
 
     },
     '#submitBtn click': function(el, ev){
