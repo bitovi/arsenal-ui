@@ -69,11 +69,11 @@
 
 										<td width="30%" class="summaryStatsTab">
 
-											<div id="summaryStatsDiv" style="display:none">
+											<fieldset id="summaryStatsDiv" style="display:none">
 												<table id="summaryTopTable" style="width:100%">
 													<tr>
 														<td width="55%">
-															<div class="mid-headers">Summary Stats</div>
+															<legend class="mid-headers">Summary Stats</legend>
 														</td>
 														<td width="35%">
 
@@ -203,7 +203,7 @@
 												</tbody>
 
 												</table>
-											</div>
+											</fieldset>
 
 
 
