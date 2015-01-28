@@ -458,11 +458,7 @@ var page = Component.extend({
 
                                 if(values[0]["status"]=="SUCCESS"){
                                        var msg = "Invoices  saved successfully."
-                                       $("#invcsvmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
-                                       $("#invcsvmessageDiv").show();
-                                       setTimeout(function(){
-                                          $("#invcsvmessageDiv").hide();
-                                       },5000)
+                                      displayMessage(msg,true);
 
                                        icsvmap.removeAttr("invoiceData");
 
@@ -474,12 +470,8 @@ var page = Component.extend({
                                     {
                                         var responseInvoiceArr = values[0].invoices;
                                         icsvmap.invoiceData.attr("invoices", responseInvoiceArr);  /*updating icsv map with invoice response*/
-
-                                      
-                                          var msg = values[0].responseText;
-                                          $("#invcsvmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
-                                          $("#invcsvmessageDiv").show();
-                                       
+                                        var msg = values[0].responseText;
+                                        displayMessage(msg,false);                                 
                                     }
                                 });
       },
@@ -614,5 +606,16 @@ function disableBundle(disable){
 
 }
 
+function displayMessage(msg,success){
+  if(success){
+    $("#invcsvmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
+  }else{
+    $("#invcsvmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+  } 
+   $("#invcsvmessageDiv").show();
+   setTimeout(function(){
+      $("#invcsvmessageDiv").hide();
+   },5000)
+}
 
 export default page;
