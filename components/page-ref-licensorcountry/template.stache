@@ -57,7 +57,7 @@
 
 
       <div class="col-sm-12 lineDividerLiceCountry"></div><!-- Main Layout START-->
-      <div class="mainLayoutId" >
+      <div class="col-sm-12 mainLayoutId" >
 
           <div class="col-sm-6 right-border" {{setHeight}}><!-- LEFT Layout START-->
             <div class="form-group">
@@ -180,16 +180,6 @@
               </div>
             </div>
 
-
-            <div class="col-sm-12">
-              <div class="col-sm8" style="text-align:right;padding:15px;">
-                <div class="col-sm-6 ">
-                  <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
-                  <button id="submitBtn" {{disableSubmit}} type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>
-                </div>
-              </div>
-            </div>
-
           </div>
           <!-- LEFT Layout END-->
 
@@ -234,7 +224,17 @@
             </div><!-- RIGHT Layout END-->
           </div>
 
+          <div class="col-sm-12 buttonsPlaceHolder">
+            <div class="col-sm-12" style="text-align:right;padding:15px;">
+              
+                <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
+                <button id="submitBtn" {{disableSubmit}} type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>
+              
+            </div>
+          </div>
           <div id="viewPricingModelDiv">
+
+      
    <!-- View Pricing Model start --->
    {{#if displayPMDetails}}
      <div class="col-sm-12" style="border-bottom: 1px solid #ddd;padding: 0px;">
