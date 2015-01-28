@@ -14,7 +14,7 @@ import BundleDetailGrid from 'components/bundle-detail-grid/';
 import Switcher from 'components/switcher/';
 import WorkflowDisplay from 'components/workflow-display/';
 import PbrDeleteConfirmModal from 'components/pbr-delete-confirm-modal/';
-import PbrRemoveGroupsModal from 'components/pbr-remove-groups-modal/';
+
 import Alert from 'components/alert/';
 import highchartpage from 'components/highchart/';
 import Preview from 'components/pbr-preview/';
@@ -269,9 +269,6 @@ var BundleDetailTabs = Component.extend({
     validationStatus: function(options) {
       return this.pageState.selectedBundle && this.pageState.selectedBundle.attr('validationRulesTotal') > 0 ? options.fn(this.pageState.selectedBundle) : '';
     },
-    allowRemoveInvoices:function(){
-      return ( this.selectedRows.attr('length') > 0 ? '' : 'disabled' ) ;
-    },
     canShowChart: function(options) {
       if(this.pageState.attr('selectedBundle.bundleType') === 'REGULAR_INV' &&
         this.selectedRows.attr('length') > 0 &&
@@ -304,10 +301,7 @@ var BundleDetailTabs = Component.extend({
     }
   },
   events: {
-    '.remove-invoice click': function(el, ev) {
-      PbrRemoveGroupsModal.displayModal(this.scope);
 
-    },
     '.grid-container table>tbody>tr click':function(item, el, ev){
 
       var alreadySelRow = item.closest("tbody").find("tr.selected");
@@ -534,7 +528,12 @@ var BundleDetailTabs = Component.extend({
         this.scope.getNewDetails(this.scope.pageState.selectedBundle);
       }
 
+    },
+    '{scope.pageState} refreshBottomGrid': function() {
+      //console.log("refreshBottomGrid change event: ");
+      this.scope.getNewDetails(this.scope.pageState.selectedBundle);
     }
+
   }
 });
 
@@ -554,6 +553,8 @@ var resetSelectedBundle = function(scope){
   scope.attr("approvalComment", '');
   scope.attr("preferredCurr", '');
 
+  canRemoveInvoice(scope.pageState);
+
   var region = scope.appstate.attr('region') != undefined ? scope.appstate.attr('region').id : "";
 
   Currency.getCurrByRegion(region).done(function(curr) {
@@ -563,7 +564,7 @@ var resetSelectedBundle = function(scope){
 
   });
 
-  canRemoveInvoice(scope);
+
   // change the columns to be correct
   var tabs = [],
   columns;
@@ -586,13 +587,17 @@ var resetSelectedBundle = function(scope){
 
 }
 
-var canRemoveInvoice = function(scope){
-    if(scope.pageState.selectedBundle != null && scope.pageState.selectedBundle.editable &&  scope.pageState.attr('selectedBundle.bundleType') === 'REGULAR_INV'
-     &&  ( scope.attr('selectedTab')  == null || scope.attr('selectedTab').value === 'licensor' ))  {
+
+var canRemoveInvoice = function(pageState){
+  if(pageState.selectedBundle != null && pageState.selectedBundle.editable &&  pageState.attr('selectedBundle.bundleType') === 'REGULAR_INV')
+    {
+      $(".vertical-line").show();
       $(".remove-invoice").show();
     } else {
+      $(".vertical-line").hide();
       $(".remove-invoice").hide();
     }
-}
+  }
+
 
 export default BundleDetailTabs;

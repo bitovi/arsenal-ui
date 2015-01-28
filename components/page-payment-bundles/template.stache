@@ -14,24 +14,20 @@
       <div id="messageDiv" class="center" role="alert"></div>
     </div>
   </div>
-  <div class="col-sm-12 bundle-list-actions">
+  <div class="bundle-list-actions">
     {{#if pageState.selectedBundle.editable}}
-      <div class="col-sm-6">
-        <button class="btn btn-custom-xs add-invoice">Add Invoices</button>
+      <div class="center">
+        <button class="btn btn-custom-small add-invoice">Add Invoices</button>
+        <div class="vertical-line"></div>
+        <button class="btn btn-custom-small remove-invoice" {{allowRemoveInvoices}}>Remove Invoice</button>
       </div>
-    {{/if}}
-    {{#if pageState.bundles.length}}
 
-    {{#if pageState.selectedBundle.editable}}
-      <div class="col-sm-6">
-    {{#else}}
-      <div class="col-sm-12">
+
     {{/if}}
 
-        <!-- <img class="excel exportToExcel" /> -->
-        <img class="clipboard copyToClipboard" style="padding-top: 1px;margin-right:1em;height:18px;width:18px;" />
-      </div>
-    {{/if}}
+    <!-- <img class="excel exportToExcel" /> -->
+    <img class="clipboard copyToClipboard" style="padding-top: 1px;height:18px;width:18px;" />
+
   </div>
 
 <!-- {{#showPage}} -->
@@ -41,7 +37,7 @@
 </div>
 {{#if pageState.selectedBundle}}
   <div id="payBundleDetailGrid">
-    <rn-bundle-detail page-state="{pageState}" appstate="{appstate}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}"></rn-bundle-detail>
+    <rn-bundle-detail page-state="{pageState}" appstate="{appstate}" selected-rows="{invoiceRowsSelected}"></rn-bundle-detail>
   </div>
 {{/if}}
 </div>

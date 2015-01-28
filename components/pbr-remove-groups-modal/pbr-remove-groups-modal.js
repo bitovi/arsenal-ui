@@ -27,10 +27,11 @@ var PbrRemoveGroupsModal = can.Component.extend({
     },
     '.submit click': function(el, ev) {
       var self = this;
-      this.scope.bundlescope.pageState.selectedBundle.removeBundleGroups(this.scope.bundlescope.selectedRows, this.scope.bundlescope.appstate).then(function(response) {
+      this.scope.bundlescope.pageState.selectedBundle.removeBundleGroups(this.scope.bundlescope.invoiceRowsSelected, this.scope.bundlescope.appstate).then(function(response) {
         if(response.status === 'SUCCESS') {
-          Alert.displayAlert(response.responseText, 'success');
-          self.scope.bundlescope.getNewDetails(self.scope.bundlescope.pageState.selectedBundle);
+          //Alert.displayAlert(response.responseText, 'success');
+          self.scope.bundlescope.pageState.attr("refreshBottomGrid",!self.scope.bundlescope.pageState.refreshBottomGrid);
+          //getNewDetails(self.scope.bundlescope.pageState.selectedBundle);
         }
       });
       this.element.find('.modal').modal('hide');

@@ -7,9 +7,11 @@ import stache from 'can/view/stache/';
 // Models
 import PaymentBundle from 'models/payment-bundle/';
 
+
 // Components
 import PaymentBundleGrid from 'components/bundle-grid/';
 import PaymentBundleDetail from 'components/bundle-detail/';
+import PbrRemoveGroupsModal from 'components/pbr-remove-groups-modal/';
 
 import commonUtils from 'utils/commonUtils';
 
@@ -24,7 +26,8 @@ var pageState = new Map({
   selectedBundle: null,
   verboseGrid: false,
   isPaginateReq: false,//triggers the paginate Event from bundle-grid.js
-  recordsAvailable:undefined
+  recordsAvailable:undefined,
+  refreshBottomGrid:false
 });
 
 var page = Component.extend({
@@ -34,6 +37,7 @@ var page = Component.extend({
     appstate: null, // will be passed in
     pageState: pageState,
     isPageSearch: undefined,//To controll Gloable search
+    invoiceRowsSelected: [],
     paginateAttr:{
       offset: 0,
       sortBy: [],
@@ -88,6 +92,7 @@ var page = Component.extend({
               pageState.bundles.splice(0, pageState.bundles.length);
               pageState.bundles.replace(data.paymentBundles);
               pageState.attr("recordsAvailable",data.recordsAvailable);
+
               can.batch.stop();
             }else{
               commonUtils.displayUIMessage( data.responseCode, data.responseText);
@@ -116,6 +121,9 @@ var page = Component.extend({
       // } else {
       //   return '';
       // }
+    },
+    allowRemoveInvoices:function(){
+      return ( this.invoiceRowsSelected.attr('length') > 0 ? '' : 'disabled' ) ;
     }
   },
   events: {
@@ -150,6 +158,9 @@ var page = Component.extend({
     // },
     '.add-invoice click': function(el, ev) {
       commonUtils.navigateTo("invoices");
+    },
+    '.remove-invoice click': function(el, ev) {
+      PbrRemoveGroupsModal.displayModal(this.scope);
     },
 //     ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
 //           var self=this;
@@ -212,22 +223,22 @@ var page = Component.extend({
            $('body').css('overflow','hidden');
            $('#copyall').trigger('click');
         });
+    },
+    '{scope.pageState} refreshBottomGrid': function() {
+      //console.log("Own change event: "+this.scope.invoiceRowsSelected.attr('length'));
+      this.scope.invoiceRowsSelected.attr('length') > 0 ? $('.remove-invoice').prop('disabled', true) : "";
     }
+
   }
 });
 
-
-
 var resetGrids = function(pageState){
   //Reset the grid
-
   can.batch.start();
   pageState.bundles.splice(0, pageState.bundles.length);
   pageState.attr('selectedBundle', null);
   can.batch.stop();
 }
-
-
 
 
 export default page;
