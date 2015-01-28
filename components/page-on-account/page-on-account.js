@@ -616,8 +616,7 @@ var page = Component.extend({
                      $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj:[]}));
                      self.scope.attr('bundleNamesForDisplay','');
                 }
-                self.scope.previouslyFetchOnAccRows.replace(finalRows);
-                self.scope.attr('populateDefaultData',false);
+                self.scope.previouslyFetchOnAccRows.replace(finalRows);     
             } else{
                 displayMessage(data["responseText"],false);
                 $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
@@ -625,6 +624,7 @@ var page = Component.extend({
                 self.scope.uploadedfileinfo.replace([]);
                 self.scope.attr('bundleNamesForDisplay','');
             }
+            self.scope.attr('populateDefaultData',false);
         }, function(xhr) {
               console.error("Error while loading: proposed onAccount Details"+xhr);
               $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
