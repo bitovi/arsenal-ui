@@ -345,7 +345,7 @@
                  <div class="submit-button-style"></div>
 				            	{{/if}}
 					       {{else}}
-                <label class="col-sm-4 bundelTitle" for="inputCountry" style="padding-left:0px;width:30%">Bundle Name:</label>
+                <label class="col-sm-4 bundelTitle" for="inputCountry" style="padding-left:0px;width:30%"></label>
                 <div class="col-sm-5" style="width:70%"></div>
 					       {{/if}}
 					        </div>
