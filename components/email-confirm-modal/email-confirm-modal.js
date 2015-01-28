@@ -25,7 +25,6 @@ var EmailConfirmModal = can.Component.extend({
     },
     '.submit click': function(el, ev) {
 
-//      console.log('this.scope.approval',this.scope.approval);
       var approvalObj = {"emailDetails":[  
           {  
              "emailType":"bundle_reminder",
