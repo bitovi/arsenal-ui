@@ -1,6 +1,7 @@
 @dark-grey: #3d3d3d;
 @medium-grey: #ececec;
 @border-grey: #dddddd;
+@blue: #3191F3;
 
 @bar-color: #81ED6A;
 @value-color: #BDBDBD;
@@ -23,7 +24,7 @@ rn-dashboard-payments {
     padding-top: 0.2em;
 
     &.selected {
-      background-color: @medium-grey;
+      background-color: @blue;
 
       &::after {
         content: '>';
@@ -47,7 +48,7 @@ rn-dashboard-payments {
   .sidebar {
     flex: 1 0;
   /*  padding: 1em;*/
-    border-right: 1px solid @border-grey;
+    //border-right: 1px solid @border-grey;
 
     rn-switcher {
       font-size: 13px;
@@ -107,5 +108,12 @@ rn-dashboard-payments {
     padding: 1.5em;
     text-align: center;
     font-weight: bold;
+  }
+
+  .vertical-line{
+    width: 1px; /* Line width */
+    background-color: #97979C; /* Line color */
+    height: 100%; /* Override in-line if you want specific height. */
+    float:left;
   }
 }

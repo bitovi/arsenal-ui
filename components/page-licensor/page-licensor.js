@@ -750,6 +750,7 @@ var page = Component.extend({
         alignGridStats('revisionHistory');
         alignGridStats('countryModelMapping');
         alignGridStats('repConfiguration');
+        alignGridStats('societyContacts');
       },100);
 
 

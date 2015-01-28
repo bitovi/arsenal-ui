@@ -78,7 +78,7 @@
               <div class="form-group">
                 <div class="col-sm-6 validFrom">
                   <label for="forValidFrom" class="col-sm-6 control-label">Valid From: </label>
-                  <div class="col-sm-4 requiredBar" style="padding-left: 5px;">
+                  <div class="col-sm-4 requiredBar" style="padding-left: 1px;">
                     <div class="calendarcls">
                       <input type='text' id="validFrom" name="validFrom" class="form-control inputMonth updateperoid"  can-value='pageState.entityCountryDetails.entityCountry.validFrom'/>
                       <period-calendar  selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
@@ -135,6 +135,7 @@
                     {{/each}}
                   </select>
                 </div>
+                <div class="col-sm-1"></div>
                 <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="pricingModelBtn">...</button>
               </div>
             </div>
@@ -172,7 +173,7 @@
                 <div class="col-sm-9 requiredBarNone">
                   <!-- <textarea id="historyComments"  class="form-control multiple-comments-editable form-control-comments new-comments multiple-comments-editable-height" style="min-height:120px;    max-height:200px;"  can-value="pageState.historyComments" readonly=true></textarea>
                   <textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:50px;   min-height:50px;    max-height:50px;" can-value="pageState.entityCountryDetails.comment"></textarea> -->
-                  <div class="multipleComments col-sm-8 requiredBar" id="multipleComments">
+                  <div class="multipleComments col-sm-8 requiredBar" id="multipleComments" style="padding-left: 17px;">
                   </div>
                   <div class="col-sm-4 multicomments-required"> Enter comments !</div>
                 </div>
@@ -199,13 +200,13 @@
             <div class="form-group">
               <div class="col-sm-1"></div>
               <div class="col-sm-6">
-                <div class="panel panel-default panel-sm">
+                <div class="panel panel-default panel-sm" style="border-color: #ddd;  border: 1px solid #827F7F;border-radius: 0px;">
                   <div class="panel-heading clearfix">
                     <h4 class="panel-title">
                       Report Configuration
                     </h4>
                   </div>
-                  <div id="grid-report-config" style="max-height: 200px; overflow-y:scroll;"></div>
+                  <div id="grid-report-config" style="max-height: 200px; overflow-y:scroll;border-right: 1px solid #827F7F;overflow-x: hidden"></div>
                 </div>
               </div>
             </div>
@@ -213,7 +214,7 @@
             <div class="form-group">
               <div class="col-sm-1"></div>
               <div class="col-sm-11">
-                <div class="panel panel-default panel-sm">
+                <div class="panel panel-default panel-sm" style="border-color: #ddd;  border: 1px solid #827F7F;border-radius: 0px;">
                   <div class="panel-heading">
                     <h4 class="panel-title">
                       <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
@@ -221,7 +222,7 @@
                       </a></h4>
                     </div>
                     <div id="collapseOne" class="panel-collapse collapse in">
-                      <div id="grid-revision-history" style="max-height: 200px; overflow-y:scroll;"></div>
+                      <div id="grid-revision-history" style="max-height: 200px; overflow-y:scroll;overflow-x: hidden"></div>
                     </div>
 
                   </div>

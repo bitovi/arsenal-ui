@@ -2,8 +2,8 @@
 {{#if fetching}}
 <div class="select-message">Loading Payments report...</div>
 {{else}}
-<div style="height:100%; width:100%;padding-top: 1em">
-<div class="sidebar" style="height:50%; width:30%;float:left;">
+<div id="parentcontainer" style="height:height:100vh;width:100%;padding-top: 1em">
+<div class="sidebar" style="height:auto; width:30%;float:left;">
   <rn-switcher options="{tabs}" selected-option="{selectedTab}"></rn-switcher>
   <ul class="chart-list">
   {{#selectedItems}}
@@ -13,13 +13,14 @@
   {{/selectedItems}}
   </ul>
 </div>
-<div class="detail" style="height:50%; width:70%;float:left;padding-top: 0px;">
+<div class="vertical-line"></div>
+<div class="detail" style="height:auto; width:69%;float:left;padding-top: 0px;display: table;margin: 0 auto;" >
   <div class="legend">
     <div class="paid"><div class="square"></div> Paid</div>
     <div class="unpaid"><div class="square"></div> Unpaid</div>
   </div>
     {{#if selectedItem}}
-    <div style="width:44%">
+    <div style="width:44%;">
     <rn-dashboard-payments-detail name-property="{selectedTab.detailNameProperty}" detail-items="{selectedItem.payments}" appstate="{appstate}"></rn-dashboard-payments-detail>
     </div>
     {{else}}
