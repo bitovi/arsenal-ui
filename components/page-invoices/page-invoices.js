@@ -815,7 +815,7 @@ var page = Component.extend({
             Invoice.update(UserReq.formRequestDetails(invoiceDelete),"invoiceDelete",function(data){
               console.log("Delete response is "+JSON.stringify(data));
               if(data["status"]=="SUCCESS"){
-                if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
+                //if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
                    $("#messageDiv").html("<label class='successMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>")
                    $("#messageDiv").show();
                    setTimeout(function(){
@@ -828,7 +828,7 @@ var page = Component.extend({
                           self.scope.appstate.attr('globalSearch', true);
                         }
                     },2000);
-                }
+                //}
               }
               else{
                 $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>");
