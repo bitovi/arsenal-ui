@@ -59,9 +59,15 @@ thead{
     border-top-right-radius: @border-radius;
 }
 
+tfoot{
+  border-bottom-left-radius: @border-radius;
+  border-bottom-right-radius: @border-radius;
+}
+
   thead, tfoot {
     background: @header-background;
     color: white;
+
 
     th, td {
       font-weight: normal;
@@ -109,16 +115,16 @@ thead{
 
           padding-right: 0.5625em;
           padding-left : 0.5625em;
-          padding-top  : 0em;
-          padding-bottom : 0em;
+          padding-top  : 0.2em;
+          padding-bottom : 0.2em;
           border-right: @light-border;
           //border-bottom: 1px solid #FFFFFF !important;
 
           &:first-child {
-            border-left: @light-border;
+            border-left: 1px solid #FFFFFF !important;
           }
           &:last-child {
-            border-right: @light-border;
+            border-right: 1px solid #FFFFFF !important;
           }
 
         }
@@ -128,7 +134,7 @@ thead{
 
   tbody {
     tr.selected {
-      background: @selected-background;
+      background: @selected-background !important;
     }
 
     tr.even-row {

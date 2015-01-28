@@ -17,31 +17,32 @@
   <div class="col-sm-12 bundle-list-actions">
     {{#if pageState.selectedBundle.editable}}
       <div class="col-sm-6">
-        <button class="btn btn-custom-xs add-invoice">Add Invoices To Bundle</button> | 
-        <button class="btn btn-custom-xs ">Remove Inovices From Bundle</button>
+        <button class="btn btn-custom-xs add-invoice">Add Invoices</button>
       </div>
     {{/if}}
     {{#if pageState.bundles.length}}
-    
+
     {{#if pageState.selectedBundle.editable}}
       <div class="col-sm-6">
     {{#else}}
       <div class="col-sm-12">
     {{/if}}
-    
+
         <!-- <img class="excel exportToExcel" /> -->
-        <img class="clipboard copyToClipboard" />
+        <img class="clipboard copyToClipboard" style="padding-top: 1px;margin-right:1em;height:18px;width:18px;" />
       </div>
     {{/if}}
   </div>
 
 <!-- {{#showPage}} -->
+<div class="col-lg-12">
 <div id="payBundleGrid">
   <rn-bundle-grid rows="{pageState.bundles}" page-state="{pageState}"></rn-bundle-grid>
 </div>
-<div id="payBundleDetailGrid">
-  {{#if pageState.selectedBundle}}
-  <rn-bundle-detail page-state="{pageState}" appstate="{appstate}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}"></rn-bundle-detail>
-  {{/if}}
+{{#if pageState.selectedBundle}}
+  <div id="payBundleDetailGrid">
+    <rn-bundle-detail page-state="{pageState}" appstate="{appstate}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}"></rn-bundle-detail>
+  </div>
+{{/if}}
 </div>
 <!-- {{/showPage}} -->

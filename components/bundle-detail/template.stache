@@ -15,18 +15,15 @@
   {{/validationStatus}}
   {{/if}}
   <div class="bundle-detail-actions">
-    <button class="btn btn-custom-xs remove-invoice" {{allowRemoveInvoices}}>Remove Invoice From Bundle</button>
+    <button class="btn btn-custom-xs remove-invoice" {{allowRemoveInvoices}}>Remove Invoice</button>
 
-    <img class="show-chart" src="/resources/images/charticon.png"/>
+    <img class="show-chart" src="/resources/images/charticon.png"/ style="padding-top: 1px;height:18px;width:18px;">
 
-    <img class="excell exportToExcel" >
-    <img class="clipboardd copyToClipboard" >
+    <img class="excell exportToExcel" style="padding-top: 1px;height:18px;width:18px;">
+    <img class="clipboardd copyToClipboard" style="padding-top: 1px;height:18px;width:18px;">
     {{#showVerboseToggle}}
-    <img class="verbose-toggle" src="/resources/images/approval_arrow_{{#if pageState.verboseGrid}}left{{else}}right{{/if}}.png"/>
+    <img class="verbose-toggle" style="padding-top: 1px;height:18px;width:18px;" src="/resources/images/approval_arrow_{{#if pageState.verboseGrid}}left{{else}}right{{/if}}.png"/>
     {{/showVerboseToggle}}
-  </div>
-  <div class="tokenData">
-    <input type="text" class="form-control" id="tokenSearch">
   </div>
   <div class="currencies">
     <span>Currency</span>
@@ -37,13 +34,18 @@
       {{/each}}
     </select>
   </div>
-  <span class="glyphicon glyphicon-download-alt btn-download" aria-hidden="true"></span>
+  <span class="glyphicon glyphicon-download-alt btn-download" style="padding-top: 1px;height:18px;width:18px;" aria-hidden="true"></span>
+  <div class="tokenData">
+    <input type="text" class="form-control" id="tokenSearch">
+  </div>
 </div>
+
 <div class="grid-container" id="bundleDetailGridDiv">
-  {{#if pageState.selectedBundle.bundleDetailsGroup.length}}
-  <rn-bundle-detail-grid columns="{gridColumns}" page-state="{pageState}" selected-rows="{selectedRows}" paginate-attr={bottomGridPaginateAttr} {{#if gettingDetails}}style="display: none;"{{/if}}></rn-bundle-detail-grid>
-  {{/if}}
+{{#if pageState.selectedBundle.bundleDetailsGroup.length}}
+    <rn-bundle-detail-grid columns="{gridColumns}" page-state="{pageState}" selected-rows="{selectedRows}" paginate-attr={bottomGridPaginateAttr} {{#if gettingDetails}}style="display: none;"{{/if}}></rn-bundle-detail-grid>
+{{/if}}
 </div>
+
 {{#if pageState.selectedBundle.bundleDetailsGroup.length}}
 <div class="grand-total">
   <h3>Grand Total: {{currencyFormat pageState.selectedBundle.paymentAmtInGblCcy}} {{pageState.selectedBundle.globalCcy}}</h3>
