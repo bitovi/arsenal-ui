@@ -203,7 +203,7 @@
           <div class="form-group">
             <div class="col-sm-1"></div>
              <div class="col-sm-11">
-              <div class="panel panel-default panel-sm">
+              <div class="panel panel-default panel-sm" style="border: 1px solid #827F7F;border-radius: 0px;">
                 <div class="panel-heading clearfix">
                     <span class="panel-title mid-headers">
                       Society Model Mapping
@@ -217,7 +217,7 @@
           <div class="form-group">
             <div class="col-sm-1"></div>
              <div class="col-sm-11">
-              <div class="panel panel-default panel-sm">
+              <div class="panel panel-default panel-sm" style="border: 1px solid #827F7F;border-radius: 0px;">
                 <div class="panel-heading clickable">
                     <span class="panel-title mid-headers">
                        <a data-toggle="collapse" data-parent="#accordion" href="#grid-collapse">
@@ -225,7 +225,7 @@
                       </a></span>
                 </div>
                 <div id="grid-collapse" class="panel-collapse collapse in">
-                  <div id="grid-revision-history" style="max-height: 200px; overflow-y:scroll;"></div>
+                  <div id="grid-revision-history" style="max-height: 200px; overflow-y:scroll;overflow-x: hidden;"></div>
                 </div>
 
               </div>
@@ -291,7 +291,7 @@
               <div class="col-sm-12">
                 <label for="" class="col-sm-2 control-label small-headers">Comments: </label>
                 <div id="priceModelmultipleComments" class="col-sm-10 normalBar">
-                  <textarea class="form-control" maxlength="1024" style="height:125px;   min-height:100px;    max-height:100px;"></textarea>
+                  <textarea class="form-control" maxlength="1024" style="height:125px;min-height:100px;max-height:100px;"></textarea>
                 </div>
               </div>
             </div>
