@@ -1,60 +1,59 @@
 <div class="unpaid-popover">
-  <div class="column-chart"></div>
-  <ul class="unpaid-details">
-    <li class="total">
-      <div class="color"><div class="square">&nbsp;</div></div>
-      <div class="category"><a href="#">Total unpaid:</a></div>
-      <div class="percent">{{item.totBalPrcnt}}%</div>
-      <div class="numbers">
-        <span class="local">{{item.totBalAmt}}</span>
-        <span class="global">{{item.totBalGblCcy}}</span>
-      </div>
-      <div class="currency">
-        <span class="local">{{localCurrency}}</span>
-        <span class="global">{{globalCurrency}}</span>
-      </div>
-    </li>
-
-    <li class="recon">
-      <div class="color"><div class="square">&nbsp;</div></div>
-      <div class="category">Unpaid:</div>
-      <div class="percent">{{item.reconPrcnt}}%</div>
-      <div class="numbers">
-        <span class="local">{{item.reconAmt}}</span>
-        <span class="global">{{item.reconGblCcy}}</span>
-      </div>
-      <div class="currency">
-        <span class="local">{{localCurrency}}</span>
-        <span class="global">{{globalCurrency}}</span>
-      </div>
-    </li>
-
-    <li class="li">
-      <div class="color"><div class="square">&nbsp;</div></div>
-      <div class="category">Line item disputes:</div>
-      <div class="percent">{{item.liPrcnt}}%</div>
-      <div class="numbers">
-        <span class="local">{{item.liAmt}}</span>
-        <span class="global">{{item.liGblCcy}}</span>
-      </div>
-      <div class="currency">
-        <span class="local">{{localCurrency}}</span>
-        <span class="global">{{globalCurrency}}</span>
-      </div>
-    </li>
-
-    <li class="or">
-      <div class="color"><div class="square">&nbsp;</div></div>
-      <div class="category">Overrep disputes:</div>
-      <div class="percent">{{formatPercent item.orPrcnt}}</div>
-      <div class="numbers">
-        <span class="local">{{item.orAmt}}</span>
-        <span class="global">{{item.orGblCcy}}</span>
-      </div>
-      <div class="currency">
-        <span class="local">{{localCurrency}}</span>
-        <span class="global">{{globalCurrency}}</span>
-      </div>
-    </li>
-  </ul>
+  <div class="column-chart" style="float:left;height:200px"></div>
+  <div style="width:80%;float:left">
+    <table class="unpaid-details" id="UnpaidPopup">
+      <tr style="width:100%;height: 60px;border-bottom: 1px solid #C6C6C6;">
+        <td style="width:20px"></td>
+        <td><div class="stats-header-style" style="width: 128px;"><a class="claim-link" href="#">Total unpaid:</a></div></td>
+        <td><div class="stats-val-style">{{item.totBalPrcnt}}%</div></td>
+        <td>
+            <div class="local-curr-val-style"><span>{{item.totBalAmt}}</span></div>
+            <div class="gbl-curr-val-style"><span>{{item.totBalGblCcy}}</span></div>
+        </td>
+        <td>
+            <div class="local-currency-style"><span>{{localCurrency}}</span> </div>
+            <div class="gbl-currency-style"><span>{{globalCurrency}}</span> </div>
+        </td>
+      </tr>
+      <tr style="width:100%;height: 40px;">
+        <td style="width:20px"><div class="recon-square">&nbsp;</div></td>
+        <td><div class="stats-header-style">Unpaid:</div></td>
+        <td><div class="stats-val-style">{{item.reconPrcnt}}%</div></td>
+        <td>
+          <div class="local-curr-val-style"><span>{{item.reconAmt}}</span></div>
+          <div class="gbl-curr-val-style"><span>{{item.totBalGblCcy}}</span></div>
+        </td>
+        <td>
+          <div class="local-currency-style"><span>{{localCurrency}}</span> </div>
+          <div class="gbl-currency-style"><span>{{globalCurrency}}</span> </div>
+        </td>
+      </tr>
+      <tr style="width:100%;height: 40px;">
+        <td style="width:20px"><div class="li-square">&nbsp;</div></td>
+        <td><div class="stats-header-style">Line item disputes:</div></td>
+        <td><div class="stats-val-style">{{item.liPrcnt}}%</div></td>
+        <td>
+          <div class="local-curr-val-style"><span>{{item.liAmt}}</span></div>
+          <div class="gbl-curr-val-style"><span>{{item.liGblCcy}}</span></div>
+        </td>
+        <td>
+          <div class="local-currency-style"><span>{{localCurrency}}</span> </div>
+          <div class="gbl-currency-style"><span>{{globalCurrency}}</span> </div>
+        </td>
+      </tr>
+      <tr style="width:100%;height: 40px;">
+        <td style="width:20px"><div class="or-square">&nbsp;</div></td>
+        <td><div class="stats-header-style">Overrep disputes:</div></td>
+        <td><div class="stats-val-style">{{formatPercent item.orPrcnt}}</div></td>
+        <td>
+          <div class="local-curr-val-style"><span>{{item.orAmt}}</span></div>
+          <div class="gbl-curr-val-style"><span>{{item.orGblCcy}}</span></div>
+        </td>
+        <td>
+          <div class="local-currency-style"><span>{{localCurrency}}</span> </div>
+          <div class="gbl-currency-style"><span>{{globalCurrency}}</span> </div>
+        </td>
+      </tr>
+    </table>
+  </div>
 </div>

@@ -958,7 +958,7 @@ var page = Component.extend({
           var errObj=validateMandatory();
           if(errObj.isFailed == true){
             var msg =showErrorDetails(errObj.errorMsgs, "Error");
-         		showMessages(msg);
+         	showMessages(msg);
             return;
           }
 
@@ -1450,12 +1450,26 @@ var page = Component.extend({
 					}
 
           function validateMandatory(){
+          	var isError=false;
             var errObj={isFailed:false,errorMsgs:[]};
             //Upload file Validation
             var uploadedfiles = $('rn-file-uploader-create').data('_d_uploadedFileInfo');
             if(uploadedfiles == undefined || uploadedfiles.length == 0){
-              errObj.isFailed=true;
-              errObj.errorMsgs.push('Please attach atleast one supporting document');
+            	isError=true;
+            }else if(uploadedfiles != undefined && uploadedfiles.length >0){
+            	//check whether atleast one fiel is moved to server
+            	isError=true;
+            	for(var i=0;i<uploadedfiles.length;i++){
+            		if(uploadedfiles[i].ftype.toUpperCase() == 'PUSHEDTOSERVER'){
+            			isError=false;
+            			break;
+            		}
+            	}
+            }
+
+            if(isError){
+            	errObj.isFailed=true;
+              	errObj.errorMsgs.push('Please attach atleast one supporting document');
             }
             return errObj;
           }

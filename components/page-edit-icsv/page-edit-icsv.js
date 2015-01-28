@@ -754,7 +754,7 @@ var page = Component.extend({
 						Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))
 						     ]).then(function(values) {
 						     	self.scope.attr("licensor").replace([]);
-							    self.scope.attr("licensor").replace(values[0]["entities"][0]);
+							    self.scope.attr("licensor").replace(values[0]["entities"]);
 							    var invoiceData = self.scope.attr().invoiceContainer[0];
 							     self.scope.attr("licensorStore", invoiceData.entityId);
 							     self.scope.ajaxRequestStatus.attr("licensorLoaded", true);
@@ -1654,13 +1654,28 @@ function getCurrentDate(){
 					}
 
           function validateMandatory(){
+          	var isError=false;
             var errObj={isFailed:false,errorMsgs:[]};
             //Upload file Validation
             var uploadedfiles = $('rn-file-uploader-icsv').data('_d_uploadedFileInfo');
             if(uploadedfiles == undefined || uploadedfiles.length == 0){
-              errObj.isFailed=true;
-              errObj.errorMsgs.push('Please attach atleast one supporting document');
+            	isError=true;
+            }else if(uploadedfiles != undefined && uploadedfiles.length >0){
+            	//check whether atleast one fiel is moved to server
+            	isError=true;
+            	for(var i=0;i<uploadedfiles.length;i++){
+            		if(uploadedfiles[i].ftype.toUpperCase() == 'PUSHEDTOSERVER' || uploadedfiles[i].isServer){
+            			isError=false;
+            			break;
+            		}
+            	}
             }
+
+            if(isError){
+            	errObj.isFailed=true;
+              	errObj.errorMsgs.push('Please attach atleast one supporting document');
+            }
+            
             return errObj;
           }
 

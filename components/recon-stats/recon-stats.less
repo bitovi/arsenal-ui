@@ -229,7 +229,7 @@ rn-grid-ingestionstats, #summaryStatsDiv{
   border: 1px solid #cccccc;
 }
 
-#ingestionStatsDivSub {
+#ingestionStatsDivSub,#summaryStatsTab {
   width: 100% !important;
   height: 220px;
   width: 100%;
@@ -240,7 +240,7 @@ rn-grid-ingestionstats, #summaryStatsDiv{
 table.rn-grid-ingestionstats {
   width: 100%;
 }
-fieldset#ingestionStatsDiv{
+fieldset#ingestionStatsDiv, fieldset#summaryStatsDiv{
   padding: .35em .625em .75em;
   margin: 0 2px;
   width:95%;
@@ -260,7 +260,7 @@ border-image-outset: initial;
 border-image-repeat: initial;
 min-width: -webkit-min-content;
 }
-fieldset#ingestionStatsDiv legend{
+fieldset#ingestionStatsDiv legend, fieldset#summaryStatsDiv legend{
   margin: 0px;
   white-space: nowrap;
   display: block;
@@ -279,6 +279,24 @@ fieldset#ingestionStatsDiv legend{
   position: relative;
   bottom: 20px;
   background: #fff;
+}
+fieldset#summaryStatsDiv legend{
+  width:48% !important;
+}
+table#summaryStatsTab{
+  min-width:450px;
+  max-width:500px;
+}
+#ingested{
+  overflow-x: scroll;
+  overflow-y: scroll;
+  border-radius: 10px 10px 0 0;
+  border: 1px solid #97979C;
+  border-top: 0px;
+  border-bottom: 0px;
+  margin: 0 1%;
+  width:98% !important;
+  padding:0 !important;
 }
 rn-grid-ingestionstats{
   table{
