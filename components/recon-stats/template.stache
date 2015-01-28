@@ -2,7 +2,7 @@
 
 	
 			<div  class="form-inline" >
-				<div class="col-md-12 form-group" style="text-align:right;padding:10px;">
+				<div class="col-md-12 form-group" style="text-align:right;padding:10px 20px;">
 					<label  for="inputAnalyze">Convert to Currency </label>
 
 					<select id="currency" class="currency form-control" name="currency" {{isIngestCcidsSelected 0}} can-value="currency">
