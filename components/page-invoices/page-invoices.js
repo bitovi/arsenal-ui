@@ -120,7 +120,7 @@ Grid.extend({
       },
       {
         id: 'comments',
-        title: 'User comments'
+        title: 'Notes'
       }
     ],
     strippedGrid:true
