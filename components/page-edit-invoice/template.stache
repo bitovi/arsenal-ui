@@ -350,7 +350,13 @@
 					       {{/if}}
 					        </div>
              <div class="col-sm-12" style="padding:15px;width:50%">
+
+							{{#if appstate.viewinvoicemode}}
+							<button  type="button"  class="btn btn-primary addInvSubmit btn-custom-big pull-right marginLeft20" disabled>Submit</button>
+							{{else}}
 							<button id="addInvSubmit" type="submit"  class="btn btn-primary addInvSubmit btn-custom-big pull-right marginLeft20">Submit</button>
+							{{/if}}
+
 							<button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled pull-right" id="buttonCancel">Cancel</button>
 						</div>
           </div>

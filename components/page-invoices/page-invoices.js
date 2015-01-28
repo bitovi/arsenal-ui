@@ -560,17 +560,16 @@ var page = Component.extend({
             if(paymentState==0 || paymentState==1 || paymentState==9){
               invoicemap.attr('invoiceid',invoiceid);
               flag=true;
+              self.scope.appstate.attr('viewinvoicemode',false);
               //commonUtils.navigateTo("edit-invoice");
               self.scope.appstate.attr('page','edit-invoice');
             }
           }
 
           if(flag==false) {
-            $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>Invoice can't be edited as its in transit/paid</label>");
-            $("#messageDiv").show();
-            setTimeout(function(){
-                $("#messageDiv").hide();
-            },4000)
+              invoicemap.attr('invoiceid',invoiceid);
+              self.scope.appstate.attr('viewinvoicemode',true);
+              self.scope.appstate.attr('page','edit-invoice');
           }
     },
     ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){

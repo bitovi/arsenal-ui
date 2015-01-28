@@ -259,6 +259,7 @@ var page = Component.extend({
     	"inserted": function(){
           	var self = this;
 			this.scope.isRequired(); /*For breakdown required field*/
+			
 			$('#invoiceform').on('init.form.bv', function(e, data) {
 			    data.bv.disableSubmitButtons(true);
 					}).bootstrapValidator({
@@ -927,6 +928,16 @@ var page = Component.extend({
 						var self = this;
 
 				 		  /*This block is used to update data in view */
+
+				 		if(self.scope.appstate.attr('viewinvoicemode') == true){
+								$("rn-file-uploader-edit .browseFiles.uploadFiles").attr("disabled", true);
+								var msg = "Info:Invoice can't be edited as its in transit/paid";
+					       		 $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
+					             $("#invmessageDiv").show();
+					             setTimeout(function(){
+					                $("#invmessageDiv").hide();
+					             },5000)
+						}
 
 						var invoiceData = self.scope.attr().invoiceContainer[0];
 
@@ -1677,7 +1688,7 @@ var page = Component.extend({
             	//check whether atleast one fiel is moved to server
             	isError=true;
             	for(var i=0;i<uploadedfiles.length;i++){
-            		if(uploadedfiles[i].ftype.toUpperCase() == 'PUSHEDTOSERVER' || uploadedfiles[i].isServer){
+            		if((typeof uploadedfiles[i].ftype !== "undefined")?uploadedfiles[i].ftype.toUpperCase() == 'PUSHEDTOSERVER':false || uploadedfiles[i].isServer){
             			isError=false;
             			break;
             		}
