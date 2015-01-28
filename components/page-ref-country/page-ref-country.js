@@ -81,6 +81,11 @@ var page = Component.extend({
               self.scope.attr("entities").replace(values[0]["entities"][0]);
               self.scope.attr("pricingModelTypes").replace(values[1].modelTypes);
               self.scope.attr("countries").replace(values[2]);
+
+              $("#selCountry").val((values[2])[0].id);
+              self.scope.pageState.countryDetails.country.attr("countryId", (values[2])[0].id);
+              $("#fetchDetailsBtn").click();
+
               self.scope.attr("pricingMethods").replace(values[3].pricingMethodList);
         }).then(function(values) {
               //self.scope.pageState.entityCountryDetails.entityCountry.attr("countryId",self.scope.attr("countries")[0].id);

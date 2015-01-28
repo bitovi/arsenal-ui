@@ -201,7 +201,7 @@ var page = Component.extend({
 
       if (repArray.length <= 0) {
 
-        repArray.push("Report configuration will be removed for this country");
+        repArray.push("Report configuration will be reset for selected country");
 
       }
 
@@ -330,6 +330,70 @@ var page = Component.extend({
       } else {
 
           return self.reqCountries;
+      }
+
+    },
+
+    loadCountryReportconfiguration : function() {
+
+
+      var self = this;
+
+      var countryObj = self.countries[0];
+
+      var reportBox = $("input.reportBox");
+
+      for(var i=0; i<reportBox.length; i++) {
+
+        if(reportBox[i].checked) {
+
+          reportBox[i].checked = false;
+
+        }
+
+      }
+      
+      if(countryObj != undefined && countryObj != null) {
+
+          var reportConf = self.getExistCountryReportConf(countryObj.name);
+
+          var country = $('input.countryBox');
+
+          var reportBox = $("input.reportBox");
+
+          var checked = false;
+
+          for(var i=0; i < reportConf.length; i++) {
+
+            for(var j=0; j<reportBox.length; j++) {
+
+                if(reportBox[j].getAttribute("value") == reportConf[i] ) {
+
+                  reportBox[j].checked = true;
+
+                  checked = true;
+
+                }
+
+            }
+
+          }
+
+          if(checked) {
+
+            for(var i=0; i<country.length; i++) {
+
+              var obj = country[i].getAttribute("value");
+
+              if(obj == countryObj.name) {
+
+                country[i].checked = true;
+
+              }
+
+            } 
+          }
+
       }
 
     },
@@ -503,6 +567,42 @@ var page = Component.extend({
 
       self.licDetails.attr("data", values[0].licensorDetails);
 
+      var countries = [];
+
+      for (var i=0; i<self.licDetails.data.countries.length; i++) {
+
+          var countryObj = {"" : {}};
+
+          var country = {};
+
+          var name = self.licDetails.data.countries[i];
+
+          country.name = self.licDetails.data.countries[i];
+          //country.selected = true;
+
+          countryObj[name] =  country;
+
+          self.countries.push(country);
+
+      }
+
+      var reportType = [];
+
+      for (var i=0; i<self.licDetails.data.reportTypes.length; i++) {
+
+          var report = {};
+
+          report.name = self.licDetails.data.reportTypes[i].split("@")[0];
+          report.actualName = self.licDetails.data.reportTypes[i];
+          //report.selected = false;
+
+          self.reportTypes.push(report);
+
+
+      }
+
+      self.loadCountryReportconfiguration();
+
       self.invoiceType = values[0].licensorDetails.invoiceDetailType;
 
       if(self.invoiceType != null) {
@@ -658,42 +758,6 @@ var page = Component.extend({
           $('#revisionHistory').html(stache('<rn-grid-revisionhistory emptyrows="{emptyrows}"></rn-grid-revisionhistory>')({emptyrows:true}));
 
         }
-
-
-
-      var countries = [];
-
-      for (var i=0; i<self.licDetails.data.countries.length; i++) {
-
-          var countryObj = {"" : {}};
-
-          var country = {};
-
-          var name = self.licDetails.data.countries[i];
-
-          country.name = self.licDetails.data.countries[i];
-          //country.selected = true;
-
-          countryObj[name] =  country;
-
-          self.countries.push(country);
-
-      }
-
-      var reportType = [];
-
-      for (var i=0; i<self.licDetails.data.reportTypes.length; i++) {
-
-          var report = {};
-
-          report.name = self.licDetails.data.reportTypes[i].split("@")[0];
-          report.actualName = self.licDetails.data.reportTypes[i];
-          //report.selected = false;
-
-          self.reportTypes.push(report);
-
-
-      }
 
       if(self.reportTypes == null || self.countries == null) {
 
