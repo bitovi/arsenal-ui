@@ -36,7 +36,7 @@ var PaymentChart = Component.extend({
             margin: [0, 0, 0, 0],
             spacing: [0, 0, 0, 0]
           },
-          colors: ['#BCF5A9']*/
+          colors: ['#81ED6A']*/
         });
 
         // setImmediate used so that highcharts renders after styling
