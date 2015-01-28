@@ -233,7 +233,7 @@ var page = Component.extend({
       },
       helpers:{
         setHeight: function(){
-          var vph = $(window).height()-180;
+          var vph = $(window).height()-350;
           return 'Style="height:'+vph+'px"';
         },
         disableSubmit:function(){
@@ -249,6 +249,8 @@ var page = Component.extend({
         "inserted": function(){
 
           $(".mainLayoutId").hide();
+          $(".buttonsPlaceHolder").hide();
+
           $(".multicomments-required").hide();
 
           var self = this;
@@ -408,9 +410,9 @@ var page = Component.extend({
         '#fetchDetailsBtn click':function(){
 
             $(".mainLayoutId").show();
+            $(".buttonsPlaceHolder").show();
 
-
-            var requestObj  = {
+             var requestObj  = {
               entityCountryDetails:{
                 entityCountry:{
                   entityId:this.scope.pageState.entityCountryDetails.entityCountry.entityId,
@@ -436,6 +438,8 @@ var page = Component.extend({
 
             //form Reset
             $(".mainLayoutId").hide();
+            $(".buttonsPlaceHolder").hide();
+
             var self = this.scope;
             reportConfigurationList.replace([]);
             revisionHistory.replace([]);
