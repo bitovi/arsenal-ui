@@ -96,7 +96,7 @@
 
 			</div>
 			<label class="silvercolor" style="align:left;font-size:18px;">
-				GrandTotal:
+				Grand Total:
 			</label>
 			<label class="silvercolor" style="color:#000;font-size:21px;">
 				{{totalAmount}}

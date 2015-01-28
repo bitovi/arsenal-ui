@@ -28,9 +28,9 @@ Grid.extend({
     columns: [
       {
         id: 'errormsg',
-        title: '<img src="resources/images/rn_WarningActive@2x.png" class="errorhead">',
+        title: '<img src="resources/images/notification.png" class="errorhead">',
         contents: function(row) {
-          return stache('{{#error}}<img src="resources/images/alert.png" class="erroricon" data-container="body" data-toggle="popover" data-placement="right" data-content="{{error}}">{{/error}}')({error: row.error});
+          return stache('{{#error}}<img src="resources/images/rn_FieldError@2x.png" width="19" height="19" class="erroricon" data-container="body" data-toggle="popover" data-placement="right" data-content="{{error}}">{{/error}}')({error: row.error});
         }
       },
       {
@@ -87,8 +87,10 @@ fileUpload.extend({
         "{uploadedfileinfo} change":function () {
             // update areFilesToBeUploaded boolean
             //Handling this using data as scope is not accessible from page-edit -invoice.
+           
             $('rn-file-uploader-icsv-sum').data('_d_uploadedFileInfo', this.scope.uploadedfileinfo);
             this.scope.fileList.replace(this.scope.uploadedfileinfo);
+
         },
         "{deletedFileInfo} change":function () {
             $('rn-file-uploader-icsv-sum').data('_d_deletedFileInfo', this.scope.deletedFileInfo);
@@ -155,9 +157,11 @@ var page = Component.extend({
    events:{
       "inserted":function(){
        var self = this;
+
        this.scope.appstate.attr("renderGlobalSearch",false);
        icsvmap.delegate("invoiceData","change", function(ev, newVal){
             //console.log(icsvmap.attr("invoiceData"));
+            $("#loading_img").hide();
             if(icsvmap.attr("invoiceData"))
             {
                   var gridData = [];
@@ -515,7 +519,11 @@ var page = Component.extend({
           } else {
             self.scope.attr('newpaymentbundlenamereq', "undefined");
           }
+      },
+      ".submitFiles.uploadFiles click":function(){
+         $("#loading_img").show();
       }
+
 
     },
     helpers:{

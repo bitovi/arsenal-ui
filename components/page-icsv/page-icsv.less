@@ -9,18 +9,40 @@
 @white-border: 1px solid #fff;
 icsv-grid {
   .grid-mixin();
+
+
   th, td {
   	white-space: nowrap;
   }
   th.checbox, td.checkbox {
     width: 30px;
   }
+  
+ 
+
  /* .entity, .invoiceType, .contentType, .country, .invoiceNum, .dueDate, .currency, .status, .bundleName, .comments{
   	text-align: left !important;
   }*/
   .invoiceAmt{
   	text-align: right !important;
   }
+
+   th:first-child{
+  		border-top-left-radius:4px;
+	}
+
+	th:last-child{
+  		border-top-right-radius:4px;
+	}
+
+	tbody tr td:first-child{
+		border-left: 1px solid #bfbfbf !important;
+	}
+
+	tbody tr td:last-child{
+		border-right: 1px solid #bfbfbf !important;
+	}
+
 }
 
 @import 'components/file-uploader/file-uploader.less';
@@ -442,3 +464,15 @@ rn-file-uploader-icsv-sum{
 	    float: left;
 	    padding-left:5px;
   	}
+
+  	#loading_img, #loading_img1
+	{
+		background:url('../../resources/images/spinner.gif') no-repeat center center;
+		padding:10%;
+		position: absolute;
+		margin: 0 auto;
+		display:none;
+		width: 100%;
+		z-index: 1;
+		left:50%;
+	}
