@@ -116,7 +116,7 @@
 													<tr id="breakrow0" rowid="0">
 											      		<td class="form-group">
 											            	<div class="contentGroup requiredBar">
-											            		<select class="form-control" id='contentGroup' can-value="baseModelParamList.{{@index}}.contentGroup" name="contentGroup[]">
+											            		<select class="form-control contentGroupClass" id='contentGroup-{{@index}}' can-value="baseModelParamList.{{@index}}.contentGroup" name="contentGroup[]">
 											            			<option value="">Select</option>
 											            			{{#each contentType}}
 													        				<option serviceTypeId="{{serviceTypeId}}" value="{{contentGroupName}}">{{contentGroupName}}
@@ -146,8 +146,8 @@
 												        	</div>
 														</td>
 											            <td class="form-group">
-											            	<div class="requiredBar">
-											            		<input type="checkbox" id='isDefault-{{@index}}' can-value="baseModelParamList.{{@index}}.isDefault" can-true-value=1 can-false-value=0 name="isDefault[]">
+											            	<div class="isDefaultGroup requiredBar">
+											            		<input  class="form-control isdefaultClass" type="checkbox" id='isDefault-{{@index}}' can-value="baseModelParamList.{{@index}}.isDefault" can-true-value=1 can-false-value=0 name="isDefault[]">
 												        	</div>
 														</td>
 												       <td>

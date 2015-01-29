@@ -34,7 +34,7 @@
 
 </div>
 
-
+    <div id="loading_img"></div>
     <div class="tab-pane active grid-custom-overflow" id="ingested" style="padding-left: 10px;padding-right: 10px;">
         <rn-recon-grid columns="{ingestGridColumns}" rows="{ingestList.headerRows}" footerrows="{ingestList.footerRows}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}" emptyrows="{emptyrows}" pagename="{pagename}"></rn-recon-grid>
     </div>

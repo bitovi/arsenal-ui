@@ -129,7 +129,8 @@ var page = Component.extend({
     filterSwitchOption:"licensor",
     maxVersion:0,
     selectedModelId:"",
-    modelSumRowIndex:""
+    modelSumRowIndex:"",
+    isError:false
 
   
   },
@@ -399,7 +400,7 @@ var page = Component.extend({
                                                       baseId:basemodelData[i].baseId, modelId:basemodelData[i].modelId
                                                     });
 
-                  var $option   = $("#baseModelTable").find('[name="contentGroup[]"], [name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
+                  var $option   = $("#baseModelTable").find('[name="contentGroup[]"], [name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"], [name="isDefault[]"]');
                   DynamicFieldValidation($option, 'addField');
                  
                  }
@@ -480,7 +481,7 @@ var page = Component.extend({
                                                       modelId:self.scope.attr("modelId")
                                                     });
 
-        var $option   = $("#baseModelTable").find('[name="contentGroup[]"], [name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
+        var $option   = $("#baseModelTable").find('[name="contentGroup[]"], [name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"], [name="isDefault[]"]');
         DynamicFieldValidation($option, 'addField');
         $("#pmform").data('bootstrapValidator').validate();
         $(".popover").hide();
@@ -490,7 +491,7 @@ var page = Component.extend({
         var self = this;
         var selrow = el.closest('tr')[0].rowIndex;
 
-        var $option   = $("#baseModelTable tbody tr:nth-child("+selrow+")").find('[name="contentGroup[]"], [name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"]');
+        var $option   = $("#baseModelTable tbody tr:nth-child("+selrow+")").find('[name="contentGroup[]"], [name="baseRate[]"], [name="minima[]"], [name="listenerMinima[]"], [name="discount[]"], [name="isDefault[]"]');
         DynamicFieldValidation($option, 'removeField');                  
         self.scope.attr("baseModelParamList").removeAttr(selrow-1);   
         $(".popover").hide();
@@ -538,6 +539,10 @@ var page = Component.extend({
           $("button#fetch").click();
       }, 200);
     },
+    ".isdefaultClass click":function(el){
+       
+      checkIsDefault();
+    },
 
    "#add click":function(){
         var self = this;  
@@ -574,6 +579,13 @@ var page = Component.extend({
    
     "#save click":function(){
       var self = this;
+
+      if(checkIsDefault()){
+        $("#save").attr("disabled", true);
+        return;
+      }else{
+        $("#savxe").attr("disabled", false);
+      }
 
       var usercomments = (self.scope.editstate === true)?$("#editableText").val():$("#usercomments").val();
 
@@ -678,6 +690,40 @@ function clearOldEditData(componentstate){
     self.scope.attr("isCommentData", false);
     $("#usercomments").val("");
     $("#save").attr("disabled", true);
+}
+
+function checkIsDefault() {
+
+//var self= scopeState;
+var isError = false;
+
+  var _checked = $('input[id^="isDefault-"]');
+  //var _checkedlength = _checked.length; console.log(_checkedlength);
+
+  var _selectedCheckBoxes = [];
+  for (var i = 0; i < _checked.length; i++) {
+    var currentID = $(_checked)[i].id;
+    if($("#" + currentID).prop("checked")){
+      _selectedCheckBoxes.push(currentID);
+    }
+  }
+
+  if(_selectedCheckBoxes.length > 1){
+    //$("#save").attr("disabled", true);
+    isError=true;
+    handleMsg("show", "Only one base model parameter can be marked as default.");
+  }else if(_selectedCheckBoxes.length == 0){
+    //$("#save").attr("disabled", true);
+    isError=true;
+    handleMsg("show","There is no default base model parameter checked.");    
+  }else{
+    //$("#save").attr("disabled", false);
+    isError=false;
+    handleMsg("hide");
+  }
+
+  return isError;
+
 }
 
 

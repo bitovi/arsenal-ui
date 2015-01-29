@@ -68,17 +68,53 @@ var pricingmodelValidation = {
                      group:'.contentGroup',
                      validators: {
                         callback: {
-                                message: 'Content Group is mandatory',
+                                //message: 'Content Group is mandatory',
                                 callback: function (value, validator, $field) {
                                    if(value == "" || value == "Select" || value == null){
-                                       return false;
+                                       return {
+                                          valid: false,
+                                          message: 'Content Group is mandatory.'
+                                      }
+
+                                  } else if(value !== "Select"){
+                                      
+                                      if(!checkContentGroup($field)){
+                                        return {
+                                            valid: false,
+                                            message: 'There cannot be multiple entries for the same content group.'
+                                          }
+                                      }
                                   }
                                   return true;
                                 }
                         }
-
                     }
                   },
+                'isDefault[]': {
+                  group:'.isDefaultGroup',
+                  validators: {
+                      
+                      callback: {
+                                //message: 'Content Group is mandatory',
+                          /*      callback: function (value, validator, $field) {
+                                  
+                                  //Validation is not popping up
+                                  
+                                  var isDefaultValue = checkIsDefault($field);
+
+                                    if (isDefaultValue > 1) {
+                                      return {
+                                            valid: false,
+                                            message: 'Only one base model parameter can be marked as default.'
+                                          }
+                                    }
+                                 
+                                  return true;
+                                }
+                          */
+                        }
+                  }
+                },
                 'baseRate[]': {
                       group:'.baseRate',
                       validators: {
@@ -145,7 +181,22 @@ var pricingmodelValidation = {
                           numeric: {
                             separator:'.',
                             message: 'Please provide numeric value for From'
-                          }
+                          },
+                          callback: {
+                                message: 'From value should be less than to value.',
+                                callback: function (value, validator, $field) {
+                                  
+                                  var toID = $field.attr('id').split("from-").join("");                             
+                                  var toValue = $("#to-"+toID).val();
+
+                                  //From value is greater than to value throw message;
+                                  if(parseInt(value) > parseInt(toValue)){
+                                    return false;
+                                  }
+                                  return true;
+                                }
+                        }
+
                       }
                   },
                   'to[]': {
@@ -157,7 +208,30 @@ var pricingmodelValidation = {
                           numeric: {
                             separator:'.',
                             message: 'Please provide numeric value for To'
-                          }
+                          },
+                          callback: {
+                               // message: 'To value should be greater than From value.',
+                                callback: function (value, validator, $field) {
+                                  
+                                  var fromID = $field.attr('id').split("to-").join("");                             
+                                  var fromValue = $("#from-"+fromID).val();
+
+                                  //To value is greater than from value throw message;
+                                  if(parseInt(fromValue) > parseInt(value)){
+                                     return {
+                                      valid: false,
+                                      message: 'To value should be greater than From value.'
+                                    }
+                                  }
+                                  
+                                  //value is changed! revalidate from field to
+                                  if($("#from-"+fromID).parent().hasClass('has-error')){
+                                    $('#pmform').bootstrapValidator('revalidateField', $("#from-"+fromID));
+                                  }
+                                                                    
+                                  return true;
+                                }
+                        }
                       }
                   },
                   'minimatrack[]': {
@@ -175,5 +249,37 @@ var pricingmodelValidation = {
             }
        }
 
+
+      function checkContentGroup(element) {
+
+        var currentElementID = $(element).attr("id");
+      
+        var _listofselect = ($("select[id^='contentGroup']:not(#" + currentElementID + ") option:selected").text()),
+          selectedtext = $("#" + currentElementID + " option:selected").text();
+
+        _listofselect = _listofselect.replace(/\s+/g, " ");
+        selectedtext = selectedtext.replace(/\s+/g, "");
+
+        if (_listofselect.indexOf(selectedtext) !== -1) {
+          console.log("Available");          
+          return false;
+        } 
+        
+        return true;
+      }
+
+      function checkIsDefault(element) {
+
+        var _checked = $('input[id^="isDefault-"]');
+        
+        var _selectedCheckBoxes = [];
+        for (var i = 0; i < _checked.length; i++) {
+          var currentID = $(_checked)[i].id;
+          if ($("#" + currentID).prop("checked")) {
+            _selectedCheckBoxes.push(currentID);
+          }
+        }
+       return _selectedCheckBoxes.length;
+      }
 
        export default pricingmodelValidation;
