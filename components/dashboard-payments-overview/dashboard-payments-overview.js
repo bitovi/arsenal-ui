@@ -12,7 +12,10 @@ var DashboardPaymentsOverview = Component.extend({
   scope: {
     appstate: null,
     summary: null,
-    percent: null
+    percent: null,
+    dispcount:10,
+    entityNotPaideList:[],
+    cntryNotPaideList:[]
   },
   helpers: {
     renderBigChart: function() {
@@ -20,6 +23,12 @@ var DashboardPaymentsOverview = Component.extend({
       var value1 = this.attr('summary').percentagePaid;
       var value = formats.formatToFixedDecimalAspercent(value1,_.isNumber, 0, '0',false);
       this.attr('percent',value);
+      if(this.attr('summary').topNotPaidEntities.length > 0){
+        this.attr('entityNotPaideList',this.attr('summary').topNotPaidEntities.slice(0,this.attr("dispcount")));
+      }
+      if(this.attr('summary').topNotPaidCountries.length > 0){
+        this.attr('cntryNotPaideList',this.attr('summary').topNotPaidCountries.slice(0,this.attr("dispcount")));
+      }
 
       return function(div) {
         var chartConfig = can.extend({}, chartDefaults.singleBarChart, {
@@ -36,6 +45,7 @@ var DashboardPaymentsOverview = Component.extend({
         }, 0);
       };
     }
+
   }
 });
 
