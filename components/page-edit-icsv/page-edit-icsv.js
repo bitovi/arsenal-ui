@@ -137,6 +137,7 @@ var page = Component.extend({
             $("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).parent().append(stache('<period-calendar></period-calendar>'));
             $("#breakrow"+rowindex+" #inputCountry").attr("id","inputCountry"+rowindex);
            	$("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val("");
+           	$("#breakrow"+rowindex+" #ccidGLtxt").attr("id","ccidGLtxt"+rowindex).val("");
            	if(rowindex != 0)
            	$("#breakrow"+rowindex+" .removeRow").css("display", "block");
 
@@ -1066,7 +1067,14 @@ var page = Component.extend({
 		},
 		".ccidGL change": function(event){
 			if(event.find('option:selected')[0]!=undefined)event.next('.ccidGLtxt').val(event.find('option:selected')[0].text);
-         	this.scope.ccidGLStore.attr(event[0].id, event[0].value)
+         	var idGL = event[0].id;
+			idGL =  idGL.indexOf("ccidGLtxt") > -1 ? idGL.replace("ccidGLtxt","ccidGL") :  idGL;
+			this.scope.ccidGLStore.attr(idGL, event[0].value);
+         	
+		},
+		".ccidGLtxt change": function(el){
+			var rowindex = el[0].id.replace( /^\D+/g, '');
+			$("#ccidGL"+rowindex).val("");
 		},
 		"#invoiceType change": function(){
 			this.scope.isRequired();
@@ -1321,19 +1329,30 @@ var page = Component.extend({
 										console.log(self.scope.countryStore.attr("inputCountry"+index));
 								   		tempArry["fiscalPeriod"] = periodWidgetHelper.getFiscalPeriod($("#inputMonth"+index).val());
 								   		tempArry["periodType"] = periodWidgetHelper.getPeriodType($("#inputMonth"+index).val());
-								   		tempArry["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent"+index);
-								   		tempArry["contentGrpName"] = $("#inputContent"+index+" option:selected").text();
+								   		//tempArry["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent"+index);
+								   		//tempArry["contentGrpName"] = $("#inputContent"+index+" option:selected").text();
 								   		tempArry["lineAmount"] = self.scope.AmountStore.attr("amountText"+index);
-								   		tempArry["adhocTypeId"] = "";
+								   		
+								   		
 								   		if(self.scope.attr("invoicetypeSelect") == "2"){
 
-								  	 		tempArry["glAccount"] = self.scope.ccidGLStore.attr(inputContent);
-								  	 		tempArry["ccidName"] = "";
-								  	 	}
+							   				if($('#ccidGL'+index).val()!=undefined  && $('#ccidGL'+index).val().length>0){
+							   						tempArry["glAccRefId"] = $("#ccidGL"+index).val();
+							   					}else{
+							   						tempArry["glAccNum"] = $("#ccidGLtxt"+index).val();
+							   				}
+                    						tempArry["adhocTypeId"] = self.scope.contentTypeStore.attr("inputContent"+index);
+						  	 			}
 								  	 	else{
-								  	 		tempArry["glAccount"] = "";
-								  	 		tempArry["ccidName"] = self.scope.ccidGLStore.attr(inputContent);
+								  	 		tempArry["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent"+index);
+								  	 		//console.log(tempArry["contentGrpName"]);
+								  	 		var tempContentGrpName = $("#inputContent"+index+" option:selected").text();
+								  	 		tempArry["contentGrpName"] = tempContentGrpName;
+								  	 		tempArry["ccidFileName"] = $("#ccidGL"+index).val();
 								  	 	}
+
+
+
 
 								  	 	  tempArry["errors"] = [];
 								  	 	  var tempErrLine = {};
