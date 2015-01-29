@@ -4,7 +4,7 @@ import stache from 'can/view/stache/';
 import template from './template.stache!';
 import styles from './page-ref-country.less!';
 import GridSocietyModelMapping from './grid-model-society-mapping/';
-import GridRevision from './grid-revision-history/';
+import GridRevision from './grid-revision-history-country/';
 import GridPricingBaseModel from './grid-pricing-base-model/';
 import GridPricingTrackcounts from './grid-pricing-trackcounts/';
 import calander from 'components/period-calendar/';
@@ -126,7 +126,7 @@ var page = Component.extend({
       $(".buttonsPlaceHolder").hide();
 
       $('#grid-society-model').append(stache('<rn-grid rows="{reportConfigurationList}"></rn-grid>')({reportConfigurationList}));
-      $('#grid-revision-history').append(stache('<rn-grid-revision-history rows="{revisionHistory}"></rn-grid-revision-history>')({revisionHistory}));
+      $('#grid-revision-history').append(stache('<rn-grid-revision-history-country rows="{revisionHistory}"></rn-grid-revision-history-country>')({revisionHistory}));
 
 
       $('#countryForm').on('init.form.bv', function(e, data) {
@@ -355,7 +355,7 @@ var page = Component.extend({
     '{revisionHistory} change': function() {
       var self = this;
       var revisionHistory = self.scope.revisionHistory;
-        $('#grid-revision-history').html(stache('<rn-grid-revision-history rows="{revisionHistory}"></rn-grid-revision-history>')({revisionHistory}));
+        $('#grid-revision-history').html(stache('<rn-grid-revision-history-country  rows="{revisionHistory}"></rn-grid-revision-history-country>')({revisionHistory}));
     },
     '{societyModelMapping} change': function() {
       var self = this;

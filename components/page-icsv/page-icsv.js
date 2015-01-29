@@ -334,6 +334,7 @@ var page = Component.extend({
                     if(messages.length >0){
                       errorMess = errorMess+" : "+fatalErrorList[0].errorMessages[0]+" "+fatalErrorList[0].csvFileName+" at lineNumber "+fatalErrorList[0].lineNumber;
                       self.scope.attr('errorMessage',errorMess);
+                       $("#loading_img").hide();
                     }
                   }else{
                     self.scope.attr('errorMessage',data.errorDesc);
