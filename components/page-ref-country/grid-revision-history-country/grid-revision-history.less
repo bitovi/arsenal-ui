@@ -1,0 +1,41 @@
+@import 'components/grid/grid.less';
+
+rn-grid-revision-history-country {
+	.grid-mixin();
+	td{
+		font-size: 12px;
+		padding-left: 10px !important;
+	}
+
+	tfoot {
+
+		tr {
+
+			td {
+				padding: 0.5em 1em 0.5em 1em;
+
+				border-top: @light-border;
+				border-right: 0px !important;
+
+				&:first-child {
+					border-left: @light-border;
+				}
+				&:last-child {
+					border-right: @light-border;
+				}
+			}
+
+			&:first-child td {
+				border-top: none;
+			}
+		}
+
+		tr.child {
+			display: none;
+
+			&.visible {
+				display: table-row;
+			}
+		}
+	}
+}
