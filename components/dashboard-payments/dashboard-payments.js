@@ -50,7 +50,7 @@ var DashboardPayments = Component.extend({
       var self = this;
       this.attr('fetching', true);
       $('#parentcontainer').css('height',$(window).height());
-
+      this.attr('selectedItem',false); //we need to reset this flag. 
       return PaymentSummary.findOne({appstate: self.appstate}).then(function(summary) {
         self.attr('summary', summary);
         self.attr('fetching', false);
