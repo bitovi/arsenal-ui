@@ -145,7 +145,7 @@ var page = Component.extend({
             $("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).parent().append(stache('<period-calendar></period-calendar>'));
             $("#breakrow"+rowindex+" #inputCountry").attr("id","inputCountry"+rowindex);
            	$("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val("");
-             $("#breakrow"+rowindex+" #ccidGLtxt").attr("id","ccidGLtxt"+rowindex).val("");
+            $("#breakrow"+rowindex+" #ccidGLtxt").attr("id","ccidGLtxt"+rowindex).val("");
            	if(rowindex != 0)
            	$("#breakrow"+rowindex+" .removeRow").css("display", "block");
 
@@ -689,7 +689,7 @@ var page = Component.extend({
 				},
 				".form-control change":function(event){
 					var self = this;
-					if(($("#invoicedate input[type=text]").val() != "") &&  (self.scope.licensorStore) && ($("#inputCountry0").val() != "")){
+					if(($("#invoicedate input[type=text]").val() != "") &&  (self.scope.licensorStore != "") && ($("#inputCountry0").val() != "")){
 					var genObj = {entityId:self.scope.licensorStore, invoiceDate:Date.parse($("#invoicedate input[type=text]").val()), countryId:$("#inputCountry0").val()};
 					CalDueDate.findOne(UserReq.formRequestDetails(genObj),function(data){
                   		//console.log(data.calInvoiceDueDate);
@@ -710,7 +710,7 @@ var page = Component.extend({
 				},
 				"#invoicedate dp.change":function(event){ /*need to repeat service call, as no way to capture date change event together with form control event*/
 					var self = this;
-					if(($("#invoicedate input[type=text]").val() != "") &&  (self.scope.licensorStore) && ($("#inputCountry0").val() != "")){
+					if(($("#invoicedate input[type=text]").val() != "") &&  (self.scope.licensorStore != "") && ($("#inputCountry0").val() != "")){
 					var genObj = {entityId:self.scope.licensorStore, invoiceDate:Date.parse($("#invoicedate input[type=text]").val()), countryId:$("#inputCountry0").val()};
 					CalDueDate.findOne(UserReq.formRequestDetails(genObj),function(data){
 						//console.log("Date 1---"+moment($("#invoicedate input[type=text]").val()).unix());
@@ -765,6 +765,10 @@ var page = Component.extend({
           // console.log(idGL);
           // console.log(event[0].value);
 		},
+		".ccidGLtxt change": function(el){
+			var rowindex = el[0].id.replace( /^\D+/g, '');
+			$("#ccidGL"+rowindex).val("");
+		},
 		"{scope} regionStore": function(){
 		  	var self = this;
 			var genObj = {regionId:self.scope.attr("regionStore")};
@@ -772,6 +776,14 @@ var page = Component.extend({
 			     ]).then(function(values) {
 		     			//console.log(values[0]);
 		     			self.scope.attr("licensor").replace([]);
+		     			self.scope.attr("currency").replace([]);
+		     			self.scope.attr("currencyStore", "");
+		     			self.scope.attr("licensorStore", "");
+
+		     			var countryDD = $('.inputCountry');
+			         	countryDD.empty();
+			         	countryDD.html($('<option>').text("Select").val(""));
+
 		     			self.scope.attr("licensor").replace(values[0]["entities"]);
 			    		if(self.scope.editpage){
 				    		var invoiceData = self.scope.attr().invoiceContainer[0];
@@ -779,16 +791,7 @@ var page = Component.extend({
 			    		}
 			    });
 
-			 // Country.findAll(UserReq.formRequestDetails(genObj),function(data){
-			 // 			self.scope.attr("country").replace([]);
-    //               		self.scope.attr("country").replace(data);
-		  //               },function(xhr){
-		  //               /*Error condition*/
-		  //       });
-
-
-		//	var requestObj = self.scope.createPBRequest();
-		//	self.scope.pbrequestObj.replace(requestObj);
+	
 			self.scope.createPBRequest();
 
 		},
@@ -798,6 +801,11 @@ var page = Component.extend({
 			Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
 			     ]).then(function(values) {
 			     	self.scope.attr("currency").replace([]);
+			     	self.scope.attr("currencyStore", "");
+			     	var countryDD = $('.inputCountry');
+		         	countryDD.empty();
+		         	countryDD.html($('<option>').text("Select").val(""));
+			     	
 			     	self.scope.attr("currency").replace(values[0]);
 				    if(self.scope.editpage){
 					    var invoiceData = self.scope.attr().invoiceContainer[0];
@@ -813,16 +821,38 @@ var page = Component.extend({
 						  currency:self.scope.attr("currencyStore")
 						};
 
-			Promise.all([Country.findCountriesForRegLicCurr(UserReq.formRequestDetails(genObj))
-			     ]).then(function(values) {
-			     	if(values[0].status == 'SUCCESS'){
-              			self.scope.attr("country").replace([]);
-                   		self.scope.attr("country").replace(values[0].data);
-              		}else{
-              			self.scope.attr("country").replace([]);
-              			showMessages(values[0].responseText);
-              		}
-			});
+			if(self.scope.attr("currencyStore") == ""){
+				return;
+			}
+
+			 Promise.all([Country.findCountriesForRegLicCurr(UserReq.formRequestDetails(genObj))
+						     ]).then(function(values) {
+						     	if(values[0].status == 'SUCCESS'){
+			              		
+			                   		var countryDD = $('.inputCountry');
+							            countryDD.options = function(data) {
+							                var self = this;
+							                $.each(data, function(key, value) {
+							                    var option = $('<option>').text(value.value).val(value.id);
+							                    data.push(option);
+							                });
+							                self.html(data);
+							                self.prepend($('<option>').text("Select").val(""));
+							            }
+
+							            countryDD.options(values[0].data);
+
+			              		}else{
+			              			
+			              			 	var countryDD = $('.inputCountry');
+							         	countryDD.empty();
+							         	countryDD.html($('<option>').text("Select").val(""));
+							           
+										showMessages(values[0].responseText);
+				              		}
+							});    
+
+
 		},
 
 		"#invoiceType change": function(){
@@ -830,6 +860,8 @@ var page = Component.extend({
 			var self = this;
             //Resetting the Region
             self.scope.attr("regionStore",'');
+
+
 
 			$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
 				if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
@@ -848,6 +880,7 @@ var page = Component.extend({
 			} else{
 				 $("#paymentBundleNames").removeAttr("disabled");
 			}
+
 			
 		},
          "{AmountStore} change": function() {
@@ -1058,24 +1091,14 @@ var page = Component.extend({
 						   		tempArry["lineAmount"] = self.scope.AmountStore.attr("amountText"+index);
 
 						   		if(self.scope.attr("invoicetypeSelect") == "2"){
-
-						   			var ccidGL = "ccidGL";
-
-                    				ccidGL = (index == 0 ? ccidGL : ccidGL+index);
-
-                    				if(index == 0){
-                    					if($('#ccidGL').val() != undefined && $('#ccidGL').val().length > 0){
-					   						tempArry["glAccRefId"] = self.scope.ccidGLStore.attr(ccidGL)
-					   					}else{
-					   						tempArry["glAccNum"] = self.scope.ccidGLStore.attr(ccidGL);
-					   					}
-                    				}else{
+						   				var ccidGL = "ccidGL"+index;
+						   			
                     					if($('#ccidGL'+index).val()!=undefined  && $('#ccidGL'+index).val().length>0){
 					   						tempArry["glAccRefId"] = self.scope.ccidGLStore.attr(ccidGL)
 					   					}else{
 					   						tempArry["glAccNum"] = self.scope.ccidGLStore.attr(ccidGL);
 					   					}
-                    				}
+                    				
 
 									//tempArry["glAccRefId"] = self.scope.ccidGLStore.attr(ccidGL);
 						  	 		tempArry["adhocTypeId"] = self.scope.contentTypeStore.attr("inputContent"+index);
@@ -1085,8 +1108,9 @@ var page = Component.extend({
 						  	 		//console.log(tempArry["contentGrpName"]);
 						  	 		var tempContentGrpName = $("#inputContent"+index+" option:selected").text();
 						  	 		tempArry["contentGrpName"] = tempContentGrpName;
+						  	 		tempArry["ccidFileName"] = $("#ccidGL"+index).val();
 						  	 	}
-								tempInvoiceData["invoiceLines"].push(tempArry);
+									tempInvoiceData["invoiceLines"].push(tempArry);
 
 
 									}
