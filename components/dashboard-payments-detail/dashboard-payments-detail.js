@@ -11,6 +11,7 @@ import template from './template.stache!';
 import popoverTemplate from './popover.stache!';
 import _less from './dashboard-payments-detail.less!';
 import _popover_less from './popover.less!';
+import PeriodWidgetHelper from 'utils/periodWidgetHelpers';
 
 var columnChartHelper = function(item, div) {
 
@@ -56,11 +57,18 @@ var DashboardPaymentsDetail = Component.extend({
     },
     getDisplayHeader: function(options) {
       var scope = this;
+      console.log("peter test",scope);
       if(scope.attr('nameProperty') === 'ctry' ){
         return scope.attr('detailItems')[0]['entyName'];
       }else if(scope.attr('nameProperty') === 'entyName' ){
         return scope.attr('detailItems')[0]['ctry'];
       }
+    },
+    getDisplayFromPeriod:function(options){
+      return PeriodWidgetHelper.getDisplayPeriod(this.appstate.periodFrom,this.appstate.periodType);
+    },
+    getDisplayToPeriod:function(options){
+      return PeriodWidgetHelper.getDisplayPeriod(this.appstate.periodTo,this.appstate.periodType);
     },
     formatNumbers: function(num){
         var formatted = formats.currencyFormatDecimal(num, 1);

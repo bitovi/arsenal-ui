@@ -5,6 +5,7 @@ import chartDefaults from 'utils/chartDefaults';
 import formats from 'utils/formats';
 import template from './template.stache!';
 import _less from './dashboard-payments-overview.less!';
+import PeriodWidgetHelper from 'utils/periodWidgetHelpers';
 
 var DashboardPaymentsOverview = Component.extend({
   tag: 'rn-dashboard-payments-overview',
@@ -44,8 +45,13 @@ var DashboardPaymentsOverview = Component.extend({
           $('svg > text:not([class=highcharts-title])', div).remove();
         }, 0);
       };
+    },
+    getDisplayFromPeriod:function(options){
+      return PeriodWidgetHelper.getDisplayPeriod(this.appstate.periodFrom,this.appstate.periodType);
+    },
+    getDisplayToPeriod:function(options){
+      return PeriodWidgetHelper.getDisplayPeriod(this.appstate.periodTo,this.appstate.periodType);
     }
-
   }
 });
 
