@@ -48,8 +48,20 @@ var bundleTypeColumnSets = {
     columns: columnSets.regularCountry
   }
   ],
-  'ON_ACCOUNT': columnSets.onAccount,
-  'ADHOC_INV': columnSets.adHoc,
+  'ON_ACCOUNT': [
+    {
+      value: 'licensor',
+      text: 'Licensor',
+      columns: columnSets.onAccount
+    }
+  ],
+  'ADHOC_INV': [
+  {
+    value: 'licensor',
+    text: 'Licensor',
+    columns: columnSets.adHoc
+  }
+  ]
 };
 
 
@@ -573,8 +585,9 @@ var resetSelectedBundle = function(scope){
     tabs = bundleTypeColumnSets[selectedBundle.bundleType];
     columns = bundleTypeColumnSets[selectedBundle.bundleType][0].columns;
   } else {
+    tabs = bundleTypeColumnSets[selectedBundle.bundleType];
     // no tabs
-    columns = bundleTypeColumnSets[selectedBundle.bundleType];
+    columns = bundleTypeColumnSets[selectedBundle.bundleType][0].columns;
   }
   scope.tabs.splice(0, scope.tabs.length, ...tabs);
   scope.attr('selectedTab', scope.tabs.length ? scope.tabs[0] : null);
