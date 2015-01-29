@@ -31,6 +31,7 @@ var stateDefaults = {
   userInfo: {
     token: 'FAKE TOKEN',
     prsId: '2002005722',
+    displayName:'',
     roleIds: [2],
     appId: '1179',
     permissions:[],

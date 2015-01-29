@@ -7,6 +7,7 @@ import GlobalParameterBar from 'components/global-parameter-bar/';
 import Bookmark from 'components/bookmark/';
 import UserReq from 'utils/request/';
 import RinsCommon from 'utils/urls';
+import logout from 'models/common/logout/';
 
 var headerNavigation = Component.extend({
     tag: 'header-navigation',
@@ -33,22 +34,24 @@ var headerNavigation = Component.extend({
           self.scope.appstate.userInfo.permissions = role;
           //end
           self.scope.appstate.userInfo.attr(role);
-
           self.scope.roles.replace(values[0]);
+          self.scope.appstate.userInfo.attr("displayName",role.permissions[0].firstName +" "+role.permissions[0].lastName);
+          self.scope.appstate.userInfo.attr("prsId",role.permissions[0].userId);
+
           var screenId= [] ;
           for(var i = 0, size = role.permissions.length; i < size ; i++)
-            {
+          {
+              //self.scope.appstate.userInfo.attr("roleIds",role.permissions[i].roleId);
               screenId.push(role.permissions[i].screenId) ;
-            }
-            self.scope.attr("allowedScreenId",screenId );
+          }
+          self.scope.attr("allowedScreenId",screenId );
 
             //added to show only the permitted screens
           //  console.log("Allowed Screen Id=="+screenId);
             //method starts here
             for(var i=0; i<menu.length; i++)
             {
-            //  console.log("menu Name=="+menu[i].id);
-                var removeId = [] ;
+              var removeId = [] ;
                 for(var x=0; x< menu[i].submenu.length; x++)
                 {
                 //  console.log("Screen Name==="+menu[i].submenu[x].value);
@@ -116,7 +119,8 @@ var headerNavigation = Component.extend({
       },
       '{appstate} change':function(el){
         if(el.navigationRequired) traverseSubMenu(el.page);
-      }
+      },
+      
   },
     helpers: {
         isActive: function(pageName) { console.log(pageName);

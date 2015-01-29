@@ -90,6 +90,8 @@ var BundleDetailTabs = Component.extend({
     approvalComment: '',
     bottomGridPaginateAttr: paginateAttr,
     isBundlePrioritySet:false,
+    sortColumns: [],
+    sortDirection: 'asc',
     details:{},
     regionCurr:[],
     havePaymentTypeAndComment: function(scope) {
@@ -313,7 +315,6 @@ var BundleDetailTabs = Component.extend({
     }
   },
   events: {
-
     '.grid-container table>tbody>tr click':function(item, el, ev){
 
       var alreadySelRow = item.closest("tbody").find("tr.selected");
@@ -331,6 +332,46 @@ var BundleDetailTabs = Component.extend({
       this.scope.details["periodType"]=row.periodType || "";
       this.scope.details["contentType"]=row.contentGrpName || "";
       this.scope.details["isChild"]=className;
+    },
+    ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
+      var self=this;
+      var val = $(item[0]).attr("class").split(" ");
+      var columns = columnSets.unsortable;
+
+      if(_.contains(columns,val[0])){
+        console.log("Not require to sort");
+        return false;
+      }
+
+      var existingSortColumns =self.scope.bottomGridPaginateAttr.sortBy;
+      var existingSortColumnsLen = existingSortColumns.length;
+      var existFlag = false;
+      if(existingSortColumnsLen==0){
+        self.scope.bottomGridPaginateAttr.attr('sortBy').push(val[0]);
+      } else {
+        _.contains(existingSortColumns, val[0]) ? existFlag = true : existFlag = false;
+        if(!existFlag){
+          self.scope.bottomGridPaginateAttr.sortBy.splice(0, self.scope.bottomGridPaginateAttr.sortBy.length);
+          self.scope.bottomGridPaginateAttr.attr('sortBy').push(val[0]);
+          self.scope.bottomGridPaginateAttr.attr('sortDirection', "asc");
+        } else {
+          var sortDirection = (self.scope.bottomGridPaginateAttr.attr('sortDirection') == 'asc') ? 'desc' : 'asc';
+          self.scope.bottomGridPaginateAttr.attr('sortDirection', sortDirection);
+        }
+      }
+      console.log(self.scope.bottomGridPaginateAttr.sortBy);
+      //commonUtils.triggerGlobalSearch();
+      self.scope.getNewDetails(self.scope.pageState.selectedBundle);
+
+      /* The below code calls {scope.appstate} change event that gets the new data for grid*/
+      /* All the neccessary parameters will be set in that event */
+      // self.scope.appstate.attr('globalSearchButtonClicked', true);
+      // if(self.scope.appstate.attr('globalSearch')){
+      //   self.scope.appstate.attr('globalSearch', false);
+      // }else{
+      //   self.scope.appstate.attr('globalSearch', true);
+      // }
+
     },
     '.show-chart click': function(el, ev) {
       // show the chart
@@ -529,8 +570,10 @@ var BundleDetailTabs = Component.extend({
       scope.getNewDetails(scope.pageState.selectedBundle);
     },
     '.preview click': function(el, ev) {
-      var row = el.closest('tr').data('row').row;
-      Preview.invoicePreview(row.invoiceId);
+        if(!el.closest('tr') == undefined){
+          var row = el.closest('tr').data('row').row;
+          Preview.invoicePreview(row.invoiceId);
+        }
     },
     '{scope.bottomGridPaginateAttr} change': function() {
       //console.log("change event: "+this.scope.bottomGridPaginateAttr.paginateRequest+", othje:"+this.scope.bottomGridPaginateAttr.recordsAvailable);
@@ -539,11 +582,22 @@ var BundleDetailTabs = Component.extend({
         this.scope.bottomGridPaginateAttr.attr("isInProgress",true);
         this.scope.getNewDetails(this.scope.pageState.selectedBundle);
       }
-
     },
     '{scope.pageState} refreshBottomGrid': function() {
       //console.log("refreshBottomGrid change event: ");
       this.scope.getNewDetails(this.scope.pageState.selectedBundle);
+    },
+    '.information mouseover': function(el, ev) {
+      var row = el.data('row');
+      el.popover({
+        content: "Information ",
+        trigger: 'manual',
+        placement: 'bottom'
+      });
+      el.popover('show');
+    },
+    '.information mouseout': function(el, ev) {
+      el.popover('hide');
     }
 
   }
