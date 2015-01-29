@@ -15,24 +15,33 @@
   {{/validationStatus}}
   {{/if}}
   <div class="bundle-detail-actions">
-    <img class="show-chart" src="/resources/images/charticon.png"/ style="padding-top: 1px;height:18px;width:18px;">
+    <img class="show-chart btn-download" src="/resources/images/downloadTemplate.png" style="padding-top: 1px;height:18px;width:25px;">
+
+    <div class="btn-group">
+      <img class="btn-preview" src="/resources/images/readerTemplate.png" data-toggle="dropdown" aria-expanded="true">
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="#">ecsv</a></li>
+        <li class="divider"></li>
+        <li><a href="#">pcsv</a></li>
+      </ul>
+    </div>
+    <img class="show-chart" src="/resources/images/charticon.png" style="padding-top: 1px;height:18px;width:18px;">
 
     <img class="excell exportToExcel" style="padding-top: 1px;height:18px;width:18px;">
     <img class="clipboardd copyToClipboard" style="padding-top: 1px;height:18px;width:18px;">
+    <img class="show-chart" src="/resources/images/infoTemplate.png" style="padding-top: 1px;height:18px;width:18px;">
     {{#showVerboseToggle}}
     <img class="verbose-toggle" style="padding-top: 1px;height:18px;width:18px;" src="/resources/images/approval_arrow_{{#if pageState.verboseGrid}}left{{else}}right{{/if}}.png"/>
     {{/showVerboseToggle}}
   </div>
   <div class="currencies">
-    <span>Currency</span>
     <select can-value={preferredCurr}>
-      <option value="">None</option>
+      <option value="">CUR</option>
       {{#each regionCurr}}
       <option>{{value}}</option>
       {{/each}}
     </select>
   </div>
-  <span class="glyphicon glyphicon-download-alt btn-download" style="padding-top: 1px;height:18px;width:18px;" aria-hidden="true"></span>
   <div class="tokenData">
     <input type="text" class="form-control" id="tokenSearch">
   </div>
