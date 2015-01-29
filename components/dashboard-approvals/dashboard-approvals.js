@@ -15,7 +15,9 @@ var DashboardApprovals = Component.extend({
   template: template,
   scope: {
     inboxRows: [],
-    outboxRows: []
+    outboxRows: [],
+    inboxnumberofrows: "@",
+    outboxnumberofrows: "@",
   },
   helpers: {
     inboxItemCount: function() {
@@ -30,12 +32,14 @@ var DashboardApprovals = Component.extend({
         mailbox: 'inbox'
       }).then(function(approvals) {
         self.scope.inboxRows.replace(approvals);
+        self.scope.attr('inboxnumberofrows',self.scope.inboxRows.length);
       });
 
       Approval.findAll({
         mailbox: 'outbox'
       }).then(function(approvals) {
         self.scope.outboxRows.replace(approvals);
+        self.scope.attr('outboxnumberofrows',self.scope.outboxRows.length);
       });
 
     },
