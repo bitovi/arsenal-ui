@@ -200,7 +200,10 @@ var page = Component.extend({
 
               $('#ingestionReconStats').html(stache('<rn-grid-ingestionstats rows="{rows}"></rn-grid-ingestionstats>')({rows}));
 
+              
+              //alignGridStats('ingested');
               setTimeout(function(){
+                alignGridStats('ingested');
                 alignGridStats('ingestionReconStats');
               },10);
               
@@ -218,8 +221,10 @@ var page = Component.extend({
 	events: {
 
     'inserted' : function() {
+      //$('#ingested').html(stache('<rn-recon-grid emptyrows="{emptyrows}"></rn-recon-grid>')({emptyrows:true}));
       $('.statsTable').hide();
       this.element.parent().scope().addRefresh(this.scope);
+
 
     },
 
