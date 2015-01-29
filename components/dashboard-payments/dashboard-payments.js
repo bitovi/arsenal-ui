@@ -49,8 +49,9 @@ var DashboardPayments = Component.extend({
     refreshReport: function() {
       var self = this;
       this.attr('fetching', true);
-      $('#parentcontainer').css('height',$(window).height());
-
+      //we need to reset this flag.
+      this.attr('selectedTab', this.tabs[0]);
+      this.attr('selectedItem',false);
       return PaymentSummary.findOne({appstate: self.appstate}).then(function(summary) {
         self.attr('summary', summary);
         self.attr('fetching', false);
@@ -69,7 +70,6 @@ var DashboardPayments = Component.extend({
     selectedItems: function(options) {
       var scope = this;
       var items = scope.summary[scope.attr('selectedTab').value];
-      console.log("item",items);
       return _.map(items, function(item) {
         return options.fn({
           item: item,
@@ -87,9 +87,6 @@ var DashboardPayments = Component.extend({
       if(this.scope.appstate.filled) {
         this.scope.debouncedRefreshReport(this.scope);
       }
-      //intially set the div height equal to window height.
-      //var windowHeight=$(window).height();
-    //  $('#parentcontainer').css('height',$(window).height());
     },
     '{scope.appstate} change': function() {
       var self = this;

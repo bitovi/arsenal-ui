@@ -15,26 +15,33 @@
   {{/validationStatus}}
   {{/if}}
   <div class="bundle-detail-actions">
-    <button class="btn btn-custom-xs remove-invoice" {{allowRemoveInvoices}}>Remove Invoice</button>
+    <img class="show-chart btn-download" src="/resources/images/downloadTemplate.png" style="padding-top: 1px;height:18px;width:25px;">
 
-    <img class="show-chart" src="/resources/images/charticon.png"/ style="padding-top: 1px;height:18px;width:18px;">
+    <div class="btn-group">
+      <img class="btn-preview" src="/resources/images/readerTemplate.png" data-toggle="dropdown" aria-expanded="true">
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="#">ecsv</a></li>
+        <li class="divider"></li>
+        <li><a href="#">pcsv</a></li>
+      </ul>
+    </div>
+    <img class="show-chart" src="/resources/images/charticon.png" style="padding-top: 1px;height:18px;width:18px;">
 
     <img class="excell exportToExcel" style="padding-top: 1px;height:18px;width:18px;">
     <img class="clipboardd copyToClipboard" style="padding-top: 1px;height:18px;width:18px;">
+    <img class="information" src="/resources/images/infoTemplate.png" style="padding-top: 1px;height:18px;width:18px;" data-original-title="" title="">
     {{#showVerboseToggle}}
     <img class="verbose-toggle" style="padding-top: 1px;height:18px;width:18px;" src="/resources/images/approval_arrow_{{#if pageState.verboseGrid}}left{{else}}right{{/if}}.png"/>
     {{/showVerboseToggle}}
   </div>
   <div class="currencies">
-    <span>Currency</span>
     <select can-value={preferredCurr}>
-      <option value="">None</option>
+      <option value="">CUR</option>
       {{#each regionCurr}}
       <option>{{value}}</option>
       {{/each}}
     </select>
   </div>
-  <span class="glyphicon glyphicon-download-alt btn-download" style="padding-top: 1px;height:18px;width:18px;" aria-hidden="true"></span>
   <div class="tokenData">
     <input type="text" class="form-control" id="tokenSearch">
   </div>
@@ -42,7 +49,7 @@
 
 <div class="grid-container" id="bundleDetailGridDiv">
 {{#if pageState.selectedBundle.bundleDetailsGroup.length}}
-    <rn-bundle-detail-grid columns="{gridColumns}" page-state="{pageState}" selected-rows="{selectedRows}" paginate-attr={bottomGridPaginateAttr} {{#if gettingDetails}}style="display: none;"{{/if}}></rn-bundle-detail-grid>
+    <rn-bundle-detail-grid columns="{gridColumns}" page-state="{pageState}" sortcolumnnames="{bottomGridPaginateAttr.sortBy}" sortdir="{bottomGridPaginateAttr.sortDirection}" selected-rows="{selectedRows}" paginate-attr={bottomGridPaginateAttr} {{#if gettingDetails}}style="display: none;"{{/if}}></rn-bundle-detail-grid>
 {{/if}}
 </div>
 
@@ -78,7 +85,7 @@
     <div class="comments">
 
     <label>Approval Comment</label>
-    <div class="requiredBar">
+    <div class="requiredBarPBR">
       <textarea class="previousComments" rows="3" readonly></textarea>
       <textarea can-value="{approvalComment}"  style='border-top: none;'></textarea>
     </div>

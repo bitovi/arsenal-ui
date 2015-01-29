@@ -307,6 +307,22 @@ var page = Component.extend({
                     utf8Bytes: true
                   }
                 }
+              },
+              accuralModelName :{
+                validators: {
+                  group:'.comments',
+                    notEmpty: {
+                        message: 'The Accural Model Name is required'
+                    }
+                }
+              },
+              accuralModelVersion :{
+                  validators: {
+                    group:'.comments',
+                      notEmpty: {
+                          message: 'The Accural Model Version is required'
+                      }
+                  }
               }
             }
           }).on('error.field.bv', function(e, data) {
@@ -384,6 +400,7 @@ var page = Component.extend({
             if(self.scope.pricingModels[i].modelName == self.scope.pageState.entityCountryDetails.pricingModelVersionNo ) {
 
               self.scope.attr("pricingModelVersions").replace(self.scope.pricingModels[i].modelVersion)
+              self.scope.pageState.entityCountryDetails.attr("pricingModelId", self.scope.pricingModels[i].modelVersion[0].id)
 
             }
 

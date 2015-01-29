@@ -14,7 +14,7 @@ import BundleDetailGrid from 'components/bundle-detail-grid/';
 import Switcher from 'components/switcher/';
 import WorkflowDisplay from 'components/workflow-display/';
 import PbrDeleteConfirmModal from 'components/pbr-delete-confirm-modal/';
-import PbrRemoveGroupsModal from 'components/pbr-remove-groups-modal/';
+
 import Alert from 'components/alert/';
 import highchartpage from 'components/highchart/';
 import Preview from 'components/pbr-preview/';
@@ -48,8 +48,20 @@ var bundleTypeColumnSets = {
     columns: columnSets.regularCountry
   }
   ],
-  'ON_ACCOUNT': columnSets.onAccount,
-  'ADHOC_INV': columnSets.adHoc,
+  'ON_ACCOUNT': [
+    {
+      value: 'licensor',
+      text: 'Licensor',
+      columns: columnSets.onAccount
+    }
+  ],
+  'ADHOC_INV': [
+  {
+    value: 'licensor',
+    text: 'Licensor',
+    columns: columnSets.adHoc
+  }
+  ]
 };
 
 
@@ -78,6 +90,8 @@ var BundleDetailTabs = Component.extend({
     approvalComment: '',
     bottomGridPaginateAttr: paginateAttr,
     isBundlePrioritySet:false,
+    sortColumns: [],
+    sortDirection: 'asc',
     details:{},
     regionCurr:[],
     havePaymentTypeAndComment: function(scope) {
@@ -269,9 +283,6 @@ var BundleDetailTabs = Component.extend({
     validationStatus: function(options) {
       return this.pageState.selectedBundle && this.pageState.selectedBundle.attr('validationRulesTotal') > 0 ? options.fn(this.pageState.selectedBundle) : '';
     },
-    allowRemoveInvoices:function(){
-      return ( this.selectedRows.attr('length') > 0 ? '' : 'disabled' ) ;
-    },
     canShowChart: function(options) {
       if(this.pageState.attr('selectedBundle.bundleType') === 'REGULAR_INV' &&
         this.selectedRows.attr('length') > 0 &&
@@ -304,10 +315,6 @@ var BundleDetailTabs = Component.extend({
     }
   },
   events: {
-    '.remove-invoice click': function(el, ev) {
-      PbrRemoveGroupsModal.displayModal(this.scope);
-
-    },
     '.grid-container table>tbody>tr click':function(item, el, ev){
 
       var alreadySelRow = item.closest("tbody").find("tr.selected");
@@ -325,6 +332,46 @@ var BundleDetailTabs = Component.extend({
       this.scope.details["periodType"]=row.periodType || "";
       this.scope.details["contentType"]=row.contentGrpName || "";
       this.scope.details["isChild"]=className;
+    },
+    ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
+      var self=this;
+      var val = $(item[0]).attr("class").split(" ");
+      var columns = columnSets.unsortable;
+
+      if(_.contains(columns,val[0])){
+        console.log("Not require to sort");
+        return false;
+      }
+
+      var existingSortColumns =self.scope.bottomGridPaginateAttr.sortBy;
+      var existingSortColumnsLen = existingSortColumns.length;
+      var existFlag = false;
+      if(existingSortColumnsLen==0){
+        self.scope.bottomGridPaginateAttr.attr('sortBy').push(val[0]);
+      } else {
+        _.contains(existingSortColumns, val[0]) ? existFlag = true : existFlag = false;
+        if(!existFlag){
+          self.scope.bottomGridPaginateAttr.sortBy.splice(0, self.scope.bottomGridPaginateAttr.sortBy.length);
+          self.scope.bottomGridPaginateAttr.attr('sortBy').push(val[0]);
+          self.scope.bottomGridPaginateAttr.attr('sortDirection', "asc");
+        } else {
+          var sortDirection = (self.scope.bottomGridPaginateAttr.attr('sortDirection') == 'asc') ? 'desc' : 'asc';
+          self.scope.bottomGridPaginateAttr.attr('sortDirection', sortDirection);
+        }
+      }
+      console.log(self.scope.bottomGridPaginateAttr.sortBy);
+      //commonUtils.triggerGlobalSearch();
+      self.scope.getNewDetails(self.scope.pageState.selectedBundle);
+
+      /* The below code calls {scope.appstate} change event that gets the new data for grid*/
+      /* All the neccessary parameters will be set in that event */
+      // self.scope.appstate.attr('globalSearchButtonClicked', true);
+      // if(self.scope.appstate.attr('globalSearch')){
+      //   self.scope.appstate.attr('globalSearch', false);
+      // }else{
+      //   self.scope.appstate.attr('globalSearch', true);
+      // }
+
     },
     '.show-chart click': function(el, ev) {
       // show the chart
@@ -523,8 +570,10 @@ var BundleDetailTabs = Component.extend({
       scope.getNewDetails(scope.pageState.selectedBundle);
     },
     '.preview click': function(el, ev) {
-      var row = el.closest('tr').data('row').row;
-      Preview.invoicePreview(row.invoiceId);
+        if(!el.closest('tr') == undefined){
+          var row = el.closest('tr').data('row').row;
+          Preview.invoicePreview(row.invoiceId);
+        }
     },
     '{scope.bottomGridPaginateAttr} change': function() {
       //console.log("change event: "+this.scope.bottomGridPaginateAttr.paginateRequest+", othje:"+this.scope.bottomGridPaginateAttr.recordsAvailable);
@@ -533,8 +582,24 @@ var BundleDetailTabs = Component.extend({
         this.scope.bottomGridPaginateAttr.attr("isInProgress",true);
         this.scope.getNewDetails(this.scope.pageState.selectedBundle);
       }
-
+    },
+    '{scope.pageState} refreshBottomGrid': function() {
+      //console.log("refreshBottomGrid change event: ");
+      this.scope.getNewDetails(this.scope.pageState.selectedBundle);
+    },
+    '.information mouseover': function(el, ev) {
+      var row = el.data('row');
+      el.popover({
+        content: "Information ",
+        trigger: 'manual',
+        placement: 'bottom'
+      });
+      el.popover('show');
+    },
+    '.information mouseout': function(el, ev) {
+      el.popover('hide');
     }
+
   }
 });
 
@@ -554,6 +619,8 @@ var resetSelectedBundle = function(scope){
   scope.attr("approvalComment", '');
   scope.attr("preferredCurr", '');
 
+  canRemoveInvoice(scope.pageState);
+
   var region = scope.appstate.attr('region') != undefined ? scope.appstate.attr('region').id : "";
 
   Currency.getCurrByRegion(region).done(function(curr) {
@@ -563,7 +630,7 @@ var resetSelectedBundle = function(scope){
 
   });
 
-  canRemoveInvoice(scope);
+
   // change the columns to be correct
   var tabs = [],
   columns;
@@ -572,8 +639,9 @@ var resetSelectedBundle = function(scope){
     tabs = bundleTypeColumnSets[selectedBundle.bundleType];
     columns = bundleTypeColumnSets[selectedBundle.bundleType][0].columns;
   } else {
+    tabs = bundleTypeColumnSets[selectedBundle.bundleType];
     // no tabs
-    columns = bundleTypeColumnSets[selectedBundle.bundleType];
+    columns = bundleTypeColumnSets[selectedBundle.bundleType][0].columns;
   }
   scope.tabs.splice(0, scope.tabs.length, ...tabs);
   scope.attr('selectedTab', scope.tabs.length ? scope.tabs[0] : null);
@@ -586,13 +654,17 @@ var resetSelectedBundle = function(scope){
 
 }
 
-var canRemoveInvoice = function(scope){
-    if(scope.pageState.selectedBundle != null && scope.pageState.selectedBundle.editable &&  scope.pageState.attr('selectedBundle.bundleType') === 'REGULAR_INV'
-     &&  ( scope.attr('selectedTab')  == null || scope.attr('selectedTab').value === 'licensor' ))  {
+
+var canRemoveInvoice = function(pageState){
+  if(pageState.selectedBundle != null && pageState.selectedBundle.editable &&  pageState.attr('selectedBundle.bundleType') === 'REGULAR_INV')
+    {
+      $(".vertical-line").show();
       $(".remove-invoice").show();
     } else {
+      $(".vertical-line").hide();
       $(".remove-invoice").hide();
     }
-}
+  }
+
 
 export default BundleDetailTabs;

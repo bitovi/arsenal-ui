@@ -5,6 +5,7 @@ import chartDefaults from 'utils/chartDefaults';
 import formats from 'utils/formats';
 import template from './template.stache!';
 import _less from './dashboard-payments-overview.less!';
+import PeriodWidgetHelper from 'utils/periodWidgetHelpers';
 
 var DashboardPaymentsOverview = Component.extend({
   tag: 'rn-dashboard-payments-overview',
@@ -12,7 +13,10 @@ var DashboardPaymentsOverview = Component.extend({
   scope: {
     appstate: null,
     summary: null,
-    percent: null
+    percent: null,
+    dispcount:10,
+    entityNotPaideList:[],
+    cntryNotPaideList:[]
   },
   helpers: {
     renderBigChart: function() {
@@ -20,6 +24,12 @@ var DashboardPaymentsOverview = Component.extend({
       var value1 = this.attr('summary').percentagePaid;
       var value = formats.formatToFixedDecimalAspercent(value1,_.isNumber, 0, '0',false);
       this.attr('percent',value);
+      if(this.attr('summary').topNotPaidEntities.length > 0){
+        this.attr('entityNotPaideList',this.attr('summary').topNotPaidEntities.slice(0,this.attr("dispcount")));
+      }
+      if(this.attr('summary').topNotPaidCountries.length > 0){
+        this.attr('cntryNotPaideList',this.attr('summary').topNotPaidCountries.slice(0,this.attr("dispcount")));
+      }
 
       return function(div) {
         var chartConfig = can.extend({}, chartDefaults.singleBarChart, {
@@ -35,6 +45,12 @@ var DashboardPaymentsOverview = Component.extend({
           $('svg > text:not([class=highcharts-title])', div).remove();
         }, 0);
       };
+    },
+    getDisplayFromPeriod:function(options){
+      return PeriodWidgetHelper.getDisplayPeriod(this.appstate.periodFrom,this.appstate.periodType);
+    },
+    getDisplayToPeriod:function(options){
+      return PeriodWidgetHelper.getDisplayPeriod(this.appstate.periodTo,this.appstate.periodType);
     }
   }
 });

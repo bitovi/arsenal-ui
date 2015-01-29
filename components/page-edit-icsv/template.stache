@@ -327,7 +327,7 @@
 						        		</select>
 						        		</div>
 						            </td>
-						           <td>
+						           <td class="form-group">
 						            	{{#if isAdhocStrore.invtype}}
 								            	<!--select id="ccidGL" name="ccidGL" class="form-control ccidGL">
 								            			<option value="">Select</option>
@@ -345,6 +345,7 @@
 						       							{{/each}}
 												    </select>
 												    <input type="text" name="format" value="" class="ccidGL ccidGLtxt"/>
+												    <input type="text" id="ccidGLtxt" name="ccidGLtxt[]" value="" class="form-control ccidGL ccidGLtxt"/>
 												</div>
 						            	  {{else}}
 						            	 		<input type="text" class="form-control ccidGL" id="ccidGL" name="ccidGL" placeholder="" readonly="true">

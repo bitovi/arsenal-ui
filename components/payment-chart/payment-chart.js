@@ -16,7 +16,8 @@ var PaymentChart = Component.extend({
     text: '',
     value: 0,
     percent:0,
-    fontsize:14,
+    chartWidth:'60',
+    valueWidth:'20',
     chartConfig: chartDefaults.singleBarChart
   },
   helpers: {
