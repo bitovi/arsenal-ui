@@ -74,7 +74,7 @@ var DashboardPaymentsDetail = Component.extend({
         return formatted;
     },
     popover: function(item) {
-
+      console.log("Peter Test",item);
       var popoverContent = $('<div>').append(popoverTemplate({
         localCurrency: item.gblCcy,
         globalCurrency: item.rgnCcy,

@@ -1,5 +1,5 @@
 <div class="stats-parent-bar">
-  <div  class="title" style="width:{{valueWidth}}%">{{text}}</div>
-  <div  class="chart" style="width:{{chartWidth}}%" {{renderChart}}></div>
-  <div  class="value" style="width:{{valueWidth}}%">{{percent}}%</div>
+  <div  class="title">{{text}}</div>
+  <div  class="chart" {{renderChart}}></div>
+  <div  class="value">{{percent}}%</div>
 </div>
