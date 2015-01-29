@@ -203,7 +203,8 @@ var page = Component.extend({
 
     },
     '#copyToClipboard click':function(){  
-        $('#clonetable').empty().html($('#reconstatsOtherGrid').find('table:visible').clone(true).attr('id','dynamic'));
+        //$('#clonetable').empty().html($('#reconstatsOtherGrid').find('table:visible').clone(true).attr('id','dynamic'));
+        $('#clonetable').empty().html($('.copyToClipboard').closest('#myTabs').next('.tab-content').find('.tab-pane:visible table:visible').clone(true).attr('id','dynamic'));
          $('copy-clipboard').slideDown(function(){
            $('body').css('overflow','hidden');
            $('#copyall').trigger('click');
