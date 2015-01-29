@@ -57,7 +57,6 @@ var DashboardPaymentsDetail = Component.extend({
     },
     getDisplayHeader: function(options) {
       var scope = this;
-      console.log("peter test",scope);
       if(scope.attr('nameProperty') === 'ctry' ){
         return scope.attr('detailItems')[0]['entyName'];
       }else if(scope.attr('nameProperty') === 'entyName' ){
