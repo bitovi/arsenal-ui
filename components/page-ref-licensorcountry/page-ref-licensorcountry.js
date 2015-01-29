@@ -307,6 +307,22 @@ var page = Component.extend({
                     utf8Bytes: true
                   }
                 }
+              },
+              accuralModelName :{
+                validators: {
+                  group:'.comments',
+                    notEmpty: {
+                        message: 'The Accural Model Name is required'
+                    }
+                }
+              },
+              accuralModelVersion :{
+                  validators: {
+                    group:'.comments',
+                      notEmpty: {
+                          message: 'The Accural Model Version is required'
+                      }
+                  }
               }
             }
           }).on('error.field.bv', function(e, data) {
