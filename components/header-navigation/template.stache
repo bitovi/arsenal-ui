@@ -21,7 +21,7 @@
           </ul>
           <ul class="nav navbar-nav" id='dynamicmenu'></ul>
           <ul id='rightsidemenu'>
-               <li class='username'><img src='../../resources/images/rn_WorkflowTypePerson_completed.png' class='logedinimg'/> rins_user1</li>
+            <li class='username'><img src='../../resources/images/rn_WorkflowTypePerson_completed.png' class='logedinimg'/>{{appstate.userInfo.displayName}}</li>
                <li class='bar'>|</li>
                <li class='rightmenu logout'>&nbsp;</li>
                <li class='rightmenu bookmark'>&nbsp;</li>
