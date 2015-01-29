@@ -244,7 +244,7 @@
 						        		</select>
 						        		</div>
 						            </td>
-						           <td>
+						           <td class="form-group">
 						            	 {{#if isAdhocStrore.invtype}}
 								            	<!--select id="ccidGL0" name="ccidGL" class="form-control ccidGL">
 								            			<option value="">Select</option>
@@ -253,14 +253,14 @@
 						       							{{/each}}
 									        	</select-->
 									        	<div class="select-editable">
-												    <select  id="ccidGL" name="ccidGL" class="form-control ccidGL">
+												    <select  id="ccidGL0" name="ccidGL" class="form-control ccidGL">
 												        <option value="">Select</option>
 												        {{#each glaccounts}}
 									        				<option value="{{id}}">{{value}}</option>
 
 						       							{{/each}}
 												    </select>
-                            <input type="text" id="ccidGLtxt" name="ccidGLtxt" value="" class="ccidGL ccidGLtxt"/>
+                            <input type="text" id="ccidGLtxt0" name="ccidGLtxt" value="" class="form-control ccidGL ccidGLtxt"/>
 												</div>
 						            	  {{else}}
 						            	 		<input type="text" class="form-control ccidGL" id="ccidGL0" name="ccidGL" placeholder="" readonly="true">
