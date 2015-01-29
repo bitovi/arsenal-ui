@@ -20,11 +20,11 @@
     <div class="unpaid"><div class="square"></div> Unpaid</div>
   </div>
     {{#if selectedItem}}
-    <div style="width:44%;">
+    <div style="width:100%;">
     <rn-dashboard-payments-detail name-property="{selectedTab.detailNameProperty}" detail-items="{selectedItem.payments}" appstate="{appstate}"></rn-dashboard-payments-detail>
     </div>
     {{else}}
-    <rn-dashboard-payments-overview summary="{summary}" appstate="{appstate}"></rn-dashboard-payments-overview>
+    <rn-dashboard-payments-overview summary="{summary}" appstate="{appstate}" dispcount="5"></rn-dashboard-payments-overview>
     {{/if}}
 
 </div>

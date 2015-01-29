@@ -47,13 +47,20 @@ var DashboardPaymentsDetail = Component.extend({
   helpers: {
     detailItemsList: function(options) {
       var scope = this;
-
       return _.map(this.attr('detailItems'), function(item) {
         return options.fn({
           item: item,
           text: item[scope.attr('nameProperty')],
         });
       });
+    },
+    getDisplayHeader: function(options) {
+      var scope = this;
+      if(scope.attr('nameProperty') === 'ctry' ){
+        return scope.attr('detailItems')[0]['entyName'];
+      }else if(scope.attr('nameProperty') === 'entyName' ){
+        return scope.attr('detailItems')[0]['ctry'];
+      }
     },
     formatNumbers: function(num){
         var formatted = formats.currencyFormatDecimal(num, 1);
