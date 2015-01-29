@@ -49,8 +49,9 @@ var DashboardPayments = Component.extend({
     refreshReport: function() {
       var self = this;
       this.attr('fetching', true);
-      $('#parentcontainer').css('height',$(window).height());
-      this.attr('selectedItem',false); //we need to reset this flag.
+      //we need to reset this flag.
+      this.attr('selectedTab', this.tabs[0]);
+      this.attr('selectedItem',false);
       return PaymentSummary.findOne({appstate: self.appstate}).then(function(summary) {
         self.attr('summary', summary);
         self.attr('fetching', false);
