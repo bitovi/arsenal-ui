@@ -96,7 +96,7 @@
 
 			       		<div class="col-lg-6" id="uploadFile">
 								<div class="col-sm-6 file-component-onacc-div">
-									<rn-file-uploader-new uploadedfileinfonew="{uploadedfileinfo}"></rn-file-uploader-new>
+									<rn-file-uploader-new uploadedfileinfo="{uploadedfileinfo}"></rn-file-uploader-new>
 								</div>
 								</div>
 
