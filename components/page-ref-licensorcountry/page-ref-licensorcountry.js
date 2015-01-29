@@ -400,6 +400,7 @@ var page = Component.extend({
             if(self.scope.pricingModels[i].modelName == self.scope.pageState.entityCountryDetails.pricingModelVersionNo ) {
 
               self.scope.attr("pricingModelVersions").replace(self.scope.pricingModels[i].modelVersion)
+              self.scope.pageState.entityCountryDetails.attr("pricingModelId", self.scope.pricingModels[i].modelVersion[0].id)
 
             }
 

@@ -27,6 +27,18 @@ var rinsCommonUtils = {
     setTimeout(function(){
       $("#messageDiv").hide();
     },constants.MESSAGE_DISPLAY_TIME);
+  },
+  getDefaultParameters:function(appstate){
+      var defaultFilterData={};
+      defaultFilterData.periodFrom = appstate.defaultPeriodFrom;
+      defaultFilterData.periodType = appstate.defaultPeriodType;
+      defaultFilterData.periodTo = appstate.defaultPeriodTo;
+      defaultFilterData.storeType = appstate.defaultStoreType;
+      defaultFilterData.country = appstate.defaultcountry;
+      defaultFilterData.licensor = appstate.defaultlicensor;
+      defaultFilterData.contentType = appstate.defaultcontentType;
+      defaultFilterData.region = appstate.defaultRegion;
+      return defaultFilterData;
   }
 
 

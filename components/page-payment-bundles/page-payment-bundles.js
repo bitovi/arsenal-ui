@@ -218,7 +218,7 @@ var page = Component.extend({
     },
     '.clipboard click': function(el, ev) {
       // copy bundle list information to clipboard
-       $('#clonetable').empty().html($('#page').find('table:visible').clone(true).attr('id','dynamic'));
+       $('#clonetable').empty().html($('#payBundleGrid').find('table:visible').clone(true).attr('id','dynamic'));
          $('copy-clipboard').slideDown(function(){
            $('body').css('overflow','hidden');
            $('#copyall').trigger('click');

@@ -123,7 +123,7 @@ var page = Component.extend({
   },
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
-    this.scope.attr("emptyrows", false);
+    this.scope.attr("emptyrows", true);
     this.scope.ingestList.headerRows.splice(0, this.scope.ingestList.headerRows.length);
     this.scope.ingestList.footerRows.splice(0,this.scope.ingestList.footerRows.length);
     this.scope.attr("ingestCcidSelected").splice(0, this.scope.attr("ingestCcidSelected").length);
@@ -142,6 +142,8 @@ var page = Component.extend({
     },
     "inserted": function(){
       var self = this;
+
+      $("#loading_img").hide();
 
       $("#tokenSearch").tokenInput([
         {id: 1, name: "Search"} //This is needed
@@ -519,6 +521,8 @@ var displayErrorMessage = function(message,log){
 
 /**/
 var fetchReconIngest = function(scope, load){
+  console.log("Loading Started");
+  $("#loading_img").show();
   var searchRequestObj = UserReq.formGlobalRequest(scope.appstate);
   searchRequestObj.searchRequest["type"] =  scope.tabName.ingest.attr("type");
   //TODO During pagination / scrolling, the below values has tobe chnaged.
@@ -548,6 +552,8 @@ var fetchReconIngest = function(scope, load){
   var dataLowerGrid = {};
 
   Promise.all([Recon.findOne(searchRequestObj)]).then(function(values){
+    console.log("Loading Done");
+    
     if(values != undefined && values != null) {
       var data = values[0];
       dataLowerGrid = data;
@@ -631,7 +637,6 @@ var fetchReconIngest = function(scope, load){
       scope.setHeaderChkBox();
 
     } else {
-
       scope.attr("load", true);
 
       var ccidCheckbox = $("input.selectRow");
@@ -652,7 +657,7 @@ var fetchReconIngest = function(scope, load){
 
     }
 
-
+    $("#loading_img").hide();
   });
 }
 

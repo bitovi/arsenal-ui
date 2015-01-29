@@ -25,7 +25,7 @@
 <table class="holes-reports-country" border="1">
   <thead>
     <tr>
-      <th></th>
+      <th>Countries</th>
     </tr>
   </thead>
   <tbody>
@@ -79,7 +79,7 @@
 <table class="holes-reports-local" border="1">
   <thead>
     <tr>
-      <th></th>
+      <th>Local society name</th>
     </tr>
   </thead>
   <tbody>

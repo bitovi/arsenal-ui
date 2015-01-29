@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import gridtemplate from './gridtemplate.stache!';
 import stache from 'can/view/stache/';
 import formats from 'utils/formats';
 import _less from './inbox-grid.less!';
@@ -6,6 +7,7 @@ import ScrollingGrid from 'components/grid/examples/scrolling-grid/';
 
 var InboxGrid = ScrollingGrid.extend({
   tag: 'rn-inbox-grid',
+  template: gridtemplate,
   scope: {
     columns: [{
       id: 'type',
