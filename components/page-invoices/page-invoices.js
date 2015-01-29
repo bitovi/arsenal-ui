@@ -1077,7 +1077,6 @@ function getAllInvoices(self) {
   if(self.attr("localGlobalSearch") != undefined){
       if(self.attr("localGlobalSearch") != self.appstate.attr('globalSearch')) {
         self.attr("localGlobalSearch",self.appstate.attr('globalSearch'));
-        $("#loading_img").show();
         fetchData(self);        
       }
 
@@ -1091,6 +1090,7 @@ function getAllInvoices(self) {
 
 function fetchData(self){
   var invSearchRequest= getInvoiceSearchRequest(self);
+  $("#loading_img").show();
   GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){
             //console.log("response is "+JSON.stringify(data.attr()));
             if(data["status"]=="SUCCESS"){

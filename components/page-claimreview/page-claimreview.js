@@ -383,6 +383,8 @@ var page = Component.extend({
 	  tokenInput: [],
     countryRecordsAvailable:'@',
     licensorRecordsAvailable:'@',
+    populateDefaultDataForCountry:'@',
+    populateDefaultDataForLicensor:'@',
     is_aggregate:0,
     refreshTokenInput: function(val, type){
       //console.log("val is "+JSON.stringify(val));
@@ -409,8 +411,14 @@ var page = Component.extend({
      }
   },
   init: function(){
-	 //console.log('inside Claim Review');
-   this.scope.appstate.attr("renderGlobalSearch",true);
+	 var self = this;
+   self.scope.appstate.attr("renderGlobalSearch",true);
+    self.scope.attr('populateDefaultDataForLicensor',true);
+    self.scope.attr("licensorViewOffset",0);
+    self.scope.attr("licensorTableScrollTop",0);
+    self.scope.sortColumns.replace([]);
+    self.scope.attr("sortDirection","asc");
+    getClaimReviewData('licensor',self.scope);
 
     },
     events: {
@@ -481,21 +489,37 @@ var page = Component.extend({
           //$("#aggregate").css("display","none");
           $("#aggregate").addClass("hide");
           self.scope.attr('view',"licensor");
+          self.scope.attr('populateDefaultDataForLicensor',true);
           //$("li#aggregate").addClass("hide");
 
           ev.preventDefault();
+
+          self.scope.attr("licensorViewOffset",0);
+          self.scope.attr("licensorTableScrollTop",0);
+          self.scope.sortColumns.replace([]);
+          self.scope.attr("sortDirection","asc");
+          getClaimReviewData('licensor',self.scope);
       },
       "#couView click": function(el, ev){
           var self = this;
           $("#aggregate").removeClass("hide");
           self.scope.attr('view',"country");
           ev.preventDefault();
-          console.log("fdfsdfsdf "+self.scope.attr("allClaimCountryMap").length);
+          //console.log("fdfsdfsdf "+self.scope.attr("allClaimCountryMap").length);
+          
           var invoiceData = self.scope.attr("allClaimCountryMap").length;
           if(invoiceData == 0){
             var is_aggregate = self.scope.attr("is_aggregate");
             $('#claimCountryGrid').html(stache('<rn-claim-country-grid emptyrows="{emptyrows}" is_aggregate="{is_aggregate}"></rn-claim-country-grid>')({emptyrows:true, is_aggregate}));
           }
+
+       
+          self.scope.attr("countryViewOffset",0);
+          self.scope.attr("countryTableScrollTop",0); 
+          self.scope.sortColumns.replace([]);
+          self.scope.attr("sortDirection","asc");
+          self.scope.attr('populateDefaultDataForLicensor',true);
+          getClaimReviewData('country',self.scope);
       },
       '#chkAggregate change': function(item, el, ev) {
         var self = this;
@@ -703,158 +727,8 @@ var page = Component.extend({
           if(this.scope.attr("localGlobalSearch") != undefined || self.scope.appstate.attr("excelOutput")){
             if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch') || self.scope.appstate.attr("excelOutput")){
                 this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
-                console.log("User clicked on  search");
-                $("#loading_img").show();
-
-                var periodFrom = this.scope.appstate.attr('periodFrom');
-                var periodTo = this.scope.appstate.attr('periodTo');
-                var serTypeId = this.scope.appstate.attr('storeType');
-                var regId = this.scope.appstate.attr('region');
-                var countryId = this.scope.appstate.attr()['country'];
-                var licId = this.scope.appstate.attr()['licensor'];
-                var contGrpId = this.scope.appstate.attr()['contentType'];
-
-                var claimLicSearchRequest = {};
-                //claimLicSearchRequest.searchRequest = {};
-                if(typeof(periodFrom)=="undefined")
-                  claimLicSearchRequest["periodFrom"] = "";
-                else
-                  claimLicSearchRequest["periodFrom"] = periodFrom;
-
-                if(typeof(periodTo)=="undefined")
-                  claimLicSearchRequest["periodTo"] = "";
-                else
-                  claimLicSearchRequest["periodTo"] = periodTo;
-
-                if(typeof(serTypeId)=="undefined")
-                  claimLicSearchRequest["serviceTypeId"] = "";
-                else
-                  claimLicSearchRequest["serviceTypeId"] = serTypeId['id'];
-
-                if(typeof(regId)=="undefined")
-                  claimLicSearchRequest["regionId"] = "";
-                else
-                  claimLicSearchRequest["regionId"] = regId['id'];
-
-                claimLicSearchRequest["country"] = [];
-                if(typeof(countryId)!="undefined")
-                  //claimLicSearchRequest.searchRequest["country"].push(countryId['value']);
-                  claimLicSearchRequest["country"]=countryId;
-
-                claimLicSearchRequest["entityId"] = [];
-                if(typeof(licId)!="undefined")
-                  claimLicSearchRequest["entityId"] = licId;
-
-                claimLicSearchRequest["contentGrpId"] = [];
-                if(typeof(contGrpId)!="undefined")
-                  claimLicSearchRequest["contentGrpId"] = contGrpId;
-
-                claimLicSearchRequest["periodType"] = "P";
-
-                claimLicSearchRequest["status"] = "";
-
-                if(tabView=="licensor")
-                  claimLicSearchRequest["offset"] = this.scope.licensorViewOffset;
-                else
-                  claimLicSearchRequest["offset"] = this.scope.countryViewOffset;
-
-                claimLicSearchRequest["limit"] = this.scope.appstate.attr("fetchSize");
-
-                if(self.scope.appstate.attr('excelOutput')) claimLicSearchRequest["excelOutput"] = true;
-
-                claimLicSearchRequest["view"] = self.scope.attr('view');
-                claimLicSearchRequest["gridName"] = (tabView === "licensor")? "CR_LICENSOR_VIEW":"CR_COUNTRY_VIEW";
-
-                var filterData = self.scope.tokenInput.attr();
-                var newFilterData = [];
-                if(filterData.length>0){
-                  for(var p=0;p<filterData.length;p++)
-                    newFilterData.push(filterData[p]["name"]);
-                }
-                claimLicSearchRequest["filter"] = newFilterData;
-
-                claimLicSearchRequest["sortBy"] = self.scope.sortColumns.attr().toString();
-                claimLicSearchRequest["sortOrder"] = self.scope.attr('sortDirection');
-
-
-                //console.log("Request are "+JSON.stringify(UserReq.formRequestDetails(claimLicSearchRequest)));
-                console.log("Request are "+JSON.stringify(claimLicSearchRequest));
-                if(tabView=="licensor"){
-                  claimLicensorInvoices.findOne(UserReq.formRequestDetails(claimLicSearchRequest),function(values){
-                      //console.log("data is "+JSON.stringify(values.attr()));
-                      if(values["status"]!="FAILURE"){
-                        if(self.scope.appstate.attr('excelOutput')){
-                          $("#loading_img").hide();
-                          $('#exportExcel').html(stache('<export-toexcel csv={values}></export-toexcel>')({values}));
-                           self.scope.appstate.attr("excelOutput",false);
-                        }else{
-                          /*
-                          $("#messageDiv").html("<label class='successMessage'>"+values["responseText"]+"</label>");
-                          $("#messageDiv").show();
-                          setTimeout(function(){
-                              $("#messageDiv").hide();
-                          },4000);
-                          */
-                          self.scope.attr('licensorRecordsAvailable',values.recordsAvailable);
-                          if(parseInt(claimLicSearchRequest["offset"])==0){
-                            self.scope.allClaimLicensorMap.replace(values);
-                          } else{
-                            $.merge(self.scope.allClaimLicensorMap[0].reviews, values.reviews);
-                            self.scope.allClaimLicensorMap.replace(self.scope.allClaimLicensorMap);
-                          }
-                        }
-                      } else {
-                        $("#loading_img").hide();
-                        $("#messageDiv").html("<label class='errorMessage'>"+values["responseText"]+"</label>");
-                        $("#messageDiv").show();
-                        setTimeout(function(){
-                            $("#messageDiv").hide();
-                        },4000);
-                      }
-                  },function(xhr){
-                     $("#loading_img").hide();
-                     self.scope.appstate.attr("excelOutput",false);
-                    console.error("Error while loading: "+xhr);
-                  });
-                } else if(tabView=="country" || tabView=="country-aggregate"){
-                  claimCountryInvoices.findOne(UserReq.formRequestDetails(claimLicSearchRequest),function(values){
-                      //console.log("data is "+JSON.stringify(values.attr()));
-                      if(values["status"]!="FAILURE"){
-                        if(self.scope.appstate.attr('excelOutput')){
-                          $("#loading_img").hide();
-                          $('#exportExcel').html(stache('<export-toexcel csv={values}></export-toexcel>')({values}));
-                           self.scope.appstate.attr("excelOutput",false);
-                        }else{
-                          /*
-                          $("#messageDiv").html("<label class='successMessage'>"+values["responseText"]+"</label>");
-                          $("#messageDiv").show();
-                          setTimeout(function(){
-                              $("#messageDiv").hide();
-                          },4000);
-                          */
-                          self.scope.attr('countryRecordsAvailable',values.recordsAvailable);
-                          if(parseInt(claimLicSearchRequest["offset"])==0){
-                            self.scope.allClaimCountryMap.replace(values);
-                          } else{
-                            $.merge(self.scope.allClaimCountryMap[0].reviews, values.reviews);
-                            self.scope.allClaimCountryMap.replace(self.scope.allClaimCountryMap);
-                          }
-                        }
-                      } else {
-                        $("#loading_img").hide();
-                        $("#messageDiv").html("<label class='errorMessage'>"+values["responseText"]+"</label>");
-                        $("#messageDiv").show();
-                        setTimeout(function(){
-                            $("#messageDiv").hide();
-                        },4000);
-                      }
-
-                  },function(xhr){
-                    $("#loading_img").hide();
-                    self.scope.appstate.attr("excelOutput",false);
-                    console.error("Error while loading: "+xhr);
-                  });
-                }
+                //console.log("User clicked on  search"); 
+                getClaimReviewData(tabView,self.scope);
             }
           } else {
             if(this.scope.appstate.attr('globalSearch')==undefined)
@@ -865,6 +739,175 @@ var page = Component.extend({
       }
     }
 });
+
+
+var getClaimReviewData = function(tabView, self) {
+  var claimLicSearchRequest = getClaimReviewRequest(tabView,self);
+  $("#loading_img").show();
+  if (tabView == "licensor") {
+    claimLicensorInvoices.findOne(UserReq.formRequestDetails(claimLicSearchRequest), function(values) {
+      //console.log("data is "+JSON.stringify(values.attr()));
+      if (values["status"] != "FAILURE") {
+        if (self.appstate.attr('excelOutput')) {
+          $("#loading_img").hide();
+          $('#exportExcel').html(stache('<export-toexcel csv={values}></export-toexcel>')({
+            values
+          }));
+          self.appstate.attr("excelOutput", false);
+        } else {
+          /*
+          $("#messageDiv").html("<label class='successMessage'>"+values["responseText"]+"</label>");
+          $("#messageDiv").show();
+          setTimeout(function(){
+              $("#messageDiv").hide();
+          },4000);
+          */
+          self.attr('licensorRecordsAvailable', values.recordsAvailable);
+          if (parseInt(claimLicSearchRequest["offset"]) == 0) {
+            self.allClaimLicensorMap.replace(values);
+          } else {
+            $.merge(self.allClaimLicensorMap[0].reviews, values.reviews);
+            self.allClaimLicensorMap.replace(self.allClaimLicensorMap);
+          }
+        }
+      } else {
+        $("#loading_img").hide();
+        $("#messageDiv").html("<label class='errorMessage'>" + values["responseText"] + "</label>");
+        $("#messageDiv").show();
+        setTimeout(function() {
+          $("#messageDiv").hide();
+        }, 4000);
+      }
+    }, function(xhr) {
+      $("#loading_img").hide();
+      self.appstate.attr("excelOutput", false);
+      console.error("Error while loading: " + xhr);
+    });
+    self.attr('populateDefaultDataForLicensor', false);
+  } else if (tabView == "country" || tabView == "country-aggregate") {
+    claimCountryInvoices.findOne(UserReq.formRequestDetails(claimLicSearchRequest), function(values) {
+      //console.log("data is "+JSON.stringify(values.attr()));
+      if (values["status"] != "FAILURE") {
+        if (self.appstate.attr('excelOutput')) {
+          $("#loading_img").hide();
+          $('#exportExcel').html(stache('<export-toexcel csv={values}></export-toexcel>')({
+            values
+          }));
+          self.appstate.attr("excelOutput", false);
+        } else {
+          /*
+          $("#messageDiv").html("<label class='successMessage'>"+values["responseText"]+"</label>");
+          $("#messageDiv").show();
+          setTimeout(function(){
+              $("#messageDiv").hide();
+          },4000);
+          */
+          self.attr('countryRecordsAvailable', values.recordsAvailable);
+          if (parseInt(claimLicSearchRequest["offset"]) == 0) {
+            self.allClaimCountryMap.replace(values);
+          } else {
+            $.merge(self.allClaimCountryMap[0].reviews, values.reviews);
+            self.allClaimCountryMap.replace(self.allClaimCountryMap);
+          }
+        }
+      } else {
+        $("#loading_img").hide();
+        $("#messageDiv").html("<label class='errorMessage'>" + values["responseText"] + "</label>");
+        $("#messageDiv").show();
+        setTimeout(function() {
+          $("#messageDiv").hide();
+        }, 4000);
+      }
+
+    }, function(xhr) {
+      $("#loading_img").hide();
+      self.appstate.attr("excelOutput", false);
+      console.error("Error while loading: " + xhr);
+    });
+    self.attr('populateDefaultDataForCountry', false);
+  }
+}
+
+
+var getClaimReviewRequest = function(tabView,self) {
+var appstate = self.appstate;
+    if(self.populateDefaultData){
+      appstate = commonUtils.getDefaultParameters(appstate);
+    }
+ var periodFrom = appstate.periodFrom;
+  var periodTo = appstate.periodTo;
+  var serTypeId = appstate.storeType;
+  var regId = appstate.region;
+  var countryId = appstate.country.attr();
+  var licId = appstate.licensor.attr();
+  var contGrpId = appstate.contentType.attr();
+  var periodType = appstate.periodType;
+
+  var claimLicSearchRequest = {};
+  //claimLicSearchRequest.searchRequest = {};
+  if (typeof(periodFrom) == "undefined")
+    claimLicSearchRequest["periodFrom"] = "";
+  else
+    claimLicSearchRequest["periodFrom"] = periodFrom;
+
+  if (typeof(periodTo) == "undefined")
+    claimLicSearchRequest["periodTo"] = "";
+  else
+    claimLicSearchRequest["periodTo"] = periodTo;
+
+  if (typeof(serTypeId) == "undefined")
+    claimLicSearchRequest["serviceTypeId"] = "";
+  else
+    claimLicSearchRequest["serviceTypeId"] = serTypeId['id'];
+
+  if (typeof(regId) == "undefined")
+    claimLicSearchRequest["regionId"] = "";
+  else
+    claimLicSearchRequest["regionId"] = regId['id'];
+
+  claimLicSearchRequest["country"] = [];
+  if (typeof(countryId) != "undefined")
+  //claimLicSearchRequest.searchRequest["country"].push(countryId['value']);
+    claimLicSearchRequest["country"] = countryId;
+
+  claimLicSearchRequest["entityId"] = [];
+  if (typeof(licId) != "undefined")
+    claimLicSearchRequest["entityId"] = licId;
+
+  claimLicSearchRequest["contentGrpId"] = [];
+  if (typeof(contGrpId) != "undefined")
+    claimLicSearchRequest["contentGrpId"] = contGrpId;
+
+  claimLicSearchRequest["periodType"] = "P";
+
+  claimLicSearchRequest["status"] = "";
+
+  if (tabView == "licensor")
+    claimLicSearchRequest["offset"] = self.licensorViewOffset;
+  else
+    claimLicSearchRequest["offset"] = self.countryViewOffset;
+
+  claimLicSearchRequest["limit"] = self.appstate.attr("fetchSize");
+
+  if (self.appstate.attr('excelOutput')) claimLicSearchRequest["excelOutput"] = true;
+
+  claimLicSearchRequest["view"] = self.attr('view');
+  claimLicSearchRequest["gridName"] = (tabView === "licensor") ? "CR_LICENSOR_VIEW" : "CR_COUNTRY_VIEW";
+
+  var filterData = self.tokenInput.attr();
+  var newFilterData = [];
+  if (filterData.length > 0) {
+    for (var p = 0; p < filterData.length; p++)
+      newFilterData.push(filterData[p]["name"]);
+  }
+  claimLicSearchRequest["filter"] = newFilterData;
+
+  claimLicSearchRequest["sortBy"] = self.sortColumns.attr().toString();
+  claimLicSearchRequest["sortOrder"] = self.attr('sortDirection');
+
+  return claimLicSearchRequest;
+
+}
 
 /* generateTableData - This function is used to convert the reponse json in to a format accepted by Grid */
 /* This function calls 'generateFooterData' function to format the footer data accepted by grid */
