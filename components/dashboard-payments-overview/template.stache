@@ -15,7 +15,7 @@
     {{/each}}
   </ul>
 </div>
-<div style="float:left;width:10%"><span style="visibility: hidden">this to occupy width-Added for workaround safari. -- need tofix this problem</span></div>
+<div style="float:left;width:10%"><span style="visibility: hidden">&nbsp;</span></div>
 <div class="column top-not-paid-licensors" style="float:left;width:45%">
   <div style="text-align: right;">
     <h3>Top Not Paid Licensors</h3>
