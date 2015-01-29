@@ -293,7 +293,7 @@ var page = Component.extend({
 
        if ($("rn-onaccount-balance-grid").find("tbody>tr").length) {
            $('rn-onaccount-balance-grid tbody tr').css("outline","0px solid #f1c8c8");
-       }else{
+       }else if(defaultRequest != undefined) {
            $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={defaultRequest}></rn-onaccount-balance-grid>')({defaultRequest}));
        }
       },
@@ -583,7 +583,7 @@ var page = Component.extend({
                 proposedRequest.footerRows = footerRows;
                 proposedRequest.recordsAvailable = data.recordsAvailable;
                 if(proposedRequest.rows != null && proposedRequest.rows.length>0){
-                    proposedRequest.quarters=self.scope.quarters;
+                    proposedRequest.quarters=quarters;
                     disableProposedSubmitButton(true);
                     disableEditORDeleteButtons(true);
                     $("#submitPOA").attr("disabled","disabled");

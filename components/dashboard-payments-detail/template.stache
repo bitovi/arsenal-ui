@@ -1,5 +1,5 @@
 <div style="width:100%">
-  <h3 class="pay-overview-heading" style="font-size: 1.2em;padding-top: 42px;padding-bottom: 15px;">{{getDisplayHeader}} Payments Info for {{appstate.periodFrom}} - {{appstate.periodTo}}</h3>
+  <h3 class="pay-overview-heading" style="font-size: 1.2em;padding-top: 42px;padding-bottom: 15px;">Payment Details of {{getDisplayHeader}} for {{getDisplayFromPeriod}} - {{getDisplayToPeriod}}</h3>
 </div>
 <div style="width:44%">
 <ul class="chart-list country-list">

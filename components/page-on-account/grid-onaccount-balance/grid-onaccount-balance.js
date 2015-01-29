@@ -52,7 +52,9 @@ var OnAccountBalance = Grid.extend({
        var self = this;
        var recordsAvailable=false;
        //console.log("inserted "+JSON.stringify(self.scope.request.searchRequest.attr()));
-       if(self.scope.request != null && self.scope.request != undefined && self.scope.request.quarters != null && self.scope.request.quarters != undefined){
+       var parentScopeVar = self.element.closest('page-on-account').scope();
+       if(self.scope.request != null && self.scope.request != undefined 
+        && self.scope.request.quarters != null && self.scope.request.quarters != undefined){
          var quarters = self.scope.request.quarters;
 
          for(var i=0;i<quarters.length;i++){
@@ -75,7 +77,9 @@ var OnAccountBalance = Grid.extend({
             title:'Licensor Cash Adjustment'
           };
           self.scope.columns.push(cashAdjustColumn);
+          parentScopeVar.attr('showLoadingImage',true);
             onAccountBalance.findOne(createBalanceOnAccountRequest(this.scope.request.appstate),function(data){
+              parentScopeVar.attr('showLoadingImage',false);
                       if(data["status"]=="SUCCESS"){
                         if(data.onAccount != undefined && data.onAccount.onAccountDetails != undefined && data.onAccount.onAccountDetails.length==0){
                           self.scope.attr('emptyrows',true);
@@ -114,7 +118,7 @@ var OnAccountBalance = Grid.extend({
        var getTblBodyHght=gridUtils.getTableBodyHeight('onAccountBalanceGrid',97);
        gridUtils.setElementHeight(tbody,getTblBodyHght,getTblBodyHght);
        //setting tbody height - end
-      var parentScopeVar = self.element.closest('page-on-account').scope();
+      
       var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
       $(tbody[0]).scrollTop(tableScrollTopVal);
         $(tbody).on('scroll', function(ev) {

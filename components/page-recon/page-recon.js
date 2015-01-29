@@ -134,7 +134,7 @@ var page = Component.extend({
   events:{
     'shown.bs.tab': function(el, ev) {
       this.scope.attr("tabSelected", $('.nav-tabs .active').text());
-      this.scope.appstate.attr("renderGlobalSearch",true);
+      //this.scope.appstate.attr("renderGlobalSearch",true);
       //Load when the list is empty
       if(_.size(this.scope.ingestList.headerRows) == 0 ){
         commonUtils.triggerGlobalSearch();
@@ -320,7 +320,7 @@ var page = Component.extend({
     },
     
     '{scope.appstate} change': function() {
-      this.scope.appstate.attr("renderGlobalSearch",true);
+      //this.scope.appstate.attr("renderGlobalSearch",true);
       if(this.scope.isGlobalSearchIngested != this.scope.appstate.attr('globalSearch')){
         this.scope.attr("isGlobalSearchIngested",this.scope.appstate.attr("globalSearch"));
         if(this.scope.tabSelected == this.scope.tabName.ingest.attr("name")){
