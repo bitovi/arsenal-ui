@@ -61,6 +61,8 @@ var page = Component.extend({
     scrollTop: 0,
     offset: 0,
     pagename : "reconOther",
+    populateDefaultDataForInvoice:'@',
+    populateDefaultDataForOther:'@',
     load : true,
 
     refreshTokenInput: function(val, type){
@@ -115,6 +117,8 @@ var page = Component.extend({
   },
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
+    this.scope.attr('populateDefaultDataForInvoice',true);
+    fetchReconIncoming(this.scope);
   },
   events:{
 
@@ -347,7 +351,7 @@ var createReconOtherRequestForExportToExcel = function(appstate){
 
 var fetchReconIncoming = function(scope){
 
-    var searchRequestObj = UserReq.formGlobalRequest(scope.appstate);
+    var searchRequestObj = getSearchReqObj(scope);
 
     if(scope.appstate.attr('globalSearchButtonClicked')==true){
       scope.attr("offset",0);
@@ -397,7 +401,7 @@ var fetchReconIncoming = function(scope){
       console.error("Error while loading: fetchReconIncoming"+xhr);
 
     });
-
+    scope.attr('populateDefaultDataForInvoice',false);
 };
 
 var fetchReconDetailsOther = function(scope, load){
@@ -624,7 +628,56 @@ var refreshChekboxSelection = function(el,scope){
 
 };
 
+ var getSearchReqObj=function(self) {
+  var appstate= self.appstate;
+  if (self.populateDefaultData) {
+    appstate = commonUtils.getDefaultParameters(appstate);
 
+    var periodFrom = appstate.periodFrom;
+    var periodTo = appstate.periodTo;
+    var serTypeId = appstate.storeType;
+    var regId = appstate.region;
+    var countryId = appstate.country.attr();
+    var licId = appstate.licensor.attr();
+    var contGrpId = appstate.contentType.attr();
+    var periodType = appstate.periodType;
+    var searchRequestObj = {};
+    searchRequestObj.searchRequest = {};
+    searchRequestObj.searchRequest["periodFrom"] = appstate.periodFrom;
+    searchRequestObj.searchRequest["periodTo"] = appstate.periodTo;
+    searchRequestObj.searchRequest["periodType"] = appstate.periodType;
+    searchRequestObj.searchRequest["serviceTypeId"] = "";
+    searchRequestObj.searchRequest["regionId"] = "";
+    searchRequestObj.searchRequest["country"] = [];
+    searchRequestObj.searchRequest["entityId"] = [];
+    searchRequestObj.searchRequest["contentGrpId"] = [];
+
+    if (typeof(serTypeId) != "undefined") {
+      searchRequestObj.searchRequest["serviceTypeId"] = serTypeId.id;
+    }
+
+    if (typeof(region) != "undefined") {
+      searchRequestObj.searchRequest["regionId"] = regId.id;
+    }
+
+    if (typeof(countryId) != "undefined") {
+      searchRequestObj.searchRequest["country"] = countryId;
+    }
+
+    if (typeof(licId) != "undefined") {
+      searchRequestObj.searchRequest["entityId"] = licId;
+    }
+
+    if (typeof(contGrpId) != "undefined") {
+      searchRequestObj.searchRequest["contentGrpId"] = contGrpId;
+    }
+
+    return searchRequestObj;
+  } else {
+    return UserReq.formGlobalRequest(appstate);
+  }
+
+}
 var createIncomingReconRequestForExportToExcel=function(appstate){
     var IncomingReconRequest={};
     IncomingReconRequest.searchRequest=UserReq.formGlobalRequest(appstate).searchRequest;
