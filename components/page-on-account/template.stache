@@ -126,8 +126,8 @@
 		   	</div>
 
 		  	<!-- On Account Balance -->
-		   	<div class="tab-pane fade in active" id = "onAccountBalanceDiv">
-		   		<div id="onAccountBalanceGrid"><div id="loading_img"></div></div>
+		   <div class="tab-pane fade in active" id = "onAccountBalanceDiv">
+		   		<div id="onAccountBalanceGrid" style="height:auto"><div id="loading_img"></div></div>
 			</div>
 
 			<!-- Propose On Account -->

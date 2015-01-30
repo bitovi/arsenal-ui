@@ -42,6 +42,23 @@ var OnAccountBalance = Grid.extend({
     emptyrows:"@",
     appstate:undefined
   },
+  helpers: {
+    columnClass: function(column) {
+      if(column.id == 'Licensor'){
+        return "col-lic-width";
+      }else if(column.id == 'Currency'){
+        return "col-currency-width";
+      }else if(column.id == 'ContentType'){
+        return "col-cttype-width";
+      }else if(column.id == 'onAccountBalance'){
+        return "col-onaccbal-width";
+      }else if(column.id == 'cashAdjust'){
+        return "col-liccashadj-width";
+      }else {
+        return "col-others-width";
+      }
+    }
+  },
   init: function(){
 
 
@@ -53,7 +70,12 @@ var OnAccountBalance = Grid.extend({
        var recordsAvailable=false;
        //console.log("inserted "+JSON.stringify(self.scope.request.searchRequest.attr()));
        var parentScopeVar = self.element.closest('page-on-account').scope();
-       if(self.scope.request != null && self.scope.request != undefined 
+       var tbody = self.element.find('tbody');
+       //setting tbody height which determines the page height- start
+       var getTblBodyHght=gridUtils.getTableBodyHeight('onAccountBalanceGrid',97);
+       gridUtils.setElementHeight(tbody,getTblBodyHght,getTblBodyHght);
+       //setting tbody height - end
+       if(self.scope.request != null && self.scope.request != undefined
         && self.scope.request.quarters != null && self.scope.request.quarters != undefined){
          var quarters = self.scope.request.quarters;
 
@@ -76,6 +98,7 @@ var OnAccountBalance = Grid.extend({
             id:'cashAdjust',
             title:'Licensor Cash Adjustment'
           };
+
           self.scope.columns.push(cashAdjustColumn);
           parentScopeVar.attr('showLoadingImage',true);
             onAccountBalance.findOne(createBalanceOnAccountRequest(this.scope.request.appstate),function(data){
@@ -113,12 +136,8 @@ var OnAccountBalance = Grid.extend({
 
 
        }
-       var tbody = self.element.find('tbody');
-       //setting tbody height which determines the page height- start
-       var getTblBodyHght=gridUtils.getTableBodyHeight('onAccountBalanceGrid',97);
-       gridUtils.setElementHeight(tbody,getTblBodyHght,getTblBodyHght);
-       //setting tbody height - end
-      
+
+
       var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
       $(tbody[0]).scrollTop(tableScrollTopVal);
         $(tbody).on('scroll', function(ev) {
@@ -143,9 +162,9 @@ var OnAccountBalance = Grid.extend({
             }
           }
         });
-      setTimeout(function(){
-        alignGrid('onAccountBalanceGrid');
-      },2000);
+    //  setTimeout(function(){
+      //  alignGrid('onAccountBalanceGrid');
+      //},2000);
 
     }
   }
@@ -199,7 +218,7 @@ var createBalanceOnAccountRequest=function(appstate){
   return requestHelper.formRequestDetails(balancedOnAccountRequest);
 };
 
-function alignGrid(divId){
+/*function alignGrid(divId){
   var colLength = $('#'+divId+' table>thead>tr>th').length;
   var rowLength = $('#'+divId+' table>tbody>tr').length;
   var divWidth = $('#'+divId).outerWidth();
@@ -244,6 +263,6 @@ function alignGrid(divId){
         $('#'+divId+' table').css("width",tableWidth);
       }
   }
-}
+}*/
 
 export default OnAccountBalance;

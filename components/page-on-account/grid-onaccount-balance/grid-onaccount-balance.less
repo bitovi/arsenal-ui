@@ -1,35 +1,134 @@
 @import 'components/grid/grid.less';
 
+.flex-basis(@basis) {
+  -webkit-flex-basis: @basis;
+  flex-basis: @basis;
+}
+
+.flex-grow(@grow) {
+  -webkit-flex-grow: @grow;
+  flex-grow: @grow;
+}
+
 rn-onaccount-balance-grid {
   .grid-mixin();
   table {
-    /* You have to specify widths */
+
     width: 100%;
-    tr>th, tr > td {
-      width:2%;
+
+    thead, tbody,tfoot {
+      display: block;
+
+      tr {
+        display: -webkit-flex;
+        width: 100%;
+      }
     }
 
-    thead, tbody, tfoot {
-      display: block;
+    thead {
+      background: @header-background;
+      color: white;
+      height:25px;
+      tr {
+        height : 25px;
+        th, td {
+          font-weight: normal;
+
+          height: 25px;
+          //padding: .3em .5em .3em .5em !important;
+          //border-right: @dark-border;
+          //border-top: @dark-border;
+          border-bottom: @dark-border;
+
+        }
+      }
     }
+
+    tfoot {
+      background: @header-background;
+      color: white;
+      height:24px !important;
+      tr {
+        height : 24px !important;
+        td {
+          font-weight: normal;
+          height: 24px !important;
+          border-bottom: @dark-border;
+        }
+      }
+    }
+
     tbody {
       //max-height: 8em;
       overflow-y: overlay;
       overflow-x: hidden;
       border-left: 1px solid #a1a1a1;
       border-right: 1px solid #a1a1a1;
-    }
-    th, td {
-      white-space: nowrap;
-    }
-  }
-  tfoot {
-  	tr.child {
-      display: none;
-
-      &.visible {
-        display: table-row;
+      tr {
+        height : 22px;
+        td {
+          height : 22px;
+          padding-top:1px;
+        }
       }
     }
+
+    tr > th, tr > td {
+      //padding: .3em .5em;
+      &.col-lic-width { .flex-grow(2); .flex-basis(250px); }
+      &.col-currency-width { .flex-grow(2); .flex-basis(100px); }
+      &.col-cttype-width { .flex-grow(2); .flex-basis(100px); }
+      &.col-others-width { .flex-grow(2); .flex-basis(100px); }
+      &.col-onaccbal-width { .flex-grow(2); .flex-basis(100px); }
+      &.col-liccashadj-width { .flex-grow(2); .flex-basis(100px); }
+    }
+
+    tbody > tr {
+
+      &.child {
+        display: none;
+
+        &.visible {
+          display: -webkit-flex;
+          border:none;
+        }
+      }
+    }
+
+    tfoot > tr {
+      &.child {
+        display: none;
+          &.visible {
+            display: -webkit-flex;
+          }
+        }
+    }
+  }
+
+
+  //Set the coloumn specifc properties here
+  .col-lic-width {
+
+  }
+
+  .col-currency-width {
+
+  }
+
+  .col-cttype-width {
+
+  }
+
+  .col-others-width {
+    text-align:right;
+    padding-right: 3px;
+  }
+
+  .col-onaccbal-width {
+
+  }
+
+  .col-liccashadj-width {
+
   }
 }
