@@ -30,28 +30,27 @@ var comments = Component.extend({
             
             if(val.isEditable ==  undefined || val.isEditable == 'n'){        
               var textAreactrl=getTextArea();
-              $(editableTextarea).attr('id', 'editableText');
-              $(textAreactrl).addClass("multiple-comments-editable").addClass("form-control-comments old-comments");
-              $(textAreactrl).attr('readonly', 'readonly');
+              
+              var tempDivID = "nonedit-div"+i;
+               $(".multiple-comments-parent").append("<div id="+tempDivID+" class='comment-env'></div>");   
+             
               if(val.createdDate != null){
                  var createdDateFormat = moment(val.createdDate).format("Do MMM, YYYY");   
                 if((val.createdByName != null) && (typeof val.createdByName != "undefined")){
-                    $(textAreactrl).val("-- "+val.createdByName +" on "+createdDateFormat+" --"+ "\n" + val.comments);
-                }else{
-                    $(textAreactrl).val(createdDateFormat + "\n" + val.comments);
-                } 
+                    $("#"+tempDivID).html("<span class='commentuser'>"+val.createdByName +"</span> <span class='commentdate'>On "+createdDateFormat+"</span><br><span class='commenttext'>"+val.comments+"</span>");
+                }
                 
               }
               else
               {
-                $(textAreactrl).val(val.comments);
+                $("#"+tempDivID).html("<span class='commenttext'>"+val.comments+"</span>");
               }  
               
-              $(msterObj).append(textAreactrl);     
-              $(msterObj).append(getLine());
+             
+              $(msterObj).append("<div class='separator'></div>");
               
             }else if(val.isEditable == 'y'){
-              editableRecComment=val.Comments;
+              editableRecComment=val.Comments;  
             }       
           });
           

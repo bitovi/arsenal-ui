@@ -133,7 +133,8 @@ Grid.extend({
         title: 'Status',
         sortable: true
       }
-    ]
+    ],
+    strippedGrid:true
   },
   helpers: {
     tableClass: function() {
@@ -293,7 +294,8 @@ Grid.extend({
         title: 'LI Disp %',
         sortable: true
       }
-    ]
+    ],
+    strippedGrid:true
   },
   events:{
     'inserted': function(){
@@ -429,6 +431,7 @@ var page = Component.extend({
           ],
           {
               theme: "facebook",
+              placeholder: "Search...",
               preventDuplicates: true,
               onResult: function (item) {
                 //alert(item);

@@ -46,6 +46,7 @@ var page = Component.extend({
       headerRows: new can.List(),
       footerRows: new can.List()
     },
+    emptyrows : true,
     detailGridColumns: detailsColumns,
     tabName:tabNameObj,
     incomingStatsDetailsSelected : [],
@@ -134,6 +135,7 @@ var page = Component.extend({
     "inserted": function(){
         var self = this;
         var tbody = self.element.find('tbody');
+        $("#loading_img").hide();
 
         $("#tokenSearch").tokenInput([
           {id: 1, name: "Search"} //This is needed
@@ -155,6 +157,11 @@ var page = Component.extend({
               self.scope.refreshTokenInput(item,"Delete");
             }
           });
+    },
+    'tbody tr click': function(el, ev) {
+      $(el).parent().find('tr').removeClass("selected");
+      $(el).parent().find('tr').removeClass("highlight");
+      $(el).addClass("selected");
     },
     "{tokenInput} change": function(){
       var self= this;
@@ -407,6 +414,9 @@ var fetchReconIncoming = function(scope){
 var fetchReconDetailsOther = function(scope, load){
 
   var searchRequestObj = getSearchReqObj(scope);
+  console.log("Loading Data");
+  $("#loading_img").show();
+  var searchRequestObj = UserReq.formGlobalRequest(scope.appstate);
   searchRequestObj.searchRequest["type"] = scope.tabName.incoming.attr("type");
 
 
@@ -437,15 +447,18 @@ var fetchReconDetailsOther = function(scope, load){
     }else  {
 
       if(load) {
+        console.log("Loading Data Done")
+        $("#loading_img").hide();
         scope.attr("incomingCcidSelected").splice(0, scope.attr("incomingCcidSelected").length);
       }
       if(data.reconStatsDetails == undefined || (data.reconStatsDetails != null && data.reconStatsDetails.length <= 0)) {
 
         scope.attr("emptyrows", true);
+        console.log("No Data")
 
       } else {
 
-        scope.attr("emptyrows", false);
+        scope.attr("emptyrows", false);console.log("Loading Data???")
 
       }   
       scope.incomingDetails.headerRows.replace(data.reconStatsDetails);

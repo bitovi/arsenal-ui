@@ -131,7 +131,7 @@ var page = Component.extend({
     // this.scope.attr("isGlobalSearchIngested",this.scope.appstate.attr("globalSearch"));
     // console.log(" ")
     this.scope.attr('populateDefaultData',true);
-     fetchReconIngest(this.scope);
+     fetchReconIngest(this.scope,true);
   },
   events:{
     'shown.bs.tab': function(el, ev) {
@@ -176,6 +176,11 @@ var page = Component.extend({
         /* All the neccessary parameters will be set in that event */
         //commonUtils.triggerGlobalSearch();
         fetchReconIngest(self.scope, false);
+      },
+      'tbody tr click': function(el, ev) {
+        $(el).parent().find('tr').removeClass("selected");
+        $(el).parent().find('tr').removeClass("highlight");
+        $(el).addClass("selected");
       },
     ".downloadLink.badLines click": function(item, el, ev){
       var self=this.scope;
@@ -524,7 +529,7 @@ var displayErrorMessage = function(message,log){
 /**/
 var fetchReconIngest = function(scope, load){
   //console.log("Loading Started");
-  $("#loading_img").show();
+  setTimeout(function(){$("#loading_img").show()},50);
   var searchRequestObj = getSearchReqObj(scope);
   searchRequestObj.searchRequest["type"] =  scope.tabName.ingest.attr("type");
   //TODO During pagination / scrolling, the below values has tobe chnaged.

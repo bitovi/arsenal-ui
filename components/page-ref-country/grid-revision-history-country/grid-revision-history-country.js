@@ -18,7 +18,7 @@ var GridRevisionHistory = Grid.extend({
         id: 'validFrom',
         title: 'Valid From',
         contents: function(row) {
-          if(row.validFrom == null)
+          if(row.validFrom == null || row.validFrom == undefined || row.validFrom == "0")
             return "";
           else
           return row.validFrom;
@@ -28,7 +28,7 @@ var GridRevisionHistory = Grid.extend({
         id: 'validTo',
         title: 'Valid To',
         contents: function(row) {
-          if(row.validTo == null)
+          if(row.validTo == null || row.validTo == undefined || row.validTo == "0")
             return "";
           else
           return row.validTo;
