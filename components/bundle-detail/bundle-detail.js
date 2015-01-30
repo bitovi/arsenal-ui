@@ -236,9 +236,9 @@ var BundleDetailTabs = Component.extend({
         view = 'licensor';
       }
 
-      if(scope.pageState.selectedBundle === bundle) {
+      if('payment-bundles' === scope.appstate.page &&  scope.pageState.selectedBundle === bundle) {
         return bundle.getValidations(view).then(function(bundle) {
-          if(bundle.status == 1 && bundle.validationStatus !== 5) {
+          if(bundle.status == 1 && bundle.vldtnStatus !== 5) {
             setTimeout(function() {
               scope.getNewValidations(bundle);
             }, VALIDATION_CHECK_INTERVAL);
