@@ -126,7 +126,7 @@
                 </div>
               </div>
               <div class="col-sm-6">
-                <div class="col-sm-2" style="padding-left:0px;">
+                <div class="col-sm-2" style="padding-left:0px;margin-left: -30px;">
                   <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelId' id="entityPricingModelVersionId" >
                     {{#each pricingModelVersions}}
                     <option value="{{id}}">{{value}}</option>
@@ -188,7 +188,7 @@
             <div class="form-group">
               <div class="col-sm-1"></div>
               <div class="col-sm-6">
-              <div class="col-sm-12"> Report Configuration</div>
+              <div class="col-sm-12" style="margin-left: -15px;"> Report Configuration</div>
               <div id="grid-report-config" style="max-height: 200px;width: 100%;"></div>
 
                 <!-- <div class="panel panel-default panel-sm" style="border-color: #ddd;  border: 1px solid #827F7F;border-radius: 0px;">
@@ -205,7 +205,7 @@
             <div class="form-group">
               <div class="col-sm-1"></div>
               <div class="col-sm-11">
-                <div class="col-sm-12"> Revision History</div>
+                <div class="col-sm-12" style="margin-left: -15px;"> Revision History</div>
                 <div id="grid-revision-history" style="max-height: 200px;"></div>
                 <!-- <div class="panel panel-default panel-sm" style="border-color: #ddd;  border: 1px solid #827F7F;border-radius: 0px;">
                   <div class="panel-heading">
