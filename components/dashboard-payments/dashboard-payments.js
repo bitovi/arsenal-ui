@@ -71,6 +71,29 @@ var DashboardPayments = Component.extend({
       var scope = this;
       var items = scope.summary[scope.attr('selectedTab').value];
       return _.map(items, function(item) {
+        //this is the temporary code.. once the service is sending this parameter
+        //then we will remove the below code
+        //start
+        var totPaidPrcnt=0;
+        if(item.totBalPrcnt != null){
+          if(item.totBalPrcnt > 0){
+            totPaidPrcnt = 100-item.totBalPrcnt;
+          }
+        }
+        item.attr("totPaidPrcnt",totPaidPrcnt);
+        if(item.payments.length > 0){
+          $.each(item.payments,function(index,itemVal){
+            var totPaidPrcnt=0;
+            if(itemVal.totBalPrcnt != null){
+              if(itemVal.totBalPrcnt > 0){
+                totPaidPrcnt = 100-itemVal.totBalPrcnt;
+              }
+            }
+            itemVal.attr("totPaidPrcnt",totPaidPrcnt);
+          });
+        }
+        
+        //end
         return options.fn({
           item: item,
           name: item[scope.selectedTab.nameProperty],
