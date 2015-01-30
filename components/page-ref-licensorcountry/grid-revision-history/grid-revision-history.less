@@ -7,4 +7,35 @@ rn-grid-revision-history {
 		white-space: nowrap;
 	}
 
+	tbody {
+	
+		tr:nth-child(odd){
+	       background: #f9f9f9;
+	    }
+
+	    tr:nth-child(even){
+	    	background: #f0f0f0;
+	    }
+	}
+
+}
+
+rn-grid-revision-history{
+  table{
+    width: 100%;
+    tr>th, tr > td {
+      white-space: normal;
+    }
+    tr{
+      width:100%;
+    }
+    thead, tbody {
+      display: block;
+    }
+    tbody{
+        max-height: 14em;
+        overflow-y: overlay;
+        overflow-x: hidden;
+    }
+  }
 }
