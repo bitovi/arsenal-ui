@@ -21,7 +21,7 @@
         <td><div class="stats-val-style">{{item.reconPrcnt}}%</div></td>
         <td>
           <div class="local-curr-val-style"><span>{{item.reconAmt}}</span></div>
-          <div class="gbl-curr-val-style"><span>{{item.totBalGblCcy}}</span></div>
+          <div class="gbl-curr-val-style"><span>{{item.reconGblCcy}}</span></div>
         </td>
         <td>
           <div class="local-currency-style"><span>{{localCurrency}}</span> </div>

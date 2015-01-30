@@ -22,7 +22,7 @@ var DashboardPaymentsOverview = Component.extend({
     renderBigChart: function() {
       var self = this;
       var value1 = this.attr('summary').percentagePaid;
-      var value = formats.formatToFixedDecimalAspercent(value1,_.isNumber, 0, '0',false);
+      var value = formats.formatToFixedDecimalAspercent(value1,_.isNumber, 0, '0',true);
       this.attr('percent',value);
       if(this.attr('summary').topNotPaidEntities.length > 0){
         this.attr('entityNotPaideList',this.attr('summary').topNotPaidEntities.slice(0,this.attr("dispcount")));
@@ -34,7 +34,7 @@ var DashboardPaymentsOverview = Component.extend({
       return function(div) {
         var chartConfig = can.extend({}, chartDefaults.singleBarChart, {
           series: [{
-            data: [value]
+            data: [value1]
           }]
         });
 
