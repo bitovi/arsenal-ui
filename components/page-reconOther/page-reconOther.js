@@ -118,7 +118,7 @@ var page = Component.extend({
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
     this.scope.attr('populateDefaultDataForInvoice',true);
-    fetchReconIncoming(this.scope);
+    fetchReconDetailsOther(this.scope,this.scope.load);
   },
   events:{
 
@@ -401,12 +401,12 @@ var fetchReconIncoming = function(scope){
       console.error("Error while loading: fetchReconIncoming"+xhr);
 
     });
-    scope.attr('populateDefaultDataForInvoice',false);
+    scope.attr('populateDefaultDataForOther',false);
 };
 
 var fetchReconDetailsOther = function(scope, load){
 
-  var searchRequestObj = UserReq.formGlobalRequest(scope.appstate);
+  var searchRequestObj = getSearchReqObj(scope);
   searchRequestObj.searchRequest["type"] = scope.tabName.incoming.attr("type");
 
 
@@ -518,6 +518,7 @@ var fetchReconDetailsOther = function(scope, load){
 
 
   });
+  scope.attr('populateDefaultDataForInvoice',false);
 };
 
 var processRejectIngestRequestOther = function(scope,requestType){

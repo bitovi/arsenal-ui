@@ -45,7 +45,7 @@ var proposedonAccountGrid = Grid.extend({
       },
       {
         id: 'ContentType',
-        title: 'ContentType'
+        title: 'Content Type'
       }
      ],
      request:{},
