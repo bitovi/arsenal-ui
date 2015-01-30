@@ -55,6 +55,7 @@ var page = Component.extend({
     pagename : "recon",
     sortColumns:[],
     sortDirection: "asc",
+    populateDefaultData:'@',
     load : true,
     recordsAvailable : true,
 
@@ -129,7 +130,8 @@ var page = Component.extend({
     this.scope.attr("ingestCcidSelected").splice(0, this.scope.attr("ingestCcidSelected").length);
     // this.scope.attr("isGlobalSearchIngested",this.scope.appstate.attr("globalSearch"));
     // console.log(" ")
-    // fetchReconIngest(this.scope);
+    this.scope.attr('populateDefaultData',true);
+     fetchReconIngest(this.scope,true);
   },
   events:{
     'shown.bs.tab': function(el, ev) {
@@ -521,9 +523,9 @@ var displayErrorMessage = function(message,log){
 
 /**/
 var fetchReconIngest = function(scope, load){
-  console.log("Loading Started");
+  //console.log("Loading Started");
   $("#loading_img").show();
-  var searchRequestObj = UserReq.formGlobalRequest(scope.appstate);
+  var searchRequestObj = getSearchReqObj(scope);
   searchRequestObj.searchRequest["type"] =  scope.tabName.ingest.attr("type");
   //TODO During pagination / scrolling, the below values has tobe chnaged.
 
@@ -552,7 +554,7 @@ var fetchReconIngest = function(scope, load){
   var dataLowerGrid = {};
 
   Promise.all([Recon.findOne(searchRequestObj)]).then(function(values){
-    console.log("Loading Done");
+    //console.log("Loading Done");
     
     if(values != undefined && values != null) {
       var data = values[0];
@@ -659,6 +661,7 @@ var fetchReconIngest = function(scope, load){
 
     $("#loading_img").hide();
   });
+  scope.attr('populateDefaultData',false);
 }
 
 var refreshChekboxSelection = function(el,scope){
@@ -693,5 +696,55 @@ function download(filename, content) {
   document.body.removeChild(a);
 }
 
+function getSearchReqObj(self) {
+  var appstate= self.appstate;
+  if (self.populateDefaultData) {
+    appstate = commonUtils.getDefaultParameters(appstate);
+
+    var periodFrom = appstate.periodFrom;
+    var periodTo = appstate.periodTo;
+    var serTypeId = appstate.storeType;
+    var regId = appstate.region;
+    var countryId = appstate.country.attr();
+    var licId = appstate.licensor.attr();
+    var contGrpId = appstate.contentType.attr();
+    var periodType = appstate.periodType;
+    var searchRequestObj = {};
+    searchRequestObj.searchRequest = {};
+    searchRequestObj.searchRequest["periodFrom"] = appstate.periodFrom;
+    searchRequestObj.searchRequest["periodTo"] = appstate.periodTo;
+    searchRequestObj.searchRequest["periodType"] = appstate.periodType;
+    searchRequestObj.searchRequest["serviceTypeId"] = "";
+    searchRequestObj.searchRequest["regionId"] = "";
+    searchRequestObj.searchRequest["country"] = [];
+    searchRequestObj.searchRequest["entityId"] = [];
+    searchRequestObj.searchRequest["contentGrpId"] = [];
+
+    if (typeof(serTypeId) != "undefined") {
+      searchRequestObj.searchRequest["serviceTypeId"] = serTypeId.id;
+    }
+
+    if (typeof(region) != "undefined") {
+      searchRequestObj.searchRequest["regionId"] = regId.id;
+    }
+
+    if (typeof(countryId) != "undefined") {
+      searchRequestObj.searchRequest["country"] = countryId;
+    }
+
+    if (typeof(licId) != "undefined") {
+      searchRequestObj.searchRequest["entityId"] = licId;
+    }
+
+    if (typeof(contGrpId) != "undefined") {
+      searchRequestObj.searchRequest["contentGrpId"] = contGrpId;
+    }
+
+    return searchRequestObj;
+  } else {
+    return UserReq.formGlobalRequest(appstate);
+  }
+
+}
 
 export default page;

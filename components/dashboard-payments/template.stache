@@ -8,7 +8,7 @@
   <ul class="chart-list">
   {{#selectedItems}}
   <li class="{{isSelected .}}" {{data 'item'}}>
-    <rn-payment-chart text="{name}" value="{item.totBalPrcnt}"</rn-payment-chart>
+    <rn-payment-chart text="{name}" value="{item.totPaidPrcnt}"</rn-payment-chart>
   </li>
   {{/selectedItems}}
   </ul>

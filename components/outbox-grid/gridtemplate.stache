@@ -10,21 +10,14 @@
     {{#filteredRows}}
     <tr class="{{rowClass row}} {{#if isOpen}}open{{/if}} {{#if isChild}}child{{/if}} {{#if isVisible}}visible{{/if}} {{#if isStrippedGd}}{{#if isOddRow}}odd-row{{else}}even-row{{/if}}{{/if}}" {{data 'row'}}>
       {{#filteredColumns}}
-      <td class="{{columnClass column}} {{cellClass row column}}" {{data 'column'}}>{{{cellContents row column}}}</td>
+      <td class="{{columnClass column}} {{cellClass row column}}" {{data 'column'}}>{{cellContents row column}}</td>
       {{/filteredColumns}}
     </tr>
     {{/filteredRows}}
   </tbody>
   <tfoot>
-      {{#footerRows}}
-        <tr class="{{rowClass row}} {{#if isOpen}}open{{/if}} {{#if isChild}}child{{/if}} {{#if isVisible}}visible{{/if}}" {{data 'row'}}>
-          {{#filteredColumns}}
-          <td class="{{columnClass column}} {{cellClass row column}}" {{data 'column'}}>{{cellContents row column}}</td>
-          {{/filteredColumns}}
-        </tr>
-      {{/footerRows}}
-      {{#if emptyrows}}
-        <tr><td style="text-align:center;background:#fff;color:#000;" colspan="{{#getColumnLength}}">Data Not Available</td</tr>
+      {{#if outboxnumberofrows}}
+        <tr><td colspan="{{outboxnumberofrows}}">Number of records in Outbox {{outboxnumberofrows}}</td</tr>
       {{/if}}
   </tfoot>
 </table>

@@ -210,6 +210,7 @@ var page = Component.extend({
     fileinfo:[],
     excelOutput:[],
     cancelnewbundlereq:'@',
+    populateDefaultData:'@',
     bundleState:{},
     refreshTokenInput: function(val, type){
       //console.log("val is "+JSON.stringify(val));
@@ -258,6 +259,8 @@ var page = Component.extend({
   init: function(){
     var self = this;
     self.scope.appstate.attr("renderGlobalSearch",true);
+    self.scope.attr('populateDefaultData',true);
+    fetchData(self.scope)
   },
   helpers: {
         createPBRequest: function(){
@@ -1074,16 +1077,86 @@ function getAllInvoices(self) {
   if(self.attr("localGlobalSearch") != undefined){
       if(self.attr("localGlobalSearch") != self.appstate.attr('globalSearch')) {
         self.attr("localGlobalSearch",self.appstate.attr('globalSearch'));
-        $("#loading_img").show();
+        fetchData(self);        
+      }
 
-        var periodFrom = self.appstate.attr('periodFrom');
-        var periodTo = self.appstate.attr('periodTo');
-        var serTypeId = self.appstate.attr('storeType');
-        var regId = self.appstate.attr('region');
-        var countryId = self.appstate.attr()['country'];
-        var licId = self.appstate.attr()['licensor'];
-        var contGrpId = self.appstate.attr()['contentType'];
-        var periodType = self.appstate.attr()['periodType'];
+  } else {
+    if(self.appstate.attr('globalSearch')==undefined)
+      self.appstate.attr('globalSearch',true);
+      self.attr("localGlobalSearch", self.appstate.attr('globalSearch'));
+  }
+
+};
+
+function fetchData(self){
+  var invSearchRequest= getInvoiceSearchRequest(self);
+  $("#loading_img").show();
+  GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){
+            //console.log("response is "+JSON.stringify(data.attr()));
+            if(data["status"]=="SUCCESS"){
+              if(self.excelOutput.attr('flag')){//when user clicks export to excel icon this block will run otherwise its goes to normal else conditon
+                 if(data["status"]=="SUCCESS"){
+                    $('#exportExcels').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
+                    self.excelOutput.attr('flag',false);
+                    $("#loading_img").hide();
+                  }
+              }else{
+                if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
+                  $("#messageDiv").html("<label class='successMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>");
+                  $("#messageDiv").show();
+                  setTimeout(function(){
+                      $("#messageDiv").hide();
+                  },4000);
+                }
+                self.attr('recordsAvailable',data.recordsAvailable);
+                self.attr('totalRecordCount', data.totRecCnt);
+                self.checkedRows.replace([]); //Reset Checked rows scope variable
+                if(parseInt(invSearchRequest.searchRequest["offset"])==0){
+                  self.allInvoicesMap.replace(data);
+                } else{
+                  //self.scope.allInvoicesMap[0].invoices.push(data.invoices);
+                  $.merge(self.allInvoicesMap[0].invoices, data.invoices);
+                  self.allInvoicesMap.replace(self.allInvoicesMap);
+                }
+               // self.allInvoicesMap.replace(data);
+                //$("rn-grid-invoice td").invoiceId
+              }
+            } else {
+              $("#loading_img").hide();
+              $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>");
+              $("#messageDiv").show();
+              setTimeout(function(){
+                  $("#messageDiv").hide();
+              },4000);
+            }
+        },function(xhr){
+          console.error("Error while loading: bundleNames"+xhr);
+        });
+    self.attr('populateDefaultData',false);
+}
+
+function getInvoiceSearchRequest(self){
+  var appstate = self.appstate;
+    if(self.populateDefaultData){
+      appstate = commonUtils.getDefaultParameters(appstate);
+    }
+        // var periodFrom = self.appstate.attr('periodFrom');
+        // var periodTo = self.appstate.attr('periodTo');
+        // var serTypeId = self.appstate.attr('storeType');
+        // var regId = self.appstate.attr('region');
+        // var countryId = self.appstate.attr()['country'];
+        // var licId = self.appstate.attr()['licensor'];
+        // var contGrpId = self.appstate.attr()['contentType'];
+        // var periodType = self.appstate.attr()['periodType'];
+
+        var periodFrom = appstate.periodFrom;
+        var periodTo = appstate.periodTo;
+        var serTypeId = appstate.storeType;
+        var regId = appstate.region;
+        var countryId = appstate.country.attr();
+        var licId = appstate.licensor.attr();
+        var contGrpId = appstate.contentType.attr();
+        var periodType = appstate.periodType;
 
         var invSearchRequest = {};
         invSearchRequest.searchRequest = {};
@@ -1127,8 +1200,11 @@ function getAllInvoices(self) {
           invSearchRequest.searchRequest["contentGrpId"] = contGrpId;
 
    //     invSearchRequest.searchRequest["periodType"] = "P";
-
-        invSearchRequest.searchRequest["status"] = $("#inputAnalyze").val();
+        var analyse = $("#inputAnalyze").val();
+        if(analyse == undefined){
+          analyse=0;
+        }
+        invSearchRequest.searchRequest["status"] = analyse;
         invSearchRequest.searchRequest["offset"] = self.offset;
         invSearchRequest.searchRequest["limit"] = self.appstate.attr("fetchSize");
         //console.log("#####this.appstate.attr(fetchSize)",self.appstate.attr("fetchSize"));
@@ -1145,62 +1221,11 @@ function getAllInvoices(self) {
         invSearchRequest.searchRequest["sortOrder"] = self.attr('sortDirection');
 
         /*This parameter is to generating the excel output*/
-        if(self.excelOutput.attr('flag'))invSearchRequest["excelOutput"] = true;
+        if(self.excelOutput.attr('flag'))
+        invSearchRequest["excelOutput"] = true;
 
-        console.log("Request are "+JSON.stringify(UserReq.formRequestDetails(invSearchRequest)));
-
-
-        GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){
-            //console.log("response is "+JSON.stringify(data.attr()));
-            if(data["status"]=="SUCCESS"){
-              if(self.excelOutput.attr('flag')){//when user clicks export to excel icon this block will run otherwise its goes to normal else conditon
-                 if(data["status"]=="SUCCESS"){
-                    $('#exportExcels').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
-                    self.excelOutput.attr('flag',false);
-                    $("#loading_img").hide();
-                  }
-              }else{
-                if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
-                  $("#messageDiv").html("<label class='successMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>");
-                  $("#messageDiv").show();
-                  setTimeout(function(){
-                      $("#messageDiv").hide();
-                  },4000);
-                }
-                self.attr('recordsAvailable',data.recordsAvailable);
-                self.attr('totalRecordCount', data.totRecCnt);
-                self.checkedRows.replace([]); //Reset Checked rows scope variable
-                if(parseInt(invSearchRequest.searchRequest["offset"])==0){
-                  self.allInvoicesMap.replace(data);
-                } else{
-                  //self.scope.allInvoicesMap[0].invoices.push(data.invoices);
-                  $.merge(self.allInvoicesMap[0].invoices, data.invoices);
-                  self.allInvoicesMap.replace(self.allInvoicesMap);
-                }
-               // self.allInvoicesMap.replace(data);
-                //$("rn-grid-invoice td").invoiceId
-              }
-            } else {
-              $("#loading_img").hide();
-              $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>");
-              $("#messageDiv").show();
-              setTimeout(function(){
-                  $("#messageDiv").hide();
-              },4000);
-            }
-        },function(xhr){
-          console.error("Error while loading: bundleNames"+xhr);
-        });
-      }
-
-  } else {
-    if(self.appstate.attr('globalSearch')==undefined)
-      self.appstate.attr('globalSearch',true);
-      self.attr("localGlobalSearch", self.appstate.attr('globalSearch'));
-  }
-
-};
-
+      return invSearchRequest;
+}
 
 var invoiceExportToExcel=function(appstate){
     var invoiceRequest={};

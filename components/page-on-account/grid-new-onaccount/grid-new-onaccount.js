@@ -130,18 +130,26 @@ var newOnAccountGrid = Grid.extend({
       'td input.editing blur':function(el, ev){
         ev.preventDefault();
         var value = el.closest('td').find('.editing').val();
-          if(isNaN(value)){
+         var parentScopeVar = el.closest('page-on-account').scope();
+        var valueToTest = value.replace(/\,/g,'');
+
+          if(!$.isNumeric(valueToTest)){
+          //if(isNaN(value)){
             el.addClass('invalid');
+            el.closest('td').find('.editing').attr('title',"Please provide onAccount amount in [##########.########] format");
+            parentScopeVar.attr('validOnAccNumbers',false);
+            parentScopeVar.attr('enableOnAccPropose', Date.now());
             return;
           }
-          if (value != "" && value != undefined && value.length != 0){
-            var decimal_validate_RE=/^\d{0,10}(\.\d{0,8})?$/;
-            if(!decimal_validate_RE.test(value)){
-              el.addClass('invalid');
-              el.closest('td').find('.editing').attr('title',"Please provide onAccount amount in [##########.########] format");
-              return;
-            }
-          }
+          //}
+          // if (value != "" && value != undefined && value.length != 0){
+          //   var decimal_validate_RE=/^\d{0,10}(\.\d{0,8})?$/;
+          //   if(!decimal_validate_RE.test(value)){
+          //     el.addClass('invalid');
+          //     el.closest('td').find('.editing').attr('title',"Please provide onAccount amount in [##########.########] format");
+          //     return;
+          //   }
+          // }
         var element = el.closest('td').find('.editing');
         var column = el.closest('td').data('column').column;
         var row = el.closest('tr').data('row').row;
@@ -153,9 +161,14 @@ var newOnAccountGrid = Grid.extend({
           }
          row.attr('total',utils.currencyFormat(total));
         //putting the rows to the page from grid component
+        var validNumbers=true;
+        if(el.closest('table').find('td .invalid').length > 0){
+          validNumbers=false;
+        }
         var mainRows={};
         mainRows.rows=this.scope.rows;
-        //$(this.element).trigger('onSelected', mainRows);
+        mainRows.validNumbers=validNumbers;
+        $(this.element).trigger('onSelected', mainRows);
         //Row got updated to the page to the grid component
       }
       // 'td input keydown':function(el, ev){
