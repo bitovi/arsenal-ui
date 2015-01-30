@@ -36,7 +36,7 @@
   </div>
   <div class="currencies">
     <select can-value={preferredCurr}>
-      <option value="">CUR</option>
+      <option value="">CCY</option>
       {{#each regionCurr}}
       <option>{{value}}</option>
       {{/each}}
@@ -84,7 +84,7 @@
         <option value="3">Payment LI Disputes</option>
         <option value="4">Payment Over Rep Disputes</option>
       </select>
-      
+
     {{/if}}
 
     {{/isBM}}
