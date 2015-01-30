@@ -24,7 +24,7 @@
       </tr>
       {{/footerRows}}
       {{#if emptyrows}}
-        <tr><td style="text-align:center;background:#fff;color:#000" colspan="{{#getColumnLength}}">Data Not Available</td</tr>
+        <tr><td style="text-align:center;background:#fff;color:#000;width:100%" colspan="{{#getColumnLength}}">Data Not Available</td</tr>
       {{/if}}
   </tfoot>
 </table>
