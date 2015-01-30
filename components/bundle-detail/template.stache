@@ -15,7 +15,7 @@
   {{/validationStatus}}
   {{/if}}
   <div class="bundle-detail-actions">
-    <img class="show-chart btn-download" src="/resources/images/downloadTemplate.png" style="padding-top: 1px;height:18px;width:25px;">
+    <img class="show-chart btn-download" src="/resources/images/downloadTemplate.png" style="padding-top: 1px;height: 20px;width: 20px;cursor: pointer;">
 
     <div class="btn-group">
       <img class="btn-preview" src="/resources/images/readerTemplate.png" data-toggle="dropdown" aria-expanded="true">
@@ -63,6 +63,7 @@
   <div class="flex-spacer"></div>
   <div class="payment-option">
     {{#isBM}}
+    {{#if pageState.selectedBundle.approvable}}
     <label>Payment Option</label>
     <select {{paymentOptionEditable}} can-value="{paymentType}">
       <option value="1">Payment - In Full</option>
@@ -71,10 +72,19 @@
       <option value="4">Payment Over Rep Disputes</option>
     </select>
 
-    {{#if pageState.selectedBundle.approvable}}
       <div class="priority">
         <input type="checkbox" can-value="{isBundlePrioritySet}" id="priority" />&nbsp;<label for="priority">Set Priority</label>
       </div>
+    {{#else}}
+
+      <label>Payment Option</label>
+      <select {{paymentOptionEditable}} can-value="{paymentType}">
+        <option value="1">Payment - In Full</option>
+        <option value="2">Payment Recon Amount</option>
+        <option value="3">Payment LI Disputes</option>
+        <option value="4">Payment Over Rep Disputes</option>
+      </select>
+      
     {{/if}}
 
     {{/isBM}}
