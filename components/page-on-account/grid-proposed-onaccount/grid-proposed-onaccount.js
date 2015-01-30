@@ -127,8 +127,9 @@ var proposedonAccountGrid = Grid.extend({
 
       var valueToTest = value.replace(/\,/g,'');
 
-        if(!$.isNumeric(valueToTest)){
-        //if(isNaN(value)){
+        if($.isNumeric(valueToTest) && el.hasClass('invalid')){
+          el.removeClass('invalid'); 
+        }else{
           el.addClass('invalid');
           el.closest('td').find('.editing').attr('title',"Please provide onAccount amount in [##########.########] format");
           $("#submitPOA").attr("disabled","disabled");
