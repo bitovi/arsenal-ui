@@ -25,10 +25,44 @@ var DashboardPaymentsOverview = Component.extend({
       var value = formats.formatToFixedDecimalAspercent(value1,_.isNumber, 0, '0',true);
       this.attr('percent',value);
       if(this.attr('summary').topNotPaidEntities.length > 0){
-        this.attr('entityNotPaideList',this.attr('summary').topNotPaidEntities.slice(0,this.attr("dispcount")));
+        //this is the temporary code.. once the service is sending this parameter
+        //then we will remove the below code
+        //start
+        var tempArray=this.attr('summary').topNotPaidEntities;
+        if(tempArray.length > 0){
+          $.each(tempArray,function(index,itemVal){
+            var totPaidPrcnt=0;
+            if(itemVal.totBalPrcnt != null){
+              if(itemVal.totBalPrcnt > 0){
+                totPaidPrcnt = 100-itemVal.totBalPrcnt;
+              }
+            }
+            itemVal.attr("totPaidPrcnt",totPaidPrcnt);
+          });
+        }
+        this.attr('entityNotPaideList',tempArray.slice(0,this.attr("dispcount")));
+        //end
+        //this.attr('entityNotPaideList',this.attr('summary').topNotPaidEntities.slice(0,this.attr("dispcount")));
       }
       if(this.attr('summary').topNotPaidCountries.length > 0){
-        this.attr('cntryNotPaideList',this.attr('summary').topNotPaidCountries.slice(0,this.attr("dispcount")));
+        //this is the temporary code.. once the service is sending this parameter
+        //then we will remove the below code
+        //start
+        var tempArray2=this.attr('summary').topNotPaidCountries;
+        if(tempArray2.length > 0){
+          $.each(tempArray2,function(index,itemVal){
+            var totPaidPrcnt=0;
+            if(itemVal.totBalPrcnt != null){
+              if(itemVal.totBalPrcnt > 0){
+                totPaidPrcnt = 100-itemVal.totBalPrcnt;
+              }
+            }
+            itemVal.attr("totPaidPrcnt",totPaidPrcnt);
+          });
+        }
+        this.attr('cntryNotPaideList',tempArray2.slice(0,this.attr("dispcount")));
+        //end
+        //this.attr('cntryNotPaideList',this.attr('summary').topNotPaidCountries.slice(0,this.attr("dispcount")));
       }
 
       return function(div) {
