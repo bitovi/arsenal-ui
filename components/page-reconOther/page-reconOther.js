@@ -158,6 +158,11 @@ var page = Component.extend({
             }
           });
     },
+    'tbody tr click': function(el, ev) {
+      $(el).parent().find('tr').removeClass("selected");
+      $(el).parent().find('tr').removeClass("highlight");
+      $(el).addClass("selected");
+    },
     "{tokenInput} change": function(){
       var self= this;
       /* The below code calls {scope.appstate} change event that gets the new data for grid*/
