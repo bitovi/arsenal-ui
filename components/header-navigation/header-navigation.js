@@ -120,7 +120,16 @@ var headerNavigation = Component.extend({
       '{appstate} change':function(el){
         if(el.navigationRequired) traverseSubMenu(el.page);
       },
-      
+      '.logout click':function(){
+        logout.find().done(function(data){
+          if(data.responseCode == 'LOGGEDOUT') {
+            window.location.href = "";
+          }
+        }) ;
+
+        //console.log("Logout");
+      },
+
   },
     helpers: {
         isActive: function(pageName) { console.log(pageName);
