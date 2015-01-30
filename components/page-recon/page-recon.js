@@ -131,7 +131,7 @@ var page = Component.extend({
     // this.scope.attr("isGlobalSearchIngested",this.scope.appstate.attr("globalSearch"));
     // console.log(" ")
     this.scope.attr('populateDefaultData',true);
-     fetchReconIngest(this.scope);
+     fetchReconIngest(this.scope,true);
   },
   events:{
     'shown.bs.tab': function(el, ev) {

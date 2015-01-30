@@ -28,14 +28,14 @@ Grid.extend({
         id: 'validFrom',
         title: 'Valid From',
         contents: function(row) {
-          return row.validFrom == null  ? "" : periodWidgetHelper.getDisplayPeriod(row.validFrom,"P");
+          return row.validFrom == null || row.validFrom == undefined || row.validFrom == "0"  ? "" : periodWidgetHelper.getDisplayPeriod(row.validFrom,"P");
         }
       },
       {
         id: 'validTo',
         title: 'Valid To',
         contents: function(row) {
-          return row.validTo == null ? "" : periodWidgetHelper.getDisplayPeriod(row.validTo,"P");
+          return row.validTo == null || row.validTo == undefined || row.validTo == "0" ? "" : periodWidgetHelper.getDisplayPeriod(row.validTo,"P");
         }
       },
       {

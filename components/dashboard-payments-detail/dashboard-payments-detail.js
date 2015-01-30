@@ -86,6 +86,9 @@ var DashboardPaymentsDetail = Component.extend({
         $(li).popover({
           content: popoverContent,
           html: true,
+          delay: {
+            hide: 100
+          },
           trigger: 'click',
           placement: 'right'
         });
@@ -95,6 +98,14 @@ var DashboardPaymentsDetail = Component.extend({
   events: {
     'inserted':function(){
 
+     },
+     '{scope} change': function(scope, ev, attr) {
+       //Remove the popup if anything is opened.
+       //As the target is same for the side chart and popup source
+       //we can not remove the popup by capturing click event on body
+       $('.chart-list .popover').each(function(){
+         $(this).remove();
+      });
      },
     '.chart-list>li, .country-list>li click': function(el, ev) {
           var popoverID = el.attr('aria-describedby');
@@ -112,6 +123,16 @@ var DashboardPaymentsDetail = Component.extend({
       }
 
     }
+});
+
+$('body').on('click', function (e) {
+  $('.chart-list li[aria-describedby*="popover"]').each(function () {
+    if (!$(this).is(e.target) && $(this).has(e.target).length === 0 &&
+      $('.popover').has(e.target).length === 0) {
+      $(this).popover('hide');
+      isRemoved=true;
+    }
+  });
 });
 
 
