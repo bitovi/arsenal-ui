@@ -23,7 +23,7 @@
           <ul id='rightsidemenu'>
             <li class='username'><img src='../../resources/images/rn_WorkflowTypePerson_completed.png' class='logedinimg'/>{{appstate.userInfo.displayName}}</li>
                <li class='bar'>|</li>
-               <li class='rightmenu logout'>&nbsp;</li>
+               <li name = 'logout' class='rightmenu logout'>&nbsp;</li>
                <li class='rightmenu bookmark'>&nbsp;</li>
                <li class='rightmenu notification'>&nbsp;</li>
                <book-mark appstate="{appstate}"></book-mark>

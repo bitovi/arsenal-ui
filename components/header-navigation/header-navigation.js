@@ -7,7 +7,7 @@ import GlobalParameterBar from 'components/global-parameter-bar/';
 import Bookmark from 'components/bookmark/';
 import UserReq from 'utils/request/';
 import RinsCommon from 'utils/urls';
-//import logout from 'models/common/logout/';
+import logout from 'models/common/logout/';
 
 var headerNavigation = Component.extend({
     tag: 'header-navigation',
@@ -120,6 +120,17 @@ var headerNavigation = Component.extend({
       '{appstate} change':function(el){
         if(el.navigationRequired) traverseSubMenu(el.page);
       },
+
+      '.logout click':function(){
+        logout.find().done(function(data){
+          if(data.responseCode == 'LOGGEDOUT') {
+            window.location.href = "";
+          }
+        }) ;
+
+        //console.log("Logout");
+      },
+
 
   },
     helpers: {
