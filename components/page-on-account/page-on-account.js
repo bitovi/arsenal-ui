@@ -162,7 +162,7 @@ var page = Component.extend({
          $('copy-clipboard').slideDown(function(){
            $('body').css('overflow','hidden');
            $('#copyall').trigger('click');
-            $(".copyclipboard").find("input").attr("disabled", "disabled");
+           //$("#copyclipboard").find("input,button,textarea").attr("disabled", "disabled");
         });
       },
       "#paymentBundleNames change": function(){
@@ -188,9 +188,12 @@ var page = Component.extend({
           }
 
           if(pbval != undefined || paymentBundleNameText != undefined){
-            $("#propose").removeAttr("disabled");
-            self.scope.attr('enableOnAccPropose',Date.now());
+            $("#propose").removeAttr("disabled"); 
           }
+          setTimeout(function(){
+                self.scope.attr('enableOnAccPropose',Date.now());
+          },2000)
+          
       },
       ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
           var self=this;
@@ -260,7 +263,7 @@ var page = Component.extend({
                     self.scope.newOnAccountRows.replace(rows);
                     self.scope.attr('licensorCurrencies',data.licensorCurrencies);
                     if(rows != null && rows.length >0){
-                      disableProposeButton(false);
+                      disableProposeButton(true);
                       $("#paymentBundleNames").removeAttr("disabled");
                       disableCopyOnAccount(false);
                     }
