@@ -227,7 +227,7 @@ var page = Component.extend({
 		createPBRequest: function(){
 	          	var bundleNamesRequest = {"bundleSearch":{}};
 	          	var serTypeId = $("#invoiceType option:selected").attr("name");
-	          	var regId = this.regionStore;
+	          	var regId = this.attr("regionStore");
 
 			  	if(typeof(serTypeId)!="undefined")
 	            	bundleNamesRequest.bundleSearch["type"] = serTypeId;

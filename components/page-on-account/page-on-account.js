@@ -110,7 +110,9 @@ var page = Component.extend({
     sortDirection: "asc",
     previouslyFetchOnAccRows:[],
     cancelnewbundlereq:'@',
-    populateDefaultData:'@'
+    populateDefaultData:'@',
+    validOnAccNumbers:undefined,
+    enableOnAccPropose:"@"
   },
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
@@ -160,6 +162,7 @@ var page = Component.extend({
          $('copy-clipboard').slideDown(function(){
            $('body').css('overflow','hidden');
            $('#copyall').trigger('click');
+           $(".copyclipboard").find("input").attr("disabled", "disabled");
         });
       },
       "#paymentBundleNames change": function(){
@@ -185,8 +188,12 @@ var page = Component.extend({
           }
 
           if(pbval != undefined || paymentBundleNameText != undefined){
-            $("#propose").removeAttr("disabled");
+            $("#propose").removeAttr("disabled"); 
           }
+          setTimeout(function(){
+                self.scope.attr('enableOnAccPropose',Date.now());
+          },2000)
+          
       },
       ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
           var self=this;
@@ -256,7 +263,8 @@ var page = Component.extend({
                     self.scope.newOnAccountRows.replace(rows);
                     self.scope.attr('licensorCurrencies',data.licensorCurrencies);
                     if(rows != null && rows.length >0){
-                      disablePropose(false);
+                      disableProposeButton(true);
+                      $("#paymentBundleNames").removeAttr("disabled");
                       disableCopyOnAccount(false);
                     }
                     $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
@@ -373,7 +381,7 @@ var page = Component.extend({
               $('#usercomments').val("");
               self.scope.attr('cancelnewbundlereq',true);
               self.scope.attr('onAccountRows',rows);
-              disablePropose(true);
+              disableProposeButton(true);
             }else{
                   displayMessage(data["responseText"],false);
                 }
@@ -395,7 +403,7 @@ var page = Component.extend({
           processDeleteOnAccount(this.scope,"delete");
         },
       "#proposedEdit click":function(el,ev){
-          $('#submitPOA').removeAttr("disabled");
+          //$('#submitPOA').removeAttr("disabled");
           var req = this.scope.request;
           var quarters = this.scope.attr('quarters');
           req.quarters=quarters;
@@ -494,6 +502,8 @@ var page = Component.extend({
       },
       'rn-new-onaccount-grid onSelected': function (ele, event, val) {  
               this.scope.attr('onAccountRows',val);
+              this.scope.attr('validOnAccNumbers',val.validNumbers);
+              this.scope.attr('enableOnAccPropose',Date.now());
       },
       'rn-onaccount-balance-grid .open-toggle click': function(ele, event, val){
         ele.closest('tr').toggleClass("open");
@@ -557,6 +567,7 @@ var page = Component.extend({
           if(self.scope.populateDefaultData){
             appstate = self.scope.defaultRequest.appstate;
             quarters = self.scope.defaultRequest.quarters;
+            self.scope.attr('quarters',quarters);
           }
 
           proposedOnAccount.findOne(createProposedOnAccountRequest(appstate),function(data){
@@ -634,6 +645,18 @@ var page = Component.extend({
         /* documents is binded to uploadedfileinfo in <rn-file-uploader uploadedfileinfo="{documents}"></rn-file-uploader> */
         /* IF the uploadedfileinfo is changed in rn-file-uploader component, documents gets updated automatically and this change event triggered. */
          // console.log("docu changed "+JSON.stringify(this.scope.documents.attr()));
+      },
+      '{scope} enableOnAccPropose':function(){
+        var self = this;
+         var paymentBundleName = $("#newPaymentBundle").val();
+        if(paymentBundleName==undefined  ||  paymentBundleName==null || paymentBundleName ==""){
+            paymentBundleName = self.scope.paymentBundleNameText;
+        }
+        if(self.scope.validOnAccNumbers && (paymentBundleName != undefined && paymentBundleName.length>0)){
+          disableProposeButton(false);
+        }else{
+          disableProposeButton(true);
+        }
       },
       '.exportToExcel click':function(el,ev){
 
@@ -823,6 +846,14 @@ var disablePropose=function(disable){
         $("#submitPOA").attr("disabled","disabled");
     }else{
        $("#paymentBundleNames").removeAttr("disabled");
+    }
+}
+
+var disableProposeButton=function(disable){
+  if(disable){
+        $("#propose").attr("disabled","disabled");
+    }else{
+       $("#propose").removeAttr("disabled");
     }
 }
 

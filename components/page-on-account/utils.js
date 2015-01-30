@@ -208,10 +208,10 @@ var onAccountUpdateRequest ={};
                       onAccountDetails.serviceTypeId=onAccountRows[i].serviceTypeId;
                       if(onAccountRows[i][fiscalPeriod] != undefined){
                         var amount = Number(onAccountRows[i][fiscalPeriod].replace(/,/g,''));
-                        if(amount >0){
+                        //if(amount >0){
                           onAccountDetails.onAccountAmt=amount;
                           onAccountUpdateRequest.onAccount.onAccountDetails.push(onAccountDetails);
-                        }
+                        //}
                       }
                   }
                 }

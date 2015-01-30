@@ -43,7 +43,8 @@ var OutboxGrid = ScrollingGrid.extend({
         var connectedSteps = steps.join('<div class="step-connector">&mdash;</div>');
         return stache(connectedSteps)({});
       }
-    }]
+    }],
+    strippedGrid:true
   },
   helpers: {
 

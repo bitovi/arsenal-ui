@@ -45,7 +45,7 @@ var proposedonAccountGrid = Grid.extend({
       },
       {
         id: 'ContentType',
-        title: 'ContentType'
+        title: 'Content Type'
       }
      ],
      request:{},
@@ -65,7 +65,13 @@ var proposedonAccountGrid = Grid.extend({
   helpers: {
     cellContents:function(row, column){
       if(column.editable && row.__isChecked && row.__isEditable) {
-        return stache('<input value="{{value}}" tabindex="0" class="editing form-control" style="width:130px;padding: 4px !important;"/>')({value: column.getEditingValue(row,column.title)});
+        var returnValue = column.getEditingValue(row,column.title);
+        if(returnValue == undefined){
+          return stache('<input value="{{value}}" tabindex="0" class="editing form-control invalid" style="width:130px;padding: 4px !important;" title="Please provide onAccount amount in [##########.########] format"/>')({value: returnValue});
+        }else{
+          return stache('<input value="{{value}}" tabindex="0" class="editing form-control" style="width:130px;padding: 4px !important;"/>')({value: returnValue});
+        }
+        
       } else {
         return Grid.prototype.helpers.cellContents.call(this, row, column);
       }
@@ -96,24 +102,46 @@ var proposedonAccountGrid = Grid.extend({
       proposedOnAccountData.checkedRows=this.scope.checkedRows;
       proposedOnAccountData.footerrows=this.scope.footerrows;
 
+      if(this.scope.checkedRows.length == 0){
+        $("#submitPOA").attr("disabled","disabled");
+      }
+
       $(this.element).trigger('onSelected', proposedOnAccountData);
 
       alignGrid("proposedOnAccountGrid");
     },
      'td input.editing blur':function(el, ev){
       var value = el.closest('td').find('.editing').val();
-        if(isNaN(value) || value==""){
+        // if(isNaN(value) || value==""){
+        //   el.addClass('invalid');
+        //   return;
+        // }
+        // if (value != "" && value != undefined && value.length != 0){
+        //   var decimal_validate_RE=/^\d{0,10}(\.\d{0,8})?$/;
+        //   if(!decimal_validate_RE.test(value)){
+        //     el.addClass('invalid');
+        //     el.closest('td').find('.editing').attr('title',"Please provide onAccount amount in [##########.########] format");
+        //     return;
+        //   }
+        // }
+
+      var valueToTest = value.replace(/\,/g,'');
+
+        if($.isNumeric(valueToTest) && el.hasClass('invalid')){
+          el.removeClass('invalid'); 
+        }else{
           el.addClass('invalid');
+          el.closest('td').find('.editing').attr('title',"Please provide onAccount amount in [##########.########] format");
+          $("#submitPOA").attr("disabled","disabled");
           return;
         }
-        if (value != "" && value != undefined && value.length != 0){
-          var decimal_validate_RE=/^\d{0,10}(\.\d{0,8})?$/;
-          if(!decimal_validate_RE.test(value)){
-            el.addClass('invalid');
-            el.closest('td').find('.editing').attr('title',"Please provide onAccount amount in [##########.########] format");
-            return;
-          }
+
+        if(el.closest('table').find('td .invalid').length > 0){
+         $("#submitPOA").attr("disabled","disabled");
+        }else{
+          $('#submitPOA').removeAttr("disabled");
         }
+
       var element = el.closest('td').find('.editing');
       var column = el.closest('td').data('column').column;
 

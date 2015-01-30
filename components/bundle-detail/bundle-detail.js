@@ -198,6 +198,7 @@ var BundleDetailTabs = Component.extend({
 
         if(commentsCollected !== ''){
           $(".previousComments").val(commentsCollected);
+          $(".previousComments").show();
         }
 
 
@@ -235,9 +236,9 @@ var BundleDetailTabs = Component.extend({
         view = 'licensor';
       }
 
-      if(scope.pageState.selectedBundle === bundle) {
+      if('payment-bundles' === scope.appstate.page &&  scope.pageState.selectedBundle === bundle) {
         return bundle.getValidations(view).then(function(bundle) {
-          if(bundle.status == 1 && bundle.validationStatus !== 5) {
+          if(bundle.status == 1 && bundle.vldtnStatus !== 5) {
             setTimeout(function() {
               scope.getNewValidations(bundle);
             }, VALIDATION_CHECK_INTERVAL);
@@ -462,6 +463,7 @@ var BundleDetailTabs = Component.extend({
       pageState = this.scope.pageState;
       self = this.scope;
 
+
       if(!this.scope.havePaymentTypeAndComment(this.scope)) {
         return;
       }
@@ -507,7 +509,18 @@ var BundleDetailTabs = Component.extend({
               var index = pageState.bundles.indexOf(selectedBundle);
               pageState.bundles.splice(index, 1);
             }else{
-              //selectedBundle.attr("pendingWith", );
+
+              self.pageState.selectedBundle.attr("pendingWith",response.paymentBundle.pendingWith);
+              self.pageState.selectedBundle.attr("paymentAmt",response.paymentBundle.paymentAmt);
+              self.pageState.selectedBundle.attr("status",response.paymentBundle.status);
+              self.pageState.selectedBundle.attr("vldtnStatus",response.paymentBundle.vldtnStatus);
+              self.pageState.selectedBundle.attr("priority",response.paymentBundle.priority);
+              self.pageState.selectedBundle.attr("isDraft",response.paymentBundle.isDraft);
+              self.pageState.selectedBundle.attr("docId",response.paymentBundle.docId);
+              self.pageState.selectedBundle.attr("generatedFiles",response.paymentBundle.generatedFiles);
+              self.pageState.selectedBundle.attr("recallable",response.paymentBundle.recallable);
+              self.pageState.selectedBundle.attr("editable",response.paymentBundle.editable);
+              self.pageState.selectedBundle.attr("approvable",response.paymentBundle.approvable);
 
               //else the ROLE is not FC, reload the bottom grid
               self.selectedBundleChanged(self);

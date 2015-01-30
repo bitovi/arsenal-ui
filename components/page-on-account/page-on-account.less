@@ -6,113 +6,6 @@
 rn-file-uploader-new,propose-rn-file-uploader{
 .fileupload-mixin();
 }
-rn-onaccount-balance-grid{
-  .grid-mixin();
-    th, td {
-      white-space: nowrap;
-      text-align: right;
-    }
-    th.checbox, td.checkbox {
-      width: 30px;
-    }
-  & > table {
-    border-radius: 0px;
-
-    /* getting border radius to work right */
-    thead:first-child, tbody:first-child {
-      & > tr:first-of-type {
-        td:first-child, th:first-child {
-          border-top-left-radius: 0px;
-        }
-
-        td:last-child, th:last-child {
-          border-top-right-radius: 0px;
-        }
-      }
-    }
-
-    thead, tfoot {
-      tr {
-        th {
-          padding-right: 0.625em;
-          height: 1.5em;
-          padding-top: .3em;
-          padding-bottom: .3em;
-          padding-left: .5em;
-        }
-      }
-      tr.child {
-          display: none;
-
-          &.visible {
-            display: table-row;
-          }
-        }
-
-    }
-
-    tbody:last-child {
-      & > tr:last-of-type {
-        td, th {
-          height : 1.5625em;
-          backgorund: !important;
-        }
-
-        td:first-child, th:first-child {
-          border-bottom-left-radius: 0px;
-          border-bottom: 1px solid #bfbfbf !important;
-          border-left: 1px solid #bfbfbf !important;
-          }
-
-        td:last-child, th:last-child {
-          border-bottom-right-radius: 0px;
-        }
-      }
-    }
-
-    tbody {
-      background: #F7F7F7 !important;
-      tr {
-        height : 1.5625em;
-
-        td {
-
-          padding-right: 0.5625em;
-          padding-left : 0.5625em;
-          padding-top  : 0em;
-          padding-bottom : 0em;
-
-          border-right: 1px solid hsl(0, 0%, 75%);
-          border-bottom: 1px solid #FFFFFF !important;
-
-        }
-
-      }
-
-      tr.child {
-        display: none;
-        td {
-          background: hsl(0, 0%, 100%)
-        }
-        &.visible {
-          display: table-row;
-        }
-      }
-
-      tr.child:last-child{
-        td{
-          border-bottom: 1px solid #bfbfbf !important;
-        }
-      }
-    }
-    .toggle, .licensor, .Licensor , .currency, .Currency, .ContentType{
-      text-align: left;
-    }
-  }
-
-}
-
-
 
   #usercomments, #usercommentsPOA{
     height: 150px !important;
@@ -137,7 +30,7 @@ rn-onaccount-balance-grid{
   #proposedOnAccountGrid, #onAccountBalanceGrid{
       min-height: 100px;
       overflow-x: scroll;
-      overflow-y: hidden;
+      overflow-y: scroll; //changed from hidden
       clear:both;
       padding-top:0px;
   }

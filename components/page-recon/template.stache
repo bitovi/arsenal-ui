@@ -19,6 +19,7 @@
 </div>
 
 <div class="col-lg-12 recon-container">
+<div id="loading_img"></div>
     <div class="export-toexcel" id="exportExcel"></div>
     <div class="col-sm-9 btn-display-center" {{isTabSelectedAs 'Ingested'}} >
       <button  class="btn btn-primary buttonSubmit btn-custom-small btn-ingested-reject" type="button" {{isIngestCcidsSelected 0}}>Reject</button>
@@ -34,7 +35,7 @@
 
 </div>
 
-    <div id="loading_img"></div>
+    
     <div class="tab-pane active grid-custom-overflow" id="ingested" style="padding-left: 10px;padding-right: 10px;">
         <rn-recon-grid columns="{ingestGridColumns}" rows="{ingestList.headerRows}" footerrows="{ingestList.footerRows}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}" emptyrows="{emptyrows}" pagename="{pagename}"></rn-recon-grid>
     </div>

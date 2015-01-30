@@ -120,6 +120,7 @@ var headerNavigation = Component.extend({
       '{appstate} change':function(el){
         if(el.navigationRequired) traverseSubMenu(el.page);
       },
+
       '.logout click':function(){
         logout.find().done(function(data){
           if(data.responseCode == 'LOGGEDOUT') {
@@ -129,6 +130,7 @@ var headerNavigation = Component.extend({
 
         //console.log("Logout");
       },
+
 
   },
     helpers: {

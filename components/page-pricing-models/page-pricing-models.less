@@ -17,7 +17,15 @@
 	  	border-collapse:separate;
 	  	border-bottom: 1px solid gray;
 	  	overflow-y:auto;
+	  	border: 1px solid #bfbfbf;
+	  	border-radius: 5px 5px 0 0;
 	  	//height:100px;
+	  	thead tr > th:first-child{
+	  		border-radius: 4px 0 0 0;
+	  	}
+	  	thead tr > th:last-child{
+	  		border-radius: 0 4px 0 0;
+	  	}
 	  }
 	}
 
@@ -331,6 +339,7 @@ page-pricing-models {
 	 min-height:100px;
 	 max-height:250px;
 	 overflow-y:auto;
+	 border-radius: 6px 7px 0 0;
 	}
 
 	.maxhtLeftGrid{
@@ -345,7 +354,21 @@ page-pricing-models {
 
 
 }
-
+#baseModelTable,#trackCount{
+	border: 1px solid #bfbfbf;
+}
+#modelDetailCont{
+	table{
+		tbody{
+			tr:nth-child(odd){
+				background: #f9f9f9;
+			}
+			tr:nth-child(even){
+				background: #f0f0f0;
+			}
+		}
+	}
+}
 
 
 
