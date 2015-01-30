@@ -39,17 +39,17 @@
 
 <table class="holes-report " border="1">
   <thead>
-    <tr>     
-      {{#entities}}
+    <tr>
+      {{#_entities}}
       <th class="entity" {{data 'entity'}}><span {{popover 'entity' {.}}}>{{.}}</span></th>
-      {{/entities}}
-       <th class="entity">LOCAL</th>      
+      {{/_entities}}
+       <th class="entity">LOCAL</th>
     </tr>
   </thead>
   <tbody>
     {{#holesReports}}
     <tr>
-      
+
       {{#holesList}}
         {{#if isLicensorInvalidForCountry}}
           <td class="hole invoice-expected"></td>
@@ -100,20 +100,20 @@
 <div class="copytoclipboardContainer">
   <table class="holes-report " border="1">
   <thead>
-    <tr> 
+    <tr>
      <th></th>
       {{#entities}}
       <th class="entity" {{data 'entity'}}><span {{popover 'entity' {.}}}>{{.}}</span></th>
       {{/entities}}
-       <th class="entity">LOCAL</th>    
-        <th></th>  
+       <th class="entity">LOCAL</th>
+        <th></th>
     </tr>
   </thead>
   <tbody>
     {{#holesReportsCC}}
-    <tr>      
+    <tr>
      <td class="country" {{#if displayBackGreen}}bgcolor="#669933" {{/if}}>{{countryId}}</td>
-      {{#holesList}}      
+      {{#holesList}}
         {{#if isLicensorInvalidForCountry}}
           <td class="hole invoice-expected"></td>
         {{else}}
@@ -147,7 +147,7 @@
 
 <div class="col-sm-3"></div>
   <div class="col-sm-1">
-    <img class="checkMark" src="resources/images/checkMarkDark.png"/><label>: All Received </label> 
+    <img class="checkMark" src="resources/images/checkMarkDark.png"/><label>: All Received </label>
   </div>
   <div class="col-sm-1"><label> PDF: PDF Received</label></div>
   <div class="col-sm-1"> <label> CCID: CCID Received </label></div>

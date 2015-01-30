@@ -3,6 +3,7 @@
     <tr>
       <th>Country</th>
       <th>Licensor</th>
+      <th>Period</th><!--TODO: Future requirement, currently its hardcoded to P1FY15 -->
       <th>Missing</th>
     </tr>
   </thead>
@@ -11,6 +12,7 @@
     <tr>
       <td>{{Country}}</td>
       <td>{{Licensor}}</td>
+      <td>P1FY15</td><!--TODO: Future requirement, currently its hardcoded to P1FY15 -->
       <td>{{Missing}}</td>
     </tr>
     {{/missingInvoices}}

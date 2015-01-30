@@ -22,7 +22,7 @@ var DashboardInvoices = Component.extend({
   tag: 'rn-dashboard-invoices',
   template: template,
   scope: {
-    entities: [],
+    _entities:[],
     holesReports:[],
     holesByCountry: {/*
       AUT: [hole, hole, hole],
@@ -46,12 +46,12 @@ var DashboardInvoices = Component.extend({
     refreshReport: function() {
       var self = this;
       this.attr('fetching', true);
-      
-      return HolesReport.findOne({ appstate: self.appstate }).then(function(holes) {
+
+      return HolesReport.findOne({ appstate: self.appstate }).then(function(holesReportResponse) {
         // TODO: I think I may need a holesByEntity as well
         var entities = [];
         var holesByCountry = {};
-        var data = holes;
+        var data = holesReportResponse;
         if (self.appstate.attr('excelOutput') != undefined || self.appstate.excelOutput) {
 
           if (data["status"] == "SUCCESS" && data["exportExcelFileInfo"] != null) {
@@ -66,37 +66,12 @@ var DashboardInvoices = Component.extend({
             }, 2000);
           }*/
         } else {
-          var licensorObj = [];
-          var selectlicIds = self.appstate.licensor;
-          var entityIds = [];
-          var licMap = new Array();
-          var genObj = {regionId:self.appstate.region.id};
-              Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))
-              ]).then(function(values) {
-                var entity= values[0]["entities"];
-                 for(var i=0; i<entity.length;i++){
-                    if(entity[i].entityType=='Licensor'){
-                      licensorObj=entity[i].entities;
-                    }
-                 }
-                 _.each(licensorObj, function(licObject) {
-                  licMap[licObject.id]=licObject.value;
-                  });
-                
-                if(selectlicIds == undefined || (selectlicIds != undefined && selectlicIds[0] == "-1")){
-                    _.each(licensorObj,function(licId){
-                          entityIds.push(licId.id);
-                    });
-                  }else{
-                        entityIds=selectlicIds.attr();
-                  }
 
-                    can.batch.start();
-                    self.attr('entities', geEntities(entityIds,licMap));
-                    //self.attr('holesByCountry', holesByCountry);
-                    self.attr('holesReports',getHolesReport(entityIds,licMap,holes));
-                    can.batch.stop();
-              });
+          can.batch.start();
+          self.attr('_entities', populateEntities(holesReportResponse));
+          self.attr('holesReports',getHolesReport(self._entities,holesReportResponse.holesReportWrapper));
+          can.batch.stop();
+
         }
         self.attr('fetching', false);
       });
@@ -163,7 +138,7 @@ var DashboardInvoices = Component.extend({
         if(this.scope.appstate.attr('excelOutput')==undefined || !self.scope.appstate.excelOutput)
           self.scope.appstate.attr("excelOutput",true);
     },
-    '#copyToClipboard click':function(){  
+    '#copyToClipboard click':function(){
 
       var tableClone = $('.dashboard-container').find('table:visible').clone(true);
 
@@ -172,7 +147,7 @@ var DashboardInvoices = Component.extend({
            $('body').css('overflow','hidden');
            $('#copyall').trigger('click');
            tableClone = "";
-        }); 
+        });
       },
     '{scope.appstate} change': function() {
       var self = this;
@@ -180,7 +155,7 @@ var DashboardInvoices = Component.extend({
       if(this.scope.appstate.filled) {
         this.scope.debouncedRefreshReport(this.scope);
       } else {
-        this.scope.attr('entities', []);
+        this.scope.attr('_entities', []);
         this.scope.attr('holesByCountry', {});
       }
     }
@@ -232,55 +207,48 @@ var getholesReportByCountry=function(holesReports,id){
   }
 }
 
-var getHolesReport=function(selectedIds,licensorMap,holes){
-    var holesReports=[];
-    var entities=[];
-    _.each(holes.holesReportWrapper, function(holesWrapper) {
-          var holesReport={};
-          var dataList = holesWrapper.holesReport.attr();
+var getHolesReport=function(_entityIds,holesReportWrapper){
+    var _newHolesReports=[];
+    _.each(holesReportWrapper, function(holesWrapper) {
+          var _newHolesReport={};
           var localSociety=holesWrapper.localSociety;
-          holesReport.countryId=holesWrapper.countryId;
-          holesReport.localSociety="";              
-          
-          // var localDisplay="";
-          // var checkForLocalSociety = false;
-          // if(typeof(localSociety) != "undefined" && localSociety != "null" && (localSociety != null) && localSociety.length >0){
-          //   holesReport.localSociety = localSociety;
-          //   checkForLocalSociety = true;
-          // }
-          holesReports.push(getEntityDataList(selectedIds,holesWrapper.holesReport.attr(),holesReport,localSociety,licensorMap));
+          _newHolesReport.countryId=holesWrapper.countryId;
+          _newHolesReport.localSociety="";
+
+          _newHolesReports.push(getEntityDataList(_entityIds,holesWrapper.holesReport,_newHolesReport,localSociety));
       });
-    return holesReports;
+    return _newHolesReports;
 }
 
-var getEntityDataList=function(entityIds,dataList,holesReport,localSociety,licensorMap){
+var getEntityDataList=function(_entityIds,_holeRptEnitities,_newHolesReport,localSociety){
   var holesList=[];
   var displayBackGreen = true;
   var localDisplay="";
   var checkForLocalSociety = false;
   if(typeof(localSociety) != "undefined" && localSociety != "null" && (localSociety != null) && localSociety.length >0){
-    holesReport.localSociety = localSociety;
+    _newHolesReport.localSociety = localSociety;
     checkForLocalSociety = true;
   }
-  _.each(entityIds, function(id) {
+  _.each(_entityIds, function(entityName) {
     var hole={};
     var display='';
     var showImage=false;
-    hole.entityId=id;
-    hole.entityName=licensorMap[id];
-    var obj = _.find(dataList, function(value) {
-         return value.entityId == id;
+    // hole.entityName=licensorMap[id];
+    hole.entityName=entityName
+    var _holeRptEnityObj = _.find(_holeRptEnitities, function(value) {
+         return value.entityName == entityName;
        });
-    if(obj != undefined){
-        hole.pdfCount=obj.pdfCount;
-        hole.ccidCount=obj.ccidCount;
-        if(obj.pdfCount > obj.ccidCount){
+    if(_holeRptEnityObj != undefined){
+        hole.entityId=_holeRptEnityObj.entityId
+        hole.pdfCount=_holeRptEnityObj.pdfCount;
+        hole.ccidCount=_holeRptEnityObj.ccidCount;
+        if(_holeRptEnityObj.pdfCount > _holeRptEnityObj.ccidCount){
           display="PDF";
           displayBackGreen = false;
-        }else if(obj.pdfCount < obj.ccidCount){
+        }else if(_holeRptEnityObj.pdfCount < _holeRptEnityObj.ccidCount){
           display="CCID";
           displayBackGreen = false;
-        }else if(obj.pdfCount>0 && obj.ccidCount>0){
+        }else if(_holeRptEnityObj.pdfCount>0 && _holeRptEnityObj.ccidCount>0){
           showImage=true;
         }else{
           displayBackGreen = false;
@@ -288,11 +256,11 @@ var getEntityDataList=function(entityIds,dataList,holesReport,localSociety,licen
 
         hole.show = display;
 
-        if(checkForLocalSociety && localSociety == obj.entityName){
+        if(checkForLocalSociety && localSociety == _holeRptEnityObj.entityName){
           localDisplay = display;
         }
-       
-        hole.isLA = (obj.laFlag == 'Y') ? true : false;
+
+        hole.isLA = (_holeRptEnityObj.laFlag == 'Y') ? true : false;
         hole.showImage=showImage;
     }else{
       hole.isLicensorInvalidForCountry=true;
@@ -304,17 +272,17 @@ var getEntityDataList=function(entityIds,dataList,holesReport,localSociety,licen
         if(obj1.entityName != undefined && obj2.entityName != undefined){
           var nameA=obj1.entityName.toLowerCase(), nameB=obj2.entityName.toLowerCase();
            if (nameA < nameB) //sort string ascending
-            return -1 
+            return -1
            if (nameA > nameB)
             return 1
         }
        return 0 //default return value (no sorting)
       });
-    holesReport.holesList=holesList;
-    holesReport.localDisplay=localDisplay;
-    holesReport.displayBackGreen=(displayBackGreen)?true:undefined;
+      _newHolesReport.holesList=holesList;
+      _newHolesReport.localDisplay=localDisplay;
+      _newHolesReport.displayBackGreen=(displayBackGreen)?true:undefined;
 
-  return holesReport;
+  return _newHolesReport;
 
 }
 var getHolesReportByEntity=function(holesReports,id){
@@ -334,6 +302,12 @@ var getHolesReportByEntity=function(holesReports,id){
   }
   return holeReport;
 }
+
+var populateEntities= function(holesReportResponse){
+  var entities  = holesReportResponse.holesReportWrapper[0].entityList;
+  return entities;
+}
+
 
 var geEntities=function(entityIds,licensorMap){
   var entities=[];
