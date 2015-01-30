@@ -51,7 +51,7 @@
 	    <div id="invoiceTypeError" class="col-md-12"></div>
 	</div>
 
-    <div class="col-lg-12 paddingLeft0" style="padding-top: 6px;">
+    <div class="col-lg-12" style="padding-top: 6px;padding-right: 0px;padding-left: 0px;">
 	   <div class="export-toexcel" id="exportExcel"></div>
 	    <!-- Tab Details -->
 	    <ul id="myTabs" class="nav nav-tabs">
@@ -126,8 +126,8 @@
 		   	</div>
 
 		  	<!-- On Account Balance -->
-		   	<div class="tab-pane fade in active" id = "onAccountBalanceDiv">
-		   		<div id="onAccountBalanceGrid"><div id="loading_img"></div></div>
+		   <div class="tab-pane fade in active" id = "onAccountBalanceDiv">
+		   		<div id="onAccountBalanceGrid" style="height:auto"><div id="loading_img"></div></div>
 			</div>
 
 			<!-- Propose On Account -->

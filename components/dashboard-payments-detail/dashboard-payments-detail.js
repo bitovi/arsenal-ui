@@ -74,10 +74,9 @@ var DashboardPaymentsDetail = Component.extend({
         return formatted;
     },
     popover: function(item) {
-
       var popoverContent = $('<div>').append(popoverTemplate({
-        localCurrency: item.gblCcy,
-        globalCurrency: item.rgnCcy,
+        localCurrency: item.rgnCcy,
+        globalCurrency: item.gblCcy,
         item: item
       }, {
         formatPercent: val => formats.percent(val())

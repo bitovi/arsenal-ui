@@ -1,4 +1,4 @@
-<table class="rn-grid {{tableClass}}">
+<table class="rn-grid {{tableClass}}" id="onAccBalance">
   <thead>
     <tr>
       {{#filteredColumns}}

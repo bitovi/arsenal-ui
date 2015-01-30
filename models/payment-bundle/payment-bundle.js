@@ -284,36 +284,41 @@ var PaymentBundle = Model.extend({
           var target = undefined;
           // only update these if validation is done
           if(validationResponse.paymentBundle.vldtnStatus === 5) {
+            bundle
             if(group.invoiceId != undefined){
               var target = _.find(bundle.bundleDetailsGroup, {key: group.key});
               if(target != undefined ){
-                // group.vldtnMessage == undefined ? target.attr('validationMessages', "") : target.attr('validationMessages', group.vldtnMessage);
-                // group.vldtnBatchResultColor == undefined ? target.attr('validationColor', "") : target.attr('validationColor', group.vldtnBatchResultColor);
+                group.vldtnMessage == undefined ? target.attr('validationMessages', "") : target.attr('validationMessages', group.vldtnMessage);
+                group.vldtnBatchResultColor == undefined ? target.attr('validationColor', "") : target.attr('validationColor', group.vldtnBatchResultColor);
               }
             }
-          }
 
-          group.bundleDetails.forEach(function(detail) {
-            // only update these if validation is done
-            //TODO code modification is needed when the servcice s is ready with Proper JSON.
-            if(validationResponse.paymentBundle.vldtnStatus === 5) {
+            group.bundleDetails.forEach(function(detail) {
+              // only update these if validation is done
+              //TODO code modification is needed when the servcice s is ready with Proper JSON.
+              // if(validationResponse.paymentBundle.vldtnStatus === 5) {
               if(target != undefined ){
                 var lineTarget = _.find(target.bundleDetails, {bndlLineId: detail.bndlLineId});
-                // lineTarget.attr('validationMessages', detail.vldtnMessage);
-                // detail.vldtnBatchResultColor != undefined  ?  lineTarget.attr('validationColor', detail.vldtnBatchResultColor ) :  lineTarget.attr('validationColor', "" );
+                lineTarget.attr('validationMessages', detail.vldtnMessage);
+                detail.vldtnBatchResultColor != undefined  ?  lineTarget.attr('validationColor', detail.vldtnBatchResultColor ) :  lineTarget.attr('validationColor', "" );
               }
-            }
+              // }
 
-            rulesCompleted += detail.vldtnRulesCompletedCnt;
-            rulesTotal += detail.vldtnRulesTotalCnt;
-          });
+
+            });
+
+          }
+
+
         });
 
-        bundle.attr({
-          validationStatus: validationResponse.paymentBundle.vldtnStatus,
-          validationRulesCompleted: rulesCompleted,
-          validationRulesTotal: rulesTotal
-        });
+        bundle.attr('vldtnStatus', validationResponse.paymentBundle.vldtnStatus);
+
+        // bundle.attr({
+        //   validationStatus: validationResponse.paymentBundle.vldtnStatus,
+        //   validationRulesCompleted: rulesCompleted,
+        //   validationRulesTotal: rulesTotal
+        // });
 
         can.batch.stop();
 
@@ -332,7 +337,7 @@ var PaymentBundle = Model.extend({
     delete bundleData.bundleFooter;
 
 
-    delete bundleData.validationStatus;
+    //delete bundleData.validationStatus;
     delete bundleData.validationRulesCompleted;
     delete bundleData.validationRulesTotal;
 
