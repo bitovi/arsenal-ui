@@ -162,6 +162,7 @@ var page = Component.extend({
          $('copy-clipboard').slideDown(function(){
            $('body').css('overflow','hidden');
            $('#copyall').trigger('click');
+            $(".copyclipboard").find("input").attr("disabled", "disabled");
         });
       },
       "#paymentBundleNames change": function(){
