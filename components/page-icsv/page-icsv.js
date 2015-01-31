@@ -134,6 +134,7 @@ var page = Component.extend({
       periodFromForPaymentBundle:"",
       periodToForPaymentBundle:"",
       fetchPB:"@",
+      cancelnewbundlereq:'@',
       sumfileuploadedinfo:[],
       createPBRequest: function(){
         var bundleNamesRequest = {"bundleSearch":{}};
@@ -266,6 +267,7 @@ var page = Component.extend({
                     var rows = new can.List(gridData);
                     if(rows.length>0){
                       $('#icsvinvoiceGrid').html(stache('<icsv-grid rows="{rows}"></icsv-grid>')({rows}));
+                        disableBundle(false);
                     }else{
                         disableBundle(true);
                         self.scope.attr("activesubmitbutton", false);
@@ -462,8 +464,10 @@ var page = Component.extend({
                                       displayMessage(msg,true);
 
                                        icsvmap.removeAttr("invoiceData");
+                                       self.scope.attr('cancelnewbundlereq',true);
 
                                         self.scope.uploadedfileinfo.replace([]);
+
 
                                          $('.jQfunhide').hide();
                                     }

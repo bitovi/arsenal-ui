@@ -64,7 +64,7 @@
 								{{#if fetchPB}}
 									<label class="col-sm-2" for="inputCountry">Bundle Name:</label>
 									<div class="col-sm-2 requiredBar">
-											<create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}"></create-pb>
+											<create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}" cancelnewbundlereq="{{cancelnewbundlereq}}"></create-pb>
 									</div>
 								{{/if}}
 								<div class="col-sm-1">
@@ -109,7 +109,7 @@
 	  	{{#if fetchPB}}
 	      <label  style="margin-left:10px">Bundle Name:</label>
 	      <span class="requiredBar">
-	      <create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}"></create-pb>
+	      <create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}" cancelnewbundlereq="{{cancelnewbundlereq}}"></create-pb>
 	      </span>
 	     {{/if}}
 	      <button id="addIcsvSubmit" type="button"  class="pull-right btn btn-primary buttonSubmit addInvSubmit btn-custom-big" {{showactivebutton}} >Submit</button>
