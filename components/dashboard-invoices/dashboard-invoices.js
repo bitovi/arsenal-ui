@@ -170,22 +170,34 @@ var getMissingInvoices=function(from,holesReports,id){
      holesReport = getholesReportByCountry(holesReports,id);
      if(holesReport != undefined){
         for(var i=0;i<holesReport.holesList.length;i++){
-          var missingInv={};
-          missingInv.Country = id;
-          missingInv.Licensor = holesReport.holesList[i].entityName;
-          missingInv.Missing = getMissing(holesReport.holesList[i].pdfCount,holesReport.holesList[i].ccidCount);
-          missingInvoices.push(missingInv);
+
+
+            var missingInv={};
+            missingInv.Country = id;
+            missingInv.Licensor = holesReport.holesList[i].entityName;
+
+            missingInv.Missing = getMissing(holesReport.holesList[i].pdfCount,holesReport.holesList[i].ccidCount);
+            //if PDFCount and CCID COunt is missed, do not required to render as the LIC AND CNT is not belongs to
+            if(missingInv.Missing != ""){
+              missingInvoices.push(missingInv);
+            }
+
         }
      }
     }else if(from.toUpperCase() == 'ENTITY'){
       holesReport = getHolesReportByEntity(holesReports,id);
       if(holesReport != undefined){
         for(var i=0;i<holesReport.length;i++){
-          var missingInv={};
-          missingInv.Country = holesReport[i].countryId;
-          missingInv.Licensor = id;
-          missingInv.Missing = getMissing(holesReport[i].pdfCount,holesReport[i].ccidCount);
-          missingInvoices.push(missingInv);
+
+            var missingInv={};
+            missingInv.Country = holesReport[i].countryId;
+            missingInv.Licensor = id;
+            missingInv.Missing = getMissing(holesReport[i].pdfCount,holesReport[i].ccidCount);
+            //if PDFCount and CCID COunt is missed, do not required to render as the LIC AND CNT is not belongs to
+            if(missingInv.Missing != ""){
+
+              missingInvoices.push(missingInv);
+            }
         }
       }
     }

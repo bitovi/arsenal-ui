@@ -1,3 +1,4 @@
+{{#if missingInvoices.length}}
 <table class="missing-invoices">
   <thead>
     <tr>
@@ -18,3 +19,6 @@
     {{/missingInvoices}}
   </tbody>
 </table>
+{{#else}}
+No Missing Invoices found.<!--TODO:Find the correct message -->
+{{/if}}

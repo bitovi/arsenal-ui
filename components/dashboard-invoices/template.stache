@@ -31,7 +31,7 @@
   <tbody>
     {{#holesReports}}
     <tr>
-      <td class="country" {{#if displayBackGreen}}bgcolor="#669933" {{/if}}><span {{popover 'country' {countryId}}}>{{countryId}}{{displayBackGreen}}</span></td>
+      <td class="country" {{#if displayBackGreen}}bgcolor="#669933" {{/if}}><span {{popover 'country' {countryId}}}>{{countryId}}</span></td>
     </tr>
     {{/holesReports}}
   </tbody>
