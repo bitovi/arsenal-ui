@@ -127,7 +127,7 @@ var proposedonAccountGrid = Grid.extend({
 
       var valueToTest = value.replace(/\,/g,'');
 
-        if($.isNumeric(valueToTest) && el.hasClass('invalid')){
+        if($.isNumeric(valueToTest)){
           el.removeClass('invalid'); 
         }else{
           el.addClass('invalid');
@@ -146,7 +146,7 @@ var proposedonAccountGrid = Grid.extend({
       var column = el.closest('td').data('column').column;
 
       var row = el.closest('tr').data('row').row;
-      row.attr(periodWidgetHelper.getFiscalPeriod(column.title),utils.currencyFormat(value));
+      row.attr(periodWidgetHelper.getFiscalPeriod(column.title),utils.currencyFormat(valueToTest));
 
       //putting the rows to the page from grid component
       var proposedOnAccountData={};
