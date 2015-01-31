@@ -12,9 +12,9 @@
     {{#missingInvoices}}
     <tr>
       <td>{{Country}}</td>
-      <td>{{Licensor}}</td>
+      <td style="white-space: nowrap;">{{Licensor}}</td>
       <td>P1FY15</td><!--TODO: Future requirement, currently its hardcoded to P1FY15 -->
-      <td>{{Missing}}</td>
+      <td style="white-space: nowrap;">{{Missing}}</td>
     </tr>
     {{/missingInvoices}}
   </tbody>
