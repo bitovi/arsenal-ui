@@ -15,6 +15,7 @@ import exportToExcel from 'components/export-toexcel/';
 import copy from 'components/copy-clipboard/';
 import Licensor from 'models/common/licensor/';
 import UserReq from 'utils/request/';
+import gridUtils from 'utils/gridUtil';
 
 var refreshTimeoutID;
 
@@ -42,6 +43,8 @@ var DashboardInvoices = Component.extend({
       refreshTimeoutID = window.setTimeout(function() {
         self.refreshReport.apply(self);
       }, 500);
+
+
     },
     refreshReport: function() {
       var self = this;
@@ -72,12 +75,22 @@ var DashboardInvoices = Component.extend({
           self.attr('holesReports',getHolesReport(self._entities,holesReportResponse.holesReportWrapper));
           can.batch.stop();
 
+
+          $(window).trigger('resize');
+          // var height = $(window).height() - 300;
+          //
+          // console.log(height);
+
         }
         self.attr('fetching', false);
       });
     }
   },
   helpers: {
+    divCalculatedHeight: function(){
+      var height = $(window).height() - 300;
+      return height+"px";
+    },
     showPage: function(options) {
       if(this.appstate.attr('filled')) {
         return options.fn(this);
@@ -129,9 +142,17 @@ var DashboardInvoices = Component.extend({
   },
   events: {
     'inserted': function() {
+    //  gridUtils.resizeElementHeight("tableDiv");
+
       if(this.scope.appstate.filled) {
         this.scope.debouncedRefreshReport(this.scope);
       }
+      
+      var $window = $(window).on('resize', function(){
+        var height = $(this).height() - 300;
+        $(".tableDiv").height(height);
+      }).trigger('resize');
+
     },
     '.exportToExcell click':function(el,ev){
         var self = this;
