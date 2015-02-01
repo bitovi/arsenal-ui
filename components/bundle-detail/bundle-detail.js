@@ -457,6 +457,16 @@ var BundleDetailTabs = Component.extend({
     '.verbose-toggle click': function(el, ev) {
       this.scope.pageState.attr('verboseGrid', !this.scope.pageState.verboseGrid);
     },
+    '.bundle-detail-actions img mouseover': function(el, ev) {
+      $(".overlay").html("<label class='tooltipMessage'>"+el.data('tooltip')+"</label>");
+      $(".overlay").show();
+      console.log("Image over:"+el.data('tooltip'));
+    },
+    '.bundle-detail-actions img mouseout': function(el, ev) {
+      console.log("Image out:"+el.data('tooltip'));
+      $(".overlay").hide();
+
+    },
     '.approval-comment .btn click': function(el, ev) {
       var action = el.data('action'),
       selectedBundle = this.scope.pageState.selectedBundle,
