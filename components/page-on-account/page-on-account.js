@@ -190,9 +190,9 @@ var page = Component.extend({
           if(pbval != undefined || paymentBundleNameText != undefined){
             $("#propose").removeAttr("disabled"); 
           }
-          setTimeout(function(){
+          //setTimeout(function(){
                 self.scope.attr('enableOnAccPropose',Date.now());
-          },2000)
+          //},100)
           
       },
       ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
