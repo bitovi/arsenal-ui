@@ -248,7 +248,7 @@ var page = Component.extend({
             self.scope.attr('quarters',quarters);
             request.quarters=quarters;
             if(self.scope.tabsClicked=="NEW_ON_ACC"){
-                  message = validateFilters(self.scope.appstate,true,true,true,true,true);
+                  //message = validateFilters(self.scope.appstate,true,true,true,true,true);
                   self.scope.attr('errorMessage',message);
                   if(message.length == 0){
                     $('#newonAccountGrid, #newonAccountGridComps').show();
@@ -271,7 +271,7 @@ var page = Component.extend({
                   });
                 }
             } else if(self.scope.tabsClicked=="ON_ACC_BALANCE"){
-              message = validateFilters(self.scope.appstate,true,false,false,false,false);
+              //message = validateFilters(self.scope.appstate,true,false,false,false,false);
               self.scope.attr('errorMessage',message);
               self.scope.appstate.attr("offset", self.scope.attr('balanceOnAccOffset'));
               self.scope.appstate.attr("sortBy", self.scope.sortColumns.attr().toString());
@@ -283,7 +283,7 @@ var page = Component.extend({
                  $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={request}></rn-onaccount-balance-grid>')({request}));
                 }
               } else if(self.scope.tabsClicked=="PROPOSED_ON_ACC"){
-                  message = validateFilters(self.scope.appstate,true,false,false,false,false);
+                  //message = validateFilters(self.scope.appstate,true,false,false,false,false);
                   self.scope.attr('errorMessage',message);
                   if(message.length == 0){
                       self.scope.attr('loadProposedONAccountPage',Date.now());
