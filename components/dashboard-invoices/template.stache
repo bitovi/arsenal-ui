@@ -20,7 +20,7 @@
 {{else}}
 
 
-<div class="tableDiv">
+<div class="tableDiv" style='height: {{divCalculatedHeight}}'>
 
 <table class="holes-reports-country" border="1">
   <thead>
