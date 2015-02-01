@@ -376,7 +376,10 @@ var page = Component.extend({
               request.quarters=self.scope.quarters;
               $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
               $('#usercomments').val("");
-              self.scope.attr('cancelnewbundlereq',true);
+              var newPaymentBundleCreated = $("#newPaymentBundle").val();
+              if(newPaymentBundleCreated!=undefined &&  paymentBundleName.length>0){
+                self.scope.attr('cancelnewbundlereq',true);
+              }
               self.scope.attr('onAccountRows',rows);
               disableProposeButton(true);
             }else{
@@ -385,6 +388,9 @@ var page = Component.extend({
             },function(xhr){
               console.error("Error while Creating: onAccount Details"+xhr);
             });
+            if(self.scope.cancelnewbundlereq){
+              self.scope.attr('cancelnewbundlereq',false);
+            }
         }else{
           displayMessage('Empty Invoice Amounts',true);
         }
