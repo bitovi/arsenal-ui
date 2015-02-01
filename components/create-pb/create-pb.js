@@ -77,14 +77,16 @@ var page = Component.extend({
       self.scope.attr("paymentBundleName", requestObj.paymentBundleName);
       self.scope.attr("paymentBundleId", requestObj.paymentBundleId);
 
-    } else if(self.scope.cancelnewbundlereq){
-      this.scope.attr("createPBFlag", {
-        select: true
-      });
-      this.scope.attr("paymentBundleId", '');
-      self.scope.attr('newbundlenamereq', "undefined");
-      self.scope.attr('paymentBundleName','');
-    }else {
+    } 
+    // else if(self.scope.cancelnewbundlereq){
+    //   this.scope.attr("createPBFlag", {
+    //     select: true
+    //   });
+    //   this.scope.attr("paymentBundleId", '');
+    //   self.scope.attr('newbundlenamereq', "undefined");
+    //   self.scope.attr('paymentBundleName','');
+    // }
+    else {
       console.error("Craete Payment Bundle: Invalid Mode!!");
     }
   },
@@ -167,8 +169,20 @@ var page = Component.extend({
       this.scope.attr("paymentBundleId", '');
       self.scope.attr('newbundlenamereq', "undefined");
       self.scope.attr('paymentBundleName','');
-      self.scope.attr('cancelnewbundlereq',false);
-      }
+      var requestObj = JSON.parse(self.scope.attr("request"));
+      if (self.scope.request != undefined) {
+          BundleNamesModel.findOne(UserReq.formRequestDetails(requestObj), function(data) {
+            if(data.status == 'SUCCESS' && data.paymentBundles != undefined && data.paymentBundles.length >0){
+              self.scope.bundleNames.replace(data["paymentBundles"]);  
+            }
+          }, function(xhr) {
+            console.error("Error while loading: bundleNames" + xhr);
+          });
+       }
+       //self.scope.attr('cancelnewbundlereq',false);
+
+      }      
+
     }
   }
 });

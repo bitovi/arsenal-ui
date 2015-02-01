@@ -525,7 +525,27 @@ var validateFilters = function(appstate, validateStoreType, validateRegion, vali
     var periodFromType = appstate['periodFromType'];
     var periodTo = appstate.attr('periodTo');
     var periodToType = appstate['periodToType'];
+    var periodType = appstate['periodType']
     var message = showErrorMsg(periodWidgetHelper.getDisplayPeriod(periodFrom, periodFromType), periodWidgetHelper.getDisplayPeriod(periodTo, periodToType));
+    var validateQuarter=false;
+    if(page == 'on-account'){
+      var onAccScope=$('.page-container').closest('page-on-account').scope();
+      if(onAccScope != undefined){
+        validateQuarter=true;
+        if(onAccScope.tabsClicked == 'NEW_ON_ACC'){
+          validateQuarter=true;
+          validateLicensor=true;
+          validateContentType=true;
+        }else if(onAccScope.tabsClicked == 'ON_ACC_BALANCE'){
+          validateQuarter=true;
+          validateLicensor=true;
+        }
+      }
+    }
+
+    if(validateQuarter && periodType!="Q"){
+        return 'Please select Quarter !'
+    }
 
     if (periodFrom.length == 0 || periodFrom.trim().length == 0) {
       return 'Invalid PeriodFrom !';
@@ -539,7 +559,7 @@ var validateFilters = function(appstate, validateStoreType, validateRegion, vali
       return 'Invalid Store Type !';
     }
 
-    if (page != 'on-account' && validateRegion && (regId == null || regId == undefined)) {
+    if (validateRegion && (regId == null || regId == undefined)) {
       return 'Please select Region !';
     }
 
@@ -547,16 +567,19 @@ var validateFilters = function(appstate, validateStoreType, validateRegion, vali
       return 'Invalid Country !';
     }
 
-    if (validateLicensor && (licId == null || licId == undefined || licId == "")) {
-      return "Invalid Licensor !";
-    } else if (validateLicensor && (licId == undefined && (licId.attr() == null || licId.attr() == ""))) {
-      return "Invalid Licensor !";
+    var licTxt = $('#licensorsFilter option:selected').text();
+    if(validateLicensor && (licId == null || licId == undefined || licId == "")){
+      return "Please select Licensor !";
+    }else if(validateLicensor && (licId == undefined || (licId.attr() == null || licId.attr() =="")) || licId.length==0 || (licTxt != undefined && licTxt.length <= 0)){
+      return "Please select Licensor !";
     }
 
-    if (validateContentType && (contGrpId == null || contGrpId == undefined || contGrpId == "")) {
+    if(validateContentType && (contGrpId == null || contGrpId == undefined || contGrpId == "")){
       return "Invalid contentType !";
-    } else if (validateContentType && (contGrpId == undefined && contGrpId.attr() == null || contGrpId.attr() == "")) {
-      return "Invalid contentType !";
+    }else if(validateContentType && (contGrpId == undefined && contGrpId.attr() == null || contGrpId.attr() =="") && contGrpId.attr().length ==0){
+      return "Please select contentType !";
+    }else if(validateContentType && (contGrpId.attr().length >1  || contGrpId[0] == "-1")){
+      return "Please select single contentType !";
     }
 
     return "";

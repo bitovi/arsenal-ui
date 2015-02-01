@@ -248,7 +248,6 @@ var page = Component.extend({
             self.scope.attr('quarters',quarters);
             request.quarters=quarters;
             if(self.scope.tabsClicked=="NEW_ON_ACC"){
-                  message = validateFilters(self.scope.appstate,true,true,true,true,true);
                   self.scope.attr('errorMessage',message);
                   if(message.length == 0){
                     $('#newonAccountGrid, #newonAccountGridComps').show();
@@ -271,7 +270,6 @@ var page = Component.extend({
                   });
                 }
             } else if(self.scope.tabsClicked=="ON_ACC_BALANCE"){
-              message = validateFilters(self.scope.appstate,true,false,false,false,false);
               self.scope.attr('errorMessage',message);
               self.scope.appstate.attr("offset", self.scope.attr('balanceOnAccOffset'));
               self.scope.appstate.attr("sortBy", self.scope.sortColumns.attr().toString());
@@ -283,7 +281,6 @@ var page = Component.extend({
                  $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={request}></rn-onaccount-balance-grid>')({request}));
                 }
               } else if(self.scope.tabsClicked=="PROPOSED_ON_ACC"){
-                  message = validateFilters(self.scope.appstate,true,false,false,false,false);
                   self.scope.attr('errorMessage',message);
                   if(message.length == 0){
                       self.scope.attr('loadProposedONAccountPage',Date.now());
@@ -379,7 +376,10 @@ var page = Component.extend({
               request.quarters=self.scope.quarters;
               $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
               $('#usercomments').val("");
-              self.scope.attr('cancelnewbundlereq',true);
+              var newPaymentBundleCreated = $("#newPaymentBundle").val();
+              if(newPaymentBundleCreated!=undefined &&  paymentBundleName.length>0){
+                self.scope.attr('cancelnewbundlereq',true);
+              }
               self.scope.attr('onAccountRows',rows);
               disableProposeButton(true);
             }else{
@@ -388,6 +388,9 @@ var page = Component.extend({
             },function(xhr){
               console.error("Error while Creating: onAccount Details"+xhr);
             });
+            if(self.scope.cancelnewbundlereq){
+              self.scope.attr('cancelnewbundlereq',false);
+            }
         }else{
           displayMessage('Empty Invoice Amounts',true);
         }
@@ -937,46 +940,4 @@ var createBalanceOnAccountRequestForExportToExcel=function(appstate){
       defaultRequest.appstate.region = appstate.defaultRegion;
       return defaultRequest;
   };
-
-var validateFilters=function(appstate,validateQuarter,validateStoreType,validateRegion,validateLicensor,validateContentType){
-  if(appstate != null && appstate != undefined){
-      var serTypeId = appstate.attr('storeType');
-      var regId = appstate.attr('region');
-      var countryId = appstate['country'];
-      var licId = appstate['licensor'];
-      var contGrpId = appstate['contentType'];
-      var periodType = appstate['periodType'];
-
-      if(validateQuarter && periodType!="Q"){
-        return 'Please select Quarter !'
-      }
-
-      if(validateStoreType && (serTypeId == null || serTypeId == "")){
-        return 'Please select Store Type !';
-      }
-
-      if(validateRegion && (regId == null || regId == undefined)){
-        return 'Please select Region !';
-      }
-
-      var licTxt = $('#licensorsFilter option:selected').text();
-      if(validateLicensor && (licId == null || licId == undefined || licId == "")){
-        return "Please select Licensor !";
-      }else if(validateLicensor && (licId == undefined || (licId.attr() == null || licId.attr() =="")) || licId.length==0 || (licTxt != undefined && licTxt.length <= 0)){
-        return "Please select Licensor !";
-      }
-
-      if(validateContentType && (contGrpId == null || contGrpId == undefined || contGrpId == "")){
-        return "Invalid contentType !";
-      }else if(validateContentType && (contGrpId == undefined && contGrpId.attr() == null || contGrpId.attr() =="") && contGrpId.attr().length ==0){
-        return "Please select contentType !";
-      }else if(validateContentType && (contGrpId.attr().length >1  || contGrpId[0] == "-1")){
-        return "Please select single contentType !";
-      }
-
-     return "";
-  }
-
-
-}
 export default page;
