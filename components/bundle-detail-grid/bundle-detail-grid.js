@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import $ from 'jquery';
 import ScrollingGrid from 'components/grid/examples/scrolling-grid/';
-
+import gridUtils from 'utils/gridUtil';
 import template from './template.stache!';
 import _less from './bundle-detail-grid.less!';
 import PeriodWidgetHelper from 'utils/periodWidgetHelpers';
@@ -241,6 +241,11 @@ var BundleDetailGrid = ScrollingGrid.extend({
 
       var component = this;
       var tbody = this.element.find('tbody');
+      var $window = $(window).on('resize', function(){
+
+        var getTblBodyHght=gridUtils.getTableBodyHeight('bundleDetailGridDiv',40);
+        gridUtils.setElementHeight(tbody,getTblBodyHght,getTblBodyHght);
+      }).trigger('resize');
       var doneCallback = function() {
 
         console.log(" is Bottom grid data Available :"+component.scope.paginateAttr.recordsAvailable);

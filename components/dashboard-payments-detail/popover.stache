@@ -17,7 +17,7 @@
       </tr-->
       <tr style="width:100%;height: 60px;border-bottom: 1px solid #C6C6C6;">
         <td style="width:20px"></td>
-        <td><div class="stats-header-style" style="width: 128px;"><a class="claim-link" href="#">Total unpaid:</a></div></td>
+        <td><div class="stats-header-style" style="width: 128px;"><a class="claim-link" href="#">Total Unpaid:</a></div></td>
         <td><div class="stats-val-style">{{item.totBalPrcnt}}%</div></td>
         <td>
             <div class="gbl-curr-val-style"><span>{{item.totBalGblCcy}}</span></div>
@@ -30,7 +30,7 @@
       </tr>
       <tr style="width:100%;height: 40px;">
         <td style="width:20px"><div class="recon-square">&nbsp;</div></td>
-        <td><div class="stats-header-style">Recon unpaid:</div></td>
+        <td><div class="stats-header-style">Reconciled Unpaid:</div></td>
         <td><div class="stats-val-style">{{item.reconPrcnt}}%</div></td>
         <td>
           <div class="gbl-curr-val-style"><span>{{item.reconGblCcy}}</span></div>

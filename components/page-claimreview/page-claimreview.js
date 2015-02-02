@@ -145,9 +145,8 @@ Grid.extend({
     'inserted': function(){
       var self= this;
       var tbody = self.element.find('tbody');
-      var getTblBodyHght=gridUtils.getTableBodyHeight('claimLicencorGrid',100);
-      $(tbody).css('min-Height',getTblBodyHght);
-      $(tbody).css('max-Height',getTblBodyHght);
+      var getTblBodyHght=getVisibleGridHeight();
+      gridUtils.setElementHeight(tbody,getTblBodyHght,getTblBodyHght);
       var parentScopeVar = self.element.closest('page-claimreview').scope();
       var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
       $(tbody[0]).scrollTop(tableScrollTopVal);
@@ -301,9 +300,8 @@ Grid.extend({
     'inserted': function(){
       var self= this;
       var tbody = self.element.find('tbody');
-      var getTblBodyHght=gridUtils.getTableBodyHeight('claimLicencorGrid',100);
-      $(tbody).css('min-Height',getTblBodyHght);
-      $(tbody).css('max-Height',getTblBodyHght);
+      var getTblBodyHght=getVisibleGridHeight();
+      gridUtils.setElementHeight(tbody,getTblBodyHght,getTblBodyHght);
       var parentScopeVar = self.element.closest('page-claimreview').scope();
       var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
       $(tbody[0]).scrollTop(tableScrollTopVal);
@@ -388,6 +386,7 @@ var page = Component.extend({
     populateDefaultDataForCountry:'@',
     populateDefaultDataForLicensor:'@',
     is_aggregate:0,
+    isfromDashBoard:false,
     refreshTokenInput: function(val, type){
       //console.log("val is "+JSON.stringify(val));
       var self = this;
@@ -414,12 +413,13 @@ var page = Component.extend({
   },
   init: function(){
 	 var self = this;
-   self.scope.appstate.attr("renderGlobalSearch",true);
+    self.scope.appstate.attr("renderGlobalSearch",true);
     self.scope.attr('populateDefaultDataForLicensor',true);
     self.scope.attr("licensorViewOffset",0);
     self.scope.attr("licensorTableScrollTop",0);
     self.scope.sortColumns.replace([]);
     self.scope.attr("sortDirection","asc");
+    self.scope.attr("isfromDashBoard",self.scope.appstate.ispagelocal);
     getClaimReviewData('licensor',self.scope);
 
     },
@@ -509,16 +509,16 @@ var page = Component.extend({
           self.scope.attr('view',"country");
           ev.preventDefault();
           //console.log("fdfsdfsdf "+self.scope.attr("allClaimCountryMap").length);
-          
+
           var invoiceData = self.scope.attr("allClaimCountryMap").length;
           if(invoiceData == 0){
             var is_aggregate = self.scope.attr("is_aggregate");
             $('#claimCountryGrid').html(stache('<rn-claim-country-grid emptyrows="{emptyrows}" is_aggregate="{is_aggregate}"></rn-claim-country-grid>')({emptyrows:true, is_aggregate}));
           }
 
-       
+
           self.scope.attr("countryViewOffset",0);
-          self.scope.attr("countryTableScrollTop",0); 
+          self.scope.attr("countryTableScrollTop",0);
           self.scope.sortColumns.replace([]);
           self.scope.attr("sortDirection","asc");
           self.scope.attr('populateDefaultDataForLicensor',true);
@@ -730,13 +730,14 @@ var page = Component.extend({
           if(this.scope.attr("localGlobalSearch") != undefined || self.scope.appstate.attr("excelOutput")){
             if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch') || self.scope.appstate.attr("excelOutput")){
                 this.scope.attr("localGlobalSearch",this.scope.appstate.attr('globalSearch'));
-                //console.log("User clicked on  search"); 
+                //console.log("User clicked on  search");
+                this.scope.attr("isfromDashBoard",false);
                 getClaimReviewData(tabView,self.scope);
             }
           } else {
             if(this.scope.appstate.attr('globalSearch')==undefined)
               this.scope.appstate.attr('globalSearch',true);
-
+              this.scope.attr("isfromDashBoard",false);
             this.scope.attr("localGlobalSearch", this.scope.appstate.attr('globalSearch'));
           }
       }
@@ -834,7 +835,7 @@ var getClaimReviewData = function(tabView, self) {
 
 var getClaimReviewRequest = function(tabView,self) {
 var appstate = self.appstate;
-    if(self.populateDefaultData){
+  if(self.populateDefaultData){
       appstate = commonUtils.getDefaultParameters(appstate);
     }
  var periodFrom = appstate.periodFrom;
@@ -843,6 +844,16 @@ var appstate = self.appstate;
   var regId = appstate.region;
   var countryId = appstate.country.attr();
   var licId = appstate.licensor.attr();
+  if(self.isfromDashBoard){
+    //if it is different page  then set the parameters from appstate
+    //var localObj=appstate.pageLocalParm.pop(); //always take the first element. This will remove the consumed element from array.
+    var localObj=appstate.pageLocalParm[0];
+    if(localObj.fromPage === "dashboard-Payment"){
+      countryId=[localObj.contryName];
+      licId=[localObj.entityId];
+    }
+    appstate.ispagelocal=false;
+  }
   var contGrpId = appstate.contentType.attr();
   var periodType = appstate.periodType;
 
@@ -907,7 +918,6 @@ var appstate = self.appstate;
 
   claimLicSearchRequest["sortBy"] = self.sortColumns.attr().toString();
   claimLicSearchRequest["sortOrder"] = self.attr('sortDirection');
-
   return claimLicSearchRequest;
 
 }
@@ -1062,7 +1072,9 @@ var generateTableData = function(invoiceData,footerData){
               gridData.data[insertedId]["invoiceNumber"] = invoiceNumberArr[0];
              }
           }
-          var footerJson = {"entityId":"","__isChild":false,"entityName":"Total in Regional Currency (EUR)","invoiceNumber":"","currency":"","period":"","country":"","contentType":"","invoiceAmount":"350000","overrepAmount":"20000","lineDisputeAmount":"40000","reconAmount":"30000","oaAllocated":"2000","caAllocated":"2000","balance":"76","priorPaid":"0","invPmtSaturation":"","pmtSaturation":"","overrepDispPer":"","liDispPer":"","status":""};
+          var footerJson = {"entityId":"","__isChild":false,
+          "entityName":"Total in Regional Currency (EUR)","invoiceNumber":"","currency":"","period":"","country":"","contentType":"","invoiceAmount":"350000","overrepAmount":"20000","lineDisputeAmount":"40000","reconAmount":"30000","oaAllocated":"2000","caAllocated":"2000","balance":"76",
+          "priorPaid":"0","invPmtSaturation":"","pmtSaturation":"","overrepDispPer":"","liDispPer":"","status":""};
           //gridData.footer.push(footerJson);
 
           //console.log("footerData is "+JSON.stringify(footerData));
@@ -1209,6 +1221,16 @@ function alignGrid(divId, is_aggregate){
         }
         $('#'+divId+' table').css("width",tableWidth);
       }
+  }
+}
+
+function getVisibleGridHeight(){
+  if($('#licensorView').is(':visible')){
+    return gridUtils.getTableBodyHeight('claimLicencorGrid',100);
+  }else if($('#countryView').is(':visible')){
+    return gridUtils.getTableBodyHeight('claimCountryGrid',100);
+  }else{
+    return 400; //default height
   }
 }
 

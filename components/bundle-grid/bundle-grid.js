@@ -3,7 +3,7 @@ import ScrollingGrid from 'components/grid/examples/scrolling-grid/';
 import formats from 'utils/formats';
 import _less from './bundle-grid.less!';
 import PeriodWidgetHelper from 'utils/periodWidgetHelpers';
-
+import gridUtils from 'utils/gridUtil';
 var BundleGrid = ScrollingGrid.extend({
   tag: 'rn-bundle-grid',
   scope: {
@@ -84,10 +84,18 @@ var BundleGrid = ScrollingGrid.extend({
   events: {
     'inserted': function(el, ev) {
 
+      var tbody = this.element.find('tbody');
+      var $window = $(window).on('resize', function(){
+
+        var getTblBodyHght=gridUtils.getTableBodyHeight('payBundleGrid',25);
+        gridUtils.setElementHeight(tbody,getTblBodyHght,getTblBodyHght);
+      }).trigger('resize');
+
+
       // we have to do this manually because scroll does not bubble
       // normally, you should not attach event handlers this way!
       var component = this;
-      var tbody = this.element.find('tbody');
+
       var doneCallback = function() {
 
         console.log(" Records Availble to sort:  "+component.scope.pageState.recordsAvailable);
