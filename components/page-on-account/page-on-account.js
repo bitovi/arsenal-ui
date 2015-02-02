@@ -289,12 +289,12 @@ var page = Component.extend({
           }
       },
       "#onAccountBalance click":function(el, ev){
+        var self = this;
         ev.preventDefault();
-        this.scope.tabsClicked="ON_ACC_BALANCE";
-
+        self.scope.tabsClicked="ON_ACC_BALANCE";
+        var defaultRequest = self.scope.defaultRequest;
         $('#newonAccountGrid, #newonAccountGridComps, #proposedonAccountDiv,#proposeOnAccountGridComps, #forminlineElements,#searchDiv, #onAccountEditDeleteDiv').hide();
         $('#onAccountBalanceDiv').show();
-
 
        if ($("rn-onaccount-balance-grid").find("tbody>tr").length) {
            $('rn-onaccount-balance-grid tbody tr').css("outline","0px solid #f1c8c8");
