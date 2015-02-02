@@ -145,9 +145,8 @@ Grid.extend({
     'inserted': function(){
       var self= this;
       var tbody = self.element.find('tbody');
-      var getTblBodyHght=gridUtils.getTableBodyHeight('claimLicencorGrid',100);
-      $(tbody).css('min-Height',getTblBodyHght);
-      $(tbody).css('max-Height',getTblBodyHght);
+      var getTblBodyHght=getVisibleGridHeight();
+      gridUtils.setElementHeight(tbody,getTblBodyHght,getTblBodyHght);
       var parentScopeVar = self.element.closest('page-claimreview').scope();
       var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
       $(tbody[0]).scrollTop(tableScrollTopVal);
@@ -301,9 +300,8 @@ Grid.extend({
     'inserted': function(){
       var self= this;
       var tbody = self.element.find('tbody');
-      var getTblBodyHght=gridUtils.getTableBodyHeight('claimLicencorGrid',100);
-      $(tbody).css('min-Height',getTblBodyHght);
-      $(tbody).css('max-Height',getTblBodyHght);
+      var getTblBodyHght=getVisibleGridHeight();
+      gridUtils.setElementHeight(tbody,getTblBodyHght,getTblBodyHght);
       var parentScopeVar = self.element.closest('page-claimreview').scope();
       var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
       $(tbody[0]).scrollTop(tableScrollTopVal);
@@ -1223,6 +1221,16 @@ function alignGrid(divId, is_aggregate){
         }
         $('#'+divId+' table').css("width",tableWidth);
       }
+  }
+}
+
+function getVisibleGridHeight(){
+  if($('#licensorView').is(':visible')){
+    return gridUtils.getTableBodyHeight('claimLicencorGrid',100);
+  }else if($('#countryView').is(':visible')){
+    return gridUtils.getTableBodyHeight('claimCountryGrid',100);
+  }else{
+    return 400; //default height
   }
 }
 
