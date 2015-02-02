@@ -84,7 +84,7 @@ var DashboardPayments = Component.extend({
         //start
         var totPaidPrcnt=0;
         if(item.totBalPrcnt != null){
-          if(item.totBalPrcnt > 0){
+          if(item.totBalPrcnt >= 0){
             totPaidPrcnt = 100-item.totBalPrcnt;
           }
         }
@@ -93,7 +93,7 @@ var DashboardPayments = Component.extend({
           $.each(item.payments,function(index,itemVal){
             var totPaidPrcnt=0;
             if(itemVal.totBalPrcnt != null){
-              if(itemVal.totBalPrcnt > 0){
+              if(itemVal.totBalPrcnt >= 0){
                 totPaidPrcnt = 100-itemVal.totBalPrcnt;
               }
             }

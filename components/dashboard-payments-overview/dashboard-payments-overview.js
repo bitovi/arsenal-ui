@@ -35,7 +35,7 @@ var DashboardPaymentsOverview = Component.extend({
             $.each(tempArray,function(index,itemVal){
               var totPaidPrcnt=0;
               if(itemVal.totBalPrcnt != null){
-                if(itemVal.totBalPrcnt > 0){
+                if(itemVal.totBalPrcnt >= 0){
                   totPaidPrcnt = 100-itemVal.totBalPrcnt;
                 }
               }
@@ -56,7 +56,7 @@ var DashboardPaymentsOverview = Component.extend({
             $.each(tempArray2,function(index,itemVal){
               var totPaidPrcnt=0;
               if(itemVal.totBalPrcnt != null){
-                if(itemVal.totBalPrcnt > 0){
+                if(itemVal.totBalPrcnt >= 0){
                   totPaidPrcnt = 100-itemVal.totBalPrcnt;
                 }
               }
