@@ -250,7 +250,7 @@
 		    				<div class="col-sm-3 textalignright small-headers align-left1" style="padding-right: 40px;">
 			    				<label>Comments:</label>
 							</div>
-			    			<div class="multipleComments col-sm-9 requiredBar" id="multipleComments" style="padding: 2px;margin-left: -15px;">
+			    			<div class="multipleComments col-sm-9 requiredBar" id="multipleComments" style="padding: 2px;margin-left: -15px;padding-top: 0px;">
 						
 							</div>
 

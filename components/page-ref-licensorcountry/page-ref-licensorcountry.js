@@ -841,7 +841,7 @@ function alignGridStats(divId){
           }
 
         if(i==1)
-          tdWidth = 35;
+          tdWidth = 45;
         
         tableWidth += tdWidth;
         cellWidthArr.push(tdWidth);
