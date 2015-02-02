@@ -1,31 +1,33 @@
 <!--<div class="col-lg-12 pageTitle" >
-	<div class="col-lg-3" style="float:left;height:40px">
-	    <h3>Dashboard</h3>
-	 </div>
-  	<div class="col-lg-9" style="float:left">
-  	<div id="messageDiv" class="col-md-12" ></div>
-	</div>
+<div class="col-lg-3" style="float:left;height:40px">
+<h3>Dashboard</h3>
+</div>
+<div class="col-lg-9" style="float:left">
+<div id="messageDiv" class="col-md-12" ></div>
+</div>
 </div>-->
-<div class="div-warn-container">
-	<div class="row pagetitle-div-parent">
-		<div class="col-sm-5 pageTitle" style="padding-left: 18px;">
-			<div class="pageHead">Dashboard</div>
+<div class="col-lg-12 page-container">
+	<div class="div-warn-container">
+		<div class="row pagetitle-div-parent">
+			<div class="col-sm-5" style="padding-left: 0px;">
+				<div class="pageHead">Dashboard</div>
+			</div>
+		</div>
+		<div class="col-sm-7 div-warn-parent">
+			<div id="messageDiv" class="center" role="alert"></div>
 		</div>
 	</div>
-	<div class="col-sm-7 div-warn-parent">
-		<div id="messageDiv" class="center" role="alert"></div>
-	</div>
-</div>
 
-<rn-switcher options="{tabs}" selected-option="{selectedTab}" value-property="text" class="tabs"></rn-switcher>
-<div class="dashboard-container">
-  {{#ifSelectedTab 'Approvals'}}
-  <rn-dashboard-approvals appstate="{appstate}"></rn-dashboard-approvals>
-  {{/ifSelectedTab}}
-  {{#ifSelectedTab 'Invoices Received'}}
-  <rn-dashboard-invoices appstate="{appstate}"></rn-dashboard-invoices>
-  {{/ifSelectedTab}}
-  {{#ifSelectedTab 'Payments'}}
-  <rn-dashboard-payments appstate="{appstate}"></rn-dashboard-payments>
-  {{/ifSelectedTab}}
+	<rn-switcher options="{tabs}" selected-option="{selectedTab}" value-property="text" class="tabs"></rn-switcher>
+	<div class="dashboard-container">
+		{{#ifSelectedTab 'Approvals'}}
+		<rn-dashboard-approvals appstate="{appstate}"></rn-dashboard-approvals>
+		{{/ifSelectedTab}}
+		{{#ifSelectedTab 'Invoices Received'}}
+		<rn-dashboard-invoices appstate="{appstate}"></rn-dashboard-invoices>
+		{{/ifSelectedTab}}
+		{{#ifSelectedTab 'Payments'}}
+		<rn-dashboard-payments appstate="{appstate}"></rn-dashboard-payments>
+		{{/ifSelectedTab}}
+	</div>
 </div>

@@ -119,9 +119,24 @@ var DashboardPaymentsDetail = Component.extend({
       }*/
       'table#UnpaidPopup a.claim-link click':function(el,ev){
         var self = this;
+        //get the country and entity name from the selected item, to set it in the global search.
+        //as per the current design it will override the user selected global search.
+        //we should enhanced to do the local search restricated to that page only.
+        if($('.chart-list li[aria-describedby*="popover"]').data('item').item != 'undefined' &&
+          $('.chart-list li[aria-describedby*="popover"]').data('item').item != null){
+            var selectedListItem=$('.chart-list li[aria-describedby*="popover"]').data('item').item;
+            var selectedCntry=selectedListItem.ctry;
+            var selectedEntity=selectedListItem.entyName;
+            var entityId=$('#licensorsFilter option').filter(function() {
+              return $(this).text() == selectedEntity;
+            }).val();
+            self.scope.appstate.ispagelocal=true;
+            var localObj={"contryName":selectedCntry,"entityId":entityId,"fromPage":"dashboard-Payment","toPage":"claimreview"};
+            self.scope.appstate.pageLocalParm=[];
+            self.scope.appstate.pageLocalParm.push(localObj);
+          }
         self.scope.appstate.attr('page','claimreview');
       }
-
     }
 });
 

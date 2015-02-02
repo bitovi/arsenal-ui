@@ -52,6 +52,8 @@ var stateDefaults = {
   renderGlobalSearch:true,
   globalSearch:undefined,
   csrfToken:undefined,
+  ispagelocal:false, //it will be set to true when you navigate from one page to another
+  pageLocalParm:[], //if ispagelocal is true then this array should have value. The values from this array will be take and used to query database
   fetchSize:30 //default fetch size. This will be overrided in index.js based on the browser size that the user is using.
 };
 

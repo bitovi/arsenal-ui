@@ -9,14 +9,17 @@ var gridUtil = {
   along with the element id.
   */
   getTableBodyHeight:function (element,requireHghtPercent){
-    var offset = $('#'+element).offset();
-    var posYOfelement = offset.top - $(window).scrollTop();
-    var windowHeight=$(window).height();
-    var heightRemain=windowHeight-posYOfelement;
-    var percentHeight=heightRemain*(requireHghtPercent/100);
-    var tableHeadheight=$('#'+element+' table>thead').height();
-    var tableFootheight=$('#'+element+' table>tfoot').height();
-    var tableBodyHeight=percentHeight-(tableHeadheight+tableFootheight+30); //30 pixel left out for the bottom space
+    var tableBodyHeight='200px'; // set the default value
+    if(!typeof $('#'+element) != 'undefined' ){
+      var offset = $('#'+element).offset();
+      var posYOfelement = offset.top - $(window).scrollTop();
+      var windowHeight=$(window).height();
+      var heightRemain=windowHeight-posYOfelement;
+      var percentHeight=heightRemain*(requireHghtPercent/100);
+      var tableHeadheight=$('#'+element+' table>thead').height();
+      var tableFootheight=$('#'+element+' table>tfoot').height();
+      tableBodyHeight=percentHeight-(tableHeadheight+tableFootheight+30); //30 pixel left out for the bottom space
+    }
     return tableBodyHeight;
   },
 
