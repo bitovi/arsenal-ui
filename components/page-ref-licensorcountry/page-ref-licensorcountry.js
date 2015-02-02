@@ -250,6 +250,7 @@ var page = Component.extend({
 
           $(".mainLayoutId").hide();
           $(".buttonsPlaceHolder").hide();
+          $("#loading_img").hide();
 
           $(".multicomments-required").hide();
 
@@ -260,7 +261,7 @@ var page = Component.extend({
 
 
 
-          $('#grid-report-config').append(stache('<rn-grid rows="{reportConfigurationList}"></rn-grid>')({reportConfigurationList}));
+          $('#grid-report-config').append(stache('<rn-grid-report-configuration rows="{reportConfigurationList}"></rn-grid-report-configuration>')({reportConfigurationList}));
           $('#grid-revision-history').append(stache('<rn-grid-revision-history rows="{revisionHistory}"></rn-grid-revision-history>')({revisionHistory}));
 
           $('#countryLicForm').on('init.form.bv', function(e, data) {
@@ -422,8 +423,9 @@ var page = Component.extend({
 
         '#fetchDetailsBtn click':function(){
 
-            $(".mainLayoutId").show();
+            $(".mainLayoutId").hide();
             $(".buttonsPlaceHolder").show();
+            $("#loading_img").show();
 
              var requestObj  = {
               entityCountryDetails:{
@@ -441,6 +443,8 @@ var page = Component.extend({
               self.pageState.entityCountryDetails.entityCountry.attr("invoiceCurr", data.entityCountryDetails.entityCountry.invoiceCurr);
               $("#countryId").val(requestObj.entityCountryDetails.entityCountry.countryId);
               self.attr("refreshEntityId", true);
+              $("#loading_img").hide();
+              $(".mainLayoutId").show();
             },function(xhr){
               console.error("Error while loading: country-Entity Details"+xhr);
             });
@@ -756,8 +760,10 @@ var loadPage = function(scope,data){
   }
 
   setTimeout(function(){
-    alignGridStats('grid-revision-history');
+    //alignGridStats('grid-revision-history');
     alignGridStats('grid-report-config');
+    //$("#grid-revision-history-heading table").append($(".rn-grid thead"));
+    //$(".rn-grid thead").remove();
   },10);
 
 }
