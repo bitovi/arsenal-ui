@@ -24,11 +24,11 @@
 
 					    	<div class="col-sm-6">
 
-					    		<div class="col-sm-9" style="margin-left: 0px">
+					    		<div class="col-sm-12" style="margin-left: 0px">
 
 						    		<!-- <div class="col-sm-12"> -->
 
-						    			<div class="col-sm-3 small-headers align-left" style="text-align:right">
+						    			<div class="col-sm-4 small-headers align-left" style="text-align:right;margin-left:-46px;">
 						    				<label>Entity:</label>
 										</div>
 						    			<div class="col-sm-4 form-group requiredBar">
@@ -51,7 +51,7 @@
 
 										</div>
 
-										<div class="col-sm-3 align-left">
+										<div class="col-sm-2 align-left" style="margin-left:0px;width:120px;">
 
 											<button type="button" id="analyticsAdd"  name="analyticsAdd"
 												class="btn buttonSubmit btn-custom-small" style="margin-left:15px;">Add</button>
@@ -100,8 +100,8 @@
 	    	
 	    				<div class="col-sm-12" id="spaceBar"></div>
 	    		
-		    			<div class="col-sm-11 col-sm-offset-0">
-		    				<div class="col-sm-3 textalignright small-headers align-left">
+		    			<div class="col-sm-12 col-sm-offset-0">
+		    				<div class="col-sm-4 textalignright small-headers align-left">
 			    				<label>Licensor:</label>
 							</div>
 			    			<div class="col-sm-4 form-group requiredBar">
@@ -111,8 +111,8 @@
 
 					
 
-		    			<div class="col-sm-11 col-sm-offset-0 status">
-		    				<div class="col-sm-3 textalignright small-headers align-left">
+		    			<div class="col-sm-12 col-sm-offset-0 status">
+		    				<div class="col-sm-4 textalignright small-headers align-left">
 			    				<label>Status:</label>
 							</div>
 			    			<div class="col-sm-4 inputPadding" can-value="licDetails.data.status">
@@ -124,8 +124,8 @@
 
 					
 		    			{{getPeriodFromVal}}
-		    			<div class="col-sm-11 col-sm-offset-0">
-		    				<div class="col-sm-3 textalignright small-headers align-left">
+		    			<div class="col-sm-12 col-sm-offset-0">
+		    				<div class="col-sm-4 textalignright small-headers align-left">
 			    				<label>Valid From:</label>
 							</div>
 			    			<div class="col-sm-4 form-group requiredBar" id="periodFromcontainer">
@@ -142,8 +142,8 @@
 
 					
 
-						<div class="col-sm-11 col-sm-offset-0">
-		    				<div class="col-sm-3 textalignright small-headers align-left">
+						<div class="col-sm-12 col-sm-offset-0">
+		    				<div class="col-sm-4 textalignright small-headers align-left">
 			    				<label>Valid To:</label>
 							</div>
 			    			<div class="col-sm-4 inputPadding" id="periodTocontainer">
@@ -159,8 +159,8 @@
 		    			 <div class='period-invalid'> Invalid Period !</div>
 		    							
 
-						<div class="col-sm-11 col-sm-offset-0 form-group">
-		    				<div class="col-sm-3 textalignright small-headers align-left">
+						<div class="col-sm-12 col-sm-offset-0 form-group">
+		    				<div class="col-sm-4 textalignright small-headers align-left">
 			    				<label>Account Name:</label>
 							</div>
 			    			<div class="col-sm-4 requiredBar">
@@ -170,8 +170,8 @@
 						</div>
 						<div class="col-sm-12" id="spaceBar5px"></div>
 
-						<div class="col-sm-11 col-sm-offset-0 form-group">
-		    				<div class="col-sm-3 textalignright small-headers align-left">
+						<div class="col-sm-12 col-sm-offset-0 form-group">
+		    				<div class="col-sm-4 textalignright small-headers align-left">
 			    				<label>Invoice Type:</label>
 							</div>
 			    			<div class="col-sm-4 requiredBar">
@@ -193,9 +193,9 @@
 		    			
 						<div class="col-sm-12" id="spaceBar5px"></div>
 
-		    			<div class="col-sm-11 col-sm-offset-0 form-group RepSplit">
+		    			<div class="col-sm-12 col-sm-offset-0 form-group RepSplit">
 
-		    				<div class="col-sm-3 textalignright small-headers align-left">
+		    				<div class="col-sm-4 textalignright small-headers align-left">
 			    				<label>Representation Split:</label>
 							</div>
 			    			<div class="col-sm-4 inputPadding">
@@ -206,9 +206,9 @@
 
 						
 
-		    			<div class="col-sm-11 col-sm-offset-0 form-group">
+		    			<div class="col-sm-12 col-sm-offset-0 form-group">
 
-		    				<div class="col-sm-3 textalignright small-headers align-left">
+		    				<div class="col-sm-4 textalignright small-headers align-left">
 			    				<label>SAP vendor#:</label>
 							</div>
 			    			<div class="col-sm-4 requiredBar">
@@ -219,9 +219,9 @@
 
 					
 
-		    			<div class="col-sm-11 col-sm-offset-0 form-group paymentTerms">
+		    			<div class="col-sm-12 col-sm-offset-0 form-group paymentTerms">
 
-		    				<div class="col-sm-3 textalignright small-headers align-left">
+		    				<div class="col-sm-4 textalignright small-headers align-left">
 			    				<label>Payment Terms(Days):</label>
 							</div>
 			    			<div class="col-sm-4 inputPadding">
@@ -231,9 +231,9 @@
 		    			</div>
 
 
-		    			<div class="col-sm-11 col-sm-offset-0 uploadedFTP">
+		    			<div class="col-sm-12 col-sm-offset-0 uploadedFTP">
 
-		    				<div class="col-sm-3 textalignright small-headers align-left">
+		    				<div class="col-sm-4 textalignright small-headers align-left">
 			    				<label>Uploaded Files to sFTP: </label>
 							</div>
 			    			<div class="col-sm-4 inputPadding">
@@ -244,13 +244,13 @@
 
 		    			
 
-		    			<div class="col-sm-11 col-sm-offset-0 form-group" style="padding: 0px;">
+		    			<div class="col-sm-12 col-sm-offset-0 form-group" style="padding: 0px;">
 		    				<div class="col-sm-12 multicomments-required"> Enter comments !</div>
 
-		    				<div class="col-sm-3 textalignright small-headers align-left1" style="padding-right: 40px;">
+		    				<div class="col-sm-4 textalignright small-headers align-left1" style="padding-right: 30px;">
 			    				<label>Comments:</label>
 							</div>
-			    			<div class="multipleComments col-sm-9 requiredBar" id="multipleComments" style="padding: 2px;margin-left: -15px;">
+			    			<div class="multipleComments col-sm-8 requiredBar" id="multipleComments" style="padding: 2px;margin-left: -15px;">
 						
 							</div>
 
@@ -308,19 +308,19 @@
 			    						</tr>
 			    					</thead>
 			    					<tbody>
-			    						<tr colspan="3" class="countryReportColumn">
+			    						<tr colspan="3">
 			    							
 			    							<td can-value="countries">
 					    						{{#each countries}}
 					    							<div  style="height:1.5em"><input type="checkbox" value="{{name}}" class="countryBox" val="false"/></div>
 					    						{{/each}}
 					    					</td>
-					    					<td can-value="countries">
+					    					<td can-value="countries" class="countryReportColumn">
 					    						{{#each countries}}
 					    							<div style="height:1.5em">{{name}}</div>
 					    						{{/each}}
 					    					</td>
-					    					<td can-value="reportTypes">
+					    					<td can-value="reportTypes" class="countryReportColumn">
 					    						{{#each reportTypes}}
 					    							<div  style="height:1.5em"><input type="checkbox" value="{{actualName}}"  actualValue= "{{name}}" class="reportBox"  val="false"/> {{name}}</div>
 					    						{{/each}}
@@ -332,8 +332,8 @@
 				    				</tbody>
 				    				<tfoot>
 				    				 <tr>
-				    				  <td  colspan="3">
-				    					<button type="button" id="applyAllSelected" name="applyAll" class="btn buttonSubmit btn-custom-small3px  applyAllSelected" style="margin-left:80%;">Apply Selected</button>
+				    				  <td  colspan="3" style="text-align:right;padding-right:2%;">
+				    					<button type="button" id="applyAllSelected" name="applyAll" class="btn buttonSubmit btn-custom-small3px  applyAllSelected" style="">Apply Selected</button>
 				    				 	</td>
 				    				 </tr>
 				    				</tfoot>
@@ -350,7 +350,7 @@
 								<label class="mid-headers">Society Contacts:</label>
 							</div>
 			    		
-			    			<div class="col-sm-12 societyContacts">
+			    			<div class="col-sm-12 societyContacts" id="societyContacts">
 		    					<table class="societyContacts">
 			    					<thead>
 			    						<tr>
@@ -448,12 +448,12 @@
 
 
 		<div class="col-sm-4 col-sm-offset-4" class="confirmationReportConfig" style="display:none">
-			<div style="float:left"><img src="resources/images/close.png" class="closeConfirmBox"  style="float:right;"></img></div>
+			<div style="float:left;cursor:pointer;"><img src="resources/images/close.png" class="closeConfirmBox"  style="float:right;"></img></div>
 			<div class="col-sm-12" id="spaceBar"></div>
 			<div class="col-sm-12 confirmHeading">Confirm your selection</div>
 			<div class="col-sm-12" id="spaceBar"></div>
 			<div class="col-sm-12" style="border: 0px">
-			<div class="repConfTable">
+			<div class="repConfTable" id="repConfTable">
 				<table style="width: 100%;">
 					<thead>
 						<tr>

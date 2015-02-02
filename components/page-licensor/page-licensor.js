@@ -401,7 +401,7 @@ var page = Component.extend({
     getSocietyContactDetails : function() {
 
       var elementArr = [];
-
+      
       var j = 0;
 
       for(var i=0; i< this.newContactDetails.data.length; i++) {
@@ -815,6 +815,8 @@ var page = Component.extend({
         alignGridStats('countryModelMapping');
         alignGridStats('repConfiguration');
         alignGridStats('societyContacts');
+        var socTableWidth=$('#societyContacts table').outerWidth()-15;
+        $('#societyContacts table').css("width",socTableWidth);
       },100);
 
 
@@ -2195,17 +2197,22 @@ function alignGridStats(divId){
         for(var j=1;j<=cellWidthArr.length;j++){
           var width = cellWidthArr[j-1]+moreWidth;
 
-          $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
+          $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);          
+          $('#'+divId+' table>thead>tr>th:last-child').css("width",width+1);
           $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width);
           $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
+          
         }
         $('#'+divId+' table').css("width",divWidth);
       } else {
         for(var j=1;j<=cellWidthArr.length;j++){
           var width = cellWidthArr[j-1];
           $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
+          $('#'+divId+' table>thead>tr>th:last-child').css("width",width+1);
           $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width);
           $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
+
+          $('#societyContacts table>thead>tr>th:last-child').css("width",width-1);
 
         }
         $('#'+divId+' table').css("width",tableWidth);
