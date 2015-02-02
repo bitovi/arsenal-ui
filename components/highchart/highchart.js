@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import Component from 'can/component/';
 
 import template from './template.stache!';
@@ -22,24 +23,24 @@ var highchartpage = Component.extend({
 	  invoiceAmount:[]
   },
   init: function(){
-	 //console.log('Inside high chart'); 
+	 //console.log('Inside high chart');
     },
     events: {
     	"inserted": function(){
-    	
+
     		 var highChartdata;
     		  	 var self = this;
 
     		  	 var chartdata = self.scope.details;
     		  	// console.log(JSON.stringify(self.scope.details));
-    	
+
     		  var genObj = {};
     		     genObj["requestFrom"]=chartdata.requestFrom;
     		     genObj["licensorId"]=chartdata.licensorId;
     		     genObj["countryId"]=chartdata.countryId;
     		     genObj["fiscalPeriod"]=chartdata.fiscalPeriod;
-    		     if(chartdata.fiscalPeriod.indexOf("P") > -1  || chartdata.fiscalPeriod.indexOf("Q") > -1){
-					genObj["fiscalPeriod"]=periodWidgetHelper.getFiscalPeriod(chartdata.fiscalPeriod);
+    		     if(_.isString(chartdata.fiscalPeriod) && ( chartdata.fiscalPeriod.indexOf("P") > -1  || chartdata.fiscalPeriod.indexOf("Q") > -1)){
+					          genObj["fiscalPeriod"]=periodWidgetHelper.getFiscalPeriod(chartdata.fiscalPeriod);
     		     }
     		     genObj["periodType"]=chartdata.periodType;
     		     genObj["contentType"]=chartdata.contentType;
@@ -118,11 +119,11 @@ var highchartpage = Component.extend({
 					            borderWidth: 0
 					        },
 					        exporting: {
-					            enabled: false 
+					            enabled: false
 					        },
 					        series: [{
 					            name: 'Invoice Amount',
-					            data: highChartdata["INVOICE_AMOUNT"] 
+					            data: highChartdata["INVOICE_AMOUNT"]
 					        }, {
 					            name: 'Overrep Amount',
 					            data: highChartdata["OVERREP_AMOUNT"]
@@ -156,7 +157,7 @@ var highchartpage = Component.extend({
     },
     "#myImage click ":function(){
     	$("#highChartDetails").addClass("highcharts_Hide");
-    }    
+    }
 });
 
 
@@ -169,7 +170,7 @@ function prepareCanMap(object){
 	var overRepAmountList = [];
 	var lineItemAmountList = [];
 	for(var i=0; i<object.length;i++){
-		var obj = object[i]; 
+		var obj = object[i];
 		console.log("Inside for loop :"+obj.fiscalPeriod);
 		 periodList[i] = periodWidgetHelper.getDisplayPeriod(obj.fiscalPeriod, "P");//obj.fiscalPeriod;
 		 invoiceAmountList[i] = obj.invoiceAmount;
