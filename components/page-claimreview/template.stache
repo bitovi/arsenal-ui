@@ -43,10 +43,10 @@
   		   <div id="aggregate" class="hide"><input id="chkAggregate" type="checkbox"> Aggregate period</div>
   		   	<li class="pull-right marginTop-10 customLI">
   		   	<div id="searchDiv">
-  		   		<input type="text" class="form-control" id="tokenSearch">
-  		        <img src="resources/images/charticon.png" class="" id="highChart" style="cursor: pointer;">
-  		        <img class="exportToExcel" id="exportExcel">
-  		        <img class="copyToClipboard" id="copyToClipboard">
+  		   		  <input type="text" class="form-control" id="tokenSearch">
+  		        <img src="resources/images/charticon.png" class="toolbox-img-style" id="highChart" style="cursor: pointer;">
+  		        <img class="exportToExcel toolbox-img-style" id="exportExcel">
+  		        <img class="copyToClipboard toolbox-img-style" id="copyToClipboard">
   		    </div>
   		   	</li>
   		</ul>
