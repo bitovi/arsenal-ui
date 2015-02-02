@@ -2,7 +2,7 @@
 {{#if fetching}}
 <div class="select-message">Loading Payments report...</div>
 {{else}}
-<div id="parentcontainer" style="height:height:100vh;width:100%;padding-top: 1em">
+<div id="parentcontainer" style="height:100%;width:100%;padding-top: 1em">
 <div class="sidebar" style="height:auto; width:30%;float:left;">
   <rn-switcher options="{tabs}" selected-option="{selectedTab}"></rn-switcher>
   <ul class="chart-list">
