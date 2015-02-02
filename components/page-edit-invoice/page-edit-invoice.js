@@ -691,16 +691,26 @@ var page = Component.extend({
 
 						}
 					}
-					if(event[0].id == "taxAmount"){
-						if((parseFloat(event[0].value) < 0) || isNaN(event[0].value)){
-
-							showError(event[0].id, "Please provide positive value for tax");
-						}else if (event[0].value != "" && event[0].value != undefined && event[0].value.length != 0) {
-              var decimal_validate_RE=/^\d{0,10}(\.\d{0,8})?$/;
-              if(!decimal_validate_RE.test(event[0].value)){
-                showError(event[0].id, "Please provide Tax value in [##########.########] format");
+					if (event[0].id == "taxAmount") {
+						var errorMessage="";
+						if($.isNumeric(event[0].value)){
+							if((parseFloat(event[0].value) < 0)){
+								errorMessage="Please provide positive Tax";	
+							}else {
+								var decimal_validate_RE = /^\d{0,10}(\.\d{0,8})?$/;
+								if (!decimal_validate_RE.test(event[0].value)) {
+									errorMessage="Please provide Tax value in [##########.########] format";
+								}
+							}
+						}else if(event[0].value.length==0){
+							errorMessage="";
+						}else{
+							errorMessage="Please provide numeric value for Tax";
 						}
-            }else{
+						if(errorMessage.length>0){
+							removeError(event[0].id);
+							showError(event[0].id,errorMessage);
+						}else{
 							removeError(event[0].id);
 						}
 					}
