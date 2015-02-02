@@ -18,7 +18,7 @@
     </div>
   </div>
   <div id="chartContainer" class="col-lg-12">
-  	<div id="highChartDetails" class="highcharts_Hide"></div>
+  	<div id="highChartDetails" class="highcharts_Hide" style="top:10%;></div>
   </div>
 
   <div class="col-lg-12 claimReviewContainer">
@@ -44,7 +44,7 @@
   		   	<li class="pull-right marginTop-10 customLI">
   		   	<div id="searchDiv">
   		   		<input type="text" class="form-control" id="tokenSearch">
-  		        <img src="resources/images/charticon.png" class="" id="highChart">
+  		        <img src="resources/images/charticon.png" class="" id="highChart" style="cursor: pointer;">
   		        <img class="exportToExcel" id="exportExcel">
   		        <img class="copyToClipboard" id="copyToClipboard">
   		    </div>
