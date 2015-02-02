@@ -1397,7 +1397,7 @@ var page = Component.extend({
                       message: 'Contact Email is mandatory'
                   },
                   regexp: {
-                      regexp: /^[a-zA-Z0-9_\- ]*@[a-zA-Z0-9_\- ]*[.[a-zA-Z0-9_\- ]*]*$/i,
+                      regexp: /^[a-zA-Z0-9_\- ]*[.[a-zA-Z0-9_\- ]*]*@[a-zA-Z0-9_\- ]*[.[a-zA-Z0-9_\- ]*]*$/i,
                       message: 'Please provide valid characters'
                   },
                   callback: {
@@ -1600,6 +1600,7 @@ var page = Component.extend({
           Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
             self.scope.populateAnalyticsPage(values);
+            self.scope.reValidateFiledsonLoad()
 
           });
 

@@ -250,6 +250,7 @@ var page = Component.extend({
 
           $(".mainLayoutId").hide();
           $(".buttonsPlaceHolder").hide();
+          $("#loading_img").hide();
 
           $(".multicomments-required").hide();
 
@@ -260,7 +261,7 @@ var page = Component.extend({
 
 
 
-          $('#grid-report-config').append(stache('<rn-grid rows="{reportConfigurationList}"></rn-grid>')({reportConfigurationList}));
+          $('#grid-report-config').append(stache('<rn-grid-report-configuration rows="{reportConfigurationList}"></rn-grid-report-configuration>')({reportConfigurationList}));
           $('#grid-revision-history').append(stache('<rn-grid-revision-history rows="{revisionHistory}"></rn-grid-revision-history>')({revisionHistory}));
 
           $('#countryLicForm').on('init.form.bv', function(e, data) {
@@ -336,12 +337,14 @@ var page = Component.extend({
           });
 
         },
-        ".rn-grid>tbody>tr td dblclick": function(item, el, ev){
+        "#grid-revision-history table>tbody>tr td dblclick": function(item, el, ev){
           //var invoiceid = el.closest('tr').data('row').row.id;
           var self=this.scope;
           var row = item.closest('tr').data('row').row;
 
-
+          $(".mainLayoutId").hide();
+          $("#loading_img").show();
+          
           var requestObj  = {
             entityCountryDetails:{
               entityCountry:{
@@ -353,6 +356,9 @@ var page = Component.extend({
           CountryLicensor.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
             loadPage(self, data);
+
+            $("#loading_img").hide();
+            $(".mainLayoutId").show();
 
           },function(xhr){
             console.error("Error while loading: country-Entity Details"+xhr);
@@ -422,8 +428,9 @@ var page = Component.extend({
 
         '#fetchDetailsBtn click':function(){
 
-            $(".mainLayoutId").show();
+            $(".mainLayoutId").hide();
             $(".buttonsPlaceHolder").show();
+            $("#loading_img").show();
 
              var requestObj  = {
               entityCountryDetails:{
@@ -441,6 +448,8 @@ var page = Component.extend({
               self.pageState.entityCountryDetails.entityCountry.attr("invoiceCurr", data.entityCountryDetails.entityCountry.invoiceCurr);
               $("#countryId").val(requestObj.entityCountryDetails.entityCountry.countryId);
               self.attr("refreshEntityId", true);
+              $("#loading_img").hide();
+              $(".mainLayoutId").show();
             },function(xhr){
               console.error("Error while loading: country-Entity Details"+xhr);
             });
@@ -758,6 +767,8 @@ var loadPage = function(scope,data){
   setTimeout(function(){
     alignGridStats('grid-revision-history');
     alignGridStats('grid-report-config');
+    //$("#grid-revision-history-heading table").append($(".rn-grid thead"));
+    //$(".rn-grid thead").remove();
   },10);
 
 }
@@ -812,7 +823,7 @@ function alignGridStats(divId){
   var tableWidth = 0;
   var tdWidth, cellWidthArr = [];
   if(rowLength>0){
-    $('#'+divId+' table').css("width",divWidth);
+    $('#'+divId+' table').css("width",divWidth-300);
       for(var i=1;i<=colLength;i++){
         var theadTdWidth = $('#'+divId+' table>thead>tr>th:nth-child('+i+')').outerWidth();
         var tbodyTdWidth = $('#'+divId+' table>tbody>tr>td:nth-child('+i+')').outerWidth();
@@ -822,11 +833,15 @@ function alignGridStats(divId){
           tdWidth = theadTdWidth;
         else if(tfootTdWidth >= tbodyTdWidth && tfootTdWidth >= theadTdWidth)
           tdWidth = tfootTdWidth;
-        else 
-          tdWidth = theadTdWidth;
+        else
+          if(divWidth > tableWidth + tbodyTdWidth) {
+            tdWidth = tbodyTdWidth;
+          } else {
+            tdWidth = divWidth - tableWidth;
+          }
 
         if(i==1)
-          tdWidth = 35;
+          tdWidth = 45;
         
         tableWidth += tdWidth;
         cellWidthArr.push(tdWidth);
@@ -838,19 +853,21 @@ function alignGridStats(divId){
           var width = cellWidthArr[j-1]+moreWidth;
 
           $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
-          $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width);
+          $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("min-width",width);
           $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
         }
         $('#'+divId+' table').css("width",divWidth);
+        $('#'+divId+' table>tbody').css("max-width",divWidth);
       } else {
         for(var j=1;j<=cellWidthArr.length;j++){
           var width = cellWidthArr[j-1];
           $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
-          $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width);
+          $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("min-width",width);
           $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
 
         }
         $('#'+divId+' table').css("width",tableWidth);
+        $('#'+divId+' table>tbody').css("max-width",tableWidth);
       }
   }
 }

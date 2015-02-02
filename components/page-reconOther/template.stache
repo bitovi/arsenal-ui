@@ -51,14 +51,18 @@
         <div id="my-tab-content" class="tab-content">
         <div id="loading_img"></div>
         <div class="tab-pane active grid-custom-overflow" id="incomingDetails">
-          <rn-recon-grid columns="{detailGridColumns}" rows="{incomingDetails.headerRows}" footerrows="{incomingDetails.footerRows}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}" emptyrows="{emptyrows}" pagename="{pagename}"></rn-recon-grid>
+          <div id="incomingDetailsGrid">
+            <rn-recon-grid columns="{detailGridColumns}" rows="{incomingDetails.headerRows}" footerrows="{incomingDetails.footerRows}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}" emptyrows="{emptyrows}" pagename="{pagename}"></rn-recon-grid>
+          </div>
         </div>
 
         
         <div class="tab-pane grid-custom-overflow" id="reconstatsOtherGrid">
             <div id="loading_img"></div>
-            <rn-recon-grid columns="{incomingOtherGridColumns}" rows="{incomingOtherList}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}"
-            pagename="{pagename}"></rn-recon-grid>
+            <div id="reconstatsOtherGrids">
+              <rn-recon-grid columns="{incomingOtherGridColumns}" rows="{incomingOtherList}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}"
+                pagename="{pagename}"></rn-recon-grid>
+            </div>
         </div>
 
       </div>
