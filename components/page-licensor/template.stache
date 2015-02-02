@@ -416,7 +416,7 @@
 
 			 			<div class="col-sm-12 revHistCollapserId" style="padding-left: 0px;">
 			 				<div class="col-sm-12">
-								<img src="resources/images/collapse.png" class="revHistCollapse"  style="float:left"></img>
+								<!-- <img src="resources/images/collapse.png" class="revHistCollapse"  style="float:left"></img> -->
 								<label class="mid-headers">Revision History</label>
 							</div>
 						</div>

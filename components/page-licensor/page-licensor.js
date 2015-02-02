@@ -815,7 +815,6 @@ var page = Component.extend({
         alignGridStats('countryModelMapping');
         alignGridStats('repConfiguration');
         alignGridStats('societyContacts');
-        
         var socTableWidth=$('#societyContacts table').outerWidth()-15;
         $('#societyContacts table').css("width",socTableWidth);
       },100);
@@ -943,7 +942,7 @@ var page = Component.extend({
 
         $('#entityLicensorBottom').bootstrapValidator('validate');
 
-        if($('#entityLicensorBottom').data('bootstrapValidator').isValid() == false && !isValid) {
+        if($('#entityLicensorBottom').data('bootstrapValidator').isValid() == false || !isValid) {
 
           return;
 
@@ -1064,7 +1063,7 @@ var page = Component.extend({
           Promise.all([
             Analytics.create(UserReq.formRequestDetails(genObj))
           ]).then(function(data) {
-            if(data[0].status == "SUCCESS") {
+            if(data[0].status == "SUCCESS") { 
 
                 var msg = "Entity Details saved successfully";
 
@@ -2046,16 +2045,10 @@ var page = Component.extend({
 
           }
 
-        });  
+        });
     },
 
     "#analyticsAdd click": function(event){
-
-      setTimeout(function(){
-        alignGridStats('societyContacts');        
-        var socTableWidth=$('#societyContacts table').outerWidth()-16;
-        $('#societyContacts table').css("width",socTableWidth);
-      },100);
 
       var self = this;
 

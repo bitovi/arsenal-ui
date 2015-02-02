@@ -233,8 +233,8 @@ var page = Component.extend({
       },
       helpers:{
         setHeight: function(){
-          var vph = $(window).height()-350;
-          return 'Style="height:'+vph+'px"';
+          var vph = '85%';
+          return 'Style="height:'+vph;
         },
         disableSubmit:function(){
           if(this.attr("state") == "Read"){
