@@ -815,6 +815,7 @@ var page = Component.extend({
         alignGridStats('countryModelMapping');
         alignGridStats('repConfiguration');
         alignGridStats('societyContacts');
+        
         var socTableWidth=$('#societyContacts table').outerWidth()-15;
         $('#societyContacts table').css("width",socTableWidth);
       },100);
@@ -2045,10 +2046,16 @@ var page = Component.extend({
 
           }
 
-        });
+        });  
     },
 
     "#analyticsAdd click": function(event){
+
+      setTimeout(function(){
+        alignGridStats('societyContacts');        
+        var socTableWidth=$('#societyContacts table').outerWidth()-16;
+        $('#societyContacts table').css("width",socTableWidth);
+      },100);
 
       var self = this;
 
