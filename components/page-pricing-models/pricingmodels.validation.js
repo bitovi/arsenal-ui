@@ -124,6 +124,11 @@ var pricingmodelValidation = {
                           numeric: {
                             separator:'.',
                             message: 'Please provide numeric value for baserate'
+                          },
+                          between: {
+                            min: 0,
+                            max: 100,
+                            message: 'Discount/BaseRate should be between 0 and 100'
                           }
                       }
                   },
