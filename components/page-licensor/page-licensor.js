@@ -1598,6 +1598,7 @@ var page = Component.extend({
           Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
             self.scope.populateAnalyticsPage(values);
+            self.scope.reValidateFiledsonLoad()
 
           });
 
