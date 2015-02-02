@@ -119,9 +119,10 @@ var DashboardPaymentsDetail = Component.extend({
       }*/
       'table#UnpaidPopup a.claim-link click':function(el,ev){
         var self = this;
-        //get the country and entity name from the selected item, to set it in the global search.
-        //as per the current design it will override the user selected global search.
-        //we should enhanced to do the local search restricated to that page only.
+        //The below method will set the user selected country and society name in the global scope
+        //Variable used in the global scope are
+        //localObj (it is array and contains the user selected values)
+        //ispagelocal (have true/false)
         if($('.chart-list li[aria-describedby*="popover"]').data('item').item != 'undefined' &&
           $('.chart-list li[aria-describedby*="popover"]').data('item').item != null){
             var selectedListItem=$('.chart-list li[aria-describedby*="popover"]').data('item').item;
