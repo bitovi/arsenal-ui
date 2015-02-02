@@ -2085,6 +2085,12 @@ var page = Component.extend({
       $("#invoiceType").val("Select");
 
       self.scope.reValidateFiledsonLoad();
+
+      setTimeout(function(){
+        alignGridStats('societyContacts');
+        var socTableWidth=$('#societyContacts table').outerWidth()-15;
+        $('#societyContacts table').css("width",socTableWidth);
+      },100);
     },
 
     '.submitButton click' : function() {
