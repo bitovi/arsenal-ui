@@ -10,6 +10,26 @@ rn-grid-revision-history {
 
   }
 
+  	thead {
+
+		display: block;
+
+	}
+	tbody {
+	
+		max-height: 11.5em;
+		overflow-y: overlay;
+		overflow-x: hidden;
+		display: block;
+		tr:nth-child(odd){
+	       background: #f9f9f9;
+	    }
+
+	    tr:nth-child(even){
+	    	background: #f0f0f0;
+	    }
+	}
+
 	th, td {
 		white-space: nowrap;
 	    padding-right: 0.5625em;
