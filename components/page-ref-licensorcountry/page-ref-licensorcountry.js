@@ -63,35 +63,6 @@ var page = Component.extend({
     validFrom: [],
     validTo : [],
 
-    commentList : [  
-         {  
-            "id":3670,
-            "commentId":1,
-            "type":"REFDATA",
-            "comments":"JUnitComments",
-            "createdBy":8888,
-            "createdByName":null,
-            "createdDate":"2014-11-14"
-         },
-         {  
-            "id":3673,
-            "commentId":1,
-            "type":"REFDATA",
-            "comments":"JUnitComments",
-            "createdBy":8888,
-            "createdByName":null,
-            "createdDate":"2014-11-14"
-         },
-         {  
-            "id":3777,
-            "commentId":1,
-            "type":"REFDATA",
-            "comments":"JUnitComments",
-            "createdBy":8888,
-            "createdByName":null,
-            "createdDate":"2014-11-14"
-         }],
-    
 
       getPricingModelsOnLoad : function(modelId, versionNo) {
         var self = this;
@@ -111,7 +82,7 @@ var page = Component.extend({
       setSelectedValue : function(text, divId) {
 
         $(divId+ " option").filter(function() {
-          return $(this).text() == text; 
+          return $(this).text() == text;
         }).prop('selected', true);
 
       }
@@ -175,8 +146,8 @@ var page = Component.extend({
             }
 
           }
-        
-          
+
+
         if( !saved ) {
 
           var element = {modelName : "", modelVersion : []  };
@@ -197,7 +168,7 @@ var page = Component.extend({
       }
 
       self.scope.attr("pricingModels").replace(pricingmodelTemps);
-  
+
       }).then(function(values) {
 
         //requestObj = {licensorId:licId};
@@ -344,7 +315,7 @@ var page = Component.extend({
 
           $(".mainLayoutId").hide();
           $("#loading_img").show();
-          
+
           var requestObj  = {
             entityCountryDetails:{
               entityCountry:{
@@ -373,11 +344,11 @@ var page = Component.extend({
 
           if(self.scope.attr("refreshEntityId")) {
             $('#fetchDetailsBtn').attr("disabled", true);
-            
+
 
             var requestObj = {entityId:self.scope.pageState.entityCountryDetails.entityCountry.entityId};
             Promise.all([Country.findAllCountriesByLicenesor(UserReq.formRequestDetails(requestObj))]).then(function(values) {
-              $('#fetchDetailsBtn').attr("disabled", false);  
+              $('#fetchDetailsBtn').attr("disabled", false);
               self.scope.attr("countries").replace(values[0].data);
               if(self.scope.attr("onload")) {
 
@@ -478,6 +449,7 @@ var page = Component.extend({
           },
           '#submitBtn click': function(){
             var entityCountry_data  = this.scope.pageState.entityCountryDetails.attr("entityCountry")._data;
+            pageState.entityCountryDetails.entityCountry.validFrom
 
             var comments = $(".new-comments").val();
 
@@ -497,22 +469,24 @@ var page = Component.extend({
               entityCountry_data.laEnabled = "N";
             }
 
-             var periodFP = "0";
 
-            if(periodFP!= undefined && periodFP != null) {
-              periodFP = periodWidgetHelper.getFiscalPeriod(entityCountry_data.validFrom);
-            }
+            //  var periodFP = "0";
+            //  //periodFP =
+
+            // if(periodFP!= undefined && periodFP != null) {
+            //   periodFP = periodWidgetHelper.getFiscalPeriod(entityCountry_data.validFrom);
+            // }
 
 
-             entityCountry_data.validFrom = periodFP;
+             entityCountry_data.validFrom = periodWidgetHelper.getFiscalPeriod($("#validFrom").val());
 
-             periodFP = "0";
+            //  periodFP = "0";
+            //
+            // if(periodFP!= undefined && periodFP != null) {
+            //   periodFP =
+            // }
 
-            if(periodFP!= undefined && periodFP != null) {
-              periodFP = periodWidgetHelper.getFiscalPeriod(entityCountry_data.validTo);
-            }
-
-             entityCountry_data.validTo = periodFP;
+             entityCountry_data.validTo = periodWidgetHelper.getFiscalPeriod($("#validTo").val());;
 
 
 
@@ -570,9 +544,9 @@ var page = Component.extend({
           },
           '#pricingModelBtn click': function(){
             var self = this.scope;
-            
+
             var selmodelid =  self.pageState.entityCountryDetails.pricingModelId;
-            
+
             var entityName  = $("#licensorId :selected").text();
             var countryId = self.pageState.entityCountryDetails.entityCountry.attr("countryId");
 
@@ -593,7 +567,7 @@ var page = Component.extend({
                 setTimeout(function(){
                   $("#invmessageDiv").hide();
                 },5000);
-        
+
               } else {
 
                 $("#viewPricingModelDiv").show();
@@ -714,7 +688,7 @@ var loadPage = function(scope,data){
     data.entityCountryDetails.entityCountry.attr("status","InActive");
   }
 
-  
+
 
   scope.pageState.entityCountryDetails.attr("pricingModelVersionNo", data.entityCountryDetails.pricingModelVersionNo);
   scope.pageState.entityCountryDetails.attr("pricingModelId", data.entityCountryDetails.pricingModelId);
@@ -727,7 +701,7 @@ var loadPage = function(scope,data){
 
   $('#validFrom').trigger("change");
   $('#validTo').trigger("change");
-  
+
   scope.pageState.attr("historyComments",data.entityCountryDetails.historyComments);
   scope.pageState.entityCountryDetails.attr("comment",data.entityCountryDetails.comment);
 
@@ -842,7 +816,7 @@ function alignGridStats(divId){
 
         if(i==1)
           tdWidth = 45;
-        
+
         tableWidth += tdWidth;
         cellWidthArr.push(tdWidth);
       }
