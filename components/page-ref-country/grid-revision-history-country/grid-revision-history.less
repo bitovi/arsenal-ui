@@ -6,6 +6,25 @@ rn-grid-revision-history-country {
 		font-size: 12px;
 		padding-left: 10px !important;
 	}
+	thead {
+
+		display: block;
+
+	}
+	tbody {
+	
+		max-height: 11em;
+		overflow-y: overlay;
+		overflow-x: hidden;
+		display: block;
+		tr:nth-child(odd){
+	       background: #f9f9f9;
+	    }
+
+	    tr:nth-child(even){
+	    	background: #f0f0f0;
+	    }
+	}
 
 	tfoot {
 

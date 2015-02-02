@@ -49,7 +49,7 @@ var EmailConfirmModal = can.Component.extend({
         
         Promise.all([ReminderEmail.create(UserReq.formRequestDetails(approvalObj))]).then(function(values) {
 
-        if((typeof values[0] === "defined") && (values[0]["status"]=="SUCCESS")){
+        if(values[0]["status"]=="SUCCESS"){
 
                 var msg = "Reminder was sent successfully."
                 $("#messageDiv").html("<label class='successMessage'>"+msg+"</label>")

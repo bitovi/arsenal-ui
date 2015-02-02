@@ -337,9 +337,10 @@ var page = Component.extend({
           }
     },
      '#copyToClipboard click':function(){  console.log($('#myTabs').next('.tab-content').find('.tab-pane:visible table:visible').clone(true));
-        $('#clonetable').empty().html($('#invoiceGrid').find('table:visible').clone(true).attr('id','dynamic'));
+        $('#clonetable').empty().html($('#invoiceGrid').find('table:visible').clone(true).attr('id','dynamic').removeClass('rn-grid'));
          $('copy-clipboard').slideDown(function(){
            $('body').css('overflow','hidden');
+           $("#clonetable input:checkbox").attr("disabled",true);   
            $('#copyall').trigger('click');
         });
       },

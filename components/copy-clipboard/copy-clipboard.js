@@ -26,6 +26,11 @@ var copyClipboard = Component.extend({
        });
       }
     },
+    '{document} dblclick' : function(el,ev){
+      ev.stopPropagation();
+      ev.preventDefault();
+      return false;
+    },
     '#copyall click':function(){
         var el = $('#clonetable'), range, sel;
         function selectElementContents(el) {

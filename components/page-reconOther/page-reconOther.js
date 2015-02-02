@@ -19,6 +19,7 @@ import FileManager from 'utils/fileManager/';
 import stache from 'can/view/stache/';
 import exportToExcel from 'components/export-toexcel/';
 import copy from 'components/copy-clipboard/';
+import gridUtils from 'utils/gridUtil';
 
 //Navigation bar definitions
 var tabNameObj = {
@@ -135,6 +136,10 @@ var page = Component.extend({
     "inserted": function(){
         var self = this;
         var tbody = self.element.find('tbody');
+        //var tbody = self.element.find('tbody');
+        var getTblBodyHght=getVisibleGridHeight();
+        gridUtils.setElementHeight(tbody,getTblBodyHght,getTblBodyHght);
+
         $("#loading_img").hide();
 
         $("#tokenSearch").tokenInput([
@@ -700,5 +705,15 @@ var createIncomingReconRequestForExportToExcel=function(appstate){
     console.log(JSON.stringify(IncomingReconRequest));
     return UserReq.formRequestDetails(IncomingReconRequest);
   };
+
+function getVisibleGridHeight(){
+  if($('#incomingDetails').is(':visible')){
+    return gridUtils.getTableBodyHeight('incomingDetailsGrid',92);
+  }else if($('#reconstatsOtherGrid').is(':visible')){
+    return gridUtils.getTableBodyHeight('incomingDetailsGrids',92 );
+  }else{
+    return 400; //default height
+  }
+}
 
 export default page;
