@@ -596,6 +596,7 @@
       .repConfTable {
         max-height: 150px;
         overflow: auto;
+        width:100%
 
       }
 
@@ -687,6 +688,25 @@
           width: 100%;
           tr>th, tr > td {
             white-space: nowrap;
+          }
+          tr{
+            width:100%;
+          }
+          thead, tbody {
+            display: block;
+          }
+          tbody{
+              max-height: 100px;
+              overflow-y: overlay;
+              overflow-x: hidden;
+          }
+        }
+      }
+      #repConfTable{
+        table{
+          width: 100%;
+          tr>th, tr > td {
+            white-space: wrap;
           }
           tr{
             width:100%;
