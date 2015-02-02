@@ -316,7 +316,8 @@ var BundleDetailTabs = Component.extend({
     paymentOptionEditable: function() {
       this.attr('paymentType');
       var bundle = this.pageState.selectedBundle;
-      return (bundle != undefined && bundle.status == 1 && bundle.editable) ? '' : 'disabled';
+
+      return (bundle != undefined && bundle.bundleType === 'REGULAR_INV' && bundle.status == 1 && bundle.editable) ? '' : 'disabled';
     }
   },
   events: {
