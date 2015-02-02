@@ -6,6 +6,7 @@ import Approval from 'models/approval/';
 
 import InboxGrid from 'components/inbox-grid/';
 import OutboxGrid from 'components/outbox-grid/';
+import gridUtils from 'utils/gridUtil';
 
 import template from './template.stache!';
 import styles from './dashboard-approvals.less!';
@@ -27,6 +28,13 @@ var DashboardApprovals = Component.extend({
   events: {
     inserted: function() {
       var self = this;
+
+       var tbody = self.element.find('tbody');
+      //setting tbody height which determines the page height- start
+      var getTblBodyHght=gridUtils.getTableBodyHeight('inboxGrid',42);
+      gridUtils.setElementHeight(tbody[0],getTblBodyHght,getTblBodyHght);
+      gridUtils.setElementHeight(tbody[1],getTblBodyHght,getTblBodyHght);
+     
 
       Approval.findAll({
         mailbox: 'inbox'

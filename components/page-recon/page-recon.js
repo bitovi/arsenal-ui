@@ -21,6 +21,7 @@ import FileManager from 'utils/fileManager/';
 import stache from 'can/view/stache/';
 import exportToExcel from 'components/export-toexcel/';
 import copy from 'components/copy-clipboard/';
+import gridUtils from 'utils/gridUtil';
 
 //Navigation bar definitions
 var tabNameObj = {
@@ -144,6 +145,11 @@ var page = Component.extend({
     },
     "inserted": function(){
       var self = this;
+
+      var tbody = self.element.find('tbody');
+        //var tbody = self.element.find('tbody');
+      var getTblBodyHght=gridUtils.getTableBodyHeight('ingested',40);
+      gridUtils.setElementHeight(tbody[0],getTblBodyHght,getTblBodyHght);
 
       $("#loading_img").hide();
 
