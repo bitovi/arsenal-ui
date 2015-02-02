@@ -122,7 +122,8 @@ var BundleDetailGrid = ScrollingGrid.extend({
         // use only the ones without verboseOnly = true
         filteredColumns = _.filter(filteredColumns, column => !column.verboseOnly);
       }
-      if(!_.some(this.scope.attr('rows'), row => row.attr('validationMessages') && row.attr('validationMessages').attr('length'))) {
+      if(this.scope.pageState.attr('validationGrid') &&
+        (!_.some(this.scope.attr('rows'), row => row.attr('validationMessages') && row.attr('validationMessages').attr('length')))) {
        filteredColumns = _.filter(filteredColumns, column => !column.validationsOnly);
       }
 
@@ -268,6 +269,13 @@ var BundleDetailGrid = ScrollingGrid.extend({
     },
     '{scope.pageState} verboseGrid': function() {
       this.scope.filterColumns.apply(this);
+    },
+    '{scope.pageState} validationGrid': function() {
+
+      if(this.scope.pageState.attr('validationGrid')) {
+        this.scope.filterColumns.apply(this);
+      }
+      
     },
     '{scope.columns} length': function() {
       this.scope.filterColumns.apply(this);

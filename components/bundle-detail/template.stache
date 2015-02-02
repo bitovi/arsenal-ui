@@ -13,7 +13,7 @@
   </div>
   {{/showAggregateControl}}
   {{#validationStatus}}
-  <div class="validation-status">{{validationRulesCompleted}} out of {{validationRulesTotal}} rules complete.</div>
+  <!--div class="validation-status">{{validationRulesCompleted}} out of {{validationRulesTotal}} rules complete.</div-->
   {{/validationStatus}}
   {{/if}}
   <div class="bundle-detail-actions">

@@ -242,6 +242,9 @@ var BundleDetailTabs = Component.extend({
             setTimeout(function() {
               scope.getNewValidations(bundle);
             }, VALIDATION_CHECK_INTERVAL);
+          }else{
+            //console.log("validationGrid is true");
+            scope.pageState.attr("validationGrid",true);
           }
 
           return bundle;
@@ -281,9 +284,10 @@ var BundleDetailTabs = Component.extend({
     showAggregateControl: function(options) {
       return this.attr('selectedTab') && this.selectedTab.value === 'country' ? options.fn(this) : '';
     },
-    validationStatus: function(options) {
-      return this.pageState.selectedBundle && this.pageState.selectedBundle.attr('validationRulesTotal') > 0 ? options.fn(this.pageState.selectedBundle) : '';
-    },
+    // Info: validationRulesTotal is no more supported by the business service team. Removing the code
+    // validationStatus: function(options) {
+    //   return this.pageState.selectedBundle && this.pageState.selectedBundle.attr('validationRulesTotal') > 0 ? options.fn(this.pageState.selectedBundle) : '';
+    // },
     canShowChart: function(options) {
       if(this.pageState.attr('selectedBundle.bundleType') === 'REGULAR_INV' &&
         this.selectedRows.attr('length') > 0 &&
@@ -460,7 +464,7 @@ var BundleDetailTabs = Component.extend({
     '.bundle-detail-actions img mouseover': function(el, ev) {
       $(".overlay").html("<label class='tooltipMessage'>"+el.data('tooltip')+"</label>");
       $(".overlay").show();
-      console.log("Image over:"+el.data('tooltip'));
+      //console.log("Image over:"+el.data('tooltip'));
     },
     '.bundle-detail-actions img mouseout': function(el, ev) {
       console.log("Image out:"+el.data('tooltip'));
@@ -544,6 +548,7 @@ var BundleDetailTabs = Component.extend({
       if(newTab && oldTab && !scope.bundleProgress.isBundleSelectionChange) { // only when *changing* tabs
         this.scope.attr('gridColumns', newTab.columns);
         scope.bundleProgress.triggerValidation = true;
+        scope.pageState.attr("validationGrid",false);
         this.scope.resetToken();
         scope.pageState.selectedBundle && scope.getNewDetails(scope.pageState.selectedBundle);
       }
@@ -641,6 +646,7 @@ var resetSelectedBundle = function(scope){
   $(".previousComments").hide();
   scope.attr("approvalComment", '');
   scope.attr("preferredCurr", '');
+  scope.pageState.attr('validationGrid',false);
 
   canRemoveInvoice(scope.pageState);
 
