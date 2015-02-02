@@ -486,6 +486,9 @@ var page = Component.extend({
             //console.log("Update response is "+JSON.stringify(data));
               if(data["status"]=="SUCCESS"){
                  displayMessage(data["responseText"],true);
+                 // empty the deletedFileInfo object to empty
+                 $('propose-rn-file-uploader').scope().deletedFileInfo.replace([]);
+
                   //req.attr('editableRows',rows);
                   //$('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
                    self.scope.attr('loadProposedONAccountPage',Date.now());
