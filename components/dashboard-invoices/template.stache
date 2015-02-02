@@ -143,18 +143,16 @@
 </table>
 </div>
 
-
-
-<div class="col-sm-3"></div>
-  <div class="col-sm-1">
+<div class="col-sm-3" style="margin:0 auto;width:100%;height:40px">
+  <div class="col-sm-1 legend-style" style="width:26%"></div>
+  <div class="col-sm-1 legend-style">
     <img class="checkMark" src="resources/images/checkMarkDark.png"/><label>: All Received </label>
   </div>
-  <div class="col-sm-1"><label> PDF: PDF Received</label></div>
-  <div class="col-sm-1"> <label> CCID: CCID Received </label></div>
-  <div class="col-sm-2" align="left"><img class="la" src="resources/images/rn_LegendLondonAgreement@2x.png"/><label>: London Aggrement</label></div>
-  <div class="col-sm-4"></div>
-
-
+  <div class="col-sm-1 legend-style"><label> PDF : PDF Received</label></div>
+  <div class="col-sm-1 legend-style"> <label> CCID : CCID Received </label></div>
+  <div class="col-sm-2 legend-style" align="left"><img class="la" src="resources/images/rn_LegendLondonAgreement@2x.png"/><label>: London Aggrement</label></div>
+  <div class="col-sm-1 legend-style" style="width:26%"></div>
+</div>
 {{/if}}
 {{else}}
 <div class="select-message">Please select parameters above for the Invoices Received report.</div>
