@@ -38,6 +38,8 @@ var comments = Component.extend({
                  var createdDateFormat = moment(val.createdDate).format("Do MMM, YYYY");   
                 if((val.createdByName != null) && (typeof val.createdByName != "undefined")){
                     $("#"+tempDivID).html("<span class='commentuser'>"+val.createdByName +"</span> <span class='commentdate'>On "+createdDateFormat+"</span><br><span class='commenttext'>"+val.comments+"</span>");
+                }else{
+                  $("#"+tempDivID).html("<span class='commentuser'></span> <span class='commentdate'>On "+createdDateFormat+"</span><br><span class='commenttext'>"+val.comments+"</span>");
                 }
                 
               }

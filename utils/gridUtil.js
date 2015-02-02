@@ -15,9 +15,12 @@ var gridUtil = {
   */
   getTableBodyHeight:function (element,requireHghtPercent){
     var tableBodyHeight='200px'; // set the default value
-    if(!typeof $('#'+element) != 'undefined' ){
+    if(typeof $('#'+element) != undefined ){
       var offset = $('#'+element).offset();
-      var posYOfelement = offset.top - $(window).scrollTop();
+      var posYOfelement=0;
+      if(offset != undefined){
+        posYOfelement = offset.top - $(window).scrollTop();
+      }
       var windowHeight=$(window).height();
       var heightRemain=windowHeight-posYOfelement;
       var percentHeight=heightRemain*(requireHghtPercent/100);

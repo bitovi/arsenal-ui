@@ -55,7 +55,15 @@ var DashboardPayments = Component.extend({
       return PaymentSummary.findOne({appstate: self.appstate}).then(function(summary) {
         self.attr('summary', summary);
         self.attr('fetching', false);
-        $('#parentcontainer').css('height',gridUtils.getTableBodyHeight('parentcontainer',96));
+        //we need to set the parent container height % height will not work as the parent is not having
+        //any with specified.
+        var parentHeight=$('.page-container').height()-100;
+        var calculatedHght=gridUtils.getTableBodyHeight('parentcontainer',95);
+        var divHeight=parentHeight;
+        if(calculatedHght > parentHeight){
+          divHeight=calculatedHght;
+        }
+        $('#parentcontainer').css('height',divHeight);
       });
     }
   },
@@ -92,7 +100,7 @@ var DashboardPayments = Component.extend({
             itemVal.attr("totPaidPrcnt",totPaidPrcnt);
           });
         }
-        
+
         //end
         return options.fn({
           item: item,

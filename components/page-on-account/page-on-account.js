@@ -190,9 +190,9 @@ var page = Component.extend({
           if(pbval != undefined || paymentBundleNameText != undefined){
             $("#propose").removeAttr("disabled"); 
           }
-          setTimeout(function(){
+          //setTimeout(function(){
                 self.scope.attr('enableOnAccPropose',Date.now());
-          },2000)
+          //},100)
           
       },
       ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
@@ -605,12 +605,12 @@ var page = Component.extend({
 
                     var tempcommentObj = data.onAccount.comments;
                     //console.log("multi comments "+JSON.stringify(tempcommentObj));
-                    if(tempcommentObj!=null)
+                    if(tempcommentObj!=null){
                       $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
-                    else
+                      //$('#multipleComments').html(stache('<multiple-comments divid="usercommentsdivinv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
+                    }else{
                       $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>');
-
-
+                    }
                       var proposedDocs = data.onAccount.documents;
                       for(var k=0;k<proposedDocs.length;k++){
                         proposedDocs[k].isServer = true;
