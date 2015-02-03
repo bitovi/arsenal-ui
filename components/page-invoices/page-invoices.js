@@ -622,7 +622,7 @@ var page = Component.extend({
         var unDelInvIdArr = [];
         for(var i=0;i<invoiceData.length;i++){
           var flag=false;
-          var statusId = invoiceData[i]["statusId"];
+          var statusId = invoiceData[i]["status"];
           var paymentState = invoiceData[i]["paymentState"];
           var invoiceno = invoiceData[i]["invoiceNumber"];
           //console.log("row is "+JSON.stringify(row));
