@@ -898,12 +898,17 @@ var createCopyOnAccountRequest=function(appstate,period){
   return requestHelper.formRequestDetails(copyOnAccountRequest);
 };
 var createProposedOnAccountRequest=function(appstate){
+  var sortByAttr=appstate.attr("sortBy");
+  var sortByMap=utils.getSortByAttr();
   var proposedOnAccountRequest={};
   proposedOnAccountRequest.searchRequest=requestHelper.formGlobalRequest(appstate).searchRequest;
   proposedOnAccountRequest.searchRequest.type="PROPOSED";
   proposedOnAccountRequest.searchRequest.offset=appstate.attr("offset");
   proposedOnAccountRequest.searchRequest.limit="10";
-  proposedOnAccountRequest.searchRequest.sortBy=appstate.attr("sortBy");
+    if(sortByMap[sortByAttr] != undefined){
+    sortByAttr = sortByMap[sortByAttr];
+  }
+  proposedOnAccountRequest.searchRequest.sortBy=sortByAttr;
   proposedOnAccountRequest.searchRequest.sortOrder=appstate.attr("sortOrder");
 
   return requestHelper.formRequestDetails(proposedOnAccountRequest);

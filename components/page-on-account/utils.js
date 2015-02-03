@@ -617,7 +617,16 @@ currencyFormat : function (number)
     }else{
       return 0;
     }
-  }
+  },
+getSortByAttr:function(){
+  var attrMap={};
+  attrMap['Licensor']='entityName';
+  attrMap['Currency']='currencyCode';
+  attrMap['ContentType']='contentGroupName';
+  attrMap['onAccountBalance']='onAccountAmtTotal';
+  attrMap['cashAdjust']='entityCashAdjAmtTotal';
+  return attrMap;
+}
 
 
 };

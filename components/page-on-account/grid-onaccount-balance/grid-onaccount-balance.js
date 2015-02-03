@@ -201,7 +201,7 @@ var OnAccountBalance = Grid.extend({
 
 var createBalanceOnAccountRequest=function(appstate){
   var sortByAttr=appstate.attr("sortBy");
-  var sortByMap=getSortByAttr();
+  var sortByMap=utils.getSortByAttr();
   var balancedOnAccountRequest={};
   balancedOnAccountRequest.searchRequest=requestHelper.formGlobalRequest(appstate).searchRequest;
   balancedOnAccountRequest.searchRequest.type="BALANCE";
@@ -215,15 +215,6 @@ var createBalanceOnAccountRequest=function(appstate){
   return requestHelper.formRequestDetails(balancedOnAccountRequest);
 };
 
-var getSortByAttr=function(){
-  var attrMap={};
-  attrMap['Licensor']='entityName';
-  attrMap['Currency']='currencyCode';
-  attrMap['ContentType']='contentGroupName';
-  attrMap['onAccountBalance']='onAccountAmtTotal';
-  attrMap['cashAdjust']='entityCashAdjAmtTotal';
-  return attrMap;
-};
 
 /*function alignGrid(divId){
   var colLength = $('#'+divId+' table>thead>tr>th').length;
