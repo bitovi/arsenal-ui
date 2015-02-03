@@ -4,7 +4,6 @@ import stache from 'can/view/stache/';
 import formats from 'utils/formats';
 import _less from './inbox-grid.less!';
 import ScrollingGrid from 'components/grid/examples/scrolling-grid/';
-import gridUtils from 'utils/gridUtil';
 
 var InboxGrid = ScrollingGrid.extend({
   tag: 'rn-inbox-grid',
@@ -55,9 +54,7 @@ var InboxGrid = ScrollingGrid.extend({
     inserted: function(){
       var self= this;
       var tbody = self.element.find('tbody');
-      //setting tbody height which determines the page height- start
-      var getTblBodyHght=gridUtils.getTableBodyHeight('inboxGrid');
-      gridUtils.setElementHeight(tbody,getTblBodyHght,getTblBodyHght);
+
       //setting tbody height - end
       var parentScopeVar = self.element.closest('rn-dashboard-approvals').scope();
       var tableScrollTopVal = parentScopeVar.attr('inboxScrollTop');

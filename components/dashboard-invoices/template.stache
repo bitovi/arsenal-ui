@@ -54,11 +54,8 @@
         {{#if isLicensorInvalidForCountry}}
           <td class="hole invoice-expected"></td>
         {{else}}
-          <td class="hole">
-            {{#if showImage}}<img class="checkMark" src="resources/images/checkMarkDark.png"/>
-            {{else}}
-              {{show}}
-            {{/if}}
+          <td class="hole {{#if showImage}}greenHighlight{{/if}}">
+           {{show}}
           {{#if isLA}}<img class="la" src="resources/images/rn_LegendLondonAgreement@2x.png"/>{{/if}}
           </td>
         {{/if}}
