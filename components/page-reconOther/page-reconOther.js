@@ -197,7 +197,7 @@ var page = Component.extend({
       // FileManager.downloadFile(request);
 
       var file={};
-      file.fileId= row.invFileId;
+      file.fileId= "694514";//row.invFileId; //invfilePath;
       file.boundType='INBOUND';
 
       //FileManager.findOne(request);

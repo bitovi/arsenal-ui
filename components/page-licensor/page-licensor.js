@@ -1072,6 +1072,8 @@ var page = Component.extend({
                 setTimeout(function(){
                   $("#invmessageDiv").hide();
                 },5000);
+
+                self.populateLicensorDetails(self.licDetails.data.licensorName);
             } else {
 
                 var msg = "Entity Details was not saved successfully";
@@ -1239,6 +1241,50 @@ var page = Component.extend({
       }
 
       return isValid;
+
+    },
+
+    populateLicensorDetails : function(val) {
+
+      var self = this;
+
+      var genObj = {};
+
+      Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
+
+          self.licensors.replace(values[0].entities[0]);
+
+          var defaultEntity = values[0].entities[0].entities[0];
+
+          var genObj = {"id" : "" , "licensorName":""};
+
+          if(self.appstate.attr("licensorName") != null && self.appstate.attr("licensorName") != undefined) {
+
+            genObj.licensorName =  self.appstate.attr("licensorName");
+            self.appstate.attr("licensorName", null);
+
+          }
+          else if (val == null){
+
+            genObj.id = defaultEntity.id;
+            genObj.licensorName =  defaultEntity.value;
+
+          } else {
+
+              genObj.licensorName =  val;
+
+          }
+
+          self.attr("selectedEntity", genObj.licensorName);
+
+          Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
+
+            self.populateAnalyticsPage(values);
+            self.reValidateFiledsonLoad()
+
+          });
+
+      });
 
     },
 
@@ -1574,37 +1620,7 @@ var page = Component.extend({
 
       var defaultEntity = [];
 
-      Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
-
-          self.scope.licensors.replace(values[0].entities[0]);
-
-          defaultEntity = values[0].entities[0].entities[0];
-
-          var genObj = {"id" : "" , "licensorName":""};
-
-          if(self.scope.appstate.attr("licensorName") != null && self.scope.appstate.attr("licensorName") != undefined) {
-
-            genObj.licensorName =  self.scope.appstate.attr("licensorName");
-            self.scope.appstate.attr("licensorName", null);
-
-          }
-          else {
-
-            genObj.id = defaultEntity.id;
-            genObj.licensorName =  defaultEntity.value;
-
-          }
-
-          self.scope.attr("selectedEntity", genObj.licensorName);
-
-          Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
-
-            self.scope.populateAnalyticsPage(values);
-            self.scope.reValidateFiledsonLoad()
-
-          });
-
-      });
+      self.scope.populateLicensorDetails(null);
 
 
       Promise.all([Analytics.getInvoiceDetails(UserReq.formRequestDetails(genObj))]).then(function(values) {

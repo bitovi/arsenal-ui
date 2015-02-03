@@ -2,10 +2,12 @@ import _ from 'lodash';
 import Grid from 'components/grid/';
 import stache from 'can/view/stache/';
 import styles from './grid-model-society-mapping.less!';
+import template from './template.stache!';
 
 /* Extend grid with the columns */
 var GridSocietyModelMapping = Grid.extend({
   tag: 'rn-grid-society-model',
+  template: template,
   scope: {
     columns: [
       {

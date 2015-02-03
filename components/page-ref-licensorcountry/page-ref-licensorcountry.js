@@ -62,6 +62,13 @@ var page = Component.extend({
     refreshEntityId : true,
     validFrom: [],
     validTo : [],
+    footerrowspresent: false,
+    footer : [],
+    data : "",
+    revisionHistory : revisionHistory,
+    reportConfigurationList : reportConfigurationList,
+    footerdatarepconf : "",
+    footerdata : "",
 
 
       getPricingModelsOnLoad : function(modelId, versionNo) {
@@ -230,10 +237,12 @@ var page = Component.extend({
           reportConfigurationList = new can.List();
           revisionHistory = new can.List();
 
+          var footer = {
+            data: "No of records : " 
+          }
 
-
-          $('#grid-report-config').append(stache('<rn-grid-report-configuration rows="{reportConfigurationList}"></rn-grid-report-configuration>')({reportConfigurationList}));
-          $('#grid-revision-history').append(stache('<rn-grid-revision-history rows="{revisionHistory}"></rn-grid-revision-history>')({revisionHistory}));
+          //$('#grid-report-config').append(stache('<rn-grid-report-configuration rows="{reportConfigurationList}"></rn-grid-report-configuration>')({reportConfigurationList}));
+          //$('#grid-revision-history').append(stache('<rn-grid-revision-history rows="{revisionHistory}" footerrowspresent="{footerrowspresent}" footerdata="{footerdata}"></rn-grid-revision-history>')({revisionHistory, footerrowspresent:true, footerdata:"No of records: "}));
 
           $('#countryLicForm').on('init.form.bv', function(e, data) {
             data.bv.disableSubmitButtons(true);
@@ -661,12 +670,18 @@ var page = Component.extend({
 
 var loadPage = function(scope,data){
 
+  //revisionHistory.splice(0, revisionHistory.length);
+  //reportConfigurationList.splice(0, reportConfigurationList.length);
 
+  scope.attr("footerrowspresent", true);
+  scope.reportConfigurationList.replace(data.entityCountryDetails.reportConfigurationList);
 
+  scope.attr("footerdatarepconf",  data.entityCountryDetails.reportConfigurationList != null && data.entityCountryDetails.reportConfigurationList.length >0 ? data.entityCountryDetails.reportConfigurationList.length : 0);
 
-  reportConfigurationList.replace(data.entityCountryDetails.reportConfigurationList);
+  scope.revisionHistory.replace(data.revisionHistory);
 
-  revisionHistory.replace(data.revisionHistory);
+  scope.attr("footerdata",  data.revisionHistory != null && data.revisionHistory.length >0 ? data.revisionHistory.length : 0);
+
 
   var displayDate = data.entityCountryDetails.entityCountry.attr("validFrom");
   if(displayDate == 0){
@@ -820,7 +835,14 @@ function alignGridStats(divId){
         tableWidth += tdWidth;
         cellWidthArr.push(tdWidth);
       }
+      var foot = true;
+      if($('#'+divId+' table>tfoot>tr') != undefined && $('#'+divId+' table>tfoot>tr') != null &&
+          ($('#'+divId+' table>tfoot>tr')[0] == undefined  || $('#'+divId+' table>tfoot>tr')[0] == null ||
+              $('#'+divId+' table>tfoot>tr')[0].getAttribute("colspan") == undefined  || $('#'+divId+' table>tfoot>tr')[0].getAttribute("colspan") == null)
 
+      ) {
+        foot = false;
+      }
       if(tableWidth < divWidth){
         var moreWidth = (divWidth-tableWidth)/colLength;
         for(var j=1;j<=cellWidthArr.length;j++){
@@ -828,7 +850,8 @@ function alignGridStats(divId){
 
           $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
           $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("min-width",width);
-          $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
+          if(!foot)
+            $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
         }
         $('#'+divId+' table').css("width",divWidth);
         $('#'+divId+' table>tbody').css("max-width",divWidth);
@@ -837,8 +860,13 @@ function alignGridStats(divId){
           var width = cellWidthArr[j-1];
           $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
           $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("min-width",width);
-          $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
+          if(!foot)
+            $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
+        
+        }
 
+        if(foot) {
+          $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",tableWidth);
         }
         $('#'+divId+' table').css("width",tableWidth);
         $('#'+divId+' table>tbody').css("max-width",tableWidth);

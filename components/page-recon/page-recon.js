@@ -192,13 +192,12 @@ var page = Component.extend({
       var self=this.scope;
       var row = item.closest('tr').data('row').row;
       var request = {
-          "fileId":row.badFileId,
+          "fileId":row.invfilePath,
           "boundType":row.badFileType
       }
       FileManager.findOne({request}, function(values) {
         
-        download("sample.csv", values[0].responseText);
-
+        
       }, function(xhr) {
           // handle errors
       });
@@ -699,13 +698,7 @@ var linkDownload = function(a, filename, request) {
 
 };
 
-function download(filename, content) {
-  var a = document.createElement('a');
-  linkDownload(a, filename, content);
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-}
+
 
 function getSearchReqObj(self) {
   var appstate= self.appstate;
