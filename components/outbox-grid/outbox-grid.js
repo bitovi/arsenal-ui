@@ -3,6 +3,7 @@ import gridtemplate from './gridtemplate.stache!';
 import stache from 'can/view/stache/';
 import formats from 'utils/formats';
 import _less from './outbox-grid.less!';
+import gridUtils from 'utils/gridUtil';
 
 import EmailConfirmModal from 'components/email-confirm-modal/';
 
@@ -54,6 +55,39 @@ var OutboxGrid = ScrollingGrid.extend({
       var approval = el.closest('tr').data('row').row;
 
       $(document.body).append(stache('<rn-email-confirm-modal approval="{approval}"></rn-email-confirm-modal>')({approval}));
+    },
+    inserted: function(){
+      var self= this;
+      var tbody = self.element.find('tbody');
+      //setting tbody height which determines the page height- start
+      var getTblBodyHght=gridUtils.getTableBodyHeight('outboxGrid');
+      gridUtils.setElementHeight(tbody,getTblBodyHght,getTblBodyHght);
+      //setting tbody height - end
+      var parentScopeVar = self.element.closest('rn-dashboard-approvals').scope();
+      var tableScrollTopVal = parentScopeVar.attr('outboxScrollTop');
+      $(tbody[0]).scrollTop(tableScrollTopVal);
+      $(tbody).on('scroll', function(ev) {
+          if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight-1  && parentScopeVar.inboxRows.recordsAvailable) {
+
+            var offsetVal = parentScopeVar.attr('outboxOffset');
+
+            $("#outboxGrid").prepend("<div class='loading_img'></div>");
+
+            /* Reset the offset value and call the webservice to fetch next set of records */
+            parentScopeVar.attr('mailboxType', 'outbox');
+            parentScopeVar.attr('outboxOffset', (parseInt(offsetVal)+1));
+            parentScopeVar.attr('outboxScrollTop', (tbody[0].scrollHeight-200));
+            parentScopeVar.appstate.attr('globalSearchButtonClicked', false);
+
+            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
+            /* All the neccessary parameters will be set in that event */
+           if(parentScopeVar.appstate.attr('globalSearch')){
+              parentScopeVar.appstate.attr('globalSearch', false);
+            }else{
+              parentScopeVar.appstate.attr('globalSearch', true);
+            }
+          }
+        });
     }
   }
 });

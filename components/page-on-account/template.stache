@@ -60,8 +60,8 @@
 		   	<li><a id = "newonAccount" href="#NewonAccountDiv" data-toggle="tab">New On Account</a></li>
 
 		   	<li class="pull-right marginLeft-5 marginTop-10">
-		   		<img class="exportToExcel" id="proposeExportToExcel">
-			    <img class="copyToClipboard" id="proposeCopyToClipboard">
+		   		<img class="exportToExcel toolbox-img-style" id="proposeExportToExcel">
+			    <img class="copyToClipboard toolbox-img-style" id="proposeCopyToClipboard">
 		   	</li>
 
 		   	<li class="pull-right marginTop-10 customLI">
@@ -74,8 +74,8 @@
 		   	<li class="pull-right marginTop-10 customLI">
 		   		<div id="forminlineElements">
 
-			    	<span class="pull-inline">Previous Quarter: </span>
-			    	<div id="calendarclsdiv" class="calendarcls pull-inline">
+			    	<span class="pull-inline" style="position: relative;bottom: -6px;">Previous Quarter: </span>
+			    	<div id="calendarclsdiv" class="calendarcls pull-inline" style="position: relative;bottom: -4px;">
 			            <input type='text' id="copyQuarter" class="form-control  updateperoid "/>
 			            <period-calendar  appstate="{appstate}"></period-calendar>
 			        </div>

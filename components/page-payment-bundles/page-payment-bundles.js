@@ -25,6 +25,7 @@ var pageState = new Map({
   bundles: new PaymentBundle.List([]),
   selectedBundle: null,
   verboseGrid: false,
+  validationGrid:false,
   isPaginateReq: false,//triggers the paginate Event from bundle-grid.js
   recordsAvailable:undefined,
   refreshBottomGrid:false

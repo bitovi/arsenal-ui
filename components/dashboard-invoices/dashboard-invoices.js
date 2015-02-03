@@ -147,7 +147,7 @@ var DashboardInvoices = Component.extend({
       if(this.scope.appstate.filled) {
         this.scope.debouncedRefreshReport(this.scope);
       }
-      
+
       var $window = $(window).on('resize', function(){
         var height = $(this).height() - 300;
         $(".tableDiv").height(height);
@@ -341,18 +341,6 @@ var populateEntities= function(holesReportResponse){
   return entities;
 }
 
-
-var geEntities=function(entityIds,licensorMap){
-  var entities=[];
-  _.each(entityIds,function(entityId){
-      entities.push(licensorMap[entityId]);
-  });
-  entities = entities.filter(function(n){ return n !== undefined; });
-  entities = _.sortBy(entities, e => e.toUpperCase());
-  entities = $.unique(entities);
-
-  return entities
-}
 
 var getMissing=function(pdfCnt,ccidCnt){
   var missing ="";
