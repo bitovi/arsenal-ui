@@ -504,6 +504,89 @@ var page = Component.extend({
       "#highChartDetails mouseup": function(item, el, ev){
         $(item[0]).removeClass("draggable")
       },
+      ".switch-toggle click":function(el, ev){
+          
+          var chart = $('#highChartDetails').highcharts();
+          
+          var amountSeries1 = chart.series[0];
+          var amountSeries2 = chart.series[1];
+          var amountSeries3 = chart.series[2];
+
+          var rateSeries1 = chart.series[3];
+          var rateSeries2 = chart.series[4];
+
+          if ($(".switch-toggle").hasClass('on')) {
+            console.log("Amount");
+            $(".switch-toggle").removeClass('on').addClass('off');
+            chart.yAxis[0].axisTitle.element.textContent = 'Amount';
+
+            (rateSeries1).hide();
+            (rateSeries2).hide();
+ 
+            rateSeries1.options.showInLegend = false;
+            rateSeries1.legendItem = null;
+            chart.legend.destroyItem(rateSeries1);            
+            chart.legend.render();
+
+            rateSeries2.options.showInLegend = false;
+            rateSeries2.legendItem = null;
+            chart.legend.destroyItem(rateSeries2);            
+            chart.legend.render();
+
+            (amountSeries1).show();
+
+            amountSeries1.options.showInLegend = true;
+            chart.legend.renderItem(amountSeries1);
+            chart.legend.render();
+
+            (amountSeries2).show();
+
+            amountSeries2.options.showInLegend = true;
+            chart.legend.renderItem(amountSeries2);
+            chart.legend.render();
+
+            (amountSeries3).show();
+
+            amountSeries3.options.showInLegend = true;
+            chart.legend.renderItem(amountSeries3);
+            chart.legend.render();
+
+            
+
+          }else {
+            console.log("Rate");
+            $(".switch-toggle").removeClass('off').addClass('on');
+            chart.yAxis[0].axisTitle.element.textContent = 'Rate';
+            
+            (rateSeries1).show();
+            rateSeries1.options.showInLegend = true;
+            chart.legend.renderItem(rateSeries1);
+            chart.legend.render();
+
+            (rateSeries2).show();
+            rateSeries2.options.showInLegend = true;
+            chart.legend.renderItem(rateSeries2);
+            chart.legend.render();
+            
+            (amountSeries1).hide();
+            (amountSeries2).hide();
+            (amountSeries3).hide();
+            amountSeries1.options.showInLegend = false;
+            amountSeries1.legendItem = null;
+            chart.legend.destroyItem(amountSeries1);
+            chart.legend.render();
+
+            amountSeries2.options.showInLegend = false;
+            amountSeries2.legendItem = null;
+            chart.legend.destroyItem(amountSeries2);
+            chart.legend.render();
+
+            amountSeries3.options.showInLegend = false;
+            amountSeries3.legendItem = null;
+            chart.legend.destroyItem(amountSeries3);
+            chart.legend.render();
+         }
+      },
       "#licView click": function(el, ev){
         var self = this;
           //$("#aggregate").css("display","none");
