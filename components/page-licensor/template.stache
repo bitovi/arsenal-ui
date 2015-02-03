@@ -28,7 +28,7 @@
 
 						    		<!-- <div class="col-sm-12"> -->
 
-						    			<div class="col-sm-4 small-headers align-left" style="text-align:right;margin-left:-46px;">
+						    			<div class="col-sm-4 small-headers align-left" style="text-align:right;margin-left:-82px;">
 						    				<label>Entity:</label>
 										</div>
 						    			<div class="col-sm-4 form-group requiredBar">
@@ -96,7 +96,7 @@
 		<div class="col-sm-12" id="entityGrid">
 
 			
-	    	<div class="col-sm-6" id="entityGridFD">
+	    	<div class="col-sm-5" id="entityGridFD">
 	    	
 	    				<div class="col-sm-12" id="spaceBar"></div>
 	    		
@@ -280,7 +280,7 @@
 			
 			
 	 
-			<div class="col-sm-6" style="padding: 0px;">
+			<div class="col-sm-7" style="padding: 0px;">
 
 				<div class="col-sm-12" id="entityGridSD" class="entityGridSDHeight">
 
@@ -362,7 +362,7 @@
 			    								Name
 			    							</th>
 			    							<th>
-			    								E-Mail <img src="resources/images/button_plus_blue.png" class="addSocContactsAdd addRow"  style="float:right;"></img>
+			    								E-Mail <img src="resources/images/button_plus_blue.png" class="addSocContactsAdd addRow"  style=""></img>
 			    							</th>
 			    						</tr>
 			    					</thead>

@@ -459,7 +459,7 @@ var page = Component.extend({
 
 
     removeRows : function(type, value) {
-
+      
       var self = this;
 
       if(type == "exists") {
@@ -815,9 +815,20 @@ var page = Component.extend({
         alignGridStats('countryModelMapping');
         alignGridStats('repConfiguration');
         alignGridStats('societyContacts');
+
+        for(var i=0;i<=$("#countryModelMapping>table>thead>tr>th").length;i++){
+          var scTdWidth=$("#countryModelMapping>table>tbody>tr>td:nth-child("+i+")").outerWidth();
+          var scThwidth=$("#countryModelMapping>table>thead>tr>th:nth-child("+i+")").outerWidth();
+          if(scTdWidth<scThwidth){
+              $("#countryModelMapping>table>tbody>tr>td:nth-child("+i+")").css('width',$("#countryModelMapping>table>thead>tr>th:nth-child("+i+")").outerWidth()+1);
+              $("#countryModelMapping>table>thead>tr>th:nth-child(("+i+")").css('width',$("#countryModelMapping>table>tbody>tr>td:nth-child("+i+")").outerWidth());
+          }
+        }
         
-        var socTableWidth=$('#societyContacts table').outerWidth()-15;
-        $('#societyContacts table').css("width",socTableWidth);
+        //var socTableWidth=$('#societyContacts table').outerWidth()-15;
+        var socTableWidthChild=$('#societyContacts table>thead>tr>th').outerWidth();
+        //$('#societyContacts table').css("width",socTableWidth);        
+        $('#societyContacts table>tbody>tr>th').css("width",socTableWidthChild);
       },100);
 
 
@@ -913,7 +924,22 @@ var page = Component.extend({
     },
 
     addRow : function() {
+      setTimeout(function(){
+        alignGridStats('societyContacts');
+        $("#societyContacts .noRecords").remove();
+        for(var i=0;i<=$("#societyContacts>table>thead>tr>th").length;i++){
+          var scTdWidth=$("#societyContacts>table>tbody>tr>td:nth-child("+i+")").outerWidth();
+          var scThwidth=$("#societyContacts>table>thead>tr>th:nth-child("+i+")").outerWidth();
+          if(scTdWidth<scThwidth){
+              $("#societyContacts>table>tbody>tr>td:nth-child("+i+")").css('width',$("#societyContacts>table>thead>tr>th:nth-child("+i+")").outerWidth()+1);
+              $("#societyContacts>table>thead>tr>th:nth-child(("+i+")").css('width',$("#societyContacts>table>tbody>tr>td:nth-child("+i+")").outerWidth());
+          }else{
+            
+            $("#societyContacts>table>tbody>tr>td:last-child>input").css('width',"96%");
+          }
+        }
 
+      },0);
       var self = this;
 
       var element = {"name": "",  "contactName":"", "contactEmail":""};
@@ -1982,6 +2008,22 @@ var page = Component.extend({
     },
 
     "#analyticsFetch click": function(event){
+        setTimeout(function(){
+          alignGridStats('societyContacts');
+          $("#societyContacts .noRecords").remove();
+          for(var i=0;i<=$("#societyContacts>table>thead>tr>th").length;i++){
+            var scTdWidth=$("#societyContacts>table>tbody>tr>td:nth-child("+i+")").outerWidth();
+            var scThwidth=$("#societyContacts>table>thead>tr>th:nth-child("+i+")").outerWidth();
+            if(scTdWidth<scThwidth){
+                $("#societyContacts>table>tbody>tr>td:nth-child("+i+")").css('width',$("#societyContacts>table>thead>tr>th:nth-child("+i+")").outerWidth()+1);
+                $("#societyContacts>table>thead>tr>th:nth-child(("+i+")").css('width',$("#societyContacts>table>tbody>tr>td:nth-child("+i+")").outerWidth());
+            }else{
+              
+              $("#societyContacts>table>tbody>tr>td:last-child>input").css('width',"96%");
+            }
+          }
+
+        },0);
 
         var self = this;
 
@@ -2052,9 +2094,7 @@ var page = Component.extend({
     "#analyticsAdd click": function(event){
 
       setTimeout(function(){
-        alignGridStats('societyContacts');        
-        var socTableWidth=$('#societyContacts table').outerWidth()-16;
-        $('#societyContacts table').css("width",socTableWidth);
+        alignGridStats('societyContacts');
       },100);
 
       var self = this;
@@ -2137,7 +2177,9 @@ var page = Component.extend({
       var value = el.attr("val");
 
       this.scope.removeRows("new", value);
-
+      if($('#societyContacts>table>tbody>tr').length==0){
+        $('#societyContacts>table').append("<tfoot><tr><td class='noRecords' style='text-align:center;border:none;' colspan="+$('#societyContacts>table>thead>tr>th').length+" width='100%'>No Records Found</td></tr></tfoot>");
+      }
     },
 
     '.deleteCheckBoxCD click' : function(el, ev) {
@@ -2147,6 +2189,9 @@ var page = Component.extend({
       this.scope.removeRows("exists", value);
 
       $('#entityLicensorTop').bootstrapValidator('validate');
+      if($('#societyContacts>table>tbody>tr').length==0){
+        $('#societyContacts>table').append("<tfoot><tr><td class='noRecords' style='text-align:center;border:none;' colspan="+$('#societyContacts>table>thead>tr>th').length+" width='100%'>No Records Found</td></tr></tfoot>");
+      }
 
     }
 
@@ -2183,6 +2228,7 @@ function alignGridStats(divId){
   var tableWidth = 0;
   var tdWidth, cellWidthArr = [];
   if(rowLength>0){
+
     $('#'+divId+' table').css("width",divWidth);
       for(var i=1;i<=colLength;i++){
         var theadTdWidth = $('#'+divId+' table>thead>tr>th:nth-child('+i+')').outerWidth();
@@ -2228,6 +2274,12 @@ function alignGridStats(divId){
         }
         $('#'+divId+' table').css("width",tableWidth);
       }
+  }else{
+      $('#'+divId+' table>thead>tr').css('width','100%;')
+      var noDataTable=$('#'+divId+' table').width();
+      var colLength=noDataTable/($('#'+divId+' table>thead>tr>th').length); 
+      $('#'+divId+' table>thead>tr>th').css("width",colLength);
+      $('#'+divId+' table').append("<tfoot><tr><td class='noRecords' style='text-align:center;border:none;' colspan="+$('#'+divId+' table>thead>tr>th').length+" width="+noDataTable+">No Records Found</td></tr></tfoot>");
   }
 }
 
@@ -2238,11 +2290,13 @@ function alignGridLicenPop(divId){
   var tableWidth = 0;
   var tdWidth, cellWidthArr = [];
   if(rowLength>0){
+
     $('#'+divId+' table').css("width",divWidth-300);
       for(var i=1;i<=colLength;i++){
         var theadTdWidth = $('#'+divId+' table>thead>tr>th:nth-child('+i+')').outerWidth();
         var tbodyTdWidth = $('#'+divId+' table>tbody>tr>td:nth-child('+i+')').outerWidth();
         var tfootTdWidth = $('#'+divId+' table>tfoot>tr>td:nth-child('+i+')').outerWidth();
+
 
         if(theadTdWidth >= tbodyTdWidth && theadTdWidth >= tfootTdWidth)
           tdWidth = theadTdWidth;
@@ -2279,11 +2333,11 @@ function alignGridLicenPop(divId){
           $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
           $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("min-width",width);
           $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
-
         }
         $('#'+divId+' table').css("width",tableWidth);
         $('#'+divId+' table>tbody').css("max-width",tableWidth);
       }
+
   }
 }
 
