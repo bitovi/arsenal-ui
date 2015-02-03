@@ -762,33 +762,35 @@ var page = Component.extend({
 					  	var self = this;
 						var genObj = {regionId:self.scope.attr("regionStore")};
 
-						Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))
-						     ]).then(function(values) {
-						     	self.scope.attr("licensor").replace([]);
-							    self.scope.attr("licensor").replace(values[0]["entities"]);
-							    var invoiceData = self.scope.attr().invoiceContainer[0];
-							     self.scope.attr("licensorStore", invoiceData.entityId);
-							     self.scope.ajaxRequestStatus.attr("licensorLoaded", true);
+						if(!self.scope.ajaxRequestStatus.attr("licensorLoaded")){
+							Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))
+							     ]).then(function(values) {
+							     	self.scope.attr("licensor").replace([]);
+								    self.scope.attr("licensor").replace(values[0]["entities"]);
+								    var invoiceData = self.scope.attr().invoiceContainer[0];
+								     self.scope.attr("licensorStore", invoiceData.entityId);
+								     self.scope.ajaxRequestStatus.attr("licensorLoaded", true);
 
-						   });
-
-
+							   });
+						}
 
 
 					},
 					"{scope} licensorStore": function(event){
 						var self = this;
 						var genObj = {licensorId:self.scope.attr("licensorStore")};
-						Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
-						     ]).then(function(values) {
-						     	self.scope.attr("currency").replace([]);
-							    self.scope.attr("currency").replace(values[0]);
-							     if(self.scope.editpage){
-									    var invoiceData = self.scope.attr().invoiceContainer[0];
-									    self.scope.attr("currencyStore", invoiceData.invoiceCcy);
-									    self.scope.ajaxRequestStatus.attr("currencyStore", true);
-									}
-							  });
+						if(!self.scope.ajaxRequestStatus.attr("currencyStore")){
+							Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
+							     ]).then(function(values) {
+							     	self.scope.attr("currency").replace([]);
+								    self.scope.attr("currency").replace(values[0]);
+								     if(self.scope.editpage){
+										    var invoiceData = self.scope.attr().invoiceContainer[0];
+										    self.scope.attr("currencyStore", invoiceData.invoiceCcy);
+										    self.scope.ajaxRequestStatus.attr("currencyStore", true);
+										}
+								  });
+						 }
 						},
 
 						"{ajaxRequestStatus} change":function(event){
@@ -805,38 +807,38 @@ var page = Component.extend({
 
 					"#currency change": function(){
 						var self = this;
-						var genObj = {
-						   regionId:self.scope.attr("regionStore"),
-						  entityId:self.scope.attr("licensorStore"),
-						  currency:self.scope.attr("currencyStore")
-						};
+						// var genObj = {
+						//    regionId:self.scope.attr("regionStore"),
+						//   entityId:self.scope.attr("licensorStore"),
+						//   currency:self.scope.attr("currencyStore")
+						// };
 
-						Promise.all([Country.findCountriesForRegLicCurr(UserReq.formRequestDetails(genObj))
-						     ]).then(function(values) {
-						     	if(values[0].status == 'SUCCESS'){
-			              			self.scope.attr("country").replace([]);
-			                   		self.scope.attr("country").replace(values[0].data);
+						// Promise.all([Country.findCountriesForRegLicCurr(UserReq.formRequestDetails(genObj))
+						//      ]).then(function(values) {
+						//      	if(values[0].status == 'SUCCESS'){
+			   //            			self.scope.attr("country").replace([]);
+			   //                 		self.scope.attr("country").replace(values[0].data);
 
-			                   		  var countryDD = $('.inputCountry');
-							            countryDD.options = function(data) {
-							                var self = this;
-							                $.each(data, function(key, value) {
-							                    var option = $('<option>').text(value.value).val(value.id);
-							                    data.push(option);
-							                });
-							                self.html(data);
-							            }
-							            countryDD.options(values[0].data);
+			   //                 		  var countryDD = $('.inputCountry');
+						// 	            countryDD.options = function(data) {
+						// 	                var self = this;
+						// 	                $.each(data, function(key, value) {
+						// 	                    var option = $('<option>').text(value.value).val(value.id);
+						// 	                    data.push(option);
+						// 	                });
+						// 	                self.html(data);
+						// 	            }
+						// 	            countryDD.options(values[0].data);
 
-			              		}else{
-			              			self.scope.attr("country").replace([]);
-			              			 	var countryDD = $('.inputCountry');
-							         	countryDD.empty();
-							         	countryDD.html($('<option>').text("Select"));
+			   //            		}else{
+			   //            			self.scope.attr("country").replace([]);
+			   //            			 	var countryDD = $('.inputCountry');
+						// 	         	countryDD.empty();
+						// 	         	countryDD.html($('<option>').text("Select"));
 							           
-										showMessages(values[0].responseText);
-				              		}
-							});
+						// 				showMessages(values[0].responseText);
+				  //             		}
+						// 	});
 						},
 
 						"{scope} currencyStore": function(){
@@ -919,16 +921,14 @@ var page = Component.extend({
 
 
 		                var genObj = {
-			                			regionId:invoiceData.regionId,
-							  			entityId:invoiceData.entityId,
-							  			currency:invoiceData.invoiceCcy
+			                			regionId:invoiceData.regionId
 									};
 
-							Promise.all([Country.findCountriesForRegLicCurr(UserReq.formRequestDetails(genObj))
+							Promise.all([Country.findAll(UserReq.formRequestDetails(genObj))
 						     ]).then(function(values) {
 						     	if(values[0].status == 'SUCCESS'){
 			              			self.scope.attr("country").replace([]);
-			                   		self.scope.attr("country").replace(values[0].data);
+			                   		self.scope.attr("country").replace(values[0]);
 			                   		self.scope.ajaxRequestStatus.attr("countryLoaded", true);
 			              		}else{
 			              			self.scope.attr("country").replace([]);
@@ -1022,8 +1022,8 @@ var page = Component.extend({
 										var inputContent = "inputContent"+rowindex;
 										var tempDelObj = {};
 										tempDelObj["country"] = self.scope.countryStore.attr("inputCountry"+rowindex);
-								   		tempDelObj["fiscalPeriod"] =  periodWidgetHelper.getFiscalPeriod($("#inputMonth"+index).val());
-								   		tempDelObj["periodType"] = periodWidgetHelper.getPeriodType($("#inputMonth"+index).val().charAt(0));
+								   		tempDelObj["fiscalPeriod"] =  periodWidgetHelper.getFiscalPeriod($("#inputMonth"+rowindex).val());
+								   		tempDelObj["periodType"] = periodWidgetHelper.getPeriodType($("#inputMonth"+rowindex).val().charAt(0));
 								   		tempDelObj["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent"+rowindex);
 								   		tempDelObj["contentGrpName"] = $("#inputContent"+rowindex+" option:selected").text();
 								   		tempDelObj["lineAmount"] = self.scope.AmountStore.attr("amountText"+rowindex);
@@ -1335,13 +1335,13 @@ var page = Component.extend({
 
 										var tempArry = {};
 
-										tempArry["country"] = self.scope.countryStore.attr("inputCountry"+index);
+										tempArry["country"] = $('#inputCountry'+index).val();
 										console.log(self.scope.countryStore.attr("inputCountry"+index));
 								   		tempArry["fiscalPeriod"] = periodWidgetHelper.getFiscalPeriod($("#inputMonth"+index).val());
 								   		tempArry["periodType"] = periodWidgetHelper.getPeriodType($("#inputMonth"+index).val());
 								   		//tempArry["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent"+index);
 								   		//tempArry["contentGrpName"] = $("#inputContent"+index+" option:selected").text();
-								   		tempArry["lineAmount"] = self.scope.AmountStore.attr("amountText"+index);
+								   		tempArry["lineAmount"] = $("#amountText"+index).val()
 								   		
 								   		
 								   		if(self.scope.attr("invoicetypeSelect") == "2"){
@@ -1354,7 +1354,7 @@ var page = Component.extend({
                     						tempArry["adhocTypeId"] = self.scope.contentTypeStore.attr("inputContent"+index);
 						  	 			}
 								  	 	else{
-								  	 		tempArry["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent"+index);
+								  	 		tempArry["contentGrpId"] = $("#inputContent"+index).val();
 								  	 		//console.log(tempArry["contentGrpName"]);
 								  	 		var tempContentGrpName = $("#inputContent"+index+" option:selected").text();
 								  	 		tempArry["contentGrpName"] = tempContentGrpName;
@@ -1392,8 +1392,11 @@ var page = Component.extend({
 
 
 								  var selIndex = self.scope.invoiceselectIndex
-								  icsvmap.invoiceData.invoices[selIndex].attr(editInvoiceCSVData);
-
+								  console.log(icsvmap.invoiceData.invoices[selIndex].attr());
+								  icsvmap.invoiceData.invoices.splice(selIndex,1);
+								  console.log(icsvmap.invoiceData.attr())
+								  //icsvmap.invoiceData.invoices[selIndex].attr('editInvoiceCSVData',editInvoiceCSVData);
+								  icsvmap.invoiceData.invoices.push(editInvoiceCSVData);
 
 								  var tempInvMap = icsvmap.invoiceData.invoices[selIndex].attr();
 
@@ -1407,7 +1410,7 @@ var page = Component.extend({
 
 
 						          for(var j =0; j < tempInvMap.invoiceLines.length; j++){
-										if((typeof tempInvMap.invoiceLines[j].errors.errorMap !== "undefined") && (tempInvMap.invoiceLines[j].errors.errorMap != null)){
+										if(tempInvMap.invoiceLines[j].errors!= undefined && (typeof tempInvMap.invoiceLines[j].errors.errorMap !== "undefined") && (tempInvMap.invoiceLines[j].errors.errorMap != null)){
 											for(var key in tempInvMap.invoiceLines[j].errors.errorMap){  /*Invoiceline error*/
 							                      console.log(tempInvMap.invoiceLines[j].errors.errorMap[key]);
 							                      icsvmap.invoiceData.invoices[selIndex].invoiceLines[j].errors.errorMap.attr(key, " ");
