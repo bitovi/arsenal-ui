@@ -74,12 +74,12 @@ rn-onaccount-balance-grid {
 
     tr > th, tr > td {
       //padding: .3em .5em;
-      &.col-lic-width { .flex-grow(2); .flex-basis(160px); }
-      &.col-currency-width { .flex-grow(2); .flex-basis(40px); }
-      &.col-cttype-width { .flex-grow(2); .flex-basis(50px); }
-      &.col-others-width { .flex-grow(2); .flex-basis(100px); }
-      &.col-onaccbal-width { .flex-grow(2); .flex-basis(100px); }
-      &.col-liccashadj-width { .flex-grow(2); .flex-basis(100px); }
+      &.Licensor { .flex-grow(2); .flex-basis(160px); }
+      &.Currency { .flex-grow(2); .flex-basis(40px); }
+      &.ContentType { .flex-grow(2); .flex-basis(50px); }
+      &.others { .flex-grow(2); .flex-basis(100px); }
+      &.onAccountBalance { .flex-grow(2); .flex-basis(100px); }
+      &.cashAdjust { .flex-grow(2); .flex-basis(100px); }
     }
 
     tbody > tr {
@@ -106,29 +106,29 @@ rn-onaccount-balance-grid {
 
 
   //Set the coloumn specifc properties here
-  .col-lic-width {
+  .Licensor {
 
   }
 
-  .col-currency-width {
+  .Currency {
 
   }
 
-  .col-cttype-width {
+  .ContentType {
 
   }
 
-  .col-others-width {
+  .others {
     text-align:right;
     padding-right: 10px;
   }
 
-  .col-onaccbal-width {
+  .onAccountBalance {
     text-align:right;
     padding-right: 10px;
   }
 
-  .col-liccashadj-width {
+  .cashAdjust {
     text-align:right;
     padding-right: 10px;
   }

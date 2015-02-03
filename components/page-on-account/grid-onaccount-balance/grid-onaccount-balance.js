@@ -44,18 +44,10 @@ var OnAccountBalance = Grid.extend({
   },
   helpers: {
     columnClass: function(column) {
-      if(column.id == 'Licensor'){
-        return "col-lic-width";
-      }else if(column.id == 'Currency'){
-        return "col-currency-width";
-      }else if(column.id == 'ContentType'){
-        return "col-cttype-width";
-      }else if(column.id == 'onAccountBalance'){
-        return "col-onaccbal-width";
-      }else if(column.id == 'cashAdjust'){
-        return "col-liccashadj-width";
-      }else {
-        return "col-others-width";
+      if(column.id == 'Licensor' || column.id == 'Currency' || column.id == 'ContentType' || column.id == 'onAccountBalance' || column.id == 'cashAdjust'){
+        return column.id;
+     }else {
+        return column.id+" others";
       }
     }
   },
@@ -208,14 +200,29 @@ var OnAccountBalance = Grid.extend({
 // }
 
 var createBalanceOnAccountRequest=function(appstate){
+  var sortByAttr=appstate.attr("sortBy");
+  var sortByMap=getSortByAttr();
   var balancedOnAccountRequest={};
   balancedOnAccountRequest.searchRequest=requestHelper.formGlobalRequest(appstate).searchRequest;
   balancedOnAccountRequest.searchRequest.type="BALANCE";
   balancedOnAccountRequest.searchRequest.offset=appstate.attr("offset");
   balancedOnAccountRequest.searchRequest.limit="10";
-  balancedOnAccountRequest.searchRequest.sortBy=appstate.attr("sortBy");
+  if(sortByMap[sortByAttr] != undefined){
+    sortByAttr = sortByMap[sortByAttr];
+  }
+  balancedOnAccountRequest.searchRequest.sortBy=sortByAttr;
   balancedOnAccountRequest.searchRequest.sortOrder=appstate.attr("sortOrder");
   return requestHelper.formRequestDetails(balancedOnAccountRequest);
+};
+
+var getSortByAttr=function(){
+  var attrMap={};
+  attrMap['Licensor']='entityName';
+  attrMap['Currency']='currencyCode';
+  attrMap['ContentType']='contentGroupName';
+  attrMap['onAccountBalance']='onAccountAmtTotal';
+  attrMap['cashAdjust']='entityCashAdjAmtTotal';
+  return attrMap;
 };
 
 /*function alignGrid(divId){

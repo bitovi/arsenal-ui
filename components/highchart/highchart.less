@@ -38,3 +38,33 @@
 		z-index: 100000;
 		cursor: pointer;
 	}
+
+	.chartRight{
+		display: block;
+		outline: none;
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		z-index: 9999;
+	}
+	.switch-toggle {
+	    background: url("/resources/images/switch.png") no-repeat;
+	    display: inline !important;
+	    height: 11px;
+	    padding-left: 26px;
+	    margin-left: 5px;
+	    cursor: pointer;
+	    display: none;
+	    z-index: 16000;
+	}
+	.switch-toggle.on {
+		background: url("/resources/images/switch_on.png") no-repeat;
+		background-position: 0px 4px;
+	}
+	.switch-toggle.off {
+		background: url("/resources/images/switch_off.png") no-repeat;
+		background-position: 0px 4px;
+	}	
+	.switch-toggle.hidden {
+		display: none;
+	}
