@@ -812,22 +812,11 @@ var page = Component.extend({
 
       setTimeout(function(){
         alignGridStats('revisionHistory');
-        alignGridStats('countryModelMapping');
+        alignGridCountMap('countryModelMapping');
         alignGridStats('repConfiguration');
         alignGridStats('societyContacts');
 
-        for(var i=0;i<=$("#countryModelMapping>table>thead>tr>th").length;i++){
-          var scTdWidth=$("#countryModelMapping>table>tbody>tr>td:nth-child("+i+")").outerWidth();
-          var scThwidth=$("#countryModelMapping>table>thead>tr>th:nth-child("+i+")").outerWidth();
-          if(scTdWidth<scThwidth){
-              $("#countryModelMapping>table>tbody>tr>td:nth-child("+i+")").css('width',$("#countryModelMapping>table>thead>tr>th:nth-child("+i+")").outerWidth()+1);
-              $("#countryModelMapping>table>thead>tr>th:nth-child(("+i+")").css('width',$("#countryModelMapping>table>tbody>tr>td:nth-child("+i+")").outerWidth());
-          }
-        }
-        
-        //var socTableWidth=$('#societyContacts table').outerWidth()-15;
-        var socTableWidthChild=$('#societyContacts table>thead>tr>th').outerWidth();
-        //$('#societyContacts table').css("width",socTableWidth);        
+        var socTableWidthChild=$('#societyContacts table>thead>tr>th').outerWidth();     
         $('#societyContacts table>tbody>tr>th').css("width",socTableWidthChild);
       },100);
 
@@ -1657,10 +1646,15 @@ var page = Component.extend({
 
       });
 
-      self.scope.loadBootStrapPlugin();
+      self.scope.loadBootStrapPlugin();     
 
 
     },
+    'tbody tr click': function(el, ev) {
+        $(el).parent().find('tr').removeClass("selected");
+        $(el).parent().find('tr').removeClass("highlight");
+        $(el).addClass("selected");
+      },
 
     '.updatePeroid focus':function(el){
        $(el).closest('.calendarcls').find('.box-modal').show().trigger( "focus" );
@@ -2264,7 +2258,7 @@ function alignGridStats(divId){
           tdWidth = tbodyTdWidth;
 
         if(i==1)
-          tdWidth = 35;
+          tdWidth = 45;
         
         tableWidth += tdWidth;
         cellWidthArr.push(tdWidth);
@@ -2296,11 +2290,11 @@ function alignGridStats(divId){
         $('#'+divId+' table').css("width",tableWidth);
       }
   }else{
-      $('#'+divId+' table>thead>tr').css('width','100%;')
-      var noDataTable=$('#'+divId+' table').width();
-      var colLength=noDataTable/($('#'+divId+' table>thead>tr>th').length); 
-      $('#'+divId+' table>thead>tr>th').css("width",colLength);
-      $('#'+divId+' table').append("<tfoot><tr><td class='noRecords' style='text-align:center;border:none;' colspan="+$('#'+divId+' table>thead>tr>th').length+" width="+noDataTable+">No Records Found</td></tr></tfoot>");
+        $('#societyContacts table>thead>tr').css('width','100%;')
+        var noDataTable=$('#societyContacts table').width();
+        var colLength=noDataTable/($('#societyContacts table>thead>tr>th').length); 
+        $('#societyContacts table>thead>tr>th').css("width",colLength);
+        $('#societyContacts table').append("<tfoot><tr><td class='noRecords' style='text-align:center;border:none;' colspan="+$('#societyContacts table>thead>tr>th').length+" width="+noDataTable+">No Records Found</td></tr></tfoot>");
   }
 }
 
@@ -2356,6 +2350,69 @@ function alignGridLicenPop(divId){
         $('#'+divId+' table').css("width",tableWidth);
         $('#'+divId+' table>tbody').css("max-width",tableWidth);
       }
+  }
+}
+
+function alignGridCountMap(divId){
+  console.log("Hi");
+  var colLength = $('#'+divId+' table>thead>tr>th').length;
+  var rowLength = $('#'+divId+' table>tbody>tr').length;
+  var divWidth = $('#'+divId).outerWidth();
+  var tableWidth = 0;
+  var tdWidth, cellWidthArr = [];
+  if(rowLength>0){
+    $('#'+divId+' table').css("width",divWidth);
+      for(var i=1;i<=colLength;i++){
+        var theadTdWidth = $('#'+divId+' table>thead>tr>th:nth-child('+i+')').outerWidth();
+        var tbodyTdWidth = $('#'+divId+' table>tbody>tr>td:nth-child('+i+')').outerWidth();
+        var tfootTdWidth = $('#'+divId+' table>tfoot>tr>td:nth-child('+i+')').outerWidth();
+
+        if(theadTdWidth >= tbodyTdWidth && theadTdWidth >= tfootTdWidth)
+          tdWidth = theadTdWidth;
+        else if(tfootTdWidth >= tbodyTdWidth && tfootTdWidth >= theadTdWidth)
+          tdWidth = tfootTdWidth;
+        else
+          if(divWidth > tableWidth + tbodyTdWidth) {
+            tdWidth = tbodyTdWidth;
+          } else {
+            tdWidth = divWidth - tableWidth;
+          }
+
+        //if(i==1)
+          //tdWidth = 63;
+        
+        tableWidth += tdWidth;
+        cellWidthArr.push(tdWidth);
+      }
+
+      if(tableWidth < divWidth){
+        var moreWidth = (divWidth-tableWidth)/colLength;
+        for(var j=1;j<=cellWidthArr.length;j++){
+          var width = cellWidthArr[j-1]+moreWidth;
+
+          $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
+          $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width);
+          $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
+        }
+        $('#'+divId+' table').css("width",divWidth);
+        $('#'+divId+' table>tbody').css("max-width",divWidth);
+      } else {
+        for(var j=1;j<=cellWidthArr.length;j++){
+          var width = cellWidthArr[j-1];
+          $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
+          $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width);
+          $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
+        }
+        $('#'+divId+' table').css("width",tableWidth);
+        $('#'+divId+' table>tbody').css("width",tableWidth);
+      }
+  }else{
+
+        $('#countryModelMapping table>thead>tr').css('width','100%;')
+        var noDataTable1=$('#countryModelMapping table').width();
+        var colLength1=noDataTable1/($('#countryModelMapping table>thead>tr>th').length); 
+        $('#countryModelMapping table>thead>tr>th').css("width",colLength1);
+
   }
 }
 
