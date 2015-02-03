@@ -9,6 +9,7 @@ import OutboxGrid from 'components/outbox-grid/';
 
 import template from './template.stache!';
 import styles from './dashboard-approvals.less!';
+import gridUtils from 'utils/gridUtil';
 
 var DashboardApprovals = Component.extend({
   tag: 'rn-dashboard-approvals',
@@ -41,6 +42,12 @@ var DashboardApprovals = Component.extend({
     inserted: function() {
       var self = this;
 
+      var tbody = self.element.find('tbody');
+      //setting tbody height which determines the page height- start
+      var getTblBodyHght=gridUtils.getTableBodyHeight('inboxGrid',42);
+      gridUtils.setElementHeight(tbody[0],getTblBodyHght,getTblBodyHght);
+      gridUtils.setElementHeight(tbody[1],getTblBodyHght,getTblBodyHght);
+
       self.scope.mailboxType = 'inbox';
       fetchInboxOutbox(this.scope);
 
@@ -55,11 +62,12 @@ var DashboardApprovals = Component.extend({
       if(this.scope.isGlobalSearch != this.scope.appstate.attr('globalSearch')){
         fetchInboxOutbox(this.scope);
       }
-    },
+    }
   }
 });
 
 var fetchInboxOutbox = function(scope){
+
     if(scope.appstate.attr('globalSearchButtonClicked')===true){
       scope.attr("inboxOffset",0);
       scope.attr("outboxOffset",0);
@@ -94,7 +102,7 @@ var fetchInboxOutbox = function(scope){
               scope.attr('inboxnumberofrows', approvals.totalRecords);
           }
         },function(xhr){
-          console.error("Error while loading: FetchInboxOutbox"+xhr);
+          console.error("Error while loading: FetchInbox"+xhr);
 
         });
     }else{
@@ -109,7 +117,7 @@ var fetchInboxOutbox = function(scope){
               setTimeout(function(){
                 $("#messageDiv").hide();
               },4000);
-              console.error("Failed to load the Inbox :"+data.responseText);
+              console.error("Failed to load the Outbox :"+data.responseText);
 
             }else{
               if(scope.outboxOffset===0){
@@ -122,10 +130,12 @@ var fetchInboxOutbox = function(scope){
               scope.attr('outboxnumberofrows', approvals.totalRecords);
             }
           },function(xhr){
-            console.error("Error while loading: FetchInboxOutbox"+xhr);
+            console.error("Error while loading: FetchOutbox"+xhr);
 
           });
     }
 };
+
+
 
 export default DashboardApprovals;

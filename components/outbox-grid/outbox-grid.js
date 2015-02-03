@@ -3,7 +3,6 @@ import gridtemplate from './gridtemplate.stache!';
 import stache from 'can/view/stache/';
 import formats from 'utils/formats';
 import _less from './outbox-grid.less!';
-import gridUtils from 'utils/gridUtil';
 
 import EmailConfirmModal from 'components/email-confirm-modal/';
 
@@ -59,9 +58,7 @@ var OutboxGrid = ScrollingGrid.extend({
     inserted: function(){
       var self= this;
       var tbody = self.element.find('tbody');
-      //setting tbody height which determines the page height- start
-      var getTblBodyHght=gridUtils.getTableBodyHeight('outboxGrid');
-      gridUtils.setElementHeight(tbody,getTblBodyHght,getTblBodyHght);
+
       //setting tbody height - end
       var parentScopeVar = self.element.closest('rn-dashboard-approvals').scope();
       var tableScrollTopVal = parentScopeVar.attr('outboxScrollTop');
