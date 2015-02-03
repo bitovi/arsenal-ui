@@ -284,6 +284,7 @@ var page = Component.extend({
                   self.scope.attr('errorMessage',message);
                   if(message.length == 0){
                       self.scope.attr('loadProposedONAccountPage',Date.now());
+                      $('propose-rn-file-uploader').scope().deletedFileInfo.replace([]);
                   }
                 }
           }
