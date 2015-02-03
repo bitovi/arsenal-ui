@@ -138,8 +138,16 @@ var highchartpage = Component.extend({
               }, {
                 name: 'Line item dispute',
                 data: highChartdata["LINE_ITEM_AMOUNT"]
+              }, {
+                name: 'Overrep Rate',
+                data: highChartdata["OVERREP_RATE"]
+              }, {
+                name: 'Line item Rate',
+                data: highChartdata["LINE_ITEM_RATE"]
               }]
             });
+          $('#highChartDetails').append('<div class="chartRight">Amount<div class="switch-toggle on" style="display:inline;"></div>Rate</div>');
+          $('.switch-toggle').trigger("click");
 
           }else{
             console.log('high chart did not return any data');
@@ -177,6 +185,9 @@ var highchartpage = Component.extend({
     var invoiceAmountList = [];
     var overRepAmountList = [];
     var lineItemAmountList = [];
+    var overRepRateList = [];
+    var lineItemRateList = [];
+
     for(var i=0; i<object.length;i++){
       var obj = object[i];
       console.log("Inside for loop :"+obj.fiscalPeriod);
@@ -184,12 +195,18 @@ var highchartpage = Component.extend({
       invoiceAmountList[i] = obj.invoiceAmount;
       overRepAmountList[i] = obj.overRepAmount;
       lineItemAmountList[i] = obj.lineItemsAmount;
+      overRepRateList[i] = obj.overRepRate;
+      lineItemRateList[i] = obj.lineItemRate;
     }
     console.log("chart data:"+periodList);
     highChartdata["FISCAL_PERIOD"] = periodList;
     highChartdata["INVOICE_AMOUNT"] = invoiceAmountList;
     highChartdata["OVERREP_AMOUNT"] = overRepAmountList;
     highChartdata["LINE_ITEM_AMOUNT"] = lineItemAmountList;
+
+    highChartdata["OVERREP_RATE"] = overRepRateList;
+    highChartdata["LINE_ITEM_RATE"] = lineItemRateList;
+    
     //console.log("chart data:"+highChartdata["LINE_ITEM_AMOUNT"]);
     return highChartdata;
   }
