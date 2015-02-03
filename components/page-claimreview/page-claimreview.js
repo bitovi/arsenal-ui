@@ -374,6 +374,23 @@ var page = Component.extend({
     allClaimCountryMap: [],
     sortColumns:[],
     sortDirection: "asc",
+    sortableColumns:[
+                      { id:"period", sortID:"PERIOD"},
+                      { id:"country", sortID:"COUNTRY"},
+                      { id:"contentType", sortID:"CONTENT_TYPE"},
+                      { id:"invoiceAmount", sortID:"TOTAL_INVOICE_AMOUNT"},
+                      { id:"overrepAmount", sortID:"OVERREP_AMOUNT"},
+                      { id:"lineDisputeAmount", sortID:"INVOICE_LINE_ITEM_AMOUNT"},
+                      { id:"reconAmount", sortID:"RECON_AMOUNT"},
+                      { id:"oaAllocated", sortID:"OA_ALLOCATED"},
+                      { id:"caAllocated", sortID:"CA_ALLOCATED"},
+                      { id:"priorPaid", sortID:"PRIOR_PAID"},
+                      { id:"balance", sortID:"BALANCE"},
+                      { id:"invPmtSaturation", sortID:"INV_PMT_SATURATION"},
+                      { id:"pmtSaturation", sortID:"PMT_SATURATION"},
+                      { id:"entityName", sortID:"LICENSOR"}
+                      //{ id:"", sortID:""},
+                       ],
     licensorTableScrollTop: 0,
     countryTableScrollTop: 0,
     licensorViewOffset: 0,
@@ -568,22 +585,29 @@ var page = Component.extend({
           var self=this;
            //console.log($(item[0]).attr("class"));
           var val = $(item[0]).attr("class").split(" ");
+
+          var sortableColumnName = _.pluck(_.filter(self.scope.attr().sortableColumns, { 'id': val[0] }), "sortID");
+
+          console.log(sortableColumnName);
           var existingSortColumns =self.scope.sortColumns.attr();
           var existingSortColumnsLen = existingSortColumns.length;
           var existFlag = false;
           if(existingSortColumnsLen==0){
-            self.scope.attr('sortColumns').push(val[0]);
+            //self.scope.attr('sortColumns').push(val[0]);
+            self.scope.attr('sortColumns').push(sortableColumnName);
           } else {
             for(var i=0;i<existingSortColumnsLen;i++){
               /* The below condition is to selected column to be sorted in asc & dec way */
-              console.log(val[0]+","+existingSortColumns[i] )
-              if(existingSortColumns[i] == val[0]){
+              console.log(sortableColumnName+","+existingSortColumns[i] )
+              //if(existingSortColumns[i] == val[0]){
+              if(existingSortColumns[i] == sortableColumnName){
                 existFlag = true;
               }
             }
             if(existFlag==false){
               self.scope.attr('sortColumns').replace([]);
-              self.scope.attr('sortColumns').push(val[0]);
+              //self.scope.attr('sortColumns').push(val[0]);
+              self.scope.attr('sortColumns').push(sortableColumnName);
             } else {
               var sortDirection = (self.scope.attr('sortDirection') == 'asc') ? 'desc' : 'asc';
               self.scope.attr('sortDirection', sortDirection);
