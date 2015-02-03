@@ -396,25 +396,6 @@ var BundleDetailTabs = Component.extend({
         }
       }
     },
-    '#highChartDetails mousedown': function(item, el, ev){
-      if(el.toElement.id == 'close'){
-        $("#highChartDetails").addClass("highcharts_Hide");
-        $("#chartContainer").removeClass('highcharts_Overlay');
-      }else{
-        $(item[0]).addClass("draggable").parents().on('mousemove', function(e) {
-          $('.draggable').offset({
-            top: e.pageY - $('.draggable').outerHeight() / 2,
-            left: e.pageX - $('.draggable').outerWidth() / 2
-          }).on('mouseup', function() {
-            $(this).removeClass('draggable');
-          });
-        });
-      }
-      e.preventDefault();
-    },
-    '#highChartDetails mouseup': function(item, el, ev){
-      $(item[0]).removeClass("draggable")
-    },
     '.excell click': function(el, ev) {
       // export data to Excel
 
