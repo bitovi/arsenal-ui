@@ -459,7 +459,7 @@ var page = Component.extend({
 
 
     removeRows : function(type, value) {
-      
+
       var self = this;
 
       if(type == "exists") {
@@ -969,7 +969,7 @@ var page = Component.extend({
 
         $('#entityLicensorBottom').bootstrapValidator('validate');
 
-        if($('#entityLicensorBottom').data('bootstrapValidator').isValid() == false && !isValid) {
+        if($('#entityLicensorBottom').data('bootstrapValidator').isValid() == false || !isValid) {
 
           return;
 
@@ -1099,6 +1099,8 @@ var page = Component.extend({
                 setTimeout(function(){
                   $("#invmessageDiv").hide();
                 },5000);
+
+                self.populateLicensorDetails(self.licDetails.data.licensorName);
             } else {
 
                 var msg = "Entity Details was not saved successfully";
@@ -1266,6 +1268,50 @@ var page = Component.extend({
       }
 
       return isValid;
+
+    },
+
+    populateLicensorDetails : function(val) {
+
+      var self = this;
+
+      var genObj = {};
+
+      Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
+
+          self.licensors.replace(values[0].entities[0]);
+
+          var defaultEntity = values[0].entities[0].entities[0];
+
+          var genObj = {"id" : "" , "licensorName":""};
+
+          if(self.appstate.attr("licensorName") != null && self.appstate.attr("licensorName") != undefined) {
+
+            genObj.licensorName =  self.appstate.attr("licensorName");
+            self.appstate.attr("licensorName", null);
+
+          }
+          else if (val == null){
+
+            genObj.id = defaultEntity.id;
+            genObj.licensorName =  defaultEntity.value;
+
+          } else {
+
+              genObj.licensorName =  val;
+
+          }
+
+          self.attr("selectedEntity", genObj.licensorName);
+
+          Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
+
+            self.populateAnalyticsPage(values);
+            self.reValidateFiledsonLoad()
+
+          });
+
+      });
 
     },
 
@@ -1601,37 +1647,7 @@ var page = Component.extend({
 
       var defaultEntity = [];
 
-      Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
-
-          self.scope.licensors.replace(values[0].entities[0]);
-
-          defaultEntity = values[0].entities[0].entities[0];
-
-          var genObj = {"id" : "" , "licensorName":""};
-
-          if(self.scope.appstate.attr("licensorName") != null && self.scope.appstate.attr("licensorName") != undefined) {
-
-            genObj.licensorName =  self.scope.appstate.attr("licensorName");
-            self.scope.appstate.attr("licensorName", null);
-
-          }
-          else {
-
-            genObj.id = defaultEntity.id;
-            genObj.licensorName =  defaultEntity.value;
-
-          }
-
-          self.scope.attr("selectedEntity", genObj.licensorName);
-
-          Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
-
-            self.scope.populateAnalyticsPage(values);
-            self.scope.reValidateFiledsonLoad()
-
-          });
-
-      });
+      self.scope.populateLicensorDetails(null);
 
 
       Promise.all([Analytics.getInvoiceDetails(UserReq.formRequestDetails(genObj))]).then(function(values) {
@@ -2088,7 +2104,7 @@ var page = Component.extend({
 
           }
 
-        });  
+        });
     },
 
     "#analyticsAdd click": function(event){
@@ -2132,6 +2148,12 @@ var page = Component.extend({
       $("#invoiceType").val("Select");
 
       self.scope.reValidateFiledsonLoad();
+
+      setTimeout(function(){
+        alignGridStats('societyContacts');
+        var socTableWidth=$('#societyContacts table').outerWidth()-15;
+        $('#societyContacts table').css("width",socTableWidth);
+      },100);
     },
 
     '.submitButton click' : function() {
@@ -2228,7 +2250,6 @@ function alignGridStats(divId){
   var tableWidth = 0;
   var tdWidth, cellWidthArr = [];
   if(rowLength>0){
-
     $('#'+divId+' table').css("width",divWidth);
       for(var i=1;i<=colLength;i++){
         var theadTdWidth = $('#'+divId+' table>thead>tr>th:nth-child('+i+')').outerWidth();
@@ -2290,13 +2311,11 @@ function alignGridLicenPop(divId){
   var tableWidth = 0;
   var tdWidth, cellWidthArr = [];
   if(rowLength>0){
-
     $('#'+divId+' table').css("width",divWidth-300);
       for(var i=1;i<=colLength;i++){
         var theadTdWidth = $('#'+divId+' table>thead>tr>th:nth-child('+i+')').outerWidth();
         var tbodyTdWidth = $('#'+divId+' table>tbody>tr>td:nth-child('+i+')').outerWidth();
         var tfootTdWidth = $('#'+divId+' table>tfoot>tr>td:nth-child('+i+')').outerWidth();
-
 
         if(theadTdWidth >= tbodyTdWidth && theadTdWidth >= tfootTdWidth)
           tdWidth = theadTdWidth;
@@ -2337,7 +2356,6 @@ function alignGridLicenPop(divId){
         $('#'+divId+' table').css("width",tableWidth);
         $('#'+divId+' table>tbody').css("max-width",tableWidth);
       }
-
   }
 }
 

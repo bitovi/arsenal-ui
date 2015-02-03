@@ -12,7 +12,7 @@ rn-dashboard-invoices {
   }
 
   table.holes-report {
-    width: 82%;
+    width: 80%;
     overflow: auto;
     margin: 0 auto;
     color: @dark-grey;
@@ -28,13 +28,12 @@ rn-dashboard-invoices {
     }
 
     tr {
-      height: 3em;
+      height: 2em;
     }
 
     th {
 
         width: 1%;
-
         padding-left: 10px;
         height: 1.5em;
         padding-top: 5px;
@@ -84,6 +83,10 @@ rn-dashboard-invoices {
       }
     }
 
+    .greenHighlight{
+      background-color:#669933;
+    }
+
     .entity, .hole{
       text-align: center;
       white-space: nowrap;
@@ -127,7 +130,7 @@ rn-dashboard-invoices {
     }
 
     tr {
-      height: 3em;
+      height: 2em;
     }
 
     th {
@@ -164,7 +167,7 @@ rn-dashboard-invoices {
   }
 
   table.holes-reports-local{
-    width:11%;
+    width:12%;
   }
 
   table.missing-invoices {
@@ -214,30 +217,42 @@ rn-dashboard-invoices {
     font-weight:normal;
   }
 
-}
+  .checkMark{
+    width:18px;
+    height:15px;
+    padding-right: 3px;
+  }
 
-.checkMark{
-  width:15px;
-  height:15px;
-}
+  .la {
+    width: 1.2em;
+    padding-right:3px;
+  }
 
-.la {
-      width: 1em;
-    }
+  .tableDiv{
+    overflow:scroll;
+    width:96%;
+    //  min-height:290px;
+    margin: 0px auto;
+    z-index:inherit;
+  }
 
- .tableDiv{
-   overflow:scroll;
-   width:96%;
-  //  min-height:290px;
-   margin: 0px auto;
-   z-index:inherit;
- }
+  .imgBlock{
+    float: right;
+    padding-top: 10px;
+    right: 0;
+    width: 8%;
+  }
 
-.imgBlock{
-  padding-left: 69%;
-  padding-top: 10px;
-}
+  .copytoclipboardContainer{
+    display: none;
+  }
 
-.copytoclipboardContainer{
-  display: none;
+  .legend-style {
+    width: 12%;
+    margin:0 auto;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top:10px;
+  }
+
 }

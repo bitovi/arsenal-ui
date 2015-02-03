@@ -51,7 +51,37 @@ var InboxGrid = ScrollingGrid.extend({
 
   },
   events: {
+    inserted: function(){
+      var self= this;
+      var tbody = self.element.find('tbody');
 
+      //setting tbody height - end
+      var parentScopeVar = self.element.closest('rn-dashboard-approvals').scope();
+      var tableScrollTopVal = parentScopeVar.attr('inboxScrollTop');
+      $(tbody[0]).scrollTop(tableScrollTopVal);
+      $(tbody).on('scroll', function(ev) {
+          if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight-1  && parentScopeVar.inboxRows.recordsAvailable) {
+
+            var offsetVal = parentScopeVar.attr('inboxOffset');
+
+            $("#inboxGrid").prepend("<div class='loading_img'></div>");
+
+            /* Reset the offset value and call the webservice to fetch next set of records */
+            parentScopeVar.attr('mailboxType', 'inbox');
+            parentScopeVar.attr('inboxOffset', (parseInt(offsetVal)+1));
+            parentScopeVar.attr('inboxScrollTop', (tbody[0].scrollHeight-200));
+            parentScopeVar.appstate.attr('globalSearchButtonClicked', false);
+
+            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
+            /* All the neccessary parameters will be set in that event */
+           if(parentScopeVar.appstate.attr('globalSearch')){
+              parentScopeVar.appstate.attr('globalSearch', false);
+            }else{
+              parentScopeVar.appstate.attr('globalSearch', true);
+            }
+          }
+        });
+    }
   }
 });
 

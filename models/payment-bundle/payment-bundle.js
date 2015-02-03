@@ -285,8 +285,7 @@ var PaymentBundle = Model.extend({
             validationResponse.paymentBundle.bundleDetailsGroup.forEach(function(group) {
               var target = undefined;
 
-                bundle
-                if(group.invoiceId != undefined){
+                if(group.key != undefined){
                   var target = _.find(bundle.bundleDetailsGroup, {key: group.key});
                   if(target != undefined ){
                     group.vldtnMessage == undefined ? target.attr('validationMessages', "") : target.attr('validationMessages', group.vldtnMessage);
@@ -335,8 +334,8 @@ var PaymentBundle = Model.extend({
 
 
     delete bundleData.validationStatus;
-    delete bundleData.validationRulesCompleted;
-    delete bundleData.validationRulesTotal;
+    //delete bundleData.validationRulesCompleted;
+    //delete bundleData.validationRulesTotal;
 
 
 

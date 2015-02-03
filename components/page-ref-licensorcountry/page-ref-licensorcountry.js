@@ -62,36 +62,14 @@ var page = Component.extend({
     refreshEntityId : true,
     validFrom: [],
     validTo : [],
+    footerrowspresent: false,
+    footer : [],
+    data : "",
+    revisionHistory : revisionHistory,
+    reportConfigurationList : reportConfigurationList,
+    footerdatarepconf : "",
+    footerdata : "",
 
-    commentList : [  
-         {  
-            "id":3670,
-            "commentId":1,
-            "type":"REFDATA",
-            "comments":"JUnitComments",
-            "createdBy":8888,
-            "createdByName":null,
-            "createdDate":"2014-11-14"
-         },
-         {  
-            "id":3673,
-            "commentId":1,
-            "type":"REFDATA",
-            "comments":"JUnitComments",
-            "createdBy":8888,
-            "createdByName":null,
-            "createdDate":"2014-11-14"
-         },
-         {  
-            "id":3777,
-            "commentId":1,
-            "type":"REFDATA",
-            "comments":"JUnitComments",
-            "createdBy":8888,
-            "createdByName":null,
-            "createdDate":"2014-11-14"
-         }],
-    
 
       getPricingModelsOnLoad : function(modelId, versionNo) {
         var self = this;
@@ -111,7 +89,7 @@ var page = Component.extend({
       setSelectedValue : function(text, divId) {
 
         $(divId+ " option").filter(function() {
-          return $(this).text() == text; 
+          return $(this).text() == text;
         }).prop('selected', true);
 
       }
@@ -175,8 +153,8 @@ var page = Component.extend({
             }
 
           }
-        
-          
+
+
         if( !saved ) {
 
           var element = {modelName : "", modelVersion : []  };
@@ -197,7 +175,7 @@ var page = Component.extend({
       }
 
       self.scope.attr("pricingModels").replace(pricingmodelTemps);
-  
+
       }).then(function(values) {
 
         //requestObj = {licensorId:licId};
@@ -233,8 +211,8 @@ var page = Component.extend({
       },
       helpers:{
         setHeight: function(){
-          var vph = $(window).height()-350;
-          return 'Style="height:'+vph+'px"';
+          var vph = '85%';
+          return 'Style="height:'+vph;
         },
         disableSubmit:function(){
           if(this.attr("state") == "Read"){
@@ -259,10 +237,12 @@ var page = Component.extend({
           reportConfigurationList = new can.List();
           revisionHistory = new can.List();
 
+          var footer = {
+            data: "No of records : " 
+          }
 
-
-          $('#grid-report-config').append(stache('<rn-grid-report-configuration rows="{reportConfigurationList}"></rn-grid-report-configuration>')({reportConfigurationList}));
-          $('#grid-revision-history').append(stache('<rn-grid-revision-history rows="{revisionHistory}"></rn-grid-revision-history>')({revisionHistory}));
+          //$('#grid-report-config').append(stache('<rn-grid-report-configuration rows="{reportConfigurationList}"></rn-grid-report-configuration>')({reportConfigurationList}));
+          //$('#grid-revision-history').append(stache('<rn-grid-revision-history rows="{revisionHistory}" footerrowspresent="{footerrowspresent}" footerdata="{footerdata}"></rn-grid-revision-history>')({revisionHistory, footerrowspresent:true, footerdata:"No of records: "}));
 
           $('#countryLicForm').on('init.form.bv', function(e, data) {
             data.bv.disableSubmitButtons(true);
@@ -344,7 +324,7 @@ var page = Component.extend({
 
           $(".mainLayoutId").hide();
           $("#loading_img").show();
-          
+
           var requestObj  = {
             entityCountryDetails:{
               entityCountry:{
@@ -373,11 +353,11 @@ var page = Component.extend({
 
           if(self.scope.attr("refreshEntityId")) {
             $('#fetchDetailsBtn').attr("disabled", true);
-            
+
 
             var requestObj = {entityId:self.scope.pageState.entityCountryDetails.entityCountry.entityId};
             Promise.all([Country.findAllCountriesByLicenesor(UserReq.formRequestDetails(requestObj))]).then(function(values) {
-              $('#fetchDetailsBtn').attr("disabled", false);  
+              $('#fetchDetailsBtn').attr("disabled", false);
               self.scope.attr("countries").replace(values[0].data);
               if(self.scope.attr("onload")) {
 
@@ -478,6 +458,7 @@ var page = Component.extend({
           },
           '#submitBtn click': function(){
             var entityCountry_data  = this.scope.pageState.entityCountryDetails.attr("entityCountry")._data;
+            pageState.entityCountryDetails.entityCountry.validFrom
 
             var comments = $(".new-comments").val();
 
@@ -497,22 +478,24 @@ var page = Component.extend({
               entityCountry_data.laEnabled = "N";
             }
 
-             var periodFP = "0";
 
-            if(periodFP!= undefined && periodFP != null) {
-              periodFP = periodWidgetHelper.getFiscalPeriod(entityCountry_data.validFrom);
-            }
+            //  var periodFP = "0";
+            //  //periodFP =
+
+            // if(periodFP!= undefined && periodFP != null) {
+            //   periodFP = periodWidgetHelper.getFiscalPeriod(entityCountry_data.validFrom);
+            // }
 
 
-             entityCountry_data.validFrom = periodFP;
+             entityCountry_data.validFrom = periodWidgetHelper.getFiscalPeriod($("#validFrom").val());
 
-             periodFP = "0";
+            //  periodFP = "0";
+            //
+            // if(periodFP!= undefined && periodFP != null) {
+            //   periodFP =
+            // }
 
-            if(periodFP!= undefined && periodFP != null) {
-              periodFP = periodWidgetHelper.getFiscalPeriod(entityCountry_data.validTo);
-            }
-
-             entityCountry_data.validTo = periodFP;
+             entityCountry_data.validTo = periodWidgetHelper.getFiscalPeriod($("#validTo").val());;
 
 
 
@@ -570,9 +553,9 @@ var page = Component.extend({
           },
           '#pricingModelBtn click': function(){
             var self = this.scope;
-            
+
             var selmodelid =  self.pageState.entityCountryDetails.pricingModelId;
-            
+
             var entityName  = $("#licensorId :selected").text();
             var countryId = self.pageState.entityCountryDetails.entityCountry.attr("countryId");
 
@@ -593,7 +576,7 @@ var page = Component.extend({
                 setTimeout(function(){
                   $("#invmessageDiv").hide();
                 },5000);
-        
+
               } else {
 
                 $("#viewPricingModelDiv").show();
@@ -687,12 +670,18 @@ var page = Component.extend({
 
 var loadPage = function(scope,data){
 
+  //revisionHistory.splice(0, revisionHistory.length);
+  //reportConfigurationList.splice(0, reportConfigurationList.length);
 
+  scope.attr("footerrowspresent", true);
+  scope.reportConfigurationList.replace(data.entityCountryDetails.reportConfigurationList);
 
+  scope.attr("footerdatarepconf",  data.entityCountryDetails.reportConfigurationList != null && data.entityCountryDetails.reportConfigurationList.length >0 ? data.entityCountryDetails.reportConfigurationList.length : 0);
 
-  reportConfigurationList.replace(data.entityCountryDetails.reportConfigurationList);
+  scope.revisionHistory.replace(data.revisionHistory);
 
-  revisionHistory.replace(data.revisionHistory);
+  scope.attr("footerdata",  data.revisionHistory != null && data.revisionHistory.length >0 ? data.revisionHistory.length : 0);
+
 
   var displayDate = data.entityCountryDetails.entityCountry.attr("validFrom");
   if(displayDate == 0){
@@ -714,7 +703,7 @@ var loadPage = function(scope,data){
     data.entityCountryDetails.entityCountry.attr("status","InActive");
   }
 
-  
+
 
   scope.pageState.entityCountryDetails.attr("pricingModelVersionNo", data.entityCountryDetails.pricingModelVersionNo);
   scope.pageState.entityCountryDetails.attr("pricingModelId", data.entityCountryDetails.pricingModelId);
@@ -727,7 +716,7 @@ var loadPage = function(scope,data){
 
   $('#validFrom').trigger("change");
   $('#validTo').trigger("change");
-  
+
   scope.pageState.attr("historyComments",data.entityCountryDetails.historyComments);
   scope.pageState.entityCountryDetails.attr("comment",data.entityCountryDetails.comment);
 
@@ -842,11 +831,18 @@ function alignGridStats(divId){
 
         if(i==1)
           tdWidth = 45;
-        
+
         tableWidth += tdWidth;
         cellWidthArr.push(tdWidth);
       }
+      var foot = true;
+      if($('#'+divId+' table>tfoot>tr') != undefined && $('#'+divId+' table>tfoot>tr') != null &&
+          ($('#'+divId+' table>tfoot>tr')[0] == undefined  || $('#'+divId+' table>tfoot>tr')[0] == null ||
+              $('#'+divId+' table>tfoot>tr')[0].getAttribute("colspan") == undefined  || $('#'+divId+' table>tfoot>tr')[0].getAttribute("colspan") == null)
 
+      ) {
+        foot = false;
+      }
       if(tableWidth < divWidth){
         var moreWidth = (divWidth-tableWidth)/colLength;
         for(var j=1;j<=cellWidthArr.length;j++){
@@ -854,7 +850,8 @@ function alignGridStats(divId){
 
           $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
           $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("min-width",width);
-          $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
+          if(!foot)
+            $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
         }
         $('#'+divId+' table').css("width",divWidth);
         $('#'+divId+' table>tbody').css("max-width",divWidth);
@@ -863,8 +860,13 @@ function alignGridStats(divId){
           var width = cellWidthArr[j-1];
           $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
           $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("min-width",width);
-          $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
+          if(!foot)
+            $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
+        
+        }
 
+        if(foot) {
+          $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",tableWidth);
         }
         $('#'+divId+' table').css("width",tableWidth);
         $('#'+divId+' table>tbody').css("max-width",tableWidth);

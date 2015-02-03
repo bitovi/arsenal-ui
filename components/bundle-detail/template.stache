@@ -1,8 +1,7 @@
 <div class="overlay">
 </div>
-<div id="chartContainer" class="col-lg-12">
+<div class="col-lg-12">
   <div id="messageDiv" class="col-md-12"></div>
-  <div id="highChartDetails" class="highcharts_Hide"></div>
 </div>
 <div class="top-controls">
   {{#if tabs.length}}
@@ -13,7 +12,7 @@
   </div>
   {{/showAggregateControl}}
   {{#validationStatus}}
-  <div class="validation-status">{{validationRulesCompleted}} out of {{validationRulesTotal}} rules complete.</div>
+  <!--div class="validation-status">{{validationRulesCompleted}} out of {{validationRulesTotal}} rules complete.</div-->
   {{/validationStatus}}
   {{/if}}
   <div class="bundle-detail-actions">

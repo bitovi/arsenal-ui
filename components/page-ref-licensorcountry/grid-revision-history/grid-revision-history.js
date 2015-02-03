@@ -49,7 +49,9 @@ Grid.extend({
         id: 'commentText',
         title: 'Comments'
       }
-    ]
+    ],
+
+    footerdata : ""
   }
 });
 

@@ -340,7 +340,7 @@ var page = Component.extend({
         $('#clonetable').empty().html($('#invoiceGrid').find('table:visible').clone(true).attr('id','dynamic').removeClass('rn-grid'));
          $('copy-clipboard').slideDown(function(){
            $('body').css('overflow','hidden');
-           $("#clonetable input:checkbox").attr("disabled",true);   
+           $("#clonetable input:checkbox").attr("disabled",true);
            $('#copyall').trigger('click');
         });
       },
@@ -349,7 +349,7 @@ var page = Component.extend({
           //console.log(JSON.stringify(self.scope.tokenInput.attr()));
            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
           /* All the neccessary parameters will be set in that event */
-         
+
           self.scope.attr("offset", 0);  /* Search criteria changes. So making offset 0 */
          if(self.scope.appstate.attr('globalSearch')){
             self.scope.appstate.attr('globalSearch', false);
@@ -622,7 +622,7 @@ var page = Component.extend({
         var unDelInvIdArr = [];
         for(var i=0;i<invoiceData.length;i++){
           var flag=false;
-          var statusId = invoiceData[i]["statusId"];
+          var statusId = invoiceData[i]["status"];
           var paymentState = invoiceData[i]["paymentState"];
           var invoiceno = invoiceData[i]["invoiceNumber"];
           //console.log("row is "+JSON.stringify(row));
@@ -747,13 +747,13 @@ var page = Component.extend({
             if(invTypeArr[z] == "CASHADJ_INV"){
               cashAdj=true;
             }
-              
+
           }
 
           if(flag==false){
               $("#paymentBundleNames").attr("disabled","disabled");
               $("#btnSubmit").attr("disabled","disabled");
-              $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>Selected rows are different types of invioces and cannot be added to same bundle.</label>");
+              $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>Selected rows are different types of invoices and cannot be added to same bundle.</label>");
               $("#messageDiv").show();
           }else if(cashAdj){
               $("#paymentBundleNames").attr("disabled","disabled");
@@ -1078,7 +1078,7 @@ function getAllInvoices(self) {
   if(self.attr("localGlobalSearch") != undefined){
       if(self.attr("localGlobalSearch") != self.appstate.attr('globalSearch')) {
         self.attr("localGlobalSearch",self.appstate.attr('globalSearch'));
-        fetchData(self);        
+        fetchData(self);
       }
 
   } else {
