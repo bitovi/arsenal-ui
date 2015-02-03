@@ -200,14 +200,17 @@
             <div class="col-sm-1"></div>
              <div class="col-sm-11">
              <div class="col-sm-12" style="margin-left: -15px;"> Society Model Mapping</div>
-             <div id="grid-society-model" style="max-height: 200px;"></div>
+             <div id="grid-society-model" style="max-height: 200px;">
+              <rn-grid-society-model rows="{societyModelMapping}" footerrowspresent="{footerrowspresent}" footerdata="{footerdatasocmod}"></rn-grid-society-model>
+             </div>
               <!-- <div class="panel panel-default panel-sm" style="border: 1px solid #827F7F;border-radius: 0px;">
                 <div class="panel-heading clearfix">
                     <span class="panel-title mid-headers">
                       Society Model Mapping
                     </span>
                 </div>
-                <div id="grid-society-model" style="max-height: 200px; overflow-y:scroll;"></div>
+                <div id="grid-society-model" style="max-height: 200px; overflow-y:scroll;">
+                </div>
               </div> -->
             </div>
           </div>
@@ -216,7 +219,9 @@
             <div class="col-sm-1"></div>
              <div class="col-sm-11">
              <div class="col-sm-12" style="margin-left: -15px;"> Revision History</div>
-             <div id="grid-revision-history-country" style="max-height: 200px;"></div>
+             <div id="grid-revision-history-country" style="max-height: 200px;">
+              <rn-grid-revision-history-country rows="{revisionHistory}" footerrowspresent="{footerrowspresent}" footerdata="{footerdata}"></rn-grid-revision-history-country>
+             </div>
 
               <!-- <div class="panel panel-default panel-sm" style="border: 1px solid #827F7F;border-radius: 0px;">
                 <div class="panel-heading clickable">

@@ -190,7 +190,9 @@
               <div class="col-sm-1"></div>
               <div class="col-sm-6">
               <div class="col-sm-12" style="margin-left: -15px;"> Report Configuration</div>
-              <div id="grid-report-config" style="max-height: 200px;width: 100%;"></div>
+              <div id="grid-report-config" style="max-height: 200px;width: 100%;">
+                <rn-grid-report-configuration rows="{reportConfigurationList}" footerrowspresent="{footerrowspresent}" footerdata="{footerdata}"></rn-grid-report-configuration>
+              </div>
 
               </div>
             </div>
@@ -199,9 +201,10 @@
               <div class="col-sm-1"></div>
               <div class="col-sm-11">
               <div class="col-sm-12" style="margin-left: -15px;"> Revision History</div>
-              <div id="grid-revision-history" style="max-height: 200px;"></div>
-                
+              <div id="grid-revision-history" style="max-height: 200px;">
+                <rn-grid-revision-history rows="{revisionHistory}" footerrowspresent="{footerrowspresent}" footerdata="{footerdata}"></rn-grid-revision-history>
               </div>
+            </div>
 
 
 

@@ -63,7 +63,11 @@ var page = Component.extend({
     displayMessage:"display:none",
     state:"Edit",
     validFrom: [],
-    validTo : []
+    validTo : [],
+    reportConfigurationList : reportConfigurationList,
+    footerrowspresent : true,
+    footerdatasocmod : "",
+    footerdata : ""
   },
 
   init: function(){
@@ -125,8 +129,8 @@ var page = Component.extend({
       $(".multicomments-required").hide();
       $(".buttonsPlaceHolder").hide();
 
-      $('#grid-society-model').append(stache('<rn-grid rows="{reportConfigurationList}"></rn-grid>')({reportConfigurationList}));
-      $('#grid-revision-history-country').append(stache('<rn-grid-revision-history-country rows="{revisionHistory}"></rn-grid-revision-history-country>')({revisionHistory}));
+      //$('#grid-society-model').append(stache('<rn-grid rows="{reportConfigurationList}"></rn-grid>')({reportConfigurationList}));
+      //$('#grid-revision-history-country').append(stache('<rn-grid-revision-history-country rows="{revisionHistory}"></rn-grid-revision-history-country>')({revisionHistory}));
 
 
       $('#countryForm').on('init.form.bv', function(e, data) {
@@ -355,17 +359,18 @@ var page = Component.extend({
     '{revisionHistory} change': function() {
       var self = this;
       var revisionHistory = self.scope.revisionHistory;
-      $('#grid-revision-history-country').html(stache('<rn-grid-revision-history-country  rows="{revisionHistory}"></rn-grid-revision-history-country>')({revisionHistory}));
-      
-      setTimeout(function(){
-        alignGrid("grid-revision-history-country");
-        alignGrid("grid-society-model");
-      },50);
+      //$('#grid-revision-history-country').html(stache('<rn-grid-revision-history-country  rows="{revisionHistory}"></rn-grid-revision-history-country>')({revisionHistory}));
+      self.scope.attr("footerrowspresent", true);
+      self.scope.attr("footerdata",  self.scope.revisionHistory != null && self.scope.revisionHistory.length >0 ? self.scope.revisionHistory.length : 0);
+
     },
     '{societyModelMapping} change': function() {
       var self = this;
       var societyModelMapping = self.scope.societyModelMapping;
-        $('#grid-society-model').html(stache('<rn-grid-society-model rows="{societyModelMapping}"></rn-grid-society-model>')({societyModelMapping}));
+      //$('#grid-society-model').html(stache('<rn-grid-society-model rows="{societyModelMapping}"></rn-grid-society-model>')({societyModelMapping}));
+      self.scope.attr("footerrowspresent", true);
+      self.scope.attr("footerdatasocmod",  self.scope.societyModelMapping != null && self.scope.societyModelMapping.length >0 ? self.scope.societyModelMapping.length : 0);
+      
     },
     '#fetchDetailsBtn click':function(){
       var self = this.scope;
@@ -526,6 +531,11 @@ var page = Component.extend({
         }else{
           self.attr("state","Read");
         }
+
+        setTimeout(function(){
+          alignGrid("grid-revision-history-country");
+          alignGrid("grid-society-model");
+        },50);
 
       },function(xhr){
           console.error("Error while loading: country Details"+xhr);
