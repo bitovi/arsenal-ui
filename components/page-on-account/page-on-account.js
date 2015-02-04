@@ -187,12 +187,12 @@ var page = Component.extend({
             self.scope.attr('paymentBundleNameText',paymentBundleNameText);
           }
 
-          if(pbval != undefined || paymentBundleNameText != undefined){
-            $("#propose").removeAttr("disabled"); 
-          }
-          //setTimeout(function(){
+          // if(pbval != undefined || paymentBundleNameText != undefined){
+          //   $("#propose").removeAttr("disabled"); 
+          // }
+          setTimeout(function(){
                 self.scope.attr('enableOnAccPropose',Date.now());
-          //},100)
+          },600)
           
       },
       ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
@@ -546,8 +546,10 @@ var page = Component.extend({
                 var request = self.scope.request;
                 request.quarters=self.scope.quarters;
                 request.rows=updatedRows;
-                self.scope.newOnAccountRows.replace(updatedRows);
+                self.scope.attr('onAccountRows',request);
                 $('#newonAccountGrid').html(stache('<rn-new-onaccount-grid request={request}></rn-new-onaccount-grid>')({request}));
+                self.scope.attr('validOnAccNumbers',true);
+                self.scope.attr('enableOnAccPropose',Date.now());
             }
             else{
               displayMessage(data["responseText"],false);
