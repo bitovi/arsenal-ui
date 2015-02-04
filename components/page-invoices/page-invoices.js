@@ -666,7 +666,7 @@ var page = Component.extend({
       }
 
       if($(item[0]).is(":checked")){
-           if(bundleStatus == "UNBUNDLED"){
+           if(bundleStatus == "Unbundled"){
               self.scope.bundleState.attr(val, true);
             }
             else
