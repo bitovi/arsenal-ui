@@ -423,12 +423,14 @@ var BundleDetailTabs = Component.extend({
         PaymentBundle.findOne(params).then(function(data) {
           console.log(data);
          if (data != undefined && data["status"] == "SUCCESS" && data["exportExcelFileInfo"] != null) {
-            self.scope.appstate.attr("excelOutput",false);
-            self.scope.appstate.attr('detail',false);
             $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
           }
+          self.scope.appstate.attr("excelOutput",false);
+          self.scope.appstate.attr('detail',false);
         },function(err){
           console.log(err);
+          self.scope.appstate.attr("excelOutput",false);
+          self.scope.appstate.attr('detail',false);
         });
       }
     },
@@ -446,12 +448,9 @@ var BundleDetailTabs = Component.extend({
     '.bundle-detail-actions img mouseover': function(el, ev) {
       $(".overlay").html("<label class='tooltipMessage'>"+el.data('tooltip')+"</label>");
       $(".overlay").show();
-      //console.log("Image over:"+el.data('tooltip'));
     },
     '.bundle-detail-actions img mouseout': function(el, ev) {
-      console.log("Image out:"+el.data('tooltip'));
       $(".overlay").hide();
-
     },
     '.approval-comment .btn click': function(el, ev) {
       var action = el.data('action'),
