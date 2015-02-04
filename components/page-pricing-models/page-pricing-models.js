@@ -569,6 +569,7 @@ var page = Component.extend({
     },
     "#addCancel click":function(){
       this.scope.attr("showbottomSection", false);
+      $("#fetch").trigger("click");
     },
     "#editCancel click":function(){
        var self = this;
