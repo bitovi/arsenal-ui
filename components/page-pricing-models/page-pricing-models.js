@@ -636,7 +636,8 @@ var page = Component.extend({
                                   if(self.scope.editstate == false){
                                     clearOldEditData(self);
                                   }
-                                        
+                                $("#addbasemodel").trigger("click");
+                                $("#addtrack").trigger("click");         
                               }
                             else
                             {
