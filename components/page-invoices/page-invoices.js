@@ -1025,13 +1025,17 @@ var page = Component.extend({
                     $("#messageDiv").hide();
                     self.scope.checkedRows.replace([]);
                      /* The below calls {scope.appstate} change event that gets the new data for grid*/
-                     self.scope.attr('cancelnewbundlereq',true);
+                      var newPaymentBundleCreated = $("#newPaymentBundle").val();
+                      if (newPaymentBundleCreated != undefined) {
+                        self.scope.attr('cancelnewbundlereq', true);
+                      }
                      if(self.scope.appstate.attr('globalSearch')){
                         self.scope.appstate.attr('globalSearch', false);
                       }else{
                         self.scope.appstate.attr('globalSearch', true);
                       }
                  },2000);
+                  self.scope.attr('cancelnewbundlereq', false);
                //}
               }
               else{
