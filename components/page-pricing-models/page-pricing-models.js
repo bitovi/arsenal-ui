@@ -199,6 +199,8 @@ var page = Component.extend({
       var self = this;
        clearOldEditData(self);
 
+
+
       self.scope.addEditUIProperty.attr("country", true);
       self.scope.addEditUIProperty.attr("entity", true);
 
@@ -245,6 +247,10 @@ var page = Component.extend({
                           $("#version").trigger('change');
                         }                          
                     },1000);
+
+                setTimeout(function(){
+                  addFooter('modelsummary');
+                },100);
                 
              //   handleMsg("show", "Please click on pricing model row to view/edit.");
                 $('#pmform').bootstrapValidator('addField', 'version');
@@ -261,9 +267,6 @@ var page = Component.extend({
 
             $("#pmform").data('bootstrapValidator').resetForm();
              $("#save").attr("disabled", true);
-             setTimeout(function(){
-                addFooter('modelsummary');
-              },100);
             return false;
     },
      "models-grid table tbody tr click":function(el){
@@ -409,7 +412,7 @@ var page = Component.extend({
                  
                  }
 
-              /** Track count minima Grid*/
+                /** Track count minima Grid*/
 
 
               self.scope.attr("trackCountMinimaList").replace([]); /*cleaning table row to load new data on click*/
@@ -433,6 +436,10 @@ var page = Component.extend({
                     },function(xhr){
                 /*Error condition*/
                 }).then(function(){
+                  addFooter('country-lic-grid');
+                  //addFooter('baseModelParam');
+                  //addFooter('trackCountDiv');
+
                   self.scope.attr("isCommentData", true);
                   $('#pmform').bootstrapValidator('addField', 'usercommentsdiv');
                  
@@ -733,10 +740,21 @@ var isError = false;
 }
 
 function addFooter(divId){
-  if(divId=="modelsummary"){
-    var rowCount= $('#'+divId+' table>tbody>tr').length;  
-      $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:left;border:none;'>No. of Records: "+rowCount+"</td></tr><tfoot>");   
-  }
+    var rowCount= $('#'+divId+' table>tbody>tr').length; 
+    var colspanFoot=$('#'+divId+' table>thead>tr>th').length; 
+    if($('#'+divId+' table tfoot').length==1){
+      if(rowCount==0){
+        $('#'+divId+' table tfoot').append("<tr><td class='recordsCount' style='text-align:left;border:none;' colspan="+colspanFoot+">No Records Found</td></tr>"); 
+      }else if($('#'+divId+' table>tbody>tr>td').hasClass("noDataFoot")==false){
+        $('#'+divId+' table tfoot').append("<tr><td class='recordsCount' style='text-align:left;border:none;' colspan="+colspanFoot+">No. of Records: "+rowCount+"</td></tr>");   
+      } 
+    }else{
+      if(rowCount==0){
+        $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:left;border:none;' colspan="+colspanFoot+">No Records Found</td></tr><tfoot>"); 
+      }else if($('#'+divId+' table>tbody>tr>td').hasClass("noDataFoot")==false){
+        $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:left;border:none;' colspan="+colspanFoot+">No. of Records: "+rowCount+"</td></tr><tfoot>");   
+      } 
+    } 
 }
 
 

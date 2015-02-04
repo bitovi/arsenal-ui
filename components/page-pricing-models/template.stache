@@ -98,7 +98,7 @@
 							<div class="col-sm-12">
 								<fieldset class="scheduler-border">
 									<legend class="scheduler-border">Base Model parameter</legend>
-										<div class="table-responsive maxheightGrid">
+										<div class="table-responsive maxheightGrid" id="baseModelParam">
 									  		<table class="table table-condensed table-striped breakdown" id="baseModelTable">
 											    <thead>
 											        <tr>
@@ -165,7 +165,7 @@
 
 								<fieldset class="scheduler-border trackcountScheduler">
 									<legend class="scheduler-border">Track Count Minima</legend>
-									<div class="table-responsive maxheightGrid">
+									<div class="table-responsive maxheightGrid" id=trackCountDiv"">
 									  	<table class="table table-condensed table-striped breakdown" id="trackCount">
 										    <thead>
 										        <tr>
