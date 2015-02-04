@@ -14,11 +14,15 @@
           <input type="button"  class="cancelUpload uploadFiles" value="Cancel">
   {{/if}}
 
+ <div class="progress progress-bar-style" id="progressouter" style="display:none">
+    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
+     aria-valuemin="0" aria-valuemax="100" id="progress" style="text-align:right"></div>
+ </div>
 
      {{#if isAnyFileLoaded}}
           {{#if fileList.length}}
 
-            <ul class="filelist">
+            <ul class="filelist" style="padding-left: 5px;">
                 {{#fileList}}
                   <li {{data 'listView'}} class="{{#if filePath}}uploaded{{/if}} {{#if fileId}}uploaded{{/if}}">
                     {{#if fileName}}
@@ -36,6 +40,7 @@
 
                     {{/if}}
                        <a  class="action-link" data-fileid="{{fileId}}" data-guid="{{guid}}" data-filemeta="{{fileName}}{{filePath}}" data-fname="{{name}}">X</a>
+
                   </li>
                 {{/fileList}}
              </ul>
