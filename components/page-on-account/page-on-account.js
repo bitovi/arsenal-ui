@@ -906,11 +906,13 @@ var createProposedOnAccountRequest=function(appstate){
   proposedOnAccountRequest.searchRequest.type="PROPOSED";
   proposedOnAccountRequest.searchRequest.offset=appstate.attr("offset");
   proposedOnAccountRequest.searchRequest.limit="10";
-    if(sortByMap[sortByAttr] == undefined){
-      sortByAttr = 'onAccountAmt';
-    }else{
-      sortByAttr = sortByMap[sortByAttr];
-    }
+   if(sortByMap[sortByAttr] != undefined){
+    sortByAttr = sortByMap[sortByAttr];
+  }else if(sortByAttr!= undefined && sortByAttr.length >0){
+    sortByAttr = 'onAccountAmt';
+  }else{
+    sortByAttr = '';
+  }
   proposedOnAccountRequest.searchRequest.sortBy=sortByAttr;
   proposedOnAccountRequest.searchRequest.sortOrder=appstate.attr("sortOrder");
 

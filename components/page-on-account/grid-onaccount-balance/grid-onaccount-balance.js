@@ -209,6 +209,10 @@ var createBalanceOnAccountRequest=function(appstate){
   balancedOnAccountRequest.searchRequest.limit="10";
   if(sortByMap[sortByAttr] != undefined){
     sortByAttr = sortByMap[sortByAttr];
+  }else if(sortByAttr!= undefined && sortByAttr.length >0){
+    sortByAttr = 'onAccountAmt';
+  }else{
+    sortByAttr = '';
   }
   balancedOnAccountRequest.searchRequest.sortBy=sortByAttr;
   balancedOnAccountRequest.searchRequest.sortOrder=appstate.attr("sortOrder");
