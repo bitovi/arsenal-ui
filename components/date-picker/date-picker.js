@@ -21,7 +21,9 @@ var datePicker = Component.extend({
       "inserted": function(){
         var self = this.scope;
         $("#"+self.attr().name).datetimepicker({
-              pickTime: false
+              pickTime: false,
+              useCurrent: false
+
         })
          
         }
