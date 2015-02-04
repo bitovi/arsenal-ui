@@ -870,16 +870,16 @@ var page = Component.extend({
 		},
 
 		"#invoiceRegion change":function(){  /*This is need only for edit case*/
-			var self = this;  
+			var self = this;
 			self.scope.attr("licensorStore", "");
 			if(self.scope.attr("licensorStore") == ""){
 				$('#invoiceform').bootstrapValidator('revalidateField', 'licensor');
-			}	
+			}
 			setTimeout(function(){
 					$("#invoicelicensor").val("");
 			},800);
 		},
-		
+
 		"{scope} licensorStore": function(event){
 			var self = this;
 			var genObj = {licensorId:self.scope.attr("licensorStore")};
@@ -896,15 +896,15 @@ var page = Component.extend({
 		},
 
 		"#invoicelicensor change":function(){  /*This is need only for edit case*/
-			var self = this;  
+			var self = this;
 			self.scope.attr("currencyStore", "");
 			if(self.scope.attr("currencyStore") == ""){
 				$('#invoiceform').bootstrapValidator('revalidateField', 'currency');
 				setTimeout(function(){
-					$("#currency").val(""); 
+					$("#currency").val("");
 				},800);
-				
-			}	
+
+			}
 
 		},
 
@@ -979,6 +979,9 @@ var page = Component.extend({
 						}
 
 						var invoiceData = self.scope.attr().invoiceContainer[0];
+
+            //<rdar://problem/19645803> Dont allow user to update the bundle if its part of the PB or in transit.
+            invoiceData.paymentState !== 0 ? $(".invoiceRegion").prop('disabled', true) : "";
 
 						self.scope.attr("invoicenumberStore", invoiceData.invoiceNumber);
 				 		self.scope.attr("invoicetypeSelect", invoiceData.invoiceTypeId);
@@ -1619,11 +1622,10 @@ var page = Component.extend({
 							//self.scope.attr('invoicetypeSelect','1');
 						},
 					  	helpers: {
-					         		currentDate: function(){
+					         	currentDate: function(){
 								  	 	var date = new Date();
 								  	 	this.attr("currentdate", (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear());
-										return this.attr("currentdate");
-
+										  return this.attr("currentdate");
 								  	},
 								  	calculatedDueDate: function(){
 							  			/*var date = new Date();
@@ -1631,8 +1633,7 @@ var page = Component.extend({
 								  	 	var calduedate = ((date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear());*/
 								  	 	var calduedate = this.attr("calduedate");
 								  	 	//this.attr("calduedate", calduedate);
-										return calduedate;
-
+										 return calduedate;
 								  	},
 								  	calculateTaxPercent: function(){
 								  		var tax = 0;
