@@ -39,7 +39,7 @@ import commonUtils from 'utils/commonUtils';
 //import Invoice from 'models/invoice/';
 
 var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]"];
-var mandatoryFieldCA = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]"];
+var mandatoryFieldCA = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
 var mandatoryField = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
 
 fileUpload.extend({
@@ -157,17 +157,12 @@ var page = Component.extend({
   	usdFxrateRatio:"",
   	invselectedbundle:"",
 	isRequired: function(){
-
-    if(this.attr("invoicetypeSelect") != "2" && this.attr("invoicetypeSelect") != "3"){  /*Adhoc*/
-      $(".breakdownCountry").addClass("requiredBar");
-
-    }else if(this.attr("invoicetypeSelect") == "3"){
-      $(".breakdownCountry").removeClass("requiredBar");
-    } else {
-      $(".breakdownCountry").removeClass("requiredBar");
-    }
-
-		},
+		if(this.attr("invoicetypeSelect") == "2"){
+ 						$(".breakdownCountry").removeClass("requiredBar");
+ 					} else {
+	  	 				$(".breakdownCountry").addClass("requiredBar");
+	  	 			}
+	},
 
 	createBreakline: function(rowindex){
 			var self = this;
@@ -559,7 +554,7 @@ var page = Component.extend({
 				                   validators: {
 				                    callback: {
 				                            callback: function (value, validator, $field) {
-				                               if((value == "") && (self.scope.attr("invoicetypeSelect") != "2") && (self.scope.attr("invoicetypeSelect") != "3")){
+				                               if((value == "") && (self.scope.attr("invoicetypeSelect") != "2")){
 				                              	   return{
 				                              	   		valid: false,    // or false
 												   		               message: 'Country is mandatory'
