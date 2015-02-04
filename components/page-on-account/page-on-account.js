@@ -488,7 +488,7 @@ var page = Component.extend({
               if(data["status"]=="SUCCESS"){
                  displayMessage(data["responseText"],true);
                  // empty the deletedFileInfo object to empty
-                 $('propose-rn-file-uploader').scope().deletedFileInfo.replace([]);
+                // $('propose-rn-file-uploader').scope().deletedFileInfo.replace([]);
 
                   //req.attr('editableRows',rows);
                   //$('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
@@ -499,9 +499,11 @@ var page = Component.extend({
               }
               else{
                displayMessage(data["responseText"],false);
+               //self.scope.uploadedfileinfo.replace(uploadedfiles.concat(deletedFiles));
                 req.attr('editableRows',self.scope.proposedOnAccountData.rows);
                 $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid request={req} type={type} ></rn-proposed-onaccount-grid>')({req,type}));
               }
+              $('propose-rn-file-uploader').scope().deletedFileInfo.replace([]);
             },function(xhr){
               console.error("Error while loading: onAccount Details"+xhr);
             });
@@ -582,8 +584,7 @@ var page = Component.extend({
           proposedOnAccount.findOne(createProposedOnAccountRequest(appstate),function(data){
             self.scope.attr('showLoadingImage',false);
             if(data["status"]=="SUCCESS"){
-               /* The below calls {scope.appstate} change event that gets the new data for grid*/
-                //var returnValue = utils.getProposedOnAccRows(quarters,data);
+            
 
                 var returnValue = utils.prepareOnAccountRowsForDisplay(data.onAccount.onAccountDetails,quarters);
                 var finalRows = returnValue['ROWS'];
@@ -592,7 +593,9 @@ var page = Component.extend({
                 }
                 //var finalRows = self.scope.previouslyFetchOnAccRows.concat(returnValue['ROWS']);
 
-                var footerRows = utils.createFooterRow(data.onAccount.onAccountFooter);
+                if(data.onAccount.onAccountFooter != undefined){
+                  var footerRows = utils.createFooterRow(data.onAccount.onAccountFooter);  
+                }
 
 
                 //var arr = $.unique(returnValue['BUNDLE_NAMES']);

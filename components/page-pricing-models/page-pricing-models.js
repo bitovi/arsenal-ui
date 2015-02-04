@@ -228,7 +228,7 @@ var page = Component.extend({
                         $('#modelsummary').html(stache('<models-grid rows="{rows}"></models-grid>')({rows}));  
                       }else{
                         $('#modelsummary').html(stache('<models-grid emptyrows="{emptyrows}"></models-grid>')({emptyrows:true}));
-                      }  
+                      }
 
 
                     
@@ -243,8 +243,7 @@ var page = Component.extend({
                         $("#version").val(maxversion);
                         if($.isNumeric(maxversion)){
                           $("#version").trigger('change');
-                        }  
-                        
+                        }                          
                     },1000);
                 
              //   handleMsg("show", "Please click on pricing model row to view/edit.");
@@ -257,9 +256,14 @@ var page = Component.extend({
              //   $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv" id="usercommentsdiv" style="height:100px; margin-bottom:10px; min-height:100px; max-height:100px;"></textarea>');
                 //$('#pricingmodelGrid tbody tr:nth-child(1)').trigger('click').addClass("selected");
               });
+              
+
 
             $("#pmform").data('bootstrapValidator').resetForm();
              $("#save").attr("disabled", true);
+             setTimeout(function(){
+                addFooter('modelsummary');
+              },100);
             return false;
     },
      "models-grid table tbody tr click":function(el){
@@ -727,6 +731,14 @@ var isError = false;
   return isError;
 
 }
+
+function addFooter(divId){
+  if(divId=="modelsummary"){
+    var rowCount= $('#'+divId+' table>tbody>tr').length;  
+      $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:left;border:none;'>No. of Records: "+rowCount+"</td></tr><tfoot>");   
+  }
+}
+
 
 
 export default page;

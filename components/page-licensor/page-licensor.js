@@ -813,6 +813,7 @@ var page = Component.extend({
       setTimeout(function(){
         alignGridStats('revisionHistory');
         alignGridCountMap('countryModelMapping');
+        $('#repConfiguration .recordsCount').remove();
         alignGridStats('repConfiguration');
         alignGridStats('societyContacts');
 
@@ -2289,12 +2290,27 @@ function alignGridStats(divId){
         }
         $('#'+divId+' table').css("width",tableWidth);
       }
-  }else{
+  }
+
+  if(rowLength==0 && divId=="societyContacts"){
         $('#societyContacts table>thead>tr').css('width','100%;')
         var noDataTable=$('#societyContacts table').width();
         var colLength=noDataTable/($('#societyContacts table>thead>tr>th').length); 
         $('#societyContacts table>thead>tr>th').css("width",colLength);
-        $('#societyContacts table').append("<tfoot><tr><td class='noRecords' style='text-align:center;border:none;' colspan="+$('#societyContacts table>thead>tr>th').length+" width="+noDataTable+">No Records Found</td></tr></tfoot>");
+        $('#societyContacts table').append("<tfoot><tr><td class='noRecords' style='text-align:left;border:none;' colspan="+$('#societyContacts table>thead>tr>th').length+" width="+noDataTable+">No Records Found</td></tr></tfoot>");
+  }
+  if(divId=="revisionHistory"){
+    var rowCount= $('#'+divId+' table>tbody>tr').length;  
+    if($('#'+divId+' table').has('tfoot')){
+        $('#'+divId+' table>tfoot').append("<tr><td class='recordsCount' style='text-align:left;border:none;'>No. of Records: "+rowCount+"</td></tr>");
+    }else{
+      $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:left;border:none;'>No. of Records: "+rowCount+"</td></tr></tfoot>");
+    }
+  }
+  if(divId=="repConfiguration"){
+    var rowCountries= $('#'+divId+' table>tbody>tr>td:nth-child(2)>div').length;  
+    var rowCntryRecords= $('#'+divId+' table>tbody>tr>td:nth-child(3)>div').length;  
+    $('#'+divId+' table>tfoot>tr>td').append("<span class='recordsCount' style='float:left;margin:2px 0;'>No. of Countries: "+rowCountries+" | No. of Reports: "+rowCntryRecords+"</span>");
   }
 }
 
@@ -2354,7 +2370,6 @@ function alignGridLicenPop(divId){
 }
 
 function alignGridCountMap(divId){
-  console.log("Hi");
   var colLength = $('#'+divId+' table>thead>tr>th').length;
   var rowLength = $('#'+divId+' table>tbody>tr').length;
   var divWidth = $('#'+divId).outerWidth();
@@ -2368,7 +2383,7 @@ function alignGridCountMap(divId){
         var tfootTdWidth = $('#'+divId+' table>tfoot>tr>td:nth-child('+i+')').outerWidth();
 
         if(theadTdWidth >= tbodyTdWidth && theadTdWidth >= tfootTdWidth)
-          tdWidth = theadTdWidth;
+          tdWidth = theadTdWidth-1;
         else if(tfootTdWidth >= tbodyTdWidth && tfootTdWidth >= theadTdWidth)
           tdWidth = tfootTdWidth;
         else
@@ -2390,18 +2405,18 @@ function alignGridCountMap(divId){
         for(var j=1;j<=cellWidthArr.length;j++){
           var width = cellWidthArr[j-1]+moreWidth;
 
-          $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
-          $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width);
-          $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
+          $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width,"max-width","250px");
+          $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width,"max-width","250px");
+          $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width,"max-width","250px");
         }
         $('#'+divId+' table').css("width",divWidth);
         $('#'+divId+' table>tbody').css("max-width",divWidth);
       } else {
         for(var j=1;j<=cellWidthArr.length;j++){
           var width = cellWidthArr[j-1];
-          $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
-          $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width);
-          $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
+          $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width,"max-width","250px");
+          $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width,"max-width","250px");
+          $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width,"max-width","250px");
         }
         $('#'+divId+' table').css("width",tableWidth);
         $('#'+divId+' table>tbody').css("width",tableWidth);
@@ -2413,6 +2428,15 @@ function alignGridCountMap(divId){
         var colLength1=noDataTable1/($('#countryModelMapping table>thead>tr>th').length); 
         $('#countryModelMapping table>thead>tr>th').css("width",colLength1);
 
+  }
+
+  if(divId=="countryModelMapping"){
+    var rowCount= $('#'+divId+' table>tbody>tr').length;  
+    if($('#'+divId+' table').has('tfoot')){
+        $('#'+divId+' table tfoot').append("<tr><td class='recordsCount' style='text-align:left;border:none;'>No. of Records: "+rowCount+"</td></tr>");
+    }else{
+      $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:left;border:none;'>No. of Records: "+rowCount+"</td></tr><tfoot>");
+    }     
   }
 }
 
