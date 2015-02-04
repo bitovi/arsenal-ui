@@ -3,9 +3,9 @@
 
 		<div class="col-sm-10 pageTitle" style="padding-left: 250px;">
 
-			<div class="pageHead" style="text-align:center">  You are Loggedout.
-				You can login again by clicking the hyperlink below.
-			</div>
+			<div class="pageHead" style="text-align:center">
+				You are Loggedout.
+				</div>
 			<div style="text-align:center">
 				<a href="#" class="login">Login Again</a>
 			</div>
