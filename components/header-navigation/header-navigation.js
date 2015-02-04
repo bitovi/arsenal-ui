@@ -8,6 +8,9 @@ import Bookmark from 'components/bookmark/';
 import UserReq from 'utils/request/';
 import RinsCommon from 'utils/urls';
 import logout from 'models/common/logout/';
+import commonUtils from 'utils/commonUtils';
+import pagelogout from 'components/page-logout/';
+
 
 var headerNavigation = Component.extend({
     tag: 'header-navigation',
@@ -124,7 +127,11 @@ var headerNavigation = Component.extend({
       '.logout click':function(){
         logout.find().done(function(data){
           if(data.responseCode == 'LOGGEDOUT') {
-            window.location.href = "";
+            commonUtils.navigateTo("logout");
+
+            document.getElementById("navigation-bar").style.display = 'none';
+            document.getElementById("globalFilterContainer").style.display = 'none';
+            //window.location.href = "";
           }
         }) ;
 

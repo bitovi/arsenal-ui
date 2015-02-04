@@ -1,4 +1,4 @@
-<div class="form-inline globalFilterContainer">
+<div class="form-inline globalFilterContainer" id = "globalFilterContainer" >
   <ul class="parameters">
    <li id="periodFromcontainer">
       <div class="box">
