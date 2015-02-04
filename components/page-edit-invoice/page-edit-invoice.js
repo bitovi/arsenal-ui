@@ -651,16 +651,16 @@ var page = Component.extend({
 					});
 
 
-					$('#invoicedate').on('dp.change dp.show', function (e) {
+					$('#invoicedate').on('dp.change', function (e) {
 		            	$('#invoiceform').bootstrapValidator('revalidateField', 'invoicedate');
 		            });
 
-			        $('#receiveddate').on('dp.change dp.show', function (e) {
+			        $('#receiveddate').on('dp.change', function (e) {
 			           	$('#invoiceform').bootstrapValidator('revalidateField', 'receiveddate');
 			        });
 
 
-					$('#invoiceduedate').on('dp.change dp.show', function (e) {
+					$('#invoiceduedate').on('dp.change', function (e) {
 			            $('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
 			        });
 
