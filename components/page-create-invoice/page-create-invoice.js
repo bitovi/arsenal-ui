@@ -34,6 +34,7 @@ import Region from 'models/common/region/';
 import stache from 'can/view/stache/';
 import moment from 'moment';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
+import commonUtils from 'utils/commonUtils';
 
 
 //import Invoice from 'models/invoice/';
@@ -1158,11 +1159,13 @@ var page = Component.extend({
 						Promise.all([Invoice.create(UserReq.formRequestDetails(createInvoiceData))]).then(function(values) {
 									if(values[0]["status"]=="SUCCESS"){
 												var msg = "Invoice number "+self.scope.invoicenumberStore+" was saved successfully."
-									            $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
+									           /* $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
 									            $("#invmessageDiv").show();
 									            setTimeout(function(){
 									                $("#invmessageDiv").hide();
-									             },5000)
+									             },5000) */
+
+									            commonUtils.displayUIMessageWithDiv("#invmessageDiv", values[0].status, msg);
 
 									            if(values[0].invoices[0].errors)
 								           		{
@@ -1171,8 +1174,11 @@ var page = Component.extend({
 
 								           		if(errorMap){
   									       		  var msg =showErrorDetails(errorMap, "Warning");
-  									       		  showMessages(msg);
-                              }
+  									       		 // showMessages(msg, "#invWarningMsgDiv");
+  									       		  commonUtils.displayUIMessageWithDiv("#invWarningMsgDiv", "ERROR", msg);
+
+
+                              					}
                         					$("#invoiceform")[0].reset();
 												$("#invoiceform").data('bootstrapValidator').resetForm();
 												$("#addInvSubmit").attr("disabled", true);
@@ -1239,8 +1245,9 @@ var page = Component.extend({
 									          		msg += values[0].responseText;
 									          	}
 
-												$("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
-										        $("#invmessageDiv").show();
+												//$("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+										        //$("#invmessageDiv").show();
+										        commonUtils.displayUIMessageWithDiv("#invmessageDiv", "ERROR", msg);
 										        $("#addInvSubmit").attr("disabled", false);
 
 										    }
@@ -1538,11 +1545,14 @@ var page = Component.extend({
             return errObj;
           }
 
-          function showMessages(msg){
-            $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
-             $("#invmessageDiv").show();
+          function showMessages(msg, divid){
+          	if(!divid){
+          		divid = "#invmessageDiv";
+          	}
+            $(divid).html("<label class='errorMessage'>"+msg+"</label>")
+             $(divid).show();
              setTimeout(function(){
-                $("#invmessageDiv").hide();
+                $(divid).hide();
              },5000)
           }
 
