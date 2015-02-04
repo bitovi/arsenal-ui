@@ -920,6 +920,7 @@ var page = Component.extend({
       },
       '#attachDocClose click': function(){
           $("#attachDocumentDiv").hide();
+          this.scope.attr("fileinfo").replace([]);
       },
       'rn-file-uploader filesUploaded': function(ele, event){
         /* uploadedfileinfo & fileinfo are two way binded. Refer template.stache <rn-file-uploader uploadedfileinfo="{fileinfo}"></rn-file-uploader>*/
@@ -964,6 +965,7 @@ var page = Component.extend({
                       $("#messageDiv").hide();
                   },2000)
                 }
+                self.scope.attr("fileinfo").replace([]);
             });
           }
       },
