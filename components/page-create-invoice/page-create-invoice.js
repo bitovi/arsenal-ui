@@ -1176,15 +1176,12 @@ var page = Component.extend({
 
 
                               					}
-                        					$("#invoiceform")[0].reset();
+                        						$("#invoiceform")[0].reset();
 												$("#invoiceform").data('bootstrapValidator').resetForm();
 												$("#addInvSubmit").attr("disabled", true);
 
-												self.scope.attr("totalAmountVal", 0);
-												self.scope.attr("tax", "");
-												self.scope.attr("showPBR", true);
-												self.scope.attr("regionStore", "");
-
+												
+												clearFieldScope(self);
 
 
 												$("[id^=breakrow]").each(function(index){  /*removing added row in break down.*/
@@ -1194,13 +1191,7 @@ var page = Component.extend({
 											  	});
 												//$("#breakrow0 .amountText").attr("id","amountText0").val(" ");
 
-												self.scope.attr("AmountStore").each(function(val, key){
-								  	 				self.scope.AmountStore.removeAttr(key);
-								  	 			});
-
-								  	 			self.scope.attr("calduedate", "");
-
-								  	 			self.scope.uploadedfileinfo.replace([]);
+												
 
 								  	 			
 
@@ -1262,8 +1253,7 @@ var page = Component.extend({
 								$("#invoiceform").data('bootstrapValidator').resetForm();
 								$("#addInvSubmit").attr("disabled", true);
 
-								self.scope.attr("totalAmountVal", 0);
-								self.scope.attr("tax", "");
+								
 
 								$("[id^=breakrow]").each(function(index){  /*removing added row in break down.*/
 								if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
@@ -1272,13 +1262,9 @@ var page = Component.extend({
 							  	});
 								//$("#breakrow0 .amountText").attr("id","amountText0").val(" ");
 
-								self.scope.attr("AmountStore").each(function(val, key){
-				  	 				self.scope.AmountStore.removeAttr(key);
-				  	 			});
-
-				  	 			self.scope.attr("calduedate", "");
-
-				  	 			self.scope.uploadedfileinfo.replace([]);
+								
+								clearFieldScope(self);
+				  	 			
 
 
 				  	 		},
@@ -1634,6 +1620,26 @@ var page = Component.extend({
 
 
 			          	return msg;
+					}
+
+					var clearFieldScope = function(self){
+						self.scope.attr("totalAmountVal", 0);
+						self.scope.attr("tax", "");
+						self.scope.attr("showPBR", true);
+						self.scope.attr("regionStore", "");
+
+						self.scope.attr("AmountStore").each(function(val, key){
+		  	 				self.scope.AmountStore.removeAttr(key);
+		  	 			});
+
+		  	 			self.scope.attr("calduedate", "");
+
+		  	 			self.scope.attr("licnotesStore", "");
+		  	 			self.scope.attr("fxrateStore", "");
+		  	 			self.scope.attr("usercommentsStore", "");
+
+		  	 			self.scope.uploadedfileinfo.replace([]);
+
 					}
 
 					var getBundleDateRange = function(){
