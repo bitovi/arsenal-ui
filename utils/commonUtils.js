@@ -28,6 +28,20 @@ var rinsCommonUtils = {
       $("#messageDiv").hide();
     },constants.MESSAGE_DISPLAY_TIME);
   },
+  displayUIMessageWithDiv : function(messageDiv, status,message){
+
+    var className = 'errorMessage';
+    if(status === 'SUCCESS'){
+      className= 'successMessage';
+    }
+
+    $(messageDiv).html("<label class='"+className+"' style='padding: 0px 15px;'>"+message+"</label>")
+    $(messageDiv).show();
+
+    setTimeout(function(){
+      $(messageDiv).hide();
+    },constants.MESSAGE_DISPLAY_TIME);
+  },
   getDefaultParameters:function(appstate){
       var defaultFilterData={};
       defaultFilterData.periodFrom = appstate.defaultPeriodFrom;
