@@ -1,9 +1,10 @@
 @import 'components/grid/grid.less';
 
 #icsvinvoiceGrid {
-	max-height: 200px;
+//	max-height: 200px;
 	overflow: auto;
-	padding: 10px;
+	padding: 10px 0px 10px 0px;
+	height:auto;
 }
 
 @white-border: 1px solid #fff;
@@ -17,8 +18,8 @@ icsv-grid {
   th.checbox, td.checkbox {
     width: 30px;
   }
-  
- 
+
+
 
  /* .entity, .invoiceType, .contentType, .country, .invoiceNum, .dueDate, .currency, .status, .bundleName, .comments{
   	text-align: left !important;
@@ -468,6 +469,26 @@ rn-file-uploader-icsv-sum{
 		}
 }
 
+.pull-up-arrow{
+	//background-image: url("../../resources/images/approval_arrow_up.png");
+	background-repeat: no-repeat;
+	margin:0 auto;
+	float: right;
+	padding-right: 10px;
+	padding-top: 5px;
+	cursor:pointer;
+}
+
+.pull-down-arrow{
+	//background-image: url("../../resources/images/approval_arrow_down.png");
+	background-repeat: no-repeat;
+	margin:0 auto;
+	float: right;
+	padding-right: 10px;
+	padding-top: 5px;
+	cursor:pointer;
+}
+
 	.marginTop10{
 		margin-top: 10px;
 	}
@@ -481,5 +502,3 @@ rn-file-uploader-icsv-sum{
 	    float: left;
 	    padding-left:5px;
   	}
-
-  	

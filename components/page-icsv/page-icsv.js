@@ -17,7 +17,7 @@ import fileUpload from 'components/file-uploader/';
 import UserReq from 'utils/request/';
 import Invoice from 'models/invoice/';
 import commonUtils from 'utils/commonUtils';
-
+import gridUtils from 'utils/gridUtil';
 
 
 Grid.extend({
@@ -67,6 +67,16 @@ Grid.extend({
       }
     ],
     strippedGrid:true
+  },
+  events: {
+    'inserted': function(){
+      var self= this;
+      var tbody = self.element.find('tbody');
+      //setting tbody height which determines the page height- start
+      var getTblBodyHght=gridUtils.getTableBodyHeight('icsvinvoiceGrid',90);
+      gridUtils.setElementHeight(tbody,getTblBodyHght,getTblBodyHght);
+      //setting tbody height - end
+    }
   }
 });
 
@@ -87,7 +97,7 @@ fileUpload.extend({
         "{uploadedfileinfo} change":function () {
             // update areFilesToBeUploaded boolean
             //Handling this using data as scope is not accessible from page-edit -invoice.
-           
+
             $('rn-file-uploader-icsv-sum').data('_d_uploadedFileInfo', this.scope.uploadedfileinfo);
             this.scope.fileList.replace(this.scope.uploadedfileinfo);
 
@@ -106,7 +116,7 @@ fileUpload.extend({
 
              var parentScopeVar = this.element.closest('page-icsv').scope();
              parentScopeVar.attr("errorMessage", "");
-          
+
 
         }
     }
@@ -136,6 +146,7 @@ var page = Component.extend({
       fetchPB:"@",
       cancelnewbundlereq:'@',
       sumfileuploadedinfo:[],
+      //gridHeight,
       createPBRequest: function(){
         var bundleNamesRequest = {"bundleSearch":{}};
           //console.log("fsdfsdfsdf "+JSON.stringify(this.attr('appstate')));
@@ -163,6 +174,7 @@ var page = Component.extend({
        icsvmap.delegate("invoiceData","change", function(ev, newVal){
             //console.log(icsvmap.attr("invoiceData"));
             $("#loading_img").hide();
+            $('#arrowbutton').show();
             if(icsvmap.attr("invoiceData"))
             {
                   var gridData = [];
@@ -188,7 +200,7 @@ var page = Component.extend({
                                            if(tempArr[i].errors.errorMap[key].trim())
                                            errString += tempArr[i].errors.errorMap[key]+", ";
                                     }
-                                }    
+                                }
 
 
                               for(var j =0; j < tempArr[i].invoiceLines.length; j++){
@@ -197,7 +209,7 @@ var page = Component.extend({
                                          if(tempArr[i].invoiceLines[j].errors.errorMap[key].trim())
                                          errString += tempArr[i].invoiceLines[j].errors.errorMap[key]+", ";
                                      }
-                                  }   
+                                  }
                               }
                               errString = errString.replace(/,\s*$/, "");
 
@@ -312,6 +324,8 @@ var page = Component.extend({
           icsvmap.removeAttr("invoiceData");
           self.scope.uploadedfileinfo.replace([]);
           $('.jQfunhide').hide();
+          $('#topContanier').show();
+          $('#arrowbutton').hide();
        },
        '{scope} uploadedfileinfo':function(){
           var self = this;
@@ -341,7 +355,7 @@ var page = Component.extend({
                   }else{
                     self.scope.attr('errorMessage',data.errorDesc);
                   }
-                 }else{ 
+                 }else{
                   self.scope.attr('errorMessage',"");
                   $('.jQfunhide').show();
                   icsvmap.attr("invoiceData", data);
@@ -352,7 +366,12 @@ var page = Component.extend({
                   console.log('error while validating ICSV');
           });
        },
-
+       "#arrowbutton click" :function(){
+         accordin(this);
+       },
+       "#arrowbtnCntiner click" :function(){
+         accordin(this);
+       },
       "#addIcsvSubmit click":function(){
           var self = this;
             var tempArr = icsvmap.invoiceData.invoices.attr();
@@ -399,7 +418,7 @@ var page = Component.extend({
                    tempInvoiceData["invoiceCalcDueDate"] = dateFormatter(tempArr[i].invoiceCalcDueDate, "mm/dd/yyyy");
                    tempInvoiceData["invoiceDueDate"] = dateFormatter(tempArr[i].invoiceDueDate,"mm/dd/yyyy"); //"06/19/2014"//self.scope.invoiceduedate;
 
-                   tempInvoiceData["createdBy"] = self.scope.appstate.userInfo.prsId;  
+                   tempInvoiceData["createdBy"] = self.scope.appstate.userInfo.prsId;
 
                    tempInvoiceData["comments"] = [];
                    var tempComment = {};
@@ -418,7 +437,7 @@ var page = Component.extend({
                 //   tempDocument.fileName = tempArr[i].invoiceDocuments.fileName;
                  //  tempDocument.location = tempArr[i].invoiceDocuments.location;
 
-                  
+
                   // console.log(tempArr[i].invoiceLines.length);
 
 
@@ -476,7 +495,7 @@ var page = Component.extend({
                                         var responseInvoiceArr = values[0].invoices;
                                         icsvmap.invoiceData.attr("invoices", responseInvoiceArr);  /*updating icsv map with invoice response*/
                                         var msg = values[0].responseText;
-                                        displayMessage(msg,false);                                 
+                                        displayMessage(msg,false);
                                     }
                                 });
       },
@@ -616,11 +635,30 @@ function displayMessage(msg,success){
     $("#invcsvmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
   }else{
     $("#invcsvmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
-  } 
+  }
    $("#invcsvmessageDiv").show();
    setTimeout(function(){
       $("#invcsvmessageDiv").hide();
    },5000)
 }
+
+function accordin(obj){
+  if($('#arrowbutton').hasClass('pull-up-arrow')){
+    $('#arrowbutton').removeClass('pull-up-arrow').addClass('pull-down-arrow');
+    $('#arrowbutton').attr('src','/resources/images/approval_arrow_down.png')
+    $('#topContanier').hide();
+    obj.scope.attr('gridHeight', $('.rn-grid tbody').height());
+    // setting tbody height which determines the page height- start
+    var getTblBodyHght=gridUtils.getTableBodyHeight('icsvinvoiceGrid',90);
+    gridUtils.setElementHeight($('.rn-grid tbody'),getTblBodyHght,getTblBodyHght);
+    // setting tbody height which determines the page height - end
+  }else if($('#arrowbutton').hasClass('pull-down-arrow')){
+    $('#arrowbutton').removeClass('pull-down-arrow').addClass('pull-up-arrow');
+    $('#arrowbutton').attr('src','/resources/images/approval_arrow_up.png')
+    $('.rn-grid tbody').height(obj.scope.attr('gridHeight'));
+    $('#topContanier').show();
+  }
+}
+
 
 export default page;
