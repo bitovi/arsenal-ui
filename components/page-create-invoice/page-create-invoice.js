@@ -38,7 +38,7 @@ import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 //import Invoice from 'models/invoice/';
 
-var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]"];
+var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]","ccidGLtxt[]"];
 var mandatoryFieldCA = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]"];
 var mandatoryField = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
 
@@ -128,7 +128,7 @@ var page = Component.extend({
 	isRequired: function(){
   	 		if(this.attr("invoicetypeSelect") != "2" && this.attr("invoicetypeSelect") != "3"){  /*Adhoc*/
  				$(".breakdownCountry").addClass("requiredBar");
- 				
+
  			}else if(this.attr("invoicetypeSelect") == "3"){
  						$(".breakdownCountry").removeClass("requiredBar");
  					} else {
@@ -155,7 +155,7 @@ var page = Component.extend({
         		$('#inputContent'+rowindex).prepend("<option value>Select</option>").val('');
         	}
 
-			var $option = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"]');
+			var $option = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"] , [name="ccidGLtxt[]"]');
 
             $option.each(function(index){
             	$('#invoiceform').bootstrapValidator('addField', $(this));
@@ -451,6 +451,27 @@ var page = Component.extend({
 		                    		}
 				                }
 			            	},
+                    'ccidGLtxt[]': {
+                      validators: {
+                        callback: {
+
+                          callback: function (value, validator, $field) {
+                            if(value == "" || value == "Select" || value == null){
+                              return {
+                                valid: false,    // or false
+                                message: 'GL Account is mandatory'
+                              }
+                            }else if(!$.isNumeric(value)){
+                              return {
+                                valid: false,    // or false
+                                message: 'GL Account is number'
+                              }
+                            }
+                            return true;
+                          }
+                        }
+                      }
+                    },
 			            	'inputContent[]': {
 				                validators: {
 				                    callback: {
@@ -458,9 +479,9 @@ var page = Component.extend({
 				                            callback: function (value, validator, $field) {
 				                              if((value == "") && (self.scope.attr("invoicetypeSelect") != "2")){
 				                              	   return {
-												            valid: false,    // or false
-												            message: 'Content type is mandatory'
-												    }
+              												            valid: false,    // or false
+              												            message: 'Content type is mandatory'
+              												    }
 				                              }
 				                              else if((value == "") && (self.scope.attr("invoicetypeSelect") == "2")){
 				                              	   return {
@@ -591,15 +612,16 @@ var page = Component.extend({
 			            	}
 						}
 				    }).on('error.field.bv', function(e, data) {
-					    	if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]")){
+					    	if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]") && (data.field != "ccidGLtxt[]")){
 					    		$("#"+data.field+"-err").css("display", "block");
 					    	}
+
 					    	$('*[data-bv-icon-for="'+data.field +'"]').popover('show');
 
 
 					}).on('success.field.bv', function(e, data) {
 	        				$('*[data-bv-icon-for="'+data.field +'"]').popover('destroy');
-	        				if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]")){
+	        				if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]") && (data.field != "ccidGLtxt[]")){
 					    		$("#"+data.field+"-err").css("display", "none");
 					    	}
 							if(!self.scope.editpage){
@@ -666,7 +688,7 @@ var page = Component.extend({
 						var errorMessage="";
 						if($.isNumeric(event[0].value)){
 							if((parseFloat(event[0].value) < 0)){
-								errorMessage="Please provide positive Tax";	
+								errorMessage="Please provide positive Tax";
 							}else {
 								var decimal_validate_RE = /^\d{0,10}(\.\d{0,8})?$/;
 								if (!decimal_validate_RE.test(event[0].value)) {
@@ -770,6 +792,9 @@ var page = Component.extend({
           idGL =  idGL.indexOf("ccidGLtxt") > -1 ? idGL.replace("ccidGLtxt","ccidGL") :  idGL;
 
          this.scope.ccidGLStore.attr(idGL, event[0].value);
+
+         $('#invoiceform').bootstrapValidator('revalidateField', 'ccidGLtxt[]');
+
           //
           // console.log(idGL);
           // console.log(event[0].value);
@@ -800,7 +825,7 @@ var page = Component.extend({
 			    		}
 			    });
 
-	
+
 			self.scope.createPBRequest();
 
 		},
@@ -814,7 +839,7 @@ var page = Component.extend({
 			     	var countryDD = $('.inputCountry');
 		         	countryDD.empty();
 		         	countryDD.html($('<option>').text("Select").val(""));
-			     	
+
 			     	self.scope.attr("currency").replace(values[0]);
 				    if(self.scope.editpage){
 					    var invoiceData = self.scope.attr().invoiceContainer[0];
@@ -837,7 +862,7 @@ var page = Component.extend({
 			 Promise.all([Country.findCountriesForRegLicCurr(UserReq.formRequestDetails(genObj))
 						     ]).then(function(values) {
 						     	if(values[0].status == 'SUCCESS'){
-			              		
+
 			                   		var countryDD = $('.inputCountry');
 							            countryDD.options = function(data) {
 							                var self = this;
@@ -852,14 +877,14 @@ var page = Component.extend({
 							            countryDD.options(values[0].data);
 
 			              		}else{
-			              			
+
 			              			 	var countryDD = $('.inputCountry');
 							         	countryDD.empty();
 							         	countryDD.html($('<option>').text("Select").val(""));
-							           
+
 										showMessages(values[0].responseText);
 				              		}
-							});    
+							});
 
 
 		},
@@ -890,7 +915,7 @@ var page = Component.extend({
 				 $("#paymentBundleNames").removeAttr("disabled");
 			}
 
-			
+
 		},
          "{AmountStore} change": function() {
          		var self = this;
@@ -1101,13 +1126,13 @@ var page = Component.extend({
 
 						   		if(self.scope.attr("invoicetypeSelect") == "2"){
 						   				var ccidGL = "ccidGL"+index;
-						   			
+
                     					if($('#ccidGL'+index).val()!=undefined  && $('#ccidGL'+index).val().length>0){
 					   						tempArry["glAccRefId"] = self.scope.ccidGLStore.attr(ccidGL)
 					   					}else{
 					   						tempArry["glAccNum"] = self.scope.ccidGLStore.attr(ccidGL);
 					   					}
-                    				
+
 
 									//tempArry["glAccRefId"] = self.scope.ccidGLStore.attr(ccidGL);
 						  	 		tempArry["adhocTypeId"] = self.scope.contentTypeStore.attr("inputContent"+index);
@@ -1177,7 +1202,7 @@ var page = Component.extend({
 								  	 	   }
 								          else
 								           {
-								           		
+
 								           		if(values[0].invoices[0].errors)
 								           		{
 								           			var errorMap = values[0].invoices[0].errors.errorMap;
@@ -1201,7 +1226,7 @@ var page = Component.extend({
 									       		if(errorMap){
 									       			 msg += showErrorDetails(errorMap);
 										        }
-									          	
+
 									          	if(errorInvLineMsg != ""){
 									          		if(msg != ""){
 									          			msg += "<br>";
@@ -1345,7 +1370,7 @@ var page = Component.extend({
 										self.scope.attr('invoicetypeSelect','1');
 						},
 					  	helpers: {
-					         		currentDate: function(){
+					         	currentDate: function(){
 								  	 	var date = new Date();
 								  	 	this.attr("currentdate", (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear());
 										return this.attr("currentdate");
@@ -1362,7 +1387,7 @@ var page = Component.extend({
 								  	},
 								  	calculateTaxPercent: function(){
 								  		var tax = 0;
-								  		
+
 								  		if((this.attr("tax").length>0) || (this.attr("tax") > 0)){
 								  			tax = Number(this.attr("tax"));
 								  		}
@@ -1428,9 +1453,15 @@ var page = Component.extend({
 											netTotal = 0;
 										}
 										return CurrencyFormat(netTotal);
-									}
+									},
+                  isGlAccountReq:function(){
+                    return this.isAdhocStrore.attr("invtype") == 'Adhoc' ? 'style="display:block"' : 'style="display:none"';
+                  },
+                  isCCIDRequired:function(){
+                    return this.isAdhocStrore.attr("invtype") == 'Adhoc' ? 'style="display:none"' : 'style="display:block"';
+                  }
 
-					  	 	}
+                }
 					});
 
 					function CurrencyFormat(number)
@@ -1591,7 +1622,7 @@ var page = Component.extend({
 			          	}else{
 			          		var msg = errorStr;
 			          	}
-						
+
 
 			          	return msg;
 					}
