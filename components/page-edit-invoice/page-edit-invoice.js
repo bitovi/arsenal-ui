@@ -1469,7 +1469,7 @@ var page = Component.extend({
 
 								           		if(errorMap){
 										       		 var msg =showErrorDetails(errorMap, "Warning");
-                               commonUtils.displayUIMessageWithDiv("#invmessageDiv", "ERROR",msg);
+                               commonUtils.displayUIMessageWithDiv("#invWarningMsgDiv", "ERROR",msg);
 										       		 /*$("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
 										             $("#invmessageDiv").show();
 										             setTimeout(function(){

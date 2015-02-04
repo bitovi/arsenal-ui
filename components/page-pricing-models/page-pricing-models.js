@@ -569,6 +569,7 @@ var page = Component.extend({
     },
     "#addCancel click":function(){
       this.scope.attr("showbottomSection", false);
+      $("#fetch").trigger("click");
     },
     "#editCancel click":function(){
        var self = this;
@@ -636,7 +637,8 @@ var page = Component.extend({
                                   if(self.scope.editstate == false){
                                     clearOldEditData(self);
                                   }
-                                        
+                                $("#addbasemodel").trigger("click");
+                                $("#addtrack").trigger("click");         
                               }
                             else
                             {

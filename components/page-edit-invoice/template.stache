@@ -8,14 +8,9 @@
 			     <div class="pageHead">Invoice Entry</div>
 		  	{{/if}}
 	</div>
-	<div class="col-sm-7">
-
-		  <div id="invmessageDiv" role="alert">
-
-		   </div>
-		    <div id="invWarningMsgDiv" role="alert">
-
-		   </div>
+	<div class="col-sm-7 div-warn-parent">
+		   <div id="invmessageDiv" class="center" role="alert"></div>
+       	   <div id="invWarningMsgDiv" class="center" role="alert"></div>
 	</div>
 </div> -->
 <div class="div-warn-container" style="padding-top: 0px;!important">
@@ -30,6 +25,7 @@
   </div>
   <div class="col-sm-7 div-warn-parent">
     <div id="invmessageDiv" class="center" role="alert"></div>
+    <div id="invWarningMsgDiv" class="center" role="alert"></div>
   </div>
 </div>
 
