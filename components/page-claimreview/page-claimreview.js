@@ -951,6 +951,7 @@ var appstate = self.appstate;
   var regId = appstate.region;
   var countryId = appstate.country.attr();
   var licId = appstate.licensor.attr();
+  var periodType=appstate.periodType;
   if(self.isfromDashBoard){
     //if it is different page  then set the parameters from appstate
     //var localObj=appstate.pageLocalParm.pop(); //always take the first element. This will remove the consumed element from array.
@@ -999,7 +1000,10 @@ var appstate = self.appstate;
   if (typeof(contGrpId) != "undefined")
     claimLicSearchRequest["contentGrpId"] = contGrpId;
 
-  claimLicSearchRequest["periodType"] = "P";
+  if(periodType == undefined){
+    periodType='P';
+  }
+  claimLicSearchRequest["periodType"] = periodType;
 
   claimLicSearchRequest["status"] = "";
 

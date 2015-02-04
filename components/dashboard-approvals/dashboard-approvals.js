@@ -83,24 +83,29 @@ var fetchInboxOutbox = function(scope){
           offset: scope.inboxOffset
         }).then(function(approvals) {
           $('#inboxGrid .loading_img').remove();
-          if(approvals.status == "FAILURE"){
-            $("#messageDiv").html("<label class='errorMessage'>"+data.responseText+"</label>");
-            $("#messageDiv").show();
-            setTimeout(function(){
-              $("#messageDiv").hide();
-            },4000);
-            console.error("Failed to load the Inbox :"+data.responseText);
+            if(approvals != undefined){
+              if(approvals.status == "FAILURE"){
+              $("#messageDiv").html("<label class='errorMessage'>"+data.responseText+"</label>");
+              $("#messageDiv").show();
+              setTimeout(function(){
+                $("#messageDiv").hide();
+              },4000);
+              console.error("Failed to load the Inbox :"+data.responseText);
 
+            }else{
+                if(scope.inboxOffset===0){
+                  scope.inboxRows.replace(approvals);
+                }else {
+                  $.merge(scope.inboxRows, approvals);
+                  scope.inboxRows.replace(scope.inboxRows);
+                }
+                scope.inboxRows.attr('recordsAvailable', approvals.recordsAvailable);
+                scope.attr('inboxnumberofrows', approvals.totalRecords);
+            }
           }else{
-              if(scope.inboxOffset===0){
-                scope.inboxRows.replace(approvals);
-              }else {
-                $.merge(scope.inboxRows, approvals);
-                scope.inboxRows.replace(scope.inboxRows);
-              }
-              scope.inboxRows.attr('recordsAvailable', approvals.recordsAvailable);
-              scope.attr('inboxnumberofrows', approvals.totalRecords);
+             scope.inboxRows.replace([]);
           }
+          
         },function(xhr){
           console.error("Error while loading: FetchInbox"+xhr);
 
@@ -111,24 +116,29 @@ var fetchInboxOutbox = function(scope){
             offset: scope.outboxOffset
           }).then(function(approvals) {
             $('#outboxGrid .loading_img').remove();
-            if(approvals.status == "FAILURE"){
-              $("#messageDiv").html("<label class='errorMessage'>"+data.responseText+"</label>");
-              $("#messageDiv").show();
-              setTimeout(function(){
-                $("#messageDiv").hide();
-              },4000);
-              console.error("Failed to load the Outbox :"+data.responseText);
+            if(approvals != undefined){
+                if(approvals.status == "FAILURE"){
+                $("#messageDiv").html("<label class='errorMessage'>"+data.responseText+"</label>");
+                $("#messageDiv").show();
+                setTimeout(function(){
+                  $("#messageDiv").hide();
+                },4000);
+                console.error("Failed to load the Outbox :"+data.responseText);
 
-            }else{
-              if(scope.outboxOffset===0){
-                scope.outboxRows.replace(approvals);
-              }else {
-                $.merge(scope.outboxRows, approvals);
-                scope.outboxRows.replace(scope.outboxRows);
+              }else{
+                if(scope.outboxOffset===0){
+                  scope.outboxRows.replace(approvals);
+                }else {
+                  $.merge(scope.outboxRows, approvals);
+                  scope.outboxRows.replace(scope.outboxRows);
+                }
+                scope.outboxRows.attr('recordsAvailable', approvals.recordsAvailable);
+                scope.attr('outboxnumberofrows', approvals.totalRecords);
               }
-              scope.outboxRows.attr('recordsAvailable', approvals.recordsAvailable);
-              scope.attr('outboxnumberofrows', approvals.totalRecords);
+            }else{
+              scope.outboxRows.replace([]);
             }
+            
           },function(xhr){
             console.error("Error while loading: FetchOutbox"+xhr);
 

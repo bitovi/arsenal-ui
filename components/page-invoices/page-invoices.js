@@ -920,6 +920,7 @@ var page = Component.extend({
       },
       '#attachDocClose click': function(){
           $("#attachDocumentDiv").hide();
+          this.scope.attr("fileinfo").replace([]);
       },
       'rn-file-uploader filesUploaded': function(ele, event){
         /* uploadedfileinfo & fileinfo are two way binded. Refer template.stache <rn-file-uploader uploadedfileinfo="{fileinfo}"></rn-file-uploader>*/
@@ -964,6 +965,7 @@ var page = Component.extend({
                       $("#messageDiv").hide();
                   },2000)
                 }
+                self.scope.attr("fileinfo").replace([]);
             });
           }
       },
@@ -1025,13 +1027,17 @@ var page = Component.extend({
                     $("#messageDiv").hide();
                     self.scope.checkedRows.replace([]);
                      /* The below calls {scope.appstate} change event that gets the new data for grid*/
-                     self.scope.attr('cancelnewbundlereq',true);
+                      var newPaymentBundleCreated = $("#newPaymentBundle").val();
+                      if (newPaymentBundleCreated != undefined) {
+                        self.scope.attr('cancelnewbundlereq', true);
+                      }
                      if(self.scope.appstate.attr('globalSearch')){
                         self.scope.appstate.attr('globalSearch', false);
                       }else{
                         self.scope.appstate.attr('globalSearch', true);
                       }
                  },2000);
+                  self.scope.attr('cancelnewbundlereq', false);
                //}
               }
               else{

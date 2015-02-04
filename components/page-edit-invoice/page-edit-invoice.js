@@ -810,7 +810,7 @@ var page = Component.extend({
 			$("#ccidGL"+rowindex).val("");
 		},
 
-		"#currency change": function(){
+		"#currency change": function(){  /*this is for edit only*/
 			var self = this;
 			var genObj = {
 			   regionId:self.scope.attr("regionStore"),
@@ -827,21 +827,23 @@ var page = Component.extend({
                    		  var countryDD = $('.inputCountry');
 				            countryDD.options = function(data) {
 				                var self = this;
-				                //var option = $('<option>').text("Select").val("");
-				                //    data.push(option);
+				                var option = $('<option>').text("Select").val("");
+				                   data.push(option);
 				                $.each(data, function(key, value) {
-				                    var option = $('<option>').text(value.value).val(value.id);
+				                    option = $('<option>').text(value.value).val(value.id);
 				                    data.push(option);
 				                });
 				                self.html(data);
 				            }
 				            countryDD.options(values[0].data);
+				            $('#invoiceform').bootstrapValidator('revalidateField', 'inputCountry[]');
 
               		}else{
               			self.scope.attr("country").replace([]);
               			 	var countryDD = $('.inputCountry');
 				         	countryDD.empty();
 				         	countryDD.html($('<option>').text("Select"));
+				         	 $('#invoiceform').bootstrapValidator('revalidateField', 'inputCountry[]');
 
 							showMessages(values[0].responseText);
 	              		}
@@ -871,6 +873,18 @@ var page = Component.extend({
 			self.scope.createPBRequest();
 
 		},
+
+		"#invoiceRegion change":function(){  /*This is need only for edit case*/
+			var self = this;  
+			self.scope.attr("licensorStore", "");
+			if(self.scope.attr("licensorStore") == ""){
+				$('#invoiceform').bootstrapValidator('revalidateField', 'licensor');
+			}	
+			setTimeout(function(){
+					$("#invoicelicensor").val("");
+			},800);
+		},
+		
 		"{scope} licensorStore": function(event){
 			var self = this;
 			var genObj = {licensorId:self.scope.attr("licensorStore")};
@@ -885,6 +899,20 @@ var page = Component.extend({
 					}
 			});
 		},
+
+		"#invoicelicensor change":function(){  /*This is need only for edit case*/
+			var self = this;  
+			self.scope.attr("currencyStore", "");
+			if(self.scope.attr("currencyStore") == ""){
+				$('#invoiceform').bootstrapValidator('revalidateField', 'currency');
+				setTimeout(function(){
+					$("#currency").val(""); 
+				},800);
+				
+			}	
+
+		},
+
 		"{ajaxRequestStatus} change":function(event){
 				var self = this;
 				if((self.scope.ajaxRequestStatus.currencyStore == true) && (self.scope.ajaxRequestStatus.licensorLoaded == true) && (self.scope.ajaxRequestStatus.countryLoaded == true) && (self.scope.ajaxRequestStatus.allDataLoaded == true)){
@@ -1441,7 +1469,7 @@ var page = Component.extend({
 
 								           		if(errorMap){
 										       		 var msg =showErrorDetails(errorMap, "Warning");
-                               commonUtils.displayUIMessageWithDiv("#invmessageDiv", "ERROR",msg);
+                               commonUtils.displayUIMessageWithDiv("#invWarningMsgDiv", "ERROR",msg);
 										       		 /*$("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
 										             $("#invmessageDiv").show();
 										             setTimeout(function(){

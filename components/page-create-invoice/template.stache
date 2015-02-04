@@ -8,7 +8,10 @@
     </div>
     <div class="col-sm-7 div-warn-parent">
       <div id="invmessageDiv" class="center" role="alert"></div>
+       <div id="invWarningMsgDiv" class="center" role="alert"></div>
     </div>
+
+
   </div>
 
 		<div class="row">
