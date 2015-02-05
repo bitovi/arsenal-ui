@@ -207,7 +207,7 @@ var createBalanceOnAccountRequest=function(appstate){
   balancedOnAccountRequest.searchRequest=requestHelper.formGlobalRequest(appstate).searchRequest;
   balancedOnAccountRequest.searchRequest.type="BALANCE";
   balancedOnAccountRequest.searchRequest.offset=appstate.attr("offset");
-  balancedOnAccountRequest.searchRequest.limit=appstate.attr("fetchSize");
+  balancedOnAccountRequest.searchRequest.limit='45';
   
   if(sort != undefined && sortByMap[sort] != undefined){
     sortByAttr = sortByMap[sort];
