@@ -8,6 +8,26 @@
   flex-grow: @grow;
 }
 
+#showTableInfo{
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding:0;
+}
+.ui-dialog .ui-dialog-titlebar-close {
+  width: 20px;
+  margin: 0px 0 0 0;
+  height: 20px;
+  background: transparent url(/resources/images/rn_RemoveFile@2x.png) no-repeat;
+  border: none;
+  z-index: 5;
+  left:0 !important
+}
+
+.ui-dialog .ui-dialog-titlebar-close span{
+  display:none;  
+}
+
 rn-bundle-detail {
   display: block;
   margin-top: .5em;
@@ -58,9 +78,10 @@ rn-bundle-detail {
       }
 
       li.token-input-token-facebook {
-        height: 16px !important;
+        height: 18px !important;
         padding-top:0px;
-        margin-top: 2px;
+        margin-top: 1px;
+        background-color:#d3f0fe;
       }
 
       input#token-input-tokenSearch{
@@ -260,6 +281,9 @@ rn-bundle-detail {
 
 table.information{
   color: @dark-grey;
+  border: 1px solid #aaaaaa;
+  background: #fff;
+  border-radius: 4px;
 
   tr {
     height: auto;

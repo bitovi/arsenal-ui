@@ -1,5 +1,6 @@
-<table class="information">
-  <thead>
+<div id="showTableInfo">
+<table class="information" border="0" cellpadding="0" cellspacing="0" width="100%" align="center">
+  <thead width="100%" cellpadding="0" cellspacing="0" height="0px">
     <tr>
       <th>Column Name</th>
       <th>Description</th>
@@ -88,3 +89,4 @@
     </tr>
   </tbody>
 </table>
+</div>

@@ -1,4 +1,8 @@
 import _ from 'lodash';
+import jqueryui from 'jqueryui';
+import jqueryuicorecss from 'jqueryui_core.css!';
+import jqueryuidialogcss from 'jqueryui_dialog.css!';
+
 import Component from 'can/component/';
 import List from 'can/list/';
 import Map from 'can/map/';
@@ -609,7 +613,27 @@ var BundleDetailTabs = Component.extend({
     },
     '.information mouseout': function(el, ev) {
       el.popover('hide');
-    }
+    },
+    '.information click': function(el, ev) {
+      var row = el.data('row');
+      var data = $('<div>').append(information_template())[0].innerHTML;
+      var opt = {
+                  dialogClass: 'modalSelectLocation',
+                  width: 'auto',
+                  autoOpen: false,
+                  height: 350,
+                  minWidth: 400,
+                  open: function(event, ui) {
+                    $("#showTableInfo").dialog("widget").position({
+                      my: "right top",
+                      at: "right top",
+                      of: "#payBundleDetailGrid",
+                      collision: "flip none"
+                    });
+                  }
+                };
+      $(data).dialog(opt).dialog("open");
+    },
 
   }
 });
