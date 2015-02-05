@@ -132,12 +132,11 @@ var page = Component.extend({
        }
 
         //var defaultRequest=setTheDefaultParameters(self.scope.appstate);
+       setTimeout(function(){
         var defaultRequest=frameRequest(self.scope.appstate);
         self.scope.attr('defaultRequest',defaultRequest);
-
-       setTimeout(function(){
         $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={defaultRequest}></rn-onaccount-balance-grid>')({defaultRequest}));
-       }, 10);
+       }, 100);
           disablePropose(true);
           disableCopyOnAccount(true);
           $("#onAccountEditDeleteDiv").hide();
