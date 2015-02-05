@@ -26,6 +26,7 @@ import onAccountBalance from 'models/onAccount/onAccountBalance/';
 
 import copy from 'components/copy-clipboard/';
 import exportToExcel from 'components/export-toexcel/';
+import commonUtils from 'utils/commonUtils';
 
 fileUpload.extend({
   tag: 'rn-file-uploader-new',
@@ -131,11 +132,13 @@ var page = Component.extend({
           $('#newonAccountGrid, #newonAccountGridComps, #proposedonAccountDiv,#proposeOnAccountGridComps, #forminlineElements,#searchDiv, #onAccountEditDeleteDiv').hide();
        }
 
+
         //var defaultRequest=setTheDefaultParameters(self.scope.appstate);
        setTimeout(function(){
-        var defaultRequest=frameRequest(self.scope.appstate);
-        self.scope.attr('defaultRequest',defaultRequest);
-        $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={defaultRequest}></rn-onaccount-balance-grid>')({defaultRequest}));
+        commonUtils.triggerGlobalSearch();
+        // var defaultRequest=frameRequest(self.scope.appstate);
+        // self.scope.attr('defaultRequest',defaultRequest);
+        // $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={defaultRequest}></rn-onaccount-balance-grid>')({defaultRequest}));
        }, 100);
           disablePropose(true);
           disableCopyOnAccount(true);
@@ -294,15 +297,17 @@ var page = Component.extend({
         ev.preventDefault();
         self.scope.tabsClicked="ON_ACC_BALANCE";
         //var defaultRequest = self.scope.defaultRequest;
-        var defaultRequest=frameRequest(self.scope.appstate);
+        //var defaultRequest=frameRequest(self.scope.appstate);
         $('#newonAccountGrid, #newonAccountGridComps, #proposedonAccountDiv,#proposeOnAccountGridComps, #forminlineElements,#searchDiv, #onAccountEditDeleteDiv').hide();
         $('#onAccountBalanceDiv').show();
 
-       //if ($("rn-onaccount-balance-grid").find("tbody>tr").length) {
-           $('rn-onaccount-balance-grid tbody tr').css("outline","0px solid #f1c8c8");
-       //}else if(defaultRequest != undefined) {
-           $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={defaultRequest}></rn-onaccount-balance-grid>')({defaultRequest}));
-       //}
+       // //if ($("rn-onaccount-balance-grid").find("tbody>tr").length) {
+       //     $('rn-onaccount-balance-grid tbody tr').css("outline","0px solid #f1c8c8");
+       // //}else if(defaultRequest != undefined) {
+       //     $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={defaultRequest}></rn-onaccount-balance-grid>')({defaultRequest}));
+       // //}
+       commonUtils.triggerGlobalSearch();
+
       },
       "#newonAccount click":function(el, ev){
         ev.preventDefault();
@@ -333,10 +338,11 @@ var page = Component.extend({
         disableProposedSubmitButton(true);
         disableEditORDeleteButtons(true);
 
-        setQuartersToScope(self.scope);
+        //setQuartersToScope(self.scope);
         //self.scope.attr('populateDefaultData',true);
         self.scope.appstate.attr('globalSearchButtonClicked',true);
-        self.scope.attr('loadProposedONAccountPage',Date.now());
+        //self.scope.attr('loadProposedONAccountPage',Date.now());
+        commonUtils.triggerGlobalSearch();
 
        // if (!$("rn-proposed-onaccount-grid").find("tbody>tr").length) {
        //   $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));

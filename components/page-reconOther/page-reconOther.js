@@ -63,8 +63,8 @@ var page = Component.extend({
     scrollTop: 0,
     offset: 0,
     pagename : "reconOther",
-    populateDefaultDataForInvoice:'@',
-    populateDefaultDataForOther:'@',
+    //populateDefaultDataForInvoice:'@',
+    //populateDefaultDataForOther:'@',
     load : true,
 
     refreshTokenInput: function(val, type){
@@ -119,7 +119,7 @@ var page = Component.extend({
   },
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
-    this.scope.attr('populateDefaultDataForInvoice',true);
+    //this.scope.attr('populateDefaultDataForInvoice',true);
     fetchReconDetailsOther(this.scope,this.scope.load);
   },
   events:{
@@ -414,7 +414,7 @@ var fetchReconIncoming = function(scope){
       console.error("Error while loading: fetchReconIncoming"+xhr);
 
     });
-    scope.attr('populateDefaultDataForOther',false);
+    //scope.attr('populateDefaultDataForOther',false);
 };
 
 var fetchReconDetailsOther = function(scope, load){
@@ -537,7 +537,7 @@ var fetchReconDetailsOther = function(scope, load){
 
 
   });
-  scope.attr('populateDefaultDataForInvoice',false);
+  //scope.attr('populateDefaultDataForInvoice',false);
 };
 
 var processRejectIngestRequestOther = function(scope,requestType){
@@ -650,52 +650,52 @@ var refreshChekboxSelection = function(el,scope){
 
  var getSearchReqObj=function(self) {
   var appstate= self.appstate;
-  if (self.populateDefaultData) {
-    appstate = commonUtils.getDefaultParameters(appstate);
+  // if (self.populateDefaultData) {
+  //   appstate = commonUtils.getDefaultParameters(appstate);
 
-    var periodFrom = appstate.periodFrom;
-    var periodTo = appstate.periodTo;
-    var serTypeId = appstate.storeType;
-    var regId = appstate.region;
-    var countryId = appstate.country.attr();
-    var licId = appstate.licensor.attr();
-    var contGrpId = appstate.contentType.attr();
-    var periodType = appstate.periodType;
-    var searchRequestObj = {};
-    searchRequestObj.searchRequest = {};
-    searchRequestObj.searchRequest["periodFrom"] = appstate.periodFrom;
-    searchRequestObj.searchRequest["periodTo"] = appstate.periodTo;
-    searchRequestObj.searchRequest["periodType"] = appstate.periodType;
-    searchRequestObj.searchRequest["serviceTypeId"] = "";
-    searchRequestObj.searchRequest["regionId"] = "";
-    searchRequestObj.searchRequest["country"] = [];
-    searchRequestObj.searchRequest["entityId"] = [];
-    searchRequestObj.searchRequest["contentGrpId"] = [];
+  //   var periodFrom = appstate.periodFrom;
+  //   var periodTo = appstate.periodTo;
+  //   var serTypeId = appstate.storeType;
+  //   var regId = appstate.region;
+  //   var countryId = appstate.country.attr();
+  //   var licId = appstate.licensor.attr();
+  //   var contGrpId = appstate.contentType.attr();
+  //   var periodType = appstate.periodType;
+  //   var searchRequestObj = {};
+  //   searchRequestObj.searchRequest = {};
+  //   searchRequestObj.searchRequest["periodFrom"] = appstate.periodFrom;
+  //   searchRequestObj.searchRequest["periodTo"] = appstate.periodTo;
+  //   searchRequestObj.searchRequest["periodType"] = appstate.periodType;
+  //   searchRequestObj.searchRequest["serviceTypeId"] = "";
+  //   searchRequestObj.searchRequest["regionId"] = "";
+  //   searchRequestObj.searchRequest["country"] = [];
+  //   searchRequestObj.searchRequest["entityId"] = [];
+  //   searchRequestObj.searchRequest["contentGrpId"] = [];
 
-    if (typeof(serTypeId) != "undefined") {
-      searchRequestObj.searchRequest["serviceTypeId"] = serTypeId.id;
-    }
+  //   if (typeof(serTypeId) != "undefined") {
+  //     searchRequestObj.searchRequest["serviceTypeId"] = serTypeId.id;
+  //   }
 
-    if (typeof(region) != "undefined") {
-      searchRequestObj.searchRequest["regionId"] = regId.id;
-    }
+  //   if (typeof(region) != "undefined") {
+  //     searchRequestObj.searchRequest["regionId"] = regId.id;
+  //   }
 
-    if (typeof(countryId) != "undefined") {
-      searchRequestObj.searchRequest["country"] = countryId;
-    }
+  //   if (typeof(countryId) != "undefined") {
+  //     searchRequestObj.searchRequest["country"] = countryId;
+  //   }
 
-    if (typeof(licId) != "undefined") {
-      searchRequestObj.searchRequest["entityId"] = licId;
-    }
+  //   if (typeof(licId) != "undefined") {
+  //     searchRequestObj.searchRequest["entityId"] = licId;
+  //   }
 
-    if (typeof(contGrpId) != "undefined") {
-      searchRequestObj.searchRequest["contentGrpId"] = contGrpId;
-    }
+  //   if (typeof(contGrpId) != "undefined") {
+  //     searchRequestObj.searchRequest["contentGrpId"] = contGrpId;
+  //   }
 
-    return searchRequestObj;
-  } else {
+  //   return searchRequestObj;
+  // } else {
     return UserReq.formGlobalRequest(appstate);
-  }
+  //}
 
 }
 var createIncomingReconRequestForExportToExcel=function(appstate){
