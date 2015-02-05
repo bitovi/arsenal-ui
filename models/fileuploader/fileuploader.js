@@ -15,7 +15,7 @@ var FileUpLoader = Model.extend({
             form_data.append(file.name, file);
         });
         console.log("File Test &&&&&&&&&&55555&&&&&&&&&&&& after forming file array. Just before calling upload service");
-        return $.ajax({
+        var uploadedDetails = $.ajax({
             /*xhr: function () {
                 var xhr = new window.XMLHttpRequest();
                 //Download progress
@@ -34,6 +34,7 @@ var FileUpLoader = Model.extend({
             type: 'POST',
             data: form_data
         });
+        return uploadedDetails;
 
     }
 },{});
