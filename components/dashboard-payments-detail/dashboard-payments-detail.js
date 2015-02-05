@@ -136,7 +136,8 @@ var DashboardPaymentsDetail = Component.extend({
             self.scope.appstate.pageLocalParm=[];
             self.scope.appstate.pageLocalParm.push(localObj);
           }
-        self.scope.appstate.attr('page','claimreview');
+        //self.scope.appstate.attr('page','claimreview');
+        commonUtils.navigateTo("claimreview");
       }
     }
 });
