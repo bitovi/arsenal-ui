@@ -1,6 +1,7 @@
 @light-grey: #f6f6f6;
 @middle-grey: hsl(0, 0%, 50%);
 @dark-grey: hsl(0, 0%, 25%);
+@border-grey: #dddddd;
 
 .flex-grow(@grow) {
   -webkit-flex-grow: @grow;
@@ -111,6 +112,10 @@ rn-bundle-detail {
       /* top: -2px; */
       cursor: pointer;
 
+    }
+    
+    .btn-download{
+      cursor: pointer;
     }
 
 
@@ -251,5 +256,35 @@ rn-bundle-detail {
     border-left: 6px solid transparent;
     content: '';
   }
+}
 
+table.information{
+  color: @dark-grey;
+
+  tr {
+    height: auto;
+  }
+
+  th {
+    font-weight: normal;
+    min-width: 6em;
+  }
+
+  th, td {
+    padding: .5em 1em;
+    border: 0px none transparent;
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    border-top: 1px solid @border-grey;
+  }
+
+  tr.add{
+    background: #F0F0F0 !important;
+  }
+
+  tr.even {
+    background: #F9F9F9 !important;
+  }
 }

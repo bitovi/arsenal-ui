@@ -56,7 +56,8 @@ var DashboardApprovals = Component.extend({
     },
     "tbody>tr td dblclick": function(item, el, ev){
         var self = this;
-        self.scope.appstate.attr('page','payment-bundles');
+        //self.scope.appstate.attr('page','payment-bundles');
+        commonUtils.navigateTo("payment-bundles");
     },
     '{scope.appstate} change': function() {
       if(this.scope.isGlobalSearch != this.scope.appstate.attr('globalSearch')){
@@ -105,7 +106,7 @@ var fetchInboxOutbox = function(scope){
           }else{
              scope.inboxRows.replace([]);
           }
-          
+
         },function(xhr){
           console.error("Error while loading: FetchInbox"+xhr);
 
@@ -138,7 +139,7 @@ var fetchInboxOutbox = function(scope){
             }else{
               scope.outboxRows.replace([]);
             }
-            
+
           },function(xhr){
             console.error("Error while loading: FetchOutbox"+xhr);
 

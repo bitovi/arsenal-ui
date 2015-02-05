@@ -5,6 +5,7 @@ import Map from 'can/map/';
 import stache from 'can/view/stache/';
 import moment from 'moment';
 
+import information_template from './pbr-information.stache!';
 import PaymentBundleDetailGroup from 'models/payment-bundle/payment-bundle-detail-group';
 import PaymentBundleDetail from 'models/payment-bundle/payment-bundle-detail';
 import WorkflowStep from 'models/workflow-step/';
@@ -17,7 +18,6 @@ import PbrDeleteConfirmModal from 'components/pbr-delete-confirm-modal/';
 
 import Alert from 'components/alert/';
 import highchartpage from 'components/highchart/';
-import Preview from 'components/pbr-preview/';
 import Currency from 'models/common/currency/';
 
 import columnSets from './column-sets';
@@ -97,6 +97,9 @@ var BundleDetailTabs = Component.extend({
     havePaymentTypeAndComment: function(scope) {
       return  (this.appstate.userInfo.roleIds.indexOf(constants.ROLES.BM) > -1 ? scope.paymentType : true) &&
       scope.approvalComment.trim().length;
+    },
+    renderInfor:function(){
+      return information_template();
     },
 
     gridColumns: [],
@@ -537,8 +540,8 @@ var BundleDetailTabs = Component.extend({
     '{scope} preferredCurr': function(){
       this.scope.getNewDetails(this.scope.pageState.selectedBundle);
     },
-    '.btn-download click': function() {
-      PaymentBundle.downloadALL(this.scope.pageState.selectedBundle.bundleId);
+    '.btn-download click': function(el, ev) {
+      PaymentBundle.downloadFile(el.data('action'),this.scope.pageState.selectedBundle.bundleId);
     },
     'inserted': function() {
       this.scope.selectedBundleChanged(this.scope);
@@ -578,11 +581,8 @@ var BundleDetailTabs = Component.extend({
     '{scope} paymentType': function(scope) {
       scope.getNewDetails(scope.pageState.selectedBundle);
     },
-    '.preview click': function(el, ev) {
-        if(!el.closest('tr') == undefined){
-          var row = el.closest('tr').data('row').row;
-          Preview.invoicePreview(row.invoiceId);
-        }
+    '.previewInv click': function(el, ev) {
+       PaymentBundle.preview(el.data('invoiceid'));
     },
     '{scope.bottomGridPaginateAttr} change': function() {
       //console.log("change event: "+this.scope.bottomGridPaginateAttr.paginateRequest+", othje:"+this.scope.bottomGridPaginateAttr.recordsAvailable);
@@ -593,13 +593,15 @@ var BundleDetailTabs = Component.extend({
       }
     },
     '{scope.pageState} refreshBottomGrid': function() {
-      //console.log("refreshBottomGrid change event: ");
+      //console.log("refreshBottomGrid chnge event: ");
       this.scope.getNewDetails(this.scope.pageState.selectedBundle);
     },
     '.information mouseover': function(el, ev) {
       var row = el.data('row');
+      var data = $('<div>').append(information_template())[0].innerHTML;
       el.popover({
-        content: "Information ",
+        content: "Information",
+        html : true,
         trigger: 'manual',
         placement: 'bottom'
       });
@@ -611,6 +613,7 @@ var BundleDetailTabs = Component.extend({
 
   }
 });
+
 
 
 
