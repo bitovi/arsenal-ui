@@ -210,7 +210,7 @@ var page = Component.extend({
     fileinfo:[],
     excelOutput:[],
     cancelnewbundlereq:'@',
-    populateDefaultData:'@',
+    //populateDefaultData:'@',
     bundleState:{},
     refreshTokenInput: function(val, type){
       //console.log("val is "+JSON.stringify(val));
@@ -259,7 +259,7 @@ var page = Component.extend({
   init: function(){
     var self = this;
     self.scope.appstate.attr("renderGlobalSearch",true);
-    self.scope.attr('populateDefaultData',true);
+    //self.scope.attr('populateDefaultData',true);
     fetchData(self.scope)
   },
   helpers: {
@@ -1140,14 +1140,14 @@ function fetchData(self){
         },function(xhr){
           console.error("Error while loading: bundleNames"+xhr);
         });
-    self.attr('populateDefaultData',false);
+   // self.attr('populateDefaultData',false);
 }
 
 function getInvoiceSearchRequest(self){
   var appstate = self.appstate;
-    if(self.populateDefaultData){
-      appstate = commonUtils.getDefaultParameters(appstate);
-    }
+    // if(self.populateDefaultData){
+    //   appstate = commonUtils.getDefaultParameters(appstate);
+    // }
         // var periodFrom = self.appstate.attr('periodFrom');
         // var periodTo = self.appstate.attr('periodTo');
         // var serTypeId = self.appstate.attr('storeType');
