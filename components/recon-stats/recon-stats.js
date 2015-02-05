@@ -212,6 +212,9 @@ var page = Component.extend({
               $('#ingestionStatsDiv').show();
               $('#summaryStatsDiv').show();
 
+          }else{
+              self.summaryStatsData.splice(0, self.summaryStatsData.length);
+              $('.statsTable').hide();
           }
 
        }
