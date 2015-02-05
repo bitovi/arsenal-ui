@@ -265,6 +265,7 @@
 									        				<option value="{{id}}">{{value}}</option>
 						       							{{/each}}
 									        	</select-->
+									        <div class="requiredBar"> 	
 									        	<div class="select-editable">
 												    <select  id="ccidGL" name="ccidGL" class="form-control ccidGL">
 												        <option value="">Select</option>
@@ -275,6 +276,7 @@
 												    </select>
 												    <input type="text" id="ccidGLtxt" name="ccidGLtxt[]" value="" class="form-control ccidGL ccidGLtxt"/>
 												</div>
+											</div>	
 						            	  {{else}}
 						            	 		<input type="text" class="form-control ccidGL" id="ccidGL" name="ccidGL" placeholder="" readonly="true">
 						            	 {{/if}}

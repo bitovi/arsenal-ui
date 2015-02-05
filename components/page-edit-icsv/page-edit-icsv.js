@@ -1241,8 +1241,8 @@ var page = Component.extend({
 							   editInvoiceCSVData.periodType = periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0));
 
 
-							   if(self.scope.tax != null && self.scope.tax!= undefined &&  self.scope.tax.length>0) {
-								   	editInvoiceCSVData["tax"] = self.scope.tax;
+							   if(self.scope.attr("tax") != null && self.scope.attr("tax") != undefined &&  self.scope.attr("tax") >0) {
+								   	editInvoiceCSVData["tax"] = self.scope.attr("tax");
 								}
 
 							   editInvoiceCSVData.comments = [];
@@ -1589,7 +1589,7 @@ var page = Component.extend({
 			  	},
 			  	grossTotal: function(){
 			  		var tax = 0;
-			  		if(this.attr("tax").length>0){
+			  		if(this.attr("tax") > 0){
 			  			tax = Number(this.attr("tax"));
 			  		}
 			  	// 	console.log(this.attr("totalAmountVal"));

@@ -357,6 +357,8 @@ var page = Component.extend({
 
           var reportConf = self.getExistCountryReportConf(countryObj.name);
 
+          $('input.countryBox').prop("checked", false);
+
           var country = $('input.countryBox');
 
           var reportBox = $("input.reportBox");
@@ -1071,8 +1073,6 @@ var page = Component.extend({
           reLicencorDetails.licensorDetails.validFrom = periodFrom;
           reLicencorDetails.licensorDetails.validTo = periodTo;
 
-          reLicencorDetails.licensorDetails.reportConfMap = self.reportConfMap.attr();
-
           reLicencorDetails.licensorId = 0;
 
           var genObj = reLicencorDetails;
@@ -1127,6 +1127,8 @@ var page = Component.extend({
 
           reLicencorDetails.licensorDetails.validFrom = periodFrom;
           reLicencorDetails.licensorDetails.validTo = periodTo;
+
+          reLicencorDetails.licensorDetails.reportConfMap = self.reportConfMap.attr();
 
           reLicencorDetails.licensorId = "0";
 

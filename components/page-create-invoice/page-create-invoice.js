@@ -1056,8 +1056,8 @@ var page = Component.extend({
 					   tempInvoiceData["netTotal"] = self.scope.totalAmountVal;
 
 
-					   if(self.scope.tax != null && self.scope.tax!= undefined &&  self.scope.tax.length>0) {
-					   		tempInvoiceData["tax"] = self.scope.tax;
+					   if(self.scope.attr("tax") != null && self.scope.attr("tax") != undefined &&  self.scope.attr("tax") > 0) {
+					   		tempInvoiceData["tax"] = self.scope.attr("tax");
 						}
                        console.log(typeof $("#paymentBundleNames").val());
 
@@ -1402,7 +1402,7 @@ var page = Component.extend({
 								  	},
 								  	grossTotal: function(){
 								  		var tax = 0;
-								  		if(this.attr("tax").length>0){
+								  		if(this.attr("tax") > 0){
 								  			tax = Number(this.attr("tax"));
 								  		}
 								  	 	var grossTotal = (parseFloat(tax) + parseFloat(this.attr("totalAmountVal")));

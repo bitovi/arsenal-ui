@@ -38,7 +38,7 @@ import commonUtils from 'utils/commonUtils';
 
 //import Invoice from 'models/invoice/';
 
-var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]"];
+var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[], ccidGLtxt[]"];
 var mandatoryFieldCA = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
 var mandatoryField = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
 
@@ -183,7 +183,7 @@ var page = Component.extend({
 		        $('#inputContent'+rowindex).prepend("<option value>Select</option>").val('')
 		    }
 
-			var $option = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"]');
+			var $option = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"], [name="ccidGLtxt[]"]');
             $option.each(function(index){
             	$('#invoiceform').bootstrapValidator('addField', $(this));
             });
@@ -452,6 +452,27 @@ var page = Component.extend({
 
 				                }
 							},
+							'ccidGLtxt[]': {
+			                      validators: {
+			                        callback: {
+
+			                          callback: function (value, validator, $field) {
+			                            if(value == "" || value == "Select" || value == null){
+			                              return {
+			                                valid: false,    // or false
+			                                message: 'GL Account is mandatory'
+			                              }
+			                            }else if(!$.isNumeric(value)){
+			                              return {
+			                                valid: false,    // or false
+			                                message: 'GL Account is number'
+			                              }
+			                            }
+			                            return true;
+			                          }
+			                        }
+			                      }
+		                    },
 							'inputContent[]': {
 				                validators: {
 				                    callback: {
@@ -616,14 +637,14 @@ var page = Component.extend({
 			            	}
 						}
 				    }).on('error.field.bv', function(e, data) {
-					    	if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]")){
+					    	if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]") && (data.field != "ccidGLtxt[]")){
 					    		$("#"+data.field+"-err").css("display", "block");
 					    	}
 					    	$('*[data-bv-icon-for="'+data.field +'"]').popover('show');
 
 					}).on('success.field.bv', function(e, data) {
 	        				$('*[data-bv-icon-for="'+data.field +'"]').popover('destroy');
-	        				if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]")){
+	        				if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]") && (data.field != "ccidGLtxt[]")){
 					    		$("#"+data.field+"-err").css("display", "none");
 					    	}
 							if(!self.scope.editpage){
@@ -798,6 +819,7 @@ var page = Component.extend({
          	var idGL = event[0].id;
 			idGL =  idGL.indexOf("ccidGLtxt") > -1 ? idGL.replace("ccidGLtxt","ccidGL") :  idGL;
 			this.scope.ccidGLStore.attr(idGL, event[0].value);
+			$('#invoiceform').bootstrapValidator('revalidateField', 'ccidGLtxt[]');
 
 		},
 		".ccidGLtxt change": function(el){
@@ -1107,7 +1129,7 @@ var page = Component.extend({
 
 								if(rowindex != 0)
 		                       		$("#breakrow"+rowindex+" .removeRow").css("display", "block");
-									var $option   = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"]');
+									var $option   = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"], [name="ccidGLtxt[]"]');
 
 			                        $option.each(function(index){
 			                        	$('#invoiceform').bootstrapValidator('addField', $(this));
@@ -1284,8 +1306,8 @@ var page = Component.extend({
 				    tempEditInvoiceData["commentsId"] = invoiceData.commentsId;
 				    tempEditInvoiceData["invoiceAmount"] = self.scope.totalAmountVal;
 				    tempEditInvoiceData["grossTotal"] = self.scope.grossTotalStore;
-				    if(self.scope.tax != null && self.scope.tax!= undefined &&  self.scope.tax.length>0) {
-					   	tempEditInvoiceData["tax"] = self.scope.tax;
+				    if(self.scope.attr("tax") != null && self.scope.attr("tax") != undefined &&  self.scope.attr("tax") >0) {
+					   	tempEditInvoiceData["tax"] = self.scope.attr("tax");
 					}
 				   // tempEditInvoiceData["userAdjAmt"] = "0";
 
@@ -1658,7 +1680,7 @@ var page = Component.extend({
 								  	},
 								  	grossTotal: function(){
 								  		var tax = 0;
-								  		if(this.attr("tax").length>0){
+								  		if(this.attr("tax") > 0){
 								  			tax = Number(this.attr("tax"));
 								  		}
 										var grossTotal = (parseFloat(tax) + parseFloat(this.attr("totalAmountVal")));
