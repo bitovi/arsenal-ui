@@ -565,8 +565,8 @@ var page = Component.extend({
               invoicemap.attr('invoiceid',invoiceid);
               flag=true;
               self.scope.appstate.attr('viewinvoicemode',false);
-              //commonUtils.navigateTo("edit-invoice");
-              self.scope.appstate.attr('page','edit-invoice');
+              commonUtils.navigateTo("edit-invoice");
+              //self.scope.appstate.attr('page','edit-invoice');
             }
           }
 
