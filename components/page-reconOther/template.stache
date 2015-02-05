@@ -26,9 +26,9 @@
           <li class="active"><a href="#incomingDetails" data-toggle="tab" >{{tabName.incoming.name}}</a></li>
           <li><a href="#reconstatsOtherGrid" data-toggle="tab">{{tabName.other.name}}</a></li>
 
-          <li class="pull-right marginLeft-5 marginTop-10 width25 reconOther">
+          <li class="pull-right marginLeft-5 marginTop-10 width25 reconOther" style="position:relative;bottom:6px; background:none;">
             <div id="searchDiv">
-              <input type="text" class="form-control" id="tokenSearch">
+              <input type="text" class="form-control" id="tokenSearch" placeholder="Search">
             </div>
             <img class="exportToExcel" id="exportExcel">
             <img class="copyToClipboard" id="copyToClipboard">

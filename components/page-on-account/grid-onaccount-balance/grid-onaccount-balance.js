@@ -200,20 +200,21 @@ var OnAccountBalance = Grid.extend({
 // }
 
 var createBalanceOnAccountRequest=function(appstate){
-  var sortByAttr=appstate.attr("sortBy");
+  var sortByAttr="";
+  var sort=appstate.attr("sortBy");
   var sortByMap=utils.getSortByAttr();
   var balancedOnAccountRequest={};
   balancedOnAccountRequest.searchRequest=requestHelper.formGlobalRequest(appstate).searchRequest;
   balancedOnAccountRequest.searchRequest.type="BALANCE";
   balancedOnAccountRequest.searchRequest.offset=appstate.attr("offset");
-  balancedOnAccountRequest.searchRequest.limit="10";
-  if(sortByMap[sortByAttr] != undefined){
-    sortByAttr = sortByMap[sortByAttr];
-  }else if(sortByAttr!= undefined && sortByAttr.length >0){
+  balancedOnAccountRequest.searchRequest.limit='45';
+  
+  if(sort != undefined && sortByMap[sort] != undefined){
+    sortByAttr = sortByMap[sort];
+  }else if(sort!= undefined && sort.length >0){
     sortByAttr = 'onAccountAmt';
-  }else{
-    sortByAttr = '';
   }
+
   balancedOnAccountRequest.searchRequest.sortBy=sortByAttr;
   balancedOnAccountRequest.searchRequest.sortOrder=appstate.attr("sortOrder");
   return requestHelper.formRequestDetails(balancedOnAccountRequest);

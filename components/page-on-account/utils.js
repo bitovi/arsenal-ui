@@ -625,7 +625,7 @@ getSortByAttr:function(){
   attrMap['ContentType']='contentGroupName';
   attrMap['onAccountBalance']='onAccountAmtTotal';
   attrMap['cashAdjust']='entityCashAdjAmtTotal';
-  attrMap['Total']='totalAmt';
+  attrMap['Total']='onAccountAmtTotal';
   return attrMap;
 }
 
