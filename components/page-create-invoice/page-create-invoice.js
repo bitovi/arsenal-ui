@@ -1180,7 +1180,7 @@ var page = Component.extend({
 												$("#invoiceform").data('bootstrapValidator').resetForm();
 												$("#addInvSubmit").attr("disabled", true);
 
-												
+
 												clearFieldScope(self);
 
 
@@ -1191,9 +1191,9 @@ var page = Component.extend({
 											  	});
 												//$("#breakrow0 .amountText").attr("id","amountText0").val(" ");
 
-												
 
-								  	 			
+
+
 
 								  	 	   }
 								          else
@@ -1253,7 +1253,7 @@ var page = Component.extend({
 								$("#invoiceform").data('bootstrapValidator').resetForm();
 								$("#addInvSubmit").attr("disabled", true);
 
-								
+
 
 								$("[id^=breakrow]").each(function(index){  /*removing added row in break down.*/
 								if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
@@ -1262,9 +1262,9 @@ var page = Component.extend({
 							  	});
 								//$("#breakrow0 .amountText").attr("id","amountText0").val(" ");
 
-								
+
 								clearFieldScope(self);
-				  	 			
+
 
 
 				  	 		},
@@ -1422,7 +1422,7 @@ var page = Component.extend({
 									},
 									calculateUSD:function(){
 										var fxrate = this.attr("usdFxrateRatio");
-										var calUSD = this.attr("totalAmountVal")/fxrate;
+										var calUSD = this.attr("totalAmountVal") * fxrate;
 
 										if(isNaN(calUSD)){
 											calUSD = 0;

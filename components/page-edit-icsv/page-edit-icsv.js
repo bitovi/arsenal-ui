@@ -611,7 +611,7 @@ var page = Component.extend({
 				    	}
 
 
-				    	
+
 
 				}).on('success.field.bv', function(e, data) {
         				//$('*[data-bv-icon-for="'+data.field +'"]').popover('destroy');
@@ -631,12 +631,12 @@ var page = Component.extend({
 	        						 break;
 	        					}
 	        				}
-        				
+
 	        			 	if($("#invoiceform").data('bootstrapValidator').getInvalidFields().length > 0){  /*needed only for icsv*/
 
 								$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
 
-							}	
+							}
 						}
 
         			}).on('success.form.bv', function(e) {
@@ -683,7 +683,7 @@ var page = Component.extend({
 						var errorMessage="";
 						if($.isNumeric(event[0].value)){
 							if((parseFloat(event[0].value) < 0)){
-								errorMessage="Please provide positive Tax";	
+								errorMessage="Please provide positive Tax";
 							}else {
 								var decimal_validate_RE = /^\d{0,10}(\.\d{0,8})?$/;
 								if (!decimal_validate_RE.test(event[0].value)) {
@@ -841,7 +841,7 @@ var page = Component.extend({
 			   //            			 	var countryDD = $('.inputCountry');
 						// 	         	countryDD.empty();
 						// 	         	countryDD.html($('<option>').text("Select"));
-							           
+
 						// 				showMessages(values[0].responseText);
 				  //             		}
 						// 	});
@@ -1086,7 +1086,7 @@ var page = Component.extend({
          	var idGL = event[0].id;
 			idGL =  idGL.indexOf("ccidGLtxt") > -1 ? idGL.replace("ccidGLtxt","ccidGL") :  idGL;
 			this.scope.ccidGLStore.attr(idGL, event[0].value);
-         	
+
 		},
 		".ccidGLtxt change": function(el){
 			var rowindex = el[0].id.replace( /^\D+/g, '');
@@ -1348,8 +1348,8 @@ var page = Component.extend({
 								   		//tempArry["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent"+index);
 								   		//tempArry["contentGrpName"] = $("#inputContent"+index+" option:selected").text();
 								   		tempArry["lineAmount"] = $("#amountText"+index).val()
-								   		
-								   		
+
+
 								   		if(self.scope.attr("invoicetypeSelect") == "2"){
 
 							   				if($('#ccidGL'+index).val()!=undefined  && $('#ccidGL'+index).val().length>0){
@@ -1612,7 +1612,7 @@ var page = Component.extend({
 				calculateUSD:function(){
 
 					var fxrate = this.attr("usdFxrateRatio");
-					var calUSD = this.attr("totalAmountVal")/fxrate;
+					var calUSD = this.attr("totalAmountVal") * fxrate;
 
 					if(isNaN(calUSD)){
 						calUSD = 0;
@@ -1713,7 +1713,7 @@ function getCurrentDate(){
             	errObj.isFailed=true;
               	errObj.errorMsgs.push('Please attach atleast one supporting document');
             }
-            
+
             return errObj;
           }
 
