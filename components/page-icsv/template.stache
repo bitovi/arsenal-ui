@@ -51,7 +51,7 @@
 		<img id="arrowbutton" class="pull-up-arrow" style="margin:0 auto;display:none"
 		src="/resources/images/approval_arrow_up.png"></img>
 	</div>
-	<div class="col-sm-12 lineDividerInvoice jQfunhide" style="padding:0px;">
+	<div class="col-sm-12 lineDividerInvoice jQfunhide" style="padding:0px;padding-top:2px;">
 
 		<div id="icsvinvoiceGrid">
 			<div class="loading_img"></div>
@@ -60,7 +60,7 @@
 
 	</div>
 	<div  class="form-inline" >
-	  <div class="col-md-12 lineDividerInvoice jQfunhide marginTop10" style="text-align:right;padding:10px;">
+	  <div class="col-md-12  jQfunhide marginTop10" style="text-align:right;padding:10px;">
 
 	  	{{#if fetchPB}}
 	      <label  style="margin-left:10px">Bundle Name:</label>

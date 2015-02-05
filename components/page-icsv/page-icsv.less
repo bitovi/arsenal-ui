@@ -3,8 +3,24 @@
 #icsvinvoiceGrid {
 //	max-height: 200px;
 	overflow: auto;
-	padding: 10px 0px 10px 0px;
+	padding: 0px 0px 0px 0px;
 	height:auto;
+
+	border-bottom: 1px solid #bfbfbf;
+	border-left: 1px solid #bfbfbf;
+	border-right: 1px solid #bfbfbf;
+	border-radius:4px;
+
+}
+
+.flex-basis(@basis) {
+	-webkit-flex-basis: @basis;
+	flex-basis: @basis;
+}
+
+.flex-grow(@grow) {
+	-webkit-flex-grow: @grow;
+	flex-grow: @grow;
 }
 
 @white-border: 1px solid #fff;
@@ -19,7 +35,15 @@ icsv-grid {
     width: 30px;
   }
 
+	tbody {
+		//height:85%;
+		//max-height: 100%;
+		overflow-y: overlay;
+		overflow-x: hidden;
+		//border: 1px solid #a1a1a1;
+		border: 0;
 
+	}
 
  /* .entity, .invoiceType, .contentType, .country, .invoiceNum, .dueDate, .currency, .status, .bundleName, .comments{
   	text-align: left !important;
@@ -46,7 +70,56 @@ icsv-grid {
 
 	table{
 		border-collapse: separate;
-		border-bottom: 1px solid #bfbfbf;
+		//border-bottom: 1px solid #bfbfbf;
+	}
+
+	thead, tbody,tfoot {
+		display: block;
+
+		tr {
+			display: -webkit-flex;
+			width: 100%;
+		}
+	}
+
+	tr > th, tr > td {
+		//padding: .3em .5em;
+		&.errormsg { .flex-grow(1); .flex-basis(50px); }
+		&.licensor { .flex-grow(2); .flex-basis(200px); }
+		&.contentType { .flex-grow(2); .flex-basis(100px); }
+		&.country { .flex-grow(1); .flex-basis(60px); }
+		&.invoiceNum { .flex-grow(2); .flex-basis(200px); }
+		&.dueDate { .flex-grow(1); .flex-basis(80px); }
+		&.invoiceAmt { .flex-grow(1); .flex-basis(155px); }
+		&.currency { .flex-grow(1); .flex-basis(55px); }
+		&.comments { .flex-grow(2); .flex-basis(200px); }
+	}
+
+	tbody > tr {
+
+		&.child {
+			display: none;
+
+			&.visible {
+				display: -webkit-flex;
+				border:none;
+			}
+		}
+	}
+
+	thead, tfoot {
+		background: @header-background;
+		color: white;
+		height:25px;
+		tr {
+			height : 25px;
+			th, td {
+				font-weight: normal;
+				height: 25px;
+				border-bottom: @dark-border;
+				text-align:center;
+			}
+		}
 	}
 
 }

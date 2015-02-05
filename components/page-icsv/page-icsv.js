@@ -73,7 +73,7 @@ Grid.extend({
       var self= this;
       var tbody = self.element.find('tbody');
       //setting tbody height which determines the page height- start
-      var getTblBodyHght=gridUtils.getTableBodyHeight('icsvinvoiceGrid',90);
+      var getTblBodyHght=gridUtils.getTableBodyHeight('icsvinvoiceGrid',89);
       gridUtils.setElementHeight(tbody,getTblBodyHght,getTblBodyHght);
       //setting tbody height - end
     }
@@ -647,16 +647,18 @@ function accordin(obj){
     $('#arrowbutton').removeClass('pull-up-arrow').addClass('pull-down-arrow');
     $('#arrowbutton').attr('src','/resources/images/approval_arrow_down.png')
     $('#topContanier').hide();
-    obj.scope.attr('gridHeight', $('.rn-grid tbody').height());
+    //obj.scope.attr('gridHeight', $('.rn-grid tbody').height());
     // setting tbody height which determines the page height- start
-    var getTblBodyHght=gridUtils.getTableBodyHeight('icsvinvoiceGrid',90);
+    var getTblBodyHght=gridUtils.getTableBodyHeight('icsvinvoiceGrid',94);
     gridUtils.setElementHeight($('.rn-grid tbody'),getTblBodyHght,getTblBodyHght);
     // setting tbody height which determines the page height - end
   }else if($('#arrowbutton').hasClass('pull-down-arrow')){
     $('#arrowbutton').removeClass('pull-down-arrow').addClass('pull-up-arrow');
     $('#arrowbutton').attr('src','/resources/images/approval_arrow_up.png')
-    $('.rn-grid tbody').height(obj.scope.attr('gridHeight'));
+    //$('.rn-grid tbody').height(obj.scope.attr('gridHeight'));
     $('#topContanier').show();
+    var getTblBodyHght=gridUtils.getTableBodyHeight('icsvinvoiceGrid',89);
+    gridUtils.setElementHeight($('.rn-grid tbody'),getTblBodyHght,getTblBodyHght);
   }
 }
 
