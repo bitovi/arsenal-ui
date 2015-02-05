@@ -42,7 +42,7 @@
 			<icsv-summary appstate="{appstate}"></icsv-summary>
 		</div>
 	</div>
-	<div class="col-sm-12 icsv-error">{{errorMessage}}</div>
+	<div class="col-sm-12 icsv-error" id="icsverr">{{errorMessage}}</div>
 
 
 <div id="bottomContainer" style="float: left;width: 100%;">

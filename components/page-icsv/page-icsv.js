@@ -116,9 +116,7 @@ fileUpload.extend({
 
              var parentScopeVar = this.element.closest('page-icsv').scope();
              parentScopeVar.attr("errorMessage", "");
-
-
-        }
+           }
     }
 });
 
@@ -339,8 +337,10 @@ var page = Component.extend({
           icsvmap.removeAttr("invoiceData");
 
           console.log(icsvmap);
-
+          $('#icsverr').removeClass("icsv-error").addClass("icsv-validate-inprogress");
+          self.scope.attr('errorMessage',"<br/><br/><br/>File Upload is Completed.<br/><br/>Invoice line validation is in Progress ......");
           ValidateIcsv.findOne(icsvReq,function(data){
+            $('#icsverr').removeClass("icsv-validate-inprogress").addClass("icsv-error");
                   //console.log(data);
                  if(data.errorStatus == 'FAILURE'){
                   var fatalErrorList = data.fatalErrorList;

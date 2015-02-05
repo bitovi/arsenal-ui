@@ -6,14 +6,14 @@ import Model from 'can/model/';
  **/
 
 var statusCodesObject = {
-		"0":"UNBUNDLED",
-		"1":"PENDING_WITH_BM (Bundled)",
-		"2":"PENDING_WITH_FA",
-		"3":"PENDING_WITH_FC",
-		"5":"FINAL_APPROVED",
-		"9":"BM_REJECTED"
+		"0":"Unbundled",
+		"1":"Pending with BM",
+		"2":"Pending with FA",
+		"3":"Pending with FC",
+		"5":"Final approved",
+		"9":"Rejected by BM"
     },
 
-    StatusCodes = new can.Map(statusCodesObject);
+StatusCodes = new can.Map(statusCodesObject);
 
 export default StatusCodes;

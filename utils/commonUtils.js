@@ -10,9 +10,14 @@ var rinsCommonUtils = {
     }
   },
   navigateTo:function(page){
-    appstate.attr('page', page);
-    appstate.attr('navigationRequired', true);
-    appstate.attr('navigationRequired', false);
+    var a = document.createElement('a');
+    a.setAttribute('href', "/"+page);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    // appstate.attr('page', page);
+    // appstate.attr('navigationRequired', true);
+    // appstate.attr('navigationRequired', false);
   },
   displayUIMessage : function(statusCode,message){
 

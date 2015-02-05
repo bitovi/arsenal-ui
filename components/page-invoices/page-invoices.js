@@ -573,7 +573,8 @@ var page = Component.extend({
           if(flag==false) {
               invoicemap.attr('invoiceid',invoiceid);
               self.scope.appstate.attr('viewinvoicemode',true);
-              self.scope.appstate.attr('page','edit-invoice');
+              //self.scope.appstate.attr('page','edit-invoice');
+              commonUtils.navigateTo("edit-invoice");
           }
     },
     ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
@@ -666,7 +667,7 @@ var page = Component.extend({
       }
 
       if($(item[0]).is(":checked")){
-           if(bundleStatus == "UNBUNDLED"){
+           if(bundleStatus == "Unbundled"){
               self.scope.bundleState.attr(val, true);
             }
             else
