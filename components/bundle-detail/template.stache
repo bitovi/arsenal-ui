@@ -16,14 +16,14 @@
   {{/validationStatus}}
   {{/if}}
   <div class="bundle-detail-actions">
-    <img class="show-chart btn-download" data-tooltip="Download-ALL Invoices" src="/resources/images/downloadTemplate.png" style="padding-top: 1px;height: 20px;width: 20px;cursor: pointer;">
+    <img class="btn-download"  data-action="all" data-tooltip="Download-ALL Invoices" src="/resources/images/downloadTemplate.png" style="padding-top: 1px;height: 20px;width: 20px;cursor: pointer;">
 
     <div class="btn-group">
       <img class="btn-preview" data-tooltip="Preview ecsv / Pcsv" src="/resources/images/readerTemplate.png" data-toggle="dropdown" aria-expanded="true">
       <ul class="dropdown-menu" role="menu">
-        <li><a href="#">ecsv</a></li>
+        <li><a href="#"  class="btn-download" data-action="ecsv">ecsv</a></li>
         <li class="divider"></li>
-        <li><a href="#">pcsv</a></li>
+        <li><a href="#" class="btn-download" data-action="pcsv">pcsv</a></li>
       </ul>
     </div>
     <img class="show-chart" data-tooltip="Chart - Stats" src="/resources/images/charticon.png" style="padding-top: 1px;height:18px;width:18px;">

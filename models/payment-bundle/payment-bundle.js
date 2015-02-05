@@ -83,34 +83,20 @@ var PaymentBundle = Model.extend({
     });
   },
   preview: function(invId){
-
-    var requestObj = {
-      searchRequest:{
-        ids:[invId]
-      }
-    }
-
-    return $.ajax({
-      url: URLs.DOMAIN_SERVICE_URL + 'invoice/getPdfContent',
-      type: 'POST',
-      data: requestObj,
-      processData: false
-    })
+    window.open(URLs.DOMAIN_SERVICE_URL + 'invoice/getPdfContent/'+invId, '_blank', 'width=300,height=200');
   },
-  downloadALL:function(bundleId){
-    var requestObj = {
-      bundleSearch:{
-        ids:[bundleId]
-      }
+  downloadFile:function(type,id){
+    var url = "";
+    if(type === 'ecsv'){
+      url = URLs.DOMAIN_SERVICE_URL +'paymentBundle/ecsv/'+id;
+    }else if(type === 'pcsv'){
+      url = URLs.DOMAIN_SERVICE_URL +'paymentBundle/pcsv/'+id;
+    }else if(type === 'all'){
+      url = URLs.DOMAIN_SERVICE_URL +'paymentBundle/downloadInvoiceFiles/'+id;
+    }else{
+      console.log("invalid action");
     }
-
-    return $.ajax({
-      url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/downloadInvoiceFiles',
-      type: 'POST',
-      data: requestObj,
-      processData: false
-    })
-
+    window.location.href = url;
   },
   findOne: function(params) {
     var appstate = params.appstate;
