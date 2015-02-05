@@ -1354,15 +1354,15 @@ var page = Component.extend({
 	                            tempDocument.location = uploadedfiles[i].filePath;
 	                            tempDocument.status = "add";
 	                            tempEditInvoiceData["invoiceDocuments"].push(tempDocument);
-	                        } else if (uploadedfiles[i].isServer) {
-	                            // This is the existing server file list which will be send back as-is with no change.
-	                            var tempDocument = {};
-	                            tempDocument.fileName = uploadedfiles[i].fileName;
-	                            tempDocument.location = uploadedfiles[i].location;
-	                            tempDocument.docId = uploadedfiles[i].docId;
-	                            tempDocument.id = uploadedfiles[i].id;
-	                            tempDocument.status = uploadedfiles[i].status;
-	                            tempEditInvoiceData["invoiceDocuments"].push(tempDocument);
+	                        // } else if (uploadedfiles[i].isServer) {
+	                        //     // This is the existing server file list which will be send back as-is with no change.
+	                        //     var tempDocument = {};
+	                        //     tempDocument.fileName = uploadedfiles[i].fileName;
+	                        //     tempDocument.location = uploadedfiles[i].location;
+	                        //     tempDocument.docId = uploadedfiles[i].docId;
+	                        //     tempDocument.id = uploadedfiles[i].id;
+	                        //     tempDocument.status = uploadedfiles[i].status;
+	                        //     tempEditInvoiceData["invoiceDocuments"].push(tempDocument);
 	                        }
 	                    }
                 	}
