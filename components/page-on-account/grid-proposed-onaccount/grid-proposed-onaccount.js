@@ -169,6 +169,7 @@ var proposedonAccountGrid = Grid.extend({
                  var editableRows = self.scope.request.editableRows;
                  var footerrows = self.scope.request.footerrows;
                  var type =self.scope.type;
+
                  //console.log(self.scope.request.rows);
                  var quarters = self.scope.request.quarters;
                 for(var i=0;i<quarters.length;i++){
@@ -214,6 +215,11 @@ var proposedonAccountGrid = Grid.extend({
                     self.scope.rows.replace(self.scope.request.rows);
                     self.scope.footerrows.replace(self.scope.request.footerRows);
                }
+
+                if(self.scope.request.sortColumns != undefined && self.scope.request.sortDirection != undefined){
+                  self.scope.attr('sortcolumnnames',self.scope.request.sortColumns);
+                  self.scope.attr('sortdir',self.scope.request.sortDirection);
+                 }
 
            }
 

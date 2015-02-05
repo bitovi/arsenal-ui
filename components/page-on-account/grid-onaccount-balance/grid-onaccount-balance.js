@@ -113,6 +113,10 @@ var OnAccountBalance = Grid.extend({
                              self.scope.footerrows.replace(footerRows);
                            }
                           }
+                           if(self.scope.request.sortColumns != undefined && self.scope.request.sortDirection != undefined){
+                              self.scope.attr('sortcolumnnames',self.scope.request.sortColumns);
+                              self.scope.attr('sortdir',self.scope.request.sortDirection);
+                             }
                         }
                       }else{
                         $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
