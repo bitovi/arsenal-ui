@@ -600,20 +600,20 @@ var BundleDetailTabs = Component.extend({
       //console.log("refreshBottomGrid chnge event: ");
       this.scope.getNewDetails(this.scope.pageState.selectedBundle);
     },
-    '.information mouseover': function(el, ev) {
-      var row = el.data('row');
-      var data = $('<div>').append(information_template())[0].innerHTML;
-      el.popover({
-        content: "Information",
-        html : true,
-        trigger: 'manual',
-        placement: 'bottom'
-      });
-      el.popover('show');
-    },
-    '.information mouseout': function(el, ev) {
-      el.popover('hide');
-    },
+    // '.information mouseover': function(el, ev) {
+    //   var row = el.data('row');
+    //   var data = $('<div>').append(information_template())[0].innerHTML;
+    //   el.popover({
+    //     content: "Information",
+    //     html : true,
+    //     trigger: 'manual',
+    //     placement: 'bottom'
+    //   });
+    //   el.popover('show');
+    // },
+    // '.information mouseout': function(el, ev) {
+    //   el.popover('hide');
+    // },
     '.information click': function(el, ev) {
       var row = el.data('row');
       var data = $('<div>').append(information_template())[0].innerHTML;
