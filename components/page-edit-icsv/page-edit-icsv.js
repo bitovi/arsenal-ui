@@ -605,15 +605,16 @@ var page = Component.extend({
 
 						}
 			    }).on('error.field.bv', function(e, data) {
+			        	$('*[data-bv-icon-for="'+data.field +'"]').popover('show');
 				    	if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]")){
 				    		$("#"+data.field+"-err").css("display", "block");
 				    	}
 
 
-				    	$('*[data-bv-icon-for="'+data.field +'"]').popover('show');
+				    	
 
 				}).on('success.field.bv', function(e, data) {
-        				$('*[data-bv-icon-for="'+data.field +'"]').popover('destroy');
+        				//$('*[data-bv-icon-for="'+data.field +'"]').popover('destroy');
         				if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]")){
 				    		$("#"+data.field+"-err").css("display", "none");
 				    	}
@@ -630,8 +631,13 @@ var page = Component.extend({
 	        						 break;
 	        					}
 	        				}
-        				}
+        				
+	        			 	if($("#invoiceform").data('bootstrapValidator').getInvalidFields().length > 0){  /*needed only for icsv*/
 
+								$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
+
+							}	
+						}
 
         			}).on('success.form.bv', function(e) {
 

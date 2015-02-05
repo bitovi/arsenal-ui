@@ -281,6 +281,8 @@ var page = Component.extend({
               if(message.length == 0){
                 //request.searchRequest["type"] = "BALANCE";
                   request.appstate=this.scope.appstate;
+                  request.sortColumns=self.scope.sortColumns;
+                  request.sortDirection=self.scope.sortDirection;
                  $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={request}></rn-onaccount-balance-grid>')({request}));
                 }
               } else if(self.scope.tabsClicked=="PROPOSED_ON_ACC"){
@@ -615,6 +617,8 @@ var page = Component.extend({
                 proposedRequest.recordsAvailable = data.recordsAvailable;
                 if(proposedRequest.rows != null && proposedRequest.rows.length>0){
                     proposedRequest.quarters=quarters;
+                    proposedRequest.sortColumns=self.scope.sortColumns;
+                    proposedRequest.sortDirection=self.scope.sortDirection;
                     disableProposedSubmitButton(true);
                     disableEditORDeleteButtons(true);
                     $("#submitPOA").attr("disabled","disabled");
