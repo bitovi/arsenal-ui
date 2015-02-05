@@ -26,6 +26,7 @@ import onAccountBalance from 'models/onAccount/onAccountBalance/';
 
 import copy from 'components/copy-clipboard/';
 import exportToExcel from 'components/export-toexcel/';
+import commonUtils from 'utils/commonUtils';
 
 fileUpload.extend({
   tag: 'rn-file-uploader-new',
@@ -131,12 +132,14 @@ var page = Component.extend({
           $('#newonAccountGrid, #newonAccountGridComps, #proposedonAccountDiv,#proposeOnAccountGridComps, #forminlineElements,#searchDiv, #onAccountEditDeleteDiv').hide();
        }
 
-        var defaultRequest=setTheDefaultParameters(self.scope.appstate);
-        self.scope.attr('defaultRequest',defaultRequest);
 
+        //var defaultRequest=setTheDefaultParameters(self.scope.appstate);
        setTimeout(function(){
-        $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={defaultRequest}></rn-onaccount-balance-grid>')({defaultRequest}));
-       }, 10);
+        commonUtils.triggerGlobalSearch();
+        // var defaultRequest=frameRequest(self.scope.appstate);
+        // self.scope.attr('defaultRequest',defaultRequest);
+        // $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={defaultRequest}></rn-onaccount-balance-grid>')({defaultRequest}));
+       }, 100);
           disablePropose(true);
           disableCopyOnAccount(true);
           $("#onAccountEditDeleteDiv").hide();
@@ -278,6 +281,8 @@ var page = Component.extend({
               if(message.length == 0){
                 //request.searchRequest["type"] = "BALANCE";
                   request.appstate=this.scope.appstate;
+                  request.sortColumns=self.scope.sortColumns;
+                  request.sortDirection=self.scope.sortDirection;
                  $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={request}></rn-onaccount-balance-grid>')({request}));
                 }
               } else if(self.scope.tabsClicked=="PROPOSED_ON_ACC"){
@@ -293,15 +298,18 @@ var page = Component.extend({
         var self = this;
         ev.preventDefault();
         self.scope.tabsClicked="ON_ACC_BALANCE";
-        var defaultRequest = self.scope.defaultRequest;
+        //var defaultRequest = self.scope.defaultRequest;
+        //var defaultRequest=frameRequest(self.scope.appstate);
         $('#newonAccountGrid, #newonAccountGridComps, #proposedonAccountDiv,#proposeOnAccountGridComps, #forminlineElements,#searchDiv, #onAccountEditDeleteDiv').hide();
         $('#onAccountBalanceDiv').show();
 
-       if ($("rn-onaccount-balance-grid").find("tbody>tr").length) {
-           $('rn-onaccount-balance-grid tbody tr').css("outline","0px solid #f1c8c8");
-       }else if(defaultRequest != undefined) {
-           $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={defaultRequest}></rn-onaccount-balance-grid>')({defaultRequest}));
-       }
+       // //if ($("rn-onaccount-balance-grid").find("tbody>tr").length) {
+       //     $('rn-onaccount-balance-grid tbody tr').css("outline","0px solid #f1c8c8");
+       // //}else if(defaultRequest != undefined) {
+       //     $('#onAccountBalanceGrid').html(stache('<rn-onaccount-balance-grid request={defaultRequest}></rn-onaccount-balance-grid>')({defaultRequest}));
+       // //}
+       commonUtils.triggerGlobalSearch();
+
       },
       "#newonAccount click":function(el, ev){
         ev.preventDefault();
@@ -332,9 +340,11 @@ var page = Component.extend({
         disableProposedSubmitButton(true);
         disableEditORDeleteButtons(true);
 
-        self.scope.attr('populateDefaultData',true);
+        //setQuartersToScope(self.scope);
+        //self.scope.attr('populateDefaultData',true);
         self.scope.appstate.attr('globalSearchButtonClicked',true);
-        self.scope.attr('loadProposedONAccountPage',Date.now());
+        //self.scope.attr('loadProposedONAccountPage',Date.now());
+        commonUtils.triggerGlobalSearch();
 
        // if (!$("rn-proposed-onaccount-grid").find("tbody>tr").length) {
        //   $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
@@ -575,11 +585,11 @@ var page = Component.extend({
           self.scope.appstate.attr("sortOrder", self.scope.attr('sortDirection'));
           var appstate = self.scope.appstate;
           var quarters = self.scope.quarters;
-          if(self.scope.populateDefaultData){
-            appstate = self.scope.defaultRequest.appstate;
-            quarters = self.scope.defaultRequest.quarters;
-            self.scope.attr('quarters',quarters);
-          }
+          // if(self.scope.populateDefaultData){
+          //   appstate = self.scope.defaultRequest.appstate;
+          //   quarters = self.scope.defaultRequest.quarters;
+          //   self.scope.attr('quarters',quarters);
+          // }
 
           proposedOnAccount.findOne(createProposedOnAccountRequest(appstate),function(data){
             self.scope.attr('showLoadingImage',false);
@@ -607,6 +617,8 @@ var page = Component.extend({
                 proposedRequest.recordsAvailable = data.recordsAvailable;
                 if(proposedRequest.rows != null && proposedRequest.rows.length>0){
                     proposedRequest.quarters=quarters;
+                    proposedRequest.sortColumns=self.scope.sortColumns;
+                    proposedRequest.sortDirection=self.scope.sortDirection;
                     disableProposedSubmitButton(true);
                     disableEditORDeleteButtons(true);
                     $("#submitPOA").attr("disabled","disabled");
@@ -828,6 +840,10 @@ var frameRequest = function(appstate){
         onAccountrequest.searchRequest["contentGrpId"]=contGrpId;
       }
 
+      onAccountrequest.appstate=appstate;
+
+      onAccountrequest.quarters = utils.getQuarter(periodWidgetHelper.getDisplayPeriod(periodFrom,appstate.periodType),periodWidgetHelper.getDisplayPeriod(periodTo,appstate.periodType));
+
       //console.log('The request is :'+JSON.stringify(onAccountrequest));
   return onAccountrequest;
 }
@@ -910,7 +926,7 @@ var createProposedOnAccountRequest=function(appstate){
   proposedOnAccountRequest.searchRequest=requestHelper.formGlobalRequest(appstate).searchRequest;
   proposedOnAccountRequest.searchRequest.type="PROPOSED";
   proposedOnAccountRequest.searchRequest.offset=appstate.attr("offset");
-  proposedOnAccountRequest.searchRequest.limit="10";
+  proposedOnAccountRequest.searchRequest.limit=appstate.attr("fetchSize");
    if(sortByMap[sortByAttr] != undefined){
     sortByAttr = sortByMap[sortByAttr];
   }else if(sortByAttr!= undefined && sortByAttr.length >0){
@@ -936,7 +952,7 @@ var createBalanceOnAccountRequestForExportToExcel=function(appstate){
     balancedOnAccountRequest.searchRequest.type="BALANCE";
     balancedOnAccountRequest.excelOutput=true;
     balancedOnAccountRequest.searchRequest.offset=appstate.attr("offset");;
-    balancedOnAccountRequest.searchRequest.limit="10";
+    balancedOnAccountRequest.searchRequest.limit=appstate.attr("fetchSize");
     balancedOnAccountRequest.searchRequest.sortBy=appstate.attr("sortBy");
     balancedOnAccountRequest.searchRequest.sortOrder=appstate.attr("sortOrder");
     return requestHelper.formRequestDetails(balancedOnAccountRequest);
@@ -958,4 +974,9 @@ var createBalanceOnAccountRequestForExportToExcel=function(appstate){
       defaultRequest.appstate.region = appstate.defaultRegion;
       return defaultRequest;
   };
+  var setQuartersToScope=function(scope){
+      var periodFrom=periodWidgetHelper.getDisplayPeriod(scope.appstate.periodFrom,scope.appstate.periodType);
+      var periodTo = periodWidgetHelper.getDisplayPeriod(scope.appstate.periodTo,scope.appstate.periodType);
+      scope.attr('quarters',utils.getQuarter(periodFrom,periodTo));
+  }
 export default page;

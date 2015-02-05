@@ -400,8 +400,8 @@ var page = Component.extend({
 	  tokenInput: [],
     countryRecordsAvailable:'@',
     licensorRecordsAvailable:'@',
-    populateDefaultDataForCountry:'@',
-    populateDefaultDataForLicensor:'@',
+    // populateDefaultDataForCountry:'@',
+    // populateDefaultDataForLicensor:'@',
     is_aggregate:0,
     isfromDashBoard:false,
     refreshTokenInput: function(val, type){
@@ -431,7 +431,7 @@ var page = Component.extend({
   init: function(){
 	 var self = this;
     self.scope.appstate.attr("renderGlobalSearch",true);
-    self.scope.attr('populateDefaultDataForLicensor',true);
+    //self.scope.attr('populateDefaultDataForLicensor',true);
     self.scope.attr("licensorViewOffset",0);
     self.scope.attr("licensorTableScrollTop",0);
     self.scope.sortColumns.replace([]);
@@ -592,7 +592,7 @@ var page = Component.extend({
           //$("#aggregate").css("display","none");
           $("#aggregate").addClass("hide");
           self.scope.attr('view',"licensor");
-          self.scope.attr('populateDefaultDataForLicensor',true);
+          //self.scope.attr('populateDefaultDataForLicensor',true);
           //$("li#aggregate").addClass("hide");
 
           ev.preventDefault();
@@ -621,7 +621,7 @@ var page = Component.extend({
           self.scope.attr("countryTableScrollTop",0);
           self.scope.sortColumns.replace([]);
           self.scope.attr("sortDirection","asc");
-          self.scope.attr('populateDefaultDataForLicensor',true);
+          //self.scope.attr('populateDefaultDataForLicensor',true);
           getClaimReviewData('country',self.scope);
       },
       '#chkAggregate change': function(item, el, ev) {
@@ -894,7 +894,7 @@ var getClaimReviewData = function(tabView, self) {
       self.appstate.attr("excelOutput", false);
       console.error("Error while loading: " + xhr);
     });
-    self.attr('populateDefaultDataForLicensor', false);
+    //self.attr('populateDefaultDataForLicensor', false);
   } else if (tabView == "country" || tabView == "country-aggregate") {
     claimCountryInvoices.findOne(UserReq.formRequestDetails(claimLicSearchRequest), function(values) {
       //console.log("data is "+JSON.stringify(values.attr()));
@@ -935,16 +935,16 @@ var getClaimReviewData = function(tabView, self) {
       self.appstate.attr("excelOutput", false);
       console.error("Error while loading: " + xhr);
     });
-    self.attr('populateDefaultDataForCountry', false);
+    //self.attr('populateDefaultDataForCountry', false);
   }
 }
 
 
 var getClaimReviewRequest = function(tabView,self) {
 var appstate = self.appstate;
-  if(self.populateDefaultData){
-      appstate = commonUtils.getDefaultParameters(appstate);
-    }
+  // if(self.populateDefaultData){
+  //     appstate = commonUtils.getDefaultParameters(appstate);
+  //   }
  var periodFrom = appstate.periodFrom;
   var periodTo = appstate.periodTo;
   var serTypeId = appstate.storeType;
