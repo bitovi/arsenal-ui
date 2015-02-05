@@ -147,6 +147,7 @@ var page = Component.extend({
           ],
           {
             theme: "facebook",
+            placeholder:"Search...",
             preventDuplicates: true,
             onResult: function (item) {
               if($.isEmptyObject(item)){
