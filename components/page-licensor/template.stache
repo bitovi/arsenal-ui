@@ -128,11 +128,10 @@
 		    				<div class="col-sm-4 textalignright small-headers align-left">
 			    				<label>Valid From:</label>
 							</div>
-			    			<div class="col-sm-4 form-group requiredBar" id="periodFromcontainer">
-
-			    				
+			    			<div class="col-sm-4 form-group requiredBar" id="periodFromcontainer">			    				
 								 <div class="calendarcls form-group">
-						            <input type='text' name="periodFromInp" id="periodFrom" class="form-control  updatePeroid periodFromInput formInputs validateInput" can-value='periodFromVal' value="{{periodFromVal}}"/>
+					            	<input type='text' name="periodFromInp" id="periodFrom" class="form-control  updatePeroid periodFromInput formInputs validateInput" can-value='getPeriodFromVall' value="{{periodFromVal}}"/>
+					            	<span class="calendarDateIcon"><i class="glyphicon-calendar glyphicon"></i></span>
 						            <period-calendar selectedperiod="{selectedperiod}"  appstate="{appstate}"></period-calendar>
 						         </div>
 	          
@@ -151,6 +150,7 @@
 			    				
 			    				<div class="calendarcls form-group" >
 						           <input type='text' name="periodToInp" id="periodTo" class="form-control  updatePeroid periodToInput formInputs validateInput" can-value='periodToVal'/>
+						           <span class="calendarDateIcon"><i class="glyphicon-calendar glyphicon"></i></span>
 						           <period-calendar selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
 						          </div>
 
