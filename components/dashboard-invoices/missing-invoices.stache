@@ -19,6 +19,6 @@
     {{/missingInvoices}}
   </tbody>
 </table>
-{{#else}}
-No Missing Invoices found.<!--TODO:Find the correct message -->
+{{else}}
+<span class="missing-invoices-empty">No Missing Invoices found.</span><!--TODO:Find the correct message -->
 {{/if}}
