@@ -83,7 +83,9 @@ var PaymentBundle = Model.extend({
     });
   },
   preview: function(invId){
-    window.open(URLs.DOMAIN_SERVICE_URL + 'invoice/getPdfContent/'+invId, '_blank', 'width=300,height=200');
+    var x = screen.width/2 - 700/2;
+    var y = screen.height/2 - 450/2;
+    window.open(URLs.DOMAIN_SERVICE_URL + 'invoice/getPdfContent/'+invId, '_blank', 'height=485,width=700,left='+x+',top='+y);
   },
   downloadFile:function(type,id){
     var url = "";
@@ -97,6 +99,14 @@ var PaymentBundle = Model.extend({
       console.log("invalid action");
     }
     window.location.href = url;
+    // return $.ajax({
+    //   url: url,
+    //   type: 'GET'
+    // }).done(function(data){
+    //     window.location.href = url;
+    // }).fail(function(data){
+    //     console.log("File Download is failed ");
+    // })
   },
   findOne: function(params) {
     var appstate = params.appstate;

@@ -504,7 +504,7 @@ var BundleDetailTabs = Component.extend({
             //Alert.displayAlert(response.responseText, 'success' );
 
             //if the final approval ( 5)  or reject ( 9), remove the bundle
-            if(response.paymentBundle.status === 5 || response.paymentBundle.status === 9 ){
+            if(!response.paymentBundle.approvable){
               // un-select the selected bundle (we're done here)
               pageState.attr('selectedBundle', null);
               // remove it from the list of bundles too, since the user can't act on it anymore
@@ -586,7 +586,11 @@ var BundleDetailTabs = Component.extend({
       scope.getNewDetails(scope.pageState.selectedBundle);
     },
     '.previewInv click': function(el, ev) {
-       PaymentBundle.preview(el.data('invoiceid'));
+       PaymentBundle.preview(el.data('invoiceid')).done(function(status) {
+
+         console.log(status);
+
+       });
     },
     '{scope.bottomGridPaginateAttr} change': function() {
       //console.log("change event: "+this.scope.bottomGridPaginateAttr.paginateRequest+", othje:"+this.scope.bottomGridPaginateAttr.recordsAvailable);

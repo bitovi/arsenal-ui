@@ -225,8 +225,9 @@ var BundleDetailGrid = ScrollingGrid.extend({
     'td.validations img mouseover': function(el, ev) {
       var row = el.data('row');
       el.popover({
-        content: row.validationMessages.join(' '),
-        trigger: 'manual'
+        content: row.validationMessages.join('<br/>'),
+        trigger: 'manual',
+        html:true
       });
       el.popover('show');
     },
