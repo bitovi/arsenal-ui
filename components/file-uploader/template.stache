@@ -27,9 +27,9 @@
                   <li {{data 'listView'}} class="{{#if filePath}}uploaded{{/if}} {{#if fileId}}uploaded{{/if}}">
                     {{#if fileName}}
                       {{#if fileId}}
-                         <a  class="downLoad-Link" id="{{fileId}}">{{fileName}} {{#if fileSize}} ({{fileSize}} KB){{/if}} </a>
+                         <a  class="downLoad-Link" id="{{fileId}}">{{getFileName fileName}} {{#if fileSize}} ({{fileSize}} KB){{/if}} </a>
                        {{#else}}
-                          {{fileName}} {{#if fileSize}}({{convertToKB fileSize}}){{/if}}
+                          {{getFileName fileName}} {{#if fileSize}}({{convertToKB fileSize}}){{/if}}
                        {{/if}}
                     {{#else}}
                       {{#if fileId}}
