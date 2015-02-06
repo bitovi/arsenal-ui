@@ -1562,7 +1562,7 @@ var page = Component.extend({
 						var _root = $(_root);
 						_root.find('.period li a').removeClass('disabled period-active');
 
-						if ($('#inputMonth0').parent().find('.period li:first-child').find('a').hasClass('period-active')) {
+						if ($("#inputMonth0").val().indexOf('Q') != "-1") {
 					        _root.find('.q1 li').not(":first").find('a').addClass('disabled');
 					        _root.find('.q2 li').not(":first").find('a').addClass('disabled');
 					        _root.find('.q3 li').not(":first").find('a').addClass('disabled');
