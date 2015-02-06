@@ -94,27 +94,24 @@ var BundleDetailTabs = Component.extend({
     approvalComment: '',
     bottomGridPaginateAttr: paginateAttr,
     isBundlePrioritySet:false,
-    sortColumns: [],
-    sortDirection: 'asc',
     details:{},
     regionCurr:[],
+    gridColumns: [],
+    selectedRows: [],
+    workflowSteps: new WorkflowStep.List([]),
+    gettingDetails: false,
+    expandBottomGrid:false,
+    bundleProgress:{
+      //To controll the multiple get calls when the tab changed
+      isBundleSelectionChange: false,
+      triggerValidation:false
+    },
     havePaymentTypeAndComment: function(scope) {
       return  (this.appstate.userInfo.roleIds.indexOf(constants.ROLES.BM) > -1 ? scope.paymentType : true) &&
       scope.approvalComment.trim().length;
     },
     renderInfor:function(){
       return information_template();
-    },
-
-    gridColumns: [],
-    selectedRows: [],
-
-
-    workflowSteps: new WorkflowStep.List([]),
-    bundleProgress:{
-      //To controll the multiple get calls when the tab changed
-      isBundleSelectionChange: false,
-      triggerValidation:false
     },
     selectedBundleChanged: function(scope) {
 
@@ -145,7 +142,6 @@ var BundleDetailTabs = Component.extend({
       scope.bundleProgress.isBundleSelectionChange = false;
     },
 
-    gettingDetails: false,
     getNewDetails: function(bundle) {
 
       if(this.bottomGridPaginateAttr.attr("paginateRequest")){
@@ -210,9 +206,7 @@ var BundleDetailTabs = Component.extend({
 
 
         //set the paymentOption which is shared by service
-        bundle.paymentOption != undefined ? scope.attr('paymentType',bundle.paymentOption) : scope.attr('paymentType', 2);
-
-
+        scope.attr('paymentType',bundle.paymentOption);
 
         //<!--rdar://problem/19415830 UI-PBR: Approve/Reject/Recall/Delete should happen only from Licensor Tab-->
         if(bundle.view === 'LICENSOR'){
@@ -600,20 +594,6 @@ var BundleDetailTabs = Component.extend({
       //console.log("refreshBottomGrid chnge event: ");
       this.scope.getNewDetails(this.scope.pageState.selectedBundle);
     },
-    // '.information mouseover': function(el, ev) {
-    //   var row = el.data('row');
-    //   var data = $('<div>').append(information_template())[0].innerHTML;
-    //   el.popover({
-    //     content: "Information",
-    //     html : true,
-    //     trigger: 'manual',
-    //     placement: 'bottom'
-    //   });
-    //   el.popover('show');
-    // },
-    // '.information mouseout': function(el, ev) {
-    //   el.popover('hide');
-    // },
     '.information click': function(el, ev) {
       var row = el.data('row');
       var data = $('<div>').append(information_template())[0].innerHTML;
@@ -646,6 +626,7 @@ var resetSelectedBundle = function(scope){
   var selectedBundle = scope.pageState.selectedBundle;
   scope.resetToken();
   can.batch.start();
+  scope.attr("paymentType", selectedBundle.paymentOption);
   // clear out selectedRows
   scope.selectedRows.splice(0, scope.selectedRows.length);
   scope.attr("isBundlePrioritySet", false);
@@ -655,18 +636,11 @@ var resetSelectedBundle = function(scope){
   scope.attr("approvalComment", '');
   scope.attr("preferredCurr", '');
   scope.pageState.attr('validationGrid',false);
-
   canRemoveInvoice(scope.pageState);
-
   var region = scope.appstate.attr('region') != undefined ? scope.appstate.attr('region').id : "";
-
   Currency.getCurrByRegion(region).done(function(curr) {
-
-
     scope.regionCurr.splice(0, scope.regionCurr.length, ...curr.data);
-
   });
-
 
   // change the columns to be correct
   var tabs = [],
@@ -684,7 +658,6 @@ var resetSelectedBundle = function(scope){
   scope.attr('selectedTab', scope.tabs.length ? scope.tabs[0] : null);
   scope.gridColumns.splice(0, scope.gridColumns.length);
   scope.gridColumns.attr(columns);
-
   // clear out the workflow steps
   scope.workflowSteps.splice(0, scope.workflowSteps.length);
   can.batch.stop();

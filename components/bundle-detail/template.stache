@@ -46,6 +46,9 @@
   <div class="tokenData">
     <input type="text" class="form-control" id="tokenSearch">
   </div>
+  <!-- <div class="pbr-accordion">
+    <img class="accordion-toggle" src="/resources/images/approval_arrow_{{#if expandBottomGrid}}up{{else}}down{{/if}}.png"/>
+  </div> -->
 </div>
 
 <div class="grid-container" id="bundleDetailGridDiv">
