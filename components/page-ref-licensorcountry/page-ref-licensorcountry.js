@@ -104,6 +104,9 @@ var page = Component.extend({
 
     var licId ="";
 
+    var objDiv = $('#usercommentsdiv');
+    objDiv.scrollTop = objDiv.scrollHeight;
+
     Promise.all([
       Licensor.findAll(UserReq.formRequestDetails(requestObj)),
       CountryLicensor.findOne(UserReq.formRequestDetails( {reqType:'modelListAndVersion'})) ,
@@ -316,6 +319,7 @@ var page = Component.extend({
             e.preventDefault();
           });
 
+
         },
         "#grid-revision-history table>tbody>tr td dblclick": function(item, el, ev){
           //var invoiceid = el.closest('tr').data('row').row.id;
@@ -471,6 +475,7 @@ var page = Component.extend({
               return;
 
             }
+            //$(".multiple-comments-parent").scrollTop= $(".multiple-comments-parent").scrollHeight;
 
             if(entityCountry_data.laEnabled){
               entityCountry_data.laEnabled = "Y";
