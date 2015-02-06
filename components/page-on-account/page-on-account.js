@@ -193,9 +193,9 @@ var page = Component.extend({
           // if(pbval != undefined || paymentBundleNameText != undefined){
           //   $("#propose").removeAttr("disabled"); 
           // }
-          setTimeout(function(){
-                self.scope.attr('enableOnAccPropose',Date.now());
-          },600)
+          // setTimeout(function(){
+          //       self.scope.attr('enableOnAccPropose',Date.now());
+          // },600)
           
       },
       ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
@@ -356,6 +356,12 @@ var page = Component.extend({
         if(paymentBundleName==undefined  ||  paymentBundleName==null || paymentBundleName ==""){
             paymentBundleName = self.scope.paymentBundleNameText;
         }
+
+          if((paymentBundleName == undefined || paymentBundleName.length==0)){
+            displayMessage('Error : Please select the Bundle Name',false);
+            return;
+          }
+
          //Add code for sending selected documens on New onaccount propose
           var uploadedfiles = $('rn-file-uploader-new').data('_d_uploadedFileInfo');
 
@@ -672,11 +678,7 @@ var page = Component.extend({
       },
       '{scope} enableOnAccPropose':function(){
         var self = this;
-         var paymentBundleName = $("#newPaymentBundle").val();
-        if(paymentBundleName==undefined  ||  paymentBundleName==null || paymentBundleName ==""){
-            paymentBundleName = self.scope.paymentBundleNameText;
-        }
-        if(self.scope.validOnAccNumbers && (paymentBundleName != undefined && paymentBundleName.length>0)){
+        if(self.scope.validOnAccNumbers){
           disableProposeButton(false);
         }else{
           disableProposeButton(true);
@@ -690,11 +692,7 @@ var page = Component.extend({
                       if(data["status"]=="SUCCESS"){
                         $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
                       }else{
-                        $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-                        $("#messageDiv").show();
-                        setTimeout(function(){
-                            $("#messageDiv").hide();
-                        },2000)
+                        displayMessage(data["responseText"],false);
                         self.scope.attr('emptyrows',true);
                       }
                 }, function(xhr) {
@@ -708,11 +706,7 @@ var page = Component.extend({
                       if(data["status"]=="SUCCESS"){
                         $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
                       }else{
-                        $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-                        $("#messageDiv").show();
-                        setTimeout(function(){
-                            $("#messageDiv").hide();
-                        },2000)
+                        displayMessage(data["responseText"],false);
                         self.scope.attr('emptyrows',true);
                       }
                 }, function(xhr) {
