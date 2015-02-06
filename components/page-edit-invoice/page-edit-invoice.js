@@ -1010,12 +1010,31 @@ var page = Component.extend({
 				 		self.scope.attr("regionStore", invoiceData.regionId);
 						self.scope.attr("fxrateStore", invoiceData.fxRate);
 				 		self.scope.attr("licnotesStore", invoiceData.notes);
-				 		self.scope.attr("invoicedate", moment(invoiceData.invoiceDate).format("MM/DD/YYYY"));
-				 		$("#invoicedate input[type=text]").val(moment(invoiceData.invoiceDate).format("MM/DD/YYYY"));
-				 		self.scope.attr("receiveddate", moment(invoiceData.receivedDate).format("MM/DD/YYYY"));
-				 		$("#receiveddate input[type=text]").val(moment(invoiceData.receivedDate).format("MM/DD/YYYY"));
-				 		self.scope.attr("invoiceduedate", moment(invoiceData.invoiceDueDate).format("MM/DD/YYYY"));
-				 		$("#invoiceduedate input[type=text]").val(moment(invoiceData.invoiceDueDate).format("MM/DD/YYYY"));
+				 		
+				 		if((invoiceData.invoiceDate != "") &&  (invoiceData.invoiceDate != null)){
+				 			self.scope.attr("invoicedate", moment(invoiceData.invoiceDate).format("MM/DD/YYYY"));
+				 			$("#invoicedate input[type=text]").val(moment(invoiceData.invoiceDate).format("MM/DD/YYYY"));
+				 		}else{
+				 			self.scope.attr("invoicedate", "");
+				 			$("#invoicedate input[type=text]").val("");
+				 		}
+
+				 		if((invoiceData.receivedDate != "") &&  (invoiceData.receivedDate != null)){
+				 			self.scope.attr("receiveddate", moment(invoiceData.receivedDate).format("MM/DD/YYYY"));
+				 			$("#receiveddate input[type=text]").val(moment(invoiceData.receivedDate).format("MM/DD/YYYY"));
+				 		}else{
+				 			self.scope.attr("receiveddate", "");
+				 			$("#receiveddate input[type=text]").val("");
+				 		}
+
+				 		if((invoiceData.invoiceDueDate != "") &&  (invoiceData.invoiceDueDate != null)){
+				 			self.scope.attr("invoiceduedate", moment(invoiceData.invoiceDueDate).format("MM/DD/YYYY"));
+				 			$("#invoiceduedate input[type=text]").val(moment(invoiceData.invoiceDueDate).format("MM/DD/YYYY"));
+				 		}else{
+				 			self.scope.attr("invoiceduedate", "");
+				 			$("#invoiceduedate input[type=text]").val("");
+				 		}
+
 				 		if((invoiceData.invoiceCalcDueDate != "") &&  (invoiceData.invoiceCalcDueDate != null)){
 				 			self.scope.attr("calduedate",moment(invoiceData.invoiceCalcDueDate).format("MM/DD/YYYY"));
 				 		}
