@@ -178,7 +178,7 @@ var page = Component.extend({
            	$("#breakrow"+rowindex+" .removeRow").css("display", "block");
 
 			var servictypeid=$("#inputContent0 option:selected").attr("servicetypeid");
-		   	if (typeof servictypeid !== "undefined" ) {
+		   	if (typeof servictypeid !== "undefined" && self.attr("invoicetypeSelect") != '2') {
 		        $('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
 		        $('#inputContent'+rowindex).prepend("<option value>Select</option>").val('')
 		    }
@@ -1812,6 +1812,8 @@ var page = Component.extend({
 
 					var updatePeriodCalender = function(elementID){
 
+					
+
 						var _root = $("input[id^='inputMonth']").not("input[id='inputMonth0']").not(':hidden').parent();
 
 
@@ -1831,7 +1833,7 @@ var page = Component.extend({
 						var _root = $(_root);
 						_root.find('.period li a').removeClass('disabled period-active');
 
-						if ($('#inputMonth0').parent().find('.period li:first-child').find('a').hasClass('period-active')) {
+						if ($("#inputMonth0").val().indexOf('Q') != "-1") {
 					        _root.find('.q1 li').not(":first").find('a').addClass('disabled');
 					        _root.find('.q2 li').not(":first").find('a').addClass('disabled');
 					        _root.find('.q3 li').not(":first").find('a').addClass('disabled');

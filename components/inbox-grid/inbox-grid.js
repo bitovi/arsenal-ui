@@ -13,9 +13,6 @@ var InboxGrid = ScrollingGrid.extend({
       id: 'type',
       title: 'Type'
     }, {
-      id: 'description',
-      title: 'Description'
-    }, {
       id: 'region',
       title: 'Region'
     }, {
@@ -23,13 +20,12 @@ var InboxGrid = ScrollingGrid.extend({
       title: 'Initiated By',
       contents: row => row.createdBy || ''
     }, {
+      id: 'description',
+      title: 'Description'
+    },  {
       id: 'previousApprover',
       title: 'Previous Approver',
       contents: row => row.previousApprover || ''
-    }, {
-      id: 'comments',
-      title: 'Comments',
-      contents: row => row.comments || ''
     }, {
       id: 'pendingDays',
       title: 'Pending',
@@ -44,6 +40,10 @@ var InboxGrid = ScrollingGrid.extend({
         var connectedSteps = steps.join('<div class="step-connector">&mdash;</div>');
         return stache(connectedSteps)({});
       }
+    }, {
+      id: 'comments',
+      title: 'Comments',
+      contents: row => row.comments || ''
     }],
     strippedGrid:true
   },

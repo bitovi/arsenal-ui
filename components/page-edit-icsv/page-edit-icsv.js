@@ -37,7 +37,7 @@ import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 //import Invoice from 'models/invoice/';
 
-var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]"];
+var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]", "ccidGLtxt[]"];
 var mandatoryField = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
 
 fileUpload.extend({
@@ -142,13 +142,13 @@ var page = Component.extend({
            	$("#breakrow"+rowindex+" .removeRow").css("display", "block");
 
 			var servictypeid=$("#inputContent0 option:selected").attr("servicetypeid");
-		   	if (typeof servictypeid !== "undefined" ) { console.log("testsssss");
+		   	if (typeof servictypeid !== "undefined" && self.attr("invoicetypeSelect") != '2') { 
 		        $('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
 		        $('#inputContent'+rowindex).prepend("<option value>Select</option>").val('')
 		    }
 
 			//var $option   = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"]');
-            var $option = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"]');
+            var $option = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"], [name="ccidGLtxt[]"]');
 
             $option.each(function(index){
             	$('#invoiceform').bootstrapValidator('addField', $(this));
@@ -424,6 +424,26 @@ var page = Component.extend({
 
 			                }
 						},
+						'ccidGLtxt[]': {
+			                      validators: {
+			                        callback: {
+										callback: function (value, validator, $field) {
+			                            if(value == "" || value == "Select" || value == null){
+			                              return {
+			                                valid: false,    // or false
+			                                message: 'GL Account is mandatory'
+			                              }
+			                            }else if(!$.isNumeric(value)){
+			                              return {
+			                                valid: false,    // or false
+			                                message: 'GL Account is number'
+			                              }
+			                            }
+			                            return true;
+			                          }
+			                        }
+			                      }
+		                 	},
 						region: {
 			            	 group:'.region',
 			                 validators: {
@@ -606,7 +626,7 @@ var page = Component.extend({
 						}
 			    }).on('error.field.bv', function(e, data) {
 			        	$('*[data-bv-icon-for="'+data.field +'"]').popover('show');
-				    	if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]")){
+				    	if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]") && (data.field != "ccidGLtxt[]")){
 				    		$("#"+data.field+"-err").css("display", "block");
 				    	}
 
@@ -615,7 +635,7 @@ var page = Component.extend({
 
 				}).on('success.field.bv', function(e, data) {
         				//$('*[data-bv-icon-for="'+data.field +'"]').popover('destroy');
-        				if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]")){
+        				if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]") && (data.field != "ccidGLtxt[]")){
 				    		$("#"+data.field+"-err").css("display", "none");
 				    	}
 
@@ -802,13 +822,15 @@ var page = Component.extend({
 						"{ajaxRequestStatus} change":function(event){
 								var self = this;
 								if((self.scope.ajaxRequestStatus.currencyStore == true) && (self.scope.ajaxRequestStatus.licensorLoaded == true) && (self.scope.ajaxRequestStatus.countryLoaded == true) && (self.scope.ajaxRequestStatus.allDataLoaded == true)){
-										var invoicevalid = $("#invoiceform").data('bootstrapValidator').isValid();
-										if(!invoicevalid){
-											$("#invoiceform").data('bootstrapValidator').validate();
-
-											$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
-										}
-								}
+										
+										setTimeout(function(){
+												var invoicevalid = $("#invoiceform").data('bootstrapValidator').isValid();
+													if(!invoicevalid){
+														$("#invoiceform").data('bootstrapValidator').validate();
+														$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
+													}
+												}, "500");	
+									}
 						},
 
 					"#currency change": function(){
@@ -926,23 +948,7 @@ var page = Component.extend({
                         //Code to display server list of files on file upload rn-file-uploader-icsv control ends
 
 
-		                var genObj = {
-			                			regionId:invoiceData.regionId
-									};
-
-							Promise.all([Country.findAll(UserReq.formRequestDetails(genObj))
-						     ]).then(function(values) {
-						     	if(values[0].status == 'SUCCESS'){
-			              			self.scope.attr("country").replace([]);
-			                   		self.scope.attr("country").replace(values[0]);
-			                   		self.scope.ajaxRequestStatus.attr("countryLoaded", true);
-			              		}else{
-			              			self.scope.attr("country").replace([]);
-			              			showMessages(values[0].responseText);
-			              		}
-							}).then(function(){
-
-				        	var $template = $('#breakrowTemplate');
+		                var $template = $('#breakrowTemplate');
 
 				        	//alert("yes");
 
@@ -951,9 +957,27 @@ var page = Component.extend({
 				        	$("[id^=breakrow]").not(":hidden").each(function(i){
 								//this.remove();
 								isInvlineExist = true;
-							});
+							});	
+
 				        	if(!isInvlineExist){
-						        		for(var i=0;i<invoiceData.invoiceLines.length;i++){
+
+				               	 var genObj = {
+					                			regionId:invoiceData.regionId
+											  };
+
+									Promise.all([Country.findAll(UserReq.formRequestDetails(genObj))
+								     ]).then(function(values) {
+								     	if(values[0].status == 'SUCCESS'){
+					              			self.scope.attr("country").replace([]);
+					                   		self.scope.attr("country").replace(values[0]);
+					                   		self.scope.ajaxRequestStatus.attr("countryLoaded", true);
+					              		}else{
+					              			self.scope.attr("country").replace([]);
+					              			showMessages(values[0].responseText);
+					              		}
+									}).then(function(){
+
+				        			for(var i=0;i<invoiceData.invoiceLines.length;i++){
 					         				self.scope.attr("rowindex",i)
 											var rowindex = self.scope.attr("rowindex");
 
@@ -1006,14 +1030,14 @@ var page = Component.extend({
 
 											if(rowindex != 0)
 					                       		$("#breakrow"+rowindex+" .removeRow").css("display", "block");
-												var $option   = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"]');
+												var $option   = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"], [name="ccidGLtxt[]"]');
 
 						                        $option.each(function(index){
 						                        	$('#invoiceform').bootstrapValidator('addField', $(this));
 						                        });
 										}
 
-				        			}
+				        			
 
 				        			self.scope.ajaxRequestStatus.attr("allDataLoaded", true);
 
@@ -1054,6 +1078,8 @@ var page = Component.extend({
 								});
 
 							});
+
+						}
 						/*Breakdown end*/
 
          },
@@ -1086,6 +1112,7 @@ var page = Component.extend({
          	var idGL = event[0].id;
 			idGL =  idGL.indexOf("ccidGLtxt") > -1 ? idGL.replace("ccidGLtxt","ccidGL") :  idGL;
 			this.scope.ccidGLStore.attr(idGL, event[0].value);
+			$('#invoiceform').bootstrapValidator('revalidateField', 'ccidGLtxt[]');
 
 		},
 		".ccidGLtxt change": function(el){
@@ -1744,7 +1771,7 @@ console.log("_root disablePeriodQuarterCalendar");console.log(_root);
 var _root = $(_root);
 _root.find('.period li a').removeClass('disabled period-active');
 
-if($('#inputMonth0').parent().find('.period li:first-child').find('a').hasClass('period-active')) {
+if ($("#inputMonth0").val().indexOf('Q') != "-1") {
 	    _root.find('.q1 li').not(":first").find('a').addClass('disabled');
 	    _root.find('.q2 li').not(":first").find('a').addClass('disabled');
 	    _root.find('.q3 li').not(":first").find('a').addClass('disabled');

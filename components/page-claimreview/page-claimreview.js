@@ -1219,8 +1219,8 @@ var generateFooterData = function(footerData){
     footTemp["priorPaid"] = CurrencyFormat(Number(footerData["priorPaid"]));
     footTemp["invPmtSaturation"] = 0.00;
     footTemp["pmtSaturation"] = 0.00;
-    footTemp["overrepDispPer"] = 0.00;
-    footTemp["liDispPer"] = 0.00;
+    footTemp["overrepDispPer"] = "";
+    footTemp["liDispPer"] = "";
     footTemp["status"] = "";
 
     formatFooterData.push(footTemp);
@@ -1246,8 +1246,8 @@ var generateFooterData = function(footerData){
       footLITemp["priorPaid"] = CurrencyFormat(Number(footerLineItems[i]["priorPaid"]));
       footLITemp["invPmtSaturation"] = 0.00;
       footLITemp["pmtSaturation"] = 0.00;
-      footLITemp["overrepDispPer"] = 0.00;
-      footLITemp["liDispPer"] = 0.00;
+      footLITemp["overrepDispPer"] = "";
+      footLITemp["liDispPer"] = "";
       footLITemp["status"] = "";
       formatFooterData.push(footLITemp);
     }
