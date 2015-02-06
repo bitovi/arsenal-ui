@@ -324,6 +324,7 @@ var page = Component.extend({
           $('.jQfunhide').hide();
           $('#topContanier').show();
           $('#arrowbutton').hide();
+          $('.file-component-icv-div #buttondiv').show();
        },
        '{scope} uploadedfileinfo':function(){
           var self = this;
@@ -341,7 +342,7 @@ var page = Component.extend({
           if(!$(".jQfunhide").is(":visible")){
             $('#icsverr').removeClass("icsv-error").addClass("icsv-validate-inprogress");
             self.scope.attr('errorMessage',"<br/><br/><br/>File Upload is Completed.<br/><br/>Invoice line validation is in Progress ......");
-          }
+
           ValidateIcsv.findOne(icsvReq,function(data){
             $('#icsverr').removeClass("icsv-validate-inprogress").addClass("icsv-error");
                   //console.log(data);
@@ -361,6 +362,7 @@ var page = Component.extend({
                  }else{
                   self.scope.attr('errorMessage',"");
                   $('.jQfunhide').show();
+                  $('.file-component-icv-div #buttondiv').hide();
                   icsvmap.attr("invoiceData", data);
 
                  }
@@ -368,6 +370,7 @@ var page = Component.extend({
                   //self.scope.attr('errorMessage','Problem accessing /api/v1/invoice/icsv/validate');
                   console.log('error while validating ICSV');
           });
+        }
        },
        "#arrowbutton click" :function(){
          accordin(this);

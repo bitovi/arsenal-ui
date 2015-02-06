@@ -4,20 +4,22 @@
 {{/if}}
 <div class="outer">
 
-<input type="button" class="browseFiles uploadFiles" value="Select Files" />
-<input type="file" class="fileSelect"  name ="UploadFile"  style="display: none;" multiple />
+<div id="buttondiv">
+    <input type="button" class="browseFiles uploadFiles" value="Select Files" />
+    <input type="file" class="fileSelect"  name ="UploadFile"  style="display: none;" multiple />
 
-  {{#if areAnyFilesToBeUploaded}}
-          <input type="button" class="submitFiles uploadFiles" value="Upload"/>
-  {{/if}}
-  {{#if isCancelToBeEnabled}}
-          <input type="button"  class="cancelUpload uploadFiles" value="Cancel">
-  {{/if}}
+    {{#if areAnyFilesToBeUploaded}}
+            <input type="button" class="submitFiles uploadFiles" value="Upload"/>
+    {{/if}}
+    {{#if isCancelToBeEnabled}}
+            <input type="button"  class="cancelUpload uploadFiles" value="Cancel">
+    {{/if}}
 
- <div class="progress progress-bar-style" id="progressouter" style="display:none">
-    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
-     aria-valuemin="0" aria-valuemax="100" id="progress" style="text-align:right"></div>
- </div>
+   <div class="progress progress-bar-style" id="progressouter" style="display:none">
+      <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
+       aria-valuemin="0" aria-valuemax="100" id="progress" style="text-align:right"></div>
+   </div>
+</div>
 
      {{#if isAnyFileLoaded}}
           {{#if fileList.length}}
