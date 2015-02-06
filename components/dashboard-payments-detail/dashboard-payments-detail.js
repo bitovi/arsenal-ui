@@ -12,6 +12,7 @@ import popoverTemplate from './popover.stache!';
 import _less from './dashboard-payments-detail.less!';
 import _popover_less from './popover.less!';
 import PeriodWidgetHelper from 'utils/periodWidgetHelpers';
+import commonUtils from 'utils/commonUtils';
 
 var columnChartHelper = function(item, div) {
 
