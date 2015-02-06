@@ -89,13 +89,10 @@ var FileUploader = Component.extend ({
                           _toBeUploaded.push(_fileList[i]);
                        }
                    }
-                   console.log("File Test &&&&&&&&&111111&&&&&&&&&&&&& Before calling upload and show progress bar");
                   $("#progress").css('width','0');
                   $("#progress").html('');
                   $("#progressouter").show();
-                  console.log("File Test &&&&&&&&&&222222&&&&&&&&&&&& after calling upload and show progress bar");
                   var uploadObj={"__fileToUpload":_toBeUploaded,"__progressCtr":"progress"};
-                  console.log("File Test &&&&&&&&&&333333&&&&&&&&&&&& after calling upload and show progress bar");
                   FileUpLoader.create(uploadObj, function(data) {
                   self.scope.attr("fileUpload" , true);
                   var response = data.filePropeties[0];
