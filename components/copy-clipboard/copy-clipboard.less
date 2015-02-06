@@ -63,7 +63,7 @@ copy-clipboard{
 		display:none;
 	}
 	#clonetable table input {
-		border:0;
+		border: none;
 	}
 	#clonetable  table thead,#clonetable table tbody, #clonetable table tr th,#clonetable table tr td{
 		background:none !important;
@@ -83,5 +83,9 @@ copy-clipboard{
 	#dynamic .copytoclipboardContainer{
 		display: block;
 	}
+
+	#clonetable input[type="radio"][disabled], input[type="checkbox"][disabled], input[type="radio"].disabled, input[type="checkbox"].disabled, fieldset[disabled] input[type="radio"], fieldset[disabled] input[type="checkbox"]{
+		display: none;
+	}
 	
-}
+}	

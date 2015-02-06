@@ -1083,7 +1083,7 @@ var page = Component.extend({
             if(data[0].status == "SUCCESS") {
 
                 var msg = "Entity Details saved successfully";
-
+                self.attr("selectedEntity", sEntity);
                 $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
                 $("#invmessageDiv").show();
                 setTimeout(function(){
@@ -1148,7 +1148,9 @@ var page = Component.extend({
                 $("#invmessageDiv").show();
                 setTimeout(function(){
                   $("#invmessageDiv").hide();
+                  self.attr("selectedEntity", sEntity);
                 },5000);
+                self.populateLicensorDetails(self.licDetails.data.licensorName);
 
                 Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
@@ -1270,6 +1272,10 @@ var page = Component.extend({
       var genObj = {};
 
       Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
+
+          self.mode = "fetch";
+          
+          $("#societyContacts .noRecords").remove();
 
           self.licensors.replace(values[0].entities[0]);
 

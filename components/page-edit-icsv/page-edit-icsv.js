@@ -948,23 +948,7 @@ var page = Component.extend({
                         //Code to display server list of files on file upload rn-file-uploader-icsv control ends
 
 
-		                var genObj = {
-			                			regionId:invoiceData.regionId
-									};
-
-							Promise.all([Country.findAll(UserReq.formRequestDetails(genObj))
-						     ]).then(function(values) {
-						     	if(values[0].status == 'SUCCESS'){
-			              			self.scope.attr("country").replace([]);
-			                   		self.scope.attr("country").replace(values[0]);
-			                   		self.scope.ajaxRequestStatus.attr("countryLoaded", true);
-			              		}else{
-			              			self.scope.attr("country").replace([]);
-			              			showMessages(values[0].responseText);
-			              		}
-							}).then(function(){
-
-				        	var $template = $('#breakrowTemplate');
+		                var $template = $('#breakrowTemplate');
 
 				        	//alert("yes");
 
@@ -973,9 +957,27 @@ var page = Component.extend({
 				        	$("[id^=breakrow]").not(":hidden").each(function(i){
 								//this.remove();
 								isInvlineExist = true;
-							});
+							});	
+
 				        	if(!isInvlineExist){
-						        		for(var i=0;i<invoiceData.invoiceLines.length;i++){
+
+				               	 var genObj = {
+					                			regionId:invoiceData.regionId
+											  };
+
+									Promise.all([Country.findAll(UserReq.formRequestDetails(genObj))
+								     ]).then(function(values) {
+								     	if(values[0].status == 'SUCCESS'){
+					              			self.scope.attr("country").replace([]);
+					                   		self.scope.attr("country").replace(values[0]);
+					                   		self.scope.ajaxRequestStatus.attr("countryLoaded", true);
+					              		}else{
+					              			self.scope.attr("country").replace([]);
+					              			showMessages(values[0].responseText);
+					              		}
+									}).then(function(){
+
+				        			for(var i=0;i<invoiceData.invoiceLines.length;i++){
 					         				self.scope.attr("rowindex",i)
 											var rowindex = self.scope.attr("rowindex");
 
@@ -1035,7 +1037,7 @@ var page = Component.extend({
 						                        });
 										}
 
-				        			}
+				        			
 
 				        			self.scope.ajaxRequestStatus.attr("allDataLoaded", true);
 
@@ -1076,6 +1078,8 @@ var page = Component.extend({
 								});
 
 							});
+
+						}
 						/*Breakdown end*/
 
          },
