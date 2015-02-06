@@ -624,8 +624,10 @@ var BundleDetailTabs = Component.extend({
 var resetSelectedBundle = function(scope){
 
   var selectedBundle = scope.pageState.selectedBundle;
-  scope.resetToken();
+
   can.batch.start();
+  scope.resetToken();
+  scope.pageState.attr("removeInvoices",  scope.pageState.attr('selectedBundle.bundleType') === 'REGULAR_INV');
   scope.attr("paymentType", selectedBundle.paymentOption);
   // clear out selectedRows
   scope.selectedRows.splice(0, scope.selectedRows.length);
@@ -636,7 +638,8 @@ var resetSelectedBundle = function(scope){
   scope.attr("approvalComment", '');
   scope.attr("preferredCurr", '');
   scope.pageState.attr('validationGrid',false);
-  canRemoveInvoice(scope.pageState);
+  scope.pageState.attr('expandBottomGrid',false);
+
   var region = scope.appstate.attr('region') != undefined ? scope.appstate.attr('region').id : "";
   Currency.getCurrByRegion(region).done(function(curr) {
     scope.regionCurr.splice(0, scope.regionCurr.length, ...curr.data);
@@ -665,16 +668,6 @@ var resetSelectedBundle = function(scope){
 }
 
 
-var canRemoveInvoice = function(pageState){
-  if(pageState.selectedBundle != null && pageState.selectedBundle.editable &&  pageState.attr('selectedBundle.bundleType') === 'REGULAR_INV')
-    {
-      $(".vertical-line").show();
-      $(".remove-invoice").show();
-    } else {
-      $(".vertical-line").hide();
-      $(".remove-invoice").hide();
-    }
-  }
 
 
 export default BundleDetailTabs;

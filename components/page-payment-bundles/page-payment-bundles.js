@@ -18,6 +18,7 @@ import commonUtils from 'utils/commonUtils';
 import template from './template.stache!';
 import styles from './page-payment-bundles.less!';
 
+
 import exportToExcel from 'components/export-toexcel/';
 import copy from 'components/copy-clipboard/';
 
@@ -28,7 +29,8 @@ var pageState = new Map({
   validationGrid:false,
   isPaginateReq: false,//triggers the paginate Event from bundle-grid.js
   recordsAvailable:undefined,
-  refreshBottomGrid:false
+  refreshBottomGrid:false,
+  removeInvoices:false
 });
 
 var page = Component.extend({
@@ -144,19 +146,6 @@ var page = Component.extend({
         this.scope.refreshBundles.apply(this);
       }
     },
-    //Removed the Delete bundle as its not require for top grid. It only need to be available in the bottom grid
-    // '.delete-bundle click': function(el, ev) {
-    //   if(!this.scope.pageState.selectedBundle) {
-    //     return;
-    //   }
-    //
-    //   PbrDeleteConfirmModal.displayModal(this.scope.pageState.selectedBundle, {
-    //     action: 'delete',
-    //     approvalComment: '',
-    //     paymentOption: 1
-    //   });
-    //   this.scope.attr('selectedBundle', null);
-    // },
     '.add-invoice click': function(el, ev) {
       commonUtils.navigateTo("invoices");
     },

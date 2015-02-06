@@ -21,8 +21,11 @@
     {{#if pageState.selectedBundle.editable}}
       <div class="center">
         <button class="btn btn-custom-small add-invoice">Add Invoices</button>
-        <div class="vertical-line"></div>
-        <button class="btn btn-custom-small remove-invoice" {{allowRemoveInvoices}}>Remove Invoice</button>
+
+        {{#if pageState.removeInvoices}}
+          <div class="vertical-line" ></div>
+          <button class="btn btn-custom-small remove-invoice" {{allowRemoveInvoices}}>Remove Invoice</button>
+        {{/if}}
       </div>
 
 
