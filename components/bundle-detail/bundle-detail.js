@@ -586,11 +586,7 @@ var BundleDetailTabs = Component.extend({
       scope.getNewDetails(scope.pageState.selectedBundle);
     },
     '.previewInv click': function(el, ev) {
-       PaymentBundle.preview(el.data('invoiceid')).done(function(status) {
-
-         console.log(status);
-
-       });
+       PaymentBundle.preview(el.data('invoiceid'));
     },
     '{scope.bottomGridPaginateAttr} change': function() {
       //console.log("change event: "+this.scope.bottomGridPaginateAttr.paginateRequest+", othje:"+this.scope.bottomGridPaginateAttr.recordsAvailable);
