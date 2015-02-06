@@ -247,31 +247,29 @@
 						        		</select>
 						        		</div>
 						            </td>
+						
+						           
 						           <td class="form-group">
-
-								            	<!--select id="ccidGL0" name="ccidGL" class="form-control ccidGL">
-								            			<option value="">Select</option>
+						            	 {{#if isAdhocStrore.invtype}}
+								          <div class="requiredBar"> 
+									        	<div class="select-editable">
+												    <select  id="ccidGL0" name="ccidGL" class="form-control ccidGL">
+												        <option value="">Select</option>
 												        {{#each glaccounts}}
 									        				<option value="{{id}}">{{value}}</option>
+
 						       							{{/each}}
-									        	</select-->
-                            <div class="requiredBar"  {{isGlAccountReq}}>
-  									        	<div class="select-editable">
-  												    <select  id="ccidGL0" name="ccidGL" class="form-control ccidGL">
-  												        <option value="">Select</option>
-  												        {{#each glaccounts}}
-  									        				<option value="{{id}}">{{value}}</option>
-
-  						       							{{/each}}
-  												    </select>
-                              <input type="text" id="ccidGLtxt0" name="ccidGLtxt[]" value="" class="form-control ccidGL ccidGLtxt"/>
-  												    </div>
-                            </div>
-
-
-						            	 	<input type="text" class="form-control ccidGL" {{isCCIDRequired}} id="ccidGL0" name="ccidGL" placeholder="" readonly="true">
-
+												    </select>
+                            					<input type="text" id="ccidGLtxt0" name="ccidGLtxt[]" value="" class="form-control ccidGL ccidGLtxt"/>
+												</div>
+											</div>	
+						            	  {{else}}
+						            	 		<input type="text" class="form-control ccidGL" id="ccidGL0" name="ccidGL" placeholder="" readonly="true">
+						            	 {{/if}}
 						           </td>
+
+
+
 						           <td>
 
 										<img src="resources/images/button_minus_red.png" class="breakDownIconSize removeRow" id="removeRow" style="display:none;">
@@ -318,30 +316,28 @@
 						        		</select>
 						        		</div>
 						            </td>
-						           <td>
-						            
-								            	<!--select id="ccidGL" name="ccidGL" class="form-control ccidGL">
-								            			<option value="">Select</option>
+						     
+						           
+						               <td class="form-group">
+						            	{{#if isAdhocStrore.invtype}}
+								            <div class="requiredBar"> 	
+									        	<div class="select-editable">
+												    <select  id="ccidGL" name="ccidGL" class="form-control ccidGL">
+												        <option value="">Select</option>
 												        {{#each glaccounts}}
 									        				<option value="{{id}}">{{value}}</option>
+
 						       							{{/each}}
-									        	</select-->
-                            <div class="requiredBar"  {{isGlAccountReq}}>
-  									        	<div class="select-editable">
-  												    <select  id="ccidGL" name="ccidGL" class="form-control ccidGL">
-  												        <option value="">Select</option>
-  												        {{#each glaccounts}}
-  									        				<option value="{{id}}">{{value}}</option>
-
-  						       							{{/each}}
-  												    </select>
-                              <input type="text" id="ccidGLtxt" name="ccidGLtxt[]" value="" class="form-control ccidGL ccidGLtxt"/>
-  												    </div>
-                             </div>
-
-                             <input type="text" class="form-control ccidGL"  {{isCCIDRequired}} id="ccidGL" name="ccidGL" placeholder="" readonly="true">
-
+												    </select>
+                            						<input type="text" id="ccidGLtxt" name="ccidGLtxt[]" value="" class="form-control ccidGL ccidGLtxt"/>
+												</div>
+											</div>	
+						            	  {{else}}
+						            	 		<input type="text" class="form-control ccidGL" id="ccidGL" name="ccidGL" placeholder="" readonly="true">
+						            	 {{/if}}
 						           </td>
+
+
 						           <td>
 
 										<img src="resources/images/button_minus_red.png" class="breakDownIconSize removeRow" id="removeRow" style="display:none;">
