@@ -48,7 +48,6 @@
 			"bootstrapValidator": "bower_components/bootstrapValidator/dist/js/bootstrapValidator.min.js",
 			"bootstrapValidator.css": "bower_components/bootstrapValidator/dist/css/bootstrapValidator.csscss",
 			"datatables": "bower_components/DataTables/media/js/jquery.dataTables.js",
-			"fixedheader": "bower_components/DataTables/media/js/jquery.stickytableheaders.js",
 			"datatables.css": "bower_components/DataTables/media/css/jquery.dataTables.csscss",
 			"treetables": "bower_components/jquery-treetable/jquery.treetable.js",
 			"treetables.css": "bower_components/jquery-treetable/css/jquery.treetable.csscss",

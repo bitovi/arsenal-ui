@@ -10,9 +10,9 @@ rn-dashboard-invoices {
     font-weight: bold;
     color: @dark-grey;
   }
-
+  
   table.holes-report {
-    width: 80%;
+    width: 100%;
     overflow: auto;
     margin: 0 auto;
     color: @dark-grey;
@@ -20,6 +20,10 @@ rn-dashboard-invoices {
     display:inline-block;
     border: 0px solid grey;
     float:left;
+
+    thead.tableFloatingHeaderOriginal{
+      top: inherit !important;
+    }
 
     tbody {
       height: 200px;
@@ -123,6 +127,10 @@ rn-dashboard-invoices {
     background-color: #f6f6f6;
     float:left;
 
+    thead{
+      z-index:100 !important;
+    }
+
     tbody {
       height: 200px;
       width: 200px;
@@ -192,6 +200,11 @@ rn-dashboard-invoices {
     }
   }
 
+  .missing-invoices-empty{
+    color:#3d3d3d;
+    font-weight:normal;
+  }
+
   .popover {
     width:400px;
     max-width: none;
@@ -205,11 +218,6 @@ rn-dashboard-invoices {
     }
   }
 
-  .missing-invoices-empty{
-    color:#3d3d3d;
-    font-weight:normal;
-  }
-  
   .popover-title {
     color:#3d3d3d;
     font-weight:bold;

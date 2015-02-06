@@ -21,76 +21,77 @@
 
 
 <div class="tableDiv" style='height: {{divCalculatedHeight}}'>
+  <table class="holes-reports-country" border="1">
+    <thead>
+      <tr>
+        <th>Countries</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#holesReports}}
+      <tr>
+        <td class="country" {{#if displayBackGreen}}bgcolor="#669933" {{/if}}><span {{popover 'country' {countryId}}}>{{countryId}}</span></td>
+      </tr>
+      {{/holesReports}}
+    </tbody>
+  </table>
 
-<table class="holes-reports-country" border="1">
-  <thead>
-    <tr>
-      <th>Countries</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#holesReports}}
-    <tr>
-      <td class="country" {{#if displayBackGreen}}bgcolor="#669933" {{/if}}><span {{popover 'country' {countryId}}}>{{countryId}}</span></td>
-    </tr>
-    {{/holesReports}}
-  </tbody>
-</table>
+  <div style="width:81%;float:left">
+    <table class="holes-report " border="1">
+      <thead>
+        <tr>
+          {{#_entities}}
+          <th class="entity" {{data 'entity'}}><span {{popover 'entity' {.}}}>{{.}}</span></th>
+          {{/_entities}}
+           <th class="entity">LOCAL</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#holesReports}}
+        <tr>
 
-<table class="holes-report " border="1">
-  <thead>
-    <tr>
-      {{#_entities}}
-      <th class="entity" {{data 'entity'}}><span {{popover 'entity' {.}}}>{{.}}</span></th>
-      {{/_entities}}
-       <th class="entity">LOCAL</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#holesReports}}
-    <tr>
+          {{#holesList}}
+            {{#if isLicensorInvalidForCountry}}
+              <td class="hole invoice-expected"></td>
+            {{else}}
+              <td class="hole {{#if showImage}}greenHighlight{{/if}}">
+               {{show}}
+              {{#if isLA}}<img class="la" src="resources/images/rn_LegendLondonAgreement@2x.png"/>{{/if}}
+              </td>
+            {{/if}}
+          {{/holesList}}
 
-      {{#holesList}}
-        {{#if isLicensorInvalidForCountry}}
-          <td class="hole invoice-expected"></td>
+          {{#if localDisplay}}
+            <td class="hole">{{localDisplay}}</td>
+          {{else}}
+            <td></td>
+          {{/if}}
+
+
+        </tr>
+        {{/holesReports}}
+      </tbody>
+    </table>
+  </div>
+
+  <table class="holes-reports-local" border="1">
+    <thead>
+      <tr>
+        <th>Local society name</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#holesReports}}
+      <tr>
+        {{#if localSociety}}
+          <td class="hole">{{localSociety}}</td>
         {{else}}
-          <td class="hole {{#if showImage}}greenHighlight{{/if}}">
-           {{show}}
-          {{#if isLA}}<img class="la" src="resources/images/rn_LegendLondonAgreement@2x.png"/>{{/if}}
-          </td>
+          <td></td>
         {{/if}}
-      {{/holesList}}
-
-      {{#if localDisplay}}
-        <td class="hole">{{localDisplay}}</td>
-      {{else}}
-        <td></td>
-      {{/if}}
-
-
-    </tr>
-    {{/holesReports}}
-  </tbody>
-</table>
-
-<table class="holes-reports-local" border="1">
-  <thead>
-    <tr>
-      <th>Local society name</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#holesReports}}
-    <tr>
-      {{#if localSociety}}
-        <td class="hole">{{localSociety}}</td>
-      {{else}}
-        <td></td>
-      {{/if}}
-    </tr>
-    {{/holesReports}}
-  </tbody>
-</table>
+      </tr>
+      {{/holesReports}}
+    </tbody>
+  </table>
 
 </div>
 

@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import $ from 'jquery';
+import FixedHeader from 'components/fixed-header/'
 import compute from 'can/compute/';
 import Component from 'can/component/';
 import Map from 'can/map/';
@@ -73,10 +74,22 @@ var DashboardInvoices = Component.extend({
           can.batch.start();
           self.attr('_entities', populateEntities(holesReportResponse));
           self.attr('holesReports',getHolesReport(self._entities,holesReportResponse.holesReportWrapper));
-          can.batch.stop();
 
+          can.batch.stop();
+          setTimeout(function(){
+
+            $('.holes-report').stickyTableHeaders({ scrollableArea: $(".holes-report")[0], "fixedOffset": 2, fixedColumn: true });
+            $('.holes-reports-country').stickyTableHeaders({scrollableArea: $(".holes-reports-country")[0], "fixedOffset": 2, fixedColumn: true});
+            $('.holes-reports-local').stickyTableHeaders({scrollableArea: $(".holes-reports-local")[0], "fixedOffset": 2, fixedColumn: true});
+            
+            $(window).resize(function() {
+              $(window).trigger('resize.stickyTableHeaders');
+            });
+          },1000)
 
           $(window).trigger('resize');
+
+          
           // var height = $(window).height() - 300;
           //
           // console.log(height);
@@ -161,7 +174,7 @@ var DashboardInvoices = Component.extend({
     },
     '#copyToClipboard click':function(){
 
-      var tableClone = $('.dashboard-container').find('table:visible').clone(true);
+      var tableClone = $('.copytoclipboardContainer').find('table').clone(true);
 
         $('#clonetable').empty().html(tableClone).attr('id','dynamic');
           $('copy-clipboard').slideDown(function(){
