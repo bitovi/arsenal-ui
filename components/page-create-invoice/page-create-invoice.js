@@ -148,7 +148,7 @@ var page = Component.extend({
            	$("#breakrow"+rowindex+" .removeRow").css("display", "block");
 
 	       	var servictypeid=$("#inputContent0 option:selected").attr("servicetypeid");
-	    	if (typeof servictypeid !== "undefined" ) {
+	    	if (typeof servictypeid !== "undefined" && self.attr("invoicetypeSelect") != '2') {
         		$('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
         		$('#inputContent'+rowindex).prepend("<option value>Select</option>").val('');
         	}
@@ -913,6 +913,12 @@ var page = Component.extend({
 				 $("#paymentBundleNames").removeAttr("disabled");
 			}
 
+			if(self.scope.attr("invoicetypeSelect") == "2"){
+				$('#invoiceform').bootstrapValidator('addField', 'ccidGLtxt[]');
+			}else{
+				$('#invoiceform').bootstrapValidator('removeField', 'ccidGLtxt[]');
+			} 
+
 
 		},
          "{AmountStore} change": function() {
@@ -1445,15 +1451,9 @@ var page = Component.extend({
 											netTotal = 0;
 										}
 										return CurrencyFormat(netTotal);
-									},
-                  isGlAccountReq:function(){
-                    return this.isAdhocStrore.attr("invtype") == 'Adhoc' ? 'style="display:block"' : 'style="display:none"';
-                  },
-                  isCCIDRequired:function(){
-                    return this.isAdhocStrore.attr("invtype") == 'Adhoc' ? 'style="display:none"' : 'style="display:block"';
-                  }
+									}
 
-                }
+                			}
 					});
 
 					function CurrencyFormat(number)
