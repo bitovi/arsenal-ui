@@ -148,7 +148,7 @@ var page = Component.extend({
            	$("#breakrow"+rowindex+" .removeRow").css("display", "block");
 
 	       	var servictypeid=$("#inputContent0 option:selected").attr("servicetypeid");
-	    	if (typeof servictypeid !== "undefined" ) {
+	    	if (typeof servictypeid !== "undefined" && self.attr("invoicetypeSelect") != '2') {
         		$('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
         		$('#inputContent'+rowindex).prepend("<option value>Select</option>").val('');
         	}

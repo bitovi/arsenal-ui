@@ -806,12 +806,12 @@ var page = Component.extend({
           var self=this;
 
           //console.log("selected Invoices are "+ self.scope.checkedRows.attr());
-          var unDeletedInvoices = self.scope.unDeletedInvoices.attr();
-          if(unDeletedInvoices.length > 0){
-            $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>Invoice "+unDeletedInvoices.toString()+" cannot be deleted! </label>");
-            $("#messageDiv").show();
-          } else {
-            $("#messageDiv").hide();
+          //var unDeletedInvoices = self.scope.unDeletedInvoices.attr();
+          // if(unDeletedInvoices.length > 0){
+          //   $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>Invoice "+unDeletedInvoices.toString()+" cannot be deleted! </label>");
+          //   $("#messageDiv").show();
+          // } else {
+            //$("#messageDiv").hide();
             var invoiceDelete = {"searchRequest":{}};
             invoiceDelete.searchRequest.ids = self.scope.checkedRows.attr();
             console.log("Delete request params are "+JSON.stringify(UserReq.formRequestDetails(invoiceDelete)));
@@ -845,7 +845,7 @@ var page = Component.extend({
             },function(xhr){
               console.error("Error while loading: bundleNames"+xhr);
             });
-          }
+          //}
       },
       "#paymentBundleNames change": function(){
           var self = this;
