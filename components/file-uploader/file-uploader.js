@@ -28,7 +28,17 @@ var FileUploader = Component.extend ({
       helpers: {
               convertToKB: function (size) {
                 return (Math.max(size/1024, 0.1).toFixed(1)  + 'KB');
+              },
+              getFileName:function(val,data){
+                var fileName=data.context.fileName;
+                if(fileName.indexOf(".zip")>-1){
+                  return fileName.substring(0,fileName.indexOf(".zip"));
+                }else{
+                  return fileName;
+                }
+                
               }
+
       },
       events: {
           '{fileList} change': function(){
