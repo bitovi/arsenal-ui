@@ -35,6 +35,7 @@ var headerNavigation = Component.extend({
           };
           //added
           self.scope.appstate.userInfo.permissions = role;
+
           //end
           self.scope.appstate.userInfo.attr(role);
           self.scope.roles.replace(values[0]);
@@ -133,7 +134,14 @@ var headerNavigation = Component.extend({
             document.getElementById("globalFilterContainer").style.display = 'none';
             //window.location.href = "";
           }
-        }) ;
+        }).fail(function(data){
+         console.log("failed ");
+         commonUtils.navigateTo("logout");
+
+         document.getElementById("navigation-bar").style.display = 'none';
+         document.getElementById("globalFilterContainer").style.display = 'none';
+
+    }) ;
 
         //console.log("Logout");
       },
