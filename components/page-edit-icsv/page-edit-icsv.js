@@ -37,7 +37,7 @@ import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 //import Invoice from 'models/invoice/';
 
-var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]"];
+var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]", "ccidGLtxt[]"];
 var mandatoryField = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
 
 fileUpload.extend({
@@ -148,7 +148,7 @@ var page = Component.extend({
 		    }
 
 			//var $option   = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"]');
-            var $option = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"]');
+            var $option = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"], [name="ccidGLtxt[]"]');
 
             $option.each(function(index){
             	$('#invoiceform').bootstrapValidator('addField', $(this));
@@ -424,6 +424,26 @@ var page = Component.extend({
 
 			                }
 						},
+						'ccidGLtxt[]': {
+			                      validators: {
+			                        callback: {
+										callback: function (value, validator, $field) {
+			                            if(value == "" || value == "Select" || value == null){
+			                              return {
+			                                valid: false,    // or false
+			                                message: 'GL Account is mandatory'
+			                              }
+			                            }else if(!$.isNumeric(value)){
+			                              return {
+			                                valid: false,    // or false
+			                                message: 'GL Account is number'
+			                              }
+			                            }
+			                            return true;
+			                          }
+			                        }
+			                      }
+		                 	},
 						region: {
 			            	 group:'.region',
 			                 validators: {
@@ -606,7 +626,7 @@ var page = Component.extend({
 						}
 			    }).on('error.field.bv', function(e, data) {
 			        	$('*[data-bv-icon-for="'+data.field +'"]').popover('show');
-				    	if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]")){
+				    	if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]") && (data.field != "ccidGLtxt[]")){
 				    		$("#"+data.field+"-err").css("display", "block");
 				    	}
 
@@ -615,7 +635,7 @@ var page = Component.extend({
 
 				}).on('success.field.bv', function(e, data) {
         				//$('*[data-bv-icon-for="'+data.field +'"]').popover('destroy');
-        				if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]")){
+        				if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]") && (data.field != "ccidGLtxt[]")){
 				    		$("#"+data.field+"-err").css("display", "none");
 				    	}
 
@@ -1006,7 +1026,7 @@ var page = Component.extend({
 
 											if(rowindex != 0)
 					                       		$("#breakrow"+rowindex+" .removeRow").css("display", "block");
-												var $option   = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"]');
+												var $option   = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"], [name="ccidGLtxt[]"]');
 
 						                        $option.each(function(index){
 						                        	$('#invoiceform').bootstrapValidator('addField', $(this));
@@ -1086,6 +1106,7 @@ var page = Component.extend({
          	var idGL = event[0].id;
 			idGL =  idGL.indexOf("ccidGLtxt") > -1 ? idGL.replace("ccidGLtxt","ccidGL") :  idGL;
 			this.scope.ccidGLStore.attr(idGL, event[0].value);
+			$('#invoiceform').bootstrapValidator('revalidateField', 'ccidGLtxt[]');
 
 		},
 		".ccidGLtxt change": function(el){
