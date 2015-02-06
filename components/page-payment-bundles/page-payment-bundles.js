@@ -163,43 +163,6 @@ var page = Component.extend({
     '.remove-invoice click': function(el, ev) {
       PbrRemoveGroupsModal.displayModal(this.scope);
     },
-//     ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
-//           var self=this;
-//            //console.log($(item[0]).attr("class"));
-//           var val = $(item[0]).attr("class").split(" ");
-//           var existingSortColumns =self.scope.sortColumns.attr();
-//           var existingSortColumnsLen = existingSortColumns.length;
-//           var existFlag = false;
-//           if(existingSortColumnsLen==0){
-//             self.scope.attr('sortColumns').push(val[0]);
-//           } else {
-//             for(var i=0;i<existingSortColumnsLen;i++){
-//               /* The below condition is to selected column to be sorted in asc & dec way */
-//               console.log(val[0]+","+existingSortColumns[i] )
-//               if(existingSortColumns[i] == val[0]){
-//                 existFlag = true;
-//               }
-//             }
-//             if(existFlag==false){
-//               self.scope.attr('sortColumns').replace([]);
-//               self.scope.attr('sortColumns').push(val[0]);
-//             } else {
-//               var sortDirection = (self.scope.attr('sortDirection') == 'asc') ? 'desc' : 'asc';
-//               self.scope.attr('sortDirection', sortDirection);
-//             }
-//
-//           }
-//
-//           console.log("aaa "+self.scope.sortColumns.attr());
-//            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
-//            /* All the neccessary parameters will be set in that event */
-//            if(self.scope.appstate.attr('globalSearch')){
-//               self.scope.appstate.attr('globalSearch', false);
-//             }else{
-//               self.scope.appstate.attr('globalSearch', true);
-//             }
-//
-//     },
     '.excel click': function(el, ev) {
       var self = this;
 
@@ -245,9 +208,9 @@ var page = Component.extend({
       $(item[0]).removeClass("draggable")
     },
       ".switch-toggle click":function(el, ev){
-          
+
           var chart = $('#highChartDetails').highcharts();
-          
+
           var amountSeries1 = chart.series[0];
           var amountSeries2 = chart.series[1];
           var amountSeries3 = chart.series[2];
@@ -262,15 +225,15 @@ var page = Component.extend({
 
             (rateSeries1).hide();
             (rateSeries2).hide();
- 
+
             rateSeries1.options.showInLegend = false;
             rateSeries1.legendItem = null;
-            chart.legend.destroyItem(rateSeries1);            
+            chart.legend.destroyItem(rateSeries1);
             chart.legend.render();
 
             rateSeries2.options.showInLegend = false;
             rateSeries2.legendItem = null;
-            chart.legend.destroyItem(rateSeries2);            
+            chart.legend.destroyItem(rateSeries2);
             chart.legend.render();
 
             (amountSeries1).show();
@@ -291,13 +254,13 @@ var page = Component.extend({
             chart.legend.renderItem(amountSeries3);
             chart.legend.render();
 
-            
+
 
           }else {
             console.log("Rate");
             $(".switch-toggle").removeClass('off').addClass('on');
             chart.yAxis[0].axisTitle.element.textContent = 'Rate';
-            
+
             (rateSeries1).show();
             rateSeries1.options.showInLegend = true;
             chart.legend.renderItem(rateSeries1);
@@ -307,7 +270,7 @@ var page = Component.extend({
             rateSeries2.options.showInLegend = true;
             chart.legend.renderItem(rateSeries2);
             chart.legend.render();
-            
+
             (amountSeries1).hide();
             (amountSeries2).hide();
             (amountSeries3).hide();

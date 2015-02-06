@@ -4,11 +4,15 @@ import formats from 'utils/formats';
 import _less from './bundle-grid.less!';
 import PeriodWidgetHelper from 'utils/periodWidgetHelpers';
 import gridUtils from 'utils/gridUtil';
+import stache from 'can/view/stache/';
+
 var BundleGrid = ScrollingGrid.extend({
   tag: 'rn-bundle-grid',
   scope: {
     pageState: null, // passed in
     strippedGrid:true,
+    editingRow: null,
+    editingColumn: null,
     columns: [
     {
       id: 'isHighPriority',
@@ -19,7 +23,12 @@ var BundleGrid = ScrollingGrid.extend({
     },
     {
       id: 'bundleName',
-      title: 'Bundle Name'
+      title: 'Bundle Name',
+      editable: true,
+      setValue: function(row, newValue) {
+        row.attr('bundleName', newValue);
+        console.log("newValue :"+newValue+", bundle_id :"+row.bundleId)
+      }
     },
     {
       id: 'paymentCcy',
@@ -79,6 +88,13 @@ var BundleGrid = ScrollingGrid.extend({
       } else {
         return '';
       }
+    },
+    cellContents: function(row, column) {
+      if(this.attr('editingRow') === row && this.attr('editingColumn') === column) {
+        return stache('<input class="editing" value="{{value}}"/>')({value: row.bundleName});
+      } else {
+        return ScrollingGrid.prototype.helpers.cellContents.call(this, row, column);
+      }
     }
   },
   events: {
@@ -111,6 +127,34 @@ var BundleGrid = ScrollingGrid.extend({
           component.scope.attr('atBottom', true);
           component.scope.atBottomHandler.call(component, doneCallback);
         }
+      });
+    },
+    'td dblclick': function(el, ev) {
+      var column = el.data('column').column;
+      if(column.editable) {
+        can.batch.start();
+        this.scope.attr('editingRow', el.closest('tr').data('row').row);
+        this.scope.attr('editingColumn', column);
+        can.batch.stop();
+      } else {
+        console.log('You cannot edit this.');
+      }
+    },
+    'td input.editing blur': function(el, ev) {
+      // do validation here first
+      if(el.val().trim().length == 0) {
+        //el.addClass('error');
+        console.log('error detected!');
+        return;
+      }
+
+      var column = el.closest('td').data('column').column;
+      var row = el.closest('tr').data('row').row;
+      //console.log('setting new value', el.val(), column, row);
+      column.setValue(row, el.val());
+      this.scope.attr({
+        'editingRow': null,
+        'editingColumn': null
       });
     },
     'tbody tr click': function(el, ev) {
