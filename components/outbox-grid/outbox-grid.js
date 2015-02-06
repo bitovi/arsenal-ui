@@ -15,18 +15,8 @@ var OutboxGrid = ScrollingGrid.extend({
       id: 'type',
       title: 'Type'
     }, {
-      id: 'description',
-      title: 'Description'
-    }, {
       id: 'region',
       title: 'Region'
-    }, {
-      id: 'comments',
-      title: 'Comments'
-    }, {
-      id: 'pendingDays',
-      title: 'Pending',
-      contents: row => row.pendingDays + ' Day' + (row.pending === 1 ? '' : 's')
     }, {
       id: 'currentlyWith',
       title: 'Currently With',
@@ -34,6 +24,13 @@ var OutboxGrid = ScrollingGrid.extend({
         return stache('<span class="name">{{previousApprover}}</span><button class="remind btn btn-primary btn-custom-small">Remind</button>')(row);
       }
     }, {
+      id: 'description',
+      title: 'Description'
+    }, {
+      id: 'pendingDays',
+      title: 'Pending',
+      contents: row => row.pendingDays + ' Day' + (row.pending === 1 ? '' : 's')
+    },  {
       id: 'approvalStage',
       title: 'Approvals',
       contents: function(row) {
@@ -43,6 +40,9 @@ var OutboxGrid = ScrollingGrid.extend({
         var connectedSteps = steps.join('<div class="step-connector">&mdash;</div>');
         return stache(connectedSteps)({});
       }
+    }, {
+      id: 'comments',
+      title: 'Comments'
     }],
     strippedGrid:true
   },
