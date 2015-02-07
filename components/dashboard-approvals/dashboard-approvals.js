@@ -10,6 +10,7 @@ import OutboxGrid from 'components/outbox-grid/';
 import template from './template.stache!';
 import styles from './dashboard-approvals.less!';
 import gridUtils from 'utils/gridUtil';
+import commonUtils from 'utils/commonUtils';
 
 var DashboardApprovals = Component.extend({
   tag: 'rn-dashboard-approvals',
