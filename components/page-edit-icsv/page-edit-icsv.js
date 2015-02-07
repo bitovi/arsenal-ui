@@ -142,7 +142,7 @@ var page = Component.extend({
            	$("#breakrow"+rowindex+" .removeRow").css("display", "block");
 
 			var servictypeid=$("#inputContent0 option:selected").attr("servicetypeid");
-		   	if (typeof servictypeid !== "undefined" && self.attr("invoicetypeSelect") != '2') { 
+		   	if (typeof servictypeid !== "undefined" && self.attr("invoicetypeSelect") != '2') {
 		        $('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
 		        $('#inputContent'+rowindex).prepend("<option value>Select</option>").val('')
 		    }
@@ -822,14 +822,14 @@ var page = Component.extend({
 						"{ajaxRequestStatus} change":function(event){
 								var self = this;
 								if((self.scope.ajaxRequestStatus.currencyStore == true) && (self.scope.ajaxRequestStatus.licensorLoaded == true) && (self.scope.ajaxRequestStatus.countryLoaded == true) && (self.scope.ajaxRequestStatus.allDataLoaded == true)){
-										
+
 										setTimeout(function(){
 												var invoicevalid = $("#invoiceform").data('bootstrapValidator').isValid();
 													if(!invoicevalid){
 														$("#invoiceform").data('bootstrapValidator').validate();
 														$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
 													}
-												}, "500");	
+												}, "500");
 									}
 						},
 
@@ -957,7 +957,7 @@ var page = Component.extend({
 				        	$("[id^=breakrow]").not(":hidden").each(function(i){
 								//this.remove();
 								isInvlineExist = true;
-							});	
+							});
 
 				        	if(!isInvlineExist){
 
@@ -1037,7 +1037,7 @@ var page = Component.extend({
 						                        });
 										}
 
-				        			
+
 
 				        			self.scope.ajaxRequestStatus.attr("allDataLoaded", true);
 
@@ -1639,7 +1639,7 @@ var page = Component.extend({
 				calculateUSD:function(){
 
 					var fxrate = this.attr("usdFxrateRatio");
-					var calUSD = this.attr("totalAmountVal") * fxrate;
+					var calUSD = this.attr("totalAmountVal") / fxrate;
 
 					if(isNaN(calUSD)){
 						calUSD = 0;

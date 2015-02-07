@@ -1010,7 +1010,7 @@ var page = Component.extend({
 				 		self.scope.attr("regionStore", invoiceData.regionId);
 						self.scope.attr("fxrateStore", invoiceData.fxRate);
 				 		self.scope.attr("licnotesStore", invoiceData.notes);
-				 		
+
 				 		if((invoiceData.invoiceDate != "") &&  (invoiceData.invoiceDate != null)){
 				 			self.scope.attr("invoicedate", moment(invoiceData.invoiceDate).format("MM/DD/YYYY"));
 				 			$("#invoicedate input[type=text]").val(moment(invoiceData.invoiceDate).format("MM/DD/YYYY"));
@@ -1719,7 +1719,7 @@ var page = Component.extend({
 									},
 									calculateUSD:function(){
 										var fxrate = this.attr("usdFxrateRatio");
-										var calUSD = this.attr("totalAmountVal") * fxrate;
+										var calUSD = this.attr("totalAmountVal") / fxrate;
 
 										if(isNaN(calUSD)){
 											calUSD = 0;
@@ -1831,7 +1831,7 @@ var page = Component.extend({
 
 					var updatePeriodCalender = function(elementID){
 
-					
+
 
 						var _root = $("input[id^='inputMonth']").not("input[id='inputMonth0']").not(':hidden').parent();
 
