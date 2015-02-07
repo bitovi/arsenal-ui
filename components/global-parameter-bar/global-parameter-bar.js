@@ -82,7 +82,15 @@ var GlobalParameterBar = Component.extend({
   },
   events: { 
     '.updatePeriod focus': function(el) {
-      $(el).closest('.calendarcls').find('.box-modal').show().trigger("focus");     
+      $('.box-modal').hide(); // hide all other open calendar popups before opening the new one.
+      $(el).closest('.calendarcls').find('.box-modal').show(0,function(){
+        //$($(el).closest('.calendarcls').find('.box-modal')).data("selected-period",el[0].value);
+        $($(el).closest('.calendarcls').find('.box-modal')).data("selected-period-from",$('#periodFrom').val());
+        $($(el).closest('.calendarcls').find('.box-modal')).data("selected-period-to",$('#periodTo').val());
+        $($(el).closest('.calendarcls').find('.box-modal')).data("selected-period-type",periodWidgetHelper.getPeriodType($('#periodFrom').val()));
+        $($(el).closest('.calendarcls').find('.box-modal')).data("selected-id",el[0].id);
+        $(this).trigger("popup-shown");
+      });   
     },
     '{selectedperiod} change': function(val) {
       val[0].which == 'periodFrom' ? this.scope.periodFrom.replace(val[0].value) : this.scope.periodTo.replace(val[0].value);
@@ -176,7 +184,7 @@ var GlobalParameterBar = Component.extend({
             $("input[name='selAllLicensor']").closest('li').hide();
           else
             $("input[name='selAllLicensor']").closest('li').show();
-          
+
           self.scope.changesToApply.attr('licensor', ["-1"]);
           self.scope.changesToApply.attr('country', ["ALL"]);
         });
@@ -263,10 +271,10 @@ var GlobalParameterBar = Component.extend({
       //      self.scope.appstate.attr('periodFrom', $('#periodFrom').val());
       //      self.scope.appstate.attr('periodTo', $('#periodTo').val());
       //$('.errorOnAccount').html('');
-      var message='';
+      var message="";
       self.scope.appstate.attr('globalSearchButtonClicked', true);
-         message = validateFilters(self.scope.changesToApply, false, true, false, false, false,self.scope.appstate.attr('page'))
-         self.scope.attr('errorMessage', message);
+      message = validateFilters(self.scope.errorMessage,self.scope.changesToApply, false, true, false, false, false,self.scope.appstate.attr('page'))
+      self.scope.attr('errorMessage', message);
 
 
       if (message.length == 0) {
@@ -295,15 +303,7 @@ var GlobalParameterBar = Component.extend({
     },
     "#periodFrom blur":function(el,ev){
       var self = this;
-      var message ='';
-      if(isDate(el.val())){
-        self.scope.changesToApply.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(el.val()));
-        self.scope.changesToApply.attr('periodType', periodWidgetHelper.getPeriodType(el.val()));
-      }else{
-        self.scope.changesToApply.attr('periodFrom', '');
-          message = 'Invalid Period From';
-      }
-       self.scope.attr('errorMessage', message);
+      periodValidation(self,'periodFrom');
     },
     '#periodFrom keydown':function(el,ev){
       //$('.box-modal').hide();
@@ -311,25 +311,7 @@ var GlobalParameterBar = Component.extend({
     },
     "#periodTo blur":function(el,ev){
       var self = this;
-      var message ='';
-      if(isDate(el.val())){
-        var periodFrom=$('#periodFrom').val();
-        var periodTo=el.val();
-        var periodFromType = periodWidgetHelper.getPeriodType(periodFrom);
-        var periodToType = periodWidgetHelper.getPeriodType(periodTo)
-        if(periodFromType == periodToType){
-          message = showErrorMsg(periodFrom,periodTo);
-          if(message.length <= 0){
-            self.scope.changesToApply.attr('periodTo', periodWidgetHelper.getFiscalPeriod(el.val()));
-          }
-        }else{
-          message = 'Please select the similar type for periodFrom and periodTo';
-        }
-      }else{
-        self.scope.changesToApply.attr('periodFrom', '');
-        message = 'Invalid Period To';
-      }
-      self.scope.attr('errorMessage', message);
+      periodValidation(self,'periodTo');
     },
     '#periodTo keydown':function(el,ev){
       //$('.box-modal').hide();
@@ -501,7 +483,8 @@ var GlobalParameterBar = Component.extend({
             self.scope.appstate.attr('defaultcontentType', self.scope.changesToApply.contentType);
 
             self.scope.applyChanges(self.scope.changesToApply, self.scope.appstate);
-            //console.log("APpp state & ChangesTOAPPLY is "+JSON.stringify(self.scope.appstate.attr())+","+JSON.stringify(self.scope.changesToApply.attr()));
+            //console.log("self.scope.appstate",self.scope.appstate)
+          //console.log("APpp state & ChangesTOAPPLY is "+JSON.stringify(self.scope.appstate.attr())+","+JSON.stringify(self.scope.changesToApply.attr()));
           }, 1000);
 
           /* Setting default global parameter values to appstate scope variable Ends here*/
@@ -511,9 +494,54 @@ var GlobalParameterBar = Component.extend({
   }
 });
 
-var validateFilters = function(appstate, validateStoreType, validateRegion, validateCountry, validateLicensor, validateContentType,page) {
+var periodValidation=function(self,control){
+  //get selected period values;
+  var periodFrom=$('#periodFrom').val();
+  var periodTo=$('#periodTo').val();
+  var message="";
+  if(control == 'periodFrom'){
+    if(isDate(periodFrom)){
+      self.scope.changesToApply.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(periodFrom));
+      self.scope.changesToApply.attr('periodType', periodWidgetHelper.getPeriodType(periodFrom));
+    }else {
+      self.scope.changesToApply.attr('periodFrom', '');
+      message = 'Invalid Period From';
+    }
+  }
 
-  if (appstate != null && appstate != undefined) {
+  if(control == 'periodTo'){
+    if(isDate(periodTo)){
+      self.scope.changesToApply.attr('periodTo', periodWidgetHelper.getFiscalPeriod(periodTo));
+    }else{
+      self.scope.changesToApply.attr('periodTo', '');
+      message = 'Invalid Period To';
+    }
+  }
+
+  if(message.length == 0){
+      var periodFromType = periodWidgetHelper.getPeriodType(periodFrom);
+      var periodToType = periodWidgetHelper.getPeriodType(periodTo);
+      if(periodFromType == periodToType){
+        message = showErrorMsg(periodFrom,periodTo);
+        if(message.length > 0){
+          if(control == 'periodFrom'){
+            self.scope.changesToApply.attr('periodFrom', '');
+          }else if(control == 'periodTo'){
+            self.scope.changesToApply.attr('periodTo', '');
+          }
+        }
+      }else{
+        message = 'Please select the similar type for periodFrom and periodTo';
+      }
+    }
+
+  self.scope.attr('errorMessage', message);
+}
+
+var validateFilters = function(errorMsg,appstate, validateStoreType, validateRegion,
+  validateCountry, validateLicensor, validateContentType,page) {
+  if(errorMsg == null) errorMsg="";
+  if (appstate != null && appstate != undefined && errorMsg.length == 0) {
 
     var serTypeId = appstate.attr('storeType');
     var regId = appstate.attr('region');
@@ -581,10 +609,9 @@ var validateFilters = function(appstate, validateStoreType, validateRegion, vali
     }else if(validateContentType && (contGrpId.attr().length >1  || contGrpId[0] == "-1")){
       return "Please select single contentType !";
     }
-
-    return "";
+    return ""; //no error
   }
-
+  return errorMsg;
 }
 
 var getDefaultPeriodFrom = function(from) {
@@ -627,33 +654,26 @@ var showErrorMsg = function(periodFrom, periodTo) {
   var message3 = 'Invalid Month Selection !'
 
   if (from && to) {
-    var fromYear = parseInt(from.slice(-2));
-    var toYear = parseInt(to.slice(-2));
-    var yearDiff = parseInt(toYear - fromYear);
-    if (fromYear > toYear) {
+    var prdFromVal=periodWidgetHelper.getFiscalPeriod(from);
+    var prdToVal=periodWidgetHelper.getFiscalPeriod(to);
+    var periodFrom=prdFromVal%100;
+    var periodTo=prdToVal%100;
+    var yearFrom=(prdFromVal-periodFrom)/100;
+    var yearTo=(prdToVal-periodTo)/100;
+    var yearDif=yearTo-yearFrom;
+    console.log()
+    if(yearDif < 0){
       return message1;
-    }
-
-    if (from.charAt(0) === "P" && to.charAt(0) === "P") {
-      var periodFromValue = periodFrom.substr(1, 2);
-      var periodToValue = periodTo.substr(1, 2);
-      if (yearDiff >= 1 && periodToValue >= periodFromValue) {
-        return message2;
-      } else if (yearDiff == 0 && periodFromValue > periodToValue) {
+    }else if(yearDif > 1){
+      return message2;
+    }else if(yearDif == 0 ){
+      if(periodFrom > periodTo){
         return message1;
       }
-    } else if (from.charAt(0) === "Q" && to.charAt(0) === "Q") {
-      var quarterFromValue = periodFrom.substr(1, 1);
-      var quarterToValue = periodTo.substr(1, 1);
-      if (yearDiff >= 1 && quarterToValue >= quarterFromValue) {
-        //if(quarterFromValue >= quarterToValue ){
+    }else if(yearDif == 1){
+      if(periodTo >= periodFrom){
         return message2;
-        //}
-      } else if (yearDiff == 0 && quarterFromValue > quarterToValue) {
-        return message1;
       }
-    }else{
-      //return message3;
     }
   }
   return "";

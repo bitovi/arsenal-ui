@@ -8,28 +8,28 @@
 	</div>
 	<div class='periods'>
 		<ul class='period q1'>
-			<li><a class="btn btn-default"  role="button">Q1</a></li>
-			<li><a class="btn btn-default"  role="button"><span>Oct</span><span class='smalltxt'>P01</span></a></li>
-			<li><a class="btn btn-default"  role="button"><span>Nov</span><span class='smalltxt'>P02</span></a></li>
-			<li><a class="btn btn-default"  role="button"><span>Dec</span><span class='smalltxt'>P03</span></a></li>
+			<li><a class="btn btn-default Q1"  role="button">Q1</a></li>
+			<li><a class="btn btn-default P01"  role="button"><span>Oct</span><span class='smalltxt'>P01</span></a></li>
+			<li><a class="btn btn-default P02"  role="button"><span>Nov</span><span class='smalltxt'>P02</span></a></li>
+			<li><a class="btn btn-default P03"  role="button"><span>Dec</span><span class='smalltxt'>P03</span></a></li>
 		</ul>
 		<ul class='period q2'>
-			<li><a class="btn btn-default withbdr" href="#" role="button">Q2</a></li>
-			<li><a class="btn btn-default"  role="button"><span>Jan</span><span class='smalltxt'>P04</span></a></li>
-			<li><a class="btn btn-default"  role="button"><span>Feb</span><span class='smalltxt'>P05</span></a></li>
-			<li><a class="btn btn-default"  role="button"><span>Mar</span><span class='smalltxt'>P06</span></a></li>
+			<li><a class="btn btn-default withbdr Q2" href="#" role="button">Q2</a></li>
+			<li><a class="btn btn-default P04"  role="button"><span>Jan</span><span class='smalltxt'>P04</span></a></li>
+			<li><a class="btn btn-default P05"  role="button"><span>Feb</span><span class='smalltxt'>P05</span></a></li>
+			<li><a class="btn btn-default P06"  role="button"><span>Mar</span><span class='smalltxt'>P06</span></a></li>
 		</ul>
 		<ul class='period q3'>
-			<li><a class="btn btn-default withbdr" href="#" role="button">Q3</a></li>
-			<li><a class="btn btn-default" role="button"><span>Apr</span><span class='smalltxt'>P07</span></a></li>
-			<li><a class="btn btn-default" role="button"><span>May</span><span class='smalltxt'>P08</span></a></li>
-			<li><a class="btn btn-default" role="button"><span>Jun</span><span class='smalltxt'>P09</span></a></li>
+			<li><a class="btn btn-default withbdr Q3" href="#" role="button">Q3</a></li>
+			<li><a class="btn btn-default P07" role="button"><span>Apr</span><span class='smalltxt'>P07</span></a></li>
+			<li><a class="btn btn-default P08" role="button"><span>May</span><span class='smalltxt'>P08</span></a></li>
+			<li><a class="btn btn-default P09" role="button"><span>Jun</span><span class='smalltxt'>P09</span></a></li>
 		</ul>
 		<ul class='period q4'>
-			<li><a class="btn btn-default withbdr" href="#" role="button">Q4</a></li>
-			<li><a class="btn btn-default" role="button"><span>Jul</span><span class='smalltxt'>P10</span></a></li>
-			<li><a class="btn btn-default" role="button"><span>Aug</span><span class='smalltxt'>P11</span></a></li>
-			<li><a class="btn btn-default" role="button"><span>Sep</span><span class='smalltxt'>P12</span></a></li>
+			<li><a class="btn btn-default withbdr Q4" href="#" role="button">Q4</a></li>
+			<li><a class="btn btn-default P10" role="button"><span>Jul</span><span class='smalltxt'>P10</span></a></li>
+			<li><a class="btn btn-default P11" role="button"><span>Aug</span><span class='smalltxt'>P11</span></a></li>
+			<li><a class="btn btn-default P12" role="button"><span>Sep</span><span class='smalltxt'>P12</span></a></li>
 		</ul>
 	</div>
 </div>
