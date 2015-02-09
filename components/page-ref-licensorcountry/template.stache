@@ -121,7 +121,7 @@
               <div class="col-sm-6">
                 <label for="forEntityPricingModelId" class="col-sm-6 control-label"  >Pricing Model:</label>
                 <div class="col-sm-6 requiredBar" style="padding-left: 2px;">
-                  <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelVersionNo' name="entityPricingModelId" id="entityPricingModelId">
+                  <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelVersionNo' name="entityPricingModelId" id="entityPricingModelId" style="max-width:180px">
                     {{#each pricingModels}}
                     <option value="{{modelName}}">{{modelName}}</option>
                     {{/each}}
@@ -130,7 +130,7 @@
               </div>
               <div class="col-sm-6">
                 <div class="col-sm-2" style="padding-left:0px;margin-left: -30px;">
-                  <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelId' id="entityPricingModelVersionId" >
+                  <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelId' id="entityPricingModelVersionId" style="margin-left:15px">
                     {{#each pricingModelVersions}}
                     <option value="{{id}}">{{value}}</option>
                     {{/each}}

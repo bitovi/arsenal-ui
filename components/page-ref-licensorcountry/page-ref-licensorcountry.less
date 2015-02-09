@@ -18,7 +18,7 @@ font-size: 12px important;
 }
 
 .pageTitle{
-	padding-left:75px;padding-bottom:25px;
+	padding: 6px 0 25px 35px;
 }
 
 .lineDividerLiceCountry{
@@ -455,24 +455,29 @@ div#grid-report-config {
 	border-radius: 5px;
 }
 
-#countryLicForm .calendarDateIcon{
-  font-size: 12px;
-  font-weight: normal;
-  line-height: 19px;
-  color: #555;
-  text-align: center;
-  background-color: #eee;
-  border: 1px solid #ccc;
-  border-radius: 0 4px 4px 0;
-  position: absolute;
-  bottom: 0px;
-  display: inline-block;
-  left: 85px;
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-  z-index: 3;
-}
-#countryLicForm .requiredBar .calendarDateIcon{
-  left:83px;
+#countryLicForm{
+	select.form-control, input.form-control{
+		width: auto !important;
+	}
+	.calendarDateIcon{
+	  font-size: 12px;
+	  font-weight: normal;
+	  line-height: 19px;
+	  color: #555;
+	  text-align: center;
+	  background-color: #eee;
+	  border: 1px solid #ccc;
+	  border-radius: 0 4px 4px 0;
+	  position: absolute;
+	  bottom: 0px;
+	  display: inline-block;
+	  left: 136px;
+	  width: 20px;
+	  height: 20px;
+	  cursor: pointer;
+	  z-index: 3;
+	}
+	.requiredBar .calendarDateIcon{
+	  left:136px;
+	}
 }
