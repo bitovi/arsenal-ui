@@ -1719,7 +1719,7 @@ var page = Component.extend({
 									},
 									calculateUSD:function(){
 										var fxrate = this.attr("usdFxrateRatio");
-										var calUSD = this.attr("totalAmountVal") / fxrate;
+										var calUSD = this.attr("grossTotalStore") / fxrate;
 
 										if(isNaN(calUSD)){
 											calUSD = 0;
