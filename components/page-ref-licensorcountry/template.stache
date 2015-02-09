@@ -3,7 +3,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-5 pageTitle">
-        <h3>Country-Licensor Details</h3>
+        <span class="large-headers">Country-Licensor Details</span>
       </div>
       <div class="col-sm-4">
         <!-- TODO - Keep the message outside -->
@@ -129,7 +129,7 @@
                 </div>
               </div>
               <div class="col-sm-6">
-                <div class="col-sm-2" style="padding-left:0px;margin-left: -30px;">
+                <div class="col-sm-2" style="padding-left:0px;margin-left: 40px;">
                   <select style="width:auto;margin-left:3px;" class="form-control" can-value='pageState.entityCountryDetails.pricingModelId' id="entityPricingModelVersionId" >
                     {{#each pricingModelVersions}}
                     <option value="{{id}}">{{value}}</option>

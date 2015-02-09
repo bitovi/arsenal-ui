@@ -508,7 +508,7 @@ var page = Component.extend({
             entityCountry_data.status = "N";// New state
             var reportConfigurationListObj =  [];
 
-            can.each(reportConfigurationList,
+            can.each(self.scope.reportConfigurationList,
               function( value, index ) {
                 reportConfigurationListObj.push(value._data);
               }
