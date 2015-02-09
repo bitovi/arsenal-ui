@@ -364,6 +364,7 @@ var page = Component.extend({
           var reportBox = $("input.reportBox");
 
           var checked = false;
+          
 
           for(var i=0; i < reportConf.length; i++) {
 
@@ -2178,6 +2179,8 @@ var page = Component.extend({
 
       this.scope.mapExistCountryReportConf();
 
+      alignGridStats('repConfiguration');
+
 
     },
 
@@ -2320,9 +2323,15 @@ function alignGridStats(divId){
     }
   }
   if(divId=="repConfiguration"){
-    var rowCountries= $('#'+divId+' table>tbody>tr>td:nth-child(2)>div').length;  
-    var rowCntryRecords= $('#'+divId+' table>tbody>tr>td:nth-child(3)>div').length;  
-    $('#'+divId+' table>tfoot>tr>td').append("<span class='recordsCount' style='float:left;margin:2px 0;'>No. of Countries: "+rowCountries+" | No. of Reports: "+rowCntryRecords+"</span>");
+    var rowCountries= $('#'+divId+' table>tbody>tr>td:nth-child(1)>div').length;  
+    var rowCntryRecords= $('#'+divId+' table>tbody>tr>td:nth-child(3)>div').length; 
+    if($('#repConfiguration input:checked').length==0){
+      $('#'+divId+' table>tfoot>tr>td').append("<span class='recordsCount' style='float:left;margin:2px 0;'>No Reports Configured</span>");
+    }else{
+      $('#'+divId+' table>tfoot>tr>td>span').html('');
+      $('#'+divId+' table>tfoot>tr>td').append("<span class='recordsCount' style='float:left;margin:2px 0;'>No. of Countries: "+rowCountries+" | No. of Reports: "+rowCntryRecords+"</span>");
+    } 
+    
   }
 }
 

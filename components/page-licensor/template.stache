@@ -11,7 +11,6 @@
 
 				    <form id="entityLicensorTop">
 
-						<div class="col-sm-12" id="spaceBar"></div>
 				    	<div class="col-sm-4" id="entityDetailsHeading">Licensor Details</div>
 
 				    	<div class="col-sm-6 col-sm-offset-1">
@@ -404,6 +403,11 @@
 				    					</tr>
 				    				 {{/each}}
 				    				</tbody>
+				    				<tfoot>
+				    				 <tr>
+				    				  <td colspan="3" style="text-align:left;padding-right:2%;">No. of records: {{contactDetails.length}}</td>
+				    				 </tr>
+				    				</tfoot>
 				    			</table>
 					    		
 			    			</div>
@@ -442,8 +446,8 @@
 		
 
 		<div class="col-sm-12 col-sm-offset-10 buttonsBottom">
-			<button type="button" id="buttonsubmit" name="SubmitPage" class="btn submitButton btn-custom-small" style="margin-left:10px;">Submit</button>
-			<button type="button" id="buttonreset" name="Reset" class="btn cancelButton btn-custom-small-cancel " style="margin-left:10px;">Cancel</button>
+			<button type="button" id="buttonreset" name="Reset" class="btn cancelButton btn-custom-big-disabled " style="margin-left:10px;">Cancel</button>
+			<button type="button" id="buttonsubmit" name="SubmitPage" class="btn submitButton btn-custom-big" style="margin-left:10px;">Submit</button>
 		</div>
 
 		<div class="col-sm-12" id="spaceBar"></div>

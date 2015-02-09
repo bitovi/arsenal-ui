@@ -70,7 +70,7 @@
                     <period-calendar selectedperiod={selectedperiod} appstate="{appstate}"></period-calendar>
                   </div>
                 </div>
-                 <div class="col-sm-2"></div>
+                <div class="col-sm-2"></div>
             </div>
             <div class="form-group">
                <div class="col-sm-10 ">
@@ -89,7 +89,7 @@
                <div class="col-sm-10 ">
                   <label for="" class="col-sm-5 control-label small-headers">Main Pricing Method: </label>
                   <div class="col-sm-7 requiredBar">
-                    <select  class="form-control inputMonth" name="mainPricingMethod" can-value='pageState.countryDetails.country.mainPricingMethod'>
+                    <select  class="form-control inputMonth" id="mainPricingMethod" name="mainPricingMethod" can-value='pageState.countryDetails.country.mainPricingMethod'>
                     <option value="">Select</option>
                       {{#each pricingMethods}}
                           <option value="{{exp_method}}">{{exp_method}}</option>
@@ -103,8 +103,8 @@
                <div class="col-sm-10 ">
                   <label for="" class="col-sm-5 control-label small-headers">Alternate Pricing Method: </label>
                   <div class="col-sm-7 normalBar">
-                    <select  class="form-control inputMonth" can-value='pageState.countryDetails.country.altPricingMethod'>
-                      -<option value="">Select</option>
+                    <select  class="form-control inputMonth" id="altPricingMethod" can-value='pageState.countryDetails.country.altPricingMethod'>
+                      <option value="">Select</option>
                       {{#each pricingMethods}}
                           <option value="{{exp_method}}">{{exp_method}}</option>
                       {{/each}}
@@ -162,14 +162,14 @@
               <div class="col-sm-10">
                  <label for="" class="col-sm-5 control-label small-headers">Accural Model:</label>
                  <div class="col-sm-7 requiredBar">
-                    <div class="col-sm-7 normalBar">
-                      <select class="form-control" id="accModelSel" name="accuralModelName" style="max-width:120px;" can-value="{pageState.countryDetails.country.modelId}">
+                    <div class="col-sm-8 normalBar">
+                      <select class="form-control" id="accModelSel" name="accuralModelName" can-value="{pageState.countryDetails.country.modelId}">
                         {{#each accuralModels}}
                           <option {{isSelected 'accModel' accName}} {{data 'accModel'}}>{{accName}}</option>
                          {{/each}}
                       </select>
                     </div>
-                    <div class="col-sm-3 normalBar">
+                    <div class="col-sm-2 normalBar">
                       <select class="form-control" id="accModelVerSel" name="accuralModelVersion">
                           {{#each accuralModelVersions}}
                             <option {{isSelected 'accModelVer' modelId}} {{data 'accModelVer'}}>{{version}}</option>

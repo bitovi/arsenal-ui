@@ -275,10 +275,14 @@ var page = Component.extend({
             $("#localSocietysel").val(data.countryDetails.localSocietyId);
           }
 
-          if(data.countryDetails.mainPricingMethod!=null)
+          if(data.countryDetails.mainPricingMethod!=null){
             self.pageState.countryDetails.country.attr("mainPricingMethod",data.countryDetails.mainPricingMethod);
-          if(data.countryDetails.altPricingMethod!=null)
+            $('#mainPricingMethod').val(data.countryDetails.mainPricingMethod);
+          }
+          if(data.countryDetails.altPricingMethod!=null){
             self.pageState.countryDetails.country.attr("altPricingMethod",data.countryDetails.altPricingMethod);
+            $('#altPricingMethod').val(data.countryDetails.altPricingMethod);
+          }
 
           self.attr("transcurrencies").replace(data.countryDetails.transactionCurrencies);
           if(data.countryDetails.transactionCurrency!=null){
@@ -431,10 +435,14 @@ var page = Component.extend({
           $("#localSocietysel").val(data.countryDetails.localSocietyId);
         }
 
-        if(data.countryDetails.mainPricingMethod!=null)
+        if(data.countryDetails.mainPricingMethod!=null){
           self.pageState.countryDetails.country.attr("mainPricingMethod",data.countryDetails.mainPricingMethod);
-        if(data.countryDetails.altPricingMethod!=null)
+          $('#mainPricingMethod').val(data.countryDetails.mainPricingMethod);
+        }
+        if(data.countryDetails.altPricingMethod!=null){
           self.pageState.countryDetails.country.attr("altPricingMethod",data.countryDetails.altPricingMethod);
+          $('#altPricingMethod').val(data.countryDetails.altPricingMethod);
+        }
 
         self.attr("transcurrencies").replace(data.countryDetails.transactionCurrencies);
         if(data.countryDetails.transactionCurrency!=null){
