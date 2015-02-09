@@ -1271,6 +1271,8 @@ var page = Component.extend({
 
       var genObj = {};
 
+      $("#loading_img").show();
+
       Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
           self.mode = "fetch";
@@ -1303,11 +1305,13 @@ var page = Component.extend({
           self.attr("selectedEntity", genObj.licensorName);
 
           Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
-
+            $("#loading_img").hide();
             self.populateAnalyticsPage(values);
             self.reValidateFiledsonLoad()
 
           });
+
+          //$("#loading_img").hide();
 
       });
 
@@ -1645,14 +1649,14 @@ var page = Component.extend({
 
       var defaultEntity = [];
 
+      //$("#loading_img").show();
       self.scope.populateLicensorDetails(null);
+      //$("#loading_img").hide();
 
-
+      
       Promise.all([Analytics.getInvoiceDetails(UserReq.formRequestDetails(genObj))]).then(function(values) {
-
           self.scope.invoiceTypeList.replace(values[0].invoiceDetailTypes);
-          self.scope.populateInvoiceTypes();
-
+          self.scope.populateInvoiceTypes();        
       });
 
       self.scope.loadBootStrapPlugin();     
