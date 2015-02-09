@@ -461,6 +461,7 @@ var page = Component.extend({
 
           },
           '#submitBtn click': function(){
+            var self=this;
             var entityCountry_data  = this.scope.pageState.entityCountryDetails.attr("entityCountry")._data;
             pageState.entityCountryDetails.entityCountry.validFrom
 
@@ -538,6 +539,29 @@ var page = Component.extend({
                 setTimeout(function(){
                   $("#invmessageDiv").hide();
                 },5000);
+
+          
+                  var requestObj  = {
+                    entityCountryDetails:{
+                      entityCountry:{
+                        entityId:self.scope.pageState.entityCountryDetails.entityCountry.entityId,
+                        countryId:self.scope.pageState.entityCountryDetails.entityCountry.attr("countryId")
+                      }
+                    }
+                  }
+
+                 CountryLicensor.findOne(UserReq.formRequestDetails(requestObj),function(data){
+
+                    loadPage(self.scope, data);
+
+                    //$("#loading_img").hide();
+                    $(".mainLayoutId").show();
+
+                  },function(xhr){
+                    console.error("Error while loading: country-Entity Details"+xhr);
+                  });
+
+
               } else {
 
                   var msg = "Country-Licensor Detials was not saved successfully";

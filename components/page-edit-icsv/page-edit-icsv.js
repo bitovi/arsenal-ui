@@ -436,7 +436,12 @@ var page = Component.extend({
 			                            }else if(!$.isNumeric(value)){
 			                              return {
 			                                valid: false,    // or false
-			                                message: 'GL Account is number'
+			                                message: 'Please provide numeric value'
+			                              }
+			                            }else if(Math.ceil(parseFloat(value)) != value){
+			                            	return {
+			                                valid: false,    // or false
+			                                message: 'Please provide long value'
 			                              }
 			                            }
 			                            return true;

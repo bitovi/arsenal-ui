@@ -462,10 +462,14 @@ var page = Component.extend({
 			                                valid: false,    // or false
 			                                message: 'GL Account is mandatory'
 			                              }
-			                            }else if(!$.isNumeric(value)){
+			                           	 }else if(!$.isNumeric(value)){
 			                              return {
+			                                 message: 'Please provide numeric value'
+				                           }
+			                            } else if(Math.ceil(parseFloat(value)) != value){
+			                            	return {
 			                                valid: false,    // or false
-			                                message: 'GL Account is number'
+			                                message: 'Please provide long value'
 			                              }
 			                            }
 			                            return true;
