@@ -2,6 +2,11 @@
 
   .licensor-container {
 
+  table{
+    th:last-child, td:last-child{padding-right:15px;}
+    .verNo, .version, .validFrom, .validTo, .id {text-align:right !important;}
+  }
+
   overflow-x: hidden;
 
   div#usercommentsdiv {
@@ -312,13 +317,13 @@
 
 
     .rn-grid-revisionhistory tr:hover, .rn-grid-revisionhistory tr.selected {
-      background-color: #D3F0FE;
+      //background-color: #D3F0FE;
     }
     .rn-grid-countrymodelmapping tr:hover, .rn-grid-revisionhistory tr.selected {
-      background-color: #D3F0FE;
+      //background-color: #D3F0FE;
     }
     .countryReportColumn div:hover, .countryReportColumn div.selected {
-      background-color: #D3F0FE;  
+     // background-color: #D3F0FE;  
     }
 
     .btn-custom-small {
@@ -423,11 +428,11 @@
             }
 
             td:first-child, th:first-child {
-              border-bottom-left-radius: 0px;
+              border-bottom-left-radius: 5px;
              }
 
             td:last-child, th:last-child {
-              border-bottom-right-radius: 0px;
+              border-bottom-right-radius: 5px;
             }
           }
         }
@@ -631,6 +636,7 @@
       }
 
       rn-grid-revisionhistory{
+        .grid-mixin();
         table{
           width: 100%;
           tr>th, tr > td {
@@ -651,6 +657,7 @@
       }
 
       rn-grid-countrymodelmapping{
+        .grid-mixin();
         table{
           width: 100%;
           tr>th, tr > td {
@@ -699,7 +706,7 @@
             width:100%;
           }
           thead, tbody {
-            display: block;
+            //display: block;
           }
           tbody{
               max-height: 75px;
@@ -771,4 +778,16 @@ multiple-comments .multiple-comments-parent{
   padding: 0 5px;
   position: relative;
   z-index: 3
+}
+.contactName{
+  width: 45%;
+  padding:5px
+}
+.contactEmail{
+  width: 45%;
+  padding:5px;
+}
+.deleteCheckBox{
+  width: 10%;
+  padding:5px;
 }

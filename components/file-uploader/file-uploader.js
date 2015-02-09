@@ -141,6 +141,7 @@ var FileUploader = Component.extend ({
               '.cancelUpload click': function() {
                   $("#progressouter").hide();
                   // remove only those files which have a guid (selectedFromLocal)
+                  var _uploadedFileInfo = this.scope.attr('uploadedfileinfo');
                   for (var i = _uploadedFileInfo.length - 1; i > -1; i--) {
                       if (!_uploadedFileInfo[i].isServer) {
                           _uploadedFileInfo.splice(i, 1);

@@ -3,7 +3,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-5 pageTitle">
-        <h3>Country-Licensor Details</h3>
+        <span class="large-headers">Country-Licensor Details</span>
       </div>
       <div class="col-sm-4">
         <!-- TODO - Keep the message outside -->
@@ -60,17 +60,17 @@
       <div class="col-sm-12" id="loading_img"></div>
       <div class="col-sm-12 mainLayoutId" >
 
-          <div class="col-sm-6 right-border" style="height:550px"><!-- LEFT Layout START-->
+          <div class="col-sm-5 right-border" style="height:550px"><!-- LEFT Layout START-->
             <div class="form-group">
               <div class="col-sm-6">
-                <label for="forId" class="col-sm-6 control-label">ID: </label>
+                <label for="forId" class="col-sm-7 control-label">ID: </label>
                 <div class="col-sm-4" style="text-align:left;padding-left:0px;font-size: 12px;">{{pageState.entityCountryDetails.entityCountry.id}}</div>
               </div>
               <div class="col-sm-6"></div>
             </div>
             <div class="form-group">
               <div class="col-sm-6">
-                <label for="forStatus" class="col-sm-6 control-label">Status: </label>
+                <label for="forStatus" class="col-sm-7 control-label">Status: </label>
                 <div class="col-sm-4" style="text-align:left;padding-left:0px;font-size: 12px;">{{pageState.entityCountryDetails.entityCountry.status}}</div>
               </div>
               <div class="col-sm-6"></div>
@@ -78,7 +78,7 @@
             <div id="ref-period-container">
               <div class="form-group">
                 <div class="col-sm-6 validFrom">
-                  <label for="forValidFrom" class="col-sm-6 control-label">Valid From: </label>
+                  <label for="forValidFrom" class="col-sm-7 control-label">Valid From: </label>
                   <div class="col-sm-4 requiredBar" style="padding-left: 1px;">
                     <div class="calendarcls">
                       <input type='text' id="validFrom" name="validFrom" class="form-control inputMonth updateperoid"  can-value='pageState.entityCountryDetails.entityCountry.validFrom'/>
@@ -91,7 +91,7 @@
               </div>
               <div class="form-group">
                 <div class="col-sm-6 ">
-                  <label for="forValidTo" class="col-sm-6 control-label">Valid To: </label>
+                  <label for="forValidTo" class="col-sm-7 control-label">Valid To: </label>
                   <div class="col-sm-4 normalBar">
                     <div class="calendarcls">
                       <input type='text' id="validTo" name="validTo" class="form-control updateperoid inputMonth"  can-value='pageState.entityCountryDetails.entityCountry.validTo'/>
@@ -105,7 +105,7 @@
             </div>
             <div class="form-group">
               <div class="col-sm-6">
-                <label for="forInvoiceCurr" class="col-sm-6 control-label">Invoice Currency: </label>
+                <label for="forInvoiceCurr" class="col-sm-7 control-label">Invoice Currency: </label>
                 <div class="col-sm-4 requiredBarNone">
                   <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.invoiceCurr' name="invoiceCurr" id="invoiceCurr">
                     <option value="">Select</option>
@@ -119,9 +119,9 @@
             </div>
             <div class="form-group">
               <div class="col-sm-6">
-                <label for="forEntityPricingModelId" class="col-sm-6 control-label"  >Pricing Model:</label>
-                <div class="col-sm-6 requiredBar" style="padding-left: 2px;">
-                  <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelVersionNo' name="entityPricingModelId" id="entityPricingModelId" style="max-width:180px">
+                <label for="forEntityPricingModelId" class="col-sm-7 control-label"  >Pricing Model:</label>
+                <div class="col-sm-5 requiredBar" style="padding-left: 2px;">
+                  <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelVersionNo' name="entityPricingModelId" id="entityPricingModelId">
                     {{#each pricingModels}}
                     <option value="{{modelName}}">{{modelName}}</option>
                     {{/each}}
@@ -129,8 +129,8 @@
                 </div>
               </div>
               <div class="col-sm-6">
-                <div class="col-sm-2" style="padding-left:0px;margin-left: -30px;">
-                  <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelId' id="entityPricingModelVersionId" style="margin-left:15px">
+                <div class="col-sm-2" style="padding-left:0px;margin-left: 40px;">
+                  <select style="width:auto;margin-left:3px;" class="form-control" can-value='pageState.entityCountryDetails.pricingModelId' id="entityPricingModelVersionId" >
                     {{#each pricingModelVersions}}
                     <option value="{{id}}">{{value}}</option>
                     {{/each}}
@@ -145,8 +145,8 @@
 
             <div class="form-group">
               <div class="col-sm-6 ">
-                <label for="forValidTo" class="col-sm-6 control-label">Pricing Method: </label>
-                <div class="col-sm-6 normalBar">
+                <label for="forValidTo" class="col-sm-7 control-label">Pricing Method: </label>
+                <div class="col-sm-5 normalBar">
                   <select  class="form-control inputMonth" can-value='pageState.entityCountryDetails.entityCountry.pricingMethod'>
                     {{#each pricingMethods}}
                     <option value="{{exp_method}}">{{exp_method}}</option>
@@ -160,18 +160,18 @@
 
             <div class="form-group">
               <div class="col-sm-12">
-                <div class="col-sm-3"></div>
-                <div class="col-sm-4">
-                  <label class="checkbox"><input type="checkbox" can-value="pageState.entityCountryDetails.entityCountry.laEnabled" class="laCheckBox">London Agreement</label>
+                <div class="col-sm-6">
+                  <div class="col-sm-7"></div>
+                  <label class="checkbox col-sm-5" style="white-space: nowrap;"><input type="checkbox" can-value="pageState.entityCountryDetails.entityCountry.laEnabled" class="laCheckBox">London Agreement</label>
                 </div>
                 <div class="col-sm-6"></div>
               </div>
             </div>
 
             <div class="form-group">
-              <div class="col-sm-12 singleField">
-                <label for="forStatus" class="col-sm-3 control-label">Comments: </label>
-                <div class="col-sm-9 requiredBarNone">
+              <div class="col-sm-6 singleField">
+                <label for="forStatus" class="col-sm-7 control-label">Comments: </label>
+                <div class="col-sm-5 requiredBarNone">
                   <!-- <textarea id="historyComments"  class="form-control multiple-comments-editable form-control-comments new-comments multiple-comments-editable-height" style="min-height:120px;    max-height:200px;"  can-value="pageState.historyComments" readonly=true></textarea>
                   <textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:50px;   min-height:50px;    max-height:50px;" can-value="pageState.entityCountryDetails.comment"></textarea> -->
                   <div class="multipleComments col-sm-8 requiredBar" id="multipleComments" style="padding-left: 17px;">
@@ -187,7 +187,7 @@
 
 
 
-          <div class="col-sm-6 left-border" style="height:550px"> <!-- RIGHT Layout START-->
+          <div class="col-sm-7 left-border" style="height:550px"> <!-- RIGHT Layout START-->
             <div class="form-group">
               <div class="col-sm-1"></div>
               <div class="col-sm-6">

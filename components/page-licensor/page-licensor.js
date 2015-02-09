@@ -364,6 +364,7 @@ var page = Component.extend({
           var reportBox = $("input.reportBox");
 
           var checked = false;
+          
 
           for(var i=0; i < reportConf.length; i++) {
 
@@ -923,7 +924,7 @@ var page = Component.extend({
           var scTdWidth=$("#societyContacts>table>tbody>tr>td:nth-child("+i+")").outerWidth();
           var scThwidth=$("#societyContacts>table>thead>tr>th:nth-child("+i+")").outerWidth();
           if(scTdWidth<scThwidth){
-              $("#societyContacts>table>tbody>tr>td:nth-child("+i+")").css('width',$("#societyContacts>table>thead>tr>th:nth-child("+i+")").outerWidth()+1);
+              $("#societyContacts>table>tbody>tr>td:nth-child("+i+")").css('width',$("#societyContacts>table>thead>tr>th:nth-child("+i+")").outerWidth());
               $("#societyContacts>table>thead>tr>th:nth-child(("+i+")").css('width',$("#societyContacts>table>tbody>tr>td:nth-child("+i+")").outerWidth());
           }else{
             
@@ -1271,6 +1272,8 @@ var page = Component.extend({
 
       var genObj = {};
 
+      $("#loading_img").show();
+
       Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
           self.mode = "fetch";
@@ -1303,11 +1306,13 @@ var page = Component.extend({
           self.attr("selectedEntity", genObj.licensorName);
 
           Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
-
+            $("#loading_img").hide();
             self.populateAnalyticsPage(values);
             self.reValidateFiledsonLoad()
 
           });
+
+          //$("#loading_img").hide();
 
       });
 
@@ -1645,14 +1650,14 @@ var page = Component.extend({
 
       var defaultEntity = [];
 
+      //$("#loading_img").show();
       self.scope.populateLicensorDetails(null);
+      //$("#loading_img").hide();
 
-
+      
       Promise.all([Analytics.getInvoiceDetails(UserReq.formRequestDetails(genObj))]).then(function(values) {
-
           self.scope.invoiceTypeList.replace(values[0].invoiceDetailTypes);
-          self.scope.populateInvoiceTypes();
-
+          self.scope.populateInvoiceTypes();        
       });
 
       self.scope.loadBootStrapPlugin();     
@@ -2034,7 +2039,7 @@ var page = Component.extend({
             var scTdWidth=$("#societyContacts>table>tbody>tr>td:nth-child("+i+")").outerWidth();
             var scThwidth=$("#societyContacts>table>thead>tr>th:nth-child("+i+")").outerWidth();
             if(scTdWidth<scThwidth){
-                $("#societyContacts>table>tbody>tr>td:nth-child("+i+")").css('width',$("#societyContacts>table>thead>tr>th:nth-child("+i+")").outerWidth()+1);
+                $("#societyContacts>table>tbody>tr>td:nth-child("+i+")").css('width',$("#societyContacts>table>thead>tr>th:nth-child("+i+")").outerWidth());
                 $("#societyContacts>table>thead>tr>th:nth-child(("+i+")").css('width',$("#societyContacts>table>tbody>tr>td:nth-child("+i+")").outerWidth());
             }else{
               
@@ -2173,6 +2178,8 @@ var page = Component.extend({
       $("#entityDetailsTab").removeClass("opaqueClass");
 
       this.scope.mapExistCountryReportConf();
+
+      alignGridStats('repConfiguration');
 
 
     },
@@ -2316,9 +2323,15 @@ function alignGridStats(divId){
     }
   }
   if(divId=="repConfiguration"){
-    var rowCountries= $('#'+divId+' table>tbody>tr>td:nth-child(2)>div').length;  
-    var rowCntryRecords= $('#'+divId+' table>tbody>tr>td:nth-child(3)>div').length;  
-    $('#'+divId+' table>tfoot>tr>td').append("<span class='recordsCount' style='float:left;margin:2px 0;'>No. of Countries: "+rowCountries+" | No. of Reports: "+rowCntryRecords+"</span>");
+    var rowCountries= $('#'+divId+' table>tbody>tr>td:nth-child(1)>div').length;  
+    var rowCntryRecords= $('#'+divId+' table>tbody>tr>td:nth-child(3)>div').length; 
+    if($('#repConfiguration input:checked').length==0){
+      $('#'+divId+' table>tfoot>tr>td').append("<span class='recordsCount' style='float:left;margin:2px 0;'>No Reports Configured</span>");
+    }else{
+      $('#'+divId+' table>tfoot>tr>td>span').html('');
+      $('#'+divId+' table>tfoot>tr>td').append("<span class='recordsCount' style='float:left;margin:2px 0;'>No. of Countries: "+rowCountries+" | No. of Reports: "+rowCntryRecords+"</span>");
+    } 
+    
   }
 }
 
