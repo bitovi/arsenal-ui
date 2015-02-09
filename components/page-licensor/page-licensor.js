@@ -924,7 +924,7 @@ var page = Component.extend({
           var scTdWidth=$("#societyContacts>table>tbody>tr>td:nth-child("+i+")").outerWidth();
           var scThwidth=$("#societyContacts>table>thead>tr>th:nth-child("+i+")").outerWidth();
           if(scTdWidth<scThwidth){
-              $("#societyContacts>table>tbody>tr>td:nth-child("+i+")").css('width',$("#societyContacts>table>thead>tr>th:nth-child("+i+")").outerWidth()+1);
+              $("#societyContacts>table>tbody>tr>td:nth-child("+i+")").css('width',$("#societyContacts>table>thead>tr>th:nth-child("+i+")").outerWidth());
               $("#societyContacts>table>thead>tr>th:nth-child(("+i+")").css('width',$("#societyContacts>table>tbody>tr>td:nth-child("+i+")").outerWidth());
           }else{
             
@@ -2039,7 +2039,7 @@ var page = Component.extend({
             var scTdWidth=$("#societyContacts>table>tbody>tr>td:nth-child("+i+")").outerWidth();
             var scThwidth=$("#societyContacts>table>thead>tr>th:nth-child("+i+")").outerWidth();
             if(scTdWidth<scThwidth){
-                $("#societyContacts>table>tbody>tr>td:nth-child("+i+")").css('width',$("#societyContacts>table>thead>tr>th:nth-child("+i+")").outerWidth()+1);
+                $("#societyContacts>table>tbody>tr>td:nth-child("+i+")").css('width',$("#societyContacts>table>thead>tr>th:nth-child("+i+")").outerWidth());
                 $("#societyContacts>table>thead>tr>th:nth-child(("+i+")").css('width',$("#societyContacts>table>tbody>tr>td:nth-child("+i+")").outerWidth());
             }else{
               

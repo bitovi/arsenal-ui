@@ -12,7 +12,7 @@
 				    <form id="entityLicensorTop">
 
 						<div class="col-sm-12" id="spaceBar"></div>
-				    	<div class="col-sm-4" id="entityDetailsHeading">Entity Details</div>
+				    	<div class="col-sm-4" id="entityDetailsHeading">Licensor Details</div>
 
 				    	<div class="col-sm-6 col-sm-offset-1">
 							<div id="invmessageDiv" role="alert"></div>
@@ -355,29 +355,29 @@
 		    					<table class="societyContacts">
 			    					<thead>
 			    						<tr>
-			    							<th>
-			    								Delete
-			    							</th>
-			    							<th>
+			    							<th class="contactName">
 			    								Name
 			    							</th>
-			    							<th>
+			    							<th class="contactEmail">
 			    								E-Mail <img src="resources/images/button_plus_blue.png" class="addSocContactsAdd addRow"  style=""></img>
+			    							</th>
+			    							<th class="deleteCheckBox">
+			    								Delete
 			    							</th>
 			    						</tr>
 			    					</thead>
 			    					<tbody>
 			    					{{#each contactDetails}}
-				    					<tr class="contactDetails">
-				    						<td class="deleteCheckBox">
-				    							<img src="resources/images/button_minus_red.png" class="addSocContactsRemove deleteCheckBoxCD" val="{{id}}"></img>	
-				    							
-				    						</td>
+				    					<tr class="contactDetails">				    						
 				    						<td class="contactName">
 				    							{{contactName}}
 				    						</td>
 				    						<td class="contactEmail">
 				    							{{contactEmail}}
+				    						</td>
+				    						<td class="deleteCheckBox">
+				    							<img src="resources/images/button_minus_red.png" class="addSocContactsRemove deleteCheckBoxCD" val="{{id}}"></img>	
+				    							
 				    						</td>
 				    					</tr>
 				    				{{/each}}
@@ -390,15 +390,16 @@
 			    					
 				    				 {{#each newContactDetails.data}}
 				    					<tr class="newcontactDetails{{newCountryCounter}}">
-				    						<td class="deleteCheckBox ">
-				    							<img src="resources/images/button_minus_red.png" class="addSocContactsRemove deleteCheckBoxNCD" val="{{name}}"></img>
-				    							
-				    						</td>
+				    						
 				    						<td class="contactName form-group">
 				    							<input type="text" id="name" value="{{contactName}}" can-value="{{canvalueName}}" class="form-control validateInput"/>
 				    						</td>
 				    						<td class="contactEmail form-group">
 				    							<input type="text" id="email" value="{{contactEmail}}" can-value="{{canvalueEmail}}" class="form-control validateInput"/>
+				    						</td>
+				    						<td class="deleteCheckBox ">
+				    							<img src="resources/images/button_minus_red.png" class="addSocContactsRemove deleteCheckBoxNCD" val="{{name}}"></img>
+				    							
 				    						</td>
 				    					</tr>
 				    				 {{/each}}

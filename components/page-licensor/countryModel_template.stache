@@ -23,6 +23,9 @@
         {{/filteredColumns}}
       </tr>
       {{/footerRows}}
+      {{#if emptyrows}}
+        <tr><td style="text-align:center;background:#fff;color:#000;" colspan="{{#getColumnLength}}">No Records Found</td</tr>
+      {{/if}}
   </tfoot>
   
 </table>
