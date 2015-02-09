@@ -94,6 +94,20 @@ Grid.extend({
 });
 
 
+Switcher.extend({
+  tag: 'rn-switcher',
+  events: {
+    'li click': function(el, ev) {
+      console.log(el);
+      var option = el.data('option');
+      this.scope.attr('selectedOption', option);
+      $(".toggleOption").html("");
+      el.html("<div class='toggleOption'>.</div>");
+    }
+  }
+
+});
+
 var page = Component.extend({
   tag: 'page-pricing-models',
   template: template,
@@ -178,10 +192,10 @@ var page = Component.extend({
 
 
           var options = [{
-            text: 'Licensor',
+            text: '<div class="toggleOption">.</div>',
             value: 'licensor'
           },{
-            text: 'Accural',
+            text: '<div class="toggleOption"></div>',
             value: 'accural'
           }];
 
@@ -441,7 +455,7 @@ var page = Component.extend({
                   //addFooter('trackCountDiv');
 
                   console.log(self.scope.baseModelParamList);
-                  
+
 
                   self.scope.attr("isCommentData", true);
                   $('#pmform').bootstrapValidator('addField', 'usercommentsdiv');
@@ -557,6 +571,8 @@ var page = Component.extend({
        
       checkIsDefault();
     },
+
+   
 
    "#add click":function(){
         var self = this;  

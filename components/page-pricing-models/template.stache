@@ -30,7 +30,11 @@
 		 			<button id="add"  class="btn btn-primary btn-custom-big" disabled>Add</button>
 			 	</div>
 
-			 	<div class="col-sm-2" id="switcher-cont"></div>
+			 	<div class="col-sm-2" id="switcher-cont-div">
+			 			<div class="lic-label">Licensor</div>
+			 			<div id="switcher-cont" class="swicher-align"></div>
+			 			<div class="acc-label">Accural</div>
+			 	</div>
 			 
 		</div>
 	 </div>
