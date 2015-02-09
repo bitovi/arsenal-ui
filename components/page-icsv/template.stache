@@ -27,11 +27,11 @@
 
 	<div id="topContanier" class="col-sm-12" style="padding:0px;background: #f4f4f4;">
 		<div class="col-sm-6" id="uploadsummary">
-			<label class="fontSize14"> iCSV Files (CSVs and PDFs)</label>
+			<label class="fontSize14 col-sm-6 "> iCSV Files (CSVs and PDFs)</label>
 
-			<div id="loading_img"></div>
+			<!--	<div id="loading_img"></div>	-->
 
-			<div class="col-sm-6 file-component-icv-div">
+		<div class="file-component-icv-div">
 				<rn-file-uploader-icsv-sum uploadedfileinfo="{uploadedfileinfo}"></rn-file-uploader-icsv-sum>
 			</div>
 

@@ -274,6 +274,7 @@ var GlobalParameterBar = Component.extend({
       var message="";
       self.scope.appstate.attr('globalSearchButtonClicked', true);
       message = validateFilters(self.scope.errorMessage,self.scope.changesToApply, false, true, false, false, false,self.scope.appstate.attr('page'))
+
       self.scope.attr('errorMessage', message);
 
 
@@ -529,12 +530,16 @@ var periodValidation=function(self,control){
           }else if(control == 'periodTo'){
             self.scope.changesToApply.attr('periodTo', '');
           }
+        }else{
+          self.scope.changesToApply.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(periodFrom));
+          self.scope.changesToApply.attr('periodType', periodWidgetHelper.getPeriodType(periodFrom));
+          self.scope.changesToApply.attr('periodTo', periodWidgetHelper.getFiscalPeriod(periodTo));
+          message="";
         }
       }else{
         message = 'Please select the similar type for periodFrom and periodTo';
       }
     }
-
   self.scope.attr('errorMessage', message);
 }
 
@@ -661,7 +666,6 @@ var showErrorMsg = function(periodFrom, periodTo) {
     var yearFrom=(prdFromVal-periodFrom)/100;
     var yearTo=(prdToVal-periodTo)/100;
     var yearDif=yearTo-yearFrom;
-    console.log()
     if(yearDif < 0){
       return message1;
     }else if(yearDif > 1){
