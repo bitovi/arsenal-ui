@@ -687,7 +687,13 @@ var page = Component.extend({
                 /*Error condition*/
               });
             }
-    }
+    },
+    helpers:{
+              setHeight: function(){
+                      var vph = $(window).height();
+                      return 'Style="height:'+vph+'px"';
+                  }
+  }
    
 });
 
