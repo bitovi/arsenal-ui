@@ -390,15 +390,16 @@
 			    					
 				    				 {{#each newContactDetails.data}}
 				    					<tr class="newcontactDetails{{newCountryCounter}}">
-				    						<td class="deleteCheckBox ">
-				    							<img src="resources/images/button_minus_red.png" class="addSocContactsRemove deleteCheckBoxNCD" val="{{name}}"></img>
-				    							
-				    						</td>
+				    						
 				    						<td class="contactName form-group">
 				    							<input type="text" id="name" value="{{contactName}}" can-value="{{canvalueName}}" class="form-control validateInput"/>
 				    						</td>
 				    						<td class="contactEmail form-group">
 				    							<input type="text" id="email" value="{{contactEmail}}" can-value="{{canvalueEmail}}" class="form-control validateInput"/>
+				    						</td>
+				    						<td class="deleteCheckBox ">
+				    							<img src="resources/images/button_minus_red.png" class="addSocContactsRemove deleteCheckBoxNCD" val="{{name}}"></img>
+				    							
 				    						</td>
 				    					</tr>
 				    				 {{/each}}
