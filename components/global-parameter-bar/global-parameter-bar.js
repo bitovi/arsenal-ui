@@ -531,6 +531,9 @@ var periodValidation=function(self,control){
             self.scope.changesToApply.attr('periodTo', '');
           }
         }else{
+          //if no validation error then set the values to global object. These values
+          //might be cleared on part of previous validation error.
+          //radar: <rdar://problem/19764807> UI : Global Filter : Incorrect error message - Unable to search by Period . Quater option works fine .
           self.scope.changesToApply.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(periodFrom));
           self.scope.changesToApply.attr('periodType', periodWidgetHelper.getPeriodType(periodFrom));
           self.scope.changesToApply.attr('periodTo', periodWidgetHelper.getFiscalPeriod(periodTo));
