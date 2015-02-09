@@ -15,8 +15,5 @@
     </tr>
     {{/filteredRows}}
 
-    {{#if emptyrows}}
-        <tr><td class="noDataFoot" style="text-align:center;background:#fff;color:#000;" colspan="{{#getColumnLength}}">Data Not Available</td</tr>
-      {{/if}}
   </tbody>
  </table>

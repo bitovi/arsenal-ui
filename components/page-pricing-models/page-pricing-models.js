@@ -440,6 +440,9 @@ var page = Component.extend({
                   //addFooter('baseModelParam');
                   //addFooter('trackCountDiv');
 
+                  console.log(self.scope.baseModelParamList);
+                  
+
                   self.scope.attr("isCommentData", true);
                   $('#pmform').bootstrapValidator('addField', 'usercommentsdiv');
                  
@@ -648,8 +651,12 @@ var page = Component.extend({
                                   if(self.scope.editstate == false){
                                     clearOldEditData(self);
                                   }
-                                $("#addbasemodel").trigger("click");
-                                $("#addtrack").trigger("click");         
+                                
+                                  if(!self.scope.editstate){
+                                    $("#addbasemodel").trigger("click");
+                                    $("#addtrack").trigger("click");         
+                                  }
+                                  
                               }
                             else
                             {
@@ -745,17 +752,19 @@ function addFooter(divId){
     if($('#'+divId+' table tfoot').length==1){
       if(rowCount==0){
         $('#'+divId+' table tfoot').append("<tr><td class='recordsCount' style='text-align:left;border:none;' colspan="+colspanFoot+">No Records Found</td></tr>"); 
-      }else if($('#'+divId+' table>tbody>tr>td').hasClass("noDataFoot")==false){
+      }else /*if($('#'+divId+' table>tbody>tr>td').hasClass("noDataFoot")==false)*/{
         $('#'+divId+' table tfoot').append("<tr><td class='recordsCount' style='text-align:left;border:none;' colspan="+colspanFoot+">No. of Records: "+rowCount+"</td></tr>");   
       } 
     }else{
       if(rowCount==0){
         $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:left;border:none;' colspan="+colspanFoot+">No Records Found</td></tr><tfoot>"); 
-      }else if($('#'+divId+' table>tbody>tr>td').hasClass("noDataFoot")==false){
+      }else /*if($('#'+divId+' table>tbody>tr>td').hasClass("noDataFoot")==false)*/{
         $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:left;border:none;' colspan="+colspanFoot+">No. of Records: "+rowCount+"</td></tr><tfoot>");   
       } 
     } 
 }
+
+
 
 
 

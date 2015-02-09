@@ -35,17 +35,17 @@
 		</div>
 	 </div>
 
-	<div class="col-sm-12" style="height: 10px;">&nbsp;</div>
+	{{#unless editstate}}<div class="col-sm-12" style="height: 10px;">&nbsp;</div>{{/unless}}
 
 	<div id="bottomsection" class="{{#if showbottomSection}}bottompartshow{{else}}bottomparthide{{/if}}">
 
-		<div class="{{#if editstate}}modelsummaryVisible col-sm-4{{else}}modelsummaryInVisible col-sm-0{{/if}}" id="modelSummaryCont">
+		<div class="{{#if editstate}}modelsummaryVisible col-sm-5 right-border{{else}}modelsummaryInVisible col-sm-0{{/if}}" id="modelSummaryCont">
 				<div class="modelsummary maxhtLeftGrid" id="modelsummary">
 				
 				</div>
 		</div>
 	
-		<div class="{{#if editstate}}col-sm-8{{else}}col-sm-12{{/if}} modelDetailContCls" id="modelDetailCont">
+		<div class="{{#if editstate}}col-sm-7 left-border{{else}}col-sm-12{{/if}} modelDetailContCls" id="modelDetailCont">
 		
 			<div class="right-pb-container">
 				<legend class="scheduler-border"></legend>
@@ -158,6 +158,15 @@
 											       </tr>
 											 	{{/each}}
 											</tbody>
+											<tfoot>
+												<tr>
+													{{#if baseModelParamList.length}}
+														<td colspan="7">No. of Records: {{baseModelParamList.length}}</td>
+														{{else}}
+														<td colspan="7">No Data found</td>
+													{{/if}}
+												</tr>
+											</tfoot>		
 										</table>
 									</div>
 								</fieldset>
@@ -165,7 +174,7 @@
 
 								<fieldset class="scheduler-border trackcountScheduler">
 									<legend class="scheduler-border">Track Count Minima</legend>
-									<div class="table-responsive maxheightGrid" id=trackCountDiv"">
+									<div class="table-responsive maxheightGrid" id="trackCountDiv">
 									  	<table class="table table-condensed table-striped breakdown" id="trackCount">
 										    <thead>
 										        <tr>
@@ -210,6 +219,15 @@
 										       </tr>
 										 	{{/each}}
 										</tbody>
+										<tfoot>
+												<tr>
+													{{#if trackCountMinimaList.length}}
+														<td colspan="5">No. of Records: {{trackCountMinimaList.length}}</td>
+													{{else}}
+														<td colspan="5">No Data Found</td>
+													{{/if}}	
+												</tr>
+										</tfoot>	
 									</table>
 								</div>
 							</fieldset>

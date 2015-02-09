@@ -70,8 +70,13 @@ page-pricing-models {
 		font-size: 24px;
 	}
 
+	.pricing-model{
+		padding-left:0px;
+		padding-right:0px;
+	}
+
 	.topsection{
-		border-bottom:1px solid black;
+		border-bottom:1px solid #C6C6C6;
 	}
 
 	.right-pb-container{
@@ -143,7 +148,7 @@ page-pricing-models {
 		top:4px;
 	}
 
-	table.breakdown thead, table#pricingmodelGrid thead{
+	table.breakdown thead, table#pricingmodelGrid thead, table.breakdown tfoot{
 		background: linear-gradient(to bottom, #7e7e83, #afafb4 100%, #b0b0b5);
 		font-size: small;
 		color: white;
@@ -152,6 +157,13 @@ page-pricing-models {
 			font-weight:normal;
 		}
 	}
+
+	table.breakdown tfoot{
+		td {
+		  height:20px;
+		}
+	}
+
 
 	.breakdown-div{
 		border: 1px solid #B0B0B5;
@@ -349,6 +361,20 @@ page-pricing-models {
 
 	.trackcountScheduler{
 	  margin-bottom:10px !important;
+	}
+
+	.right-border{
+		border-right:1px solid #C6C6C6;
+		padding-top:20px;
+		background-color:#f6f6f6;
+		min-height:720px;
+	}
+
+	.left-border{
+		border-right:1px solid #C6C6C6;
+		padding-top:20px;
+		background-color:#E4E4E4;
+		min-height:720px;
 	}
 
 
