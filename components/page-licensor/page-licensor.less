@@ -316,13 +316,13 @@
 
 
     .rn-grid-revisionhistory tr:hover, .rn-grid-revisionhistory tr.selected {
-      background-color: #D3F0FE;
+      //background-color: #D3F0FE;
     }
     .rn-grid-countrymodelmapping tr:hover, .rn-grid-revisionhistory tr.selected {
-      background-color: #D3F0FE;
+      //background-color: #D3F0FE;
     }
     .countryReportColumn div:hover, .countryReportColumn div.selected {
-      background-color: #D3F0FE;  
+     // background-color: #D3F0FE;  
     }
 
     .btn-custom-small {
@@ -427,11 +427,11 @@
             }
 
             td:first-child, th:first-child {
-              border-bottom-left-radius: 0px;
+              border-bottom-left-radius: 5px;
              }
 
             td:last-child, th:last-child {
-              border-bottom-right-radius: 0px;
+              border-bottom-right-radius: 5px;
             }
           }
         }
@@ -635,6 +635,7 @@
       }
 
       rn-grid-revisionhistory{
+        .grid-mixin();
         table{
           width: 100%;
           tr>th, tr > td {
@@ -655,6 +656,7 @@
       }
 
       rn-grid-countrymodelmapping{
+        .grid-mixin();
         table{
           width: 100%;
           tr>th, tr > td {
