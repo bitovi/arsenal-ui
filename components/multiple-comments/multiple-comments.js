@@ -35,7 +35,7 @@ var comments = Component.extend({
                $(".multiple-comments-parent").append("<div id="+tempDivID+" class='comment-env'></div>");   
              
               if(val.createdDate != null){
-                 var createdDateFormat = moment(val.createdDate).format("Do MMM, YYYY");   
+                 var createdDateFormat = moment(val.createdDate).format("Do MMM, YYYY - HH:mm:ss");   
                 if((val.createdByName != null) && (typeof val.createdByName != "undefined")){
                     $("#"+tempDivID).html("<span class='commentuser'>"+val.createdByName +"</span> <span class='commentdate'>On "+createdDateFormat+"</span><br><span class='commenttext'>"+val.comments+"</span>");
                 }else{
