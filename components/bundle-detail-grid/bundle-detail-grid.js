@@ -47,7 +47,7 @@ var BundleDetailGrid = ScrollingGrid.extend({
             //Detailed row, apply logic now only as being traversed
             detail.attr("fiscalPeriodDisplay",PeriodWidgetHelper.getDisplayPeriod(detail.fiscalPeriod.toString(), detail.periodType));
           }
-          if(detail.adhocTypeName != undefined){
+          if(detail.adhocTypeName != undefined &&  detail.adhocTypeName != 'TAX'){
             _.contains(adhocTypes, detail.adhocTypeName) ?  "" : adhocTypes.push(detail.adhocTypeName);
           }
 
