@@ -372,7 +372,7 @@
          <div class="col-sm-9 totalbox">
            <label  class="control-label">Tax:</label>
 							  </div>
-         <div class="col-sm-3 totalboxlabel">
+         <div class="col-sm-3 totalboxlabel taxAmountCont">
 							       <input type="text" name="taxAmount" id="taxAmount" class="form-control taxAmount" can-value="tax" >
            <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "taxAmount-err" style="display:none">
          </div>
