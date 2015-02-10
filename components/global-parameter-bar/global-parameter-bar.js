@@ -122,6 +122,8 @@ var GlobalParameterBar = Component.extend({
       this.scope.attr('errorMessage', showErrorMsg(periodFromValue, this.scope.attr('periodTo')[0]));
     },
     '#store-type select change': function(el, ev) {
+      //clear the error message if there is any.
+      this.scope.attr('errorMessage','');
       var selected = $(el[0].selectedOptions).data('storetype');
       this.scope.changesToApply.attr('storeType', selected);
 
@@ -203,6 +205,7 @@ var GlobalParameterBar = Component.extend({
       var self=this;
       //var selected = $(el[0].selectedOptions).data('country');
       console.log("Country sel id is "+$(el[0]).val());
+      self.scope.attr('errorMessage','');
       var selected = $(el[0]).val();
       if (selected != null) {
         this.scope.changesToApply.attr('country', selected);
@@ -223,6 +226,7 @@ var GlobalParameterBar = Component.extend({
     '#licensor select change': function(el, ev) {
       var self=this;
       //var selected = $(el[0].selectedOptions).data('licensor');
+      self.scope.attr('errorMessage','');
       var selected = $(el[0]).val();
       if (selected != null)
         this.scope.changesToApply.attr('licensor', selected);
@@ -245,7 +249,7 @@ var GlobalParameterBar = Component.extend({
       //var selected = $(el[0].selectedOptions).data('contenttype');
       var selected = $(el[0]).val();
       var formatSelected = [];
-
+      self.scope.attr('errorMessage','');
       if (selected != null) {
         for (var i = 0; i < selected.length; i++) {
           formatSelected.push(selected[i].split(":")[0]);
@@ -550,7 +554,7 @@ var validateFilters = function(errorMsg,appstate, validateStoreType, validateReg
   validateCountry, validateLicensor, validateContentType,page) {
   if(errorMsg == null) errorMsg="";
   if (appstate != null && appstate != undefined && errorMsg.length == 0) {
-
+    console.log("Peter testing",appstate);
     var serTypeId = appstate.attr('storeType');
     var regId = appstate.attr('region');
     var countryId = appstate['country'];

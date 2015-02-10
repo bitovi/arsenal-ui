@@ -505,9 +505,9 @@ var page = Component.extend({
         $(item[0]).removeClass("draggable")
       },
       ".switch-toggle click":function(el, ev){
-          
+
           var chart = $('#highChartDetails').highcharts();
-          
+
           var amountSeries1 = chart.series[0];
           var amountSeries2 = chart.series[1];
           var amountSeries3 = chart.series[2];
@@ -522,15 +522,15 @@ var page = Component.extend({
 
             (rateSeries1).hide();
             (rateSeries2).hide();
- 
+
             rateSeries1.options.showInLegend = false;
             rateSeries1.legendItem = null;
-            chart.legend.destroyItem(rateSeries1);            
+            chart.legend.destroyItem(rateSeries1);
             chart.legend.render();
 
             rateSeries2.options.showInLegend = false;
             rateSeries2.legendItem = null;
-            chart.legend.destroyItem(rateSeries2);            
+            chart.legend.destroyItem(rateSeries2);
             chart.legend.render();
 
             (amountSeries1).show();
@@ -551,13 +551,13 @@ var page = Component.extend({
             chart.legend.renderItem(amountSeries3);
             chart.legend.render();
 
-            
+
 
           }else {
             console.log("Rate");
             $(".switch-toggle").removeClass('off').addClass('on');
             chart.yAxis[0].axisTitle.element.textContent = 'Rate';
-            
+
             (rateSeries1).show();
             rateSeries1.options.showInLegend = true;
             chart.legend.renderItem(rateSeries1);
@@ -567,7 +567,7 @@ var page = Component.extend({
             rateSeries2.options.showInLegend = true;
             chart.legend.renderItem(rateSeries2);
             chart.legend.render();
-            
+
             (amountSeries1).hide();
             (amountSeries2).hide();
             (amountSeries3).hide();
@@ -735,6 +735,7 @@ var page = Component.extend({
         } else {
           $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid emptyrows="{emptyrows}"></rn-claim-licensor-grid>')({emptyrows:true}));
         }
+        alignGrid('claimLicencorGrid'); //added for 19727470 UI : Wave - M2 - Claim Review - UI is not proper when navigating between Licensor and Country tab in Claim Review
       },
       "{allClaimLicensorMap} change": function() {
         var self = this;
@@ -756,6 +757,7 @@ var page = Component.extend({
           $("#loading_img").hide();
           $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid emptyrows="{emptyrows}"></rn-claim-licensor-grid>')({emptyrows:true}));
         }
+        alignGrid('claimLicencorGrid'); //added for 19727470 UI : Wave - M2 - Claim Review - UI is not proper when navigating between Licensor and Country tab in Claim Review
       },
       "{allClaimCountryMap} change": function() {
         var self = this;
@@ -787,6 +789,8 @@ var page = Component.extend({
           $(".period").show();
           $(".entityName").show();
         }
+        alignGrid('claimCountryGrid', self.scope.is_aggregate); ////added for 19727470 UI : Wave - M2 - Claim Review - UI is not proper when navigating between Licensor and Country tab in Claim Review
+
       },
 
 
@@ -1281,6 +1285,7 @@ var status ="";
   return status;
 }
 function alignGrid(divId, is_aggregate){
+  //console.log("&&&&&&&&&&&&&&Align Grid Called &&&&&&&&&&&");
   var colLength = $('#'+divId+' table>thead>tr>th').length;
   var rowLength = $('#'+divId+' table>tbody>tr').length;
   var divWidth = $('#'+divId).outerWidth();

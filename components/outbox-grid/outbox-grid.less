@@ -37,14 +37,23 @@ rn-outbox-grid {
 	      //border-bottom: 1px solid #bfbfbf;
 	     }
 
+       thead {
+         tr {
+           th, td {
+             text-align:center !important;
+           }
+         }
+       }
+
 	    tr > th, tr > td {
-	      &.type { .flex-basis(75px); }
-	      &.description { .flex-basis(325px); }
-	      &.region { .flex-basis(100px); }
-	      &.comments { .flex-grow(1); .flex-basis(500px); }
-	      &.pendingDays { .flex-basis(75px); }
-	      &.currentlyWith  { .flex-basis(100px); }
-	      &.approvalStage { .flex-basis(100px); }
+	      &.type { .flex-basis(150px); }
+	      &.description { .flex-grow(1); .flex-basis(250px); }
+	      &.region { .flex-basis(150px); }
+        &.remind { .flex-basis(150px);text-align:center;}
+	      &.comments { .flex-grow(1); .flex-basis(300px); }
+	      &.pendingDays { .flex-basis(150px); }
+	      &.groupName  { .flex-basis(150px); }
+	      &.approvalStage { .flex-basis(150px);text-align: center; }
 	    }
 	  }
 }
