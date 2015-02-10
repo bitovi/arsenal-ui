@@ -730,6 +730,7 @@ function clearOldEditData(componentstate){
      self.scope.attr("baseModelParamList").replace([]); 
      self.scope.attr("modelname", "");
      self.scope.attr("pricingmodeltype", "");
+     self.scope.pmVersion.replace([]);
      $('#country-lic-grid').html(stache('<countrylic-grid emptyrows="{emptyrows}"></countrylic-grid>')({}));
      
     self.scope.attr("isCommentData", false);

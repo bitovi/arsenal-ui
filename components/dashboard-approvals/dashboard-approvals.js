@@ -57,7 +57,55 @@ var DashboardApprovals = Component.extend({
     },
     "tbody>tr td dblclick": function(item, el, ev){
         var self = this;
-        //self.scope.appstate.attr('page','payment-bundles');
+
+        var screenName =  "licensor";//el.closest('input .valueScreenName');
+        var tableId = 599;//el.closest('input .valueId');
+
+        if(screenName!= undefined && screenName!= null && screenName != "") {
+
+          self.scope.appstate.attr("screenName", screenName);
+
+        }
+
+        if(tableId!= undefined && tableId!= null && tableId != "") {
+          
+          //self.scope.appstate("tableId", tableId);
+          self.scope.appstate.attr("tableId", 599);
+
+        }
+
+        //screenName = "licensor";
+
+        if( screenName!= undefined && screenName!= null && tableId!= undefined && tableId!= null ) {
+
+          if(screenName == 'licensor') {
+
+            self.scope.appstate.attr('page','licensor');
+
+          } else if(screenName == 'licensorcountry') {
+
+            self.scope.appstate.attr('page','ref-licensorcountry');
+
+          } else if(screenName == 'country') {
+
+            self.scope.appstate.attr('page','ref-country');
+
+          } else if(screenName == 'pricing-models') {
+
+            self.scope.appstate.attr('page','pricing-models');
+
+          }
+
+        } else {
+
+          self.scope.appstate.attr('page','payment-bundles');
+
+        }
+
+        self.scope.appstate.attr('page','payment-bundles');
+
+
+
         commonUtils.navigateTo("payment-bundles");
     },
     '{scope.appstate} change': function() {

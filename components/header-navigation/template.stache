@@ -26,7 +26,10 @@
                <li name = 'logout' class='rightmenu logout'>&nbsp;</li>
                <li class='rightmenu bookmark'>&nbsp;</li>
                <li class='rightmenu notification'>&nbsp;</li>
-               <book-mark appstate="{appstate}"></book-mark>
+               <!--Bookmark  - Palceholder -->
+               <div class="bookMarkPalceHolder" >
+               </div>
+
           </ul>
       </div>
   </div>

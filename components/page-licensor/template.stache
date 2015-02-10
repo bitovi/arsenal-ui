@@ -312,17 +312,17 @@
 			    							
 			    							<td can-value="countries">
 					    						{{#each countries}}
-					    							<div  style="height:1.5em"><input type="checkbox" value="{{name}}" class="countryBox" val="false"/></div>
+					    							<div class="tableDiv"><input type="checkbox" value="{{name}}" class="countryBox" val="false"/></div>
 					    						{{/each}}
 					    					</td>
 					    					<td can-value="countries" class="countryReportColumn">
 					    						{{#each countries}}
-					    							<div style="height:1.5em">{{name}}</div>
+					    							<div class="tableDiv">{{name}}</div>
 					    						{{/each}}
 					    					</td>
-					    					<td can-value="reportTypes" class="countryReportColumn">
+					    					<td can-value="reportTypes">
 					    						{{#each reportTypes}}
-					    							<div  style="height:1.5em"><input type="checkbox" value="{{actualName}}"  actualValue= "{{name}}" class="reportBox"  val="false"/> {{name}}</div>
+					    							<div  class="tableDiv"><input type="checkbox" value="{{actualName}}"  actualValue= "{{name}}" class="reportBox"  val="false"/> {{name}}</div>
 					    						{{/each}}
 					    					</td>
 					    					
