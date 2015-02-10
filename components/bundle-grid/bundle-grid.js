@@ -31,6 +31,13 @@ var BundleGrid = ScrollingGrid.extend({
       setValue: function(row, newValue) {
         row.attr('bundleName', newValue);
         //console.log("newValue :"+newValue+", bundle_id :"+row.bundleId)
+      },
+      contents: function(row) {
+        if(row.editable){
+          return stache('{{bundleName}}<img id="bundleEditImage" src="/resources/images/Edit_small.png" {{data \'row\'}}/>')({bundleName: row.bundleName},row);
+        }else{
+          return row.bundleName;
+        }
       }
     },
     {
@@ -94,7 +101,7 @@ var BundleGrid = ScrollingGrid.extend({
     },
     cellContents: function(row, column) {
       if(this.attr('editingRow') === row && this.attr('editingColumn') === column) {
-        return stache('<div class="input-group"><input  type="text"  autofocus value="{{value}}" style="min-width: 200px;" class="form-control resizeBox editing" ><div class="input-group-btn"><button  class="btn btn-default cancelBundleEdit" style="background: url(\'/resources/images/close.png\') no-repeat;background-size: 22px 22px;background-position: 50% 50%;" type="button"/><button  class="btn btn-default editName" style="background: url(\'/resources/images/checkMarkDark.png\') no-repeat;background-position: 50% 50%;" type="button"/></div></div>')({value: row.bundleName});
+        return stache('<div class="input-group"><input  type="text"  autofocus value="{{value}}" style="min-width: 200px;" class="form-control resizeBox editing" ><div class="input-group-btn"><button  class="btn btn-default cancelBundleEdit" style="background: url(\'/resources/images/ActionCancel.png\') no-repeat;background-size: 22px 22px;background-position: 50% 50%;" type="button"/><button  class="btn btn-default editName" style="background: url(\'/resources/images/checkMarkDark.png\') no-repeat;background-position: 50% 50%;" type="button"/></div></div>')({value: row.bundleName});
       } else {
         return ScrollingGrid.prototype.helpers.cellContents.call(this, row, column);
       }
@@ -131,17 +138,6 @@ var BundleGrid = ScrollingGrid.extend({
           component.scope.atBottomHandler.call(component, doneCallback);
         }
       });
-    },
-    'td dblclick': function(el, ev) {
-      var column = el.data('column').column;
-      if(column.editable) {
-        can.batch.start();
-        this.scope.attr('editingRow', el.closest('tr').data('row').row);
-        this.scope.attr('editingColumn', column);
-        can.batch.stop();
-      } else {
-        console.log('You cannot edit this.');
-      }
     },
     '.editName click': function(el, ev) {
       // do validation here first
@@ -186,9 +182,17 @@ var BundleGrid = ScrollingGrid.extend({
         'editingRow': null,
         'editingColumn': null
       });
-
-
-
+    },
+    '#bundleEditImage click': function(el, ev) {
+      var column = el.closest('td').data('column').column;
+      if(column.editable) {
+        can.batch.start();
+        this.scope.attr('editingRow', el.closest('tr').data('row').row);
+        this.scope.attr('editingColumn', column);
+        can.batch.stop();
+      } else {
+        console.log('You cannot edit this.');
+      }
     },
     'tbody tr click': function(el, ev) {
       //if(el.data('row') == undefined) return false;
