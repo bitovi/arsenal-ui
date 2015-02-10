@@ -16,16 +16,12 @@ var InboxGrid = ScrollingGrid.extend({
       id: 'region',
       title: 'Region'
     }, {
+      id: 'description',
+      title: 'Description'
+    }, {
       id: 'createdBy',
       title: 'Initiated By',
       contents: row => row.createdBy || ''
-    }, {
-      id: 'description',
-      title: 'Description'
-    },  {
-      id: 'previousApprover',
-      title: 'Previous Approver',
-      contents: row => row.previousApprover || ''
     }, {
       id: 'pendingDays',
       title: 'Pending',
@@ -44,6 +40,10 @@ var InboxGrid = ScrollingGrid.extend({
       id: 'comments',
       title: 'Comments',
       contents: row => row.comments || ''
+    },  {
+      id: 'previousApprover',
+      title: 'Previous Approver',
+      contents: row => row.previousApproverName || ''
     }],
     strippedGrid:true
   },

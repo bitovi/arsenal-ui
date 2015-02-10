@@ -2,7 +2,7 @@
 @import 'components/grid/examples/scrolling-grid/scrolling-grid.less';
 
 @step-border-color: #c6c6c6;
-@approved-color: #d0e3c3;
+@approved-color: #669933; //#D0E3C3; changed as per the 19770183 UI - Look & feel changes accross mulitple screens
 @light-border: 1px solid hsl(0, 0%, 75%);
 
 .flex-basis(@basis) {
@@ -50,12 +50,14 @@ rn-inbox-grid, rn-outbox-grid {
     display: inline-block;
     position: relative;
     top: -3px;
-    margin-left: -3px;
-    margin-right: -3px;
+    margin-left: -2px; //changed to resolve overlapping
+    margin-right: -2px;//changed to resolve overlapping
   }
 
-  button.remind {
-    float: right;
+  img.remind {
+    float: center;
+    height: 18px;
+    width: 18px;
   }
 
   table.scrolling {
@@ -76,15 +78,23 @@ rn-inbox-grid, rn-outbox-grid {
       //border-bottom: 1px solid #bfbfbf;
      }
 
-    tr > th, tr > td {
-      &.type { .flex-basis(75px); }
-      &.description { .flex-basis(300px); }
-      &.region { .flex-basis(100px); }
-      &.createdBy { .flex-basis(100px); }
-      &.previousApprover { .flex-basis(130px); }
-      &.comments { .flex-grow(1); .flex-basis(325px); }
-      &.pendingDays { .flex-basis(75px); }
-      &.approvalStage { .flex-basis(100px); }
+     thead {
+       tr {
+         th, td {
+           text-align:center !important;
+         }
+       }
+     }
+
+     tr > th, tr > td {
+      &.type { .flex-basis(150px); }
+      &.description { .flex-grow(1); .flex-basis(250px); }
+      &.region { .flex-basis(150px); }
+      &.createdBy { .flex-basis(150px); }
+      &.previousApprover { .flex-basis(150px); }
+      &.comments { .flex-grow(1); .flex-basis(300px); }
+      &.pendingDays { .flex-basis(150px); }
+      &.approvalStage { .flex-basis(150px);text-align: center; }
     }
   }
 }

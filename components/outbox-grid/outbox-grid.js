@@ -18,14 +18,11 @@ var OutboxGrid = ScrollingGrid.extend({
       id: 'region',
       title: 'Region'
     }, {
-      id: 'currentlyWith',
-      title: 'Currently With',
-      contents: function(row) {
-        return stache('<span class="name">{{previousApprover}}</span><button class="remind btn btn-primary btn-custom-small">Remind</button>')(row);
-      }
-    }, {
       id: 'description',
       title: 'Description'
+    }, {
+      id: 'groupName',
+      title: 'Currently With'
     }, {
       id: 'pendingDays',
       title: 'Pending',
@@ -43,6 +40,12 @@ var OutboxGrid = ScrollingGrid.extend({
     }, {
       id: 'comments',
       title: 'Comments'
+    }, {
+      id: 'remind',
+      title: 'Remind',
+      contents: function(row) {
+        return stache('<span class="name">{{previousApprover}}</span><img class="remind" src="/resources/images/rn_NotifyActive@2x.png"/>')(row);
+      }
     }],
     strippedGrid:true
   },
