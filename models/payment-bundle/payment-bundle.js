@@ -205,6 +205,22 @@ var PaymentBundle = Model.extend({
     var d = can.Deferred();
     d.resolve(this);
     return d;
+  },
+  editBundleName: function(bundleId,bundleNameEdited){
+
+
+    return $.ajax({
+      url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/editBundleName',
+      type: 'POST',
+      data: {
+        paymentBundle: {
+          bundleId: bundleId,
+          bundleName: bundleNameEdited
+        }
+      },
+      processData: false
+    });
+
   }
 }, {
   define: {
