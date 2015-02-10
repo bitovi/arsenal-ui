@@ -31,4 +31,6 @@
       </div>
   </div>
 </div>
-<global-parameter-bar appstate="{appstate}" {{renderGlobalSearch}} ></global-parameter-bar>
+<!--GloablSearch Parameter - Palceholder -->
+<div class="gParamSearchbar" {{renderGlobalSearch}} >
+</div>

@@ -1,5 +1,6 @@
 import Component from 'can/component/';
 
+import stache from 'can/view/stache/';
 import template from './template.stache!';
 import styles from './header-navigation.less!';
 import roles from 'models/roles/';
@@ -10,6 +11,7 @@ import RinsCommon from 'utils/urls';
 import logout from 'models/common/logout/';
 import commonUtils from 'utils/commonUtils';
 import pagelogout from 'components/page-logout/';
+
 
 
 var headerNavigation = Component.extend({
@@ -27,9 +29,7 @@ var headerNavigation = Component.extend({
 
       Promise.all([
         roles.findAll(UserReq.formRequestDetails(genObj))
-
-        ]).then(function(values) {
-
+      ]).then(function(values) {
           var role = {
             permissions: values[0]
           };
@@ -41,25 +41,30 @@ var headerNavigation = Component.extend({
           self.scope.roles.replace(values[0]);
           self.scope.appstate.userInfo.attr("displayName",role.permissions[0].firstName +" "+role.permissions[0].lastName);
           self.scope.appstate.userInfo.attr("prsId",role.permissions[0].userId);
+          //Remove the existing role, if any
+          if(self.scope.appstate.userInfo.roleIds !=undefined ){
+            self.scope.appstate.userInfo.roleIds.splice(0);
+            self.scope.appstate.userInfo.roleIds.push(role.permissions[0].roleId);
+          }else{
+            var roleIds = [];
+            roleIds.push(role.permissions[0].roleId);
+            self.scope.appstate.userInfo.attr("roleIds",roleIds);
+          }
 
           var screenId= [] ;
           for(var i = 0, size = role.permissions.length; i < size ; i++)
           {
-              //self.scope.appstate.userInfo.attr("roleIds",role.permissions[i].roleId);
               screenId.push(role.permissions[i].screenId) ;
           }
           self.scope.attr("allowedScreenId",screenId );
-
             //added to show only the permitted screens
-          //  console.log("Allowed Screen Id=="+screenId);
             //method starts here
             for(var i=0; i<menu.length; i++)
             {
               var removeId = [] ;
                 for(var x=0; x< menu[i].submenu.length; x++)
                 {
-                //  console.log("Screen Name==="+menu[i].submenu[x].value);
-                //  console.log("screenId.indexOf(menu[i].submenu[x].screenId)====="+screenId.indexOf(menu[i].submenu[x].screenId));
+
                   if(screenId.indexOf(menu[i].submenu[x].screenId) == -1)
                   {
                     removeId.push(x);
@@ -68,15 +73,16 @@ var headerNavigation = Component.extend({
                 }
                 for (var y = removeId.length-1; y >= 0; y--)
                 {
-                //  console.log("removing removeId[y]=" +removeId[y]);
                   menu[i].submenu.splice(removeId[y],1);
-
                 }
-
             }
             //ends here
-
+            var appstate = self.scope.appstate;
+            $('.gParamSearchbar').append(stache('<global-parameter-bar appstate="{appstate}"></global-parameter-bar>')({appstate}));
           });
+
+
+
         },
     events:{
       '.bookmark click':function(){

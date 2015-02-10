@@ -30,11 +30,11 @@ var stateDefaults = {
   // for right now, this is just a mock-up
   userInfo: {
     token: 'FAKE TOKEN',
-    prsId: '2002005722',
-    displayName:'',
-    roleIds: [2],
+    //prsId: '2002005719',
+    //displayName:'',
+    //roleIds: [3],
     appId: '1179',
-    permissions:[],
+    //permissions:[],
     secretKey: 'f4166789-30bb-4e12-9973-a76376745096'
   },
 
