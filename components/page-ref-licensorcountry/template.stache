@@ -60,7 +60,7 @@
       <div class="col-sm-12" id="loading_img"></div>
       <div class="col-sm-12 mainLayoutId" >
 
-          <div class="col-sm-5 right-border" style="height:550px"><!-- LEFT Layout START-->
+          <div class="col-sm-6 right-border" style="height:550px"><!-- LEFT Layout START-->
             <div class="form-group">
               <div class="col-sm-6">
                 <label for="forId" class="col-sm-7 control-label">ID: </label>
@@ -187,7 +187,7 @@
 
 
 
-          <div class="col-sm-7 left-border" style="height:550px"> <!-- RIGHT Layout START-->
+          <div class="col-sm-6 left-border" style="height:550px"> <!-- RIGHT Layout START-->
             <div class="form-group">
               <div class="col-sm-1"></div>
               <div class="col-sm-6">
