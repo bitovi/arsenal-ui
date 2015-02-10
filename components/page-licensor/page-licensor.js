@@ -919,19 +919,6 @@ var page = Component.extend({
     addRow : function() {
       setTimeout(function(){
         alignGridStats('societyContacts');
-        $("#societyContacts .noRecords").remove();
-        for(var i=0;i<=$("#societyContacts>table>thead>tr>th").length;i++){
-          var scTdWidth=$("#societyContacts>table>tbody>tr>td:nth-child("+i+")").outerWidth();
-          var scThwidth=$("#societyContacts>table>thead>tr>th:nth-child("+i+")").outerWidth();
-          if(scTdWidth<scThwidth){
-              $("#societyContacts>table>tbody>tr>td:nth-child("+i+")").css('width',$("#societyContacts>table>thead>tr>th:nth-child("+i+")").outerWidth());
-              $("#societyContacts>table>thead>tr>th:nth-child(("+i+")").css('width',$("#societyContacts>table>tbody>tr>td:nth-child("+i+")").outerWidth());
-          }else{
-            
-            $("#societyContacts>table>tbody>tr>td:last-child>input").css('width',"96%");
-          }
-        }
-
       },0);
       var self = this;
 
@@ -2035,17 +2022,6 @@ var page = Component.extend({
         setTimeout(function(){
           alignGridStats('societyContacts');
           $("#societyContacts .noRecords").remove();
-          /*for(var i=0;i<=$("#societyContacts>table>thead>tr>th").length;i++){
-            var scTdWidth=$("#societyContacts>table>tbody>tr>td:nth-child("+i+")").outerWidth();
-            var scThwidth=$("#societyContacts>table>thead>tr>th:nth-child("+i+")").outerWidth();
-            if(scTdWidth<scThwidth){
-                $("#societyContacts>table>tbody>tr>td:nth-child("+i+")").css('width',scThwidth);
-                $("#societyContacts>table>thead>tr>th:nth-child(("+i+")").css('width',scTdWidth);
-            }else{              
-              $("#societyContacts>table>tbody>tr>td:last-child>input").css('width',"96%");
-            }
-          }*/
-
         },0);
 
         var self = this;
@@ -2274,6 +2250,10 @@ function alignGridStats(divId){
 
         if(i==1)
           tdWidth = 45;
+        if((i==1) && divId== 'societyContacts')
+          tdWidth = 100;
+        if((i==3) && divId== 'societyContacts')
+          tdWidth = 100;
         
         tableWidth += tdWidth;
         cellWidthArr.push(tdWidth);
