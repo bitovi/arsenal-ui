@@ -2035,17 +2035,16 @@ var page = Component.extend({
         setTimeout(function(){
           alignGridStats('societyContacts');
           $("#societyContacts .noRecords").remove();
-          for(var i=0;i<=$("#societyContacts>table>thead>tr>th").length;i++){
+          /*for(var i=0;i<=$("#societyContacts>table>thead>tr>th").length;i++){
             var scTdWidth=$("#societyContacts>table>tbody>tr>td:nth-child("+i+")").outerWidth();
             var scThwidth=$("#societyContacts>table>thead>tr>th:nth-child("+i+")").outerWidth();
             if(scTdWidth<scThwidth){
-                $("#societyContacts>table>tbody>tr>td:nth-child("+i+")").css('width',$("#societyContacts>table>thead>tr>th:nth-child("+i+")").outerWidth());
-                $("#societyContacts>table>thead>tr>th:nth-child(("+i+")").css('width',$("#societyContacts>table>tbody>tr>td:nth-child("+i+")").outerWidth());
-            }else{
-              
+                $("#societyContacts>table>tbody>tr>td:nth-child("+i+")").css('width',scThwidth);
+                $("#societyContacts>table>thead>tr>th:nth-child(("+i+")").css('width',scTdWidth);
+            }else{              
               $("#societyContacts>table>tbody>tr>td:last-child>input").css('width',"96%");
             }
-          }
+          }*/
 
         },0);
 
@@ -2312,7 +2311,7 @@ function alignGridStats(divId){
         var noDataTable=$('#societyContacts table').width();
         var colLength=noDataTable/($('#societyContacts table>thead>tr>th').length); 
         $('#societyContacts table>thead>tr>th').css("width",colLength);
-        $('#societyContacts table').append("<tfoot><tr><td class='noRecords' style='text-align:left;border:none;' colspan="+$('#societyContacts table>thead>tr>th').length+" width="+noDataTable+">No Records Found</td></tr></tfoot>");
+        $('#societyContacts table').append("<tfoot><tr><td class='noRecords' style='text-align:left;border:none;' colspan="+ $('#societyContacts table>thead>tr>th').length+" width="+noDataTable+">No Records Found</td></tr></tfoot>");
   }
   if(divId=="revisionHistory"){
     var rowCount= $('#'+divId+' table>tbody>tr').length;  

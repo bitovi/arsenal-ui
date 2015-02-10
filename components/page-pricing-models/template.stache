@@ -9,9 +9,9 @@
 			</div>
 		 
 			<div class="col-sm-12">
-			 	 <div class="col-sm-3 regions form-group">
-				 		<div class="col-sm-12 singleField">
-						    <label for="inputEmail3" class="col-sm-4 control-label">Region:</label>
+			 	 <div class="col-sm-3 regions form-group" style="padding-right:0;width:auto;">
+				 		<div class="col-sm-12 singleField" style="padding-top: 7px;padding-right:0;">
+						    <label for="inputEmail3" class="col-sm-3 control-label" style="margin: 2px 5px 0 0px;">Region:</label>
 						    <div class="col-sm-8 requiredBar">
 					      
 					      <select id="regions" class="form-control" name="regions" can-value="regions">
@@ -25,7 +25,7 @@
 				  	</div>
 				 </div>
 
-				<div class="col-sm-2">
+				<div class="col-sm-3">
 		 			<button id="fetch" class="btn btn-primary btn-custom-big" disabled>Fetch</button>
 		 			<button id="add"  class="btn btn-primary btn-custom-big" disabled>Add</button>
 			 	</div>
@@ -43,13 +43,13 @@
 
 	<div id="bottomsection" class="{{#if showbottomSection}}bottompartshow{{else}}bottomparthide{{/if}}">
 
-		<div class="{{#if editstate}}modelsummaryVisible col-sm-5 right-border{{else}}modelsummaryInVisible col-sm-0{{/if}}" {{#if editstate}} {{setHeight}} {{/if}}  id="modelSummaryCont">
+		<div class="{{#if editstate}}modelsummaryVisible col-sm-6 right-border{{else}}modelsummaryInVisible col-sm-0{{/if}}" {{#if editstate}} {{setHeight}} {{/if}}  id="modelSummaryCont">
 				<div class="modelsummary maxhtLeftGrid" id="modelsummary">
 				
 				</div>
 		</div>
 	
-		<div class="{{#if editstate}}col-sm-7 left-border{{else}}col-sm-12{{/if}} modelDetailContCls" {{#if editstate}} {{setHeight}} {{/if}}   id="modelDetailCont">
+		<div class="{{#if editstate}}col-sm-6 left-border{{else}}col-sm-12{{/if}} modelDetailContCls" {{#if editstate}} {{setHeight}} {{/if}}   id="modelDetailCont">
 		
 			<div class="right-pb-container">
 				<legend class="scheduler-border"></legend>
@@ -240,48 +240,37 @@
 						
 						{{#if editstate}}
 								{{#if isCommentData}}
-								 	<legend class="scheduler-border" style="margin-left: 10px;">Comments</legend>
-									<div class="col-sm-12">
+								 	<legend class="scheduler-border" style="margin-left: 50px;width:50%;">Comments</legend>
+									<div class="col-sm-6" style="margin-left:30px;">
 										<div class="col-sm-8" id="multipleComments" class="requiredBar">
 											<multiple-comments divid="usercommentsdiv" options="{multipleComments}" divheight="100" isreadOnly="n"></multiple-comments>
 										</div>
 									</div>
 								{{/if}}
 							{{else}}
-							<legend class="scheduler-border" style="margin-left: 10px;">Comments</legend>
-							<div class="col-sm-12">
+							<legend class="scheduler-border" style="margin-left: 50px;width:50%;">Comments</legend>
+							<div class="col-sm-6" style="margin-left: 30px;">
 								<div id="multipleComments" class="requiredBar">
 								<textarea class="form-control" id="usercomments" name="usercommentsdiv"  can-value="usercommentsStore"></textarea>
 								</div>
 							</div>
 							{{/if}}
 
-							
-						
-						{{#if editstate}}
-							<div  class="col-sm-4 col-sm-offset-8" >
-								<div class="col-sm-6">
-									<button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="editCancel">Cancel</button>
-								</div>
-								<div class="col-sm-6">
-									<button id="save" type="button" class="btn btn-primary btn-custom-big">Submit</button>
-								</div>
-							</div>
-						{{else}}
-							<div  class="col-sm-3 col-sm-offset-9">
-								<div class="col-sm-6">
-									<button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="addCancel">Cancel</button>
-								</div>
-								<div class="col-sm-6">
-									<button id="save" type="button" class="btn btn-primary btn-custom-big">Submit</button>
-								</div>
-							</div>
-						{{/if}}
-		  		
-
 		  		</div>	
 			</div>
 	   </div>
+	   {{#if editstate}}
+			<div  class="col-sm-12"  style="text-align:right;padding:15px 3%;">
+					<button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="editCancel">Cancel</button>
+					<button id="save" type="button" class="btn btn-primary btn-custom-big">Submit</button>
+			</div>
+		{{else}}
+			<div  class="col-sm-12" style="text-align:right;padding:15px 3%;">
+					<button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="addCancel">Cancel</button>
+					<button id="save" type="button" class="btn btn-primary btn-custom-big">Submit</button>
+			</div>
+		{{/if}}
+
 	</div> 
 	
 </form>
