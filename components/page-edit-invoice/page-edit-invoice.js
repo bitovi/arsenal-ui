@@ -38,7 +38,7 @@ import commonUtils from 'utils/commonUtils';
 
 //import Invoice from 'models/invoice/';
 
-var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[], ccidGLtxt[]"];
+var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]", "ccidGLtxt[]"];
 var mandatoryFieldCA = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
 var mandatoryField = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
 
@@ -683,26 +683,21 @@ var page = Component.extend({
 	        				if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]") && (data.field != "ccidGLtxt[]")){
 					    		$("#"+data.field+"-err").css("display", "none");
 					    	}
-							if(!self.scope.editpage){
-		        				var requireField = (self.scope.attr("invoicetypeSelect") == "2")?mandatoryFieldAdhoc:mandatoryField;
+							
+		        				var requireField = (self.scope.attr("invoicetypeSelect") == "2")? mandatoryFieldAdhoc: (self.scope.attr("invoicetypeSelect") == "3") ? mandatoryFieldCA  : mandatoryField;
 
 		        				for(var i= 0; i < requireField.length; i++){
-		        					if(!data.bv.isValidField(mandatoryField[i])){
-
-		        						 if(mandatoryField[i] == "receiveddate"){
+		        					if(!data.bv.isValidField(requireField[i])){
+		        						 data.bv.disableSubmitButtons(true);
+		        						 if(requireField[i] == "receiveddate"){
 		        						 	$('#invoiceform').bootstrapValidator('revalidateField', 'receiveddate'); /*revalidating this field. It initialized with currentdate*/
 		        						 }
 		        						 break;
 		        					}
 
 		        				}
-	        				}
-	        				if(self.scope.editpage){
-		        				if(!data.bv.isValid()){
-		        					data.bv.disableSubmitButtons(true);
-								}
-
-							}
+	        				
+	        			
 						}).on('success.form.bv', function(e) {
 							e.preventDefault();
 					});
