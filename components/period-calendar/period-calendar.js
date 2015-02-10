@@ -147,9 +147,7 @@ function callSetstyle(scope){
     }
   }else{
     //set the default style for year button
-    $('.topmenucontainer .period-calendar-yearbtn').css('background-color','#fff');
-    $('.topmenucontainer .period-calendar-yearbtn').css('border-color','#ccc');
-    $('.topmenucontainer .period-calendar-yearbtn').css('background-image','');
+    $('.topmenucontainer .period-calendar-yearbtn').removeClass('year-active');
   }
 }
 
@@ -173,9 +171,7 @@ function setActiveStyle(selectedPeriod,scope){
     scope.year=dispYear;
     $('.topmenucontainer .period-calendar-yearbtn').val(dispYear);
     //change color for selected country
-    $('.topmenucontainer .period-calendar-yearbtn').css('background-color','#1581F4');
-    $('.topmenucontainer .period-calendar-yearbtn').css('background-image','linear-gradient(to bottom, #1581f4, #63adf1)');
-    $('.topmenucontainer .period-calendar-yearbtn').css('border-color','#0a66cb');
+    $('.topmenucontainer .period-calendar-yearbtn').addClass('year-active');
     //remove selected class from li element.
     $('.period li a').removeClass('period-active');
     //add the selected color back ground
