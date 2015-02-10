@@ -79,6 +79,8 @@ var headerNavigation = Component.extend({
             //ends here
             var appstate = self.scope.appstate;
             $('.gParamSearchbar').append(stache('<global-parameter-bar appstate="{appstate}"></global-parameter-bar>')({appstate}));
+            $('.bookMarkPalceHolder').append(stache('<book-mark appstate="{appstate}"></book-mark>')({appstate}));
+
           });
 
 
