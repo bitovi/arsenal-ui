@@ -1285,7 +1285,7 @@ var status ="";
   return status;
 }
 function alignGrid(divId, is_aggregate){
-  //console.log("&&&&&&&&&&&&&&Align Grid Called &&&&&&&&&&&");
+  console.log("&&&&&&&&&&&&&&Align Grid Called &&&&&&&&&&&");
   var colLength = $('#'+divId+' table>thead>tr>th').length;
   var rowLength = $('#'+divId+' table>tbody>tr').length;
   var divWidth = $('#'+divId).outerWidth();
