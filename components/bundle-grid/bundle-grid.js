@@ -5,6 +5,9 @@ import _less from './bundle-grid.less!';
 import PeriodWidgetHelper from 'utils/periodWidgetHelpers';
 import gridUtils from 'utils/gridUtil';
 import stache from 'can/view/stache/';
+import commonUtils from 'utils/commonUtils';
+import PaymentBundle from 'models/payment-bundle/';
+
 
 var BundleGrid = ScrollingGrid.extend({
   tag: 'rn-bundle-grid',
@@ -27,7 +30,7 @@ var BundleGrid = ScrollingGrid.extend({
       editable: true,
       setValue: function(row, newValue) {
         row.attr('bundleName', newValue);
-        console.log("newValue :"+newValue+", bundle_id :"+row.bundleId)
+        //console.log("newValue :"+newValue+", bundle_id :"+row.bundleId)
       }
     },
     {
@@ -91,7 +94,7 @@ var BundleGrid = ScrollingGrid.extend({
     },
     cellContents: function(row, column) {
       if(this.attr('editingRow') === row && this.attr('editingColumn') === column) {
-        return stache('<input class="editing" value="{{value}}"/>')({value: row.bundleName});
+        return stache('<div class="input-group"><input  type="text"  autofocus value="{{value}}" style="min-width: 200px;" class="form-control resizeBox editing" ><div class="input-group-btn"><button  class="btn btn-default cancelBundleEdit" style="background: url(\'/resources/images/close.png\') no-repeat;background-size: 22px 22px;background-position: 50% 50%;" type="button"/><button  class="btn btn-default editName" style="background: url(\'/resources/images/checkMarkDark.png\') no-repeat;background-position: 50% 50%;" type="button"/></div></div>')({value: row.bundleName});
       } else {
         return ScrollingGrid.prototype.helpers.cellContents.call(this, row, column);
       }
@@ -140,26 +143,58 @@ var BundleGrid = ScrollingGrid.extend({
         console.log('You cannot edit this.');
       }
     },
-    'td input.editing blur': function(el, ev) {
+    '.editName click': function(el, ev) {
       // do validation here first
-      if(el.val().trim().length == 0) {
+      // console.log($(".editing").val())
+      if($(".editing").val().trim().length == 0) {
         //el.addClass('error');
+        $(".editing").css( "border", "0.1em solid red" );
+        commonUtils.displayUIMessage( "Error", "Bundlename is Mandatory!");
         console.log('error detected!');
-        return;
+        return false;
       }
+      var self = this;
 
       var column = el.closest('td').data('column').column;
       var row = el.closest('tr').data('row').row;
+
+      PaymentBundle.editBundleName(row.bundleId,$(".editing").val()).done(function(data) {
+
+        commonUtils.displayUIMessage( data.responseCode, data.responseText);
+
+        if(data.responseCode === '0000'){
+          //console.log('setting new value', el.val(), column, row);
+          column.setValue(row, $(".editing").val());
+          self.scope.attr({
+            'editingRow': null,
+            'editingColumn': null
+          });
+        }else{
+          $(".editing").css( "border", "0.1em solid red" );
+        }
+      });
+
+
+    },
+    '.cancelBundleEdit click': function(el, ev) {
+      var column = el.closest('td').data('column').column;
+      var row = el.closest('tr').data('row').row;
       //console.log('setting new value', el.val(), column, row);
-      column.setValue(row, el.val());
+
+      column.setValue(row, row.bundleName);
       this.scope.attr({
         'editingRow': null,
         'editingColumn': null
       });
+
+
+
     },
     'tbody tr click': function(el, ev) {
+      //if(el.data('row') == undefined) return false;
       var bundle = el.data('row').row;
       this.scope.pageState.attr('selectedBundle', bundle);
+
     }
   }
 });
