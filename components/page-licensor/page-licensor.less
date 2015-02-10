@@ -448,8 +448,8 @@
 
             td {
 
-              padding-right: 0.625em;
-              padding-left : 0.625em;
+              /*padding-right: 0.625em;
+              padding-left : 0.35em;*/
               padding-top  : 0em;
               padding-bottom : 0em;
               font-size: 12px;
@@ -684,7 +684,16 @@
             white-space: nowrap;
           }
           tr{
+             background: #ffffff;
             width:100%;
+          }
+          tr > td > div:nth-child(odd){
+             background: #f9f9f9;
+              border-bottom: 1px solid #FFFFFF !important;
+          }
+          tr > td > div:nth-child(even){
+            background: #f0f0f0;
+             border-bottom: 1px solid #FFFFFF !important;
           }
           thead, tbody {
             display: block;
@@ -790,4 +799,8 @@ multiple-comments .multiple-comments-parent{
 .deleteCheckBox{
   width: 1%;
   padding:5px;
+}
+.tableDiv{
+  height: 2em;
+  padding-left: 0.5em;
 }

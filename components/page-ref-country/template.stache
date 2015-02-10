@@ -39,7 +39,7 @@
 
   <div class="col-sm-12 lineDividerInvoice main-layout"><!-- Main Layout START-->
     <form id="countryForm" >
-      <div class="col-sm-5 left-layout"><!-- LEFT Layout START-->
+      <div class="col-sm-6 left-layout"><!-- LEFT Layout START-->
             <div id="loading_img1"></div> 
             <div class="form-group">
                <div class="col-sm-10">
@@ -197,7 +197,7 @@
         </div>
         <!-- LEFT Layout END-->
 
-        <div class="col-sm-7 right-layout"> <!-- RIGHT Layout START-->
+        <div class="col-sm-6 right-layout"> <!-- RIGHT Layout START-->
           <div class="form-group">
             <div class="col-sm-1"></div>
              <div class="col-sm-11">
