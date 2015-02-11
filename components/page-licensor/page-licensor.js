@@ -2260,9 +2260,23 @@ function alignGridStats(divId){
       }
 
       if(tableWidth < divWidth){
-        var moreWidth = (divWidth-tableWidth)/colLength;
+        var moreWidth = (divId == "repConfiguration")?(divWidth-tableWidth):(divWidth-tableWidth)/colLength;
+        
         for(var j=1;j<=cellWidthArr.length;j++){
-          var width = cellWidthArr[j-1]+moreWidth;
+            if(divId == "repConfiguration"){
+              if(j == cellWidthArr.length){
+                var width = cellWidthArr[j-1]+moreWidth;
+              }
+              else{
+                var width = cellWidthArr[j-1];
+              }
+            }
+            else
+            {
+              var width = cellWidthArr[j-1]+moreWidth;
+            }
+          
+          
 
           $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);          
           $('#'+divId+' table>thead>tr>th:last-child').css("width",width+1);

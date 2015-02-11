@@ -1189,7 +1189,8 @@ var page = Component.extend({
 									                $("#invmessageDiv").hide();
 									             },5000) */
 
-									            commonUtils.displayUIMessageWithDiv("#invmessageDiv", values[0].status, msg);
+									            //commonUtils.displayUIMessageWithDiv("#invmessageDiv", values[0].status, msg);
+									            commonUtils.showSuccessMessage(msg);
 
 									            if(values[0].invoices[0].errors)
 								           		{
@@ -1199,8 +1200,8 @@ var page = Component.extend({
 								           		if(errorMap){
   									       		  var msg =showErrorDetails(errorMap, "Warning");
   									       		 // showMessages(msg, "#invWarningMsgDiv");
-  									       		  commonUtils.displayUIMessageWithDiv("#invWarningMsgDiv", "ERROR", msg);
-
+  									       		  //commonUtils.displayUIMessageWithDiv("#invWarningMsgDiv", "ERROR", msg);
+  									       		  commonUtils.showErrorMessage(msg);
 
                               					}
                         						$("#invoiceform")[0].reset();
@@ -1264,7 +1265,8 @@ var page = Component.extend({
 
 												//$("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
 										        //$("#invmessageDiv").show();
-										        commonUtils.displayUIMessageWithDiv("#invmessageDiv", "ERROR", msg);
+										        //commonUtils.displayUIMessageWithDiv("#invmessageDiv", "ERROR", msg);
+										        commonUtils.showErrorMessage(msg);
 										        $("#addInvSubmit").attr("disabled", false);
 
 										    }
@@ -1552,14 +1554,15 @@ var page = Component.extend({
           }
 
           function showMessages(msg, divid){
-          	if(!divid){
-          		divid = "#invmessageDiv";
-          	}
-            $(divid).html("<label class='errorMessage'>"+msg+"</label>")
-             $(divid).show();
-             setTimeout(function(){
-                $(divid).hide();
-             },5000)
+          	// if(!divid){
+          	// 	divid = "#invmessageDiv";
+          	// }
+           //  $(divid).html("<label class='errorMessage'>"+msg+"</label>")
+           //   $(divid).show();
+           //   setTimeout(function(){
+           //      $(divid).hide();
+           //   },5000)
+           commonUtils.showErrorMessage(msg);
           }
 
 					var updatePeriodCalender = function(elementID){

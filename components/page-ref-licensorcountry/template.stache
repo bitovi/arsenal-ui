@@ -23,7 +23,7 @@
 
       <div class="form-group col-sm-12">
 
-        <div class="col-sm-3 licensorDrop">
+        <div class="col-sm-4 licensorDrop">
           <label for="forEntity" class="col-sm-4 control-label">Licensor: </label>
           <div class="col-sm-6">
             <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.entityId' id="licensorId">
@@ -62,23 +62,23 @@
 
           <div class="col-sm-6 right-border" style="height:550px"><!-- LEFT Layout START-->
             <div class="form-group">
-              <div class="col-sm-6">
-                <label for="forId" class="col-sm-7 control-label">ID: </label>
-                <div class="col-sm-4" style="text-align:left;padding-left:0px;font-size: 12px;">{{pageState.entityCountryDetails.entityCountry.id}}</div>
+              <div class="col-sm-12">
+                <label for="forId" class="col-sm-4 control-label">ID: </label>
+                <div class="col-sm-8" style="text-align:left;padding-left:0px;font-size: 12px;">{{pageState.entityCountryDetails.entityCountry.id}}</div>
               </div>
-              <div class="col-sm-6"></div>
+             
             </div>
             <div class="form-group">
-              <div class="col-sm-6">
-                <label for="forStatus" class="col-sm-7 control-label">Status: </label>
-                <div class="col-sm-4" style="text-align:left;padding-left:0px;font-size: 12px;">{{pageState.entityCountryDetails.entityCountry.status}}</div>
+              <div class="col-sm-12">
+                <label for="forStatus" class="col-sm-4 control-label">Status: </label>
+                <div class="col-sm-8" style="text-align:left;padding-left:0px;font-size: 12px;">{{pageState.entityCountryDetails.entityCountry.status}}</div>
               </div>
-              <div class="col-sm-6"></div>
+             
             </div>
             <div id="ref-period-container">
               <div class="form-group">
-                <div class="col-sm-6 validFrom">
-                  <label for="forValidFrom" class="col-sm-7 control-label">Valid From: </label>
+                <div class="col-sm-12 validFrom">
+                  <label for="forValidFrom" class="col-sm-4 control-label">Valid From: </label>
                   <div class="col-sm-4 requiredBar" style="padding-left: 1px;">
                     <div class="calendarcls">
                       <input type='text' id="validFrom" name="validFrom" class="form-control inputMonth updateperoid"  can-value='pageState.entityCountryDetails.entityCountry.validFrom'/>
@@ -87,12 +87,12 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-sm-6"><div class='period-invalid'> Invalid Period !</div></div>
+                <div class="col-sm-4"><div class='period-invalid'> Invalid Period !</div></div>
               </div>
               <div class="form-group">
-                <div class="col-sm-6 ">
-                  <label for="forValidTo" class="col-sm-7 control-label">Valid To: </label>
-                  <div class="col-sm-4 normalBar">
+                <div class="col-sm-12 ">
+                  <label for="forValidTo" class="col-sm-4 control-label">Valid To: </label>
+                  <div class="col-sm-8 normalBar">
                     <div class="calendarcls">
                       <input type='text' id="validTo" name="validTo" class="form-control updateperoid inputMonth"  can-value='pageState.entityCountryDetails.entityCountry.validTo'/>
                       <span class="calendarDateIcon"><i class="glyphicon-calendar glyphicon"></i></span>
@@ -100,13 +100,13 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-sm-6"></div>
+                
               </div>
             </div>
             <div class="form-group">
-              <div class="col-sm-6">
-                <label for="forInvoiceCurr" class="col-sm-7 control-label">Invoice Currency: </label>
-                <div class="col-sm-4 requiredBarNone">
+              <div class="col-sm-12">
+                <label for="forInvoiceCurr" class="col-sm-4 control-label">Invoice Currency: </label>
+                <div class="col-sm-8 requiredBarNone">
                   <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.invoiceCurr' name="invoiceCurr" id="invoiceCurr">
                     <option value="">Select</option>
                     {{#each currencies}}
@@ -115,38 +115,46 @@
                   </select>
                 </div>
               </div>
-              <div class="col-sm-6"></div>
+              
             </div>
+            
             <div class="form-group">
-              <div class="col-sm-6">
-                <label for="forEntityPricingModelId" class="col-sm-7 control-label"  >Pricing Model:</label>
-                <div class="col-sm-5 requiredBar" style="padding-left: 2px;">
-                  <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelVersionNo' name="entityPricingModelId" id="entityPricingModelId">
-                    {{#each pricingModels}}
-                    <option value="{{modelName}}">{{modelName}}</option>
-                    {{/each}}
-                  </select>
+               <div class="col-sm-12">
+                  <label for="forInvoiceCurr" class="col-sm-4 control-label">Pricing Model: </label>
+                    
+                    <div class="col-sm-8" style="padding-left:0px;">
+                  
+                        <div class="col-sm-4 requiredBar" style="padding-left: 2px;">
+                          <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelVersionNo' name="entityPricingModelId" id="entityPricingModelId">
+                            {{#each pricingModels}}
+                            <option value="{{modelName}}">{{modelName}}</option>
+                            {{/each}}
+                          </select>
+                        </div>
+                
+                        <div class="col-sm-6">
+                          <div class="col-sm-2" style="padding-left:0px;">
+                            <select style="width:auto;margin-left:3px;" class="form-control" can-value='pageState.entityCountryDetails.pricingModelId' id="entityPricingModelVersionId" >
+                              {{#each pricingModelVersions}}
+                              <option value="{{id}}">{{value}}</option>
+                              {{/each}}
+                            </select>
+                          </div>
+                          <div class="col-sm-1"></div>
+                          <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="pricingModelBtn" style="margin-left: -20px;">...</button>
+                        </div>
+                    
+                    </div>
+                
                 </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="col-sm-2" style="padding-left:0px;margin-left: 40px;">
-                  <select style="width:auto;margin-left:3px;" class="form-control" can-value='pageState.entityCountryDetails.pricingModelId' id="entityPricingModelVersionId" >
-                    {{#each pricingModelVersions}}
-                    <option value="{{id}}">{{value}}</option>
-                    {{/each}}
-                  </select>
-                </div>
-                <div class="col-sm-1"></div>
-                <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="pricingModelBtn" style="margin-left: -20px;">...</button>
-              </div>
             </div>
 
 
 
             <div class="form-group">
-              <div class="col-sm-6 ">
-                <label for="forValidTo" class="col-sm-7 control-label">Pricing Method: </label>
-                <div class="col-sm-5 normalBar">
+              <div class="col-sm-12 ">
+                <label for="forValidTo" class="col-sm-4 control-label">Pricing Method: </label>
+                <div class="col-sm-8 normalBar">
                   <select  class="form-control inputMonth" can-value='pageState.entityCountryDetails.entityCountry.pricingMethod'>
                     {{#each pricingMethods}}
                     <option value="{{exp_method}}">{{exp_method}}</option>
@@ -154,27 +162,26 @@
                   </select>
                 </div>
               </div>
-              <div class="col-sm-6"></div>
+              
             </div>
 
-
             <div class="form-group">
-              <div class="col-sm-12">
-                <div class="col-sm-6">
-                  <div class="col-sm-7"></div>
-                  <label class="checkbox col-sm-5" style="white-space: nowrap;"><input type="checkbox" can-value="pageState.entityCountryDetails.entityCountry.laEnabled" class="laCheckBox">London Agreement</label>
+              <div class="col-sm-12 ">
+                <label for="forValidTo" class="col-sm-4 control-label">London Agreement: </label>
+                <div class="col-sm-8 normalBar">
+                  <input type="checkbox" can-value="pageState.entityCountryDetails.entityCountry.laEnabled" class="laCheckBox">
                 </div>
-                <div class="col-sm-6"></div>
               </div>
+              
             </div>
 
             <div class="form-group">
-              <div class="col-sm-6 singleField">
-                <label for="forStatus" class="col-sm-7 control-label">Comments: </label>
-                <div class="col-sm-5 requiredBarNone">
+              <div class="col-sm-12 singleField">
+                <label for="forStatus" class="col-sm-4 control-label">Comments: </label>
+                <div class="col-sm-8 requiredBarNone">
                   <!-- <textarea id="historyComments"  class="form-control multiple-comments-editable form-control-comments new-comments multiple-comments-editable-height" style="min-height:120px;    max-height:200px;"  can-value="pageState.historyComments" readonly=true></textarea>
                   <textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:50px;   min-height:50px;    max-height:50px;" can-value="pageState.entityCountryDetails.comment"></textarea> -->
-                  <div class="multipleComments col-sm-8 requiredBar" id="multipleComments" style="padding-left: 17px;">
+                  <div class="multipleComments col-sm-12 requiredBar" id="multipleComments" style="padding-left: 17px;">
                   </div>
                   <div class="col-sm-4 multicomments-required"> Enter comments !</div>
                 </div>
