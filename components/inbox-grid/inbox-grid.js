@@ -4,6 +4,7 @@ import stache from 'can/view/stache/';
 import formats from 'utils/formats';
 import _less from './inbox-grid.less!';
 import ScrollingGrid from 'components/grid/examples/scrolling-grid/';
+import commonUtils from 'utils/commonUtils';
 
 var InboxGrid = ScrollingGrid.extend({
   tag: 'rn-inbox-grid',
@@ -81,6 +82,18 @@ var InboxGrid = ScrollingGrid.extend({
             }
           }
         });
+    },
+    "tbody tr dblclick": function(el, ev){
+      var row = el.data('row').row;
+      console.log(" Clicked "+row.tableName+", value :"+row.tableValue);
+
+      if(row.tableName === 'RINS_PMT_BUNDLE'){
+        var data = {  bundleId:row.tableValue};
+        this.scope.appstate.screenLookup.attr("PBR" ,data);
+        console.log(" Bundle Id Selected :  "+this.scope.appstate.screenLookup.PBR.bundleId);
+        commonUtils.navigateTo("payment-bundles");
+      }
+
     }
   }
 });

@@ -88,15 +88,18 @@ var page = Component.extend({
           resetGrids(pageState);
 
           this.scope.isPageSearch  = this.scope.appstate.globalSearch;
-          PaymentBundle.loadAll ({appstate: this.scope.appstate,paginate: this.scope.paginateAttr}).done(function(data) {
+          PaymentBundle.loadAll ({appstate: this.scope.appstate,paginate: this.scope.paginateAttr, lookForBundle : 1065}).done(function(data) {
 
             if(data.responseCode === '0000'){
+              var test = false;
               can.batch.start();
               pageState.bundles.splice(0, pageState.bundles.length);
               pageState.bundles.replace(data.paymentBundles);
               pageState.attr("recordsAvailable",data.recordsAvailable);
-
+              test = true;
               can.batch.stop();
+
+              if(test)$(".visible").click();
             }else{
               commonUtils.displayUIMessage( data.responseCode, data.responseText);
             }

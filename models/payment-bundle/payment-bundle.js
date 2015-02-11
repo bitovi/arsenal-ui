@@ -59,21 +59,31 @@ var PaymentBundle = Model.extend({
     var appstate = params.appstate;
     var data = {}
 
-    var excelOutput = appstate.attr('excelOutput') != undefined ? appstate.attr('excelOutput') : false;
-     data = {
-        bundleSearch:requestHelper.formGlobalRequest(appstate).searchRequest
-      };
-      if (params.paginate) {
-        data.bundleSearch["offset"] = params.paginate.offset;
-        data.bundleSearch["sortBy"] =  params.paginate.sortBy.attr().toString()
-        data.bundleSearch["limit"] = appstate.attr("fetchSize");
-        data.bundleSearch["sortOrder"] = params.paginate.sortDirection;
+    if(params.lookForBundle == undefined){
+      var excelOutput = appstate.attr('excelOutput') != undefined ? appstate.attr('excelOutput') : false;
+        data = {
+          bundleSearch:requestHelper.formGlobalRequest(appstate).searchRequest
+        };
+
+        if (params.paginate) {
+          data.bundleSearch["offset"] = params.paginate.offset;
+          data.bundleSearch["sortBy"] =  params.paginate.sortBy.attr().toString()
+          data.bundleSearch["limit"] = appstate.attr("fetchSize");
+          data.bundleSearch["sortOrder"] = params.paginate.sortDirection;
+        }
+
+
+        if(excelOutput!=false){
+          data["excelOutput"]=true
+        }
+    }else{
+      console.log("params.lookForBundle :"+params.lookForBundle);
+      data = {
+        paymentBundle: {
+          bundleId: params.lookForBundle
+        }
       }
-
-
-     if(excelOutput!=false){
-        data["excelOutput"]=true
-     }
+    }
 
     return $.ajax({
       url: URLs.DOMAIN_SERVICE_URL + 'paymentBundle/getAll',
@@ -233,7 +243,7 @@ var PaymentBundle = Model.extend({
       }
     }
   },
-  getDetails: function(params) {
+    getDetails: function(params) {
     var self = this;
 
     params["bundleID"] = self.bundleId;
