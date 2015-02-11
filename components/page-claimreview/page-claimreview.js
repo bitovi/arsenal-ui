@@ -23,6 +23,8 @@ import copy from 'components/copy-clipboard/';
 import gridUtils from 'utils/gridUtil';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
+import commonUtils from 'utils/commonUtils';
+
 /* Extend grid with the columns */
 Grid.extend({
   tag: "rn-claim-licensor-grid",
@@ -483,16 +485,17 @@ var page = Component.extend({
     	"#highChart click":function(){
 
         if(this.scope.details.isChild){
-          $("#messageDiv").hide();
+          //$("#messageDiv").hide();
           //$("#chartContainer").addClass("highcharts_Overlay");
           var data = this.scope.details;
              $("#highChartDetails").append(stache('<high-chart details={data}></high-chart>')({data}));
         }else{
-          $("#messageDiv").html("<label class='errorMessage'>Please select Invoice from child row to see Historical Trends</label>");
-          $("#messageDiv").show();
-          setTimeout(function(){
-              $("#messageDiv").hide();
-          },4000);
+          // $("#messageDiv").html("<label class='errorMessage'>Please select Invoice from child row to see Historical Trends</label>");
+          // $("#messageDiv").show();
+          // setTimeout(function(){
+          //     $("#messageDiv").hide();
+          // },4000);
+          commonUtils.showErrorMessage("Please select Invoice from child row to see Historical Trends.");
         }
     	},
       "#highChartDetails mousedown": function(item, el, ev){
@@ -813,11 +816,12 @@ var page = Component.extend({
             self.scope.appstate.attr("excelOutput",true);
           }else{
             $("#loading_img").hide();
-                        $("#messageDiv").html("<label class='errorMessage'>Data Not Available</label>");
-                        $("#messageDiv").show();
-                        setTimeout(function(){
-                            $("#messageDiv").hide();
-                        },4000);
+                        // $("#messageDiv").html("<label class='errorMessage'>Data Not Available</label>");
+                        // $("#messageDiv").show();
+                        // setTimeout(function(){
+                        //     $("#messageDiv").hide();
+                        // },4000);
+            commonUtils.showErrorMessage("Data Not Available");
           }
 
       },
@@ -897,11 +901,12 @@ var getClaimReviewData = function(tabView, self) {
         }
       } else {
         $("#loading_img").hide();
-        $("#messageDiv").html("<label class='errorMessage'>" + values["responseText"] + "</label>");
-        $("#messageDiv").show();
-        setTimeout(function() {
-          $("#messageDiv").hide();
-        }, 4000);
+        // $("#messageDiv").html("<label class='errorMessage'>" + values["responseText"] + "</label>");
+        // $("#messageDiv").show();
+        // setTimeout(function() {
+        //   $("#messageDiv").hide();
+        // }, 4000);
+        commonUtils.showErrorMessage(values["responseText"]);
       }
     }, function(xhr) {
       $("#loading_img").hide();
@@ -937,11 +942,12 @@ var getClaimReviewData = function(tabView, self) {
         }
       } else {
         $("#loading_img").hide();
-        $("#messageDiv").html("<label class='errorMessage'>" + values["responseText"] + "</label>");
-        $("#messageDiv").show();
-        setTimeout(function() {
-          $("#messageDiv").hide();
-        }, 4000);
+        // $("#messageDiv").html("<label class='errorMessage'>" + values["responseText"] + "</label>");
+        // $("#messageDiv").show();
+        // setTimeout(function() {
+        //   $("#messageDiv").hide();
+        // }, 4000);
+        commonUtils.showErrorMessage(values["responseText"]);
       }
 
     }, function(xhr) {
