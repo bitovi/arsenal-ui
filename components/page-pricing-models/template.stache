@@ -25,7 +25,7 @@
 				  	</div>
 				 </div>
 
-				<div class="col-sm-3">
+				<div class="col-sm-2">
 		 			<button id="fetch" class="btn btn-primary btn-custom-big" disabled>Fetch</button>
 		 			<button id="add"  class="btn btn-primary btn-custom-big" disabled>Add</button>
 			 	</div>
@@ -43,13 +43,13 @@
 
 	<div id="bottomsection" class="{{#if showbottomSection}}bottompartshow{{else}}bottomparthide{{/if}}">
 
-		<div class="{{#if editstate}}modelsummaryVisible col-sm-6 right-border{{else}}modelsummaryInVisible col-sm-0{{/if}}" {{#if editstate}} {{setHeight}} {{/if}}  id="modelSummaryCont">
+		<div class="{{#if editstate}}modelsummaryVisible col-sm-4 right-border{{else}}modelsummaryInVisible col-sm-0{{/if}}" {{#if editstate}} {{setHeight}} {{/if}}  id="modelSummaryCont">
 				<div class="modelsummary maxhtLeftGrid" id="modelsummary">
 				
 				</div>
 		</div>
 	
-		<div class="{{#if editstate}}col-sm-6 left-border{{else}}col-sm-12{{/if}} modelDetailContCls" {{#if editstate}} {{setHeight}} {{/if}}   id="modelDetailCont">
+		<div class="{{#if editstate}}col-sm-8 left-border{{else}}col-sm-12{{/if}} modelDetailContCls" {{#if editstate}} {{setHeight}} {{/if}}   id="modelDetailCont">
 		
 			<div class="right-pb-container">
 				<legend class="scheduler-border"></legend>
@@ -57,7 +57,7 @@
 					{{#if editstate}}
 					<div class="col-sm-6 form-group" style="margin-left:0px;">
 				 		<div class="singleField">
-						    <label for="inputEmail3" class="col-sm-4 control-label">Version:</label>
+						    <label for="inputEmail3" class="col-sm-3 control-label">Version:</label>
 						    <div class="col-sm-4 requiredBar">
 						    	<select  class="form-control" name="version" id="version" can-value="selectedModelId">
 							       <option value="">Select</option>
@@ -78,8 +78,8 @@
 
 					<div class="col-sm-6 form-group">
 				 		<div class="singleField">
-						    <label for="inputEmail3" class="col-sm-4 control-label">Pricing Model:</label>
-						    <div class="col-sm-8 requiredBar">
+						    <label for="inputEmail3" class="col-sm-3 control-label">Pricing Model:</label>
+						    <div class="col-sm-4 requiredBar">
 						    	<select  class="form-control" name="pricingmodeltype" id="pricingmodeltype" can-value="pricingmodeltype">
 							       <option value="">Select</option>
 							        {{#each pricingmodeltypeStore}}
@@ -91,8 +91,8 @@
 					 </div>
 					<div class="col-sm-6 form-group">
 				 		<div class="singleField">
-						    <label for="inputEmail3" class="col-sm-4 control-label">Model Name:</label>
-						    <div class="col-sm-8 requiredBar">
+						    <label for="inputEmail3" class="col-sm-3 control-label">Model Name:</label>
+						    <div class="col-sm-4 requiredBar">
 						      	<input class="form-control" type="text" name="modelname" id="modelname" can-value="modelname">
 						    </div>
 					  	</div>
