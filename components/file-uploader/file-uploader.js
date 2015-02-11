@@ -4,6 +4,7 @@ import FileUpLoader from 'models/fileuploader/';
 import compute from 'can/compute/';
 import _less from './file-uploader.less!';
 import fileManager from 'utils/fileManager/'
+import commonUtils from 'utils/commonUtils';
 
 var FileUploader = Component.extend ({
 
@@ -200,11 +201,12 @@ var FileUploader = Component.extend ({
                       if(data["status"]=="SUCCESS"){
 
                       }else{
-                        $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-                        $("#messageDiv").show();
-                        setTimeout(function(){
-                            $("#messageDiv").hide();
-                        },2000)
+                        // $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                        // $("#messageDiv").show();
+                        // setTimeout(function(){
+                        //     $("#messageDiv").hide();
+                        // },2000)
+                        commonUtils.showErrorMessage(data["responseText"]);
                       }
                 }, function(xhr) {
                       console.error("Error while downloading the file with fileId: "+fileId+xhr);
