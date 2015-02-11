@@ -1070,7 +1070,7 @@ var page = Component.extend({
           ]).then(function(data) {
             if(data[0].status == "SUCCESS") {
 
-                var msg = "Entity Details saved successfully";
+                var msg = "Licensor Details saved successfully";
                 self.attr("selectedEntity", sEntity);
                 $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
                 $("#invmessageDiv").show();
@@ -1081,7 +1081,7 @@ var page = Component.extend({
                 self.populateLicensorDetails(self.licDetails.data.licensorName);
             } else {
 
-                var msg = "Entity Details was not saved successfully";
+                var msg = "Licensor Details was not saved successfully";
                 $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
                 $("#invmessageDiv").show();
                 setTimeout(function(){
@@ -1130,7 +1130,7 @@ var page = Component.extend({
 
                 var genObj = {};
 
-                var msg = "Entity Details added successfully";
+                var msg = "Licensor Details added successfully";
 
                 $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
                 $("#invmessageDiv").show();
@@ -1152,7 +1152,7 @@ var page = Component.extend({
 
             } else {
 
-                var msg = "Entity Details was not added successfully";
+                var msg = "Licensor Details was not added successfully";
                 $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
                 $("#invmessageDiv").show();
                 setTimeout(function(){
@@ -1525,14 +1525,14 @@ var page = Component.extend({
               //group:'.licensors',
               validators: {
                   notEmpty: {
-                      message: 'Entity is mandatory'
+                      message: 'Licensor is mandatory'
                   },
                   regexp: {
                       regexp: /^[a-zA-Z0-9_\- ]*$/i,
                       message: 'Please provide valid characters'
                   },
                   callback: {
-                      message: 'Entity is mandatory',
+                      message: 'Licensor is mandatory',
                       callback: function (value, validator, $field) {
                         if(value == "Select"){
                              return false;
