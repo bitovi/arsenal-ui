@@ -50,7 +50,7 @@
 
 										</div>
 
-										<div class="col-sm-2 align-left" style="margin:-4px 0 0 0;width:120px;">
+										<div class="col-sm-1 align-left" style="margin:-4px 0 0 0;width:100px;">
 
 											<button type="button" id="analyticsAdd"  name="analyticsAdd"
 												class="btn buttonSubmit btn-custom-small" style="margin-left:15px;">Add</button>
@@ -58,7 +58,7 @@
 
 						    			</div>
 
-						    			<div class="col-sm-2 align-left" style="margin:-4px 0 0 0">
+						    			<div class="col-sm-1 align-left" style="margin:-4px 0 0 0">
 
 						    					<button type="button" id="analyticsFetch"  name="analyticsFetch"
 													class="btn buttonSubmit btn-custom-small">Fetch</button>
