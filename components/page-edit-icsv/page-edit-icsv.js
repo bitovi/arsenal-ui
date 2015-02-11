@@ -14,6 +14,7 @@ import template from './template.stache!';
 import styles from './page-edit-icsv.less!';
 
 import UserReq from 'utils/request/';
+import commonUtils from 'utils/commonUtils';
 
 import fileUpload from 'components/file-uploader/';
 import periodCalendar from 'components/period-calendar/';
@@ -1763,11 +1764,12 @@ function getCurrentDate(){
           }
 
           function showMessages(msg){
-            $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
-             $("#invmessageDiv").show();
-             setTimeout(function(){
-                $("#invmessageDiv").hide();
-             },5000)
+            // $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
+            //  $("#invmessageDiv").show();
+            //  setTimeout(function(){
+            //     $("#invmessageDiv").hide();
+            //  },5000)
+            commonUtils.showErrorMessage(msg);
           }
 
 var updatePeriodCalender = function(elementID){
