@@ -11,15 +11,77 @@
       </div>
       <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav" id='homemenu'>
-            <li name='Dashboard' {{isActive 'dashboard'}}><a href="/dashboard" id='dashboard'>Dashboard</a></li>
-            <li name='Approvals'> <a href="#">Approvals</a></li>
-            <li name='Invoices' class="dropdown"><a href="#">Invoices</a></li>
-            <li name='Reference' class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference</a></li>
-            <li name='Analytics' class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Analytics</a></li>
-            <li name='System' class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">System</a></li>
-            <li name='Approval History' class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Approval History</a></li>
-          </ul>
-          <ul class="nav navbar-nav" id='dynamicmenu'></ul>
+
+            <li><a href="/dashboard">Dashboard</a></li>
+
+            <li name='Invoices' class="dropdown" >
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Invoices<span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li {{isScreenEnabled 3}}><a href="/create-invoice">Invoice Entry</a></li>
+                    <li {{isScreenEnabled 4}}><a href='/icsv' >iCSV Entry</a></li>
+                    <li {{isScreenEnabled 5}}><a href='/invoices'>Search Invoice</a></li>
+                    <li {{isScreenEnabled 7}}><a href='/recon'>Recon Stats</a></li>
+                    <li {{isScreenEnabled 8}}><a href='/reconOther'>Incoming Other</a></li>
+                    <li {{isScreenEnabled 9}}><a href='/on-account'>On Account</a></li>
+                </ul>
+            </li>
+
+             <li {{isScreenEnabled 20}} name='Analytics' class="dropdown" >
+                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Analytics<span class="caret"></span></a>
+                 <ul class="dropdown-menu" role="menu">
+                     <li {{isScreenEnabled 21}}><a href='/payment-bundles'>Payment Bundle Review</a></li>
+                     <li {{isScreenEnabled 22}}><a href='/claimreview'>Claim Review</a></li>
+                     <li {{isScreenEnabled 23}}><a href='{{url}}globalRevenue' target="_blank">Global Revenue</a></li>
+                     <li {{isScreenEnabled 24}}><a href='{{url}}bwReport' target="_blank">Monthly Billings Reconciliation</a></li>
+                 </ul>
+             </li>
+
+            <li name='Reference' class="dropdown" >
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reference<span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li {{isScreenEnabled 16}}><a href='/licensor'>Licensor</a></li>
+                    <li {{isScreenEnabled 17}}><a href='/ref-country'>Country</a></li>
+                    <li {{isScreenEnabled 18}}><a href='/ref-licensorcountry'>Country Licensor</a></li>
+                    <li {{isScreenEnabled 19}}><a href='/pricing-models'>Pricing Model</a></li>
+                </ul>
+             </li>
+
+             <li name='Accruals' class="dropdown" >
+                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Accruals<span class="caret"></span></a>
+                 <ul class="dropdown-menu" role="menu">
+                     <li {{isScreenEnabled 11}}><a href='{{url}}accrualJV' target="_blank">Accrual Journal Voucher</a></li>
+                     <li {{isScreenEnabled 12}}><a href='{{url}}accrualDetails' target="_blank">Accrual Details</a></li>
+                     <li {{isScreenEnabled 13}}><a href='{{url}}accrualsAgingReport' target="_blank">Accruals Aging Report</a></li>
+                     <li {{isScreenEnabled 14}}><a href='{{url}}accrualTrueUp' target="_blank">Accrual Trueup</a></li>
+                     <li {{isScreenEnabled 15}}><a href='{{url}}accrualAnalysis' target="_blank">Accrual Analysis</a></li>
+                 </ul>
+             </li>
+
+              <li name='System' class="dropdown" >
+                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">System<span class="caret"></span></a>
+                   <ul class="dropdown-menu" role="menu">
+                       <li {{isScreenEnabled 25}}><a href='{{url}}jobStatistics' target="_blank">Job Statistics</a></li>
+                       <li {{isScreenEnabled 26}}><a href='{{url}}reportDownloads' target="_blank">Report Downloads</a></li>
+                   </ul>
+              </li>
+
+              <li name='Approval History' class="dropdown" >
+               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Approval History<span class="caret"></span></a>
+               <ul class="dropdown-menu" role="menu">
+                   <li {{isScreenEnabled 27}}><a href='{{url}}accrualApprovalHistory' target="_blank">Accrual Approval</a></li>
+                   <li {{isScreenEnabled 28}}><a href='{{url}}refDataHistory' target="_blank">Ref Data</a></li>
+                   <li {{isScreenEnabled 29}}><a href='{{url}}reconPaymentHistory' target="_blank">Recon Payment</a></li>
+                   <li {{isScreenEnabled 30}}><a href='{{url}}salesReportHistory' target="_blank">Sales Report</a></li>
+                   <li ><a href='{{url}}paymentReportHistory' target="_blank">Payment Report</a></li>
+                   <li ><a href='{{url}}unClaimedReportHistory' target="_blank">Unclaimed Report</a></li>
+                   <li {{isScreenEnabled 31}}><a href='{{url}}onAccountAmountHistory' target="_blank">OnAccount</a></li>
+                   <li {{isScreenEnabled 32}}><a href='{{url}}lineItemHistory' target="_blank">Dispute Report</a></li>
+                   <li {{isScreenEnabled 33}}><a href='{{url}}accrualRerunHistory' target="_blank">Accrual Rerun</a></li>
+               </ul>
+           </li>
+        </ul>
+
+          <ul class="nav navbar-nav"></ul>
           <ul id='rightsidemenu'>
             <li class='username'><img src='../../resources/images/rn_WorkflowTypePerson_completed.png' class='logedinimg'/>{{appstate.userInfo.displayName}}</li>
                <li class='bar'>|</li>
