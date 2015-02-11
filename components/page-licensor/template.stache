@@ -236,7 +236,7 @@
 			    				<label>Uploaded Files to sFTP: </label>
 							</div>
 			    			<div class="col-sm-4 inputPadding">
-			    			<input type="checkbox" id="uploadedFTP" can-value="licDetails.data.uploadedFilesToSFTP" checked="{{licDetails.data.loadedFilesToSFTP}}" class="formInputs"/>
+			    			<input type="checkbox" id="uploadedFTP" can-value="licDetails.data.uploadedFilesToSFTP" checked="{{licDetails.data.loadedFilesToSFTP}}"/>
 							</div>
 
 		    			</div>
