@@ -50,7 +50,7 @@
 
 										</div>
 
-										<div class="col-sm-2 align-left" style="margin-left:0px;width:120px;">
+										<div class="col-sm-2 align-left" style="margin:-4px 0 0 0;width:120px;">
 
 											<button type="button" id="analyticsAdd"  name="analyticsAdd"
 												class="btn buttonSubmit btn-custom-small" style="margin-left:15px;">Add</button>
@@ -58,7 +58,7 @@
 
 						    			</div>
 
-						    			<div class="col-sm-2 align-left">
+						    			<div class="col-sm-2 align-left" style="margin:-4px 0 0 0">
 
 						    					<button type="button" id="analyticsFetch"  name="analyticsFetch"
 													class="btn buttonSubmit btn-custom-small">Fetch</button>
@@ -95,7 +95,7 @@
 		<div class="col-sm-12" id="entityGrid">
 
 			
-	    	<div class="col-sm-5" id="entityGridFD">
+	    	<div class="col-sm-6" id="entityGridFD">
 	    	
 	    				<div class="col-sm-12" id="spaceBar"></div>
 	    		
@@ -279,7 +279,7 @@
 			
 			
 	 
-			<div class="col-sm-7" style="padding: 0px;">
+			<div class="col-sm-6" style="padding: 0px;">
 
 				<div class="col-sm-12" id="entityGridSD" class="entityGridSDHeight">
 

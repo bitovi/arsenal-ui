@@ -8,6 +8,7 @@ import highcharts from 'highcharts';
 import exporting from 'exporting';
 
 import UserReq from 'utils/request/';
+import commonUtils from 'utils/commonUtils';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 import HighChart from 'models/highchart/';
@@ -152,12 +153,13 @@ var highchartpage = Component.extend({
           }else{
             console.log('high chart did not return any data');
             $("#highChartDetails").addClass("highcharts_Hide");
-            $("#messageDiv").html("<label class='errorMessage'>Data not available</label>");
-            //$("#chartContainer").removeClass('highcharts_Overlay');
-            $("#messageDiv").show();
-            setTimeout(function(){
-              $("#messageDiv").hide();
-            },2000);
+            // $("#messageDiv").html("<label class='errorMessage'>Data not available</label>");
+            // //$("#chartContainer").removeClass('highcharts_Overlay');
+            // $("#messageDiv").show();
+            // setTimeout(function(){
+            //   $("#messageDiv").hide();
+            // },2000);
+            commonUtils.showErrorMessage("Data not available");
           }
           // $("#highChartDetails").resizable({
           // 	containment: 'document'

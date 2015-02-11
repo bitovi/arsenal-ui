@@ -124,7 +124,7 @@
                     
                     <div class="col-sm-8" style="padding-left:0px;">
                   
-                        <div class="col-sm-4 requiredBar" style="padding-left: 2px;">
+                        <div class="col-sm-5 requiredBar" style="padding-left: 2px;width: 160px;padding-right: 0;">
                           <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelVersionNo' name="entityPricingModelId" id="entityPricingModelId">
                             {{#each pricingModels}}
                             <option value="{{modelName}}">{{modelName}}</option>
@@ -132,15 +132,14 @@
                           </select>
                         </div>
                 
-                        <div class="col-sm-6">
-                          <div class="col-sm-2" style="padding-left:0px;">
+                        <div class="col-sm-7" style="padding: 0;">
+                          <div class="col-sm-2" style="padding-left:0px;width: 65px;">
                             <select style="width:auto;margin-left:3px;" class="form-control" can-value='pageState.entityCountryDetails.pricingModelId' id="entityPricingModelVersionId" >
                               {{#each pricingModelVersions}}
                               <option value="{{id}}">{{value}}</option>
                               {{/each}}
                             </select>
                           </div>
-                          <div class="col-sm-1"></div>
                           <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="pricingModelBtn" style="margin-left: -20px;">...</button>
                         </div>
                     

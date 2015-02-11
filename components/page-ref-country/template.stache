@@ -22,14 +22,14 @@
          <div class="form-group col-sm-12">
               <div class="col-sm-5" id="countryFetchDiv">
                  <label for="forCountry" class="col-sm-3 control-label small-headers">Country: </label>
-                 <div class="col-sm-3">
+                 <div class="col-sm-5">
                    <select class="form-control" id="selCountry" can-value='pageState.countryDetails.country.countryId'>
                        {{#each countries}}
                          <option value="{{id}}">{{value}}</option>
                         {{/each}}
                      </select>
                  </div>
-                 <div class="col-sm-2 ">
+                 <div class="col-sm-2" style="margin-top:-4px;">
                    <button id="fetchDetailsBtn" class="btn btn-primary btn-custom-small">Fetch</button>
                  </div>
                </div>
@@ -162,21 +162,21 @@
               <div class="col-sm-12">
                  <label for="" class="col-sm-4 control-label small-headers">Accural Model:</label>
                  <div class="col-sm-8 requiredBar">
-                    <div class="col-sm-4 normalBar">
+                    <div class="col-sm-6 normalBar" style="width: 160px;padding-right: 0;">
                       <select class="form-control" id="accModelSel" name="accuralModelName" can-value="{pageState.countryDetails.country.modelId}">
                         {{#each accuralModels}}
                           <option {{isSelected 'accModel' accName}} {{data 'accModel'}}>{{accName}}</option>
                          {{/each}}
                       </select>
                     </div>
-                    <div class="col-sm-1 normalBar">
+                    <div class="col-sm-2 normalBar" style="width: 40px;padding: 0;">
                       <select class="form-control" id="accModelVerSel" name="accuralModelVersion">
                           {{#each accuralModelVersions}}
                             <option {{isSelected 'accModelVer' modelId}} {{data 'accModelVer'}}>{{version}}</option>
                            {{/each}}
                       </select>
                     </div>
-                    <div class="col-sm-2 normalBar">
+                    <div class="col-sm-2 normalBar" >
                       <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="accuralModelBtn">...</button>
                     </div>
                  </div>
