@@ -1,5 +1,5 @@
 import Component from 'can/component/';
-
+import _ from 'lodash';
 import stache from 'can/view/stache/';
 import template from './template.stache!';
 import styles from './header-navigation.less!';
@@ -57,26 +57,7 @@ var headerNavigation = Component.extend({
               screenId.push(role.permissions[i].screenId) ;
           }
           self.scope.attr("allowedScreenId",screenId );
-            //added to show only the permitted screens
-            //method starts here
-            for(var i=0; i<menu.length; i++)
-            {
-              var removeId = [] ;
-                for(var x=0; x< menu[i].submenu.length; x++)
-                {
 
-                  if(screenId.indexOf(menu[i].submenu[x].screenId) == -1)
-                  {
-                    removeId.push(x);
-
-                  }
-                }
-                for (var y = removeId.length-1; y >= 0; y--)
-                {
-                  menu[i].submenu.splice(removeId[y],1);
-                }
-            }
-            //ends here
             var appstate = self.scope.appstate;
             $('.gParamSearchbar').append(stache('<global-parameter-bar appstate="{appstate}"></global-parameter-bar>')({appstate}));
             $('.bookMarkPalceHolder').append(stache('<book-mark appstate="{appstate}"></book-mark>')({appstate}));
@@ -163,10 +144,11 @@ var headerNavigation = Component.extend({
             return 'style="' + (this.appstate.attr('renderGlobalSearch') ? '' : 'display:none') + '"'
         },
         isScreenEnabled:function(screenId){
-          var index = _.indexOf(this.attr("allowedScreenId"), screenId);
-          var isEnable = 'style="display:' + ( index == -1 ? 'none' : 'block') + '"';
-
-          return isEnable
+           var index = _.indexOf(this.attr("allowedScreenId"), screenId);
+           var isEnable = 'style="display:' + ( index == -1 ? 'none' : 'block') + '"';
+        //
+        return isEnable
+        //return "abc";
 
         },
         url: function(){
