@@ -75,7 +75,7 @@ Grid.extend({
       },
       {
         id: 'entityName',
-        title: 'Entity',
+        title: 'Licensor',
         contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{entityName}}')({entityName: row.entityName, isChild: row.__isChild}); }
       },
       {
