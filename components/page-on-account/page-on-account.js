@@ -881,14 +881,16 @@ var disableProposeButton=function(disable){
 
 var displayMessage=function(message,isSuccess){
   if(isSuccess){
-    $("#messageDiv").html("<label class='successMessage'>"+message+"</label>");
+      //$("#messageDiv").html("<label class='successMessage'>"+message+"</label>");
+      commonUtils.showSuccessMessage(message);
   }else{
-      $("#messageDiv").html("<label class='errorMessage'>"+message+"</label>");
+      //$("#messageDiv").html("<label class='errorMessage'>"+message+"</label>");
+      commonUtils.showErrorMessage(message);
   }
-  $("#messageDiv").show();
-  setTimeout(function(){
-      $("#messageDiv").hide();
-  },2000)
+  //$("#messageDiv").show();
+  // setTimeout(function(){
+  //     $("#messageDiv").hide();
+  // },2000)
 }
 var hidethePeriods = function(){
               var _root = $('#calendarclsdiv')

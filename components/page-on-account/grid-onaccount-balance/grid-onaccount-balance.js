@@ -13,6 +13,7 @@ import utils from 'components/page-on-account/utils';
 import requestHelper from 'utils/request/';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
 import gridUtils from 'utils/gridUtil';
+import commonUtils from 'utils/commonUtils';
 
 var OnAccountBalance = Grid.extend({
   tag: 'rn-onaccount-balance-grid',
@@ -119,11 +120,12 @@ var OnAccountBalance = Grid.extend({
                              }
                         }
                       }else{
-                        $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-                        $("#messageDiv").show();
-                        setTimeout(function(){
-                            $("#messageDiv").hide();
-                        },2000)
+                        // $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                        // $("#messageDiv").show();
+                        // setTimeout(function(){
+                        //     $("#messageDiv").hide();
+                        // },2000)
+                        commonUtils.showErrorMessage(data["responseText"]);
                         self.scope.attr('emptyrows',true);
                       }
                 }, function(xhr) {
