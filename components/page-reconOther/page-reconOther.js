@@ -207,11 +207,12 @@ var page = Component.extend({
           if(data["status"]=="SUCCESS"){
 
           }else{
-            $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-            $("#messageDiv").show();
-            setTimeout(function(){
-                $("#messageDiv").hide();
-            },2000)
+            // $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+            // $("#messageDiv").show();
+            // setTimeout(function(){
+            //     $("#messageDiv").hide();
+            // },2000)
+            commonUtils.showErrorMessage(data["responseText"]);
           }
     }, function(xhr) {
           console.error("Error while downloading the file with fileId: "+fileId+xhr);
@@ -272,11 +273,12 @@ var page = Component.extend({
                 if(data.exportExcelFileInfo["values"]!=null)
                   $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
               }else{
-                $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-                $("#messageDiv").show();
-                setTimeout(function(){
-                    $("#messageDiv").hide();
-                },2000)
+                // $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                // $("#messageDiv").show();
+                // setTimeout(function(){
+                //     $("#messageDiv").hide();
+                // },2000)
+                commonUtils.showErrorMessage(data["responseText"]);
                 self.scope.attr('emptyrows',true);
               }
         }, function(xhr) {
@@ -391,11 +393,12 @@ var fetchReconIncoming = function(scope){
     Recon.findOne((searchRequestObj),function(data){
       $("#loading_img").hide();
       if(data.status == "FAILURE"){
-        $("#messageDiv").html("<label class='errorMessage'>"+data.responseText+"</label>");
-        $("#messageDiv").show();
-        setTimeout(function(){
-          $("#messageDiv").hide();
-        },4000);
+        // $("#messageDiv").html("<label class='errorMessage'>"+data.responseText+"</label>");
+        // $("#messageDiv").show();
+        // setTimeout(function(){
+        //   $("#messageDiv").hide();
+        // },4000);
+        commonUtils.showErrorMessage(data["responseText"]);
         console.error("Failed to load the Recon incoming other :"+data.responseText);
 
       }else  {
@@ -450,6 +453,7 @@ var fetchReconDetailsOther = function(scope, load){
   Recon.findOne((searchRequestObj),function(data){
     if(data.status == "FAILURE"){
       displayErrorMessage(data.responseText,"Failed to load the Recondetails:");
+      //commonUtils.showErrorMessage(data.responseText);
     }else  {
 
       if(load) {
@@ -576,16 +580,18 @@ var processRejectIngestRequestOther = function(scope,requestType){
         if(values != null && values.length > 0) {
           var data = values[0];
           if(data.status == "SUCCESS"){
-            $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
-            $("#messageDiv").show();
+            //$("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
+            //$("#messageDiv").show();
             
             scope.attr("incomingCcidSelected").splice(0, scope.attr("incomingCcidSelected").length);
          
             $('.statsTable').hide();
             
-            setTimeout(function(){
-              $("#messageDiv").hide();
-            },3000);
+            // setTimeout(function(){
+            //   $("#messageDiv").hide();
+            // },3000);
+            
+            commonUtils.showSuccessMessage(data.responseText);
 
             fetchReconDetailsOther(scope, false);
           }
@@ -610,11 +616,12 @@ var processRejectIngestRequestOther = function(scope,requestType){
 
       Recon.ingest((rejectSearchRequestObj)).done(function(data){
         if(data.responseCode == "0000"){
-          $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
-          $("#messageDiv").show();
-          setTimeout(function(){
-            $("#messageDiv").hide();
-          },4000);
+          // $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
+          // $("#messageDiv").show();
+          // setTimeout(function(){
+          //   $("#messageDiv").hide();
+          // },4000);
+          commonUtils.showSuccessMessage(data.responseText);
         }else{
           //error text has to be shared. TODO - not sure how service responds to it
           displayErrorMessage(data.responseText,"Failed to Ingest:");
@@ -626,12 +633,13 @@ var processRejectIngestRequestOther = function(scope,requestType){
 
 var displayErrorMessage = function(message,log){
 
-  $("#messageDiv").html("<label class='errorMessage'>"+message+"</label>");
-  $("#messageDiv").show();
-  setTimeout(function(){
-    $("#messageDiv").hide();
-  },4000);
-  console.error(log+message);
+  // $("#messageDiv").html("<label class='errorMessage'>"+message+"</label>");
+  // $("#messageDiv").show();
+  // setTimeout(function(){
+  //   $("#messageDiv").hide();
+  // },4000);
+  commonUtils.showErrorMessage(message);
+  //console.error(log+message);
 
 };
 
