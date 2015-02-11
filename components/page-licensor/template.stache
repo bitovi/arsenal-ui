@@ -27,10 +27,10 @@
 
 						    		<!-- <div class="col-sm-12"> -->
 
-						    			<div class="col-sm-4 small-headers align-left" style="text-align:right;margin-left:-82px;">
+						    			<div class="col-sm-4 small-headers textalignright align-left">
 						    				<label>Licensor:</label>
 										</div>
-						    			<div class="col-sm-4 form-group requiredBar">
+						    			<div class="col-sm-3 form-group requiredBar">
 						    			
 						    			{{getselectedEntity selectedEntity}}
 							    			<select id="licensorsFilter" name="licensorsFilter" can-value="selectedEntity" class="form-control resizeBox licensors">
@@ -50,7 +50,7 @@
 
 										</div>
 
-										<div class="col-sm-1 align-left" style="margin:-4px 0 0 0;width:100px;">
+										<div class="col-sm-2 align-left" style="margin:-4px 0 0 0;width:100px;">
 
 											<button type="button" id="analyticsAdd"  name="analyticsAdd"
 												class="btn buttonSubmit btn-custom-small" style="margin-left:15px;">Add</button>
@@ -58,7 +58,7 @@
 
 						    			</div>
 
-						    			<div class="col-sm-1 align-left" style="margin:-4px 0 0 0">
+						    			<div class="col-sm-2 align-left" style="margin:-4px 0 0 0">
 
 						    					<button type="button" id="analyticsFetch"  name="analyticsFetch"
 													class="btn buttonSubmit btn-custom-small">Fetch</button>
