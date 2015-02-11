@@ -338,6 +338,18 @@ var page = Component.extend({
         var genObj = {modelId:selmodelid,reqType:'details'};
         
         },
+        /*"#usercomments change":function(){
+
+          var pmvalid = $("#pmform").data('bootstrapValidator').isValid();
+
+          if(!pmvalid){
+           
+            $("#save").attr("disabled", true);
+          }
+          else{
+            $("#save").attr("disabled", false);
+          } 
+        },*/
 
         "#version change":function(el){
             var self = this;
@@ -577,7 +589,7 @@ var page = Component.extend({
 
    
 
-   "#add click":function(){
+   "#add click":function(){      
         var self = this;  
 
         self.scope.attr("showbottomSection", true);
@@ -599,6 +611,7 @@ var page = Component.extend({
        $("#pmform").data('bootstrapValidator').resetForm();
        $("#save").attr("disabled", true);
        return false;
+       
     },
     "#addCancel click":function(){
       this.scope.attr("showbottomSection", false);
@@ -814,7 +827,7 @@ function alignGridStats(divId){
         if(i==1 && divId== 'baseModelParam')
           tdWidth = 100;
         if((i==2 || i==3 || i==4 || i==5) && divId== 'baseModelParam')
-          tdWidth = 88;
+          tdWidth = 100;
         
         tableWidth += tdWidth;
         cellWidthArr.push(tdWidth);
