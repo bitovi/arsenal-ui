@@ -212,7 +212,7 @@
             <div class="col-sm-1"></div>
              <div class="col-sm-12">
              <div class="col-sm-12" style="margin-left: -15px;"> Society Model Mapping</div>
-             <div id="grid-society-model" style="max-height: 200px;">
+             <div id="grid-society-model" class="socModMapHt">
               <rn-grid-society-model rows="{societyModelMapping}" footerrowspresent="{footerrowspresent}" footerdata="{footerdatasocmod}"></rn-grid-society-model>
              </div>
               <!-- <div class="panel panel-default panel-sm" style="border: 1px solid #827F7F;border-radius: 0px;">
