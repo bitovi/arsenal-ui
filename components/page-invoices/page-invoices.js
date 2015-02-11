@@ -584,8 +584,12 @@ var page = Component.extend({
           var existingSortColumns =self.scope.sortColumns.attr();
           var existingSortColumnsLen = existingSortColumns.length;
           var existFlag = false;
+          var sortAttr=val[0];
           if(existingSortColumnsLen==0){
-            self.scope.attr('sortColumns').push(val[0]);
+            if(sortAttr.toUpperCase() == 'STATUS'){
+              sortAttr='displayPaymentStatus';
+            }
+            self.scope.attr('sortColumns').push(sortAttr);
           } else {
             for(var i=0;i<existingSortColumnsLen;i++){
               /* The below condition is to selected column to be sorted in asc & dec way */
@@ -596,7 +600,11 @@ var page = Component.extend({
             }
             if(existFlag==false){
               self.scope.attr('sortColumns').replace([]);
-              self.scope.attr('sortColumns').push(val[0]);
+              if(sortAttr.toUpperCase() == 'STATUS'){
+                sortAttr='displayPaymentStatus';
+              }
+              self.scope.attr('sortColumns').push(sortAttr);
+             
             } else {
               var sortDirection = (self.scope.attr('sortDirection') == 'asc') ? 'desc' : 'asc';
               self.scope.attr('sortDirection', sortDirection);
@@ -604,7 +612,7 @@ var page = Component.extend({
 
           }
 
-          console.log("aaa "+self.scope.sortColumns.attr());
+          //console.log("aaa "+self.scope.sortColumns.attr());
            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
            /* All the neccessary parameters will be set in that event */
            self.scope.appstate.attr('globalSearchButtonClicked', true);

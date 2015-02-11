@@ -61,7 +61,7 @@
 						    			<div class="col-sm-2 align-left">
 
 						    					<button type="button" id="analyticsFetch"  name="analyticsFetch"
-													class="btn buttonSubmit btn-custom-small" style="margin-left:-12px;">Fetch</button>
+													class="btn buttonSubmit btn-custom-small">Fetch</button>
 											
 						    			</div>
 
