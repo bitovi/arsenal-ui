@@ -88,7 +88,7 @@ var InboxGrid = ScrollingGrid.extend({
       console.log(" Clicked "+row.tableName+", value :"+row.tableValue);
 
       if(row.tableName === 'RINS_PMT_BUNDLE'){
-        var data = {  bundleId:row.tableValue};
+        var data = {bundleId:row.tableValue,loadedFrom:"dashboard"};
         this.scope.appstate.screenLookup.attr("PBR" ,data);
         console.log(" Bundle Id Selected :  "+this.scope.appstate.screenLookup.PBR.bundleId);
         commonUtils.navigateTo("payment-bundles");

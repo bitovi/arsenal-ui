@@ -3,11 +3,12 @@ import constants from 'utils/constants';
 
 var rinsCommonUtils = {
   triggerGlobalSearch:function (){
-    if(appstate.attr('globalSearch')){
-      appstate.attr('globalSearch', false);
-    }else{
-      appstate.attr('globalSearch', true);
-    }
+    appstate.attr('globalSearch', !appstate.attr('globalSearch'));
+    // if(appstate.attr('globalSearch')){
+    //   appstate.attr('globalSearch', false);
+    // }else{
+    //   appstate.attr('globalSearch', true);
+    // }
   },
   navigateTo:function(page){
     var a = document.createElement('a');
