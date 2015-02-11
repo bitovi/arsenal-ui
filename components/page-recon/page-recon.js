@@ -234,11 +234,12 @@ var page = Component.extend({
           if(data["status"]=="SUCCESS"){
 
           }else{
-            $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-            $("#messageDiv").show();
-            setTimeout(function(){
-                $("#messageDiv").hide();
-            },2000)
+            // $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+            // $("#messageDiv").show();
+            // setTimeout(function(){
+            //     $("#messageDiv").hide();
+            // },2000)
+            commonUtils.showErrorMessage(data["responseText"]);
           }
     }, function(xhr) {
           console.error("Error while downloading the file with fileId: "+fileId+xhr);
@@ -406,11 +407,12 @@ var page = Component.extend({
                       if(data["status"]=="SUCCESS"){
                         $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
                       }else{
-                        $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-                        $("#messageDiv").show();
-                        setTimeout(function(){
-                            $("#messageDiv").hide();
-                        },2000)
+                        // $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+                        // $("#messageDiv").show();
+                        // setTimeout(function(){
+                        //     $("#messageDiv").hide();
+                        // },2000)
+                        commonUtils.showErrorMessage(data["responseText"]);
                         self.scope.attr('emptyrows',true);
                       }
                 }, function(xhr) {
@@ -468,8 +470,8 @@ var processRejectIngestRequest = function(scope,requestType){
         if(values != null && values.length > 0) {
           var data = values[0];
           if(data.status == "SUCCESS"){
-            $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
-            $("#messageDiv").show();
+            // $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
+            // $("#messageDiv").show();
             
             if(tab == "ingest") {
               scope.reconRefresh[0].summaryStatsData.splice(0,1);
@@ -478,9 +480,11 @@ var processRejectIngestRequest = function(scope,requestType){
             
             $('.statsTable').hide();
             
-            setTimeout(function(){
-              $("#messageDiv").hide();
-            },3000);
+            // setTimeout(function(){
+            //   $("#messageDiv").hide();
+            // },3000);
+            
+            commonUtils.showSuccessMessage(data["responseText"]);
 
             fetchReconIngest(scope, scope.load);
           }
@@ -505,11 +509,12 @@ var processRejectIngestRequest = function(scope,requestType){
 
       Recon.ingest((rejectSearchRequestObj)).done(function(data){
         if(data.responseCode == "0000"){
-          $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
-          $("#messageDiv").show();
-          setTimeout(function(){
-            $("#messageDiv").hide();
-          },4000);
+          // $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
+          // $("#messageDiv").show();
+          // setTimeout(function(){
+          //   $("#messageDiv").hide();
+          // },4000);
+          commonUtils.showSuccessMessage(data["responseText"]);
         }else{
           //error text has to be shared. TODO - not sure how service responds to it
           displayErrorMessage(data.responseText,"Failed to Ingest:");
@@ -522,12 +527,14 @@ var processRejectIngestRequest = function(scope,requestType){
 
 var displayErrorMessage = function(message,log){
 
-  $("#messageDiv").html("<label class='errorMessage'>"+message+"</label>");
-  $("#messageDiv").show();
-  setTimeout(function(){
-    $("#messageDiv").hide();
-  },4000);
-  console.error(log+message);
+  // $("#messageDiv").html("<label class='errorMessage'>"+message+"</label>");
+  // $("#messageDiv").show();
+  // setTimeout(function(){
+  //   $("#messageDiv").hide();
+  // },4000);
+  // console.error(log+message);
+  
+  commonUtils.showErrorMessage(message);
 
 }
 
