@@ -436,21 +436,20 @@
 	    		</div>
 
 		    </div>
-
 		</div>
-
-		<div class="col-sm-12" id="spaceBar"></div>
 
 
 	</form>
 
 
-		<div class="col-sm-12 col-sm-offset-10 buttonsBottom">
-			<button type="button" id="buttonreset" name="Reset" class="btn cancelButton btn-custom-big-disabled " style="margin-left:10px;">Cancel</button>
+		<div class="col-sm-12" style="text-align:right;padding:15px;padding-right: 32px;">
+			<button type="button" id="buttonreset" name="Reset" class="btn cancelButton btn-custom-big-disabled ">Cancel</button>
 			<button type="button" id="buttonsubmit" name="SubmitPage" class="btn submitButton btn-custom-big" style="margin-left:10px;">Submit</button>
 		</div>
 
-		<div class="col-sm-12" id="spaceBar"></div>
+
+
+		<!--<div class="col-sm-12" id="spaceBar"></div>-->
 
 
 		<div class="col-sm-4 col-sm-offset-4" class="confirmationReportConfig" style="display:none">
@@ -502,8 +501,6 @@
 
 
 </div>
-
-
 
 
 
