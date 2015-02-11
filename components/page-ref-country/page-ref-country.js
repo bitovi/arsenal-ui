@@ -840,9 +840,24 @@ function alignGrid(divId){
       }
 
       if(tableWidth < divWidth){
-        var moreWidth = (divWidth-tableWidth)/colLength;
+
+
+        var moreWidth = (divId == "grid-society-model")?(divWidth-tableWidth)/(colLength-1):(divWidth-tableWidth)/colLength;
         for(var j=1;j<=cellWidthArr.length;j++){
           var width = cellWidthArr[j-1]+moreWidth;
+
+           if(divId == "grid-society-model"){
+              if(j != 3){  //version
+                var width = cellWidthArr[j-1]+moreWidth;
+              }
+              else{
+                var width = cellWidthArr[j-1];
+              }
+            }
+            else
+            {
+              var width = cellWidthArr[j-1]+moreWidth;
+            }
 
           $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
           $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width);

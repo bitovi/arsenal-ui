@@ -1,33 +1,26 @@
 <form class="form-horizontal"  id="invoiceform" role="form">
 <div class="container-fluid create-invoice">
-<!--  <div class="row">
-    <div class="col-sm-5 pageTitleInv">
-		    {{#if editpage}}
+
+    <div class="div-warn-container">
+      <div class="row pagetitle-div-parent">
+          <div class="col-sm-5 pageTitleInv">
+                {{#if editpage}}
 			    <div class="pageHead">Edit Invoice</div>
-			{{else}}
-			     <div class="pageHead">Invoice Entry</div>
-		  	{{/if}}
-	</div>
-	<div class="col-sm-7 div-warn-parent">
-		   <div id="invmessageDiv" class="center" role="alert"></div>
-       	   <div id="invWarningMsgDiv" class="center" role="alert"></div>
-	</div>
-</div> -->
-<div class="div-warn-container" style="padding-top: 0px;!important">
-  <div class="row pagetitle-div-parent" style="padding-top: 0px;!important">
-    <div class="col-sm-5 pageTitle">
-      {{#if editpage}}
-      <div class="pageHead">Edit Invoice</div>
-      {{else}}
-      <div class="pageHead">Invoice Entry</div>
-      {{/if}}
-    </div>
-  </div>
-  <div class="col-sm-7 div-warn-parent">
-    <div id="invmessageDiv" class="center" role="alert"></div>
-    <div id="invWarningMsgDiv" class="center" role="alert"></div>
-  </div>
-</div>
+			    {{else}}
+			    <div class="pageHead">Invoice Entry</div>
+			    {{/if}}
+          </div>
+      </div>
+      <div class="col-sm-7 div-warn-parent">
+          	<div id="messageDiv" class="center messageDiv" role="alert"></div>
+          	<!-- 
+	          	<div id="invmessageDiv" class="center" role="alert"></div>
+	       		<div id="invWarningMsgDiv" class="center" role="alert"></div>
+       		-->
+      </div>
+  	</div>  
+
+
 
 		<div class="row">
 

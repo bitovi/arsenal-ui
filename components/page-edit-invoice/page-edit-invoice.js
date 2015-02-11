@@ -1007,11 +1007,12 @@ var page = Component.extend({
 				 		if(self.scope.appstate.attr('viewinvoicemode') == true){
 							$("rn-file-uploader-edit .browseFiles.uploadFiles").attr("disabled", true);
 							var msg = "Info:Invoice can't be edited as its in transit/paid";
-					       	$("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
-				            $("#invmessageDiv").show();
-				             setTimeout(function(){
-				                $("#invmessageDiv").hide();
-				            },5000)
+							commonUtils.showErrorMessage(msg);
+					     // $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
+				         //    $("#invmessageDiv").show();
+				         //     setTimeout(function(){
+				         //        $("#invmessageDiv").hide();
+				         //    },5000)
 						}
 
 						var invoiceData = self.scope.attr().invoiceContainer[0];
@@ -1508,7 +1509,8 @@ var page = Component.extend({
                             //var msg = "Invoice number "+self.scope.invoicenumberStore+" was saved successfully.";
                             var msg = values[0].responseText;
 
-                            commonUtils.displayUIMessageWithDiv("#invmessageDiv", values[0].status,values[0].responseText);
+                            //commonUtils.displayUIMessageWithDiv("#invmessageDiv", values[0].status,values[0].responseText);
+                            commonUtils.showSuccessMessage(msg);
 
 								            // $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
 								            // $("#invmessageDiv").show();
@@ -1522,7 +1524,8 @@ var page = Component.extend({
 
 								           		if(errorMap){
 										       		 var msg =showErrorDetails(errorMap, "Warning");
-                               commonUtils.displayUIMessageWithDiv("#invWarningMsgDiv", "ERROR",msg);
+                               //commonUtils.displayUIMessageWithDiv("#invWarningMsgDiv", "ERROR",msg);
+                               commonUtils.showErrorMessage(msg);
 										       		 /*$("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
 										             $("#invmessageDiv").show();
 										             setTimeout(function(){
@@ -1544,7 +1547,8 @@ var page = Component.extend({
 									          		var msg = values[0].responseText;
 									          	}
 
-                            commonUtils.displayUIMessageWithDiv("#invmessageDiv", "ERROR",msg);
+                            //commonUtils.displayUIMessageWithDiv("#invmessageDiv", "ERROR",msg);
+                            commonUtils.showErrorMessage(msg);
 												// $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
 										    //     $("#invmessageDiv").show();
 										        $("#addInvSubmit").attr("disabled", false);
@@ -1660,15 +1664,17 @@ var page = Component.extend({
 
 								                  		 if(data.status === "FAILURE"){
         								                  		 	var msg = data.responseText;
-        								          					$("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
-        								          					$("#invmessageDiv").show();
+        								          					// $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+        								          					// $("#invmessageDiv").show();
+        								          					commonUtils.showErrorMessage(msg);
         								          					$("#addInvSubmit").attr("disabled", false);
 								                  		 }
 
 								                  		},function(errmsg){
     										                /*Error condition*/
-    										                	$("#invmessageDiv").html("<label class='errorMessage'>"+errmsg+"</label>");
-    								          					$("#invmessageDiv").show();
+    										             //    	$("#invmessageDiv").html("<label class='errorMessage'>"+errmsg+"</label>");
+    								          					// $("#invmessageDiv").show();
+    								          					commonUtils.showErrorMessage(errmsg);
     								          					$("#addInvSubmit").attr("disabled", false);
     										        		});
 
@@ -1836,11 +1842,12 @@ var page = Component.extend({
           }
 
           function showMessages(msg){
-            $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
-             $("#invmessageDiv").show();
-             setTimeout(function(){
-                $("#invmessageDiv").hide();
-             },5000)
+            // $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
+            //  $("#invmessageDiv").show();
+            //  setTimeout(function(){
+            //     $("#invmessageDiv").hide();
+            //  },5000)
+            commonUtils.showErrorMessage(msg);
           }
 
 					var updatePeriodCalender = function(elementID){
