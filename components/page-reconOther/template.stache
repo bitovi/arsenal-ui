@@ -1,89 +1,93 @@
 <copy-clipboard> {{values}}</copy-clipboard>
-<!--<div class="col-lg-12 pageTitle">
-  <div class="col-lg-4">
-    <h3>Recon Other</h3>
-  </div>
-  <div class="col-lg-4">
-    <div id="messageDiv" class="col-md-12" style="text-align:center;padding-top:5px;"></div>
-  </div>
-</div>-->
-<div class="div-warn-container" style="padding-left: 10px;padding-right: 10px;">
-  <div class="row pagetitle-div-parent">
-    <div class="col-sm-5 pageTitleInv">
-      <div class="pageHead">Incoming Other</div>
+
+<div class="div-warn-container">
+    <div class="row pagetitle-div-parent">
+        <div class="col-sm-5 pageTitleInv">
+            <div class="pageHead">Incoming Other</div>
+        </div>
     </div>
-  </div>
-  <div class="col-sm-7 div-warn-parent" style="padding-top: 6px;">
-    <div id="messageDiv" class="center" role="alert"></div>
-  </div>
+    <div class="col-sm-7 div-warn-parent">
+        <div id="messageDiv" class="center messageDiv" role="alert"></div>
+    </div>
 </div>
+
 <div class="col-lg-12 recon-container">
-  
-  <div id="content"><!-- Tabs - Start-->
+ 
+  <div id="content">
 
-
+      <!-- Tabs - Start-->
       <ul id="myTabs" class="nav nav-tabs" data-tabs="tabs">
-          <li class="active"><a href="#incomingDetails" data-toggle="tab" >{{tabName.incoming.name}}</a></li>
-          <li><a href="#reconstatsOtherGrid" data-toggle="tab">{{tabName.other.name}}</a></li>
-
+          <li class="active">
+              <a href="#incomingDetails" data-toggle="tab" >{{tabName.incoming.name}}</a>
+          </li>
+          <li>
+              <a href="#reconstatsOtherGrid" data-toggle="tab">{{tabName.other.name}}</a>
+          </li>
           <li class="pull-right marginLeft-5 marginTop-10 width25 reconOther" style="position:relative;bottom:6px; background:none;">
-            <div id="searchDiv">
-              <input type="text" class="form-control" id="tokenSearch" placeholder="Search">
-            </div>
-            <img class="exportToExcel" id="exportExcel">
-            <img class="copyToClipboard" id="copyToClipboard">
-
+              <div id="searchDiv">
+                  <input type="text" class="form-control" id="tokenSearch" placeholder="Search">
+                  </div>
+                  <img class="exportToExcel" id="exportExcel">
+                  <img class="copyToClipboard" id="copyToClipboard">
           </li>
-
           <li class="pull-right marginTop-10 customLI width55"  {{isTabSelectedAs 'Invoices'}} >
-            <div class="col-sm-9 btn-display-center">
-              <button  class="btn btn-primary buttonSubmit btn-custom-small btn-incoming-reject" type="button"  {{isIncomingCcidsSelected 0}}>Reject</button>
-              <button type="button" class="btn btn-primary buttonSubmit btn-custom-small btn-Ingest" {{isIncomingCcidsSelected 0}} >Ingest</button>
-            </div>
+              <div class="col-sm-9 btn-display-center">
+                  <button  class="btn btn-primary buttonSubmit btn-custom-small btn-incoming-reject" type="button"  {{isIncomingCcidsSelected 0}}>Reject</button>
+                  <button type="button" class="btn btn-primary buttonSubmit btn-custom-small btn-Ingest" {{isIncomingCcidsSelected 0}} >Ingest</button>
+              </div>
           </li>
-
           <li class="pull-right marginTop-10 customLI width55"  {{isTabSelectedAs 'Other'}}>
-            <div class="col-sm-9 form-inline" style="text-align:right;"></div>
+              <div class="col-sm-9 form-inline" style="text-align:right;"></div>
           </li>
-
       </ul>
 
-        <div id="my-tab-content" class="tab-content">
-        <div id="loading_img"></div>
-        <div class="tab-pane active grid-custom-overflow" id="incomingDetails">
-          <div id="incomingDetailsGrid">
-            <rn-recon-grid columns="{detailGridColumns}" rows="{incomingDetails.headerRows}" footerrows="{incomingDetails.footerRows}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}" emptyrows="{emptyrows}" pagename="{pagename}"></rn-recon-grid>
+      <div id="my-tab-content" class="tab-content">
+
+          <div id="loading_img"></div>
+
+          <div class="tab-pane active grid-custom-overflow" id="incomingDetails">
+              <div id="incomingDetailsGrid">
+                  <rn-recon-grid columns="{detailGridColumns}" rows="{incomingDetails.headerRows}" footerrows="{incomingDetails.footerRows}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}" emptyrows="{emptyrows}" pagename="{pagename}"></rn-recon-grid>
+              </div>
           </div>
-        </div>
 
-        
-        <div class="tab-pane grid-custom-overflow" id="reconstatsOtherGrid">
-            <div id="loading_img"></div>
-            <div id="reconstatsOtherGrids">
-              <rn-recon-grid columns="{incomingOtherGridColumns}" rows="{incomingOtherList}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}"
-                pagename="{pagename}"></rn-recon-grid>
-            </div>
-        </div>
+          <div class="tab-pane grid-custom-overflow" id="reconstatsOtherGrid">
+              <div id="loading_img"></div>
+              <div id="reconstatsOtherGrids">
+                  <rn-recon-grid columns="{incomingOtherGridColumns}" rows="{incomingOtherList}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}" pagename="{pagename}"></rn-recon-grid>
+              </div>
+          </div>
 
       </div>
-
-  </div> <!-- Tabs - End-->
-
-<div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="rejectModal" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Confirm</h4>
-      </div>
-      <div class="modal-body">
-        <p>Selected CCID invoices will be rejected. Please confirm!</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default btn-confirm-cancel" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary btn-confirm-ok">Ok</button>
-      </div>
-    </div>
   </div>
-</div>
+  
+  <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="rejectModal" aria-hidden="true">
+    
+    <div class="modal-dialog">
+
+      <div class="modal-content">
+       
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">Close</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">Confirm</h4>
+        </div>
+
+        <div class="modal-body">
+            <p>Selected CCID invoices will be rejected. Please confirm!</p>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default btn-confirm-cancel" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary btn-confirm-ok">Ok</button>
+        </div>
+
+      </div>
+
+    </div>
+    
+  </div>
+
 </div>
