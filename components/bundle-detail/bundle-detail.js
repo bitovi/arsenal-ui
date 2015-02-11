@@ -459,10 +459,15 @@ var BundleDetailTabs = Component.extend({
       pageState = this.scope.pageState;
       self = this.scope;
 
+      if(action ==='back') {
+        commonUtils.navigateTo(this.scope.pageState.loadedFromDetails.loadedFrom);
+        return;
+      }
 
       if(!this.scope.havePaymentTypeAndComment(this.scope)) {
         return;
       }
+
 
       if(action ==='delete') {
         selectedBundle.bind('destroyed', function() {

@@ -388,7 +388,7 @@ var page = Component.extend({
               invTemp["invoiceDueDate"] = (invoiceData[i]["invoiceDueDate"]==null)?"":invoiceData[i]["invoiceDueDate"];
               invTemp["invoiceCcy"] = (invoiceData[i]["invoiceCcy"]==null)?"":invoiceData[i]["invoiceCcy"];
               invTemp["statusId"] = (invoiceData[i]["status"]==null || invoiceData[i]["status"]==-1)?"":invoiceData[i]["status"];
-              invTemp["status"] = (invoiceData[i]["status"]==null || invoiceData[i]["status"]==-1)?"":StatusCodes[invoiceData[i]["paymentState"]];
+              invTemp["status"] = (invoiceData[i]["displayPaymentStatus"]==null)?"":invoiceData[i]["displayPaymentStatus"];
               invTemp["paymentState"] = (invoiceData[i]["paymentState"]==null || invoiceData[i]["paymentState"]==-1)?"":invoiceData[i]["paymentState"];
               invTemp["bundleName"] = (invoiceData[i]["bundleName"]==null || invoiceData[i]["bundleName"]=="--Select--")?"":invoiceData[i]["bundleName"];
               invTemp["comments"] = (invoiceData[i]["notes"]==null || invoiceData[i]["notes"].length==0)?"":invoiceData[i]["notes"];
@@ -806,12 +806,12 @@ var page = Component.extend({
           var self=this;
 
           //console.log("selected Invoices are "+ self.scope.checkedRows.attr());
-          //var unDeletedInvoices = self.scope.unDeletedInvoices.attr();
-          // if(unDeletedInvoices.length > 0){
-          //   $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>Invoice "+unDeletedInvoices.toString()+" cannot be deleted! </label>");
-          //   $("#messageDiv").show();
-          // } else {
-            //$("#messageDiv").hide();
+          var unDeletedInvoices = self.scope.unDeletedInvoices.attr();
+          if(unDeletedInvoices.length > 0){
+            $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>Invoice "+unDeletedInvoices.toString()+" cannot be deleted! </label>");
+            $("#messageDiv").show();
+          } else {
+            $("#messageDiv").hide();
             var invoiceDelete = {"searchRequest":{}};
             invoiceDelete.searchRequest.ids = self.scope.checkedRows.attr();
             console.log("Delete request params are "+JSON.stringify(UserReq.formRequestDetails(invoiceDelete)));
@@ -845,7 +845,7 @@ var page = Component.extend({
             },function(xhr){
               console.error("Error while loading: bundleNames"+xhr);
             });
-          //}
+          }
       },
       "#paymentBundleNames change": function(){
           var self = this;

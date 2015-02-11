@@ -37,7 +37,7 @@ var stateDefaults = {
     //permissions:[],
     secretKey: 'f4166789-30bb-4e12-9973-a76376745096'
   },
-
+  screenLookup:{},//used for to carry the objects and pass it to the destination. U can follow the format as <SCREEN>:{<data>}
   page: null,
   navigationRequired: false,
   periodFrom: undefined,
