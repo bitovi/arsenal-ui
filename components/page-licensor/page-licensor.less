@@ -198,8 +198,10 @@
   }
 
   div#entityDetailsTab {
-      border: 1px solid #bfbfbf;
+     border: 1px solid #bfbfbf;
   }
+
+    padding-left: 5px;
 
   div#entityDetailsHeading{
     margin-top: 0px;
@@ -223,6 +225,9 @@
     padding-left: 0px;
   }
 
+  .paddingLicensor {
+      padding-left: 0px;
+   }
   .col-sm-3.textalignright {
     text-align:right;
     padding-bottom:8px;
@@ -233,9 +238,7 @@
     padding-bottom:7.8125px;
   }
 
-
   div#countryModelMapping {
-
       width: 100%;
       max-height:6.250em;
       padding: 0px;
@@ -496,6 +499,7 @@
               display: table-row;
             }
           }
+
         }
 
         tfoot {
@@ -623,10 +627,8 @@
       }
 
       .closeConfirmBox {
-
         height : 20px;
         width : 20px;
-
       }
 
       .requiredBar{
@@ -638,10 +640,9 @@
       }
 
       .inputPadding{
-
         padding-left: 2px;
-
       }
+
 
       rn-grid-revisionhistory{
         .grid-mixin();
@@ -674,6 +675,12 @@
           tr{
             width:100%;
           }
+          tr.selected {
+            background: #d3f0fe !important;
+          }
+          tr:hover {
+            outline: 2px solid #1581F4;;
+          }
           thead, tbody {
             display: block;
           }
@@ -693,7 +700,7 @@
           }
           tr{
              background: #ffffff;
-            width:100%;
+             Dwidth:100%;
           }
           tr > td > div:nth-child(odd){
              background: #f9f9f9;
@@ -701,8 +708,9 @@
           }
           tr > td > div:nth-child(even){
             background: #f0f0f0;
-             border-bottom: 1px solid #FFFFFF !important;
+            border-bottom: 1px solid #FFFFFF !important;
           }
+
           thead, tbody {
             display: block;
           }
@@ -748,7 +756,10 @@
               max-height: 100px;
               overflow-y: overlay;
               overflow-x: hidden;
+
+
           }
+
         }
       }
 

@@ -2,7 +2,7 @@
 <div class="licensor-container">
 
 
-	<div class="col-sm-12" id="entityDetailsTab">
+	<div class="col-sm-12 paddingLicensor" id="entityDetailsTab">
 
 
 		<div class="col-sm-12">
