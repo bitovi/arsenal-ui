@@ -23,7 +23,7 @@
 
       <div class="form-group col-sm-12">
 
-        <div class="col-sm-4">
+        <div class="col-sm-3 licensorDrop">
           <label for="forEntity" class="col-sm-4 control-label">Licensor: </label>
           <div class="col-sm-6">
             <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.entityId' id="licensorId">
@@ -38,8 +38,8 @@
 
             </div>
           </div>
-          <div class="col-sm-6">
-            <label for="forCountry" class="col-sm-4 control-label">Country: </label>
+          <div class="col-sm-6 countryDrop">
+            <label for="forCountry" class="col-sm-2 control-label">Country: </label>
             <div class="col-sm-4">
               <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.countryId' id="countryId">
                 <option value="">Select</option>
@@ -49,7 +49,7 @@
               </select>
             </div>
             <div class="col-sm-2 ">
-              <button class="btn btn-primary btn-custom-small" id="fetchDetailsBtn">Fetch</button>
+              <button class="btn btn-primary btn-custom-small" id="fetchDetailsBtn" style="margin: -4px 0 0 70px;">Fetch</button>
             </div>
           </div>
 

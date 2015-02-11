@@ -3,11 +3,12 @@ import constants from 'utils/constants';
 
 var rinsCommonUtils = {
   triggerGlobalSearch:function (){
-    if(appstate.attr('globalSearch')){
-      appstate.attr('globalSearch', false);
-    }else{
-      appstate.attr('globalSearch', true);
-    }
+    appstate.attr('globalSearch', !appstate.attr('globalSearch'));
+    // if(appstate.attr('globalSearch')){
+    //   appstate.attr('globalSearch', false);
+    // }else{
+    //   appstate.attr('globalSearch', true);
+    // }
   },
   navigateTo:function(page){
     var a = document.createElement('a');
@@ -58,6 +59,30 @@ var rinsCommonUtils = {
       defaultFilterData.contentType = appstate.defaultcontentType;
       defaultFilterData.region = appstate.defaultRegion;
       return defaultFilterData;
+  }, 
+  showSuccessMessage: function(message){
+    if($(".messageDiv").is(':visible')){
+      $(".messageDiv").html("").hide();
+    }
+    $(".messageDiv").html("<label class='successMessage'>"+message+"<a href='#' id='messageClose' class='close messageClose'> &times;</a></label>").show();                  
+    
+    if($(".messageClose").is(':visible')){
+      $(".messageClose").on("click", function(){
+        $(".messageDiv").hide();
+      });
+    }
+  },
+  showErrorMessage: function(message){
+    if($(".messageDiv").is(':visible')){
+      $(".messageDiv").html("").hide();
+    }
+    $(".messageDiv").html("<label class='errorMessage'>"+message+"<a href='#' id='messageClose' class='close messageClose'> &times;</a></label>").show();                  
+    
+    if($(".messageClose").is(':visible')){
+      $(".messageClose").on("click", function(){
+        $(".messageDiv").hide();
+      });
+    }
   }
 
 

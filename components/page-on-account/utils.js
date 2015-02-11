@@ -354,12 +354,16 @@ prepareRowsForDisplay:function(onAccountDetails,quarters){
           for(var k=0;k<quarters.length;k++){
             var fiscalPeriod = this.getFiscalPeriod(quarters[k]);
              if(periodMap.hasOwnProperty(fiscalPeriod)){
-              addToRow = true;
-              row[fiscalPeriod]=utils.currencyFormat(periodMap[fiscalPeriod]);
+                addToRow = true;
+                row[fiscalPeriod]=utils.currencyFormat(periodMap[fiscalPeriod]);
+              }else if(periodMap.hasOwnProperty(0)){
+                addToRow = true;
+                row[fiscalPeriod]="0.00";
               }
            }
           if(addToRow){
             rows.push(row);
+            periodMap = new Object();
           }
         }
         row=this.createRow(onAccountDetails[i],true,"");
