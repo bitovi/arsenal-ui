@@ -22,14 +22,14 @@
          <div class="form-group col-sm-12">
               <div class="col-sm-5" id="countryFetchDiv">
                  <label for="forCountry" class="col-sm-3 control-label small-headers">Country: </label>
-                 <div class="col-sm-5">
+                 <div class="col-sm-4">
                    <select class="form-control" id="selCountry" can-value='pageState.countryDetails.country.countryId'>
                        {{#each countries}}
                          <option value="{{id}}">{{value}}</option>
                         {{/each}}
                      </select>
                  </div>
-                 <div class="col-sm-2" style="margin-top:-4px;">
+                 <div class="col-sm-2" style="margin-top:-2px;">
                    <button id="fetchDetailsBtn" class="btn btn-primary btn-custom-small">Fetch</button>
                  </div>
                </div>
@@ -177,7 +177,7 @@
                       </select>
                     </div>
                     <div class="col-sm-2 normalBar" >
-                      <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="accuralModelBtn">...</button>
+                      <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="accuralModelBtn">View</button>
                     </div>
                  </div>
               </div>

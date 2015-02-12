@@ -60,7 +60,7 @@
       <div class="col-sm-12" id="loading_img"></div>
       <div class="col-sm-12 mainLayoutId" >
 
-          <div class="col-sm-6 right-border" style="height:550px"><!-- LEFT Layout START-->
+          <div class="col-sm-6 right-border maxContHieght"><!-- LEFT Layout START-->
             <div class="form-group">
               <div class="col-sm-12">
                 <label for="forId" class="col-sm-4 control-label">ID: </label>
@@ -193,9 +193,8 @@
 
 
 
-          <div class="col-sm-6 left-border" style="height:550px"> <!-- RIGHT Layout START-->
+          <div class="col-sm-6 left-border maxContHieght"> <!-- RIGHT Layout START-->
             <div class="form-group minReportConfHt">
-              <div class="col-sm-1"></div>
               <div class="col-sm-6">
               <div class="col-sm-12" style="margin-left: -15px;"> Report Configuration</div>
               <div id="grid-report-config" style="max-height: 200px;width: 100%;">
@@ -206,8 +205,7 @@
             </div>
 
             <div class="form-group">
-              <div class="col-sm-1"></div>
-              <div class="col-sm-11">
+             <div class="col-sm-11">
               <div class="col-sm-12" style="margin-left: -15px;"> Revision History</div>
               <div id="grid-revision-history" style="max-height: 200px;">
                 <rn-grid-revision-history rows="{revisionHistory}" footerrowspresent="{footerrowspresent}" footerdata="{footerdata}"></rn-grid-revision-history>

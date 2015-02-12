@@ -790,15 +790,15 @@ function addFooter(divId){
     var colspanFoot=$('#'+divId+' table>thead>tr>th').length; 
     if($('#'+divId+' table tfoot').length==1){
       if(rowCount==0){
-        $('#'+divId+' table tfoot').append("<tr><td class='recordsCount' style='text-align:center;border:none;' colspan="+colspanFoot+">No Records Found</td></tr>"); 
+        $('#'+divId+' table tfoot').append("<tr><td style='text-align:center;background:#fff;color:#000;border-radius:0px;' colspan="+colspanFoot+">No Records Found</td></tr><tr><td class='recordsCount' style='text-align:left;border:none;' colspan="+colspanFoot+">Number of records: "+rowCount+"</td></tr>"); 
       }else /*if($('#'+divId+' table>tbody>tr>td').hasClass("noDataFoot")==false)*/{
-        $('#'+divId+' table tfoot').append("<tr><td class='recordsCount' style='text-align:center;border:none;' colspan="+colspanFoot+">Number of records: "+rowCount+"</td></tr>");
+        $('#'+divId+' table tfoot').append("<tr><td class='recordsCount' style='text-align:left;border:none;' colspan="+colspanFoot+">Number of records: "+rowCount+"</td></tr>");
       } 
     }else{
       if(rowCount==0){
-        $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:center;border:none;' colspan="+colspanFoot+">No Records Found</td></tr><tfoot>"); 
+        $('#'+divId+' table').append("<tfoot><tr><td style='text-align:center;background:#fff;color:#000;border-radius:0px;' colspan="+colspanFoot+">No Records Found</td></tr><tr><td class='recordsCount' style='text-align:left;border:none;' colspan="+colspanFoot+">Number of records: "+rowCount+"</td></tr><tfoot>"); 
       }else /*if($('#'+divId+' table>tbody>tr>td').hasClass("noDataFoot")==false)*/{
-        $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:center;border:none;' colspan="+colspanFoot+">Number of records: "+rowCount+"</td></tr><tfoot>");
+        $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:left;border:none;' colspan="+colspanFoot+">Number of records: "+rowCount+"</td></tr><tfoot>");
       } 
     } 
 }
