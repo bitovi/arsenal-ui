@@ -17,7 +17,7 @@
   </tbody>
   <tfoot>
       {{#if outboxnumberofrows}}
-        <tr><td colspan="{{outboxnumberofrows}}">Number of records in Outbox {{outboxnumberofrows}}</td</tr>
+        <tr><td colspan="{{outboxnumberofrows}}">Number of records in outbox: {{outboxnumberofrows}}</td</tr>
       {{/if}}
   </tfoot>
 </table>

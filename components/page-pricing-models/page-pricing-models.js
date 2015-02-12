@@ -792,13 +792,13 @@ function addFooter(divId){
       if(rowCount==0){
         $('#'+divId+' table tfoot').append("<tr><td class='recordsCount' style='text-align:center;border:none;' colspan="+colspanFoot+">No Records Found</td></tr>"); 
       }else /*if($('#'+divId+' table>tbody>tr>td').hasClass("noDataFoot")==false)*/{
-        $('#'+divId+' table tfoot').append("<tr><td class='recordsCount' style='text-align:center;border:none;' colspan="+colspanFoot+">No. of Records: "+rowCount+"</td></tr>");   
+        $('#'+divId+' table tfoot').append("<tr><td class='recordsCount' style='text-align:center;border:none;' colspan="+colspanFoot+">Number of records: "+rowCount+"</td></tr>");
       } 
     }else{
       if(rowCount==0){
         $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:center;border:none;' colspan="+colspanFoot+">No Records Found</td></tr><tfoot>"); 
       }else /*if($('#'+divId+' table>tbody>tr>td').hasClass("noDataFoot")==false)*/{
-        $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:center;border:none;' colspan="+colspanFoot+">No. of Records: "+rowCount+"</td></tr><tfoot>");   
+        $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:center;border:none;' colspan="+colspanFoot+">Number of records: "+rowCount+"</td></tr><tfoot>");
       } 
     } 
 }

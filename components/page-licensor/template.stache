@@ -399,7 +399,7 @@
 								</tbody>
 								<tfoot>
 									<tr>
-										<td colspan="3" style="text-align:left;padding-right:2%;">No. of records: {{contactDetails.length}}</td>
+										<td colspan="3" style="text-align:left;padding-right:2%;">Number of contacts: {{contactDetails.length}}</td>
 									</tr>
 								</tfoot>
 								<tfoot class="sctCntNoRecords" style="display: table-footer-group;"><tr><td style="text-align: center; color: rgb(0, 0, 0); width: 225.333333333333px; background: rgb(255, 255, 255);" colspan="3">No Records Found</td></tr></tfoot>

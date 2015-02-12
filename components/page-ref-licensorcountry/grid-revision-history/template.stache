@@ -18,7 +18,7 @@
   <tfoot>
     {{#if footerrowspresent}}
         <tr class="open">
-          <td colspan="{{getColumnLength}}">No of records : {{footerdata}}</td>
+          <td colspan="{{getColumnLength}}">Number of records: {{footerdata}}</td>
         </tr>
     {{/if}}
   </tfoot>
