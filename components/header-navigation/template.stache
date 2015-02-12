@@ -53,7 +53,7 @@
                 <ul class="dropdown-menu" role="menu">
                     <li {{isScreenEnabled 16}}><a href='/licensor'>Licensor</a></li>
                     <li {{isScreenEnabled 17}}><a href='/ref-country'>Country</a></li>
-                    <li {{isScreenEnabled 18}}><a href='/ref-licensorcountry'>Country Licensor</a></li>
+                    <li {{isScreenEnabled 18}}><a href='/ref-licensorcountry'>Licensor Country</a></li>
                     <li {{isScreenEnabled 19}}><a href='/pricing-models'>Pricing Model</a></li>
                 </ul>
              </li>
