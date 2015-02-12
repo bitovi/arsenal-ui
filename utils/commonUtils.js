@@ -20,33 +20,54 @@ var rinsCommonUtils = {
     // appstate.attr('navigationRequired', true);
     // appstate.attr('navigationRequired', false);
   },
+  hideUIMessage: function(){
+    var messageDiv = ".messageDiv";
+    
+    if($(messageDiv).is(':visible')){
+      $(messageDiv).html("").hide();
+    }
+  },
   displayUIMessage : function(statusCode,message){
 
     var className = 'errorMessage';
     if(statusCode === '0000' ||  statusCode === 'SUCCESS' ){
       className= 'successMessage';
     }
+    var messageDiv = ".messageDiv";
 
-    $("#messageDiv").html("<label class='"+className+"' style='padding: 0px 15px;'>"+message+"</label>")
-    $("#messageDiv").show();
+    if($(messageDiv).is(':visible')){
+      $(messageDiv).html("").hide();
+    }
+    $(messageDiv).html("<label class='"+className+"'>"+message+"<a href='#' id='messageClose' class='close messageClose'> &times;</a></label>").show();
 
-    setTimeout(function(){
-      $("#messageDiv").hide();
-    },constants.MESSAGE_DISPLAY_TIME);
+    if($(".messageClose").is(':visible')){
+      $(".messageClose").on("click", function(){
+        $(messageDiv).hide();
+      });
+    }
   },
   displayUIMessageWithDiv : function(messageDiv, status,message){
-
     var className = 'errorMessage';
     if(status === 'SUCCESS'){
       className= 'successMessage';
     }
+    // $(messageDiv).html("<label class='"+className+"' style='padding: 0px 15px;'>"+message+"</label>")
+    // $(messageDiv).show();
+    //
+    // setTimeout(function(){
+    //   $(messageDiv).hide();
+    // },constants.MESSAGE_DISPLAY_TIME);
 
-    $(messageDiv).html("<label class='"+className+"' style='padding: 0px 15px;'>"+message+"</label>")
-    $(messageDiv).show();
+    if($(messageDiv).is(':visible')){
+      $(messageDiv).html("").hide();
+    }
+    $(messageDiv).html("<label class='"+className+"'>"+message+"<a href='#' id='messageClose' class='close messageClose'> &times;</a></label>").show();
 
-    setTimeout(function(){
-      $(messageDiv).hide();
-    },constants.MESSAGE_DISPLAY_TIME);
+    if($(".messageClose").is(':visible')){
+      $(".messageClose").on("click", function(){
+        $(messageDiv).hide();
+      });
+    }
   },
   getDefaultParameters:function(appstate){
       var defaultFilterData={};

@@ -29,6 +29,7 @@ var pageState = new Map({
   validationGrid:false,
   isPaginateReq: false,//triggers the paginate Event from bundle-grid.js
   recordsAvailable:undefined,
+  totRecCnt:0,
   refreshBottomGrid:false,
   removeInvoices:false,
   loadedFromDetails:undefined
@@ -68,6 +69,8 @@ var page = Component.extend({
             pageState.bundles.replace(pageState.bundles);
 
             pageState.attr("recordsAvailable",data.recordsAvailable);
+            pageState.attr("totRecCnt",data.totRecCnt);
+
 
             can.batch.stop();
           }else{
@@ -102,6 +105,7 @@ var page = Component.extend({
               pageState.bundles.splice(0, pageState.bundles.length);
               pageState.bundles.replace(data.paymentBundles);
               pageState.attr("recordsAvailable",data.recordsAvailable);
+              pageState.attr("totRecCnt",data.totRecCnt);
               bundleLookupNeeded = true;
               can.batch.stop();
 

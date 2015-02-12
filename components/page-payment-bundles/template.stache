@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="col-sm-7 div-warn-parent" style="padding-top:5px;">
-      <div id="messageDiv" class="center" role="alert"></div>
+      <div id="messageDiv" class="center messageDiv" role="alert"></div>
     </div>
   </div>
   <div class="bundle-list-actions">

@@ -23,6 +23,7 @@ import requestHelper from 'utils/request/';
 import index_template from 'index.stache!';
 import less_index from 'index.less!';
 import token from 'models/common/token/';
+import commonUtils from 'utils/commonUtils';
 // Fixtures?
 //import _fixtures from 'models/fixtures/';
 
@@ -50,7 +51,7 @@ appstate.bind('page', function(ev, newVal, oldVal) {
 $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
   //FIX: <rdar://problem/19231697> Wave M2 : Invoice Entry/iCSV Entr
   //skip for multipart/form-data
-
+  commonUtils.hideUIMessage();
   //added for CSRF token
 
   if(appstate.csrfToken != null && options.type=='POST' && options.url.indexOf(URLs.UI_SERVICE_URL) === 0)

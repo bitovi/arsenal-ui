@@ -17,7 +17,7 @@
   </tbody>
   <tfoot>
     <tr>
-      <td colspan="9">Number of rows displayed: {{rows.length}}</td>
+      <td colspan="9">Number of Payment Bundles : {{pageState.totRecCnt}}</td>
     </tr>
   </tfoot>
 </table>
