@@ -577,12 +577,14 @@ var fetchReconIngest = function(scope, load){
       var data = values[0];
       dataLowerGrid = data;
       if(data.status == "FAILURE"){
-        displayErrorMessage(data.responseText,"Failed to load the Recon Ingest Tab:");
+        //displayErrorMessage(data.responseText,"Failed to load the Recon Ingest Tab:");
+        commonUtils.displayUIMessageWithDiv("#messageDiv", "FAILURE", data["responseText"]);
       }else  {
 
         if(data.reconStatsDetails == undefined || (data.reconStatsDetails != null && data.reconStatsDetails.length <= 0)) {
 
           scope.attr("emptyrows", true);
+          commonUtils.displayUIMessageWithDiv("#messageDiv", "SUCCESS", data["responseText"]);
 
         } else {
 

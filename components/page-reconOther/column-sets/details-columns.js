@@ -8,16 +8,17 @@ export default [
   title: '<input type="checkbox" class="headerChkBox"/>',
   contents: function(row) {
     var value = row.dtlHdrId;
+
     var rejectable = false;
 
     if(row.rejectable && row.dtlHdrType != 'PDF') {
-
       rejectable = true;
-
     }
-
+    
     if(!row.isFooterRow){
-      return rejectable ? can.stache('<input type="checkbox" class="selectRow" value="'+  value +'"/>')() : can.stache('<input type="checkbox" disabled/>')();
+      //return rejectable ? can.stache('<input type="checkbox" class="selectRow" value="'+  value +'"/>')() : can.stache('<input type="checkbox" disabled/>')();
+      //if rejectable is true disable the checkbox else don't
+      return rejectable ? can.stache('<input type="checkbox" disabled/>')() : can.stache('<input type="checkbox" class="selectRow" value="'+  value +'"/>')();
     }
   }
 },
@@ -45,7 +46,7 @@ export default [
   id: 'pubfee',
   title: 'PUB Fee',
   contents: function(row) {
-    return formats.currencyFormat(row.pubfee == undefined || row.pubfee == null || row.pubfee == "" ? 0 :  row.pubfee);
+    return formats.currencyFormat(row.pubFee == undefined || row.pubFee == null || row.pubFee == "" ? 0 :  row.pubFee);
   },
   sortable: true
 },
@@ -59,7 +60,7 @@ export default [
   title: 'File Name',
   contents: function(row) {
     if(row.invFileName != undefined && row.invFileName != null){
-      return can.stache('<a class="downloadLink fileName" href="#download">'+row.invFileName+'</a>')();  
+      return can.stache('<a class="downloadLink fileName" href="#download">'+row.invFileName+'</a>')();
     }else{
       return "null";
     }

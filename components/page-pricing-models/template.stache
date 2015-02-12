@@ -1,12 +1,26 @@
 <div class="container-fluid pricing-model">
 <form id="pmform" role="form">
 	<div class="row topsection">
+		  
+		  <!-- 
 		    <div class="col-sm-5 pageTitle">
 				<div class="large-headers">Pricing Models</div>
 			</div>
 			<div class="col-sm-7">
 				<div id="pbmessageDiv" role="alert"></div>
-			</div>
+			</div> -->
+
+		<div class="div-warn-container">
+          	<div class="row pagetitle-div-parent">
+            	<div class="col-sm-5 pageTitleInv">
+                	<div class="pageHead">Pricing Models</div>
+              	</div>
+          	</div>
+          	<div class="col-sm-7 div-warn-parent">
+            	<div id="pbmessageDiv" class="center messageDiv" role="alert"></div>
+        	</div>
+      	</div>  
+		      	
 		 
 			<div class="col-sm-12">
 			 	 <div class="col-sm-3 regions form-group" style="padding-right:0;width:auto;">

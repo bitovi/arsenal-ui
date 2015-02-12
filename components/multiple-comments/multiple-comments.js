@@ -59,6 +59,7 @@ var comments = Component.extend({
           if(self.scope.isreadonly === 'n'){
             var editableTextarea=getTextArea();
             $(editableTextarea).attr('id', 'editableText');
+            $(editableTextarea).attr('placeholder', 'Please add your comments..');
             $(editableTextarea).attr('name',self.scope.divid);
             $(editableTextarea).addClass("multiple-comments-editable").addClass("form-control-comments new-comments multiple-comments-editable-height");
             $(editableTextarea).text(editableRecComment);

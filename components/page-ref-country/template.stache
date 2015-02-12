@@ -1,35 +1,47 @@
 <div class="form-horizontal" id="refcountryform" role="form">
   <div id="loading_img"></div>
   <div class="container-fluid">
+<!--
     <div class="row col-sm-12">
       <div class="col-sm-4 pageTitle">
           <span class="large-headers">Country Details</span>
       </div>
       <div class="col-sm-4">
-        <!-- TODO - Keep the message outside -->
-        <!-- <div style="{{displayMessage}}" class="alert-success alert-dimension" role="alert">
+        TODO - Keep the message outside 
+         <div style="{{displayMessage}}" class="alert-success alert-dimension" role="alert">
           <a href="#" class="close" data-dismiss="alert">&times;</a>
           New Country Details Changes Saved Successfully.
-        </div> -->
+        </div> 
         <div class="cols-sm-4">
           <div id="invmessageDiv" role="alert"></div>
         </div>
 
       </div>
     </div>
+-->
+      <div class="div-warn-container">
+          <div class="row pagetitle-div-parent">
+              <div class="col-sm-5 pageTitleInv">
+                <div class="pageHead">Country Details</div>
+              </div>
+          </div>
+          <div class="col-sm-7 div-warn-parent">
+            <div id="invmessageDiv" class="center messageDiv" role="alert"></div>
+        </div>
+      </div>  
 
     <div class="row">
          <div class="form-group col-sm-12">
               <div class="col-sm-5" id="countryFetchDiv">
                  <label for="forCountry" class="col-sm-3 control-label small-headers">Country: </label>
-                 <div class="col-sm-5">
+                 <div class="col-sm-4">
                    <select class="form-control" id="selCountry" can-value='pageState.countryDetails.country.countryId'>
                        {{#each countries}}
                          <option value="{{id}}">{{value}}</option>
                         {{/each}}
                      </select>
                  </div>
-                 <div class="col-sm-2" style="margin-top:-4px;">
+                 <div class="col-sm-2" style="margin-top:-2px;">
                    <button id="fetchDetailsBtn" class="btn btn-primary btn-custom-small">Fetch</button>
                  </div>
                </div>
@@ -177,7 +189,7 @@
                       </select>
                     </div>
                     <div class="col-sm-2 normalBar" >
-                      <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="accuralModelBtn">...</button>
+                      <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="accuralModelBtn">View</button>
                     </div>
                  </div>
               </div>

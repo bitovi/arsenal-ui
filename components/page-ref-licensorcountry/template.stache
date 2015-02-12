@@ -1,16 +1,16 @@
 <form class="form-horizontal" id="countryLicForm" role="form">
 
   <div class="container-fluid">
-    <div class="row">
+   <!--  <div class="row">
       <div class="col-sm-5 pageTitle">
         <span class="large-headers">Country-Licensor Details</span>
       </div>
       <div class="col-sm-4">
-        <!-- TODO - Keep the message outside -->
-        <!-- <div style="{{displayMessage}}" class="alert-success alert-dimension" role="alert">
+         TODO - Keep the message outside 
+         <div style="{{displayMessage}}" class="alert-success alert-dimension" role="alert">
           <a href="#" class="close" data-dismiss="alert">&times;</a>
           New Country-Society Details Changes Saved Successfully.
-        </div> -->
+        </div> 
         <div class="cols-sm-4">
           <div id="invmessageDiv" role="alert"></div>
         </div>
@@ -18,6 +18,18 @@
 
       </div>
     </div>
+-->
+
+      <div class="div-warn-container">
+          <div class="row pagetitle-div-parent">
+              <div class="col-sm-5 pageTitleInv">
+                <div class="pageHead">Country-Licensor Details</div>
+              </div>
+          </div>
+          <div class="col-sm-7 div-warn-parent">
+            <div id="invmessageDiv" class="center messageDiv" role="alert"></div>
+        </div>
+      </div>  
 
     <div class="row">
 
@@ -60,7 +72,7 @@
       <div class="col-sm-12" id="loading_img"></div>
       <div class="col-sm-12 mainLayoutId" >
 
-          <div class="col-sm-6 right-border" style="height:550px"><!-- LEFT Layout START-->
+          <div class="col-sm-6 right-border maxContHieght"><!-- LEFT Layout START-->
             <div class="form-group">
               <div class="col-sm-12">
                 <label for="forId" class="col-sm-4 control-label">ID: </label>
@@ -140,7 +152,7 @@
                               {{/each}}
                             </select>
                           </div>
-                          <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="pricingModelBtn" style="margin-left: -20px;">...</button>
+                          <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="pricingModelBtn" style="margin-left: -20px;">View</button>
                         </div>
                     
                     </div>
@@ -193,9 +205,8 @@
 
 
 
-          <div class="col-sm-6 left-border" style="height:550px"> <!-- RIGHT Layout START-->
-            <div class="form-group" class="minReportConfHt">
-              <div class="col-sm-1"></div>
+          <div class="col-sm-6 left-border maxContHieght"> <!-- RIGHT Layout START-->
+            <div class="form-group minReportConfHt">
               <div class="col-sm-6">
               <div class="col-sm-12" style="margin-left: -15px;"> Report Configuration</div>
               <div id="grid-report-config" style="max-height: 200px;width: 100%;">
@@ -206,8 +217,7 @@
             </div>
 
             <div class="form-group">
-              <div class="col-sm-1"></div>
-              <div class="col-sm-11">
+             <div class="col-sm-11">
               <div class="col-sm-12" style="margin-left: -15px;"> Revision History</div>
               <div id="grid-revision-history" style="max-height: 200px;">
                 <rn-grid-revision-history rows="{revisionHistory}" footerrowspresent="{footerrowspresent}" footerdata="{footerdata}"></rn-grid-revision-history>
