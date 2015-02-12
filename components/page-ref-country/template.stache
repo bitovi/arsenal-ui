@@ -160,7 +160,7 @@
 
             <div class="form-group">
               <div class="col-sm-12">
-                 <label for="" class="col-sm-4 control-label small-headers">Accural Model:</label>
+                 <label for="" class="col-sm-4 control-label small-headers">Accrual Model:</label>
                  <div class="col-sm-8 requiredBar">
                     <div class="col-sm-6 normalBar" style="width: 160px;padding-right: 0;">
                       <select class="form-control" id="accModelSel" name="accuralModelName" can-value="{pageState.countryDetails.country.modelId}">
