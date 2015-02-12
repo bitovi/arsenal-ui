@@ -241,7 +241,7 @@ var page = Component.extend({
           revisionHistory = new can.List();
 
           var footer = {
-            data: "No of records : " 
+            data: "Number of records: "
           }
 
           //$('#grid-report-config').append(stache('<rn-grid-report-configuration rows="{reportConfigurationList}"></rn-grid-report-configuration>')({reportConfigurationList}));

@@ -260,7 +260,7 @@
 				<div class="col-sm-12 countryModelLabel" style="padding:0px;">
 
 					<div class="col-sm-12" id="countryModelLabelId" style="padding:0px;">
-						<label class="mid-headers">Country Model Mapping:</label>
+						<label class="mid-headers">Country Model Mapping</label>
 					</div>
 
 					<div class="col-sm-12" id="countryModelMapping">
@@ -289,7 +289,7 @@
 
 					<div class="repConfigurationTab">
 						<div class="col-sm-12" >
-							<label class="mid-headers">Report Configuration:</label>
+							<label class="mid-headers">Report Configuration</label>
 						</div>
 
 						<div id="repConfiguration" class="col-sm-12 repConfiguration">
@@ -347,7 +347,7 @@
 
 					<div class="societyContactsTab">
 						<div class="col-sm-12" style="margin-top: 5px;">
-							<label class="mid-headers">Society Contacts:</label>
+							<label class="mid-headers">Society Contacts</label>
 						</div>
 
 						<div class="col-sm-12 societyContacts" id="societyContacts">
@@ -399,7 +399,7 @@
 								</tbody>
 								<tfoot>
 									<tr>
-										<td colspan="3" style="text-align:left;padding-right:2%;">No. of records: {{contactDetails.length}}</td>
+										<td colspan="3" style="text-align:left;padding-right:2%;">Number of contacts: {{contactDetails.length}}</td>
 									</tr>
 								</tfoot>
 								<tfoot class="sctCntNoRecords" style="display: table-footer-group;"><tr><td style="text-align: center; color: rgb(0, 0, 0); width: 225.333333333333px; background: rgb(255, 255, 255);" colspan="3">No Records Found</td></tr></tfoot>
@@ -436,8 +436,8 @@
 	</form>
 
 		<div class="col-sm-12" style="text-align:right;padding:15px;padding-right: 32px;">
-			<button type="button" id="buttonreset" name="Reset" class="btn cancelButton btn-custom-big-disabled ">Cancel</button>
-			<button type="button" id="buttonsubmit" name="SubmitPage" class="btn submitButton btn-custom-big" style="margin-left:10px;">Submit</button>
+			<button type="button" id="buttonreset" name="Reset" class="btn cancelButton btn-custom-small ">Cancel</button>
+			<button type="button" id="buttonsubmit" name="SubmitPage" class="btn submitButton btn-custom-small" style="margin-left:10px;">Submit</button>
 		</div>
 
 

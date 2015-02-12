@@ -2318,9 +2318,9 @@ function alignGridStats(divId){
   if(divId=="revisionHistory"){
     var rowCount= $('#'+divId+' table>tbody>tr').length;
     if($('#'+divId+' table').has('tfoot')){
-        $('#'+divId+' table>tfoot').append("<tr><td class='recordsCount' style='text-align:left;border:none;'>No. of Records: "+rowCount+"</td></tr>");
+        $('#'+divId+' table>tfoot').append("<tr><td class='recordsCount' style='text-align:left;border:none;'>Number of revisions: "+rowCount+"</td></tr>");
     }else{
-      $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:left;border:none;'>No. of Records: "+rowCount+"</td></tr></tfoot>");
+      $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:left;border:none;'>Number of revisions: "+rowCount+"</td></tr></tfoot>");
     }
   }
   if(divId=="repConfiguration"){
@@ -2330,7 +2330,7 @@ function alignGridStats(divId){
       $('#'+divId+' table>tfoot>tr>td').append("<span class='recordsCount' style='float:left;margin:2px 0;'>No Reports Configured</span>");
     }else{
       $('#'+divId+' table>tfoot>tr>td>span').html('');
-      $('#'+divId+' table>tfoot>tr>td').append("<span class='recordsCount' style='float:left;margin:2px 0;'>No. of Countries: "+rowCountries+" | No. of Reports: "+rowCntryRecords+"</span>");
+      $('#'+divId+' table>tfoot>tr>td').append("<span class='recordsCount' style='float:left;margin:2px 0;'>Number of countries: "+rowCountries+" | Number of Reports: "+rowCntryRecords+"</span>");
     }
 
   }
@@ -2455,9 +2455,9 @@ function alignGridCountMap(divId){
   if(divId=="countryModelMapping"){
     var rowCount= $('#'+divId+' table>tbody>tr').length;
     if($('#'+divId+' table').has('tfoot')){
-        $('#'+divId+' table tfoot').append("<tr><td class='recordsCount' style='text-align:left;border:none;'>No. of Records: "+rowCount+"</td></tr>");
+        $('#'+divId+' table tfoot').append("<tr><td class='recordsCount' style='text-align:left;border:none;'>Number of country model mapping: "+rowCount+"</td></tr>");
     }else{
-      $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:left;border:none;'>No. of Records: "+rowCount+"</td></tr><tfoot>");
+      $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:left;border:none;'>Number  of country model mapping: "+rowCount+"</td></tr><tfoot>");
     }
   }
 }

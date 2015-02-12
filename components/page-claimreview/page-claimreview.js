@@ -1158,9 +1158,13 @@ var generateTableData = function(invoiceData,footerData){
                     invLITemp["period"] = '';
                   }
 
-
-                contentTypeArr.push(invLITemp["contentType"]);
-                countryArr.push(invLITemp["country"]);
+                if(invLITemp["contentType"]!= undefined && invLITemp["contentType"].indexOf('TAX') == -1){
+                    contentTypeArr.push(invLITemp["contentType"]);
+                }
+                if(invLITemp["country"] != undefined && typeof(invLITemp["country"]) != 'null'){
+                  countryArr.push(invLITemp["country"]);
+                }
+                
                 invoiceNumberArr.push(invLITemp["invoiceNumber"]);
                 gridData.data.push(invLITemp);
               }

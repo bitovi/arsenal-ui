@@ -20,33 +20,18 @@ var rinsCommonUtils = {
     // appstate.attr('navigationRequired', true);
     // appstate.attr('navigationRequired', false);
   },
-  displayUIMessage : function(statusCode,message){
+  hideUIMessage: function(){
+    var messageDiv = ".messageDiv";
 
-    var className = 'errorMessage';
-    if(statusCode === '0000' ||  statusCode === 'SUCCESS' ){
-      className= 'successMessage';
+    if($(messageDiv).is(':visible')){
+      $(messageDiv).html("").hide();
     }
-
-    $("#messageDiv").html("<label class='"+className+"' style='padding: 0px 15px;'>"+message+"</label>")
-    $("#messageDiv").show();
-
-    setTimeout(function(){
-      $("#messageDiv").hide();
-    },constants.MESSAGE_DISPLAY_TIME);
+  },
+  displayUIMessage : function(status,message){
+    commonUIDisplay(  ".messageDiv", status,message);
   },
   displayUIMessageWithDiv : function(messageDiv, status,message){
-
-    var className = 'errorMessage';
-    if(status === 'SUCCESS'){
-      className= 'successMessage';
-    }
-
-    $(messageDiv).html("<label class='"+className+"' style='padding: 0px 15px;'>"+message+"</label>")
-    $(messageDiv).show();
-
-    setTimeout(function(){
-      $(messageDiv).hide();
-    },constants.MESSAGE_DISPLAY_TIME);
+    commonUIDisplay(messageDiv, status,message);
   },
   getDefaultParameters:function(appstate){
       var defaultFilterData={};
@@ -87,6 +72,26 @@ var rinsCommonUtils = {
 
 
 };
+
+var   commonUIDisplay  = function(messageDiv, status,message){
+
+  var className = 'errorMessage';
+  if(status === '0000' ||  status === 'SUCCESS' ){
+    className= 'successMessage';
+  }
+
+
+  if($(messageDiv).is(':visible')){
+    $(messageDiv).html("").hide();
+  }
+  $(messageDiv).html("<label class='"+className+"'>"+message+"<a href='#' id='messageClose' class='close messageClose'> &times;</a></label>").show();
+
+  if($(".messageClose").is(':visible')){
+    $(".messageClose").on("click", function(){
+      $(messageDiv).hide();
+    });
+  }
+}
 
 
 export default rinsCommonUtils;
