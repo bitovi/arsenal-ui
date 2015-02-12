@@ -9,7 +9,7 @@ import gridtemplate from './gridtemplate.stache!';
 import stache from 'can/view/stache/';
 
 import UserReq from 'utils/request/';
-import StatusCodes from 'models/common/statuscodes/';
+
 import GetAllInvoices from 'models/getAllInvoices/';
 import Invoice from 'models/invoice/';
 import BundleNamesModel from 'models/payment/bundleNames/';
@@ -365,7 +365,7 @@ var page = Component.extend({
 
 
 
-        //console.log("Status code "+JSON.stringify(StatusCodes));
+        
         //console.log("dsada "+JSON.stringify(invoiceData));
         var gridData = {"data":[],"footer":[]};
         var currencyList = {};
@@ -604,7 +604,7 @@ var page = Component.extend({
                 sortAttr='displayPaymentStatus';
               }
               self.scope.attr('sortColumns').push(sortAttr);
-             
+
             } else {
               var sortDirection = (self.scope.attr('sortDirection') == 'asc') ? 'desc' : 'asc';
               self.scope.attr('sortDirection', sortDirection);

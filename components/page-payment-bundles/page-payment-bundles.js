@@ -60,7 +60,7 @@ var page = Component.extend({
 
         PaymentBundle.loadAll({appstate: this.scope.appstate, paginate: this.scope.paginateAttr}).done(function(data) {
 
-          if(data.responseCode === '0000'){
+          if(data.status === 'SUCCESS'){
 
             can.batch.start();
 
@@ -74,7 +74,7 @@ var page = Component.extend({
 
             can.batch.stop();
           }else{
-            commonUtils.displayUIMessage( data.responseCode, data.responseText);
+            commonUtils.displayUIMessage( data.status, data.responseText);
           }
 
         });
@@ -99,7 +99,7 @@ var page = Component.extend({
           this.scope.isPageSearch  = this.scope.appstate.globalSearch;
           PaymentBundle.loadAll ({appstate: this.scope.appstate,paginate: this.scope.paginateAttr, lookForBundle : lookForBundle}).done(function(data) {
 
-            if(data.responseCode === '0000'){
+            if(data.status === 'SUCCESS'){
               var bundleLookupNeeded = false;
               can.batch.start();
               pageState.bundles.splice(0, pageState.bundles.length);
@@ -120,7 +120,7 @@ var page = Component.extend({
               }
 
             }else{
-              commonUtils.displayUIMessage( data.responseCode, data.responseText);
+              commonUtils.displayUIMessage( data.status, data.responseText);
               self.scope.appstate.attr("screenLookup",{});
             }
 

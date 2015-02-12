@@ -184,7 +184,7 @@ var BundleDetailTabs = Component.extend({
         scope.bottomGridPaginateAttr.attr("isInProgress",false);
 
         if(bundle.status === 'FAILURE'){
-          commonUtils.displayUIMessage( bundle.responseCode, bundle.responseText);
+          commonUtils.displayUIMessage( bundle.status, bundle.responseText);
         }else{
           scope.bundleProgress.triggerValidation ? scope.getNewValidations(bundle) : "";
         }
@@ -505,7 +505,7 @@ var BundleDetailTabs = Component.extend({
 
         }).then(function(response) {
 
-          commonUtils.displayUIMessage( response.responseCode, response.responseText);
+          commonUtils.displayUIMessage( response.status, response.responseText);
 
           if(response.status === 'SUCCESS') {
             //Alert.displayAlert(response.responseText, 'success' );
