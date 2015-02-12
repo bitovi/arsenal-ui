@@ -17,9 +17,13 @@
   </tbody>
   <tfoot>
     {{#if footerrowspresent}}
+      {{#unless footerdatarepconf}}
+        <tr><td style="text-align:center;background:#fff;color:#000;border-radius:0px;" colspan="{{#getColumnLength}}">No Records Found</td</tr>
+      {{/unless}}
         <tr class="open">
           <td colspan="{{getColumnLength}}">Number of records: {{footerdatarepconf}}</td>
         </tr>
     {{/if}}
+    
   </tfoot>
 </table>
