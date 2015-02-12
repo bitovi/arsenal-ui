@@ -17,7 +17,7 @@
   </tbody>
   <tfoot>
       {{#if inboxnumberofrows}}
-        <tr><td colspan="{{inboxnumberofrows}}">Number of records in Inbox {{inboxnumberofrows}}</td</tr>
+        <tr><td colspan="{{inboxnumberofrows}}">Number of records in inbox: {{inboxnumberofrows}}</td</tr>
       {{/if}}
   </tfoot>
 </table>

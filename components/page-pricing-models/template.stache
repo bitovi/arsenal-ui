@@ -165,7 +165,7 @@
 											<tfoot>
 												<tr>
 													{{#if baseModelParamList.length}}
-														<td colspan="7">No. of Records: {{baseModelParamList.length}}</td>
+														<td colspan="7">Number of records:: {{baseModelParamList.length}}</td>
 														{{else}}
 														<td colspan="7">No Data found</td>
 													{{/if}}
@@ -226,7 +226,7 @@
 										<tfoot>
 												<tr>
 													{{#if trackCountMinimaList.length}}
-														<td colspan="5">No. of Records: {{trackCountMinimaList.length}}</td>
+														<td colspan="5">Number of records: {{trackCountMinimaList.length}}</td>
 													{{else}}
 														<td colspan="5">No Data Found</td>
 													{{/if}}	
