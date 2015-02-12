@@ -204,6 +204,13 @@ var BundleDetailTabs = Component.extend({
           $(".previousComments").show();
         }
 
+        if(bundle.status ==  1 ){
+          $(".btn-preview").addClass( "dropdownNone" );
+          $(".btn-preview").attr("data-toggle","dropdownNone");
+        } else{
+          $(".btn-preview").removeClass( "dropdownNone" );
+          $(".btn-preview").attr("data-toggle","dropdown");
+        }
 
         //set the paymentOption which is shared by service
         scope.attr('paymentType',bundle.paymentOption);
