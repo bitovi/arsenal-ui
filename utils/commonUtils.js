@@ -23,7 +23,7 @@ var rinsCommonUtils = {
   displayUIMessage : function(statusCode,message){
 
     var className = 'errorMessage';
-    if(statusCode === '0000'){
+    if(statusCode === '0000' ||  statusCode === 'SUCCESS' ){
       className= 'successMessage';
     }
 
@@ -59,13 +59,13 @@ var rinsCommonUtils = {
       defaultFilterData.contentType = appstate.defaultcontentType;
       defaultFilterData.region = appstate.defaultRegion;
       return defaultFilterData;
-  }, 
+  },
   showSuccessMessage: function(message){
     if($(".messageDiv").is(':visible')){
       $(".messageDiv").html("").hide();
     }
-    $(".messageDiv").html("<label class='successMessage'>"+message+"<a href='#' id='messageClose' class='close messageClose'> &times;</a></label>").show();                  
-    
+    $(".messageDiv").html("<label class='successMessage'>"+message+"<a href='#' id='messageClose' class='close messageClose'> &times;</a></label>").show();
+
     if($(".messageClose").is(':visible')){
       $(".messageClose").on("click", function(){
         $(".messageDiv").hide();
@@ -76,8 +76,8 @@ var rinsCommonUtils = {
     if($(".messageDiv").is(':visible')){
       $(".messageDiv").html("").hide();
     }
-    $(".messageDiv").html("<label class='errorMessage'>"+message+"<a href='#' id='messageClose' class='close messageClose'> &times;</a></label>").show();                  
-    
+    $(".messageDiv").html("<label class='errorMessage'>"+message+"<a href='#' id='messageClose' class='close messageClose'> &times;</a></label>").show();
+
     if($(".messageClose").is(':visible')){
       $(".messageClose").on("click", function(){
         $(".messageDiv").hide();

@@ -204,6 +204,7 @@ var BundleDetailTabs = Component.extend({
           $(".previousComments").show();
         }
 
+        //<rdar://problem/19793722> UI-PBR: Preview eCSV/pCSV to be disabled when bundle with BM
         if(bundle.status ==  1 ){
           $(".btn-preview").addClass( "dropdownNone" );
           $(".btn-preview").attr("data-toggle","dropdownNone");

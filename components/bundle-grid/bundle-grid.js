@@ -6,11 +6,13 @@ import PeriodWidgetHelper from 'utils/periodWidgetHelpers';
 import gridUtils from 'utils/gridUtil';
 import stache from 'can/view/stache/';
 import commonUtils from 'utils/commonUtils';
+import template from './template.stache!';
 import PaymentBundle from 'models/payment-bundle/';
 
 
 var BundleGrid = ScrollingGrid.extend({
   tag: 'rn-bundle-grid',
+  template: template,
   scope: {
     pageState: null, // passed in
     strippedGrid:true,

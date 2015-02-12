@@ -1,0 +1,23 @@
+<table class="rn-grid {{tableClass}}">
+  <thead>
+    <tr class="{{#if allOpen}}open{{/if}}">
+      {{#filteredColumns}}
+      <th class="{{columnClass column}} {{sortClass column}}" {{data 'column'}}>{{{columnTitle column}}} <span class="sort-arrow">{{{sortArrow column}}}</span></th>
+      {{/filteredColumns}}
+    </tr>
+  </thead>
+  <tbody>
+    {{#filteredRows}}
+    <tr class="{{rowClass row}} {{#if isOpen}}open{{/if}} {{#if isChild}}child{{/if}} {{#if isVisible}}visible{{/if}} {{#if isStrippedGd}}{{#if isOddRow}}odd-row{{else}}even-row{{/if}}{{/if}}" {{data 'row'}}>
+      {{#filteredColumns}}
+      <td class="{{columnClass column}} {{cellClass row column}}" {{data 'column'}}>{{{cellContents row column}}}</td>
+      {{/filteredColumns}}
+    </tr>
+    {{/filteredRows}}
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="9">Number of rows displayed: {{rows.length}}</td>
+    </tr>
+  </tfoot>
+</table>

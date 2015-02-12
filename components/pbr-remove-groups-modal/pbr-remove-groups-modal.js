@@ -7,6 +7,7 @@ import PaymentBundle from 'models/payment-bundle/';
 
 import template from './template.stache!';
 import './pbr-remove-groups-modal.less!';
+import commonUtils from 'utils/commonUtils';
 
 var PbrRemoveGroupsModal = can.Component.extend({
   tag: 'rn-pbr-remove-groups-modal',
@@ -33,6 +34,7 @@ var PbrRemoveGroupsModal = can.Component.extend({
           self.scope.bundlescope.pageState.attr("refreshBottomGrid",!self.scope.bundlescope.pageState.refreshBottomGrid);
           //getNewDetails(self.scope.bundlescope.pageState.selectedBundle);
         }
+        commonUtils.displayUIMessage( response.status, response.responseText);
       });
       this.element.find('.modal').modal('hide');
       this.element.remove();

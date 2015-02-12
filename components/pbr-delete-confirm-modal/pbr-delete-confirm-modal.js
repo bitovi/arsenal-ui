@@ -33,7 +33,7 @@ var PbrDeleteConfirmModal = can.Component.extend({
           self.scope.bundle.destroy();
           self.element.find('.modal').modal('hide');
           self.element.remove();
-          commonUtils.displayUIMessage( result.responseCode, result.responseText);
+          commonUtils.displayUIMessage( result.status, result.responseText);
           //Alert.displayAlert(result.responseText, 'success');
         }else{
           self.element.find('.modal').modal('hide');
