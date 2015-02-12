@@ -36,7 +36,8 @@
 			"jqueryui_dialog.css": "bower_components/jquery-ui/themes/base/dialog.csscss",
 			"lodash": "bower_components/lodash/dist/lodash.js",
 			"can/*": "bower_components/canjs/*.js",
-      "bundles/*": "../bundles/*css",
+      // "bundles/*": "*.js",
+			// "bundles/*.css": "*.css",
       		"lodash": "bower_components/lodash/dist/lodash.js",
 			"bootstrap": "bower_components/bootstrap/dist/js/bootstrap.js",
 			"bootstrap.css": "bower_components/bootstrap/dist/css/bootstrap.csscss",
@@ -69,13 +70,38 @@
 			qunit: {
 				format: 'global',
 				exports: 'QUnit'
+			},
+			// highcharts: {
+			// 	format: 'global',
+			// 	exports: 'Highcharts'
+			// },
+			exporting: {
+				format: 'global',
+				deps: ['highcharts']
 			}
 		},
 		ext: {
-			stache: "can/view/stache/system",
-			css: "bower_components/steal/css",
-			less: "bower_components/steal/less"
-		}
+			stache: "can/view/stache/system"
+		},
+		bundle:[
+			"components/page-analytics/page-analytics",
+			"components/page-claimreview/page-claimreview",
+			"components/page-dashboard/page-dashboard",
+			"components/page-icsv/page-icsv",
+			"components/page-invoices/page-invoices",
+			"components/page-licensor/page-licensor",
+			"components/page-on-account/page-on-account",
+			"components/page-payment-bundles/page-payment-bundles",
+			"components/page-pricing-models/page-pricing-models",
+			"components/page-recon/page-recon",
+			"components/page-reconOther/page-reconOther",
+			"components/page-ref-country/page-ref-country",
+			"components/page-ref-licensorcountry/page-ref-licensorcountry",
+			"components/page-logout/page-logout",
+			"components/page-create-invoice/page-create-invoice",
+			"components/page-edit-icsv/page-edit-icsv",
+			"components/page-edit-invoice/page-edit-invoice"
+]
 	});
 
   System.buildConfig = {

@@ -11,7 +11,6 @@ import RinsCommon from 'utils/urls';
 import logout from 'models/common/logout/';
 import commonUtils from 'utils/commonUtils';
 import pagelogout from 'components/page-logout/';
-import commonUtils from 'utils/commonUtils';
 
 
 var headerNavigation = Component.extend({

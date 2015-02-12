@@ -32,7 +32,6 @@ import CalDueDate from 'models/common/calinvoiceduedate/';
 import AdhocTypes from 'models/common/adhoc-types/';
 import GLaccounts from 'models/glaccounts/';
 import Region from 'models/common/region/';
-import stache from 'can/view/stache/';
 import moment from 'moment';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
