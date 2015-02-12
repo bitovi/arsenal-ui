@@ -1135,7 +1135,7 @@ function fetchData(self){
                   // setTimeout(function(){
                   //     $("#messageDiv").hide();
                   // },4000);
-                  commonUtils.showSuccessMessage(data["responseText"]);
+                  commonUtils.commonUIDisplay("#messageDiv", "success", data["responseText"]);
                 }
                 self.attr('recordsAvailable',data.recordsAvailable);
                 self.attr('totalRecordCount', data.totRecCnt);
@@ -1157,7 +1157,7 @@ function fetchData(self){
               // setTimeout(function(){
               //     $("#messageDiv").hide();
               // },4000);
-              commonUtils.showErrorMessage(data["responseText"]);
+              commonUtils.commonUIDisplay("#messageDiv", "success", data["responseText"]);
             }
         },function(xhr){
           console.error("Error while loading: bundleNames"+xhr);
