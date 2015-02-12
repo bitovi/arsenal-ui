@@ -44,7 +44,7 @@
             <div class="form-group">
                <div class="col-sm-12">
                   <label for="forStatus" class="col-sm-4 control-label small-headers">Status: </label>
-                  <div class="col-sm-8" style="text-align:left;padding-left:0px">
+                  <div class="col-sm-8 small-headers" style="text-align:left;padding-left:5px">
                     <span>{{pageState.countryDetails.country.status}}</span>
                   </div>
                 </div>
@@ -116,7 +116,7 @@
             <div class="form-group">
                <div class="col-sm-12">
                   <label for="forStatus" class="col-sm-4 control-label small-headers">Mechanical Share: </label>
-                  <div class="col-sm-8" style="text-align:left;padding-left:0px">
+                  <div class="col-sm-8 small-headers" style="text-align:left;padding-left:5px">
                     <span>{{pageState.countryDetails.country.mechShare}}</span>
                   </div>
                 </div>
@@ -125,7 +125,7 @@
             <div class="form-group">
                <div class="col-sm-12">
                   <label for="forStatus" class="col-sm-4 control-label small-headers">Performance Share: </label>
-                  <div class="col-sm-8" style="text-align:left;padding-left:0px">
+                  <div class="col-sm-8 small-headers" style="text-align:left;padding-left:5px">
                     <span>{{pageState.countryDetails.country.performShare}}</span>
                   </div>
                 </div>
@@ -251,6 +251,10 @@
             </div>
           </div>
         </div><!-- RIGHT Layout END-->
+
+
+
+
         <div id="viewPricingModelDiv"> <!-- View Pricing Model start --->
             <div class="col-sm-12" style="border-bottom: 1px solid #ddd;padding: 0px;">
               <div class="col-sm-11 mid-headers" style="padding-top: 10px;">
