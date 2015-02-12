@@ -312,12 +312,12 @@
 
 										<td can-value="countries">
 											{{#each countries}}
-											<div class="tableDiv"><input type="checkbox" value="{{id}}" class="countryBox" val="false"/></div>
+											<div class="tableDiv"><input type="checkbox" value="{{name}}" class="countryBox" val="false"/></div>
 											{{/each}}
 										</td>
 										<td can-value="countries" class="countryReportColumn">
 											{{#each countries}}
-											<div class="tableDiv" id="{{id}}">{{name}}</div>
+											<div class="tableDiv">{{name}}</div>
 											{{/each}}
 										</td>
 										<td can-value="reportTypes">
