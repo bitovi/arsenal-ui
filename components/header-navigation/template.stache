@@ -7,7 +7,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-       <a class="navbar-brand" href="#"><img src='../../resources/images/apple-chrome.png' class='applelogo'/>RightNotes</a>
+       <a id="appleLogo" class="navbar-brand" href="#"><img src='../../resources/images/apple-chrome.png' class='applelogo'/>RightNotes</a>
       </div>
       <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav" id='homemenu'>
@@ -97,9 +97,9 @@
           <ul id='rightsidemenu'>
             <li class='username'><img src='../../resources/images/rn_WorkflowTypePerson_completed.png' class='logedinimg'/>{{appstate.userInfo.displayName}}</li>
                <li class='bar'>|</li>
-               <li name = 'logout' class='rightmenu logout'>&nbsp;</li>
-               <li class='rightmenu bookmark'>&nbsp;</li>
-               <li class='rightmenu notification'>&nbsp;</li>
+               <li name = 'logout' class='rightmenu logout' title="Logout">&nbsp;</li>
+               <li class='rightmenu bookmark' title="Bookmark">&nbsp;</li>
+               <li class='rightmenu notification' title="Notification">&nbsp;</li>
                <!--Bookmark  - Palceholder -->
                <div class="bookMarkPalceHolder" >
                </div>

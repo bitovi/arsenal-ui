@@ -1,5 +1,5 @@
 <div class="container-fluid icsv-invoice" {{showediticsvmain}}>
-    
+
     <div class="div-warn-container">
         <div class="row pagetitle-div-parent">
             <div class="col-sm-5 pageTitleInv">
@@ -12,7 +12,7 @@
     </div>
 
     <div class="col-sm-12 lineDividerInvoice removeH"></div>
-    
+
     <div id="topContanier" class="col-sm-12" style="padding:0px;background: #f4f4f4;">
         <div class="col-sm-6" id="uploadsummary">
             <label class="fontSize14 col-sm-6 "> iCSV Files (CSVs and PDFs)</label>
@@ -25,32 +25,32 @@
             <icsv-summary appstate="{appstate}"></icsv-summary>
         </div>
     </div>
-    
+
     <div class="col-sm-12 icsv-error" id="icsverr">{{errorMessage}}</div>
-    
+
     <div id="bottomContainer" style="float: left;width: 100%;">
-        
-        <div style="width:100%;text-align:center" id="arrowbtnCntiner" style="cursor:pointer;height:20px">
-        	<img id="arrowbutton" class="pull-up-arrow" style="margin:0 auto;display:none" src="/resources/images/approval_arrow_up.png"></img>
+
+        <div style="width:100%;text-align:center" id="arrowbtnCntiner" style="cursor:pointer;height:20px;display:none">
+        	<img id="arrowbutton" class="pull-up-arrow" style="margin:0 auto;" src="/resources/images/approval_arrow_up.png"></img>
         </div>
-        
+
         <div class="col-sm-12 lineDividerInvoice jQfunhide" style="padding:0px;padding-top:2px;">
             <div id="icsvinvoiceGrid">
                 <div class="loading_img"></div>
             </div>
         </div>
-        
+
         <div  class="form-inline" >
             <div class="col-md-12  jQfunhide marginTop10" style="text-align:right;padding:10px;">
 
 	  	{{#if fetchPB}}
-	      
+
                 <label  style="margin-left:10px">Bundle Name:</label>
                 <span class="requiredBar">
                     <create-pb request="{{createPBRequest}}" newbundlenamereq="{{newpaymentbundlenamereq}}" cancelnewbundlereq="{{cancelnewbundlereq}}"></create-pb>
                 </span>
 	     {{/if}}
-	      
+
                 <button id="addIcsvSubmit" type="button"  class="pull-right btn btn-primary buttonSubmit addInvSubmit btn-custom-big" {{showactivebutton}} >Submit</button>
                 <button type="button" class="pull-right btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancelicsv" >Cancel</button>
             </div>
