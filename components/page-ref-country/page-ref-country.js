@@ -649,12 +649,13 @@ var page = Component.extend({
 
             var msg = "No details available";
 
-            $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
-            $("#invmessageDiv").show();
-            setTimeout(function(){
-              $("#invmessageDiv").hide();
-            },5000);
-    
+            // $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
+            // $("#invmessageDiv").show();
+            // setTimeout(function(){
+            //   $("#invmessageDiv").hide();
+            // },5000);
+            commonUtils.displayUIMessage("SUCCESS", msg);
+
           } else {
 
             $("#viewPricingModelDiv").show();
@@ -766,12 +767,13 @@ var page = Component.extend({
         if(data.status=="SUCCESS"){
           var msg = "Country details saved successfully";
 
-          $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
-          $("#invmessageDiv").show();
+          //$("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
+          //$("#invmessageDiv").show();
           $("#fetchDetailsBtn").click();
-          setTimeout(function(){
-            $("#invmessageDiv").hide();
-          },5000);
+          // setTimeout(function(){
+          //   $("#invmessageDiv").hide();
+          // },5000);
+          commonUtils.displayUIMessage(data.status, msg);
         }
       });
 

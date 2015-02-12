@@ -14,7 +14,7 @@ import validations from 'can/map/validations/';
 import bootstrapValidator from 'bootstrapValidator';
 import css_bootstrapValidator from 'bootstrapValidator.css!';
 import PeriodWidgetHelper from 'utils/periodWidgetHelpers';
-
+import commonUtils from 'utils/commonUtils';
 
 var lDetails = new can.Map({
   data: null,
@@ -1459,19 +1459,21 @@ var page = Component.extend({
 
                 var msg = "Entity Detials saved successfully";
 
-                $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
-                $("#invmessageDiv").show();
-                setTimeout(function(){
-                  $("#invmessageDiv").hide();
-                },5000);
+                // $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
+                // $("#invmessageDiv").show();
+                // setTimeout(function(){
+                //   $("#invmessageDiv").hide();
+                // },5000);
+                commonUtils.displayUIMessage(data[0].status, msg);
             } else {
 
                 var msg = "Entity Detials was not saved successfully";
-                $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
-                $("#invmessageDiv").show();
-                setTimeout(function(){
-                  $("#invmessageDiv").hide();
-                },5000);
+                // $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+                // $("#invmessageDiv").show();
+                // setTimeout(function(){
+                //   $("#invmessageDiv").hide();
+                // },5000);
+                commonUtils.displayUIMessage(data[0].status, msg);
             }
           
           });
@@ -1513,11 +1515,12 @@ var page = Component.extend({
 
                 var msg = "Entity Detials added successfully";
 
-                $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
-                $("#invmessageDiv").show();
-                setTimeout(function(){
-                  $("#invmessageDiv").hide();
-                },5000);
+                // $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
+                // $("#invmessageDiv").show();
+                // setTimeout(function(){
+                //   $("#invmessageDiv").hide();
+                // },5000);
+                commonUtils.displayUIMessage(data[0].status, msg);
 
                 Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
@@ -1529,12 +1532,12 @@ var page = Component.extend({
             } else {
 
                 var msg = "Entity Detials was not added successfully";
-                $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
-                $("#invmessageDiv").show();
-                setTimeout(function(){
-                  $("#invmessageDiv").hide();
-                },5000);
-
+                // $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+                // $("#invmessageDiv").show();
+                // setTimeout(function(){
+                //   $("#invmessageDiv").hide();
+                // },5000);
+                commonUtils.displayUIMessage(data[0].status, msg);
             }
           
           });

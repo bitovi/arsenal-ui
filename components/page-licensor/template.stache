@@ -4,13 +4,13 @@
 
 	<div class="col-sm-12 paddingLicensor" id="entityDetailsTab">
 
-
 		<div class="col-sm-12">
 
 			<div id="entityDetails">
 
 				<form id="entityLicensorTop">
 
+					<!--
 					<div class="col-sm-4" id="entityDetailsHeading">Licensor Details</div>
 
 					<div class="col-sm-6 col-sm-offset-1">
@@ -18,6 +18,18 @@
 					</div>
 
 					<div class="col-sm-12"></div>
+					-->
+					<div class="div-warn-container">
+				      	<div class="row pagetitle-div-parent">
+				          	<div class="col-sm-5 pageTitleInv">
+				            	<div class="pageHead">Licensor Details</div>
+				          	</div>
+				      	</div>
+				      	<div class="col-sm-7 div-warn-parent">
+				          <div id="invmessageDiv" class="center messageDiv" role="alert"></div>
+				    	</div>
+				  	</div>  
+
 
 					<div class="col-sm-12">
 
