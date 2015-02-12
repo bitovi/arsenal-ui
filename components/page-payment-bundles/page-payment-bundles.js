@@ -157,7 +157,7 @@ var page = Component.extend({
       this.scope.appstate.attr('renderGlobalSearch', true);
       this.scope.appstate.attr('excelOutput',false);
     //  this.scope.refreshBundles.apply(this);
-    commonUtils.triggerGlobalSearch();
+     commonUtils.triggerGlobalSearch();
     },
     '{scope} change': function(scope, ev, attr) {
       var self=this;
@@ -167,6 +167,7 @@ var page = Component.extend({
       }
 
       if(attr.substr(0, 8) === 'appstate') {
+        commonUtils.hideUIMessage();
         this.scope.refreshBundles.apply(this);
       }
     },

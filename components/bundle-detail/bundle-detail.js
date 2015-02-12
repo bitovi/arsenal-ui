@@ -585,6 +585,7 @@ var BundleDetailTabs = Component.extend({
 
     },
     '{scope} pageState.selectedBundle': function(scope) {
+      commonUtils.hideUIMessage();
       this.scope.selectedBundleChanged(this.scope);
     },
     '{scope} aggregatePeriod': function(scope) {
@@ -646,7 +647,7 @@ var resetSelectedBundle = function(scope){
   // clear out selectedRows
   scope.selectedRows.splice(0, scope.selectedRows.length);
   scope.attr("isBundlePrioritySet", false);
-  $("#messageDiv").hide();
+  //$("#messageDiv").hide();
   $(".previousComments").val();
   $(".previousComments").hide();
   scope.attr("approvalComment", '');
