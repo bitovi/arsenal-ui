@@ -140,7 +140,7 @@
                               {{/each}}
                             </select>
                           </div>
-                          <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="pricingModelBtn" style="margin-left: -20px;">...</button>
+                          <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="pricingModelBtn" style="margin-left: -20px;">View</button>
                         </div>
                     
                     </div>
@@ -194,7 +194,7 @@
 
 
           <div class="col-sm-6 left-border" style="height:550px"> <!-- RIGHT Layout START-->
-            <div class="form-group" class="minReportConfHt">
+            <div class="form-group minReportConfHt">
               <div class="col-sm-1"></div>
               <div class="col-sm-6">
               <div class="col-sm-12" style="margin-left: -15px;"> Report Configuration</div>
