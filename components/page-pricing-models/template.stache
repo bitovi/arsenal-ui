@@ -112,10 +112,7 @@
 					  	</div>
 					</div>
 					<div class="col-sm-12">
-						
-							<div class="col-sm-12">
-								<fieldset class="scheduler-border">
-									<legend class="scheduler-border">Base Model parameter</legend>
+                                  <div class="greyHeader">Society Model Mapping</div>
 										<div class="table-responsive maxheightGrid" id="baseModelParam">
 									  		<table class="table table-condensed table-striped breakdown" id="baseModelTable">
 											    <thead>
@@ -187,11 +184,12 @@
 											</tfoot>		
 										</table>
 									</div>
-								</fieldset>
 
 
-								<fieldset class="scheduler-border trackcountScheduler">
-									<legend class="scheduler-border">Track Count Minima</legend>
+
+								<!--<fieldset class="scheduler-border trackcountScheduler">
+									<legend class="scheduler-border">Track Count Minima</legend>-->
+                                    <div class="greyHeader">Track Count Minima</div>
 									<div class="table-responsive maxheightGrid" id="trackCountDiv">
 									  	<table class="table table-condensed table-striped breakdown" id="trackCount">
 										    <thead>
@@ -248,22 +246,25 @@
 										</tfoot>	
 									</table>
 								</div>
-							</fieldset>
+							<!--</fieldset>-->
 						</div>
 						
 						
 						{{#if editstate}}
 								{{#if isCommentData}}
-								 	<legend class="scheduler-border" style="margin-left: 50px;width:50%;">Comments</legend>
-									<div class="col-sm-6" style="margin-left:30px;">
-										<div class="col-sm-8" id="multipleComments" class="requiredBar">
+								 <!--	<legend class="scheduler-border" style="margin-left: 50px;width:50%;">Comments</legend>-->
+                            <div class="col-sm-12">
+                            <div class="greyHeader">Comments</div>
+
+										<div id="multipleComments" class="requiredBar">
 											<multiple-comments divid="usercommentsdiv" options="{multipleComments}" divheight="100" isreadOnly="n"></multiple-comments>
 										</div>
 									</div>
 								{{/if}}
 							{{else}}
-							<legend class="scheduler-border" style="margin-left: 50px;width:50%;">Comments</legend>
-							<div class="col-sm-6" style="margin-left: 30px;">
+							<!--<legend class="scheduler-border" style="margin-left: 50px;width:50%;">Comments</legend>-->
+                            <div class="greyHeader">Comments</div>
+							<div class="col-sm-12">
 								<div id="multipleComments" class="requiredBar">
 								<textarea class="form-control" id="usercomments" name="usercommentsdiv"  can-value="usercommentsStore"></textarea>
 								</div>
