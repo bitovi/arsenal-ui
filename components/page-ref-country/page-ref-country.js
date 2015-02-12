@@ -32,7 +32,7 @@ var revisionHistory = new can.List();
 
 var pageState = {
     countryDetails:{
-      country:{localSocietyId:"",countryId:"",status:undefined},
+      country:{localSocietyId:"",countryId:"",status:undefined,displayStatus:undefined},
       commentList:undefined
     }
 };
@@ -232,11 +232,23 @@ var page = Component.extend({
             "id":row.id,
             "countryId":self.pageState.countryDetails.country.attr("countryId")
         };
-        console.log("Request passed is "+ JSON.stringify(UserReq.formRequestDetails(requestObj)));
+//        console.log("Request passed is "+ JSON.stringify(UserReq.formRequestDetails(requestObj)));
         RefCountry.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
-          console.log("Response data is "+JSON.stringify(data.attr()));
+//          console.log("Response data is "+JSON.stringify(data.attr()));
           self.pageState.countryDetails.attr("country",data.countryDetails);
+
+            if(data.countryDetails.status == "A") {
+                self.pageState.countryDetails.country.attr("displayStatus","Active");
+            } else if (data.countryDetails.status == "I") {
+                self.pageState.countryDetails.country.attr("displayStatus","Inactive");
+            } else if (data.countryDetails.status == "R") {
+                self.pageState.countryDetails.country.attr("displayStatus","Rejected");
+            } else if (data.countryDetails.status == "N") {
+                self.pageState.countryDetails.country.attr("displayStatus","New");
+            }else {
+                self.pageState.countryDetails.country.attr("displayStatus",data.countryDetails.status);
+            }
 
           /* if the data.countryDetails.countryId is null then set the country dropdown using requestObj*/
           if(data.countryDetails.countryId==null){
@@ -397,6 +409,21 @@ var page = Component.extend({
 
         //console.log("Response data is "+JSON.stringify(data.attr()));
         self.pageState.countryDetails.attr("country",data.countryDetails);
+
+        console.log("data.countryDetails.status-->"+data.countryDetails.status);
+         if(data.countryDetails.status == "A") {
+              self.pageState.countryDetails.country.attr("displayStatus","Active");
+         } else if (data.countryDetails.status == "I") {
+              self.pageState.countryDetails.country.attr("displayStatus","Inactive");
+         } else if (data.countryDetails.status == "R") {
+              self.pageState.countryDetails.country.attr("displayStatus","Rejected");
+         }else if (data.countryDetails.status == "N") {
+             self.pageState.countryDetails.country.attr("displayStatus","New");
+         }
+         else {
+             self.pageState.countryDetails.country.attr("displayStatus",data.countryDetails.status);
+         }
+
 
         /* if the data.countryDetails.countryId is null then set the country dropdown using requestObj*/
         if(data.countryDetails.countryId==null){
