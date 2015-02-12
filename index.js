@@ -56,7 +56,7 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
   if(appstate.csrfToken != null && options.type=='POST' && options.url.indexOf(URLs.UI_SERVICE_URL) === 0)
   {
     jqXHR.setRequestHeader('X-Apple-CSRF-Token', appstate.csrfToken);
-    //options.async = false;
+    options.async = false;
   }
 
   //end
