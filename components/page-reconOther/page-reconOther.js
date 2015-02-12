@@ -295,7 +295,7 @@ var page = Component.extend({
     '{scope.appstate} change': function() {
       if (this.scope.isGlobalSearch != this.scope.appstate.attr('globalSearch')) {
         this.scope.attr("isGlobalSearch", this.scope.appstate.attr("globalSearch"));
-        
+
         /*if (this.scope.tabSelected == this.scope.tabName.other.attr("name")) {
           $("#loading_img").show();
           fetchReconIncoming(this.scope);
@@ -634,7 +634,7 @@ var processRejectIngestRequestOther = function(scope, requestType) {
     //console.log(JSON.stringify((rejectSearchRequestObj)));
 
     Recon.ingest((rejectSearchRequestObj)).done(function(data) {
-      if (data.responseCode == "0000") {
+      if (data.status == "SUCCESS") {
         // $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
         // $("#messageDiv").show();
         // setTimeout(function(){

@@ -158,9 +158,9 @@ var BundleGrid = ScrollingGrid.extend({
 
       PaymentBundle.editBundleName(row.bundleId,$(".editing").val()).done(function(data) {
 
-        commonUtils.displayUIMessage( data.responseCode, data.responseText);
+        commonUtils.displayUIMessage( data.status, data.responseText);
 
-        if(data.responseCode === '0000'){
+        if(data.status === 'SUCCESS'){
           //console.log('setting new value', el.val(), column, row);
           column.setValue(row, $(".editing").val());
           self.scope.attr({

@@ -44,7 +44,7 @@ var page = Component.extend({
       headerRows: new can.List(),
       footerRows: new can.List()
     },
-    
+
     ingestCcidSelected:[],
     size_ingestCcidSelected:0,
     currencyScope:[],
@@ -117,7 +117,7 @@ var page = Component.extend({
       //if the size of the list is greater than 0, enables the Reject button
       return ( this.attr("size_ingestCcidSelected") == ref ? 'disabled' : '' ) ;
     },
-    
+
     isTabSelectedAs:function(tabName){
       return 'style="display:' + ( this.attr("tabSelected") == tabName  ? 'block' : 'none') + '"';
     }
@@ -196,8 +196,8 @@ var page = Component.extend({
           "boundType":row.badFileType
       }
       FileManager.findOne({request}, function(values) {
-        
-        
+
+
       }, function(xhr) {
           // handle errors
       });
@@ -247,12 +247,12 @@ var page = Component.extend({
 
 
      //Promise.all([FileManager.findOne(request)]).then(function(values) {
-    
+
        //download("sampleFile" , values[0].responseText);
 
     //});
       //FileManager.findOne({request}, function(values) {
-        
+
         //download("sample.csv", values[0].responseText);
 
       //}, function(xhr) {
@@ -315,7 +315,7 @@ var page = Component.extend({
       });
 
     },
-    
+
     '.btn-holesReport click': function() {
       commonUtils.navigateTo("dashboard");
       this.scope.appstate.attr('DISPLAY_HOLES_REPORT',true);
@@ -331,7 +331,7 @@ var page = Component.extend({
       $('#rejectModal').modal('hide');
       processRejectIngestRequest(this.scope,"reject");
     },
-    
+
     '{scope.appstate} change': function() {
       //this.scope.appstate.attr("renderGlobalSearch",true);
       if(this.scope.isGlobalSearchIngested != this.scope.appstate.attr('globalSearch')){
@@ -394,14 +394,14 @@ var page = Component.extend({
          $('copy-clipboard').slideDown(function(){
            $('body').css('overflow','hidden');
            $('#copyall').trigger('click');
-        });       
+        });
       },
    '.exportToExcel click':function(el,ev){
-       
+
         var self = this;
         console.log(self.scope.tabSelected);
        if(self.scope.tabSelected=="Ingested"){
-              Recon.findOne(createIngestedReconRequestForExportToExcel(self.scope.appstate),function(data){ 
+              Recon.findOne(createIngestedReconRequestForExportToExcel(self.scope.appstate),function(data){
                 console.log(data);
                 console.log(JSON.stringify(data));
                       if(data["status"]=="SUCCESS"){
@@ -417,8 +417,8 @@ var page = Component.extend({
                       }
                 }, function(xhr) {
                       console.error("Error while loading: onAccount balance Details"+xhr);
-                } ); 
-         }  
+                } );
+         }
        }
    }
 });
@@ -472,18 +472,18 @@ var processRejectIngestRequest = function(scope,requestType){
           if(data.status == "SUCCESS"){
             // $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
             // $("#messageDiv").show();
-            
+
             if(tab == "ingest") {
               scope.reconRefresh[0].summaryStatsData.splice(0,1);
               scope.attr("ingestCcidSelected").splice(0, scope.attr("ingestCcidSelected").length);
             }
-            
+
             $('.statsTable').hide();
-            
+
             // setTimeout(function(){
             //   $("#messageDiv").hide();
             // },3000);
-            
+
             commonUtils.showSuccessMessage(data["responseText"]);
 
             fetchReconIngest(scope, scope.load);
@@ -508,7 +508,7 @@ var processRejectIngestRequest = function(scope,requestType){
       //console.log(JSON.stringify((rejectSearchRequestObj)));
 
       Recon.ingest((rejectSearchRequestObj)).done(function(data){
-        if(data.responseCode == "0000"){
+        if(data.status == "SUCCESS"){
           // $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
           // $("#messageDiv").show();
           // setTimeout(function(){
@@ -533,7 +533,7 @@ var displayErrorMessage = function(message,log){
   //   $("#messageDiv").hide();
   // },4000);
   // console.error(log+message);
-  
+
   commonUtils.showErrorMessage(message);
 
 }
@@ -572,7 +572,7 @@ var fetchReconIngest = function(scope, load){
 
   Promise.all([Recon.findOne(searchRequestObj)]).then(function(values){
     //console.log("Loading Done");
-    
+
     if(values != undefined && values != null) {
       var data = values[0];
       dataLowerGrid = data;
@@ -590,7 +590,7 @@ var fetchReconIngest = function(scope, load){
 
           scope.attr("emptyrows", false);
 
-        } 
+        }
         if(searchRequestObj.searchRequest["offset"]==0)
           scope.ingestList.headerRows.replace(data.reconStatsDetails);
         else {
@@ -607,7 +607,7 @@ var fetchReconIngest = function(scope, load){
           $("#currency").val(scope.reconRefresh[0].attr("currency"));
         }
 
-        
+
 
         if(data.summary == undefined){
           console.error("Footer rows doesn't exists in the response");
