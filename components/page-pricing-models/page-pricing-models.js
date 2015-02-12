@@ -27,6 +27,7 @@ import PricingModelsValidation from './pricingmodels.validation';
 
 import Comments from 'components/multiple-comments/';
 import Switcher from 'components/switcher/';
+import commonUtils from 'utils/commonUtils';
 
 var mandatoryAddField = ["pricingmodeltype", "modelname", "usercommentsdiv", "contentGroup[]", "baseRate[]", "minima[]", "listenerMinima[]", "discount[]", "description[]", "from[]", "to[]", "minimatrack[]"];
 var mandatoryEditField = ["version", "pricingmodeltype", "modelname", "usercommentsdiv", "contentGroup[]", "baseRate[]", "minima[]", "listenerMinima[]", "discount[]", "description[]", "from[]", "to[]", "minimatrack[]"];
@@ -666,12 +667,13 @@ var page = Component.extend({
        PricingModels.create(UserReq.formRequestDetails(saveRecord), function(data){
                   if(data["status"]=="SUCCESS"){
                               var msg = data["responseText"];
-                              $("#pbmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
-                              $("#pbmessageDiv").css("display", "block");
+                              // $("#pbmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
+                              // $("#pbmessageDiv").css("display", "block");
                               
-                                 setTimeout(function(){
-                                    $("#pbmessageDiv").hide();
-                                 },5000);
+                              //    setTimeout(function(){
+                              //       $("#pbmessageDiv").hide();
+                              //    },5000);
+                                commonUtils.displayUIMessage(data["status"], msg);
 
                                  var selModel = self.scope.attr("modelSumRowIndex");
                                 $("models-grid table tbody tr").eq(selModel-1).click();
@@ -693,11 +695,12 @@ var page = Component.extend({
                             else
                             {
                                 var msg = data["responseText"];
-                                $("#pbmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
-                                $("#pbmessageDiv").show();
-                                setTimeout(function(){
-                                    $("#pbmessageDiv").hide();
-                                 },5000);
+                                // $("#pbmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+                                // $("#pbmessageDiv").show();
+                                // setTimeout(function(){
+                                //     $("#pbmessageDiv").hide();
+                                //  },5000);
+                                commonUtils.displayUIMessage(data["status"], msg);
                             }
                 },function(xhr){
                 /*Error condition*/
@@ -725,11 +728,12 @@ function handleMsg(state, msg){
     if(state == "show")
     { 
        var msg = msg;
-       $("#pbmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
-       $("#pbmessageDiv").show();
-        setTimeout(function(){
-          $("#pbmessageDiv").hide();
-       },3000);
+       // $("#pbmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+       // $("#pbmessageDiv").show();
+       //  setTimeout(function(){
+       //    $("#pbmessageDiv").hide();
+       // },3000);
+       commonUtils.displayUIMessage("ERROR", msg);
     }
     else
     {

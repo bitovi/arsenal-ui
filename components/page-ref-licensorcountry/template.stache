@@ -1,16 +1,16 @@
 <form class="form-horizontal" id="countryLicForm" role="form">
 
   <div class="container-fluid">
-    <div class="row">
+   <!--  <div class="row">
       <div class="col-sm-5 pageTitle">
         <span class="large-headers">Country-Licensor Details</span>
       </div>
       <div class="col-sm-4">
-        <!-- TODO - Keep the message outside -->
-        <!-- <div style="{{displayMessage}}" class="alert-success alert-dimension" role="alert">
+         TODO - Keep the message outside 
+         <div style="{{displayMessage}}" class="alert-success alert-dimension" role="alert">
           <a href="#" class="close" data-dismiss="alert">&times;</a>
           New Country-Society Details Changes Saved Successfully.
-        </div> -->
+        </div> 
         <div class="cols-sm-4">
           <div id="invmessageDiv" role="alert"></div>
         </div>
@@ -18,6 +18,18 @@
 
       </div>
     </div>
+-->
+
+      <div class="div-warn-container">
+          <div class="row pagetitle-div-parent">
+              <div class="col-sm-5 pageTitleInv">
+                <div class="pageHead">Country-Licensor Details</div>
+              </div>
+          </div>
+          <div class="col-sm-7 div-warn-parent">
+            <div id="invmessageDiv" class="center messageDiv" role="alert"></div>
+        </div>
+      </div>  
 
     <div class="row">
 
