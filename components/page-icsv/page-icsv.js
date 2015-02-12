@@ -172,7 +172,7 @@ var page = Component.extend({
        icsvmap.delegate("invoiceData","change", function(ev, newVal){
             //console.log(icsvmap.attr("invoiceData"));
             $("#loading_img").hide();
-            $('#arrowbutton').show();
+            $('#arrowbtnCntiner').show();
             if(icsvmap.attr("invoiceData"))
             {
                   var gridData = [];
@@ -323,7 +323,7 @@ var page = Component.extend({
           self.scope.uploadedfileinfo.replace([]);
           $('.jQfunhide').hide();
           $('#topContanier').show();
-          $('#arrowbutton').hide();
+          $('#arrowbtnCntiner').hide();
           $('.file-component-icv-div #buttondiv').show();
        },
        '{scope} uploadedfileinfo':function(){
@@ -570,10 +570,10 @@ var page = Component.extend({
           if($.isEmptyObject(this.attr("errorStatus"))){
                 if(this.attr("errorStatus") == "success"){
                     //return "<label class='successMessage'>"+this.attr("responseText")+"</label>";
-                    return commonUtils.showSuccessMessage(this.attr("responseText")); 
+                    return commonUtils.showSuccessMessage(this.attr("responseText"));
                 }else{
                     //return "<label class='errorMessage'>"+this.attr("responseText")+"</label>";
-                    return commonUtils.showErrorMessage(this.attr("responseText")); 
+                    return commonUtils.showErrorMessage(this.attr("responseText"));
                 }
 
                 // setTimeout(function(){
