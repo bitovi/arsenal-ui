@@ -33,44 +33,24 @@ var rinsCommonUtils = {
   displayUIMessageWithDiv : function(messageDiv, status,message){
     commonUIDisplay(messageDiv, status,message);
   },
-  getDefaultParameters:function(appstate){
-      var defaultFilterData={};
-      defaultFilterData.periodFrom = appstate.defaultPeriodFrom;
-      defaultFilterData.periodType = appstate.defaultPeriodType;
-      defaultFilterData.periodTo = appstate.defaultPeriodTo;
-      defaultFilterData.storeType = appstate.defaultStoreType;
-      defaultFilterData.country = appstate.defaultcountry;
-      defaultFilterData.licensor = appstate.defaultlicensor;
-      defaultFilterData.contentType = appstate.defaultcontentType;
-      defaultFilterData.region = appstate.defaultRegion;
-      return defaultFilterData;
-  },
   showSuccessMessage: function(message){
-    if($(".messageDiv").is(':visible')){
-      $(".messageDiv").html("").hide();
-    }
-    $(".messageDiv").html("<label class='successMessage'>"+message+"<a href='#' id='messageClose' class='close messageClose'> &times;</a></label>").show();
-
-    if($(".messageClose").is(':visible')){
-      $(".messageClose").on("click", function(){
-        $(".messageDiv").hide();
-      });
-    }
+    commonUIDisplay(  ".messageDiv", "0000",message);
   },
   showErrorMessage: function(message){
-    if($(".messageDiv").is(':visible')){
-      $(".messageDiv").html("").hide();
-    }
-    $(".messageDiv").html("<label class='errorMessage'>"+message+"<a href='#' id='messageClose' class='close messageClose'> &times;</a></label>").show();
-
-    if($(".messageClose").is(':visible')){
-      $(".messageClose").on("click", function(){
-        $(".messageDiv").hide();
-      });
-    }
+    commonUIDisplay(  ".messageDiv", "ERROR",message);
+  },
+  getDefaultParameters:function(appstate){
+    var defaultFilterData={};
+    defaultFilterData.periodFrom = appstate.defaultPeriodFrom;
+    defaultFilterData.periodType = appstate.defaultPeriodType;
+    defaultFilterData.periodTo = appstate.defaultPeriodTo;
+    defaultFilterData.storeType = appstate.defaultStoreType;
+    defaultFilterData.country = appstate.defaultcountry;
+    defaultFilterData.licensor = appstate.defaultlicensor;
+    defaultFilterData.contentType = appstate.defaultcontentType;
+    defaultFilterData.region = appstate.defaultRegion;
+    return defaultFilterData;
   }
-
-
 };
 
 var   commonUIDisplay  = function(messageDiv, status,message){
