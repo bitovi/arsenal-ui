@@ -26,7 +26,7 @@ var InboxGrid = ScrollingGrid.extend({
     }, {
       id: 'pendingDays',
       title: 'Pending',
-      contents: row => row.pendingDays + ' Day' + (row.pending === 1 ? '' : 's')
+      contents: row => row.pendingDays + ' Day' + (row.pendingDays === 1 ? '' : 's')
     }, {
       id: 'approvalStage',
       title: 'Approvals',
@@ -69,7 +69,7 @@ var InboxGrid = ScrollingGrid.extend({
 
             /* Reset the offset value and call the webservice to fetch next set of records */
             parentScopeVar.attr('mailboxType', 'inbox');
-            parentScopeVar.attr('inboxOffset', (parseInt(offsetVal)+1));
+            parentScopeVar.attr('inboxOffset', (parseInt(offsetVal)+10));
             parentScopeVar.attr('inboxScrollTop', (tbody[0].scrollHeight-200));
             parentScopeVar.appstate.attr('globalSearchButtonClicked', false);
 
