@@ -85,6 +85,8 @@ var page = Component.extend({
 
       }else{
         if(this.scope.isPageSearch != this.scope.appstate.globalSearch) {
+          commonUtils.hideUIMessage();
+          pageState.attr("totRecCnt",0);
 
           this.scope.appstate.attr('excelOutput',false);
           this.scope.paginateAttr.attr('offset',  0);
@@ -167,13 +169,13 @@ var page = Component.extend({
       }
 
       if(attr.substr(0, 8) === 'appstate') {
-        commonUtils.hideUIMessage();
+
         this.scope.refreshBundles.apply(this);
       }
     },
     '.add-invoice click': function(el, ev) {
       if(this.scope.pageState.selectedBundle.bundleType === 'ON_ACCOUNT'){
-        commonUtils.navigateTo("on-account");  
+        commonUtils.navigateTo("on-account");
       }else{
         commonUtils.navigateTo("invoices");
       }
