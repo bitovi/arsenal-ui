@@ -172,7 +172,11 @@ var page = Component.extend({
       }
     },
     '.add-invoice click': function(el, ev) {
-      commonUtils.navigateTo("invoices");
+      if(this.scope.pageState.selectedBundle.bundleType === 'ON_ACCOUNT'){
+        commonUtils.navigateTo("on-account");  
+      }else{
+        commonUtils.navigateTo("invoices");
+      }
     },
     '.remove-invoice click': function(el, ev) {
       PbrRemoveGroupsModal.displayModal(this.scope);
