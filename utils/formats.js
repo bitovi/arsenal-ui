@@ -12,7 +12,8 @@ var formats = {
   },
   currencyFormat: function (numberVal)
   {
-    if(isNaN(numberVal) && (numberVal == "" || numberVal == null)){
+    if(numberVal === '' || numberVal == null){
+    //  console.log("numberVal : "+numberVal);
       return "";
     }else  {
       var n =  formats.number(numberVal).toFixed(2);
