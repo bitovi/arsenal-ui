@@ -7,14 +7,25 @@
   </formats>
   <fileSets>
     <fileSet>
-      <directory>${project.basedir}/dist/bundles</directory>
+      <directory>${project.basedir}/dist</directory>
+      <outputDirectory>/dist</outputDirectory>
+      <useDefaultExcludes>true</useDefaultExcludes>
+    </fileSet>
+    <fileSet>
+      <directory>${project.basedir}/resources</directory>
+      <outputDirectory>/resources</outputDirectory>
+    </fileSet>
+    <fileSet>
+      <directory>${project.basedir}/bower_components</directory>
+      <outputDirectory>/bower_components</outputDirectory>
+    </fileSet>
+    <fileSet>
+      <directory>${project.basedir}</directory>
       <outputDirectory>/</outputDirectory>
        <includes>
-        <include>index.js</include>
         <include>index.html</include>
-        <include>index.css</include>
+        <include>stealconfig.js</include>
       </includes>
-      <useDefaultExcludes>true</useDefaultExcludes>
     </fileSet>
   </fileSets>
 </assembly>
