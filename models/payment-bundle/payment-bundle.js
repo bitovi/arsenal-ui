@@ -93,9 +93,10 @@ var PaymentBundle = Model.extend({
     });
   },
   preview: function(invId){
-    var x = screen.width/2 - 700/2;
-    var y = screen.height/2 - 450/2;
-    window.open(URLs.DOMAIN_SERVICE_URL + 'invoice/getPdfContent/'+invId, '_blank', 'height=485,width=700,left='+x+',top='+y);
+    // var x = screen.width/2 - 700/2;
+    // var y = screen.height/2 - 450/2;
+    // window.open(URLs.DOMAIN_SERVICE_URL + 'invoice/getPdfContent/'+invId, '_blank', 'height=485,width=700,left='+x+',top='+y);
+    window.location.href = URLs.DOMAIN_SERVICE_URL + 'invoice/getPdfContent/'+invId;
   },
   downloadFile:function(type,id){
     var url = "";
