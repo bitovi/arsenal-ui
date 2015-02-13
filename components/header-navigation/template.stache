@@ -17,11 +17,11 @@
               <li name='Approvals' class="dropdown" >
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Approvals<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href='{{url}}approvals/accrualApproval' target="_blank">Accrual</a></li>
-                    <li><a href='{{url}}approvals/refDataApproval' target="_blank">Ref Data</a></li>
+                    <li><a href='{{url}}approvals/accrualApproval' class="old" target="_blank">Accrual</a></li>
+                    <li><a href='{{url}}approvals/refDataApproval' class="old" target="_blank">Ref Data</a></li>
                     <li><a href='/payment-bundles'>Payment Bundle Review</a></li>
-                    <li><a href='{{url}}approvals/salesReportApproval' target="_blank">Sales Report</a></li>
-                    <li><a href='{{url}}approvals/unClaimedReportApproval' target="_blank">Unclaimed Report</a></li>
+                    <li><a href='{{url}}approvals/salesReportApproval' class="old" target="_blank">Sales Report</a></li>
+                    <li><a href='{{url}}approvals/unClaimedReportApproval' class="old" target="_blank">Unclaimed Report</a></li>
                 </ul>
             </li>
 
@@ -43,8 +43,8 @@
                  <ul class="dropdown-menu" role="menu">
 
                      <li {{isScreenEnabled 22}}><a href='/claimreview'>Claim Review</a></li>
-                     <li {{isScreenEnabled 23}}><a href='{{url}}globalRevenue' target="_blank">Global Revenue</a></li>
-                     <li {{isScreenEnabled 24}}><a href='{{url}}bwReport' target="_blank">Monthly Billings Reconciliation</a></li>
+                     <li {{isScreenEnabled 23}}><a href='{{url}}globalRevenue' class="old" target="_blank">Global Revenue</a></li>
+                     <li {{isScreenEnabled 24}}><a href='{{url}}bwReport' class="old" target="_blank">Monthly Billings Reconciliation</a></li>
                  </ul>
              </li>
 
@@ -61,34 +61,34 @@
              <li name='Accruals' class="dropdown" >
                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Accruals<span class="caret"></span></a>
                  <ul class="dropdown-menu" role="menu">
-                     <li {{isScreenEnabled 11}}><a href='{{url}}accrualJV' target="_blank">Accrual Journal Voucher</a></li>
-                     <li {{isScreenEnabled 12}}><a href='{{url}}accrualDetails' target="_blank">Accrual Details</a></li>
-                     <li {{isScreenEnabled 13}}><a href='{{url}}accrualsAgingReport' target="_blank">Accruals Aging Report</a></li>
-                     <li {{isScreenEnabled 14}}><a href='{{url}}accrualTrueUp' target="_blank">Accrual Trueup</a></li>
-                     <li {{isScreenEnabled 15}}><a href='{{url}}accrualAnalysis' target="_blank">Accrual Analysis</a></li>
+                     <li {{isScreenEnabled 11}}><a href='{{url}}accrualJV' class="old" target="_blank">Accrual Journal Voucher</a></li>
+                     <li {{isScreenEnabled 12}}><a href='{{url}}accrualDetails' class="old" target="_blank">Accrual Details</a></li>
+                     <li {{isScreenEnabled 13}}><a href='{{url}}accrualsAgingReport' class="old" target="_blank">Accruals Aging Report</a></li>
+                     <li {{isScreenEnabled 14}}><a href='{{url}}accrualTrueUp' class="old" target="_blank">Accrual Trueup</a></li>
+                     <li {{isScreenEnabled 15}}><a href='{{url}}accrualAnalysis' class="old" target="_blank">Accrual Analysis</a></li>
                  </ul>
              </li>
 
               <li name='System' class="dropdown" >
                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">System<span class="caret"></span></a>
                    <ul class="dropdown-menu" role="menu">
-                       <li {{isScreenEnabled 25}}><a href='{{url}}jobStatistics' target="_blank">Job Statistics</a></li>
-                       <li {{isScreenEnabled 26}}><a href='{{url}}reportDownloads' target="_blank">Report Downloads</a></li>
+                       <li {{isScreenEnabled 25}}><a href='{{url}}jobStatistics' class="old" target="_blank">Job Statistics</a></li>
+                       <li {{isScreenEnabled 26}}><a href='{{url}}reportDownloads' class="old" target="_blank">Report Downloads</a></li>
                    </ul>
               </li>
 
               <li name='Approval History' class="dropdown" >
                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Approval History<span class="caret"></span></a>
                <ul class="dropdown-menu" role="menu">
-                   <li {{isScreenEnabled 27}}><a href='{{url}}accrualApprovalHistory' target="_blank">Accrual Approval</a></li>
-                   <li {{isScreenEnabled 28}}><a href='{{url}}refDataHistory' target="_blank">Ref Data</a></li>
-                   <li {{isScreenEnabled 29}}><a href='{{url}}reconPaymentHistory' target="_blank">Recon Payment</a></li>
-                   <li {{isScreenEnabled 30}}><a href='{{url}}salesReportHistory' target="_blank">Sales Report</a></li>
-                   <li ><a href='{{url}}paymentReportHistory' target="_blank">Payment Report</a></li>
-                   <li ><a href='{{url}}unClaimedReportHistory' target="_blank">Unclaimed Report</a></li>
-                   <li {{isScreenEnabled 31}}><a href='{{url}}onAccountAmountHistory' target="_blank">OnAccount</a></li>
-                   <li {{isScreenEnabled 32}}><a href='{{url}}lineItemHistory' target="_blank">Dispute Report</a></li>
-                   <li {{isScreenEnabled 33}}><a href='{{url}}accrualRerunHistory' target="_blank">Accrual Rerun</a></li>
+                   <li {{isScreenEnabled 27}}><a href='{{url}}accrualApprovalHistory' class="old" target="_blank">Accrual Approval</a></li>
+                   <li {{isScreenEnabled 28}}><a href='{{url}}refDataHistory' class="old" target="_blank">Ref Data</a></li>
+                   <li {{isScreenEnabled 29}}><a href='{{url}}reconPaymentHistory' class="old" target="_blank">Recon Payment</a></li>
+                   <li {{isScreenEnabled 30}}><a href='{{url}}salesReportHistory' class="old" target="_blank">Sales Report</a></li>
+                   <li ><a href='{{url}}paymentReportHistory' class="old" target="_blank">Payment Report</a></li>
+                   <li ><a href='{{url}}unClaimedReportHistory' class="old" target="_blank">Unclaimed Report</a></li>
+                   <li {{isScreenEnabled 31}}><a href='{{url}}onAccountAmountHistory' class="old" target="_blank">OnAccount</a></li>
+                   <li {{isScreenEnabled 32}}><a href='{{url}}lineItemHistory' class="old" target="_blank">Dispute Report</a></li>
+                   <li {{isScreenEnabled 33}}><a href='{{url}}accrualRerunHistory' class="old" target="_blank">Accrual Rerun</a></li>
                </ul>
            </li>
         </ul>
