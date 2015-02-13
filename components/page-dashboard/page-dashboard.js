@@ -4,7 +4,7 @@ import GlobalParameterBar from 'components/global-parameter-bar/';
 import Switcher from 'components/switcher/';
 import DashboardInvoices from 'components/dashboard-invoices/';
 import DashboardApprovals from 'components/dashboard-approvals/';
-import DashboardApprovals from 'components/dashboard-payments/';
+import DashboardPayments from 'components/dashboard-payments/';
 
 import template from './template.stache!';
 import styles from './page-dashboard.less!';

@@ -14,7 +14,7 @@
     "license": "Proprietary",
     "devDependencies": {
         "grunt": "~0.4.5",
-        "steal-tools": "~0.4.0",
+        "steal-tools": "https://github.com/bitovi/steal-tools/tarball/v0.7.0-pre.0",
         "testee": "~0.1.1",
         "grunt-shell": "~1.1.1",
         "grunt-contrib-connect": "~0.8.0",
