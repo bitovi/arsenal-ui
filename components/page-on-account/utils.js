@@ -379,7 +379,10 @@ prepareRowsForDisplay:function(onAccountDetails,quarters){
        if(periodMap.hasOwnProperty(fiscalPeriod)){
         addToRow = true;
         row[fiscalPeriod]=utils.currencyFormat(periodMap[fiscalPeriod]);
-        }
+        } else if (periodMap.hasOwnProperty(0)) { 
+            addToRow = true;
+            row[fiscalPeriod] = "0.00";
+          }
      }
     if(addToRow){
       rows.push(row);
