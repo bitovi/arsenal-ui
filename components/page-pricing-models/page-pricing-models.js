@@ -3,7 +3,7 @@ import Map from 'can/map/';
 
 /** for pricing model*/
 import view from 'can/view/';
-import stache from 'can/view/stache/';
+//import stache from 'can/view/stache/';
 import _ from 'lodash';
 import Grid from 'components/grid/';
 import stache from 'can/view/stache/';
@@ -266,6 +266,7 @@ var page = Component.extend({
 
                 setTimeout(function(){
                   addFooter('modelsummary');
+                  alignGridStats('modelsummary');
                 },100);
                 
              //   handleMsg("show", "Please click on pricing model row to view/edit.");
@@ -465,6 +466,7 @@ var page = Component.extend({
                 /*Error condition*/
                 }).then(function(){
                   addFooter('country-lic-grid');
+                  alignGridStats('country-lic-grid');
                   //addFooter('baseModelParam');
                   //addFooter('trackCountDiv');
 
@@ -823,7 +825,7 @@ function alignGridStats(divId){
 
         if(theadTdWidth >= tbodyTdWidth && theadTdWidth >= tfootTdWidth)
           tdWidth = theadTdWidth;
-        else if(tfootTdWidth >= tbodyTdWidth && tfootTdWidth >= theadTdWidth)
+        else if(tfootTdWidth >= tbodyTdWidth && tfootTdWidth >= theadTdWidth && divId != "modelsummary" && divId != "country-lic-grid")
           tdWidth = tfootTdWidth;
         else 
           tdWidth = tbodyTdWidth;
@@ -863,7 +865,16 @@ function alignGridStats(divId){
         $('#'+divId+' table').css("width",tableWidth);
       }
     }
+
+    if(rowLength == 0 && (divId == 'modelsummary' || divId == 'country-lic-grid')){
+      $('#'+divId+' table>thead>tr').css('width','100%;')
+        var noDataTable1=$('#'+divId+' table').width();
+        var colLength1=noDataTable1/($('#'+divId+' table>thead>tr>th').length);
+        $('#'+divId+' table>thead>tr>th').css("width",colLength1);
+    }
   }
+
+
 
 
 
