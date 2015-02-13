@@ -1,7 +1,7 @@
 import Component from 'can/component/';
 
 import view from 'can/view/';
-import stache from 'can/view/stache/';
+//import stache from 'can/view/stache/';
 import datePicker from 'components/date-picker/';
 import comments from 'components/multiple-comments/';
 import createpb from 'components/create-pb/';
@@ -478,7 +478,7 @@ var page = Component.extend({
 			                      }
 		                    },
 		                    'taxAmount': {
-		                     group:'.taxAmountCont',	
+		                     group:'.taxAmountCont',
 		                      validators: {
 		                        callback: {
 
@@ -683,7 +683,7 @@ var page = Component.extend({
 	        				if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]") && (data.field != "ccidGLtxt[]")){
 					    		$("#"+data.field+"-err").css("display", "none");
 					    	}
-							
+
 		        				var requireField = (self.scope.attr("invoicetypeSelect") == "2")? mandatoryFieldAdhoc: (self.scope.attr("invoicetypeSelect") == "3") ? mandatoryFieldCA  : mandatoryField;
 
 		        				for(var i= 0; i < requireField.length; i++){
@@ -696,8 +696,8 @@ var page = Component.extend({
 		        					}
 
 		        				}
-	        				
-	        			
+
+
 						}).on('success.form.bv', function(e) {
 							e.preventDefault();
 					});
@@ -741,9 +741,9 @@ var page = Component.extend({
 								removeError(event[0].id);
 
 							}
-						}	
+						}
 					}
-				
+
 					if(self.scope.editpage){
 						if(event[0].id == "usercomments"){
 							if(String(event[0].value).length > 0){
@@ -753,8 +753,8 @@ var page = Component.extend({
 								else{
 									removeError(event[0].id);
 								}
-							}	
-						
+							}
+
 						}
 				   }
 				},
@@ -888,18 +888,22 @@ var page = Component.extend({
 		"{scope} regionStore": function(){
 		  	var self = this;
 			var genObj = {regionId:self.scope.attr("regionStore")};
-			Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))
+			Promise.all([
+				Licensor.findAll(UserReq.formRequestDetails(genObj)),
+				Currency.getCurrByRegion(self.scope.attr("regionStore"))
 			     ]).then(function(values) {
 		     			self.scope.attr("licensor").replace([]);
 			    		self.scope.attr("licensor").replace(values[0]["entities"]);
+			    		  self.scope.attr("currency").replace([]);
+					     self.scope.attr("currency").replace(values[1].data);
 			    		if(self.scope.editpage){
 				    		var invoiceData = self.scope.attr().invoiceContainer[0];
 				    		self.scope.attr("licensorStore", invoiceData.entityId);
 				    		self.scope.ajaxRequestStatus.attr("licensorLoaded", true);
+				    		self.scope.attr("currencyStore", invoiceData.invoiceCcy);
+						    self.scope.ajaxRequestStatus.attr("currencyStore", true);
 			    		}
 			    });
-
-
 
 			self.scope.createPBRequest();
 
@@ -918,17 +922,17 @@ var page = Component.extend({
 
 		"{scope} licensorStore": function(event){
 			var self = this;
-			var genObj = {licensorId:self.scope.attr("licensorStore")};
-			Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
-			     ]).then(function(values) {
-				    self.scope.attr("currency").replace([]);
-				     self.scope.attr("currency").replace(values[0]);
-				    if(self.scope.editpage){
-					    var invoiceData = self.scope.attr().invoiceContainer[0];
-					    self.scope.attr("currencyStore", invoiceData.invoiceCcy);
-					    self.scope.ajaxRequestStatus.attr("currencyStore", true);
-					}
-			});
+			//var genObj = {licensorId:self.scope.attr("regionStore")};
+			// Promise.all([Currency.getCurrByRegion(self.scope.attr("regionStore"))
+			//      ]).then(function(values) {
+			// 	    self.scope.attr("currency").replace([]);
+			// 	     self.scope.attr("currency").replace(values[0]);
+			// 	    if(self.scope.editpage){
+			// 		    var invoiceData = self.scope.attr().invoiceContainer[0];
+			// 		    self.scope.attr("currencyStore", invoiceData.invoiceCcy);
+			// 		    self.scope.ajaxRequestStatus.attr("currencyStore", true);
+			// 		}
+			// });
 		},
 
 		"#invoicelicensor change":function(){  /*This is need only for edit case*/
@@ -1007,11 +1011,12 @@ var page = Component.extend({
 				 		if(self.scope.appstate.attr('viewinvoicemode') == true){
 							$("rn-file-uploader-edit .browseFiles.uploadFiles").attr("disabled", true);
 							var msg = "Info:Invoice can't be edited as its in transit/paid";
-					       	$("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
-				            $("#invmessageDiv").show();
-				             setTimeout(function(){
-				                $("#invmessageDiv").hide();
-				            },5000)
+							commonUtils.showErrorMessage(msg);
+					     // $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
+				         //    $("#invmessageDiv").show();
+				         //     setTimeout(function(){
+				         //        $("#invmessageDiv").hide();
+				         //    },5000)
 						}
 
 						var invoiceData = self.scope.attr().invoiceContainer[0];
@@ -1508,7 +1513,8 @@ var page = Component.extend({
                             //var msg = "Invoice number "+self.scope.invoicenumberStore+" was saved successfully.";
                             var msg = values[0].responseText;
 
-                            commonUtils.displayUIMessageWithDiv("#invmessageDiv", values[0].status,values[0].responseText);
+                            //commonUtils.displayUIMessageWithDiv("#invmessageDiv", values[0].status,values[0].responseText);
+                            commonUtils.showSuccessMessage(msg);
 
 								            // $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
 								            // $("#invmessageDiv").show();
@@ -1522,7 +1528,8 @@ var page = Component.extend({
 
 								           		if(errorMap){
 										       		 var msg =showErrorDetails(errorMap, "Warning");
-                               commonUtils.displayUIMessageWithDiv("#invWarningMsgDiv", "ERROR",msg);
+                               //commonUtils.displayUIMessageWithDiv("#invWarningMsgDiv", "ERROR",msg);
+                               commonUtils.showErrorMessage(msg);
 										       		 /*$("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
 										             $("#invmessageDiv").show();
 										             setTimeout(function(){
@@ -1544,7 +1551,8 @@ var page = Component.extend({
 									          		var msg = values[0].responseText;
 									          	}
 
-                            commonUtils.displayUIMessageWithDiv("#invmessageDiv", "ERROR",msg);
+                            //commonUtils.displayUIMessageWithDiv("#invmessageDiv", "ERROR",msg);
+                            commonUtils.showErrorMessage(msg);
 												// $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
 										    //     $("#invmessageDiv").show();
 										        $("#addInvSubmit").attr("disabled", false);
@@ -1660,15 +1668,17 @@ var page = Component.extend({
 
 								                  		 if(data.status === "FAILURE"){
         								                  		 	var msg = data.responseText;
-        								          					$("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
-        								          					$("#invmessageDiv").show();
+        								          					// $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+        								          					// $("#invmessageDiv").show();
+        								          					commonUtils.showErrorMessage(msg);
         								          					$("#addInvSubmit").attr("disabled", false);
 								                  		 }
 
 								                  		},function(errmsg){
     										                /*Error condition*/
-    										                	$("#invmessageDiv").html("<label class='errorMessage'>"+errmsg+"</label>");
-    								          					$("#invmessageDiv").show();
+    										             //    	$("#invmessageDiv").html("<label class='errorMessage'>"+errmsg+"</label>");
+    								          					// $("#invmessageDiv").show();
+    								          					commonUtils.showErrorMessage(errmsg);
     								          					$("#addInvSubmit").attr("disabled", false);
     										        		});
 
@@ -1733,7 +1743,7 @@ var page = Component.extend({
 									},
 									calculateUSD:function(){
 										var fxrate = this.attr("usdFxrateRatio");
-										var calUSD = this.attr("grossTotalStore") / fxrate;
+										var calUSD = this.attr("grossTotalStore") * fxrate;
 
 										if(isNaN(calUSD)){
 											calUSD = 0;
@@ -1836,11 +1846,12 @@ var page = Component.extend({
           }
 
           function showMessages(msg){
-            $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
-             $("#invmessageDiv").show();
-             setTimeout(function(){
-                $("#invmessageDiv").hide();
-             },5000)
+            // $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
+            //  $("#invmessageDiv").show();
+            //  setTimeout(function(){
+            //     $("#invmessageDiv").hide();
+            //  },5000)
+            commonUtils.showErrorMessage(msg);
           }
 
 					var updatePeriodCalender = function(elementID){

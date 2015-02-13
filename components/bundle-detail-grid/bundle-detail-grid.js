@@ -215,12 +215,16 @@ var BundleDetailGrid = ScrollingGrid.extend({
       var row = el.data('row').row;
 
       // toggle selecting a row
-      var ix = this.scope.selectedRows.indexOf(row);
-      if(ix > -1) {
-        this.scope.selectedRows.splice(ix, 1);
-      } else {
-        this.scope.selectedRows.push(row);
-      }
+      // var ix = this.scope.selectedRows.indexOf(row);
+      // if(ix > -1) {
+      //   this.scope.selectedRows.splice(ix, 1);
+      // } else {
+      //   this.scope.selectedRows.push(row);
+      // }
+
+      this.scope.selectedRows.splice(0, this.scope.selectedRows.length);
+      this.scope.selectedRows.push(row);
+
     },
     'td.validations img mouseover': function(el, ev) {
       var row = el.data('row');

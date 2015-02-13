@@ -21,7 +21,7 @@ import periodWidgetHelper from 'utils/periodWidgetHelpers';
 import Comments from 'components/multiple-comments/';
 import GridPricingBaseModel from '../pricing-model-components/grid-pricing-base-model/';
 import GridPricingTrackcounts from '../pricing-model-components/grid-pricing-trackcounts/';
-
+import commonUtils from 'utils/commonUtils';
 
 var reportConfigurationList = new can.List();
 
@@ -241,7 +241,7 @@ var page = Component.extend({
           revisionHistory = new can.List();
 
           var footer = {
-            data: "No of records : " 
+            data: "Number of records: "
           }
 
           //$('#grid-report-config').append(stache('<rn-grid-report-configuration rows="{reportConfigurationList}"></rn-grid-report-configuration>')({reportConfigurationList}));
@@ -534,12 +534,12 @@ var page = Component.extend({
 
                 var msg = "Country-Licensor details saved successfully";
 
-                $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
-                $("#invmessageDiv").show();
-                setTimeout(function(){
-                  $("#invmessageDiv").hide();
-                },5000);
-
+                // $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
+                // $("#invmessageDiv").show();
+                // setTimeout(function(){
+                //   $("#invmessageDiv").hide();
+                // },5000);
+                commonUtils.displayUIMessage(data.status, msg);
           
                   var requestObj  = {
                     entityCountryDetails:{
@@ -565,11 +565,12 @@ var page = Component.extend({
               } else {
 
                   var msg = "Country-Licensor Detials was not saved successfully";
-                  $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
-                  $("#invmessageDiv").show();
-                  setTimeout(function(){
-                    $("#invmessageDiv").hide();
-                  },5000);
+                  // $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+                  // $("#invmessageDiv").show();
+                  // setTimeout(function(){
+                  //   $("#invmessageDiv").hide();
+                  // },5000);
+                  commonUtils.displayUIMessage(data.status, msg);
               }
             },function(xhr){
               console.error("Failed :"+xhr);
@@ -600,11 +601,12 @@ var page = Component.extend({
 
                 var msg = "No details available";
 
-                $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
-                $("#invmessageDiv").show();
-                setTimeout(function(){
-                  $("#invmessageDiv").hide();
-                },5000);
+                // $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
+                // $("#invmessageDiv").show();
+                // setTimeout(function(){
+                //   $("#invmessageDiv").hide();
+                // },5000);
+                commonUtils.displayUIMessage("SUCCESS", msg);
 
               } else {
 

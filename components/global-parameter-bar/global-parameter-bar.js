@@ -358,9 +358,36 @@ var GlobalParameterBar = Component.extend({
           //selectAllValue: 'selectAll',
           selectAllName: 'selAllCountry',
           maxHeight: 200,
+          buttonClass: 'dropdown-toggle btn btn-default safari-style',
           onChange: function(option, checked, select) {
             $("#countriesFilter").multiselect("refresh");
-          }
+          },
+          buttonText: function(options, select) {
+              if(typeof options != undefined && options != null && options != ""){
+                var returntext="";
+                if (options.length === 0) {
+                    returntext='None Selected';
+                  }else{
+                    var labels = [];
+                    options.each(function() {
+                        if ($(this).attr('label') !== undefined) {
+                            labels.push($(this).attr('label'));
+                        }
+                        else {
+                            labels.push($(this).html());
+                        }
+                    });
+                    if(labels.length == 1){
+                      returntext= labels.pop();
+                    }else if(select.context.length == labels.length){
+                      returntext='All Selected';
+                    }else{
+                      returntext=options.length+' Selected';
+                    }
+                  }
+                  return "<span style='padding-left:10px'>"+truncateText(returntext,15)+"</span>";
+              }
+            }
 
         });
 
@@ -372,9 +399,36 @@ var GlobalParameterBar = Component.extend({
           //selectAllValue: 'selectAll',
           selectAllName: 'selAllLicensor',
           maxHeight: 200,
+          buttonClass: 'dropdown-toggle btn btn-default safari-style',
           onChange: function(option, checked, select) {
             $("#licensorsFilter").multiselect("refresh");
-          }
+          },
+          buttonText: function(options, select) {
+              if(typeof options != undefined && options != null && options != ""){
+                var returntext="";
+                if (options.length === 0) {
+                    returntext='None Selected';
+                  }else{
+                    var labels = [];
+                    options.each(function() {
+                        if ($(this).attr('label') !== undefined) {
+                            labels.push($(this).attr('label'));
+                        }
+                        else {
+                            labels.push($(this).html());
+                        }
+                    });
+                    if(labels.length == 1){
+                      returntext= labels.pop();
+                    }else if(select.context.length == labels.length){
+                      returntext='All Selected';
+                    }else{
+                      returntext=options.length+' Selected';
+                    }
+                  }
+                  return "<span style='padding-left:10px'>"+truncateText(returntext,15)+"</span>";
+              }
+            }
 
         });
         $("#contentTypesFilter").multiselect({
@@ -384,9 +438,36 @@ var GlobalParameterBar = Component.extend({
           //selectAllValue: 'selectAll',
           selectAllName: 'selAllContentType',
           maxHeight: 200,
+          buttonClass: 'dropdown-toggle btn btn-default safari-style',
           onChange: function(option, checked, select) {
             $("#contentTypesFilter").multiselect("refresh");
-          }
+          },
+          buttonText: function(options, select) {
+              if(typeof options != undefined && options != null && options != ""){
+                var returntext="";
+                if (options.length === 0) {
+                    returntext='None Selected';
+                  }else{
+                    var labels = [];
+                    options.each(function() {
+                        if ($(this).attr('label') !== undefined) {
+                            labels.push($(this).attr('label'));
+                        }
+                        else {
+                            labels.push($(this).html());
+                        }
+                    });
+                    if(labels.length == 1){
+                      returntext= labels.pop();
+                    }else if(select.context.length == labels.length){
+                      returntext='All Selected';
+                    }else{
+                      returntext=options.length+' Selected';
+                    }
+                  }
+                  return "<span style='padding-left:10px'>"+truncateText(returntext,15)+"</span>";
+              }
+            }
 
         });
 
@@ -548,6 +629,16 @@ var periodValidation=function(self,control){
       }
     }
   self.scope.attr('errorMessage', message);
+}
+
+var truncateText=function(textval,length){
+  if(textval != "" && textval != null){
+    var returnStr=textval;
+    if(textval.length > length){
+      returnStr=returnStr.substring(0,length)+'...';
+    }
+    return returnStr;
+  }
 }
 
 var validateFilters = function(errorMsg,appstate, validateStoreType, validateRegion,

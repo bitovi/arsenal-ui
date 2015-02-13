@@ -184,7 +184,7 @@ var BundleDetailTabs = Component.extend({
         scope.bottomGridPaginateAttr.attr("isInProgress",false);
 
         if(bundle.status === 'FAILURE'){
-          commonUtils.displayUIMessage( bundle.responseCode, bundle.responseText);
+          commonUtils.displayUIMessage( bundle.status, bundle.responseText);
         }else{
           scope.bundleProgress.triggerValidation ? scope.getNewValidations(bundle) : "";
         }
@@ -204,6 +204,14 @@ var BundleDetailTabs = Component.extend({
           $(".previousComments").show();
         }
 
+        //<rdar://problem/19793722> UI-PBR: Preview eCSV/pCSV to be disabled when bundle with BM
+        if(bundle.status ==  1 ){
+          $(".btn-preview").addClass( "dropdownNone" );
+          $(".btn-preview").attr("data-toggle","dropdownNone");
+        } else{
+          $(".btn-preview").removeClass( "dropdownNone" );
+          $(".btn-preview").attr("data-toggle","dropdown");
+        }
 
         //set the paymentOption which is shared by service
         scope.attr('paymentType',bundle.paymentOption);
@@ -459,10 +467,15 @@ var BundleDetailTabs = Component.extend({
       pageState = this.scope.pageState;
       self = this.scope;
 
+      if(action ==='back') {
+        commonUtils.navigateTo(this.scope.pageState.loadedFromDetails.loadedFrom);
+        return;
+      }
 
       if(!this.scope.havePaymentTypeAndComment(this.scope)) {
         return;
       }
+
 
       if(action ==='delete') {
         selectedBundle.bind('destroyed', function() {
@@ -492,7 +505,7 @@ var BundleDetailTabs = Component.extend({
 
         }).then(function(response) {
 
-          commonUtils.displayUIMessage( response.responseCode, response.responseText);
+          commonUtils.displayUIMessage( response.status, response.responseText);
 
           if(response.status === 'SUCCESS') {
             //Alert.displayAlert(response.responseText, 'success' );
@@ -572,6 +585,7 @@ var BundleDetailTabs = Component.extend({
 
     },
     '{scope} pageState.selectedBundle': function(scope) {
+      commonUtils.hideUIMessage();
       this.scope.selectedBundleChanged(this.scope);
     },
     '{scope} aggregatePeriod': function(scope) {
@@ -633,7 +647,7 @@ var resetSelectedBundle = function(scope){
   // clear out selectedRows
   scope.selectedRows.splice(0, scope.selectedRows.length);
   scope.attr("isBundlePrioritySet", false);
-  $("#messageDiv").hide();
+  //$("#messageDiv").hide();
   $(".previousComments").val();
   $(".previousComments").hide();
   scope.attr("approvalComment", '');

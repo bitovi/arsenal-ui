@@ -14,6 +14,7 @@ import template from './template.stache!';
 import styles from './page-edit-icsv.less!';
 
 import UserReq from 'utils/request/';
+import commonUtils from 'utils/commonUtils';
 
 import fileUpload from 'components/file-uploader/';
 import periodCalendar from 'components/period-calendar/';
@@ -31,7 +32,6 @@ import CalDueDate from 'models/common/calinvoiceduedate/';
 import AdhocTypes from 'models/common/adhoc-types/';
 import GLaccounts from 'models/glaccounts/';
 import Region from 'models/common/region/';
-import stache from 'can/view/stache/';
 import moment from 'moment';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
@@ -465,7 +465,7 @@ var page = Component.extend({
 			                }
 						},
 						'taxAmount': {
-		                     group:'.taxAmountCont',	
+		                     group:'.taxAmountCont',
 		                      validators: {
 		                        callback: {
 
@@ -738,7 +738,7 @@ var page = Component.extend({
 							}
 						}
 					}
-				
+
 
 					if(self.scope.editpage){
 						if(event[0].id == "usercomments"){
@@ -751,7 +751,7 @@ var page = Component.extend({
 
 									removeError(event[0].id);
 								}
-							}	
+							}
 						}
 				   }
 
@@ -1008,7 +1008,17 @@ var page = Component.extend({
 
 											$("#breakrow"+rowindex+" .amountText").attr("id","amountText"+rowindex).val(invoiceData.invoiceLines[i].lineAmount);
 					                       	self.scope.AmountStore.attr("amountText"+rowindex, invoiceData.invoiceLines[i].lineAmount);
-					                       	$("#breakrow"+rowindex+" #inputContent").attr("id","inputContent"+rowindex).val(invoiceData.invoiceLines[i].contentGrpId);
+					                       	
+					                       	$("#breakrow"+rowindex+" #inputContent").attr("id","inputContent"+rowindex);
+
+					                       	var servictypeid = $("#inputContent0 option:selected").attr("servicetypeid");
+											if (typeof servictypeid !== "undefined" && rowindex > 0) {
+												$('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
+												$('#inputContent'+rowindex).prepend("<option value>Select</option>").val('');
+											}
+											
+					                       	$('#inputContent'+rowindex).val(invoiceData.invoiceLines[i].contentGrpId);
+
 					                       	if(self.scope.attr("invoicetypeSelect") == "2"){
 					                       		self.scope.contentTypeStore.attr("inputContent"+rowindex, invoiceData.invoiceLines[i].adhocTypeId);
 											}
@@ -1017,10 +1027,7 @@ var page = Component.extend({
 												self.scope.contentTypeStore.attr("inputContent"+rowindex, invoiceData.invoiceLines[i].contentGrpId);
 									 		}
 
-									 		var servictypeid = $("#inputContent0 option:selected").attr("servicetypeid");
-											if (typeof servictypeid !== "undefined" && rowindex > 0) {
-												$('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
-											}
+									 		
 
 									 		var displayPeriod = "";
 									 		if(invoiceData.invoiceLines[i].fiscalPeriod != null && invoiceData.invoiceLines[i].periodType != null){
@@ -1657,7 +1664,7 @@ var page = Component.extend({
 				calculateUSD:function(){
 
 					var fxrate = this.attr("usdFxrateRatio");
-					var calUSD = this.attr("grossTotalStore") / fxrate;
+					var calUSD = this.attr("grossTotalStore") * fxrate;
 
 					if(isNaN(calUSD)){
 						calUSD = 0;
@@ -1763,11 +1770,12 @@ function getCurrentDate(){
           }
 
           function showMessages(msg){
-            $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
-             $("#invmessageDiv").show();
-             setTimeout(function(){
-                $("#invmessageDiv").hide();
-             },5000)
+            // $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
+            //  $("#invmessageDiv").show();
+            //  setTimeout(function(){
+            //     $("#invmessageDiv").hide();
+            //  },5000)
+            commonUtils.showErrorMessage(msg);
           }
 
 var updatePeriodCalender = function(elementID){

@@ -19,7 +19,7 @@
     "tests"
   ],
   "dependencies": {
-    "steal": "~0.3.0",
+    "steal": "0.6.x",
     "jquery": "~2.1.1",
     "canjs": "git://github.com/bitovi/canjs.git#1295-extending-components",
     "bootstrap": "~3.2.0",

@@ -26,7 +26,7 @@ var OutboxGrid = ScrollingGrid.extend({
     }, {
       id: 'pendingDays',
       title: 'Pending',
-      contents: row => row.pendingDays + ' Day' + (row.pending === 1 ? '' : 's')
+      contents: row => row.pendingDays + ' Day' + (row.pendingDays === 1 ? '' : 's')
     },  {
       id: 'approvalStage',
       title: 'Approvals',
@@ -75,7 +75,7 @@ var OutboxGrid = ScrollingGrid.extend({
 
             /* Reset the offset value and call the webservice to fetch next set of records */
             parentScopeVar.attr('mailboxType', 'outbox');
-            parentScopeVar.attr('outboxOffset', (parseInt(offsetVal)+1));
+            parentScopeVar.attr('outboxOffset', (parseInt(offsetVal)+10));
             parentScopeVar.attr('outboxScrollTop', (tbody[0].scrollHeight-200));
             parentScopeVar.appstate.attr('globalSearchButtonClicked', false);
 

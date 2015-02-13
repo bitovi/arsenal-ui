@@ -14,6 +14,7 @@ import validations from 'can/map/validations/';
 import bootstrapValidator from 'bootstrapValidator';
 import css_bootstrapValidator from 'bootstrapValidator.css!';
 import PeriodWidgetHelper from 'utils/periodWidgetHelpers';
+import commonUtils from 'utils/commonUtils';
 
 
 var lDetails = new can.Map({
@@ -352,7 +353,7 @@ var page = Component.extend({
         }
 
       }
-      
+
       if(countryObj != undefined && countryObj != null) {
 
           var reportConf = self.getExistCountryReportConf(countryObj.name);
@@ -364,7 +365,7 @@ var page = Component.extend({
           var reportBox = $("input.reportBox");
 
           var checked = false;
-          
+
 
           for(var i=0; i < reportConf.length; i++) {
 
@@ -394,7 +395,7 @@ var page = Component.extend({
 
               }
 
-            } 
+            }
           }
 
       }
@@ -404,7 +405,7 @@ var page = Component.extend({
     getSocietyContactDetails : function() {
 
       var elementArr = [];
-      
+
       var j = 0;
 
       for(var i=0; i< this.newContactDetails.data.length; i++) {
@@ -522,7 +523,7 @@ var page = Component.extend({
       $('.buttonsBottom').hide();
 
       $('.status').hide();
-      
+
       $(".multicomments-required").hide();
 
 
@@ -559,6 +560,7 @@ var page = Component.extend({
 
       self.clearContactDetails();
 
+      self.clearRepConfDetails();
 
       self.editable = "";
 
@@ -691,17 +693,17 @@ var page = Component.extend({
 
               self.licDetails.data.revisionHistories[i].status = "Active";
               self.licDetails.data.revisionHistories[i]._data.status = "Active";
-            } 
+            }
             if(self.licDetails.data.revisionHistories[i].status == 'I' ) {
 
               self.licDetails.data.revisionHistories[i].status = "Inctive";
               self.licDetails.data.revisionHistories[i]._data.status = "Inactive";
-            } 
+            }
             if(self.licDetails.data.revisionHistories[i].status == 'N' ) {
 
               self.licDetails.data.revisionHistories[i].status = "";
               self.licDetails.data.revisionHistories[i]._data.status = "";
-            } 
+            }
 
           }
 
@@ -820,7 +822,7 @@ var page = Component.extend({
         alignGridStats('repConfiguration');
         alignGridStats('societyContacts');
 
-        var socTableWidthChild=$('#societyContacts table>thead>tr>th').outerWidth();     
+        var socTableWidthChild=$('#societyContacts table>thead>tr>th').outerWidth();
         $('#societyContacts table>tbody>tr>th').css("width",socTableWidthChild);
       },100);
 
@@ -1072,21 +1074,23 @@ var page = Component.extend({
 
                 var msg = "Licensor Details saved successfully";
                 self.attr("selectedEntity", sEntity);
-                $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
-                $("#invmessageDiv").show();
-                setTimeout(function(){
-                  $("#invmessageDiv").hide();
-                },5000);
+                // $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
+                // $("#invmessageDiv").show();
+                // setTimeout(function(){
+                //   $("#invmessageDiv").hide();
+                // },5000);
+                commonUtils.displayUIMessage(data[0].status, msg);
 
                 self.populateLicensorDetails(self.licDetails.data.licensorName);
             } else {
 
                 var msg = "Licensor Details was not saved successfully";
-                $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
-                $("#invmessageDiv").show();
-                setTimeout(function(){
-                  $("#invmessageDiv").hide();
-                },5000);
+                // $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+                // $("#invmessageDiv").show();
+                // setTimeout(function(){
+                //   $("#invmessageDiv").hide();
+                // },5000);
+                commonUtils.displayUIMessage(data[0].status, msg);
             }
 
           });
@@ -1132,12 +1136,14 @@ var page = Component.extend({
 
                 var msg = "Licensor Details added successfully";
 
-                $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
-                $("#invmessageDiv").show();
-                setTimeout(function(){
-                  $("#invmessageDiv").hide();
-                  self.attr("selectedEntity", sEntity);
-                },5000);
+                // $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
+                // $("#invmessageDiv").show();
+                // setTimeout(function(){
+                //   $("#invmessageDiv").hide();
+                //   self.attr("selectedEntity", sEntity);
+                // },5000);
+                commonUtils.displayUIMessage(data[0].status, msg);
+
                 self.populateLicensorDetails(self.licDetails.data.licensorName);
 
                 Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
@@ -1153,12 +1159,12 @@ var page = Component.extend({
             } else {
 
                 var msg = "Licensor Details was not added successfully";
-                $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
-                $("#invmessageDiv").show();
-                setTimeout(function(){
-                  $("#invmessageDiv").hide();
-                },5000);
-
+                // $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+                // $("#invmessageDiv").show();
+                // setTimeout(function(){
+                //   $("#invmessageDiv").hide();
+                // },5000);
+                commonUtils.displayUIMessage(data[0].status, msg);
             }
 
           });
@@ -1261,10 +1267,12 @@ var page = Component.extend({
 
       $("#loading_img").show();
 
+
+
       Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
           self.mode = "fetch";
-          
+
           $("#societyContacts .noRecords").remove();
 
           self.licensors.replace(values[0].entities[0]);
@@ -1641,13 +1649,13 @@ var page = Component.extend({
       self.scope.populateLicensorDetails(null);
       //$("#loading_img").hide();
 
-      
+
       Promise.all([Analytics.getInvoiceDetails(UserReq.formRequestDetails(genObj))]).then(function(values) {
           self.scope.invoiceTypeList.replace(values[0].invoiceDetailTypes);
-          self.scope.populateInvoiceTypes();        
+          self.scope.populateInvoiceTypes();
       });
 
-      self.scope.loadBootStrapPlugin();     
+      self.scope.loadBootStrapPlugin();
 
 
     },
@@ -1894,8 +1902,9 @@ var page = Component.extend({
     ".addRow click": function(event){
 
       var self = this;
-
       self.scope.addRow();
+
+      $(".sctCntNoRecords").hide();
 
     },
 
@@ -1970,7 +1979,7 @@ var page = Component.extend({
       setTimeout(function(){
           alignGridLicenPop('repConfTable');
       },100)
-      
+
     },
 
 
@@ -2077,11 +2086,12 @@ var page = Component.extend({
           } else {
 
             var msg = "No data fetched";
-                $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
-                $("#invmessageDiv").show();
-                setTimeout(function(){
-                  $("#invmessageDiv").hide();
-                },5000);
+                // $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+                // $("#invmessageDiv").show();
+                // setTimeout(function(){
+                //   $("#invmessageDiv").hide();
+                // },5000);
+                commonUtils.displayUIMessage(values[0].status, msg);
 
             $("#loading_img").hide();
 
@@ -2185,7 +2195,9 @@ var page = Component.extend({
 
       this.scope.removeRows("new", value);
       if($('#societyContacts>table>tbody>tr').length==0){
-        $('#societyContacts>table').append("<tfoot><tr><td class='noRecords' style='text-align:center;border:none;' colspan="+$('#societyContacts>table>thead>tr>th').length+" width='100%'>No Records Found</td></tr></tfoot>");
+        $(".sctCntNoRecords").show();
+      }else{
+        $(".sctCntNoRecords").hide();
       }
     },
 
@@ -2197,7 +2209,9 @@ var page = Component.extend({
 
       $('#entityLicensorTop').bootstrapValidator('validate');
       if($('#societyContacts>table>tbody>tr').length==0){
-        $('#societyContacts>table').append("<tfoot><tr><td class='noRecords' style='text-align:center;border:none;' colspan="+$('#societyContacts>table>thead>tr>th').length+" width='100%'>No Records Found</td></tr></tfoot>");
+        $(".sctCntNoRecords").show();
+      }else{
+        $(".sctCntNoRecords").hide();
       }
 
     }
@@ -2245,7 +2259,7 @@ function alignGridStats(divId){
           tdWidth = theadTdWidth;
         else if(tfootTdWidth >= tbodyTdWidth && tfootTdWidth >= theadTdWidth)
           tdWidth = tfootTdWidth;
-        else 
+        else
           tdWidth = tbodyTdWidth;
 
         if(i==1)
@@ -2254,21 +2268,35 @@ function alignGridStats(divId){
           tdWidth = 100;
         if((i==3) && divId== 'societyContacts')
           tdWidth = 100;
-        
+
         tableWidth += tdWidth;
         cellWidthArr.push(tdWidth);
       }
 
       if(tableWidth < divWidth){
-        var moreWidth = (divWidth-tableWidth)/colLength;
-        for(var j=1;j<=cellWidthArr.length;j++){
-          var width = cellWidthArr[j-1]+moreWidth;
+        var moreWidth = (divId == "repConfiguration")?(divWidth-tableWidth):(divWidth-tableWidth)/colLength;
 
-          $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);          
+        for(var j=1;j<=cellWidthArr.length;j++){
+            if(divId == "repConfiguration"){
+              if(j == cellWidthArr.length){
+                var width = cellWidthArr[j-1]+moreWidth;
+              }
+              else{
+                var width = cellWidthArr[j-1];
+              }
+            }
+            else
+            {
+              var width = cellWidthArr[j-1]+moreWidth;
+            }
+
+
+
+          $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
           $('#'+divId+' table>thead>tr>th:last-child').css("width",width+1);
           $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width);
           $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
-          
+
         }
         $('#'+divId+' table').css("width",divWidth);
       } else {
@@ -2289,28 +2317,31 @@ function alignGridStats(divId){
   if(rowLength==0 && divId=="societyContacts"){
         $('#societyContacts table>thead>tr').css('width','100%;')
         var noDataTable=$('#societyContacts table').width();
-        var colLength=noDataTable/($('#societyContacts table>thead>tr>th').length); 
+        var colLength=noDataTable/($('#societyContacts table>thead>tr>th').length);
         $('#societyContacts table>thead>tr>th').css("width",colLength);
-        $('#societyContacts table').append("<tfoot><tr><td class='noRecords' style='text-align:left;border:none;' colspan="+ $('#societyContacts table>thead>tr>th').length+" width="+noDataTable+">No Records Found</td></tr></tfoot>");
+        $(".sctCntNoRecords").show();
+        //$('#societyContacts table').append("<tfoot class='sctCntNoRecords'><tr><td style='text-align:center;background:#fff;color:#000;' colspan='3'>No Records Found</td></tr></tfoot>");
+  }else{
+    $(".sctCntNoRecords").hide();
   }
   if(divId=="revisionHistory"){
-    var rowCount= $('#'+divId+' table>tbody>tr').length;  
+    var rowCount= $('#'+divId+' table>tbody>tr').length;
     if($('#'+divId+' table').has('tfoot')){
-        $('#'+divId+' table>tfoot').append("<tr><td class='recordsCount' style='text-align:left;border:none;'>No. of Records: "+rowCount+"</td></tr>");
+        $('#'+divId+' table>tfoot').append("<tr><td class='recordsCount' style='text-align:left;border:none;'>Number of revisions: "+rowCount+"</td></tr>");
     }else{
-      $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:left;border:none;'>No. of Records: "+rowCount+"</td></tr></tfoot>");
+      $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:left;border:none;'>Number of revisions: "+rowCount+"</td></tr></tfoot>");
     }
   }
   if(divId=="repConfiguration"){
-    var rowCountries= $('#'+divId+' table>tbody>tr>td:nth-child(1)>div').length;  
-    var rowCntryRecords= $('#'+divId+' table>tbody>tr>td:nth-child(3)>div').length; 
+    var rowCountries= $('#'+divId+' table>tbody>tr>td:nth-child(1)>div').length;
+    var rowCntryRecords= $('#'+divId+' table>tbody>tr>td:nth-child(3)>div').length;
     if($('#repConfiguration input:checked').length==0){
       $('#'+divId+' table>tfoot>tr>td').append("<span class='recordsCount' style='float:left;margin:2px 0;'>No Reports Configured</span>");
     }else{
       $('#'+divId+' table>tfoot>tr>td>span').html('');
-      $('#'+divId+' table>tfoot>tr>td').append("<span class='recordsCount' style='float:left;margin:2px 0;'>No. of Countries: "+rowCountries+" | No. of Reports: "+rowCntryRecords+"</span>");
-    } 
-    
+      $('#'+divId+' table>tfoot>tr>td').append("<span class='recordsCount' style='float:left;margin:2px 0;'>Number of countries: "+rowCountries+" | Number of Reports: "+rowCntryRecords+"</span>");
+    }
+
   }
 }
 
@@ -2340,7 +2371,7 @@ function alignGridLicenPop(divId){
 
         if(i==1)
           tdWidth = 45;
-        
+
         tableWidth += tdWidth;
         cellWidthArr.push(tdWidth);
       }
@@ -2395,7 +2426,7 @@ function alignGridCountMap(divId){
 
         //if(i==1)
           //tdWidth = 63;
-        
+
         tableWidth += tdWidth;
         cellWidthArr.push(tdWidth);
       }
@@ -2425,18 +2456,18 @@ function alignGridCountMap(divId){
 
         $('#countryModelMapping table>thead>tr').css('width','100%;')
         var noDataTable1=$('#countryModelMapping table').width();
-        var colLength1=noDataTable1/($('#countryModelMapping table>thead>tr>th').length); 
+        var colLength1=noDataTable1/($('#countryModelMapping table>thead>tr>th').length);
         $('#countryModelMapping table>thead>tr>th').css("width",colLength1);
 
   }
 
   if(divId=="countryModelMapping"){
-    var rowCount= $('#'+divId+' table>tbody>tr').length;  
+    var rowCount= $('#'+divId+' table>tbody>tr').length;
     if($('#'+divId+' table').has('tfoot')){
-        $('#'+divId+' table tfoot').append("<tr><td class='recordsCount' style='text-align:left;border:none;'>No. of Records: "+rowCount+"</td></tr>");
+        $('#'+divId+' table tfoot').append("<tr><td class='recordsCount' style='text-align:left;border:none;'>Number of country model mapping: "+rowCount+"</td></tr>");
     }else{
-      $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:left;border:none;'>No. of Records: "+rowCount+"</td></tr><tfoot>");
-    }     
+      $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:left;border:none;'>Number  of country model mapping: "+rowCount+"</td></tr><tfoot>");
+    }
   }
 }
 

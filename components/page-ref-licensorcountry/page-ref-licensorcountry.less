@@ -1,4 +1,10 @@
 page-ref-licensorcountry{
+label{
+	font-family: HelveticaNeue, "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	color: #848484;
+	font-weight: normal;
+}
 
 table{
 	th:last-child, td:last-child{padding-right:15px;}
@@ -305,12 +311,14 @@ table.breakdown thead th{
 	border-right:1px solid #C6C6C6;
 	padding-top:20px;
 	background-color:#f6f6f6;
+	border-bottom:1px solid #C6C6C6;
 }
 
 .left-border{
 	border-right:1px solid #C6C6C6;
 	padding-top:20px;
 	background-color:#E4E4E4;
+	border-bottom:1px solid #C6C6C6;
 }
 label{
 	font-family:HelveticaNeue, "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif; ;
@@ -414,6 +422,7 @@ div#usercommentsdiv {
 	top: 30px;
 	background: #f6f6f6;
 	display:none;
+	z-index:999;
 
 	fieldset.scheduler-border {
 		border: 1px groove #ddd;
@@ -444,20 +453,20 @@ div#usercommentsdiv {
 }
 
 div#grid-revision-history {
-	max-height: 200px;
-	max-height: 200px;
-	/*overflow-x: auto;
-	overflow-y: auto;*/
-	height: 400px;
-	width: 100%;
-	border-radius: 5px;
+  max-height: 200px;
+  width: 97%;
+  /*overflow-y: overlay;*/
+  border-radius: 5px;
 }
 
 div#grid-report-config {
 	max-height: 200px;
-	width: 100%;
+	width: 97%;
 	/*overflow-y: overlay;*/
 	border-radius: 5px;
+}
+.greyHeader{
+  color: #848484;
 }
 
 #countryLicForm{
@@ -476,18 +485,26 @@ div#grid-report-config {
 	  position: absolute;
 	  bottom: 0px;
 	  display: inline-block;
-	  left: 136px;
+	  left: 146px;
 	  width: 20px;
 	  height: 20px;
 	  cursor: pointer;
 	  z-index: 3;
 	}
 	.requiredBar .calendarDateIcon{
-	  left:136px;
+	  left:143px;
 	}
 	#entityPricingModelId{
-		max-width: 180px;
+		max-width: 156px;
 	}
+
+	.minReportConfHt{
+		min-height:165px;
+  	}
+
+  	.maxContHieght{
+  		min-height:430px;
+  	}
 }
 
 multiple-comments .multiple-comments-parent, #multipleComments {
@@ -503,3 +520,15 @@ page-ref-licensorcountry .col-sm-5 .form-control{
 	padding-left: 0px; 
 	padding-right: 0px
 }
+.licensorDrop{
+	margin-left:6.5%;
+	padding:0;
+}
+.licensorDrop div{
+	padding:0;
+}
+.countryDrop{
+	width:350px;
+	padding:0;
+}
+

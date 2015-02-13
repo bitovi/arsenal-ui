@@ -1,5 +1,5 @@
-@import 'components/grid/grid.less';
-@import 'components/grid/examples/scrolling-grid/scrolling-grid.less';
+@import '../grid/grid.less';
+@import '../grid/examples/scrolling-grid/scrolling-grid.less';
 
 .flex-basis(@basis) {
   -webkit-flex-basis: @basis;
@@ -32,9 +32,12 @@ rn-bundle-grid {
     //  height: 10em;
       //border-bottom: 0;
     // border-bottom: 1px solid #666;
-      border-bottom-left-radius: 5px;
-      border-bottom-right-radius: 5px;
+      // border-bottom-left-radius: 5px;
+      // border-bottom-right-radius: 5px;
 
+    }
+    tfoot td{
+        border-bottom: 0px;
     }
     tbody tr {
       min-height: 1.5625em;

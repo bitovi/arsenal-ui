@@ -26,7 +26,7 @@ var InboxGrid = ScrollingGrid.extend({
     }, {
       id: 'pendingDays',
       title: 'Pending',
-      contents: row => row.pendingDays + ' Day' + (row.pending === 1 ? '' : 's')
+      contents: row => row.pendingDays + ' Day' + (row.pendingDays === 1 ? '' : 's')
     }, {
       id: 'approvalStage',
       title: 'Approvals',
@@ -69,7 +69,7 @@ var InboxGrid = ScrollingGrid.extend({
 
             /* Reset the offset value and call the webservice to fetch next set of records */
             parentScopeVar.attr('mailboxType', 'inbox');
-            parentScopeVar.attr('inboxOffset', (parseInt(offsetVal)+1));
+            parentScopeVar.attr('inboxOffset', (parseInt(offsetVal)+10));
             parentScopeVar.attr('inboxScrollTop', (tbody[0].scrollHeight-200));
             parentScopeVar.appstate.attr('globalSearchButtonClicked', false);
 
@@ -88,7 +88,7 @@ var InboxGrid = ScrollingGrid.extend({
       console.log(" Clicked "+row.tableName+", value :"+row.tableValue);
 
       if(row.tableName === 'RINS_PMT_BUNDLE'){
-        var data = {  bundleId:row.tableValue};
+        var data = {bundleId:row.tableValue,loadedFrom:"dashboard"};
         this.scope.appstate.screenLookup.attr("PBR" ,data);
         console.log(" Bundle Id Selected :  "+this.scope.appstate.screenLookup.PBR.bundleId);
         commonUtils.navigateTo("payment-bundles");

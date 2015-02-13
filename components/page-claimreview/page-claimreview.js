@@ -23,6 +23,8 @@ import copy from 'components/copy-clipboard/';
 import gridUtils from 'utils/gridUtil';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
+import commonUtils from 'utils/commonUtils';
+
 /* Extend grid with the columns */
 Grid.extend({
   tag: "rn-claim-licensor-grid",
@@ -38,10 +40,15 @@ Grid.extend({
         }
       },*/
       {
+        id: 'sorticon',
+        title: '<span class="open-toggle-all"></span>',
+        sortable: false,
+        contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}}')({isChild: row.__isChild}); }
+      },
+      {
         id: 'entityName',
-        title: '<span class="open-toggle-all"></span> Licensor',
-        sortable: true,
-        contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{entityName}}')({entityName: row.entityName, isChild: row.__isChild}); }
+        title: 'Licensor',
+        sortable: true
       },
       {
         id: 'invoiceNumber',
@@ -173,12 +180,12 @@ Grid.extend({
           }
         });
 
-      alignGrid('claimLicencorGrid');
+      //alignGrid('claimLicencorGrid');
     },
     '.open-toggle click': function(el, ev) {
       var row = el.closest('tr').data('row').row;
       row.attr('__isOpen', !row.attr('__isOpen'));
-      alignGrid('claimLicencorGrid');
+      //alignGrid('claimLicencorGrid');
     },
     '.open-toggle-all click': function(el, ev) {
       ev.stopPropagation();
@@ -188,7 +195,7 @@ Grid.extend({
       this.scope.rows.each(row => row.__isChild || row.attr('__isOpen', !allOpen));
       this.scope.attr('allOpen', !allOpen);
       can.batch.stop();
-      alignGrid('claimLicencorGrid');
+      //alignGrid('claimLicencorGrid');
     },
   }
 });
@@ -208,10 +215,15 @@ Grid.extend({
         }
       },*/
       {
+        id: 'sorticon',
+        title: '<span class="open-toggle-all"></span>',
+        sortable: false,
+        contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}}')({isChild: row.__isChild}); }
+      },
+      {
         id: 'country',
-        title: '<span class="open-toggle-all"></span> Country',
-        sortable: true,
-        contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{entityName}}')({entityName: row.country, isChild: row.__isChild}); }
+        title: 'Country',
+        sortable: true
       },
       {
         id: 'period',
@@ -328,7 +340,7 @@ Grid.extend({
           }
         });
 
-      alignGrid('claimCountryGrid', self.scope.is_aggregate);
+      //alignGrid('claimCountryGrid', self.scope.is_aggregate);
     },
     '.open-toggle click': function(el, ev) {
       var self = this;
@@ -341,7 +353,7 @@ Grid.extend({
         $(".period").show();
         $(".entityName").show();
       }
-      alignGrid('claimCountryGrid', self.scope.is_aggregate);
+      //alignGrid('claimCountryGrid', self.scope.is_aggregate);
     },
     '.open-toggle-all click': function(el, ev) {
       var self = this;
@@ -359,7 +371,7 @@ Grid.extend({
         $(".period").show();
         $(".entityName").show();
       }
-      alignGrid('claimCountryGrid', self.scope.is_aggregate);
+      //alignGrid('claimCountryGrid', self.scope.is_aggregate);
     }
   }
 });
@@ -473,16 +485,17 @@ var page = Component.extend({
     	"#highChart click":function(){
 
         if(this.scope.details.isChild){
-          $("#messageDiv").hide();
+          //$("#messageDiv").hide();
           //$("#chartContainer").addClass("highcharts_Overlay");
           var data = this.scope.details;
              $("#highChartDetails").append(stache('<high-chart details={data}></high-chart>')({data}));
         }else{
-          $("#messageDiv").html("<label class='errorMessage'>Please select Invoice from child row to see Historical Trends</label>");
-          $("#messageDiv").show();
-          setTimeout(function(){
-              $("#messageDiv").hide();
-          },4000);
+          // $("#messageDiv").html("<label class='errorMessage'>Please select Invoice from child row to see Historical Trends</label>");
+          // $("#messageDiv").show();
+          // setTimeout(function(){
+          //     $("#messageDiv").hide();
+          // },4000);
+          commonUtils.showErrorMessage("Please select Invoice from child row to see Historical Trends.");
         }
     	},
       "#highChartDetails mousedown": function(item, el, ev){
@@ -735,7 +748,7 @@ var page = Component.extend({
         } else {
           $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid emptyrows="{emptyrows}"></rn-claim-licensor-grid>')({emptyrows:true}));
         }
-        alignGrid('claimLicencorGrid'); //added for 19727470 UI : Wave - M2 - Claim Review - UI is not proper when navigating between Licensor and Country tab in Claim Review
+        //alignGrid('claimLicencorGrid'); //added for 19727470 UI : Wave - M2 - Claim Review - UI is not proper when navigating between Licensor and Country tab in Claim Review
       },
       "{allClaimLicensorMap} change": function() {
         var self = this;
@@ -757,7 +770,7 @@ var page = Component.extend({
           $("#loading_img").hide();
           $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid emptyrows="{emptyrows}"></rn-claim-licensor-grid>')({emptyrows:true}));
         }
-        alignGrid('claimLicencorGrid'); //added for 19727470 UI : Wave - M2 - Claim Review - UI is not proper when navigating between Licensor and Country tab in Claim Review
+        //alignGrid('claimLicencorGrid'); //added for 19727470 UI : Wave - M2 - Claim Review - UI is not proper when navigating between Licensor and Country tab in Claim Review
       },
       "{allClaimCountryMap} change": function() {
         var self = this;
@@ -789,7 +802,7 @@ var page = Component.extend({
           $(".period").show();
           $(".entityName").show();
         }
-        alignGrid('claimCountryGrid', self.scope.is_aggregate); ////added for 19727470 UI : Wave - M2 - Claim Review - UI is not proper when navigating between Licensor and Country tab in Claim Review
+        //alignGrid('claimCountryGrid', self.scope.is_aggregate); ////added for 19727470 UI : Wave - M2 - Claim Review - UI is not proper when navigating between Licensor and Country tab in Claim Review
 
       },
 
@@ -803,11 +816,12 @@ var page = Component.extend({
             self.scope.appstate.attr("excelOutput",true);
           }else{
             $("#loading_img").hide();
-                        $("#messageDiv").html("<label class='errorMessage'>Data Not Available</label>");
-                        $("#messageDiv").show();
-                        setTimeout(function(){
-                            $("#messageDiv").hide();
-                        },4000);
+                        // $("#messageDiv").html("<label class='errorMessage'>Data Not Available</label>");
+                        // $("#messageDiv").show();
+                        // setTimeout(function(){
+                        //     $("#messageDiv").hide();
+                        // },4000);
+            commonUtils.showErrorMessage("Data Not Available");
           }
 
       },
@@ -887,11 +901,12 @@ var getClaimReviewData = function(tabView, self) {
         }
       } else {
         $("#loading_img").hide();
-        $("#messageDiv").html("<label class='errorMessage'>" + values["responseText"] + "</label>");
-        $("#messageDiv").show();
-        setTimeout(function() {
-          $("#messageDiv").hide();
-        }, 4000);
+        // $("#messageDiv").html("<label class='errorMessage'>" + values["responseText"] + "</label>");
+        // $("#messageDiv").show();
+        // setTimeout(function() {
+        //   $("#messageDiv").hide();
+        // }, 4000);
+        commonUtils.showErrorMessage(values["responseText"]);
       }
     }, function(xhr) {
       $("#loading_img").hide();
@@ -927,11 +942,12 @@ var getClaimReviewData = function(tabView, self) {
         }
       } else {
         $("#loading_img").hide();
-        $("#messageDiv").html("<label class='errorMessage'>" + values["responseText"] + "</label>");
-        $("#messageDiv").show();
-        setTimeout(function() {
-          $("#messageDiv").hide();
-        }, 4000);
+        // $("#messageDiv").html("<label class='errorMessage'>" + values["responseText"] + "</label>");
+        // $("#messageDiv").show();
+        // setTimeout(function() {
+        //   $("#messageDiv").hide();
+        // }, 4000);
+        commonUtils.showErrorMessage(values["responseText"]);
       }
 
     }, function(xhr) {
@@ -1078,7 +1094,7 @@ var generateTableData = function(invoiceData,footerData){
             //console.log("jfsdhfjshj is "+invoiceData[i]["claimReviewLicDetails"]);
             var invoiceLineItems = invoiceData[i]["reviewDetails"];
 
-            var contentTypeArr = [], countryArr = [] , invoiceNumberArr = [];
+            var contentTypeArr = [], countryArr = [] , invoiceNumberArr = [], licensorTypeArr = [];
              var lowestPeriod = 0;
               var highestPeriod = 0;
               var tmpPeriod = 0;
@@ -1129,6 +1145,10 @@ var generateTableData = function(invoiceData,footerData){
                 invLITemp["status"] = getInvoiceStatus(invoiceLineItems[j]["status"]);
                 invTemp["status"] = invLITemp["status"];
 
+                //added for licensor
+                invLITemp["entityName"] = invoiceLineItems[j]["entityName"];
+                //end
+
                 if(period != undefined && period > 0){
                     invLITemp["period"] = periodWidgetHelper.getDisplayPeriod(period,periodType);
                     if(lowestPeriod==0 && highestPeriod == 0){
@@ -1142,9 +1162,17 @@ var generateTableData = function(invoiceData,footerData){
                     invLITemp["period"] = '';
                   }
 
+                if(invLITemp["contentType"]!= undefined && invLITemp["contentType"].indexOf('TAX') == -1){
+                    contentTypeArr.push(invLITemp["contentType"]);
+                }
+                if(invLITemp["country"] != undefined && typeof(invLITemp["country"]) != 'null'){
+                  countryArr.push(invLITemp["country"]);
+                }
 
-                contentTypeArr.push(invLITemp["contentType"]);
-                countryArr.push(invLITemp["country"]);
+                if(invLITemp["entityName"] != undefined && typeof(invLITemp["entityName"]) != 'null'){
+                  licensorTypeArr.push(invLITemp["entityName"]);
+                }
+
                 invoiceNumberArr.push(invLITemp["invoiceNumber"]);
                 gridData.data.push(invLITemp);
               }
@@ -1163,6 +1191,20 @@ var generateTableData = function(invoiceData,footerData){
             }
             else if(contentTypeArr.length==1)
               gridData.data[insertedId]["contentType"] = contentTypeArr[0];
+
+
+              /*Below function is to remove the duplicate Licensor and find the count */
+              licensorTypeArr = licensorTypeArr.filter( function( item, index, inputArray ) {
+                     return inputArray.indexOf(item) == index;
+              });
+
+              if(licensorTypeArr.length>1){
+
+                gridData.data[insertedId]["entityName"] = (licensorTypeArr.indexOf('TAX')!== -1)?(licensorTypeArr.length-1)+" types of Licensor":licensorTypeArr.length+" types of Licensor";
+              }
+              else if(licensorTypeArr.length==1)
+                gridData.data[insertedId]["entityName"] = licensorTypeArr[0];
+                //end
 
             /*Below function is to remove the duplicate country and find the count */
             countryArr = countryArr.filter( function( item, index, inputArray ) {
@@ -1285,7 +1327,7 @@ var status ="";
   return status;
 }
 function alignGrid(divId, is_aggregate){
-  console.log("&&&&&&&&&&&&&&Align Grid Called &&&&&&&&&&&");
+/*  console.log("&&&&&&&&&&&&&&Align Grid Called &&&&&&&&&&&");
   var colLength = $('#'+divId+' table>thead>tr>th').length;
   var rowLength = $('#'+divId+' table>tbody>tr').length;
   var divWidth = $('#'+divId).outerWidth();
@@ -1305,7 +1347,6 @@ function alignGrid(divId, is_aggregate){
         else
           tdWidth = tbodyTdWidth;
 
-        /* When aggregate period is checked, 'period' & 'entityName' will be hidden, so its width made 0 */
         if(is_aggregate==1){
           if(i==2 || i==3)
             tdWidth = 0;
@@ -1337,7 +1378,7 @@ function alignGrid(divId, is_aggregate){
         }
         $('#'+divId+' table').css("width",tableWidth);
       }
-  }
+  }*/
 }
 
 function getVisibleGridHeight(){

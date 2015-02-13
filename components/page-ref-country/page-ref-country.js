@@ -32,7 +32,7 @@ var revisionHistory = new can.List();
 
 var pageState = {
     countryDetails:{
-      country:{localSocietyId:"",countryId:"",status:undefined},
+      country:{localSocietyId:"",countryId:"",status:undefined,displayStatus:undefined},
       commentList:undefined
     }
 };
@@ -232,11 +232,23 @@ var page = Component.extend({
             "id":row.id,
             "countryId":self.pageState.countryDetails.country.attr("countryId")
         };
-        console.log("Request passed is "+ JSON.stringify(UserReq.formRequestDetails(requestObj)));
+//        console.log("Request passed is "+ JSON.stringify(UserReq.formRequestDetails(requestObj)));
         RefCountry.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
-          console.log("Response data is "+JSON.stringify(data.attr()));
+//          console.log("Response data is "+JSON.stringify(data.attr()));
           self.pageState.countryDetails.attr("country",data.countryDetails);
+
+            if(data.countryDetails.status == "A") {
+                self.pageState.countryDetails.country.attr("displayStatus","Active");
+            } else if (data.countryDetails.status == "I") {
+                self.pageState.countryDetails.country.attr("displayStatus","Inactive");
+            } else if (data.countryDetails.status == "R") {
+                self.pageState.countryDetails.country.attr("displayStatus","Rejected");
+            } else if (data.countryDetails.status == "N") {
+                self.pageState.countryDetails.country.attr("displayStatus","New");
+            }else {
+                self.pageState.countryDetails.country.attr("displayStatus",data.countryDetails.status);
+            }
 
           /* if the data.countryDetails.countryId is null then set the country dropdown using requestObj*/
           if(data.countryDetails.countryId==null){
@@ -397,6 +409,21 @@ var page = Component.extend({
 
         //console.log("Response data is "+JSON.stringify(data.attr()));
         self.pageState.countryDetails.attr("country",data.countryDetails);
+
+        console.log("data.countryDetails.status-->"+data.countryDetails.status);
+         if(data.countryDetails.status == "A") {
+              self.pageState.countryDetails.country.attr("displayStatus","Active");
+         } else if (data.countryDetails.status == "I") {
+              self.pageState.countryDetails.country.attr("displayStatus","Inactive");
+         } else if (data.countryDetails.status == "R") {
+              self.pageState.countryDetails.country.attr("displayStatus","Rejected");
+         }else if (data.countryDetails.status == "N") {
+             self.pageState.countryDetails.country.attr("displayStatus","New");
+         }
+         else {
+             self.pageState.countryDetails.country.attr("displayStatus",data.countryDetails.status);
+         }
+
 
         /* if the data.countryDetails.countryId is null then set the country dropdown using requestObj*/
         if(data.countryDetails.countryId==null){
@@ -649,12 +676,13 @@ var page = Component.extend({
 
             var msg = "No details available";
 
-            $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
-            $("#invmessageDiv").show();
-            setTimeout(function(){
-              $("#invmessageDiv").hide();
-            },5000);
-    
+            // $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
+            // $("#invmessageDiv").show();
+            // setTimeout(function(){
+            //   $("#invmessageDiv").hide();
+            // },5000);
+            commonUtils.displayUIMessage("SUCCESS", msg);
+
           } else {
 
             $("#viewPricingModelDiv").show();
@@ -766,12 +794,13 @@ var page = Component.extend({
         if(data.status=="SUCCESS"){
           var msg = "Country details saved successfully";
 
-          $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
-          $("#invmessageDiv").show();
+          //$("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
+          //$("#invmessageDiv").show();
           $("#fetchDetailsBtn").click();
-          setTimeout(function(){
-            $("#invmessageDiv").hide();
-          },5000);
+          // setTimeout(function(){
+          //   $("#invmessageDiv").hide();
+          // },5000);
+          commonUtils.displayUIMessage(data.status, msg);
         }
       });
 
@@ -840,9 +869,24 @@ function alignGrid(divId){
       }
 
       if(tableWidth < divWidth){
-        var moreWidth = (divWidth-tableWidth)/colLength;
+
+
+        var moreWidth = (divId == "grid-society-model")?(divWidth-tableWidth)/(colLength-1):(divWidth-tableWidth)/colLength;
         for(var j=1;j<=cellWidthArr.length;j++){
           var width = cellWidthArr[j-1]+moreWidth;
+
+           if(divId == "grid-society-model"){
+              if(j != 3){  //version
+                var width = cellWidthArr[j-1]+moreWidth;
+              }
+              else{
+                var width = cellWidthArr[j-1];
+              }
+            }
+            else
+            {
+              var width = cellWidthArr[j-1]+moreWidth;
+            }
 
           $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
           $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width);

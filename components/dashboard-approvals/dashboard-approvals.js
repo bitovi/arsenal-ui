@@ -137,11 +137,12 @@ var fetchInboxOutbox = function(scope){
           $('#inboxGrid .loading_img').remove();
             if(approvals != undefined){
               if(approvals.status == "FAILURE"){
-              $("#messageDiv").html("<label class='errorMessage'>"+data.responseText+"</label>");
-              $("#messageDiv").show();
-              setTimeout(function(){
-                $("#messageDiv").hide();
-              },4000);
+              // $("#messageDiv").html("<label class='errorMessage'>"+data.responseText+"</label>");
+              // $("#messageDiv").show();
+              // setTimeout(function(){
+              //   $("#messageDiv").hide();
+              // },4000);
+              commonUtils.showErrorMessage(data.responseText);
               console.error("Failed to load the Inbox :"+data.responseText);
 
             }else{
@@ -170,11 +171,12 @@ var fetchInboxOutbox = function(scope){
             $('#outboxGrid .loading_img').remove();
             if(approvals != undefined){
                 if(approvals.status == "FAILURE"){
-                $("#messageDiv").html("<label class='errorMessage'>"+data.responseText+"</label>");
-                $("#messageDiv").show();
-                setTimeout(function(){
-                  $("#messageDiv").hide();
-                },4000);
+                // $("#messageDiv").html("<label class='errorMessage'>"+data.responseText+"</label>");
+                // $("#messageDiv").show();
+                // setTimeout(function(){
+                //   $("#messageDiv").hide();
+                // },4000);
+                commonUtils.showErrorMessage(data.responseText);
                 console.error("Failed to load the Outbox :"+data.responseText);
 
               }else{

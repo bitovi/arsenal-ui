@@ -1,34 +1,249 @@
 @import 'components/grid/grid.less';
 @white-border: 1px solid #fff;
 
-rn-claim-licensor-grid, rn-claim-country-grid{
+.flex-basis(@basis) {
+  -webkit-flex-basis: @basis;
+  flex-basis: @basis;
+}
+
+.flex-grow(@grow) {
+  -webkit-flex-grow: @grow;
+  flex-grow: @grow;
+}
+
+rn-claim-licensor-grid {
   .grid-mixin();
   table {
-    /* You have to specify widths */
+
     width: 100%;
-    border-collapse:separate !important;
-    tr>th, tr > td {
-      width:2%;
+    min-width:1900px;
+
+    thead, tbody,tfoot {
+      display: block;
+
+      tr {
+        display: -webkit-flex;
+        width: 100%;
+      }
     }
 
-    thead, tbody, tfoot {
-      display: block;
+    thead, tfoot {
+      background: @header-background;
+      color: white;
+      //height:24px;
+      tr {
+        height : 24px;
+        th, td {
+          font-weight: normal;
+
+          height: 24px;
+          //padding: .3em .5em .3em .5em !important;
+          //border-right: @dark-border;
+          //border-top: @dark-border;
+          border-bottom: @dark-border;
+
+        }
+      }
+    }
+    thead {
+      tr {
+        th, td {
+          text-align:center !important;
+        }
+      }
     }
     tbody {
-      //height: 400px	;
-      //max-height: 600px;
+      //max-height: 8em;
       overflow-y: overlay;
       overflow-x: hidden;
-      //border: 1px solid #a1a1a1;
-      border-bottom: 0;
-      //min-height:300px !important;
+      border-left: 1px solid #a1a1a1;
+      //border-right: 1px solid #a1a1a1;
+      tr {
+        height : auto;
+        min-height:22px;
+        word-wrap: break-word;
+        td {
+          height : auto;
+          min-height:22px;
+          padding-top:1px;
+        }
+      }
     }
-    th, td {
-      white-space: nowrap;
+
+    tr > th, tr > td {
+      //padding: .3em .5em;
+      &.sorticon { .flex-basis(50px);text-align:center; }
+      &.entityName { .flex-grow(1); .flex-basis(200px); }
+      &.invoiceNumber { .flex-grow(1); .flex-basis(150px); }
+      &.currency {  .flex-basis(50px); }
+      &.period {  .flex-basis(150px); }
+      &.country {  .flex-basis(60px); }
+      &.contentType {  .flex-basis(150px); }
+      &.invoiceAmount { .flex-grow(1); .flex-basis(110px); }
+      &.overrepAmount { .flex-grow(1); .flex-basis(110px); }
+      &.lineDisputeAmount { .flex-grow(1); .flex-basis(110px); }
+      &.reconAmount { .flex-grow(1); .flex-basis(110px); }
+      &.oaAllocated { .flex-grow(1); .flex-basis(110px); }
+      &.caAllocated { .flex-grow(1); .flex-basis(110px); }
+      &.priorPaid { .flex-grow(1); .flex-basis(110px); }
+      &.invPmtSaturation { .flex-grow(1); .flex-basis(110px); }
+      &.pmtSaturation { .flex-grow(1); .flex-basis(110px); }
+      &.balance { .flex-grow(1); .flex-basis(110px); }
+      &.overrepDispPer { .flex-grow(1); .flex-basis(110px); }
+      &.liDispPer { .flex-grow(1); .flex-basis(110px); }
+      &.status {  .flex-basis(60px); }
     }
+
+    tbody > tr {
+
+      &.child {
+        display: none;
+
+        &.visible {
+          display: -webkit-flex;
+          border:none;
+        }
+      }
+    }
+
+    tfoot {
+
+      tr.child {
+
+        display: none;
+        td:first-child{
+          border-left: 1px solid #666666;
+        }
+        &.visible {
+          display: -webkit-flex;
+        }
+      }
+    }
+
   }
-  .entity, .currency, .period, .country, .contentType, .status{
-    text-align: left;
+
+}
+
+rn-claim-country-grid {
+  .grid-mixin();
+  table {
+
+    width: 100%;
+    min-width:1590px;
+
+    thead, tbody,tfoot {
+      display: block;
+
+      tr {
+        display: -webkit-flex;
+        width: 100%;
+      }
+    }
+    thead {
+      tr {
+        th, td {
+          text-align:center !important;
+        }
+      }
+    }
+
+    thead, tfoot {
+      background: @header-background;
+      color: white;
+      //height:24px;
+      tr {
+        height : 24px;
+        th, td {
+          font-weight: normal;
+
+          height: 24px;
+          //padding: .3em .5em .3em .5em !important;
+          //border-right: @dark-border;
+          //border-top: @dark-border;
+          border-bottom: @dark-border;
+
+        }
+      }
+    }
+
+    tbody {
+      //max-height: 8em;
+      overflow-y: overlay;
+      overflow-x: hidden;
+      border-left: 1px solid #a1a1a1;
+      //border-right: 1px solid #a1a1a1;
+      tr {
+        height : auto;
+        word-wrap: break-word;
+        min-height:22px;
+        td {
+          height : auto;
+          min-height:22px;
+          padding-top:1px;
+        }
+      }
+    }
+    thead{
+      tr{
+        td{
+          text-align:center;
+        }
+      }
+    }
+
+    tr > th, tr > td {
+      //padding: .3em .5em;
+      &.sorticon { .flex-basis(50px);text-align:center; }
+      &.entityName { .flex-grow(1); .flex-basis(200px); }
+      //&.invoiceNumber { .flex-grow(1); .flex-basis(150px); }
+      &.currency {  .flex-basis(50px); }
+      &.period {  .flex-basis(150px); }
+      &.country {  .flex-basis(70px); }
+      &.contentType {  .flex-basis(150px); }
+      &.invoiceAmount { .flex-grow(1); .flex-basis(110px); }
+      &.overrepAmount { .flex-grow(1); .flex-basis(110px); }
+      &.lineDisputeAmount { .flex-grow(1); .flex-basis(110px); }
+      &.reconAmount { .flex-grow(1); .flex-basis(110px); }
+      &.oaAllocated { .flex-grow(1); .flex-basis(110px); }
+      &.caAllocated { .flex-grow(1); .flex-basis(110px); }
+      &.priorPaid { .flex-grow(1); .flex-basis(110px); }
+      &.invPmtSaturation { .flex-grow(1); .flex-basis(110px); }
+      &.pmtSaturation { .flex-grow(1); .flex-basis(110px); }
+      &.balance { .flex-grow(1); .flex-basis(110px); }
+      &.overrepDispPer { .flex-grow(1); .flex-basis(110px); }
+      &.liDispPer { .flex-grow(1); .flex-basis(110px); }
+      //&.status {  .flex-basis(50px); }
+    }
+
+    tbody > tr {
+
+      &.child {
+        display: none;
+
+        &.visible {
+          display: -webkit-flex;
+          border:none;
+        }
+      }
+    }
+
+    tfoot {
+
+      tr.child {
+
+        display: none;
+
+        td:first-child{
+          border-left: 1px solid #666666;
+        }
+
+        &.visible {
+
+          display: -webkit-flex;
+        }
+      }
+    }
+
   }
 
 }
@@ -96,7 +311,8 @@ padding-left:25px !important;
     overflow-x: scroll;
     overflow-y: hidden;
     clear: both;
-    border: 1px solid #a1a1a1;
+    //border: 1px solid #a1a1a1;
+    border-right:1px solid #a1a1a1;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     border-top-left-radius: 5px;

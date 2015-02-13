@@ -1,35 +1,47 @@
 <div class="form-horizontal" id="refcountryform" role="form">
   <div id="loading_img"></div>
   <div class="container-fluid">
+<!--
     <div class="row col-sm-12">
       <div class="col-sm-4 pageTitle">
           <span class="large-headers">Country Details</span>
       </div>
       <div class="col-sm-4">
-        <!-- TODO - Keep the message outside -->
-        <!-- <div style="{{displayMessage}}" class="alert-success alert-dimension" role="alert">
+        TODO - Keep the message outside 
+         <div style="{{displayMessage}}" class="alert-success alert-dimension" role="alert">
           <a href="#" class="close" data-dismiss="alert">&times;</a>
           New Country Details Changes Saved Successfully.
-        </div> -->
+        </div> 
         <div class="cols-sm-4">
           <div id="invmessageDiv" role="alert"></div>
         </div>
 
       </div>
     </div>
+-->
+      <div class="div-warn-container">
+          <div class="row pagetitle-div-parent">
+              <div class="col-sm-5 pageTitleInv">
+                <div class="pageHead">Country Details</div>
+              </div>
+          </div>
+          <div class="col-sm-7 div-warn-parent">
+            <div id="invmessageDiv" class="center messageDiv" role="alert"></div>
+        </div>
+      </div>  
 
     <div class="row">
          <div class="form-group col-sm-12">
               <div class="col-sm-5" id="countryFetchDiv">
                  <label for="forCountry" class="col-sm-3 control-label small-headers">Country: </label>
-                 <div class="col-sm-5">
+                 <div class="col-sm-4">
                    <select class="form-control" id="selCountry" can-value='pageState.countryDetails.country.countryId'>
                        {{#each countries}}
                          <option value="{{id}}">{{value}}</option>
                         {{/each}}
                      </select>
                  </div>
-                 <div class="col-sm-2 ">
+                 <div class="col-sm-2" style="margin-top:-2px;">
                    <button id="fetchDetailsBtn" class="btn btn-primary btn-custom-small">Fetch</button>
                  </div>
                </div>
@@ -42,17 +54,17 @@
       <div class="col-sm-6 left-layout"><!-- LEFT Layout START-->
             <div id="loading_img1"></div> 
             <div class="form-group">
-               <div class="col-sm-10">
-                  <label for="forStatus" class="col-sm-5 control-label small-headers">Status: </label>
-                  <div class="col-sm-7" style="text-align:left;padding-left:0px">
-                    <span>{{pageState.countryDetails.country.status}}</span>
+               <div class="col-sm-12">
+                  <label for="forStatus" class="col-sm-4 control-label small-headers">Status: </label>
+                  <div class="col-sm-8 small-headers" style="text-align:left;padding-left:5px">
+                    <span>{{pageState.countryDetails.country.displayStatus}}</span>
                   </div>
                 </div>
-                 <div class="col-sm-2"></div>
+                 
             </div>
             <div class="form-group">
-                 <div class="col-sm-10" id="periodFromcontainer">
-                  <label for="forValidFrom" class="col-sm-5 control-label small-headers">Valid From: </label>
+                 <div class="col-sm-12" id="periodFromcontainer">
+                  <label for="forValidFrom" class="col-sm-4 control-label small-headers">Valid From: </label>
                   <div class="col-sm-4 requiredBar calendarcls">
                     <input type='text' id="validFrom" class="validFrom form-control updatePeroid" name="validFrom" place-holder="Select Period" can-value='pageState.countryDetails.country.validFrom'/>
                     <span class="calendarDateIcon"><i class="glyphicon-calendar glyphicon"></i></span>
@@ -62,33 +74,33 @@
                  <div class="col-sm-2"></div>
             </div>
             <div class="form-group">
-               <div class="col-sm-10 " id="periodTocontainer">
-                  <label for="forValidTo" class="col-sm-5 control-label small-headers">Valid To: </label>
-                  <div class="col-sm-7 normalBar calendarcls">
+               <div class="col-sm-12 " id="periodTocontainer">
+                  <label for="forValidTo" class="col-sm-4 control-label small-headers">Valid To: </label>
+                  <div class="col-sm-8 normalBar calendarcls">
                     <input type='text' id="validTo" class="validTo form-control updatePeroid" place-holder="Select Period" can-value='pageState.countryDetails.country.validTo'/>
                     <span class="calendarDateIcon"><i class="glyphicon-calendar glyphicon"></i></span>
                     <period-calendar selectedperiod={selectedperiod} appstate="{appstate}"></period-calendar>
                   </div>
                 </div>
-                <div class="col-sm-2"></div>
+                
             </div>
             <div class="form-group">
-               <div class="col-sm-10 ">
-                  <label for="forEntity" class="col-sm-5 control-label small-headers">Local Society: </label>
-                  <div class="col-sm-7 requiredBar">
+               <div class="col-sm-12 ">
+                  <label for="forEntity" class="col-sm-4 control-label small-headers">Local Society: </label>
+                  <div class="col-sm-8 requiredBar">
                     <select class="form-control" id="localSocietysel" name="localSociety" can-value='pageState.countryDetails.country.localSocietyId'>
                       {{#each localSocietyNames}}
                         <option value="{{id}}">{{value}}</option>
                        {{/each}}
                   </div>
                 </div>
-                 <div class="col-sm-2"></div>
+                 
             </div>
             
             <div class="form-group">
-               <div class="col-sm-10 ">
-                  <label for="" class="col-sm-5 control-label small-headers">Main Pricing Method: </label>
-                  <div class="col-sm-7 requiredBar">
+               <div class="col-sm-12 ">
+                  <label for="" class="col-sm-4 control-label small-headers">Main Pricing Method: </label>
+                  <div class="col-sm-8 requiredBar">
                     <select  class="form-control inputMonth" id="mainPricingMethod" name="mainPricingMethod" can-value='pageState.countryDetails.country.mainPricingMethod'>
                     <option value="">Select</option>
                       {{#each pricingMethods}}
@@ -97,12 +109,12 @@
                     </select>
                   </div>
                 </div>
-                 <div class="col-sm-2"></div>
+                 
             </div>
             <div class="form-group">
-               <div class="col-sm-10 ">
-                  <label for="" class="col-sm-5 control-label small-headers">Alternate Pricing Method: </label>
-                  <div class="col-sm-7 normalBar">
+               <div class="col-sm-12 ">
+                  <label for="" class="col-sm-4 control-label small-headers">Alternate Pricing Method: </label>
+                  <div class="col-sm-8 normalBar">
                     <select  class="form-control inputMonth" id="altPricingMethod" can-value='pageState.countryDetails.country.altPricingMethod'>
                       <option value="">Select</option>
                       {{#each pricingMethods}}
@@ -111,30 +123,30 @@
                     </select>
                   </div>
                 </div>
-                 <div class="col-sm-2"></div>
+                 
             </div>
             <div class="form-group">
-               <div class="col-sm-10">
-                  <label for="forStatus" class="col-sm-5 control-label small-headers">Mechanical Share: </label>
-                  <div class="col-sm-7" style="text-align:left;padding-left:0px">
+               <div class="col-sm-12">
+                  <label for="forStatus" class="col-sm-4 control-label small-headers">Mechanical Share: </label>
+                  <div class="col-sm-8 small-headers" style="text-align:left;padding-left:5px">
                     <span>{{pageState.countryDetails.country.mechShare}}</span>
                   </div>
                 </div>
-                 <div class="col-sm-2"></div>
+                
             </div>
             <div class="form-group">
-               <div class="col-sm-10">
-                  <label for="forStatus" class="col-sm-5 control-label small-headers">Performance Share: </label>
-                  <div class="col-sm-7" style="text-align:left;padding-left:0px">
+               <div class="col-sm-12">
+                  <label for="forStatus" class="col-sm-4 control-label small-headers">Performance Share: </label>
+                  <div class="col-sm-8 small-headers" style="text-align:left;padding-left:5px">
                     <span>{{pageState.countryDetails.country.performShare}}</span>
                   </div>
                 </div>
-                 <div class="col-sm-2"></div>
+                 
             </div>
             <div class="form-group">
-               <div class="col-sm-10">
-                  <label for="" class="col-sm-5 control-label small-headers">Transaction Currency: </label>
-                  <div class="col-sm-7 requiredBar">
+               <div class="col-sm-12">
+                  <label for="" class="col-sm-4 control-label small-headers">Transaction Currency: </label>
+                  <div class="col-sm-8 requiredBar">
                     <select class="form-control" id="transCurrSel" can-value='pageState.countryDetails.country.transactionCurrency' name="transCurr" >
                       {{#each transcurrencies}}
                         <option value="{{.}}">{{.}}</option>
@@ -142,12 +154,12 @@
                     </select>
                   </div>
                 </div>
-                 <div class="col-sm-2"></div>
+                 
             </div>
             <div class="form-group">
-               <div class="col-sm-10">
-                  <label for="" class="col-sm-5 control-label small-headers">Alternate Currency: </label>
-                  <div class="col-sm-7 normalBar">
+               <div class="col-sm-12">
+                  <label for="" class="col-sm-4 control-label small-headers">Alternate Currency: </label>
+                  <div class="col-sm-8 normalBar">
                     <select class="form-control" id="altCurrSel" can-value='pageState.countryDetails.country.altCurrency' name="invoiceCurr" >
                       {{#each altcurrencies}}
                         <option value="{{.}}">{{.}}</option>
@@ -155,43 +167,53 @@
                     </select>
                   </div>
                 </div>
-                 <div class="col-sm-2"></div>
+                 
             </div>
 
             <div class="form-group">
-              <div class="col-sm-10">
-                 <label for="" class="col-sm-5 control-label small-headers">Accural Model:</label>
-                 <div class="col-sm-7 requiredBar">
-                    <div class="col-sm-8 normalBar">
+              <div class="col-sm-12">
+                 <label for="" class="col-sm-4 control-label small-headers">Accrual Model:</label>
+                 <div class="col-sm-8 requiredBar">
+                    <div class="col-sm-6 normalBar" style="width: 160px;padding-right: 0;">
                       <select class="form-control" id="accModelSel" name="accuralModelName" can-value="{pageState.countryDetails.country.modelId}">
                         {{#each accuralModels}}
                           <option {{isSelected 'accModel' accName}} {{data 'accModel'}}>{{accName}}</option>
                          {{/each}}
                       </select>
                     </div>
-                    <div class="col-sm-2 normalBar">
+                    <div class="col-sm-2 normalBar" style="width: 40px;padding: 0;">
                       <select class="form-control" id="accModelVerSel" name="accuralModelVersion">
                           {{#each accuralModelVersions}}
                             <option {{isSelected 'accModelVer' modelId}} {{data 'accModelVer'}}>{{version}}</option>
                            {{/each}}
                       </select>
                     </div>
-                    <div class="col-sm-2 normalBar">
-                      <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="accuralModelBtn">...</button>
+                    <div class="col-sm-2 normalBar" >
+                      <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="accuralModelBtn">View</button>
                     </div>
                  </div>
               </div>
               <div class="col-sm-2"></div>
             </div>
             <div class="col-sm-12 multicomments-required"> <div class="col-sm-1"></div><div class="col-sm-8">Enter comments !</div></div>
-            <div class="form-group">
+          <!--  <div class="form-group">
                <div class="col-sm-12" id="refCountryComments">
                   <label for="forStatus" class="col-sm-4 control-label small-headers">Comments: </label>
                   <div id="multipleComments" class="col-sm-8 normalBar requiredBar">
                     <textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>
                   </div>
                 </div>
-            </div>
+            </div> -->
+
+               <div class="form-group">
+               <div class="col-sm-12" >
+                  <label for="" class="col-sm-4 control-label small-headers">Comments: </label>
+                  <div id="multipleComments" class="col-sm-8 normalBar requiredBar">
+                    <textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>
+                  </div>
+                </div>
+                 
+             </div>
 
             
         </div>
@@ -200,9 +222,9 @@
         <div class="col-sm-6 right-layout"> <!-- RIGHT Layout START-->
           <div class="form-group">
             <div class="col-sm-1"></div>
-             <div class="col-sm-11">
-             <div class="col-sm-12" style="margin-left: -15px;"> Society Model Mapping</div>
-             <div id="grid-society-model" style="max-height: 200px;">
+             <div class="col-sm-12">
+             <div class="col-sm-12 greyHeader" style="margin-left: -15px;"> Society Model Mapping</div>
+             <div id="grid-society-model" class="socModMapHt">
               <rn-grid-society-model rows="{societyModelMapping}" footerrowspresent="{footerrowspresent}" footerdata="{footerdatasocmod}"></rn-grid-society-model>
              </div>
               <!-- <div class="panel panel-default panel-sm" style="border: 1px solid #827F7F;border-radius: 0px;">
@@ -219,8 +241,8 @@
 
           <div class="form-group">
             <div class="col-sm-1"></div>
-             <div class="col-sm-11">
-             <div class="col-sm-12" style="margin-left: -15px;"> Revision History</div>
+             <div class="col-sm-12">
+             <div class="col-sm-12 greyHeader" style="margin-left: -15px;"> Revision History</div>
              <div id="grid-revision-history-country" style="max-height: 200px;">
               <rn-grid-revision-history-country rows="{revisionHistory}" footerrowspresent="{footerrowspresent}" footerdata="{footerdata}"></rn-grid-revision-history-country>
              </div>
@@ -241,6 +263,10 @@
             </div>
           </div>
         </div><!-- RIGHT Layout END-->
+
+
+
+
         <div id="viewPricingModelDiv"> <!-- View Pricing Model start --->
             <div class="col-sm-12" style="border-bottom: 1px solid #ddd;padding: 0px;">
               <div class="col-sm-11 mid-headers" style="padding-top: 10px;">

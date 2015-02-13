@@ -3,11 +3,12 @@ import constants from 'utils/constants';
 
 var rinsCommonUtils = {
   triggerGlobalSearch:function (){
-    if(appstate.attr('globalSearch')){
-      appstate.attr('globalSearch', false);
-    }else{
-      appstate.attr('globalSearch', true);
-    }
+    appstate.attr('globalSearch', !appstate.attr('globalSearch'));
+    // if(appstate.attr('globalSearch')){
+    //   appstate.attr('globalSearch', false);
+    // }else{
+    //   appstate.attr('globalSearch', true);
+    // }
   },
   navigateTo:function(page){
     var a = document.createElement('a');
@@ -19,49 +20,58 @@ var rinsCommonUtils = {
     // appstate.attr('navigationRequired', true);
     // appstate.attr('navigationRequired', false);
   },
-  displayUIMessage : function(statusCode,message){
+  hideUIMessage: function(){
+    var messageDiv = ".messageDiv";
 
-    var className = 'errorMessage';
-    if(statusCode === '0000'){
-      className= 'successMessage';
+    if($(messageDiv).is(':visible')){
+      $(messageDiv).html("").hide();
     }
-
-    $("#messageDiv").html("<label class='"+className+"' style='padding: 0px 15px;'>"+message+"</label>")
-    $("#messageDiv").show();
-
-    setTimeout(function(){
-      $("#messageDiv").hide();
-    },constants.MESSAGE_DISPLAY_TIME);
+  },
+  displayUIMessage : function(status,message){
+    commonUIDisplay(  ".messageDiv", status,message);
   },
   displayUIMessageWithDiv : function(messageDiv, status,message){
-
-    var className = 'errorMessage';
-    if(status === 'SUCCESS'){
-      className= 'successMessage';
-    }
-
-    $(messageDiv).html("<label class='"+className+"' style='padding: 0px 15px;'>"+message+"</label>")
-    $(messageDiv).show();
-
-    setTimeout(function(){
-      $(messageDiv).hide();
-    },constants.MESSAGE_DISPLAY_TIME);
+    commonUIDisplay(messageDiv, status,message);
+  },
+  showSuccessMessage: function(message){
+    commonUIDisplay(  ".messageDiv", "0000",message);
+  },
+  showErrorMessage: function(message){
+    commonUIDisplay(  ".messageDiv", "ERROR",message);
   },
   getDefaultParameters:function(appstate){
-      var defaultFilterData={};
-      defaultFilterData.periodFrom = appstate.defaultPeriodFrom;
-      defaultFilterData.periodType = appstate.defaultPeriodType;
-      defaultFilterData.periodTo = appstate.defaultPeriodTo;
-      defaultFilterData.storeType = appstate.defaultStoreType;
-      defaultFilterData.country = appstate.defaultcountry;
-      defaultFilterData.licensor = appstate.defaultlicensor;
-      defaultFilterData.contentType = appstate.defaultcontentType;
-      defaultFilterData.region = appstate.defaultRegion;
-      return defaultFilterData;
+    var defaultFilterData={};
+    defaultFilterData.periodFrom = appstate.defaultPeriodFrom;
+    defaultFilterData.periodType = appstate.defaultPeriodType;
+    defaultFilterData.periodTo = appstate.defaultPeriodTo;
+    defaultFilterData.storeType = appstate.defaultStoreType;
+    defaultFilterData.country = appstate.defaultcountry;
+    defaultFilterData.licensor = appstate.defaultlicensor;
+    defaultFilterData.contentType = appstate.defaultcontentType;
+    defaultFilterData.region = appstate.defaultRegion;
+    return defaultFilterData;
+  }
+};
+
+var   commonUIDisplay  = function(messageDiv, status,message){
+
+  var className = 'errorMessage';
+  if(status === '0000' ||  status === 'SUCCESS' ){
+    className= 'successMessage';
   }
 
 
-};
+  if($(messageDiv).is(':visible')){
+    $(messageDiv).html("").hide();
+  }
+  $(messageDiv).html("<label class='"+className+"'>"+message+"<a href='#' id='messageClose' class='close messageClose'> &times;</a></label>").show();
+
+  if($(".messageClose").is(':visible')){
+    $(".messageClose").on("click", function(){
+      $(messageDiv).hide();
+    });
+  }
+}
 
 
 export default rinsCommonUtils;

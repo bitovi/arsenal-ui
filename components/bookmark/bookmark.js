@@ -27,7 +27,7 @@ var bookmark = Component.extend({
     var self = this;
     //setTimeout(function(){$('.bookmark_loader').show();},2000);
     Promise.all([Bookmark.findOne(UserReq.formRequestDetails())]).then(function(data) { console.log(data);
-         if(data[0].responseCode=='0000'){
+         if(data[0].status=='SUCCESS'){
             $('.bookmark_loader').hide();
             self.scope.bookMarkList.replace(data[0].bookmarkList);
             if(data[0].bookmarkList.length>0){
@@ -41,7 +41,7 @@ var bookmark = Component.extend({
         }
     });
     Promise.all([Bookmarkusers.findOne(UserReq.formRequestDetails())]).then(function(data) {
-      if(data[0].responseCode=='0000'){
+      if(data[0].status=='SUCCESS'){
            self.scope.userList.replace(data[0].userList);
            $('.bookmark_loader').hide();
         }
@@ -93,7 +93,7 @@ var bookmark = Component.extend({
            }
            self.scope.setFlag.attr("flag",false);
            Promise.all([Sharedbookmarks.findOne(UserReq.formRequestDetails(gearid))]).then(function(data) {
-            if(data[0].responseCode=='0000'){
+            if(data[0].status=='SUCCESS'){
                self.scope.settingsList.replace('');
                self.scope.settingsList.replace(self.scope.userList);
                for(var i=0;i<self.scope.userList.length;i++){
@@ -131,7 +131,7 @@ var bookmark = Component.extend({
           root["sharedForIds"] = temp;
           $('.bookmark_loader').show();
           Bookmarkusers.update(UserReq.formRequestDetails(root),"UPDATE",function(data){
-              if(data.responseCode=='0000'){
+              if(data.status=='SUCCESS'){
                  $('.bookmark_loader').hide();
                   $('.bookmark_sharing_settings').slideUp('fast');
                   $('.listofbookmark').slideDown('fast');
@@ -157,7 +157,7 @@ var bookmark = Component.extend({
           root["idsToBeDeleted"] =deleteId;
           $('.bookmark_loader').show();
           Bookmark.update(UserReq.formRequestDetails(root),"DELETE",function(data){ console.log(data);
-            if(data.responseCode=='0000'){
+            if(data.status=='SUCCESS'){
               $('.bookmark_loader').hide();
             }
           });
@@ -193,7 +193,7 @@ var bookmark = Component.extend({
                   Bookmark.update(UserReq.formRequestDetails(passtoSave),"SAVE",function(data){
                       if(data.responseText=="SUCCESS"){
                          Promise.all([Bookmark.findOne(UserReq.formRequestDetails())]).then(function(data) {
-                           if(data[0].responseCode=='0000'){
+                           if(data[0].status=='SUCCESS'){
                               self.scope.bookMarkList.replace(data[0].bookmarkList);
                               $('.bookmark_loader').hide();
 

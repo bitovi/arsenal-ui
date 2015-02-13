@@ -23,16 +23,17 @@ module.exports = function (grunt) {
 
   // Configure the tasks we loaded.
   grunt.initConfig({
-    stealBuild: {
+    'steal-build': {
       main: {
         options: {
           system: {
             config: __dirname + "/stealconfig.js",
-            main: "index",
-            bundlesPath: buildDir
+            main: "index"//,
+            // bundlesPath: buildDir
           },
           buildOptions: {
-            bundleSteal: true
+            bundleSteal: false,
+            minify: false
           }
         }
       }
@@ -198,7 +199,7 @@ module.exports = function (grunt) {
   // `grunt test`
   grunt.registerTask('test', 'Run tests.', ['testee']);
   // `grunt build`
-  grunt.registerTask('build', 'Make a build.', ['clean:build', 'stealBuild', 'writeFiles']);
+  grunt.registerTask('build', 'Make a build.', ['clean:build', 'steal-build', 'writeFiles']);
 
   // `grunt release`
   grunt.registerTask('release', 'Create a release.', function(releaseType) {

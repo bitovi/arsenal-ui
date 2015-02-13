@@ -31,7 +31,6 @@ import CalDueDate from 'models/common/calinvoiceduedate/';
 import AdhocTypes from 'models/common/adhoc-types/';
 import GLaccounts from 'models/glaccounts/';
 import Region from 'models/common/region/';
-import stache from 'can/view/stache/';
 import moment from 'moment';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
 import commonUtils from 'utils/commonUtils';
@@ -476,7 +475,7 @@ var page = Component.extend({
 		                      }
 		                    },
 		                    'taxAmount': {
-		                     group:'.taxAmountCont',	
+		                     group:'.taxAmountCont',
 		                      validators: {
 		                        callback: {
 
@@ -720,9 +719,9 @@ var page = Component.extend({
 								removeError(event[0].id);
 							}
 						}
-						
+
 					}
-				
+
 					if(self.scope.editpage){
 						if(event[0].id == "usercomments"){
 							if(String(event[0].value).length > 0){
@@ -733,7 +732,7 @@ var page = Component.extend({
 									removeError(event[0].id);
 								}
 							}
-							
+
 						}
 				   }
 				},
@@ -825,7 +824,9 @@ var page = Component.extend({
 		"{scope} regionStore": function(){
 		  	var self = this;
 			var genObj = {regionId:self.scope.attr("regionStore")};
-			Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))
+			Promise.all([
+				Licensor.findAll(UserReq.formRequestDetails(genObj)),
+				Currency.getCurrByRegion(self.scope.attr("regionStore"))
 			     ]).then(function(values) {
 		     			//console.log(values[0]);
 		     			self.scope.attr("licensor").replace([]);
@@ -838,33 +839,34 @@ var page = Component.extend({
 			         	countryDD.html($('<option>').text("Select").val(""));
 
 		     			self.scope.attr("licensor").replace(values[0]["entities"]);
+		     			self.scope.attr("currency").replace(values[1].data);
 			    		if(self.scope.editpage){
 				    		var invoiceData = self.scope.attr().invoiceContainer[0];
 				    		self.scope.attr("licensorStore", invoiceData.entityId);
+				    		self.scope.attr("currencyStore", invoiceData.invoiceCcy);
 			    		}
 			    });
-
 
 			self.scope.createPBRequest();
 
 		},
 		"{scope} licensorStore": function(event){
 			var self = this;
-			var genObj = {licensorId:self.scope.attr("licensorStore")};
-			Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
-			     ]).then(function(values) {
-			     	self.scope.attr("currency").replace([]);
-			     	self.scope.attr("currencyStore", "");
-			     	var countryDD = $('.inputCountry');
-		         	countryDD.empty();
-		         	countryDD.html($('<option>').text("Select").val(""));
+			//var genObj = {licensorId:self.scope.attr("licensorStore")};
+			// Promise.all([Currency.getCurrByRegion(self.scope.attr("regionStore"))
+			//      ]).then(function(values) {
+			//      	self.scope.attr("currency").replace([]);
+			//      	self.scope.attr("currencyStore", "");
+			//      	var countryDD = $('.inputCountry');
+		 //         	countryDD.empty();
+		 //         	countryDD.html($('<option>').text("Select").val(""));
 
-			     	self.scope.attr("currency").replace(values[0]);
-				    if(self.scope.editpage){
-					    var invoiceData = self.scope.attr().invoiceContainer[0];
-					    self.scope.attr("currencyStore", invoiceData.invoiceCcy);
-					}
-			});
+			//      	self.scope.attr("currency").replace(values[0].data);
+			// 	    if(self.scope.editpage){
+			// 		    var invoiceData = self.scope.attr().invoiceContainer[0];
+			// 		    self.scope.attr("currencyStore", invoiceData.invoiceCcy);
+			// 		}
+			// });
 		},
 		"{scope} currencyStore": function(){
 			var self = this;
@@ -1189,7 +1191,8 @@ var page = Component.extend({
 									                $("#invmessageDiv").hide();
 									             },5000) */
 
-									            commonUtils.displayUIMessageWithDiv("#invmessageDiv", values[0].status, msg);
+									            //commonUtils.displayUIMessageWithDiv("#invmessageDiv", values[0].status, msg);
+									            commonUtils.showSuccessMessage(msg);
 
 									            if(values[0].invoices[0].errors)
 								           		{
@@ -1199,8 +1202,8 @@ var page = Component.extend({
 								           		if(errorMap){
   									       		  var msg =showErrorDetails(errorMap, "Warning");
   									       		 // showMessages(msg, "#invWarningMsgDiv");
-  									       		  commonUtils.displayUIMessageWithDiv("#invWarningMsgDiv", "ERROR", msg);
-
+  									       		  //commonUtils.displayUIMessageWithDiv("#invWarningMsgDiv", "ERROR", msg);
+  									       		  commonUtils.showErrorMessage(msg);
 
                               					}
                         						$("#invoiceform")[0].reset();
@@ -1264,7 +1267,8 @@ var page = Component.extend({
 
 												//$("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
 										        //$("#invmessageDiv").show();
-										        commonUtils.displayUIMessageWithDiv("#invmessageDiv", "ERROR", msg);
+										        //commonUtils.displayUIMessageWithDiv("#invmessageDiv", "ERROR", msg);
+										        commonUtils.showErrorMessage(msg);
 										        $("#addInvSubmit").attr("disabled", false);
 
 										    }
@@ -1449,7 +1453,7 @@ var page = Component.extend({
 									},
 									calculateUSD:function(){
 										var fxrate = this.attr("usdFxrateRatio");
-										var calUSD = this.attr("grossTotalStore") / fxrate;
+										var calUSD = this.attr("grossTotalStore") * fxrate;
 
 										if(isNaN(calUSD)){
 											calUSD = 0;
@@ -1552,14 +1556,15 @@ var page = Component.extend({
           }
 
           function showMessages(msg, divid){
-          	if(!divid){
-          		divid = "#invmessageDiv";
-          	}
-            $(divid).html("<label class='errorMessage'>"+msg+"</label>")
-             $(divid).show();
-             setTimeout(function(){
-                $(divid).hide();
-             },5000)
+          	// if(!divid){
+          	// 	divid = "#invmessageDiv";
+          	// }
+           //  $(divid).html("<label class='errorMessage'>"+msg+"</label>")
+           //   $(divid).show();
+           //   setTimeout(function(){
+           //      $(divid).hide();
+           //   },5000)
+           commonUtils.showErrorMessage(msg);
           }
 
 					var updatePeriodCalender = function(elementID){

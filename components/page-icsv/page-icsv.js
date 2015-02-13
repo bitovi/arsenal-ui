@@ -172,7 +172,7 @@ var page = Component.extend({
        icsvmap.delegate("invoiceData","change", function(ev, newVal){
             //console.log(icsvmap.attr("invoiceData"));
             $("#loading_img").hide();
-            $('#arrowbutton').show();
+            $('#arrowbtnCntiner').show();
             if(icsvmap.attr("invoiceData"))
             {
                   var gridData = [];
@@ -209,7 +209,21 @@ var page = Component.extend({
                                      }
                                   }
                               }
-                              errString = errString.replace(/,\s*$/, "");
+                                
+                             errString = errString.replace(/,\s*$/, "");
+
+                               /*filtering duplicate invloiceline error*/
+
+
+                              var arr = errString.split(", ");
+                              var unique = [];
+                              $.each(arr, function (index,word) {
+                                  if ($.inArray(word, unique) === -1) 
+                                      unique.push(word);
+
+                              });
+
+                              errString = unique;
 
                               var errlabel = "<span class='errorlabel'>Error: </span>";
 
@@ -323,7 +337,7 @@ var page = Component.extend({
           self.scope.uploadedfileinfo.replace([]);
           $('.jQfunhide').hide();
           $('#topContanier').show();
-          $('#arrowbutton').hide();
+          $('#arrowbtnCntiner').hide();
           $('.file-component-icv-div #buttondiv').show();
        },
        '{scope} uploadedfileinfo':function(){
@@ -569,14 +583,16 @@ var page = Component.extend({
      showAfterSubmitMsg:function(){
           if($.isEmptyObject(this.attr("errorStatus"))){
                 if(this.attr("errorStatus") == "success"){
-                    return "<label class='successMessage'>"+this.attr("responseText")+"</label>";
+                    //return "<label class='successMessage'>"+this.attr("responseText")+"</label>";
+                    return commonUtils.showSuccessMessage(this.attr("responseText"));
                 }else{
-                    return "<label class='errorMessage'>"+this.attr("responseText")+"</label>";
+                    //return "<label class='errorMessage'>"+this.attr("responseText")+"</label>";
+                    return commonUtils.showErrorMessage(this.attr("responseText"));
                 }
 
-                setTimeout(function(){
-                      $("#icsvMessageDiv").hide();
-                },2000);
+                // setTimeout(function(){
+                //       $("#icsvMessageDiv").hide();
+                // },2000);
            }
        }
 
@@ -638,14 +654,16 @@ function disableBundle(disable){
 
 function displayMessage(msg,success){
   if(success){
-    $("#invcsvmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
+    //$("#invcsvmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
+    commonUtils.showSuccessMessage(msg);
   }else{
-    $("#invcsvmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+    //$("#invcsvmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+    commonUtils.showErrorMessage(msg);
   }
-   $("#invcsvmessageDiv").show();
-   setTimeout(function(){
-      $("#invcsvmessageDiv").hide();
-   },5000)
+   // $("#invcsvmessageDiv").show();
+   // setTimeout(function(){
+   //    $("#invcsvmessageDiv").hide();
+   // },5000)
 }
 
 function accordin(obj){

@@ -4,7 +4,7 @@ import stache from 'can/view/stache/';
 import Alert from 'components/alert/';
 
 import PaymentBundle from 'models/payment-bundle/';
-
+import commonUtils from 'utils/commonUtils';
 import template from './template.stache!';
 import './pbr-delete-confirm-modal.less!';
 
@@ -33,7 +33,8 @@ var PbrDeleteConfirmModal = can.Component.extend({
           self.scope.bundle.destroy();
           self.element.find('.modal').modal('hide');
           self.element.remove();
-          Alert.displayAlert(result.responseText, 'success');
+          commonUtils.displayUIMessage( result.status, result.responseText);
+          //Alert.displayAlert(result.responseText, 'success');
         }else{
           self.element.find('.modal').modal('hide');
           self.element.remove();

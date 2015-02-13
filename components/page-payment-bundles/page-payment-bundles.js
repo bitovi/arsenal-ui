@@ -29,8 +29,10 @@ var pageState = new Map({
   validationGrid:false,
   isPaginateReq: false,//triggers the paginate Event from bundle-grid.js
   recordsAvailable:undefined,
+  totRecCnt:0,
   refreshBottomGrid:false,
-  removeInvoices:false
+  removeInvoices:false,
+  loadedFromDetails:undefined
 });
 
 var page = Component.extend({
@@ -58,7 +60,7 @@ var page = Component.extend({
 
         PaymentBundle.loadAll({appstate: this.scope.appstate, paginate: this.scope.paginateAttr}).done(function(data) {
 
-          if(data.responseCode === '0000'){
+          if(data.status === 'SUCCESS'){
 
             can.batch.start();
 
@@ -67,10 +69,12 @@ var page = Component.extend({
             pageState.bundles.replace(pageState.bundles);
 
             pageState.attr("recordsAvailable",data.recordsAvailable);
+            pageState.attr("totRecCnt",data.totRecCnt);
+
 
             can.batch.stop();
           }else{
-            commonUtils.displayUIMessage( data.responseCode, data.responseText);
+            commonUtils.displayUIMessage( data.status, data.responseText);
           }
 
         });
@@ -81,27 +85,45 @@ var page = Component.extend({
 
       }else{
         if(this.scope.isPageSearch != this.scope.appstate.globalSearch) {
+          commonUtils.hideUIMessage();
+          pageState.attr("totRecCnt",0);
 
           this.scope.appstate.attr('excelOutput',false);
           this.scope.paginateAttr.attr('offset',  0);
 
+          var lookForBundle = undefined;
+          if(this.scope.appstate.screenLookup.PBR != undefined){
+            lookForBundle = this.scope.appstate.screenLookup.PBR.bundleId;
+          }
+
           resetGrids(pageState);
 
           this.scope.isPageSearch  = this.scope.appstate.globalSearch;
-          PaymentBundle.loadAll ({appstate: this.scope.appstate,paginate: this.scope.paginateAttr, lookForBundle : 1065}).done(function(data) {
+          PaymentBundle.loadAll ({appstate: this.scope.appstate,paginate: this.scope.paginateAttr, lookForBundle : lookForBundle}).done(function(data) {
 
-            if(data.responseCode === '0000'){
-              var test = false;
+            if(data.status === 'SUCCESS'){
+              var bundleLookupNeeded = false;
               can.batch.start();
               pageState.bundles.splice(0, pageState.bundles.length);
               pageState.bundles.replace(data.paymentBundles);
               pageState.attr("recordsAvailable",data.recordsAvailable);
-              test = true;
+              pageState.attr("totRecCnt",data.totRecCnt);
+              bundleLookupNeeded = true;
               can.batch.stop();
 
-              if(test)$(".visible").click();
+              if(bundleLookupNeeded && lookForBundle != undefined){
+
+                  self.scope.pageState.attr("loadedFromDetails",self.scope.appstate.screenLookup.PBR);
+                  self.scope.appstate.attr("screenLookup",{});
+
+                  $(".visible").click();
+              }else{
+                self.scope.pageState.attr("loadedFromDetails",undefined);
+              }
+
             }else{
-              commonUtils.displayUIMessage( data.responseCode, data.responseText);
+              commonUtils.displayUIMessage( data.status, data.responseText);
+              self.scope.appstate.attr("screenLookup",{});
             }
 
           });
@@ -136,7 +158,8 @@ var page = Component.extend({
     'inserted': function(ev, el) {
       this.scope.appstate.attr('renderGlobalSearch', true);
       this.scope.appstate.attr('excelOutput',false);
-      this.scope.refreshBundles.apply(this);
+    //  this.scope.refreshBundles.apply(this);
+     commonUtils.triggerGlobalSearch();
     },
     '{scope} change': function(scope, ev, attr) {
       var self=this;
@@ -146,11 +169,16 @@ var page = Component.extend({
       }
 
       if(attr.substr(0, 8) === 'appstate') {
+
         this.scope.refreshBundles.apply(this);
       }
     },
     '.add-invoice click': function(el, ev) {
-      commonUtils.navigateTo("invoices");
+      if(this.scope.pageState.selectedBundle.bundleType === 'ON_ACCOUNT'){
+        commonUtils.navigateTo("on-account");
+      }else{
+        commonUtils.navigateTo("invoices");
+      }
     },
     '.remove-invoice click': function(el, ev) {
       PbrRemoveGroupsModal.displayModal(this.scope);

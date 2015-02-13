@@ -5,16 +5,16 @@ import template from './template.stache!';
 
 import _less from './page-on-account.less!';
 
-import stache from 'can/view/stache/';
+//import stache from 'can/view/stache/';
 
 import OnAccountGrid from './grid-onaccount-balance/';
 import newOnAccountGrid from './grid-new-onaccount/';
-import fileUpload from 'components/file-uploader/';
+//import fileUpload from 'components/file-uploader/';
 
 import createpb from 'components/create-pb/';
 import utils from 'components/page-on-account/utils';
 import proposedOnAccountGrid from './grid-proposed-onaccount/';
-import proposedOnAccount from 'models/onAccount/proposedOnAccount/';
+//import proposedOnAccount from 'models/onAccount/proposedOnAccount/';
 import requestHelper from 'utils/request/';
 import newOnAccountModel from 'models/onAccount/newOnAccount/'
 import LicensorCurrency from 'models/common/licensorcurrency/';
@@ -191,12 +191,12 @@ var page = Component.extend({
           }
 
           // if(pbval != undefined || paymentBundleNameText != undefined){
-          //   $("#propose").removeAttr("disabled"); 
+          //   $("#propose").removeAttr("disabled");
           // }
           // setTimeout(function(){
           //       self.scope.attr('enableOnAccPropose',Date.now());
           // },600)
-          
+
       },
       ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
           var self=this;
@@ -600,7 +600,7 @@ var page = Component.extend({
           proposedOnAccount.findOne(createProposedOnAccountRequest(appstate),function(data){
             self.scope.attr('showLoadingImage',false);
             if(data["status"]=="SUCCESS"){
-            
+
 
                 var returnValue = utils.prepareOnAccountRowsForDisplay(data.onAccount.onAccountDetails,quarters);
                 var finalRows = returnValue['ROWS'];
@@ -610,7 +610,7 @@ var page = Component.extend({
                 //var finalRows = self.scope.previouslyFetchOnAccRows.concat(returnValue['ROWS']);
 
                 if(data.onAccount.onAccountFooter != undefined){
-                  var footerRows = utils.createFooterRow(data.onAccount.onAccountFooter);  
+                  var footerRows = utils.createFooterRow(data.onAccount.onAccountFooter);
                 }
 
 
@@ -657,7 +657,7 @@ var page = Component.extend({
                      $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj:[]}));
                      self.scope.attr('bundleNamesForDisplay','');
                 }
-                self.scope.previouslyFetchOnAccRows.replace(finalRows);     
+                self.scope.previouslyFetchOnAccRows.replace(finalRows);
             } else{
                 displayMessage(data["responseText"],false);
                 $('#proposedOnAccountGrid').html(stache('<rn-proposed-onaccount-grid emptyrows={emptyrows}></rn-proposed-onaccount-grid>')({emptyrows:true}));
@@ -881,14 +881,16 @@ var disableProposeButton=function(disable){
 
 var displayMessage=function(message,isSuccess){
   if(isSuccess){
-    $("#messageDiv").html("<label class='successMessage'>"+message+"</label>");
+      //$("#messageDiv").html("<label class='successMessage'>"+message+"</label>");
+      commonUtils.showSuccessMessage(message);
   }else{
-      $("#messageDiv").html("<label class='errorMessage'>"+message+"</label>");
+      //$("#messageDiv").html("<label class='errorMessage'>"+message+"</label>");
+      commonUtils.showErrorMessage(message);
   }
-  $("#messageDiv").show();
-  setTimeout(function(){
-      $("#messageDiv").hide();
-  },2000)
+  //$("#messageDiv").show();
+  // setTimeout(function(){
+  //     $("#messageDiv").hide();
+  // },2000)
 }
 var hidethePeriods = function(){
               var _root = $('#calendarclsdiv')

@@ -6,11 +6,13 @@ import PeriodWidgetHelper from 'utils/periodWidgetHelpers';
 import gridUtils from 'utils/gridUtil';
 import stache from 'can/view/stache/';
 import commonUtils from 'utils/commonUtils';
+import template from './template.stache!';
 import PaymentBundle from 'models/payment-bundle/';
 
 
 var BundleGrid = ScrollingGrid.extend({
   tag: 'rn-bundle-grid',
+  template: template,
   scope: {
     pageState: null, // passed in
     strippedGrid:true,
@@ -101,7 +103,7 @@ var BundleGrid = ScrollingGrid.extend({
     },
     cellContents: function(row, column) {
       if(this.attr('editingRow') === row && this.attr('editingColumn') === column) {
-        return stache('<div class="input-group"><input  type="text"  autofocus value="{{value}}" style="min-width: 200px;" class="form-control resizeBox editing" ><div class="input-group-btn"><button  class="btn btn-default cancelBundleEdit" style="background: url(\'/resources/images/ActionCancel.png\') no-repeat;background-size: 22px 22px;background-position: 50% 50%;" type="button"/><button  class="btn btn-default editName" style="background: url(\'/resources/images/checkMarkDark.png\') no-repeat;background-position: 50% 50%;" type="button"/></div></div>')({value: row.bundleName});
+        return stache('<div class="input-group"><input  type="text"  autofocus value="{{value}}" style="min-width: 200px;" class="form-control resizeBox editing" ><div class="input-group-btn"><button  class="btn btn-default cancelBundleEdit" style="background: url(\'/resources/images/ActionCancel.png\') no-repeat;background-size: 15px 15px;background-position: 50% 50%;" type="button"/><button  class="btn btn-default editName" style="background: url(\'/resources/images/checkMarkDark.png\') no-repeat;background-position: 50% 50%; background-size: 15px 15px;" type="button"/></div></div>')({value: row.bundleName});
       } else {
         return ScrollingGrid.prototype.helpers.cellContents.call(this, row, column);
       }
@@ -156,9 +158,9 @@ var BundleGrid = ScrollingGrid.extend({
 
       PaymentBundle.editBundleName(row.bundleId,$(".editing").val()).done(function(data) {
 
-        commonUtils.displayUIMessage( data.responseCode, data.responseText);
+        commonUtils.displayUIMessage( data.status, data.responseText);
 
-        if(data.responseCode === '0000'){
+        if(data.status === 'SUCCESS'){
           //console.log('setting new value', el.val(), column, row);
           column.setValue(row, $(".editing").val());
           self.scope.attr({

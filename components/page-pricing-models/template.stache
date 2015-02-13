@@ -1,16 +1,22 @@
 <div class="container-fluid pricing-model">
 <form id="pmform" role="form">
 	<div class="row topsection">
-		    <div class="col-sm-5 pageTitle">
-				<div class="large-headers">Pricing Models</div>
-			</div>
-			<div class="col-sm-7">
-				<div id="pbmessageDiv" role="alert"></div>
-			</div>
+
+			<div class="div-warn-container">
+          	<div class="row pagetitle-div-parent">
+            	<div class="col-sm-5 pageTitleInv">
+                	<div class="pageHead">Pricing Model Details</div>
+              	</div>
+          	</div>
+          	<div class="col-sm-7 div-warn-parent">
+            	<div id="pbmessageDiv" class="center messageDiv" role="alert"></div>
+        	</div>
+      	</div>  
+		      	
 		 
-			<div class="col-sm-12">
+			<div class="col-sm-12" style="padding-top:10px">
 			 	 <div class="col-sm-3 regions form-group" style="padding-right:0;width:auto;">
-				 		<div class="col-sm-12 singleField" style="padding-top: 7px;padding-right:0;">
+				 		<div class="col-sm-12 singleField" style="padding-top: 3px;padding-right:0;">
 						    <label for="inputEmail3" class="col-sm-3 control-label" style="margin: 2px 5px 0 0px;">Region:</label>
 						    <div class="col-sm-8 requiredBar">
 					      
@@ -25,12 +31,12 @@
 				  	</div>
 				 </div>
 
-				<div class="col-sm-3">
-		 			<button id="fetch" class="btn btn-primary btn-custom-big" disabled>Fetch</button>
-		 			<button id="add"  class="btn btn-primary btn-custom-big" disabled>Add</button>
+				<div class="col-sm-2">
+		 			<button id="fetch" class="btn btn-primary btn-custom-small" disabled>Fetch</button>
+		 			<button id="add"  class="btn btn-primary btn-custom-small" disabled>Add</button>
 			 	</div>
 
-			 	<div class="col-sm-2" id="switcher-cont-div">
+			 	<div class="col-sm-2 switcher-btn-align" id="switcher-cont-div">
 			 			<div class="lic-label">Licensor</div>
 			 			<div id="switcher-cont" class="swicher-align"></div>
 			 			<div class="acc-label">Accural</div>
@@ -43,21 +49,19 @@
 
 	<div id="bottomsection" class="{{#if showbottomSection}}bottompartshow{{else}}bottomparthide{{/if}}">
 
-		<div class="{{#if editstate}}modelsummaryVisible col-sm-6 right-border{{else}}modelsummaryInVisible col-sm-0{{/if}}" {{#if editstate}} {{setHeight}} {{/if}}  id="modelSummaryCont">
+		<div class="{{#if editstate}}modelsummaryVisible col-sm-4 right-border{{else}}modelsummaryInVisible col-sm-0{{/if}}" {{#if editstate}} {{setHeight}} {{/if}}  id="modelSummaryCont">
 				<div class="modelsummary maxhtLeftGrid" id="modelsummary">
 				
 				</div>
 		</div>
 	
-		<div class="{{#if editstate}}col-sm-6 left-border{{else}}col-sm-12{{/if}} modelDetailContCls" {{#if editstate}} {{setHeight}} {{/if}}   id="modelDetailCont">
+		<div class="{{#if editstate}}col-sm-8 left-border{{else}}col-sm-12{{/if}} modelDetailContCls" {{#if editstate}} {{setHeight}} {{/if}}   id="modelDetailCont">
 		
 			<div class="right-pb-container">
-				<legend class="scheduler-border"></legend>
-		
 					{{#if editstate}}
 					<div class="col-sm-6 form-group" style="margin-left:0px;">
 				 		<div class="singleField">
-						    <label for="inputEmail3" class="col-sm-4 control-label">Version:</label>
+						    <label for="inputEmail3" class="col-sm-3 control-label">Version:</label>
 						    <div class="col-sm-4 requiredBar">
 						    	<select  class="form-control" name="version" id="version" can-value="selectedModelId">
 							       <option value="">Select</option>
@@ -68,19 +72,21 @@
 						    </div>
 					  	</div>
 					 </div>
-					<div class="col-sm-6" style="margin-left:0px;width:100%;"></div>
+			<!--		<div class="col-sm-6" style="margin-left:0px;width:100%;"></div>-->
 
-
+            <div class="col-sm-12">
+                <div class="greyHeader">Versions</div>
 					<div id="country-lic-grid">
 						<countrylic-grid></countrylic-grid>
 					</div>
+              </div>
 					{{/if}}
 
-					<div class="col-sm-6 form-group">
-				 		<div class="singleField">
-						    <label for="inputEmail3" class="col-sm-4 control-label">Pricing Model:</label>
-						    <div class="col-sm-8 requiredBar">
-						    	<select  class="form-control" name="pricingmodeltype" id="pricingmodeltype" can-value="pricingmodeltype">
+					<div class="col-sm-6 form-group" style="margin-left:0px;">
+				 		<div class="singleField" style="padding-top: 24px;padding-right:0;">
+						    <label for="inputEmail3" class="col-sm-3 control-label">Pricing Model:</label>
+						    <div class="col-sm-4 requiredBar">
+						    	<select class="form-control" name="pricingmodeltype" id="pricingmodeltype" can-value="pricingmodeltype" style="width:100%;">
 							       <option value="">Select</option>
 							        {{#each pricingmodeltypeStore}}
 									  <option value="{{modelName}}">{{modelName}}</option>     
@@ -90,18 +96,15 @@
 					  	</div>
 					 </div>
 					<div class="col-sm-6 form-group">
-				 		<div class="singleField">
-						    <label for="inputEmail3" class="col-sm-4 control-label">Model Name:</label>
-						    <div class="col-sm-8 requiredBar">
-						      	<input class="form-control" type="text" name="modelname" id="modelname" can-value="modelname">
+				 		<div class="singleField" style="padding-top: 24px;padding-right:0;">
+						    <label for="inputEmail3" class="col-sm-3 control-label">Model Name:</label>
+						    <div class="col-sm-4 requiredBar">
+						      	<input class="form-control" type="text" name="modelname" id="modelname" can-value="modelname" style="width:100%;">
 						    </div>
 					  	</div>
 					</div>
 					<div class="col-sm-12">
-						
-							<div class="col-sm-12">
-								<fieldset class="scheduler-border">
-									<legend class="scheduler-border">Base Model parameter</legend>
+                                  <div class="greyHeader">Society Model Mapping</div>
 										<div class="table-responsive maxheightGrid" id="baseModelParam">
 									  		<table class="table table-condensed table-striped breakdown" id="baseModelTable">
 											    <thead>
@@ -165,7 +168,7 @@
 											<tfoot>
 												<tr>
 													{{#if baseModelParamList.length}}
-														<td colspan="7">No. of Records: {{baseModelParamList.length}}</td>
+														<td colspan="7">Number of records: {{baseModelParamList.length}}</td>
 														{{else}}
 														<td colspan="7">No Data found</td>
 													{{/if}}
@@ -173,11 +176,12 @@
 											</tfoot>		
 										</table>
 									</div>
-								</fieldset>
 
 
-								<fieldset class="scheduler-border trackcountScheduler">
-									<legend class="scheduler-border">Track Count Minima</legend>
+
+								<!--<fieldset class="scheduler-border trackcountScheduler">
+									<legend class="scheduler-border">Track Count Minima</legend>-->
+                                    <div class="greyHeader">Track Count Minima</div>
 									<div class="table-responsive maxheightGrid" id="trackCountDiv">
 									  	<table class="table table-condensed table-striped breakdown" id="trackCount">
 										    <thead>
@@ -226,7 +230,7 @@
 										<tfoot>
 												<tr>
 													{{#if trackCountMinimaList.length}}
-														<td colspan="5">No. of Records: {{trackCountMinimaList.length}}</td>
+														<td colspan="5">Number of records: {{trackCountMinimaList.length}}</td>
 													{{else}}
 														<td colspan="5">No Data Found</td>
 													{{/if}}	
@@ -234,22 +238,25 @@
 										</tfoot>	
 									</table>
 								</div>
-							</fieldset>
+							<!--</fieldset>-->
 						</div>
 						
 						
 						{{#if editstate}}
 								{{#if isCommentData}}
-								 	<legend class="scheduler-border" style="margin-left: 50px;width:50%;">Comments</legend>
-									<div class="col-sm-6" style="margin-left:30px;">
-										<div class="col-sm-8" id="multipleComments" class="requiredBar">
+								 <!--	<legend class="scheduler-border" style="margin-left: 50px;width:50%;">Comments</legend>-->
+                            <div class="col-sm-12">
+                            <div class="greyHeader">Comments</div>
+
+										<div id="multipleComments" class="requiredBar">
 											<multiple-comments divid="usercommentsdiv" options="{multipleComments}" divheight="100" isreadOnly="n"></multiple-comments>
 										</div>
 									</div>
 								{{/if}}
 							{{else}}
-							<legend class="scheduler-border" style="margin-left: 50px;width:50%;">Comments</legend>
-							<div class="col-sm-6" style="margin-left: 30px;">
+							<!--<legend class="scheduler-border" style="margin-left: 50px;width:50%;">Comments</legend>-->
+                            <div class="greyHeader">Comments</div>
+							<div class="col-sm-12">
 								<div id="multipleComments" class="requiredBar">
 								<textarea class="form-control" id="usercomments" name="usercommentsdiv"  can-value="usercommentsStore"></textarea>
 								</div>
@@ -261,13 +268,13 @@
 	   </div>
 	   {{#if editstate}}
 			<div  class="col-sm-12"  style="text-align:right;padding:15px 3%;">
-					<button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="editCancel">Cancel</button>
-					<button id="save" type="button" class="btn btn-primary btn-custom-big">Submit</button>
+					<button type="button" class="btn btn-default btn-custom-small" id="editCancel">Cancel</button>
+					<button id="save" type="button" class="btn btn-primary btn-custom-small" style="margin-left:10px;">Submit</button>
 			</div>
 		{{else}}
 			<div  class="col-sm-12" style="text-align:right;padding:15px 3%;">
-					<button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="addCancel">Cancel</button>
-					<button id="save" type="button" class="btn btn-primary btn-custom-big">Submit</button>
+					<button type="button" class="btn btn-default btn-custom-small" id="addCancel">Cancel</button>
+					<button id="save" type="button" class="btn btn-primary btn-custom-small" style="margin-left:10px;">Submit</button>
 			</div>
 		{{/if}}
 

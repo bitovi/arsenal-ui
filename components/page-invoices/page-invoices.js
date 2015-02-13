@@ -9,7 +9,7 @@ import gridtemplate from './gridtemplate.stache!';
 import stache from 'can/view/stache/';
 
 import UserReq from 'utils/request/';
-import StatusCodes from 'models/common/statuscodes/';
+
 import GetAllInvoices from 'models/getAllInvoices/';
 import Invoice from 'models/invoice/';
 import BundleNamesModel from 'models/payment/bundleNames/';
@@ -365,7 +365,7 @@ var page = Component.extend({
 
 
 
-        //console.log("Status code "+JSON.stringify(StatusCodes));
+        
         //console.log("dsada "+JSON.stringify(invoiceData));
         var gridData = {"data":[],"footer":[]};
         var currencyList = {};
@@ -388,7 +388,7 @@ var page = Component.extend({
               invTemp["invoiceDueDate"] = (invoiceData[i]["invoiceDueDate"]==null)?"":invoiceData[i]["invoiceDueDate"];
               invTemp["invoiceCcy"] = (invoiceData[i]["invoiceCcy"]==null)?"":invoiceData[i]["invoiceCcy"];
               invTemp["statusId"] = (invoiceData[i]["status"]==null || invoiceData[i]["status"]==-1)?"":invoiceData[i]["status"];
-              invTemp["status"] = (invoiceData[i]["status"]==null || invoiceData[i]["status"]==-1)?"":StatusCodes[invoiceData[i]["paymentState"]];
+              invTemp["status"] = (invoiceData[i]["displayPaymentStatus"]==null)?"":invoiceData[i]["displayPaymentStatus"];
               invTemp["paymentState"] = (invoiceData[i]["paymentState"]==null || invoiceData[i]["paymentState"]==-1)?"":invoiceData[i]["paymentState"];
               invTemp["bundleName"] = (invoiceData[i]["bundleName"]==null || invoiceData[i]["bundleName"]=="--Select--")?"":invoiceData[i]["bundleName"];
               invTemp["comments"] = (invoiceData[i]["notes"]==null || invoiceData[i]["notes"].length==0)?"":invoiceData[i]["notes"];
@@ -584,8 +584,12 @@ var page = Component.extend({
           var existingSortColumns =self.scope.sortColumns.attr();
           var existingSortColumnsLen = existingSortColumns.length;
           var existFlag = false;
+          var sortAttr=val[0];
           if(existingSortColumnsLen==0){
-            self.scope.attr('sortColumns').push(val[0]);
+            if(sortAttr.toUpperCase() == 'STATUS'){
+              sortAttr='displayPaymentStatus';
+            }
+            self.scope.attr('sortColumns').push(sortAttr);
           } else {
             for(var i=0;i<existingSortColumnsLen;i++){
               /* The below condition is to selected column to be sorted in asc & dec way */
@@ -596,7 +600,11 @@ var page = Component.extend({
             }
             if(existFlag==false){
               self.scope.attr('sortColumns').replace([]);
-              self.scope.attr('sortColumns').push(val[0]);
+              if(sortAttr.toUpperCase() == 'STATUS'){
+                sortAttr='displayPaymentStatus';
+              }
+              self.scope.attr('sortColumns').push(sortAttr);
+
             } else {
               var sortDirection = (self.scope.attr('sortDirection') == 'asc') ? 'desc' : 'asc';
               self.scope.attr('sortDirection', sortDirection);
@@ -604,7 +612,7 @@ var page = Component.extend({
 
           }
 
-          console.log("aaa "+self.scope.sortColumns.attr());
+          //console.log("aaa "+self.scope.sortColumns.attr());
            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
            /* All the neccessary parameters will be set in that event */
            self.scope.appstate.attr('globalSearchButtonClicked', true);
@@ -667,7 +675,7 @@ var page = Component.extend({
       }
 
       if($(item[0]).is(":checked")){
-           if(bundleStatus == "Unbundled"){
+           if(bundleStatus.toUpperCase() == "UNBUNDLED"){
               self.scope.bundleState.attr(val, true);
             }
             else
@@ -754,14 +762,16 @@ var page = Component.extend({
           if(flag==false){
               $("#paymentBundleNames").attr("disabled","disabled");
               $("#btnSubmit").attr("disabled","disabled");
-              $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>Selected rows are different types of invoices and cannot be added to same bundle.</label>");
-              $("#messageDiv").show();
+              //$("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>Selected rows are different types of invoices and cannot be added to same bundle.</label>");
+              //$("#messageDiv").show();
+              commonUtils.showErrorMessage("Selected rows are different types of invoices and cannot be added to same bundle.");
+
           }else if(cashAdj){
               $("#paymentBundleNames").attr("disabled","disabled");
               $("#btnSubmit").attr("disabled","disabled");
-              $("#messageDiv").hide();
+              //$("#messageDiv").hide();
           } else {
-               $("#messageDiv").hide();
+              // $("#messageDiv").hide();
               if(self.scope.attr('checkedRows').length > 0){
                   $("#btnSubmit").removeAttr("disabled");
                   $("#paymentBundleNames").removeAttr("disabled");
@@ -806,11 +816,12 @@ var page = Component.extend({
           var self=this;
 
           //console.log("selected Invoices are "+ self.scope.checkedRows.attr());
-          //var unDeletedInvoices = self.scope.unDeletedInvoices.attr();
-          // if(unDeletedInvoices.length > 0){
-          //   $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>Invoice "+unDeletedInvoices.toString()+" cannot be deleted! </label>");
-          //   $("#messageDiv").show();
-          // } else {
+          var unDeletedInvoices = self.scope.unDeletedInvoices.attr();
+          if(unDeletedInvoices.length > 0){
+            //$("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>Invoice "+unDeletedInvoices.toString()+" cannot be deleted! </label>");
+            //$("#messageDiv").show();
+            commonUtils.showErrorMessage("Invoice "+unDeletedInvoices.toString()+" cannot be deleted!");
+          } else {
             //$("#messageDiv").hide();
             var invoiceDelete = {"searchRequest":{}};
             invoiceDelete.searchRequest.ids = self.scope.checkedRows.attr();
@@ -820,10 +831,11 @@ var page = Component.extend({
               console.log("Delete response is "+JSON.stringify(data));
               if(data["status"]=="SUCCESS"){
                 //if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
-                   $("#messageDiv").html("<label class='successMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>")
-                   $("#messageDiv").show();
+                   // $("#messageDiv").html("<label class='successMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>")
+                   // $("#messageDiv").show();
+                   commonUtils.showSuccessMessage(data["responseText"]);
                    setTimeout(function(){
-                      $("#messageDiv").hide();
+                      //$("#messageDiv").hide();
                       self.scope.checkedRows.replace([]);
                        /* The below calls {scope.appstate} change event that gets the new data for grid*/
                        if(self.scope.appstate.attr('globalSearch')){
@@ -835,17 +847,18 @@ var page = Component.extend({
                 //}
               }
               else{
-                $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>");
-                $("#messageDiv").show();
-                setTimeout(function(){
-                    $("#messageDiv").hide();
-                },2000)
+                // $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>");
+                // $("#messageDiv").show();
+                // setTimeout(function(){
+                //     $("#messageDiv").hide();
+                // },2000)
+                commonUtils.showErrorMessage(data["responseText"]);
               }
 
             },function(xhr){
               console.error("Error while loading: bundleNames"+xhr);
             });
-          //}
+          }
       },
       "#paymentBundleNames change": function(){
           var self = this;
@@ -906,11 +919,12 @@ var page = Component.extend({
                   else
                   {
                     $("#paymentBundleNames").val("");
-                    $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>Only unbundled invoices can be bundled</label>");
-                    $("#messageDiv").show();
-                     setTimeout(function(){
-                      $("#messageDiv").hide();
-                   },4000);
+                   //  $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>Only unbundled invoices can be bundled</label>");
+                   //  $("#messageDiv").show();
+                   //   setTimeout(function(){
+                   //    $("#messageDiv").hide();
+                   // },4000);
+                   commonUtils.showErrorMessage("Only unbundled invoices can be bundled.");
                   }
             }
       },
@@ -945,10 +959,11 @@ var page = Component.extend({
               $("#attachDocumentDiv").hide();
               if(data["status"]=="SUCCESS"){
 
-                   $("#messageDiv").html("<label class='successMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>")
-                   $("#messageDiv").show();
+                   //$("#messageDiv").html("<label class='successMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>")
+                   //$("#messageDiv").show();
+                   commonUtils.showSuccessMessage(data["responseText"]);
                    setTimeout(function(){
-                      $("#messageDiv").hide();
+                      //$("#messageDiv").hide();
                       self.scope.checkedRows.replace([]);
                        /* The below calls {scope.appstate} change event that gets the new data for grid*/
                        if(self.scope.appstate.attr('globalSearch')){
@@ -960,11 +975,12 @@ var page = Component.extend({
 
                 }
                 else{
-                  $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>");
-                  $("#messageDiv").show();
-                  setTimeout(function(){
-                      $("#messageDiv").hide();
-                  },2000)
+                  // $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>");
+                  // $("#messageDiv").show();
+                  // setTimeout(function(){
+                  //     $("#messageDiv").hide();
+                  // },2000)
+                  commonUtils.showErrorMessage(data["responseText"]);
                 }
                 self.scope.attr("fileinfo").replace([]);
             });
@@ -981,11 +997,12 @@ var page = Component.extend({
             if(invoiceData.length > 0 && selInvoices.indexOf(invId)>-1) {
                 /* The below condition is to check if an invoice is already Bundled */
                 if(paymentState!=0){
-                  $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>Only unbundled invoices can be bundled</label>")
-                  $("#messageDiv").show();
-                   setTimeout(function(){
-                      $("#messageDiv").hide();
-                   },4000);
+                  // $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>Only unbundled invoices can be bundled</label>")
+                  // $("#messageDiv").show();
+                  //  setTimeout(function(){
+                  //     $("#messageDiv").hide();
+                  //  },4000);
+                  commonUtils.showErrorMessage("Only unbundled invoices can be bundled.");
                    return false;
                 }
                 var lineType = invoiceData[i]["invoiceType"];
@@ -1022,10 +1039,11 @@ var page = Component.extend({
               console.log("passing params is "+JSON.stringify(data));
               if(data["status"]=="SUCCESS"){
                 //if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
-                 $("#messageDiv").html("<label class='successMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>")
-                 $("#messageDiv").show();
+                 //$("#messageDiv").html("<label class='successMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>")
+                 //$("#messageDiv").show();
+                 commonUtils.showSuccessMessage(data["responseText"]);
                  setTimeout(function(){
-                    $("#messageDiv").hide();
+                    //$("#messageDiv").hide();
                     self.scope.checkedRows.replace([]);
                      /* The below calls {scope.appstate} change event that gets the new data for grid*/
                       var newPaymentBundleCreated = $("#newPaymentBundle").val();
@@ -1042,21 +1060,23 @@ var page = Component.extend({
                //}
               }
               else{
-                $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>")
-                $("#messageDiv").show();
-                 setTimeout(function(){
-                    $("#messageDiv").hide();
-                 },2000);
+                // $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>")
+                // $("#messageDiv").show();
+                //  setTimeout(function(){
+                //     $("#messageDiv").hide();
+                //  },2000);
+                commonUtils.showErrorMessage(data["responseText"]);
               }
           },function(xhr){
             console.error("Error while loading: bundleNames"+xhr);
           });
         } else {
-          $("#messageDiv").html("<label class='errorMessage'>Please select Bundle Name</label>")
-          $("#messageDiv").show();
-           setTimeout(function(){
-              $("#messageDiv").hide();
-           },2000);
+          // $("#messageDiv").html("<label class='errorMessage'>Please select Bundle Name</label>")
+          // $("#messageDiv").show();
+          //  setTimeout(function(){
+          //     $("#messageDiv").hide();
+          //  },2000);
+          commonUtils.showErrorMessage("Please select Bundle Name.");
         }
       },
       '{scope.appstate} change': function() {
@@ -1110,11 +1130,12 @@ function fetchData(self){
                   }
               }else{
                 if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
-                  $("#messageDiv").html("<label class='successMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>");
-                  $("#messageDiv").show();
-                  setTimeout(function(){
-                      $("#messageDiv").hide();
-                  },4000);
+                  // $("#messageDiv").html("<label class='successMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>");
+                  // $("#messageDiv").show();
+                  // setTimeout(function(){
+                  //     $("#messageDiv").hide();
+                  // },4000);
+                  commonUtils.displayUIMessageWithDiv("#messageDiv", "SUCCESS", data["responseText"]);
                 }
                 self.attr('recordsAvailable',data.recordsAvailable);
                 self.attr('totalRecordCount', data.totRecCnt);
@@ -1131,11 +1152,12 @@ function fetchData(self){
               }
             } else {
               $("#loading_img").hide();
-              $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>");
-              $("#messageDiv").show();
-              setTimeout(function(){
-                  $("#messageDiv").hide();
-              },4000);
+              // $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>");
+              // $("#messageDiv").show();
+              // setTimeout(function(){
+              //     $("#messageDiv").hide();
+              // },4000);
+              commonUtils.displayUIMessageWithDiv("#messageDiv", "SUCCESS", data["responseText"]);
             }
         },function(xhr){
           console.error("Error while loading: bundleNames"+xhr);

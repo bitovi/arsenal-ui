@@ -7,7 +7,7 @@ import appstate from 'models/appstate/';
 
         var fieldPerm = [] ;
 
-          if(role != "")
+          if(role != "" && role.permissions != undefined && role.permissions!= null)
           {
             for(var i = 0, size = role.permissions.length; i < size ; i++)
             {

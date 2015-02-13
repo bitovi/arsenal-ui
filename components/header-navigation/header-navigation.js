@@ -14,7 +14,6 @@ import commonUtils from 'utils/commonUtils';
 import pagelogout from 'components/page-logout/';
 
 
-
 var headerNavigation = Component.extend({
     tag: 'header-navigation',
     template: template,
@@ -68,6 +67,10 @@ var headerNavigation = Component.extend({
           });
         },
     events:{
+      '#appleLogo click':function(){
+          commonUtils.navigateTo("dashboard");
+      },
+
       '.bookmark click':function(){
           $('book-mark').slideToggle('fast');
       },

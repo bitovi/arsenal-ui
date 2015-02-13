@@ -3,6 +3,12 @@
 		th:last-child, td:last-child{padding-right:15px;}
 		.verNo, .version, .validFrom, .validTo, .id {text-align:right !important;}
 	}
+	label{
+		font-family: HelveticaNeue, "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
+		font-size: 12px;
+		color: #848484;
+		font-weight: normal;
+	}
 	border-bottom: 1px solid #c6c6c6;
 	.main-layout{
 		background:#E4E4E4;
@@ -15,6 +21,7 @@
 		padding-top:20px;
 		background-color:#f6f6f6;
 		height:auto;
+		padding-bottom:20px;
 	}
 	.right-layout{
 		padding-top:20px;
@@ -48,10 +55,10 @@
 	}
 	#refCountryComments{
 		>label{
-			width:28.75% !important;
+			width:34.4% !important;
 		}
 		>div{
-			width:71%;
+			width:65%;
 		}
 	}
 	.requiredBar{
@@ -73,7 +80,7 @@
 	}
 	#countryFetchDiv{
 		label{
-			width:29.25%;			
+			width:41.66666667%;			
 		}
 		>div{
 			padding-left:0px;
@@ -154,10 +161,15 @@
         
       }
       #accModelSel{
-      	max-width:180px;
+      	max-width:155px;
       }
       #localSocietysel{
       	min-width: 155px;
+      }
+
+      .socModMapHt{
+      	max-height: 200px; 
+      	min-height:248px;
       }
 
 }
@@ -197,10 +209,10 @@
 }
 
 table.breakdown thead {
-	background-color: linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
-	background: -moz-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
-	background: -webkit-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
-	background: -o-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+	background-color: linear-gradient(to top, #7e7e83, #afafb4 100%, #b0b0b5);
+	background: -moz-linear-gradient(to top, #7e7e83, #afafb4 100%, #b0b0b5);
+	background: -webkit-linear-gradient(to top, #7e7e83, #afafb4 100%, #b0b0b5);
+	background: -o-linear-gradient(to top, #7e7e83, #afafb4 100%, #b0b0b5);
 	font-size: small;
 	color: white;
 }
@@ -287,7 +299,9 @@ width:19%;
 .breakdownIcon{
 width:5%;
 }
-
+.greyHeader{
+  color: #848484;
+}
 textarea.form-control{
 	height:100%;
 }
@@ -309,7 +323,6 @@ div#grid-society-model {
 	max-height: 200px;
 	/*overflow-x: auto;
 	overflow-y: auto;*/
-	height: 400px;
 	width: 100%;
 	//border-radius: 5px;
 }

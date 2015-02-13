@@ -11,8 +11,8 @@ var defaultGlobalParameters = {
 		"PeriodTo": getDefaultPeriodTo(),
 		"StoreType":{id:1, value:"iTunes Downloads"}, /* use {id:1, value:"iTunes Downloads"} if u want to select iTunes Downloads by default */
 		"Region":{id:2, value:"Europe"},
-		"Country":["AUT"], /* To select all pass "ALL" or "-1" as a string not in array, for multi select pass ["AUT","BEL", ...]*/
-		"Licensor":["17"], /* To select all pass "ALL" or "-1" as a string not in array, for multi select pass ["17","32", ...], 17 is for CELAS */
+		"Country":"ALL",//["AUT"], /* To select all pass "ALL" or "-1" as a string not in array, for multi select pass ["AUT","BEL", ...]*/
+		"Licensor":"ALL",//["17"], /* To select all pass "ALL" or "-1" as a string not in array, for multi select pass ["17","32", ...], 17 is for CELAS */
 		"ContentType":"-1" /* To select all pass "ALL" or "-1" as a string not in array, for multi select pass ["3:1","1:1", ...], 3:1 is for MUSIC */
     },
 

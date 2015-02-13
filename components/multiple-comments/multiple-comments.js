@@ -37,9 +37,9 @@ var comments = Component.extend({
               if(val.createdDate != null){
                  var createdDateFormat = moment(val.createdDate).format("Do MMM, YYYY - HH:mm:ss");   
                 if((val.createdByName != null) && (typeof val.createdByName != "undefined")){
-                    $("#"+tempDivID).html("<span class='commentuser'>"+val.createdByName +"</span> <span class='commentdate'>On "+createdDateFormat+"</span><br><span class='commenttext'>"+val.comments+"</span>");
+                    $("#"+tempDivID).html("<span class='commentuser'>"+val.createdByName +"</span> <span class='commentdate'>on "+createdDateFormat+"</span><br><span class='commenttext'>"+val.comments+"</span>");
                 }else{
-                  $("#"+tempDivID).html("<span class='commentuser'></span> <span class='commentdate'>On "+createdDateFormat+"</span><br><span class='commenttext'>"+val.comments+"</span>");
+                  $("#"+tempDivID).html("<span class='commentuser'></span> <span class='commentdate'>on "+createdDateFormat+"</span><br><span class='commenttext'>"+val.comments+"</span>");
                 }
                 
               }
@@ -59,6 +59,7 @@ var comments = Component.extend({
           if(self.scope.isreadonly === 'n'){
             var editableTextarea=getTextArea();
             $(editableTextarea).attr('id', 'editableText');
+            $(editableTextarea).attr('placeholder', 'Please add your comments..');
             $(editableTextarea).attr('name',self.scope.divid);
             $(editableTextarea).addClass("multiple-comments-editable").addClass("form-control-comments new-comments multiple-comments-editable-height");
             $(editableTextarea).text(editableRecComment);

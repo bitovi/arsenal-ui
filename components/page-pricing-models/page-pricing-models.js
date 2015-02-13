@@ -3,7 +3,7 @@ import Map from 'can/map/';
 
 /** for pricing model*/
 import view from 'can/view/';
-import stache from 'can/view/stache/';
+//import stache from 'can/view/stache/';
 import _ from 'lodash';
 import Grid from 'components/grid/';
 import stache from 'can/view/stache/';
@@ -27,6 +27,7 @@ import PricingModelsValidation from './pricingmodels.validation';
 
 import Comments from 'components/multiple-comments/';
 import Switcher from 'components/switcher/';
+import commonUtils from 'utils/commonUtils';
 
 var mandatoryAddField = ["pricingmodeltype", "modelname", "usercommentsdiv", "contentGroup[]", "baseRate[]", "minima[]", "listenerMinima[]", "discount[]", "description[]", "from[]", "to[]", "minimatrack[]"];
 var mandatoryEditField = ["version", "pricingmodeltype", "modelname", "usercommentsdiv", "contentGroup[]", "baseRate[]", "minima[]", "listenerMinima[]", "discount[]", "description[]", "from[]", "to[]", "minimatrack[]"];
@@ -265,6 +266,7 @@ var page = Component.extend({
 
                 setTimeout(function(){
                   addFooter('modelsummary');
+                  alignGridStats('modelsummary');
                 },100);
                 
              //   handleMsg("show", "Please click on pricing model row to view/edit.");
@@ -338,6 +340,18 @@ var page = Component.extend({
         var genObj = {modelId:selmodelid,reqType:'details'};
         
         },
+        /*"#usercomments change":function(){
+
+          var pmvalid = $("#pmform").data('bootstrapValidator').isValid();
+
+          if(!pmvalid){
+           
+            $("#save").attr("disabled", true);
+          }
+          else{
+            $("#save").attr("disabled", false);
+          } 
+        },*/
 
         "#version change":function(el){
             var self = this;
@@ -452,6 +466,7 @@ var page = Component.extend({
                 /*Error condition*/
                 }).then(function(){
                   addFooter('country-lic-grid');
+                  alignGridStats('country-lic-grid');
                   //addFooter('baseModelParam');
                   //addFooter('trackCountDiv');
 
@@ -577,7 +592,7 @@ var page = Component.extend({
 
    
 
-   "#add click":function(){
+   "#add click":function(){      
         var self = this;  
 
         self.scope.attr("showbottomSection", true);
@@ -599,6 +614,7 @@ var page = Component.extend({
        $("#pmform").data('bootstrapValidator').resetForm();
        $("#save").attr("disabled", true);
        return false;
+       
     },
     "#addCancel click":function(){
       this.scope.attr("showbottomSection", false);
@@ -653,12 +669,13 @@ var page = Component.extend({
        PricingModels.create(UserReq.formRequestDetails(saveRecord), function(data){
                   if(data["status"]=="SUCCESS"){
                               var msg = data["responseText"];
-                              $("#pbmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
-                              $("#pbmessageDiv").css("display", "block");
+                              // $("#pbmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
+                              // $("#pbmessageDiv").css("display", "block");
                               
-                                 setTimeout(function(){
-                                    $("#pbmessageDiv").hide();
-                                 },5000);
+                              //    setTimeout(function(){
+                              //       $("#pbmessageDiv").hide();
+                              //    },5000);
+                                commonUtils.displayUIMessage(data["status"], msg);
 
                                  var selModel = self.scope.attr("modelSumRowIndex");
                                 $("models-grid table tbody tr").eq(selModel-1).click();
@@ -680,11 +697,12 @@ var page = Component.extend({
                             else
                             {
                                 var msg = data["responseText"];
-                                $("#pbmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
-                                $("#pbmessageDiv").show();
-                                setTimeout(function(){
-                                    $("#pbmessageDiv").hide();
-                                 },5000);
+                                // $("#pbmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+                                // $("#pbmessageDiv").show();
+                                // setTimeout(function(){
+                                //     $("#pbmessageDiv").hide();
+                                //  },5000);
+                                commonUtils.displayUIMessage(data["status"], msg);
                             }
                 },function(xhr){
                 /*Error condition*/
@@ -712,11 +730,12 @@ function handleMsg(state, msg){
     if(state == "show")
     { 
        var msg = msg;
-       $("#pbmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
-       $("#pbmessageDiv").show();
-        setTimeout(function(){
-          $("#pbmessageDiv").hide();
-       },3000);
+       // $("#pbmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+       // $("#pbmessageDiv").show();
+       //  setTimeout(function(){
+       //    $("#pbmessageDiv").hide();
+       // },3000);
+       commonUtils.displayUIMessage("ERROR", msg);
     }
     else
     {
@@ -777,15 +796,15 @@ function addFooter(divId){
     var colspanFoot=$('#'+divId+' table>thead>tr>th').length; 
     if($('#'+divId+' table tfoot').length==1){
       if(rowCount==0){
-        $('#'+divId+' table tfoot').append("<tr><td class='recordsCount' style='text-align:center;border:none;' colspan="+colspanFoot+">No Records Found</td></tr>"); 
+        $('#'+divId+' table tfoot').append("<tr><td style='text-align:center;background:#fff;color:#000;border-radius:0px;' colspan="+colspanFoot+">No Records Found</td></tr><tr><td class='recordsCount' style='text-align:left;border:none;' colspan="+colspanFoot+">Number of records: "+rowCount+"</td></tr>"); 
       }else /*if($('#'+divId+' table>tbody>tr>td').hasClass("noDataFoot")==false)*/{
-        $('#'+divId+' table tfoot').append("<tr><td class='recordsCount' style='text-align:center;border:none;' colspan="+colspanFoot+">No. of Records: "+rowCount+"</td></tr>");   
+        $('#'+divId+' table tfoot').append("<tr><td class='recordsCount' style='text-align:left;border:none;' colspan="+colspanFoot+">Number of records: "+rowCount+"</td></tr>");
       } 
     }else{
       if(rowCount==0){
-        $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:center;border:none;' colspan="+colspanFoot+">No Records Found</td></tr><tfoot>"); 
+        $('#'+divId+' table').append("<tfoot><tr><td style='text-align:center;background:#fff;color:#000;border-radius:0px;' colspan="+colspanFoot+">No Records Found</td></tr><tr><td class='recordsCount' style='text-align:left;border:none;' colspan="+colspanFoot+">Number of records: "+rowCount+"</td></tr><tfoot>"); 
       }else /*if($('#'+divId+' table>tbody>tr>td').hasClass("noDataFoot")==false)*/{
-        $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:center;border:none;' colspan="+colspanFoot+">No. of Records: "+rowCount+"</td></tr><tfoot>");   
+        $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:left;border:none;' colspan="+colspanFoot+">Number of records: "+rowCount+"</td></tr><tfoot>");
       } 
     } 
 }
@@ -806,7 +825,7 @@ function alignGridStats(divId){
 
         if(theadTdWidth >= tbodyTdWidth && theadTdWidth >= tfootTdWidth)
           tdWidth = theadTdWidth;
-        else if(tfootTdWidth >= tbodyTdWidth && tfootTdWidth >= theadTdWidth)
+        else if(tfootTdWidth >= tbodyTdWidth && tfootTdWidth >= theadTdWidth && divId != "modelsummary" && divId != "country-lic-grid")
           tdWidth = tfootTdWidth;
         else 
           tdWidth = tbodyTdWidth;
@@ -814,7 +833,7 @@ function alignGridStats(divId){
         if(i==1 && divId== 'baseModelParam')
           tdWidth = 100;
         if((i==2 || i==3 || i==4 || i==5) && divId== 'baseModelParam')
-          tdWidth = 88;
+          tdWidth = 100;
         
         tableWidth += tdWidth;
         cellWidthArr.push(tdWidth);
@@ -846,7 +865,16 @@ function alignGridStats(divId){
         $('#'+divId+' table').css("width",tableWidth);
       }
     }
+
+    if(rowLength == 0 && (divId == 'modelsummary' || divId == 'country-lic-grid')){
+      $('#'+divId+' table>thead>tr').css('width','100%;')
+        var noDataTable1=$('#'+divId+' table').width();
+        var colLength1=noDataTable1/($('#'+divId+' table>thead>tr>th').length);
+        $('#'+divId+' table>thead>tr>th').css("width",colLength1);
+    }
   }
+
+
 
 
 
