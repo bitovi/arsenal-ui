@@ -89,8 +89,8 @@
                <li class='rightmenu bookmark'>&nbsp;</li>
                <li class='rightmenu notification'>&nbsp;</li>
                <!--Bookmark  - Palceholder -->
-               <div class="bookMarkPalceHolder" >
-               </div>
+               <div class="bookMarkPalceHolder"></div>
+               <div class="notificationPlaceHolder"></div>
 
           </ul>
       </div>

@@ -20,7 +20,8 @@ var bookmark = Component.extend({
     setFlag:[],
     settingsList:[],
     shareList:[],
-    visible:[]
+    visible:[],
+    bookmarkcount:0
  },
   init:function(){
     var self = this;
@@ -33,6 +34,8 @@ var bookmark = Component.extend({
               for(var i=0;i<self.scope.bookMarkList.length;i++){
                   self.scope.bookMarkList[i].attr("pageId",i+1)
               }
+              self.scope.bookmarkcount = data[0].bookmarkList.length;
+              $('.bookmark').html('<span>'+self.scope.bookmarkcount+'</span>')
             }
 
         }

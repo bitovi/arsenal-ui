@@ -1,0 +1,168 @@
+rn-notifications{
+	display:none;
+	position: absolute;
+	right:0px;
+	.newnotification, .notification_settings_options{
+		display:none;
+	}
+	.notificationContainer{
+		width: 270px;
+		min-height: 298px;
+		position: absolute;
+		background-color: #fff;
+		-webkit-background-clip: padding-box;
+		background-clip: padding-box;
+		border: 1px solid #999;
+		border: 1px solid rgba(0, 0, 0, 0.2);
+		outline: 0;
+		-webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+		box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+		right: -12px;
+		top: 51px;
+		border: 1px solid #888;
+		z-index: 100;
+	}
+	.arrow_box {
+		position: relative;
+		background: transparent;
+	}
+	.arrow_box:after, .arrow_box:before {
+		bottom: 100%;
+		right: 10px;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+	}
+	.arrow_box:after {
+		border-color: transparent;
+		border-bottom-color: #ddd;
+		border-width: 14px;
+		margin-right: 2px;
+		
+	}
+	.arrow_box:before {
+		border-color: transparent;
+		border-bottom-color: #888;
+		border-width: 15.99px;
+		margin-right: 0px;
+	}
+	.listtitle{
+		height:25px;
+		vertical-align:middle;
+		background:#ddd;
+		border-bottom: 1px solid #888;
+		font-size:12px;
+		font-weight:bold;
+		padding: 4px 10px;
+	}
+	.listofnotification{
+		height:296px;
+		overflow:hidden;
+	}
+	.notification_list{
+		min-height:80px;
+		border-bottom:1px solid #888;
+		padding: 8px;
+		line-height: 22px;
+		position:relative;
+	}
+	.notification_list:nth-child(odd){
+		background:#ccc;
+	}
+	.notification_list{
+		background:#fff;
+	}
+	.type-text {
+		padding:3px;
+		text-align:right;
+		font-size:12px;
+		font-family: HelveticaNeue-Medium;
+		position:absolute;
+		right:15px;
+		top:0px;
+	}
+
+	.notification-text {
+		padding:5px;
+		font-size:14px;
+		font-family: HelveticaNeue-Medium;
+		display:list item;
+	}
+
+	.date-text {
+		text-align:left;
+		font-size:12px;
+		font-family: HelveticaNeue-Medium;
+		display: inline;
+		padding:5px;
+		position:absolute;
+		bottom:0px;
+	}
+
+	.user-text {
+		font-size:12px;
+		font-family: HelveticaNeue-Medium;
+		display:inline;
+		padding:5px;
+		position:absolute;
+		bottom:0px;
+		right:10px;
+	}
+	.showMore{
+		text-align:center;
+	}
+	.notification_settings_icon{
+		background:url(../../resources/images/rn_OptionsActive@2x.png)no-repeat center center;
+		height: 16px;
+		width: 16px;
+		background-size:100% 100%;
+		position: absolute;
+		top: 5px;
+		right: 5px;
+		cursor: pointer;
+	}
+	.notification_custombtns{
+		width: 100%;
+		text-align: center;
+		margin: 0px;
+		border-top: 1px solid #888;
+		padding: 10px 0px;
+	}
+	.autoscroll{
+		height:240px;
+		overflow-y:scroll;
+	}
+	.notification_loader{
+		min-height:290px;
+		min-width:260px;
+		position:absolute;
+		top:0px;
+		z-index:1;
+		display: none;
+	}
+	.loader{
+	   position: absolute;
+	   left: 50%;
+	   top: 50%;
+	   background: transparent url('../../resources/images/spinner.gif') no-repeat center center;
+	   background-size: 100% 100%;
+	   margin: -10px 0 0 -10px;
+	   z-index: 100;
+	   height: 22px;
+	   width: 22px;
+	   color: transparent;
+	}
+	.custombtns{
+		height: 25px;
+		padding: 4px;
+		margin-top: 2px;
+		width: 66px;
+		background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#1581f4), to(#63adf1))
+	}
+	.notification_options{
+		padding:10px;
+	}
+}

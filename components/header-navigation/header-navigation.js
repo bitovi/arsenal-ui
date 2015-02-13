@@ -6,6 +6,7 @@ import styles from './header-navigation.less!';
 import roles from 'models/roles/';
 import GlobalParameterBar from 'components/global-parameter-bar/';
 import Bookmark from 'components/bookmark/';
+import Notification from 'components/notifications/';
 import UserReq from 'utils/request/';
 import RinsCommon from 'utils/urls';
 import logout from 'models/common/logout/';
@@ -61,12 +62,18 @@ var headerNavigation = Component.extend({
             var appstate = self.scope.appstate;
             $('.gParamSearchbar').append(stache('<global-parameter-bar appstate="{appstate}"></global-parameter-bar>')({appstate}));
             $('.bookMarkPalceHolder').append(stache('<book-mark appstate="{appstate}"></book-mark>')({appstate}));
+            $('.notificationPlaceHolder').append(stache('<rn-notifications appstate="{appstate}"></rn-notifications>')({appstate}));
+
 
           });
         },
     events:{
       '.bookmark click':function(){
           $('book-mark').slideToggle('fast');
+      },
+      '.notification click':function(){
+          $('rn-notifications').slideToggle('fast');
+          this.element.find('rn-notifications').scope().notificationTriggered(this.element.find('rn-notifications').scope());
       },
      '#homemenu li a click':function(btn){
         var mainmenu_txt = btn.text();
