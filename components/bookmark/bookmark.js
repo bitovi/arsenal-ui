@@ -35,7 +35,7 @@ var bookmark = Component.extend({
                   self.scope.bookMarkList[i].attr("pageId",i+1)
               }
               self.scope.bookmarkcount = data[0].bookmarkList.length;
-              $('.bookmark').html('<span>'+self.scope.bookmarkcount+'</span>')
+              $('.bookmark').html("<span class='bookmark-bubble'>"+self.scope.bookmarkcount+"</span>")
             }
 
         }

@@ -52,7 +52,7 @@ var notification = Component.extend({
       },
       '{document}  click':function(el,e){
         if($(e.target).closest(".notification").length === 0 && $('rn-notifications').is(':visible')) {
-         
+
         }
       },
       '{notificationtriggered} change':function(el, e){
@@ -79,10 +79,10 @@ var notification = Component.extend({
               if(self.scope.pref[items]=='I'){
                 allTypesSelected = false;
               }
-              notificationOptionTemplate = notificationOptionTemplate + '<div class="notificationItems"><input type="checkbox" class="'+items+'" '+((self.scope.pref[items]=='A')?'checked="checked"':'')+'/> '+items+'</div>'; 
+              notificationOptionTemplate = notificationOptionTemplate + '<div class="notificationItems"><input type="checkbox" class="'+items+'" '+((self.scope.pref[items]=='A')?'checked="checked"':'')+'/> '+items+'</div>';
             }
             notificationOptionTemplate = '<div class="notification_options"><div class="notificationItems"><input type="checkbox" class ="selectall" '+((allTypesSelected)?'checked="checked"':'')+'/> <strong>Show Notification For </strong></div>'+notificationOptionTemplate+'</div>';
-            $(".notification_settings_options .autoscroll").html(notificationOptionTemplate);  
+            $(".notification_settings_options .autoscroll").html(notificationOptionTemplate);
             $('.listofnotification').slideUp('fast');
             $('.notification_settings_options').slideDown('fast');
           }else{
@@ -121,9 +121,9 @@ var notification = Component.extend({
                notificationItemsCheckboxes.each(function(el, e){
                 $(this).prop('checked', false);
                 self.scope.pref[$(this).attr('class')] = 'I';
-              }); 
+              });
             }
-          }else{ 
+          }else{
             if($(el).is(':checked')){
               self.scope.pref[$(el).attr('class')] = 'A';
               if($('.notification_options input:checkbox:checked:not(.selectall)').length === notificationItemsCheckboxes.length){
@@ -149,7 +149,7 @@ var fetchNotifications = function(self){
         self.scope.attr("count", values[0].length);
         if(self.scope.attr("count") > 0) {
           self.scope.notificationList.replace(values[0]);
-          $(".notification").html("<span>"+self.scope.attr("count")+"</span>");
+          $(".notification").html("<span class='notification-bubble'>"+self.scope.attr("count")+"</span>");
         }
     });
 }
