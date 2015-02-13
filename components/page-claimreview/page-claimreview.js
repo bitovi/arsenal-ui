@@ -1094,7 +1094,7 @@ var generateTableData = function(invoiceData,footerData){
             //console.log("jfsdhfjshj is "+invoiceData[i]["claimReviewLicDetails"]);
             var invoiceLineItems = invoiceData[i]["reviewDetails"];
 
-            var contentTypeArr = [], countryArr = [] , invoiceNumberArr = [];
+            var contentTypeArr = [], countryArr = [] , invoiceNumberArr = [], licensorTypeArr = [];
              var lowestPeriod = 0;
               var highestPeriod = 0;
               var tmpPeriod = 0;
@@ -1145,6 +1145,10 @@ var generateTableData = function(invoiceData,footerData){
                 invLITemp["status"] = getInvoiceStatus(invoiceLineItems[j]["status"]);
                 invTemp["status"] = invLITemp["status"];
 
+                //added for licensor
+                invLITemp["entityName"] = invoiceLineItems[j]["entityName"];
+                //end
+
                 if(period != undefined && period > 0){
                     invLITemp["period"] = periodWidgetHelper.getDisplayPeriod(period,periodType);
                     if(lowestPeriod==0 && highestPeriod == 0){
@@ -1164,7 +1168,11 @@ var generateTableData = function(invoiceData,footerData){
                 if(invLITemp["country"] != undefined && typeof(invLITemp["country"]) != 'null'){
                   countryArr.push(invLITemp["country"]);
                 }
-                
+
+                if(invLITemp["entityName"] != undefined && typeof(invLITemp["entityName"]) != 'null'){
+                  licensorTypeArr.push(invLITemp["entityName"]);
+                }
+
                 invoiceNumberArr.push(invLITemp["invoiceNumber"]);
                 gridData.data.push(invLITemp);
               }
@@ -1183,6 +1191,20 @@ var generateTableData = function(invoiceData,footerData){
             }
             else if(contentTypeArr.length==1)
               gridData.data[insertedId]["contentType"] = contentTypeArr[0];
+
+
+              /*Below function is to remove the duplicate Licensor and find the count */
+              licensorTypeArr = licensorTypeArr.filter( function( item, index, inputArray ) {
+                     return inputArray.indexOf(item) == index;
+              });
+
+              if(licensorTypeArr.length>1){
+
+                gridData.data[insertedId]["entityName"] = (licensorTypeArr.indexOf('TAX')!== -1)?(licensorTypeArr.length-1)+" types of Licensor":licensorTypeArr.length+" types of Licensor";
+              }
+              else if(licensorTypeArr.length==1)
+                gridData.data[insertedId]["entityName"] = licensorTypeArr[0];
+                //end
 
             /*Below function is to remove the duplicate country and find the count */
             countryArr = countryArr.filter( function( item, index, inputArray ) {

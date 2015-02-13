@@ -478,7 +478,7 @@ var page = Component.extend({
 			                      }
 		                    },
 		                    'taxAmount': {
-		                     group:'.taxAmountCont',	
+		                     group:'.taxAmountCont',
 		                      validators: {
 		                        callback: {
 
@@ -683,7 +683,7 @@ var page = Component.extend({
 	        				if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]") && (data.field != "ccidGLtxt[]")){
 					    		$("#"+data.field+"-err").css("display", "none");
 					    	}
-							
+
 		        				var requireField = (self.scope.attr("invoicetypeSelect") == "2")? mandatoryFieldAdhoc: (self.scope.attr("invoicetypeSelect") == "3") ? mandatoryFieldCA  : mandatoryField;
 
 		        				for(var i= 0; i < requireField.length; i++){
@@ -696,8 +696,8 @@ var page = Component.extend({
 		        					}
 
 		        				}
-	        				
-	        			
+
+
 						}).on('success.form.bv', function(e) {
 							e.preventDefault();
 					});
@@ -741,9 +741,9 @@ var page = Component.extend({
 								removeError(event[0].id);
 
 							}
-						}	
+						}
 					}
-				
+
 					if(self.scope.editpage){
 						if(event[0].id == "usercomments"){
 							if(String(event[0].value).length > 0){
@@ -753,8 +753,8 @@ var page = Component.extend({
 								else{
 									removeError(event[0].id);
 								}
-							}	
-						
+							}
+
 						}
 				   }
 				},
@@ -1739,7 +1739,7 @@ var page = Component.extend({
 									},
 									calculateUSD:function(){
 										var fxrate = this.attr("usdFxrateRatio");
-										var calUSD = this.attr("grossTotalStore") / fxrate;
+										var calUSD = this.attr("grossTotalStore") * fxrate;
 
 										if(isNaN(calUSD)){
 											calUSD = 0;
