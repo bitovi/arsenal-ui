@@ -824,7 +824,9 @@ var page = Component.extend({
 		"{scope} regionStore": function(){
 		  	var self = this;
 			var genObj = {regionId:self.scope.attr("regionStore")};
-			Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))
+			Promise.all([
+				Licensor.findAll(UserReq.formRequestDetails(genObj)),
+				Currency.getCurrByRegion(self.scope.attr("regionStore"))
 			     ]).then(function(values) {
 		     			//console.log(values[0]);
 		     			self.scope.attr("licensor").replace([]);
@@ -837,33 +839,34 @@ var page = Component.extend({
 			         	countryDD.html($('<option>').text("Select").val(""));
 
 		     			self.scope.attr("licensor").replace(values[0]["entities"]);
+		     			self.scope.attr("currency").replace(values[1].data);
 			    		if(self.scope.editpage){
 				    		var invoiceData = self.scope.attr().invoiceContainer[0];
 				    		self.scope.attr("licensorStore", invoiceData.entityId);
+				    		self.scope.attr("currencyStore", invoiceData.invoiceCcy);
 			    		}
 			    });
-
 
 			self.scope.createPBRequest();
 
 		},
 		"{scope} licensorStore": function(event){
 			var self = this;
-			var genObj = {licensorId:self.scope.attr("licensorStore")};
-			Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
-			     ]).then(function(values) {
-			     	self.scope.attr("currency").replace([]);
-			     	self.scope.attr("currencyStore", "");
-			     	var countryDD = $('.inputCountry');
-		         	countryDD.empty();
-		         	countryDD.html($('<option>').text("Select").val(""));
+			//var genObj = {licensorId:self.scope.attr("licensorStore")};
+			// Promise.all([Currency.getCurrByRegion(self.scope.attr("regionStore"))
+			//      ]).then(function(values) {
+			//      	self.scope.attr("currency").replace([]);
+			//      	self.scope.attr("currencyStore", "");
+			//      	var countryDD = $('.inputCountry');
+		 //         	countryDD.empty();
+		 //         	countryDD.html($('<option>').text("Select").val(""));
 
-			     	self.scope.attr("currency").replace(values[0]);
-				    if(self.scope.editpage){
-					    var invoiceData = self.scope.attr().invoiceContainer[0];
-					    self.scope.attr("currencyStore", invoiceData.invoiceCcy);
-					}
-			});
+			//      	self.scope.attr("currency").replace(values[0].data);
+			// 	    if(self.scope.editpage){
+			// 		    var invoiceData = self.scope.attr().invoiceContainer[0];
+			// 		    self.scope.attr("currencyStore", invoiceData.invoiceCcy);
+			// 		}
+			// });
 		},
 		"{scope} currencyStore": function(){
 			var self = this;
