@@ -1,7 +1,7 @@
 import Component from 'can/component/';
 
 import view from 'can/view/';
-import stache from 'can/view/stache/';
+//import stache from 'can/view/stache/';
 import datePicker from 'components/date-picker/';
 import comments from 'components/multiple-comments/';
 import createpb from 'components/create-pb/';
@@ -888,18 +888,22 @@ var page = Component.extend({
 		"{scope} regionStore": function(){
 		  	var self = this;
 			var genObj = {regionId:self.scope.attr("regionStore")};
-			Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))
+			Promise.all([
+				Licensor.findAll(UserReq.formRequestDetails(genObj)),
+				Currency.getCurrByRegion(self.scope.attr("regionStore"))
 			     ]).then(function(values) {
 		     			self.scope.attr("licensor").replace([]);
 			    		self.scope.attr("licensor").replace(values[0]["entities"]);
+			    		  self.scope.attr("currency").replace([]);
+					     self.scope.attr("currency").replace(values[1].data);
 			    		if(self.scope.editpage){
 				    		var invoiceData = self.scope.attr().invoiceContainer[0];
 				    		self.scope.attr("licensorStore", invoiceData.entityId);
 				    		self.scope.ajaxRequestStatus.attr("licensorLoaded", true);
+				    		self.scope.attr("currencyStore", invoiceData.invoiceCcy);
+						    self.scope.ajaxRequestStatus.attr("currencyStore", true);
 			    		}
 			    });
-
-
 
 			self.scope.createPBRequest();
 
@@ -918,17 +922,17 @@ var page = Component.extend({
 
 		"{scope} licensorStore": function(event){
 			var self = this;
-			var genObj = {licensorId:self.scope.attr("licensorStore")};
-			Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
-			     ]).then(function(values) {
-				    self.scope.attr("currency").replace([]);
-				     self.scope.attr("currency").replace(values[0]);
-				    if(self.scope.editpage){
-					    var invoiceData = self.scope.attr().invoiceContainer[0];
-					    self.scope.attr("currencyStore", invoiceData.invoiceCcy);
-					    self.scope.ajaxRequestStatus.attr("currencyStore", true);
-					}
-			});
+			//var genObj = {licensorId:self.scope.attr("regionStore")};
+			// Promise.all([Currency.getCurrByRegion(self.scope.attr("regionStore"))
+			//      ]).then(function(values) {
+			// 	    self.scope.attr("currency").replace([]);
+			// 	     self.scope.attr("currency").replace(values[0]);
+			// 	    if(self.scope.editpage){
+			// 		    var invoiceData = self.scope.attr().invoiceContainer[0];
+			// 		    self.scope.attr("currencyStore", invoiceData.invoiceCcy);
+			// 		    self.scope.ajaxRequestStatus.attr("currencyStore", true);
+			// 		}
+			// });
 		},
 
 		"#invoicelicensor change":function(){  /*This is need only for edit case*/

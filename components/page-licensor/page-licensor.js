@@ -560,6 +560,7 @@ var page = Component.extend({
 
       self.clearContactDetails();
 
+      self.clearRepConfDetails();
 
       self.editable = "";
 
@@ -1265,6 +1266,8 @@ var page = Component.extend({
       var genObj = {};
 
       $("#loading_img").show();
+
+
 
       Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
