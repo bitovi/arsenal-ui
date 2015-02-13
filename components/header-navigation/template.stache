@@ -97,13 +97,12 @@
           <ul id='rightsidemenu'>
             <li class='username'><img src='../../resources/images/rn_WorkflowTypePerson_completed.png' class='logedinimg'/>{{appstate.userInfo.displayName}}</li>
                <li class='bar'>|</li>
-               <li name = 'logout' class='rightmenu logout' title="Logout">&nbsp;</li>
                <li class='rightmenu bookmark' title="Bookmark">&nbsp;</li>
                <li class='rightmenu notification' title="Notification">&nbsp;</li>
+               <li name = 'logout' class='rightmenu logout' title="Logout">&nbsp;</li>
                <!--Bookmark  - Palceholder -->
                <div class="bookMarkPalceHolder"></div>
                <div class="notificationPlaceHolder"></div>
-
           </ul>
       </div>
   </div>
