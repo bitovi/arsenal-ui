@@ -209,7 +209,21 @@ var page = Component.extend({
                                      }
                                   }
                               }
-                              errString = errString.replace(/,\s*$/, "");
+                                
+                             errString = errString.replace(/,\s*$/, "");
+
+                               /*filtering duplicate invloiceline error*/
+
+
+                              var arr = errString.split(", ");
+                              var unique = [];
+                              $.each(arr, function (index,word) {
+                                  if ($.inArray(word, unique) === -1) 
+                                      unique.push(word);
+
+                              });
+
+                              errString = unique;
 
                               var errlabel = "<span class='errorlabel'>Error: </span>";
 

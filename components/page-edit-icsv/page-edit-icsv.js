@@ -1008,7 +1008,17 @@ var page = Component.extend({
 
 											$("#breakrow"+rowindex+" .amountText").attr("id","amountText"+rowindex).val(invoiceData.invoiceLines[i].lineAmount);
 					                       	self.scope.AmountStore.attr("amountText"+rowindex, invoiceData.invoiceLines[i].lineAmount);
-					                       	$("#breakrow"+rowindex+" #inputContent").attr("id","inputContent"+rowindex).val(invoiceData.invoiceLines[i].contentGrpId);
+					                       	
+					                       	$("#breakrow"+rowindex+" #inputContent").attr("id","inputContent"+rowindex);
+
+					                       	var servictypeid = $("#inputContent0 option:selected").attr("servicetypeid");
+											if (typeof servictypeid !== "undefined" && rowindex > 0) {
+												$('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
+												$('#inputContent'+rowindex).prepend("<option value>Select</option>").val('');
+											}
+											
+					                       	$('#inputContent'+rowindex).val(invoiceData.invoiceLines[i].contentGrpId);
+
 					                       	if(self.scope.attr("invoicetypeSelect") == "2"){
 					                       		self.scope.contentTypeStore.attr("inputContent"+rowindex, invoiceData.invoiceLines[i].adhocTypeId);
 											}
@@ -1017,10 +1027,7 @@ var page = Component.extend({
 												self.scope.contentTypeStore.attr("inputContent"+rowindex, invoiceData.invoiceLines[i].contentGrpId);
 									 		}
 
-									 		var servictypeid = $("#inputContent0 option:selected").attr("servicetypeid");
-											if (typeof servictypeid !== "undefined" && rowindex > 0) {
-												$('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
-											}
+									 		
 
 									 		var displayPeriod = "";
 									 		if(invoiceData.invoiceLines[i].fiscalPeriod != null && invoiceData.invoiceLines[i].periodType != null){
