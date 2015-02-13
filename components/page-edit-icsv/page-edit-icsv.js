@@ -465,7 +465,7 @@ var page = Component.extend({
 			                }
 						},
 						'taxAmount': {
-		                     group:'.taxAmountCont',	
+		                     group:'.taxAmountCont',
 		                      validators: {
 		                        callback: {
 
@@ -738,7 +738,7 @@ var page = Component.extend({
 							}
 						}
 					}
-				
+
 
 					if(self.scope.editpage){
 						if(event[0].id == "usercomments"){
@@ -751,7 +751,7 @@ var page = Component.extend({
 
 									removeError(event[0].id);
 								}
-							}	
+							}
 						}
 				   }
 
@@ -1657,7 +1657,7 @@ var page = Component.extend({
 				calculateUSD:function(){
 
 					var fxrate = this.attr("usdFxrateRatio");
-					var calUSD = this.attr("grossTotalStore") / fxrate;
+					var calUSD = this.attr("grossTotalStore") * fxrate;
 
 					if(isNaN(calUSD)){
 						calUSD = 0;
