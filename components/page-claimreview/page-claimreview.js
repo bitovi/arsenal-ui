@@ -6,7 +6,7 @@ import styles from './page-claimreview.less!';
 
 import Grid from 'components/grid/';
 import gridtemplate from './gridtemplate.stache!';
-import stache from 'can/view/stache/';
+
 
 import UserReq from 'utils/request/';
 import claimLicensorInvoices from 'models/claim/licensor/';

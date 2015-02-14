@@ -11,15 +11,15 @@
           	<div class="col-sm-7 div-warn-parent">
             	<div id="pbmessageDiv" class="center messageDiv" role="alert"></div>
         	</div>
-      	</div>  
-		      	
-		 
+      	</div>
+
+
 			<div class="col-sm-12" style="padding-top:10px">
 			 	 <div class="col-sm-3 regions form-group" style="padding-right:0;width:auto;">
 				 		<div class="col-sm-12 singleField" style="padding-top: 3px;padding-right:0;">
 						    <label for="inputEmail3" class="col-sm-3 control-label" style="margin: 2px 5px 0 0px;">Region:</label>
 						    <div class="col-sm-8 requiredBar">
-					      
+
 					      <select id="regions" class="form-control" name="regions" can-value="regions">
 							       <option value="">Select</option>
 							       {{#each regionStore}}
@@ -41,7 +41,7 @@
 			 			<div id="switcher-cont" class="swicher-align"></div>
 			 			<div class="acc-label">Accural</div>
 			 	</div>
-			 
+
 		</div>
 	 </div>
 
@@ -51,12 +51,12 @@
 
 		<div class="{{#if editstate}}modelsummaryVisible col-sm-4 right-border{{else}}modelsummaryInVisible col-sm-0{{/if}}" {{#if editstate}} {{setHeight}} {{/if}}  id="modelSummaryCont">
 				<div class="modelsummary maxhtLeftGrid" id="modelsummary">
-				
+
 				</div>
 		</div>
-	
+
 		<div class="{{#if editstate}}col-sm-8 left-border{{else}}col-sm-12{{/if}} modelDetailContCls" {{#if editstate}} {{setHeight}} {{/if}}   id="modelDetailCont">
-		
+
 			<div class="right-pb-container">
 					{{#if editstate}}
 					<div class="col-sm-6 form-group" style="margin-left:0px;">
@@ -66,8 +66,8 @@
 						    	<select  class="form-control" name="version" id="version" can-value="selectedModelId">
 							       <option value="">Select</option>
 							        {{#each pmVersion}}
-									  <option value="{{modelId}}">{{version}}</option>     
-									 {{/each}}      
+									  <option value="{{modelId}}">{{version}}</option>
+									 {{/each}}
 								</select>
 						    </div>
 					  	</div>
@@ -89,8 +89,8 @@
 						    	<select class="form-control" name="pricingmodeltype" id="pricingmodeltype" can-value="pricingmodeltype" style="width:100%;">
 							       <option value="">Select</option>
 							        {{#each pricingmodeltypeStore}}
-									  <option value="{{modelName}}">{{modelName}}</option>     
-									 {{/each}}      
+									  <option value="{{modelName}}">{{modelName}}</option>
+									 {{/each}}
 								</select>
 						    </div>
 					  	</div>
@@ -98,7 +98,7 @@
 					<div class="col-sm-6 form-group">
 				 		<div class="singleField" style="padding-top: 24px;padding-right:0;">
 						    <label for="inputEmail3" class="col-sm-3 control-label">Model Name:</label>
-						    <div class="col-sm-4 requiredBar">
+						    <div class="col-sm-6 requiredBar">
 						      	<input class="form-control" type="text" name="modelname" id="modelname" can-value="modelname" style="width:100%;">
 						    </div>
 					  	</div>
@@ -141,7 +141,7 @@
 											            	<div class="minima requiredBar">
 											            		<input class="form-control" type="text" id='minima-{{@index}}' can-value="baseModelParamList.{{@index}}.minima" name="minima[]">
 												        	</div>
-														</td>	
+														</td>
 														<td class="form-group">
 											            	<div class="listenerMinima requiredBar">
 											            		<input class="form-control" type="text" id='listenerMinima-{{@index}}' can-value="baseModelParamList.{{@index}}.listenerMinima" name="listenerMinima[]">
@@ -158,7 +158,7 @@
 												        	</div>
 														</td>
 												       <td>
-											           		<div>	
+											           		<div>
 																<img id="basemodeldel" class="breakDownIconSize" src="resources/images/button_minus_red.png">
 															</div>
 											           </td>
@@ -173,7 +173,7 @@
 														<td colspan="7">No Data found</td>
 													{{/if}}
 												</tr>
-											</tfoot>		
+											</tfoot>
 										</table>
 									</div>
 
@@ -197,7 +197,7 @@
 										  	{{#each trackCountMinimaList}}
 
 										      <tr id="breakrow0" rowid="0">
-										      		
+
 													<td class="form-group">
 										            	<div class="description requiredBar">
 										            		<input class="form-control" id='description' can-value="trackCountMinimaList.{{@index}}.description" id="description-{{@index}}" name="description[]">
@@ -207,7 +207,7 @@
 										            	<div class="from requiredBar">
 										            		<input class="form-control" type="text" id='from-{{@index}}' can-value="trackCountMinimaList.{{@index}}.from" name="from[]">
 											        	</div>
-													</td>	
+													</td>
 													<td class="form-group">
 										            	<div class="to requiredBar">
 										            		<input class="form-control" type="text" id='to-{{@index}}' can-value="trackCountMinimaList.{{@index}}.to" name="to[]">
@@ -218,9 +218,9 @@
 										            		<input  class="form-control" type="text" id='minima-{{@index}}' can-value="trackCountMinimaList.{{@index}}.minima" name="minimatrack[]">
 											        	</div>
 													</td>
-										            
+
 											       <td>
-										           		<div>	
+										           		<div>
 															<img id="trackdel" class="breakDownIconSize" src="resources/images/button_minus_red.png">
 														</div>
 										           </td>
@@ -233,15 +233,15 @@
 														<td colspan="5">Number of records: {{trackCountMinimaList.length}}</td>
 													{{else}}
 														<td colspan="5">No Data Found</td>
-													{{/if}}	
+													{{/if}}
 												</tr>
-										</tfoot>	
+										</tfoot>
 									</table>
 								</div>
 							<!--</fieldset>-->
 						</div>
-						
-						
+
+
 						{{#if editstate}}
 								{{#if isCommentData}}
 								 <!--	<legend class="scheduler-border" style="margin-left: 50px;width:50%;">Comments</legend>-->
@@ -263,7 +263,7 @@
 							</div>
 							{{/if}}
 
-		  		</div>	
+		  		</div>
 			</div>
 	   </div>
 	   {{#if editstate}}
@@ -278,14 +278,7 @@
 			</div>
 		{{/if}}
 
-	</div> 
-	
+	</div>
+
 </form>
 </div>
-			
-
-
-
-
-
-
