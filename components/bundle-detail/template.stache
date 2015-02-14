@@ -26,13 +26,13 @@
         <li><a href="#" class="btn-download" data-action="pcsv">pcsv</a></li>
       </ul>
     </div>
-    <img class="show-chart" data-tooltip="Chart - Stats" src="/resources/images/charticon.png" style="padding-top: 1px;height:18px;width:18px;">
+    <img class="show-chart" data-tooltip="Chart - Stats" src="/resources/images/charticon.png" style="padding-top: 1px;margin-right: 0.2em;height:18px;width:18px;">
 
     <img class="excell exportToExcel" data-tooltip="Export Excel"  style="padding-top: 1px;height:18px;width:18px;">
-    <img class="clipboardd copyToClipboard" data-tooltip="Copy to Clipboard" style="padding-top: 1px;height:18px;width:18px;">
-    <img class="information" src="/resources/images/infoTemplate.png" data-tooltip="Information" style="padding-top: 1px;height:18px;width:18px;" data-original-title="" title="">
+    <img class="clipboardd copyToClipboard" data-tooltip="Copy to Clipboard" style="padding-top: 1px;height:18px;margin-right: 0.1em;width:18px;">
+    <img class="information" src="/resources/images/infoTemplate.png" data-tooltip="Information" style="padding-top: 1px;height:18px;width:18px;margin-right: 0.2em;" data-original-title="" title="">
     {{#showVerboseToggle}}
-    <img class="verbose-toggle" style="margin-top: 2px;height: 20px;width: 18px;" data-tooltip="Skinny / Expnded view" src="/resources/images/{{#if pageState.verboseGrid}}expand@2x{{else}}collapse@2x{{/if}}.png"/>
+    <img class="verbose-toggle" style="margin-top: 2px;height: 20px;width: 18px; padding-top: 2px;" data-tooltip="Skinny / Expnded view" src="/resources/images/{{#if pageState.verboseGrid}}expand@2x{{else}}collapse@2x{{/if}}.png"/>
     {{/showVerboseToggle}}
   </div>
   <div class="currencies">
