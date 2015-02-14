@@ -77,7 +77,7 @@ var page = Component.extend({
       self.scope.attr("paymentBundleName", requestObj.paymentBundleName);
       self.scope.attr("paymentBundleId", requestObj.paymentBundleId);
 
-    } 
+    }
     // else if(self.scope.cancelnewbundlereq){
     //   this.scope.attr("createPBFlag", {
     //     select: true
@@ -173,7 +173,9 @@ var page = Component.extend({
       if (self.scope.request != undefined) {
           BundleNamesModel.findOne(UserReq.formRequestDetails(requestObj), function(data) {
             if(data.status == 'SUCCESS' && data.paymentBundles != undefined && data.paymentBundles.length >0){
-              self.scope.bundleNames.replace(data["paymentBundles"]);  
+              self.scope.bundleNames.replace(data["paymentBundles"]);
+            }else{
+              console.error("Failed to load the bundleName: " + data.responseText);
             }
           }, function(xhr) {
             console.error("Error while loading: bundleNames" + xhr);
@@ -181,7 +183,7 @@ var page = Component.extend({
        }
        //self.scope.attr('cancelnewbundlereq',false);
 
-      }      
+      }
 
     }
   }

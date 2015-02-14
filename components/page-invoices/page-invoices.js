@@ -365,7 +365,7 @@ var page = Component.extend({
 
 
 
-        
+
         //console.log("dsada "+JSON.stringify(invoiceData));
         var gridData = {"data":[],"footer":[]};
         var currencyList = {};
@@ -1037,35 +1037,35 @@ var page = Component.extend({
           console.log("Add to bundle request is "+JSON.stringify(UserReq.formRequestDetails(overAllBundleRequest)));
           BundleNamesModel.create(UserReq.formRequestDetails(overAllBundleRequest),function(data){
               console.log("passing params is "+JSON.stringify(data));
+
+
+              commonUtils.displayUIMessage(data["status"],data["responseText"]);
+
               if(data["status"]=="SUCCESS"){
                 //if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
                  //$("#messageDiv").html("<label class='successMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>")
                  //$("#messageDiv").show();
-                 commonUtils.showSuccessMessage(data["responseText"]);
-                 setTimeout(function(){
-                    //$("#messageDiv").hide();
+                 //commonUtils.showSuccessMessage(data["responseText"]);
+                //  setTimeout(function(){
+                //     //$("#messageDiv").hide();
                     self.scope.checkedRows.replace([]);
                      /* The below calls {scope.appstate} change event that gets the new data for grid*/
                       var newPaymentBundleCreated = $("#newPaymentBundle").val();
                       if (newPaymentBundleCreated != undefined) {
                         self.scope.attr('cancelnewbundlereq', true);
-                      }
-                     if(self.scope.appstate.attr('globalSearch')){
-                        self.scope.appstate.attr('globalSearch', false);
                       }else{
-                        self.scope.appstate.attr('globalSearch', true);
+                        self.scope.attr('cancelnewbundlereq', false);
                       }
-                 },2000);
-                  self.scope.attr('cancelnewbundlereq', false);
-               //}
-              }
-              else{
-                // $("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>"+data["responseText"]+"</label>")
-                // $("#messageDiv").show();
-                //  setTimeout(function(){
-                //     $("#messageDiv").hide();
+
+                    //  if(self.scope.appstate.attr('globalSearch')){
+                    //     self.scope.appstate.attr('globalSearch', false);
+                    //   }else{
+                    //     self.scope.appstate.attr('globalSearch', true);
+                    //   }
+                    commonUtils.triggerGlobalSearch();
                 //  },2000);
-                commonUtils.showErrorMessage(data["responseText"]);
+                  //self.scope.attr('cancelnewbundlereq', false);
+               //}
               }
           },function(xhr){
             console.error("Error while loading: bundleNames"+xhr);

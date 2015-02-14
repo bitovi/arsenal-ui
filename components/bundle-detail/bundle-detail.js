@@ -642,7 +642,6 @@ var resetSelectedBundle = function(scope){
 
   can.batch.start();
   scope.resetToken();
-  scope.pageState.attr("removeInvoices",  scope.pageState.attr('selectedBundle.bundleType') === 'REGULAR_INV');
   scope.attr("paymentType", selectedBundle.paymentOption);
   // clear out selectedRows
   scope.selectedRows.splice(0, scope.selectedRows.length);

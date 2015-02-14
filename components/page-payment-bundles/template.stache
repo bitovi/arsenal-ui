@@ -18,19 +18,11 @@
     </div>
   </div>
   <div class="bundle-list-actions">
-    {{#if pageState.selectedBundle.editable}}
       <div class="center">
-        <button class="btn btn-custom-small add-invoice">Add Invoices</button>
-
-        {{#if pageState.removeInvoices}}
-          <div class="vertical-line" ></div>
-          <button class="btn btn-custom-small remove-invoice" {{allowRemoveInvoices}}>Remove Invoice</button>
-        {{/if}}
+        <button class="btn btn-custom-small add-invoice" {{allowAddInvoices}} >Add Invoices</button>
+        <div class="vertical-line" ></div>
+        <button class="btn btn-custom-small remove-invoice" {{allowRemoveInvoices}} >Remove Invoice</button>
       </div>
-
-
-    {{/if}}
-
     <!-- <img class="excel exportToExcel" /> -->
     <img class="clipboard copyToClipboard" style="padding-top: 1px;height:18px;width:18px;" />
 
