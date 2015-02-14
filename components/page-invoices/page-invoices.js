@@ -1102,17 +1102,17 @@ function getAllInvoices(self) {
 
   /* Page is not allowed to do search by default when page is loaded */
   /* This can be checked using 'localGlobalSearch' parameter, it will be undefined when page loaded */
-  if(self.attr("localGlobalSearch") != undefined){
+  // if(self.attr("localGlobalSearch") != undefined){
       if(self.attr("localGlobalSearch") != self.appstate.attr('globalSearch')) {
         self.attr("localGlobalSearch",self.appstate.attr('globalSearch'));
         fetchData(self);
       }
 
-  } else {
-    if(self.appstate.attr('globalSearch')==undefined)
-      self.appstate.attr('globalSearch',true);
-      self.attr("localGlobalSearch", self.appstate.attr('globalSearch'));
-  }
+  // } else {
+  //   if(self.appstate.attr('globalSearch')==undefined)
+  //     self.appstate.attr('globalSearch',true);
+  //     self.attr("localGlobalSearch", self.appstate.attr('globalSearch'));
+  // }
 
 };
 
