@@ -7,10 +7,19 @@
   margin-top: -9px;
   position: relative;
 }
+
+.logo-text-style{
+  font-size: 18px;
+  margin-left: -5px;
+  margin-right: 10px;
+  vertical-align: bottom;
+}
+
 .navbar-brand{
   position: absolute;
   left: 15px;
   padding: 15px 0px !important;
+  margin-left: -12px !important;
 }
 .navbar{
 	border-radius:0px !important;
@@ -164,6 +173,7 @@
 		color:#fff;
 		padding:0.1em 0.15em;
 		display:block;
+    text-align: center;
 	}
 	.notification{
 		background:transparent url('../../resources/images/rn_AlarmActive@2x.png')no-repeat center center;
@@ -171,7 +181,38 @@
 	}
 	.notification span{
 		color:#fff;
-		padding:0.2em 0.55em;
+		padding:0.1em 0.15em;
 		display:block;
+    text-align: center;
 	}
+  .notification-bubble{
+    background-color: #dc0d17;
+    background-image: -webkit-gradient(linear, center top, center bottom, from(#fa3c45), to(#dc0d17));
+    background-image: -webkit-linear-gradient(#fa3c45, #dc0d17);
+    color: #fff;
+    min-height: 13px;
+    padding: 1px 3px;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, .4);
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    top: 6px;
+    right: 30px;
+    font-size:9px;
+  }
+  .bookmark-bubble{
+    background-color: #dc0d17;
+    background-image: -webkit-gradient(linear, center top, center bottom, from(#fa3c45), to(#dc0d17));
+    background-image: -webkit-linear-gradient(#fa3c45, #dc0d17);
+    color: #fff;
+    min-height: 13px;
+    padding: 1px 3px;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, .4);
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    top: 6px;
+    right: 62px;
+    font-size:9px;
+  }
 }

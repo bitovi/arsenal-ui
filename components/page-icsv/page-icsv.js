@@ -209,7 +209,7 @@ var page = Component.extend({
                                      }
                                   }
                               }
-                                
+
                              errString = errString.replace(/,\s*$/, "");
 
                                /*filtering duplicate invloiceline error*/
@@ -218,7 +218,7 @@ var page = Component.extend({
                               var arr = errString.split(", ");
                               var unique = [];
                               $.each(arr, function (index,word) {
-                                  if ($.inArray(word, unique) === -1) 
+                                  if ($.inArray(word, unique) === -1)
                                       unique.push(word);
 
                               });
@@ -509,6 +509,7 @@ var page = Component.extend({
 
 
                                          $('.jQfunhide').hide();
+                                         $('.file-component-icv-div #buttondiv').show();
                                     }
                                     else
                                     {
