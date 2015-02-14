@@ -22,6 +22,8 @@ import Comments from 'components/multiple-comments/';
 import GridPricingBaseModel from '../pricing-model-components/grid-pricing-base-model/';
 import GridPricingTrackcounts from '../pricing-model-components/grid-pricing-trackcounts/';
 import commonUtils from 'utils/commonUtils';
+import appstate from 'models/appstate/';
+import constants from 'utils/constants';
 
 var reportConfigurationList = new can.List();
 
@@ -69,7 +71,7 @@ var page = Component.extend({
     reportConfigurationList : reportConfigurationList,
     footerdatarepconf : "",
     footerdata : "",
-
+    appstate: undefined,// this gets passed in
 
       getPricingModelsOnLoad : function(modelId, versionNo) {
         var self = this;
@@ -93,6 +95,8 @@ var page = Component.extend({
         }).prop('selected', true);
 
       }
+
+
 
   },
 
@@ -224,6 +228,7 @@ var page = Component.extend({
             return '';
           }
         }
+
       },
       events: {
 
@@ -232,8 +237,16 @@ var page = Component.extend({
           $(".mainLayoutId").hide();
           $(".buttonsPlaceHolder").hide();
           $("#loading_img").hide();
-
           $(".multicomments-required").hide();
+
+          if(commonUtils.isReadOnly()=='true'){
+
+          $('#left_layout').find('input, textarea, select').attr('disabled','disabled');
+          $('#right_layout').find('input, textarea, button').attr('disabled','disabled');
+          $('#button_layout').find('input, textarea, button').attr('disabled','disabled');
+
+          }
+
 
           var self = this;
 
@@ -540,7 +553,7 @@ var page = Component.extend({
                 //   $("#invmessageDiv").hide();
                 // },5000);
                 commonUtils.displayUIMessage(data.status, msg);
-          
+
                   var requestObj  = {
                     entityCountryDetails:{
                       entityCountry:{
@@ -735,7 +748,6 @@ var loadPage = function(scope,data){
   }
 
 
-
   scope.pageState.entityCountryDetails.attr("pricingModelVersionNo", data.entityCountryDetails.pricingModelVersionNo);
   scope.pageState.entityCountryDetails.attr("pricingModelId", data.entityCountryDetails.pricingModelId);
 
@@ -893,7 +905,7 @@ function alignGridStats(divId){
           $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("min-width",width);
           if(!foot)
             $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
-        
+
         }
 
         if(foot) {

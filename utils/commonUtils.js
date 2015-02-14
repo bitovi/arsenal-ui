@@ -50,6 +50,9 @@ var rinsCommonUtils = {
     defaultFilterData.contentType = appstate.defaultcontentType;
     defaultFilterData.region = appstate.defaultRegion;
     return defaultFilterData;
+  },
+  isReadOnly:function() {
+    return appstate.userInfo.roleIds.indexOf(constants.ROLES.RO) > -1 ? 'true' : 'false';
   }
 };
 
