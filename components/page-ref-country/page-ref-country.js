@@ -312,18 +312,19 @@ var page = Component.extend({
               self.scope.attr("countries").replace(values[2]);
 
               $("#selCountry").val((values[2])[0].id);
-              if(self.scope.appstate.attr("screendetails") != null && self.scope.appstate.attr("screendetails") != undefined && 
-                self.scope.appstate.attr("screendetails") != undefined && 
-                self.scope.appstate.attr("screendetails") != null ) {
+              if(self.scope.appstate.attr("screendetails") != null && self.scope.appstate.attr("screendetails") != undefined) {
         
+                  self.scope.appstate.attr("screendetails", null);
                   self.scope.populateCountryDetails(self.scope, "", self.scope.appstate.screendetails.tableId, false)
+                  
 
               } else {
 
                 self.scope.pageState.countryDetails.country.attr("countryId", (values[2])[0].id);
+                $("#fetchDetailsBtn").click();
               
               }
-              $("#fetchDetailsBtn").click();
+              
 
               self.scope.attr("pricingMethods").replace(values[3].pricingMethodList);
         }).then(function(values) {

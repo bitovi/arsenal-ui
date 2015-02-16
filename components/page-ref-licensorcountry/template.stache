@@ -52,7 +52,7 @@
           </div>
           <div class="col-sm-6 countryDrop">
             <label for="forCountry" class="col-sm-2 control-label">Country: </label>
-            <div class="col-sm-4">
+            <div class="col-sm-6">
               <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.countryId' id="countryId">
                 <option value="">Select</option>
                 {{#each countries}}
