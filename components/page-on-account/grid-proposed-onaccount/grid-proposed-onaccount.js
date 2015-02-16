@@ -53,7 +53,8 @@ var proposedonAccountGrid = Grid.extend({
      type:"",
      bundleNames:[],
      quarters:[],
-     test:[]
+     test:[],
+     strippedGrid:true
 
   },
   init :function()
@@ -71,7 +72,7 @@ var proposedonAccountGrid = Grid.extend({
         }else{
           return stache('<input value="{{value}}" tabindex="0" class="editing form-control" style="width:130px;padding: 4px !important;"/>')({value: returnValue});
         }
-        
+
       } else {
         return Grid.prototype.helpers.cellContents.call(this, row, column);
       }
@@ -128,7 +129,7 @@ var proposedonAccountGrid = Grid.extend({
       var valueToTest = value.replace(/\,/g,'');
 
         if($.isNumeric(valueToTest)){
-          el.removeClass('invalid'); 
+          el.removeClass('invalid');
         }else{
           el.addClass('invalid');
           el.closest('td').find('.editing').attr('title',"Please provide onAccount amount in [##########.########] format");

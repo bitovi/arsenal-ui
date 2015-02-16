@@ -1,60 +1,125 @@
 @import '../grid/grid.less';
 
 @white-border: 1px solid #fff;
+.flex-basis(@basis) {
+  -webkit-flex-basis: @basis;
+  flex-basis: @basis;
+}
+
+.flex-grow(@grow) {
+  -webkit-flex-grow: @grow;
+  flex-grow: @grow;
+}
+
 rn-grid-invoice {
   .grid-mixin();
   table {
-    /* You have to specify widths */
-    width: 100%;
-    //height:100%;
 
-    tr>th, tr > td {
-      width:2%;
+    width: 100%;
+    min-width:1850px;
+
+    thead, tbody,tfoot {
+      display: block;
+
+      tr {
+        display: -webkit-flex;
+        width: 100%;
+      }
     }
 
-  tr.highlight{
-		background: #d3f0fe !important;
-	}
+    thead, tfoot {
+      background: @header-background;
+      color: white;
+      //height:24px;
+      tr {
+        height : 24px;
+        th, td {
+          font-weight: normal;
 
-  tr.selected {
-    background: #d3f0fe !important;
-  }
+          height: 24px;
+          //padding: .3em .5em .3em .5em !important;
+          //border-right: @dark-border;
+          //border-top: @dark-border;
+          border-bottom: @dark-border;
 
-  thead, tbody, tfoot {
-	  display: block;
-	}
-	tbody {
-    //height:85%;
-	  //max-height: 100%;
-	  overflow-y: overlay;
-	  overflow-x: hidden;
-    //border: 1px solid #a1a1a1;
-    border-bottom: 0;
+        }
+      }
+    }
+    thead {
+      tr {
+        th, td {
+          text-align:center !important;
+        }
+      }
+    }
+    tbody {
+      //max-height: 8em;
+      overflow-y: overlay;
+      overflow-x: hidden;
+      border-left: 1px solid #a1a1a1;
+      //border-right: 1px solid #a1a1a1;
+      tr {
+        height : auto;
+        min-height:22px;
+        word-wrap: break-word;
+        td {
+          height : auto;
+          min-height:22px;
+          padding-top:1px;
+        }
+      }
+    }
 
-  /*  tr:hover {
-      outline: 2px solid #1581F4;
-    } */
+    tr > th, tr > td {
+      //padding: .3em .5em;
+      &.invId { .flex-basis(35px);text-align:center; }
+      &.entityName { .flex-grow(1); .flex-basis(230px); }
+      &.fiscalPeriod {  .flex-basis(150px); }
+      &.invTypeDisp  {  .flex-basis(130px); }
+      &.contentGrpName {  .flex-basis(130px); }
+      &.country {  .flex-basis(100px); }
+      &.invoiceNumber { .flex-grow(1); .flex-basis(200px); }
+      &.invoiceCcy {  .flex-basis(100px); }
+      &.invoiceAmount  { .flex-grow(1); .flex-basis(140px); }
+      &.invoiceDueDate {  .flex-basis(110px); }
+      &.status {  .flex-basis(110px); }
+      &.bundleName { .flex-grow(1); .flex-basis(280px); }
+      &.comments { .flex-grow(1); .flex-basis(200px); }
+    }
 
-	}
-  thead {
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-  }
-  tfoot{
-    border-bottom-right-radius: 4px;
-    border-bottom-left-radius: 4px;
-  }
-	th, td {
-	  white-space: nowrap;
-	}
+    tbody > tr {
+
+      &.child {
+        display: none;
+
+        &.visible {
+          display: -webkit-flex;
+          border:none;
+        }
+      }
+    }
+
+    tfoot {
+
+      tr.child {
+
+        display: none;
+        td:first-child{
+          border-left: 1px solid #666666;
+        }
+        &.visible {
+          display: -webkit-flex;
+        }
+      }
+    }
 
   }
   .entity, .invoiceTypeDisp, .contentType, .country, .invoiceNum, .dueDate, .currency, .status, .bundleName, .comments{
-  	text-align: left !important;
+    text-align: left;
   }
 
   .invoiceAmount{
-    text-align: right !important;
+    text-align: right;
   }
 }
 
@@ -164,6 +229,7 @@ rn-grid-invoice {
     border:1px solid #97979C;
     border-top:0px;
     border-bottom:0px;
+    border-left: 0px;
 		.invoiceAmt {
 			text-align: right;
 		}
