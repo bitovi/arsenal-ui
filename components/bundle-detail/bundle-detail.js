@@ -416,7 +416,7 @@ var BundleDetailTabs = Component.extend({
         var view;
         if(this.scope.pageState.selectedBundle.bundleType === 'REGULAR_INV') {
           view = this.scope.attr('selectedTab').value;
-          if(view === 'country' && this.attr('aggregatePeriod')) {
+          if(view === 'country' && this.scope.attr('aggregatePeriod')) {
             view = 'aggregated';
           }
         } else {
