@@ -64,8 +64,8 @@
 
 								<div class="col-sm-2 align-left" id = "add_layout" style="margin:-4px 0 0 0;width:100px;">
 
-									<button type="button" id="analyticsAdd"  name="analyticsAdd"
-									class="btn buttonSubmit btn-custom-small" style="margin-left:15px;">Add</button>
+									<!--<button type="button" id="analyticsAdd"  name="analyticsAdd"
+									class="btn buttonSubmit btn-custom-small" style="margin-left:15px;">Add</button>-->
 
 
 								</div>
