@@ -33,7 +33,7 @@
 
 				<div class="col-sm-2">
 		 			<button id="fetch" class="btn btn-primary btn-custom-small" disabled>Fetch</button>
-		 			<button id="add"  class="btn btn-primary btn-custom-small" disabled>Add</button>
+		 			<button id="add"  class="btn btn-primary btn-custom-small" >Add</button>
 			 	</div>
 
 			 	<div class="col-sm-2 switcher-btn-align" id="switcher-cont-div">

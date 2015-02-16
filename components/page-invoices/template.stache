@@ -1,7 +1,7 @@
 <copy-clipboard> {{values}}</copy-clipboard>
 
 <div class="col-lg-12 page-container">
-  
+
   <div class="div-warn-container">
       <div class="row pagetitle-div-parent">
           <div class="col-sm-5 pageTitleInv">
@@ -11,9 +11,9 @@
       <div class="col-sm-7 div-warn-parent">
           <div id="messageDiv" class="center messageDiv" role="alert"></div>
       </div>
-  </div>  
+  </div>
 
-  <div class="button-ctrls">
+  <div class="button-ctrls" id = "button-ctrls">
       <div class="center">
           <button type="button" class="btn btn-primary buttonSubmit btn-custom-small" style="margin-left:0px;" id="btnAdd">Add</button>
           <button type="button" class="btn btn-primary buttonSubmit btn-custom-small" style="margin-left:10px;" id="btnAddFromiCSV">Add from ICSV</button>
@@ -30,14 +30,14 @@
   </div>
 
    <div class="col-lg-12 invoiceContainer">
-     
+
       <div id="loading_img"></div>
       <div id="invoiceGrid"></div>
-      
+
       <div id="attachDocumentDiv">
 
           <div class="col-sm-12" style="border-bottom: 1px solid #ddd;padding: 0px;">
-              
+
               <div class="col-sm-11" >
                   <h4> Attach Document</h4>
               </div>
@@ -55,7 +55,7 @@
       </div>
 
       <div class="export-toexcel" id="exportExcels"></div>
-      
+
       <div  class="form-inline" style="height:50px">
           <div class="col-md-12 paymentBundleDiv" style="text-align:right;padding:10px;">
               <label  for="inputAnalyze">Analyze </label>
@@ -71,5 +71,5 @@
       </div>
 
     </div>
-    
+
 </div>

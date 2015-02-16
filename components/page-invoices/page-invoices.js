@@ -162,6 +162,11 @@ Grid.extend({
             }
           }
         });
+
+        if(commonUtils.isReadOnly()=='true'){
+        $('#button-ctrls').find('button').attr('disabled','disabled');
+
+        }
       //alignGrid('invoiceGrid');
     },
 
