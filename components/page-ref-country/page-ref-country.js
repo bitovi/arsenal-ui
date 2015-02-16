@@ -312,11 +312,11 @@ var page = Component.extend({
               self.scope.attr("countries").replace(values[2]);
 
               $("#selCountry").val((values[2])[0].id);
-              if(self.scope.appstate.attr("screendetails") != null && self.scope.appstate.attr("screendetails") != undefined && 
-                self.scope.appstate.attr("screendetails") != undefined && 
-                self.scope.appstate.attr("screendetails") != null ) {
+              if(self.scope.appstate.attr("screendetails") != null && self.scope.appstate.attr("screendetails") != undefined) {
         
+                  self.scope.appstate.attr("screendetails", null);
                   self.scope.populateCountryDetails(self.scope, "", self.scope.appstate.screendetails.tableId, false)
+                  
 
               } else {
 
