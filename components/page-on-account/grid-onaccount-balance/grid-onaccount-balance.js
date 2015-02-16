@@ -41,7 +41,8 @@ var OnAccountBalance = Grid.extend({
     ],
     request:{},
     emptyrows:"@",
-    appstate:undefined
+    appstate:undefined,
+    strippedGrid:true
   },
   helpers: {
     columnClass: function(column) {
@@ -214,7 +215,7 @@ var createBalanceOnAccountRequest=function(appstate){
   balancedOnAccountRequest.searchRequest.type="BALANCE";
   balancedOnAccountRequest.searchRequest.offset=appstate.attr("offset");
   balancedOnAccountRequest.searchRequest.limit='45';
-  
+
   if(sort != undefined && sortByMap[sort] != undefined){
     sortByAttr = sortByMap[sort];
   }else if(sort!= undefined && sort.length >0){
