@@ -162,7 +162,7 @@ Grid.extend({
             }
           }
         });
-      alignGrid('invoiceGrid');
+      //alignGrid('invoiceGrid');
     },
 
     'tbody tr click': function(el, ev) {
@@ -174,7 +174,7 @@ Grid.extend({
     '.open-toggle click': function(el, ev) {
       var row = el.closest('tr').data('row').row;
       row.attr('__isOpen', !row.attr('__isOpen'));
-      alignGrid('invoiceGrid');
+      //alignGrid('invoiceGrid');
     },
     '.select-toggle-all click': function(el, ev) {
       ev.stopPropagation();
@@ -183,7 +183,7 @@ Grid.extend({
       // open parent rows if they are closed; close them if they are open
       this.scope.rows.each(row => row.attr('__isChecked', !allChecked));
       can.batch.stop();
-      alignGrid('invoiceGrid');
+      //alignGrid('invoiceGrid');
     },
   }
 });
@@ -709,7 +709,7 @@ var page = Component.extend({
       }
       //console.log("Checked rows: "+JSON.stringify(self.scope.checkedRows.attr()));
       //console.log("unDeleted Invoices: "+JSON.stringify(self.scope.attr('unDeletedInvoices')));
-      alignGrid('invoiceGrid');
+      //alignGrid('invoiceGrid');
     },
     "{checkedRows} change": function(item,el,ev){
           var self = this;
@@ -1272,7 +1272,7 @@ function CurrencyFormat(number)
 }
 
 
-function alignGrid(divId){
+/*function alignGrid(divId){
   var colLength = $('#'+divId+' table>thead>tr>th').length;
   var rowLength = $('#'+divId+' table>tbody>tr').length;
   var divWidth = $('#'+divId).outerWidth();
@@ -1319,5 +1319,5 @@ function alignGrid(divId){
       }
   }
 
-}
+}*/
 export default page;
