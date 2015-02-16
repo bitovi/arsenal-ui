@@ -1669,8 +1669,18 @@ var page = Component.extend({
 
       self.scope.loadBootStrapPlugin();
 
+      if(commonUtils.isReadOnly()=='true'){
+
+      $('#entityGrid').find('input, textarea,button, select').attr('disabled','disabled');
+
+       $('#button_layout').find('input, textarea, button').attr('disabled','disabled');
+
+       $('#add_layout').find('input, textarea, button').attr('disabled','disabled');
+
+      }
 
     },
+
     'tbody tr click': function(el, ev) {
         $(el).parent().find('tr').removeClass("selected");
         $(el).parent().find('tr').removeClass("highlight");

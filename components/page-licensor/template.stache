@@ -62,10 +62,10 @@
 
 								</div>
 
-								<div class="col-sm-2 align-left" style="margin:-4px 0 0 0;width:100px;">
+								<div class="col-sm-2 align-left" id = "add_layout" style="margin:-4px 0 0 0;width:100px;">
 
-									<button type="button" id="analyticsAdd"  name="analyticsAdd"
-									class="btn buttonSubmit btn-custom-small" style="margin-left:15px;">Add</button>
+									<!--<button type="button" id="analyticsAdd"  name="analyticsAdd"
+									class="btn buttonSubmit btn-custom-small" style="margin-left:15px;">Add</button>-->
 
 
 								</div>
@@ -448,11 +448,10 @@
 
 	</form>
 
-		<div class="col-sm-12" style="text-align:right;padding:15px;padding-right: 32px;">
+		<div id = "button_layout" class="col-sm-12" style="text-align:right;padding:15px;padding-right: 32px;">
 			<button type="button" id="buttonreset" name="Reset" class="btn cancelButton btn-custom-small ">Cancel</button>
 			<button type="button" id="buttonsubmit" name="SubmitPage" class="btn submitButton btn-custom-small" style="margin-left:10px;">Submit</button>
 		</div>
-
 
 
 	<div class="col-sm-4 col-sm-offset-4" class="confirmationReportConfig" style="display:none">
