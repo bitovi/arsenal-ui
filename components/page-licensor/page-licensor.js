@@ -582,16 +582,13 @@ var page = Component.extend({
 
           var name = self.licDetails.data.countries[i];
 
-          var countryIdName=name.split(":");
-
-          country.id = countryIdName[0];
-          country.name = countryIdName[1];
-          
-
+          country.name = self.licDetails.data.countries[i];
           //country.selected = true;
+           var countryIdName=name.split(":");
+           country.id = countryIdName[0];
+           country.name = countryIdName[1];
 
           countryObj[name] =  country;
-
 
           self.countries.push(country);
 
@@ -1944,15 +1941,8 @@ var page = Component.extend({
       var country = el.closest('div')[0].id;
       var reportConf = self.scope.getExistCountryReportConf(country);
 
-      if(country.indexOf("<") > 0) {
+      var countryBox = $('input.countryBox');
 
-        var obj = el.closest('div')[0];
-        country = obj.childNodes[0].getAttribute("value");
-        obj.childNodes[0].checked = true;
-
-      } else {
-
-        var countryBox = $('input.countryBox');
       for(var i=0; i< countryBox.length ; i++) {
 
         if(countryBox[i].getAttribute("value") === country) {
