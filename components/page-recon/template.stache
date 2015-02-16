@@ -15,7 +15,7 @@
     <div id="loading_img"></div>
     <div class="export-toexcel" id="exportExcel"></div>
     <div class="col-sm-9 btn-display-center" {{isTabSelectedAs 'Ingested'}} >
-        <button  class="btn btn-primary buttonSubmit btn-custom-small btn-ingested-reject" type="button" {{isIngestCcidsSelected 0}}>Reject</button>
+        <button  class="btn btn-primary buttonSubmit btn-custom-small btn-ingested-reject" id="reject_button" type="button" {{isIngestCcidsSelected 0}}>Reject</button>
         <button type="button" class="btn btn-primary buttonSubmit btn-custom-small btn-holesReport">Holes Report</button>
         <button type="button" class="btn btn-primary buttonSubmit btn-custom-small btn-OverRep" >Overrep Config</button>
     </div>
@@ -34,9 +34,9 @@
 
 
 <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="rejectModal" aria-hidden="true">
-    
+
     <div class="modal-dialog">
-        
+
         <div class="modal-content">
 
             <div class="modal-header">

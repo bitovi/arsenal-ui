@@ -115,7 +115,7 @@ var page = Component.extend({
 
     isIngestCcidsSelected:function(ref){
       //if the size of the list is greater than 0, enables the Reject button
-      return ( this.attr("size_ingestCcidSelected") == ref ? 'disabled' : '' ) ;
+      return ( this.attr("size_ingestCcidSelected") == ref || commonUtils.isReadOnly()=='true' ? 'disabled' : '' ) ;
     },
 
     isTabSelectedAs:function(tabName){
@@ -174,6 +174,11 @@ var page = Component.extend({
             self.scope.refreshTokenInput(item,"Delete");
           }
         });
+
+        if(commonUtils.isReadOnly()=='true'){
+          $('#reject_button').attr('disabled',true);
+        }
+
       },
       "{tokenInput} change": function(){
         var self= this;
@@ -571,7 +576,7 @@ var fetchReconIngest = function(scope, load){
   var dataLowerGrid = {};
 
   Promise.all([Recon.findOne(searchRequestObj)]).then(function(values){
-    //console.log("Loading Done");
+    console.log("Loading Done");
 
     if(values != undefined && values != null) {
       var data = values[0];
