@@ -321,9 +321,10 @@ var page = Component.extend({
               } else {
 
                 self.scope.pageState.countryDetails.country.attr("countryId", (values[2])[0].id);
+                $("#fetchDetailsBtn").click();
               
               }
-              $("#fetchDetailsBtn").click();
+              
 
               self.scope.attr("pricingMethods").replace(values[3].pricingMethodList);
         }).then(function(values) {
