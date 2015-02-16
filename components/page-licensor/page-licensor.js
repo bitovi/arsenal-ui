@@ -1248,7 +1248,7 @@ var page = Component.extend({
 
       }
 
-      if(!isValid) {
+      if(!isValid || commonUtils.isReadOnly()=='true') {
 
         $("#buttonsubmit").attr("disabled", true);
 
