@@ -93,6 +93,24 @@ var InboxGrid = ScrollingGrid.extend({
         console.log(" Bundle Id Selected :  "+this.scope.appstate.screenLookup.PBR.bundleId);
         commonUtils.navigateTo("payment-bundles");
       }
+      if(row.tableName === 'RINS_REF_ENTITY'){
+        var data = {  tableName:row.tableName, tableId: row.tableValue};
+        console.log(" Entity Id :  "+ row.tableValue);
+        this.scope.appstate.attr("screendetails" ,data);
+        commonUtils.navigateTo("licensor");
+      }
+      if(row.tableName === 'RINS_REF_COUNTRY'){
+        var data = {  tableName:row.tableName, tableId: row.tableValue};
+        this.scope.appstate.attr("screendetails" ,data);
+        console.log(" Country Id :  "+ row.tableValue);
+        commonUtils.navigateTo("ref-country");
+      }
+      if(row.tableName === 'RINS_REF_ENTITY_COUNTRY'){
+        var data = {  tableName:row.tableName, tableId: row.tableValue};
+        this.scope.appstate.attr("screendetails" ,data);
+        console.log(" Entity Country Id :  "+ row.tableValue);
+        commonUtils.navigateTo("ref-licensorcountry");
+      }
 
     }
   }

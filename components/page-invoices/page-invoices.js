@@ -924,7 +924,7 @@ var page = Component.extend({
                    //   setTimeout(function(){
                    //    $("#messageDiv").hide();
                    // },4000);
-                   commonUtils.showErrorMessage("Only unbundled invoices can be bundled.");
+                   commonUtils.showErrorMessage("Paid/Partially paid invoices cannot be bundled.");
                   }
             }
       },
@@ -1002,7 +1002,7 @@ var page = Component.extend({
                   //  setTimeout(function(){
                   //     $("#messageDiv").hide();
                   //  },4000);
-                  commonUtils.showErrorMessage("Only unbundled invoices can be bundled.");
+                  commonUtils.showErrorMessage("Paid/Partially paid invoices cannot be bundled.");
                    return false;
                 }
                 var lineType = invoiceData[i]["invoiceType"];

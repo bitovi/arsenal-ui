@@ -33,6 +33,26 @@ var CountryLicensor = Model.extend({
       dataType: 'json',
       contentType: 'application/json'
     })
+  },
+  
+  approve: function(params){
+   return $.ajax({
+      url: RinsCommon.UI_SERVICE_URL+'approveCountryDetails',
+      type: 'POST',
+      data: JSON.stringify(params),
+      dataType: 'json',
+      contentType: 'application/json'
+    })
+  },
+
+  reject: function(params){
+   return $.ajax({
+      url: RinsCommon.UI_SERVICE_URL+'rejectCountryDetails',
+      type: 'POST',
+      data: JSON.stringify(params),
+      dataType: 'json',
+      contentType: 'application/json'
+    })
   }
 }, {});
 
