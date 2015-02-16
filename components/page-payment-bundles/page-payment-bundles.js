@@ -31,7 +31,6 @@ var pageState = new Map({
   recordsAvailable:undefined,
   totRecCnt:0,
   refreshBottomGrid:false,
-  removeInvoices:false,
   loadedFromDetails:undefined
 });
 
@@ -150,8 +149,11 @@ var page = Component.extend({
       //   return '';
       // }
     },
+     allowAddInvoices:function(){
+      return this.pageState.attr("selectedBundle") !=null  && this.pageState.attr("selectedBundle.editable") ? '' : 'disabled';
+    },
     allowRemoveInvoices:function(){
-      return ( this.invoiceRowsSelected.attr('length') > 0 ? '' : 'disabled' ) ;
+      return (this.invoiceRowsSelected.attr('length') > 0  && this.pageState.attr("selectedBundle.editable")   && this.pageState.attr("selectedBundle.bundleType") !== 'ON_ACCOUNT' ) ? '' : 'disabled';
     }
   },
   events: {

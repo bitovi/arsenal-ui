@@ -852,6 +852,7 @@ var page = Component.extend({
 		},
 		"{scope} licensorStore": function(event){
 			var self = this;
+      loadCountries(this);
 			//var genObj = {licensorId:self.scope.attr("licensorStore")};
 			// Promise.all([Currency.getCurrByRegion(self.scope.attr("regionStore"))
 			//      ]).then(function(values) {
@@ -869,45 +870,7 @@ var page = Component.extend({
 			// });
 		},
 		"{scope} currencyStore": function(){
-			var self = this;
-			self.scope.getFxrate();
-			var genObj = {regionId:self.scope.attr("regionStore"),
-						  entityId:self.scope.attr("licensorStore"),
-						  currency:self.scope.attr("currencyStore")
-						};
-
-			if(self.scope.attr("currencyStore") == ""){
-				return;
-			}
-
-			 Promise.all([Country.findCountriesForRegLicCurr(UserReq.formRequestDetails(genObj))
-						     ]).then(function(values) {
-						     	if(values[0].status == 'SUCCESS'){
-
-			                   		var countryDD = $('.inputCountry');
-							            countryDD.options = function(data) {
-							                var self = this;
-							                $.each(data, function(key, value) {
-							                    var option = $('<option>').text(value.value).val(value.id);
-							                    data.push(option);
-							                });
-							                self.html(data);
-							                self.prepend($('<option>').text("Select").val(""));
-							            }
-
-							            countryDD.options(values[0].data);
-
-			              		}else{
-
-			              			 	var countryDD = $('.inputCountry');
-							         	countryDD.empty();
-							         	countryDD.html($('<option>').text("Select").val(""));
-
-										showMessages(values[0].responseText);
-				              		}
-							});
-
-
+      loadCountries(this);
 		},
 
 		"#invoiceType change": function(){
@@ -940,7 +903,9 @@ var page = Component.extend({
 				$('#invoiceform').bootstrapValidator('addField', 'ccidGLtxt[]');
 			}else{
 				$('#invoiceform').bootstrapValidator('removeField', 'ccidGLtxt[]');
-			}
+			}  
+
+			$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
 
 
 		},
@@ -1707,4 +1672,43 @@ var page = Component.extend({
 						return FromToRange;
 					}
 
+
+  var loadCountries = function(self){
+    self.scope.getFxrate();
+    var genObj = {regionId:self.scope.attr("regionStore"),
+    entityId:self.scope.attr("licensorStore"),
+    currency:self.scope.attr("currencyStore")
+  };
+
+  if(self.scope.attr("currencyStore") == ""){
+    return;
+  }
+
+  Promise.all([Country.findCountriesForRegLicCurr(UserReq.formRequestDetails(genObj))
+  ]).then(function(values) {
+    if(values[0].status == 'SUCCESS'){
+
+      var countryDD = $('.inputCountry');
+      countryDD.options = function(data) {
+         var self = this;
+        $.each(data, function(key, value) {
+          var option = $('<option>').text(value.value).val(value.id);
+          data.push(option);
+        });
+        self.html(data);
+        self.prepend($('<option>').text("Select").val(""));
+      }
+
+      countryDD.options(values[0].data);
+
+    }else{
+
+      var countryDD = $('.inputCountry');
+      countryDD.empty();
+      countryDD.html($('<option>').text("Select").val(""));
+
+      showMessages(values[0].responseText);
+    }
+  });
+  }
 export default page;

@@ -42,7 +42,8 @@ var page = Component.extend({
   template: template,
   scope: {
     pageState: pageState,
-
+  appstate : [],
+  
     /*Loading form elemenst*/
     localSocietyNames:[],
     countries:[],
@@ -67,7 +68,231 @@ var page = Component.extend({
     reportConfigurationList : reportConfigurationList,
     footerrowspresent : true,
     footerdatasocmod : "",
-    footerdata : ""
+    footerdata : "",
+    revHistory : [],
+    enableButtonsPropose : "display:block",
+    enableButtonsApprove : "display:none",
+    enableButtonsReject : "display:none",
+
+    switchButtons: function() {
+
+      var self = this;
+
+      if(self.pageState.countryDetails.country.status == "N") {
+
+        self.attr("enableButtonsApprove", "display:block");
+        self.attr("enableButtonsReject", "display:block");
+        self.attr("enableButtonsPropose", "display:none");
+
+      } else {
+
+        self.attr("enableButtonsApprove", "display:none");
+        self.attr("enableButtonsReject", "display:none");
+        self.attr("enableButtonsPropose", "display:block");
+
+      }
+
+    },
+
+    populateCountryDetails : function(self, countryId, rowId, revHistory) {
+
+      var requestObj  = {
+          "id":rowId
+//          "countryId":countryId
+      };
+
+      console.log("Request passed is "+ JSON.stringify(UserReq.formRequestDetails(requestObj)));
+      RefCountry.findOne(UserReq.formRequestDetails(requestObj),function(data){
+
+        console.log("Response data is "+JSON.stringify(data.attr()));
+        self.pageState.countryDetails.attr("country",data.countryDetails);
+
+        /* if the data.countryDetails.countryId is null then set the country dropdown using requestObj*/
+        if(data.countryDetails.countryId==null){
+          self.pageState.countryDetails.country.attr("countryId",requestObj.countryId);
+        }
+
+        if(data.countryDetails.attr("validFrom")!=0)
+          var validFrom = data.countryDetails.attr("validFrom").toString();
+        else
+          var validFrom = "0";
+
+        if(validFrom == undefined || validFrom == null || validFrom == "0")
+          self.pageState.countryDetails.country.attr("validFrom","");
+        else {
+          var formatValidFrom = PeriodHelper.getDisplayPeriod(validFrom,"P");
+          self.pageState.countryDetails.country.attr("validFrom",formatValidFrom);
+          //self.validFrom.replace(formatValidFrom);
+        }
+
+        if(data.countryDetails.attr("validTo")!=0)
+          var validTo = data.countryDetails.attr("validTo").toString();
+        else
+          var validTo = "0";
+
+        if(validTo == undefined || validTo == null || validTo == "0")
+          self.pageState.countryDetails.country.attr("validTo","");
+        else {
+          var formatValidTo = PeriodHelper.getDisplayPeriod(validTo,"P");
+          self.pageState.countryDetails.country.attr("validTo",formatValidTo);
+          //self.validTo.replace(formatValidTo);
+        }
+
+        self.attr("localSocietyNames").replace(data.countryDetails.localSocietyNames);
+        if(data.countryDetails.localSocietyId !=0){
+          self.pageState.countryDetails.country.attr("localSocietyId",data.countryDetails.localSocietyId);
+          $("#localSocietysel").val(data.countryDetails.localSocietyId);
+        }
+
+        if(data.countryDetails.mainPricingMethod!=null)
+          self.pageState.countryDetails.country.attr("mainPricingMethod",data.countryDetails.mainPricingMethod);
+        if(data.countryDetails.altPricingMethod!=null)
+          self.pageState.countryDetails.country.attr("altPricingMethod",data.countryDetails.altPricingMethod);
+
+        self.attr("transcurrencies").replace(data.countryDetails.transactionCurrencies);
+        if(data.countryDetails.transactionCurrency!=null){
+          self.pageState.countryDetails.country.attr("transactionCurrency",data.countryDetails.transactionCurrency);
+          $("#transCurrSel").val(data.countryDetails.transactionCurrency);
+        }
+
+        self.attr("altcurrencies").replace(data.countryDetails.altCurrencies);
+        if(data.countryDetails.altCurrency!=null){
+          self.pageState.countryDetails.country.attr("altCurrency",data.countryDetails.altCurrency);
+          $("#altCurrSel").val(data.countryDetails.altCurrency);
+        }
+
+        var pricingModelNames = [];
+        var pricingModelVersions = {};
+        var getModels = data.countryDetails.models;
+        var selectedAccModel = data.countryDetails.model;
+        var selModelId,selectedAccModelVersions;
+
+        for(var i=0;i<getModels.length;i++){
+          var accModelName = getModels[i].accrualModelName;
+          var accModelId = getModels[i].accrualModelID;
+          var accModelVersion = getModels[i].versionNo;
+          if(pricingModelNames.indexOf(accModelName)==-1){
+            pricingModelNames.push(accModelName);
+            pricingModelVersions[accModelName] = [];
+            pricingModelVersions[accModelName].push({"version":accModelVersion,"modelId":accModelId});
+          } else {
+            pricingModelVersions[accModelName].push({"version":accModelVersion,"modelId":accModelId});
+          }
+        }
+
+        var accModels = [];
+        var flag= false;
+        for(var key in pricingModelVersions){
+          var temp = {};
+          temp["accName"] = key;
+          temp["versions"] = pricingModelVersions[key];
+          accModels.push(temp);
+          /* this in the case of selectedAccModel is null to set the first value in Pricing model*/
+          if(selectedAccModel==null && flag==false){
+            selectedAccModelVersions =  pricingModelVersions[key];
+            selModelId = selectedAccModelVersions[0]["modelId"];
+            flag = true;
+          }
+          if(key==selectedAccModel){
+            selectedAccModelVersions =  pricingModelVersions[key];
+            selModelId = selectedAccModelVersions[0]["modelId"];
+          }
+        }
+        //console.log("accural Models "+JSON.stringify(accModels));
+        //console.log("sel accural Model vers are "+JSON.stringify(selectedAccModelVersions));
+        //console.log("sel accural Model id is "+JSON.stringify(selModelId));
+        self.attr("accuralModels").replace(accModels);
+        self.attr("accuralModelVersions").replace(selectedAccModelVersions);
+        self.attr("selectedModelId",selModelId);
+        setTimeout(function(){
+          if(selectedAccModel !=null)
+            $("#accModelSel").val(selectedAccModel);
+        },1000);
+
+
+        var tempcommentObj = data.countryDetails.commentList;
+        //console.log("multi comments "+JSON.stringify(tempcommentObj.attr()));
+        if(tempcommentObj !=null)
+        {
+          self.pageState.countryDetails.attr("commentList",data.countryDetails.commentList);
+          $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
+        } else {
+          self.pageState.countryDetails.attr("commentList","");
+        }
+
+        var revHistories = [];
+        if(revHistory) {
+
+          revHistories = self.attr("revHistory");
+        }
+       
+        var formatRevHistories = [];
+
+        if(revHistory) {
+
+          revHistories = self.attr("revHistory");
+
+        } else {
+
+          revHistories = data.countryDetails.revisionHistories.attr();
+          self.attr("revHistory", data.countryDetails.revisionHistories.attr());
+
+        }
+        
+        for(var i=0;i<revHistories.length;i++){
+          var revHisTemp = {};
+          revHisTemp["id"] = revHistories[i]["id"];
+          revHisTemp["validFrom"] = (revHistories[i]["validFrom"]==null)?"":revHistories[i]["validFrom"];
+          revHisTemp["validTo"] = (revHistories[i]["validTo"]==null)?"":revHistories[i]["validTo"];
+          revHisTemp["comment"] = (revHistories[i]["commentList"] == undefined || revHistories[i]["commentList"] == null || 
+            (revHistories[i]["commentList"].length==0 || revHistories[i]["commentList"][0]["comments"]==null))?"":revHistories[i]["commentList"][0]["comments"];
+          revHisTemp["status"] = revHistories[i]["status"];
+          formatRevHistories.push(revHisTemp);
+        }
+        //console.log("revision history "+JSON.stringify(formatRevHistories));
+        self.revisionHistory.replace(formatRevHistories);
+
+        self.societyModelMapping.replace(data.countryDetails.modelMappings);
+
+        $("#loading_img").hide();
+        $(".main-layout").show();
+        
+        $(".buttonsPlaceHolder").show();
+
+        if(data.countryDetails.status == "A") {
+              self.pageState.countryDetails.country.attr("displayStatus","Active");
+         } else if (data.countryDetails.status == "I") {
+              self.pageState.countryDetails.country.attr("displayStatus","Inactive");
+         } else if (data.countryDetails.status == "R") {
+              self.pageState.countryDetails.country.attr("displayStatus","Rejected");
+         }else if (data.countryDetails.status == "N") {
+             self.pageState.countryDetails.country.attr("displayStatus","New");
+         }
+         else {
+             self.pageState.countryDetails.country.attr("displayStatus",data.countryDetails.status);
+         }
+
+        if(data.countryDetails.status == "A" || data.countryDetails.status == "N") {
+          self.attr("state","Edit");
+        }else{
+          self.attr("state","Read");
+        }
+
+        //self.fetchDetailsBtn();
+
+        setTimeout(function(){
+          alignGrid("grid-revision-history-country");
+          alignGrid("grid-society-model");
+        },50);
+
+        self.switchButtons();
+
+      },function(xhr){
+          console.error("Error while loading: country Details"+xhr);
+      });
+
+
+    }
   },
 
   init: function(){
@@ -87,8 +312,19 @@ var page = Component.extend({
               self.scope.attr("countries").replace(values[2]);
 
               $("#selCountry").val((values[2])[0].id);
-              self.scope.pageState.countryDetails.country.attr("countryId", (values[2])[0].id);
-              $("#fetchDetailsBtn").click();
+              if(self.scope.appstate.attr("screendetails") != null && self.scope.appstate.attr("screendetails") != undefined) {
+
+                  self.scope.populateCountryDetails(self.scope, "", self.scope.appstate.screendetails.tableId, false)
+                  self.scope.appstate.attr("screendetails", null);
+                  
+
+              } else {
+
+                self.scope.pageState.countryDetails.country.attr("countryId", (values[2])[0].id);
+                $("#fetchDetailsBtn").click();
+              
+              }
+              
 
               self.scope.attr("pricingMethods").replace(values[3].pricingMethodList);
         }).then(function(values) {
@@ -119,6 +355,15 @@ var page = Component.extend({
       } else {
         return '';
       }
+    },
+    
+    enableButtons : function(ref){
+
+      if(this.attr("USER_ROLE") != ref)
+          return "display:none";
+      else 
+          return "display:inline";
+
     }
 
   },
@@ -220,7 +465,7 @@ var page = Component.extend({
     "#grid-revision-history-country table>tbody>tr click": function(item, el, ev){
         //var invoiceid = el.closest('tr').data('row').row.id;
         var self=this.scope;
-        $("#loading_img1").show();
+        $("#loading_img").show();
 
         var alreadySelRow = item.closest("tbody").find("tr.selected");
         alreadySelRow.toggleClass("selected");
@@ -228,149 +473,7 @@ var page = Component.extend({
         $(item[0]).toggleClass("selected");
         var row = item.closest('tr').data('row').row;
 
-        var requestObj  = {
-            "id":row.id,
-            "countryId":self.pageState.countryDetails.country.attr("countryId")
-        };
-//        console.log("Request passed is "+ JSON.stringify(UserReq.formRequestDetails(requestObj)));
-        RefCountry.findOne(UserReq.formRequestDetails(requestObj),function(data){
-
-//          console.log("Response data is "+JSON.stringify(data.attr()));
-          self.pageState.countryDetails.attr("country",data.countryDetails);
-
-            if(data.countryDetails.status == "A") {
-                self.pageState.countryDetails.country.attr("displayStatus","Active");
-            } else if (data.countryDetails.status == "I") {
-                self.pageState.countryDetails.country.attr("displayStatus","Inactive");
-            } else if (data.countryDetails.status == "R") {
-                self.pageState.countryDetails.country.attr("displayStatus","Rejected");
-            } else if (data.countryDetails.status == "N") {
-                self.pageState.countryDetails.country.attr("displayStatus","New");
-            }else {
-                self.pageState.countryDetails.country.attr("displayStatus",data.countryDetails.status);
-            }
-
-          /* if the data.countryDetails.countryId is null then set the country dropdown using requestObj*/
-          if(data.countryDetails.countryId==null){
-            self.pageState.countryDetails.country.attr("countryId",requestObj.countryId);
-          }
-
-          if(data.countryDetails.attr("validFrom")!=0)
-            var validFrom = data.countryDetails.attr("validFrom").toString();
-          else
-            var validFrom = "0";
-
-          if(validFrom == undefined || validFrom == null || validFrom == "0")
-            self.pageState.countryDetails.country.attr("validFrom","");
-          else {
-            var formatValidFrom = PeriodHelper.getDisplayPeriod(validFrom, "P");
-            self.pageState.countryDetails.country.attr("validFrom",formatValidFrom);
-            self.validFrom.replace(formatValidFrom);
-          }
-
-          if(data.countryDetails.attr("validTo")!=0)
-            var validTo = data.countryDetails.attr("validTo").toString();
-          else
-            var validTo = "0";
-
-          if(validTo == undefined || validTo == null|| validTo == "0" )
-            self.pageState.countryDetails.country.attr("validTo","");
-          else {
-            var formatValidTo = PeriodHelper.getDisplayPeriod(validTo,"P");
-            self.pageState.countryDetails.country.attr("validTo",formatValidTo);
-            self.validTo.replace(formatValidTo);
-          }
-
-          self.attr("localSocietyNames").replace(data.countryDetails.localSocietyNames);
-          if(data.countryDetails.localSocietyId !=0){
-            self.pageState.countryDetails.country.attr("localSocietyId",data.countryDetails.localSocietyId);
-            $("#localSocietysel").val(data.countryDetails.localSocietyId);
-          }
-
-          if(data.countryDetails.mainPricingMethod!=null){
-            self.pageState.countryDetails.country.attr("mainPricingMethod",data.countryDetails.mainPricingMethod);
-            $('#mainPricingMethod').val(data.countryDetails.mainPricingMethod);
-          }
-          if(data.countryDetails.altPricingMethod!=null){
-            self.pageState.countryDetails.country.attr("altPricingMethod",data.countryDetails.altPricingMethod);
-            $('#altPricingMethod').val(data.countryDetails.altPricingMethod);
-          }
-
-          self.attr("transcurrencies").replace(data.countryDetails.transactionCurrencies);
-          if(data.countryDetails.transactionCurrency!=null){
-            self.pageState.countryDetails.country.attr("transactionCurrency",data.countryDetails.transactionCurrency);
-            $("#transCurrSel").val(data.countryDetails.transactionCurrency);
-          }
-
-          self.attr("altcurrencies").replace(data.countryDetails.altCurrencies);
-          if(data.countryDetails.altCurrency!=null){
-            self.pageState.countryDetails.country.attr("altCurrency",data.countryDetails.altCurrency);
-            $("#altCurrSel").val(data.countryDetails.altCurrency);
-          }
-
-
-          var pricingModelNames = [];
-          var pricingModelVersions = {};
-          var getModels = data.countryDetails.models;
-          var selectedAccModel = data.countryDetails.model;
-          var selModelId,selectedAccModelVersions;
-
-          for(var i=0;i<getModels.length;i++){
-            var accModelName = getModels[i].accrualModelName;
-            var accModelId = getModels[i].accrualModelID;
-            var accModelVersion = getModels[i].versionNo;
-            if(pricingModelNames.indexOf(accModelName)==-1){
-              pricingModelNames.push(accModelName);
-              pricingModelVersions[accModelName] = [];
-              pricingModelVersions[accModelName].push({"version":accModelVersion,"modelId":accModelId});
-            } else {
-              pricingModelVersions[accModelName].push({"version":accModelVersion,"modelId":accModelId});
-            }
-          }
-
-          var accModels = [];
-          var flag= false;
-          for(var key in pricingModelVersions){
-            var temp = {};
-            temp["accName"] = key;
-            temp["versions"] = pricingModelVersions[key];
-            accModels.push(temp);
-            /* this in the case of selectedAccModel is null to set the first value in Pricing model*/
-            if(selectedAccModel==null && flag==false){
-              selectedAccModelVersions =  pricingModelVersions[key];
-              selModelId = selectedAccModelVersions[0]["modelId"];
-              flag = true;
-            }
-            if(key==selectedAccModel){
-              selectedAccModelVersions =  pricingModelVersions[key];
-              selModelId = selectedAccModelVersions[0]["modelId"];
-            }
-          }
-          //console.log("accural Models "+JSON.stringify(accModels));
-          //console.log("sel accural Model vers are "+JSON.stringify(selectedAccModelVersions));
-          //console.log("sel accural Model id is "+JSON.stringify(selModelId));
-          self.attr("accuralModels").replace(accModels);
-          self.attr("accuralModelVersions").replace(selectedAccModelVersions);
-          self.attr("selectedModelId",selModelId);
-          setTimeout(function(){
-            if(selectedAccModel !=null)
-              $("#accModelSel").val(selectedAccModel);
-          },1000);
-
-
-          var tempcommentObj = data.countryDetails.commentList;
-          //console.log("multi comments "+JSON.stringify(tempcommentObj));
-          if(tempcommentObj!=null){
-            self.pageState.countryDetails.attr("commentList",data.countryDetails.commentList);
-            $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
-          } else {
-              self.pageState.countryDetails.attr("commentList",[]);
-              $('#multipleComments').html('<textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>');
-          }
-          $("#loading_img1").hide();
-        },function(xhr){
-            console.error("Error while loading: country-Entity Details"+xhr);
-        });
+        self.populateCountryDetails(self, self.pageState.countryDetails.country.attr("countryId"), row.id, true);
     },
     '{revisionHistory} change': function() {
       var self = this;
@@ -390,6 +493,7 @@ var page = Component.extend({
     },
     '#fetchDetailsBtn click':function(){
       var self = this.scope;
+      self.attr("revHistory").splice(0, self.attr("revHistory").length);
       $("#loading_img").show();
       $(".buttonsPlaceHolder").hide();
       //console.log(this.scope.pageState.attr("countryId"));
@@ -543,6 +647,7 @@ var page = Component.extend({
         }
 
         var revHistories = data.countryDetails.revisionHistories.attr();
+        self.attr("revHistory", data.countryDetails.revisionHistories.attr());
         var formatRevHistories = [];
         for(var i=0;i<revHistories.length;i++){
           var revHisTemp = {};
@@ -561,7 +666,8 @@ var page = Component.extend({
         $("#loading_img").hide();
         $(".main-layout").show();
         $(".buttonsPlaceHolder").show();
-        if(data.countryDetails.status == "A") {
+        
+        if(data.countryDetails.status == "A" || data.countryDetails.status == "N") {
           self.attr("state","Edit");
         }else{
           self.attr("state","Read");
@@ -572,6 +678,8 @@ var page = Component.extend({
           alignGrid("grid-society-model");
         },50);
 
+        self.switchButtons();
+    
       },function(xhr){
           console.error("Error while loading: country Details"+xhr);
       });
@@ -736,8 +844,185 @@ var page = Component.extend({
       $(".buttonsPlaceHolder").hide();
 
     },
+    '#approveBtn click': function() {
+
+      var genObj = {};
+      var self = this.scope;
+
+      var selmodelid = self.pageState.countryDetails.country.attr("modelId");
+      var country = self.pageState.countryDetails.country.attr("countryId");
+      var validFrom = $("#validFrom").val();
+      var formatValidFrom = PeriodHelper.getFiscalPeriod(validFrom);
+      var validTo = $("#validTo").val();
+      if(validTo != null && validTo != undefined && validTo!="")
+        var formatValidTo = PeriodHelper.getFiscalPeriod(validTo);
+      else
+        var formatValidTo = "";
+      var comments = $(".new-comments").val();
+
+      if(comments != null && comments == "") {
+
+        $(".multicomments-required").show();
+        setTimeout(function(){
+          $(".multicomments-required").hide();
+        },2000);
+        return;
+
+      }
+
+      $("#loading_img").show();
+
+      //genObj = {modelId:selmodelid,reqType:'countryLicensordetails', countryId:country};
+
+      var requestObj  = {
+          id : self.pageState.countryDetails.country.id,
+          countryDetails  :{
+            id: self.pageState.countryDetails.country.id,
+            status: self.pageState.countryDetails.country.status,
+            modelId: self.selectedModelId,
+            countryId: self.pageState.countryDetails.country.countryId,
+            currencies: null,
+            countryName: self.pageState.countryDetails.country.countryName,
+            localSocietyNames: null,
+            residualInvoiceDays: 0,
+            mainPricingMethod: self.pageState.countryDetails.country.mainPricingMethod,
+            altPricingMethod: self.pageState.countryDetails.country.altPricingMethod,
+            mainPricingMethods: null,
+            altPricingMethods: null,
+            mechShare: self.pageState.countryDetails.country.mechShare,
+            performShare: self.pageState.countryDetails.country.performShare,
+            transactionCurrency: self.pageState.countryDetails.country.transactionCurrency,
+            altCurrency: self.pageState.countryDetails.country.altCurrency,
+            currency: self.pageState.countryDetails.country.altCurrency,
+            transactionCurrencies: null,
+            altCurrencies: null,
+            localSocietyId: self.pageState.countryDetails.country.localSocietyId,
+            validFrom: formatValidFrom,
+            validTo: formatValidTo,
+            commentId: self.pageState.countryDetails.country.commentId,
+            comments: comments
+            
+          }
+        };
+
+      console.log("Request passed is "+JSON.stringify(UserReq.formRequestDetails(requestObj)));
+
+      Promise.all([RefCountry.approve(UserReq.formRequestDetails(requestObj))]).then(function(values){
+        var data = values[0];
+        console.log("Response is "+ JSON.stringify(data));
+
+        $("#loading_img").hide();
+
+        if(data.status=="SUCCESS"){
+          var msg = "Country details saved successfully";
+
+          $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
+          $("#invmessageDiv").show();
+          setTimeout(function(){
+            $("#invmessageDiv").hide();
+          },5000);
+
+          self.populateCountryDetails(self, country, self.pageState.countryDetails.country.id, false)
+        } else {
+
+          $("#loading_img").hide();
+
+        }
+      });
+
+    },
+
+    '#rejectBtn click': function() {
+
+      //var genObj = {};
+      var self = this.scope;
+
+     // var selmodelid = (item.closest("a")[0]).getAttribute("value");
+      var country = self.pageState.countryDetails.country.attr("countryId");
+      //genObj = {modelId:selmodelid,reqType:'countryLicensordetails', countryId:country, entityName:entity};
+
+      var validFrom = $("#validFrom").val();
+      var formatValidFrom = PeriodHelper.getFiscalPeriod(validFrom);
+      var validTo = $("#validTo").val();
+      if(validTo != null && validTo != undefined && validTo!="")
+        var formatValidTo = PeriodHelper.getFiscalPeriod(validTo);
+      else
+        var formatValidTo = "";
+      var comments = $(".new-comments").val();
+
+      if(comments != null && comments == "") {
+
+        $(".multicomments-required").show();
+        setTimeout(function(){
+          $(".multicomments-required").hide();
+        },2000);
+        return;
+
+      }
+
+      $("#loading_img").show();
+
+      var requestObj  = {
+          id: self.pageState.countryDetails.country.id,
+          countryDetails  :{
+            id: self.pageState.countryDetails.country.id,
+            status: self.pageState.countryDetails.country.status,
+            modelId: self.selectedModelId,
+            countryId: self.pageState.countryDetails.country.countryId,
+            currencies: null,
+            countryName: self.pageState.countryDetails.country.countryName,
+            localSocietyNames: null,
+            residualInvoiceDays: 0,
+            mainPricingMethod: self.pageState.countryDetails.country.mainPricingMethod,
+            altPricingMethod: self.pageState.countryDetails.country.altPricingMethod,
+            mainPricingMethods: null,
+            altPricingMethods: null,
+            mechShare: self.pageState.countryDetails.country.mechShare,
+            performShare: self.pageState.countryDetails.country.performShare,
+            transactionCurrency: self.pageState.countryDetails.country.transactionCurrency,
+            altCurrency: self.pageState.countryDetails.country.altCurrency,
+            currency: self.pageState.countryDetails.country.altCurrency,
+            transactionCurrencies: null,
+            altCurrencies: null,
+            localSocietyId: self.pageState.countryDetails.country.localSocietyId,
+            validFrom: formatValidFrom,
+            validTo: formatValidTo,
+            commentId: self.pageState.countryDetails.country.commentId,
+            comments: comments
+            
+          }
+        };
+
+      console.log("Request passed is "+JSON.stringify(UserReq.formRequestDetails(requestObj)));
+
+      Promise.all([RefCountry.reject(UserReq.formRequestDetails(requestObj))]).then(function(values){
+        var data = values[0];
+        console.log("Response is "+ JSON.stringify(data));
+        if(data.status=="SUCCESS"){
+          var msg = "Country details saved successfully";
+
+          $("#loading_img").hide();
+
+          $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
+          $("#invmessageDiv").show();
+          setTimeout(function(){
+            $("#invmessageDiv").hide();
+          },5000);
+
+          self.populateCountryDetails(self, country, self.pageState.countryDetails.country.id, false)
+        } else {
+
+          $("#loading_img").hide();
+
+        }
+      });
+
+    },
     '#submitBtn click': function(el, ev){
       ev.preventDefault();
+      
+      $("#loading_img").show();
+      
       var self = this.scope;
       var validFrom = $("#validFrom").val();
       var formatValidFrom = PeriodHelper.getFiscalPeriod(validFrom);
@@ -791,10 +1076,11 @@ var page = Component.extend({
 
       RefCountry.create(UserReq.formRequestDetails(requestObj),function(data){
         console.log("Response is "+ JSON.stringify(data));
+         $("#loading_img").hide();
         if(data.status=="SUCCESS"){
           var msg = "Country details saved successfully";
-
-          //$("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
+    
+      //$("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
           //$("#invmessageDiv").show();
           $("#fetchDetailsBtn").click();
           // setTimeout(function(){

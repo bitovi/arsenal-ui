@@ -6,11 +6,11 @@
         <span class="large-headers">Country-Licensor Details</span>
       </div>
       <div class="col-sm-4">
-         TODO - Keep the message outside 
+         TODO - Keep the message outside
          <div style="{{displayMessage}}" class="alert-success alert-dimension" role="alert">
           <a href="#" class="close" data-dismiss="alert">&times;</a>
           New Country-Society Details Changes Saved Successfully.
-        </div> 
+        </div>
         <div class="cols-sm-4">
           <div id="invmessageDiv" role="alert"></div>
         </div>
@@ -29,7 +29,7 @@
           <div class="col-sm-7 div-warn-parent">
             <div id="invmessageDiv" class="center messageDiv" role="alert"></div>
         </div>
-      </div>  
+      </div>
 
     <div class="row">
 
@@ -52,7 +52,7 @@
           </div>
           <div class="col-sm-6 countryDrop">
             <label for="forCountry" class="col-sm-2 control-label">Country: </label>
-            <div class="col-sm-4">
+            <div class="col-sm-6">
               <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.countryId' id="countryId">
                 <option value="">Select</option>
                 {{#each countries}}
@@ -72,20 +72,20 @@
       <div class="col-sm-12" id="loading_img"></div>
       <div class="col-sm-12 mainLayoutId" >
 
-          <div class="col-sm-6 right-border maxContHieght"><!-- LEFT Layout START-->
+          <div class="col-sm-6 right-border maxContHieght" id = "left_layout"><!-- LEFT Layout START-->
             <div class="form-group">
              <!-- <div class="col-sm-12">
                 <label for="forId" class="col-sm-4 control-label">ID: </label>
                 <div class="col-sm-8" style="text-align:left;padding-left:0px;font-size: 12px;">{{pageState.entityCountryDetails.entityCountry.id}}</div>
               </div>-->
-             
+
             </div>
             <div class="form-group">
               <div class="col-sm-12">
                 <label for="forStatus" class="col-sm-4 control-label">Status: </label>
                 <div class="col-sm-8" style="text-align:left;padding-left:0px;font-size: 12px;">{{pageState.entityCountryDetails.entityCountry.status}}</div>
               </div>
-             
+
             </div>
             <div id="ref-period-container">
               <div class="form-group">
@@ -112,7 +112,7 @@
                     </div>
                   </div>
                 </div>
-                
+
               </div>
             </div>
             <div class="form-group">
@@ -127,15 +127,15 @@
                   </select>
                 </div>
               </div>
-              
+
             </div>
-            
+
             <div class="form-group">
                <div class="col-sm-12">
                   <label for="forInvoiceCurr" class="col-sm-4 control-label">Pricing Model: </label>
-                    
+
                     <div class="col-sm-8" style="padding-left:0px;">
-                  
+
                         <div class="col-sm-5 requiredBar" style="padding-left: 2px;width: 160px;padding-right: 0;">
                           <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelVersionNo' name="entityPricingModelId" id="entityPricingModelId">
                             {{#each pricingModels}}
@@ -143,7 +143,7 @@
                             {{/each}}
                           </select>
                         </div>
-                
+
                         <div class="col-sm-7" style="padding: 0;">
                           <div class="col-sm-2" style="padding-left:0px;width: 65px;">
                             <select style="width:auto;margin-left:3px;" class="form-control" can-value='pageState.entityCountryDetails.pricingModelId' id="entityPricingModelVersionId" >
@@ -154,9 +154,9 @@
                           </div>
                           <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="pricingModelBtn" style="margin-left: -20px;">View</button>
                         </div>
-                    
+
                     </div>
-                
+
                 </div>
             </div>
 
@@ -173,7 +173,7 @@
                   </select>
                 </div>
               </div>
-              
+
             </div>
 
             <div class="form-group">
@@ -183,7 +183,7 @@
                   <input type="checkbox" can-value="pageState.entityCountryDetails.entityCountry.laEnabled" class="laCheckBox">
                 </div>
               </div>
-              
+
             </div>
 
             <div class="form-group">
@@ -205,7 +205,7 @@
 
 
 
-          <div class="col-sm-6 left-border maxContHieght"> <!-- RIGHT Layout START-->
+          <div class="col-sm-6 left-border maxContHieght" id = "right_layout"> <!-- RIGHT Layout START-->
 
             <div class="form-group">
               <div class="col-sm-12 greyHeader"> Report Configuration</div>
@@ -222,17 +222,17 @@
             </div><!-- RIGHT Layout END-->
           </div>
 
-          <div class="col-sm-12 buttonsPlaceHolder">
+          <div class="col-sm-12 buttonsPlaceHolder" id = "button_layout">
             <div class="col-sm-12" style="text-align:right;padding:15px;">
-              
+
                 <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
                 <button id="submitBtn" {{disableSubmit}} type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>
-              
+
             </div>
           </div>
           <div id="viewPricingModelDiv" style="background:#fff">
 
-      
+
    <!-- View Pricing Model start --->
    {{#if displayPMDetails}}
      <div class="col-sm-12" style="border-bottom: 1px solid #ddd;padding: 0px;">

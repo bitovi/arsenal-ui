@@ -1109,70 +1109,9 @@ var page = Component.extend({
 			              		}
 							}).then(function(){
 
-				        	var $template = $('#breakrowTemplate');
+				        	
 
-			         		for(var i=0;i<invoiceData.invoiceLines.length;i++){
-								self.scope.attr("rowindex",i)
-								var rowindex = self.scope.attr("rowindex");
-
-			                	var $clone = $template.clone().removeClass('hide').removeAttr('id').attr("id","breakrow"+rowindex).attr("rowid", rowindex).insertBefore($template);
-
-			                	$("#breakrow"+rowindex).attr("data-invLineId",invoiceData.invoiceLines[i].invLineId);
-
-			                	$("#breakrow"+rowindex).attr("data-lineStatus",invoiceData.invoiceLines[i].lineStatus);
-
-
-								$("#breakrow"+rowindex+" .amountText").attr("id","amountText"+rowindex).val(invoiceData.invoiceLines[i].lineAmount);
-		                       	self.scope.AmountStore.attr("amountText"+rowindex, invoiceData.invoiceLines[i].lineAmount);
-
-		                       	if(self.scope.attr("invoicetypeSelect") == "2"){
-		                       		$("#breakrow"+rowindex+" #inputContent").attr("id","inputContent"+rowindex).val(invoiceData.invoiceLines[i].adhocTypeId);
-		                       		self.scope.contentTypeStore.attr("inputContent"+rowindex, invoiceData.invoiceLines[i].adhocTypeId);
-								}
-						 		else
-						 		{
-									$("#breakrow"+rowindex+" #inputContent").attr("id","inputContent"+rowindex).val(invoiceData.invoiceLines[i].contentGrpId);
-									self.scope.contentTypeStore.attr("inputContent"+rowindex, invoiceData.invoiceLines[i].contentGrpId);
-						 		}
-
-								var servictypeid = $("#inputContent0 option:selected").attr("servicetypeid");
-								if (typeof servictypeid !== "undefined" && rowindex > 0) {
-									$('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
-								}
-
-						 		var displayPeriod = "";
-						 		if(invoiceData.invoiceLines[i].fiscalPeriod != null && invoiceData.invoiceLines[i].periodType != null){
-						 			var displayPeriod = periodWidgetHelper.getDisplayPeriod(invoiceData.invoiceLines[i].fiscalPeriod+'',invoiceData.invoiceLines[i].periodType);
-								}
-		                 		$("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).val(displayPeriod).parent().append(stache('<period-calendar></period-calendar>'));
-
-		                       	self.scope.monthStore.attr("inputMonth"+rowindex, displayPeriod);
-
-		                       	$("#breakrow"+rowindex+" #inputCountry").attr("id","inputCountry"+rowindex).val(invoiceData.invoiceLines[i].country);
-		                         self.scope.countryStore.attr("inputCountry"+rowindex, invoiceData.invoiceLines[i].country);
-
-
-
-		                       	if(self.scope.attr("invoicetypeSelect") == "2"){
-		                       		$("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val(invoiceData.invoiceLines[i].glAccRefId);
-		                       		$("#breakrow"+rowindex+" #ccidGLtxt").attr("id","ccidGLtxt"+rowindex).val(invoiceData.invoiceLines[i].glAccNum);
-
-									self.scope.ccidGLStore.attr("ccidGL"+rowindex, invoiceData.invoiceLines[i].glAccount);
-						 		}
-						 		else
-						 		{
-									$("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val(invoiceData.invoiceLines[i].ccidName);
-									self.scope.ccidGLStore.attr("ccidGL"+rowindex, invoiceData.invoiceLines[i].ccidName);
-						 		}
-
-								if(rowindex != 0)
-		                       		$("#breakrow"+rowindex+" .removeRow").css("display", "block");
-									var $option   = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"], [name="ccidGLtxt[]"]');
-
-			                        $option.each(function(index){
-			                        	$('#invoiceform').bootstrapValidator('addField', $(this));
-			                        });
-							}
+			         		prepareInvoiceLines(self.scope,invoiceData.invoiceLines,false);
 
 							self.scope.ajaxRequestStatus.attr("allDataLoaded", true);
 
@@ -1507,57 +1446,55 @@ var page = Component.extend({
 					});
 					$.merge(tempEditInvoiceData["invoiceLines"], self.scope.attr().DelInvoiceline); /*merging invoice line with deleted row*/
 					editInvoiceData.invoices.push(tempEditInvoiceData);
-					Promise.all([Invoice.update(UserReq.formRequestDetails(editInvoiceData))
-						     ]).then(function(values) {
-										if(values[0]["status"]=="SUCCESS") {
-                            //var msg = "Invoice number "+self.scope.invoicenumberStore+" was saved successfully.";
-                            var msg = values[0].responseText;
+					Promise.all([Invoice.update(UserReq.formRequestDetails(editInvoiceData))]).then(function(values) {
+						if (values[0]["status"] == "SUCCESS") {
+							//var msg = "Invoice number "+self.scope.invoicenumberStore+" was saved successfully.";
+							var msg = values[0].responseText;
 
-                            //commonUtils.displayUIMessageWithDiv("#invmessageDiv", values[0].status,values[0].responseText);
-                            commonUtils.showSuccessMessage(msg);
+							prepareInvoiceLines(self.scope,values[0].invoices[0].invoiceLines,true);
 
-								            // $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
-								            // $("#invmessageDiv").show();
-								            // setTimeout(function(){
-								            //     $("#invmessageDiv").hide();
-								            // },5000)
+							//commonUtils.displayUIMessageWithDiv("#invmessageDiv", values[0].status,values[0].responseText);
+							commonUtils.showSuccessMessage(msg);
 
-								            if(values[0].invoices[0].errors) {
-								           			var errorMap = values[0].invoices[0].errors.errorMap;
-								           	}
+							// $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
+							// $("#invmessageDiv").show();
+							// setTimeout(function(){
+							//     $("#invmessageDiv").hide();
+							// },5000)
 
-								           		if(errorMap){
-										       		 var msg =showErrorDetails(errorMap, "Warning");
-                               //commonUtils.displayUIMessageWithDiv("#invWarningMsgDiv", "ERROR",msg);
-                               commonUtils.showErrorMessage(msg);
-										       		 /*$("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
-										             $("#invmessageDiv").show();
-										             setTimeout(function(){
-										                $("#invmessageDiv").hide();
-										             },5000)*/
-												    }
+							if (values[0].invoices[0].errors) {
+								var errorMap = values[0].invoices[0].errors.errorMap;
+							}
 
-                           // reset data for uploaded fileinfo
-                           //   self.scope.uploadedfileinfo.replace([]); /*not needed for edit invoice*/
-                           self.scope.deletedFileInfo.replace([]);
-										}
-							          	else
-							          	{
-								          	if(values[0].invoices[0].errors != "undefined" && values[0].invoices[0].errors != null)
-								           		{
-								           			var errorMap = values[0].invoices[0].errors.errorMap;
-								           			var msg = showErrorDetails(errorMap, "Error");
-								           		} else {
-									          		var msg = values[0].responseText;
-									          	}
+							if (errorMap) {
+								var msg = showErrorDetails(errorMap, "Warning");
+								//commonUtils.displayUIMessageWithDiv("#invWarningMsgDiv", "ERROR",msg);
+								commonUtils.showErrorMessage(msg);
+								/*$("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
+												             $("#invmessageDiv").show();
+												             setTimeout(function(){
+												                $("#invmessageDiv").hide();
+												             },5000)*/
+							}
 
-                            //commonUtils.displayUIMessageWithDiv("#invmessageDiv", "ERROR",msg);
-                            commonUtils.showErrorMessage(msg);
-												// $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
-										    //     $("#invmessageDiv").show();
-										        $("#addInvSubmit").attr("disabled", false);
-											}
-				});
+							// reset data for uploaded fileinfo
+							//   self.scope.uploadedfileinfo.replace([]); /*not needed for edit invoice*/
+							self.scope.deletedFileInfo.replace([]);
+						} else {
+							if (values[0].invoices[0].errors != "undefined" && values[0].invoices[0].errors != null) {
+								var errorMap = values[0].invoices[0].errors.errorMap;
+								var msg = showErrorDetails(errorMap, "Error");
+							} else {
+								var msg = values[0].responseText;
+							}
+
+							//commonUtils.displayUIMessageWithDiv("#invmessageDiv", "ERROR",msg);
+							commonUtils.showErrorMessage(msg);
+							// $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+							//     $("#invmessageDiv").show();
+							$("#addInvSubmit").attr("disabled", false);
+						}
+					});
 
 				/*Edit invoice end*/
 							},
@@ -1852,6 +1789,73 @@ var page = Component.extend({
             //     $("#invmessageDiv").hide();
             //  },5000)
             commonUtils.showErrorMessage(msg);
+          }
+
+          function prepareInvoiceLines(self,invoiceLines,reload) {
+          	var $template = $('#breakrowTemplate');
+          	for (var i = 0; i < invoiceLines.length; i++) {
+          		self.attr("rowindex", i)
+          		var rowindex = self.attr("rowindex");
+          		if(!reload){
+          			var $clone = $template.clone().removeClass('hide').removeAttr('id').attr("id", "breakrow" + rowindex).attr("rowid", rowindex).insertBefore($template);	
+          		}
+
+          		if($("#breakrow" + rowindex).attr("data-invLineId") == undefined || ($("#breakrow" + rowindex).attr("data-invLineId") != undefined && $("#breakrow" + rowindex).attr("data-invLineId").length==0)){
+          		
+
+          		$("#breakrow" + rowindex).attr("data-invLineId", invoiceLines[i].invLineId);
+
+          		$("#breakrow" + rowindex).attr("data-lineStatus", invoiceLines[i].lineStatus);
+
+
+          		$("#breakrow" + rowindex + " .amountText").attr("id", "amountText" + rowindex).val(invoiceLines[i].lineAmount);
+          		self.AmountStore.attr("amountText" + rowindex, invoiceLines[i].lineAmount);
+
+          		if (self.attr("invoicetypeSelect") == "2") {
+          			$("#breakrow" + rowindex + " #inputContent").attr("id", "inputContent" + rowindex).val(invoiceLines[i].adhocTypeId);
+          			self.contentTypeStore.attr("inputContent" + rowindex, invoiceLines[i].adhocTypeId);
+          		} else {
+          			$("#breakrow" + rowindex + " #inputContent").attr("id", "inputContent" + rowindex).val(invoiceLines[i].contentGrpId);
+          			self.contentTypeStore.attr("inputContent" + rowindex, invoiceLines[i].contentGrpId);
+          		}
+
+          		var servictypeid = $("#inputContent0 option:selected").attr("servicetypeid");
+          		if (typeof servictypeid !== "undefined" && rowindex > 0) {
+          			$('#inputContent' + rowindex + ' option[ servicetypeid!=' + servictypeid + ' ]').remove();
+          		}
+
+          		var displayPeriod = "";
+          		if (invoiceLines[i].fiscalPeriod != null && invoiceLines[i].periodType != null) {
+          			var displayPeriod = periodWidgetHelper.getDisplayPeriod(invoiceLines[i].fiscalPeriod + '', invoiceLines[i].periodType);
+          		}
+          		$("#breakrow" + rowindex + " #inputMonth").attr("id", "inputMonth" + rowindex).val(displayPeriod).parent().append(stache('<period-calendar></period-calendar>'));
+
+          		self.monthStore.attr("inputMonth" + rowindex, displayPeriod);
+
+          		$("#breakrow" + rowindex + " #inputCountry").attr("id", "inputCountry" + rowindex).val(invoiceLines[i].country);
+          		self.countryStore.attr("inputCountry" + rowindex, invoiceLines[i].country);
+
+
+
+          		if (self.attr("invoicetypeSelect") == "2") {
+          			$("#breakrow" + rowindex + " #ccidGL").attr("id", "ccidGL" + rowindex).val(invoiceLines[i].glAccRefId);
+          			$("#breakrow" + rowindex + " #ccidGLtxt").attr("id", "ccidGLtxt" + rowindex).val(invoiceLines[i].glAccNum);
+
+          			self.ccidGLStore.attr("ccidGL" + rowindex, invoiceLines[i].glAccount);
+          		} else {
+          			$("#breakrow" + rowindex + " #ccidGL").attr("id", "ccidGL" + rowindex).val(invoiceLines[i].ccidName);
+          			self.ccidGLStore.attr("ccidGL" + rowindex, invoiceLines[i].ccidName);
+          		}
+
+          		if (rowindex != 0)
+          			$("#breakrow" + rowindex + " .removeRow").css("display", "block");
+          		var $option = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"], [name="ccidGLtxt[]"]');
+
+          		$option.each(function(index) {
+          			$('#invoiceform').bootstrapValidator('addField', $(this));
+          		});
+          	}
+          	}
           }
 
 					var updatePeriodCalender = function(elementID){
