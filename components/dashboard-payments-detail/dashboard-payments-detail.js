@@ -132,10 +132,10 @@ var DashboardPaymentsDetail = Component.extend({
             var entityId=$('#licensorsFilter option').filter(function() {
               return $(this).text() == selectedEntity;
             }).val();
-            self.scope.appstate.ispagelocal=true;
+            self.scope.appstate.screenLookup.ispagelocal=true;
             var localObj={"contryName":selectedCntry,"entityId":entityId,"fromPage":"dashboard-Payment","toPage":"claimreview"};
-            self.scope.appstate.pageLocalParm=[];
-            self.scope.appstate.pageLocalParm.push(localObj);
+            self.scope.appstate.screenLookup.pageLocalParm=[];
+            self.scope.appstate.screenLookup.pageLocalParm.push(localObj);
           }
         //self.scope.appstate.attr('page','claimreview');
         commonUtils.navigateTo("claimreview");

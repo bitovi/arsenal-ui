@@ -113,7 +113,7 @@ var page = Component.extend({
               if(bundleLookupNeeded && lookForBundle != undefined){
 
                   self.scope.pageState.attr("loadedFromDetails",self.scope.appstate.screenLookup.PBR);
-                  self.scope.appstate.attr("screenLookup",{});
+                  self.scope.appstate.screenLookup.attr("PBR",undefined);
 
                   $(".visible").click();
               }else{
@@ -122,7 +122,7 @@ var page = Component.extend({
 
             }else{
               commonUtils.displayUIMessage( data.status, data.responseText);
-              self.scope.appstate.attr("screenLookup",{});
+              self.scope.appstate.screenLookup.attr("PBR",undefined);
             }
 
           });

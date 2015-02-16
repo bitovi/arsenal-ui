@@ -448,7 +448,7 @@ var page = Component.extend({
     self.scope.attr("licensorTableScrollTop",0);
     self.scope.sortColumns.replace([]);
     self.scope.attr("sortDirection","asc");
-    self.scope.attr("isfromDashBoard",self.scope.appstate.ispagelocal);
+    self.scope.attr("isfromDashBoard",self.scope.appstate.screenLookup.ispagelocal);
     getClaimReviewData('licensor',self.scope);
 
     },
@@ -975,12 +975,12 @@ var appstate = self.appstate;
   if(self.isfromDashBoard){
     //if it is different page  then set the parameters from appstate
     //var localObj=appstate.pageLocalParm.pop(); //always take the first element. This will remove the consumed element from array.
-    var localObj=appstate.pageLocalParm[0];
+    var localObj=appstate.screenLookup.pageLocalParm[0];
     if(localObj.fromPage === "dashboard-Payment"){
       countryId=[localObj.contryName];
       licId=[localObj.entityId];
     }
-    appstate.ispagelocal=false;
+    appstate.screenLookup.ispagelocal=false;
   }
   var contGrpId = appstate.contentType.attr();
   var periodType = appstate.periodType;

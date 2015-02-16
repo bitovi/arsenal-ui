@@ -4,11 +4,6 @@ import constants from 'utils/constants';
 var rinsCommonUtils = {
   triggerGlobalSearch:function (){
     appstate.attr('globalSearch', !appstate.attr('globalSearch'));
-    // if(appstate.attr('globalSearch')){
-    //   appstate.attr('globalSearch', false);
-    // }else{
-    //   appstate.attr('globalSearch', true);
-    // }
   },
   navigateTo:function(page){
     var a = document.createElement('a');
@@ -16,9 +11,6 @@ var rinsCommonUtils = {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    // appstate.attr('page', page);
-    // appstate.attr('navigationRequired', true);
-    // appstate.attr('navigationRequired', false);
   },
   hideUIMessage: function(){
     var messageDiv = ".messageDiv";
