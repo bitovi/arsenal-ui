@@ -1696,7 +1696,7 @@ var page = Component.extend({
         //$($(el).closest('.calendarcls').find('.box-modal')).data("selected-period",el[0].value);
 
         //var selected = el.data('type');
-        console.log($('.periodFromInput').val() +", "+ $('.periodToInput').val() );
+      //  console.log($('.periodFromInput').val() +", "+ $('.periodToInput').val() );
         $($(el).closest('.calendarcls').find('.box-modal')).data("selected-period-from",$('.periodFromInput').val());
         $($(el).closest('.calendarcls').find('.box-modal')).data("selected-period-to",$('.periodToInput').val());
         $($(el).closest('.calendarcls').find('.box-modal')).data("selected-period-type",PeriodWidgetHelper.getPeriodType($('.periodFromInput').val()));
