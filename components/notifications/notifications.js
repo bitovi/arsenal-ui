@@ -39,9 +39,6 @@ var notification = Component.extend({
     fetchNotifications(self);
    },
   events:{
-      'inserted':function(){
-        this.element.parent().scope().notificationtriggered
-      },
       '{document} keydown':function(el, ev){
         if(ev.which==27 && $('.notificationContainer').is(':visible')){
           $('rn-notifications').hide('fast');
