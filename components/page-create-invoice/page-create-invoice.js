@@ -903,7 +903,9 @@ var page = Component.extend({
 				$('#invoiceform').bootstrapValidator('addField', 'ccidGLtxt[]');
 			}else{
 				$('#invoiceform').bootstrapValidator('removeField', 'ccidGLtxt[]');
-			}
+			}  
+
+			$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
 
 
 		},
