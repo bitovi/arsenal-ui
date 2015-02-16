@@ -34,7 +34,8 @@ var newOnAccountGrid = Grid.extend({
     type:"",
     editingRow: null,
     editingColumn: null,
-    quarters:[]
+    quarters:[],
+    strippedGrid:true
   },
    helpers: {
     cellContents: function(row, column) {
@@ -44,7 +45,7 @@ var newOnAccountGrid = Grid.extend({
           return stache('<div style="float: right;text-align: right;" valign="middle"><input value="{{value}}" tabindex="0" class="editing form-control invalid" style="width:130px;padding: 4px !important;text-align: right; title="Please provide onAccount amount in [##########.########] format""/></div>')({value: returnValue});
         }else{
           return stache('<div style="float: right;text-align: right;" valign="middle"><input value="{{value}}" tabindex="0" class="editing form-control" style="width:130px;padding: 4px !important;text-align: right;"/></div>')({value: returnValue});
-        }   
+        }
       } else {
         if(column.title == 'Total' && row.__isChild && column.getEditingValue(row,column.id) != null)
         {
@@ -122,9 +123,9 @@ var newOnAccountGrid = Grid.extend({
 
       },
 
-      // 'td input.editing keydown':function(el, ev){  
-      //    ev.preventDefault();  
-          
+      // 'td input.editing keydown':function(el, ev){
+      //    ev.preventDefault();
+
       //   if(ev.keyCode==9){
       //     console.log("Keydown Working", el.parent('div').parent('td').next('td').find('input.editing').val());
       //     //el.blur();
@@ -149,7 +150,7 @@ var newOnAccountGrid = Grid.extend({
             el.removeClass('invalid');
             if(el.closest('table').find('td .invalid').length > 0){
               return;
-            }    
+            }
           }
           //}
           // if (value != "" && value != undefined && value.length != 0){
