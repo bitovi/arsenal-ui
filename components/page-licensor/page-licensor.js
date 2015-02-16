@@ -838,7 +838,7 @@ var page = Component.extend({
     clearPeriods : function() {
 
       var self = this;
-      self.attr("periodFromVal", "");
+      self.attr("getPeriodFromVall","");
       self.attr("periodToVal", "");
 
     },
@@ -1272,6 +1272,9 @@ var page = Component.extend({
       var genObj = {};
 
       $("#loading_img").show();
+      $("#entityLicensorBottom").hide();
+      $("#buttonsubmit").hide();
+      $("#buttonreset").hide();
 
 
 
@@ -1308,6 +1311,9 @@ var page = Component.extend({
 
           Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
             $("#loading_img").hide();
+            $("#entityLicensorBottom").show();
+            $("#buttonsubmit").show();
+            $("#buttonreset").show();
             self.populateAnalyticsPage(values);
             self.reValidateFiledsonLoad()
 
@@ -1649,6 +1655,9 @@ var page = Component.extend({
 
       $("#buttonsubmit").attr("disabled", true);
 
+      $("#buttonsubmit").hide();
+      $("#buttonreset").hide();
+
       var defaultEntity = [];
 
       //$("#loading_img").show();
@@ -1944,18 +1953,17 @@ var page = Component.extend({
       } else {
 
         var countryBox = $('input.countryBox');
+      for(var i=0; i< countryBox.length ; i++) {
 
-        for(var i=0; i< countryBox.length ; i++) {
+        if(countryBox[i].getAttribute("value") === country) {
 
-          if(countryBox[i].getAttribute("value") === country) {
-
-            countryBox[i].checked = true;
-
-          }
+          countryBox[i].checked = true;
 
         }
 
       }
+
+     
 
       var reportConf = self.scope.reportConfMap[country];
 
@@ -2045,6 +2053,9 @@ var page = Component.extend({
         //clear elements
 
         $("#loading_img").show();
+        $("#buttonsubmit").hide();
+        $("#buttonreset").hide();
+
 
         var entityName = self.scope.attr("selectedEntity");
 
@@ -2053,6 +2064,8 @@ var page = Component.extend({
         if($('#entityLicensorTop').data('bootstrapValidator').isValid() == false) {
 
           $("#loading_img").hide();
+          $("#buttonsubmit").show();
+          $("#buttonreset").show();
 
           return;
 
@@ -2085,6 +2098,8 @@ var page = Component.extend({
             self.scope.populateAnalyticsPage(values);
 
             $("#loading_img").hide();
+            $("#buttonsubmit").show();
+            $("#buttonreset").show();
 
             self.scope.reValidateFiledsonLoad();
 
@@ -2100,6 +2115,8 @@ var page = Component.extend({
                 commonUtils.displayUIMessage(values[0].status, msg);
 
             $("#loading_img").hide();
+            $("#buttonsubmit").show();
+            $("#buttonreset").show();
 
           }
 
