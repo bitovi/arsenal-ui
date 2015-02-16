@@ -313,9 +313,9 @@ var page = Component.extend({
 
               $("#selCountry").val((values[2])[0].id);
               if(self.scope.appstate.attr("screendetails") != null && self.scope.appstate.attr("screendetails") != undefined) {
-        
-                  self.scope.appstate.attr("screendetails", null);
+
                   self.scope.populateCountryDetails(self.scope, "", self.scope.appstate.screendetails.tableId, false)
+                  self.scope.appstate.attr("screendetails", null);
                   
 
               } else {
