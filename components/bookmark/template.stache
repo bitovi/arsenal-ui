@@ -13,14 +13,10 @@
                     <div class='checkbox_list'><input type="checkbox" name='bookmark' id={{bookMarkId}} class='bookmarkchkbox'/></div>
                     <div class='bookmark_subject'> {{bookMarkName}}</div>
                     <div class='bookmark_settings' data-id={{bookMarkId}}>&nbsp;</div>
-                    <div class='clr'></div>
-                    <div>
-                        <div class='flL'>createdBy : {{createdBy}}</div>
-                        <div class='flR'>
-                            <div>Owner:{{lastName}}</div>
-                            <div><b>Shared</b></div>
-                        </div>
-                   </div>
+                    <div class="clr owner">Owner:{{lastName}}</div>
+                    <div class='clr create'>createdBy : {{createdBy}}</div>
+                    <div class='shared'><strong>Shared</strong></div>
+                    <div role="presentation" class="divider clr"></div>
                 </div>
               {{/each}}
              </div>  
@@ -30,7 +26,7 @@
          <div class='listtitle'>New Bookmark</div>
          <div class='bookmarkinput'>
               <div><label>Name</label></div>
-              <input type='text' name='bookmarkname' class='newbookmark_name_txtbx'/>
+              <input type='text' name='bookmarkname' class='form-control newbookmark_name_txtbx'/>
                <div class="shareerror">Please Enter valid Bookmark Name</div>
          </div>
           <div class='autoscrollforuser'>
