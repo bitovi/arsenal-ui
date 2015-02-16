@@ -92,6 +92,19 @@ var GlobalParameterBar = Component.extend({
         $(this).trigger("popup-shown");
       });   
     },
+    '.calendarDateIcon click': function(el){
+      $('.box-modal').hide(); // hide all other open calendar popups before opening the new one.
+      $(el).closest('.calendarcls').find('.box-modal').show(0,function(){
+        //$($(el).closest('.calendarcls').find('.box-modal')).data("selected-period",el[0].value);
+        console.log($('#periodFrom').val() +", "+ $('#periodTo').val())
+
+        $($(el).closest('.calendarcls').find('.box-modal')).data("selected-period-from",$('#periodFrom').val());
+        $($(el).closest('.calendarcls').find('.box-modal')).data("selected-period-to",$('#periodTo').val());
+        $($(el).closest('.calendarcls').find('.box-modal')).data("selected-period-type",periodWidgetHelper.getPeriodType($('#periodFrom').val()));
+        $($(el).closest('.calendarcls').find('.box-modal')).data("selected-id",el.data('type'));
+        $(this).trigger("popup-shown");
+      }); 
+    },
     '{selectedperiod} change': function(val) {
       val[0].which == 'periodFrom' ? this.scope.periodFrom.replace(val[0].value) : this.scope.periodTo.replace(val[0].value);
     },

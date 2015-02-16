@@ -5,6 +5,7 @@
         <span class="parameter-name">Period From:</span>
          <div class="calendarcls">
             <input type='text' id="periodFrom" class="form-control updatePeriod"/>
+            <span class="calendarDateIcon" data-type="periodFrom"><i class="glyphicon-calendar glyphicon"></i></span>
             <period-calendar selectedperiod="{selectedperiod}"  appstate="{appstate}"></period-calendar>
          </div>
           </div>
@@ -15,6 +16,7 @@
           <span class="parameter-name">Period To:</span>
           <div class="calendarcls">
             <input type='text' id="periodTo" class="form-control updatePeriod"/>
+            <span class="calendarDateIcon" data-type="periodTo"><i class="glyphicon-calendar glyphicon"></i></span>
             <period-calendar selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
           </div>
 
