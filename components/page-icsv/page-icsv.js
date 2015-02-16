@@ -227,7 +227,7 @@ var page = Component.extend({
 
                               var errlabel = "<span class='errorlabel'>Error: </span>";
 
-                              tempObj.error = (errString)?errlabel+errString:"";
+                              tempObj.error = ((errString[0] == "") && (errString.length == 1))?"":errlabel+errString;
                           }
                         tempObj.licensor= tempArr[i].entityName;
                         tempObj.invoiceNum= tempArr[i].invoiceNumber;
