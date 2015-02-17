@@ -275,7 +275,27 @@ var page = Component.extend({
 
       }
 
-      FileManager.downloadFile(request);
+      //FileManager.downloadFile(request);
+        var file={};
+        file.fileId= row.invFileId;
+        file.boundType='INBOUND';
+
+        //FileManager.findOne(request);
+
+        FileManager.findOne(file,function(data){
+            if(data["status"]=="SUCCESS"){
+
+            }else{
+              // $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+              // $("#messageDiv").show();
+              // setTimeout(function(){
+              //     $("#messageDiv").hide();
+              // },2000)
+              commonUtils.showErrorMessage(data["responseText"]);
+            }
+      }, function(xhr) {
+            console.error("Error while downloading the file with fileId: "+fileId+xhr);
+      });
     },
     '.toggle :checkbox change': function(el, ev) {
       if (el[0].getAttribute('class') != 'headerChkBox') {
