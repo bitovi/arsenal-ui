@@ -24,6 +24,7 @@ import RefCountry from 'models/refdata/country/';
 import PricingModels from 'models/pricing-models/';
 import PricingMethods from 'models/common/pricingMethods/';
 import CountryLicensor from 'models/refdata/countryLicensor/';
+import constants from 'utils/constants';
 
 
 var reportConfigurationList = new can.List();
@@ -80,26 +81,26 @@ var page = Component.extend({
 
       if(self.pageState.countryDetails.country.status == "N") {
 
-        if(self.scope.appstate.attr("role")) {
+        if(self.appstate.userInfo.roleIds[0] == constants.ROLES.BM) {
 
-          //self.attr("enableButtonsApprove", "display:none");
-          //self.attr("enableButtonsReject", "display:none");
-          //self.attr("enableButtonsPropose", "display:block");
+          self.attr("enableButtonsApprove", "display:none");
+          self.attr("enableButtonsReject", "display:none");
+          self.attr("enableButtonsPropose", "display:none");
   
         } else {
 
-          self.attr("enableButtonsApprove", "display:block");
-          self.attr("enableButtonsReject", "display:block");
+          self.attr("enableButtonsApprove", "display:inline-block");
+          self.attr("enableButtonsReject", "display:inline-block");
           self.attr("enableButtonsPropose", "display:none");
 
         }
 
       } else {
 
-        self.attr("enableButtonsApprove", "display:none");
-        self.attr("enableButtonsReject", "display:none");
-        self.attr("enableButtonsPropose", "display:block");
-
+          self.attr("enableButtonsApprove", "display:none");
+          self.attr("enableButtonsReject", "display:none");
+          self.attr("enableButtonsPropose", "display:inline-block");
+  
       }
 
     },
