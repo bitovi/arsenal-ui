@@ -1843,8 +1843,10 @@ var page = Component.extend({
 
           			self.ccidGLStore.attr("ccidGL" + rowindex, invoiceLines[i].glAccount);
           		} else {
-          			$("#breakrow" + rowindex + " #ccidGL").attr("id", "ccidGL" + rowindex).val(invoiceLines[i].ccidName);
-          			self.ccidGLStore.attr("ccidGL" + rowindex, invoiceLines[i].ccidName);
+                    //Changed for ccidFileName
+          			$("#breakrow" + rowindex + " #ccidGL").attr("id", "ccidGL" + rowindex).val(invoiceLines[i].ccidFileName);
+//                    $("#breakrow" + rowindex + " #ccidGL").attr("title", "ccidGL" + rowindex).val(invoiceLines[i].ccidFileName);
+          			self.ccidGLStore.attr("ccidGL" + rowindex, invoiceLines[i].ccidFileName);
           		}
 
           		if (rowindex != 0)
