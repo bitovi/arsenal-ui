@@ -1814,9 +1814,10 @@ if ($("#inputMonth0").val().indexOf('Q') != "-1") {
 
 var getDateToDisplay=function(longDate){
     var calculateDueDate = new Date(longDate);
-    var calMonth = ("0" + (calculateDueDate.getMonth() + 1)).slice(-2);
+    var calMonth = ("0" + (calculateDueDate.getMonth())).slice(-2);
     var calDate =  ("0" + calculateDueDate.getDate()).slice(-2);
     var calYear = calculateDueDate.getFullYear();
+		comsole.log("calculateDueDate "+calculateDueDate);
     return calMonth + "/" + calDate + "/" + calYear;
 }
 
