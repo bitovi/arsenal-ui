@@ -29,7 +29,10 @@ var DashboardApprovals = Component.extend({
     recordsAvailable: false,
     sortColumns:[],
     sortDirection: "asc",
-    populateDefaultData:'@'
+    populateDefaultData:'@',
+    triggerChild: function(params){
+      fetchInboxOutbox(params)
+    }
   },
   helpers: {
     inboxItemCount: function() {
@@ -132,16 +135,13 @@ var fetchInboxOutbox = function(scope){
     if(scope.mailboxType == 'inbox'){
       Approval.findAll({
           mailbox: 'inbox',
-          offset: scope.inboxOffset
+          offset: scope.inboxOffset,
+          sortBy: scope.sortcolumnnames,
+          sortDirection:scope.sortDirection
         }).then(function(approvals) {
           $('#inboxGrid .loading_img').remove();
             if(approvals != undefined){
               if(approvals.status == "FAILURE"){
-              // $("#messageDiv").html("<label class='errorMessage'>"+data.responseText+"</label>");
-              // $("#messageDiv").show();
-              // setTimeout(function(){
-              //   $("#messageDiv").hide();
-              // },4000);
               commonUtils.showErrorMessage(data.responseText);
               console.error("Failed to load the Inbox :"+data.responseText);
 
@@ -152,8 +152,12 @@ var fetchInboxOutbox = function(scope){
                   $.merge(scope.inboxRows, approvals);
                   scope.inboxRows.replace(scope.inboxRows);
                 }
+                
                 scope.inboxRows.attr('recordsAvailable', approvals.recordsAvailable);
                 scope.attr('inboxnumberofrows', approvals.totalRecords);
+
+                scope.attr('sortcolumnnames',scope.sortcolumnnames);
+                scope.attr('sortdir',scope.sortdir);
             }
           }else{
              scope.inboxRows.replace([]);
@@ -166,16 +170,13 @@ var fetchInboxOutbox = function(scope){
     }else{
         Approval.findAll({
             mailbox: 'outbox',
-            offset: scope.outboxOffset
+            offset: scope.outboxOffset,
+            sortBy: scope.sortBy,
+            sortDirection:scope.sortDirection
           }).then(function(approvals) {
             $('#outboxGrid .loading_img').remove();
             if(approvals != undefined){
                 if(approvals.status == "FAILURE"){
-                // $("#messageDiv").html("<label class='errorMessage'>"+data.responseText+"</label>");
-                // $("#messageDiv").show();
-                // setTimeout(function(){
-                //   $("#messageDiv").hide();
-                // },4000);
                 commonUtils.showErrorMessage(data.responseText);
                 console.error("Failed to load the Outbox :"+data.responseText);
 
