@@ -96,15 +96,15 @@
 </div>
 
 <div class="copytoclipboardContainer">
-  <table class="holes-report " border="1">
+  <table class="holes-reports" border="1">
   <thead>
     <tr>
-     <th></th>
-      {{#entities}}
+     <th>Countries</th>
+      {{#_entities}}
       <th class="entity" {{data 'entity'}}><span {{popover 'entity' {.}}}>{{.}}</span></th>
-      {{/entities}}
-       <th class="entity">LOCAL</th>
-        <th></th>
+      {{/_entities}}
+      <th class="entity">LOCAL</th>
+       <th>Local society name</th>
     </tr>
   </thead>
   <tbody>

@@ -25,7 +25,7 @@ var DashboardInvoices = Component.extend({
   template: template,
   scope: {
     _entities:[],
-    holesReports:[],
+    holesReports:[],holesReportsCC:[],
     holesByCountry: {/*
       AUT: [hole, hole, hole],
     */},
@@ -73,7 +73,9 @@ var DashboardInvoices = Component.extend({
 
           can.batch.start();
           self.attr('_entities', populateEntities(holesReportResponse));
-          self.attr('holesReports',getHolesReport(self._entities,holesReportResponse.holesReportWrapper));
+          var getHolesReports = getHolesReport(self._entities,holesReportResponse.holesReportWrapper);
+          self.attr('holesReports', getHolesReports);
+          self.attr('holesReportsCC', getHolesReports);
 
           can.batch.stop();
           setTimeout(function(){
@@ -174,13 +176,13 @@ var DashboardInvoices = Component.extend({
     },
     '#copyToClipboard click':function(){
 
-      var tableClone = $('.copytoclipboardContainer').find('table').clone(true);
+      var tableClone = $('.dashboard-container').find('.copytoclipboardContainer').clone(true);
 
-        $('#clonetable').empty().html(tableClone).attr('id','dynamic');
-          $('copy-clipboard').slideDown(function(){
-           $('body').css('overflow','hidden');
-           $('#copyall').trigger('click');
-           tableClone = "";
+      $('#clonetable').empty().html(tableClone).attr('id', 'dynamic');
+      $('copy-clipboard').slideDown(function() {
+          $('body').css('overflow', 'hidden');
+          $('#copyall').trigger('click');
+          tableClone = "";
         });
       },
     '{scope.appstate} change': function() {
