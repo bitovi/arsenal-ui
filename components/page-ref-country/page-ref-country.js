@@ -204,11 +204,9 @@ var page = Component.extend({
         self.attr("accuralModels").replace(accModels);
         self.attr("accuralModelVersions").replace(selectedAccModelVersions);
         self.attr("selectedModelId",selModelId);
-        setTimeout(function(){
-          if(selectedAccModel !=null)
-            $("#accModelSel").val(selectedAccModel);
-        },1000);
 
+        $("#accModelSel").val(selectedAccModel);
+        $("#accModelSel").change();
 
         var tempcommentObj = data.countryDetails.commentList;
         //console.log("multi comments "+JSON.stringify(tempcommentObj.attr()));
@@ -645,12 +643,10 @@ var page = Component.extend({
         self.attr("accuralModels").replace(accModels);
         self.attr("accuralModelVersions").replace(selectedAccModelVersions);
         self.attr("selectedModelId",selModelId);
-        setTimeout(function(){
-          if(selectedAccModel !=null)
-            $("#accModelSel").val(selectedAccModel);
-        },1000);
-
-
+        
+        $("#accModelSel").val(selectedAccModel);
+        $("#accModelSel").change();
+        
         var tempcommentObj = data.countryDetails.commentList;
         //console.log("multi comments "+JSON.stringify(tempcommentObj.attr()));
         if(tempcommentObj !=null)
@@ -738,6 +734,20 @@ var page = Component.extend({
       self.attr("accuralModelVersions").replace(ver);
 
       var selModelId = ver[0]["modelId"];
+
+      var maxVersion = 0;
+      
+      for(var i=0; i< ver.length; i++) {
+        
+        if(maxVersion < ver[i].version) {
+
+          maxVersion =  ver[i].version;          
+
+        }
+
+      }
+      
+      $("#accModelVerSel").val(maxVersion);
       //console.log("sel model id "+selModelId)
       self.attr("selectedModelId",selModelId);
 
@@ -746,7 +756,7 @@ var page = Component.extend({
       var self=this.scope;
       var selected = $(el[0].selectedOptions).data('accModelVer');
       //console.log("selected accmodelvers "+JSON.stringify(selected.attr()));
-      var selModelId = selected["modelId"];
+      
       //console.log("sel model id "+selModelId)
       self.attr("selectedModelId",selModelId);
     },
