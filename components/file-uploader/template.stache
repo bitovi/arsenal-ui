@@ -37,7 +37,7 @@
                       {{#if fileId}}
                          <a  class="downLoad-Link" id="{{fileId}}">{{name}} {{#if size}}({{convertToKB size}}){{/if}} </a>
                       {{#else}}
-                          {{name}} {{#if size}}({{convertToKB size}}){{/if}}
+                          {{getFileName name}} {{#if size}}({{convertToKB size}}){{/if}}
                       {{/if}}
 
                     {{/if}}
