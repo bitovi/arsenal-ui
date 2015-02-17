@@ -112,7 +112,7 @@ var page = Component.extend({
   	glaccounts:[],
   	regions:[],
   	AmountStore:{},
- 	totalAmountVal:0,
+ 	  totalAmountVal:0,
   	calduedate:0,
   	tax:"",
   	taxStore:{},
@@ -189,7 +189,8 @@ var page = Component.extend({
             });
 
             $("#addInvSubmit").attr("disabled", true);
-			$(".removeRow").click(function(event){
+
+    	$(".removeRow").click(function(event){
 				$option.each(function(index){
                 	$('#invoiceform').bootstrapValidator('removeField', $(this));
                 });
@@ -868,7 +869,7 @@ var page = Component.extend({
 				                    option = $('<option>').text(value.value).val(value.id);
 				                    if(value.value != undefined && value.id != undefined){
 				                    	data.push(option);
-				                    }   
+				                    }
 				                });
 				                self.html(data);
 				            }
@@ -1012,17 +1013,11 @@ var page = Component.extend({
          "{invoiceContainer} change": function() {
 						var self = this;
 
-				 		  /*This block is used to update data in view */
-
-				 		if(self.scope.appstate.attr('viewinvoicemode') == true){
+				 		/*This block is used to update data in view */
+             if(self.scope.appstate.attr('viewinvoicemode') == true){
 							$("rn-file-uploader-edit .browseFiles.uploadFiles").attr("disabled", true);
 							var msg = "Info:Invoice can't be edited as its in transit/paid";
 							commonUtils.showErrorMessage(msg);
-					     // $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
-				         //    $("#invmessageDiv").show();
-				         //     setTimeout(function(){
-				         //        $("#invmessageDiv").hide();
-				         //    },5000)
 						}
 
 						var invoiceData = self.scope.attr().invoiceContainer[0];
@@ -1080,28 +1075,24 @@ var page = Component.extend({
 						var tempcommentObj = invoiceData.comments;
 						$('#multipleCommentsInv').html(stache('<multiple-comments divid="usercommentsdivinv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
 		                self.scope.changeTextOnInvType();
-
-                        //Sudesna
-                        //Code to display server list of files on file upload rn-file-uploader-edit control starts
-                        for(var j=0;j<invoiceData.invoiceDocuments.length;j++){
-                            invoiceData.invoiceDocuments[j].isServer = true;
-                            invoiceData.invoiceDocuments[j].filePath = invoiceData.invoiceDocuments[j].location;
-                        }
+                    //Code to display server list of files on file upload rn-file-uploader-edit control starts
+                    for(var j=0;j<invoiceData.invoiceDocuments.length;j++){
+                        invoiceData.invoiceDocuments[j].isServer = true;
+                        invoiceData.invoiceDocuments[j].filePath = invoiceData.invoiceDocuments[j].location;
+                    }
 
 		                if(invoiceData.invoiceDocuments.length > 0){
 		                	self.scope.uploadedfileinfo.replace(invoiceData.invoiceDocuments);
 		                } else {
 		                	self.scope.uploadedfileinfo.replace([]);
 		                }
-                        //Code to display server list of files on file upload rn-file-uploader-edit control ends
-
-                        self.scope.attr("invselectedbundle", invoiceData.bundleId);
-
+                    //Code to display server list of files on file upload rn-file-uploader-edit control ends
+                    self.scope.attr("invselectedbundle", invoiceData.bundleId);
 		                var genObj = {
 			                			regionId:invoiceData.regionId,
-							  			entityId:invoiceData.entityId,
-							  			currency:invoiceData.invoiceCcy
-									};
+							  			      entityId:invoiceData.entityId,
+							  			      currency:invoiceData.invoiceCcy
+									        };
 
 							Promise.all([Country.findCountriesForRegLicCurr(UserReq.formRequestDetails(genObj))
 						     ]).then(function(values) {
@@ -1115,56 +1106,8 @@ var page = Component.extend({
 			              		}
 							}).then(function(){
 
-
-
-			         		prepareInvoiceLines(self.scope,invoiceData.invoiceLines,false);
-
-							self.scope.ajaxRequestStatus.attr("allDataLoaded", true);
-
-							$(".removeRow").click(function(event){
-		              	           $option.each(function(index){
-		                            	$('#invoiceform').bootstrapValidator('removeField', $(this));
-		                           	});
-
-						           	var rowindex = $(this).closest("tr").attr("rowid");
-
-										var inputContent = "inputContent"+rowindex;
-										var tempDelObj = {};
-										tempDelObj["country"] = self.scope.countryStore.attr("inputCountry"+rowindex);
-										tempDelObj["invLineId"] = $(this).closest("tr").attr("data-invLineId");
-								   		tempDelObj["fiscalPeriod"] =  periodWidgetHelper.getFiscalPeriod($("#inputMonth"+rowindex).val());
-								   		tempDelObj["periodType"] = periodWidgetHelper.getPeriodType($("#inputMonth"+rowindex).val().charAt(0));
-								   		tempDelObj["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent"+rowindex);
-								   		tempDelObj["contentGrpName"] = $("#inputContent"+rowindex+" option:selected").text();
-								   		tempDelObj["lineAmount"] = self.scope.AmountStore.attr("amountText"+rowindex);
-								   		tempDelObj["lineStatus"] = $(this).closest("tr").attr("data-lineStatus");
-								   		tempDelObj["status"] = "DELETE";
-								   		tempDelObj["lineType"] = invoiceData.invoiceLines[0].lineType;
-
-										if(self.scope.attr("invoicetypeSelect") == "2"){
-											//var ccidGL = "ccidGL"+rowindex;
-											if($('#ccidGL'+rowindex).val()!=undefined  && $('#ccidGL'+rowindex).val().length>0){
-							   						tempDelObj["glAccRefId"] = $("#ccidGL"+rowindex).val();
-							   					}else{
-							   						tempDelObj["glAccNum"] = $("#ccidGLtxt"+rowindex).val();
-							   					}
-
-
-											//tempArry["glAccRefId"] = self.scope.ccidGLStore.attr(ccidGL);
-								  	 		tempDelObj["adhocTypeId"] = self.scope.contentTypeStore.attr("inputContent"+rowindex);
-								  	 	}
-								  	 	else{
-								  	 		tempDelObj["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent"+rowindex);
-								  	 		//console.log(tempArry["contentGrpName"]);
-								  	 		var tempContentGrpName = $("#inputContent"+rowindex+" option:selected").text();
-								  	 		tempDelObj["contentGrpName"] = tempContentGrpName;
-								  	 	}
-
-									self.scope.DelInvoiceline.push(tempDelObj);
-									$(this).closest("tr").remove();
-						           	self.scope.AmountStore.removeAttr("amountText"+rowindex);
-						           	self.scope.contentTypeStore.removeAttr("inputContent"+rowindex);
-								});
+			         		prepareInvoiceLines(self.scope,invoiceData.invoiceLines,false,true);
+                  self.scope.ajaxRequestStatus.attr("allDataLoaded", true);
 
 							});
 						/*Breakdown end*/
@@ -1457,7 +1400,7 @@ var page = Component.extend({
 							//var msg = "Invoice number "+self.scope.invoicenumberStore+" was saved successfully.";
 							var msg = values[0].responseText;
 
-							prepareInvoiceLines(self.scope,values[0].invoices[0].invoiceLines,true);
+							prepareInvoiceLines(self.scope,values[0].invoices[0].invoiceLines,true,false);
 
 							//commonUtils.displayUIMessageWithDiv("#invmessageDiv", values[0].status,values[0].responseText);
 							commonUtils.showSuccessMessage(msg);
@@ -1607,23 +1550,16 @@ var page = Component.extend({
 												self.scope.attr("editpage", true);
 
 												Invoice.findOne(UserReq.formRequestDetails(getByIDReq),function(data){
-								                  		 self.scope.attr("invoiceContainer").replace(data["invoices"]);
-
-								                  		 if(data.status === "FAILURE"){
-        								                  		 	var msg = data.responseText;
-        								          					// $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
-        								          					// $("#invmessageDiv").show();
-        								          					commonUtils.showErrorMessage(msg);
-        								          					$("#addInvSubmit").attr("disabled", false);
-								                  		 }
-
-								                  		},function(errmsg){
-    										                /*Error condition*/
-    										             //    	$("#invmessageDiv").html("<label class='errorMessage'>"+errmsg+"</label>");
-    								          					// $("#invmessageDiv").show();
-    								          					commonUtils.showErrorMessage(errmsg);
-    								          					$("#addInvSubmit").attr("disabled", false);
-    										        		});
+			                  		 self.scope.attr("invoiceContainer").replace(data["invoices"]);
+			                  		 if(data.status === "FAILURE"){
+							          					commonUtils.showErrorMessage(data.responseText);
+							          					$("#addInvSubmit").attr("disabled", false);
+			                  		 }
+                           	},function(errmsg){
+							                /*Error condition*/
+					          					commonUtils.showErrorMessage(errmsg);
+					          					$("#addInvSubmit").attr("disabled", false);
+							        		});
 
 												}
 											});
@@ -1797,7 +1733,7 @@ var page = Component.extend({
             commonUtils.showErrorMessage(msg);
           }
 
-          function prepareInvoiceLines(self,invoiceLines,reload) {
+          function prepareInvoiceLines(self,invoiceLines,reload,isLineItemRemoveNeeded) {
           	var $template = $('#breakrowTemplate');
           	for (var i = 0; i < invoiceLines.length; i++) {
           		self.attr("rowindex", i)
@@ -1855,15 +1791,65 @@ var page = Component.extend({
           			self.ccidGLStore.attr("ccidGL" + rowindex, invoiceLines[i].ccidFileName);
           		}
 
-          		if (rowindex != 0)
-          			$("#breakrow" + rowindex + " .removeRow").css("display", "block");
-          		var $option = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"], [name="ccidGLtxt[]"]');
+          		if (rowindex != 0){
+                $("#breakrow" + rowindex + " .removeRow").css("display", "block");
+              }
 
-          		$option.each(function(index) {
-          			$('#invoiceform').bootstrapValidator('addField', $(this));
-          		});
+              if($clone != undefined){
+                var $option = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"], [name="ccidGLtxt[]"]');
+
+                if(isLineItemRemoveNeeded){
+                  removeBreakLineEvent($option,self,invoiceLines);
+                }
+
+                $option.each(function(index) {
+                  $('#invoiceform').bootstrapValidator('addField', $(this));
+                });
+
+              }
           	}
           	}
+          }
+
+          var removeBreakLineEvent = function(lineItem,self,invoiceLines){
+
+            $(".removeRow").click(function(event){
+              lineItem.each(function(index){
+                $('#invoiceform').bootstrapValidator('removeField', $(this));
+              });
+              var rowindex = $(this).closest("tr").attr("rowid");
+              var inputContent = "inputContent"+rowindex;
+              var tempDelObj = {};
+              tempDelObj["country"] = self.countryStore.attr("inputCountry"+rowindex);
+              tempDelObj["invLineId"] = $(this).closest("tr").attr("data-invLineId");
+              tempDelObj["fiscalPeriod"] =  periodWidgetHelper.getFiscalPeriod($("#inputMonth"+rowindex).val());
+              tempDelObj["periodType"] = periodWidgetHelper.getPeriodType($("#inputMonth"+rowindex).val().charAt(0));
+              tempDelObj["contentGrpId"] = self.contentTypeStore.attr("inputContent"+rowindex);
+              tempDelObj["contentGrpName"] = $("#inputContent"+rowindex+" option:selected").text();
+              tempDelObj["lineAmount"] = self.AmountStore.attr("amountText"+rowindex);
+              tempDelObj["lineStatus"] = $(this).closest("tr").attr("data-lineStatus");
+              tempDelObj["status"] = "DELETE";
+              tempDelObj["lineType"] = invoiceLines[0].lineType;
+
+              if(self.attr("invoicetypeSelect") == "2"){
+                //var ccidGL = "ccidGL"+rowindex;
+                if($('#ccidGL'+rowindex).val()!=undefined  && $('#ccidGL'+rowindex).val().length>0){
+                  tempDelObj["glAccRefId"] = $("#ccidGL"+rowindex).val();
+                }else{
+                  tempDelObj["glAccNum"] = $("#ccidGLtxt"+rowindex).val();
+                }
+                tempDelObj["adhocTypeId"] = self.contentTypeStore.attr("inputContent"+rowindex);
+              }
+              else{
+                tempDelObj["contentGrpId"] = self.contentTypeStore.attr("inputContent"+rowindex);
+                var tempContentGrpName = $("#inputContent"+rowindex+" option:selected").text();
+                tempDelObj["contentGrpName"] = tempContentGrpName;
+              }
+              self.DelInvoiceline.push(tempDelObj);
+              $(this).closest("tr").remove();
+              self.AmountStore.removeAttr("amountText"+rowindex);
+              self.contentTypeStore.removeAttr("inputContent"+rowindex);
+            });
           }
 
 					var updatePeriodCalender = function(elementID){
