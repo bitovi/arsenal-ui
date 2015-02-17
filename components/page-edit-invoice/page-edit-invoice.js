@@ -866,7 +866,9 @@ var page = Component.extend({
 				                   data.push(option);
 				                $.each(data, function(key, value) {
 				                    option = $('<option>').text(value.value).val(value.id);
-				                    data.push(option);
+				                    if(value.value != undefined && value.id != undefined){
+				                    	data.push(option);
+				                    }   
 				                });
 				                self.html(data);
 				            }

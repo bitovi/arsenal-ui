@@ -284,4 +284,81 @@ rn-dashboard-invoices {
   }
 //19770183 UI - Look & feel changes accross mulitple screens --end  
 
+
+table.holes-reports {
+    width: 90%;
+    margin: 0 auto;
+    color: @dark-grey;
+
+    tr {
+      height: 3em;
+    }
+
+    th {
+      font-weight: normal;
+      padding: .25em .5em;
+      color: @dark-grey;
+      font-size: 12px;
+      background: linear-gradient(to bottom, #bfbfbf, #808080);
+      border-right: 1px solid #666666 !important;
+      border-left: 1px solid #666666 !important;
+      border-top: 1px solid #666666 !important;
+      border-bottom: 1px solid #666666 !important;
+    }
+
+    td {
+      border: 1px solid @border-grey;
+      position: relative;
+      background-color: white;
+
+      &.invoice-expected {
+        background-color: @medium-grey;
+      }
+
+      .circle {
+        margin: 0 auto;
+        background-color: green;
+        width: 1em;
+        height: .5em;
+
+        &.top {
+          border-radius: .5em .5em 0 0;
+        }
+        &.bottom {
+          border-radius: 0 0 .5em .5em;
+        }
+      }
+
+      .la {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 1em;
+      }
+    }
+
+    .entity {
+      text-align: center;
+    }
+
+    .country {
+      text-align: center;
+      width: 8em;
+
+      span {
+        display: inline-block;
+        width: 50px;
+
+        padding: .25em;
+        background: @medium-grey;
+        border-radius: .5em;
+      }
+    }
+
+    .local-society {
+      padding-left: 1em;
+
+    }
+  }
+
 }

@@ -1046,14 +1046,18 @@ var page = Component.extend({
 					                       	$("#breakrow"+rowindex+" #inputCountry").attr("id","inputCountry"+rowindex).val(invoiceData.invoiceLines[i].country);
 					                         self.scope.countryStore.attr("inputCountry"+rowindex, invoiceData.invoiceLines[i].country);
 
-					                       	$("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val(invoiceData.invoiceLines[i].glAccount);
+					                       
 
 					                       	if(self.scope.attr("invoicetypeSelect") == "2"){
+					                       		//$("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val(invoiceData.invoiceLines[i].glAccount);
+					                       		$("#breakrow" + rowindex + " #ccidGL").attr("id", "ccidGL" + rowindex).val(invoiceData.invoiceLines[i].glAccRefId);
+          										$("#breakrow" + rowindex + " #ccidGLtxt").attr("id", "ccidGLtxt" + rowindex).val(invoiceData.invoiceLines[i].glAccNum);
 												self.scope.ccidGLStore.attr("ccidGL"+rowindex, invoiceData.invoiceLines[i].glAccount);
 									 		}
 									 		else
 									 		{
-												self.scope.ccidGLStore.attr("ccidGL"+rowindex, invoiceData.invoiceLines[i].ccidName);
+												$("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val(invoiceData.invoiceLines[i].ccidFileName);
+												self.scope.ccidGLStore.attr("ccidGL"+rowindex, invoiceData.invoiceLines[i].ccidFileName);
 									 		}
 
 											if(rowindex != 0)

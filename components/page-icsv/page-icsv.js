@@ -360,11 +360,11 @@ var page = Component.extend({
 
           //console.log('Request:'+ JSON.stringify(icsvReq));
 
-          console.log(icsvmap);
+          //console.log(icsvmap);
 
           icsvmap.removeAttr("invoiceData");
 
-          console.log(icsvmap);
+          //console.log(icsvmap);
 
           if(!$(".jQfunhide").is(":visible")){
             $('#icsverr').removeClass("icsv-error").addClass("icsv-validate-inprogress");

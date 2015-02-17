@@ -24,6 +24,7 @@ import RefCountry from 'models/refdata/country/';
 import PricingModels from 'models/pricing-models/';
 import PricingMethods from 'models/common/pricingMethods/';
 import CountryLicensor from 'models/refdata/countryLicensor/';
+import constants from 'utils/constants';
 
 
 var reportConfigurationList = new can.List();
@@ -74,22 +75,32 @@ var page = Component.extend({
     enableButtonsApprove : "display:none",
     enableButtonsReject : "display:none",
 
-    switchButtons: function() {
+    switchButtons: function() { 
 
       var self = this;
 
       if(self.pageState.countryDetails.country.status == "N") {
 
-        self.attr("enableButtonsApprove", "display:block");
-        self.attr("enableButtonsReject", "display:block");
-        self.attr("enableButtonsPropose", "display:none");
+        if(self.appstate.userInfo.roleIds[0] == constants.ROLES.BM) {
+
+          self.attr("enableButtonsApprove", "display:none");
+          self.attr("enableButtonsReject", "display:none");
+          self.attr("enableButtonsPropose", "display:none");
+  
+        } else {
+
+          self.attr("enableButtonsApprove", "display:inline-block");
+          self.attr("enableButtonsReject", "display:inline-block");
+          self.attr("enableButtonsPropose", "display:none");
+
+        }
 
       } else {
 
-        self.attr("enableButtonsApprove", "display:none");
-        self.attr("enableButtonsReject", "display:none");
-        self.attr("enableButtonsPropose", "display:block");
-
+          self.attr("enableButtonsApprove", "display:none");
+          self.attr("enableButtonsReject", "display:none");
+          self.attr("enableButtonsPropose", "display:inline-block");
+  
       }
 
     },
@@ -204,11 +215,9 @@ var page = Component.extend({
         self.attr("accuralModels").replace(accModels);
         self.attr("accuralModelVersions").replace(selectedAccModelVersions);
         self.attr("selectedModelId",selModelId);
-        setTimeout(function(){
-          if(selectedAccModel !=null)
-            $("#accModelSel").val(selectedAccModel);
-        },1000);
 
+        $("#accModelSel").val(selectedAccModel);
+        $("#accModelSel").change();
 
         var tempcommentObj = data.countryDetails.commentList;
         //console.log("multi comments "+JSON.stringify(tempcommentObj.attr()));
@@ -645,12 +654,10 @@ var page = Component.extend({
         self.attr("accuralModels").replace(accModels);
         self.attr("accuralModelVersions").replace(selectedAccModelVersions);
         self.attr("selectedModelId",selModelId);
-        setTimeout(function(){
-          if(selectedAccModel !=null)
-            $("#accModelSel").val(selectedAccModel);
-        },1000);
-
-
+        
+        $("#accModelSel").val(selectedAccModel);
+        $("#accModelSel").change();
+        
         var tempcommentObj = data.countryDetails.commentList;
         //console.log("multi comments "+JSON.stringify(tempcommentObj.attr()));
         if(tempcommentObj !=null)
@@ -738,6 +745,21 @@ var page = Component.extend({
       self.attr("accuralModelVersions").replace(ver);
 
       var selModelId = ver[0]["modelId"];
+
+      var maxVersion = 0;
+      
+      for(var i=0; i< ver.length; i++) {
+        
+        if(maxVersion < ver[i].version) {
+
+          maxVersion =  ver[i].version;          
+
+        }
+
+      }
+      
+      $("#accModelVerSel").val(maxVersion);
+      $("#accModelVerSel").change();
       //console.log("sel model id "+selModelId)
       self.attr("selectedModelId",selModelId);
 
@@ -746,9 +768,9 @@ var page = Component.extend({
       var self=this.scope;
       var selected = $(el[0].selectedOptions).data('accModelVer');
       //console.log("selected accmodelvers "+JSON.stringify(selected.attr()));
-      var selModelId = selected["modelId"];
+      
       //console.log("sel model id "+selModelId)
-      self.attr("selectedModelId",selModelId);
+      self.attr("selectedModelId",selected.modelId);
     },
     '.society click': function(el, ev){
 
