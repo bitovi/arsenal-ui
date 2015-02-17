@@ -123,6 +123,13 @@ var page = Component.extend({
     },
     events: {
       "inserted": function(){
+
+        if(commonUtils.isReadOnly()=='true'){
+
+          $('#onAccountEditDeleteDiv').find('button').attr('disabled','disabled');
+        }
+
+
         var self = this;
        $("#searchDiv").show();
        self.scope.uploadedfileinfonew.replace([]);
@@ -843,7 +850,7 @@ var frameRequest = function(appstate){
 }
 
 var disableEditORDeleteButtons = function(disable){
-  if(disable){
+  if(disable || commonUtils.isReadOnly()=='true'){
        $("#proposedDelete").attr("disabled","disabled");
        $("#proposedEdit").attr("disabled","disabled");
        //disableProposedSubmitButton(true);
@@ -862,7 +869,7 @@ var disableProposedSubmitButton = function(disable){
 
 }
 var disablePropose=function(disable){
-    if(disable){
+    if(disable || commonUtils.isReadOnly()=='true'){
         $("#propose").attr("disabled","disabled");
         $("#paymentBundleNames").attr("disabled","disabled");
         $("#submitPOA").attr("disabled","disabled");
@@ -872,7 +879,7 @@ var disablePropose=function(disable){
 }
 
 var disableProposeButton=function(disable){
-  if(disable){
+  if(disable || commonUtils.isReadOnly()=='true'){
         $("#propose").attr("disabled","disabled");
     }else{
        $("#propose").removeAttr("disabled");
@@ -900,7 +907,7 @@ var hidethePeriods = function(){
               _root.find('.q4 li').not(":first").find('a').addClass('disabled');
 };
 var disableCopyOnAccount=function(disable){
-  if(disable){
+  if(disable || commonUtils.isReadOnly()=='true'){
         $("#copyOnAccount").attr("disabled","disabled");
     }else{
       $("#copyOnAccount").removeAttr("disabled");

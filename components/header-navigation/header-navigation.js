@@ -70,7 +70,6 @@ var headerNavigation = Component.extend({
       '#appleLogo click':function(){
           commonUtils.navigateTo("dashboard");
       },
-
       '.bookmark click':function(){
           $('book-mark').slideToggle('fast');
       },
@@ -78,34 +77,18 @@ var headerNavigation = Component.extend({
           $('rn-notifications').slideToggle('fast');
           this.element.find('rn-notifications').scope().notificationTriggered(this.element.find('rn-notifications').scope());
       },
-     '#homemenu li a click':function(btn){
-        var mainmenu_txt = btn.text();
-        if(btn.attr('id')){
-          $('#dynamicmenu').hide();
-          $('#homemenu').show();
+      '.dropdown-menu li a click':function(el){
+        
+         console.log(" I am heer "+el.data('screenid'));
+         this.scope.appstate.screenLookup.attr("screenid",el.data('screenid'));
 
-        }
-        //changeMenu(mainmenu_txt);
-      },
-      '#show click':function(btn){
-         $('#dropdown').slideToggle('fast');
-      },
-      '#dropdown li click':function(btn){
-           var mainmenu_txt = $.trim(btn.text());
-           if(mainmenu_txt=='Dashboard'){
-             $('#dynamicmenu').hide();
-             $('#homemenu').show();
-           }
-           // else changeMenu(mainmenu_txt);
-      },
-      '#dynamicmenu li a click':function(btn){
-            if(btn.attr('id')!='show' && btn.attr('id')==undefined){
-               $('#dynamicmenu li a').removeClass('submenuactive');
-                btn.addClass('submenuactive');
-                if($("#dropdown").is(':visible')){
-                  $("#dropdown").hide();
-                }
-            }
+            // if(btn.attr('id')!='show' && btn.attr('id')==undefined){
+            //    $('#dynamicmenu li a').removeClass('submenuactive');
+            //     btn.addClass('submenuactive');
+            //     if($("#dropdown").is(':visible')){
+            //       $("#dropdown").hide();
+            //     }
+            // }
       },
       '{document}  click':function(el,e){
         if ($(e.target).closest("#dynamicmenu").length === 0) {
@@ -117,10 +100,6 @@ var headerNavigation = Component.extend({
             $("#dropdown").hide();
         }
       },
-      '{appstate} change':function(el){
-        if(el.navigationRequired) traverseSubMenu(el.page);
-      },
-
       '.logout click':function(){
         logout.find().done(function(data){
           if(data.responseCode == 'LOGGEDOUT') {
@@ -166,139 +145,4 @@ var headerNavigation = Component.extend({
         }
     }
 });
-
-var changeMenu = function(mainmenu_txt){
-    var test = '<li><ul id="dropdown"></ul></li>',addcls;
-    var temp ='<li class="show active"><a id="show">'+mainmenu_txt+'<span class="activemenu">></span>'+'</a></li>'+$(test).html();
-        $.each(menu,function(i,el){
-            if(el.value==mainmenu_txt){
-             if(el.submenu!=undefined && el.submenu.length>0){
-                $('#dynamicmenu, #dynhide').show();
-                $('#homemenu').hide();
-                $.each(el.submenu,function(i,el){
-                    if(i==0) addcls ='';//submenuactive
-                    else addcls ='';
-                    if(el.url != undefined){
-                      temp+='<li {{isActive '+el.id+'}}><a  class="'+addcls+'" href="'+el.url+'" target="_blank">'+el.value+'</a></li>';
-                    } else {
-                      temp+='<li {{isActive '+el.id+'}}><a  class="'+addcls+'" href="'+el.id+'">'+el.value+'</a></li>';
-                    }
-               });
-              }
-            }
-        });
-
-
-
-       $('#dynamicmenu').empty().append(temp);
-       $('#dropdown').empty().append($('#homemenu').html());
-       $( "#dropdown li[name*='"+mainmenu_txt+"']").hide()
-
-};
-
-//traverseSubMenu is need to look for the mainMenu to looked and and sub menu to be selected.
-// This will only be trigerred when the appstate.navigationRequired is set true
-var traverseSubMenu = function(pageLoad){
-  if(pageLoad == "null") return false;
-
-  var mainMenu = "";
-  var subMenu = "";
-
-
-  if(pageLoad == "dashboard"){
-    mainMenu = pageLoad;
-  }else{
-    $.each(menu,function(i,el){
-        if(el.submenu != undefined)
-        {
-            $.each(el.submenu,function(i,el){
-              if(el.id == pageLoad){
-                subMenu = el.value;
-                return false;
-              }
-            });
-
-          if(subMenu != ""){
-            mainMenu = el.value;
-            console.log("Page : Main : "+mainMenu+", subMenu:> "+subMenu)
-            return false;
-          }
-        }
-    });
-  }
-
-  // changeMenu(mainMenu);
-  $('#dynamicmenu li a[href$="'+pageLoad+'"]').addClass('submenuactive');
-
-};//------traverseSubMenu: end
-
-
-var  menu =[
-  {
-    "id": "dashboard",
-   "value": "Dashboard",
-   "submenu":[]
-  },
-  {
-  "id": "approvals",
-  "value": "Approvals",
-   "submenu": [
-       {"value": "Accrual Journal Voucher", "id": "accrualjournalvoucher","screenId":11, "url":RinsCommon.RINS_OLD_URL+"accrualJV"},
-       {"value": "Accrual Details", "id": "accrualdetails","screenId":12, "url":RinsCommon.RINS_OLD_URL+"accrualDetails"},
-       {"value": "Accruals Aging Report", "id": "accrualsagingreport","screenId":13, "url":RinsCommon.RINS_OLD_URL+"accrualsAgingReport"},
-       {"value": "Accrual Trueup", "id": "accrualtrueup","screenId":14, "url":RinsCommon.RINS_OLD_URL+"accrualTrueUp"},
-       {"value": "Accrual Analysis", "id": "accrualanalysis","screenId":15, "url":RinsCommon.RINS_OLD_URL+"accrualAnalysis"}
-   ]
-},{
-  "id": "invoices",
-  "value": "Invoices",
-   "submenu": [
-       {"value": "Invoice Entry", "id": "create-invoice","screenId":3},
-       {"value": "iCSV Entry", "id": "icsv","screenId":4},
-       {"value": "Search Invoice", "id": "invoices","screenId":5},
-       {"value": "Recon Stats", "id": "recon","screenId":7},
-       {"value": "Incoming Other", "id": "reconOther","screenId":8},
-       {"value": "On Account", "id": "on-account","screenId":9}
-   ]
-},{
-  "id": "reference",
-  "value": "Reference",
-   "submenu": [
-  //    {"value": "Licensor", "id": "licensor"},
-    {"value": "Licensor", "id": "licensor","screenId":16},
-      {"value": "Country", "id": "ref-country","screenId":17},
-    {"value": "Country Licensor", "id": "ref-licensorcountry","screenId":18},
-  {"value": "Pricing Model", "id": "pricing-models","screenId":19}
-   ]
-},{
-  "id": "analytic",
-  "value": "Analytics",
-   "submenu": [
- {"value": "Analytics", "id": "analytic","screenId":20},
-      {"value": "Payment Bundle Review", "id": "payment-bundles","screenId":21},
-    {"value": "Claim Review", "id": "claimreview","screenId":22},
-  {"value": "Global Revenue", "id": "globalrevenue","screenId":23, "url":RinsCommon.RINS_OLD_URL+"globalRevenue"},
-      /*{"value": "Monthly Billings Reconciliation", "id": "monthlybillingsreconciliation"},*/
-    {"value": "Unclaimed Summary", "id": "unclaimedsummary","screenId":24, "url":RinsCommon.RINS_OLD_URL+"unClaimedSummary"},
-   ]
-},{
-  "id": "system",
-  "value": "System",
-   "submenu": [
- {"value": "Job Statistics", "id": "jobstatistics","screenId":25, "url":RinsCommon.RINS_OLD_URL+"jobStatistics"},
-      {"value": "Report Downloads", "id": "reportdownloads","screenId":26, "url":RinsCommon.RINS_OLD_URL+"reportDownloads"}
-   ]
-},{
-  "id": "approvalhistory",
-  "value": "Approval History",
-   "submenu": [
-    {"value": "Accrual", "id": "accrual","screenId":27, "url":RinsCommon.RINS_OLD_URL+"accrualApprovalHistory"},
-    {"value": "Ref Data", "id": "refdata","screenId":28},
-    {"value": "Recon/Payment", "id": "reconpayment","screenId":29, "url":RinsCommon.RINS_OLD_URL+"reconPaymentHistory"},
-    {"value": "Sales Report", "id": "salesreport","screenId":30, "url":RinsCommon.RINS_OLD_URL+"salesReportHistory"},
-    {"value": "On Account", "id": "onaccount","screenId":31},
-    {"value": "Dispute Report", "id": "disputereport","screenId":32, "url":RinsCommon.RINS_OLD_URL+"lineItemHistory"},
-    {"value": "Accrual Rerun", "id": "accrualrerun","screenId":33, "url":RinsCommon.RINS_OLD_URL+"accrualRerunHistory"},
-   ]
-}];
 export default headerNavigation;

@@ -37,9 +37,13 @@ var stateDefaults = {
     //permissions:[],
     secretKey: 'f4166789-30bb-4e12-9973-a76376745096'
   },
-  screenLookup:{},//used for to carry the objects and pass it to the destination. U can follow the format as <SCREEN>:{<data>}
+  screenLookup:{
+    screenid:undefined,//each screen has its own screen id, which will be set during navigation from Menu.
+    ispagelocal:false, //it will be set to true when you navigate from one page to another
+    pageLocalParm:[], //if ispagelocal is true then this array should have value. The values from this array will be take and used to query database
+    targetScreen:undefined
+  },//used for to carry the objects and pass it to the destination. U can follow the format as <SCREEN>:{<data>}
   page: null,
-  navigationRequired: false,
   periodFrom: undefined,
   periodTo: undefined,
   periodType: undefined,
@@ -52,8 +56,6 @@ var stateDefaults = {
   renderGlobalSearch:true,
   globalSearch:undefined,
   csrfToken:undefined,
-  ispagelocal:false, //it will be set to true when you navigate from one page to another
-  pageLocalParm:[], //if ispagelocal is true then this array should have value. The values from this array will be take and used to query database
   fetchSize:30 //default fetch size. This will be overrided in index.js based on the browser size that the user is using.
 };
 

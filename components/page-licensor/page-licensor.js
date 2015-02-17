@@ -1248,7 +1248,7 @@ var page = Component.extend({
 
       }
 
-      if(!isValid) {
+      if(!isValid || commonUtils.isReadOnly()=='true') {
 
         $("#buttonsubmit").attr("disabled", true);
 
@@ -1669,8 +1669,18 @@ var page = Component.extend({
 
       self.scope.loadBootStrapPlugin();
 
+      if(commonUtils.isReadOnly()=='true'){
+
+      $('#entityGrid').find('input, textarea,button, select').attr('disabled','disabled');
+
+       $('#button_layout').find('input, textarea, button').attr('disabled','disabled');
+
+       $('#add_layout').find('input, textarea, button').attr('disabled','disabled');
+
+      }
 
     },
+
     'tbody tr click': function(el, ev) {
         $(el).parent().find('tr').removeClass("selected");
         $(el).parent().find('tr').removeClass("highlight");
@@ -1679,6 +1689,21 @@ var page = Component.extend({
 
     '.updatePeroid focus':function(el){
        $(el).closest('.calendarcls').find('.box-modal').show().trigger( "focus" );
+    },
+    '.calendarDateIcon click': function(el){
+      $('.box-modal').hide(); // hide all other open calendar popups before opening the new one.
+      $(el).closest('.calendarcls').find('.box-modal').show(0,function(){
+        //$($(el).closest('.calendarcls').find('.box-modal')).data("selected-period",el[0].value);
+
+        //var selected = el.data('type');
+      //  console.log($('.periodFromInput').val() +", "+ $('.periodToInput').val() );
+        $($(el).closest('.calendarcls').find('.box-modal')).data("selected-period-from",$('.periodFromInput').val());
+        $($(el).closest('.calendarcls').find('.box-modal')).data("selected-period-to",$('.periodToInput').val());
+        $($(el).closest('.calendarcls').find('.box-modal')).data("selected-period-type",PeriodWidgetHelper.getPeriodType($('.periodFromInput').val()));
+        $($(el).closest('.calendarcls').find('.box-modal')).data("selected-id",el.data('type'));
+        $(this).trigger("popup-shown");
+
+      }); 
     },
 
     '{selectedperiod} change':function(val){
@@ -1953,7 +1978,7 @@ var page = Component.extend({
 
       }
 
-     
+
 
       var reportConf = self.scope.reportConfMap[country];
 

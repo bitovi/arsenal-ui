@@ -708,6 +708,10 @@ var page = Component.extend({
 					}
 
 			},
+      destroy: function() {
+        //distroy all items can be placed.
+        $(".popover").hide();
+      },
 			".form-control keyup": function(event){
 					var self = this;
 					if(event[0].id == "newPaymentBundle"){
@@ -903,7 +907,7 @@ var page = Component.extend({
 				$('#invoiceform').bootstrapValidator('addField', 'ccidGLtxt[]');
 			}else{
 				$('#invoiceform').bootstrapValidator('removeField', 'ccidGLtxt[]');
-			}  
+			}
 
 			$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
 

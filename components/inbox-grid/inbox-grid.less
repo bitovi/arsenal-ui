@@ -1,7 +1,7 @@
 @import '../grid/grid.less';
 @import '../grid/examples/scrolling-grid/scrolling-grid.less';
 
-@step-border-color: #c6c6c6;
+@step-border-color: #9D9D9D;
 @approved-color: #669933; //#D0E3C3; changed as per the 19770183 UI - Look & feel changes accross mulitple screens
 @light-border: 1px solid hsl(0, 0%, 75%);
 
@@ -68,6 +68,7 @@ rn-inbox-grid, rn-outbox-grid {
     tbody tr {
       min-height: 1.5625em;
       cursor: pointer;
+      word-wrap: break-word;
     }
 
     tbody td {
@@ -94,7 +95,7 @@ rn-inbox-grid, rn-outbox-grid {
       &.previousApprover { .flex-basis(150px); }
       &.comments { .flex-grow(1); .flex-basis(300px); }
       &.pendingDays { .flex-basis(150px); }
-      &.approvalStage { .flex-basis(150px);text-align: center; }
+      &.approvalStage { .flex-basis(150px); }
     }
   }
 }

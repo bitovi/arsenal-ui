@@ -7,11 +7,11 @@
           <span class="large-headers">Country Details</span>
       </div>
       <div class="col-sm-4">
-        TODO - Keep the message outside 
+        TODO - Keep the message outside
          <div style="{{displayMessage}}" class="alert-success alert-dimension" role="alert">
           <a href="#" class="close" data-dismiss="alert">&times;</a>
           New Country Details Changes Saved Successfully.
-        </div> 
+        </div>
         <div class="cols-sm-4">
           <div id="invmessageDiv" role="alert"></div>
         </div>
@@ -28,7 +28,7 @@
           <div class="col-sm-7 div-warn-parent">
             <div id="invmessageDiv" class="center messageDiv" role="alert"></div>
         </div>
-      </div>  
+      </div>
 
     <div class="row">
          <div class="form-group col-sm-12">
@@ -51,8 +51,8 @@
 
   <div class="col-sm-12 lineDividerInvoice main-layout"><!-- Main Layout START-->
     <form id="countryForm" >
-      <div class="col-sm-6 left-layout"><!-- LEFT Layout START-->
-            <div id="loading_img1"></div> 
+      <div class="col-sm-6 left-layout" id ="left_layout"><!-- LEFT Layout START-->
+            <div id="loading_img1"></div>
             <div class="form-group">
                <div class="col-sm-12">
                   <label for="forStatus" class="col-sm-4 control-label small-headers">Status: </label>
@@ -60,7 +60,7 @@
                     <span>{{pageState.countryDetails.country.displayStatus}}</span>
                   </div>
                 </div>
-                 
+
             </div>
             <div class="form-group">
                  <div class="col-sm-12" id="periodFromcontainer">
@@ -82,7 +82,7 @@
                     <period-calendar selectedperiod={selectedperiod} appstate="{appstate}"></period-calendar>
                   </div>
                 </div>
-                
+
             </div>
             <div class="form-group">
                <div class="col-sm-12 ">
@@ -94,9 +94,9 @@
                        {{/each}}
                   </div>
                 </div>
-                 
+
             </div>
-            
+
             <div class="form-group">
                <div class="col-sm-12 ">
                   <label for="" class="col-sm-4 control-label small-headers">Main Pricing Method: </label>
@@ -109,7 +109,7 @@
                     </select>
                   </div>
                 </div>
-                 
+
             </div>
             <div class="form-group">
                <div class="col-sm-12 ">
@@ -123,7 +123,7 @@
                     </select>
                   </div>
                 </div>
-                 
+
             </div>
             <div class="form-group">
                <div class="col-sm-12">
@@ -132,7 +132,7 @@
                     <span>{{pageState.countryDetails.country.mechShare}}</span>
                   </div>
                 </div>
-                
+
             </div>
             <div class="form-group">
                <div class="col-sm-12">
@@ -141,7 +141,7 @@
                     <span>{{pageState.countryDetails.country.performShare}}</span>
                   </div>
                 </div>
-                 
+
             </div>
             <div class="form-group">
                <div class="col-sm-12">
@@ -154,7 +154,7 @@
                     </select>
                   </div>
                 </div>
-                 
+
             </div>
             <div class="form-group">
                <div class="col-sm-12">
@@ -167,7 +167,7 @@
                     </select>
                   </div>
                 </div>
-                 
+
             </div>
 
             <div class="form-group">
@@ -212,14 +212,14 @@
                     <textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>
                   </div>
                 </div>
-                 
+
              </div>
 
-            
+
         </div>
         <!-- LEFT Layout END-->
 
-        <div class="col-sm-6 right-layout"> <!-- RIGHT Layout START-->
+        <div class="col-sm-6 right-layout" id ="right_layout"> <!-- RIGHT Layout START-->
           <div class="form-group">
             <div class="col-sm-1"></div>
              <div class="col-sm-12">
@@ -273,7 +273,7 @@
                 View Pricing Model
               </div>
               <div class="col-sm-1" style="padding-top: 10px;text-align: right;" id="priModelClose">
-                <a href="javascript:void(0)"><img src="resources/images/rn_RemoveFile@2x.png"></a> 
+                <a href="javascript:void(0)"><img src="resources/images/rn_RemoveFile@2x.png"></a>
               </div>
             </div>
             <div class="col-sm-12" style="padding-top: 10px;">
@@ -299,7 +299,7 @@
                   <div class="singleField">
                       <label for="inputEmail3" class="col-sm-6 control-label small-headers">Pricing Model:</label>
                       <div class="col-sm-6">
-                        <span>{{getPricingModelDetails.pricingModel.modelName}}</span>     
+                        <span>{{getPricingModelDetails.pricingModel.modelName}}</span>
                       </select>
                       </div>
                     </div>
@@ -308,7 +308,7 @@
                   <div class="singleField">
                       <label for="inputEmail3" class="col-sm-6 control-label small-headers">Model Name:</label>
                       <div class="col-sm-6">
-                          <span>{{getPricingModelDetails.pricingModel.modelDescription}}</span> 
+                          <span>{{getPricingModelDetails.pricingModel.modelDescription}}</span>
                       </div>
                     </div>
                 </div>
@@ -332,11 +332,11 @@
             </div>
         </div><!-- View Pricing Model ends --->
       </div> <!-- Main Layout END-->
-    </form> 
+    </form>
   </div>
 </div>
 
-<div class="col-sm-12 buttonsPlaceHolder" style="text-align:right;padding:15px;padding-right: 32px;">
+<div class="col-sm-12 buttonsPlaceHolder" id ="button_layout" style="text-align:right;padding:15px;padding-right: 32px;">
   <!--<button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
   <button id="submitBtn" {{disableSubmit}} type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>-->
   <div class="col-sm-9"></div><div class="col-sm-1" style="{{enableButtonsPropose}}"><button id="submitBtn" {{disableSubmit}} type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big" style="{{enableButtonsPropose}}">Propose</button></div>

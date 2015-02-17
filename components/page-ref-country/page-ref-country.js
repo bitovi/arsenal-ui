@@ -43,7 +43,7 @@ var page = Component.extend({
   scope: {
     pageState: pageState,
   appstate : [],
-  
+
     /*Loading form elemenst*/
     localSocietyNames:[],
     countries:[],
@@ -225,7 +225,7 @@ var page = Component.extend({
 
           revHistories = self.attr("revHistory");
         }
-       
+
         var formatRevHistories = [];
 
         if(revHistory) {
@@ -238,13 +238,13 @@ var page = Component.extend({
           self.attr("revHistory", data.countryDetails.revisionHistories.attr());
 
         }
-        
+
         for(var i=0;i<revHistories.length;i++){
           var revHisTemp = {};
           revHisTemp["id"] = revHistories[i]["id"];
           revHisTemp["validFrom"] = (revHistories[i]["validFrom"]==null)?"":revHistories[i]["validFrom"];
           revHisTemp["validTo"] = (revHistories[i]["validTo"]==null)?"":revHistories[i]["validTo"];
-          revHisTemp["comment"] = (revHistories[i]["commentList"] == undefined || revHistories[i]["commentList"] == null || 
+          revHisTemp["comment"] = (revHistories[i]["commentList"] == undefined || revHistories[i]["commentList"] == null ||
             (revHistories[i]["commentList"].length==0 || revHistories[i]["commentList"][0]["comments"]==null))?"":revHistories[i]["commentList"][0]["comments"];
           revHisTemp["status"] = revHistories[i]["status"];
           formatRevHistories.push(revHisTemp);
@@ -256,7 +256,7 @@ var page = Component.extend({
 
         $("#loading_img").hide();
         $(".main-layout").show();
-        
+
         $(".buttonsPlaceHolder").show();
 
         if(data.countryDetails.status == "A") {
@@ -312,19 +312,19 @@ var page = Component.extend({
               self.scope.attr("countries").replace(values[2]);
 
               $("#selCountry").val((values[2])[0].id);
-              if(self.scope.appstate.attr("screendetails") != null && self.scope.appstate.attr("screendetails") != undefined && 
-                self.scope.appstate.attr("screendetails") != undefined && 
-                self.scope.appstate.attr("screendetails") != null ) {
-        
+              if(self.scope.appstate.attr("screendetails") != null && self.scope.appstate.attr("screendetails") != undefined) {
+
                   self.scope.populateCountryDetails(self.scope, "", self.scope.appstate.screendetails.tableId, false)
+                  self.scope.appstate.attr("screendetails", null);
+
 
               } else {
 
                 self.scope.pageState.countryDetails.country.attr("countryId", (values[2])[0].id);
                 $("#fetchDetailsBtn").click();
-              
+
               }
-              
+
 
               self.scope.attr("pricingMethods").replace(values[3].pricingMethodList);
         }).then(function(values) {
@@ -356,12 +356,12 @@ var page = Component.extend({
         return '';
       }
     },
-    
+
     enableButtons : function(ref){
 
       if(this.attr("USER_ROLE") != ref)
           return "display:none";
-      else 
+      else
           return "display:inline";
 
     }
@@ -458,6 +458,21 @@ var page = Component.extend({
       $('#submitBtn').prop('disabled',false);
       });
 
+      if(commonUtils.isReadOnly()=='true'){
+
+
+
+ $('#left_layout').find('input, textarea, select').attr('disabled','disabled');
+
+ $('#right_layout').find('input, textarea, button').attr('disabled','disabled');
+
+ $('#button_layout').find('input, textarea, button').attr('disabled','disabled');
+
+
+
+ }
+
+
     },
     '.updatePeroid focus':function(el){
         $(el).closest('.calendarcls').find('.box-modal').show().trigger( "focus" );
@@ -489,7 +504,7 @@ var page = Component.extend({
       //$('#grid-society-model').html(stache('<rn-grid-society-model rows="{societyModelMapping}"></rn-grid-society-model>')({societyModelMapping}));
       self.scope.attr("footerrowspresent", true);
       self.scope.attr("footerdatasocmod",  self.scope.societyModelMapping != null && self.scope.societyModelMapping.length >0 ? self.scope.societyModelMapping.length : 0);
-      
+
     },
     '#fetchDetailsBtn click':function(){
       var self = this.scope;
@@ -666,7 +681,7 @@ var page = Component.extend({
         $("#loading_img").hide();
         $(".main-layout").show();
         $(".buttonsPlaceHolder").show();
-        
+
         if(data.countryDetails.status == "A" || data.countryDetails.status == "N") {
           self.attr("state","Edit");
         }else{
@@ -679,19 +694,19 @@ var page = Component.extend({
         },50);
 
         self.switchButtons();
-    
+
       },function(xhr){
           console.error("Error while loading: country Details"+xhr);
       });
 
 
     },
-    '{selectedperiod} change':function(val){ 
+    '{selectedperiod} change':function(val){
 
        var periodValue = val[0].value;
        console.log(periodValue);
 
-       if(val[0].which == "validFrom"){ 
+       if(val[0].which == "validFrom"){
 
          $("input[name='validFrom']").val(periodValue);
 
@@ -794,7 +809,7 @@ var page = Component.extend({
           } else {
 
             $("#viewPricingModelDiv").show();
-              
+
           }
 
           self.attr("getPricingModelDetails",data.pricingModel);
@@ -901,7 +916,7 @@ var page = Component.extend({
             validTo: formatValidTo,
             commentId: self.pageState.countryDetails.country.commentId,
             comments: comments
-            
+
           }
         };
 
@@ -989,7 +1004,7 @@ var page = Component.extend({
             validTo: formatValidTo,
             commentId: self.pageState.countryDetails.country.commentId,
             comments: comments
-            
+
           }
         };
 
@@ -1020,9 +1035,9 @@ var page = Component.extend({
     },
     '#submitBtn click': function(el, ev){
       ev.preventDefault();
-      
+
       $("#loading_img").show();
-      
+
       var self = this.scope;
       var validFrom = $("#validFrom").val();
       var formatValidFrom = PeriodHelper.getFiscalPeriod(validFrom);
@@ -1079,7 +1094,7 @@ var page = Component.extend({
          $("#loading_img").hide();
         if(data.status=="SUCCESS"){
           var msg = "Country details saved successfully";
-    
+
       //$("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
           //$("#invmessageDiv").show();
           $("#fetchDetailsBtn").click();
@@ -1144,12 +1159,12 @@ function alignGrid(divId){
           tdWidth = theadTdWidth;
         else if(tfootTdWidth >= tbodyTdWidth && tfootTdWidth >= theadTdWidth)
           tdWidth = tfootTdWidth;
-        else 
+        else
           tdWidth = tbodyTdWidth;
 
         if(i==1)
           tdWidth = 35;
-        
+
         tableWidth += tdWidth;
         cellWidthArr.push(tdWidth);
       }
@@ -1192,6 +1207,6 @@ function alignGrid(divId){
   }
 }
 
-  
+
 
 export default page;

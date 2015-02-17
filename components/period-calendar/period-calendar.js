@@ -178,6 +178,9 @@ function setActiveStyle(selectedPeriod,scope){
     if(!$('.period li .'+period).hasClass('disabled')){
       $('.period li .'+period).addClass('period-active');
     }
+  }else{
+    //remove selected class from li element.
+    $('.period li a').removeClass('period-active');
   }
 }
 

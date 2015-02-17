@@ -115,7 +115,7 @@ var page = Component.extend({
 
     isIngestCcidsSelected:function(ref){
       //if the size of the list is greater than 0, enables the Reject button
-      return ( this.attr("size_ingestCcidSelected") == ref ? 'disabled' : '' ) ;
+      return ( this.attr("size_ingestCcidSelected") == ref || commonUtils.isReadOnly()=='true' ? 'disabled' : '' ) ;
     },
 
     isTabSelectedAs:function(tabName){
@@ -174,6 +174,11 @@ var page = Component.extend({
             self.scope.refreshTokenInput(item,"Delete");
           }
         });
+
+        if(commonUtils.isReadOnly()=='true'){
+          $('#reject_button').attr('disabled',true);
+        }
+
       },
       "{tokenInput} change": function(){
         var self= this;
@@ -318,8 +323,7 @@ var page = Component.extend({
 
     '.btn-holesReport click': function() {
       commonUtils.navigateTo("dashboard");
-      this.scope.appstate.attr('DISPLAY_HOLES_REPORT',true);
-      // this.scope.appstate.attr('page','dashboard');
+      this.scope.appstate.screenLookup.attr('targetScreen',"2");// 2 - Screenid for Holes report 
     },
     '.btn-OverRep click': function() {
         window.open(RinsCommon.RINS_OLD_URL+'overRepConfig');
@@ -571,7 +575,7 @@ var fetchReconIngest = function(scope, load){
   var dataLowerGrid = {};
 
   Promise.all([Recon.findOne(searchRequestObj)]).then(function(values){
-    //console.log("Loading Done");
+    console.log("Loading Done");
 
     if(values != undefined && values != null) {
       var data = values[0];

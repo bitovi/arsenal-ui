@@ -22,7 +22,7 @@
                 <ul class="dropdown-menu" role="menu">
                     <li><a href='{{url}}approvals/accrualApproval' class="old" target="_blank">Accrual</a></li>
                     <li><a href='{{url}}approvals/refDataApproval' class="old" target="_blank">Ref Data</a></li>
-                    <li><a href='/payment-bundles'>Payment Bundle Review</a></li>
+                    <li {{isScreenEnabled 21}}><a href='/payment-bundles' data-screenid="21" >Payment Bundle Review</a></li>
                     <li><a href='{{url}}approvals/salesReportApproval' class="old" target="_blank">Sales Report</a></li>
                     <li><a href='{{url}}approvals/unClaimedReportApproval' class="old" target="_blank">Unclaimed Report</a></li>
                 </ul>
@@ -32,12 +32,12 @@
             <li name='Invoices' class="dropdown" >
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Invoices<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                    <li {{isScreenEnabled 3}}><a href="/create-invoice">Invoice Entry</a></li>
-                    <li {{isScreenEnabled 4}}><a href='/icsv' >iCSV Entry</a></li>
-                    <li {{isScreenEnabled 5}}><a href='/invoices'>Search Invoice</a></li>
-                    <li {{isScreenEnabled 7}}><a href='/recon'>Recon Stats</a></li>
-                    <li {{isScreenEnabled 8}}><a href='/reconOther'>Incoming Other</a></li>
-                    <li {{isScreenEnabled 9}}><a href='/on-account'>On Account</a></li>
+                    <li {{isScreenEnabled 3}}><a href="/create-invoice" data-screenid="3">Invoice Entry</a></li>
+                    <li {{isScreenEnabled 4}}><a href='/icsv'  data-screenid="4">iCSV Entry</a></li>
+                    <li {{isScreenEnabled 5}}><a href='/invoices'  data-screenid="5">Search Invoice</a></li>
+                    <li {{isScreenEnabled 7}}><a href='/recon'  data-screenid="7">Recon Stats</a></li>
+                    <li {{isScreenEnabled 8}}><a href='/reconOther'  data-screenid="8">Incoming Other</a></li>
+                    <li {{isScreenEnabled 9}}><a href='/on-account'  data-screenid="9">On Account</a></li>
                 </ul>
             </li>
 
@@ -45,7 +45,7 @@
                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Analytics<span class="caret"></span></a>
                  <ul class="dropdown-menu" role="menu">
 
-                     <li {{isScreenEnabled 22}}><a href='/claimreview'>Claim Review</a></li>
+                     <li {{isScreenEnabled 22}}><a href='/claimreview'  data-screenid="22">Claim Review</a></li>
                      <li {{isScreenEnabled 23}}><a href='{{url}}globalRevenue' class="old" target="_blank">Global Revenue</a></li>
                      <li {{isScreenEnabled 24}}><a href='{{url}}bwReport' class="old" target="_blank">Monthly Billings Reconciliation</a></li>
                  </ul>
@@ -54,10 +54,10 @@
             <li name='Reference' class="dropdown" >
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reference<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                    <li {{isScreenEnabled 16}}><a href='/licensor'>Licensor</a></li>
-                    <li {{isScreenEnabled 17}}><a href='/ref-country'>Country</a></li>
-                    <li {{isScreenEnabled 18}}><a href='/ref-licensorcountry'>Licensor Country</a></li>
-                    <li {{isScreenEnabled 19}}><a href='/pricing-models'>Pricing Model</a></li>
+                    <li {{isScreenEnabled 16}}><a href='/licensor'  data-screenid="16">Licensor</a></li>
+                    <li {{isScreenEnabled 17}}><a href='/ref-country'  data-screenid="17">Country</a></li>
+                    <li {{isScreenEnabled 18}}><a href='/ref-licensorcountry'  data-screenid="18">Licensor Country</a></li>
+                    <li {{isScreenEnabled 19}}><a href='/pricing-models'  data-screenid="19">Pricing Model</a></li>
                 </ul>
              </li>
 

@@ -20,17 +20,20 @@ var page = Component.extend({
     tabs: [
     {
       text: 'Approvals',
-      id: 1
+      id: 1,
+      tabIndex:0
     },
 
     {
       text: 'Invoices Received',
-      id:2
+      id:2,
+      tabIndex:1
     }
     ,
     {
       text: 'Payments',
-      id:3
+      id:3,
+      tabIndex:2
     }
 
     ],
@@ -60,7 +63,6 @@ var page = Component.extend({
     getFieldAttribute:function(fieldId){
       var role = this.attr("role") ;
       return fieldPermission.formRequestDetails(fieldId,this.attr("screenId"),role);
-
     },
     ifSelectedTab: function(tabText, options) {
       return this.attr('selectedTab').text === tabText ? options.fn(this) : '';
@@ -69,11 +71,23 @@ var page = Component.extend({
   events: {
     init: function() {
       this.scope.appstate.attr('renderGlobalSearch', true);
-      if(this.scope.appstate.attr('DISPLAY_HOLES_REPORT')){
-        this.scope.attr('selectedTab', this.scope.tabs[1]);
-        this.scope.appstate.attr('DISPLAY_HOLES_REPORT','');
-      }else
-      this.scope.attr('selectedTab', this.scope.tabs[0]);
+
+      var tabIndex = 0;
+      var self = this;
+      if(this.scope.appstate.screenLookup.targetScreen != undefined){
+        this.scope.tabs.each(function(tab){
+          if(self.scope.appstate.screenLookup.targetScreen == tab.id){
+            self.scope.appstate.screenLookup.attr('targetScreen',undefined);
+            tabIndex = tab.tabIndex;
+          }
+        });
+      }
+
+      this.scope.attr('selectedTab', this.scope.tabs[tabIndex]);
+      self.scope.appstate.screenLookup.attr('screenid',this.scope.tabs[tabIndex].id);
+      
+      console.log(self.scope.appstate.screenLookup.attr('screenid'));
+
     }
   }
 });
