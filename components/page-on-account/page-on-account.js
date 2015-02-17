@@ -364,7 +364,7 @@ var page = Component.extend({
             paymentBundleName = self.scope.paymentBundleNameText;
         }
 
-          if((paymentBundleName == undefined || paymentBundleName.length==0)){
+          if((paymentBundleName == undefined || (paymentBundleName!= undefined && paymentBundleName.length==0) || (paymentBundleName!= undefined && paymentBundleName == "--Select--"))){
             displayMessage('Error : Please select the Bundle Name',false);
             return;
           }
