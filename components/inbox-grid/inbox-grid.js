@@ -72,7 +72,8 @@ var InboxGrid = ScrollingGrid.extend({
             parentScopeVar.attr('inboxOffset', (parseInt(offsetVal)+10));
             parentScopeVar.attr('inboxScrollTop', (tbody[0].scrollHeight-200));
             parentScopeVar.appstate.attr('globalSearchButtonClicked', false);
-
+            parentScopeVar.attr('sortBy', parentScopeVar.attr('sortColumns')[0]);
+            parentScopeVar.attr('sortDirection',parentScopeVar.attr('sortDirection') );
             /* The below code calls {scope.appstate} change event that gets the new data for grid*/
             /* All the neccessary parameters will be set in that event */
            if(parentScopeVar.appstate.attr('globalSearch')){
@@ -112,6 +113,46 @@ var InboxGrid = ScrollingGrid.extend({
         commonUtils.navigateTo("ref-licensorcountry");
       }
 
+    },
+    ".rn-grid>thead>tr>th click": function(item, el, ev) {
+        var self = this;
+        var parentScopeVar = self.element.closest('rn-dashboard-approvals').scope();  //console.log($(item[0]).attr("class"));
+        var val = $(item[0]).attr("class").split(" ");
+        var existingSortColumns = parentScopeVar.sortColumns.attr();
+        var existingSortColumnsLen = existingSortColumns.length;
+        var existFlag = false;
+        var sortAttr = val[0];
+
+        if (sortAttr === "createdBy" || sortAttr === "approvalStage") {
+          commonUtils.showErrorMessage("SortBy not permitted for Initiated-By & Approvals.");
+          return false;
+        } else {
+          commonUtils.hideUIMessage();
+        }
+
+        if (existingSortColumnsLen == 0) {
+          parentScopeVar.attr('sortColumns').push(sortAttr);
+        } else {
+          for (var i = 0; i < existingSortColumnsLen; i++) {
+            /* The below condition is to selected column to be sorted in asc & dec way */
+            console.log(val[0] + "," + existingSortColumns[i])
+            if (existingSortColumns[i] == val[0]) {
+              existFlag = true;
+            }
+          }
+          if (existFlag == false) {
+            parentScopeVar.attr('sortColumns').replace([]);
+            parentScopeVar.attr('sortColumns').push(sortAttr);
+          } else {
+            var sortDirection = (parentScopeVar.attr('sortDirection') == 'asc') ? 'desc' : 'asc';
+            parentScopeVar.attr('sortDirection', sortDirection);
+          }
+        }
+        parentScopeVar.attr('mailboxType', 'inbox');
+        parentScopeVar.attr('sortcolumnnames', parentScopeVar.attr('sortColumns')[0]);
+        parentScopeVar.attr('sortdir', parentScopeVar.attr('sortDirection'));
+        parentScopeVar.attr('inboxOffset', 0);
+        parentScopeVar.triggerChild(parentScopeVar);
     }
   }
 });

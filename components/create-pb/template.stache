@@ -1,10 +1,10 @@
 {{#if createPBFlag.select }}
 <select id="paymentBundleNames" class="form-control resizeBox" can-value="paymentBundleId" name="paymentBundleNames" >
     <option value="" selected>--Select--</option>
+    <option value="createB">Create Bundle</option>
       {{#each bundleNames}}
         <option value="{{bundleId}}">{{bundleName}}</option>
-       {{/each}}
-       <option value="createB">Create Bundle</option>
+       {{/each}}     
 </select>
 {{/if}}
 

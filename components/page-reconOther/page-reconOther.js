@@ -138,6 +138,7 @@ var page = Component.extend({
     "inserted": function() {
       var self = this;
       var tbody = self.element.find('tbody');
+
       //var tbody = self.element.find('tbody');
       var getTblBodyHght = getVisibleGridHeight();
       gridUtils.setElementHeight(tbody, getTblBodyHght, getTblBodyHght);
