@@ -746,6 +746,18 @@ var page = Component.extend({
           //console.log("GetBundleNamesRequest is "+JSON.stringify(bundleNamesRequest));
 
           return JSON.stringify(bundleNamesRequest);
+        },
+
+        disableButton:function(fieldId){
+          var screenId = this.appstate.screenLookup.attr("screenid");
+
+          if(commonUtils.getFieldAttribute(screenId,fieldId)=="disable")
+
+        {
+            return 'disabled';
+          }else{
+            return '';
+          }
         }
       }
 });
@@ -850,7 +862,8 @@ var frameRequest = function(appstate){
 }
 
 var disableEditORDeleteButtons = function(disable){
-  if(disable || commonUtils.isReadOnly()=='true'){
+  var screenId = 9;
+  if(disable || commonUtils.isReadOnly()=='true'||commonUtils.getFieldAttribute(screenId,5)=="disabled" ){
        $("#proposedDelete").attr("disabled","disabled");
        $("#proposedEdit").attr("disabled","disabled");
        //disableProposedSubmitButton(true);

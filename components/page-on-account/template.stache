@@ -1,7 +1,7 @@
 {{#if showLoadingImage}}
 	<div class='page_loader'>&nbsp;</div>
 {{/if}}
-	
+
 <copy-clipboard> {{values}}</copy-clipboard>
 
 <div class='errorOnAccount'> {{errorMessage}}</div>
@@ -36,7 +36,7 @@
             <li>
                 <a id = "proposedonAccount" href="#proposedonAccountDiv" data-toggle="tab">Proposed On Account</a>
             </li>
-            <li>
+            <li >
                 <a id = "newonAccount" href="#NewonAccountDiv" data-toggle="tab">New On Account</a>
             </li>
             <li class="pull-right marginLeft-5 marginTop-10">
@@ -45,8 +45,8 @@
             </li>
             <li class="pull-right marginTop-10 customLI">
                 <div id="onAccountEditDeleteDiv">
-                    <button type="button" id="proposedEdit" class="btn btn-primary buttonSubmit btn-custom-small">Edit</button>
-                    <button type="button" id="proposedDelete" class="btn btn-primary buttonSubmit btn-custom-small ">Delete</button>
+                    <button type="button" {{disableButton 5}} id="proposedEdit" class="btn btn-primary buttonSubmit btn-custom-small">Edit</button>
+                    <button type="button" {{disableButton 6}} id="proposedDelete" class="btn btn-primary buttonSubmit btn-custom-small ">Delete</button>
                 </div>
             </li>
             <li class="pull-right marginTop-10 customLI">
@@ -60,10 +60,10 @@
                 </div>
             </li>
             </ul>
-              
+
                 <!-- Tab Contents -->
             <div id="myTabContent" class="tab-content">
-           
+
                 <!-- New On Account -->
                 <div class="tab-pane fade" id="NewonAccountDiv">
                     <div id="newonAccountGrid">
@@ -86,7 +86,7 @@
                         </div>
                         <div class="col-lg-6 marginTop-10">
                             <span class="col-sm-3 pull-inline">User Comments:
-		       				
+
                                 <!-- <label for="inputEmail3" class="control-label text-right">User Comments: </label> -->
                             </span>
                             <span class="col-sm-9 pull-inline">
@@ -99,14 +99,14 @@
                             </div>
                         </div>
                     </div>
-               
+
                     <!-- On Account Balance -->
                     <div class="tab-pane fade in active" id = "onAccountBalanceDiv">
                         <div id="onAccountBalanceGrid" style="height:auto">
                             <div id="loading_img"></div>
                         </div>
                     </div>
-               
+
                     <!-- Propose On Account -->
                     <div class="tab-pane fade" id="proposedonAccountDiv">
                         <div id="proposedOnAccountGrid">

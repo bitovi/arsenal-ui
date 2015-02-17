@@ -221,13 +221,17 @@ var page = Component.extend({
           var vph = '85%';
           return 'Style="height:'+vph;
         },
-        disableSubmit:function(){
-          if(this.attr("state") == "Read"){
-            return 'disabled';
-          }else{
-            return '';
-          }
-        }
+        disableSubmit:function(fieldId){
+         var screenId = appstate.screenLookup.attr("screenid") ;
+         if(this.attr("state") == "Read" ||
+         (commonUtils.getFieldAttribute(screenId,fieldId)=="disabled")
+       )
+       {
+           return 'disabled';
+         }else{
+           return '';
+         }
+       }
 
       },
       events: {
