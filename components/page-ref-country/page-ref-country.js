@@ -115,186 +115,193 @@ var page = Component.extend({
       console.log("Request passed is "+ JSON.stringify(UserReq.formRequestDetails(requestObj)));
       RefCountry.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
-        console.log("Response data is "+JSON.stringify(data.attr()));
-        self.pageState.countryDetails.attr("country",data.countryDetails);
+        if(data.status == "SUCCESS") {
 
-        /* if the data.countryDetails.countryId is null then set the country dropdown using requestObj*/
-        if(data.countryDetails.countryId==null){
-          self.pageState.countryDetails.country.attr("countryId",requestObj.countryId);
-        }
+          console.log("Response data is "+JSON.stringify(data.attr()));
+          self.pageState.countryDetails.attr("country",data.countryDetails);
 
-        if(data.countryDetails.attr("validFrom")!=0)
-          var validFrom = data.countryDetails.attr("validFrom").toString();
-        else
-          var validFrom = "0";
+          /* if the data.countryDetails.countryId is null then set the country dropdown using requestObj*/
+          if(data.countryDetails.countryId==null){
+            self.pageState.countryDetails.country.attr("countryId",requestObj.countryId);
+          }
 
-        if(validFrom == undefined || validFrom == null || validFrom == "0")
-          self.pageState.countryDetails.country.attr("validFrom","");
-        else {
-          var formatValidFrom = PeriodHelper.getDisplayPeriod(validFrom,"P");
-          self.pageState.countryDetails.country.attr("validFrom",formatValidFrom);
-          //self.validFrom.replace(formatValidFrom);
-        }
+          if(data.countryDetails.attr("validFrom")!=0)
+            var validFrom = data.countryDetails.attr("validFrom").toString();
+          else
+            var validFrom = "0";
 
-        if(data.countryDetails.attr("validTo")!=0)
-          var validTo = data.countryDetails.attr("validTo").toString();
-        else
-          var validTo = "0";
+          if(validFrom == undefined || validFrom == null || validFrom == "0")
+            self.pageState.countryDetails.country.attr("validFrom","");
+          else {
+            var formatValidFrom = PeriodHelper.getDisplayPeriod(validFrom,"P");
+            self.pageState.countryDetails.country.attr("validFrom",formatValidFrom);
+            //self.validFrom.replace(formatValidFrom);
+          }
 
-        if(validTo == undefined || validTo == null || validTo == "0")
-          self.pageState.countryDetails.country.attr("validTo","");
-        else {
-          var formatValidTo = PeriodHelper.getDisplayPeriod(validTo,"P");
-          self.pageState.countryDetails.country.attr("validTo",formatValidTo);
-          //self.validTo.replace(formatValidTo);
-        }
+          if(data.countryDetails.attr("validTo")!=0)
+            var validTo = data.countryDetails.attr("validTo").toString();
+          else
+            var validTo = "0";
 
-        self.attr("localSocietyNames").replace(data.countryDetails.localSocietyNames);
-        if(data.countryDetails.localSocietyId !=0){
-          self.pageState.countryDetails.country.attr("localSocietyId",data.countryDetails.localSocietyId);
-          $("#localSocietysel").val(data.countryDetails.localSocietyId);
-        }
+          if(validTo == undefined || validTo == null || validTo == "0")
+            self.pageState.countryDetails.country.attr("validTo","");
+          else {
+            var formatValidTo = PeriodHelper.getDisplayPeriod(validTo,"P");
+            self.pageState.countryDetails.country.attr("validTo",formatValidTo);
+            //self.validTo.replace(formatValidTo);
+          }
 
-        if(data.countryDetails.mainPricingMethod!=null)
-          self.pageState.countryDetails.country.attr("mainPricingMethod",data.countryDetails.mainPricingMethod);
-        if(data.countryDetails.altPricingMethod!=null)
-          self.pageState.countryDetails.country.attr("altPricingMethod",data.countryDetails.altPricingMethod);
+          self.attr("localSocietyNames").replace(data.countryDetails.localSocietyNames);
+          if(data.countryDetails.localSocietyId !=0){
+            self.pageState.countryDetails.country.attr("localSocietyId",data.countryDetails.localSocietyId);
+            $("#localSocietysel").val(data.countryDetails.localSocietyId);
+          }
 
-        self.attr("transcurrencies").replace(data.countryDetails.transactionCurrencies);
-        if(data.countryDetails.transactionCurrency!=null){
-          self.pageState.countryDetails.country.attr("transactionCurrency",data.countryDetails.transactionCurrency);
-          $("#transCurrSel").val(data.countryDetails.transactionCurrency);
-        }
+          if(data.countryDetails.mainPricingMethod!=null)
+            self.pageState.countryDetails.country.attr("mainPricingMethod",data.countryDetails.mainPricingMethod);
+          if(data.countryDetails.altPricingMethod!=null)
+            self.pageState.countryDetails.country.attr("altPricingMethod",data.countryDetails.altPricingMethod);
 
-        self.attr("altcurrencies").replace(data.countryDetails.altCurrencies);
-        if(data.countryDetails.altCurrency!=null){
-          self.pageState.countryDetails.country.attr("altCurrency",data.countryDetails.altCurrency);
-          $("#altCurrSel").val(data.countryDetails.altCurrency);
-        }
+          self.attr("transcurrencies").replace(data.countryDetails.transactionCurrencies);
+          if(data.countryDetails.transactionCurrency!=null){
+            self.pageState.countryDetails.country.attr("transactionCurrency",data.countryDetails.transactionCurrency);
+            $("#transCurrSel").val(data.countryDetails.transactionCurrency);
+          }
 
-        var pricingModelNames = [];
-        var pricingModelVersions = {};
-        var getModels = data.countryDetails.models;
-        var selectedAccModel = data.countryDetails.model;
-        var selModelId,selectedAccModelVersions;
+          self.attr("altcurrencies").replace(data.countryDetails.altCurrencies);
+          if(data.countryDetails.altCurrency!=null){
+            self.pageState.countryDetails.country.attr("altCurrency",data.countryDetails.altCurrency);
+            $("#altCurrSel").val(data.countryDetails.altCurrency);
+          }
 
-        for(var i=0;i<getModels.length;i++){
-          var accModelName = getModels[i].accrualModelName;
-          var accModelId = getModels[i].accrualModelID;
-          var accModelVersion = getModels[i].versionNo;
-          if(pricingModelNames.indexOf(accModelName)==-1){
-            pricingModelNames.push(accModelName);
-            pricingModelVersions[accModelName] = [];
-            pricingModelVersions[accModelName].push({"version":accModelVersion,"modelId":accModelId});
+          var pricingModelNames = [];
+          var pricingModelVersions = {};
+          var getModels = data.countryDetails.models;
+          var selectedAccModel = data.countryDetails.model;
+          var selModelId,selectedAccModelVersions;
+
+          for(var i=0;i<getModels.length;i++){
+            var accModelName = getModels[i].accrualModelName;
+            var accModelId = getModels[i].accrualModelID;
+            var accModelVersion = getModels[i].versionNo;
+            if(pricingModelNames.indexOf(accModelName)==-1){
+              pricingModelNames.push(accModelName);
+              pricingModelVersions[accModelName] = [];
+              pricingModelVersions[accModelName].push({"version":accModelVersion,"modelId":accModelId});
+            } else {
+              pricingModelVersions[accModelName].push({"version":accModelVersion,"modelId":accModelId});
+            }
+          }
+
+          var accModels = [];
+          var flag= false;
+          for(var key in pricingModelVersions){
+            var temp = {};
+            temp["accName"] = key;
+            temp["versions"] = pricingModelVersions[key];
+            accModels.push(temp);
+            /* this in the case of selectedAccModel is null to set the first value in Pricing model*/
+            if(selectedAccModel==null && flag==false){
+              selectedAccModelVersions =  pricingModelVersions[key];
+              selModelId = selectedAccModelVersions[0]["modelId"];
+              flag = true;
+            }
+            if(key==selectedAccModel){
+              selectedAccModelVersions =  pricingModelVersions[key];
+              selModelId = selectedAccModelVersions[0]["modelId"];
+            }
+          }
+          //console.log("accural Models "+JSON.stringify(accModels));
+          //console.log("sel accural Model vers are "+JSON.stringify(selectedAccModelVersions));
+          //console.log("sel accural Model id is "+JSON.stringify(selModelId));
+          self.attr("accuralModels").replace(accModels);
+          self.attr("accuralModelVersions").replace(selectedAccModelVersions);
+          self.attr("selectedModelId",selModelId);
+
+          $("#accModelSel").val(selectedAccModel);
+          $("#accModelSel").change();
+
+          var tempcommentObj = data.countryDetails.commentList;
+          //console.log("multi comments "+JSON.stringify(tempcommentObj.attr()));
+          if(tempcommentObj !=null)
+          {
+            self.pageState.countryDetails.attr("commentList",data.countryDetails.commentList);
+            $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
           } else {
-            pricingModelVersions[accModelName].push({"version":accModelVersion,"modelId":accModelId});
+            self.pageState.countryDetails.attr("commentList","");
           }
-        }
 
-        var accModels = [];
-        var flag= false;
-        for(var key in pricingModelVersions){
-          var temp = {};
-          temp["accName"] = key;
-          temp["versions"] = pricingModelVersions[key];
-          accModels.push(temp);
-          /* this in the case of selectedAccModel is null to set the first value in Pricing model*/
-          if(selectedAccModel==null && flag==false){
-            selectedAccModelVersions =  pricingModelVersions[key];
-            selModelId = selectedAccModelVersions[0]["modelId"];
-            flag = true;
+          var revHistories = [];
+          if(revHistory) {
+
+            revHistories = self.attr("revHistory");
           }
-          if(key==selectedAccModel){
-            selectedAccModelVersions =  pricingModelVersions[key];
-            selModelId = selectedAccModelVersions[0]["modelId"];
+
+          var formatRevHistories = [];
+
+          if(revHistory) {
+
+            revHistories = self.attr("revHistory");
+
+          } else {
+
+            revHistories = data.countryDetails.revisionHistories.attr();
+            self.attr("revHistory", data.countryDetails.revisionHistories.attr());
+
           }
-        }
-        //console.log("accural Models "+JSON.stringify(accModels));
-        //console.log("sel accural Model vers are "+JSON.stringify(selectedAccModelVersions));
-        //console.log("sel accural Model id is "+JSON.stringify(selModelId));
-        self.attr("accuralModels").replace(accModels);
-        self.attr("accuralModelVersions").replace(selectedAccModelVersions);
-        self.attr("selectedModelId",selModelId);
 
-        $("#accModelSel").val(selectedAccModel);
-        $("#accModelSel").change();
+          for(var i=0;i<revHistories.length;i++){
+            var revHisTemp = {};
+            revHisTemp["id"] = revHistories[i]["id"];
+            revHisTemp["validFrom"] = (revHistories[i]["validFrom"]==null)?"":revHistories[i]["validFrom"];
+            revHisTemp["validTo"] = (revHistories[i]["validTo"]==null)?"":revHistories[i]["validTo"];
+            revHisTemp["comment"] = (revHistories[i]["commentList"] == undefined || revHistories[i]["commentList"] == null ||
+              (revHistories[i]["commentList"].length==0 || revHistories[i]["commentList"][0]["comments"]==null))?"":revHistories[i]["commentList"][0]["comments"];
+            revHisTemp["status"] = revHistories[i]["status"];
+            formatRevHistories.push(revHisTemp);
+          }
+          //console.log("revision history "+JSON.stringify(formatRevHistories));
+          self.revisionHistory.replace(formatRevHistories);
 
-        var tempcommentObj = data.countryDetails.commentList;
-        //console.log("multi comments "+JSON.stringify(tempcommentObj.attr()));
-        if(tempcommentObj !=null)
-        {
-          self.pageState.countryDetails.attr("commentList",data.countryDetails.commentList);
-          $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
-        } else {
-          self.pageState.countryDetails.attr("commentList","");
-        }
+          self.societyModelMapping.replace(data.countryDetails.modelMappings);
 
-        var revHistories = [];
-        if(revHistory) {
+          $("#loading_img").hide();
+          $(".main-layout").show();
 
-          revHistories = self.attr("revHistory");
-        }
+          $(".buttonsPlaceHolder").show();
 
-        var formatRevHistories = [];
+          if(data.countryDetails.status == "A") {
+                self.pageState.countryDetails.country.attr("displayStatus","Active");
+           } else if (data.countryDetails.status == "I") {
+                self.pageState.countryDetails.country.attr("displayStatus","Inactive");
+           } else if (data.countryDetails.status == "R") {
+                self.pageState.countryDetails.country.attr("displayStatus","Rejected");
+           }else if (data.countryDetails.status == "N") {
+               self.pageState.countryDetails.country.attr("displayStatus","New");
+           }
+           else {
+               self.pageState.countryDetails.country.attr("displayStatus",data.countryDetails.status);
+           }
 
-        if(revHistory) {
+          if(data.countryDetails.status == "A" || data.countryDetails.status == "N") {
+            self.attr("state","Edit");
+          }else{
+            self.attr("state","Read");
+          }
 
-          revHistories = self.attr("revHistory");
+          //self.fetchDetailsBtn();
 
-        } else {
+          setTimeout(function(){
+            alignGrid("grid-revision-history-country");
+            alignGrid("grid-society-model");
+          },50);
 
-          revHistories = data.countryDetails.revisionHistories.attr();
-          self.attr("revHistory", data.countryDetails.revisionHistories.attr());
+          self.switchButtons();
+      } else {
 
-        }
+        commonUtils.displayUIMessage(data.status, data.responseText);
 
-        for(var i=0;i<revHistories.length;i++){
-          var revHisTemp = {};
-          revHisTemp["id"] = revHistories[i]["id"];
-          revHisTemp["validFrom"] = (revHistories[i]["validFrom"]==null)?"":revHistories[i]["validFrom"];
-          revHisTemp["validTo"] = (revHistories[i]["validTo"]==null)?"":revHistories[i]["validTo"];
-          revHisTemp["comment"] = (revHistories[i]["commentList"] == undefined || revHistories[i]["commentList"] == null ||
-            (revHistories[i]["commentList"].length==0 || revHistories[i]["commentList"][0]["comments"]==null))?"":revHistories[i]["commentList"][0]["comments"];
-          revHisTemp["status"] = revHistories[i]["status"];
-          formatRevHistories.push(revHisTemp);
-        }
-        //console.log("revision history "+JSON.stringify(formatRevHistories));
-        self.revisionHistory.replace(formatRevHistories);
-
-        self.societyModelMapping.replace(data.countryDetails.modelMappings);
-
-        $("#loading_img").hide();
-        $(".main-layout").show();
-
-        $(".buttonsPlaceHolder").show();
-
-        if(data.countryDetails.status == "A") {
-              self.pageState.countryDetails.country.attr("displayStatus","Active");
-         } else if (data.countryDetails.status == "I") {
-              self.pageState.countryDetails.country.attr("displayStatus","Inactive");
-         } else if (data.countryDetails.status == "R") {
-              self.pageState.countryDetails.country.attr("displayStatus","Rejected");
-         }else if (data.countryDetails.status == "N") {
-             self.pageState.countryDetails.country.attr("displayStatus","New");
-         }
-         else {
-             self.pageState.countryDetails.country.attr("displayStatus",data.countryDetails.status);
-         }
-
-        if(data.countryDetails.status == "A" || data.countryDetails.status == "N") {
-          self.attr("state","Edit");
-        }else{
-          self.attr("state","Read");
-        }
-
-        //self.fetchDetailsBtn();
-
-        setTimeout(function(){
-          alignGrid("grid-revision-history-country");
-          alignGrid("grid-society-model");
-        },50);
-
-        self.switchButtons();
+      }
 
       },function(xhr){
           console.error("Error while loading: country Details"+xhr);
@@ -535,172 +542,179 @@ var page = Component.extend({
       //console.log("Request passed is "+ JSON.stringify(UserReq.formRequestDetails(requestObj)));
       RefCountry.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
-        //console.log("Response data is "+JSON.stringify(data.attr()));
-        self.pageState.countryDetails.attr("country",data.countryDetails);
+        if(data.status == "SUCCESS") {
+          //console.log("Response data is "+JSON.stringify(data.attr()));
+          self.pageState.countryDetails.attr("country",data.countryDetails);
 
-        console.log("data.countryDetails.status-->"+data.countryDetails.status);
-         if(data.countryDetails.status == "A") {
-              self.pageState.countryDetails.country.attr("displayStatus","Active");
-         } else if (data.countryDetails.status == "I") {
-              self.pageState.countryDetails.country.attr("displayStatus","Inactive");
-         } else if (data.countryDetails.status == "R") {
-              self.pageState.countryDetails.country.attr("displayStatus","Rejected");
-         }else if (data.countryDetails.status == "N") {
-             self.pageState.countryDetails.country.attr("displayStatus","New");
-         }
-         else {
-             self.pageState.countryDetails.country.attr("displayStatus",data.countryDetails.status);
-         }
+          console.log("data.countryDetails.status-->"+data.countryDetails.status);
+           if(data.countryDetails.status == "A") {
+                self.pageState.countryDetails.country.attr("displayStatus","Active");
+           } else if (data.countryDetails.status == "I") {
+                self.pageState.countryDetails.country.attr("displayStatus","Inactive");
+           } else if (data.countryDetails.status == "R") {
+                self.pageState.countryDetails.country.attr("displayStatus","Rejected");
+           }else if (data.countryDetails.status == "N") {
+               self.pageState.countryDetails.country.attr("displayStatus","New");
+           }
+           else {
+               self.pageState.countryDetails.country.attr("displayStatus",data.countryDetails.status);
+           }
 
 
-        /* if the data.countryDetails.countryId is null then set the country dropdown using requestObj*/
-        if(data.countryDetails.countryId==null){
-          self.pageState.countryDetails.country.attr("countryId",requestObj.countryId);
-        }
+          /* if the data.countryDetails.countryId is null then set the country dropdown using requestObj*/
+          if(data.countryDetails.countryId==null){
+            self.pageState.countryDetails.country.attr("countryId",requestObj.countryId);
+          }
 
-        if(data.countryDetails.attr("validFrom")!=0)
-          var validFrom = data.countryDetails.attr("validFrom").toString();
-        else
-          var validFrom = "0";
+          if(data.countryDetails.attr("validFrom")!=0)
+            var validFrom = data.countryDetails.attr("validFrom").toString();
+          else
+            var validFrom = "0";
 
-        if(validFrom == undefined || validFrom == null || validFrom == "0")
-          self.pageState.countryDetails.country.attr("validFrom","");
-        else {
-          var formatValidFrom = PeriodHelper.getDisplayPeriod(validFrom,"P");
-          self.pageState.countryDetails.country.attr("validFrom",formatValidFrom);
-          //self.validFrom.replace(formatValidFrom);
-        }
+          if(validFrom == undefined || validFrom == null || validFrom == "0")
+            self.pageState.countryDetails.country.attr("validFrom","");
+          else {
+            var formatValidFrom = PeriodHelper.getDisplayPeriod(validFrom,"P");
+            self.pageState.countryDetails.country.attr("validFrom",formatValidFrom);
+            //self.validFrom.replace(formatValidFrom);
+          }
 
-        if(data.countryDetails.attr("validTo")!=0)
-          var validTo = data.countryDetails.attr("validTo").toString();
-        else
-          var validTo = "0";
+          if(data.countryDetails.attr("validTo")!=0)
+            var validTo = data.countryDetails.attr("validTo").toString();
+          else
+            var validTo = "0";
 
-        if(validTo == undefined || validTo == null || validTo == "0")
-          self.pageState.countryDetails.country.attr("validTo","");
-        else {
-          var formatValidTo = PeriodHelper.getDisplayPeriod(validTo,"P");
-          self.pageState.countryDetails.country.attr("validTo",formatValidTo);
-          //self.validTo.replace(formatValidTo);
-        }
+          if(validTo == undefined || validTo == null || validTo == "0")
+            self.pageState.countryDetails.country.attr("validTo","");
+          else {
+            var formatValidTo = PeriodHelper.getDisplayPeriod(validTo,"P");
+            self.pageState.countryDetails.country.attr("validTo",formatValidTo);
+            //self.validTo.replace(formatValidTo);
+          }
 
-        self.attr("localSocietyNames").replace(data.countryDetails.localSocietyNames);
-        if(data.countryDetails.localSocietyId !=0){
-          self.pageState.countryDetails.country.attr("localSocietyId",data.countryDetails.localSocietyId);
-          $("#localSocietysel").val(data.countryDetails.localSocietyId);
-        }
+          self.attr("localSocietyNames").replace(data.countryDetails.localSocietyNames);
+          if(data.countryDetails.localSocietyId !=0){
+            self.pageState.countryDetails.country.attr("localSocietyId",data.countryDetails.localSocietyId);
+            $("#localSocietysel").val(data.countryDetails.localSocietyId);
+          }
 
-        if(data.countryDetails.mainPricingMethod!=null){
-          self.pageState.countryDetails.country.attr("mainPricingMethod",data.countryDetails.mainPricingMethod);
-          $('#mainPricingMethod').val(data.countryDetails.mainPricingMethod);
-        }
-        if(data.countryDetails.altPricingMethod!=null){
-          self.pageState.countryDetails.country.attr("altPricingMethod",data.countryDetails.altPricingMethod);
-          $('#altPricingMethod').val(data.countryDetails.altPricingMethod);
-        }
+          if(data.countryDetails.mainPricingMethod!=null){
+            self.pageState.countryDetails.country.attr("mainPricingMethod",data.countryDetails.mainPricingMethod);
+            $('#mainPricingMethod').val(data.countryDetails.mainPricingMethod);
+          }
+          if(data.countryDetails.altPricingMethod!=null){
+            self.pageState.countryDetails.country.attr("altPricingMethod",data.countryDetails.altPricingMethod);
+            $('#altPricingMethod').val(data.countryDetails.altPricingMethod);
+          }
 
-        self.attr("transcurrencies").replace(data.countryDetails.transactionCurrencies);
-        if(data.countryDetails.transactionCurrency!=null){
-          self.pageState.countryDetails.country.attr("transactionCurrency",data.countryDetails.transactionCurrency);
-          $("#transCurrSel").val(data.countryDetails.transactionCurrency);
-        }
+          self.attr("transcurrencies").replace(data.countryDetails.transactionCurrencies);
+          if(data.countryDetails.transactionCurrency!=null){
+            self.pageState.countryDetails.country.attr("transactionCurrency",data.countryDetails.transactionCurrency);
+            $("#transCurrSel").val(data.countryDetails.transactionCurrency);
+          }
 
-        self.attr("altcurrencies").replace(data.countryDetails.altCurrencies);
-        if(data.countryDetails.altCurrency!=null){
-          self.pageState.countryDetails.country.attr("altCurrency",data.countryDetails.altCurrency);
-          $("#altCurrSel").val(data.countryDetails.altCurrency);
-        }
+          self.attr("altcurrencies").replace(data.countryDetails.altCurrencies);
+          if(data.countryDetails.altCurrency!=null){
+            self.pageState.countryDetails.country.attr("altCurrency",data.countryDetails.altCurrency);
+            $("#altCurrSel").val(data.countryDetails.altCurrency);
+          }
 
-        var pricingModelNames = [];
-        var pricingModelVersions = {};
-        var getModels = data.countryDetails.models;
-        var selectedAccModel = data.countryDetails.model;
-        var selModelId,selectedAccModelVersions;
+          var pricingModelNames = [];
+          var pricingModelVersions = {};
+          var getModels = data.countryDetails.models;
+          var selectedAccModel = data.countryDetails.model;
+          var selModelId,selectedAccModelVersions;
 
-        for(var i=0;i<getModels.length;i++){
-          var accModelName = getModels[i].accrualModelName;
-          var accModelId = getModels[i].accrualModelID;
-          var accModelVersion = getModels[i].versionNo;
-          if(pricingModelNames.indexOf(accModelName)==-1){
-            pricingModelNames.push(accModelName);
-            pricingModelVersions[accModelName] = [];
-            pricingModelVersions[accModelName].push({"version":accModelVersion,"modelId":accModelId});
+          for(var i=0;i<getModels.length;i++){
+            var accModelName = getModels[i].accrualModelName;
+            var accModelId = getModels[i].accrualModelID;
+            var accModelVersion = getModels[i].versionNo;
+            if(pricingModelNames.indexOf(accModelName)==-1){
+              pricingModelNames.push(accModelName);
+              pricingModelVersions[accModelName] = [];
+              pricingModelVersions[accModelName].push({"version":accModelVersion,"modelId":accModelId});
+            } else {
+              pricingModelVersions[accModelName].push({"version":accModelVersion,"modelId":accModelId});
+            }
+          }
+
+          var accModels = [];
+          var flag= false;
+          for(var key in pricingModelVersions){
+            var temp = {};
+            temp["accName"] = key;
+            temp["versions"] = pricingModelVersions[key];
+            accModels.push(temp);
+            /* this in the case of selectedAccModel is null to set the first value in Pricing model*/
+            if(selectedAccModel==null && flag==false){
+              selectedAccModelVersions =  pricingModelVersions[key];
+              selModelId = selectedAccModelVersions[0]["modelId"];
+              flag = true;
+            }
+            if(key==selectedAccModel){
+              selectedAccModelVersions =  pricingModelVersions[key];
+              selModelId = selectedAccModelVersions[0]["modelId"];
+            }
+          }
+          //console.log("accural Models "+JSON.stringify(accModels));
+          //console.log("sel accural Model vers are "+JSON.stringify(selectedAccModelVersions));
+          //console.log("sel accural Model id is "+JSON.stringify(selModelId));
+          self.attr("accuralModels").replace(accModels);
+          self.attr("accuralModelVersions").replace(selectedAccModelVersions);
+          self.attr("selectedModelId",selModelId);
+          
+          $("#accModelSel").val(selectedAccModel);
+          $("#accModelSel").change();
+          
+          var tempcommentObj = data.countryDetails.commentList;
+          //console.log("multi comments "+JSON.stringify(tempcommentObj.attr()));
+          if(tempcommentObj !=null)
+          {
+            self.pageState.countryDetails.attr("commentList",data.countryDetails.commentList);
+            $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
           } else {
-            pricingModelVersions[accModelName].push({"version":accModelVersion,"modelId":accModelId});
+            self.pageState.countryDetails.attr("commentList","");
           }
-        }
 
-        var accModels = [];
-        var flag= false;
-        for(var key in pricingModelVersions){
-          var temp = {};
-          temp["accName"] = key;
-          temp["versions"] = pricingModelVersions[key];
-          accModels.push(temp);
-          /* this in the case of selectedAccModel is null to set the first value in Pricing model*/
-          if(selectedAccModel==null && flag==false){
-            selectedAccModelVersions =  pricingModelVersions[key];
-            selModelId = selectedAccModelVersions[0]["modelId"];
-            flag = true;
+          var revHistories = data.countryDetails.revisionHistories.attr();
+          self.attr("revHistory", data.countryDetails.revisionHistories.attr());
+          var formatRevHistories = [];
+          for(var i=0;i<revHistories.length;i++){
+            var revHisTemp = {};
+            revHisTemp["id"] = revHistories[i]["id"];
+            revHisTemp["validFrom"] = (revHistories[i]["validFrom"]==null)?"":revHistories[i]["validFrom"];
+            revHisTemp["validTo"] = (revHistories[i]["validTo"]==null)?"":revHistories[i]["validTo"];
+            revHisTemp["comment"] = (revHistories[i]["commentList"].length==0 || revHistories[i]["commentList"][0]["comments"]==null)?"":revHistories[i]["commentList"][0]["comments"];
+            revHisTemp["status"] = revHistories[i]["status"];
+            formatRevHistories.push(revHisTemp);
           }
-          if(key==selectedAccModel){
-            selectedAccModelVersions =  pricingModelVersions[key];
-            selModelId = selectedAccModelVersions[0]["modelId"];
+          //console.log("revision history "+JSON.stringify(formatRevHistories));
+          self.revisionHistory.replace(formatRevHistories);
+
+          self.societyModelMapping.replace(data.countryDetails.modelMappings);
+
+          $("#loading_img").hide();
+          $(".main-layout").show();
+          $(".buttonsPlaceHolder").show();
+
+          if(data.countryDetails.status == "A" || data.countryDetails.status == "N") {
+            self.attr("state","Edit");
+          }else{
+            self.attr("state","Read");
           }
-        }
-        //console.log("accural Models "+JSON.stringify(accModels));
-        //console.log("sel accural Model vers are "+JSON.stringify(selectedAccModelVersions));
-        //console.log("sel accural Model id is "+JSON.stringify(selModelId));
-        self.attr("accuralModels").replace(accModels);
-        self.attr("accuralModelVersions").replace(selectedAccModelVersions);
-        self.attr("selectedModelId",selModelId);
-        
-        $("#accModelSel").val(selectedAccModel);
-        $("#accModelSel").change();
-        
-        var tempcommentObj = data.countryDetails.commentList;
-        //console.log("multi comments "+JSON.stringify(tempcommentObj.attr()));
-        if(tempcommentObj !=null)
-        {
-          self.pageState.countryDetails.attr("commentList",data.countryDetails.commentList);
-          $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
+
+          setTimeout(function(){
+            alignGrid("grid-revision-history-country");
+            alignGrid("grid-society-model");
+          },50);
+
+          self.switchButtons();
+
         } else {
-          self.pageState.countryDetails.attr("commentList","");
+
+          commonUtils.displayUIMessage(data.status, data.responseText);
+          
         }
-
-        var revHistories = data.countryDetails.revisionHistories.attr();
-        self.attr("revHistory", data.countryDetails.revisionHistories.attr());
-        var formatRevHistories = [];
-        for(var i=0;i<revHistories.length;i++){
-          var revHisTemp = {};
-          revHisTemp["id"] = revHistories[i]["id"];
-          revHisTemp["validFrom"] = (revHistories[i]["validFrom"]==null)?"":revHistories[i]["validFrom"];
-          revHisTemp["validTo"] = (revHistories[i]["validTo"]==null)?"":revHistories[i]["validTo"];
-          revHisTemp["comment"] = (revHistories[i]["commentList"].length==0 || revHistories[i]["commentList"][0]["comments"]==null)?"":revHistories[i]["commentList"][0]["comments"];
-          revHisTemp["status"] = revHistories[i]["status"];
-          formatRevHistories.push(revHisTemp);
-        }
-        //console.log("revision history "+JSON.stringify(formatRevHistories));
-        self.revisionHistory.replace(formatRevHistories);
-
-        self.societyModelMapping.replace(data.countryDetails.modelMappings);
-
-        $("#loading_img").hide();
-        $(".main-layout").show();
-        $(".buttonsPlaceHolder").show();
-
-        if(data.countryDetails.status == "A" || data.countryDetails.status == "N") {
-          self.attr("state","Edit");
-        }else{
-          self.attr("state","Read");
-        }
-
-        setTimeout(function(){
-          alignGrid("grid-revision-history-country");
-          alignGrid("grid-society-model");
-        },50);
-
-        self.switchButtons();
 
       },function(xhr){
           console.error("Error while loading: country Details"+xhr);
