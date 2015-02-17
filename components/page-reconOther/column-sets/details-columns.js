@@ -9,16 +9,17 @@ export default [
   contents: function(row) {
     var value = row.dtlHdrId;
 
-    var rejectable = false;
+    // var rejectable = false;
 
-    if(row.rejectable && row.dtlHdrType != 'PDF') {
-      rejectable = true;
-    }
+
+    // if(row.rejectable) {
+    //   rejectable = true;
+    // }
     
     if(!row.isFooterRow){
       //return rejectable ? can.stache('<input type="checkbox" class="selectRow" value="'+  value +'"/>')() : can.stache('<input type="checkbox" disabled/>')();
       //if rejectable is true disable the checkbox else don't
-      return rejectable ? can.stache('<input type="checkbox" disabled/>')() : can.stache('<input type="checkbox" class="selectRow" value="'+  value +'"/>')();
+      return row.rejectable ? can.stache('<input type="checkbox" class="selectRow" value="'+  value +'"/>')() : can.stache('<input type="checkbox" disabled/>')();
     }
   }
 },

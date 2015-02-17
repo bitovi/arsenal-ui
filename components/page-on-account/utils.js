@@ -525,6 +525,7 @@ prepareOnAccountRowsForDisplay:function(onAccountDetails,quarters){
            }
           if(addToRow){
             rows.push(row);
+            periodMap = new Object();
           }
           //rows.push(row);
         }

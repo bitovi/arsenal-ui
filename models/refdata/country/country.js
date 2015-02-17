@@ -27,7 +27,7 @@ var CountryLicensor = Model.extend({
   },
   create: function(params){
    return $.ajax({
-      url: RinsCommon.UI_SERVICE_URL+'updateCountryDetails',
+      url: RinsCommon.UI_SERVICE_URL+'proposeCountryDetails',
       type: 'POST',
       data: JSON.stringify(params),
       dataType: 'json',

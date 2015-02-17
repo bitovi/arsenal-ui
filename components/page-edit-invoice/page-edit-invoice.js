@@ -730,6 +730,10 @@ var page = Component.extend({
 
 
 			},
+      destroy: function() {
+        //distroy all items can be placed.
+        $(".popover").hide();
+      },
 			".form-control keyup": function(event){
 					var self = this;
 					if(event[0].id == "newPaymentBundle"){
@@ -862,7 +866,9 @@ var page = Component.extend({
 				                   data.push(option);
 				                $.each(data, function(key, value) {
 				                    option = $('<option>').text(value.value).val(value.id);
-				                    data.push(option);
+				                    if(value.value != undefined && value.id != undefined){
+				                    	data.push(option);
+				                    }   
 				                });
 				                self.html(data);
 				            }
@@ -1109,7 +1115,7 @@ var page = Component.extend({
 			              		}
 							}).then(function(){
 
-				        	
+
 
 			         		prepareInvoiceLines(self.scope,invoiceData.invoiceLines,false);
 
@@ -1797,11 +1803,11 @@ var page = Component.extend({
           		self.attr("rowindex", i)
           		var rowindex = self.attr("rowindex");
           		if(!reload){
-          			var $clone = $template.clone().removeClass('hide').removeAttr('id').attr("id", "breakrow" + rowindex).attr("rowid", rowindex).insertBefore($template);	
+          			var $clone = $template.clone().removeClass('hide').removeAttr('id').attr("id", "breakrow" + rowindex).attr("rowid", rowindex).insertBefore($template);
           		}
 
           		if($("#breakrow" + rowindex).attr("data-invLineId") == undefined || ($("#breakrow" + rowindex).attr("data-invLineId") != undefined && $("#breakrow" + rowindex).attr("data-invLineId").length==0)){
-          		
+
 
           		$("#breakrow" + rowindex).attr("data-invLineId", invoiceLines[i].invLineId);
 
@@ -1843,8 +1849,10 @@ var page = Component.extend({
 
           			self.ccidGLStore.attr("ccidGL" + rowindex, invoiceLines[i].glAccount);
           		} else {
-          			$("#breakrow" + rowindex + " #ccidGL").attr("id", "ccidGL" + rowindex).val(invoiceLines[i].ccidName);
-          			self.ccidGLStore.attr("ccidGL" + rowindex, invoiceLines[i].ccidName);
+                    //Changed for ccidFileName
+          			$("#breakrow" + rowindex + " #ccidGL").attr("id", "ccidGL" + rowindex).val(invoiceLines[i].ccidFileName);
+//                    $("#breakrow" + rowindex + " #ccidGL").attr("title", "ccidGL" + rowindex).val(invoiceLines[i].ccidFileName);
+          			self.ccidGLStore.attr("ccidGL" + rowindex, invoiceLines[i].ccidFileName);
           		}
 
           		if (rowindex != 0)

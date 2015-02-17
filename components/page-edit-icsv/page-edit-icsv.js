@@ -121,6 +121,7 @@ var page = Component.extend({
   	ajaxRequestStatus:{},
   	usdFxrateRatio:"",
   	sumfileuploadedinfo:[],
+		iscountryFetchCalled:false,
     isRequired: function(){
   	 		if(this.attr("invoicetypeSelect") != "2"){  /*Adhoc*/
   	 				$(".breakdownCountry").addClass("requiredBar");
@@ -665,6 +666,9 @@ var page = Component.extend({
 			        	$('*[data-bv-icon-for="'+data.field +'"]').popover('show');
 				    	if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]") && (data.field != "ccidGLtxt[]")){
 				    		$("#"+data.field+"-err").css("display", "block");
+
+				    	}else{
+				    		$('*[data-bv-icon-for="'+data.field +'"]').popover('hide');
 				    	}
 
 
@@ -758,7 +762,7 @@ var page = Component.extend({
 
 
 				},
-				".form-control change":function(event){
+				".calduefield change":function(event){
 					var self = this;
 					if(($("#invoicedate input[type=text]").val() != "") &&  (self.scope.licensorStore != "") && ($("#inputCountry0").val() != "")){
 					var genObj = {entityId:self.scope.licensorStore, invoiceDate:Date.parse($("#invoicedate input[type=text]").val()), countryId:$("#inputCountry0").val()};
@@ -814,7 +818,7 @@ var page = Component.extend({
 								    var invoiceData = self.scope.attr().invoiceContainer[0];
 								     self.scope.attr("licensorStore", invoiceData.entityId);
 								     self.scope.ajaxRequestStatus.attr("licensorLoaded", true);
-
+										self.scope.attr("iscountryFetchCalled",true);
 							   });
 						}
 
@@ -977,12 +981,12 @@ var page = Component.extend({
 								isInvlineExist = true;
 							});
 
-				        	if(!isInvlineExist){
+				        	if(!isInvlineExist && !self.scope.attr("iscountryFetchCalled")){
 
 				               	 var genObj = {
 					                			regionId:invoiceData.regionId
 											  };
-
+												self.scope.attr("iscountryFetchCalled",true);
 									Promise.all([Country.findAll(UserReq.formRequestDetails(genObj))
 								     ]).then(function(values) {
 								     	if(values[0].status == 'SUCCESS'){
@@ -1008,7 +1012,7 @@ var page = Component.extend({
 
 											$("#breakrow"+rowindex+" .amountText").attr("id","amountText"+rowindex).val(invoiceData.invoiceLines[i].lineAmount);
 					                       	self.scope.AmountStore.attr("amountText"+rowindex, invoiceData.invoiceLines[i].lineAmount);
-					                       	
+
 					                       	$("#breakrow"+rowindex+" #inputContent").attr("id","inputContent"+rowindex);
 
 					                       	var servictypeid = $("#inputContent0 option:selected").attr("servicetypeid");
@@ -1016,7 +1020,7 @@ var page = Component.extend({
 												$('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
 												$('#inputContent'+rowindex).prepend("<option value>Select</option>").val('');
 											}
-											
+
 					                       	$('#inputContent'+rowindex).val(invoiceData.invoiceLines[i].contentGrpId);
 
 					                       	if(self.scope.attr("invoicetypeSelect") == "2"){
@@ -1027,7 +1031,7 @@ var page = Component.extend({
 												self.scope.contentTypeStore.attr("inputContent"+rowindex, invoiceData.invoiceLines[i].contentGrpId);
 									 		}
 
-									 		
+
 
 									 		var displayPeriod = "";
 									 		if(invoiceData.invoiceLines[i].fiscalPeriod != null && invoiceData.invoiceLines[i].periodType != null){
@@ -1043,14 +1047,18 @@ var page = Component.extend({
 					                       	$("#breakrow"+rowindex+" #inputCountry").attr("id","inputCountry"+rowindex).val(invoiceData.invoiceLines[i].country);
 					                         self.scope.countryStore.attr("inputCountry"+rowindex, invoiceData.invoiceLines[i].country);
 
-					                       	$("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val(invoiceData.invoiceLines[i].glAccount);
+
 
 					                       	if(self.scope.attr("invoicetypeSelect") == "2"){
+					                       		//$("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val(invoiceData.invoiceLines[i].glAccount);
+					                       		$("#breakrow" + rowindex + " #ccidGL").attr("id", "ccidGL" + rowindex).val(invoiceData.invoiceLines[i].glAccRefId);
+          										$("#breakrow" + rowindex + " #ccidGLtxt").attr("id", "ccidGLtxt" + rowindex).val(invoiceData.invoiceLines[i].glAccNum);
 												self.scope.ccidGLStore.attr("ccidGL"+rowindex, invoiceData.invoiceLines[i].glAccount);
 									 		}
 									 		else
 									 		{
-												self.scope.ccidGLStore.attr("ccidGL"+rowindex, invoiceData.invoiceLines[i].ccidName);
+												$("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val(invoiceData.invoiceLines[i].ccidFileName);
+												self.scope.ccidGLStore.attr("ccidGL"+rowindex, invoiceData.invoiceLines[i].ccidFileName);
 									 		}
 
 											if(rowindex != 0)
@@ -1287,7 +1295,7 @@ var page = Component.extend({
 							   editInvoiceCSVData.netTotal = self.scope.totalAmountVal;
 							   editInvoiceCSVData.receivedDate = $("#receiveddate input[type=text]").val();
 							   editInvoiceCSVData.invoiceDate = $("#invoicedate input[type=text]").val();
-							   editInvoiceCSVData.invoiceCalculatedDueDate = self.scope.calduedate;
+							   editInvoiceCSVData.invoiceCalcDueDate = self.scope.calduedate;
 							   editInvoiceCSVData.invoiceDueDate = $("#invoiceduedate input[type=text]").val();
 							   editInvoiceCSVData.createdBy = UserReq.formRequestDetails().prsId;
 							   editInvoiceCSVData.periodType = periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0));
@@ -1596,6 +1604,8 @@ var page = Component.extend({
 								self.scope.attr("editpage", true);
 								self.scope.attr("invoiceContainer").replace(icsvmap.attr().invoiceData.invoices[i]);
 								self.scope.attr("invoiceselectIndex", i);
+								self.scope.attr("iscountryFetchCalled",false);
+								break;
 							}
 						}
 
@@ -1807,11 +1817,19 @@ if ($("#inputMonth0").val().indexOf('Q') != "-1") {
 	 }
 }
 
-var getDateToDisplay=function(longDate){
-	var calculateDueDate = new Date(longDate);
-	return calculateDueDate.getMonth()+1 + "/" + calculateDueDate.getDate() + "/" + calculateDueDate.getFullYear();
-}
+// var getDateToDisplay=function(longDate){
+// 	var calculateDueDate = new Date(longDate);
+// 	return calculateDueDate.getMonth()+1 + "/" + calculateDueDate.getDate() + "/" + calculateDueDate.getFullYear();
+// }
 
+var getDateToDisplay=function(longDate){
+    var calculateDueDate = new Date(longDate);
+    var calMonth = ("0" + (calculateDueDate.getMonth())).slice(-2);
+    var calDate =  ("0" + calculateDueDate.getDate()).slice(-2);
+    var calYear = calculateDueDate.getFullYear();
+
+    return calMonth + "/" + calDate + "/" + calYear;
+}
 
 var updateContentType = function(element) {
 

@@ -429,6 +429,10 @@ var page = Component.extend({
 
         '#fetchDetailsBtn click':function(){
 
+            if($('#countryId').val=='Select'){
+              console.log('please select values');
+            }
+
             $(".mainLayoutId").hide();
             $(".buttonsPlaceHolder").show();
             $("#loading_img").show();

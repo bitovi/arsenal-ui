@@ -644,6 +644,13 @@ var page = Component.extend({
         $("#savxe").attr("disabled", false);
       }
 
+      if(checkTrackValue()){
+        $("#save").attr("disabled", true);
+        return;
+      }else{
+        $("#savxe").attr("disabled", false);
+      }
+
       var usercomments = (self.scope.editstate === true)?$("#editableText").val():$("#usercomments").val();
 
       var saveRecord = {
@@ -796,6 +803,30 @@ var isError = false;
 
   return isError;
 
+}
+
+function checkTrackValue(){
+  
+  var isError = false;
+  
+  var _listofFrom = $("input[id^='from-']").not(':hidden');
+
+  var _listofTo = $("input[id^='to-']").not(':hidden');
+
+  if(_listofFrom.length > 1 && _listofTo.length > 1){
+
+    for(var i = 1; i < _listofFrom.length; i++){
+
+      if( parseInt($(_listofFrom[i]).val()) === (parseInt($(_listofTo[i-1]).val()) + 1) ){
+        isError = false;
+        handleMsg("hide");
+      }else{
+        isError = true;
+        handleMsg("show", "Partition does not continue after previous one/ Not all Tiers contains edge values");
+      }
+    }
+  }
+  return isError;
 }
 
 function addFooter(divId){

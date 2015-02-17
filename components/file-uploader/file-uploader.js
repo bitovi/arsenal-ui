@@ -5,6 +5,7 @@ import compute from 'can/compute/';
 import _less from './file-uploader.less!';
 import fileManager from 'utils/fileManager/'
 import commonUtils from 'utils/commonUtils';
+import stache from 'can/view/stache/';
 
 var FileUploader = Component.extend ({
 
@@ -20,7 +21,8 @@ var FileUploader = Component.extend ({
             required: false,
             deletedFileInfo:[],
           areAnyFilesToBeUploaded: false,
-          isCancelToBeEnabled: false
+          isCancelToBeEnabled: false,
+          isInValidFormat: false
 
       },
       init:function(){
@@ -30,13 +32,20 @@ var FileUploader = Component.extend ({
               convertToKB: function (size) {
                 return (Math.max(size/1024, 0.1).toFixed(1)  + 'KB');
               },
-              getFileName:function(val,data){
+             getFileName:function(val,data){
                 var fileName=data.context.fileName;
-                if(fileName.indexOf(".zip")>-1){
-                  return fileName.substring(0,fileName.indexOf(".zip"));
-                }else{
-                  return fileName;
+                if(data.context.fileName ==undefined){
+                  fileName=data.context.name;
                 }
+                var displayName="";
+                if(fileName.indexOf(".zip")>-1){
+                  fileName = fileName.substring(0,fileName.indexOf(".zip"));
+                  //displayName = truncatedFileName(fileName);
+                  //return stache('<div title="Please provide onAccount amount in [##########.########] format">{{name}}</div>')({name});
+                }
+                  displayName = truncatedFileName(fileName);
+                  return stache('<span title="{{displayMessage}}">{{name}}</span>')({displayMessage:fileName,name:displayName});
+             
                 
               }
 
@@ -68,12 +77,14 @@ var FileUploader = Component.extend ({
               },
                '.fileSelect change' : function(el, ev) {
                   var files = el[0].files;
+                 
                    for (var i = 0; i < files.length; i++) {
                        files[i].ftype = 'selectedFromLocal';
                        files[i].guid = generateUUID();
                    }
                    this.scope.uploadedfileinfo.push.apply(this.scope.uploadedfileinfo, files);
                      // clearing the input value.
+                     checkValidFormat(this.scope.attr("uploadedfileinfo"), this);
                     this.element.find('input[type=file]').val(null);
 
                    function generateUUID(){
@@ -157,6 +168,7 @@ var FileUploader = Component.extend ({
                   var _fileList = this.scope.attr('fileList');
                   var _deletedFileInfo = this.scope.attr('deletedFileInfo');
 
+
                   function removeFileFromList(comparator) {
                       for (var i = 0, len = _fileList.length; i < len; i++) {
                           if ( comparator(_fileList[i]) ) {
@@ -187,6 +199,8 @@ var FileUploader = Component.extend ({
                           });
                       }
                   }
+
+                  checkValidFormat(_uploadedFileInfo, this);
 
               },
               '.downLoad-Link click': function(el, ev) {
@@ -219,5 +233,32 @@ var FileUploader = Component.extend ({
               }
           }
     })
+
+    function checkValidFormat(files, self){ 
+      for (var i = 0; i < files.length; i++) {
+             var validStatus = (/\.(tiff|jpeg|png|jpg|csv|pdf|txt)$/i).test(files[i].name);
+             if(!validStatus && (typeof(files[i].name) != "undefined")){
+                self.scope.attr("isInValidFormat", true);
+                $('.validFormatError').empty().html("Invalid File format. Valid format: tiff/jpeg/png/jpg/csv/pdf/txt");
+                $('.submitFiles').attr("disabled", true);
+                $('div.outer').scrollTop($( "div.outer" ).height());
+                break;
+             }else{
+                 self.scope.attr("isInValidFormat", false);
+                 $('.validFormatError').empty();
+                 $('.submitFiles').attr("disabled", false);
+               
+             }
+          }
+    }
+
+var truncatedFileName = function(fileName){
+  if(fileName != undefined && fileName.length>0 && fileName.length>45){
+    return fileName.substring(0,45)+"...";
+  }
+  return fileName;
+}
+
+
 
 export default FileUploader;

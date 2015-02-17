@@ -53,9 +53,9 @@ var bookmark = Component.extend({
            $('book-mark').hide('fast');
         }
       },
-      '{document}  click':function(el,e){
-        if($(e.target).closest(".bookmark").length === 0 && $('book-mark').is(':visible')) {
-          //$('book-mark').hide('fast');
+      '{document} click':function(el,e){
+        if($(e.target).closest(".bookmark").length === 0 && $(e.target).closest("book-mark").length === 0 && $('book-mark').css('display') === "block") {
+          $('book-mark').hide('fast');
         }
       },
       '.bookmark_list dblclick':function(el){
@@ -188,7 +188,8 @@ var bookmark = Component.extend({
                           "filter7": replacements($('#contentTypesFilter').val())
                       };
                   var filterData=[filters];
-                  var passtoSave = {"screenId": 1,"bookmarkName": $('.newbookmark_name_txtbx').val(),sharedForIds,filterData}
+
+                  var passtoSave = {"screenId": this.scope.appstate.screenLookup.attr("screenid") ,"bookmarkName": $('.newbookmark_name_txtbx').val(),sharedForIds,filterData}
                   $('.bookmark_loader').show();
                   Bookmark.update(UserReq.formRequestDetails(passtoSave),"SAVE",function(data){
                       if(data.responseText=="SUCCESS"){

@@ -275,7 +275,27 @@ var page = Component.extend({
 
       }
 
-      FileManager.downloadFile(request);
+      //FileManager.downloadFile(request);
+        var file={};
+        file.fileId= row.invFileId;
+        file.boundType='INBOUND';
+
+        //FileManager.findOne(request);
+
+        FileManager.findOne(file,function(data){
+            if(data["status"]=="SUCCESS"){
+
+            }else{
+              // $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
+              // $("#messageDiv").show();
+              // setTimeout(function(){
+              //     $("#messageDiv").hide();
+              // },2000)
+              commonUtils.showErrorMessage(data["responseText"]);
+            }
+      }, function(xhr) {
+            console.error("Error while downloading the file with fileId: "+fileId+xhr);
+      });
     },
     '.toggle :checkbox change': function(el, ev) {
       if (el[0].getAttribute('class') != 'headerChkBox') {
@@ -323,8 +343,7 @@ var page = Component.extend({
 
     '.btn-holesReport click': function() {
       commonUtils.navigateTo("dashboard");
-      this.scope.appstate.attr('DISPLAY_HOLES_REPORT',true);
-      // this.scope.appstate.attr('page','dashboard');
+      this.scope.appstate.screenLookup.attr('targetScreen',"2");// 2 - Screenid for Holes report 
     },
     '.btn-OverRep click': function() {
         window.open(RinsCommon.RINS_OLD_URL+'overRepConfig');

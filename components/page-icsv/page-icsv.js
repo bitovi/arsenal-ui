@@ -223,11 +223,21 @@ var page = Component.extend({
 
                               });
 
-                              errString = unique;
+                              //errString = unique;
+                              
+                              var resErrString=[];
+                              for(var k=0;k<=unique.length-1;k++){
+                                resErrString.push("<div> <b>-</b> "+unique[k]+"</div>");
+                              }
 
-                              var errlabel = "<span class='errorlabel'>Error: </span>";
+                              errString = resErrString;
 
-                              tempObj.error = ((errString[0] == "") && (errString.length == 1))?"":errlabel+errString;
+                              var errlabel = "<span class='errorlabel' style='font-weight:bold;'>Error: </span>";
+
+                              var newErrString=(errlabel+errString).replace("</div>,<div>","</div><div>");
+
+                              tempObj.error = ((unique[0] == "") && (unique.length == 1))?"":newErrString;
+
                           }
                         tempObj.licensor= tempArr[i].entityName;
                         tempObj.invoiceNum= tempArr[i].invoiceNumber;
@@ -320,7 +330,10 @@ var page = Component.extend({
 
           });
       },
-
+      destroy: function() {
+        //distroy all items can be placed.
+        $(".popover").hide();
+      },
 
       'rn-file-uploader-icsv-sum onSelected': function (ele, event, val) {
             var self = this;
@@ -347,11 +360,11 @@ var page = Component.extend({
 
           //console.log('Request:'+ JSON.stringify(icsvReq));
 
-          console.log(icsvmap);
+          //console.log(icsvmap);
 
           icsvmap.removeAttr("invoiceData");
 
-          console.log(icsvmap);
+          //console.log(icsvmap);
 
           if(!$(".jQfunhide").is(":visible")){
             $('#icsverr').removeClass("icsv-error").addClass("icsv-validate-inprogress");
@@ -398,6 +411,7 @@ var page = Component.extend({
            var createInvoiceData = {};
              createInvoiceData.invoices = [];
 
+             console.log("tempArr",tempArr);
             for(var i=0; i < tempArr.length; i++)
                 {
                     var tempInvoiceData = {};
