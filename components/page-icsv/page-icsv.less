@@ -45,11 +45,24 @@ icsv-grid {
 	tbody {
 		//height:85%;
 		//max-height: 100%;
+		width:100%;
+		min-width:1248;
 		overflow-y: overlay;
 		overflow-x: hidden;
 		//border: 1px solid #a1a1a1;
 		border: 0;
-
+		tr {
+			height : auto;
+			min-height:22px;
+			word-wrap: break-word !important;
+			td {
+				height : auto;
+				min-height:22px;
+				padding-top:1px;
+				min-height:22px;
+				word-wrap: break-word !important;
+			}
+		}
 	}
 
  /* .entity, .invoiceType, .contentType, .country, .invoiceNum, .dueDate, .currency, .status, .bundleName, .comments{
@@ -94,7 +107,7 @@ icsv-grid {
 		&.errormsg { .flex-grow(1); .flex-basis(50px); }
 		&.licensor { .flex-grow(2); .flex-basis(200px); }
 		&.contentType { .flex-grow(2); .flex-basis(100px); }
-		&.country { .flex-grow(1); .flex-basis(60px); }
+		&.country { .flex-grow(1); .flex-basis(75px); }
 		&.invoiceNum { .flex-grow(2); .flex-basis(200px); }
 		&.dueDate { .flex-grow(1); .flex-basis(80px); }
 		&.invoiceAmt { .flex-grow(1); .flex-basis(155px); }

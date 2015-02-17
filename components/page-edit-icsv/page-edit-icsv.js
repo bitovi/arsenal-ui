@@ -121,6 +121,7 @@ var page = Component.extend({
   	ajaxRequestStatus:{},
   	usdFxrateRatio:"",
   	sumfileuploadedinfo:[],
+		iscountryFetchCalled:false,
     isRequired: function(){
   	 		if(this.attr("invoicetypeSelect") != "2"){  /*Adhoc*/
   	 				$(".breakdownCountry").addClass("requiredBar");
@@ -665,7 +666,7 @@ var page = Component.extend({
 			        	$('*[data-bv-icon-for="'+data.field +'"]').popover('show');
 				    	if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]") && (data.field != "ccidGLtxt[]")){
 				    		$("#"+data.field+"-err").css("display", "block");
-				    		
+
 				    	}else{
 				    		$('*[data-bv-icon-for="'+data.field +'"]').popover('hide');
 				    	}
@@ -817,7 +818,7 @@ var page = Component.extend({
 								    var invoiceData = self.scope.attr().invoiceContainer[0];
 								     self.scope.attr("licensorStore", invoiceData.entityId);
 								     self.scope.ajaxRequestStatus.attr("licensorLoaded", true);
-
+										self.scope.attr("iscountryFetchCalled",true);
 							   });
 						}
 
@@ -980,12 +981,12 @@ var page = Component.extend({
 								isInvlineExist = true;
 							});
 
-				        	if(!isInvlineExist){
+				        	if(!isInvlineExist && !self.scope.attr("iscountryFetchCalled")){
 
 				               	 var genObj = {
 					                			regionId:invoiceData.regionId
 											  };
-
+												self.scope.attr("iscountryFetchCalled",true);
 									Promise.all([Country.findAll(UserReq.formRequestDetails(genObj))
 								     ]).then(function(values) {
 								     	if(values[0].status == 'SUCCESS'){
@@ -1046,7 +1047,7 @@ var page = Component.extend({
 					                       	$("#breakrow"+rowindex+" #inputCountry").attr("id","inputCountry"+rowindex).val(invoiceData.invoiceLines[i].country);
 					                         self.scope.countryStore.attr("inputCountry"+rowindex, invoiceData.invoiceLines[i].country);
 
-					                       
+
 
 					                       	if(self.scope.attr("invoicetypeSelect") == "2"){
 					                       		//$("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val(invoiceData.invoiceLines[i].glAccount);
@@ -1603,6 +1604,8 @@ var page = Component.extend({
 								self.scope.attr("editpage", true);
 								self.scope.attr("invoiceContainer").replace(icsvmap.attr().invoiceData.invoices[i]);
 								self.scope.attr("invoiceselectIndex", i);
+								self.scope.attr("iscountryFetchCalled",false);
+								break;
 							}
 						}
 
