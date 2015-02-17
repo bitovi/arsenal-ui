@@ -97,9 +97,16 @@ var page = Component.extend({
 
       } else {
 
+        if(self.appstate.userInfo.roleIds[0] == constants.ROLES.FA) {
+          self.attr("enableButtonsApprove", "display:none");
+          self.attr("enableButtonsReject", "display:none");
+          self.attr("enableButtonsPropose", "display:none");
+        } else {
           self.attr("enableButtonsApprove", "display:none");
           self.attr("enableButtonsReject", "display:none");
           self.attr("enableButtonsPropose", "display:inline-block");
+
+        }
   
       }
 
