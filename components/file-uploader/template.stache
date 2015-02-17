@@ -22,7 +22,7 @@
 </div>
 
      {{#if isAnyFileLoaded}}
-          {{#if fileList.length}}
+          {{#if fileList.length>0}}
 
             <ul class="filelist" style="padding-left: 5px;">
                 {{#fileList}}

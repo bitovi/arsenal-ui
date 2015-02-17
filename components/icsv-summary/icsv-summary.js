@@ -11,13 +11,13 @@ var icsvsummary = Component.extend({
   tag: 'icsv-summary',
   template: template,
   scope: {
-    "fileCount":undefined,
-    "invoiceCount":undefined,
-    "noOfPdf":undefined,
-    "licensorsCount":undefined,
-    "rowCount":undefined,
-    "errorCount":undefined,
-    "totalAmount":undefined,
+    "fileCount":'@',
+    "invoiceCount":'@',
+    "noOfPdf":'@',
+    "licensorsCount":'@',
+    "rowCount":'@',
+    "errorCount":'@',
+    "totalAmount":'@',
     invoiceTotal:[]
   },
   events:{
@@ -57,7 +57,7 @@ var icsvsummary = Component.extend({
         //console.log('Details--'+JSON.stringify(utils.convertMapToCanListObject(summaryDetails.invoiceTotal)));
         var invoiceTotal = summaryDetails.amountSummaryList;
 
-        if(invoiceTotal != null && invoiceTotal != undefined){
+        if(invoiceTotal != null && invoiceTotal != undefined){ 
           self.scope.invoiceTotal.replace(convertMapToCanListObject(invoiceTotal));
           self.scope.attr("totalAmount",currencyFormat(summaryDetails.totalAmount));
         }else{
