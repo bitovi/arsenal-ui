@@ -809,7 +809,7 @@ var page = Component.extend({
       var self = this.scope;
       var selmodelid = self.attr("selectedModelId").toString();
       var country = self.pageState.countryDetails.country.attr("countryId");
-      var genObj = {modelId:selmodelid,reqType:'countryLicensordetails', countryId:country};
+      var genObj = {modelId:selmodelid,reqType:'countryLicensordetails', countryId:country, id:self.pageState.countryDetails.country.id};
 
       console.log("Request is " +JSON.stringify(UserReq.formRequestDetails(genObj)));
       CountryLicensor.findOne(UserReq.formRequestDetails(genObj),function(data){
