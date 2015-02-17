@@ -323,8 +323,7 @@ var page = Component.extend({
 
     '.btn-holesReport click': function() {
       commonUtils.navigateTo("dashboard");
-      this.scope.appstate.attr('DISPLAY_HOLES_REPORT',true);
-      // this.scope.appstate.attr('page','dashboard');
+      this.scope.appstate.screenLookup.attr('targetScreen',"2");// 2 - Screenid for Holes report 
     },
     '.btn-OverRep click': function() {
         window.open(RinsCommon.RINS_OLD_URL+'overRepConfig');
