@@ -74,15 +74,25 @@ var page = Component.extend({
     enableButtonsApprove : "display:none",
     enableButtonsReject : "display:none",
 
-    switchButtons: function() {
+    switchButtons: function() { 
 
       var self = this;
 
       if(self.pageState.countryDetails.country.status == "N") {
 
-        self.attr("enableButtonsApprove", "display:block");
-        self.attr("enableButtonsReject", "display:block");
-        self.attr("enableButtonsPropose", "display:none");
+        if(self.scope.appstate.attr("role")) {
+
+          //self.attr("enableButtonsApprove", "display:none");
+          //self.attr("enableButtonsReject", "display:none");
+          //self.attr("enableButtonsPropose", "display:block");
+  
+        } else {
+
+          self.attr("enableButtonsApprove", "display:block");
+          self.attr("enableButtonsReject", "display:block");
+          self.attr("enableButtonsPropose", "display:none");
+
+        }
 
       } else {
 
@@ -748,6 +758,7 @@ var page = Component.extend({
       }
       
       $("#accModelVerSel").val(maxVersion);
+      $("#accModelVerSel").change();
       //console.log("sel model id "+selModelId)
       self.attr("selectedModelId",selModelId);
 
@@ -758,7 +769,7 @@ var page = Component.extend({
       //console.log("selected accmodelvers "+JSON.stringify(selected.attr()));
       
       //console.log("sel model id "+selModelId)
-      self.attr("selectedModelId",selModelId);
+      self.attr("selectedModelId",selected.modelId);
     },
     '.society click': function(el, ev){
 
