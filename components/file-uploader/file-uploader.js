@@ -5,6 +5,7 @@ import compute from 'can/compute/';
 import _less from './file-uploader.less!';
 import fileManager from 'utils/fileManager/'
 import commonUtils from 'utils/commonUtils';
+import stache from 'can/view/stache/';
 
 var FileUploader = Component.extend ({
 
@@ -32,11 +33,18 @@ var FileUploader = Component.extend ({
               },
               getFileName:function(val,data){
                 var fileName=data.context.fileName;
-                if(fileName.indexOf(".zip")>-1){
-                  return fileName.substring(0,fileName.indexOf(".zip"));
-                }else{
-                  return fileName;
+                if(data.context.fileName ==undefined){
+                  fileName=data.context.name;
                 }
+                var displayName="";
+                if(fileName.indexOf(".zip")>-1){
+                  fileName = fileName.substring(0,fileName.indexOf(".zip"));
+                  //displayName = truncatedFileName(fileName);
+                  //return stache('<div title="Please provide onAccount amount in [##########.########] format">{{name}}</div>')({name});
+                }
+                  displayName = truncatedFileName(fileName);
+                  return stache('<span title="{{displayMessage}}">{{name}}</span>')({displayMessage:fileName,name:displayName});
+             
                 
               }
 
@@ -218,6 +226,12 @@ var FileUploader = Component.extend ({
                 $("#progressouter").hide();
               }
           }
-    })
+    });
 
+var truncatedFileName = function(fileName){
+  if(fileName != undefined && fileName.length>0 && fileName.length>45){
+    return fileName.substring(0,45)+"...";
+  }
+  return fileName;
+};
 export default FileUploader;
