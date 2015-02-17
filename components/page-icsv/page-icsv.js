@@ -223,11 +223,21 @@ var page = Component.extend({
 
                               });
 
-                              errString = unique;
+                              //errString = unique;
+                              
+                              var resErrString=[];
+                              for(var k=0;k<=unique.length-1;k++){
+                                resErrString.push("<div> <b>-</b> "+unique[k]+"</div>");
+                              }
 
-                              var errlabel = "<span class='errorlabel'>Error: </span>";
+                              errString = resErrString;
 
-                              tempObj.error = ((errString[0] == "") && (errString.length == 1))?"":errlabel+errString;
+                              var errlabel = "<span class='errorlabel' style='font-weight:bold;'>Error: </span>";
+
+                              var newErrString=(errlabel+errString).replace("</div>,<div>","</div><div>");
+
+                              tempObj.error = ((errString[0] == "") && (errString.length == 1))?"":newErrString;
+
                           }
                         tempObj.licensor= tempArr[i].entityName;
                         tempObj.invoiceNum= tempArr[i].invoiceNumber;
