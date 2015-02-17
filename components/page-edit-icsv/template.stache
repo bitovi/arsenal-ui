@@ -60,7 +60,7 @@
                     <div class="col-sm-6">
                         <label for="inputEmail3" class="col-sm-6 control-label">Licensor: </label>
                         <div class="col-sm-4 requiredBar licensor">
-                            <select id="invoicelicensor" class="form-control" name="licensor" can-value="licensorStore">
+                            <select id="invoicelicensor" class="form-control calduefield" name="licensor" can-value="licensorStore">
                                 <option value="">Select</option>
 							    {{#each licensor}}
                                 <optgroup label="{{entityType}}">
@@ -222,7 +222,7 @@
                                         </td>
                                         <td class="form-group">
                                             <div class="breakdownCountry">
-                                                <select id="inputCountry0"  name="inputCountry[]" class="form-control inputCountry" >
+                                                <select id="inputCountry0"  name="inputCountry[]" class="form-control inputCountry calduefield" >
                                                     <option value="">Select</option>
     			        	                        {{#each country}}    			        		
                                                         <option value="{{id}}">{{value}}</option>
@@ -288,7 +288,7 @@
                                                         </td>
                                                         <td class="form-group">
                                                             <div class="breakdownCountry">
-                                                                <select id="inputCountry" name="inputCountry[]" class="form-control inputCountry">
+                                                                <select id="inputCountry" name="inputCountry[]" class="form-control inputCountry calduefield">
                                                                     <option value="">Select</option>
     			        	{{#each country}}
     			        		
