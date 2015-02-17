@@ -980,7 +980,8 @@ var page = Component.extend({
 								//this.remove();
 								isInvlineExist = true;
 							});
-
+									//"iscountryFetchCalled" this dirty flat is introduced for temporary fix for Business demo
+									//please fix it properly later
 				        	if(!isInvlineExist && !self.scope.attr("iscountryFetchCalled")){
 
 				               	 var genObj = {
