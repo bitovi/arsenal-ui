@@ -320,7 +320,10 @@ var page = Component.extend({
 
           });
       },
-
+      destroy: function() {
+        //distroy all items can be placed.
+        $(".popover").hide();
+      },
 
       'rn-file-uploader-icsv-sum onSelected': function (ele, event, val) {
             var self = this;

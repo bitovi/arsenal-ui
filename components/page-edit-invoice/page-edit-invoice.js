@@ -730,6 +730,10 @@ var page = Component.extend({
 
 
 			},
+      destroy: function() {
+        //distroy all items can be placed.
+        $(".popover").hide();
+      },
 			".form-control keyup": function(event){
 					var self = this;
 					if(event[0].id == "newPaymentBundle"){
@@ -1109,7 +1113,7 @@ var page = Component.extend({
 			              		}
 							}).then(function(){
 
-				        	
+
 
 			         		prepareInvoiceLines(self.scope,invoiceData.invoiceLines,false);
 
@@ -1797,11 +1801,11 @@ var page = Component.extend({
           		self.attr("rowindex", i)
           		var rowindex = self.attr("rowindex");
           		if(!reload){
-          			var $clone = $template.clone().removeClass('hide').removeAttr('id').attr("id", "breakrow" + rowindex).attr("rowid", rowindex).insertBefore($template);	
+          			var $clone = $template.clone().removeClass('hide').removeAttr('id').attr("id", "breakrow" + rowindex).attr("rowid", rowindex).insertBefore($template);
           		}
 
           		if($("#breakrow" + rowindex).attr("data-invLineId") == undefined || ($("#breakrow" + rowindex).attr("data-invLineId") != undefined && $("#breakrow" + rowindex).attr("data-invLineId").length==0)){
-          		
+
 
           		$("#breakrow" + rowindex).attr("data-invLineId", invoiceLines[i].invLineId);
 
