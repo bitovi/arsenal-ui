@@ -1287,7 +1287,7 @@ var page = Component.extend({
 							   editInvoiceCSVData.netTotal = self.scope.totalAmountVal;
 							   editInvoiceCSVData.receivedDate = $("#receiveddate input[type=text]").val();
 							   editInvoiceCSVData.invoiceDate = $("#invoicedate input[type=text]").val();
-							   editInvoiceCSVData.invoiceCalculatedDueDate = self.scope.calduedate;
+							   editInvoiceCSVData.invoiceCalcDueDate = self.scope.calduedate;
 							   editInvoiceCSVData.invoiceDueDate = $("#invoiceduedate input[type=text]").val();
 							   editInvoiceCSVData.createdBy = UserReq.formRequestDetails().prsId;
 							   editInvoiceCSVData.periodType = periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0));
@@ -1817,7 +1817,7 @@ var getDateToDisplay=function(longDate){
     var calMonth = ("0" + (calculateDueDate.getMonth())).slice(-2);
     var calDate =  ("0" + calculateDueDate.getDate()).slice(-2);
     var calYear = calculateDueDate.getFullYear();
-		comsole.log("calculateDueDate "+calculateDueDate);
+
     return calMonth + "/" + calDate + "/" + calYear;
 }
 
