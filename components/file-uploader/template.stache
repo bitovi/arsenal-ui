@@ -50,13 +50,19 @@
           {{/if}}
       {{/if}}
 
-        {{#if isAnyFileLoaded}}
+      {{#if isAnyFileLoaded}}
+
+            {{#if isInValidFormat}}
+                 <div class="validFormatError"></div>
+            {{/if}}
+
            {{#if isSuccess}}
               <div class="success"></div>
             {{else}}
               <div class="fileError"></div>
-         {{/if}}
-    {{/if}}
+           {{/if}}
+      
+      {{/if}}
 
 </div>
 {{#if required}}

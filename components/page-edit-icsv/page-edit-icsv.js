@@ -665,6 +665,9 @@ var page = Component.extend({
 			        	$('*[data-bv-icon-for="'+data.field +'"]').popover('show');
 				    	if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]") && (data.field != "ccidGLtxt[]")){
 				    		$("#"+data.field+"-err").css("display", "block");
+				    		
+				    	}else{
+				    		$('*[data-bv-icon-for="'+data.field +'"]').popover('hide');
 				    	}
 
 

@@ -20,7 +20,8 @@ var FileUploader = Component.extend ({
             required: false,
             deletedFileInfo:[],
           areAnyFilesToBeUploaded: false,
-          isCancelToBeEnabled: false
+          isCancelToBeEnabled: false,
+          isInValidFormat: false
 
       },
       init:function(){
@@ -68,12 +69,14 @@ var FileUploader = Component.extend ({
               },
                '.fileSelect change' : function(el, ev) {
                   var files = el[0].files;
+                 
                    for (var i = 0; i < files.length; i++) {
                        files[i].ftype = 'selectedFromLocal';
                        files[i].guid = generateUUID();
                    }
                    this.scope.uploadedfileinfo.push.apply(this.scope.uploadedfileinfo, files);
                      // clearing the input value.
+                     checkValidFormat(this.scope.attr("uploadedfileinfo"), this);
                     this.element.find('input[type=file]').val(null);
 
                    function generateUUID(){
@@ -157,6 +160,7 @@ var FileUploader = Component.extend ({
                   var _fileList = this.scope.attr('fileList');
                   var _deletedFileInfo = this.scope.attr('deletedFileInfo');
 
+
                   function removeFileFromList(comparator) {
                       for (var i = 0, len = _fileList.length; i < len; i++) {
                           if ( comparator(_fileList[i]) ) {
@@ -187,6 +191,8 @@ var FileUploader = Component.extend ({
                           });
                       }
                   }
+
+                  checkValidFormat(_uploadedFileInfo, this);
 
               },
               '.downLoad-Link click': function(el, ev) {
@@ -219,5 +225,24 @@ var FileUploader = Component.extend ({
               }
           }
     })
+
+    function checkValidFormat(files, self){ 
+      for (var i = 0; i < files.length; i++) {
+             var validStatus = (/\.(tiff|jpeg|png|jpg|csv|pdf|txt)$/i).test(files[i].name);
+             if(!validStatus){
+                self.scope.attr("isInValidFormat", true);
+                $('.validFormatError').empty().html("Invalid File format. Valid format: tiff/jpeg/png/jpg/csv/pdf/txt");
+                $('.submitFiles').attr("disabled", true);
+                break;
+             }else{
+                 self.scope.attr("isInValidFormat", false);
+                 $('.validFormatError').empty();
+                 $('.submitFiles').attr("disabled", false);
+               
+             }
+          }
+    }
+
+
 
 export default FileUploader;
