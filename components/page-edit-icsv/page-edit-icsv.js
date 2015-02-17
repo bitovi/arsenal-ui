@@ -1008,7 +1008,7 @@ var page = Component.extend({
 
 											$("#breakrow"+rowindex+" .amountText").attr("id","amountText"+rowindex).val(invoiceData.invoiceLines[i].lineAmount);
 					                       	self.scope.AmountStore.attr("amountText"+rowindex, invoiceData.invoiceLines[i].lineAmount);
-					                       	
+
 					                       	$("#breakrow"+rowindex+" #inputContent").attr("id","inputContent"+rowindex);
 
 					                       	var servictypeid = $("#inputContent0 option:selected").attr("servicetypeid");
@@ -1016,7 +1016,7 @@ var page = Component.extend({
 												$('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
 												$('#inputContent'+rowindex).prepend("<option value>Select</option>").val('');
 											}
-											
+
 					                       	$('#inputContent'+rowindex).val(invoiceData.invoiceLines[i].contentGrpId);
 
 					                       	if(self.scope.attr("invoicetypeSelect") == "2"){
@@ -1027,7 +1027,7 @@ var page = Component.extend({
 												self.scope.contentTypeStore.attr("inputContent"+rowindex, invoiceData.invoiceLines[i].contentGrpId);
 									 		}
 
-									 		
+
 
 									 		var displayPeriod = "";
 									 		if(invoiceData.invoiceLines[i].fiscalPeriod != null && invoiceData.invoiceLines[i].periodType != null){
@@ -1813,12 +1813,6 @@ var getDateToDisplay=function(longDate){
 }
 
 var getDateToDisplay=function(longDate){
-    var calculateDueDate = new Date(longDate);
-    var calMonth = ("0" + (calculateDueDate.getMonth() + 1)).slice(-2);
-    var calDate =  ("0" + calculateDueDate.getDate()).slice(-2);
-    var calYear = calculateDueDate.getFullYear();
-    return calMonth + "/" + calDate + "/" + calYear;
-}var getDateToDisplay=function(longDate){
     var calculateDueDate = new Date(longDate);
     var calMonth = ("0" + (calculateDueDate.getMonth() + 1)).slice(-2);
     var calDate =  ("0" + calculateDueDate.getDate()).slice(-2);
