@@ -229,10 +229,11 @@ var FileUploader = Component.extend ({
     function checkValidFormat(files, self){ 
       for (var i = 0; i < files.length; i++) {
              var validStatus = (/\.(tiff|jpeg|png|jpg|csv|pdf|txt)$/i).test(files[i].name);
-             if(!validStatus){
+             if(!validStatus && (typeof(files[i].name) != "undefined")){
                 self.scope.attr("isInValidFormat", true);
                 $('.validFormatError').empty().html("Invalid File format. Valid format: tiff/jpeg/png/jpg/csv/pdf/txt");
                 $('.submitFiles').attr("disabled", true);
+                $('div.outer').scrollTop($( "div.outer" ).height());
                 break;
              }else{
                  self.scope.attr("isInValidFormat", false);

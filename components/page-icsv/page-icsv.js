@@ -236,7 +236,7 @@ var page = Component.extend({
 
                               var newErrString=(errlabel+errString).replace("</div>,<div>","</div><div>");
 
-                              tempObj.error = ((errString[0] == "") && (errString.length == 1))?"":newErrString;
+                              tempObj.error = ((unique[0] == "") && (unique.length == 1))?"":newErrString;
 
                           }
                         tempObj.licensor= tempArr[i].entityName;
