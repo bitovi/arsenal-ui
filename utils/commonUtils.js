@@ -1,5 +1,6 @@
 import appstate from 'models/appstate/';
 import constants from 'utils/constants';
+import fieldPermission from 'utils/fieldPermission';
 
 var rinsCommonUtils = {
   triggerGlobalSearch:function (){
@@ -45,7 +46,23 @@ var rinsCommonUtils = {
   },
   isReadOnly:function() {
     return appstate.userInfo.roleIds.indexOf(constants.ROLES.RO) > -1 ? 'true' : 'false';
-  }
+  },
+  getFieldAttribute:function(screenId,fieldId){
+    var role = appstate.userInfo.roleIds ;
+    return fieldPermission.formRequestDetails(fieldId,screenId,role);
+
+  },
+  // getAllowedScreenIds:function(){
+  //
+  //   var screenId= [] ;
+  //   for(var i = 0, size = role.permissions.length; i < size ; i++)
+  //   {
+  //       screenId.push(role.permissions[i].screenId) ;
+  //   }
+  //
+  //   return screenId;
+  // }
+
 };
 
 var   commonUIDisplay  = function(messageDiv, status,message){

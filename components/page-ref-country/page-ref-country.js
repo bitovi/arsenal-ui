@@ -75,7 +75,7 @@ var page = Component.extend({
     enableButtonsApprove : "display:none",
     enableButtonsReject : "display:none",
 
-    switchButtons: function() { 
+    switchButtons: function() {
 
       var self = this;
 
@@ -86,7 +86,7 @@ var page = Component.extend({
           self.attr("enableButtonsApprove", "display:none");
           self.attr("enableButtonsReject", "display:none");
           self.attr("enableButtonsPropose", "display:none");
-  
+
         } else {
 
           self.attr("enableButtonsApprove", "display:inline-block");
@@ -94,6 +94,18 @@ var page = Component.extend({
           self.attr("enableButtonsPropose", "display:none");
 
         }
+      //   var screenId = self.appstate.screenLookup.attr("screenid") ;
+      //   console.log("screenId="+screenId);
+      //   console.log("commonUtils.getFieldAttribute(screenId,9)="+commonUtils.getFieldAttribute(screenId,9));
+      //   if(commonUtils.getFieldAttribute(screenId,9)=="disabled"){
+      //     self.attr("enableButtonsApprove", "display:none");
+      //   }
+      //   if(commonUtils.getFieldAttribute(screenId,10)=="disabled"){
+      //     self.attr("enableButtonsReject", "display:none");
+      //   }
+      //   if(commonUtils.getFieldAttribute(screenId,11)=="disabled"){
+      //  self.attr("enableButtonsPropose", "display:none");
+      // }
 
       } else {
 
@@ -107,7 +119,7 @@ var page = Component.extend({
           self.attr("enableButtonsPropose", "display:inline-block");
 
         }
-  
+
       }
 
     },
@@ -122,7 +134,7 @@ var page = Component.extend({
       console.log("Request passed is "+ JSON.stringify(UserReq.formRequestDetails(requestObj)));
       RefCountry.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
-        $("#loading_img").hide(); 
+        $("#loading_img").hide();
         if(data.status == "SUCCESS") {
 
           console.log("Response data is "+JSON.stringify(data.attr()));
@@ -365,8 +377,9 @@ var page = Component.extend({
        console.log("Div height "+ $("#refcountryform").height());
        return 'Style="height:'+vph+'px"';
      },
-    disableSubmit:function(){
-       if(this.attr("state") == "Read"){
+    disableSubmit:function(fieldId){
+      var screenId = this.appstate.screenLookup.attr("screenid");
+       if(this.attr("state") == "Read" || commonUtils.getFieldAttribute(screenId,fieldId)){
          return 'disabled';
        }else{
          return '';
@@ -670,10 +683,10 @@ var page = Component.extend({
           self.attr("accuralModels").replace(accModels);
           self.attr("accuralModelVersions").replace(selectedAccModelVersions);
           self.attr("selectedModelId",selModelId);
-          
+
           $("#accModelSel").val(selectedAccModel);
           $("#accModelSel").change();
-          
+
           var tempcommentObj = data.countryDetails.commentList;
           //console.log("multi comments "+JSON.stringify(tempcommentObj.attr()));
           if(tempcommentObj !=null)
@@ -769,17 +782,17 @@ var page = Component.extend({
       var selModelId = ver[0]["modelId"];
 
       var maxVersion = 0;
-      
+
       for(var i=0; i< ver.length; i++) {
-        
+
         if(maxVersion < ver[i].version) {
 
-          maxVersion =  ver[i].version;          
+          maxVersion =  ver[i].version;
 
         }
 
       }
-      
+
       $("#accModelVerSel").val(maxVersion);
       $("#accModelVerSel").change();
       //console.log("sel model id "+selModelId)
@@ -790,7 +803,7 @@ var page = Component.extend({
       var self=this.scope;
       var selected = $(el[0].selectedOptions).data('accModelVer');
       //console.log("selected accmodelvers "+JSON.stringify(selected.attr()));
-      
+
       //console.log("sel model id "+selModelId)
       self.attr("selectedModelId",selected.modelId);
     },
