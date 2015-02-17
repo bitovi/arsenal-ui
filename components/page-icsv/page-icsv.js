@@ -438,7 +438,7 @@ var page = Component.extend({
 
                    tempInvoiceData["receivedDate"] = dateFormatter(tempArr[i].receivedDate,"mm/dd/yyyy");//"06/19/2014"//self.scope.receiveddate;
                    tempInvoiceData["invoiceDate"] = dateFormatter(tempArr[i].invoiceDate,"mm/dd/yyyy");//"06/19/2014"//self.scope.invoicedate;
-                   tempInvoiceData["invoiceCalcDueDate"] = dateFormatter(tempArr[i].invoiceCalcDueDate, "mm/dd/yyyy");
+                   tempInvoiceData["invoiceCalcDueDate"] = dateFormatter(tempArr[i].invoiceCalculatedDueDate, "mm/dd/yyyy");
                    tempInvoiceData["invoiceDueDate"] = dateFormatter(tempArr[i].invoiceDueDate,"mm/dd/yyyy"); //"06/19/2014"//self.scope.invoiceduedate;
 
                    tempInvoiceData["createdBy"] = self.scope.appstate.userInfo.prsId;

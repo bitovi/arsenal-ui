@@ -1812,6 +1812,19 @@ var getDateToDisplay=function(longDate){
 	return calculateDueDate.getMonth()+1 + "/" + calculateDueDate.getDate() + "/" + calculateDueDate.getFullYear();
 }
 
+var getDateToDisplay=function(longDate){
+    var calculateDueDate = new Date(longDate);
+    var calMonth = ("0" + (calculateDueDate.getMonth() + 1)).slice(-2);
+    var calDate =  ("0" + calculateDueDate.getDate()).slice(-2);
+    var calYear = calculateDueDate.getFullYear();
+    return calMonth + "/" + calDate + "/" + calYear;
+}var getDateToDisplay=function(longDate){
+    var calculateDueDate = new Date(longDate);
+    var calMonth = ("0" + (calculateDueDate.getMonth() + 1)).slice(-2);
+    var calDate =  ("0" + calculateDueDate.getDate()).slice(-2);
+    var calYear = calculateDueDate.getFullYear();
+    return calMonth + "/" + calDate + "/" + calYear;
+}
 
 var updateContentType = function(element) {
 
