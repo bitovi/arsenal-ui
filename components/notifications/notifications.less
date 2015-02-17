@@ -23,113 +23,130 @@ rn-notifications{
 		box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
 		right: 18px;
 		top: 51px;
-		z-index: 100;
+		z-index: 200;
 		border-radius:6px;
-	}
-	.arrow_box {
-		position: relative;
-		background: transparent;
-	}
-	.arrow_box:after, .arrow_box:before {
-		bottom: 100%;
-		right: 10px;
-		border: solid transparent;
-		content: " ";
-		height: 0;
-		width: 0;
-		position: absolute;
-		pointer-events: none;
-	}
-	.arrow_box:after {
-		border-color: rgba(136, 183, 213, 0);
-		border-bottom-color: #f7f7f7;
-		border-width: 14px;
-		margin-right: 2px;
 
-	}
-	.arrow_box:before {
-		border-color: rgba(194, 225, 245, 0);
-		border-bottom-color: #e5e5e5;
-		border-width: 15.99px;
-		margin-right: 0px;
-	}
-	.listtitle{
-		height:25px;
-		vertical-align:middle;
-		background:@title-background;
-		border-bottom: 1px solid #c6c6c6;
-		font-size:12px;
-		padding: 4px 10px;
-	}
-	.listofnotification{
-		height:340px;
-		overflow:scroll;
-	}
-	.notification_list{
-		min-height:110px;
-		padding: 8px;
-		line-height: 22px;
-		position:relative;
+		.arrow_box {
+			position: relative;
+			background: transparent;
+		}
+		.arrow_box:after, .arrow_box:before {
+			bottom: 100%;
+			right: 10px;
+			border: solid transparent;
+			content: " ";
+			height: 0;
+			width: 0;
+			position: absolute;
+			pointer-events: none;
+		}
+		.arrow_box:after {
+			border-color: rgba(136, 183, 213, 0);
+			border-bottom-color: #f7f7f7;
+			border-width: 14px;
+			margin-right: 2px;
 
-		.divider{
-			border-bottom:1px solid #c6c6c6;
-			position:absolute;
-			bottom:0px;
-			width:90%;
+		}
+		.arrow_box:before {
+			border-color: rgba(194, 225, 245, 0);
+			border-bottom-color: #e5e5e5;
+			border-width: 15.99px;
+			margin-right: 0px;
+		}
+		.listofnotification, .notification_settings_options{
+
+			.listtitle{
+				height:25px;
+				vertical-align:middle;
+				background:@title-background;
+				border-bottom: 1px solid #c6c6c6;
+				font-size:12px;
+				padding: 4px 10px;
+			}
+
+			.notification_settings_icon{
+				background:url(../../resources/images/rn_OptionsActive@2x.png)no-repeat center center;
+				height: 16px;
+				width: 16px;
+				background-size:100% 100%;
+				position: absolute;
+				top: 5px;
+				right: 5px;
+				cursor: pointer;
+			}
+
+			.autoscroll{
+				height:340px;
+				overflow-y:scroll;
+
+				.notification_list{
+					min-height:80px;
+					padding:0 12px;
+					line-height: 22px;
+					position:relative;
+					background:#f6f6f6;
+					float:left;
+					width:100%;
+
+					div{
+						float:left;
+					}
+					.type-text {
+						font-size:11px;
+						float:right;
+					}
+					.notification-text {
+						font-size:16px;
+						padding:15px 0 5px;
+					}
+					.date-text {
+						font-size:12px;
+						clear:both;
+						padding:10px 0;
+					}
+					.user-text {
+						font-size:12px;
+						float:right;
+						padding:10px 0;
+					}
+					.divider{
+						border-bottom:1px solid #c6c6c6;
+						width:100%;
+					}
+				}
+				.notification_list.new{
+					background:#ebebeb;
+				}
+				.showMore{
+					text-align:center;
+					margin-top:5px;
+				}
+				.notification_options{
+					padding:10px;
+				}
+			}
 		}
 	}
-	.notification_list:nth-child(odd){
-		background:#ebebeb;
-	}
-	.notification_list{
-		background:#f6f6f6;
-	}
-	.type-text {
-		padding:6px;
-		text-align:right;
-		font-size:11px;
-		position:absolute;
-		right:0px;
-		top:0px;
-	}
 
-	.notification-text {
-		padding:5px;
-		font-size:18px;
-		display:list item;
-		margin-top:26px;
+	.btn-custom-small-disabled {
+	  color: #ffffff;
+	  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	  background-color: #1581F4;
+	  background-image: -moz-linear-gradient(top, #7e7e83, #afafb4);
+	  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#7e7e83), to(#afafb4));
+	  background-image: -webkit-linear-gradient(top, #7e7e83, #afafb4);
+	  background-image: -o-linear-gradient(top, #7e7e83, #afafb4);
+	  background-image: linear-gradient(to bottom, #7e7e83, #afafb4);
+	  background-repeat: repeat-x;
+	  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff00aaff', GradientType=0);
+	  border-color: rgba(132, 132, 132, 0.8) rgba(132, 132, 132, 0.8) rgba(132, 132, 132, 0.8);
+	  *background-color: #7e7e83;
+	  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+	  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+	  border-radius: 6px !important;
+	  padding: 3px 22px !important;
 	}
-
-	.date-text {
-		text-align:left;
-		font-size:12px;
-		display: inline;
-		padding:12px 5px;
-		position:absolute;
-		bottom:0px;
-	}
-
-	.user-text {
-		font-size:12px;
-		display:inline;
-		padding:12px 5px;
-		position:absolute;
-		bottom:0px;
-		right:10px;
-	}
-	.showMore{
-		text-align:center;
-	}
-	.notification_settings_icon{
-		background:url(../../resources/images/rn_OptionsActive@2x.png)no-repeat center center;
-		height: 16px;
-		width: 16px;
-		background-size:100% 100%;
-		position: absolute;
-		top: 5px;
-		right: 5px;
-		cursor: pointer;
-	}
+	
 	.notification_custombtns{
 		width: 100%;
 		text-align: center;
@@ -137,10 +154,7 @@ rn-notifications{
 		border-top: 1px solid #888;
 		padding: 10px 0px;
 	}
-	.autoscroll{
-		height:320px;
-		overflow-y:scroll;
-	}
+	
 	.notification_loader{
 		min-height:290px;
 		min-width:260px;
@@ -160,15 +174,5 @@ rn-notifications{
 	   height: 22px;
 	   width: 22px;
 	   color: transparent;
-	}
-	.custombtns{
-		height: 25px;
-		padding: 4px;
-		margin-top: 2px;
-		width: 66px;
-		background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#1581f4), to(#63adf1))
-	}
-	.notification_options{
-		padding:10px;
 	}
 }
