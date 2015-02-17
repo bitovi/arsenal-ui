@@ -3,6 +3,8 @@ import gridtemplate from './gridtemplate.stache!';
 import stache from 'can/view/stache/';
 import formats from 'utils/formats';
 import _less from './outbox-grid.less!';
+import Approval from 'models/approval/';
+import commonUtils from 'utils/commonUtils';
 
 import EmailConfirmModal from 'components/email-confirm-modal/';
 
@@ -55,7 +57,6 @@ var OutboxGrid = ScrollingGrid.extend({
   events: {
     '.remind click': function(el, ev) {
       var approval = el.closest('tr').data('row').row;
-
       $(document.body).append(stache('<rn-email-confirm-modal approval="{approval}"></rn-email-confirm-modal>')({approval}));
     },
     inserted: function(){
@@ -67,7 +68,7 @@ var OutboxGrid = ScrollingGrid.extend({
       var tableScrollTopVal = parentScopeVar.attr('outboxScrollTop');
       $(tbody[0]).scrollTop(tableScrollTopVal);
       $(tbody).on('scroll', function(ev) {
-          if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight-1  && parentScopeVar.inboxRows.recordsAvailable) {
+          if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight-1  && parentScopeVar.outboxRows.recordsAvailable) {
 
             var offsetVal = parentScopeVar.attr('outboxOffset');
 
@@ -78,6 +79,8 @@ var OutboxGrid = ScrollingGrid.extend({
             parentScopeVar.attr('outboxOffset', (parseInt(offsetVal)+10));
             parentScopeVar.attr('outboxScrollTop', (tbody[0].scrollHeight-200));
             parentScopeVar.appstate.attr('globalSearchButtonClicked', false);
+            parentScopeVar.attr('sortBy', parentScopeVar.attr('sortColumns')[0]);
+            parentScopeVar.attr('sortDirection',parentScopeVar.attr('sortDirection') );
 
             /* The below code calls {scope.appstate} change event that gets the new data for grid*/
             /* All the neccessary parameters will be set in that event */
@@ -88,6 +91,45 @@ var OutboxGrid = ScrollingGrid.extend({
             }
           }
         });
+    },
+    ".rn-grid>thead>tr>th click": function(item, el, ev) {
+        var self = this;
+        var parentScopeVar = self.element.closest('rn-dashboard-approvals').scope();  //console.log($(item[0]).attr("class"));
+        var val = $(item[0]).attr("class").split(" ");
+        var existingSortColumns = parentScopeVar.sortColumns.attr();
+        var existingSortColumnsLen = existingSortColumns.length;
+        var existFlag = false;
+        var sortAttr = val[0];
+
+        if (sortAttr === "groupName" || sortAttr === "approvalStage" || sortAttr === "remind") {
+          commonUtils.showErrorMessage("SortBy not permitted for Approvals, Remind & currently-with.");
+          return false;
+        }
+
+        if (existingSortColumnsLen == 0) {
+          parentScopeVar.attr('sortColumns').push(sortAttr);
+        } else {
+          for (var i = 0; i < existingSortColumnsLen; i++) {
+            /* The below condition is to selected column to be sorted in asc & dec way */
+            console.log(val[0] + "," + existingSortColumns[i])
+            if (existingSortColumns[i] == val[0]) {
+              existFlag = true;
+            }
+          }
+          if (existFlag == false) {
+            parentScopeVar.attr('sortColumns').replace([]);
+            parentScopeVar.attr('sortColumns').push(sortAttr);
+          } else {
+            var sortDirection = (parentScopeVar.attr('sortDirection') == 'asc') ? 'desc' : 'asc';
+            parentScopeVar.attr('sortDirection', sortDirection);
+          }
+        }
+
+        parentScopeVar.attr('mailboxType', 'outbox');
+        parentScopeVar.attr('sortcolumnnames', parentScopeVar.attr('sortColumns')[0]);
+        parentScopeVar.attr('sortdir', parentScopeVar.attr('sortDirection'));
+        parentScopeVar.attr('outboxOffset', 0);
+        parentScopeVar.triggerChild(parentScopeVar);
     }
   }
 });
