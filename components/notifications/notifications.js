@@ -48,8 +48,8 @@ var notification = Component.extend({
         }
       },
       '{document}  click':function(el,e){
-        if($(e.target).closest(".notification").length === 0 && $('rn-notifications').is(':visible')) {
-
+        if($(e.target).closest(".notification").length === 0 && $(e.target).closest("rn-notifications").length === 0 && $('rn-notifications').css('display') === "block"){
+          $('rn-notifications').hide('fast');
         }
       },
       '{notificationtriggered} change':function(el, e){

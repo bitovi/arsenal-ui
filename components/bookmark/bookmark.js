@@ -53,9 +53,9 @@ var bookmark = Component.extend({
            $('book-mark').hide('fast');
         }
       },
-      '{document}  click':function(el,e){
-        if($(e.target).closest(".bookmark").length === 0 && $('book-mark').is(':visible')) {
-          //$('book-mark').hide('fast');
+      '{document} click':function(el,e){
+        if($(e.target).closest(".bookmark").length === 0 && $(e.target).closest("book-mark").length === 0 && $('book-mark').css('display') === "block") {
+          $('book-mark').hide('fast');
         }
       },
       '.bookmark_list dblclick':function(el){
