@@ -224,7 +224,7 @@ var page = Component.extend({
                               });
 
                               //errString = unique;
-                              
+
                               var resErrString=[];
                               for(var k=0;k<=unique.length-1;k++){
                                 resErrString.push("<div> <b>-</b> "+unique[k]+"</div>");
@@ -536,7 +536,9 @@ var page = Component.extend({
       },
       ".rn-grid>tbody>tr td dblclick": function(el, ev){
           var invoiceid = el.closest('tr').data('row').row.invoiceNum;
+          var societyName=el.closest('tr').data('row').row.licensor;
           icsvmap.attr("invoiceid", invoiceid);
+          icsvmap.attr("licensor", societyName);
           icsvmap.attr("showediticsv", true);
       },
       ".erroricon mouseover":function(el, ev){

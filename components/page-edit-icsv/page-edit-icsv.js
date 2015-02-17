@@ -121,7 +121,6 @@ var page = Component.extend({
   	ajaxRequestStatus:{},
   	usdFxrateRatio:"",
   	sumfileuploadedinfo:[],
-		iscountryFetchCalled:false,
     isRequired: function(){
   	 		if(this.attr("invoicetypeSelect") != "2"){  /*Adhoc*/
   	 				$(".breakdownCountry").addClass("requiredBar");
@@ -817,9 +816,9 @@ var page = Component.extend({
 								    self.scope.attr("licensor").replace(values[0]["entities"]);
 								    var invoiceData = self.scope.attr().invoiceContainer[0];
 								     self.scope.attr("licensorStore", invoiceData.entityId);
+										console.log("Peter test here &&&&&&&&&&",invoiceData,invoiceData.entityId);
 								     self.scope.ajaxRequestStatus.attr("licensorLoaded", true);
-										self.scope.attr("iscountryFetchCalled",true);
-							   });
+							 });
 						}
 
 
@@ -905,6 +904,7 @@ var page = Component.extend({
 				 		self.scope.attr("invoicenumberStore", invoiceData.invoiceNumber);
 				 		self.scope.attr("invoicetypeSelect", invoiceData.invoiceTypeId);
 				 		self.scope.attr("regionStore", invoiceData.regionId);
+						//self.scope.attr("licensorStore", invoiceData.entityId);
 						self.scope.attr("fxrateStore", invoiceData.fxRate);
 				 		self.scope.attr("licnotesStore", invoiceData.notes);
 
@@ -980,14 +980,12 @@ var page = Component.extend({
 								//this.remove();
 								isInvlineExist = true;
 							});
-									//"iscountryFetchCalled" this dirty flat is introduced for temporary fix for Business demo
-									//please fix it properly later
-				        	if(!isInvlineExist && !self.scope.attr("iscountryFetchCalled")){
+									if(!isInvlineExist){
 
 				               	 var genObj = {
 					                			regionId:invoiceData.regionId
 											  };
-												self.scope.attr("iscountryFetchCalled",true);
+
 									Promise.all([Country.findAll(UserReq.formRequestDetails(genObj))
 								     ]).then(function(values) {
 								     	if(values[0].status == 'SUCCESS'){
@@ -1016,7 +1014,7 @@ var page = Component.extend({
 
 					                       	$("#breakrow"+rowindex+" #inputContent").attr("id","inputContent"+rowindex);
 
-					                       	var servictypeid = $("#inputContent0 option:selected").attr("servicetypeid");
+					                       var servictypeid = $("#inputContent0 option:selected").attr("servicetypeid");
 											if (typeof servictypeid !== "undefined" && rowindex > 0) {
 												$('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
 												$('#inputContent'+rowindex).prepend("<option value>Select</option>").val('');
@@ -1597,15 +1595,15 @@ var page = Component.extend({
 
 		     	     /*Getting data from icsv map*/
 
-
+							console.log("PEter testing &&&&&&&&",icsvmap);
 
 		     	     for(var i = 0; i < icsvmap.attr().invoiceData.invoices.length; i++){
-							if(icsvmap.attr().invoiceData.invoices[i].invoiceNumber == icsvmap.attr().invoiceid){
-								console.log(icsvmap.attr().invoiceData.invoices[i]);
+							if(icsvmap.attr().invoiceData.invoices[i].invoiceNumber == icsvmap.attr().invoiceid
+								&& icsvmap.attr().invoiceData.invoices[i].entityName == icsvmap.attr().licensor){
+								//console.log(icsvmap.attr().invoiceData.invoices[i]);
 								self.scope.attr("editpage", true);
 								self.scope.attr("invoiceContainer").replace(icsvmap.attr().invoiceData.invoices[i]);
 								self.scope.attr("invoiceselectIndex", i);
-								self.scope.attr("iscountryFetchCalled",false);
 								break;
 							}
 						}
@@ -1843,7 +1841,7 @@ var updateContentType = function(element) {
 	}
 
 	var serviceID = $("#inputContent0 option:selected").attr("servicetypeid");
-	console.log(serviceID);
+	console.log("PEter test here ",serviceID);
 	if (typeof serviceID !== undefined) {
 		var options = $(_elementID).data('options').filter('[servicetypeid=' + serviceID + ']');
 	} else {
