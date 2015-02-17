@@ -1807,10 +1807,10 @@ if ($("#inputMonth0").val().indexOf('Q') != "-1") {
 	 }
 }
 
-var getDateToDisplay=function(longDate){
-	var calculateDueDate = new Date(longDate);
-	return calculateDueDate.getMonth()+1 + "/" + calculateDueDate.getDate() + "/" + calculateDueDate.getFullYear();
-}
+// var getDateToDisplay=function(longDate){
+// 	var calculateDueDate = new Date(longDate);
+// 	return calculateDueDate.getMonth()+1 + "/" + calculateDueDate.getDate() + "/" + calculateDueDate.getFullYear();
+// }
 
 var getDateToDisplay=function(longDate){
     var calculateDueDate = new Date(longDate);
