@@ -115,6 +115,7 @@ var page = Component.extend({
       console.log("Request passed is "+ JSON.stringify(UserReq.formRequestDetails(requestObj)));
       RefCountry.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
+        $("#loading_img").hide(); 
         if(data.status == "SUCCESS") {
 
           console.log("Response data is "+JSON.stringify(data.attr()));
@@ -541,7 +542,7 @@ var page = Component.extend({
 
       //console.log("Request passed is "+ JSON.stringify(UserReq.formRequestDetails(requestObj)));
       RefCountry.findOne(UserReq.formRequestDetails(requestObj),function(data){
-
+        $("#loading_img").hide();
         if(data.status == "SUCCESS") {
           //console.log("Response data is "+JSON.stringify(data.attr()));
           self.pageState.countryDetails.attr("country",data.countryDetails);
@@ -713,7 +714,7 @@ var page = Component.extend({
         } else {
 
           commonUtils.displayUIMessage(data.status, data.responseText);
-          
+
         }
 
       },function(xhr){
@@ -1138,6 +1139,10 @@ var page = Component.extend({
           //   $("#invmessageDiv").hide();
           // },5000);
           commonUtils.displayUIMessage(data.status, msg);
+        } else {
+
+          commonUtils.displayUIMessage(data.status, data.responseText);
+
         }
       });
 
