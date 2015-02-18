@@ -675,6 +675,7 @@ var page = Component.extend({
            this.scope.details["fiscalPeriod"]=row.period;
            this.scope.details["periodType"]="P";
            this.scope.details["contentType"]=row.contentType;
+           this.scope.details["currency"]=row.currency || "";
            this.scope.details["isChild"]=className;
       },
       ".rn-grid>thead>tr>th click": function(item, el, ev){

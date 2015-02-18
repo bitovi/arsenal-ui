@@ -116,7 +116,7 @@ var highchartpage = Component.extend({
               },
               tooltip: {
                 formatter: function () {
-                  return '<b>' + this.series.name + '</b><br/>' + this.x + ': ' + currencyFormat(this.y) +' USD';
+                  return '<b>' + this.series.name + '</b><br/>' + this.x + ': ' + currencyFormat(this.y) +' '+chartdata.currency;
                 },
                 style:{"font-family": "Helvetica Neue"}
               },
