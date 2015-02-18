@@ -28,7 +28,7 @@ import css_treetables from 'treetables.css!';
 
 import createpb from 'components/create-pb/';
 
-import tokeninput from 'tokeninput';
+import tokeninput from 'rinsTokeninput';
 import css_tokeninput from 'tokeninput.css!';
 import css_tokeninput_theme from 'tokeninput_theme.css!';
 
@@ -215,6 +215,7 @@ var page = Component.extend({
     fileinfo:[],
     excelOutput:[],
     cancelnewbundlereq:'@',
+    //searchArray:[],
     //populateDefaultData:'@',
     bundleState:{},
     refreshTokenInput: function(val, type){
@@ -294,27 +295,47 @@ var page = Component.extend({
     "inserted": function(){
 
         var self = this;
-
-        $("#tokenSearch").tokenInput([
-            {id: 1, name: "Search"} //This is needed
-        ],
+        $("#tokenSearch").tokenInput(self.scope.appstate.filterSuggestion,
         {
             theme: "facebook",
             placeholder:"Search...",
             preventDuplicates: true,
+            allowFreeTagging:true,
+            tokenLimit:3,
+            allowTabOut:false,
             onResult: function (item) {
-              //alert(item);
-                if($.isEmptyObject(item)){
-                      return [{id:$("#token-input-tokenSearch").val(),name: $("#token-input-tokenSearch").val()}];
+              if($.isEmptyObject(item)){
+                      var tempObj={id:$("#token-input-tokenSearch").val(),name: $("#token-input-tokenSearch").val()};
+                      return [tempObj];
                 }else{
                       return item;
                 }
             },
             onAdd: function (item) {
+                //add it to the exisitng search array, remove duplicate if any
+                var isExists=false;
+                for(var j=0;j<self.scope.appstate.filterSuggestion.length;j++){
+                  if(self.scope.appstate.filterSuggestion[j].attr('name').toLowerCase() === item.name.toLowerCase()){
+                    isExists=true;
+                    break;
+                  }
+                }
+                if(!isExists){
+                  self.scope.appstate.filterSuggestion.push(item);
+                }
                 self.scope.refreshTokenInput(item,"Add");
             },
             onDelete: function (item) {
                  self.scope.refreshTokenInput(item,"Delete");
+                 //after deleting call refresh method
+                 refreshSearchOnfilter(self);
+            },
+            queryDB:function(items){
+               //Call Db fetch for the filter conditions.
+               //this call back function will be called when the last token is added.
+               //if the limit of the token is 3 then when the user add the last token this method
+               //get invoked
+               refreshSearchOnfilter(self);
             }
         });
 
@@ -341,7 +362,7 @@ var page = Component.extend({
             self.scope.appstate.attr('globalSearch', true);
           }
     },
-     '#copyToClipboard click':function(){  console.log($('#myTabs').next('.tab-content').find('.tab-pane:visible table:visible').clone(true));
+     '#copyToClipboard click':function(){  //console.log($('#myTabs').next('.tab-content').find('.tab-pane:visible table:visible').clone(true));
         $('#clonetable').empty().html($('#invoiceGrid').find('table:visible').clone(true).attr('id','dynamic').removeClass('rn-grid'));
          $('copy-clipboard').slideDown(function(){
            $('body').css('overflow','hidden');
@@ -349,27 +370,18 @@ var page = Component.extend({
            $('#copyall').trigger('click');
         });
       },
-    "{tokenInput} change": function(){
+    ".token-input-list-facebook keyup": function(e,ev){
+      if(ev.keyCode === 13){ //trigger search when user press enter key. This is becase user can
+          //select multiple search token and can trigger the search
           var self= this;
           //console.log(JSON.stringify(self.scope.tokenInput.attr()));
-           /* The below code calls {scope.appstate} change event that gets the new data for grid*/
-          /* All the neccessary parameters will be set in that event */
-
-          self.scope.attr("offset", 0);  /* Search criteria changes. So making offset 0 */
-         if(self.scope.appstate.attr('globalSearch')){
-            self.scope.appstate.attr('globalSearch', false);
-          }else{
-            self.scope.appstate.attr('globalSearch', true);
-          }
+          refreshSearchOnfilter(self);
+        }
     },
     "{allInvoicesMap} change": function() {
         var self = this;
         var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
         var footerData = this.scope.attr().allInvoicesMap[0].footer;
-
-
-
-
 
         //console.log("dsada "+JSON.stringify(invoiceData));
         var gridData = {"data":[],"footer":[]};
@@ -1094,6 +1106,14 @@ var page = Component.extend({
   }
 });
 
+function refreshSearchOnfilter(self){
+  self.scope.attr("offset", 0);  /* Search criteria changes. So making offset 0 */
+   if(self.scope.appstate.attr('globalSearch')){
+      self.scope.appstate.attr('globalSearch', false);
+    }else{
+      self.scope.appstate.attr('globalSearch', true);
+    }
+}
 
 function getAllInvoices(self) {
 

@@ -11,7 +11,7 @@ import ingestedColumns from './column-sets/ingest-columns';
 //import detailsColumns from './column-sets/details-columns';
 import Recon from 'models/recon/';
 
-import tokeninput from 'tokeninput';
+import tokeninput from 'rinsTokeninput';
 import css_tokeninput from 'tokeninput.css!';
 import css_tokeninput_theme from 'tokeninput_theme.css!';
 
@@ -153,40 +153,65 @@ var page = Component.extend({
 
       $("#loading_img").hide();
 
-      $("#tokenSearch").tokenInput([
-        {id: 1, name: "Search"} //This is needed
-        ],
-        {
+      $("#tokenSearch").tokenInput(self.scope.appstate.filterSuggestion,
+      {
           theme: "facebook",
           placeholder:"Search...",
           preventDuplicates: true,
+          allowFreeTagging:true,
+          tokenLimit:3,
+          allowTabOut:false,
           onResult: function (item) {
             if($.isEmptyObject(item)){
-              return [{id:$("#token-input-tokenSearch").val(),name: $("#token-input-tokenSearch").val()}];
-            }else{
-              return item;
-            }
+                    var tempObj={id:$("#token-input-tokenSearch").val(),name: $("#token-input-tokenSearch").val()};
+                    return [tempObj];
+              }else{
+                    return item;
+              }
           },
           onAdd: function (item) {
-            self.scope.refreshTokenInput(item,"Add");
+              //add it to the exisitng search array, remove duplicate if any
+              var isExists=false;
+              for(var j=0;j<self.scope.appstate.filterSuggestion.length;j++){
+                if(self.scope.appstate.filterSuggestion[j].attr('name').toLowerCase() === item.name.toLowerCase()){
+                  isExists=true;
+                  break;
+                }
+              }
+              if(!isExists){
+                self.scope.appstate.filterSuggestion.push(item);
+              }
+              self.scope.refreshTokenInput(item,"Add");
           },
           onDelete: function (item) {
-            self.scope.refreshTokenInput(item,"Delete");
+               self.scope.refreshTokenInput(item,"Delete");
+               //after deleting call refresh method
+               fetchReconIngest(self.scope, false);
+          },
+          queryDB:function(items){
+             //Call Db fetch for the filter conditions.
+             //this call back function will be called when the last token is added.
+             //if the limit of the token is 3 then when the user add the last token this method
+             //get invoked
+             fetchReconIngest(self.scope, false);
           }
-        });
+      });
 
         if(commonUtils.isReadOnly()=='true'){
           $('#reject_button').attr('disabled',true);
         }
 
       },
-      "{tokenInput} change": function(){
-        var self= this;
-        //console.log(this.scope.tokenInput);
-        /* The below code calls {scope.appstate} change event that gets the new data for grid*/
-        /* All the neccessary parameters will be set in that event */
-        //commonUtils.triggerGlobalSearch();
-        fetchReconIngest(self.scope, false);
+      ".token-input-list-facebook keyup": function(e,ev){
+        if(ev.keyCode === 13){ //trigger search when user press enter key. This is becase user can
+            //select multiple search token and can trigger the search
+            var self= this;
+            //console.log(this.scope.tokenInput);
+            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
+            /* All the neccessary parameters will be set in that event */
+            //commonUtils.triggerGlobalSearch();
+            fetchReconIngest(self.scope, false);
+          }
       },
       'tbody tr click': function(el, ev) {
         $(el).parent().find('tr').removeClass("selected");
@@ -343,7 +368,7 @@ var page = Component.extend({
 
     '.btn-holesReport click': function() {
       commonUtils.navigateTo("dashboard");
-      this.scope.appstate.screenLookup.attr('targetScreen',"2");// 2 - Screenid for Holes report 
+      this.scope.appstate.screenLookup.attr('targetScreen',"2");// 2 - Screenid for Holes report
     },
     '.btn-OverRep click': function() {
         window.open(RinsCommon.RINS_OLD_URL+'overRepConfig');

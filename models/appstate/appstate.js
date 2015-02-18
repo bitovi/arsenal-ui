@@ -56,7 +56,8 @@ var stateDefaults = {
   renderGlobalSearch:true,
   globalSearch:undefined,
   csrfToken:undefined,
-  fetchSize:30 //default fetch size. This will be overrided in index.js based on the browser size that the user is using.
+  fetchSize:30, //default fetch size. This will be overrided in index.js based on the browser size that the user is using.
+  filterSuggestion:[] //this attribute will store the user searched values
 };
 
 var firstPage = 'dashboard';

@@ -193,10 +193,11 @@ var page = Component.extend({
                   }
             });
 
-            if(commonUtils.isReadOnly()=='true'){
+            if(commonUtils.isReadOnly()=='true' || commonUtils.isReadOnlyScreen()=='R'){
 
               $('#bottomsection').find('input, textarea,button, select').attr('disabled','disabled');
-              $("#add").attr("disabled", true);
+              $("button#add").attr("disabled", true);
+
               }
 
           var options = [{
@@ -572,9 +573,14 @@ var page = Component.extend({
         $("#pmform").data('bootstrapValidator').validate();
     },
     "#regions change":function(el){
+
       if(el[0].value != ""){
         $("button#fetch").attr("disabled", false);
-        $("button#add").attr("disabled", false);
+
+        if(commonUtils.isReadOnly()!='true' && commonUtils.isReadOnlyScreen()!='R'){
+            $("button#add").attr("disabled", false);
+          }
+
       }else{
         $("button#fetch").attr("disabled", true);
         $("button#add").attr("disabled", true);
@@ -587,7 +593,10 @@ var page = Component.extend({
       setTimeout(function(){
           $("#regions").val("Europe");
           $("button#fetch").attr("disabled", false);
+
+          if(commonUtils.isReadOnly()!='true' && commonUtils.isReadOnlyScreen()!='R'){
           $("button#add").attr("disabled", false);
+          }
           self.scope.attr("regions", "Europe");
           $("button#fetch").click();
       }, 200);
@@ -806,9 +815,9 @@ var isError = false;
 }
 
 function checkTrackValue(){
-  
+
   var isError = false;
-  
+
   var _listofFrom = $("input[id^='from-']").not(':hidden');
 
   var _listofTo = $("input[id^='to-']").not(':hidden');

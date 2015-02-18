@@ -31,7 +31,7 @@ import formats from 'utils/formats';
 import template from './template.stache!';
 import _less from './bundle-detail.less!';
 
-import tokeninput from 'tokeninput';
+import tokeninput from 'rinsTokeninput';
 import css_tokeninput from 'tokeninput.css!';
 import css_tokeninput_theme from 'tokeninput_theme.css!';
 import commonUtils from 'utils/commonUtils';
@@ -576,27 +576,47 @@ var BundleDetailTabs = Component.extend({
       var self = this;
 
 
-      $("#tokenSearch").tokenInput([
-        {id: 1, name: "Search"} //This is needed
-        ],
-        {
+      $("#tokenSearch").tokenInput(self.scope.appstate.filterSuggestion,
+      {
           theme: "facebook",
           placeholder:"Search...",
           preventDuplicates: true,
+          allowFreeTagging:true,
+          tokenLimit:3,
+          allowTabOut:false,
           onResult: function (item) {
             if($.isEmptyObject(item)){
-              return [{id:$("#token-input-tokenSearch").val(),name: $("#token-input-tokenSearch").val()}];
-            }else{
-              return item;
-            }
+                    var tempObj={id:$("#token-input-tokenSearch").val(),name: $("#token-input-tokenSearch").val()};
+                    return [tempObj];
+              }else{
+                    return item;
+              }
           },
           onAdd: function (item) {
-            self.scope.refreshTokenInput(item,"Add");
+              //add it to the exisitng search array, remove duplicate if any
+              var isExists=false;
+              for(var j=0;j<self.scope.appstate.filterSuggestion.length;j++){
+                if(self.scope.appstate.filterSuggestion[j].attr('name').toLowerCase() === item.name.toLowerCase()){
+                  isExists=true;
+                  break;
+                }
+              }
+              if(!isExists){
+                self.scope.appstate.filterSuggestion.push(item);
+              }
+              self.scope.refreshTokenInput(item,"Add");
           },
           onDelete: function (item) {
-            self.scope.refreshTokenInput(item,"Delete");
+               self.scope.refreshTokenInput(item,"Delete");
+          },
+          queryDB:function(items){
+             //Call Db fetch for the filter conditions.
+             //this call back function will be called when the last token is added.
+             //if the limit of the token is 3 then when the user add the last token this method
+             //get invoked
+             this.getNewDetails(this.pageState.selectedBundle);
           }
-        });
+      });
 
 
     },
