@@ -705,7 +705,7 @@ var page = Component.extend({
 					});
 
 
-						$('#invoicedate').on('dp.change', function (e) {
+					/*	$('#invoicedate').on('dp.change', function (e) {
 			            			$('#invoiceform').bootstrapValidator('revalidateField', 'invoicedate');
 			        	});
 
@@ -716,7 +716,7 @@ var page = Component.extend({
 
 						$('#invoiceduedate').on('dp.change', function (e) {
 				            		$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
-				        });
+				        }); */
 
 						if(!self.scope.editpage){
 							self.scope.attr("invoiceduedate", getCurrentDate());
@@ -726,7 +726,15 @@ var page = Component.extend({
 
 
 				},
-			".form-control keyup": function(event){
+					"#receiveddate dp.change":function(event){ 
+			      		$('#invoiceform').bootstrapValidator('revalidateField', 'receiveddate');
+			      	},
+
+			      	"#invoiceduedate dp.change":function(event){ 
+			      	 	$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
+			      	},
+				
+				".form-control keyup": function(event){
 
 					var self = this;
 
@@ -783,6 +791,7 @@ var page = Component.extend({
 					}
 				},
 				"#invoicedate dp.change":function(event){ /*need to repeat service call, as no way to capture date change event together with form control event*/
+					$('#invoiceform').bootstrapValidator('revalidateField', 'invoicedate');
 					var self = this;
 					if(($("#invoicedate input[type=text]").val() != "") &&  (self.scope.licensorStore != "") && ($("#inputCountry0").val() != "")){
 					var genObj = {entityId:self.scope.licensorStore, invoiceDate:Date.parse($("#invoicedate input[type=text]").val()), countryId:$("#inputCountry0").val()};
