@@ -520,10 +520,10 @@ var page = Component.extend({
                                        self.scope.attr('cancelnewbundlereq',true);
 
                                         self.scope.uploadedfileinfo.replace([]);
-
-
-                                         $('.jQfunhide').hide();
-                                         $('.file-component-icv-div #buttondiv').show();
+                                        $('.jQfunhide').hide();
+                                        $('#topContanier').show();
+                                        $('#arrowbtnCntiner').hide();
+                                        $('.file-component-icv-div #buttondiv').show();
                                     }
                                     else
                                     {

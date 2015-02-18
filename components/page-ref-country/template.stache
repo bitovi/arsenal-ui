@@ -88,7 +88,7 @@
                <div class="col-sm-12 ">
                   <label for="forEntity" class="col-sm-4 control-label small-headers">Local Society: </label>
                   <div class="col-sm-8 requiredBar">
-                    <select class="form-control" id="localSocietysel" name="localSociety" can-value='pageState.countryDetails.country.localSocietyId'>
+                    <select disabled class="form-control" id="localSocietysel" name="localSociety" can-value='pageState.countryDetails.country.localSocietyId'>
                       {{#each localSocietyNames}}
                         <option value="{{id}}">{{value}}</option>
                        {{/each}}

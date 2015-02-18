@@ -815,9 +815,8 @@ var page = Component.extend({
 							     	self.scope.attr("licensor").replace([]);
 								    self.scope.attr("licensor").replace(values[0]["entities"]);
 								    var invoiceData = self.scope.attr().invoiceContainer[0];
-								     self.scope.attr("licensorStore", invoiceData.entityId);
-										console.log("Peter test here &&&&&&&&&&",invoiceData,invoiceData.entityId);
-								     self.scope.ajaxRequestStatus.attr("licensorLoaded", true);
+								    self.scope.attr("licensorStore", invoiceData.entityId);
+										self.scope.ajaxRequestStatus.attr("licensorLoaded", true);
 							 });
 						}
 
@@ -1595,17 +1594,15 @@ var page = Component.extend({
 
 		     	     /*Getting data from icsv map*/
 
-							console.log("PEter testing &&&&&&&&",icsvmap);
-
-		     	     for(var i = 0; i < icsvmap.attr().invoiceData.invoices.length; i++){
-							if(icsvmap.attr().invoiceData.invoices[i].invoiceNumber == icsvmap.attr().invoiceid
-								&& icsvmap.attr().invoiceData.invoices[i].entityName == icsvmap.attr().licensor){
-								//console.log(icsvmap.attr().invoiceData.invoices[i]);
-								self.scope.attr("editpage", true);
-								self.scope.attr("invoiceContainer").replace(icsvmap.attr().invoiceData.invoices[i]);
-								self.scope.attr("invoiceselectIndex", i);
-								break;
-							}
+							for(var i = 0; i < icsvmap.attr().invoiceData.invoices.length; i++){
+								if(icsvmap.attr().invoiceData.invoices[i].invoiceNumber == icsvmap.attr().invoiceid
+									&& icsvmap.attr().invoiceData.invoices[i].entityName == icsvmap.attr().licensor){
+									//console.log(icsvmap.attr().invoiceData.invoices[i]);
+									self.scope.attr("editpage", true);
+									self.scope.attr("invoiceContainer").replace(icsvmap.attr().invoiceData.invoices[i]);
+									self.scope.attr("invoiceselectIndex", i);
+									break;
+								}
 						}
 
 
@@ -1841,7 +1838,6 @@ var updateContentType = function(element) {
 	}
 
 	var serviceID = $("#inputContent0 option:selected").attr("servicetypeid");
-	console.log("PEter test here ",serviceID);
 	if (typeof serviceID !== undefined) {
 		var options = $(_elementID).data('options').filter('[servicetypeid=' + serviceID + ']');
 	} else {
