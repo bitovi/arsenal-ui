@@ -128,13 +128,14 @@ var BundleDetailTabs = Component.extend({
       resetSelectedBundle(scope);
 
 
-      $(".loading_img").show();
+
       scope.getNewDetails(selectedBundle)
       .then(function(bundle) {
         return WorkflowStep.loadWorkFlowView({
           workflowInstanceId: bundle.approvalId
         });
       }).done(function(steps) {
+        $(".loading_img").show();
         //console.log(JSON.stringify(steps.workflowView.nodes))
         scope.workflowSteps.splice(0, scope.workflowSteps.length);
         scope.workflowSteps.replace(steps.workflowView.nodes);
@@ -145,6 +146,7 @@ var BundleDetailTabs = Component.extend({
 
     getNewDetails: function(bundle) {
 
+      $(".loading_img").show();
       if(this.bottomGridPaginateAttr.attr("paginateRequest")){
         //By setting the paginateRequest to false confirms the request is completed.
         this.bottomGridPaginateAttr.attr("paginateRequest",false);
@@ -153,7 +155,7 @@ var BundleDetailTabs = Component.extend({
         this.bundleProgress.triggerValidation = false;
       }else{
         //first time request, by setting this, the grid details will not be shown.
-        this.attr('gettingDetails', true);
+        //this.attr('gettingDetails', false);// Removed the feature by setting it to False
         this.bottomGridPaginateAttr.attr("offset",0);
       }
 
@@ -186,7 +188,9 @@ var BundleDetailTabs = Component.extend({
 
         if(bundle.status === 'FAILURE'){
           commonUtils.displayUIMessage( bundle.status, bundle.responseText);
+          scope.pageState.attr('isPmtBundleDetailsAvl',false);
         }else{
+          scope.pageState.attr('isPmtBundleDetailsAvl',true);
           scope.bundleProgress.triggerValidation ? scope.getNewValidations(bundle) : "";
         }
 
@@ -223,6 +227,8 @@ var BundleDetailTabs = Component.extend({
         }else{
           $(".allowedClass").hide();
         }
+
+        $(".loading_img").hide();
 
         return bundle;
       });
@@ -497,7 +503,7 @@ var BundleDetailTabs = Component.extend({
         }
 
         $(".loading_img").show();
-        
+
         selectedBundle.moveInWorkflow({
           action: action,
           approvalComment: this.scope.approvalComment,
@@ -549,6 +555,8 @@ var BundleDetailTabs = Component.extend({
         scope.bundleProgress.triggerValidation = true;
         scope.pageState.attr("validationGrid",false);
         this.scope.resetToken();
+        //Switching b/w tab s.
+        this.scope.attr('gettingDetails', true);// Removed the feature by setting it to False
         scope.pageState.selectedBundle && scope.getNewDetails(scope.pageState.selectedBundle);
       }
     },
@@ -557,6 +565,10 @@ var BundleDetailTabs = Component.extend({
     },
     '.btn-download click': function(el, ev) {
       PaymentBundle.downloadFile(el.data('action'),this.scope.pageState.selectedBundle.bundleId);
+    },
+    '.accordion-wf click': function() {
+      this.scope.pageState.attr('displayWFSection',!this.scope.pageState.displayWFSection);
+      $(window).trigger('resize');
     },
     'inserted': function() {
       this.scope.selectedBundleChanged(this.scope);

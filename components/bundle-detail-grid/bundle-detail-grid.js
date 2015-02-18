@@ -242,14 +242,22 @@ var BundleDetailGrid = ScrollingGrid.extend({
       this.scope.filterColumns.apply(this);
     },
     'inserted': function() {
-      this.scope.filterColumns.apply(this);
+        this.scope.filterColumns.apply(this);
 
-      var component = this;
-      var tbody = this.element.find('tbody');
-      var $window = $(window).on('resize', function(){
-
+        var component = this;
+        var tbody = this.element.find('tbody');
+        var $window = $(window).on('resize', function(){
         var getTblBodyHght=gridUtils.getTableBodyHeight('bundleDetailGridDiv',40);
+
+        if(!component.scope.pageState.attr('displayWFSection')){
+          $('.bottom-controls').hide();
+          getTblBodyHght=gridUtils.getTableBodyHeight('bundleDetailGridDiv',80);
+        }else{
+          $('.bottom-controls').show();
+        }
+
         gridUtils.setElementHeight(tbody,getTblBodyHght,getTblBodyHght);
+
       }).trigger('resize');
       var doneCallback = function() {
 
@@ -259,7 +267,7 @@ var BundleDetailGrid = ScrollingGrid.extend({
         if(!component.scope.paginateAttr.isInProgress && component.scope.paginateAttr.recordsAvailable){
           component.scope.paginateAttr.attr("paginateRequest",true);
         }
-        
+
         component.scope.attr('atBottom', false);
       };
       $(tbody).on('scroll', function(ev) {

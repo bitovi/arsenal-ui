@@ -417,17 +417,10 @@ var fetchReconDetailsOther = function(scope){
       // },4000);
       commonUtils.showErrorMessage(data["responseText"]);
       console.error("Failed to load the Recon incoming other :" + data.responseText);
-      scope.attr("emptyrows", true);
 
     } else {
-      if (searchRequestObj.searchRequest["offset"] == 0){
+      if (searchRequestObj.searchRequest["offset"] == 0)
         scope.incomingOtherList.replace(data.reconStatsDetails);
-        if(data.reconStatsDetails.length==0){
-          scope.attr("emptyrows", true);
-        }else{
-          scope.attr("emptyrows", false);
-        }
-      }
       else {
         $.merge(scope.incomingOtherList, data.reconStatsDetails);
         scope.incomingOtherList.replace(scope.incomingOtherList);
@@ -493,6 +486,7 @@ var fetchReconIncoming = function(scope, load) {
 
       } else {
 
+        scope.attr("emptyrows", false);
         console.log("Loading Data???")
 
       }
@@ -620,13 +614,11 @@ var processRejectIngestRequestOther = function(scope, requestType) {
           commonUtils.showSuccessMessage(data.responseText);
 
           fetchReconIncoming(scope, false);
-          scope.attr("emptyrows", false);
         }
       } else {
 
         //error text has to be shared. TODO - not sure how service responds to it
         displayErrorMessage(data.responseText, "Failed to Ingest:");
-
 
       }
     });
