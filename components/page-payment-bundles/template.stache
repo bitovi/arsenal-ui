@@ -33,6 +33,9 @@
 <div id="payBundleGrid">
   <rn-bundle-grid rows="{pageState.bundles}" page-state="{pageState}"></rn-bundle-grid>
 </div>
+
+<div class="loading_img"></div>
+
 {{#if pageState.selectedBundle}}
   <div id="payBundleDetailGrid">
     <rn-bundle-detail page-state="{pageState}" appstate="{appstate}" selected-rows="{invoiceRowsSelected}"></rn-bundle-detail>

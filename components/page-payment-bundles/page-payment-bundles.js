@@ -50,7 +50,7 @@ var page = Component.extend({
     refreshBundles: _.debounce(function() {
       var self=this;
 
-
+      $(".loading_img").show();
       if(pageState.attr("isPaginateReq")){
 
         this.scope.paginateAttr.attr('offset',  this.scope.paginateAttr.attr('offset')+1);
@@ -75,7 +75,7 @@ var page = Component.extend({
           }else{
             commonUtils.displayUIMessage( data.status, data.responseText);
           }
-
+          $(".loading_img").hide();
         });
 
         pageState.attr("isPaginateReq",false);
@@ -125,6 +125,8 @@ var page = Component.extend({
               self.scope.appstate.screenLookup.attr("PBR",undefined);
             }
 
+            $(".loading_img").hide();
+
           });
 
 
@@ -137,6 +139,7 @@ var page = Component.extend({
         //   }
         // }
       }
+
 
     }, 200)
   },
