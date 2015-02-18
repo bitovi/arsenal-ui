@@ -1511,7 +1511,11 @@ var page = Component.extend({
 						  	// 	});
 
 						  	// 	this.scope.contentTypeFilter.replace(this.scope.contentType);
-						  		updateContentType(el);
+						  		
+						  		var self = this;
+						  		if(self.scope.attr("invoicetypeSelect") != '2'){
+						  			updateContentType(el);
+						  		}
 							},
 						   '#inputMonth0 change':function(el){ /*validation for period*/
 						  		var self = this;
