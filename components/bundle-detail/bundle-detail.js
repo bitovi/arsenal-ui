@@ -153,7 +153,7 @@ var BundleDetailTabs = Component.extend({
         this.bundleProgress.triggerValidation = false;
       }else{
         //first time request, by setting this, the grid details will not be shown.
-        this.attr('gettingDetails', true);
+        this.attr('gettingDetails', false);
         this.bottomGridPaginateAttr.attr("offset",0);
       }
 
@@ -497,7 +497,7 @@ var BundleDetailTabs = Component.extend({
         }
 
         $(".loading_img").show();
-        
+
         selectedBundle.moveInWorkflow({
           action: action,
           approvalComment: this.scope.approvalComment,
