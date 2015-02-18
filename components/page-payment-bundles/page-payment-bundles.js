@@ -31,7 +31,9 @@ var pageState = new Map({
   recordsAvailable:undefined,
   totRecCnt:0,
   refreshBottomGrid:false,
-  loadedFromDetails:undefined
+  loadedFromDetails:undefined,
+  isPmtBundleDetailsAvl:true,//Default true and it will set to false when PB has no details
+  displayWFSection:true//Used accordian display
 });
 
 var page = Component.extend({
@@ -50,9 +52,9 @@ var page = Component.extend({
     refreshBundles: _.debounce(function() {
       var self=this;
 
-      $(".loading_img").show();
-      if(pageState.attr("isPaginateReq")){
 
+      if(pageState.attr("isPaginateReq")){
+        $(".loading_img").show();
         this.scope.paginateAttr.attr('offset',  this.scope.paginateAttr.attr('offset')+1);
 
         this.scope.appstate.attr('excelOutput',false);
@@ -84,6 +86,7 @@ var page = Component.extend({
 
       }else{
         if(this.scope.isPageSearch != this.scope.appstate.globalSearch) {
+          $(".loading_img").show();
           commonUtils.hideUIMessage();
           pageState.attr("totRecCnt",0);
 
@@ -110,6 +113,8 @@ var page = Component.extend({
               bundleLookupNeeded = true;
               can.batch.stop();
 
+
+
               if(bundleLookupNeeded && lookForBundle != undefined){
 
                   self.scope.pageState.attr("loadedFromDetails",self.scope.appstate.screenLookup.PBR);
@@ -117,6 +122,8 @@ var page = Component.extend({
 
                   $(".visible").click();
               }else{
+                $("#payBundleGrid").find("tr").eq(1).click();
+                //$('#payBundleGrid').closest('table tbody:tr:first').click();
                 self.scope.pageState.attr("loadedFromDetails",undefined);
               }
 
