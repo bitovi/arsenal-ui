@@ -24,7 +24,15 @@ var datePicker = Component.extend({
               pickTime: false,
               useCurrent: false
 
-        })
+        });
+
+        $("#"+self.attr().name).datetimepicker().on("dp.show",function (e) {
+            var InputName = this.id;
+            if($("input[name='"+InputName+"']").val() === ""){
+              $(".picker-open").find("td.active").removeClass("active");
+              $(".picker-open").find("td.today").addClass("active");
+            }
+        });
          
         }
       } 

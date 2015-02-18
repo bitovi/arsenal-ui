@@ -204,7 +204,7 @@ var page = Component.extend({
               //alignGridStats('ingested');
               setTimeout(function(){
                 alignGridStats('ingested');
-                alignGridStats('ingestionReconStats');
+                alignGridStats('ingestionReconStats');                
               },10);
               
 
@@ -266,6 +266,10 @@ function alignGridStats(divId){
 
         if(i==1)
           tdWidth = 35;
+
+        if(divId=='ingestionReconStats' && i==1){
+            tdWidth = 140;
+        }
         
         tableWidth += tdWidth;
         cellWidthArr.push(tdWidth);

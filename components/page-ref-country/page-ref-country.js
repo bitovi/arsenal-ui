@@ -514,6 +514,21 @@ var page = Component.extend({
     '.updatePeroid focus':function(el){
         $(el).closest('.calendarcls').find('.box-modal').show().trigger( "focus" );
      },
+    '.calendarDateIcon click': function(el){
+      $('.box-modal').hide(); // hide all other open calendar popups before opening the new one.
+      $(el).closest('.calendarcls').find('.box-modal').show(0,function(){
+        //$($(el).closest('.calendarcls').find('.box-modal')).data("selected-period",el[0].value);
+
+        //var selected = el.data('type');
+      //  console.log($('.periodFromInput').val() +", "+ $('.periodToInput').val() );
+        $($(el).closest('.calendarcls').find('.box-modal')).data("selected-period-from",$('.periodFromInput').val());
+        $($(el).closest('.calendarcls').find('.box-modal')).data("selected-period-to",$('.periodToInput').val());
+        //$($(el).closest('.calendarcls').find('.box-modal')).data("selected-period-type",PeriodWidgetHelper.getPeriodType($('.periodFromInput').val()));
+        $($(el).closest('.calendarcls').find('.box-modal')).data("selected-id",el.data('type'));
+        $(this).trigger("popup-shown");
+
+      }); 
+    },
     "#grid-revision-history-country table>tbody>tr click": function(item, el, ev){
         //var invoiceid = el.closest('tr').data('row').row.id;
         var self=this.scope;
@@ -807,7 +822,7 @@ var page = Component.extend({
       //console.log("sel model id "+selModelId)
       self.attr("selectedModelId",selected.modelId);
     },
-    '.society click': function(el, ev){
+    'td .society click': function(el, ev){
 
         var self = this;
         self.scope.appstate.attr("licensorName", (el[0].getElementsByTagName("a")).length > 0 ?  ((el[0].getElementsByTagName("a"))[0]).getAttribute("value") : "") ;
