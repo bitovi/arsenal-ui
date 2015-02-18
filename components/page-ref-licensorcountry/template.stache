@@ -94,7 +94,7 @@
                   <div class="col-sm-4 requiredBar" style="padding-left: 1px;">
                     <div class="calendarcls">
                       <input type='text' id="validFrom" name="validFrom" class="form-control inputMonth updateperoid"  can-value='pageState.entityCountryDetails.entityCountry.validFrom'/>
-                      <span class="calendarDateIcon"><i class="glyphicon-calendar glyphicon"></i></span>
+                      <span class="calendarDateIcon" data-type="periodFrom"><i class="glyphicon-calendar glyphicon"></i></span>
                       <period-calendar  selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
                     </div>
                   </div>
@@ -107,7 +107,7 @@
                   <div class="col-sm-8 normalBar">
                     <div class="calendarcls">
                       <input type='text' id="validTo" name="validTo" class="form-control updateperoid inputMonth"  can-value='pageState.entityCountryDetails.entityCountry.validTo'/>
-                      <span class="calendarDateIcon"><i class="glyphicon-calendar glyphicon"></i></span>
+                      <span class="calendarDateIcon" data-type="periodTo"><i class="glyphicon-calendar glyphicon"></i></span>
                       <period-calendar selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
                     </div>
                   </div>
