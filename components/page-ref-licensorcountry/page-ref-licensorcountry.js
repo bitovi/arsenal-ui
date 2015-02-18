@@ -402,14 +402,33 @@ var page = Component.extend({
 
             if(self.scope.pricingModels[i].modelName == self.scope.pageState.entityCountryDetails.pricingModelVersionNo ) {
 
-              self.scope.attr("pricingModelVersions").replace(self.scope.pricingModels[i].modelVersion)
-              self.scope.pageState.entityCountryDetails.attr("pricingModelId", self.scope.pricingModels[i].modelVersion[0].id)
+              self.scope.attr("pricingModelVersions").replace(self.scope.pricingModels[i].modelVersion);
+
+              var ver = self.scope.attr("pricingModelVersions");
+              var maxVersion = 0;
+              var verCount = 0;
+
+              for(var j=0; j< ver.length; j++) {              
+                if(maxVersion < ver[j].value) {                 
+                  maxVersion =  ver[j].value; 
+                  verCount = j; 
+                }       
+              }
+
+              self.scope.setSelectedValue(maxVersion, "#entityPricingModelVersionId");
+              self.scope.pageState.entityCountryDetails.attr("pricingModelId", self.scope.pricingModels[i].modelVersion[verCount].id)
 
             }
 
           }
 
           //this.scope.currencies.replace(Currency.findAll(UserReq.formRequestDetails(requestObj)));
+        },
+
+        '#entityPricingModelVersionId change': function(el, ev) {
+          var self=this.scope;
+          var selected = $(el[0].selectedOptions).val();
+          self.pageState.entityCountryDetails.attr("pricingModelId", selected);
         },
 
         '{baseModelParameter} change': function() {
