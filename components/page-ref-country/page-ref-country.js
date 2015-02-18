@@ -822,7 +822,7 @@ var page = Component.extend({
       //console.log("sel model id "+selModelId)
       self.attr("selectedModelId",selected.modelId);
     },
-    '.society click': function(el, ev){
+    'td .society click': function(el, ev){
 
         var self = this;
         self.scope.appstate.attr("licensorName", (el[0].getElementsByTagName("a")).length > 0 ?  ((el[0].getElementsByTagName("a"))[0]).getAttribute("value") : "") ;
