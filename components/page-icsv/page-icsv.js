@@ -240,7 +240,8 @@ var page = Component.extend({
 
                           }
                         tempObj.licensor= tempArr[i].entityName;
-                        tempObj.invoiceNum= tempArr[i].invoiceNumber;
+                        tempObj.invoiceNum= (tempArr[i].invoiceNumber.length > 40)?tempArr[i].invoiceNumber.substring(0, 50)+"..":tempArr[i].invoiceNumber;
+                        tempObj.invoiceOrigNum= tempArr[i].invoiceNumber;
                         tempObj.dueDate= tempArr[i].invoiceDueDate;
                         tempObj.invoiceAmt= CurrencyFormat(tempArr[i].invoiceAmount);
                         tempObj.currency= tempArr[i].invoiceCcy;
@@ -535,7 +536,7 @@ var page = Component.extend({
                                 });
       },
       ".rn-grid>tbody>tr td dblclick": function(el, ev){
-          var invoiceid = el.closest('tr').data('row').row.invoiceNum;
+          var invoiceid = el.closest('tr').data('row').row.invoiceOrigNum;
           var societyName=el.closest('tr').data('row').row.licensor;
           icsvmap.attr("invoiceid", invoiceid);
           icsvmap.attr("licensor", societyName);
