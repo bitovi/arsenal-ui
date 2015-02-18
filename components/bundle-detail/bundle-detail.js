@@ -128,7 +128,7 @@ var BundleDetailTabs = Component.extend({
       resetSelectedBundle(scope);
 
 
-
+      $(".loading_img").show();
       scope.getNewDetails(selectedBundle)
       .then(function(bundle) {
         return WorkflowStep.loadWorkFlowView({
@@ -138,6 +138,7 @@ var BundleDetailTabs = Component.extend({
         //console.log(JSON.stringify(steps.workflowView.nodes))
         scope.workflowSteps.splice(0, scope.workflowSteps.length);
         scope.workflowSteps.replace(steps.workflowView.nodes);
+        $(".loading_img").hide();
       });
       scope.bundleProgress.isBundleSelectionChange = false;
     },
@@ -495,7 +496,8 @@ var BundleDetailTabs = Component.extend({
           this.scope.isBundlePrioritySet ? bundlePriority = "Y" : bundlePriority = "N";
         }
 
-
+        $(".loading_img").show();
+        
         selectedBundle.moveInWorkflow({
           action: action,
           approvalComment: this.scope.approvalComment,
@@ -537,6 +539,7 @@ var BundleDetailTabs = Component.extend({
             }
 
           }
+          $(".loading_img").hide();
         });
       }
     },

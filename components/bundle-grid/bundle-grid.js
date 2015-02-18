@@ -116,8 +116,8 @@ var BundleGrid = ScrollingGrid.extend({
       var $window = $(window).on('resize', function(){
 
         var getTblBodyHght=gridUtils.getTableBodyHeight('payBundleGrid',25);
-        gridUtils.setElementHeight(tbody,getTblBodyHght,getTblBodyHght);
-      }).trigger('resize');
+          gridUtils.setElementHeight(tbody,getTblBodyHght,getTblBodyHght);
+        }).trigger('resize');
 
 
       // we have to do this manually because scroll does not bubble
@@ -126,7 +126,7 @@ var BundleGrid = ScrollingGrid.extend({
 
       var doneCallback = function() {
 
-        console.log(" Records Availble to sort:  "+component.scope.pageState.recordsAvailable);
+        //console.log(" Records Availble to sort:  "+component.scope.pageState.recordsAvailable);
         //recordsAvailable is to know, if there is next set records available, if yes, invoke
         if(component.scope.pageState.recordsAvailable){
           component.scope.pageState.attr("isPaginateReq",true);
