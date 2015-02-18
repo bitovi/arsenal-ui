@@ -52,16 +52,17 @@ var rinsCommonUtils = {
     return fieldPermission.formRequestDetails(fieldId,screenId,role);
 
   },
-  // getAllowedScreenIds:function(){
-  //
-  //   var screenId= [] ;
-  //   for(var i = 0, size = role.permissions.length; i < size ; i++)
-  //   {
-  //       screenId.push(role.permissions[i].screenId) ;
-  //   }
-  //
-  //   return screenId;
-  // }
+  getAllowedScreenIds:function(){
+    var role =   appstate.userInfo.attr(role);
+     var screenId= [] ;
+     for(var i = 0, size = role.permissions.length; i < size ; i++)
+    {
+        console.log("role="+role.permissions[i].screenId);
+         screenId.push(role.permissions[i].screenId) ;
+     }
+
+     return screenId;
+   }
 
 };
 

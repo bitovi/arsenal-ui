@@ -8,6 +8,12 @@ import styles from './page-logout.less!';
 var page = Component.extend({
   tag: 'page-logout',
   template: template,
+  init: function() {
+    var backlen = history.length;
+    history.go(-backlen);
+
+  },
+
   events:{
     '.login click':function(){
       window.location.href = RinsCommon.UI_SERVICE_URL_CONTEXT;
@@ -17,5 +23,15 @@ var page = Component.extend({
 
 
 });
+
+
+// <SCRIPT LANGUAGE="javascript">
+// function ClearHistory()
+// {
+//      var backlen = history.length;
+//      history.go(-backlen);
+
+// }
+// </SCRIPT>
 
 export default page;

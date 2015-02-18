@@ -758,7 +758,14 @@ var page = Component.extend({
           }else{
             return '';
           }
-        }
+        },
+        isScreenEnabled:function(screenId){
+           var allowedScreenId = commonUtils.getAllowedScreenIds();
+            var index = _.indexOf(allowedScreenId, screenId);
+            var isEnable = 'style="display:' + ( index == -1 ? 'none' : 'block') + '"';
+            return isEnable
+
+         }
       }
 });
 
