@@ -67,7 +67,7 @@
                   <label for="forValidFrom" class="col-sm-4 control-label small-headers">Valid From: </label>
                   <div class="col-sm-4 requiredBar calendarcls">
                     <input type='text' id="validFrom" class="validFrom form-control updatePeroid" name="validFrom" place-holder="Select Period" can-value='pageState.countryDetails.country.validFrom'/>
-                    <span class="calendarDateIcon"><i class="glyphicon-calendar glyphicon"></i></span>
+                    <span class="calendarDateIcon" data-type="periodFrom"><i class="glyphicon-calendar glyphicon"></i></span>
                     <period-calendar selectedperiod={selectedperiod} appstate="{appstate}"></period-calendar>
                   </div><div class="col-sm-3"><div class='period-invalid'> Invalid Period !</div></div>
                 </div>
@@ -78,7 +78,7 @@
                   <label for="forValidTo" class="col-sm-4 control-label small-headers">Valid To: </label>
                   <div class="col-sm-8 normalBar calendarcls">
                     <input type='text' id="validTo" class="validTo form-control updatePeroid" place-holder="Select Period" can-value='pageState.countryDetails.country.validTo'/>
-                    <span class="calendarDateIcon"><i class="glyphicon-calendar glyphicon"></i></span>
+                    <span class="calendarDateIcon" data-type="periodTo"><i class="glyphicon-calendar glyphicon"></i></span>
                     <period-calendar selectedperiod={selectedperiod} appstate="{appstate}"></period-calendar>
                   </div>
                 </div>
