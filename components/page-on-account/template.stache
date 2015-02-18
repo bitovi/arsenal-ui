@@ -36,7 +36,7 @@
             <li>
                 <a id = "proposedonAccount" href="#proposedonAccountDiv" data-toggle="tab">Proposed On Account</a>
             </li>
-            <li >
+            <li {{isScreenEnabled 37}}>
                 <a id = "newonAccount" href="#NewonAccountDiv" data-toggle="tab">New On Account</a>
             </li>
             <li class="pull-right marginLeft-5 marginTop-10">
