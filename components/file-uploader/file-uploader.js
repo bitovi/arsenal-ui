@@ -45,8 +45,8 @@ var FileUploader = Component.extend ({
                 }
                   displayName = truncatedFileName(fileName);
                   return stache('<span title="{{displayMessage}}">{{name}}</span>')({displayMessage:fileName,name:displayName});
-             
-                
+
+
               }
 
       },
@@ -77,7 +77,7 @@ var FileUploader = Component.extend ({
               },
                '.fileSelect change' : function(el, ev) {
                   var files = el[0].files;
-                 
+
                    for (var i = 0; i < files.length; i++) {
                        files[i].ftype = 'selectedFromLocal';
                        files[i].guid = generateUUID();
@@ -85,6 +85,7 @@ var FileUploader = Component.extend ({
                    this.scope.uploadedfileinfo.push.apply(this.scope.uploadedfileinfo, files);
                      // clearing the input value.
                      checkValidFormat(this.scope.attr("uploadedfileinfo"), this);
+
                     this.element.find('input[type=file]').val(null);
 
                    function generateUUID(){
@@ -201,7 +202,7 @@ var FileUploader = Component.extend ({
                   }
 
                   checkValidFormat(_uploadedFileInfo, this);
-
+                  
               },
               '.downLoad-Link click': function(el, ev) {
                   var downLoadFile={};
@@ -234,23 +235,35 @@ var FileUploader = Component.extend ({
           }
     })
 
-    function checkValidFormat(files, self){ 
+    function checkValidFormat(files, self){
       for (var i = 0; i < files.length; i++) {
              var validStatus = (/\.(tiff|jpeg|png|jpg|csv|pdf|txt)$/i).test(files[i].name);
+
              if(!validStatus && (typeof(files[i].name) != "undefined")){
                 self.scope.attr("isInValidFormat", true);
                 $('.validFormatError').empty().html("Invalid File format. Valid format: tiff/jpeg/png/jpg/csv/pdf/txt");
                 $('.submitFiles').attr("disabled", true);
                 $('div.outer').scrollTop($( "div.outer" ).height());
                 break;
-             }else{
+            }
+             var validName = (/^[a-zA-Z0-9-._ ]*$/.test(files[i].name) )
+             if(!validName && (typeof(files[i].name) != "undefined")){
+                self.scope.attr("isInValidFormat", true);
+                $('.validFormatError').empty().html("Invalid File Name. Special Characters are not allowed");
+                $('.submitFiles').attr("disabled", true);
+                $('div.outer').scrollTop($( "div.outer" ).height());
+                break;
+             }
+             else{
                  self.scope.attr("isInValidFormat", false);
                  $('.validFormatError').empty();
                  $('.submitFiles').attr("disabled", false);
-               
+
              }
           }
     }
+
+
 
 var truncatedFileName = function(fileName){
   if(fileName != undefined && fileName.length>0 && fileName.length>45){
