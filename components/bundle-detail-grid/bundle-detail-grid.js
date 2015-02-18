@@ -253,13 +253,13 @@ var BundleDetailGrid = ScrollingGrid.extend({
       }).trigger('resize');
       var doneCallback = function() {
 
-        console.log(" is Bottom grid data Available :"+component.scope.paginateAttr.recordsAvailable);
+        //console.log(" is Bottom grid data Available :"+component.scope.paginateAttr.recordsAvailable);
 
         //recordsAvailable is to know, if there is next set records available, if yes, invoke
         if(!component.scope.paginateAttr.isInProgress && component.scope.paginateAttr.recordsAvailable){
           component.scope.paginateAttr.attr("paginateRequest",true);
-
         }
+        
         component.scope.attr('atBottom', false);
       };
       $(tbody).on('scroll', function(ev) {

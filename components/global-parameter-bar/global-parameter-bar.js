@@ -657,7 +657,6 @@ var validateFilters = function(errorMsg,appstate, validateStoreType, validateReg
   validateCountry, validateLicensor, validateContentType,page) {
   if(errorMsg == null) errorMsg="";
   if (appstate != null && appstate != undefined && errorMsg.length == 0) {
-    //console.log("Peter testing",appstate);
     var serTypeId = appstate.attr('storeType');
     var regId = appstate.attr('region');
     var countryId = appstate['country'];
