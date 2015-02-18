@@ -40,8 +40,8 @@
         
 
          <div class='btnsfor_new'>
-              <button type="button" class="btn btn-primary custombtns" id='bookmark_cancel'>Cancel</button> 
-              <button type="button" class="btn btn-primary custombtns" id='new_bookmark_save'>Save</button> 
+              <button type="button" class="btn btn-primary btn-custom-small-disabled" id='bookmark_cancel'>Cancel</button> 
+              <button type="button" class="btn btn-primary btn-custom-small" id='new_bookmark_save'>Save</button> 
           </div>
 
     </div><!--new bookmark end-->
@@ -63,8 +63,8 @@
          <div></div>
 
          <div class='btnsfor_new'>
-              <button type="button" class="btn btn-primary custombtns" id='sharebk_cancel'>Cancel</button> 
-              <button type="button" class="btn btn-primary custombtns togglebtns" id='sharebk_save' disabled='disabled'>Save</button> 
+              <button type="button" class="btn btn-primary btn-custom-small-disabled" id='sharebk_cancel'>Cancel</button> 
+              <button type="button" class="btn btn-primary btn-custom-small" id='sharebk_save' disabled='disabled'>Save</button> 
           </div>
 
     </div>
