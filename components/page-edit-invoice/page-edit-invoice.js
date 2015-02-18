@@ -1016,8 +1016,11 @@ var page = Component.extend({
 				 		/*This block is used to update data in view */
              if(self.scope.appstate.attr('viewinvoicemode') == true){
 							$("rn-file-uploader-edit .browseFiles.uploadFiles").attr("disabled", true);
+							$("page-edit-invoice form :input:not('#buttonCancel')").prop("disabled",true);
+							setTimeout(function(){$('rn-file-uploader-edit .action-link').prop("disabled", true)}, 200);
 							var msg = "Info:Invoice can't be edited as its in transit/paid";
 							commonUtils.showErrorMessage(msg);
+
 						}
 
 						var invoiceData = self.scope.attr().invoiceContainer[0];
@@ -1511,7 +1514,11 @@ var page = Component.extend({
 						  	// 	});
 
 						  	// 	this.scope.contentTypeFilter.replace(this.scope.contentType);
-						  		updateContentType(el);
+						  		
+						  		var self = this;
+						  		if(self.scope.attr("invoicetypeSelect") != '2'){
+						  			updateContentType(el);
+						  		}
 							},
 						   '#inputMonth0 change':function(el){ /*validation for period*/
 						  		var self = this;
