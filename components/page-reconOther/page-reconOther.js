@@ -416,17 +416,29 @@ var fetchReconDetailsOther = function(scope){
       //   $("#messageDiv").hide();
       // },4000);
       commonUtils.showErrorMessage(data["responseText"]);
+      scope.attr("emptyrows", true);
       console.error("Failed to load the Recon incoming other :" + data.responseText);
 
     } else {
-      if (searchRequestObj.searchRequest["offset"] == 0)
+        
+      if (data.recordsAvailable) {
+        if (searchRequestObj.searchRequest["offset"] == 0)
+          scope.incomingOtherList.replace(data.reconStatsDetails);
+        else {
+          $.merge(scope.incomingOtherList, data.reconStatsDetails);
+          scope.incomingOtherList.replace(scope.incomingOtherList);
+        }
+        scope.recordsAvailable = data.recordsAvailable;
+        scope.totalRecordCount = data.totRecCnt;
+        scope.attr("emptyrows", false);
+      }else{
         scope.incomingOtherList.replace(data.reconStatsDetails);
-      else {
-        $.merge(scope.incomingOtherList, data.reconStatsDetails);
-        scope.incomingOtherList.replace(scope.incomingOtherList);
+        //commonUtils.displayUIMessage(data.responseCode, data.responseText);
+        scope.attr("emptyrows", true);
       }
-      scope.recordsAvailable = data.recordsAvailable;
-      scope.totalRecordCount = data.totRecCnt;
+
+      
+      
     }
 
   }, function(xhr) {
