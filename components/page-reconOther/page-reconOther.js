@@ -419,8 +419,14 @@ var fetchReconDetailsOther = function(scope){
       console.error("Failed to load the Recon incoming other :" + data.responseText);
 
     } else {
-      if (searchRequestObj.searchRequest["offset"] == 0)
+      if (searchRequestObj.searchRequest["offset"] == 0){
         scope.incomingOtherList.replace(data.reconStatsDetails);
+        if(data.reconStatsDetails.length==0){
+          scope.attr("emptyrows", true);
+        }else{
+          scope.attr("emptyrows", false);
+        }
+      }
       else {
         $.merge(scope.incomingOtherList, data.reconStatsDetails);
         scope.incomingOtherList.replace(scope.incomingOtherList);
