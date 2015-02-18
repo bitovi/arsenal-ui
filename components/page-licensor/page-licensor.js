@@ -336,70 +336,39 @@ var page = Component.extend({
     },
 
     loadCountryReportconfiguration : function() {
-
-
       var self = this;
-
-      var countryObj = self.countries[0];
-
+      var countryObj;
       var reportBox = $("input.reportBox");
-
       for(var i=0; i<reportBox.length; i++) {
-
         if(reportBox[i].checked) {
-
           reportBox[i].checked = false;
-
         }
-
       }
-
-      if(countryObj != undefined && countryObj != null) {
-
-          var reportConf = self.getExistCountryReportConf(countryObj.name);
-
-          $('input.countryBox').prop("checked", false);
-
-          var country = $('input.countryBox');
-
-          var reportBox = $("input.reportBox");
-
-          var checked = false;
-
-
-          for(var i=0; i < reportConf.length; i++) {
-
-            for(var j=0; j<reportBox.length; j++) {
-
-                if(reportBox[j].getAttribute("value") == reportConf[i] ) {
-
-                  reportBox[j].checked = true;
-
-                  checked = true;
-
-                }
-
-            }
-
+      var reportConf;
+      $.each(self.countries, function( index, value ) {
+        countryObj = value;
+        reportConf =self.getExistCountryReportConf(value.id);
+       return (!(reportConf != undefined && reportConf.length>0));       
+      });
+      if (countryObj != undefined && countryObj != null) {
+        $('input.countryBox').prop("checked", false);
+        var checked = false;
+        for (var j = 0; j < reportBox.length; j++) {
+          if ($.inArray(reportBox[j].getAttribute("value"), reportConf) > -1) {
+            reportBox[j].checked = true;
+            checked = true;
           }
-
-          if(checked) {
-
-            for(var i=0; i<country.length; i++) {
-
-              var obj = country[i].getAttribute("value");
-
-              if(obj == countryObj.name) {
-
-                country[i].checked = true;
-
-              }
-
+        }
+        if (checked) {
+           var country = $('input.countryBox');
+          for (var i = 0; i < country.length; i++) {
+            var obj = country[i].getAttribute("value");
+            if (obj == countryObj.id) {
+              country[i].checked = true;
             }
           }
-
+        }
       }
-
     },
 
     getSocietyContactDetails : function() {
@@ -1066,6 +1035,7 @@ var page = Component.extend({
           reLicencorDetails.licensorDetails.validFrom = periodFrom;
           reLicencorDetails.licensorDetails.validTo = periodTo;
 
+          reLicencorDetails.licensorDetails.reportConfMap = self.reportConfMap.attr();
           reLicencorDetails.licensorId = 0;
 
           var genObj = reLicencorDetails;
