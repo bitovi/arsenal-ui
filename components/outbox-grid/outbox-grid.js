@@ -23,8 +23,19 @@ var OutboxGrid = ScrollingGrid.extend({
       id: 'description',
       title: 'Description'
     }, {
-      id: 'groupName',
-      title: 'Currently With'
+      id: 'pendingGroupName',
+      title: 'Currently With',
+      contents: function(row) { //we are hoping that these values will not change from DS.
+        if (row.pendingGroupName == 'RINS-BusinessManager'){
+          return 'BM';
+        }else if (row.pendingGroupName == 'RINS-FinanceApprover'){
+          return 'FA';
+        }else if (row.pendingGroupName == 'RINS-FinanceController'){
+          return 'FC';
+        }else{
+          return '';
+        }
+      }
     }, {
       id: 'pendingDays',
       title: 'Pending',
