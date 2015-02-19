@@ -11,6 +11,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-connect-proxy');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
 
   grunt.loadTasks('tasks/write-files');
 
@@ -28,8 +29,7 @@ module.exports = function (grunt) {
         options: {
           system: {
             config: __dirname + "/stealconfig.js",
-            main: "index"//,
-            // bundlesPath: buildDir
+            main: "index"
           },
           buildOptions: {
             bundleSteal: false,
@@ -105,8 +105,24 @@ module.exports = function (grunt) {
             'git push --tags'
           ].join(' && ');
         }
-      }
+      },
 
+      deploy: {
+        options: {
+          stdout: true,
+          failOnError: true
+        },
+        command: function() {
+          return ['mkdir deploy',
+          'cp -R resources deploy',
+          'cp -R dist deploy',
+          'mkdir deploy/bower_components',
+          'cp -R bower_components/steal deploy/bower_components',
+          'cp -R bower_components/bootstrap deploy/bower_components/bootstrap',
+          'cp index.prod.html deploy/index.html',
+          'cp stealconfig.js deploy'].join(' && ');
+        }
+      }
     },
 
     connect: {
@@ -185,12 +201,20 @@ module.exports = function (grunt) {
     },
 
     clean: {
-      build: [ buildDir ]
+      build: [ buildDir ],
+      deploy: 'deploy'
     },
 
     writeFiles: {
       build: {
         dstDir: buildDir
+      }
+    },
+
+    jshint: {
+      all: ['models/**/*.js', 'components/**/*.js', 'utils/**/*.js'],
+      options: {
+        esnext: true
       }
     }
 
@@ -199,7 +223,7 @@ module.exports = function (grunt) {
   // `grunt test`
   grunt.registerTask('test', 'Run tests.', ['testee']);
   // `grunt build`
-  grunt.registerTask('build', 'Make a build.', ['clean:build', 'steal-build', 'writeFiles']);
+  grunt.registerTask('build', 'Make a build.', ['clean', 'steal-build', 'writeFiles', 'shell:deploy']);
 
   // `grunt release`
   grunt.registerTask('release', 'Create a release.', function(releaseType) {
