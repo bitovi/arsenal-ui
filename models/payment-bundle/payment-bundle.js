@@ -263,6 +263,8 @@ var PaymentBundle = Model.extend({
           // merge all those new properties into this one
           bundle.hasOwnProperty('recordsAvailable') ? params.paginate.attr("recordsAvailable",bundle.recordsAvailable):"";
 
+          bundle.hasOwnProperty('totRecCnt') ? params.paginate.attr("totRecCnt",bundle.totRecCnt):"";
+
           //console.log(params.paginate.attr("offset") + ", Inside : "+params.paginate.attr("recordsAvailable"));
           bundle = bundle.hasOwnProperty('responseCode') ? bundle.paymentBundle : bundle;
           if(params.paginate.offset > 0){
@@ -312,7 +314,7 @@ var PaymentBundle = Model.extend({
                   var target = _.find(bundle.bundleDetailsGroup, {key: group.key});
                   if(target != undefined ){
                     group.vldtnMessage == undefined ? target.attr('validationMessages', "") : target.attr('validationMessages', group.vldtnMessage);
-                    group.vldtnBatchResultColor == undefined ? target.attr('validationColor', "") : target.attr('validationColor', group.vldtnBatchResultColor);
+                    group.vldtnBatchResultColor == undefined ? target.attr('validationColorHeader', "") : target.attr('validationColorHeader', group.vldtnBatchResultColor);
                   }
                 }
 
@@ -373,7 +375,7 @@ var PaymentBundle = Model.extend({
       delete group.entityNameCnt;
       delete group.view;
       delete group.validationMessages;
-      delete group.validationColor;
+      delete group.validationColorHeader;
 
       group.bundleDetails.forEach(function(detail) {
         delete detail.__isChild;

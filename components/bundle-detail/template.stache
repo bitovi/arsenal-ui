@@ -32,7 +32,7 @@
     <img class="excell exportToExcel" data-tooltip="Export Excel"  style="padding-top: 1px;height:18px;width:18px;">
     <img class="clipboardd copyToClipboard" data-tooltip="Copy to Clipboard" style="padding-top: 1px;height:18px;margin-right: 0.1em;width:18px;">
     <img class="information" src="/resources/images/infoTemplate.png" data-tooltip="Information" style="padding-top: 1px;height:18px;width:18px;margin-right: 0.2em;" data-original-title="" title="">
-    <img class="accordion-wf" style="height: 15px;width: 15px; padding-top: 2px;" data-tooltip="Display Workflow Section" src="/resources/images/approval_arrow_{{#if pageState.displayWFSection}}up{{else}}down{{/if}}.png"/>
+    <img class="accordion-wf" style="height: 15px;width: 15px; padding-top: 2px;" data-tooltip="Display Workflow Section" src="/resources/images/approval_arrow_{{#if pageState.displayWFSection}}down{{else}}up{{/if}}.png"/>
     {{#showVerboseToggle}}
       <img class="verbose-toggle" style="height: 20px;width: 18px; padding-top: 2px;" data-tooltip="Skinny / Expnded view" src="/resources/images/{{#if pageState.verboseGrid}}expand@2x{{else}}collapse@2x{{/if}}.png"/>
     {{/showVerboseToggle}}
