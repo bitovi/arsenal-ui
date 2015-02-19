@@ -329,7 +329,7 @@
 										</td>
 										<td can-value="countries" class="countryReportColumn">
 											{{#each countries}}
-											<div class="tableDiv" id={{id}}>{{name}}</div>
+											<div class="tableDiv countryDiv" id={{id}}>{{name}}</div>
 											{{/each}}
 										</td>
 										<td can-value="reportTypes">
