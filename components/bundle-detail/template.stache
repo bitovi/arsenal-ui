@@ -68,7 +68,7 @@
   <rn-workflow-display steps="{workflowSteps}" class="progress-display"></rn-workflow-display>
   <div class="flex-spacer"></div>
   <div class="payment-option">
-    {{#isBM}}
+
     {{#if pageState.selectedBundle.approvable}}
     <label>Payment Option</label>
     <select {{paymentOptionEditable}} can-value="{paymentType}">
@@ -93,7 +93,7 @@
 
     {{/if}}
 
-    {{/isBM}}
+  
   </div>
 
   <div class="approval-comment">
