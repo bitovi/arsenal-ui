@@ -32,7 +32,13 @@ var columns = {
   'invoiceNumber': {
     id: 'invoiceNumber',
     title: 'Invoice #',
-    contents: row => row.__isChild ? '' : row.invoiceNumber
+    contents: function(row) {
+      if(row.isFooterRow){
+        return this.paginateAttr.attr('totRecCnt') +" Invoices";
+      }else{
+        return  row => row.__isChild ? '' : row.invoiceNumber;
+      }
+    },
   },
   'paymentCcy': {
     id: 'paymentCcy',
