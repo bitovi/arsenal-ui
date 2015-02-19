@@ -86,7 +86,11 @@ export default [
       if(row.isFooterRow){
         return formats.currencyFormat(row.liDispAmt);
       }else{
-        return can.stache('<a class="downloadLink liDispAmt" href="#download">'+formats.currencyFormat(row.liDispAmt)+'</a>')();
+        if(row.liDispAmt!= undefined && row.liDispAmt!= null && row.liDispAmt!= 0.00 ){
+          return can.stache('<a class="downloadLink liDispAmt" href="#download">'+formats.currencyFormat(row.liDispAmt)+'</a>')();
+        } else {
+          return "null";
+        }
       }
     },
     sortable: true
@@ -115,7 +119,11 @@ export default [
       if(row.isFooterRow){
         return formats.currencyFormat(row.badLines);
       }else{
-        return can.stache('<a class="downloadLink badLines" href="#download">'+formats.currencyFormat(row.badLines)+'</a>')();
+        if(row.badLines!= undefined && row.badLines!= null && row.badLines!= 0.00 ){
+          return can.stache('<a class="downloadLink badLines" href="#download">'+formats.currencyFormat(row.badLines)+'</a>')();
+        } else {
+          return "null";
+        }
       }
     },
     format: formats.currencyFormat,
@@ -130,7 +138,11 @@ export default [
     id: 'invFileName',
     title: 'File Name',
     contents: function(row) {
-      return can.stache('<a class="downloadLink fileName" href="#download">'+row.invFileName+'</a>')();
+      if(row.invFileName != undefined && row.invFileName != null ) {
+        return can.stache('<a class="downloadLink fileName" href="#download">'+row.invFileName+'</a>')();
+      } else {
+        return "null";
+      }
     },
     sortable: true
   },
