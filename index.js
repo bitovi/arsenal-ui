@@ -53,6 +53,9 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
   //skip for multipart/form-data
 
   //added for CSRF token
+  if(appstate.userInfo == undefined){
+  window.location.href= URLs.UI_SERVICE_URL_CONTEXT;
+  }
 
   if(appstate.csrfToken != null && options.type=='POST' && options.url.indexOf(URLs.UI_SERVICE_URL) === 0)
   {

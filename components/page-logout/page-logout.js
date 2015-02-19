@@ -9,8 +9,10 @@ var page = Component.extend({
   tag: 'page-logout',
   template: template,
   init: function() {
-    var backlen = history.length;
-    history.go(-backlen);
+    appstate.attr('userInfo',undefined);
+  //console.log("I am herea ");
+  var backlen = history.length;
+  history.go(-backlen);
 
   },
 
