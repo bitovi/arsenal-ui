@@ -111,7 +111,7 @@ Grid.extend({
         title: 'Due date'
       },
       {
-        id: 'status',
+        id: 'displayPaymentStatus',
         title: 'Status'
       },
       {
@@ -202,7 +202,7 @@ var page = Component.extend({
     allInvoicesMap:[],
     checkedRows: [],
     unDeletedInvoices: [],
-    sortColumns:[],
+    sortColumns:["fiscalPeriod"],
     sortDirection: "asc",
     tokenInput: [],
     disableBundleName:undefined,
@@ -405,7 +405,7 @@ var page = Component.extend({
               invTemp["invoiceDueDate"] = (invoiceData[i]["invoiceDueDate"]==null)?"":invoiceData[i]["invoiceDueDate"];
               invTemp["invoiceCcy"] = (invoiceData[i]["invoiceCcy"]==null)?"":invoiceData[i]["invoiceCcy"];
               invTemp["statusId"] = (invoiceData[i]["status"]==null || invoiceData[i]["status"]==-1)?"":invoiceData[i]["status"];
-              invTemp["status"] = (invoiceData[i]["displayPaymentStatus"]==null)?"":invoiceData[i]["displayPaymentStatus"];
+              invTemp["displayPaymentStatus"] = (invoiceData[i]["displayPaymentStatus"]==null)?"":invoiceData[i]["displayPaymentStatus"];
               invTemp["paymentState"] = (invoiceData[i]["paymentState"]==null || invoiceData[i]["paymentState"]==-1)?"":invoiceData[i]["paymentState"];
               invTemp["bundleName"] = (invoiceData[i]["bundleName"]==null || invoiceData[i]["bundleName"]=="--Select--")?"":invoiceData[i]["bundleName"];
               invTemp["comments"] = (invoiceData[i]["notes"]==null || invoiceData[i]["notes"].length==0)?"":invoiceData[i]["notes"];
@@ -445,7 +445,7 @@ var page = Component.extend({
                   invLITemp["invoiceDueDate"] = "";
                   invLITemp["invoiceCcy"] = invTemp["invoiceCcy"];
                   invLITemp["statusId"] = "";
-                  invLITemp["status"] = "";
+                  invLITemp["displayPaymentStatus"] = "";
                   invLITemp["paymentState"] = "";
                   invLITemp["bundleName"] = "";
                   invLITemp["comments"] = "";
@@ -510,13 +510,13 @@ var page = Component.extend({
             }
 
             var first = "true";
-            var regCcyTemp = {"invId":"", "__isChild":false, "entityName":"Total in Regional Currency", "invoiceType":"", "invTypeDisp":"", "contentGrpName":"", "country":"", "invoiceNumber":"","invoiceAmount":"", "invoiceDueDate":"", "invoiceCcy":"", "status":"", "bundleName":"", "comments":""};
+            var regCcyTemp = {"invId":"", "__isChild":false, "entityName":"Total in Regional Currency", "invoiceType":"", "invTypeDisp":"", "contentGrpName":"", "country":"", "invoiceNumber":"","invoiceAmount":"", "invoiceDueDate":"", "invoiceCcy":"", "displayPaymentStatus":"", "bundleName":"", "comments":""};
             regCcyTemp["invoiceAmount"] = CurrencyFormat(footerData["regAmtTot"]);
             regCcyTemp["invoiceNumber"] = self.scope.attr('totalRecordCount') + " Invoices";
             regCcyTemp["invoiceCcy"] = footerData["regCcy"];
             gridData["footer"].push(regCcyTemp);
             for(var obj in footerData["amtCcyMap"]){
-              var ccyTemp = {"invId":"", "__isChild":true, "entityName":"", "invoiceType":"", "invTypeDisp":"", "contentGrpName":"", "country":"", "invoiceNumber":"","invoiceAmount":"", "invoiceDueDate":"", "invoiceCcy":"", "status":"", "bundleName":"", "comments":""};
+              var ccyTemp = {"invId":"", "__isChild":true, "entityName":"", "invoiceType":"", "invTypeDisp":"", "contentGrpName":"", "country":"", "invoiceNumber":"","invoiceAmount":"", "invoiceDueDate":"", "invoiceCcy":"", "displayPaymentStatus":"", "bundleName":"", "comments":""};
               ccyTemp["invoiceAmount"] = CurrencyFormat(footerData["amtCcyMap"][obj]);
               ccyTemp["invoiceCcy"] = obj;
               gridData["footer"].push(ccyTemp);
@@ -602,24 +602,24 @@ var page = Component.extend({
           var existingSortColumnsLen = existingSortColumns.length;
           var existFlag = false;
           var sortAttr=val[0];
+          /*if(sortAttr.toUpperCase() == 'STATUS'){
+            sortAttr='displayPaymentStatus';
+          }*/
           if(existingSortColumnsLen==0){
-            if(sortAttr.toUpperCase() == 'STATUS'){
-              sortAttr='displayPaymentStatus';
-            }
             self.scope.attr('sortColumns').push(sortAttr);
           } else {
             for(var i=0;i<existingSortColumnsLen;i++){
               /* The below condition is to selected column to be sorted in asc & dec way */
               console.log(val[0]+","+existingSortColumns[i] )
-              if(existingSortColumns[i] == val[0]){
+              if(existingSortColumns[i] == sortAttr){
                 existFlag = true;
               }
             }
             if(existFlag==false){
               self.scope.attr('sortColumns').replace([]);
-              if(sortAttr.toUpperCase() == 'STATUS'){
+              /*if(sortAttr.toUpperCase() == 'STATUS'){
                 sortAttr='displayPaymentStatus';
-              }
+              }*/
               self.scope.attr('sortColumns').push(sortAttr);
 
             } else {
@@ -675,7 +675,7 @@ var page = Component.extend({
       var val = parseInt($(item[0]).attr("value"));
       var row = item.closest('tr').data('row').row;
       var invoiceType = row.invoiceType;
-      var bundleStatus = row.status;
+      var bundleStatus = row.displayPaymentStatus;
 
      $('.select-toggle-all').prop("checked", false);
 
