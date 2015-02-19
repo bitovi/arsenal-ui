@@ -9,7 +9,7 @@
           </div>
           <div class='autoscroll'>
             {{#each bookMarkList}}
-               <div class='bookmark_list' data-pageId={{pageUri}}>
+               <div class='bookmark_list' data-pageId={{pageUri}} data-filter={{filterData}}>
                     <div class='checkbox_list'><input type="checkbox" name='bookmark' id={{bookMarkId}} class='bookmarkchkbox'/></div>
                     <div class='bookmark_subject'> {{bookMarkName}}</div>
                     <div class='bookmark_settings' data-id={{bookMarkId}}>&nbsp;</div>

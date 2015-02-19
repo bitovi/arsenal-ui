@@ -5,6 +5,8 @@ import Bookmark from 'models/common/bookmark/';
 import Bookmarkusers from 'models/common/bookmarkusers/';
 import Sharedbookmarks from 'models/common/sharedbookmarks/';
 import UserReq from 'utils/request/';
+import _ from 'lodash';
+import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 import commonUtils from 'utils/commonUtils';
 
@@ -60,7 +62,79 @@ var bookmark = Component.extend({
     },
     '.bookmark_list dblclick':function(el){
       var page = el.attr('data-pageid');
+      var filterData = el.attr('data-filter');
       page = page.replace("/","");
+      var fileArr = filterData.split(",");
+      var map1 = [];
+      var customObj = {
+        "key":"",
+        "value":""
+      }
+      var temp;
+      _.forEach(fileArr, function(n) {
+          temp = n.split(":");
+          //var test = {""+temp[0], ""+temp[1] };
+          //console.log(temp);
+          customObj = {
+            "key":"",
+            "value":""
+          };
+          customObj.key = temp[0];
+          customObj.value = temp[1];
+        //  console.log(customObj.key);
+          map1.push(customObj);
+      });
+    //  _.result(_.find(users, 'active'), 'user')
+      var periodType = _.result(_.find(map1, {'key':'PeriodType'}),'value');
+      var lookingFor =  _.result(_.find(map1, {'key':'PeriodFrom'}),'value');
+      if(lookingFor != undefined){
+        this.scope.appstate.attr('periodFrom',lookingFor);
+        this.scope.appstate.attr('periodType',periodType);
+        $('#periodFrom').val(  periodWidgetHelper.getDisplayPeriod(lookingFor,periodType ));
+        }
+
+      lookingFor =  _.result(_.find(map1, {'key':'PeriodTo'}),'value');
+      if(lookingFor != undefined){
+        this.scope.appstate.attr('periodTo',lookingFor);
+        $('#periodTo').val(  periodWidgetHelper.getDisplayPeriod(lookingFor,periodType ));
+      }
+
+      lookingFor =  _.result(_.find(map1, {'key':'StoreType'}),'value');
+      if(lookingFor != undefined){
+        this.scope.appstate.attr('storeType',  {id:lookingFor});
+        $('#storeTypesFilter').val(lookingFor);
+      }
+      // lookingFor =  _.result(_.find(map1, {'key':'Region'}),'value');
+      // if(lookingFor != undefined){
+      //   this.scope.appstate.attr('region',  {id:lookingFor});
+      //   $('#regionsFilter').val(lookingFor);
+      // }
+
+
+
+      // lookingFor =  _.result(_.find(map1, {'key':'PeriodFrom'}),'value');
+      // if( _.result(_.find(map1, {'key':'PeriodFrom'}),'value')){
+      //  "PeriodFrom":userRequest.searchRequest.periodFrom,
+      // "PeriodTo": userRequest.searchRequest.periodFrom,
+      // "StoreType": userRequest.searchRequest.serviceTypeId.toString(),
+      // "Region": userRequest.searchRequest.regionId.toString(),
+      // "Country": userRequest.searchRequest.country.toString(),
+      // "Licensor": userRequest.searchRequest.entityId.toString(),
+      // "ContentType": userRequest.searchRequest.contentGrpId.toString(),
+      // "PeriodType": userRequest.searchRequest.periodType
+      // }
+
+      // console.log(fileArr[0]);
+      // if(filterData.indexOf("PeriodTo")){
+      //
+      // }
+      //if()
+      //$('#periodFrom').val("P11FY15");
+
+      // $('#periodTo').val(DefaultGlobalParameters.PeriodTo);
+      // $('#storeTypesFilter').val(DefaultGlobalParameters.StoreType.value);
+      // $('#regionsFilter').val(DefaultGlobalParameters.Region.value);
+
       commonUtils.navigateTo(page);
       //this.scope.appstate.attr('page',page);
     },
@@ -192,7 +266,7 @@ var bookmark = Component.extend({
 
          var filters ={
                   "PeriodFrom":userRequest.searchRequest.periodFrom,
-                  "PeriodTo": userRequest.searchRequest.periodFrom,
+                  "PeriodTo": userRequest.searchRequest.periodTo,
                   "StoreType": userRequest.searchRequest.serviceTypeId.toString(),
                   "Region": userRequest.searchRequest.regionId.toString(),
                   "Country": userRequest.searchRequest.country.toString(),
@@ -236,5 +310,7 @@ function replacements(vals){
 var pageIdMatcher =function(val){
   return val==1 ? 'dashboard':'invoices';
 };
+
+
 
 export default bookmark;
