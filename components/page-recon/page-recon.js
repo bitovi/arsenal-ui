@@ -693,7 +693,7 @@ var fetchReconIngest = function(scope, load){
     console.error("Error while loading: fetchReconIngest"+xhr);
   }).then(function(values){
 
-    if(load) {
+    //if(load) {
       var ccidCheckbox = $("input.selectRow");
 
       for(var i=0; i<ccidCheckbox.length  ;i++) {
@@ -703,10 +703,15 @@ var fetchReconIngest = function(scope, load){
       }
 
       var ccids = scope.ingestCcidSelected;
-      scope.reconRefresh[0].loadRefreshStats(dataLowerGrid, scope.reconRefresh[0]);
       scope.setHeaderChkBox();
 
-    } else {
+      if(load)
+        scope.reconRefresh[0].loadRefreshStats(dataLowerGrid, scope.reconRefresh[0]);
+      else
+        scope.attr("load", true);
+      
+
+   /* } else {
       scope.attr("load", true);
 
       var ccidCheckbox = $("input.selectRow");
@@ -725,7 +730,8 @@ var fetchReconIngest = function(scope, load){
       }
       scope.setHeaderChkBox();
 
-    }
+    }*/
+
 
     $("#loading_img").hide();
   });
