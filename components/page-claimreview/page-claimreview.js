@@ -12,7 +12,7 @@ import UserReq from 'utils/request/';
 import claimLicensorInvoices from 'models/claim/licensor/';
 import claimCountryInvoices from 'models/claim/country/';
 
-import tokeninput from 'tokeninput';
+import tokeninput from 'rinsTokeninput';
 import css_tokeninput from 'tokeninput.css!';
 import css_tokeninput_theme from 'tokeninput_theme.css!';
 
@@ -455,28 +455,48 @@ var page = Component.extend({
     events: {
     	"inserted": function(){
     		var self = this;
-        $("#tokenSearch").tokenInput([
-            {id: 1, name: "Search"} //This is needed
-          ],
-          {
-              theme: "facebook",
-              placeholder: "Search...",
-              preventDuplicates: true,
-              onResult: function (item) {
-                //alert(item);
-                  if($.isEmptyObject(item)){
-                        return [{id:$("#token-input-tokenSearch").val(),name: $("#token-input-tokenSearch").val()}];
-                  }else{
-                        return item;
+        $("#tokenSearch").tokenInput(self.scope.appstate.filterSuggestion,
+        {
+            theme: "facebook",
+            placeholder:"Search...",
+            preventDuplicates: true,
+            allowFreeTagging:true,
+            tokenLimit:3,
+            allowTabOut:false,
+            onResult: function (item) {
+              if($.isEmptyObject(item)){
+                      var tempObj={id:$("#token-input-tokenSearch").val(),name: $("#token-input-tokenSearch").val()};
+                      return [tempObj];
+                }else{
+                      return item;
+                }
+            },
+            onAdd: function (item) {
+                //add it to the exisitng search array, remove duplicate if any
+                var isExists=false;
+                for(var j=0;j<self.scope.appstate.filterSuggestion.length;j++){
+                  if(self.scope.appstate.filterSuggestion[j].attr('name').toLowerCase() === item.name.toLowerCase()){
+                    isExists=true;
+                    break;
                   }
-              },
-              onAdd: function (item) {
-                  self.scope.refreshTokenInput(item,"Add");
-
-              },
-              onDelete: function (item) {
-                   self.scope.refreshTokenInput(item,"Delete");
-              }
+                }
+                if(!isExists){
+                  self.scope.appstate.filterSuggestion.push(item);
+                }
+                self.scope.refreshTokenInput(item,"Add");
+            },
+            onDelete: function (item) {
+                 self.scope.refreshTokenInput(item,"Delete");
+                 //after deleting call refresh method
+                 refreshSearchOnfilter(self);
+            },
+            queryDB:function(items){
+               //Call Db fetch for the filter conditions.
+               //this call back function will be called when the last token is added.
+               //if the limit of the token is 3 then when the user add the last token this method
+               //get invoked
+               refreshSearchOnfilter(self);
+            }
         });
 
         $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid emptyrows="{emptyrows}"></rn-claim-licensor-grid>')({emptyrows:true}));
@@ -722,18 +742,13 @@ var page = Component.extend({
               self.scope.appstate.attr('globalSearch', true);
             }
       },
-      "{tokenInput} change": function(){
-        var self = this;
-          console.log(JSON.stringify(self.scope.tokenInput.attr()));
-          console.log("appState set to "+JSON.stringify(self.scope.appstate.attr()));
-
-          /* The below code calls {scope.appstate} change event that gets the new data for grid*/
-          /* All the neccessary parameters will be set in that event */
-         if(self.scope.appstate.attr('globalSearch')){
-            self.scope.appstate.attr('globalSearch', false);
-          }else{
-            self.scope.appstate.attr('globalSearch', true);
-          }
+      ".token-input-list-facebook keyup": function(e,ev){
+      if(ev.keyCode === 13){ //trigger search when user press enter key. This is becase user can
+          //select multiple search token and can trigger the search
+          var self= this;
+          //console.log(JSON.stringify(self.scope.tokenInput.attr()));
+          refreshSearchOnfilter(self);
+        }
       },
       "#currencyType change": function(){
         var self=this;
@@ -1390,6 +1405,15 @@ function getVisibleGridHeight(){
   }else{
     return 400; //default height
   }
+}
+
+function refreshSearchOnfilter(self){
+  self.scope.attr("offset", 0);  /* Search criteria changes. So making offset 0 */
+   if(self.scope.appstate.attr('globalSearch')){
+      self.scope.appstate.attr('globalSearch', false);
+    }else{
+      self.scope.appstate.attr('globalSearch', true);
+    }
 }
 
 export default page;

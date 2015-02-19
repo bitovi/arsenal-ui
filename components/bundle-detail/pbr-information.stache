@@ -7,85 +7,41 @@
     </tr>
   </thead>
   <tbody>
-    <tr class="odd">
-      <td>Accrual Rate</td>
-      <td>Accrual/ Revenue</td>
-    </tr>
     <tr class="even">
-      <td>Estimated Pub Fee</td>
-      <td>Revenue * Mkt share avg * Effective pub rate avg</td>
-    </tr>
-    <tr class="odd">
-      <td>Estimated Pub Fee YOY</td>
-      <td>Revenue * Mkt share prev yr * Effective pub rate prev yr</td>
-    </tr>
-    <tr class="even">
-      <td>Effective Pub Rate (Actual)</td>
-      <td>Pub Fee / (Country Period)</td>
-    </tr>
-    <tr class="odd">
-      <td>Effective Pub Rate (Avg)</td>
-      <td>Last 12 months Fees / Last 12 months Revenue</td>
-    </tr>
-    <tr class="even">
-      <td>Effective Pub Rate (Prev year)</td>
-      <td>Fee from 12 months ago / Rev. from 12 months ago</td>
-    </tr>
-    <tr class="odd">
-      <td>Market Share (Actual)</td>
-      <td>Actual Market share for a Country / Revenue</td>
-    </tr>
-    <tr class="even">
-      <td>Market Share (Avg)</td>
-      <td>12 month average</td>
-    </tr>
-    <tr class="odd">
-      <td>Market Share (Prev year)</td>
-      <td>Value from 12 months ago</td>
-    </tr>
-    <tr class="even">
-      <td>Pub fee (Actual)</td>
-      <td>Invoice amount (from CCID file, not PDF)</td>
-    </tr>
-    <tr class="odd">
-      <td>Pub fee (Avg)</td>
-      <td>12 month average</td>
-    </tr>
-    <tr class="even">
-      <td>Pub fee (Prev year)</td>
-      <td>Value from 12 months ago</td>
-    </tr>
-    <tr class="odd">
       <td>Line Item Dispute</td>
       <td>Errors in the licensor CCID (e.g. rate is too high, waiver not respected)</td>
     </tr>
+    <tr class="odd">
+        <td>Recon</td>
+        <td>Reconciled amount</td>
+    </tr>
     <tr class="even">
-      <td>Pub Fee</td>
-      <td>Fees of what are payable from the invoice (ignoring over-rep)</td>
+      <td>OA Allocated</td>
+      <td>Onaccount allocated</td>
     </tr>
     <tr class="odd">
-      <td>Claimed revenue</td>
-      <td>Used for calculating the effective rate on what is actually being paid</td>
+      <td>CA Allocated</td>
+      <td>Cash adjustment allocated</td>
     </tr>
     <tr class="even">
-      <td>Effective rate</td>
-      <td>Pub fee / Claimed Revenue</td>
-    </tr>
-    <tr class="odd">
-      <td>London</td>
-      <td>Whether a "London Agreement" has been signed. This means over-rep is ignored</td>
-    </tr>
-    <tr class="even">
-      <td>PDF Delta</td>
-      <td>PDF Amount - (Detail) Pub Fee</td>
-    </tr>
-    <tr class="odd">
-      <td>On-Acct Balance</td>
-      <td>On-Account balance paid for the period + any prior on-account credits</td>
-    </tr>
-    <tr class="even">
-      <td>Prev. Paid</td>
+      <td>Prior Paid</td>
       <td>Portion of invoices that were previously paid</td>
+    </tr>
+    <tr class="odd">
+      <td>Net Payment</td>
+      <td>PNet amount payable for the invoicee</td>
+    </tr>
+    <tr class="even">
+      <td>Invoice Payment Sat</td>
+      <td>Paid amount/Total invoice</td>
+    </tr>
+    <tr class="odd">
+      <td>Invoice Sat</td>
+      <td>Total invoice/Accrual</td>
+    </tr>
+    <tr class="odd">
+        <td>Payment Sat</td>
+        <td>Paid amount/Accrual</td>
     </tr>
   </tbody>
 </table>

@@ -25,28 +25,21 @@ var EmailConfirmModal = can.Component.extend({
     },
     '.submit click': function(el, ev) {
 
-      var approvalObj = {"emailDetails":[  
-          {  
-             "emailType":"bundle_reminder",
-             "mailingList":{  
-                "groupId":this.scope.approval.pendingGroupId,
-                "roleId":null,
-                "to":[],  
-                     /*[] Currently do not have source to get emailid. Mentioned in radar:19529991*/
-                "bcc":null,
-                "cc":null
-             },
-             "attachments" : null,
-             "dynamicContents": {
-              "PAYMENT_BUNDLE_NAME": this.scope.approval.description,
-              "GROUP_NAME": this.scope.approval.pendingGroup,
-              "PENDING_DAYS": this.scope.approval.pendingDays
-            }
+       var approvalObj = {
+          "notificationType":"bundle_reminder",
+          "screenId":1,
+          "groupId":this.scope.approval.pendingGroupId,
+          "text":"Reminder",
+          "region": this.scope.approval.region,
+          "roleId":null,
+          "settings":{
+            "PAYMENT_BUNDLE_NAME": this.scope.approval.description,
+            "PENDING_DAYS": this.scope.approval.pendingDays,
+            "GROUP_NAME":this.scope.approval.pendingGroupName
+           },
           }
-       ]};
-      
-          
-        
+
+
         Promise.all([ReminderEmail.create(UserReq.formRequestDetails(approvalObj))]).then(function(values) {
 
         if(values[0]["status"]=="SUCCESS"){

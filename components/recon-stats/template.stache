@@ -1,6 +1,6 @@
 <div>
 
-	
+
 			<div  class="form-inline" >
 				<div class="col-md-12 form-group" style="text-align:right;padding:10px 20px;">
 					<!--<label  for="inputAnalyze">Convert to Currency </label>-->
@@ -17,7 +17,7 @@
 					style="margin-left:10px;" {{isIngestCcidsSelected 0}}>
 					Refresh</button>
 				</div>
-				
+
 			</div>
 
 
@@ -25,7 +25,7 @@
 				<table class="statsTable">
 					<tr>
 						<td>
-   
+
 							<div width="100%>
 
 								<!-- todo export buttons -->
@@ -40,7 +40,7 @@
 
 										<td width="55%">
 											<fieldset id="ingestionStatsDiv" style="display:none">
-											
+
 												<table id="summaryTopTable">
 													<tr>
 														<td width="50%">
@@ -67,9 +67,9 @@
 
 								 <!-- can js insert -->
 
-										<td width="30%" class="summaryStatsTab">
+										<td width="43%" class="summaryStatsTab">
 
-											<fieldset id="summaryStatsDiv" style="display:none">
+											<fieldset id="summaryStatsDiv" style="display:none;width:100%">
 												<table id="summaryTopTable" style="width:100%">
 													<tr>
 														<td width="55%">

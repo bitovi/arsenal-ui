@@ -348,7 +348,7 @@ var page = Component.extend({
       $.each(self.countries, function( index, value ) {
         countryObj = value;
         reportConf =self.getExistCountryReportConf(value.id);
-       return (!(reportConf != undefined && reportConf.length>0));       
+       return (!(reportConf != undefined && reportConf.length>0));
       });
       if (countryObj != undefined && countryObj != null) {
         $('input.countryBox').prop("checked", false);
@@ -1218,7 +1218,7 @@ var page = Component.extend({
 
       }
 
-      if(!isValid || commonUtils.isReadOnly()=='true') {
+      if(!isValid || commonUtils.isReadOnly()=='true' || commonUtils.isReadOnlyScreen()=='R' ) {
 
         $("#buttonsubmit").attr("disabled", true);
 
@@ -1582,7 +1582,17 @@ var page = Component.extend({
 
       //return entity;
 
-    }
+    },
+    disableSubmit:function(fieldId){
+      var self = this;
+     var screenId = self.appstate.screenLookup.attr("screenid") ;
+     if(commonUtils.getFieldAttribute(screenId,fieldId)=="disabled")
+     {
+       return 'disabled';
+     }else{
+       return '';
+     }
+   }
 
   },
 
@@ -1639,7 +1649,7 @@ var page = Component.extend({
 
       self.scope.loadBootStrapPlugin();
 
-      if(commonUtils.isReadOnly()=='true'){
+      if(commonUtils.isReadOnly()=='true' || commonUtils.isReadOnlyScreen()=='R' ){
 
       $('#entityGrid').find('input, textarea,button, select').attr('disabled','disabled');
 

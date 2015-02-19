@@ -243,7 +243,7 @@ var page = Component.extend({
           $("#loading_img").hide();
           $(".multicomments-required").hide();
 
-          if(commonUtils.isReadOnly()=='true'){
+          if(commonUtils.isReadOnly()=='true'|| commonUtils.isReadOnlyScreen()=='R'){
 
           $('#left_layout').find('input, textarea, select').attr('disabled','disabled');
           $('#right_layout').find('input, textarea, button').attr('disabled','disabled');
@@ -280,6 +280,23 @@ var page = Component.extend({
               validating: 'glyphicon glyphicon-refreshas'
             },
             fields: {
+//              licensorId : {
+//                  trigger: 'change',
+//                  validators: {
+//                      notEmpty: {
+//                          message: 'Licensor is mandatory'
+//                      },
+//                      callback: {
+//                          message: 'Licensor is mandatory',
+//                          callback: function (value, validator, $field) {
+//                              if(value == "Select"){
+//                                  return false;
+//                              }
+//                              return true;
+//                          }
+//                      }
+//                  }
+//              },
               validFrom: {
                 trigger: 'change',
                 validators: {
@@ -408,11 +425,11 @@ var page = Component.extend({
               var maxVersion = 0;
               var verCount = 0;
 
-              for(var j=0; j< ver.length; j++) {              
-                if(maxVersion < ver[j].value) {                 
-                  maxVersion =  ver[j].value; 
-                  verCount = j; 
-                }       
+              for(var j=0; j< ver.length; j++) {
+                if(maxVersion < ver[j].value) {
+                  maxVersion =  ver[j].value;
+                  verCount = j;
+                }
               }
 
               self.scope.setSelectedValue(maxVersion, "#entityPricingModelVersionId");

@@ -54,6 +54,7 @@
 			"treetables.css": "bower_components/jquery-treetable/css/jquery.treetable.csscss",
 			"treetables_theme.css": "bower_components/jquery-treetable/css/jquery.treetable.theme.default.csscss",
 			"tokeninput": "bower_components/jquery-tokeninput/src/jquery.tokeninput.js",
+			"rinsTokeninput": "rins_cutom_plugin/tokenInput/jquery.tokeninput.js",
 			"tokeninput.css": "bower_components/jquery-tokeninput/styles/token-input.csscss",
 			"tokeninput_theme.css": "bower_components/jquery-tokeninput/styles/token-input-facebook.csscss",
 			"highcharts": "bower_components/highcharts-release/highcharts.js",

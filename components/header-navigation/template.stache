@@ -21,7 +21,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Approvals<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                     <li><a href='{{url}}approvals/accrualApproval' class="old" target="_blank">Accrual</a></li>
-                    <li><a href='{{url}}approvals/refDataApproval' class="old" target="_blank">Ref Data</a></li>
+                 <!--   <li><a href='{{url}}approvals/refDataApproval' class="old" target="_blank">Ref Data</a></li>-->
                     <li {{isScreenEnabled 21}}><a href='/payment-bundles' data-screenid="21" >Payment Bundle Review</a></li>
                     <li><a href='{{url}}approvals/salesReportApproval' class="old" target="_blank">Sales Report</a></li>
                     <li><a href='{{url}}approvals/unClaimedReportApproval' class="old" target="_blank">Unclaimed Report</a></li>
