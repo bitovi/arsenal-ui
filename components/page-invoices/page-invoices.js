@@ -695,6 +695,10 @@ var page = Component.extend({
            if(bundleStatus.toUpperCase() == "UNBUNDLED"){
               self.scope.bundleState.attr(val, true);
             }
+            else if(bundleStatus.toUpperCase().indexOf("PARTIALLY PAID") != -1)
+            {
+              self.scope.bundleState.attr(val, true);  
+            }
             else
             {
               self.scope.bundleState.attr(val, false);
@@ -1124,6 +1128,10 @@ function getAllInvoices(self) {
     self.attr("offset",0);
     self.attr("tableScrollTop",0);
   }
+
+ /*unselect all checkbox on click of fetch*/
+   self.attr('checkedRows').replace([]);
+   self.attr('unDeletedInvoices').replace([]);
 
   /* Page is not allowed to do search by default when page is loaded */
   /* This can be checked using 'localGlobalSearch' parameter, it will be undefined when page loaded */

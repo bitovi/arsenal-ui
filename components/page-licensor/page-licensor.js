@@ -1338,7 +1338,7 @@ var page = Component.extend({
               }
           },
           invoiceName: {
-              group:'.licensors',
+              //group:'.licensors',
               validators: {
                   notEmpty: {
                       message: 'Invoice Name is mandatory'
@@ -1350,6 +1350,7 @@ var page = Component.extend({
               }
           },
           sapVendor: {
+            //group:"#sapVendor",
               validators: {
                   notEmpty: {
                       message: 'Sap Vendor is mandatory'
@@ -1473,12 +1474,46 @@ var page = Component.extend({
                  callback: {
                     message: 'Valid From is mandatory',
                     callback: function (value, validator, $field) {
+                      var periodTo = $("input[name='periodToInp']").val();
                         if(value == "" || value == "0"){
                           return {
                                 valid: false,
                                 message: 'Valid From is mandatory'
                             }
+                        } else {
+                          if(periodTo.length > 0){
+                            var isValid = showErrorMsg(value, periodTo);
+                            if(isValid !== ""){
+                                return{
+                                  valid: false,
+                                  message: isValid
+                                }
+                              }
+                            }
                         }
+                        return true;
+                      }
+                  }
+             }
+         },
+          periodToInp: {
+             validators: {
+                 
+                 callback: {
+                    //message: 'Valid From is mandatory',
+                    callback: function (value, validator, $field) {
+                        var periodFrom = $("input[name='periodFromInp']").val();
+                        //var periodTo = $("input[name='periodToInp']").val();
+                        if(value !== ""){
+                            var isValid = showErrorMsg(periodFrom, value);
+                            if(isValid !== ""){
+                              return{
+                                valid: false,
+                                message: isValid
+                              }
+                            }
+                        }
+
                         return true;
                       }
                   }
@@ -1491,8 +1526,8 @@ var page = Component.extend({
           //$('*[data-bv-icon-for="'+data.field +'"]').popover('show');
 
           //setTimeout(function(){
-           // $('*[data-bv-icon-for="'+data.field +'"]').popover('hide');
-          //},1000);
+            //$('*[data-bv-icon-for="'+data.field +'"]').popover('hide');
+          //},10000);
 
       }).on('added.field.bv', function(e, data) {
       });
@@ -1706,7 +1741,7 @@ var page = Component.extend({
          $("input[name='periodToInp']").val(periodValue);
          $("input[name='periodToInp']").on('change', function(e) {
              // Revalidate the date when user change it
-           $('#entityLicensorBottom').bootstrapValidator('revalidateField', 'periodToInp');
+           //$('#entityLicensorBottom').bootstrapValidator('revalidateField', 'periodToInp');
          });
        }
        $('input[name=periodToInp]').change();
@@ -1716,13 +1751,18 @@ var page = Component.extend({
 
 
      '{periodFrom} change': function(el, ev) {
-         var comp ='from';
-         showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0],comp);
+         
+      // var isValidPeriod = showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0]);
+      // if (isValidPeriod !== "") {
+      //   commonUtils.showErrorMessage(isValidPeriod);
+      // }
      },
      '{periodTo} change': function(el, ev) {
-          var comp ='to';
-          showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0],comp);
-
+          
+        // var isValidPeriod = showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0]);
+        // if (isValidPeriod !== "") {
+        //   commonUtils.showErrorMessage(isValidPeriod);
+        // }
      },
 
      ".validateInput change" : function() {
@@ -2258,16 +2298,37 @@ var page = Component.extend({
 });
 
 
-var showErrorMsg = function(periodFrom,periodTo,whichcomp){
-       var showFlg=false;
-       var from = periodFrom,to =  periodTo;
-       if(from!=undefined &&  to!=undefined){
-            from = from.slice(-2);
-            to = to.slice(-2);
-           if(parseInt(periodFrom.substr(0,4)) >  parseInt(periodTo.substr(0,4)))showFlg=true;
-           if(parseInt(from) > parseInt(to)) showFlg=true;
-        }
-        if(showFlg==true){ $('.period-invalid').show(); return false;}else {showFlg=false; $('.period-invalid').hide();}
+var showErrorMsg = function(periodFrom,periodTo){
+  var flag = false;
+  var from = periodFrom || false;
+  var to = periodTo || false;
+  var message1 = 'Period from is greater than period to !';
+  var message2 = 'Please select one year of data !';
+  var message3 = 'Invalid Month Selection !'
+
+  if (from && to) {
+    var prdFromVal=PeriodWidgetHelper.getFiscalPeriod(from);
+    var prdToVal=PeriodWidgetHelper.getFiscalPeriod(to);
+    var periodFrom=prdFromVal%100;
+    var periodTo=prdToVal%100;
+    var yearFrom=(prdFromVal-periodFrom)/100;
+    var yearTo=(prdToVal-periodTo)/100;
+    var yearDif=yearTo-yearFrom;
+    if(yearDif < 0){
+      return message1;
+    }else if(yearDif > 1){
+      return message2;
+    }else if(yearDif == 0 ){
+      if(periodFrom > periodTo){
+        return message1;
+      }
+    }else if(yearDif == 1){
+      if(periodTo >= periodFrom){
+        return message2;
+      }
+    }
+  }
+  return "";
 }
 
 
