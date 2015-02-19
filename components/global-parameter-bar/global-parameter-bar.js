@@ -486,8 +486,8 @@ var GlobalParameterBar = Component.extend({
         /* This is to set default global parameter values to appstate scope variable Starts here*/
           $('#periodFrom').val(DefaultGlobalParameters.PeriodFrom);
           $('#periodTo').val(DefaultGlobalParameters.PeriodTo);
-          $('#storeTypesFilter').val(DefaultGlobalParameters.StoreType.value);
-          $('#regionsFilter').val(DefaultGlobalParameters.Region.value);
+          $('#storeTypesFilter').val(DefaultGlobalParameters.StoreType.id);
+          $('#regionsFilter').val(DefaultGlobalParameters.Region.id);
 
 
           var defCountry = DefaultGlobalParameters.attr('Country');
