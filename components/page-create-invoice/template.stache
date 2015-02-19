@@ -123,7 +123,7 @@
 
 				   			<div class="col-sm-6 ">
 							    <label for="inputPassword3" class="col-sm-6 control-label">Invoice Date:</label>
-							    <div class="col-sm-6 invdate requiredBar">
+							    <div id="invdatecont" class="col-sm-6 invdate requiredBar">
 							     <date-picker name="invoicedate" placeholder=""></date-picker>
 							    </div>
 						    </div>
@@ -140,7 +140,7 @@
 				   <div class="form-group">
 						    <div class="col-sm-6 invduedate">
 							     <label for="inputPassword3" class="col-sm-6 control-label">Invoice Due Date:</label>
-							    <div class="col-sm-6 invduedate requiredBar">
+							    <div id="invduedatecont" class="col-sm-6 invduedate requiredBar">
 							     <date-picker name="invoiceduedate" placeholder=""></date-picker>
 							    </div>
 						    </div>
