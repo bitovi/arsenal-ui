@@ -1125,6 +1125,10 @@ function getAllInvoices(self) {
     self.attr("tableScrollTop",0);
   }
 
+ /*unselect all checkbox on click of fetch*/
+   self.attr('checkedRows').replace([]);
+   self.attr('unDeletedInvoices').replace([]);
+
   /* Page is not allowed to do search by default when page is loaded */
   /* This can be checked using 'localGlobalSearch' parameter, it will be undefined when page loaded */
   // if(self.attr("localGlobalSearch") != undefined){

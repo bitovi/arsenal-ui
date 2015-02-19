@@ -721,9 +721,9 @@ var page = Component.extend({
 		      },
 
 		      "#invoiceduedate dp.change":function(event){ 
-		      	console.log("ddate1");
+		      	//console.log("ddate1");
 		      	 setTimeout(function(){
-		      	 	console.log("ddate2");
+		      	 //	console.log("ddate2");
 		      	 	$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
 		      	 }, 300);
 		      	
@@ -780,9 +780,9 @@ var page = Component.extend({
 					}
 				},
 				"#invoicedate dp.change":function(event){ /*need to repeat service call, as no way to capture date change event together with form control event*/
-					console.log("idate1");
+					//console.log("idate1");
 					setTimeout(function(){
-						console.log("idate2");
+						//console.log("idate2");
 			      	 	$('#invoiceform').bootstrapValidator('revalidateField', 'invoicedate');
 			      	 }, 300);
 
