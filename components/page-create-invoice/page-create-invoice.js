@@ -714,11 +714,19 @@ var page = Component.extend({
 		      },
 
 		      "#receiveddate dp.change":function(event){ 
-		      	$('#invoiceform').bootstrapValidator('revalidateField', 'receiveddate');
+
+		      	setTimeout(function(){
+		      		$('#invoiceform').bootstrapValidator('revalidateField', 'receiveddate');
+		      	}, 300);
 		      },
 
 		      "#invoiceduedate dp.change":function(event){ 
-		      	 $('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
+		      	console.log("ddate1");
+		      	 setTimeout(function(){
+		      	 	console.log("ddate2");
+		      	 	$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
+		      	 }, 300);
+		      	
 		      },
 
 
@@ -772,7 +780,12 @@ var page = Component.extend({
 					}
 				},
 				"#invoicedate dp.change":function(event){ /*need to repeat service call, as no way to capture date change event together with form control event*/
-					$('#invoiceform').bootstrapValidator('revalidateField', 'invoicedate');
+					console.log("idate1");
+					setTimeout(function(){
+						console.log("idate2");
+			      	 	$('#invoiceform').bootstrapValidator('revalidateField', 'invoicedate');
+			      	 }, 300);
+
 					var self = this;
 					if(($("#invoicedate input[type=text]").val() != "") &&  (self.scope.licensorStore != "") && ($("#inputCountry0").val() != "")){
 					var genObj = {entityId:self.scope.licensorStore, invoiceDate:Date.parse($("#invoicedate input[type=text]").val()), countryId:$("#inputCountry0").val()};
@@ -1189,6 +1202,15 @@ var page = Component.extend({
                         						$("#invoiceform")[0].reset();
 												$("#invoiceform").data('bootstrapValidator').resetForm();
 												$("#addInvSubmit").attr("disabled", true);
+
+												//$('.datepicker').datepicker('remove');
+												//$('#invoicedate').datetimepicker('remove');
+												//$('#invoiceduedate').datetimepicker('remove');
+												$('#invdatecont').html(stache('<date-picker name="invoicedate" placeholder=""></date-picker>'));
+												$('#invduedatecont').html(stache('<date-picker name="invoiceduedate" placeholder=""></date-picker>'));
+
+												//$('#invoicedate').data("DateTimePicker").destroy();
+
 
 
 												clearFieldScope(self);
