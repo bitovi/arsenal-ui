@@ -38,8 +38,8 @@
         <div class="col-sm-4 licensorDrop">
           <label for="forEntity" class="col-sm-4 control-label">Licensor: </label>
           <div class="col-sm-6">
-            <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.entityId' id="licensorId">
-              <option value="">Select</option>
+            <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.entityId' id="licensorId" name="licensorId">
+    <!--          <option value="">Select</option>-->
               {{#each entities}}
               <optgroup label="{{entityType}}">
                 {{#each entities}}
@@ -54,7 +54,7 @@
             <label for="forCountry" class="col-sm-2 control-label">Country: </label>
             <div class="col-sm-6">
               <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.countryId' id="countryId">
-                <option value="">Select</option>
+              <!--  <option value="">Select</option>-->
                 {{#each countries}}
                 <option value="{{id}}">{{value}}</option>
                 {{/each}}

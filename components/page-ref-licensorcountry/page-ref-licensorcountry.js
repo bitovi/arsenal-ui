@@ -280,6 +280,23 @@ var page = Component.extend({
               validating: 'glyphicon glyphicon-refreshas'
             },
             fields: {
+//              licensorId : {
+//                  trigger: 'change',
+//                  validators: {
+//                      notEmpty: {
+//                          message: 'Licensor is mandatory'
+//                      },
+//                      callback: {
+//                          message: 'Licensor is mandatory',
+//                          callback: function (value, validator, $field) {
+//                              if(value == "Select"){
+//                                  return false;
+//                              }
+//                              return true;
+//                          }
+//                      }
+//                  }
+//              },
               validFrom: {
                 trigger: 'change',
                 validators: {
