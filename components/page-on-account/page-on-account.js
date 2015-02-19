@@ -113,7 +113,9 @@ var page = Component.extend({
     cancelnewbundlereq:'@',
     populateDefaultData:'@',
     validOnAccNumbers:undefined,
-    enableOnAccPropose:"@"
+    enableOnAccPropose:"@",
+    recordsAvailableForOnAccBalance:false,
+    onAccBalanceRows:[]
   },
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
