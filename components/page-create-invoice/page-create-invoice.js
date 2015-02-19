@@ -850,33 +850,38 @@ var page = Component.extend({
 			$("#ccidGL"+rowindex).val("");
 		},
 		"{scope} regionStore": function(){
-		  	var self = this;
-			var genObj = {regionId:self.scope.attr("regionStore")};
-			Promise.all([
-				Licensor.findAll(UserReq.formRequestDetails(genObj)),
-				Currency.getCurrByRegion(self.scope.attr("regionStore"))
-			     ]).then(function(values) {
-		     			//console.log(values[0]);
-		     			self.scope.attr("licensor").replace([]);
-		     			self.scope.attr("currency").replace([]);
-		     			self.scope.attr("currencyStore", "");
-		     			self.scope.attr("licensorStore", "");
+			var self = this;
+			var regnId = self.scope.attr("regionStore");
+			if (regnId != undefined && regnId.length > 0) {
+				var genObj = {
+					regionId: regnId
+				};
+				Promise.all([
+					Licensor.findAll(UserReq.formRequestDetails(genObj)),
+					Currency.getCurrByRegion(self.scope.attr("regionStore"))
+				]).then(function(values) {
+					//console.log(values[0]);
+					self.scope.attr("licensor").replace([]);
+					self.scope.attr("currency").replace([]);
+					self.scope.attr("currencyStore", "");
+					self.scope.attr("licensorStore", "");
 
-		     			var countryDD = $('.inputCountry');
-			         	countryDD.empty();
-			         	countryDD.html($('<option>').text("Select").val(""));
+					var countryDD = $('.inputCountry');
+					countryDD.empty();
+					countryDD.html($('<option>').text("Select").val(""));
 
-		     			self.scope.attr("licensor").replace(values[0]["entities"]);
-		     			self.scope.attr("currency").replace(values[1].data);
-			    		if(self.scope.editpage){
-				    		var invoiceData = self.scope.attr().invoiceContainer[0];
-				    		self.scope.attr("licensorStore", invoiceData.entityId);
-				    		self.scope.attr("currencyStore", invoiceData.invoiceCcy);
-			    		}
-			    });
+					self.scope.attr("licensor").replace(values[0]["entities"]);
+					self.scope.attr("currency").replace(values[1].data);
+					if (self.scope.editpage) {
+						var invoiceData = self.scope.attr().invoiceContainer[0];
+						self.scope.attr("licensorStore", invoiceData.entityId);
+						self.scope.attr("currencyStore", invoiceData.invoiceCcy);
+					}
+				});
 
-			self.scope.createPBRequest();
+				self.scope.createPBRequest();
 
+			}
 		},
 		"{scope} licensorStore": function(event){
 			var self = this;
