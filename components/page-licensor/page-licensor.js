@@ -1338,7 +1338,7 @@ var page = Component.extend({
               }
           },
           invoiceName: {
-              group:'.licensors',
+              //group:'.licensors',
               validators: {
                   notEmpty: {
                       message: 'Invoice Name is mandatory'
@@ -1350,6 +1350,7 @@ var page = Component.extend({
               }
           },
           sapVendor: {
+            //group:"#sapVendor",
               validators: {
                   notEmpty: {
                       message: 'Sap Vendor is mandatory'
@@ -1491,8 +1492,8 @@ var page = Component.extend({
           //$('*[data-bv-icon-for="'+data.field +'"]').popover('show');
 
           //setTimeout(function(){
-           // $('*[data-bv-icon-for="'+data.field +'"]').popover('hide');
-          //},1000);
+            //$('*[data-bv-icon-for="'+data.field +'"]').popover('hide');
+          //},10000);
 
       }).on('added.field.bv', function(e, data) {
       });
@@ -1706,7 +1707,7 @@ var page = Component.extend({
          $("input[name='periodToInp']").val(periodValue);
          $("input[name='periodToInp']").on('change', function(e) {
              // Revalidate the date when user change it
-           $('#entityLicensorBottom').bootstrapValidator('revalidateField', 'periodToInp');
+           //$('#entityLicensorBottom').bootstrapValidator('revalidateField', 'periodToInp');
          });
        }
        $('input[name=periodToInp]').change();

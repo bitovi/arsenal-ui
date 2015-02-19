@@ -115,8 +115,8 @@
 					<div class="col-sm-4 textalignright small-headers align-left">
 						<label>Licensor:</label>
 					</div>
-					<div class="col-sm-4 form-group requiredBar">
-						<input type="text" name="licensorName" id="licensorName" class="form-control licensorName formInputs validateInput" can-value="licDetails.data.licensorName" value='{{licDetails.data.licensorName}}' />
+					<div class="col-sm-2 form-group requiredBar">
+						<input type="text" name="licensorName" id="licensorName" class="form-control licensorName formInputs validateInput" can-value="licDetails.data.licensorName" value='{{licDetails.data.licensorName}}'/>
 					</div>
 				</div>
 
@@ -126,7 +126,7 @@
 					<div class="col-sm-4 textalignright small-headers align-left">
 						<label>Status:</label>
 					</div>
-					<div class="col-sm-4 inputPadding" can-value="licDetails.data.status">
+					<div class="col-sm-2 inputPadding" can-value="licDetails.data.status">
 						<div class="col-sm-12 status">
 							{{licDetails.data.status}}
 						</div>
@@ -139,7 +139,7 @@
 					<div class="col-sm-4 textalignright small-headers align-left">
 						<label>Valid From:</label>
 					</div>
-					<div class="col-sm-4 form-group requiredBar" id="periodFromcontainer">
+					<div class="col-sm-2 form-group requiredBar" id="periodFromcontainer">
 						<div class="calendarcls form-group">
 							<input type='text' name="periodFromInp" id="periodFrom" class="form-control  updatePeroid periodFromInput formInputs validateInput" can-value='getPeriodFromVall' value="{{periodFromVal}}"/>
 							<span class="calendarDateIcon" data-type="periodFrom"><i class="glyphicon-calendar glyphicon"></i></span>
@@ -156,7 +156,7 @@
 					<div class="col-sm-4 textalignright small-headers align-left">
 						<label>Valid To:</label>
 					</div>
-					<div class="col-sm-4 inputPadding" id="periodTocontainer">
+					<div class="col-sm-2 inputPadding" id="periodTocontainer">
 
 
 						<div class="calendarcls form-group" >
@@ -174,7 +174,7 @@
 					<div class="col-sm-4 textalignright small-headers align-left">
 						<label>Account Name:</label>
 					</div>
-					<div class="col-sm-4 requiredBar">
+					<div class="col-sm-2 requiredBar">
 						<input type="text" name="accountName" can-value="licDetails.data.accountName" value="{{licDetails.data.accountName}}" class="form-control accountName formInputs validateInput"/>
 					</div>
 
@@ -185,7 +185,7 @@
 					<div class="col-sm-4 textalignright small-headers align-left">
 						<label>Invoice Type:</label>
 					</div>
-					<div class="col-sm-4 requiredBar">
+					<div class="col-sm-2 requiredBar">
 						{{getselectedInvoiceType invoiceType}}
 						<select id="invoiceType" name="invoiceType" can-value="invoiceType" class="form-control resizeInvoice invoiceType formInputs validateInput">
 
@@ -209,7 +209,7 @@
 					<div class="col-sm-4 textalignright small-headers align-left">
 						<label>Representation Split:</label>
 					</div>
-					<div class="col-sm-4 inputPadding">
+					<div class="col-sm-2 inputPadding">
 						<input type="text" name="repSplit" id="repSplit" can-value="licDetails.data.repSplit" value="{{licDetails.data.repSplit}}" class="form-control repSplit formInputs" readOnly/>
 					</div>
 
@@ -222,7 +222,7 @@
 					<div class="col-sm-4 textalignright small-headers align-left">
 						<label>SAP vendor#:</label>
 					</div>
-					<div class="col-sm-4 requiredBar">
+					<div class="col-sm-2 requiredBar">
 						<input type="text" name="sapVendor" id="sapVendor" can-value="licDetails.data.sapVendorNo" value="{{licDetails.data.sapVendorNo}}" class="form-control sapVendor formInputs validateInput"/>
 					</div>
 
@@ -235,7 +235,7 @@
 					<div class="col-sm-4 textalignright small-headers align-left">
 						<label>Payment Terms(Days):</label>
 					</div>
-					<div class="col-sm-4 inputPadding">
+					<div class="col-sm-2 inputPadding">
 						<input type="text" name="paymentTerms" id="paymentTerms" can-value="licDetails.data.paymentTerms" value="{{licDetails.data.paymentTerms}}" class="form-control paymentTerms formInputs "/>
 					</div>
 
@@ -247,7 +247,7 @@
 					<div class="col-sm-4 textalignright small-headers align-left">
 						<label>Uploaded Files to sFTP: </label>
 					</div>
-					<div class="col-sm-4 inputPadding">
+					<div class="col-sm-2 inputPadding">
 						<input type="checkbox" id="uploadedFTP" can-value="licDetails.data.uploadedFilesToSFTP" checked="{{licDetails.data.loadedFilesToSFTP}}"/>
 					</div>
 
