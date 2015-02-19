@@ -4,22 +4,21 @@
         <div class='listofbookmark'>
           <div class='listtitle'>Bookmarks</div>
           <div class='btns'>
-              <button type="button" class="btn btn-primary bookmark_custombtns" id='add_new'>Add new</button> 
-              <button type="button" class="btn btn-primary bookmark_custombtns" id='bookmarkitem_remove' disabled='disabled'>Remove</button> 
+              <button type="button" class="btn btn-primary bookmark_custombtns" id='add_new'>Add new</button>
+              <button type="button" class="btn btn-primary bookmark_custombtns" id='bookmarkitem_remove' disabled='disabled'>Remove</button>
           </div>
           <div class='autoscroll'>
             {{#each bookMarkList}}
-               <div class='bookmark_list' data-pageId={{pageId}}>
+               <div class='bookmark_list' data-pageId={{pageUri}}>
                     <div class='checkbox_list'><input type="checkbox" name='bookmark' id={{bookMarkId}} class='bookmarkchkbox'/></div>
                     <div class='bookmark_subject'> {{bookMarkName}}</div>
                     <div class='bookmark_settings' data-id={{bookMarkId}}>&nbsp;</div>
-                    <div class="clr owner">Owner: {{lastName}}</div>
-                    <div class='clr create'>Created By: {{createdBy}}</div>
-                    <div class='shared'><strong>Shared</strong></div>
+                    <div class='clr create'>Created By: {{createdByName}}</div>
+                    <div class='shared' style='float:right'><strong style="float:right">{{#if shared}}&nbsp;&nbsp;Shared{{#else}}Not Share{{/if}}</strong></div>
                     <div role="presentation" class="divider clr"></div>
                 </div>
               {{/each}}
-             </div>  
+             </div>
     </div><!--list of bookmark end-->
 
     <div class='newbookmark'>
@@ -37,11 +36,11 @@
                 {{/each}}
                </div>
            </div>
-        
+
 
          <div class='btnsfor_new'>
-              <button type="button" class="btn btn-primary btn-custom-small-disabled" id='bookmark_cancel'>Cancel</button> 
-              <button type="button" class="btn btn-primary btn-custom-small" id='new_bookmark_save'>Save</button> 
+              <button type="button" class="btn btn-primary btn-custom-small-disabled" id='bookmark_cancel'>Cancel</button>
+              <button type="button" class="btn btn-primary btn-custom-small" id='new_bookmark_save'>Save</button>
           </div>
 
     </div><!--new bookmark end-->
@@ -51,20 +50,20 @@
        <div class='autoscrollfornew'>
               <div class='bookmark_sharing'>
                 <div class='checkboxlbl' id=''><input type="checkbox" {{#if setFlag.flag}} disabled="disabled"{{/if}}  class='setshareall'/> <span class='checkboxtxt'>All</span></div>
-               
+
                   {{#each shareList}}
                       <div class='checkboxlbl'>
-                          <input type="checkbox" id='{{id}}' {{#if flag}} disabled="disabled" checked="checked" {{/if}}class='bookmarkchkbox' name='bookmarkforsettings'/> 
+                          <input type="checkbox" id='{{id}}' {{#if flag}} disabled="disabled" checked="checked" {{/if}}class='bookmarkchkbox' name='bookmarkforsettings'/>
                           <span data-id={{id}} class='checkboxtxt'>{{name}}</span></div>
                   {{/each}}
-              
+
                </div>
            </div>
          <div></div>
 
          <div class='btnsfor_new'>
-              <button type="button" class="btn btn-primary btn-custom-small-disabled" id='sharebk_cancel'>Cancel</button> 
-              <button type="button" class="btn btn-primary btn-custom-small" id='sharebk_save' disabled='disabled'>Save</button> 
+              <button type="button" class="btn btn-primary btn-custom-small-disabled" id='sharebk_cancel'>Cancel</button>
+              <button type="button" class="btn btn-primary btn-custom-small" id='sharebk_save' disabled='disabled'>Save</button>
           </div>
 
     </div>

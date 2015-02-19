@@ -59,7 +59,8 @@ var bookmark = Component.extend({
       }
     },
     '.bookmark_list dblclick':function(el){
-      var page = pageIdMatcher(el.attr('data-pageid'));
+      var page = el.attr('data-pageid');
+      page = page.replace("/","");
       commonUtils.navigateTo(page);
       //this.scope.appstate.attr('page',page);
     },
