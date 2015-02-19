@@ -29,13 +29,13 @@ var EmailConfirmModal = can.Component.extend({
           "notificationType":"bundle_reminder",
           "screenId":1,
           "groupId":this.scope.approval.pendingGroupId,
-          "groupName":this.scope.approval.pendingGroupName,
           "text":"Reminder",
           "region": this.scope.approval.region,
           "roleId":null,
           "settings":{
             "PAYMENT_BUNDLE_NAME": this.scope.approval.description,
-            "PENDING_DAYS": this.scope.approval.pendingDays
+            "PENDING_DAYS": this.scope.approval.pendingDays,
+            "GROUP_NAME":this.scope.approval.pendingGroupName
            },
           }
 
