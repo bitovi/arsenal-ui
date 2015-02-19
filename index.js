@@ -42,7 +42,6 @@ appstate.bind('page', function(ev, newVal, oldVal) {
   }).catch(function(ex) {
     // TODO: Do something more intelligent with miss cases, like defaulting to the Dashboard.
     $('#page').html('<p class="error">Invalid page!</p>');
-    console.log(ex);
     console.error('Invalid page linked!');
     throw ex;
   });
@@ -53,9 +52,6 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
   //skip for multipart/form-data
 
   //added for CSRF token
-  if(appstate.userInfo == undefined){
-  window.location.href= URLs.UI_SERVICE_URL_CONTEXT;
-  }
 
   if(appstate.csrfToken != null && options.type=='POST' && options.url.indexOf(URLs.UI_SERVICE_URL) === 0)
   {

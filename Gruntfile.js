@@ -118,6 +118,8 @@ module.exports = function (grunt) {
           'cp -R dist deploy',
           'mkdir deploy/bower_components',
           'cp -R bower_components/steal deploy/bower_components',
+          'cp -R bower_components/bootstrapValidator deploy/resources',
+          'cp -R bower_components/highcharts-release deploy/resources',
           'cp -R bower_components/bootstrap deploy/bower_components/bootstrap',
           'cp index.prod.html deploy/index.html',
           'cp stealconfig.js deploy'].join(' && ');
