@@ -3,7 +3,7 @@ import RinsCommon from 'utils/urls';
 
 import template from './template.stache!';
 import styles from './page-logout.less!';
-
+import appstate from 'models/appstate/';
 
 var page = Component.extend({
   tag: 'page-logout',
