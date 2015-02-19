@@ -397,14 +397,14 @@ var page = Component.extend({
             Promise.all([Country.findAllCountriesByLicenesor(UserReq.formRequestDetails(requestObj))]).then(function(values) {
               $('#fetchDetailsBtn').attr("disabled", false);
               self.scope.attr("countries").replace(values[0].data);
-              if(self.scope.attr("onload")) {
+              //if(self.scope.attr("onload")) {
 
                 self.scope.attr("onload", false);
                 $("#countryId").val(values[0].data[0].id);
                 self.scope.pageState.entityCountryDetails.entityCountry.attr("countryId", values[0].data[0].id);
                 $('#fetchDetailsBtn').click();
 
-              }
+              //}
 
             });
           }
@@ -675,7 +675,8 @@ var page = Component.extend({
               self.attr("baseModelParameter").replace(data.pricingModel != undefined && data.pricingModel != null && data.pricingModel.baseModelParameters != null  ? data.pricingModel.baseModelParameters : []);
               self.attr("trackCounts").replace(data.pricingModel != undefined && data.pricingModel != null && data.pricingModel.trackCounts != null  ? data.pricingModel.trackCounts : []);
 
-              var tempcommentObj = data.pricingModel.pricingModel.comments;
+              var tempcommentObj = (data.pricingModel != undefined && data.pricingModel != null) ? 
+                      ((data.pricingModel.pricingModel != undefined && data.pricingModel.pricingModel != null) ? data.pricingModel.pricingModel.comments : "") : "";
               if(tempcommentObj!=null)
                 $('#priceModelmultipleComments').html(stache('<multiple-comments divid="priceModelmultipleComments" options="{tempcommentObj}" divheight="100" isreadOnly="y"></multiple-comments>')({tempcommentObj}));
               }).then(function(){
