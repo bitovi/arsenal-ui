@@ -21,7 +21,7 @@
 						    <div class="col-sm-8 requiredBar">
 
 					      <select id="regions" class="form-control" name="regions" can-value="regions">
-							       <option value="">Select</option>
+							      <!-- <option value="">Select</option>-->
 							       {{#each regionStore}}
 							       		<option value="{{value}}">{{value}}</option>
 							       	{{/each}}
