@@ -1890,6 +1890,23 @@ var page = Component.extend({
 
     },
 
+    ".countryDiv click":function(el,ev){
+       var self = this;
+       var divElement=el.closest("td").find('div.tdselected');
+        if(divElement != undefined){
+          divElement.removeClass('tdselected');
+        }
+        el.addClass('tdselected');
+        var reportConfig = self.scope.getExistCountryReportConf(el[0].id);
+        var reportBox = $("input.reportBox");
+        uncheckAllReports(reportBox);
+        uncheckAllCountries($('input.countryBox'));
+
+         if(reportConfig != null && reportConfig.length>0){
+            checkReports(reportBox,reportConfig);
+         }
+    },
+
     ".reportBox click": function(el, ev){
 
         var self = this;
@@ -2487,6 +2504,35 @@ function alignGridCountMap(divId){
       $('#'+divId+' table').append("<tfoot><tr><td class='recordsCount' style='text-align:left;border:none;'>Number  of country model mapping: "+rowCount+"</td></tr><tfoot>");
     }
   }
+}
+
+function uncheckAllReports(reportBox){
+  if(reportBox != undefined){
+    for(var i=0; i<reportBox.length; i++) {
+        if(reportBox[i].checked) {
+          reportBox[i].checked = false;
+        }
+      }
+  }
+}
+
+
+function uncheckAllCountries(countryBox){
+  if(countryBox != undefined){
+    for(var i=0; i<countryBox.length; i++) {
+        if(countryBox[i].checked) {
+          countryBox[i].checked = false;
+        }
+      }
+  }
+}
+
+function checkReports(reportBox,reportConf){
+for (var j = 0; j < reportBox.length; j++) {
+        if ($.inArray(reportBox[j].getAttribute("value"), reportConf) > -1) {
+          reportBox[j].checked = true;
+        }
+      }
 }
 
 export default page;

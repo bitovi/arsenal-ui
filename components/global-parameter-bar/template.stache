@@ -28,7 +28,7 @@
         <span class="parameter-name">Store Type:</span>
         <select id="storeTypesFilter" class="form-control resizeBox">
                {{#each storeTypes}}
-                  <option {{isSelected 'storetype' id}} {{data 'storetype'}}>{{value}}</option>
+                  <option value="{{id}}" {{isSelected 'storetype' id}} {{data 'storetype'}}>{{value}}</option>
                 {{/each}}
          </select>
        </div>
@@ -40,7 +40,7 @@
         <select id="regionsFilter" class="form-control resizeBox">
                 <option value="">Select</option>
                {{#each regions}}
-                  <option {{isSelected 'region' id}} {{data 'region'}}>{{value}}</option>
+                  <option value="{{id}}" {{isSelected 'region' id}} {{data 'region'}}>{{value}}</option>
                 {{/each}}
          </select>
        </div>
