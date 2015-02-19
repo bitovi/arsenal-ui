@@ -695,6 +695,10 @@ var page = Component.extend({
            if(bundleStatus.toUpperCase() == "UNBUNDLED"){
               self.scope.bundleState.attr(val, true);
             }
+            else if(bundleStatus.toUpperCase().indexOf("PARTIALLY PAID") != -1)
+            {
+              self.scope.bundleState.attr(val, true);  
+            }
             else
             {
               self.scope.bundleState.attr(val, false);
