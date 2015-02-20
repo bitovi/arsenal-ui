@@ -230,83 +230,85 @@
 
             </div>
           </div>
-          <div id="viewPricingModelDiv" style="background:#fff">
+              <div id="viewPricingModelDivBlock">
+                <div id="viewPricingModelDiv" style="background:#fff">
 
 
-   <!-- View Pricing Model start --->
-   {{#if displayPMDetails}}
-     <div class="col-sm-12" style="border-bottom: 1px solid #ddd;padding: 0px;">
-        <div class="col-sm-11" >
-           <h4> View Pricing Model</h4>
-        </div>
-        <div class="col-sm-1" style="padding-top: 10px;text-align: right;" id="priModelClose">
-           <a href="javascript:void(0)"><img src="resources/images/rn_RemoveFile@2x.png"></a>
-        </div>
-     </div>
-
-       <div class="col-sm-12" style="padding-top: 10px;">
-          <div class="col-sm-5 form-group">
-             <div class="singleField">
-                <label for="" class="col-sm-6 control-label">Country:</label>
-                <div class="col-sm-6">
-                   <span>{{getPricingModelDetails.country}}</span>
-                </div>
-             </div>
-          </div>
-          <div class="col-sm-7 form-group">
-             <div class="singleField">
-                <label for="" class="col-sm-6 control-label">Entity:</label>
-                <div class="col-sm-6">
-                   <span>{{getPricingModelDetails.entity}}</span>
-                </div>
-             </div>
-          </div>
-          <div class="col-sm-5 form-group">
-             <div class="singleField">
-                <label for="inputEmail3" class="col-sm-6 control-label">Pricing Model:</label>
-                <div class="col-sm-6">
-                   <span>{{getPricingModelDetails.pricingModel.modelName}}</span>
-                   </select>
-                </div>
-             </div>
-          </div>
-          <div class="col-sm-7 form-group">
-             <div class="singleField">
-                <label for="inputEmail3" class="col-sm-6 control-label">Model Name:</label>
-                <div class="col-sm-6">
-                   <span>{{getPricingModelDetails.pricingModel.modelDescription}}</span>
-                </div>
-             </div>
-          </div>
-          <div class="col-sm-12">
-             <fieldset class="scheduler-border">
-                <legend class="scheduler-border">Base Model parameter</legend>
-                <div id="baseModelParameterDiv">
-                   <div class="tab-pane active grid-custBaseom-overflow" id="incomingDetails">
-                      <rn-recon-grid columns="{detailGridColumns}" rows="{incomingDetails.headerRows}" footerrows="{incomingDetails.footerRows}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}" emptyrows="{emptyrows}" pagename="{pagename}"></rn-recon-grid>
+                 <!-- View Pricing Model start --->
+                 {{#if displayPMDetails}}
+                   <div class="col-sm-12" style="border-bottom: 1px solid #ddd;padding: 0px;">
+                      <div class="col-sm-11" >
+                         <h4> View Pricing Model</h4>
+                      </div>
+                      <div class="col-sm-1" style="padding-top: 10px;text-align: right;" id="priModelClose">
+                         <a href="javascript:void(0)"><img src="resources/images/rn_RemoveFile@2x.png"></a>
+                      </div>
                    </div>
-                </div>
-             </fieldset>
-             <fieldset class="scheduler-border">
-                <legend class="scheduler-border">Track Counts</legend>
-                <div id="trackCountsDiv"></div>
-             </fieldset>
-          </div>
-          <!-- 
-          Removed as part of this below radar!
-          <rdar://problem/19800926> UI : Wave - M2 - Ref data - Country Licensors - Comments are not visible in the View pricing Model Popup
-          
-          <div class="col-sm-12">
-             <label for="" class="col-sm-2 control-label" style="text-align: left;padding-left: 0px;">Comments: </label>
-             <div id="priceModelmultipleComments" class="col-sm-10 normalBar">
-                <textarea class="form-control" maxlength="1024" style="height:125px;   min-height:100px;    max-height:100px;"></textarea>
-             </div>
-          </div>
-          -->
-       </div>
 
-  </div>
-  {{/if}}<!-- View Pricing Model ends --->
+                     <div class="col-sm-12" style="padding-top: 10px;">
+                        <div class="col-sm-5 form-group">
+                           <div class="singleField">
+                              <label for="" class="col-sm-6 control-label">Country:</label>
+                              <div class="col-sm-6">
+                                 <span>{{getPricingModelDetails.country}}</span>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-sm-7 form-group">
+                           <div class="singleField">
+                              <label for="" class="col-sm-6 control-label">Entity:</label>
+                              <div class="col-sm-6">
+                                 <span>{{getPricingModelDetails.entity}}</span>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-sm-5 form-group">
+                           <div class="singleField">
+                              <label for="inputEmail3" class="col-sm-6 control-label">Pricing Model:</label>
+                              <div class="col-sm-6">
+                                 <span>{{getPricingModelDetails.pricingModel.modelName}}</span>
+                                 </select>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-sm-7 form-group">
+                           <div class="singleField">
+                              <label for="inputEmail3" class="col-sm-6 control-label">Model Name:</label>
+                              <div class="col-sm-6">
+                                 <span>{{getPricingModelDetails.pricingModel.modelDescription}}</span>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-sm-12">
+                           <fieldset class="scheduler-border">
+                              <legend class="scheduler-border">Base Model parameter</legend>
+                              <div id="baseModelParameterDiv">
+                                 <div class="tab-pane active grid-custBaseom-overflow" id="incomingDetails">
+                                    <rn-recon-grid columns="{detailGridColumns}" rows="{incomingDetails.headerRows}" footerrows="{incomingDetails.footerRows}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}" emptyrows="{emptyrows}" pagename="{pagename}"></rn-recon-grid>
+                                 </div>
+                              </div>
+                           </fieldset>
+                           <fieldset class="scheduler-border">
+                              <legend class="scheduler-border">Track Counts</legend>
+                              <div id="trackCountsDiv"></div>
+                           </fieldset>
+                        </div>
+                        <!-- 
+                        Removed as part of this below radar!
+                        <rdar://problem/19800926> UI : Wave - M2 - Ref data - Country Licensors - Comments are not visible in the View pricing Model Popup
+                        
+                        <div class="col-sm-12">
+                           <label for="" class="col-sm-2 control-label" style="text-align: left;padding-left: 0px;">Comments: </label>
+                           <div id="priceModelmultipleComments" class="col-sm-10 normalBar">
+                              <textarea class="form-control" maxlength="1024" style="height:125px;   min-height:100px;    max-height:100px;"></textarea>
+                           </div>
+                        </div>
+                        -->
+                     </div>
+
+                  </div>
+                {{/if}}<!-- View Pricing Model ends --->
+              </div>
           </div><!-- Main Layout END-->
       </div>
     </form>

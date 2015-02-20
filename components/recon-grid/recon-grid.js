@@ -22,6 +22,7 @@ var reconGrid = Grid.extend({
     'inserted': function(){
       var self= this;
       var tbody = self.element.find('tbody');
+    
       if(self.scope.attr("pagename")=="recon"){
         var parentScopeVar = self.element.closest('page-recon').scope();
         var tableScrollTopVal = parentScopeVar.attr('ingestedScrollTop');
@@ -51,10 +52,11 @@ var reconGrid = Grid.extend({
           });
         } else if(self.scope.attr("pagename")=="reconOther"){
           var parentScopeVar = self.element.closest('page-reconOther').scope();
+
           var tableScrollTopVal = parentScopeVar.attr('scrollTop');
           $(tbody[0]).scrollTop(tableScrollTopVal);
           $(tbody).on('scroll', function(ev) {
-            if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight && parentScopeVar.recordsAvailable) {
+            if(tbody[0].scrollTop + tbody[0].clientHeight + 3 >= tbody[0].scrollHeight && parentScopeVar.recordsAvailable) {
               //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
               
               var tabSelected = parentScopeVar.attr('tabSelected');

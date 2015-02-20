@@ -652,7 +652,7 @@ var BundleDetailTabs = Component.extend({
                   dialogClass: 'modalSelectLocation',
                   width: 'auto',
                   autoOpen: false,
-                  height: 350,
+                  height: 'auto',
                   minWidth: 400,
                   open: function(event, ui) {
                     $("#showTableInfo").dialog("widget").position({
@@ -663,7 +663,8 @@ var BundleDetailTabs = Component.extend({
                     });
                   }
                 };
-      $(data).dialog(opt).dialog("open");
+
+          $(data).dialog(opt).dialog("open");      
     },
 
   }
