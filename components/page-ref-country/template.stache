@@ -266,71 +266,72 @@
 
 
 
-
-        <div id="viewPricingModelDiv"> <!-- View Pricing Model start --->
-            <div class="col-sm-12" style="border-bottom: 1px solid #ddd;padding: 0px;">
-              <div class="col-sm-11 mid-headers" style="padding-top: 10px;">
-                View Pricing Model
-              </div>
-              <div class="col-sm-1" style="padding-top: 10px;text-align: right;" id="priModelClose">
-                <a href="javascript:void(0)"><img src="resources/images/rn_RemoveFile@2x.png"></a>
-              </div>
-            </div>
-            <div class="col-sm-12" style="padding-top: 10px;">
-                <div class="col-sm-5 form-group">
-                  <div class="singleField">
-                      <label for="" class="col-sm-6 control-label small-headers">Country:</label>
-                      <div class="col-sm-6">
-                        <span>{{getPricingModelDetails.country}}</span>
-                      </div>
-                    </div>
-                 </div>
-                <div class="col-sm-7 form-group">
-                  <div class="singleField">
-                      <label for="" class="col-sm-6 control-label small-headers">Entity:</label>
-                      <div class="col-sm-6">
-                          <span>{{getPricingModelDetails.entity}}</span>
-                      </div>
-                    </div>
+        <div id="viewPricingModelDivBlock">
+          <div id="viewPricingModelDiv"> <!-- View Pricing Model start --->
+              <div class="col-sm-12" style="border-bottom: 1px solid #ddd;padding: 0px;">
+                <div class="col-sm-11 mid-headers" style="padding-top: 10px;">
+                  View Pricing Model
+                </div>
+                <div class="col-sm-1" style="padding-top: 10px;text-align: right;" id="priModelClose">
+                  <a href="javascript:void(0)"><img src="resources/images/rn_RemoveFile@2x.png"></a>
                 </div>
               </div>
               <div class="col-sm-12" style="padding-top: 10px;">
-                <div class="col-sm-5 form-group">
-                  <div class="singleField">
-                      <label for="inputEmail3" class="col-sm-6 control-label small-headers">Pricing Model:</label>
-                      <div class="col-sm-6">
-                        <span>{{getPricingModelDetails.pricingModel.modelName}}</span>
-                      </select>
+                  <div class="col-sm-5 form-group">
+                    <div class="singleField">
+                        <label for="" class="col-sm-6 control-label small-headers">Country:</label>
+                        <div class="col-sm-6">
+                          <span>{{getPricingModelDetails.country}}</span>
+                        </div>
                       </div>
-                    </div>
-                 </div>
-                <div class="col-sm-7 form-group">
-                  <div class="singleField">
-                      <label for="inputEmail3" class="col-sm-6 control-label small-headers">Model Name:</label>
-                      <div class="col-sm-6">
-                          <span>{{getPricingModelDetails.pricingModel.modelDescription}}</span>
+                   </div>
+                  <div class="col-sm-7 form-group">
+                    <div class="singleField">
+                        <label for="" class="col-sm-6 control-label small-headers">Entity:</label>
+                        <div class="col-sm-6">
+                            <span>{{getPricingModelDetails.entity}}</span>
+                        </div>
                       </div>
-                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-12" style="padding-top: 10px;">
+                  <div class="col-sm-5 form-group">
+                    <div class="singleField">
+                        <label for="inputEmail3" class="col-sm-6 control-label small-headers">Pricing Model:</label>
+                        <div class="col-sm-6">
+                          <span>{{getPricingModelDetails.pricingModel.modelName}}</span>
+                        </select>
+                        </div>
+                      </div>
+                   </div>
+                  <div class="col-sm-7 form-group">
+                    <div class="singleField">
+                        <label for="inputEmail3" class="col-sm-6 control-label small-headers">Model Name:</label>
+                        <div class="col-sm-6">
+                            <span>{{getPricingModelDetails.pricingModel.modelDescription}}</span>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <fieldset class="scheduler-border">
+                    <legend class="scheduler-border mid-headers">Base Model parameter</legend>
+                    <div id="baseModelParameterDiv"></div>
+                  </fieldset>
+                  <fieldset class="scheduler-border">
+                    <legend class="scheduler-border mid-headers">Track Counts</legend>
+                    <div id="trackCountsDiv"></div>
+                  </fieldset>
+                </div>
+                <div class="col-sm-12">
+                  <label for="" class="col-sm-2 control-label small-headers" style="text-align: left;padding-left: 0px;">Comments: </label>
+                  <div id="priceModelmultipleComments" class="col-sm-10 normalBar">
+                    <textarea class="form-control" maxlength="1024" style="height:125px;min-height:100px;max-height:100px;"></textarea>
+                  </div>
                 </div>
               </div>
-              <div class="col-sm-12">
-                <fieldset class="scheduler-border">
-                  <legend class="scheduler-border mid-headers">Base Model parameter</legend>
-                  <div id="baseModelParameterDiv"></div>
-                </fieldset>
-                <fieldset class="scheduler-border">
-                  <legend class="scheduler-border mid-headers">Track Counts</legend>
-                  <div id="trackCountsDiv"></div>
-                </fieldset>
-              </div>
-              <div class="col-sm-12">
-                <label for="" class="col-sm-2 control-label small-headers" style="text-align: left;padding-left: 0px;">Comments: </label>
-                <div id="priceModelmultipleComments" class="col-sm-10 normalBar">
-                  <textarea class="form-control" maxlength="1024" style="height:125px;min-height:100px;max-height:100px;"></textarea>
-                </div>
-              </div>
-            </div>
-        </div><!-- View Pricing Model ends --->
+          </div><!-- View Pricing Model ends --->
+        </div>
       </div> <!-- Main Layout END-->
     </form>
   </div>
