@@ -2,7 +2,7 @@
 
 
 			<div  class="form-inline" >
-				<div class="col-md-12 form-group" style="text-align:right;padding:10px 20px;">
+				<div class="col-md-12 form-group" style="text-align:right;padding:10px 10px;">
 					<!--<label  for="inputAnalyze">Convert to Currency </label>-->
 
 					<select id="currency" class="currency" name="currency" {{isIngestCcidsSelected 0}} can-value="currency">
@@ -29,9 +29,9 @@
 							<div width="100%>
 
 								<!-- todo export buttons -->
-								<div class="spaceDiv">&nbsp;</div>
+								<div class="spaceDiv1">&nbsp;</div>
 
-								<table style="width:100%">
+								<table style="width:100%;">
 									<tr width="100%" style="vertical-align: top;" colspan="3">
 
 										<td width="1%">
@@ -41,10 +41,10 @@
 										<td width="55%">
 											<fieldset id="ingestionStatsDiv" style="display:none">
 
-												<table id="summaryTopTable">
+												<table id="ingestionStatsDiv">
 													<tr>
 														<td width="50%">
-															<legend class="mid-headers">Ingestion Stats</legend>
+															<label class="mid-headers">Ingestion Stats</label>
 														</td>
 
 														<td style="width:20%;">
@@ -60,31 +60,25 @@
 												<div id="ingestionStatsDivSub">
 													<div id="ingestionReconStats"><div>
 												</div>
-											</fieldset>
+										</fieldset>
 
 										</td>
 
-
-								 <!-- can js insert -->
-
 										<td width="43%" class="summaryStatsTab">
 
-											<fieldset id="summaryStatsDiv" style="display:none;width:100%">
-												<table id="summaryTopTable" style="width:100%">
+										<fieldset id="summaryStatsDiv" style="display:none;width:100%">
+												<table id="summaryStatsDiv" style="width:100%">
 													<tr>
 														<td width="55%">
-															<legend class="mid-headers">Summary Stats</legend>
+															<label class="mid-headers">Summary Stats</label>
 														</td>
-														<td width="35%">
-
-														</td>
+														<td width="35%"></td>
 
 														<td style="float: right;">
 															<!-- <div style="display:block">
 																<img class="exportToExcel" id="exportExcel">
 				        								 		<img class="copyToClipboard" id="copyToClipboard">
 															</div> -->
-
 														</td>
 													</tr>
 												</table>
