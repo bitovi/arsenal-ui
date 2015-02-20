@@ -10,7 +10,7 @@ export default [
       var value = row.dtlHdrId;
       var rejectableVal = false;
 
-      if(row.rejectable && row.dtlHdrType != 'PDF') { 
+      if(row.rejectable && row.dtlHdrType != 'PDF') {
 
         rejectableVal = true;
 
@@ -22,14 +22,6 @@ export default [
     }
   },
   {
-    id: 'ccidId',
-    title: 'CCID ID',
-    sortable: true,
-    contents: function(row) {
-        return (row.ccidId == null || row.ccidId == "0" ) ? "": row.ccidId ;
-    }
-  },
-  {
     id: 'entityName',
     title: 'Licensor',
     sortable: true
@@ -38,6 +30,14 @@ export default [
     id: 'countryId',
     title: 'Country',
     sortable: true
+  },
+  {
+    id: 'ccidId',
+    title: 'CCID ID',
+    sortable: true,
+    contents: function(row) {
+        return (row.ccidId == null || row.ccidId == "0" ) ? "": row.ccidId ;
+    }
   },
   {
     id: 'ccy',
