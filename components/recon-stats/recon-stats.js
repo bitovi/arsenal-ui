@@ -178,7 +178,7 @@ var page = Component.extend({
               ingestionSummaryStats.overRepDispute = formats.currencyFormat(data.summaryStats.overRepDispute, 2);
 
 
-              ingestionSummaryStats.noOfReconRecords = (formats.numberFormatDecimal(data.summaryStats.noOfReconRecords).toString()).split(".")[0];
+              ingestionSummaryStats.noOfReconRecords = (formats.currencyFormat(data.summaryStats.noOfReconRecords).toString()).split(".")[0];
 
               ingestionSummaryStats.reconAmount = formats.currencyFormat(data.summaryStats.reconAmount, 2);
 
