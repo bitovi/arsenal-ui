@@ -1319,8 +1319,14 @@ var page = Component.extend({
 						      $(el).closest('.calendarcls').find('.box-modal').show();
 						     	if(el[0].id == "inputMonth0"){
 						     		self.scope.getFxrate();
-
 							 	}
+							 	if ($(".updateperoid").val() === "") {
+									$(".calendarcls .box-modal :visible").removeClass("period-active").find(".period-calendar-yearbtn").val('FY '+new Date().getFullYear());
+									//$(".period-calendar-yearbtn").trigger('change');
+									//if ($(".period-calendar-yearbtn").val() != "") {
+										$(".period-calendar-yearbtn").trigger('change');
+									//}
+								}
 							 },
 							'.updateperoid blur':function(el){
 						   	 	var self = this;
