@@ -546,6 +546,7 @@ var fetchReconIncoming = function(scope, load) {
         scope.incomingDetails.footerRows.replace(footerLine);
       }
       $("#loading_img").hide();
+      scope.recordsAvailable = data.recordsAvailable;
     }
   }, function(xhr) {
     console.error("Error while loading: fetchReconIncoming" + xhr);
@@ -764,9 +765,9 @@ var createIncomingReconRequestForExportToExcel = function(appstate) {
 
 function getVisibleGridHeight() {
   if ($('#incomingDetails').is(':visible')) {
-    return gridUtils.getTableBodyHeight('incomingDetailsGrid', 92);
+    return gridUtils.getTableBodyHeight('incomingDetailsGrid', 40);   
   } else if ($('#reconstatsOtherGrid').is(':visible')) {
-    return gridUtils.getTableBodyHeight('incomingDetailsGrids', 92);
+    return gridUtils.getTableBodyHeight('incomingDetailsGrids', 40);
   } else {
     return 400; //default height
   }
