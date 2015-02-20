@@ -27,7 +27,7 @@ var DashboardApprovals = Component.extend({
     outboxScrollTop: 0,
     outboxOffset: 0,
     recordsAvailable: false,
-    sortColumns:['pendingDays'],
+    sortColumns:[],
     sortDirection: "asc",
     populateDefaultData:'@',
     triggerChild: function(params){
@@ -61,9 +61,9 @@ var DashboardApprovals = Component.extend({
 
       },1000)
 
-      /*setTimeout(function(){
-        //$('.pendingDays').trigger('click');
-      },600);*/
+      setTimeout(function(){
+        $('.pendingDays').trigger('click');
+      },600);
       
     },
     "tbody>tr td dblclick": function(item, el, ev){
@@ -121,19 +121,8 @@ var DashboardApprovals = Component.extend({
 
 
     },
-    '#globalSearch click':function(){
-        var self=this;
-        self.scope.mailboxType = 'inbox';
-        fetchInboxOutbox(self.scope);
-
-        self.scope.mailboxType = 'outbox';
-        fetchInboxOutbox(self.scope);
-    },
     '{scope.appstate} change': function() {
       var self=this;
-      if(scope.appstate.attr('globalSearch')===true){
-        alert('Hi');
-      }
       if(this.scope.isGlobalSearch != this.scope.appstate.attr('globalSearch')){
         this.scope.attr("isGlobalSearch",this.scope.appstate.attr("globalSearch"));
         fetchInboxOutbox(this.scope);
