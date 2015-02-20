@@ -129,6 +129,10 @@ var PeriodCalendar = Component.extend({
     '{inputDynamicMonth} click': function(el, ev) {
       var comp = 'inputMonth0';
       showErrorMsg(this.scope.attr('inputMonth0'),this.scope.attr('inputDynamicMonth'),comp);
+    },
+    '.period-calendar-yearbtn change': function(el, ev) {
+      var self = this;
+      self.scope.year = $(".period-calendar-yearbtn").val() === self.scope.year ? self.scope.year :  $(".period-calendar-yearbtn").val();
     }
   },
   helpers:function(){
