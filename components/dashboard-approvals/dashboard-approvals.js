@@ -52,12 +52,19 @@ var DashboardApprovals = Component.extend({
       gridUtils.setElementHeight(tbody[0],getTblBodyHght,getTblBodyHght);
       gridUtils.setElementHeight(tbody[1],getTblBodyHght,getTblBodyHght);
 
-      self.scope.mailboxType = 'inbox';
-      fetchInboxOutbox(this.scope);
+      setTimeout(function(){
+        self.scope.mailboxType = 'inbox';
+        fetchInboxOutbox(self.scope);
 
-      self.scope.mailboxType = 'outbox';
-      fetchInboxOutbox(this.scope);
-      $('.pendingDays').trigger('click');
+        self.scope.mailboxType = 'outbox';
+        fetchInboxOutbox(self.scope);
+
+      },1000)
+
+      setTimeout(function(){
+        $('.pendingDays').trigger('click');
+      },600);
+      
     },
     "tbody>tr td dblclick": function(item, el, ev){
         // var self = this;
@@ -115,7 +122,9 @@ var DashboardApprovals = Component.extend({
 
     },
     '{scope.appstate} change': function() {
+      var self=this;
       if(this.scope.isGlobalSearch != this.scope.appstate.attr('globalSearch')){
+        this.scope.attr("isGlobalSearch",this.scope.appstate.attr("globalSearch"));
         fetchInboxOutbox(this.scope);
       }
     }
