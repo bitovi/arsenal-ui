@@ -10,18 +10,22 @@
 
 #showTableInfo{
   background: #fff;
-  border: 1px solid #ccc;
+  border: 2px solid #ccc;
   border-radius: 10px;
   padding:0;
+  overflow:hidden;
 }
 .ui-dialog .ui-dialog-titlebar-close {
   width: 20px;
-  margin: 0px 0 0 0;
+  margin: 20px 5px 0 0;
   height: 20px;
   background: transparent url(/resources/images/rn_RemoveFile@2x.png) no-repeat;
   border: none;
   z-index: 5;
-  left:0 !important
+  right:0 !important
+}
+.ui-dialog .ui-dialog-titlebar-close:focus {
+  outline:1px;
 }
 
 .ui-dialog .ui-dialog-titlebar-close span{
@@ -283,7 +287,7 @@ rn-bundle-detail {
 
 table.information{
   color: @dark-grey;
-  border: 1px solid #aaaaaa;
+  border: 0px solid #aaaaaa;
   background: #fff;
   border-radius: 4px;
 

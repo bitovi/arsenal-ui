@@ -135,6 +135,8 @@ var page = Component.extend({
       RefCountry.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
         $("#loading_img").hide();
+        $("#viewPricingModelDivBlock").hide();
+
         if(data.status == "SUCCESS") {
 
           console.log("Response data is "+JSON.stringify(data.attr()));
@@ -336,6 +338,8 @@ var page = Component.extend({
         self.scope.appstate.attr("renderGlobalSearch",false);
         var requestObj = {};
         var modelObj = {reqType:'modeltype'};
+
+        $("#viewPricingModelDivBlock").hide();
 
         Promise.all([
             Licensor.findAll(UserReq.formRequestDetails(requestObj)),
@@ -563,6 +567,7 @@ var page = Component.extend({
       self.attr("revHistory").splice(0, self.attr("revHistory").length);
       $("#loading_img").show();
       $(".buttonsPlaceHolder").hide();
+      $("#viewPricingModelDivBlock").hide();
       //console.log(this.scope.pageState.attr("countryId"));
       var countryId;
       if(self.pageState.countryDetails.country.attr("countryId")=="")
@@ -849,7 +854,7 @@ var page = Component.extend({
             if(tempcommentObj!=null)
               $('#priceModelmultipleComments').html(stache('<multiple-comments divid="priceModelmultipleComments" options="{tempcommentObj}" divheight="100" isreadOnly="y"></multiple-comments>')({tempcommentObj}));
 
-            $("#viewPricingModelDiv").show();
+            $("#viewPricingModelDivBlock").show();
         }).then(function(){
           console.log("ERROR");
         });
@@ -867,7 +872,7 @@ var page = Component.extend({
 
           if(data.pricingModel == undefined || data.pricingModel == null) {
 
-            $("#viewPricingModelDiv").hide();
+            $("#viewPricingModelDivBlock").hide();
 
             var msg = "No details available";
 
@@ -880,7 +885,7 @@ var page = Component.extend({
 
           } else {
 
-            $("#viewPricingModelDiv").show();
+            $("#viewPricingModelDivBlock").show();
 
           }
 
@@ -892,13 +897,13 @@ var page = Component.extend({
           if(tempcommentObj!=null)
             $('#priceModelmultipleComments').html(stache('<multiple-comments divid="priceModelmultipleComments" options="{tempcommentObj}" divheight="100" isreadOnly="y"></multiple-comments>')({tempcommentObj}));
 
-          $("#viewPricingModelDiv").show();
+          $("#viewPricingModelDivBlock").show();
       }).then(function(){
         console.log("ERROR");
       });
     },
     '#priModelClose click': function(){
-        $("#viewPricingModelDiv").hide();
+        $("#viewPricingModelDivBlock").hide();
     },
     '{baseModelParameter} change': function() {
       var self = this;

@@ -57,6 +57,7 @@ var DashboardApprovals = Component.extend({
 
       self.scope.mailboxType = 'outbox';
       fetchInboxOutbox(this.scope);
+      $('.pendingDays').trigger('click');
     },
     "tbody>tr td dblclick": function(item, el, ev){
         // var self = this;
