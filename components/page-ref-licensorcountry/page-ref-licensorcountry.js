@@ -110,6 +110,7 @@ var page = Component.extend({
 
     var objDiv = $('#usercommentsdiv');
     objDiv.scrollTop = objDiv.scrollHeight;
+    $("#viewPricingModelDivBlock").show();
 
     Promise.all([
       Licensor.findAll(UserReq.formRequestDetails(requestObj)),
@@ -472,6 +473,7 @@ var page = Component.extend({
             $(".mainLayoutId").hide();
             $(".buttonsPlaceHolder").show();
             $("#loading_img").show();
+            $("#viewPricingModelDivBlock").hide();
 
              var requestObj  = {
               entityCountryDetails:{
@@ -636,7 +638,7 @@ var page = Component.extend({
 
           },
           '#priModelClose click': function(){
-            $("#viewPricingModelDiv").hide();
+            $("#viewPricingModelDivBlock").hide();
           },
           '#pricingModelBtn click': function(){
             var self = this.scope;
@@ -654,7 +656,7 @@ var page = Component.extend({
 
               if(data.pricingModel == undefined || data.pricingModel == null) {
 
-                $("#viewPricingModelDiv").hide();
+                $("#viewPricingModelDivBlock").hide();
 
                 var msg = "No details available";
 
@@ -667,7 +669,7 @@ var page = Component.extend({
 
               } else {
 
-                $("#viewPricingModelDiv").show();
+                $("#viewPricingModelDivBlock").show();
                   self.attr("displayPMDetails",true);
               }
 
