@@ -58,13 +58,10 @@ var DashboardApprovals = Component.extend({
 
         self.scope.mailboxType = 'outbox';
         fetchInboxOutbox(self.scope);
-
-      },1000)
-
-      setTimeout(function(){
         $('.pendingDays').trigger('click');
-      },600);
+      },500);
       
+      //$('.pendingDays').trigger('click');
     },
     "tbody>tr td dblclick": function(item, el, ev){
         // var self = this;
@@ -122,7 +119,6 @@ var DashboardApprovals = Component.extend({
 
     },
     '{scope.appstate} change': function() {
-      var self=this;
       if(this.scope.isGlobalSearch != this.scope.appstate.attr('globalSearch')){
         this.scope.attr("isGlobalSearch",this.scope.appstate.attr("globalSearch"));
         fetchInboxOutbox(this.scope);

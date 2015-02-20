@@ -122,11 +122,14 @@ var DashboardInvoices = Component.extend({
       }));
     },
     popover: function(from,val,data) {
-      var id = "";
+      var id = "", placement='right';
       if(from == 'country'){
         id = data.context.countryId;
       }else{
         id = data.context;
+        if( (data.contexts._parent._context._entities).indexOf(data.context) > data.contexts._parent._context._entities.length/2 ){
+          placement='left';
+        }
       }
       var popoverContent = $('<div>').append(this.renderMissingInvoices(id,from))[0].innerHTML;
       return function(span) {
@@ -134,7 +137,8 @@ var DashboardInvoices = Component.extend({
           title: 'Missing Invoices',
           content: popoverContent,
           html: true,
-          trigger: 'hover'
+          trigger: 'hover',
+          placement: placement
         });
       };
     },
