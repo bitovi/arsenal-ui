@@ -14,10 +14,10 @@
     <div class="col-sm-12 lineDividerInvoice removeH"></div>
 
     <div id="topContanier" class="col-sm-12" style="padding:0px;background: #f4f4f4;">
-        <div class="col-sm-6" id="uploadsummary">
-            <label class="fontSize14 col-sm-6 "> iCSV Files (CSVs and PDFs)</label>
+        <div class="col-sm-6" id="uploadsummary" style="padding-bottom: 10px;">
+            <label class="fontSize14 col-sm-6 " style="width:100%;"> iCSV Files (CSVs and PDFs)</label>
             <!--	<div id="loading_img"></div>	-->
-            <div class="file-component-icv-div">
+            <div class="file-component-icv-div" style="float: left;padding-left: 20px;">
                 <rn-file-uploader-icsv-sum uploadedfileinfo="{uploadedfileinfo}"></rn-file-uploader-icsv-sum>
             </div>
         </div>

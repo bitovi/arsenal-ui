@@ -34,7 +34,7 @@
       <div id="loading_img"></div>
       <div id="invoiceGrid"></div>
 
-      <div id="attachDocumentDiv">
+      <div id="attachDocumentDiv" style="height:190px">
 
           <div class="col-sm-12" style="border-bottom: 1px solid #ddd;padding: 0px;">
 
@@ -48,7 +48,7 @@
 
           </div>
 
-          <div id="fileUploaderDiv" class="col-sm-12 file-component-div" style="padding-top: 10px;">
+          <div id="fileUploaderDiv" class="col-sm-12 file-component-div" style="padding-top: 10px;height:78%">
               <rn-file-uploader uploadedfileinfo="{fileinfo}"></rn-file-uploader>
           </div>
 

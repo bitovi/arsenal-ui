@@ -4,7 +4,7 @@
 {{/if}}
 <div class="outer">
 
-<div id="buttondiv">
+<div id="buttondiv" style="min-height: 30px;">
     <input type="button" class="browseFiles uploadFiles" value="Select Files" />
     <input type="file" class="fileSelect"  name ="UploadFile"  style="display: none;" multiple />
 
@@ -19,8 +19,21 @@
       <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
        aria-valuemin="0" aria-valuemax="100" id="progress" style="text-align:right"></div>
    </div>
-</div>
+   {{#if isAnyFileLoaded}}
 
+         {{#if isInValidFormat}}
+              <div class="validFormatError" style="padding-bottom:0px;"></div>
+         {{/if}}
+
+        {{#if isSuccess}}
+           <div class="success" style="padding-bottom:0px;"></div>
+         {{else}}
+           <div class="fileError" style="padding-bottom:0px;"></div>
+        {{/if}}
+
+   {{/if}}
+</div>
+<div id="fileContainer" class="file-container">
      {{#if isAnyFileLoaded}}
           {{#if fileList.length}}
 
@@ -49,21 +62,7 @@
 
           {{/if}}
       {{/if}}
-
-      {{#if isAnyFileLoaded}}
-
-            {{#if isInValidFormat}}
-                 <div class="validFormatError"></div>
-            {{/if}}
-
-           {{#if isSuccess}}
-              <div class="success"></div>
-            {{else}}
-              <div class="fileError"></div>
-           {{/if}}
-      
-      {{/if}}
-
+</div>
 </div>
 {{#if required}}
   </div>
