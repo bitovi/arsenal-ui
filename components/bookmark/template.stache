@@ -4,7 +4,7 @@
         <div class='listofbookmark'>
           <div class='listtitle'>Bookmarks</div>
           <div class='btns'>
-              <button type="button" class="btn btn-primary bookmark_custombtns" id='add_new'>Add new</button>
+              <button type="button" class="btn btn-primary bookmark_custombtns" id='add_new' {{isAllowedForBK}}>Add new</button>
               <button type="button" class="btn btn-primary bookmark_custombtns" id='bookmarkitem_remove' disabled='disabled'>Remove</button>
           </div>
           <div class='autoscroll'>

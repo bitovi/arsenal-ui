@@ -73,18 +73,14 @@ var bookmark = Component.extend({
       var temp;
       _.forEach(fileArr, function(n) {
           temp = n.split(":");
-          //var test = {""+temp[0], ""+temp[1] };
-          //console.log(temp);
           customObj = {
             "key":"",
             "value":""
           };
           customObj.key = temp[0];
           customObj.value = temp[1];
-        //  console.log(customObj.key);
           map1.push(customObj);
       });
-    //  _.result(_.find(users, 'active'), 'user')
       var periodType = _.result(_.find(map1, {'key':'PeriodType'}),'value');
       var lookingFor =  _.result(_.find(map1, {'key':'PeriodFrom'}),'value');
       if(lookingFor != undefined){
@@ -299,8 +295,10 @@ var bookmark = Component.extend({
 
     }
   },
-  helpers:function(){
-
+  helpers: {
+    isAllowedForBK: function(){
+      return this.appstate.attr("renderGlobalSearch") ? '': 'disabled';
+    }
   }
 
 });
