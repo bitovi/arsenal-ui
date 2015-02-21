@@ -13,8 +13,8 @@ var page = Component.extend({
   //console.log("I am herea ");
   var backlen = history.length;
   history.go(-backlen);
-  window.location.href= URLs.UI_SERVICE_URL_CONTEXT + 'logout';
-},
+
+  },
 
   events:{
     '.login click':function(){
