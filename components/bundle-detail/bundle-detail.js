@@ -14,6 +14,7 @@ import PaymentBundleDetailGroup from 'models/payment-bundle/payment-bundle-detai
 import PaymentBundleDetail from 'models/payment-bundle/payment-bundle-detail';
 import WorkflowStep from 'models/workflow-step/';
 import PaymentBundle from 'models/payment-bundle/';
+import comments from 'components/multiple-comments/';
 
 import BundleDetailGrid from 'components/bundle-detail-grid/';
 import Switcher from 'components/switcher/';
@@ -194,15 +195,17 @@ var BundleDetailTabs = Component.extend({
           scope.bundleProgress.triggerValidation ? scope.getNewValidations(bundle) : "";
         }
 
-        var commentsCollected = '';
-        _.each(bundle.approvalComments, function(commentsObj) {
+        var commentsCollected = bundle.approvalComments;
+        // _.each(bundle.approvalComments, function(commentsObj) {
+        //
+        //   var createdDateFormat = moment(commentsObj.createdDate).format("Do MMM, YYYY");
+        //
+        //   commentsCollected = commentsCollected + "-- " + commentsObj.createdByName +" on "+createdDateFormat+" --"+"\n"+commentsObj.comments;
+        //   commentsCollected = commentsCollected + "\n";
+        //
+        // });
 
-          var createdDateFormat = moment(commentsObj.createdDate).format("Do MMM, YYYY");
-
-          commentsCollected = commentsCollected + "-- " + commentsObj.createdByName +" on "+createdDateFormat+" --"+"\n"+commentsObj.comments;
-          commentsCollected = commentsCollected + "\n";
-
-        });
+        $('.multipleCommentsInv').html(stache('<multiple-comments divid="usercommentsdivinv" modulestate="{scope}" divheight="100" isreadOnly="n"></multiple-comments>')({scope}));
 
         if(commentsCollected !== ''){
           $(".previousComments").val(commentsCollected);
@@ -664,7 +667,7 @@ var BundleDetailTabs = Component.extend({
                   }
                 };
 
-          $(data).dialog(opt).dialog("open");      
+          $(data).dialog(opt).dialog("open");
     },
 
   }
