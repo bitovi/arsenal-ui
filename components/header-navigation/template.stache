@@ -101,12 +101,16 @@
           <ul id='rightsidemenu'>
             <li class='username'><img src='../../resources/images/rn_WorkflowTypePerson_completed.png' class='logedinimg'/>{{appstate.userInfo.displayName}}</li>
                <li class='bar'>|</li>
-               <li class='rightmenu bookmark' title="Bookmark">&nbsp;</li>
-               <li class='rightmenu notification' title="Notification">&nbsp;</li>
+               <li class='rightmenu bookmark' title="Bookmark"><span class='bookmark-bubble'>{{counter.bookmark}}</span></li>
+               <li class='rightmenu notification' title="Notification"><span class='notification-bubble'>{{counter.notifications}}</span>;</li>
                <li name = 'logout' class='rightmenu logout' title="Logout">&nbsp;</li>
                <!--Bookmark  - Palceholder -->
-               <div class="bookMarkPalceHolder"></div>
-               <div class="notificationPlaceHolder"></div>
+               <div class="bookMarkPalceHolder">
+                 <!-- <book-mark appstate="{appstate}" counter="{counter}"></book-mark> -->
+                </div>
+               <div class="notificationPlaceHolder">
+                 <!-- <rn-notifications appstate="{appstate}"></rn-notifications> -->
+               </div>
           </ul>
       </div>
   </div>

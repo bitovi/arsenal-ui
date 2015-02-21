@@ -353,6 +353,7 @@ var page = Component.extend({
           $('#topContanier').show();
           $('#arrowbtnCntiner').hide();
           $('.file-component-icv-div #buttondiv').show();
+          $('.file-component-icv-div #fileContainer').css('height','80%');
        },
        '{scope} uploadedfileinfo':function(){
           var self = this;
@@ -391,6 +392,7 @@ var page = Component.extend({
                   self.scope.attr('errorMessage',"");
                   $('.jQfunhide').show();
                   $('.file-component-icv-div #buttondiv').hide();
+                  $('.file-component-icv-div #fileContainer').css('height','93%');
                   icsvmap.attr("invoiceData", data);
 
                  }
@@ -525,6 +527,7 @@ var page = Component.extend({
                                         $('#topContanier').show();
                                         $('#arrowbtnCntiner').hide();
                                         $('.file-component-icv-div #buttondiv').show();
+                                        $('.file-component-icv-div #fileContainer').css('height','80%');
                                     }
                                     else
                                     {

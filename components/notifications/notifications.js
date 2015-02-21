@@ -11,6 +11,7 @@ var notification = Component.extend({
   template: template,
   scope: {
     appstate: undefined,
+    counter:undefined,//passed in
     count: 0,
     notificationList : new can.List(),
     showUserPref: false,
@@ -143,10 +144,12 @@ var fetchNotifications = function(self){
     Promise.all([
         Notification.findAll(UserReq.formRequestDetails(notificationRequest))
       ]).then(function(values) {
-        self.scope.attr("count", values[0].length);
-        if(self.scope.attr("count") > 0) {
+        var count = values[0].length;
+        //self.scope.attr("count", values[0].length);
+        if(count > 0) {
           self.scope.notificationList.replace(values[0]);
-          $(".notification").html("<span class='notification-bubble'>"+self.scope.attr("count")+"</span>");
+          // $(".notification").html("<span class='notification-bubble'>"+self.scope.attr("count")+"</span>");
+          self.scope.counter.attr('notifications',count);
         }
     });
 }
