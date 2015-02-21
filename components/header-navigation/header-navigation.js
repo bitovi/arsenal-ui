@@ -19,6 +19,10 @@ var headerNavigation = Component.extend({
     template: template,
     scope: {
         appstate: undefined,// this gets passed in
+        counter:{
+            bookmark:undefined,
+            notifications:undefined
+        },
         show:true,
         roles: [],
         allowedScreenId : []
@@ -59,9 +63,10 @@ var headerNavigation = Component.extend({
           self.scope.attr("allowedScreenId",screenId );
 
             var appstate = self.scope.appstate;
+            var counter = self.scope.counter;
             $('.gParamSearchbar').append(stache('<global-parameter-bar appstate="{appstate}"></global-parameter-bar>')({appstate}));
-            $('.bookMarkPalceHolder').append(stache('<book-mark appstate="{appstate}"></book-mark>')({appstate}));
-            $('.notificationPlaceHolder').append(stache('<rn-notifications appstate="{appstate}"></rn-notifications>')({appstate}));
+            $('.bookMarkPalceHolder').append(stache('<book-mark appstate={appstate}  counter={counter}></book-mark>')({appstate,counter}));
+            $('.notificationPlaceHolder').append(stache('<rn-notifications appstate="{appstate}" counter={counter}></rn-notifications>')({appstate,counter}));
 
 
           });
@@ -78,7 +83,7 @@ var headerNavigation = Component.extend({
           this.element.find('rn-notifications').scope().notificationTriggered(this.element.find('rn-notifications').scope());
       },
       '.dropdown-menu li a click':function(el){
-        
+
          console.log(" I am heer "+el.data('screenid'));
          this.scope.appstate.screenLookup.attr("screenid",el.data('screenid'));
 

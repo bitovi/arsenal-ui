@@ -14,7 +14,8 @@ var bookmark = Component.extend({
   tag: 'book-mark',
   template: template,
   scope: {
-    appstate: undefined,
+    appstate: undefined,//passed
+    counter:undefined,//passed
     checkedRows: [],
     bookMarkList:[],
     userList:[],
@@ -37,7 +38,8 @@ var bookmark = Component.extend({
             self.scope.bookMarkList[i].attr("pageId",i+1)
           }
           self.scope.bookmarkcount = data[0].bookmarkList.length;
-          $('.bookmark').html("<span class='bookmark-bubble'>"+self.scope.bookmarkcount+"</span>")
+           //$('.bookmark').html("<span class='bookmark-bubble'>"++"</span>")
+          self.scope.counter.attr('bookmark',self.scope.bookmarkcount);
         }
 
       }
@@ -214,6 +216,7 @@ var bookmark = Component.extend({
       var root = {"idsToBeDeleted":[]};
       var deleteId = [];
       var bookMarkItems = {};
+      var self = this;
       $('.bookmarklist .bookmark_list .bookmarkchkbox').closest('.bookmark_list').each(function(i,el){
         if($(el).find('.bookmarkchkbox').is(':checked')){
           $(el).closest('.bookmark_list').remove();
@@ -228,8 +231,10 @@ var bookmark = Component.extend({
       root["idsToBeDeleted"] =deleteId;
       $('.bookmark_loader').show();
       Bookmark.update(UserReq.formRequestDetails(root),"DELETE",function(data){ console.log(data);
+        $('.bookmark_loader').hide();
         if(data.status=='SUCCESS'){
-          $('.bookmark_loader').hide();
+          var counter = self.scope.counter.attr('bookmark');
+          self.scope.counter.attr('bookmark', (counter - deleteId.length ) );
         }
       });
     },
@@ -280,6 +285,8 @@ var bookmark = Component.extend({
             Promise.all([Bookmark.findOne(UserReq.formRequestDetails())]).then(function(data) {
               if(data[0].status=='SUCCESS'){
                 self.scope.bookMarkList.replace(data[0].bookmarkList);
+                var counter = self.scope.counter.attr('bookmark');
+                self.scope.counter.attr('bookmark', (self.scope.bookMarkList.length) );
                 $('.bookmark_loader').hide();
 
                 $('.newbookmark_name_txtbx').val('');
