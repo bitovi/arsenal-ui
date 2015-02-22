@@ -104,7 +104,7 @@ var BundleGrid = ScrollingGrid.extend({
     },
     cellContents: function(row, column) {
       if(this.attr('editingRow') === row && this.attr('editingColumn') === column) {
-        return stache('<div class="input-group"><input  type="text"  autofocus value="{{value}}" style="min-width: 200px;" class="form-control resizeBox editing" ><div class="input-group-btn"><button  class="btn btn-default cancelBundleEdit" style="background: url(\'/resources/images/ActionCancel.png\') no-repeat;background-size: 15px 15px;background-position: 50% 50%;" type="button"/><button  class="btn btn-default editName" style="background: url(\'/resources/images/checkMarkDark.png\') no-repeat;background-position: 50% 50%; background-size: 15px 15px;" type="button"/></div></div>')({value: row.bundleName});
+        return stache('<div class="input-group"><input  type="text"  autofocus  value="{{value}}" style="min-width: 200px;" class="form-control resizeBox editing" ><div class="input-group-btn"><button  class="btn btn-default cancelBundleEdit" style="background: url(\'/resources/images/ActionCancel.png\') no-repeat;background-size: 15px 15px;background-position: 50% 50%;" type="button"/><button  class="btn btn-default editName" style="background: url(\'/resources/images/checkMarkDark.png\') no-repeat;background-position: 50% 50%; background-size: 15px 15px;" type="button"/></div></div>')({value: row.bundleName});
       } else {
         return ScrollingGrid.prototype.helpers.cellContents.call(this, row, column);
       }
@@ -181,6 +181,9 @@ var BundleGrid = ScrollingGrid.extend({
       });
 
 
+    },
+    '.input-group click': function(el, ev) {
+      this.scope.attr('isEditBundleClicked',true);
     },
     '.cancelBundleEdit click': function(el, ev) {
       this.scope.attr('isEditBundleClicked',true);
