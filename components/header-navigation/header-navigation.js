@@ -84,7 +84,7 @@ var headerNavigation = Component.extend({
       },
       '.dropdown-menu li a click':function(el){
 
-         console.log(" I am heer "+el.data('screenid'));
+         //console.log(" I am heer "+el.data('screenid'));
          this.scope.appstate.screenLookup.attr("screenid",el.data('screenid'));
 
             // if(btn.attr('id')!='show' && btn.attr('id')==undefined){
