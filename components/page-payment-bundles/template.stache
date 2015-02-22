@@ -24,7 +24,7 @@
         <button class="btn btn-custom-small remove-invoice" {{allowRemoveInvoices}} >Remove Invoice</button>
       </div>
     <!-- <img class="excel exportToExcel" /> -->
-    <img class="clipboard copyToClipboard" style="padding-top: 1px;height:18px;width:18px;" />
+    <img class="clipboard copyToClipboard" style="padding-top: 1px;height:18px;width:18px;" title="Copy to Clipboard"/>
 
   </div>
 
