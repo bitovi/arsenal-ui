@@ -36,7 +36,7 @@ var columns = {
       if(row.isFooterRow){
         return this.paginateAttr.attr('totRecCnt') +" Invoices";
       }else{
-        return  row => row.__isChild ? '' : row.invoiceNumber;
+        return row.__isChild ? '' : row.invoiceNumber;
       }
     },
   },
