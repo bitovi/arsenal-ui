@@ -185,7 +185,23 @@ var GlobalParameterBar = Component.extend({
           }
           self.scope.countries.replace(values[0]);
           self.scope.licensors.replace(values[1]["entities"]);
+
+
+            $("#countriesFilter").multiselect('selectAll', false);
+            $('#countriesFilter').multiselect('updateButtonText');
+            setTimeout(function(){
+              $("input[name='selAllCountry']").prop("checked",true);
+              $("input[name='selAllCountry']").closest('li').addClass("active");
+            }, 1000);
           $("#countriesFilter").multiselect('rebuild');
+
+          $("#licensorsFilter").multiselect('selectAll', false);
+          $('#licensorsFilter').multiselect('updateButtonText');
+          setTimeout(function(){
+            $("input[name='selAllLicensor']").prop("checked",true);
+            $("input[name='selAllLicensor']").closest('li').addClass("active");
+          }, 1000);
+          
           $("#licensorsFilter").multiselect('rebuild');
 
           /* To show 'Select All' option only if more than one options available */
