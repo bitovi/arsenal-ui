@@ -633,7 +633,7 @@ var fetchReconIngest = function(scope, load){
         if(data.reconStatsDetails == undefined || (data.reconStatsDetails != null && data.reconStatsDetails.length <= 0)) {
 
           scope.attr("emptyrows", true);
-          commonUtils.displayUIMessageWithDiv("#messageDiv", "SUCCESS", data["responseText"]);
+          //commonUtils.displayUIMessageWithDiv("#messageDiv", "SUCCESS", data["responseText"]);
 
         } else {
 
