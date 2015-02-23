@@ -54,6 +54,18 @@ var pricingModels = Model.extend({
 	      	contentType: 'application/json; charset=utf-8',
 	  		data: JSON.stringify(params)
 	  	});
+   },
+
+   add: function(params) {
+
+	 	return $.ajax({
+	  		url: RinsCommon.UI_SERVICE_URL +'addPricingModelDetails',
+	  		type: 'POST',
+	      	datatype:'json',
+	      	contentType: 'application/json; charset=utf-8',
+	  		data: JSON.stringify(params)
+	  	});
+
    }
 
 

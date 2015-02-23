@@ -533,10 +533,14 @@ var page = Component.extend({
 
       self.editable = "";
 
-      if(values[0].licensorDetails.id == "0") {
+      if(values[0].licensorDetails.id == 0) {
 
         $("#loading_img").hide();
-        $("#button_layout").hide();
+        //$("#button_layout").hide();
+
+        $("#buttonsubmit").hide();
+        $("#buttonreset").hide();
+        
         var msg = "No details present";
         
         commonUtils.displayUIMessageWithDiv("#invmessageDiv", "FAILURE", msg);
