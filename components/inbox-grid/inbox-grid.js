@@ -149,10 +149,10 @@ var InboxGrid = ScrollingGrid.extend({
           }
         }
         parentScopeVar.attr('mailboxType', 'inbox');
-        parentScopeVar.attr('sortcolumnnames', parentScopeVar.attr('sortColumns')[0]);
-        self.scope.attr('sortcolumnnames',parentScopeVar.attr('sortColumns'));
+        parentScopeVar.attr('sortColumns', parentScopeVar.attr('sortColumns'));
+        //self.scope.attr('sortcolumnnames',parentScopeVar.attr('sortColumns'));
         parentScopeVar.attr('sortdir', parentScopeVar.attr('sortDirection'));
-        self.scope.attr('sortdir',parentScopeVar.attr('sortDirection'));
+        //self.scope.attr('sortdir',parentScopeVar.attr('sortDirection'));
         parentScopeVar.attr('inboxOffset', 0);
         parentScopeVar.triggerChild(parentScopeVar);
     }

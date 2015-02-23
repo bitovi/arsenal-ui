@@ -58,7 +58,7 @@ var DashboardApprovals = Component.extend({
 
         self.scope.mailboxType = 'outbox';
         fetchInboxOutbox(self.scope);
-        $('.pendingDays').trigger('click');
+        //$('.pendingDays').trigger('click');
       },500);
       
       //$('.pendingDays').trigger('click');
@@ -129,6 +129,8 @@ var DashboardApprovals = Component.extend({
 
 var fetchInboxOutbox = function(scope){
 
+var validInbox = false;
+var validOutbox = false;
     if(scope.appstate.attr('globalSearchButtonClicked')===true){
       scope.attr("inboxOffset",0);
       scope.attr("outboxOffset",0);
@@ -136,13 +138,20 @@ var fetchInboxOutbox = function(scope){
       scope.attr("outboxScrollTop",0);
       scope.sortColumns.replace([]);
       scope.attr("sortDirection","asc");
+      validInbox = true;
+      validOutbox = true;
     }
 
-    if(scope.mailboxType == 'inbox'){
+    if(scope.mailboxType == 'inbox' || validInbox){
+      
+      validInbox = false;
+
+      scope.sortColumns.length === 0 ? scope.sortColumns.push("pendingDays"): scope.sortColumns[0];
+
       Approval.findAll({
           mailbox: 'inbox',
           offset: scope.inboxOffset,
-          sortBy: scope.sortcolumnnames,
+          sortBy: scope.sortColumns[0],
           sortDirection:scope.sortDirection
         }).then(function(approvals) {
           $('#inboxGrid .loading_img').remove();
@@ -162,7 +171,7 @@ var fetchInboxOutbox = function(scope){
                 scope.inboxRows.attr('recordsAvailable', approvals.recordsAvailable);
                 scope.attr('inboxnumberofrows', approvals.totalRecords);
 
-                scope.attr('sortcolumnnames',scope.sortcolumnnames);
+                scope.attr('sortcolumnnames',scope.sortColumns);
                 scope.attr('sortdir',scope.sortdir);
             }
           }else{
@@ -173,11 +182,18 @@ var fetchInboxOutbox = function(scope){
           console.error("Error while loading: FetchInbox"+xhr);
 
         });
-    }else{
+    }
+
+    if(scope.mailboxType == 'outbox' || validOutbox){
+
+        validOutbox = false;
+
+        scope.sortColumns.length === 0 ? scope.sortColumns.push("pendingDays"): scope.sortColumns[0]
+        
         Approval.findAll({
             mailbox: 'outbox',
             offset: scope.outboxOffset,
-            sortBy: scope.sortBy,
+            sortBy: scope.sortColumns[0],
             sortDirection:scope.sortDirection
           }).then(function(approvals) {
             $('#outboxGrid .loading_img').remove();
@@ -195,6 +211,9 @@ var fetchInboxOutbox = function(scope){
                 }
                 scope.outboxRows.attr('recordsAvailable', approvals.recordsAvailable);
                 scope.attr('outboxnumberofrows', approvals.totalRecords);
+
+                scope.attr('sortcolumnnames',scope.sortColumns);
+                scope.attr('sortdir',scope.sortdir);
               }
             }else{
               scope.outboxRows.replace([]);

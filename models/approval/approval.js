@@ -15,7 +15,7 @@ var Approval = can.Model.extend({
         settings: {
           LevelsOfApprovalNeeded: params.levels || 2
         },
-        sortBy: params.sortBy || 'type',
+        sortBy: params.sortBy || 'pendingDays',
         sortOrder: params.sortDirection || 'asc',
         limit: params.limit || 10,
         offset: params.offset || 0
