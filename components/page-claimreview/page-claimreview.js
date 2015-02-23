@@ -691,9 +691,16 @@ var page = Component.extend({
            console.log("row "+JSON.stringify(row.attr()));
            this.scope.details["countryId"]=row.country;
            this.scope.details["requestFrom"]="Licensor";
-           this.scope.details["licensorId"]=row.entityId.split(",")[1];
+           if($("#couView").parent().hasClass("active")){
+            this.scope.details["requestFrom"]="Country";
+           }
+           var licensor=row.entityName;
+           if(licensor == null || licensor == undefined){
+            licensor=row.entityId.split(",")[1];
+           }
+           this.scope.details["licensorId"]=licensor;
            this.scope.details["fiscalPeriod"]=row.period;
-           this.scope.details["periodType"]="P";
+           this.scope.details["periodType"]=periodWidgetHelper.getPeriodType(row.period);
            this.scope.details["contentType"]=row.contentType;
            this.scope.details["currency"]=row.currency || "";
            this.scope.details["isChild"]=className;
