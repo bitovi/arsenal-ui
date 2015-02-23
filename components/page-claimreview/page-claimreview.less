@@ -16,7 +16,7 @@ rn-claim-licensor-grid {
   table {
 
     width: 100%;
-    min-width:1900px;
+    min-width:2100px;
 
     thead, tbody,tfoot {
       display: block;
@@ -32,11 +32,13 @@ rn-claim-licensor-grid {
       color: white;
       //height:24px;
       tr {
-        height : 24px;
+        min-height: 24px;
+        height : auto;
+        word-wrap: break-word;
         th, td {
           font-weight: normal;
-
-          height: 24px;
+          height : auto;
+          min-height: 24px;
           //padding: .3em .5em .3em .5em !important;
           //border-right: @dark-border;
           //border-top: @dark-border;
@@ -45,13 +47,13 @@ rn-claim-licensor-grid {
         }
       }
     }
-    thead {
+    /*thead {
       tr {
         th, td {
           text-align:center !important;
         }
       }
-    }
+    }*/
     tbody {
       //max-height: 8em;
       overflow-y: overlay;
@@ -69,7 +71,6 @@ rn-claim-licensor-grid {
         }
       }
     }
-
     tr > th, tr > td {
       //padding: .3em .5em;
       &.sorticon { .flex-basis(50px);text-align:center; }
@@ -77,20 +78,20 @@ rn-claim-licensor-grid {
       &.invoiceNumber { .flex-grow(1); .flex-basis(150px); }
       &.currency {  .flex-basis(50px); }
       &.period {  .flex-basis(150px); }
-      &.country {  .flex-basis(60px); }
+      &.country {  .flex-basis(70px); }
       &.contentType {  .flex-basis(150px); }
-      &.invoiceAmount { .flex-grow(1); .flex-basis(110px); }
-      &.overrepAmount { .flex-grow(1); .flex-basis(110px); }
-      &.lineDisputeAmount { .flex-grow(1); .flex-basis(110px); }
-      &.reconAmount { .flex-grow(1); .flex-basis(110px); }
-      &.oaAllocated { .flex-grow(1); .flex-basis(110px); }
-      &.caAllocated { .flex-grow(1); .flex-basis(110px); }
-      &.priorPaid { .flex-grow(1); .flex-basis(110px); }
-      &.invPmtSaturation { .flex-grow(1); .flex-basis(110px); }
-      &.pmtSaturation { .flex-grow(1); .flex-basis(110px); }
-      &.balance { .flex-grow(1); .flex-basis(110px); }
-      &.overrepDispPer { .flex-grow(1); .flex-basis(110px); }
-      &.liDispPer { .flex-grow(1); .flex-basis(110px); }
+      &.invoiceAmount { .flex-grow(2); .flex-basis(120px); }
+      &.overrepAmount { .flex-grow(1); .flex-basis(120px); }
+      &.lineDisputeAmount { .flex-grow(1); .flex-basis(120px); }
+      &.reconAmount { .flex-grow(1); .flex-basis(120px); }
+      &.oaAllocated { .flex-grow(1); .flex-basis(120px); }
+      &.caAllocated { .flex-grow(1); .flex-basis(120px); }
+      &.priorPaid { .flex-grow(1); .flex-basis(120px); }
+      &.invPmtSaturation { .flex-grow(1); .flex-basis(120px); }
+      &.pmtSaturation { .flex-grow(1); .flex-basis(120px); }
+      &.balance { .flex-grow(1); .flex-basis(120px); }
+      &.overrepDispPer { .flex-basis(110px); }
+      &.liDispPer { .flex-basis(110px); }
       &.status {  .flex-basis(60px); }
     }
 
@@ -129,7 +130,7 @@ rn-claim-country-grid {
   table {
 
     width: 100%;
-    min-width:1590px;
+    min-width:1700px;
 
     thead, tbody,tfoot {
       display: block;
@@ -139,24 +140,26 @@ rn-claim-country-grid {
         width: 100%;
       }
     }
-    thead {
+    /*thead {
       tr {
         th, td {
           text-align:center !important;
         }
       }
-    }
+    }*/
 
     thead, tfoot {
       background: @header-background;
       color: white;
       //height:24px;
       tr {
-        height : 24px;
+        min-height: 24px;
+        height : auto;
+        word-wrap: break-word;
         th, td {
           font-weight: normal;
-
-          height: 24px;
+          height : auto;
+          min-height: 24px;
           //padding: .3em .5em .3em .5em !important;
           //border-right: @dark-border;
           //border-top: @dark-border;
@@ -200,18 +203,18 @@ rn-claim-country-grid {
       &.period {  .flex-basis(150px); }
       &.country {  .flex-basis(70px); }
       &.contentType {  .flex-basis(150px); }
-      &.invoiceAmount { .flex-grow(1); .flex-basis(110px); }
-      &.overrepAmount { .flex-grow(1); .flex-basis(110px); }
-      &.lineDisputeAmount { .flex-grow(1); .flex-basis(110px); }
-      &.reconAmount { .flex-grow(1); .flex-basis(110px); }
-      &.oaAllocated { .flex-grow(1); .flex-basis(110px); }
-      &.caAllocated { .flex-grow(1); .flex-basis(110px); }
-      &.priorPaid { .flex-grow(1); .flex-basis(110px); }
-      &.invPmtSaturation { .flex-grow(1); .flex-basis(110px); }
-      &.pmtSaturation { .flex-grow(1); .flex-basis(110px); }
-      &.balance { .flex-grow(1); .flex-basis(110px); }
-      &.overrepDispPer { .flex-grow(1); .flex-basis(110px); }
-      &.liDispPer { .flex-grow(1); .flex-basis(110px); }
+      &.invoiceAmount { .flex-grow(2); .flex-basis(150px); }
+      &.overrepAmount { .flex-grow(1); .flex-basis(120px); }
+      &.lineDisputeAmount { .flex-grow(1); .flex-basis(120px); }
+      &.reconAmount { .flex-grow(1); .flex-basis(120px); }
+      &.oaAllocated { .flex-grow(1); .flex-basis(120px); }
+      &.caAllocated { .flex-grow(1); .flex-basis(120px); }
+      &.priorPaid { .flex-grow(1); .flex-basis(120px); }
+      &.invPmtSaturation { .flex-grow(1); .flex-basis(120px); }
+      &.pmtSaturation { .flex-grow(1); .flex-basis(120px); }
+      &.balance { .flex-grow(1); .flex-basis(120px); }
+      &.overrepDispPer {  .flex-basis(110px); }
+      &.liDispPer {  .flex-basis(110px); }
       //&.status {  .flex-basis(50px); }
     }
 
