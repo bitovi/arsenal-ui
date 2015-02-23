@@ -202,7 +202,7 @@ var FileUploader = Component.extend ({
                   }
 
                   checkValidFormat(_uploadedFileInfo, this);
-                  
+
               },
               '.downLoad-Link click': function(el, ev) {
                   var downLoadFile={};
@@ -243,7 +243,7 @@ var FileUploader = Component.extend ({
                 self.scope.attr("isInValidFormat", true);
                 $('.validFormatError').empty().html("Invalid File format. Valid format: tiff/jpeg/png/jpg/csv/pdf/txt");
                 $('.submitFiles').attr("disabled", true);
-                $('div.outer').scrollTop($( "div.outer" ).height());
+                //$('div.outer').scrollTop($( "div.outer" ).height());
                 break;
             }
              var validName = (/^[a-zA-Z0-9-._ ]*$/.test(files[i].name) )
@@ -251,7 +251,7 @@ var FileUploader = Component.extend ({
                 self.scope.attr("isInValidFormat", true);
                 $('.validFormatError').empty().html("Invalid File Name. Special Characters are not allowed");
                 $('.submitFiles').attr("disabled", true);
-                $('div.outer').scrollTop($( "div.outer" ).height());
+                //$('div.outer').scrollTop($( "div.outer" ).height());
                 break;
              }
              else{

@@ -70,7 +70,7 @@
                         <div id="loading_img"></div>
                     </div>
                     <div class="col-lg-12 marginTop-10 lightestGrey" id='newonAccountGridComps'>
-                        <div class="col-lg-6" id="uploadFile">
+                        <div class="col-lg-6" id="uploadFile" style="margin-top: 10px;margin-bottom:10px">
                             <div class="col-sm-6 file-component-onacc-div">
                                 <rn-file-uploader-new uploadedfileinfo="{uploadedfileinfo}"></rn-file-uploader-new>
                             </div>
@@ -113,7 +113,7 @@
                             <div id="loading_img"></div>
                         </div>
                         <div class="col-lg-12 marginTop-10 lightestGrey" id='proposeOnAccountGridComps'>
-                            <div class="col-lg-6" id="proposeuploadFile">
+                            <div class="col-lg-6" id="proposeuploadFile" style="margin-top: 10px;margin-bottom:3px">
                                 <div class="col-sm-6 file-component-onacc-div">
                                     <propose-rn-file-uploader uploadedfileinfo="{uploadedfileinfo}" deletedFileInfo="{deletedFileInfo}"></propose-rn-file-uploader>
                                 </div>

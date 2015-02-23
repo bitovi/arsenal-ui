@@ -192,7 +192,7 @@
                 <div class="col-sm-8 requiredBarNone">
                   <!-- <textarea id="historyComments"  class="form-control multiple-comments-editable form-control-comments new-comments multiple-comments-editable-height" style="min-height:120px;    max-height:200px;"  can-value="pageState.historyComments" readonly=true></textarea>
                   <textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:50px;   min-height:50px;    max-height:50px;" can-value="pageState.entityCountryDetails.comment"></textarea> -->
-                  <div class="multipleComments col-sm-12 requiredBar" id="multipleComments" style="padding-left: 17px;">
+                  <div class="multipleComments col-sm-12 requiredBar" id="multipleComments" style="padding-left: 2px;">
                   </div>
                   <div class="col-sm-4 multicomments-required"> Enter comments !</div>
                 </div>
@@ -293,10 +293,10 @@
                               <div id="trackCountsDiv"></div>
                            </fieldset>
                         </div>
-                        <!-- 
+                        <!--
                         Removed as part of this below radar!
                         <rdar://problem/19800926> UI : Wave - M2 - Ref data - Country Licensors - Comments are not visible in the View pricing Model Popup
-                        
+
                         <div class="col-sm-12">
                            <label for="" class="col-sm-2 control-label" style="text-align: left;padding-left: 0px;">Comments: </label>
                            <div id="priceModelmultipleComments" class="col-sm-10 normalBar">

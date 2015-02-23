@@ -643,12 +643,12 @@ var page = Component.extend({
           '#pricingModelBtn click': function(){
             var self = this.scope;
 
-            var selmodelid =  self.pageState.entityCountryDetails.pricingModelId;
+            var selmodelid =  $("#entityPricingModelVersionId").val();
 
             var entityName  = $("#licensorId :selected").text();
-            var countryId = self.pageState.entityCountryDetails.entityCountry.attr("countryId");
+            var id = self.pageState.entityCountryDetails.entityCountry.attr("id");
 
-            var genObj = {modelId:selmodelid, reqType:'countryLicensordetails', "countryId" : countryId, "entityName" : entityName};
+            var genObj = {modelId:selmodelid, reqType:'countryLicensordetails', "entityName" : entityName, id: id };
 
             console.log("Request is " +JSON.stringify(UserReq.formRequestDetails(genObj)));
             CountryLicensor.findOne(UserReq.formRequestDetails(genObj),function(data){

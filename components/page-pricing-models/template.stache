@@ -59,31 +59,24 @@
 
 			<div class="right-pb-container">
 					{{#if editstate}}
-					<div class="col-sm-6 form-group" style="margin-left:0px;">
-				 		<div class="singleField">
-						    <label for="inputEmail3" class="col-sm-3 control-label">Version:</label>
-						    <div class="col-sm-4 requiredBar">
-						    	<select  class="form-control" name="version" id="version" can-value="selectedModelId">
-							       <option value="">Select</option>
-							        {{#each pmVersion}}
-									  <option value="{{modelId}}">{{version}}</option>
-									 {{/each}}
-								</select>
-						    </div>
-					  	</div>
-					 </div>
-			<!--		<div class="col-sm-6" style="margin-left:0px;width:100%;"></div>-->
-
-            <div class="col-sm-12">
-                <div class="greyHeader">Versions</div>
-					<div id="country-lic-grid">
-						<countrylic-grid></countrylic-grid>
-					</div>
-              </div>
+                            <div class="col-sm-6 form-group" style="margin-left:0px;">
+                                <div class="singleField">
+                                    <label for="inputEmail3" class="col-sm-3 control-label">Version:</label>
+                                    <div class="col-sm-4 requiredBar">
+                                        <select  class="form-control" name="version" id="version" can-value="selectedModelId">
+                                            <option value="">Select</option>
+                                            {{#each pmVersion}}
+                                            <option value="{{modelId}}">{{version}}</option>
+                                            {{/each}}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
 					{{/if}}
 
+                    <div class="col-sm-12 divider"></div>
 					<div class="col-sm-6 form-group" style="margin-left:0px;">
-				 		<div class="singleField" style="padding-top: 24px;padding-right:0;">
+				 		<div class="singleField" style="padding-right:0;">
 						    <label for="inputEmail3" class="col-sm-3 control-label">Pricing Model:</label>
 						    <div class="col-sm-4 requiredBar">
 						    	<select class="form-control" name="pricingmodeltype" id="pricingmodeltype" can-value="pricingmodeltype" style="width:100%;">
@@ -95,8 +88,9 @@
 						    </div>
 					  	</div>
 					 </div>
+
 					<div class="col-sm-6 form-group">
-				 		<div class="singleField" style="padding-top: 24px;padding-right:0;">
+				 		<div class="singleField" style="padding-right:0;">
 						    <label for="inputEmail3" class="col-sm-3 control-label">Model Name:</label>
 						    <div class="col-sm-6 requiredBar">
 						      	<input class="form-control" type="text" name="modelname" id="modelname" can-value="modelname" style="width:100%;">
@@ -104,7 +98,7 @@
 					  	</div>
 					</div>
 					<div class="col-sm-12">
-                                  <div class="greyHeader">Society Model Mapping</div>
+                                  <div class="greyHeader">Base Model Parameter</div>
 										<div class="table-responsive maxheightGrid" id="baseModelParam">
 									  		<table class="table table-condensed table-striped breakdown" id="baseModelTable">
 											    <thead>
@@ -242,26 +236,35 @@
 						</div>
 
 
-						{{#if editstate}}
-								{{#if isCommentData}}
-								 <!--	<legend class="scheduler-border" style="margin-left: 50px;width:50%;">Comments</legend>-->
-                            <div class="col-sm-12">
-                            <div class="greyHeader">Comments</div>
+                    {{#if editstate}}
+                        <div class="col-sm-12">
+                            <div class="greyHeader">Versions</div>
+                            <div id="country-lic-grid">
+                                <countrylic-grid></countrylic-grid>
+                            </div>
+                        </div>
+                    {{/if}}
 
-										<div id="multipleComments" class="requiredBar">
-											<multiple-comments divid="usercommentsdiv" options="{multipleComments}" divheight="100" isreadOnly="n"></multiple-comments>
-										</div>
-									</div>
-								{{/if}}
-							{{else}}
-							<!--<legend class="scheduler-border" style="margin-left: 50px;width:50%;">Comments</legend>-->
-                            <div class="greyHeader">Comments</div>
-							<div class="col-sm-12">
-								<div id="multipleComments" class="requiredBar">
-								<textarea class="form-control" id="usercomments" name="usercommentsdiv"  can-value="usercommentsStore"></textarea>
-								</div>
-							</div>
-							{{/if}}
+                    {{#if editstate}}
+                            {{#if isCommentData}}
+                             <!--	<legend class="scheduler-border" style="margin-left: 50px;width:50%;">Comments</legend>-->
+                        <div class="col-sm-12" style="margin-top: 20px;">
+                        <div class="greyHeader">Comments</div>
+
+                                    <div id="multipleComments" class="requiredBar" style="width:49.776785714%;">
+                                        <multiple-comments divid="usercommentsdiv" options="{multipleComments}" divheight="100" isreadOnly="n"></multiple-comments>
+                                    </div>
+                                </div>
+                            {{/if}}
+                        {{else}}
+                        <!--<legend class="scheduler-border" style="margin-left: 50px;width:50%;">Comments</legend>-->
+                        <div class="greyHeader">Comments</div>
+                        <div class="col-sm-8">
+                            <div id="multipleComments" class="requiredBar"  style="width:49.776785714%;">
+                            <textarea class="form-control" id="usercomments" name="usercommentsdiv"  can-value="usercommentsStore"></textarea>
+                            </div>
+                        </div>
+                    {{/if}}
 
 		  		</div>
 			</div>

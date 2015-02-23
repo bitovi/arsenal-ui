@@ -533,271 +533,281 @@ var page = Component.extend({
 
       self.editable = "";
 
-      var countryModelObj = values[0].licensorDetails.commentList;
+      if(values[0].licensorDetails.id == "0") {
 
-      rows = values[0].licensorDetails.countryModelMappings;
-
-      self.reportConfMap = values[0].licensorDetails.reportConfMap;
-
-      self.licDetails.attr("data", values[0].licensorDetails);
-
-      var countries = [];
-
-      for (var i=0; i<self.licDetails.data.countries.length; i++) {
-
-          var countryObj = {"" : {}};
-
-          var country = {};
-
-          var name = self.licDetails.data.countries[i];
-
-          country.name = self.licDetails.data.countries[i];
-          //country.selected = true;
-           var countryIdName=name.split(":");
-           country.id = countryIdName[0];
-           country.name = countryIdName[1];
-
-          countryObj[name] =  country;
-
-          self.countries.push(country);
-
-      }
-
-      var reportType = [];
-
-      for (var i=0; i<self.licDetails.data.reportTypes.length; i++) {
-
-          var report = {};
-
-          report.name = self.licDetails.data.reportTypes[i].split("@")[0];
-          report.actualName = self.licDetails.data.reportTypes[i];
-          //report.selected = false;
-
-          self.reportTypes.push(report);
-
-
-      }
-
-      self.loadCountryReportconfiguration();
-
-      self.invoiceType = values[0].licensorDetails.invoiceDetailType;
-
-      if(self.invoiceType != null) {
-
-        $("#invoiceType").val(self.invoiceType);
-
+        $("#loading_img").hide();
+        $("#entityLicensorBottom").hide();
+        var msg = "No details present";
+        
+        commonUtils.displayUIMessageWithDiv("#invmessageDiv", "FAILURE", msg);
+    
       } else {
 
-        $("#invoiceType").val("Select");
+        var countryModelObj = values[0].licensorDetails.commentList;
 
-      }
+        rows = values[0].licensorDetails.countryModelMappings;
 
-      self.attr("periodToVal",self.licDetails.data.validTo);
+        self.reportConfMap = values[0].licensorDetails.reportConfMap;
 
-      self.attr("periodFromVal", self.licDetails.data.validFrom);
+        self.licDetails.attr("data", values[0].licensorDetails);
 
-      if (self.periodToVal != undefined && self.periodToVal != "0" && self.periodToVal != null && self.periodToVal.toString().length >= 6) {
+        var countries = [];
 
-          self.attr("periodToVal",PeriodWidgetHelper.getDisplayPeriod(self.periodToVal.toString(), "P"));
+        for (var i=0; i<self.licDetails.data.countries.length; i++) {
 
-      } else {
+            var countryObj = {"" : {}};
 
-        self.attr("periodToVal", "");
+            var country = {};
 
-      }
+            var name = self.licDetails.data.countries[i];
 
-      if (self.periodFromVal != undefined && self.periodFromVal != "0" && self.periodFromVal != null && self.periodFromVal.toString().length >= 6) {
+            country.name = self.licDetails.data.countries[i];
+            //country.selected = true;
+             var countryIdName=name.split(":");
+             country.id = countryIdName[0];
+             country.name = countryIdName[1];
 
-          self.attr("periodFromVal",PeriodWidgetHelper.getDisplayPeriod(self.periodFromVal.toString(), "P"));
+            countryObj[name] =  country;
 
-
-      } else {
-
-        self.attr("periodfromVal", "");
-
-      }
-
-      //$(".periodFromInput").val(self.periodFromInput);
-      //$(".periodToInput").val(self.periodToInput);
-
-      if(self.licDetails.data.status == "A") {
-
-        self.licDetails.data.attr("status","Active");
-
-      } else if (self.licDetails.data.status == "I") {
-
-        self.licDetails.data.attr("status","Inactive");
-
-      } else if (self.licDetails.data.status == "N") {
-
-        self.licDetails.data.attr("status","Rejected");
-
-      }
-
-
-      /**  Revision History  **/
-      if(self.licDetails.data.revisionHistories != null) {
-        for(var i=0; i<self.licDetails.data.revisionHistories.length; i++) {
-
-          var tempArr = {};
-
-          if(self.licDetails.data.revisionHistories[i].countryName == null) {
-            self.licDetails.data.revisionHistories[i]._data.countryName = "";
-            self.licDetails.data.revisionHistories[i].countryName = "";
-          }
-
-          if(self.licDetails.data.revisionHistories[i].entity == null) {
-            self.licDetails.data.revisionHistories[i]._data.entity = "";
-            self.licDetails.data.revisionHistories[i].entity = "";
-          }
-
-          if(self.licDetails.data.revisionHistories[i].validFrom == null) {
-            self.licDetails.data.revisionHistories[i]._data.validFrom = "";
-            self.icDetails.data.revisionHistories[i].validFrom = "";
-          }
-
-          if(self.licDetails.data.revisionHistories[i].status == null) {
-            self.licDetails.data.revisionHistories[i].status = "";
-            self.licDetails.data.revisionHistories[i]._data.status = "";
-          } else {
-
-            if(self.licDetails.data.revisionHistories[i].status == 'A' ) {
-
-              self.licDetails.data.revisionHistories[i].status = "Active";
-              self.licDetails.data.revisionHistories[i]._data.status = "Active";
-            }
-            if(self.licDetails.data.revisionHistories[i].status == 'I' ) {
-
-              self.licDetails.data.revisionHistories[i].status = "Inctive";
-              self.licDetails.data.revisionHistories[i]._data.status = "Inactive";
-            }
-            if(self.licDetails.data.revisionHistories[i].status == 'N' ) {
-
-              self.licDetails.data.revisionHistories[i].status = "";
-              self.licDetails.data.revisionHistories[i]._data.status = "";
-            }
-
-          }
-
-
-          if(self.licDetails.data.revisionHistories[i].validTo == null) {
-            self.licDetails.data.revisionHistories[i].validTo = "";
-            self.licDetails.data.revisionHistories[i]._data.validTo = "";
-          }
-
-          if(self.licDetails.data.revisionHistories[i].commentText == null) {
-
-            var commentListLength = self.licDetails.data.revisionHistories[i].commentList.length;
-
-            self.licDetails.data.revisionHistories[i].commentText = commentListLength != null && commentListLength > 1  ? self.licDetails.data.revisionHistories[i].commentList[0].comments : "";
-            self.licDetails.data.revisionHistories[i]._data.commentText =  commentListLength != null && commentListLength > 1  ? self.licDetails.data.revisionHistories[i].commentList[0].comments : "";
-          }
+            self.countries.push(country);
 
         }
-      }
 
-      /**  populate data in the grids  **/
+        var reportType = [];
 
-      $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{commentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({commentObj}));
+        for (var i=0; i<self.licDetails.data.reportTypes.length; i++) {
 
-      /**  Country Model Mapping  **/
-      if(rows != null && rows.length > 0) {
+            var report = {};
 
-        $('#countryModelMapping').html(stache('<rn-grid-countrymodelmapping rows="{rows}"></rn-grid-countrymodelmapping>')({rows}));
+            report.name = self.licDetails.data.reportTypes[i].split("@")[0];
+            report.actualName = self.licDetails.data.reportTypes[i];
+            //report.selected = false;
 
-      } else {
+            self.reportTypes.push(report);
 
-        $('#countryModelMapping').html(stache('<rn-grid-countrymodelmapping emptyrows="{emptyrows}"></rn-grid-countrymodelmapping>')({emptyrows:true}));
-      }
 
-      if(from != undefined && from != null) {
+        }
 
-        rows = self.revisionHistory;
+        self.loadCountryReportconfiguration();
 
-      } else {
+        self.invoiceType = values[0].licensorDetails.invoiceDetailType;
 
-        self.revisionHistory = [];
+        if(self.invoiceType != null) {
 
-        self.revisionHistory = self.licDetails.data.revisionHistories;
-
-        rows = self.licDetails.data.revisionHistories;
-
-      }
-
-      $(".revHistCollapser").show();
-
-      if(rows != null && rows.length > 0) {
-
-          $('#revisionHistory').html(stache('<rn-grid-revisionhistory rows="{rows}"></rn-grid-revisionhistory>')({rows}));
+          $("#invoiceType").val(self.invoiceType);
 
         } else {
 
-          $('#revisionHistory').html(stache('<rn-grid-revisionhistory emptyrows="{emptyrows}"></rn-grid-revisionhistory>')({emptyrows:true}));
+          $("#invoiceType").val("Select");
 
         }
 
-      if(self.reportTypes == null || self.countries == null) {
+        self.attr("periodToVal",self.licDetails.data.validTo);
 
-          $("$repConfigurationTab").hide();
+        self.attr("periodFromVal", self.licDetails.data.validFrom);
 
+        if (self.periodToVal != undefined && self.periodToVal != "0" && self.periodToVal != null && self.periodToVal.toString().length >= 6) {
+
+            self.attr("periodToVal",PeriodWidgetHelper.getDisplayPeriod(self.periodToVal.toString(), "P"));
+
+        } else {
+
+          self.attr("periodToVal", "");
+
+        }
+
+        if (self.periodFromVal != undefined && self.periodFromVal != "0" && self.periodFromVal != null && self.periodFromVal.toString().length >= 6) {
+
+            self.attr("periodFromVal",PeriodWidgetHelper.getDisplayPeriod(self.periodFromVal.toString(), "P"));
+
+
+        } else {
+
+          self.attr("periodfromVal", "");
+
+        }
+
+        //$(".periodFromInput").val(self.periodFromInput);
+        //$(".periodToInput").val(self.periodToInput);
+
+        if(self.licDetails.data.status == "A") {
+
+          self.licDetails.data.attr("status","Active");
+
+        } else if (self.licDetails.data.status == "I") {
+
+          self.licDetails.data.attr("status","Inactive");
+
+        } else if (self.licDetails.data.status == "N") {
+
+          self.licDetails.data.attr("status","Rejected");
+
+        }
+
+
+        /**  Revision History  **/
+        if(self.licDetails.data.revisionHistories != null) {
+          for(var i=0; i<self.licDetails.data.revisionHistories.length; i++) {
+
+            var tempArr = {};
+
+            if(self.licDetails.data.revisionHistories[i].countryName == null) {
+              self.licDetails.data.revisionHistories[i]._data.countryName = "";
+              self.licDetails.data.revisionHistories[i].countryName = "";
+            }
+
+            if(self.licDetails.data.revisionHistories[i].entity == null) {
+              self.licDetails.data.revisionHistories[i]._data.entity = "";
+              self.licDetails.data.revisionHistories[i].entity = "";
+            }
+
+            if(self.licDetails.data.revisionHistories[i].validFrom == null) {
+              self.licDetails.data.revisionHistories[i]._data.validFrom = "";
+              self.icDetails.data.revisionHistories[i].validFrom = "";
+            }
+
+            if(self.licDetails.data.revisionHistories[i].status == null) {
+              self.licDetails.data.revisionHistories[i].status = "";
+              self.licDetails.data.revisionHistories[i]._data.status = "";
+            } else {
+
+              if(self.licDetails.data.revisionHistories[i].status == 'A' ) {
+
+                self.licDetails.data.revisionHistories[i].status = "Active";
+                self.licDetails.data.revisionHistories[i]._data.status = "Active";
+              }
+              if(self.licDetails.data.revisionHistories[i].status == 'I' ) {
+
+                self.licDetails.data.revisionHistories[i].status = "Inctive";
+                self.licDetails.data.revisionHistories[i]._data.status = "Inactive";
+              }
+              if(self.licDetails.data.revisionHistories[i].status == 'N' ) {
+
+                self.licDetails.data.revisionHistories[i].status = "";
+                self.licDetails.data.revisionHistories[i]._data.status = "";
+              }
+
+            }
+
+
+            if(self.licDetails.data.revisionHistories[i].validTo == null) {
+              self.licDetails.data.revisionHistories[i].validTo = "";
+              self.licDetails.data.revisionHistories[i]._data.validTo = "";
+            }
+
+            if(self.licDetails.data.revisionHistories[i].commentText == null) {
+
+              var commentListLength = self.licDetails.data.revisionHistories[i].commentList.length;
+
+              self.licDetails.data.revisionHistories[i].commentText = commentListLength != null && commentListLength > 1  ? self.licDetails.data.revisionHistories[i].commentList[0].comments : "";
+              self.licDetails.data.revisionHistories[i]._data.commentText =  commentListLength != null && commentListLength > 1  ? self.licDetails.data.revisionHistories[i].commentList[0].comments : "";
+            }
+
+          }
+        }
+
+        /**  populate data in the grids  **/
+
+        $('#multipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{commentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({commentObj}));
+
+        /**  Country Model Mapping  **/
+        if(rows != null && rows.length > 0) {
+
+          $('#countryModelMapping').html(stache('<rn-grid-countrymodelmapping rows="{rows}"></rn-grid-countrymodelmapping>')({rows}));
+
+        } else {
+
+          $('#countryModelMapping').html(stache('<rn-grid-countrymodelmapping emptyrows="{emptyrows}"></rn-grid-countrymodelmapping>')({emptyrows:true}));
+        }
+
+        if(from != undefined && from != null) {
+
+          rows = self.revisionHistory;
+
+        } else {
+
+          self.revisionHistory = [];
+
+          self.revisionHistory = self.licDetails.data.revisionHistories;
+
+          rows = self.licDetails.data.revisionHistories;
+
+        }
+
+        $(".revHistCollapser").show();
+
+        if(rows != null && rows.length > 0) {
+
+            $('#revisionHistory').html(stache('<rn-grid-revisionhistory rows="{rows}"></rn-grid-revisionhistory>')({rows}));
+
+          } else {
+
+            $('#revisionHistory').html(stache('<rn-grid-revisionhistory emptyrows="{emptyrows}"></rn-grid-revisionhistory>')({emptyrows:true}));
+
+          }
+
+        if(self.reportTypes == null || self.countries == null) {
+
+            $("$repConfigurationTab").hide();
+
+        }
+
+        //self.scope.countries.data.push(countries);
+
+        self.licDetails.data.cs=self.countries;
+
+        self.licDetails.data.rt=self.reportTypes;
+
+        for(var i=0; i<self.licDetails.data.contactDetails.length; i++) {
+
+          var contactDetails = {};
+
+          contactDetails.contactName = self.licDetails.data.contactDetails[i].contactName;
+
+          contactDetails.contactEmail = self.licDetails.data.contactDetails[i].contactEmail;
+
+          contactDetails.id = self.licDetails.data.contactDetails[i].id;
+
+          contactDetails.licensorId = self.licDetails.data.licensorId;
+
+          self.contactDetails.push(contactDetails);
+
+        }
+
+
+        $('.societyContactsTab').show();
+
+        $('#multipleComments').show();
+
+        $('.countryModelLabel').show();
+
+        $('#entityGrid').show();
+
+        $('.repConfigurationTab').show();
+
+        $('.societyContactsTab').show();
+
+        $('.RepSplit').show();
+
+        $('.buttonsBottom').show();
+
+        $('.status').show();
+
+        $('.uploadedFTP').show();
+
+        $('.paymentTerms').show();
+
+        setTimeout(function(){
+          alignGridStats('revisionHistory');
+          alignGridCountMap('countryModelMapping');
+          $('#repConfiguration .recordsCount').remove();
+          alignGridStats('repConfiguration');
+          alignGridStats('societyContacts');
+
+          var socTableWidthChild=$('#societyContacts table>thead>tr>th').outerWidth();
+          $('#societyContacts table>tbody>tr>th').css("width",socTableWidthChild);
+        },100);
       }
-
-      //self.scope.countries.data.push(countries);
-
-      self.licDetails.data.cs=self.countries;
-
-      self.licDetails.data.rt=self.reportTypes;
-
-      for(var i=0; i<self.licDetails.data.contactDetails.length; i++) {
-
-        var contactDetails = {};
-
-        contactDetails.contactName = self.licDetails.data.contactDetails[i].contactName;
-
-        contactDetails.contactEmail = self.licDetails.data.contactDetails[i].contactEmail;
-
-        contactDetails.id = self.licDetails.data.contactDetails[i].id;
-
-        contactDetails.licensorId = self.licDetails.data.licensorId;
-
-        self.contactDetails.push(contactDetails);
-
-      }
-
-
-      $('.societyContactsTab').show();
-
-      $('#multipleComments').show();
-
-      $('.countryModelLabel').show();
-
-      $('#entityGrid').show();
-
-      $('.repConfigurationTab').show();
-
-      $('.societyContactsTab').show();
-
-      $('.RepSplit').show();
-
-      $('.buttonsBottom').show();
-
-      $('.status').show();
-
-      $('.uploadedFTP').show();
-
-      $('.paymentTerms').show();
-
-      setTimeout(function(){
-        alignGridStats('revisionHistory');
-        alignGridCountMap('countryModelMapping');
-        $('#repConfiguration .recordsCount').remove();
-        alignGridStats('repConfiguration');
-        alignGridStats('societyContacts');
-
-        var socTableWidthChild=$('#societyContacts table>thead>tr>th').outerWidth();
-        $('#societyContacts table>tbody>tr>th').css("width",socTableWidthChild);
-      },100);
-
 
     },
 

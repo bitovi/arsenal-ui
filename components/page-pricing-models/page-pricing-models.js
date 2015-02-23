@@ -99,11 +99,15 @@ Switcher.extend({
   tag: 'rn-switcher',
   events: {
     'li click': function(el, ev) {
-      console.log(el);
+      //console.log(el);
       var option = el.data('option');
       this.scope.attr('selectedOption', option);
-      $(".toggleOption").html("");
-      el.html("<div class='toggleOption'>.</div>");
+      //this is not the proper fix.
+      if($(el).closest('page-pricing-models').length > 0){
+        $(".toggleOption").html("");
+        el.html("<div class='toggleOption'>.</div>");
+      }
+
     }
   }
 

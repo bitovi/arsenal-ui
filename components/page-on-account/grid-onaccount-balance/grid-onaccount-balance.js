@@ -98,11 +98,14 @@ var OnAccountBalance = Grid.extend({
           parentScopeVar.attr('showLoadingImage',true);
             onAccountBalance.findOne(createBalanceOnAccountRequest(this.scope.request.appstate),function(data){
               parentScopeVar.attr('showLoadingImage',false);
+                      var finalRows=[];
                       if(data["status"]=="SUCCESS"){
-                        if(data.onAccount != undefined && data.onAccount.onAccountDetails != undefined && data.onAccount.onAccountDetails.length==0){
-                          self.scope.attr('emptyrows',true);
+                        if (data.onAccount == undefined || (data.onAccount != undefined && data.onAccount.onAccountDetails == undefined) 
+                          || (data.onAccount.onAccountDetails != undefined && data.onAccount.onAccountDetails.length == 0)) {
+                          self.scope.attr('emptyrows', true);
+                          finalRows = [];
                           //recordsAvailable=data.recordsAvailable;
-                        }else{
+                        } else {
                           parentScopeVar.attr('recordsAvailableForOnAccBalance',data.recordsAvailable);
                           var oldRows = parentScopeVar.attr('onAccBalanceRows');
                           var detailRows = utils.prepareRowsForDisplay(data.onAccount.onAccountDetails,quarters);
@@ -113,11 +116,11 @@ var OnAccountBalance = Grid.extend({
                           if(detailRows != undefined && detailRows.length==0 && oldRows != undefined && oldRows.length==0){
                             self.scope.attr('emptyrows',true);
                           }else{
-                            var finalRows=detailRows;
-                            if(oldRows != undefined && oldRows.length>0){
+                              finalRows=detailRows;
+                            if(oldRows != undefined && oldRows.length>0 && parentScopeVar.attr('balanceOnAccOffset') > 0){
                               finalRows = parentScopeVar.attr('onAccBalanceRows').concat(detailRows);
                             }
-                             parentScopeVar.attr('onAccBalanceRows',finalRows);
+                             //parentScopeVar.attr('onAccBalanceRows',finalRows);
                            self.scope.rows.replace(finalRows);
                            if(footerRows != undefined && footerRows.length>0){
                              self.scope.footerrows.replace(footerRows);
@@ -137,6 +140,7 @@ var OnAccountBalance = Grid.extend({
                         commonUtils.showErrorMessage(data["responseText"]);
                         self.scope.attr('emptyrows',true);
                       }
+                      parentScopeVar.attr('onAccBalanceRows',finalRows);
                 }, function(xhr) {
                       console.error("Error while loading: onAccount balance Details"+xhr);
                 } );
@@ -148,8 +152,8 @@ var OnAccountBalance = Grid.extend({
       var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
       $(tbody[0]).scrollTop(tableScrollTopVal);
         $(tbody).on('scroll', function(ev) {
-          console.log("Intial height :"+(tbody[0].scrollTop + tbody[0].clientHeight)+" later height"+tbody[0].scrollHeight);
-          console.log(parentScopeVar.attr('recordsAvailableForOnAccBalance'));
+          //console.log("Intial height :"+(tbody[0].scrollTop + tbody[0].clientHeight)+" later height"+tbody[0].scrollHeight);
+          //console.log(parentScopeVar.attr('recordsAvailableForOnAccBalance'));
           if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight && parentScopeVar.attr('recordsAvailableForOnAccBalance')) {
             //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
 

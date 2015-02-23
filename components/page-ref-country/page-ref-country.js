@@ -277,8 +277,15 @@ var page = Component.extend({
             revHisTemp["id"] = revHistories[i]["id"];
             revHisTemp["validFrom"] = (revHistories[i]["validFrom"]==null)?"":revHistories[i]["validFrom"];
             revHisTemp["validTo"] = (revHistories[i]["validTo"]==null)?"":revHistories[i]["validTo"];
-            revHisTemp["comment"] = (revHistories[i]["commentList"] == undefined || revHistories[i]["commentList"] == null ||
-              (revHistories[i]["commentList"].length==0 || revHistories[i]["commentList"][0]["comments"]==null))?"":revHistories[i]["commentList"][0]["comments"];
+             revHisTemp["comment"] = (revHistories[i]["commentText"]==null)?"":revHistories[i]["commentText"];
+            //
+            // (revHistories[i]["commentList"] == undefined || revHistories[i]["commentList"] == null
+            //
+            // ||
+            //   (revHistories[i]["commentList"].length==0
+            //
+            //   || revHistories[i]["commentList"][0]["comments"]==null))?"":revHistories[i]["commentList"][0]["comments"];
+            //
             revHisTemp["status"] = revHistories[i]["status"];
             formatRevHistories.push(revHisTemp);
           }
@@ -725,7 +732,9 @@ var page = Component.extend({
             revHisTemp["id"] = revHistories[i]["id"];
             revHisTemp["validFrom"] = (revHistories[i]["validFrom"]==null)?"":revHistories[i]["validFrom"];
             revHisTemp["validTo"] = (revHistories[i]["validTo"]==null)?"":revHistories[i]["validTo"];
-            revHisTemp["comment"] = (revHistories[i]["commentList"].length==0 || revHistories[i]["commentList"][0]["comments"]==null)?"":revHistories[i]["commentList"][0]["comments"];
+
+          //  revHisTemp["comment"] = (revHistories[i]["commentList"].length==0 || revHistories[i]["commentList"][0]["comments"]==null)?"":revHistories[i]["commentList"][0]["comments"];
+          revHisTemp["comment"] = (revHistories[i]["commentText"]==null)?"":revHistories[i]["commentText"];
             revHisTemp["status"] = revHistories[i]["status"];
             formatRevHistories.push(revHisTemp);
           }

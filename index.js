@@ -54,8 +54,10 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
   //added for CSRF token
 
   if(appstate.userInfo == undefined){
-    window.location.href= URLs.UI_SERVICE_URL_CONTEXT;
-
+    window.location.href= URLs.UI_SERVICE_URL_CONTEXT + 'logout';
+    // $("#navigation-bar").hide();
+    // $("#globalFilterContainer").hide();
+    //document.getElementById("globalFilterContainer").style.display = 'none';
   }
 
   if(appstate.csrfToken != null && options.type=='POST' && options.url.indexOf(URLs.UI_SERVICE_URL) === 0)
@@ -90,6 +92,7 @@ $(document).ajaxComplete(function(ev, xhr, options) {
     var token = xhr.getResponseHeader('X-Apple-CSRF-Token');
     appstate.csrfToken = token;
     console.log("token=="+token);
+
   }
 
   // ony do this for regular requests

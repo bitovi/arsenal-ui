@@ -18,6 +18,7 @@ var BundleGrid = ScrollingGrid.extend({
     strippedGrid:true,
     editingRow: null,
     editingColumn: null,
+    isEditBundleClicked:false,
     columns: [
     {
       id: 'isHighPriority',
@@ -103,7 +104,7 @@ var BundleGrid = ScrollingGrid.extend({
     },
     cellContents: function(row, column) {
       if(this.attr('editingRow') === row && this.attr('editingColumn') === column) {
-        return stache('<div class="input-group"><input  type="text"  autofocus value="{{value}}" style="min-width: 200px;" class="form-control resizeBox editing" ><div class="input-group-btn"><button  class="btn btn-default cancelBundleEdit" style="background: url(\'/resources/images/ActionCancel.png\') no-repeat;background-size: 15px 15px;background-position: 50% 50%;" type="button"/><button  class="btn btn-default editName" style="background: url(\'/resources/images/checkMarkDark.png\') no-repeat;background-position: 50% 50%; background-size: 15px 15px;" type="button"/></div></div>')({value: row.bundleName});
+        return stache('<div class="input-group"><input  type="text"  autofocus  value="{{value}}" style="min-width: 200px;" class="form-control resizeBox editing" ><div class="input-group-btn"><button  class="btn btn-default cancelBundleEdit" style="background: url(\'/resources/images/ActionCancel.png\') no-repeat;background-size: 15px 15px;background-position: 50% 50%;" type="button"/><button  class="btn btn-default editName" style="background: url(\'/resources/images/checkMarkDark.png\') no-repeat;background-position: 50% 50%; background-size: 15px 15px;" type="button"/></div></div>')({value: row.bundleName});
       } else {
         return ScrollingGrid.prototype.helpers.cellContents.call(this, row, column);
       }
@@ -143,12 +144,19 @@ var BundleGrid = ScrollingGrid.extend({
     },
     '.editName click': function(el, ev) {
       // do validation here first
-      // console.log($(".editing").val())
-      if($(".editing").val().trim().length == 0) {
-        //el.addClass('error');
-        $(".editing").css( "border", "0.1em solid red" );
-        commonUtils.displayUIMessage( "Error", "Bundlename is Mandatory!");
-        console.log('error detected!');
+      this.scope.attr('isEditBundleClicked',true);
+      if($(".editing").val() == null ||
+        $(".editing").val() == undefined ||
+        $(".editing").val().trim().length == 0 ) {
+          //el.addClass('error');
+          $(".editing").css( "border", "0.1em solid red" );
+          commonUtils.displayUIMessage( "Error", "Bundlename is Mandatory!");
+          console.log('error detected!');
+          return false;
+      }else if($(".editing").val().trim().length  > 100) {
+          $(".editing").css( "border", "0.1em solid red" );
+          commonUtils.displayUIMessage( "Error", "Bundlename Length is 100 chars!");
+          console.log('error detected!');
         return false;
       }
       var self = this;
@@ -174,7 +182,11 @@ var BundleGrid = ScrollingGrid.extend({
 
 
     },
+    '.input-group click': function(el, ev) {
+      this.scope.attr('isEditBundleClicked',true);
+    },
     '.cancelBundleEdit click': function(el, ev) {
+      this.scope.attr('isEditBundleClicked',true);
       var column = el.closest('td').data('column').column;
       var row = el.closest('tr').data('row').row;
       //console.log('setting new value', el.val(), column, row);
@@ -186,6 +198,8 @@ var BundleGrid = ScrollingGrid.extend({
       });
     },
     '#bundleEditImage click': function(el, ev) {
+      console.log("bundleEditImage");
+      this.scope.attr('isEditBundleClicked',true);
       var column = el.closest('td').data('column').column;
       if(column.editable) {
         can.batch.start();
@@ -198,8 +212,14 @@ var BundleGrid = ScrollingGrid.extend({
     },
     'tbody tr click': function(el, ev) {
       //if(el.data('row') == undefined) return false;
-      var bundle = el.data('row').row;
-      this.scope.pageState.attr('selectedBundle', bundle);
+
+      if(this.scope.attr('isEditBundleClicked')){
+        //console.log("Bundle Editing is in Progress");
+        this.scope.attr('isEditBundleClicked',false);
+      }else{
+        var bundle = el.data('row').row;
+        this.scope.pageState.attr('selectedBundle', bundle);
+      }
 
     }
   }
