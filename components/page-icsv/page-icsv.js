@@ -210,6 +210,16 @@ var page = Component.extend({
                                   }
                               }
 
+                              for(var k =0; k < tempArr[i].invoiceDocuments.length; k++){
+                                if((tempArr[i].invoiceDocuments[k].errors != "undefined") && (tempArr[i].invoiceDocuments[k].errors != null)){
+                                    for(var key in tempArr[i].invoiceDocuments[k].errors.errorMap){  /*Invoice document error*/
+                                         if(tempArr[i].invoiceDocuments[k].errors.errorMap[key].trim())
+                                         errString += tempArr[i].invoiceDocuments[k].errors.errorMap[key]+", ";
+                                     }
+                                  }
+                              }
+
+
                              errString = errString.replace(/,\s*$/, "");
 
                                /*filtering duplicate invloiceline error*/
