@@ -20,6 +20,16 @@ var comments = Component.extend({
 
   },
   events: {
+      '.multiple-comments-child click':function(){
+      //  console.log("multiple-comments-child");
+        $(".multiple-comments-parent").toggleClass("showMultipleP");
+        $(".multiple-comments-child").toggleClass("showMultipleCh");
+      },
+      // '.corner click':function(){
+      //   console.log("multiple-comments-child");
+      //   $(".multiple-comments-parent").toggleClass("showMultipleP");
+      //   $(".multiple-comments-child").toggleClass("showMultipleCh");
+      // },
       "inserted": function(){
         var self = this;
         var commentsData=self.scope.options;
