@@ -818,6 +818,10 @@ var isError = false;
 
 }
 
+function hasDuplicates(a) {
+  return _.uniq(a, 'value').length !== a.length; 
+}
+
 function checkTrackValue(){
 
   var isError = false;
@@ -826,17 +830,38 @@ function checkTrackValue(){
 
   var _listofTo = $("input[id^='to-']").not(':hidden');
 
+  var multipleNull = 0; 
+
+  var duplicateToValue = [];
+
+  var duplicateFromValue = 0;
+
   if(_listofFrom.length > 1 && _listofTo.length > 1){
+
+    handleMsg("hide");
+
+    if(hasDuplicates(_listofFrom)){
+        isError=true;
+        handleMsg("show", "Multiple From Fields cannot have the same value or null value");
+        return isError;
+    }
+
+    if(hasDuplicates(_listofTo)){
+        isError=true;
+        handleMsg("show", "Multiple To Fields cannot have the same value or null value");
+        return isError;
+    }
 
     for(var i = 1; i < _listofFrom.length; i++){
 
       if( parseInt($(_listofFrom[i]).val()) === (parseInt($(_listofTo[i-1]).val()) + 1) ){
-        isError = false;
-        handleMsg("hide");
+        isError = false;        
       }else{
         isError = true;
         handleMsg("show", "Partition does not continue after previous one/ Not all Tiers contains edge values");
+        return isError;
       }
+
     }
   }
   return isError;

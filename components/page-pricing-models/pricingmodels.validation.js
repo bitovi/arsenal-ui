@@ -212,9 +212,9 @@ var pricingmodelValidation = {
                   'to[]': {
                       group:'.to',
                       validators: {
-                          notEmpty: {
-                              message: 'To is mandatory'
-                          },
+                          //notEmpty: {
+                          //    message: 'To is mandatory'
+                          //},
                           numeric: {
                             separator:'.',
                             message: 'Please provide numeric value for To'

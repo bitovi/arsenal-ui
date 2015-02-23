@@ -203,7 +203,7 @@
 											        	</div>
 													</td>
 													<td class="form-group">
-										            	<div class="to requiredBar">
+										            	<div class="to">
 										            		<input class="form-control" type="text" id='to-{{@index}}' can-value="trackCountMinimaList.{{@index}}.to" name="to[]">
 											        	</div>
 													</td>
