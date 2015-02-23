@@ -536,7 +536,7 @@ var page = Component.extend({
       if(values[0].licensorDetails.id == "0") {
 
         $("#loading_img").hide();
-        $("#entityLicensorBottom").hide();
+        $("#button_layout").hide();
         var msg = "No details present";
         
         commonUtils.displayUIMessageWithDiv("#invmessageDiv", "FAILURE", msg);
