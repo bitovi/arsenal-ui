@@ -103,13 +103,13 @@
 									  		<table class="table table-condensed table-striped breakdown" id="baseModelTable">
 											    <thead>
 											        <tr>
-											         	<th width="18%">Content Group</th>
-											            <th width="18%">Base Rate[%]</th>
-											            <th width="18%">Minima</th>
-											            <th width="20%">Listener Hours Minima</th>
-											            <th width="18%">Discount[%]</th>
-											            <th width="15%">isDefault</th>
-											            <th width="5%"><img id="addbasemodel" class="breakDownIconSize" src="resources/images/button_plus_blue.png"></th>
+											         	<th>Content Group</th>
+											            <th>Base Rate[%]</th>
+											            <th>Minima</th>
+											            <th>Listener Hours Minima</th>
+											            <th>Discount[%]</th>
+											            <th>isDefault</th>
+											            <th><img id="addbasemodel" class="breakDownIconSize" src="resources/images/button_plus_blue.png"></th>
 											        </tr>
 											    </thead>
 											    <tbody>

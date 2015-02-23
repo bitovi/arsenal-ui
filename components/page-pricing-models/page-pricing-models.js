@@ -274,7 +274,7 @@ var page = Component.extend({
                         if($.isNumeric(maxversion)){
                           $("#version").trigger('change');
                         }
-                    },1000);
+                    },1500);
 
                 setTimeout(function(){
                   addFooter('modelsummary');
@@ -315,7 +315,7 @@ var page = Component.extend({
                 $("#version").trigger('change');
               }
 
-          },1000);
+          },1500);
         }
 
        self.scope.attr("modelSumRowIndex", el.closest('tr')[0].rowIndex);
