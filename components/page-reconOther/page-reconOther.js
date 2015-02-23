@@ -259,6 +259,10 @@ var page = Component.extend({
     ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev) {
       var self = this;  //console.log($(item[0]).attr("class"));
       var val = $(item[0]).attr("class").split(" ");
+      
+      self.scope.attr("offset", 0);  //For other tab. Resetting offset to 0 for sorting
+      self.scope.attr("incomingOffset", 0);  //For invoices tab. Resetting offset to 0 for sorting
+      
       var existingSortColumns = self.scope.sortColumns.attr();
       var existingSortColumnsLen = existingSortColumns.length;
       var existFlag = false;
