@@ -149,7 +149,8 @@ var page = Component.extend({
     maxVersion:0,
     selectedModelId:"",
     modelSumRowIndex:"",
-    isError:false
+    isError:false,
+    mode: "FETCH"
 
 
   },
@@ -228,7 +229,7 @@ var page = Component.extend({
        clearOldEditData(self);
 
 
-
+       self.scope.attr("mode", "ADD")
       self.scope.addEditUIProperty.attr("country", true);
       self.scope.addEditUIProperty.attr("entity", true);
 
@@ -615,6 +616,7 @@ var page = Component.extend({
    "#add click":function(){
         var self = this;
 
+        self.scope.attr("mode", "ADD");
         self.scope.attr("showbottomSection", true);
         self.scope.attr("editstate", false);
        self.scope.addEditUIProperty.attr("country", false);
@@ -693,7 +695,53 @@ var page = Component.extend({
 
       console.log(JSON.stringify(saveRecord));
 
-       PricingModels.create(UserReq.formRequestDetails(saveRecord), function(data){
+      if( self.scope.attr("mode") == "ADD") {
+
+          PricingModels.add(UserReq.formRequestDetails(saveRecord), function(data){
+                  if(data["status"]=="SUCCESS"){
+                              var msg = data["responseText"];
+                              // $("#pbmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
+                              // $("#pbmessageDiv").css("display", "block");
+
+                              //    setTimeout(function(){
+                              //       $("#pbmessageDiv").hide();
+                              //    },5000);
+                                commonUtils.displayUIMessage(data["status"], msg);
+
+                                 var selModel = self.scope.attr("modelSumRowIndex");
+                                $("models-grid table tbody tr").eq(selModel-1).click();
+
+                                setTimeout(function(){
+                                    $("#version option:last-child").attr('selected', 'selected');
+                                 },1000);
+
+                                  if(self.scope.editstate == false){
+                                    clearOldEditData(self);
+                                  }
+
+                                  if(!self.scope.editstate){
+                                    $("#addbasemodel").trigger("click");
+                                    $("#addtrack").trigger("click");
+                                  }
+
+                              }
+                            else
+                            {
+                                var msg = data["responseText"];
+                                // $("#pbmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
+                                // $("#pbmessageDiv").show();
+                                // setTimeout(function(){
+                                //     $("#pbmessageDiv").hide();
+                                //  },5000);
+                                commonUtils.displayUIMessage(data["status"], msg);
+                            }
+                },function(xhr){
+                /*Error condition*/
+              });
+
+      } else {
+
+        PricingModels.create(UserReq.formRequestDetails(saveRecord), function(data){
                   if(data["status"]=="SUCCESS"){
                               var msg = data["responseText"];
                               // $("#pbmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
@@ -735,6 +783,7 @@ var page = Component.extend({
                 /*Error condition*/
               });
             }
+          }
     },
     helpers:{
               setHeight: function(){
