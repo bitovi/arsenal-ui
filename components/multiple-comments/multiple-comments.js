@@ -20,7 +20,7 @@ var comments = Component.extend({
 
   },
   events: {
-      '.multiple-comments-child click':function(){
+      '.corner click':function(){
       //  console.log("multiple-comments-child");
         $(".multiple-comments-parent").toggleClass("showMultipleP");
         $(".multiple-comments-child").toggleClass("showMultipleCh");
