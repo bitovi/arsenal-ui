@@ -71,7 +71,9 @@ var reconGrid = Grid.extend({
               } else {
                 var offsetVal = parentScopeVar.attr('incomingOffset');
                 parentScopeVar.attr('incomingOffset', (parseInt(offsetVal)+1));
-                parentScopeVar.attr('incomingScrollTop', (tbody[0].scrollHeight-100));
+                //parentScopeVar.attr('incomingScrollTop', (tbody[0].scrollHeight-100));
+                parentScopeVar.attr('incomingScrollTop', 0);
+                parentScopeVar.appstate.attr('globalSearchButtonClicked', false);
               }
 
               /* The below code calls {scope.appstate} change event that gets the new data for grid*/
