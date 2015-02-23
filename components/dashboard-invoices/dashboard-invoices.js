@@ -330,13 +330,43 @@ var getEntityDataList=function(_entityIds,_holeRptEnitities,_newHolesReport,loca
         }
        return 0 //default return value (no sorting)
       });
+      var localSocHole=getLocalSocietyHole(localSociety,_holeRptEnitities)
       _newHolesReport.holesList=holesList;
-      _newHolesReport.localDisplay=localDisplay;
+      _newHolesReport.localDisplay=localSocHole.show;
+      _newHolesReport.showLocalImage=localSocHole.showImage;
       _newHolesReport.displayBackGreen=(displayBackGreen)?true:undefined;
 
   return _newHolesReport;
 
 }
+
+var getLocalSocietyHole=function(localSociety,_holeRptEnitities){
+  var hole={};
+  var display="";
+  var showImage=false;
+  var _holeRptEnityObj = _.find(_holeRptEnitities, function(value) {
+         return value.entityName == localSociety;
+       });
+
+     if(_holeRptEnityObj != undefined){
+        hole.pdfCount=_holeRptEnityObj.pdfCount;
+        hole.ccidCount=_holeRptEnityObj.ccidCount;
+        if(_holeRptEnityObj.pdfCount > _holeRptEnityObj.ccidCount){
+          display="PDF";
+        }else if(_holeRptEnityObj.pdfCount < _holeRptEnityObj.ccidCount){
+          display="CCID";
+        }else if(_holeRptEnityObj.pdfCount>0 && _holeRptEnityObj.ccidCount>0){
+          showImage=true;
+        }
+        hole.show = display;
+        hole.isLA = (_holeRptEnityObj.laFlag == 'Y') ? true : false;
+        hole.showImage=showImage;
+    }else{
+      hole.isLicensorInvalidForCountry=true;
+    }
+  return hole;
+}
+
 var getHolesReportByEntity=function(holesReports,id){
   var holeReport=[];
   if(id != undefined && id.length >0){

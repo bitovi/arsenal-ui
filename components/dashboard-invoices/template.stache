@@ -62,7 +62,9 @@
           {{/holesList}}
 
           {{#if localDisplay}}
-            <td class="hole">{{localDisplay}}</td>
+              <td class="hole {{#if showLocalImage}}greenHighlight{{/if}}">
+               {{localDisplay}}
+              </td>
           {{else}}
             <td></td>
           {{/if}}
