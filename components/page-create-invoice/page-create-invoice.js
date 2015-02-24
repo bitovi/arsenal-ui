@@ -254,7 +254,30 @@ var page = Component.extend({
 				                        max:50,
 				                        message: 'Maximum 50 characters allowed',
 				                        utf8Bytes: true
-				                    }
+				                    },
+                                    callback: {
+                                   //     message: 'Special characters allowed in invoice number are space,slash,hyphen,apostrophe',
+                                        callback: function (value, validator, $field) {
+                                            var inputval=value.trim();
+//                                            if(inputval != ""){
+//                                                return {
+//                                                    valid: false,
+//                                                    message: 'Please provide invoice number'
+//                                                }
+//                                            }else
+                                            if (inputval != "" && inputval != undefined && inputval.length != 0){
+                                                var invoice_validate_RE=/^(0|[a-zA-Z0-9_ \/\-']*)$/g;
+                                                if(!invoice_validate_RE.test(inputval)){
+                                                    return {
+                                                        valid: false,
+                                                        message: "Special characters allowed in invoice number space,/,-,'"
+                                                    }
+                                                }
+                                            }
+                                            return true;
+                                        }
+                                    }
+
 				                }
 			            },
 			            invoicedate :{
