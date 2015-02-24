@@ -55,7 +55,7 @@
 				</div>
 		</div>
 
-		<div class="{{#if editstate}}col-sm-8 left-border{{else}}col-sm-12{{/if}} modelDetailContCls" {{#if editstate}} {{setHeight}} {{/if}}   id="modelDetailCont">
+		<div class="{{#if editstate}}col-sm-8 left-border{{else}}col-sm-8{{/if}} modelDetailContCls" {{#if editstate}} {{setHeight}} {{/if}}   id="modelDetailCont">
 
 			<div class="right-pb-container">
 					{{#if editstate}}
@@ -80,8 +80,7 @@
 						    <label for="inputEmail3" class="col-sm-3 control-label">Pricing Model:</label>
 						    <div class="col-sm-4 requiredBar">
 						    	<select class="form-control" name="pricingmodeltype" id="pricingmodeltype" can-value="pricingmodeltype" style="width:100%;">
-							       <option value="">Select</option>
-							        {{#each pricingmodeltypeStore}}
+							       {{#each pricingmodeltypeStore}}
 									  <option value="{{modelName}}">{{modelName}}</option>
 									 {{/each}}
 								</select>
@@ -93,7 +92,12 @@
 				 		<div class="singleField" style="padding-right:0;">
 						    <label for="inputEmail3" class="col-sm-3 control-label">Model Name:</label>
 						    <div class="col-sm-6 requiredBar">
-						      	<input class="form-control" type="text" name="modelname" id="modelname" can-value="modelname" style="width:100%;">
+						    	{{#if editstate}}
+						      	<input class="form-control" type="text" name="modelname" id="modelname" can-value="modelname" style="width:100%;" readonly>
+						    	{{else}}
+						    	<input class="form-control" type="text" name="modelname" id="modelname" can-value="modelname" style="width:100%;">
+						    	{{/if}}
+						    	
 						    </div>
 					  	</div>
 					</div>
@@ -127,22 +131,22 @@
 												        	</div>
 														</td>
 														<td class="form-group">
-											            	<div class="baseRate requiredBar">
+											            	<div class="baseRate">
 											            		<input class="form-control" id='baseRate-{{@index}}' can-value="baseModelParamList.{{@index}}.baseRate" name="baseRate[]">
 												        	</div>
 														</td>
 														<td class="form-group">
-											            	<div class="minima requiredBar">
+											            	<div class="minima">
 											            		<input class="form-control" type="text" id='minima-{{@index}}' can-value="baseModelParamList.{{@index}}.minima" name="minima[]">
 												        	</div>
 														</td>
 														<td class="form-group">
-											            	<div class="listenerMinima requiredBar">
+											            	<div class="listenerMinima">
 											            		<input class="form-control" type="text" id='listenerMinima-{{@index}}' can-value="baseModelParamList.{{@index}}.listenerMinima" name="listenerMinima[]">
 												        	</div>
 														</td>
 														<td class="form-group">
-											            	<div class="discount requiredBar">
+											            	<div class="discount">
 											            		<input class="form-control" type="text" id='discount-{{@index}}' can-value="baseModelParamList.{{@index}}.discount" name="discount[]">
 												        	</div>
 														</td>
@@ -193,12 +197,12 @@
 										      <tr id="breakrow0" rowid="0">
 
 													<td class="form-group">
-										            	<div class="description requiredBar">
+										            	<div class="description">
 										            		<input class="form-control" id='description' can-value="trackCountMinimaList.{{@index}}.description" id="description-{{@index}}" name="description[]">
 											        	</div>
 													</td>
 													<td class="form-group">
-										            	<div class="from requiredBar">
+										            	<div class="from">
 										            		<input class="form-control" type="text" id='from-{{@index}}' can-value="trackCountMinimaList.{{@index}}.from" name="from[]">
 											        	</div>
 													</td>
@@ -208,7 +212,7 @@
 											        	</div>
 													</td>
 													<td class="form-group">
-										            	<div class="minimatrack requiredBar">
+										            	<div class="minimatrack">
 										            		<input  class="form-control" type="text" id='minima-{{@index}}' can-value="trackCountMinimaList.{{@index}}.minima" name="minimatrack[]">
 											        	</div>
 													</td>
@@ -258,9 +262,10 @@
                             {{/if}}
                         {{else}}
                         <!--<legend class="scheduler-border" style="margin-left: 50px;width:50%;">Comments</legend>-->
-                        <div class="greyHeader">Comments</div>
-                        <div class="col-sm-8">
-                            <div id="multipleComments" class="requiredBar"  style="width:49.776785714%;">
+                       
+                        <div class="col-sm-5">
+                            <div class="greyHeader">Comments</div>
+                            <div id="multipleComments" class="requiredBar">
                             <textarea class="form-control" id="usercomments" name="usercommentsdiv"  can-value="usercommentsStore"></textarea>
                             </div>
                         </div>
@@ -270,12 +275,12 @@
 			</div>
 	   </div>
 	   {{#if editstate}}
-			<div  class="col-sm-12"  style="text-align:right;padding:15px 3%;">
+			<div  class="col-sm-12"  style="text-align:right;padding:15px 3%;border-top:1px solid #DAD7D7;">
 					<button type="button" class="btn btn-default btn-custom-small" id="editCancel">Cancel</button>
 					<button id="save" type="button" class="btn btn-primary btn-custom-small" style="margin-left:10px;">Submit</button>
 			</div>
 		{{else}}
-			<div  class="col-sm-12" style="text-align:right;padding:15px 3%;">
+			<div  class="col-sm-12" style="text-align:right;padding:15px 3%; border-top:1px solid #DAD7D7;">
 					<button type="button" class="btn btn-default btn-custom-small" id="addCancel">Cancel</button>
 					<button id="save" type="button" class="btn btn-primary btn-custom-small" style="margin-left:10px;">Submit</button>
 			</div>
