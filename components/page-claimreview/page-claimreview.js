@@ -1335,7 +1335,7 @@ function CurrencyFormat(number) {
       var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
       return n;
     } else {
-      return 0;
+      return "0.00";
     }
 }
 function getInvoiceStatus(invStatus){
