@@ -2162,22 +2162,17 @@ var page = Component.extend({
 
           if(values[0].status == "SUCCESS") {
              if(values[0].licensorDetails != undefined && values[0].licensorDetails.id == 0) {
-
                 $("#loading_img").hide();
-                //$("#button_layout").hide();
-
                 $("#buttonsubmit").hide();
-                $("#buttonreset").hide();
-                
-                var msg = "No details present";
-                
+                $("#buttonreset").hide();             
+                var msg = "No details present";               
                 commonUtils.displayUIMessageWithDiv("#invmessageDiv", "FAILURE", msg);
               }else{
                 self.scope.populateAnalyticsPage(values);
                  $("#loading_img").hide();
+                self.scope.reValidateFiledsonLoad();
                 $("#buttonsubmit").show();
                 $("#buttonreset").show();
-                self.scope.reValidateFiledsonLoad();
               }
 
           } else {
