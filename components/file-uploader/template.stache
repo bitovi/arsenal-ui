@@ -39,7 +39,7 @@
 
             <ul class="filelist" style="padding-left: 5px;">
                 {{#fileList}}
-                  <li {{data 'listView'}} class="{{#if filePath}}uploaded{{/if}} {{#if fileId}}uploaded{{/if}}">
+                  <li {{data 'listView'}} class="{{#if filePath}}uploaded{{/if}} {{#if fileId}}uploaded{{/if}} {{#if isInValid}}inValid-style{{/if}}" >
                     {{#if fileName}}
                       {{#if fileId}}
                          <a  class="downLoad-Link" id="{{fileId}}">{{getFileName fileName}} {{#if fileSize}} ({{fileSize}} KB){{/if}} </a>
