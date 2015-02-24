@@ -59,7 +59,7 @@ var page = Component.extend({
     //populateDefaultData:'@',
     load : true,
     recordsAvailable : true,
-
+    totalRecordCount:'@',
     reconStatsDetailsSelected : [],
 
     //bottomgrid
@@ -652,7 +652,7 @@ var fetchReconIngest = function(scope, load){
         }
         scope.recordsAvailable = data.recordsAvailable;
         scope.reconStatsDetailsSelected = data.reconStatsDetails;
-
+        scope.totalRecordCount = data.totRecCnt;
         scope.currencyScope.replace(data.currency);
 
         if(scope.reconRefresh[0] != undefined) {
@@ -677,7 +677,7 @@ var fetchReconIngest = function(scope, load){
             "copConAmt": data.summary.totalCopCon,
             "unMatchedAmt": data.summary.totalUnMatched!= undefined && data.summary.totalUnMatched!= null ? data.summary.totalUnMatched : 0.00,
             "badLines": data.summary.totalBadLines,
-            "ccidId":"",
+            "ccidId": scope.totalRecordCount +" invocies",
             "entityName":"",
             "countryId":"",
             "contType":"",

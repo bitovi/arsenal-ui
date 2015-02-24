@@ -251,10 +251,6 @@ var page = Component.extend({
 				                        max:50,
 				                        message: 'Maximum 50 characters allowed',
 				                        utf8Bytes: true
-				                    },
-				                    regexp: {
-				                        regexp: /^[a-zA-Z0-9_\- ]*$/i,
-				                        message: 'Please provide valid characters'
 				                    }
 				                }
 			            },
@@ -344,11 +340,7 @@ var page = Component.extend({
 			                    notEmpty: {
 			                        message: 'Amount is mandatory'
 			                    },
-			                    numeric: {
-			                        separator:',',
-			                        message: 'Please provide numeric value for amount'
-	                			},
-	                			callback: {
+			                    callback: {
 			                            message: 'Please provide positive value for amount',
 			                            callback: function (value, validator, $field) {
 			                                      var inputval=value.trim();
@@ -358,13 +350,13 @@ var page = Component.extend({
 								                                    message: 'Please provide positive invoice amount'
 								                                }
 							                              }else if (inputval != "" && inputval != undefined && inputval.length != 0){
-			                                        var decimal_validate_RE=/^\d{0,10}(\.\d{0,8})?$/;
-			                                        if(!decimal_validate_RE.test(inputval)){
-			                                          return {
-			                                            valid: false,
-			                                            message: 'Please provide invoice amount in [##########.########] format'
-			                                          }
-			                                        }
+					                                        var decimal_validate_RE=/^[0-9\,]*(\.[0-9]{0,8})?$/g;
+					                                        if(!decimal_validate_RE.test(inputval)){
+					                                          return {
+					                                            valid: false,
+					                                            message: 'Please provide valid invoice amount. Example: [###,###,####.########]'
+					                                          }
+					                                        }
 			                                      }
 											return true;
 			                            }
