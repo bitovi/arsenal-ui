@@ -22,7 +22,7 @@ var reconGrid = Grid.extend({
     'inserted': function(){
       var self= this;
       var tbody = self.element.find('tbody');
-    
+
       if(self.scope.attr("pagename")=="recon"){
         var parentScopeVar = self.element.closest('page-recon').scope();
         var tableScrollTopVal = parentScopeVar.attr('ingestedScrollTop');
@@ -30,14 +30,14 @@ var reconGrid = Grid.extend({
           $(tbody).on('scroll', function(ev) {
             if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight && parentScopeVar.recordsAvailable) {
               //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
-              
+
               var tabSelected = parentScopeVar.attr('tabSelected');
               /* Reset the offset value and call the webservice to fetch next set of records */
               if(tabSelected=="Ingested"){
                 var offsetVal = parentScopeVar.attr('ingestedOffset');
                 parentScopeVar.attr('ingestedOffset', (parseInt(offsetVal)+1));
                 parentScopeVar.attr('ingestedScrollTop', (tbody[0].scrollHeight-100));
-              } 
+              }
               parentScopeVar.appstate.attr('globalSearchButtonClicked', false);
               parentScopeVar.attr("load", false);
 
@@ -58,7 +58,7 @@ var reconGrid = Grid.extend({
           $(tbody).on('scroll', function(ev) {
             if(tbody[0].scrollTop + tbody[0].clientHeight + 3 >= tbody[0].scrollHeight && parentScopeVar.recordsAvailable) {
               //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
-              
+
               var tabSelected = parentScopeVar.attr('tabSelected');
               parentScopeVar.attr("load", false);
               if(tabSelected=="Other") {
@@ -96,7 +96,7 @@ var reconGrid = Grid.extend({
         var tableScrollTopVal=0;
         if(tabSelected=="Ingested"){
           setTimeout(function(){
-            alignGrid("ingested");
+            //alignGrid("ingested");
             tableScrollTopVal = parentScopeVar.attr('ingestedScrollTop');
             $(tbody[0]).scrollTop(tableScrollTopVal);
           },10);
@@ -107,19 +107,19 @@ var reconGrid = Grid.extend({
         var tableScrollTopVal=0;
         if(tabSelected=="Other"){
           setTimeout(function(){
-            alignGrid("reconstatsOtherGrid");
+            //alignGrid("reconstatsOtherGrid");
             tableScrollTopVal = parentScopeVar.attr('scrollTop');
             $(tbody[0]).scrollTop(tableScrollTopVal);
           },10);
         }  else {
           setTimeout(function(){
-            alignGrid("incomingDetails");
+            //alignGrid("incomingDetails");
             tableScrollTopVal = parentScopeVar.attr('incomingScrollTop');
             $(tbody[0]).scrollTop(tableScrollTopVal);
           },10);
         }
       }
-      
+
     },
     '.checkbox :checkbox change': function(el, ev) {
       var row = el.closest('tr').data('row').row;
@@ -136,7 +136,7 @@ var reconGrid = Grid.extend({
 });
 
 function alignGrid(divId){
-  var colLength = $('#'+divId+' table>thead>tr>th').length;
+  /*var colLength = $('#'+divId+' table>thead>tr>th').length;
   var rowLength = $('#'+divId+' table>tbody>tr').length;
   var divWidth = $('#'+divId).outerWidth();
   var tableWidth = 0;
@@ -152,12 +152,12 @@ function alignGrid(divId){
           tdWidth = theadTdWidth;
         else if(tfootTdWidth >= tbodyTdWidth && tfootTdWidth >= theadTdWidth)
           tdWidth = tfootTdWidth;
-        else 
+        else
           tdWidth = tbodyTdWidth;
 
         if(i==1)
           tdWidth = 35;
-        
+
         tableWidth += tdWidth;
         cellWidthArr.push(tdWidth);
       }
@@ -182,7 +182,7 @@ function alignGrid(divId){
         }
         $('#'+divId+' table').css("width",tableWidth);
       }
-  }
+  }*/
 }
 
 export default reconGrid;
