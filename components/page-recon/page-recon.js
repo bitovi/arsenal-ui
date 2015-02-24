@@ -591,7 +591,7 @@ var displayErrorMessage = function(message,log){
 
 /**/
 var fetchReconIngest = function(scope, load){
-  commonUtils.hideUIMessage(); 
+  commonUtils.hideUIMessage();
   //console.log("Loading Started");
   setTimeout(function(){$("#loading_img").show()},50);
   var searchRequestObj = getSearchReqObj(scope);
@@ -610,7 +610,7 @@ var fetchReconIngest = function(scope, load){
       scope.attr("ingestedScrollTop",0);
   }
   searchRequestObj.searchRequest["limit"] = "10";
-  
+
   searchRequestObj.searchRequest["sortBy"] = scope.sortColumns.attr().toString();
   searchRequestObj.searchRequest["sortOrder"] = scope.sortDirection;
 
@@ -670,7 +670,6 @@ var fetchReconIngest = function(scope, load){
         if(data.summary == undefined){
           console.error("Footer rows doesn't exists in the response");
         }
-
         scope.ingestList.footerRows.splice(0, scope.ingestList.footerRows.length);
         if (data.summary!== null) {
           var footerLine= {
@@ -714,11 +713,13 @@ var fetchReconIngest = function(scope, load){
       var ccids = scope.ingestCcidSelected;
       scope.setHeaderChkBox();
 
-      if(load)
-        scope.reconRefresh[0].loadRefreshStats(dataLowerGrid, scope.reconRefresh[0]);
-      else
+      if(load){
+        if(scope.attr("ingestedOffset") == 0){
+          scope.reconRefresh[0].loadRefreshStats(dataLowerGrid, scope.reconRefresh[0]);
+        }
+      }else{
         scope.attr("load", true);
-      
+      }
 
    /* } else {
       scope.attr("load", true);
