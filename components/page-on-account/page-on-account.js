@@ -267,6 +267,12 @@ var page = Component.extend({
                     genObj["regionId"]=request.searchRequest.regionId;
                     self.scope.attr('showLoadingImage',true);
                     LicensorCurrency.findAll(requestHelper.formRequestDetails(genObj)).then(function(data) {
+
+                    if(data["status"]=="SUCCESS"){
+                      if(data["responseCode"]!= "0000"){
+                           commonUtils.showSuccessMessage(data["responseText"]);
+                      } 
+                    }  
                     self.scope.attr('showLoadingImage',false);
                     var rows = utils.frameRows(data.licensorCurrencies,quarters);
                     request.rows=rows;
@@ -610,6 +616,9 @@ var page = Component.extend({
             self.scope.attr('showLoadingImage',false);
             if(data["status"]=="SUCCESS"){
 
+                if(data["responseText"].indexOf("No data found") > -1){
+                     commonUtils.showSuccessMessage(data["responseText"]);
+                } 
 
                 var returnValue = utils.prepareOnAccountRowsForDisplay(data.onAccount.onAccountDetails,quarters);
                 var finalRows = returnValue['ROWS'];
