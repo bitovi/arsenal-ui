@@ -23,13 +23,7 @@ var comments = Component.extend({
       '.corner click':function(){
         $(".multiple-comments-parent").toggleClass("showMultipleP");
         $(".multiple-comments-child").toggleClass("showMultipleCh");
-
       },
-      // '.corner click':function(){
-      //   console.log("multiple-comments-child");
-      //   $(".multiple-comments-parent").toggleClass("showMultipleP");
-      //   $(".multiple-comments-child").toggleClass("showMultipleCh");
-      // },
       "inserted": function(){
         var self = this;
         var commentsData=self.scope.options;
@@ -42,9 +36,6 @@ var comments = Component.extend({
              _.each(commentsData, function(comment) {
                commentsData1.push(comment);
              });
-
-
-
 
              commentsData1.sort(function(obj1, obj2) {
                if(obj1.id != undefined && obj2.id != undefined){
@@ -59,7 +50,6 @@ var comments = Component.extend({
 
                  commentsData = commentsData1;
            }
-
 
         }
         //Specific to PBR module - End
@@ -85,7 +75,6 @@ var comments = Component.extend({
                 }else{
                   $("#"+tempDivID).html("<span class='commentuser'></span> <span class='commentdate'>on "+createdDateFormat+"</span><br><span class='commenttext'>"+val.comments+"</span>");
                 }
-
               }
               else
               {
