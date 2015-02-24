@@ -25,7 +25,7 @@
       margin-top: 1px;
       background-color:#d3f0fe !important;
   }
-  
+
   #searchDiv > *{
     float:left;
     margin:0px 5px 0px 0px;
@@ -35,7 +35,7 @@
     float: none !important;
     padding: 4px 0 0 4px !important;
   }
-  
+
   .btn-display-center{
     text-align:center;
     position: absolute;
@@ -84,6 +84,65 @@
   padding-left:0 !important;
 }
 
+page-reconother{
+  .flex-basis(@basis) {
+    -webkit-flex-basis: @basis;
+    flex-basis: @basis;
+  }
 
+  .flex-grow(@grow) {
+    -webkit-flex-grow: @grow;
+    flex-grow: @grow;
+  }
+  #incomingDetailsGrid{
 
+    rn-recon-grid {
+      table {
+        width: 100%;
+        min-width:1600px;
 
+        tr > th, tr > td {
+          //padding: .3em .5em;
+          &.toggle { .flex-basis(35px);text-align:center; }
+          &.entityName { .flex-grow(1); .flex-basis(150px); }
+          &.countryId { .flex-grow(1); .flex-basis(70px); }
+          &.ccy  { .flex-basis(40px); }
+          &.contType { .flex-grow(1); .flex-basis(100px); }
+          &.fiscalPeriod { .flex-basis(85px); }
+          &.pubfee { .flex-grow(1);  .flex-basis(120px); text-align:right}
+          &.rcvdDate   {  .flex-basis(100px); }
+          &.amountColumn  { .flex-grow(1); .flex-basis(120px); }
+          &.invFileName { .flex-grow(2); .flex-basis(400px); }
+          &.status {  .flex-basis(120px); }
+        }
+      }
+    }
+  }
+
+  #reconstatsOtherGrids{
+    
+    rn-recon-grid {
+      table {
+        width: 100%;
+        min-width:500px;
+        //min-width:1600px;
+
+        tr > th, tr > td {
+          //padding: .3em .5em;
+          &.toggle { .flex-basis(35px);text-align:center; }
+          &.entityName { .flex-grow(1); .flex-basis(150px); }
+          &.countryId { .flex-grow(1); .flex-basis(70px); }
+          &.ccy  { .flex-basis(40px); }
+          &.contType { .flex-grow(1); .flex-basis(100px); }
+          &.fiscalPeriod { .flex-basis(85px); }
+          &.pubfee { .flex-grow(1);  .flex-basis(100px); text-align:right}
+          &.rcvdDate   {  .flex-basis(100px); }
+          &.amountColumn  { .flex-grow(1); .flex-basis(120px); }
+          &.invFileName { .flex-grow(2); .flex-basis(400px); }
+          &.status {  .flex-basis(120px); }
+        }
+      }
+    }
+  }
+
+}

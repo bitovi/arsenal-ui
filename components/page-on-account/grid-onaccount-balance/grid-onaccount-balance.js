@@ -100,6 +100,9 @@ var OnAccountBalance = Grid.extend({
               parentScopeVar.attr('showLoadingImage',false);
                       var finalRows=[];
                       if(data["status"]=="SUCCESS"){
+                        if(data["responseText"].indexOf("No data found") > -1){
+                             commonUtils.showSuccessMessage(data["responseText"]);
+                        }                       
                         if (data.onAccount == undefined || (data.onAccount != undefined && data.onAccount.onAccountDetails == undefined) 
                           || (data.onAccount.onAccountDetails != undefined && data.onAccount.onAccountDetails.length == 0)) {
                           self.scope.attr('emptyrows', true);

@@ -12,7 +12,7 @@
 </div>
 
 <div class="col-lg-12 recon-container">
- 
+
   <div id="content">
 
       <!-- Tabs - Start-->
@@ -60,13 +60,13 @@
 
       </div>
   </div>
-  
+
   <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="rejectModal" aria-hidden="true">
-    
+
     <div class="modal-dialog">
 
       <div class="modal-content">
-       
+
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">
                 <span aria-hidden="true">&times;</span>
@@ -87,7 +87,7 @@
       </div>
 
     </div>
-    
+
   </div>
 
 </div>

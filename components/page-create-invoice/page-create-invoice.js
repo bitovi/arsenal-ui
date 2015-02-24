@@ -251,10 +251,6 @@ var page = Component.extend({
 				                        max:50,
 				                        message: 'Maximum 50 characters allowed',
 				                        utf8Bytes: true
-				                    },
-				                    regexp: {
-				                        regexp: /^[a-zA-Z0-9_\- ]*$/i,
-				                        message: 'Please provide valid characters'
 				                    }
 				                }
 			            },
@@ -344,11 +340,7 @@ var page = Component.extend({
 			                    notEmpty: {
 			                        message: 'Amount is mandatory'
 			                    },
-			                    numeric: {
-			                        separator:',',
-			                        message: 'Please provide numeric value for amount'
-	                			},
-	                			callback: {
+			                    callback: {
 			                            message: 'Please provide positive value for amount',
 			                            callback: function (value, validator, $field) {
 			                                      var inputval=value.trim();
@@ -358,13 +350,13 @@ var page = Component.extend({
 								                                    message: 'Please provide positive invoice amount'
 								                                }
 							                              }else if (inputval != "" && inputval != undefined && inputval.length != 0){
-			                                        var decimal_validate_RE=/^\d{0,10}(\.\d{0,8})?$/;
-			                                        if(!decimal_validate_RE.test(inputval)){
-			                                          return {
-			                                            valid: false,
-			                                            message: 'Please provide invoice amount in [##########.########] format'
-			                                          }
-			                                        }
+					                                        var decimal_validate_RE=/^[0-9\,]*(\.[0-9]{0,8})?$/g;
+					                                        if(!decimal_validate_RE.test(inputval)){
+					                                          return {
+					                                            valid: false,
+					                                            message: 'Please provide valid invoice amount. Example: [###,###,####.########]'
+					                                          }
+					                                        }
 			                                      }
 											return true;
 			                            }
@@ -713,20 +705,20 @@ var page = Component.extend({
 		        $(".popover").hide();
 		      },
 
-		      "#receiveddate dp.change":function(event){ 
+		      "#receiveddate dp.change":function(event){
 
 		      	setTimeout(function(){
 		      		$('#invoiceform').bootstrapValidator('revalidateField', 'receiveddate');
 		      	}, 300);
 		      },
 
-		      "#invoiceduedate dp.change":function(event){ 
+		      "#invoiceduedate dp.change":function(event){
 		      	//console.log("ddate1");
 		      	 setTimeout(function(){
 		      	 //	console.log("ddate2");
 		      	 	$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
 		      	 }, 300);
-		      	
+
 		      },
 
 
@@ -878,29 +870,21 @@ var page = Component.extend({
 						self.scope.attr("currencyStore", invoiceData.invoiceCcy);
 					}
 				});
-
 				self.scope.createPBRequest();
+			}else{
 
-			}
+        //reset Country, Licensor, Currency
+        self.scope.attr("currency").splice(0, self.scope.currency.length);
+        self.scope.attr("licensor").splice(0, self.scope.licensor.length);
+        var countryDD = $('.inputCountry');
+        countryDD.empty();
+        countryDD.html($('<option>').text("Select").val(""));
+
+      }
 		},
 		"{scope} licensorStore": function(event){
 			var self = this;
       loadCountries(this);
-			//var genObj = {licensorId:self.scope.attr("licensorStore")};
-			// Promise.all([Currency.getCurrByRegion(self.scope.attr("regionStore"))
-			//      ]).then(function(values) {
-			//      	self.scope.attr("currency").replace([]);
-			//      	self.scope.attr("currencyStore", "");
-			//      	var countryDD = $('.inputCountry');
-		 //         	countryDD.empty();
-		 //         	countryDD.html($('<option>').text("Select").val(""));
-
-			//      	self.scope.attr("currency").replace(values[0].data);
-			// 	    if(self.scope.editpage){
-			// 		    var invoiceData = self.scope.attr().invoiceContainer[0];
-			// 		    self.scope.attr("currencyStore", invoiceData.invoiceCcy);
-			// 		}
-			// });
 		},
 		"{scope} currencyStore": function(){
       loadCountries(this);
@@ -1368,12 +1352,12 @@ var page = Component.extend({
 						  	// 	});
 
 						  	// 	this.scope.contentTypeFilter.replace(this.scope.contentType);
-						  		
+
 						  		var self = this;
 						  		if(self.scope.attr("invoicetypeSelect") != '2'){
 						  			updateContentType(el);
 						  		}
-						  		
+
 							},
 						   '#inputMonth0 change':function(el){ /*validation for period*/
 						  		var self = this;
@@ -1729,9 +1713,9 @@ var page = Component.extend({
   var loadCountries = function(self){
     self.scope.getFxrate();
     var genObj = {regionId:self.scope.attr("regionStore"),
-    entityId:self.scope.attr("licensorStore"),
-    currency:self.scope.attr("currencyStore")
-  };
+                  entityId:self.scope.attr("licensorStore"),
+                  currency:self.scope.attr("currencyStore")
+                };
 
   if(self.scope.attr("currencyStore") == ""){
     return;
