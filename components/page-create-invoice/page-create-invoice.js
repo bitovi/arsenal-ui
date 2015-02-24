@@ -256,7 +256,6 @@ var page = Component.extend({
 				                        utf8Bytes: true
 				                    },
                                     callback: {
-                                   //     message: 'Special characters allowed in invoice number are space,slash,hyphen,apostrophe',
                                         callback: function (value, validator, $field) {
                                             var inputval=value.trim();
 //                                            if(inputval != ""){
@@ -270,7 +269,7 @@ var page = Component.extend({
                                                 if(!invoice_validate_RE.test(inputval)){
                                                     return {
                                                         valid: false,
-                                                        message: "Special characters allowed in invoice number space,/,-,'"
+                                                        message: "Special characters allowed in invoice number space,_,/,-,'"
                                                     }
                                                 }
                                             }
