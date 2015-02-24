@@ -839,8 +839,13 @@ var page = Component.extend({
     'td .society click': function(el, ev){
 
         var self = this;
-        self.scope.appstate.attr("licensorName", (el[0].getElementsByTagName("a")).length > 0 ?  ((el[0].getElementsByTagName("a"))[0]).getAttribute("value") : "") ;
-        commonUtils.navigateTo("licensor");
+        var licensor = el[0].getAttribute("value");
+        if(licensor != undefined && licensor.length>0){
+           self.scope.appstate.attr("licensorName",licensor);
+           commonUtils.navigateTo("licensor");
+        }
+        // self.scope.appstate.attr("licensorName", (el[0].getElementsByTagName("a")).length > 0 ?  ((el[0].getElementsByTagName("a"))[0]).getAttribute("value") : "") ;
+        // commonUtils.navigateTo("licensor");
         // this.scope.appstate.attr('page','licensor');
     },
     '.pricingModel click': function(item, el, ev){

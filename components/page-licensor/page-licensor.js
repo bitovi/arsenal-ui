@@ -2161,15 +2161,20 @@ var page = Component.extend({
         Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
           if(values[0].status == "SUCCESS") {
-            self.scope.populateAnalyticsPage(values);
+             if(values[0].licensorDetails != undefined && values[0].licensorDetails.id == 0) {
+                $("#loading_img").hide();
+                $("#buttonsubmit").hide();
+                $("#buttonreset").hide();             
+                var msg = "No details present";               
+                commonUtils.displayUIMessageWithDiv("#invmessageDiv", "FAILURE", msg);
+              }else{
+                self.scope.populateAnalyticsPage(values);
+                 $("#loading_img").hide();
+                self.scope.reValidateFiledsonLoad();
+                $("#buttonsubmit").show();
+                $("#buttonreset").show();
+              }
 
-            $("#loading_img").hide();
-            $("#buttonsubmit").show();
-            $("#buttonreset").show();
-
-            self.scope.reValidateFiledsonLoad();
-
-            //$('#entityLicensorBottom').bootstrapValidator('validate');
           } else {
 
             var msg = "No data fetched";
@@ -2181,8 +2186,8 @@ var page = Component.extend({
                 commonUtils.displayUIMessage(values[0].status, msg);
 
             $("#loading_img").hide();
-            $("#buttonsubmit").show();
-            $("#buttonreset").show();
+            //$("#buttonsubmit").show();
+            //$("#buttonreset").show();
 
           }
 

@@ -195,7 +195,11 @@
 
 												{{/each}}
 												</tbody>
-
+												<tfoot>
+											        <tr class="open">
+											          <td colspan="2">Number of stats: 9</td>
+											        </tr>
+											    </tfoot>
 												</table>
 											</fieldset>
 
