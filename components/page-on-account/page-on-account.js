@@ -260,6 +260,7 @@ var page = Component.extend({
             self.scope.attr('quarters',quarters);
             request.quarters=quarters;
             if(self.scope.tabsClicked=="NEW_ON_ACC"){
+                  commonUtils.hideUIMessage();
                   self.scope.attr('errorMessage',message);
                   if(message.length == 0){
                     $('#newonAccountGrid, #newonAccountGridComps').show();
@@ -611,7 +612,7 @@ var page = Component.extend({
           //   quarters = self.scope.defaultRequest.quarters;
           //   self.scope.attr('quarters',quarters);
           // }
-
+          commonUtils.hideUIMessage();
           proposedOnAccount.findOne(createProposedOnAccountRequest(appstate),function(data){
             self.scope.attr('showLoadingImage',false);
             if(data["status"]=="SUCCESS"){

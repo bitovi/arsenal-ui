@@ -433,6 +433,7 @@ var fetchReconDetailsOther = function(scope){
   searchRequestObj.searchRequest["filter"] = newFilterData;
 
   Recon.findOne((searchRequestObj), function(data) {
+    commonUtils.hideUIMessage(); 
     $("#loading_img").hide();
     if (data.status == "FAILURE") {
       // $("#messageDiv").html("<label class='errorMessage'>"+data.responseText+"</label>");
@@ -504,6 +505,8 @@ var fetchReconIncoming = function(scope, load) {
   searchRequestObj.searchRequest["filter"] = newFilterData;
 
   Recon.findOne((searchRequestObj), function(data) {
+
+    commonUtils.hideUIMessage(); 
     if (data.status == "FAILURE") {
       displayErrorMessage(data.responseText, "Failed to load the Recondetails:");
       //commonUtils.showErrorMessage(data.responseText);

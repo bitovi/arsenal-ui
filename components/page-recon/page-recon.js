@@ -514,6 +514,7 @@ var processRejectIngestRequest = function(scope,requestType){
 
       Promise.all([Recon.reject(rejectSearchRequestObj)]).then(function(values) {
 
+
         scope.attr("size_ingestCcidSelected", 0);
 
         if(values != null && values.length > 0) {
@@ -590,6 +591,7 @@ var displayErrorMessage = function(message,log){
 
 /**/
 var fetchReconIngest = function(scope, load){
+  commonUtils.hideUIMessage(); 
   //console.log("Loading Started");
   setTimeout(function(){$("#loading_img").show()},50);
   var searchRequestObj = getSearchReqObj(scope);
@@ -598,6 +600,9 @@ var fetchReconIngest = function(scope, load){
 
   if(load) {
     scope.attr("ingestCcidSelected").splice(0, scope.attr("ingestCcidSelected").length);
+    searchRequestObj.searchRequest["offset"] = scope.ingestedOffset;
+  }else{
+    searchRequestObj.searchRequest["offset"] = 0;
   }
 
   if(scope.appstate.attr('globalSearchButtonClicked')==true){
@@ -605,7 +610,7 @@ var fetchReconIngest = function(scope, load){
       scope.attr("ingestedScrollTop",0);
   }
   searchRequestObj.searchRequest["limit"] = "10";
-  searchRequestObj.searchRequest["offset"] = scope.ingestedOffset;
+  
   searchRequestObj.searchRequest["sortBy"] = scope.sortColumns.attr().toString();
   searchRequestObj.searchRequest["sortOrder"] = scope.sortDirection;
 

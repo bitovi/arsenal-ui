@@ -95,14 +95,16 @@ var OnAccountBalance = Grid.extend({
           };
 
           self.scope.columns.push(cashAdjustColumn);
+          commonUtils.hideUIMessage();
           parentScopeVar.attr('showLoadingImage',true);
             onAccountBalance.findOne(createBalanceOnAccountRequest(this.scope.request.appstate),function(data){
               parentScopeVar.attr('showLoadingImage',false);
                       var finalRows=[];
                       if(data["status"]=="SUCCESS"){
+
                         if(data["responseText"].indexOf("No data found") > -1){
-                             commonUtils.showSuccessMessage(data["responseText"]);
-                        }                       
+                          commonUtils.showSuccessMessage(data["responseText"]);
+                        }
                         if (data.onAccount == undefined || (data.onAccount != undefined && data.onAccount.onAccountDetails == undefined) 
                           || (data.onAccount.onAccountDetails != undefined && data.onAccount.onAccountDetails.length == 0)) {
                           self.scope.attr('emptyrows', true);
