@@ -119,7 +119,6 @@ var page = Component.extend({
     },
 
     isTabSelectedAs:function(tabName){
-      console.log("Tsting hereeeeeeee&&&&&",this.attr("tabSelected"),tabName);
       return 'style="display:' + ( this.attr("tabSelected") == tabName  ? 'block' : 'none') + '"';
     }
 
