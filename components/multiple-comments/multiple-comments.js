@@ -21,9 +21,9 @@ var comments = Component.extend({
   },
   events: {
       '.corner click':function(){
-      //  console.log("multiple-comments-child");
         $(".multiple-comments-parent").toggleClass("showMultipleP");
         $(".multiple-comments-child").toggleClass("showMultipleCh");
+
       },
       // '.corner click':function(){
       //   console.log("multiple-comments-child");
@@ -78,7 +78,8 @@ var comments = Component.extend({
                $(".multiple-comments-child").append("<div id="+tempDivID+" class='comment-env '></div>");
 
               if(val.createdDate != null){
-                 var createdDateFormat = moment(val.createdDate).format("Do MMM, YYYY - HH:mm:ss");
+//                 var createdDateFormat = moment(val.createdDate).format("Do MMM, YYYY - HH:mm:ss");
+                  var createdDateFormat = moment(val.createdDate).format("Do MMM, YYYY");
                 if((val.createdByName != null) && (typeof val.createdByName != "undefined")){
                     $("#"+tempDivID).html("<span class='commentuser'>"+val.createdByName +"</span> <span class='commentdate'>on "+createdDateFormat+"</span><br><span class='commenttext'>"+val.comments+"</span>");
                 }else{
