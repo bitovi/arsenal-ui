@@ -600,6 +600,9 @@ var fetchReconIngest = function(scope, load){
 
   if(load) {
     scope.attr("ingestCcidSelected").splice(0, scope.attr("ingestCcidSelected").length);
+    searchRequestObj.searchRequest["offset"] = scope.ingestedOffset;
+  }else{
+    searchRequestObj.searchRequest["offset"] = 0;
   }
 
   if(scope.appstate.attr('globalSearchButtonClicked')==true){
@@ -607,7 +610,7 @@ var fetchReconIngest = function(scope, load){
       scope.attr("ingestedScrollTop",0);
   }
   searchRequestObj.searchRequest["limit"] = "10";
-  searchRequestObj.searchRequest["offset"] = scope.ingestedOffset;
+  
   searchRequestObj.searchRequest["sortBy"] = scope.sortColumns.attr().toString();
   searchRequestObj.searchRequest["sortOrder"] = scope.sortDirection;
 
