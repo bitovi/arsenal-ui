@@ -15,6 +15,7 @@ import bootstrapValidator from 'bootstrapValidator';
 import css_bootstrapValidator from 'bootstrapValidator.css!';
 import PeriodWidgetHelper from 'utils/periodWidgetHelpers';
 import commonUtils from 'utils/commonUtils';
+import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 
 var lDetails = new can.Map({
@@ -612,7 +613,7 @@ var page = Component.extend({
 
         if (self.periodToVal != undefined && self.periodToVal != "0" && self.periodToVal != null && self.periodToVal.toString().length >= 6) {
 
-            self.attr("periodToVal",PeriodWidgetHelper.getDisplayPeriod(self.periodToVal.toString(), "P"));
+            self.attr("periodToVal",periodWidgetHelper.getDisplayPeriod(self.periodToVal.toString(), "P"));
 
         } else {
 
@@ -622,7 +623,7 @@ var page = Component.extend({
 
         if (self.periodFromVal != undefined && self.periodFromVal != "0" && self.periodFromVal != null && self.periodFromVal.toString().length >= 6) {
 
-            self.attr("periodFromVal",PeriodWidgetHelper.getDisplayPeriod(self.periodFromVal.toString(), "P"));
+            self.attr("periodFromVal",periodWidgetHelper.getDisplayPeriod(self.periodFromVal.toString(), "P"));
 
 
         } else {
@@ -667,7 +668,11 @@ var page = Component.extend({
 
             if(self.licDetails.data.revisionHistories[i].validFrom == null) {
               self.licDetails.data.revisionHistories[i]._data.validFrom = "";
-              self.icDetails.data.revisionHistories[i].validFrom = "";
+              self.licDetails.data.revisionHistories[i].validFrom = "";
+            }else{
+              var period = periodWidgetHelper.getDisplayPeriod(self.licDetails.data.revisionHistories[i].validFrom,'P');
+              self.licDetails.data.revisionHistories[i]._data.validFrom = period;
+              self.licDetails.data.revisionHistories[i].validFrom = period;
             }
 
             if(self.licDetails.data.revisionHistories[i].status == null) {
@@ -697,6 +702,10 @@ var page = Component.extend({
             if(self.licDetails.data.revisionHistories[i].validTo == null) {
               self.licDetails.data.revisionHistories[i].validTo = "";
               self.licDetails.data.revisionHistories[i]._data.validTo = "";
+            }else{
+              var period = periodWidgetHelper.getDisplayPeriod(self.licDetails.data.revisionHistories[i].validTo,'P');
+              self.licDetails.data.revisionHistories[i]._data.validTo = period;
+              self.licDetails.data.revisionHistories[i].validTo = period;
             }
 
             if(self.licDetails.data.revisionHistories[i].commentText == null) {

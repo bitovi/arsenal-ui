@@ -156,6 +156,7 @@ var page = Component.extend({
   	ajaxRequestStatus:{},
   	usdFxrateRatio:"",
   	invselectedbundle:"",
+  	countryData:[],
 	isRequired: function(){
 		if(this.attr("invoicetypeSelect") == "2"){
  						$(".breakdownCountry").removeClass("requiredBar");
@@ -863,32 +864,41 @@ var page = Component.extend({
               			self.scope.attr("country").replace([]);
                    		self.scope.attr("country").replace(values[0].data);
 
-                   		  var countryDD = $('.inputCountry');
-				            countryDD.options = function(data) {
-				                var self = this;
-				                var option = $('<option>').text("Select").val("");
-				                   data.push(option);
-				                $.each(data, function(key, value) {
-				                    option = $('<option>').text(value.value).val(value.id);
-				                    if(value.value != undefined && value.id != undefined){
-				                    	data.push(option);
-				                    }
-				                });
-				                self.html(data);
-				            }
-				            countryDD.options(values[0].data);
-				            $('#invoiceform').bootstrapValidator('revalidateField', 'inputCountry[]');
+                			self.scope.countryData.attr(values[0].data, true);
+                			$('#invoiceform').bootstrapValidator('revalidateField', 'inputCountry[]');
 
-              		}else{
+                		}else{
               			self.scope.attr("country").replace([]);
               			 	var countryDD = $('.inputCountry');
 				         	countryDD.empty();
-				         	countryDD.html($('<option>').text("Select"));
+				         	countryDD.html($('<option>').text("Select").val(""));
 				         	 $('#invoiceform').bootstrapValidator('revalidateField', 'inputCountry[]');
-
+				         	 self.scope.countryData.attr([], true);
 							showMessages(values[0].responseText);
 	              		}
 				});
+			},
+
+			"{countryData} change": function(){   /*code change from create invoice*/
+				var self = this;
+				var countryDD = $('.inputCountry');
+	            countryDD.options = function(data) {
+	                var self = this;
+	                var option = $('<option>').text("Select").val("");
+	                   data.push(option);
+	                $.each(data, function(key, value) {
+	                    option = $('<option>').text(value.value).val(value.id);
+	                    if(value.value != undefined && value.id != undefined){
+	                    	data.push(option);
+	                    }
+	                });
+	                self.html(data);
+	            }
+
+		      countryDD.options(self.scope.attr().countryData);
+
+
+			
 			},
 
 		"{scope} currencyStore": function(){
@@ -1105,9 +1115,12 @@ var page = Component.extend({
 						     	if(values[0].status == 'SUCCESS'){
 			              			self.scope.attr("country").replace([]);
 			                   		self.scope.attr("country").replace(values[0].data);
+			                   		self.scope.countryData.attr(values[0].data, true);
+
 			                   		self.scope.ajaxRequestStatus.attr("countryLoaded", true);
 			              		}else{
 			              			self.scope.attr("country").replace([]);
+			              			self.scope.countryData.attr([], true);
 			              			showMessages(values[0].responseText);
 			              		}
 							}).then(function(){

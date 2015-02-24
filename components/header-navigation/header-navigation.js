@@ -12,7 +12,7 @@ import RinsCommon from 'utils/urls';
 import logout from 'models/common/logout/';
 import commonUtils from 'utils/commonUtils';
 import pagelogout from 'components/page-logout/';
-
+import countMap from 'components/bookmark-notification-counter/';
 
 var headerNavigation = Component.extend({
     tag: 'header-navigation',
@@ -72,6 +72,15 @@ var headerNavigation = Component.extend({
           });
         },
     events:{
+      'inserted':function(){
+          var self = this;
+          countMap.delegate("notifications","change", function(ev, newVal){
+              self.scope.counter.attr('notifications', this);
+          });
+          countMap.delegate("bookmarks","change", function(ev, newVal){
+              self.scope.counter.attr('bookmark', this);
+          });
+      },
       '#appleLogo click':function(){
           commonUtils.navigateTo("dashboard");
       },

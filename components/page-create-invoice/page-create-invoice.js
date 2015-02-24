@@ -5,6 +5,7 @@ import stache from 'can/view/stache/';
 import datePicker from 'components/date-picker/';
 import comments from 'components/multiple-comments/';
 import createpb from 'components/create-pb/';
+import _ from 'lodash';
 
 import css_bootstrapValidator from 'bootstrapValidator.css!';
 
@@ -125,7 +126,9 @@ var page = Component.extend({
   	periodType:"",
   	usdFxrateRatio:"",
   	pbrequestObj:[],
-	isRequired: function(){
+  	countryData:[],
+
+  	isRequired: function(){
   	 		 if(this.attr("invoicetypeSelect") == "2"){
  						$(".breakdownCountry").removeClass("requiredBar");
  					} else {
@@ -884,12 +887,27 @@ var page = Component.extend({
 		},
 		"{scope} licensorStore": function(event){
 			var self = this;
-      loadCountries(this);
+            loadCountries(this);
 		},
 		"{scope} currencyStore": function(){
-      loadCountries(this);
+           loadCountries(this);
 		},
+		"{countryData} change": function(){
+			var self = this;
+			var countryDD = $('.inputCountry');
+	      	countryDD.options = function(data) {
+	        var self = this;
+	        $.each(data, function(key, value) {
+	          var option = $('<option>').text(value.value).val(value.id);
+	          data.push(option);
+	        });
+	        self.html(data);
+	        self.prepend($('<option>').text("Select").val(""));
+	      }
 
+	      countryDD.options(self.scope.attr().countryData);
+				
+		},
 		"#invoiceType change": function(){
 			this.scope.isRequired();
 			var self = this;
@@ -1710,42 +1728,29 @@ var page = Component.extend({
 					}
 
 
-  var loadCountries = function(self){
-    self.scope.getFxrate();
-    var genObj = {regionId:self.scope.attr("regionStore"),
-                  entityId:self.scope.attr("licensorStore"),
-                  currency:self.scope.attr("currencyStore")
-                };
+				  var loadCountries = function(self){
+				    self.scope.getFxrate();
+				    var genObj = {regionId:self.scope.attr("regionStore"),
+				                  entityId:self.scope.attr("licensorStore"),
+				                  currency:self.scope.attr("currencyStore")
+				                };
 
-  if(self.scope.attr("currencyStore") == ""){
-    return;
-  }
+					  if(self.scope.attr("currencyStore") == ""){
+					    return;
+					  }
 
-  Promise.all([Country.findCountriesForRegLicCurr(UserReq.formRequestDetails(genObj))
-  ]).then(function(values) {
-    if(values[0].status == 'SUCCESS'){
+					  Promise.all([Country.findCountriesForRegLicCurr(UserReq.formRequestDetails(genObj))
+					  ]).then(function(values) {
+					    if(values[0].status == 'SUCCESS'){
+								self.scope.countryData.attr(values[0].data, true);
+						}else{
+						  var countryDD = $('.inputCountry');
+					      countryDD.empty();
+					      countryDD.html($('<option>').text("Select").val(""));
+					      self.scope.countryData.attr([], true);
+					      showMessages(values[0].responseText);
 
-      var countryDD = $('.inputCountry');
-      countryDD.options = function(data) {
-         var self = this;
-        $.each(data, function(key, value) {
-          var option = $('<option>').text(value.value).val(value.id);
-          data.push(option);
-        });
-        self.html(data);
-        self.prepend($('<option>').text("Select").val(""));
-      }
-
-      countryDD.options(values[0].data);
-
-    }else{
-
-      var countryDD = $('.inputCountry');
-      countryDD.empty();
-      countryDD.html($('<option>').text("Select").val(""));
-
-      showMessages(values[0].responseText);
-    }
-  });
-  }
+					    }
+					  });
+				  }
 export default page;

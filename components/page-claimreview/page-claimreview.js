@@ -1137,11 +1137,14 @@ var generateTableData = function(invoiceData,footerData){
              var lowestPeriod = 0;
               var highestPeriod = 0;
               var tmpPeriod = 0;
-              var periodType = 'P';
 
             if(invoiceLineItems.length > 0){
               for(var j=0;j<invoiceLineItems.length;j++){
                 var invLITemp={};
+                var periodType = invoiceLineItems[j]["periodType"];
+                if(periodType == null || periodType == undefined ||(periodType !=null && periodType.length ==0)){
+                  periodType='P';
+                }
 
                 invLITemp["entityId"] = invTemp["entityId"]+","+  invTemp["entityName"] ;
                 invLITemp["__isChild"] = true;
