@@ -17,7 +17,7 @@
   </tbody>
   <tfoot>
       <tr class="open">
-        <td colspan="2">Number of stats: {{rows.length}}</td>
+        <td colspan="2">Number of ingestion stats: {{rows.length}}</td>
       </tr>
   </tfoot>
 </table>

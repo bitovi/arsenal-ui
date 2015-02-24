@@ -682,7 +682,7 @@ var fetchReconIngest = function(scope, load){
             "copConAmt": data.summary.totalCopCon,
             "unMatchedAmt": data.summary.totalUnMatched!= undefined && data.summary.totalUnMatched!= null ? data.summary.totalUnMatched : 0.00,
             "badLines": data.summary.totalBadLines,
-            "ccidId": scope.totalRecordCount +" invocies",
+            "ccidId": scope.totalRecordCount +" invoices",
             "entityName":"",
             "countryId":"",
             "contType":"",
