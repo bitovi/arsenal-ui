@@ -444,10 +444,14 @@ var fetchReconDetailsOther = function(scope){
       console.error("Failed to load the Recon incoming other :" + data.responseText);
 
     } else {
+      
       if (searchRequestObj.searchRequest["offset"] == 0){
         scope.incomingOtherList.replace(data.reconStatsDetails);
         if(data.reconStatsDetails.length==0){
           scope.attr("emptyrows", true);
+          if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
+            commonUtils.showSuccessMessage(data["responseText"]);
+          }
         }else{
           scope.attr("emptyrows", false);
         }
@@ -513,7 +517,10 @@ var fetchReconIncoming = function(scope, load) {
       if (data.reconStatsDetails == undefined || (data.reconStatsDetails != null && data.reconStatsDetails.length <= 0)) {
 
         scope.attr("emptyrows", true);
-        console.log("No Data")
+        console.log("No Data");
+        if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
+          commonUtils.showSuccessMessage(data["responseText"]);
+        }
 
       } else {
 

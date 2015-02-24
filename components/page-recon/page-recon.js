@@ -519,6 +519,7 @@ var processRejectIngestRequest = function(scope,requestType){
         if(values != null && values.length > 0) {
           var data = values[0];
           if(data.status == "SUCCESS"){
+
             // $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
             // $("#messageDiv").show();
 
@@ -633,6 +634,9 @@ var fetchReconIngest = function(scope, load){
         if(data.reconStatsDetails == undefined || (data.reconStatsDetails != null && data.reconStatsDetails.length <= 0)) {
 
           scope.attr("emptyrows", true);
+          if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
+              commonUtils.showSuccessMessage(data["responseText"]);
+            }
           //commonUtils.displayUIMessageWithDiv("#messageDiv", "SUCCESS", data["responseText"]);
 
         } else {
