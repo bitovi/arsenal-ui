@@ -1150,6 +1150,7 @@ function getAllInvoices(self) {
 };
 
 function fetchData(self){
+  commonUtils.hideUIMessage(); 
   var invSearchRequest= getInvoiceSearchRequest(self);
   $("#loading_img").show();
   GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){

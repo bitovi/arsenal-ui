@@ -514,6 +514,7 @@ var processRejectIngestRequest = function(scope,requestType){
 
       Promise.all([Recon.reject(rejectSearchRequestObj)]).then(function(values) {
 
+
         scope.attr("size_ingestCcidSelected", 0);
 
         if(values != null && values.length > 0) {
@@ -590,6 +591,7 @@ var displayErrorMessage = function(message,log){
 
 /**/
 var fetchReconIngest = function(scope, load){
+  commonUtils.hideUIMessage(); 
   //console.log("Loading Started");
   setTimeout(function(){$("#loading_img").show()},50);
   var searchRequestObj = getSearchReqObj(scope);

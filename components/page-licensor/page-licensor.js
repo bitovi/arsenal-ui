@@ -2441,6 +2441,7 @@ function alignGridStats(divId){
   }
   if(divId=="revisionHistory"){
     var rowCount= $('#'+divId+' table>tbody>tr').length;
+    $('#'+divId+' table').css({"max-width":"100%"});
     if($('#'+divId+' table').has('tfoot')){
         $('#'+divId+' table>tfoot').append("<tr><td class='recordsCount' style='text-align:left;border:none;'>Number of revisions: "+rowCount+"</td></tr>");
     }else{
