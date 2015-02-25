@@ -33,115 +33,116 @@
 @white-border: 1px solid #fff;
 icsv-grid {
   .grid-mixin();
-
-
-  th, td {
-  	white-space: nowrap;
-  }
-  th.checbox, td.checkbox {
-    width: 30px;
-  }
-
-	tbody {
-		//height:85%;
-		//max-height: 100%;
-		width:100%;
-		min-width:1248;
-		overflow-y: overlay;
-		overflow-x: hidden;
-		//border: 1px solid #a1a1a1;
-		border: 0;
-		tr {
-			height : auto;
-			min-height:22px;
-			word-wrap: break-word !important;
-			td {
-				height : auto;
-				min-height:22px;
-				padding-top:1px;
-				min-height:22px;
-				word-wrap: break-word !important;
-			}
-		}
-	}
-
-  .entity, .invoiceType, .contentType, .country, .invoiceNum, .dueDate, .currency, .status, .bundleName, .comments{
-  	text-align: left !important;
-  }
-  .invoiceAmt{
-  	text-align: right !important;
-  }
-
-   th:first-child{
-  		border-top-left-radius:4px;
-	}
-
-	th:last-child{
-  		border-top-right-radius:4px;
-	}
-
-	tbody tr td:first-child{
-		border-left: 1px solid #bfbfbf !important;
-	}
-
-	tbody tr td:last-child{
-		border-right: 1px solid #bfbfbf !important;
-	}
-
 	table{
 		border-collapse: separate;
+		width:100%;
+		//min-width:1248px;
 		//border-bottom: 1px solid #bfbfbf;
-	}
 
-	thead, tbody,tfoot {
-		display: block;
 
-		tr {
-			display: -webkit-flex;
-			width: 100%;
+	  /*th, td {
+	  	white-space: nowrap;
+	  }*/
+	  th.checbox, td.checkbox {
+	    width: 30px;
+	  }
+
+		tbody {
+			//height:85%;
+			//max-height: 100%;
+			overflow-y: overlay;
+			overflow-x: hidden;
+			//border: 1px solid #a1a1a1;
+			border: 0;
+			tr {
+				height : auto;
+				min-height:22px;
+				word-wrap: break-word !important;
+				td {
+					height : auto;
+					min-height:22px;
+					padding-top:1px;
+					min-height:22px;
+					word-wrap: break-word !important;
+				}
+			}
 		}
-	}
 
-	tr > th, tr > td {
-		//padding: .3em .5em;
-		&.errormsg { .flex-grow(1); .flex-basis(50px); }
-		&.licensor { .flex-grow(2); .flex-basis(200px); }
-		&.contentType { .flex-grow(2); .flex-basis(100px); }
-		&.country { .flex-grow(1); .flex-basis(75px); }
-		&.invoiceNum { .flex-grow(2); .flex-basis(300px); }
-		&.dueDate { .flex-grow(1); .flex-basis(80px); }
-		&.invoiceAmt { .flex-grow(1); .flex-basis(155px); }
-		&.currency { .flex-grow(1); .flex-basis(55px); }
-		&.comments { .flex-grow(2); .flex-basis(200px); }
-	}
+	  .licensor .entity, .invoiceType, .contentType, .country, .invoiceNum, .dueDate, .currency, .status, .bundleName, .comments{
+	  	text-align: left !important;
+	  }
+	  .invoiceAmt{
+	  	text-align: right !important;
+	  }
 
-	tbody > tr {
+	   th:first-child{
+	  		border-top-left-radius:4px;
+		}
 
-		&.child {
-			display: none;
+		th:last-child{
+	  		border-top-right-radius:4px;
+		}
 
-			&.visible {
+		tbody tr td:first-child{
+			border-left: 1px solid #bfbfbf !important;
+		}
+
+		tbody tr td:last-child{
+			border-right: 1px solid #bfbfbf !important;
+		}
+
+
+
+		thead, tbody,tfoot {
+			display: block;
+
+			tr {
 				display: -webkit-flex;
-				border:none;
+				width: 100%;
 			}
 		}
-	}
 
-	thead, tfoot {
-		background: @header-background;
-		color: white;
-		height:25px;
-		tr {
-			height : 25px;
-			th, td {
-				font-weight: normal;
-				height: 25px;
-				border-bottom: @dark-border;
-				text-align:center;
+		tr > th, tr > td {
+			//padding: .3em .5em;
+			&.errormsg { .flex-grow(1); .flex-basis(50px); text-align:center;}
+			&.licensor { .flex-grow(2); .flex-basis(200px); }
+			&.contentType { .flex-grow(2); .flex-basis(110px); }
+			&.country { .flex-grow(1); .flex-basis(75px); }
+			&.invoiceNum { .flex-grow(1); .flex-basis(180px); }
+			&.dueDate { .flex-grow(1); .flex-basis(80px); }
+			&.invoiceAmt { .flex-grow(1); .flex-basis(120px); }
+			&.currency { .flex-grow(1); .flex-basis(55px); }
+			&.comments { .flex-grow(2); .flex-basis(300px); }
+		}
+
+		tbody > tr {
+
+			&.child {
+				display: none;
+
+				&.visible {
+					display: -webkit-flex;
+					border:none;
+				}
 			}
 		}
-	}
 
+		thead, tfoot {
+			background: @header-background;
+			color: white;
+			height:25px;
+			tr {
+				height : 25px;
+				th, td {
+					font-weight: normal;
+					height: 25px;
+					border-bottom: @dark-border;
+					//text-align:center;
+				}
+			}
+		}
+
+	}
 }
 
 

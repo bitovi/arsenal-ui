@@ -28,6 +28,7 @@ import PricingModelsValidation from './pricingmodels.validation';
 import Comments from 'components/multiple-comments/';
 import Switcher from 'components/switcher/';
 import commonUtils from 'utils/commonUtils';
+import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 var mandatoryAddField = ["modelname", "usercommentsdiv", "contentGroup[]"];
 var mandatoryEditField = ["version",  "modelname", "usercommentsdiv", "contentGroup[]"];
@@ -50,11 +51,17 @@ Grid.extend({
       },
       {
         id: 'validfrom',
-        title: 'Valid From'
+        title: 'Valid From',
+        contents: function(row) {
+          return row.validfrom == null || row.validfrom == undefined || row.validfrom == "0"  ? "" : periodWidgetHelper.getDisplayPeriod(row.validfrom,"P");
+        }
       },
       {
         id: 'validto',
-        title: 'Valid To'
+        title: 'Valid To',
+        contents: function(row) {
+          return row.validto == null || row.validto == undefined || row.validto == "0" ? "" : periodWidgetHelper.getDisplayPeriod(row.validto,"P");
+        }
       }
     ]
   }
@@ -557,7 +564,7 @@ var page = Component.extend({
     "#addtrack click":function(){
         var self = this;
         self.scope.attr("trackCountMinimaList").push({description:"", from:"",
-                                                      to:"", minima:"",
+                                                      to:"", minima:"0",
                                                       modelId:self.scope.attr("modelId")});
 
          var $option = $("#trackCount").find('[name="description[]"], [name="from[]"], [name="to[]"], [name="minimatrack[]"]');
@@ -626,6 +633,7 @@ var page = Component.extend({
         $("#addbasemodel").trigger("click");
         $("#addtrack").trigger("click");
         $('#pricingmodelGrid tbody tr').removeClass("selected");
+        
 
         $(".old-comments").remove();
         $('#pmform').bootstrapValidator('addField', 'usercommentsdiv');
@@ -665,6 +673,7 @@ var page = Component.extend({
 
       var usercomments = (self.scope.editstate === true)?$("#editableText").val():$("#usercomments").val();
 
+     
       var saveRecord = {
 
         "filterOption":self.scope.attr("filterSwitchOption"),
