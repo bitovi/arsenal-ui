@@ -89,7 +89,7 @@ export default [
         if(row.liDispAmt!= undefined && row.liDispAmt!= null && row.liDispAmt!= 0.00 ){
           return can.stache('<a class="downloadLink liDispAmt" href="#download">'+formats.currencyFormat(row.liDispAmt)+'</a>')();
         } else {
-          return "null";
+          return "";
         }
       }
     },
@@ -122,7 +122,7 @@ export default [
         if(row.badLines!= undefined && row.badLines!= null && row.badLines!= 0.00 ){
           return can.stache('<a class="downloadLink badLines" href="#download">'+formats.currencyFormat(row.badLines)+'</a>')();
         } else {
-          return "null";
+          return "";
         }
       }
     },
