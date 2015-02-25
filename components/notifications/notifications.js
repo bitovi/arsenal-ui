@@ -56,9 +56,7 @@ var notification = Component.extend({
           $('rn-notifications').hide('fast');
         }
       },
-      '{notificationtriggered} change':function(el, e){
-          console.log('Notification <Triggered></Triggered>');
-      },
+      // ShowMore functionality
       '.showButton click':function(el,e){
         if($(el).is(":visible")){
           $('.autoscroll').css('overflow-y','scroll');
@@ -69,6 +67,7 @@ var notification = Component.extend({
           $(el).parent().show();
         }
       },
+      // Method to show Notfication User Preferences
       '.notification_settings_icon click':function(el,e){
         var self = this, userPrefRequest = {}, notificationOptionTemplate='', notificationTypes='', allTypesSelected = true;
 
@@ -95,10 +94,12 @@ var notification = Component.extend({
           }
         });
       },
+      // Method to cancel Notfication User Preferences changes
       '#notification_settings_cancel click':function(el, e){
         $('.listofnotification').slideDown('fast');
         $('.notification_settings_options').slideUp('fast');
       },
+      // Method to save Notfication User Preferences changes
       '#notification_settings_save click':function(el, e){
         var self = this, userPrefRequest = {}, preference = self.scope.pref, notificationRequest = {};
         userPrefRequest["type"] = [];
@@ -112,6 +113,7 @@ var notification = Component.extend({
         $('.listofnotification').slideDown('fast');
         $('.notification_settings_options').slideUp('fast');
       },
+      // Method to update user preference variable on user checkbox click action
       '.notification_options input:checkbox click':function(el, e){
           var self = this, notificationItemsCheckboxes = $('.notificationItems input:checkbox:not(".selectall")');
           if($(el).hasClass('selectall')){
@@ -153,6 +155,8 @@ var fetchNotifications = function(self, notificationRequest){
         if( self.scope.attr("count") > 0) {
           self.scope.notificationList.replace(values[0]);
           self.scope.notificationTriggered(self);
+        }else{
+          self.scope.notificationList.replace(values[0]);
         }
         $('.notification_loader').hide();
     });

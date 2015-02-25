@@ -164,9 +164,11 @@ var page = Component.extend({
           allowTabOut:false,
           onResult: function (item) {
             if($.isEmptyObject(item)){
+                    commonUtils.hideUIMessage();
                     var tempObj={id:$("#token-input-tokenSearch").val(),name: $("#token-input-tokenSearch").val()};
                     return [tempObj];
               }else{
+                    commonUtils.hideUIMessage();
                     return item;
               }
           },

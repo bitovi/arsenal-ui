@@ -590,6 +590,7 @@ var page = Component.extend({
       //console.log("Request passed is "+ JSON.stringify(UserReq.formRequestDetails(requestObj)));
       RefCountry.findOne(UserReq.formRequestDetails(requestObj),function(data){
         $("#loading_img").hide();
+
         if(data.status == "SUCCESS") {
           //console.log("Response data is "+JSON.stringify(data.attr()));
           self.pageState.countryDetails.attr("country",data.countryDetails);
@@ -765,6 +766,7 @@ var page = Component.extend({
           commonUtils.displayUIMessage(data.status, data.responseText);
 
         }
+        commonUtils.hideUIMessage();
 
       },function(xhr){
           console.error("Error while loading: country Details"+xhr);

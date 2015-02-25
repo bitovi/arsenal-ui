@@ -2148,6 +2148,7 @@ var page = Component.extend({
     },
 
     "#analyticsFetch click": function(event){
+        commonUtils.hideUIMessage();
         setTimeout(function(){
           alignGridStats('societyContacts');
           $("#societyContacts .noRecords").remove();
