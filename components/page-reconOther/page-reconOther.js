@@ -110,6 +110,7 @@ var page = Component.extend({
   helpers: {
     //none
     isTabSelectedAs: function(tabName) {
+      commonUtils.hideUIMessage();
       return 'style="display:' + (this.attr("tabSelected") == tabName ? 'block' : 'none') + '"';
     },
     isIncomingCcidsSelected: function(ref) {
@@ -155,9 +156,11 @@ var page = Component.extend({
           allowTabOut:false,
           onResult: function (item) {
             if($.isEmptyObject(item)){
+                    commonUtils.hideUIMessage();
                     var tempObj={id:$("#token-input-tokenSearch").val(),name: $("#token-input-tokenSearch").val()};
                     return [tempObj];
               }else{
+                    commonUtils.hideUIMessage();
                     return item;
               }
           },
@@ -319,6 +322,7 @@ var page = Component.extend({
       });
     },
     '{scope.appstate} change': function() {
+      commonUtils.hideUIMessage();
       if (this.scope.isGlobalSearch != this.scope.appstate.attr('globalSearch')) {
         this.scope.attr("isGlobalSearch", this.scope.appstate.attr("globalSearch"));
 

@@ -503,7 +503,7 @@ var page = Component.extend({
 
     	},
     	"#highChart click":function(){
-
+        commonUtils.hideUIMessage();
         if(this.scope.details.isChild){
           //$("#messageDiv").hide();
           //$("#chartContainer").addClass("highcharts_Overlay");
