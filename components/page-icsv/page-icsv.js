@@ -171,6 +171,7 @@ var page = Component.extend({
        this.scope.appstate.attr("renderGlobalSearch",false);
        icsvmap.delegate("invoiceData","change", function(ev, newVal){
             //console.log(icsvmap.attr("invoiceData"));
+            $('rn-file-uploader-icsv-sum').scope().attr('fileDeletionRequired',false)
             $("#loading_img").hide();
             $('#arrowbtnCntiner').show();
             if(icsvmap.attr("invoiceData"))
