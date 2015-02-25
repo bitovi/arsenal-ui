@@ -13,39 +13,42 @@ var notification = Component.extend({
     appstate: undefined,
     counter:undefined,//passed in
     count: 0,
+    limit: "10",
+    offset: 0,
     notificationList : new can.List(),
     showUserPref: false,
     showNotification:false,
     pref: new can.Map(),
     fetchedPref: new can.Map(),
-    isAnyNotification : can.compute(function() { return false;/*this.notificationList.attr('length') > 0*/ }),
+    isAnyNotification : can.compute(function() { this.count > 0 }),
     notificationTriggered: function(self){
        var notificationRequest = {};
-      if(self.attr("count") > 0) {
+      if(self.scope.attr("count") > 0) {
         notificationRequest["notificationList"] =[];
-        for(var i = 0 ;i < self.attr("count");i++) {
-          notificationRequest["notificationList"].push(self.attr("notificationList")[i].notificationId);
+        for(var i = 0 ;i < self.scope.attr("count");i++) {
+          notificationRequest["notificationList"].push(self.scope.attr("notificationList")[i].notificationId);
         }
         Promise.all([
           Notification.createNotificationViewed(UserReq.formRequestDetails(notificationRequest))
           ]).then(function(values) {
+            $('header-navigation').scope().getCounter()
             console.log("Return data from notification viewed save call:"+JSON.stringify(values));
           });
-          self.attr("count",0)
+          self.scope.attr("count",0)
       }
     }
  },
   init:function(){
-    var self = this;
-    fetchNotifications(self);
+    var self = this, notificationRequest = {};//notificationRequest = {limit: self.scope.limit, offset: self.scope.offset};
+    fetchNotifications(self, notificationRequest);
    },
   events:{
       '{document} keydown':function(el, ev){
         if(ev.which==27 && $('.notificationContainer').is(':visible')){
           $('rn-notifications').hide('fast');
-          /*if(!$('.showMore').is(":visible")){
+          if(!$('.showMore').is(":visible")){
             $('.showButton').trigger('click')
-          }*/
+          }
         }
       },
       '{document}  click':function(el,e){
@@ -97,12 +100,14 @@ var notification = Component.extend({
         $('.notification_settings_options').slideUp('fast');
       },
       '#notification_settings_save click':function(el, e){
-        var self = this, userPrefRequest = {}, preference = self.scope.pref;
+        var self = this, userPrefRequest = {}, preference = self.scope.pref, notificationRequest = {};
         userPrefRequest["type"] = [];
         userPrefRequest["type"].push(preference);
-
+        $('.notification_loader').show();
         Promise.all([Notification.create(UserReq.formRequestDetails(userPrefRequest))]).then(function(values) {
-          fetchNotifications(self)
+          $('.notification_loader').hide();
+          $('header-navigation').scope().getCounter()
+          fetchNotifications(self, notificationRequest);
         });
         $('.listofnotification').slideDown('fast');
         $('.notification_settings_options').slideUp('fast');
@@ -139,18 +144,17 @@ var notification = Component.extend({
   }
 
 });
-var fetchNotifications = function(self){
-    var notificationRequest = {};
+var fetchNotifications = function(self, notificationRequest){
+    $('.notification_loader').show();
     Promise.all([
         Notification.findAll(UserReq.formRequestDetails(notificationRequest))
       ]).then(function(values) {
-        var count = values[0].length;
-        //self.scope.attr("count", values[0].length);
-        if(count > 0) {
+        self.scope.attr("count", values[0].notificationCount);
+        if( self.scope.attr("count") > 0) {
           self.scope.notificationList.replace(values[0]);
-          // $(".notification").html("<span class='notification-bubble'>"+self.scope.attr("count")+"</span>");
-          self.scope.counter.attr('notifications',count);
+          self.scope.notificationTriggered(self);
         }
+        $('.notification_loader').hide();
     });
 }
 export default notification;

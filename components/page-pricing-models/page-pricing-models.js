@@ -640,6 +640,7 @@ var page = Component.extend({
         $('#pmform').bootstrapValidator('addField', 'modelname');
        $("#pmform").data('bootstrapValidator').resetForm();
        $("#save").attr("disabled", true);
+       $("#usercomments").val("");
         return false;
 
     },
@@ -790,6 +791,8 @@ function clearOldAddData(componentstate){
      self.scope.attr("pricingmodeltype", "STANDARD");
      self.scope.pmVersion.replace([]);
      $('#country-lic-grid').html(stache('<countrylic-grid emptyrows="{emptyrows}"></countrylic-grid>')({}));
+
+     $("#pmform").data('bootstrapValidator').resetForm();
 
     self.scope.attr("isCommentData", false);
     $("#usercomments").val("");

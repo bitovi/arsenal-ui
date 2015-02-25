@@ -535,7 +535,18 @@ var fetchReconIncoming = function(scope, load) {
         console.log("Loading Data???")
 
       }
-      scope.incomingDetails.headerRows.replace(data.reconStatsDetails);
+        
+      if(scope.attr("incomingOffset") == 0){
+        scope.incomingDetails.headerRows.replace(data.reconStatsDetails);
+      }
+      else
+      {
+        $.merge(scope.incomingDetails.headerRows, data.reconStatsDetails);
+        scope.incomingDetails.headerRows.replace(scope.incomingDetails.headerRows);
+        scope.attr("emptyrows", false);
+       // scope.incomingDetails.headerRows.replace(data.reconStatsDetails);
+      }
+      
 
       scope.incomingStatsDetailsSelected = data.reconStatsDetails;
 
