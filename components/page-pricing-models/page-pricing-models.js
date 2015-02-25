@@ -28,6 +28,7 @@ import PricingModelsValidation from './pricingmodels.validation';
 import Comments from 'components/multiple-comments/';
 import Switcher from 'components/switcher/';
 import commonUtils from 'utils/commonUtils';
+import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 var mandatoryAddField = ["modelname", "usercommentsdiv", "contentGroup[]"];
 var mandatoryEditField = ["version",  "modelname", "usercommentsdiv", "contentGroup[]"];
@@ -50,11 +51,17 @@ Grid.extend({
       },
       {
         id: 'validfrom',
-        title: 'Valid From'
+        title: 'Valid From',
+        contents: function(row) {
+          return row.validfrom == null || row.validfrom == undefined || row.validfrom == "0"  ? "" : periodWidgetHelper.getDisplayPeriod(row.validfrom,"P");
+        }
       },
       {
         id: 'validto',
-        title: 'Valid To'
+        title: 'Valid To',
+        contents: function(row) {
+          return row.validto == null || row.validto == undefined || row.validto == "0" ? "" : periodWidgetHelper.getDisplayPeriod(row.validto,"P");
+        }
       }
     ]
   }

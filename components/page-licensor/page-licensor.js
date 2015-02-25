@@ -49,11 +49,17 @@ Grid.extend({
       },
       {
         id: 'validFrom',
-        title: 'Valid From'
+        title: 'Valid From',
+        contents: function(row) {
+          return row.validFrom == null || row.validFrom == undefined || row.validFrom == "0"  ? "" : periodWidgetHelper.getDisplayPeriod(row.validFrom,"P");
+        }
       },
       {
         id: 'validTo',
-        title: 'Valid To'
+        title: 'Valid To',
+        contents: function(row) {
+          return row.validTo == null || row.validTo == undefined || row.validTo == "0" ? "" : periodWidgetHelper.getDisplayPeriod(row.validTo,"P");
+        }
       }
     ]
   }
@@ -82,7 +88,7 @@ Grid.extend({
       },
       {
         id: 'validTo',
-        title: 'Valid To'
+        title: 'Valid To',
       },
       {
         id: 'status',
