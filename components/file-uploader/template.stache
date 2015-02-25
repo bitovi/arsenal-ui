@@ -54,7 +54,7 @@
                       {{/if}}
 
                     {{/if}}
-                       <a  class="action-link" data-fileid="{{fileId}}" data-guid="{{guid}}" data-filemeta="{{fileName}}{{filePath}}" data-fname="{{name}}">X</a>
+                       <a  class="action-link" data-fileid="{{fileId}}" data-guid="{{guid}}" data-filemeta="{{fileName}}{{filePath}}" data-fname="{{name}}">{{#if fileDeletionRequired}}X{{/if}}</a>
 
                   </li>
                 {{/fileList}}

@@ -13,6 +13,7 @@ var FileUploader = Component.extend ({
       template: template,
       scope: {
             fileList : new can.List(),
+            appstate:undefined,
             displayMessage:"display:none",
             fileUpload:false,
             uploadedfileinfo:[],
@@ -22,7 +23,8 @@ var FileUploader = Component.extend ({
             deletedFileInfo:[],
           areAnyFilesToBeUploaded: false,
           isCancelToBeEnabled: false,
-          isInValidFormat: false
+          isInValidFormat: false,
+          fileDeletionRequired:true
 
       },
       init:function(){

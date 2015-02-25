@@ -49,11 +49,17 @@ Grid.extend({
       },
       {
         id: 'validFrom',
-        title: 'Valid From'
+        title: 'Valid From',
+        contents: function(row) {
+          return row.validFrom == null || row.validFrom == undefined || row.validFrom == "0"  ? "" : periodWidgetHelper.getDisplayPeriod(row.validFrom,"P");
+        }
       },
       {
         id: 'validTo',
-        title: 'Valid To'
+        title: 'Valid To',
+        contents: function(row) {
+          return row.validTo == null || row.validTo == undefined || row.validTo == "0" ? "" : periodWidgetHelper.getDisplayPeriod(row.validTo,"P");
+        }
       }
     ]
   }
@@ -82,7 +88,7 @@ Grid.extend({
       },
       {
         id: 'validTo',
-        title: 'Valid To'
+        title: 'Valid To',
       },
       {
         id: 'status',
@@ -1939,6 +1945,25 @@ var page = Component.extend({
 
         } else {
 
+            var divElement=el.closest("td").find('div.tdselected');
+            if(divElement != undefined){
+              divElement.removeClass('tdselected');
+            }
+            //el.parent().addClass('tdselected');//Selected Value for the other checkbox parent
+            var reportConfig = self.scope.getExistCountryReportConf(el[0].value);
+            var reportBox = $("input.reportBox");
+            uncheckAllReports(reportBox);
+            uncheckAllCountries($('input.countryBox'));
+
+            $(".countryDiv").removeClass('tdselected');
+            $("#"+el[0].value).addClass('tdselected');
+
+           if(reportConfig != null && reportConfig.length>0){
+              checkReports(reportBox,reportConfig);
+           }
+
+           el.closest('input').prop("checked",true);
+
             var element = {};
 
             element.name = id.attr("value");
@@ -1968,6 +1993,12 @@ var page = Component.extend({
          if(reportConfig != null && reportConfig.length>0){
             checkReports(reportBox,reportConfig);
          }
+
+
+         $(".tableDiv input[value="+el[0].id+"]").prop("checked",true);
+         //Selected Value for the other checkbox parent
+         /*$(".selected td:first-child>.tableDiv").removeClass("tdselected");
+         $(".tableDiv input[value="+el[0].id+"]").parent().addClass("tdselected");*/
     },
 
     ".reportBox click": function(el, ev){
@@ -2387,7 +2418,7 @@ function alignGridStats(divId){
           tdWidth = tbodyTdWidth;
 
         if(i==1)
-          tdWidth = 45;
+          tdWidth = 30;
         if((i==1) && divId== 'societyContacts')
           tdWidth = 100;
         if((i==3) && divId== 'societyContacts')
@@ -2601,6 +2632,9 @@ function uncheckAllReports(reportBox){
     for(var i=0; i<reportBox.length; i++) {
         if(reportBox[i].checked) {
           reportBox[i].checked = false;
+
+          var divEl=reportBox[i];          
+          divEl.parentNode.className = "tableDiv";
         }
       }
   }
@@ -2616,11 +2650,23 @@ function uncheckAllCountries(countryBox){
       }
   }
 }
+function checkAllCountries(countryBox){
+  if(countryBox != undefined){
+    for(var j=0; j<countryBox.length; j++) {
+        if(countryBox[j].checked) {
+          countryBox[j].checked = true;
+        }
+      }
+  }
+}
 
 function checkReports(reportBox,reportConf){
 for (var j = 0; j < reportBox.length; j++) {
         if ($.inArray(reportBox[j].getAttribute("value"), reportConf) > -1) {
           reportBox[j].checked = true;
+
+          var divEl=reportBox[j];          
+          divEl.parentNode.className = divEl.parentNode.className + " tdselected";
         }
       }
 }

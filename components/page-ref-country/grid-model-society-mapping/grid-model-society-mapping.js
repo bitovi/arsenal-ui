@@ -3,6 +3,7 @@ import Grid from 'components/grid/';
 import stache from 'can/view/stache/';
 import styles from './grid-model-society-mapping.less!';
 import template from './template.stache!';
+import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 /* Extend grid with the columns */
 var GridSocietyModelMapping = Grid.extend({
@@ -32,20 +33,14 @@ var GridSocietyModelMapping = Grid.extend({
         id: 'validFrom',
         title: 'Valid From',
         contents: function(row) {
-          if(row.validFrom == null)
-            return "";
-          else
-          return row.validFrom;
+          return row.validFrom == null || row.validFrom == undefined || row.validFrom == "0"  ? "" : periodWidgetHelper.getDisplayPeriod(row.validFrom,"P");
         }
       },
       {
         id: 'validTo',
         title: 'Valid To',
         contents: function(row) {
-          if(row.validTo == null || row.validTo == "0" )
-            return "";
-          else
-          return row.validTo;
+          return row.validTo == null || row.validTo == undefined || row.validTo == "0" ? "" : periodWidgetHelper.getDisplayPeriod(row.validTo,"P");
         }
       },
     ]

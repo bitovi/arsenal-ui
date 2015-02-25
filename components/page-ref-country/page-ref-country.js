@@ -131,7 +131,7 @@ var page = Component.extend({
 //          "countryId":countryId
       };
 
-      console.log("Request passed is "+ JSON.stringify(UserReq.formRequestDetails(requestObj)));
+      //console.log("Request passed is "+ JSON.stringify(UserReq.formRequestDetails(requestObj)));
       RefCountry.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
         $("#loading_img").hide();
@@ -139,7 +139,7 @@ var page = Component.extend({
 
         if(data.status == "SUCCESS") {
 
-          console.log("Response data is "+JSON.stringify(data.attr()));
+          //console.log("Response data is "+JSON.stringify(data.attr()));
           self.pageState.countryDetails.attr("country",data.countryDetails);
 
           /* if the data.countryDetails.countryId is null then set the country dropdown using requestObj*/
