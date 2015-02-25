@@ -1,11 +1,11 @@
-<div>
+<div style="padding-left: 15px;padding-right: 15px;">
 
 
 			<div  class="form-inline" >
-				<div class="col-md-12 form-group" style="text-align:right;padding:10px 10px;">
+				<div class="col-md-12 form-group" style="text-align:right;padding: 0px;padding-top:10px;padding-bottom:10px">
 					<!--<label  for="inputAnalyze">Convert to Currency </label>-->
 
-					<select id="currency" class="currency" name="currency" {{isIngestCcidsSelected 0}} can-value="currency">
+					<select id="currency" class="currency" name="currency" {{isIngestCcidsSelected 0}} can-value="currency" style="vertical-align: bottom;">
 						<option value="">Select</option>
 						{{#each currencyList}}
 						<option value="{{id}}">{{id}}</option>
@@ -33,15 +33,10 @@
 
 								<table style="width:100%;">
 									<tr width="100%" style="vertical-align: top;" colspan="3">
-
-										<td width="1%">
-											&nbsp;&nbsp;
-										</td>
-
 										<td width="55%">
-											<fieldset id="ingestionStatsDiv" style="display:none">
+											<fieldset id="ingestionStatsDiv" style="display:none;padding-left: 0px;">
 
-												<table id="ingestionStatsDiv">
+												<table id="ingestionStatsDiv" style="padding-left: 0px;">
 													<tr>
 														<td width="50%">
 															<label class="mid-headers">Ingestion Stats</label>
@@ -66,8 +61,8 @@
 
 										<td width="43%" class="summaryStatsTab">
 
-										<fieldset id="summaryStatsDiv" style="display:none;width:100%">
-												<table id="summaryStatsDiv" style="width:100%">
+										<fieldset id="summaryStatsDiv" style="display:none;width:100%;padding-right: 0px;">
+												<table id="summaryStatsDiv" style="width:100%;padding-left: 0px;">
 													<tr>
 														<td width="55%">
 															<label class="mid-headers">Summary Stats</label>
@@ -206,9 +201,7 @@
 
 
 										</td>
-										<td width="5%">
-											&nbsp;&nbsp;
-										</td>
+
 
 									</tr>
 								</table>
@@ -216,9 +209,8 @@
 
 						</td>
 					</tr>
-					<div class="spaceDiv">&nbsp;</div>
+
 				</table>
 
-				<div class="spaceDiv">&nbsp;</div>
 
 </div>

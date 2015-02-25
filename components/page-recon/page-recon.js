@@ -61,7 +61,7 @@ var page = Component.extend({
     recordsAvailable : true,
     totalRecordCount:'@',
     reconStatsDetailsSelected : [],
-
+    fetchSize:10,
     //bottomgrid
     refreshStatsReq:undefined,
     isBottomGridRefresh:true,
@@ -125,6 +125,7 @@ var page = Component.extend({
   },
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
+    this.scope.attr("fetchSize",this.scope.appstate.attr("fetchSize"));
     this.scope.attr("emptyrows", true);
     this.scope.ingestList.headerRows.splice(0, this.scope.ingestList.headerRows.length);
     this.scope.ingestList.footerRows.splice(0,this.scope.ingestList.footerRows.length);
@@ -148,7 +149,7 @@ var page = Component.extend({
 
       var tbody = self.element.find('tbody');
         //var tbody = self.element.find('tbody');
-      var getTblBodyHght=gridUtils.getTableBodyHeight('ingested',40);
+      var getTblBodyHght=gridUtils.getTableBodyHeight('ingested',60);
       gridUtils.setElementHeight(tbody[0],getTblBodyHght,getTblBodyHght);
 
       $("#loading_img").hide();
@@ -609,7 +610,7 @@ var fetchReconIngest = function(scope, load){
       scope.attr("ingestedOffset",0);
       scope.attr("ingestedScrollTop",0);
   }
-  searchRequestObj.searchRequest["limit"] = "10";
+  searchRequestObj.searchRequest["limit"] = scope.attr("fetchSize");
 
   searchRequestObj.searchRequest["sortBy"] = scope.sortColumns.attr().toString();
   searchRequestObj.searchRequest["sortOrder"] = scope.sortDirection;
