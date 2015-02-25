@@ -41,11 +41,13 @@ fileUpload.extend({
 },
     events:{
         "{uploadedfileinfo} change":function () {
+            commonUtils.hideUIMessage();
             //Handling this using data as scope is not accessible from page-edit -invoice.
             $('rn-file-uploader-new').data('_d_uploadedFileInfo', this.scope.uploadedfileinfo);
             this.scope.fileList.replace(this.scope.uploadedfileinfo);
         },
         "{deletedFileInfo} change":function () {
+            commonUtils.hideUIMessage();
             $('rn-file-uploader-new').data('_d_deletedFileInfo', this.scope.deletedFileInfo);
         }
     }
@@ -65,11 +67,13 @@ fileUpload.extend({
     },
     events:{
        "{uploadedfileinfo} change":function(){
+        commonUtils.hideUIMessage();
         $('propose-rn-file-uploader').data('_d_uploadedFileInfo', this.scope.uploadedfileinfo);
           this.scope.fileList.replace(this.scope.uploadedfileinfo);
 
       },
       "{deletedFileInfo} change":function(){
+        commonUtils.hideUIMessage();
         //this.scope.deletedFileInfo.replace(this.scope.deletedFileInfo);
         $('propose-rn-file-uploader').data('_d_deletedFileInfo', this.scope.deletedFileInfo);
       }
@@ -178,6 +182,7 @@ var page = Component.extend({
         });
       },
       "#paymentBundleNames change": function(){
+          commonUtils.hideUIMessage();
           var self = this;
           var pbval = $("#paymentBundleNames").val();
           var paymentBundleNameText;
@@ -245,6 +250,7 @@ var page = Component.extend({
 
     },
       '{scope.appstate} change': function() {
+        commonUtils.hideUIMessage();
          var self = this;
          self.scope.attr('errorMessage','');
          if(this.scope.attr("localGlobalSearch") != this.scope.appstate.attr('globalSearch')){
