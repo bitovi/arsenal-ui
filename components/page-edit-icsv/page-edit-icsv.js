@@ -147,8 +147,7 @@ var page = Component.extend({
 		        $('#inputContent'+rowindex).prepend("<option value>Select</option>").val('')
 		    }
 
-			//var $option   = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"]');
-            var $option = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"], [name="ccidGLtxt[]"]');
+			var $option = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"], [name="ccidGLtxt[]"]');
 
             $option.each(function(index){
             	$('#invoiceform').bootstrapValidator('addField', $(this));
@@ -156,13 +155,18 @@ var page = Component.extend({
 
             $("#addInvSubmit").attr("disabled", true);
 			$(".removeRow").click(function(event){
-				$option.each(function(index){
-                	$('#invoiceform').bootstrapValidator('removeField', $(this));
-                });
+					// $option.each(function(index){
+	        //         	$('#invoiceform').bootstrapValidator('removeField', $(this));
+	        //         });
 
            		$(this).closest("tr").remove();
 	            self.AmountStore.removeAttr("amountText"+rowindex);
-	          //  $("#addInvSubmit").attr("disabled", true);
+
+		          if($("#invoiceform").data('bootstrapValidator').isValid()){
+		            $("#invoiceform").data('bootstrapValidator').disableSubmitButtons(false);
+		          }else{
+		            $("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
+		          }
 	        });
 		},
 		changeTextOnInvType:function(){
@@ -739,14 +743,14 @@ var page = Component.extend({
 
 
 				},
-					"#receiveddate dp.change":function(event){ 
+					"#receiveddate dp.change":function(event){
 			      		$('#invoiceform').bootstrapValidator('revalidateField', 'receiveddate');
 			      	},
 
-			      	"#invoiceduedate dp.change":function(event){ 
+			      	"#invoiceduedate dp.change":function(event){
 			      	 	$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
 			      	},
-				
+
 				".form-control keyup": function(event){
 
 					var self = this;
