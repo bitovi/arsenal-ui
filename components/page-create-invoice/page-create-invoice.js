@@ -779,6 +779,7 @@ var page = Component.extend({
                     }
                   },
                   ".form-control change":function(event){
+                    commonUtils.hideUIMessage(); 
                     var self = this;
                     if(($("#invoicedate input[type=text]").val() != "") &&  (self.scope.licensorStore != "") && ($("#inputCountry0").val() != "")){
                       var genObj = {entityId:self.scope.licensorStore, invoiceDate:Date.parse($("#invoicedate input[type=text]").val()), countryId:$("#inputCountry0").val()};
