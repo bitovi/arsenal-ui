@@ -135,6 +135,7 @@ var GlobalParameterBar = Component.extend({
     },
     '#store-type select change': function(el, ev) {
       //clear the error message if there is any.
+      var self = this;
       this.scope.attr('errorMessage','');
       var selected = $(el[0].selectedOptions).data('storetype');
       this.scope.changesToApply.attr('storeType', selected);
@@ -156,8 +157,10 @@ var GlobalParameterBar = Component.extend({
         $("#contentTypesFilter").multiselect('rebuild');
 
         /* To show 'Select All' only if more than one options available */
-        if(newContentTypes.length<=1)
+        if(newContentTypes.length<=1){
           $("input[name='selAllContentType']").closest('li').hide();
+          self.scope.changesToApply.attr('contentType', [newContentTypes[0]["contentGroupId"]]);
+        }  
         else
           $("input[name='selAllContentType']").closest('li').show();
       }, 1000);
@@ -176,6 +179,7 @@ var GlobalParameterBar = Component.extend({
 
       /* This is to reset the contentType attr in 'appstate' variable  */
       this.scope.changesToApply.removeAttr('contentType');
+
     },
     '#region select change': function(el, ev) {
       var self = this;
@@ -302,7 +306,7 @@ var GlobalParameterBar = Component.extend({
       setTimeout(function(){
         if($("input[name='selAllContentType']").prop("checked"))
         {
-          self.scope.allContentTypes.length > 1 ? self.scope.changesToApply.attr('contentType', ["-1"]) : "";
+          self.scope.contentTypes.length > 1 ? self.scope.changesToApply.attr('contentType', ["-1"]) : "";
         }
         else if($(el[0]).val() == null)
         {
