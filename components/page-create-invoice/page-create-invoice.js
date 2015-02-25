@@ -683,7 +683,7 @@ var page = Component.extend({
 
                                 for(var i= 0; i < requireField.length; i++){
                                   var isValid = data.bv.isValidField(requireField[i]);
-                                  console.log(requireField[i]+"isValid "+isValid)
+                                  //console.log(requireField[i]+"isValid "+isValid)
                                   if(!isValid){
                                     data.bv.disableSubmitButtons(true);
                                     if(requireField[i] == "receiveddate"){
@@ -920,7 +920,7 @@ var page = Component.extend({
                     "{scope} currencyStore": function(){
                       loadCountries(this);
                     },
-                    "{countryData} change": function(){
+                    "{scope} countryData": function(){
                       var self = this;
                       var countryDD = $('.inputCountry');
                       countryDD.options = function(data) {
@@ -1685,109 +1685,104 @@ var page = Component.extend({
 
                                             }
 
-                                            var showErrorDetails = function(errormap, errortype){
-                                              var errorStr = "";
-                                              for(var key in errormap){
-                                                errorStr += errormap[key]+", ";
-                                                //console.log(key);
-                                              }
-                                              errorStr = errorStr.replace(/,\s*$/, "");
-                                              if(errortype){
-                                                var msg = errortype+": "+ errorStr;
-                                              }else{
-                                                var msg = errorStr;
-                                              }
+  var showErrorDetails = function(errormap, errortype){
+    var errorStr = "";
+    for(var key in errormap){
+      errorStr += errormap[key]+", ";
+      //console.log(key);
+    }
+    errorStr = errorStr.replace(/,\s*$/, "");
+    if(errortype){
+      var msg = errortype+": "+ errorStr;
+    }else{
+      var msg = errorStr;
+    }
 
 
-                                              return msg;
-                                            }
+    return msg;
+  }
 
-                                            var clearFieldScope = function(self){
-                                              self.scope.attr("invoicetypeSelect", "1");
-                                              self.scope.attr("totalAmountVal", 0);
-                                              self.scope.attr("tax", "");
-                                              self.scope.attr("showPBR", true);
-                                              self.scope.attr("regionStore", "");
+  var clearFieldScope = function(self){
+    self.scope.attr("invoicetypeSelect", "1");
+    self.scope.attr("totalAmountVal", 0);
+    self.scope.attr("tax", "");
+    self.scope.attr("showPBR", true);
+    self.scope.attr("regionStore", "");
 
-                                              self.scope.attr("AmountStore").each(function(val, key){
-                                                self.scope.AmountStore.removeAttr(key);
-                                              });
+    self.scope.attr("AmountStore").each(function(val, key){
+      self.scope.AmountStore.removeAttr(key);
+    });
+    self.scope.attr("calduedate", "");
+    self.scope.attr("licnotesStore", "");
+    self.scope.attr("fxrateStore", "");
+    self.scope.attr("usercommentsStore", "");
+    self.scope.uploadedfileinfo.replace([]);
+  }
 
+  var getBundleDateRange = function(){
+      var FromToRange = {};
+      FromToRange.periodType = periodWidgetHelper.getPeriodType($("#inputMonth0").val());
 
+      var _listofDateRange = $("input[id^='inputMonth']").not(':hidden');
+      var _listofDate = [];
 
-                                              self.scope.attr("calduedate", "");
+      if(_listofDateRange.length > 0){
 
-                                              self.scope.attr("licnotesStore", "");
-                                              self.scope.attr("fxrateStore", "");
-                                              self.scope.attr("usercommentsStore", "");
+        for(var i=0; i < _listofDateRange.length; i++){
 
-                                              self.scope.uploadedfileinfo.replace([]);
+          var currentID = $(_listofDateRange)[i].id;
+          var currentVal = $("#"+currentID).val();
 
-                                            }
+          if(FromToRange.periodType === "Q"){
+            var currentYear = currentVal.substring(2, currentVal.length);
+            _listofDate.push(currentVal.charAt(1));
+          }else{
+            var currentYear = currentVal.substring(3, currentVal.length);
+            _listofDate.push(currentVal.substring(1,3));
+          }
 
-                                            var getBundleDateRange = function(){
+        }
 
-                                              var FromToRange = {};
+        _listofDate.sort(function(a, b){return b-a});
 
-                                              FromToRange.periodType = periodWidgetHelper.getPeriodType($("#inputMonth0").val());
+        FromToRange.fromDate = periodWidgetHelper.getFiscalPeriod(FromToRange.periodType + _listofDate[_listofDate.length - 1] + currentYear);
+        FromToRange.toDate = periodWidgetHelper.getFiscalPeriod(FromToRange.periodType + _listofDate[0] + currentYear);
 
-                                              var _listofDateRange = $("input[id^='inputMonth']").not(':hidden');
-                                              var _listofDate = [];
+      }else{
+        FromToRange.fromDate = periodWidgetHelper.getFiscalPeriod($("#inputMonth0").val());
+        FromToRange.toDate = periodWidgetHelper.getFiscalPeriod($("#inputMonth0").val());
+      }
 
-                                              if(_listofDateRange.length > 0){
-
-                                                for(var i=0; i < _listofDateRange.length; i++){
-
-                                                  var currentID = $(_listofDateRange)[i].id;
-                                                  var currentVal = $("#"+currentID).val();
-
-                                                  if(FromToRange.periodType === "Q"){
-                                                    var currentYear = currentVal.substring(2, currentVal.length);
-                                                    _listofDate.push(currentVal.charAt(1));
-                                                  }else{
-                                                    var currentYear = currentVal.substring(3, currentVal.length);
-                                                    _listofDate.push(currentVal.substring(1,3));
-                                                  }
-
-                                                }
-
-                                                _listofDate.sort(function(a, b){return b-a});
-
-                                                FromToRange.fromDate = periodWidgetHelper.getFiscalPeriod(FromToRange.periodType + _listofDate[_listofDate.length - 1] + currentYear);
-                                                FromToRange.toDate = periodWidgetHelper.getFiscalPeriod(FromToRange.periodType + _listofDate[0] + currentYear);
-
-                                              }else{
-                                                FromToRange.fromDate = periodWidgetHelper.getFiscalPeriod($("#inputMonth0").val());
-                                                FromToRange.toDate = periodWidgetHelper.getFiscalPeriod($("#inputMonth0").val());
-                                              }
-
-                                              return FromToRange;
-                                            }
+      return FromToRange;
+    }
 
 
-                                            var loadCountries = function(self){
-                                              self.scope.getFxrate();
-                                              var genObj = {regionId:self.scope.attr("regionStore"),
-                                              entityId:self.scope.attr("licensorStore"),
-                                              currency:self.scope.attr("currencyStore")
-                                            };
+      var loadCountries = function(self){
+        self.scope.getFxrate();
+        var genObj = {regionId:self.scope.attr("regionStore"),
+        entityId:self.scope.attr("licensorStore"),
+        currency:self.scope.attr("currencyStore")
+      };
 
-                                            if(self.scope.attr("currencyStore") == ""){
-                                              return;
-                                            }
+      if(self.scope.attr("currencyStore") == ""){
+        return;
+      }
 
-                                            Promise.all([Country.findCountriesForRegLicCurr(UserReq.formRequestDetails(genObj))
-                                            ]).then(function(values) {
-                                              if(values[0].status == 'SUCCESS'){
-                                                self.scope.countryData.attr(values[0].data, true);
-                                              }else{
-                                                var countryDD = $('.inputCountry');
-                                                countryDD.empty();
-                                                countryDD.html($('<option>').text("Select").val(""));
-                                                self.scope.countryData.attr([], true);
-                                                showMessages(values[0].responseText);
+      Promise.all([Country.findCountriesForRegLicCurr(UserReq.formRequestDetails(genObj))
+      ]).then(function(values) {
+        console.log("Promise.all"+values[0].status);
+        if(values[0].status == 'SUCCESS'){
+          console.log("Promise.all 11"+values[0].status);
+          self.scope.attr('countryData',values[0].data);
+        }else{
+          var countryDD = $('.inputCountry');
+          countryDD.empty();
+          countryDD.html($('<option>').text("Select").val(""));
+          //self.scope.countryData.attr([], true);
+          self.scope.attr('countryData',[]);
+          showMessages(values[0].responseText);
 
-                                              }
-                                            });
-                                          }
-                                          export default page;
+        }
+      });
+    }
+export default page;
