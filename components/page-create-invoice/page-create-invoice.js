@@ -681,7 +681,7 @@ var page = Component.extend({
 
                                 for(var i= 0; i < requireField.length; i++){
                                   var isValid = data.bv.isValidField(requireField[i]);
-                                  console.log(requireField[i]+"isValid "+isValid)
+                                  
                                   if(!isValid){
                                     data.bv.disableSubmitButtons(true);
                                     if(requireField[i] == "receiveddate"){
@@ -779,6 +779,7 @@ var page = Component.extend({
                     }
                   },
                   ".form-control change":function(event){
+                    commonUtils.hideUIMessage(); 
                     var self = this;
                     if(($("#invoicedate input[type=text]").val() != "") &&  (self.scope.licensorStore != "") && ($("#inputCountry0").val() != "")){
                       var genObj = {entityId:self.scope.licensorStore, invoiceDate:Date.parse($("#invoicedate input[type=text]").val()), countryId:$("#inputCountry0").val()};
@@ -1222,6 +1223,8 @@ var page = Component.extend({
 
                               //commonUtils.displayUIMessageWithDiv("#invmessageDiv", values[0].status, msg);
                               commonUtils.showSuccessMessage(msg);
+
+                              self.scope.countryData.replace([]);
 
                               if(values[0].invoices[0].errors)
                                 {

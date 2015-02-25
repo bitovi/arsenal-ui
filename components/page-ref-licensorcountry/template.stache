@@ -152,7 +152,7 @@
                               {{/each}}
                             </select>
                           </div>
-                          <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="pricingModelBtn" style="margin-left: -20px;">View</button>
+                          <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="pricingModelBtn" style="margin-left: -10px;">View</button>
                         </div>
 
                     </div>
@@ -192,7 +192,7 @@
                 <div class="col-sm-8 requiredBarNone">
                   <!-- <textarea id="historyComments"  class="form-control multiple-comments-editable form-control-comments new-comments multiple-comments-editable-height" style="min-height:120px;    max-height:200px;"  can-value="pageState.historyComments" readonly=true></textarea>
                   <textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:50px;   min-height:50px;    max-height:50px;" can-value="pageState.entityCountryDetails.comment"></textarea> -->
-                  <div class="multipleComments col-sm-12 requiredBar" id="multipleComments" style="padding-left: 2px;">
+                  <div class="multipleComments col-sm-12 requiredBar" id="multipleComments" style="padding-left: 2px; height:100px;">
                   </div>
                   <div class="col-sm-4 multicomments-required"> Enter comments !</div>
                 </div>
