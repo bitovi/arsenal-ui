@@ -21,15 +21,9 @@ var comments = Component.extend({
   },
   events: {
       '.corner click':function(){
-      //  console.log("multiple-comments-child");
         $(".multiple-comments-parent").toggleClass("showMultipleP");
         $(".multiple-comments-child").toggleClass("showMultipleCh");
       },
-      // '.corner click':function(){
-      //   console.log("multiple-comments-child");
-      //   $(".multiple-comments-parent").toggleClass("showMultipleP");
-      //   $(".multiple-comments-child").toggleClass("showMultipleCh");
-      // },
       "inserted": function(){
         var self = this;
         var commentsData=self.scope.options;
@@ -42,9 +36,6 @@ var comments = Component.extend({
              _.each(commentsData, function(comment) {
                commentsData1.push(comment);
              });
-
-
-
 
              commentsData1.sort(function(obj1, obj2) {
                if(obj1.id != undefined && obj2.id != undefined){
@@ -59,7 +50,6 @@ var comments = Component.extend({
 
                  commentsData = commentsData1;
            }
-
 
         }
         //Specific to PBR module - End
@@ -78,13 +68,13 @@ var comments = Component.extend({
                $(".multiple-comments-child").append("<div id="+tempDivID+" class='comment-env '></div>");
 
               if(val.createdDate != null){
-                 var createdDateFormat = moment(val.createdDate).format("Do MMM, YYYY - HH:mm:ss");
+//                 var createdDateFormat = moment(val.createdDate).format("Do MMM, YYYY - HH:mm:ss");
+                  var createdDateFormat = moment(val.createdDate).format("Do MMM, YYYY");
                 if((val.createdByName != null) && (typeof val.createdByName != "undefined")){
                     $("#"+tempDivID).html("<span class='commentuser'>"+val.createdByName +"</span> <span class='commentdate'>on "+createdDateFormat+"</span><br><span class='commenttext'>"+val.comments+"</span>");
                 }else{
                   $("#"+tempDivID).html("<span class='commentuser'></span> <span class='commentdate'>on "+createdDateFormat+"</span><br><span class='commenttext'>"+val.comments+"</span>");
                 }
-
               }
               else
               {
