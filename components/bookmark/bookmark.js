@@ -7,7 +7,6 @@ import Sharedbookmarks from 'models/common/sharedbookmarks/';
 import UserReq from 'utils/request/';
 import _ from 'lodash';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
-
 import commonUtils from 'utils/commonUtils';
 
 var bookmark = Component.extend({
@@ -39,7 +38,7 @@ var bookmark = Component.extend({
           }
           self.scope.bookmarkcount = data[0].bookmarkList.length;
            //$('.bookmark').html("<span class='bookmark-bubble'>"++"</span>")
-          self.scope.counter.attr('bookmark',self.scope.bookmarkcount);
+          //self.scope.counter.attr('bookmark',self.scope.bookmarkcount);
         }
 
       }
@@ -230,11 +229,19 @@ var bookmark = Component.extend({
       });
       root["idsToBeDeleted"] =deleteId;
       $('.bookmark_loader').show();
-      Bookmark.update(UserReq.formRequestDetails(root),"DELETE",function(data){ console.log(data);
+      Bookmark.update(UserReq.formRequestDetails(root),"DELETE",function(data){
+        //console.log(data);
         $('.bookmark_loader').hide();
         if(data.status=='SUCCESS'){
-          var counter = self.scope.counter.attr('bookmark');
-          self.scope.counter.attr('bookmark', (counter - deleteId.length ) );
+          // var counter = self.scope.counter.attr('bookmark');
+          // self.scope.counter.attr('bookmark', (counter - deleteId.length ) );
+          var params = {
+            "messageDiv":".messageDivBK",
+            "status":data.status,
+            "message":data.responseText,
+            "timer":true
+          };
+          commonUtils.showMessage(params);
         }
       });
     },
@@ -285,8 +292,9 @@ var bookmark = Component.extend({
             Promise.all([Bookmark.findOne(UserReq.formRequestDetails())]).then(function(data) {
               if(data[0].status=='SUCCESS'){
                 self.scope.bookMarkList.replace(data[0].bookmarkList);
-                var counter = self.scope.counter.attr('bookmark');
-                self.scope.counter.attr('bookmark', (self.scope.bookMarkList.length) );
+                // var counter = self.scope.counter.attr('bookmark');
+                // self.scope.counter.attr('bookmark', (self.scope.bookMarkList.length) );
+
                 $('.bookmark_loader').hide();
 
                 $('.newbookmark_name_txtbx').val('');

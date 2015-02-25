@@ -22,16 +22,39 @@ var rinsCommonUtils = {
     }
   },
   displayUIMessage : function(status,message){
-    commonUIDisplay(  ".messageDiv", status,message);
+    var params = {
+      "messageDiv":".messageDiv",
+      "status": status,
+      "message":message
+    };
+    commonUIDisplay(params);
   },
   displayUIMessageWithDiv : function(messageDiv, status,message){
-    commonUIDisplay(messageDiv, status,message);
+    var params = {
+      "messageDiv":messageDiv,
+      "status": status,
+      "message":message
+    };
+    commonUIDisplay(params);
+  },
+  showMessage : function(params){
+    commonUIDisplay(params);
   },
   showSuccessMessage: function(message){
-    commonUIDisplay(  ".messageDiv", "0000",message);
+    var params = {
+      "messageDiv": ".messageDiv",
+      "status": "0000",
+      "message":message
+    };
+    commonUIDisplay(params);
   },
   showErrorMessage: function(message){
-    commonUIDisplay(  ".messageDiv", "ERROR",message);
+    var params = {
+      "messageDiv": ".messageDiv",
+      "status": "ERROR",
+      "message":message
+    };
+    commonUIDisplay(params);
   },
   getDefaultParameters:function(appstate){
     var defaultFilterData={};
@@ -71,24 +94,37 @@ var rinsCommonUtils = {
 
 };
 
-var   commonUIDisplay  = function(messageDiv, status,message){
+var commonUIDisplay  = function(params){
+
+  if(params.timer == undefined){
+    params["timer"] = false;
+  }
 
   var className = 'errorMessage';
-  if(status === '0000' ||  status === 'SUCCESS' ){
+  if(params.status === '0000' ||  params.status === 'SUCCESS' || params.status === "SUCCESS" ){
     className= 'successMessage';
   }
 
 
-  if($(messageDiv).is(':visible')){
-    $(messageDiv).html("").hide();
+  if($(params.messageDiv).is(':visible')){
+    $(params.messageDiv).html("").hide();
   }
-  $(messageDiv).html("<label class='"+className+"'>"+message+"<a href='#' id='messageClose' class='close messageClose'> &times;</a></label>").show();
+  $(params.messageDiv).html("<label class='"+className+"'>"+params.message+"<a href='#' id='messageClose' class='close messageClose'> &times;</a></label>").show();
 
   if($(".messageClose").is(':visible')){
     $(".messageClose").on("click", function(){
-      $(messageDiv).hide();
+      $(params.messageDiv).hide();
     });
   }
+
+  if(params.timer){
+    setTimeout(function() {
+      $(params.messageDiv).hide();
+    }, 2000);
+  }
+
+
+
 }
 
 
