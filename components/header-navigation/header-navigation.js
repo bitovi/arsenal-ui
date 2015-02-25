@@ -1,4 +1,6 @@
 import Component from 'can/component/';
+import Control from 'can/control/';
+import Counter from 'models/common/getCounter/';
 import _ from 'lodash';
 import stache from 'can/view/stache/';
 import template from './template.stache!';
@@ -12,7 +14,6 @@ import RinsCommon from 'utils/urls';
 import logout from 'models/common/logout/';
 import commonUtils from 'utils/commonUtils';
 import pagelogout from 'components/page-logout/';
-import countMap from 'components/bookmark-notification-counter/';
 
 var headerNavigation = Component.extend({
     tag: 'header-navigation',
@@ -69,17 +70,33 @@ var headerNavigation = Component.extend({
             $('.notificationPlaceHolder').append(stache('<rn-notifications appstate="{appstate}" counter={counter}></rn-notifications>')({appstate,counter}));
 
 
-          });
-        },
+        });
+        
+        // Bookmark and Notification Counter Poller
+        var CounterControl = Control.extend({
+          init: function (){
+              this.interval = setInterval(function () {
+                  var getCounterRequest = {};
+                  
+                  Promise.all([
+                      Counter.findOne(UserReq.formRequestDetails(getCounterRequest))
+                    ]).then(function(values) {
+                      self.scope.counter.attr('bookmark', values[0].bookmarks);
+                      self.scope.counter.attr('notifications', values[0].notifications);
+                  });
+              }, 20000);
+          },
+
+          destroy: function () {
+              removeInterval(this.interval);
+          }
+        });
+
+        new CounterControl();
+    },
     events:{
       'inserted':function(){
           var self = this;
-          countMap.delegate("notifications","change", function(ev, newVal){
-              self.scope.counter.attr('notifications', this);
-          });
-          countMap.delegate("bookmarks","change", function(ev, newVal){
-              self.scope.counter.attr('bookmark', this);
-          });
       },
       '#appleLogo click':function(){
           commonUtils.navigateTo("dashboard");
