@@ -1,23 +1,25 @@
 import Component from 'can/component/';
+import _ from 'lodash';
 
 import view from 'can/view/';
 import stache from 'can/view/stache/';
+import css_bootstrapValidator from 'bootstrapValidator.css!';
+import bootstrapValidator from 'bootstrapValidator';
+import moment from 'moment';
+
 import datePicker from 'components/date-picker/';
 import comments from 'components/multiple-comments/';
 import createpb from 'components/create-pb/';
-import _ from 'lodash';
+import fileUpload from 'components/file-uploader/';
+import periodCalendar from 'components/period-calendar/';
 
-import css_bootstrapValidator from 'bootstrapValidator.css!';
-
-import bootstrapValidator from 'bootstrapValidator';
 
 import template from './template.stache!';
 import styles from './page-create-invoice.less!';
 
 import UserReq from 'utils/request/';
-
-import fileUpload from 'components/file-uploader/';
-import periodCalendar from 'components/period-calendar/';
+import periodWidgetHelper from 'utils/periodWidgetHelpers';
+import commonUtils from 'utils/commonUtils';
 
 import invoicemap from 'models/sharedMap/invoice';
 import InvoiceType from 'models/common/invoice-type/';
@@ -27,17 +29,11 @@ import Currency from 'models/common/currency/';
 import Country from 'models/common/country/';
 import Invoice from 'models/invoice/';
 import Fxrate from 'models/common/fxrate/';
-
 import CalDueDate from 'models/common/calinvoiceduedate/';
 import AdhocTypes from 'models/common/adhoc-types/';
 import GLaccounts from 'models/glaccounts/';
 import Region from 'models/common/region/';
-import moment from 'moment';
-import periodWidgetHelper from 'utils/periodWidgetHelpers';
-import commonUtils from 'utils/commonUtils';
 
-
-//import Invoice from 'models/invoice/';
 
 var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]","ccidGLtxt[]"];
 var mandatoryFieldCA = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
@@ -163,12 +159,18 @@ var page = Component.extend({
 
         $("#addInvSubmit").attr("disabled", true);
         $(".removeRow").click(function(event){
-          $option.each(function(index){
-            $('#invoiceform').bootstrapValidator('removeField', $(this));
-          });
+          // $option.each(function(index){
+          //   $('#invoiceform').bootstrapValidator('removeField', $(this));
+          // });
 
           $(this).closest("tr").remove();
           self.AmountStore.removeAttr("amountText"+rowindex);
+
+          if($("#invoiceform").data('bootstrapValidator').isValid()){
+            $("#invoiceform").data('bootstrapValidator').disableSubmitButtons(false);
+          }else{
+            $("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
+          }
           //$("#addInvSubmit").attr("disabled", true);
         });
 
@@ -681,7 +683,7 @@ var page = Component.extend({
 
                                 for(var i= 0; i < requireField.length; i++){
                                   var isValid = data.bv.isValidField(requireField[i]);
-                                  
+                                  console.log(requireField[i]+"isValid "+isValid)
                                   if(!isValid){
                                     data.bv.disableSubmitButtons(true);
                                     if(requireField[i] == "receiveddate"){
@@ -779,7 +781,7 @@ var page = Component.extend({
                     }
                   },
                   ".form-control change":function(event){
-                    commonUtils.hideUIMessage(); 
+                    commonUtils.hideUIMessage();
                     var self = this;
                     if(($("#invoicedate input[type=text]").val() != "") &&  (self.scope.licensorStore != "") && ($("#inputCountry0").val() != "")){
                       var genObj = {entityId:self.scope.licensorStore, invoiceDate:Date.parse($("#invoicedate input[type=text]").val()), countryId:$("#inputCountry0").val()};
