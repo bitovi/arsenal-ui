@@ -67,6 +67,7 @@ var page = Component.extend({
     isBottomGridRefresh:true,
     isGlobalSearchIngested:undefined,
     tokenInput: [],
+    isSortsearch:false,
     refreshTokenInput: function(val, type){
       var self = this;
       if(type=="Add")
@@ -149,7 +150,7 @@ var page = Component.extend({
 
       var tbody = self.element.find('tbody');
         //var tbody = self.element.find('tbody');
-      var getTblBodyHght=gridUtils.getTableBodyHeight('ingested',60);
+      var getTblBodyHght=gridUtils.getTableBodyHeight('ingested',88);
       gridUtils.setElementHeight(tbody[0],getTblBodyHght,getTblBodyHght);
 
       $("#loading_img").hide();
@@ -406,7 +407,7 @@ var page = Component.extend({
     },
     ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
           var self=this;
-           //console.log($(item[0]).attr("class"));
+//console.log($(item[0]).attr("class"));
           var val = $(item[0]).attr("class").split(" ");
           var existingSortColumns =self.scope.sortColumns.attr();
           var existingSortColumnsLen = existingSortColumns.length;
@@ -431,7 +432,8 @@ var page = Component.extend({
 
           }
 
-          console.log("aaa "+self.scope.sortColumns.attr());
+          //console.log("aaa "+self.scope.sortColumns.attr());
+          self.scope.attr('isSortsearch',true);
            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
            /* All the neccessary parameters will be set in that event */
            if(self.scope.appstate.attr('globalSearch')){
@@ -471,9 +473,50 @@ var page = Component.extend({
                       console.error("Error while loading: onAccount balance Details"+xhr);
                 } );
          }
+       },
+       "#arrowbtnCntiner click" :function(){
+         accordin(this.scope,''); //user desired action
        }
    }
 });
+
+
+function accordin(obj,action){
+  if($('#arrowbutton').hasClass('pull-up-arrow') || action === 'OPEN'){ //open
+
+    if(obj.totalRecordCount > 0 || action === 'OPEN'){
+      // setting tbody height which determines the page height- start
+      if(obj.totalRecordCount > 0){
+        $('#arrowbutton').removeClass('pull-up-arrow').addClass('pull-down-arrow');
+        $('#arrowbutton').attr('src','/resources/images/approval_arrow_down.png');
+      }
+      var getTblBodyHght=gridUtils.getTableBodyHeight('ingested',51);
+      gridUtils.setElementHeight($('.rn-grid tbody'),getTblBodyHght,getTblBodyHght);
+      var getstatTabhght=gridUtils.getTableBodyHeight('arrowbtnCntiner',62.5);
+      $(".statsTable").show(10,function(){
+        gridUtils.setElementHeight($('.rn-grid-ingestionstats tbody'),getstatTabhght,getstatTabhght);
+        gridUtils.setElementHeight($('.rn-summary-stat tbody'),getstatTabhght,getstatTabhght);
+      });
+    }else{
+      $('#arrowbutton').removeClass('pull-up-arrow').addClass('pull-down-arrow');
+      $('#arrowbutton').attr('src','/resources/images/approval_arrow_down.png');
+    }
+  }else if($('#arrowbutton').hasClass('pull-down-arrow') || action === 'CLOSE'){ //close
+    if(obj.totalRecordCount > 0 || action === 'CLOSE'){
+      if(obj.totalRecordCount > 0){
+        $('#arrowbutton').removeClass('pull-down-arrow').addClass('pull-up-arrow');
+        $('#arrowbutton').attr('src','/resources/images/approval_arrow_up.png');
+      }
+      var getTblBodyHght=gridUtils.getTableBodyHeight('ingested',88);
+      gridUtils.setElementHeight($('.rn-grid tbody'),getTblBodyHght,getTblBodyHght);
+      //hide the stats table.
+      $(".statsTable").hide();
+    }else{
+      $('#arrowbutton').removeClass('pull-down-arrow').addClass('pull-up-arrow');
+      $('#arrowbutton').attr('src','/resources/images/approval_arrow_up.png');
+    }
+  }
+}
 
 
 var createIngestedReconRequestForExportToExcel=function(appstate){
@@ -697,6 +740,24 @@ var fetchReconIngest = function(scope, load){
           scope.ingestList.footerRows.replace(footerLine);
         }
 
+        //if search results comes for the user search criteria and if there is records to
+        //show then open the according control to show results.
+        // we need to eliminate this action when the sort search result.
+        //commenting out this implementation now.
+        /*if(!scope.attr('isSortsearch')){
+          if(scope.totalRecordCount > 0){
+            accordin(scope,'OPEN');
+          }else{
+            accordin(scope,'CLOSE');
+          }
+        }else{
+          scope.attr('isSortsearch',false);
+        }*/
+        // This check is make sure that wheneven the search result is return it shows the up arrow
+        // The logic of open and close working based on the arrow button class.
+        if($('#arrowbutton').hasClass('pull-down-arrow')){
+          $('#arrowbutton').removeClass('pull-down-arrow').addClass('pull-up-arrow');
+        }
       }
     }
 

@@ -8,6 +8,7 @@ import stache from 'can/view/stache/';
 import Currency from 'models/common/currency/';
 import UserReq from 'utils/request/';
 import formats from 'utils/formats';
+import gridUtils from 'utils/gridUtil';
 
 /* Extend grid with the columns */
 Grid.extend({
@@ -102,9 +103,9 @@ var page = Component.extend({
 
             self.refreshParam.searchRequest.ids = dtlHDRIds;
 
-            $('.statsTable').show();
-            $('#summaryStatsDiv').hide();
-            $('#ingestionStatsDiv').hide();
+            //$('.statsTable').show();
+            //$('#summaryStatsDiv').hide();
+            //$('#ingestionStatsDiv').hide();
 
             var value = {};
 
@@ -135,7 +136,7 @@ var page = Component.extend({
               var data = values[0];
 
               self.loadRefreshStats(data,self);
-              
+
 
             },function(xhr){
 
@@ -200,21 +201,26 @@ var page = Component.extend({
 
               $('#ingestionReconStats').html(stache('<rn-grid-ingestionstats rows="{rows}"></rn-grid-ingestionstats>')({rows}));
 
-              
-              //alignGridStats('ingested');
-              setTimeout(function(){
-                alignGridStats('ingested');
-                alignGridStats('ingestionReconStats');                
-              },10);
-              
+              //whenever the grid is rerendering take the height of the summay grid and set it to ingestion
+              //stats grid.
+              var summaryBodyhght=$('.rn-summary-stat tbody').height();
+              gridUtils.setElementHeight($('.rn-grid-ingestionstats tbody'),summaryBodyhght,summaryBodyhght);
 
-              $('.statsTable').show();
-              $('#ingestionStatsDiv').show();
-              $('#summaryStatsDiv').show();
+              //alignGridStats('ingested');
+              /*setTimeout(function(){
+                alignGridStats('ingested');
+                alignGridStats('ingestionReconStats');
+              },10);*/
+
+
+              //$('.statsTable').show();
+              //$('#ingestionStatsDiv').show();
+              //$('#summaryStatsDiv').show();
 
           }else{
               self.summaryStatsData.splice(0, self.summaryStatsData.length);
-              $('.statsTable').hide();
+              //$('.statsTable').hide();
+              //trigger according click event to hide if it is open
           }
 
        }
@@ -244,7 +250,7 @@ var page = Component.extend({
 
 });
 
-function alignGridStats(divId){
+/*function alignGridStats(divId){
   var colLength = $('#'+divId+' table>thead>tr>th').length;
   var rowLength = $('#'+divId+' table>tbody>tr').length;
   var divWidth = $('#'+divId).outerWidth();
@@ -261,7 +267,7 @@ function alignGridStats(divId){
           tdWidth = theadTdWidth;
         else if(tfootTdWidth >= tbodyTdWidth && tfootTdWidth >= theadTdWidth)
           tdWidth = tfootTdWidth;
-        else 
+        else
           tdWidth = tbodyTdWidth;
 
         if(i==1)
@@ -270,7 +276,7 @@ function alignGridStats(divId){
         if(divId=='ingestionReconStats' && i==1){
             tdWidth = 140;
         }
-        
+
         tableWidth += tdWidth;
         cellWidthArr.push(tdWidth);
       }
@@ -296,6 +302,6 @@ function alignGridStats(divId){
         $('#'+divId+' table').css("width",tableWidth);
       }
   }
-}
+}*/
 
 export default page;

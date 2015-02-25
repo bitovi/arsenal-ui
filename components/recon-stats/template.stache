@@ -1,8 +1,8 @@
-<div style="padding-left: 15px;padding-right: 15px;">
+<div style="padding:0 15px;">
 
 
 			<div  class="form-inline" >
-				<div class="col-md-12 form-group" style="text-align:right;padding: 0px;padding-top:10px;padding-bottom:10px">
+				<div class="col-md-12" style="text-align:right;padding: 0px;padding-top:10px;padding-bottom:10px">
 					<!--<label  for="inputAnalyze">Convert to Currency </label>-->
 
 					<select id="currency" class="currency" name="currency" {{isIngestCcidsSelected 0}} can-value="currency" style="vertical-align: bottom;">
@@ -17,24 +17,26 @@
 					style="margin-left:10px;" {{isIngestCcidsSelected 0}}>
 					Refresh</button>
 				</div>
-
+				<div class="accordin-div col-md-12" id="arrowbtnCntiner">
+					<img id="arrowbutton" class="pull-up-arrow" style="margin:0 auto;" src="/resources/images/approval_arrow_up.png"></img>
+				</div>
 			</div>
 
 
 
-				<table class="statsTable">
+				<table class="statsTable" style="display:none">
 					<tr>
 						<td>
 
 							<div width="100%">
 
 								<!-- todo export buttons -->
-								<div class="spaceDiv1">&nbsp;</div>
+								<!--<div class="spaceDiv1">&nbsp;</div>-->
 
 								<table style="width:100%;">
 									<tr width="100%" style="vertical-align: top;" colspan="3">
 										<td width="55%">
-											<fieldset id="ingestionStatsDiv" style="display:none;padding-left: 0px;">
+											<fieldset id="ingestionStatsDiv" style="padding-left: 0px;">
 
 												<table id="ingestionStatsDiv" style="padding-left: 0px;">
 													<tr>
@@ -61,7 +63,7 @@
 
 										<td width="43%" class="summaryStatsTab">
 
-										<fieldset id="summaryStatsDiv" style="display:none;width:100%;padding-right: 0px;">
+										<fieldset id="summaryStatsDiv" style="width:100%;padding-right: 0px;">
 												<table id="summaryStatsDiv" style="width:100%;padding-left: 0px;">
 													<tr>
 														<td width="55%">
@@ -79,11 +81,11 @@
 												</table>
 
 
-												<table id="summaryStatsTab" style="width:100%">
+												<table id="summaryStatsTab" style="width:100%" class="rn-summary-stat">
 													<thead>
 														<tr>
 													 		<th class="ssStatus" style="width:55%">Stats</th>
-													 		<th class="ssvalue" style="width:45%">Value</th>
+													 		<th class="ssvalue value" style="width:45%" >Value</th>
 													 	</tr>
 													</thead>
 
@@ -92,10 +94,10 @@
 													{{#each summaryStatsData}}
 
 													<tr>
-														<td>
+														<td style="width:55%">
 															Recon Records #
 														</td>
-														<td>
+														<td style="width:45%" class="value">
 															{{noOfReconRecords}}
 														</td>
 
@@ -103,10 +105,10 @@
 													</tr>
 
 													<tr>
-														<td>
+														<td style="width:55%">
 															Recon Records %
 														</td>
-														<td>
+														<td style="width:45%" class="value">
 															{{reconRecordsPercentage}}
 														</td>
 
@@ -114,10 +116,10 @@
 													</tr>
 
 														<tr>
-														<td>
+														<td style="width:55%">
 															Recon Amt
 														</td>
-														<td>
+														<td style="width:45%" class="value">
 															{{reconAmount}}
 														</td>
 
@@ -125,10 +127,10 @@
 													</tr>
 
 														<tr>
-														<td>
+														<td style="width:55%">
 															Recon Amt %
 														</td>
-														<td>
+														<td style="width:45%" class="value">
 															{{reconAmountPercentage}}
 														</td>
 
@@ -136,10 +138,10 @@
 													</tr>
 
 													<tr>
-														<td>
+														<td style="width:55%">
 															Lineitem Dispute
 														</td>
-														<td>
+														<td style="width:45%" class="value">
 															{{lineItemDispute}}
 														</td>
 
@@ -147,30 +149,30 @@
 
 													<tr>
 
-														<td>
+														<td style="width:55%">
 															Overrep Dispute
 														</td>
-														<td>
+														<td style="width:45%" class="value">
 															{{overRepDispute}}
 														</td>
 
 													</tr>
 
 													<tr>
-														<td>
+														<td style="width:55%">
 															Total Pub fee
 														</td>
-														<td>
+														<td style="width:45%" class="value">
 															{{totalPubFee}}
 														</td>
 
 													</tr>
 
 													<tr>
-														<td>
+														<td style="width:55%">
 															Recommended Payment
 														</td>
-														<td>
+														<td style="width:45%" class="value">
 															{{recommendedPayment}}
 														</td>
 
@@ -179,10 +181,10 @@
 
 													<tr>
 
-														<td>
+														<td style="width:55%">
 															Actual Payment
 														</td>
-														<td>
+														<td style="width:45%" class="value">
 															{{actualPayment}}
 														</td>
 
