@@ -103,7 +103,7 @@ var headerNavigation = Component.extend({
           $('book-mark').slideToggle('fast');
       },
       '.notification click':function(){
-          $('.notificationPlaceHolder').append(stache('<rn-notifications></rn-notifications>'));
+          $('.notificationPlaceHolder').html(stache('<rn-notifications></rn-notifications>'));
           $('rn-notifications').slideToggle('fast');
           //this.element.find('rn-notifications').scope().notificationTriggered(this.element.find('rn-notifications').scope());
       },
