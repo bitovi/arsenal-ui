@@ -26,7 +26,18 @@ var headerNavigation = Component.extend({
         },
         show:true,
         roles: [],
-        allowedScreenId : []
+        allowedScreenId : [],
+        getCounter: function(){
+          self = this;
+          var getCounterRequest = {};
+                          
+          Promise.all([
+              Counter.findOne(UserReq.formRequestDetails(getCounterRequest))
+            ]).then(function(values) {
+              self.counter.attr('bookmark', values[0].bookmarks);
+              self.counter.attr('notifications', values[0].notifications);
+          });
+        }
     },
     init: function() {
       var self = this;
@@ -67,23 +78,13 @@ var headerNavigation = Component.extend({
             var counter = self.scope.counter;
             $('.gParamSearchbar').append(stache('<global-parameter-bar appstate="{appstate}"></global-parameter-bar>')({appstate}));
             $('.bookMarkPalceHolder').append(stache('<book-mark appstate={appstate}  counter={counter}></book-mark>')({appstate,counter}));
-            $('.notificationPlaceHolder').append(stache('<rn-notifications appstate="{appstate}" counter={counter}></rn-notifications>')({appstate,counter}));
-
-
         });
         
         // Bookmark and Notification Counter Poller
         var CounterControl = Control.extend({
           init: function (){
               this.interval = setInterval(function () {
-                  var getCounterRequest = {};
-                  
-                  Promise.all([
-                      Counter.findOne(UserReq.formRequestDetails(getCounterRequest))
-                    ]).then(function(values) {
-                      self.scope.counter.attr('bookmark', values[0].bookmarks);
-                      self.scope.counter.attr('notifications', values[0].notifications);
-                  });
+                  self.scope.getCounter();
               }, 20000);
           },
 
@@ -95,9 +96,6 @@ var headerNavigation = Component.extend({
         new CounterControl();
     },
     events:{
-      'inserted':function(){
-          var self = this;
-      },
       '#appleLogo click':function(){
           commonUtils.navigateTo("dashboard");
       },
@@ -105,8 +103,9 @@ var headerNavigation = Component.extend({
           $('book-mark').slideToggle('fast');
       },
       '.notification click':function(){
+          $('.notificationPlaceHolder').append(stache('<rn-notifications></rn-notifications>'));
           $('rn-notifications').slideToggle('fast');
-          this.element.find('rn-notifications').scope().notificationTriggered(this.element.find('rn-notifications').scope());
+          //this.element.find('rn-notifications').scope().notificationTriggered(this.element.find('rn-notifications').scope());
       },
       '.dropdown-menu li a click':function(el){
 
