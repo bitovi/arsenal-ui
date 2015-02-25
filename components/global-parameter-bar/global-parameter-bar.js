@@ -161,6 +161,19 @@ var GlobalParameterBar = Component.extend({
         else
           $("input[name='selAllContentType']").closest('li').show();
       }, 1000);
+
+
+
+
+      $("#contentTypesFilter").multiselect('selectAll', false);
+      $('#contentTypesFilter').multiselect('updateButtonText');
+      setTimeout(function(){
+        $("input[name='selAllContentType']").prop("checked",true);
+        $("input[name='selAllContentType']").closest('li').addClass("active");
+      }, 1000);
+
+      $("#contentTypesFilter").multiselect('rebuild');
+
       /* This is to reset the contentType attr in 'appstate' variable  */
       this.scope.changesToApply.removeAttr('contentType');
     },
@@ -201,7 +214,7 @@ var GlobalParameterBar = Component.extend({
             $("input[name='selAllLicensor']").prop("checked",true);
             $("input[name='selAllLicensor']").closest('li').addClass("active");
           }, 1000);
-          
+
           $("#licensorsFilter").multiselect('rebuild');
 
           /* To show 'Select All' option only if more than one options available */

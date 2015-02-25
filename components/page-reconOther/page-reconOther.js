@@ -259,10 +259,10 @@ var page = Component.extend({
     ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev) {
       var self = this;  //console.log($(item[0]).attr("class"));
       var val = $(item[0]).attr("class").split(" ");
-      
+
       self.scope.attr("offset", 0);  //For other tab. Resetting offset to 0 for sorting
       self.scope.attr("incomingOffset", 0);  //For invoices tab. Resetting offset to 0 for sorting
-      
+
       var existingSortColumns = self.scope.sortColumns.attr();
       var existingSortColumnsLen = existingSortColumns.length;
       var existFlag = false;
@@ -433,6 +433,7 @@ var fetchReconDetailsOther = function(scope){
   searchRequestObj.searchRequest["filter"] = newFilterData;
 
   Recon.findOne((searchRequestObj), function(data) {
+    commonUtils.hideUIMessage();
     $("#loading_img").hide();
     if (data.status == "FAILURE") {
       // $("#messageDiv").html("<label class='errorMessage'>"+data.responseText+"</label>");
@@ -444,7 +445,7 @@ var fetchReconDetailsOther = function(scope){
       console.error("Failed to load the Recon incoming other :" + data.responseText);
 
     } else {
-      
+
       if (searchRequestObj.searchRequest["offset"] == 0){
         scope.incomingOtherList.replace(data.reconStatsDetails);
         if(data.reconStatsDetails.length==0){
@@ -504,6 +505,8 @@ var fetchReconIncoming = function(scope, load) {
   searchRequestObj.searchRequest["filter"] = newFilterData;
 
   Recon.findOne((searchRequestObj), function(data) {
+
+    commonUtils.hideUIMessage();
     if (data.status == "FAILURE") {
       displayErrorMessage(data.responseText, "Failed to load the Recondetails:");
       //commonUtils.showErrorMessage(data.responseText);
@@ -776,7 +779,7 @@ var createIncomingReconRequestForExportToExcel = function(appstate) {
 
 function getVisibleGridHeight() {
   if ($('#incomingDetails').is(':visible')) {
-    return gridUtils.getTableBodyHeight('incomingDetailsGrid', 40);   
+    return gridUtils.getTableBodyHeight('incomingDetailsGrid', 40);
   } else if ($('#reconstatsOtherGrid').is(':visible')) {
     return gridUtils.getTableBodyHeight('incomingDetailsGrids', 40);
   } else {

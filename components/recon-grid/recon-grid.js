@@ -32,14 +32,15 @@ var reconGrid = Grid.extend({
               //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
 
               var tabSelected = parentScopeVar.attr('tabSelected');
+
               /* Reset the offset value and call the webservice to fetch next set of records */
-              if(tabSelected=="Ingested"){
+              if(tabSelected ==="Ingested"){
                 var offsetVal = parentScopeVar.attr('ingestedOffset');
                 parentScopeVar.attr('ingestedOffset', (parseInt(offsetVal)+1));
                 parentScopeVar.attr('ingestedScrollTop', (tbody[0].scrollHeight-100));
               }
               parentScopeVar.appstate.attr('globalSearchButtonClicked', false);
-              parentScopeVar.attr("load", false);
+              parentScopeVar.attr("load", true);
 
               /* The below code calls {scope.appstate} change event that gets the new data for grid*/
               /* All the neccessary parameters will be set in that event */
@@ -60,7 +61,7 @@ var reconGrid = Grid.extend({
               //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
 
               var tabSelected = parentScopeVar.attr('tabSelected');
-              parentScopeVar.attr("load", false);
+              parentScopeVar.attr("load", true);
               if(tabSelected=="Other") {
               /* Reset the offset value and call the webservice to fetch next set of records */
                 var offsetVal = parentScopeVar.attr('offset');

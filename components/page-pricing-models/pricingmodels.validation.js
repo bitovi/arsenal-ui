@@ -118,9 +118,6 @@ var pricingmodelValidation = {
                 'baseRate[]': {
                       group:'.baseRate',
                       validators: {
-                          notEmpty: {
-                              message: 'Baserate is mandatory'
-                          },
                           numeric: {
                             separator:'.',
                             message: 'Please provide numeric value for baserate'
@@ -135,9 +132,6 @@ var pricingmodelValidation = {
                 'minima[]': {
                       group:'.minima',
                       validators: {
-                          notEmpty: {
-                              message: 'Minima is mandatory'
-                          },
                           numeric: {
                             separator:'.',
                             message: 'Please provide numeric value for minima'
@@ -147,9 +141,6 @@ var pricingmodelValidation = {
                 'listenerMinima[]': {
                       group:'.listenerMinima',
                       validators: {
-                          notEmpty: {
-                              message: 'Listener Hours Minima is mandatory'
-                          },
                           numeric: {
                             separator:'.',
                             message: 'Please provide numeric value for Listener Hours Minima'
@@ -159,9 +150,6 @@ var pricingmodelValidation = {
                   'discount[]': {
                       group:'.discount',
                       validators: {
-                          notEmpty: {
-                              message: 'Discount is mandatory'
-                          },
                           numeric: {
                             separator:'.',
                             message: 'Please provide numeric value for Discount'
@@ -176,18 +164,13 @@ var pricingmodelValidation = {
                   'description[]': {
                       group:'.description',
                       validators: {
-                          notEmpty: {
-                              message: 'Description is mandatory'
-                          }
+                          
                           
                       }
                   },
                   'from[]': {
                       group:'.from',
                       validators: {
-                          notEmpty: {
-                              message: 'From is mandatory'
-                          },
                           numeric: {
                             separator:'.',
                             message: 'Please provide numeric value for From'
@@ -247,10 +230,7 @@ var pricingmodelValidation = {
                   'minimatrack[]': {
                       group:'.minimatrack',
                       validators: {
-                          notEmpty: {
-                              message: 'Minima is mandatory'
-                          },
-                          numeric: {
+                        numeric: {
                             separator:'.',
                             message: 'Please provide numeric value for Minima'
                           }

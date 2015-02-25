@@ -896,12 +896,14 @@ var page = Component.extend({
 
 
 var getClaimReviewData = function(tabView, self) {
+   commonUtils.hideUIMessage(); 
   var claimLicSearchRequest = getClaimReviewRequest(tabView,self);
   $("#loading_img").show();
   if (tabView == "licensor") {
     claimLicensorInvoices.findOne(UserReq.formRequestDetails(claimLicSearchRequest), function(values) {
       //console.log("data is "+JSON.stringify(values.attr()));
       if (values["status"] != "FAILURE") {
+
         if (self.appstate.attr('excelOutput')) {
           $("#loading_img").hide();
           $('#exportExcel').html(stache('<export-toexcel csv={values}></export-toexcel>')({
@@ -916,6 +918,9 @@ var getClaimReviewData = function(tabView, self) {
               $("#messageDiv").hide();
           },4000);
           */
+          if(values["responseText"].indexOf("No Data found") > -1){
+            commonUtils.showSuccessMessage(values["responseText"]);
+          }
           self.attr('licensorRecordsAvailable', values.recordsAvailable);
           if (parseInt(claimLicSearchRequest["offset"]) == 0) {
             self.allClaimLicensorMap.replace(values);
@@ -925,6 +930,10 @@ var getClaimReviewData = function(tabView, self) {
           }
         }
       } else {
+
+        //if(values["responseText"]=="No data found"){
+            commonUtils.showSuccessMessage(values["responseText"]);
+          //}
         $("#loading_img").hide();
         // $("#messageDiv").html("<label class='errorMessage'>" + values["responseText"] + "</label>");
         // $("#messageDiv").show();
@@ -957,6 +966,9 @@ var getClaimReviewData = function(tabView, self) {
               $("#messageDiv").hide();
           },4000);
           */
+          if(values["responseText"].indexOf("No Data found") > -1){
+            commonUtils.showSuccessMessage(values["responseText"]);
+          }
           self.attr('countryRecordsAvailable', values.recordsAvailable);
           if (parseInt(claimLicSearchRequest["offset"]) == 0) {
             self.allClaimCountryMap.replace(values);
@@ -966,6 +978,8 @@ var getClaimReviewData = function(tabView, self) {
           }
         }
       } else {
+
+
         $("#loading_img").hide();
         // $("#messageDiv").html("<label class='errorMessage'>" + values["responseText"] + "</label>");
         // $("#messageDiv").show();
@@ -1123,11 +1137,14 @@ var generateTableData = function(invoiceData,footerData){
              var lowestPeriod = 0;
               var highestPeriod = 0;
               var tmpPeriod = 0;
-              var periodType = 'P';
 
             if(invoiceLineItems.length > 0){
               for(var j=0;j<invoiceLineItems.length;j++){
                 var invLITemp={};
+                var periodType = invoiceLineItems[j]["periodType"];
+                if(periodType == null || periodType == undefined ||(periodType !=null && periodType.length ==0)){
+                  periodType='P';
+                }
 
                 invLITemp["entityId"] = invTemp["entityId"]+","+  invTemp["entityName"] ;
                 invLITemp["__isChild"] = true;

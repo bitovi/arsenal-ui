@@ -425,7 +425,10 @@ var page = Component.extend({
               var lowestPeriod = 0;
               var highestPeriod = 0;
               var tmpPeriod = 0;
-              var periodType = 'P';
+              var periodType = invoiceData[i]["periodType"];
+              if(periodType == null || periodType == undefined ||(periodType !=null && periodType.length ==0)){
+                periodType='P';
+              }
               if(invoiceLineItems.length > 0){
                 for(var j=0;j<invoiceLineItems.length;j++){
                   var invLITemp={};
@@ -1150,6 +1153,7 @@ function getAllInvoices(self) {
 };
 
 function fetchData(self){
+  commonUtils.hideUIMessage(); 
   var invSearchRequest= getInvoiceSearchRequest(self);
   $("#loading_img").show();
   GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){

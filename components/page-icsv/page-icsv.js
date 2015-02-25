@@ -391,7 +391,8 @@ var page = Component.extend({
                   if(fatalErrorList.length>0){
                     var messages = fatalErrorList[0].errorMessages;
                     if(messages.length >0){
-                      errorMess = errorMess+" : "+fatalErrorList[0].errorMessages[0]+" "+fatalErrorList[0].csvFileName+" at lineNumber "+fatalErrorList[0].lineNumber;
+                      //errorMess = errorMess+" : "+fatalErrorList[0].errorMessages[0]+" "+fatalErrorList[0].csvFileName+" at lineNumber "+fatalErrorList[0].lineNumber;
+                      errorMess = errorMess+" : "+ "Line #"+fatalErrorList[0].lineNumber+" - "+ fatalErrorList[0].errorMessages[0] +" in File \""+fatalErrorList[0].csvFileName+"\".\n";
                       self.scope.attr('errorMessage',errorMess);
                        $("#loading_img").hide();
                     }

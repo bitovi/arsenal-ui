@@ -46,26 +46,26 @@ var pricingModels = Model.extend({
 		}
 	},
 	create: function(params){
-		//var RinsCommon.UI_SERVICE_URL = "http://localhost:10645/api/v1/rinsui/";
-	 	return $.ajax({
-	  		url: RinsCommon.UI_SERVICE_URL +'updatePricingModelDetails',
-	  		type: 'POST',
-	      	datatype:'json',
-	      	contentType: 'application/json; charset=utf-8',
-	  		data: JSON.stringify(params)
-	  	});
-   },
-
-   add: function(params) {
-
-	 	return $.ajax({
-	  		url: RinsCommon.UI_SERVICE_URL +'addPricingModelDetails',
-	  		type: 'POST',
-	      	datatype:'json',
-	      	contentType: 'application/json; charset=utf-8',
-	  		data: JSON.stringify(params)
-	  	});
-
+		if(params.reqType === 'add'){
+			delete params.reqType;
+		 	return $.ajax({
+		  		url: RinsCommon.UI_SERVICE_URL +'addPricingModelDetails',
+		  		type: 'POST',
+		      	datatype:'json',
+		      	contentType: 'application/json; charset=utf-8',
+		  		data: JSON.stringify(params)
+		  	});
+	   }
+	   else if(params.reqType === 'edit'){
+	   		delete params.reqType; 
+		   	return $.ajax({
+		  		url: RinsCommon.UI_SERVICE_URL +'updatePricingModelDetails',
+		  		type: 'POST',
+		      	datatype:'json',
+		      	contentType: 'application/json; charset=utf-8',
+		  		data: JSON.stringify(params)
+		  	});
+		}
    }
 
 

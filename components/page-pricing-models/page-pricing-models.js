@@ -29,8 +29,8 @@ import Comments from 'components/multiple-comments/';
 import Switcher from 'components/switcher/';
 import commonUtils from 'utils/commonUtils';
 
-var mandatoryAddField = ["pricingmodeltype", "modelname", "usercommentsdiv", "contentGroup[]", "baseRate[]", "minima[]", "listenerMinima[]", "discount[]", "description[]", "from[]", "to[]", "minimatrack[]"];
-var mandatoryEditField = ["version", "pricingmodeltype", "modelname", "usercommentsdiv", "contentGroup[]", "baseRate[]", "minima[]", "listenerMinima[]", "discount[]", "description[]", "from[]", "to[]", "minimatrack[]"];
+var mandatoryAddField = ["modelname", "usercommentsdiv", "contentGroup[]"];
+var mandatoryEditField = ["version",  "modelname", "usercommentsdiv", "contentGroup[]"];
 
 
 
@@ -149,8 +149,8 @@ var page = Component.extend({
     maxVersion:0,
     selectedModelId:"",
     modelSumRowIndex:"",
-    isError:false,
-    mode: "FETCH"
+    isError:false
+   
 
 
   },
@@ -228,8 +228,6 @@ var page = Component.extend({
       var self = this;
        clearOldEditData(self);
 
-
-       self.scope.attr("mode", "ADD")
       self.scope.addEditUIProperty.attr("country", true);
       self.scope.addEditUIProperty.attr("entity", true);
 
@@ -534,9 +532,9 @@ var page = Component.extend({
 
         "#addbasemodel click":function(){
         var self = this;
-        self.scope.baseModelParamList.push({contentGroup:"", baseRate:"",
-                                                      minima:"", listenerMinima:"",
-                                                      discount:"", isDefault:"",
+        self.scope.baseModelParamList.push({contentGroup:"", baseRate:"0",
+                                                      minima:"0", listenerMinima:"",
+                                                      discount:"0", isDefault:"",
                                                       modelId:self.scope.attr("modelId")
                                                     });
 
@@ -615,8 +613,6 @@ var page = Component.extend({
 
    "#add click":function(){
         var self = this;
-
-        self.scope.attr("mode", "ADD");
         self.scope.attr("showbottomSection", true);
         self.scope.attr("editstate", false);
        self.scope.addEditUIProperty.attr("country", false);
@@ -626,16 +622,17 @@ var page = Component.extend({
        self.scope.attr("trackCountMinimaList").replace([]);
        self.scope.attr("baseModelParamList").replace([]);
        self.scope.attr("modelname", "");
-       self.scope.attr("pricingmodeltype", "");
+       self.scope.attr("pricingmodeltype", "STANDARD");  //making it default for add
         $("#addbasemodel").trigger("click");
         $("#addtrack").trigger("click");
         $('#pricingmodelGrid tbody tr').removeClass("selected");
 
         $(".old-comments").remove();
         $('#pmform').bootstrapValidator('addField', 'usercommentsdiv');
+        $('#pmform').bootstrapValidator('addField', 'modelname');
        $("#pmform").data('bootstrapValidator').resetForm();
        $("#save").attr("disabled", true);
-       return false;
+        return false;
 
     },
     "#addCancel click":function(){
@@ -690,100 +687,43 @@ var page = Component.extend({
              "version": (self.scope.editstate === true)?$("#version option:selected").text():1
           }
 
-        }
+        },
+        "reqType":(self.scope.editstate === true)?'edit':'add'
+
       }
 
-      console.log(JSON.stringify(saveRecord));
+      PricingModels.create(UserReq.formRequestDetails(saveRecord), function(data){
+                      if(data["status"]=="SUCCESS"){
+                                  var msg = data["responseText"];
+                           
+                                    commonUtils.displayUIMessage(data["status"], msg);
 
-      if( self.scope.attr("mode") == "ADD") {
+                                     var selModel = self.scope.attr("modelSumRowIndex");
+                                    $("models-grid table tbody tr").eq(selModel-1).click();
 
-          PricingModels.add(UserReq.formRequestDetails(saveRecord), function(data){
-                  if(data["status"]=="SUCCESS"){
-                              var msg = data["responseText"];
-                              // $("#pbmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
-                              // $("#pbmessageDiv").css("display", "block");
+                                    setTimeout(function(){
+                                        $("#version option:last-child").attr('selected', 'selected');
+                                     },1000);
 
-                              //    setTimeout(function(){
-                              //       $("#pbmessageDiv").hide();
-                              //    },5000);
-                                commonUtils.displayUIMessage(data["status"], msg);
+                                      if(self.scope.editstate == false){
+                                          clearOldAddData(self);
+                                      }
 
-                                 var selModel = self.scope.attr("modelSumRowIndex");
-                                $("models-grid table tbody tr").eq(selModel-1).click();
+                                      if(!self.scope.editstate){
+                                        $("#addbasemodel").trigger("click");
+                                        $("#addtrack").trigger("click");
+                                      }
 
-                                setTimeout(function(){
-                                    $("#version option:last-child").attr('selected', 'selected');
-                                 },1000);
-
-                                  if(self.scope.editstate == false){
-                                    clearOldEditData(self);
                                   }
-
-                                  if(!self.scope.editstate){
-                                    $("#addbasemodel").trigger("click");
-                                    $("#addtrack").trigger("click");
-                                  }
-
-                              }
-                            else
-                            {
-                                var msg = data["responseText"];
-                                // $("#pbmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
-                                // $("#pbmessageDiv").show();
-                                // setTimeout(function(){
-                                //     $("#pbmessageDiv").hide();
-                                //  },5000);
-                                commonUtils.displayUIMessage(data["status"], msg);
-                            }
-                },function(xhr){
-                /*Error condition*/
-              });
-
-      } else {
-
-        PricingModels.create(UserReq.formRequestDetails(saveRecord), function(data){
-                  if(data["status"]=="SUCCESS"){
-                              var msg = data["responseText"];
-                              // $("#pbmessageDiv").html("<label class='successMessage'>"+msg+"</label>")
-                              // $("#pbmessageDiv").css("display", "block");
-
-                              //    setTimeout(function(){
-                              //       $("#pbmessageDiv").hide();
-                              //    },5000);
-                                commonUtils.displayUIMessage(data["status"], msg);
-
-                                 var selModel = self.scope.attr("modelSumRowIndex");
-                                $("models-grid table tbody tr").eq(selModel-1).click();
-
-                                setTimeout(function(){
-                                    $("#version option:last-child").attr('selected', 'selected');
-                                 },1000);
-
-                                  if(self.scope.editstate == false){
-                                    clearOldEditData(self);
-                                  }
-
-                                  if(!self.scope.editstate){
-                                    $("#addbasemodel").trigger("click");
-                                    $("#addtrack").trigger("click");
-                                  }
-
-                              }
-                            else
-                            {
-                                var msg = data["responseText"];
-                                // $("#pbmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
-                                // $("#pbmessageDiv").show();
-                                // setTimeout(function(){
-                                //     $("#pbmessageDiv").hide();
-                                //  },5000);
-                                commonUtils.displayUIMessage(data["status"], msg);
-                            }
-                },function(xhr){
-                /*Error condition*/
-              });
-            }
-          }
+                                else
+                                {
+                                    var msg = data["responseText"];
+                                    commonUtils.displayUIMessage(data["status"], msg);
+                                }
+                    },function(xhr){
+                    /*Error condition*/
+                  });
+        }
     },
     helpers:{
               setHeight: function(){
@@ -825,6 +765,20 @@ function clearOldEditData(componentstate){
      self.scope.attr("baseModelParamList").replace([]);
      self.scope.attr("modelname", "");
      self.scope.attr("pricingmodeltype", "");
+     self.scope.pmVersion.replace([]);
+     $('#country-lic-grid').html(stache('<countrylic-grid emptyrows="{emptyrows}"></countrylic-grid>')({}));
+
+    self.scope.attr("isCommentData", false);
+    $("#usercomments").val("");
+    $("#save").attr("disabled", true);
+}
+
+function clearOldAddData(componentstate){
+     var self = componentstate;
+     self.scope.attr("trackCountMinimaList").replace([]);
+     self.scope.attr("baseModelParamList").replace([]);
+     self.scope.attr("modelname", "");
+     self.scope.attr("pricingmodeltype", "STANDARD");
      self.scope.pmVersion.replace([]);
      $('#country-lic-grid').html(stache('<countrylic-grid emptyrows="{emptyrows}"></countrylic-grid>')({}));
 

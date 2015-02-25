@@ -61,7 +61,7 @@ var page = Component.extend({
     recordsAvailable : true,
     totalRecordCount:'@',
     reconStatsDetailsSelected : [],
-
+    fetchSize:10,
     //bottomgrid
     refreshStatsReq:undefined,
     isBottomGridRefresh:true,
@@ -125,6 +125,7 @@ var page = Component.extend({
   },
   init: function(){
     this.scope.appstate.attr("renderGlobalSearch",true);
+    this.scope.attr("fetchSize",this.scope.appstate.attr("fetchSize"));
     this.scope.attr("emptyrows", true);
     this.scope.ingestList.headerRows.splice(0, this.scope.ingestList.headerRows.length);
     this.scope.ingestList.footerRows.splice(0,this.scope.ingestList.footerRows.length);
@@ -148,7 +149,7 @@ var page = Component.extend({
 
       var tbody = self.element.find('tbody');
         //var tbody = self.element.find('tbody');
-      var getTblBodyHght=gridUtils.getTableBodyHeight('ingested',40);
+      var getTblBodyHght=gridUtils.getTableBodyHeight('ingested',60);
       gridUtils.setElementHeight(tbody[0],getTblBodyHght,getTblBodyHght);
 
       $("#loading_img").hide();
@@ -514,6 +515,7 @@ var processRejectIngestRequest = function(scope,requestType){
 
       Promise.all([Recon.reject(rejectSearchRequestObj)]).then(function(values) {
 
+
         scope.attr("size_ingestCcidSelected", 0);
 
         if(values != null && values.length > 0) {
@@ -590,6 +592,7 @@ var displayErrorMessage = function(message,log){
 
 /**/
 var fetchReconIngest = function(scope, load){
+  commonUtils.hideUIMessage();
   //console.log("Loading Started");
   setTimeout(function(){$("#loading_img").show()},50);
   var searchRequestObj = getSearchReqObj(scope);
@@ -598,14 +601,17 @@ var fetchReconIngest = function(scope, load){
 
   if(load) {
     scope.attr("ingestCcidSelected").splice(0, scope.attr("ingestCcidSelected").length);
+    searchRequestObj.searchRequest["offset"] = scope.ingestedOffset;
+  }else{
+    searchRequestObj.searchRequest["offset"] = 0;
   }
 
   if(scope.appstate.attr('globalSearchButtonClicked')==true){
       scope.attr("ingestedOffset",0);
       scope.attr("ingestedScrollTop",0);
   }
-  searchRequestObj.searchRequest["limit"] = "10";
-  searchRequestObj.searchRequest["offset"] = scope.ingestedOffset;
+  searchRequestObj.searchRequest["limit"] = scope.attr("fetchSize");
+
   searchRequestObj.searchRequest["sortBy"] = scope.sortColumns.attr().toString();
   searchRequestObj.searchRequest["sortOrder"] = scope.sortDirection;
 
@@ -665,7 +671,6 @@ var fetchReconIngest = function(scope, load){
         if(data.summary == undefined){
           console.error("Footer rows doesn't exists in the response");
         }
-
         scope.ingestList.footerRows.splice(0, scope.ingestList.footerRows.length);
         if (data.summary!== null) {
           var footerLine= {
@@ -677,7 +682,7 @@ var fetchReconIngest = function(scope, load){
             "copConAmt": data.summary.totalCopCon,
             "unMatchedAmt": data.summary.totalUnMatched!= undefined && data.summary.totalUnMatched!= null ? data.summary.totalUnMatched : 0.00,
             "badLines": data.summary.totalBadLines,
-            "ccidId": scope.totalRecordCount +" invocies",
+            "ccidId": scope.totalRecordCount +" invoices",
             "entityName":"",
             "countryId":"",
             "contType":"",
@@ -709,11 +714,13 @@ var fetchReconIngest = function(scope, load){
       var ccids = scope.ingestCcidSelected;
       scope.setHeaderChkBox();
 
-      if(load)
-        scope.reconRefresh[0].loadRefreshStats(dataLowerGrid, scope.reconRefresh[0]);
-      else
+      if(load){
+        if(scope.attr("ingestedOffset") == 0){
+          scope.reconRefresh[0].loadRefreshStats(dataLowerGrid, scope.reconRefresh[0]);
+        }
+      }else{
         scope.attr("load", true);
-      
+      }
 
    /* } else {
       scope.attr("load", true);
