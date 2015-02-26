@@ -176,11 +176,11 @@ Grid.extend({
       $(el).addClass("selected");
     },
 
-    '.open-toggle click': function(el, ev) {
+    /*'.open-toggle click': function(el, ev) {
       var row = el.closest('tr').data('row').row;
       row.attr('__isOpen', !row.attr('__isOpen'));
       //alignGrid('invoiceGrid');
-    },
+    },*/
     '.select-toggle-all click': function(el, ev) {
       ev.stopPropagation();
       var allChecked = _.every(this.scope.rows, row => row.__isChecked ? true : false);
@@ -700,7 +700,7 @@ var page = Component.extend({
             }
             else if(bundleStatus.toUpperCase().indexOf("PARTIALLY PAID") != -1)
             {
-              self.scope.bundleState.attr(val, true);  
+              self.scope.bundleState.attr(val, true);
             }
             else
             {
@@ -1154,7 +1154,7 @@ function getAllInvoices(self) {
 };
 
 function fetchData(self){
-  commonUtils.hideUIMessage(); 
+  commonUtils.hideUIMessage();
   var invSearchRequest= getInvoiceSearchRequest(self);
   $("#loading_img").show();
   GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){
