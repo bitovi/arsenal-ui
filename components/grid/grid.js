@@ -219,17 +219,22 @@ var Grid = Component.extend({
       //the above line will re render the complete tbody again.
       //insted we can go for simple DOM manipulatation to make the child visible
       //get the row index
-      var index=el.closest('tr').data('row').index;
-      var allRows=el.closest('table').find('tbody').find('tr'); // get all the rows from table.
-      for(var k=index+1;k<allRows.length;k++){
-        if(!$(allRows[k]).hasClass('child')){//if you encountered the next parent then break the loop and comeout
-          break;
+      if($(el.closest('tr').parent()).is('tfoot')){
+        $(el.closest('table').find('tfoot').find('tr')).not('.child').toggleClass('open');
+        $(el.closest('table').find('tfoot').find('.child')).toggleClass('visible');
+      }else{
+        var index=el.closest('tr').data('row').index;
+        var allRows=el.closest('table').find('tbody').find('tr'); // get all the rows from table.
+        for(var k=index+1;k<allRows.length;k++){
+          if(!$(allRows[k]).hasClass('child')){//if you encountered the next parent then break the loop and comeout
+            break;
+          }
+          if($(allRows[k]).hasClass('child')){
+            $(allRows[k]).toggleClass('visible');
+          }
         }
-        if($(allRows[k]).hasClass('child')){
-          $(allRows[k]).toggleClass('visible');
-        }
+        $(allRows[index]).toggleClass('open');
       }
-      $(allRows[index]).toggleClass('open');
     },
     '.open-toggle-all click': function(el, ev) {
       /*ev.stopPropagation();
@@ -243,11 +248,11 @@ var Grid = Component.extend({
       $(el.closest('table').find('tbody').find('.child')).toggleClass('visible');*/
       var isOpend=el.closest('table').find('thead').find('tr').hasClass('open');
       if(!isOpend){
-        el.closest('table').find('thead').find('tr').addClass('open');
+        $(el.closest('table').find('thead').find('tr')).addClass('open');
         $(el.closest('table').find('tbody').find('tr')).not('.child').addClass('open');
         $(el.closest('table').find('tbody').find('.child')).addClass('visible');
       }else{
-        el.closest('table').find('thead').find('tr').removeClass('open');
+        $(el.closest('table').find('thead').find('tr')).removeClass('open');
         $(el.closest('table').find('tbody').find('tr')).not('.child').removeClass('open');
         $(el.closest('table').find('tbody').find('.child')).removeClass('visible');
       }
