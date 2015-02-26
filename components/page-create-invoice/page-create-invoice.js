@@ -1129,7 +1129,11 @@ var page = Component.extend({
                           tempInvoiceData["invoiceDate"] = dateFormatter($("#invoicedate input[type=text]").val(),"mm/dd/yyyy");
                           if(self.scope.calduedate)
                             tempInvoiceData["invoiceCalcDueDate"] = dateFormatter(self.scope.calduedate, "mm/dd/yyyy");
-                            tempInvoiceData["invoiceDueDate"] = dateFormatter($("#invoiceduedate input[type=text]").val(),"mm/dd/yyyy");
+                            if($("#invoiceduedate input[type=text]").val() != "") {
+                                tempInvoiceData["invoiceDueDate"] = dateFormatter($("#invoiceduedate input[type=text]").val(), "mm/dd/yyyy");
+                                console.log(dateFormatter($("#invoiceduedate input[type=text]").val(),"mm/dd/yyyy"));
+                            }
+//                            console.log(dateFormatter($("#invoiceduedate input[type=text]").val(),"mm/dd/yyyy"));
                             tempInvoiceData["createdBy"] = UserReq.formRequestDetails().prsId;
 
                             tempInvoiceData["comments"] = [];
