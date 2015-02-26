@@ -276,7 +276,7 @@
 	   </div>
 	   {{#if editstate}}
 			<div  class="col-sm-12"  style="text-align:right;padding:15px 3%;border-top:1px solid #DAD7D7;">
-					<button type="button" class="btn btn-default btn-custom-small" id="editCancel">Cancel</button>
+					<button type="button" class="btn btn-default btn-custom-small-disabled" id="editCancel">Cancel</button>
 					<button id="save" type="button" class="btn btn-primary btn-custom-small" style="margin-left:10px;">Submit</button>
 			</div>
 		{{else}}
