@@ -99,7 +99,7 @@ var Grid = Component.extend({
         return !!row.attr('__isOpen');
       };
 
-      var out = [],parentRowIndex=-1,
+      var out = [],parentRowIndex=-1,rowindex=-1,
       childRowsAreVisible = false;
       can.__reading(this.rows, 'change'); // TODO: figure out if there's a better way to do this.
                                           // Note for others - don't use can.__reading yourself!
@@ -107,6 +107,7 @@ var Grid = Component.extend({
         var isChild = isRowAChild(row);
         var isOddRow=false;
         var isStrippedGrid=false;
+
         // if the row is a parent and isn't open, its children shouldn't be visible -
         // this flag is only true for the children of an open parent row
         if(!isChild) {
@@ -130,6 +131,7 @@ var Grid = Component.extend({
           isChild: isChild,
           isVisible: isChild ? childRowsAreVisible : true, // parent rows are always visible
           isOddRow:isOddRow,
+          index:++rowindex,
           isStrippedGd:isStrippedGrid
         });
       });
@@ -207,17 +209,52 @@ var Grid = Component.extend({
 
   events: {
     '.open-toggle click': function(el, ev) {
-      var row = el.closest('tr').data('row').row;
-      row.attr('__isOpen', !row.attr('__isOpen'));
+      /*var row = el.closest('tr').data('row').row;
+      row.attr('__isOpen', !row.attr('__isOpen'));*/
+      //the above line will re render the complete tbody again.
+      //insted we can go for simple DOM manipulatation to make the child visible
+      //get the row index
+      var index=el.closest('tr').data('row').index;
+      var allRows=el.closest('table').find('tbody').find('tr'); // get all the rows from table.
+      var parentOpen=$(allRows[index]).hasClass('open');
+      for(var k=index+1;k<allRows.length;k++){
+        if(!$(allRows[k]).hasClass('child')){//if you encountered the next parent then break the loop and comeout
+          break;
+        }
+        if($(allRows[k]).hasClass('child')){
+          if(!parentOpen){
+            $(allRows[k]).addClass('visible');
+          }else{
+            $(allRows[k]).removeClass('visible');
+          }
+        }
+      }
+      if(parentOpen){
+        $(allRows[index]).removeClass('open');
+      }else{
+        $(allRows[index]).addClass('open');
+      }
     },
     '.open-toggle-all click': function(el, ev) {
-      ev.stopPropagation();
+      /*ev.stopPropagation();
       var allOpen = _.every(this.scope.rows, row => row.__isChild ? true : row.__isOpen);
       can.batch.start();
       // open parent rows if they are closed; close them if they are open
       this.scope.rows.each(row => row.__isChild || row.attr('__isOpen', !allOpen));
-      this.scope.attr('allOpen', !allOpen);
-      can.batch.stop();
+      this.scope.attr('allOpen', !allOpen);*/
+      /*$(el.closest('table').find('thead').find('tr')).toggleClass('open');
+      $(el.closest('table').find('tbody').find('tr')).not('.child').toggleClass('open');
+      $(el.closest('table').find('tbody').find('.child')).toggleClass('visible');*/
+      var isOpend=el.closest('table').find('thead').find('tr').hasClass('open');
+      if(!isOpend){
+        el.closest('table').find('thead').find('tr').addClass('open');
+        $(el.closest('table').find('tbody').find('tr')).not('.child').addClass('open');
+        $(el.closest('table').find('tbody').find('.child')).addClass('visible');
+      }else{
+        el.closest('table').find('thead').find('tr').removeClass('open');
+        $(el.closest('table').find('tbody').find('tr')).not('.child').removeClass('open');
+        $(el.closest('table').find('tbody').find('.child')).removeClass('visible');
+      }
     },
     /*'tbody th, tfoot th click': function(el, ev) {
       var column = el.data('column').column;
