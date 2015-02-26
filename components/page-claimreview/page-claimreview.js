@@ -449,8 +449,6 @@ var page = Component.extend({
     self.scope.sortColumns.replace([]);
     self.scope.attr("sortDirection","asc");
     self.scope.attr("isfromDashBoard",self.scope.appstate.screenLookup.ispagelocal);
-    getClaimReviewData('licensor',self.scope);
-
     },
     events: {
     	"inserted": function(){
@@ -500,7 +498,7 @@ var page = Component.extend({
         });
 
         $('#claimLicencorGrid').html(stache('<rn-claim-licensor-grid emptyrows="{emptyrows}"></rn-claim-licensor-grid>')({emptyrows:true}));
-
+        getClaimReviewData('licensor',self.scope);
     	},
     	"#highChart click":function(){
         commonUtils.hideUIMessage();
@@ -1293,7 +1291,7 @@ var generateFooterData = function(footerData){
     footTemp["entityId"] = "";
     footTemp["__isChild"] = false;
     footTemp["entityName"] = "Total in Regional Currency";
-    footTemp["invoiceNumber"] = "";
+    footTemp["invoiceNumber"] = footerData["invoiceCount"]+ " Invoices";
     footTemp["currency"] = footerData["currency"];
     footTemp["period"] = "";
     footTemp["country"] = "";
