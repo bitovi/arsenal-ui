@@ -178,13 +178,13 @@ var BundleDetailGrid = ScrollingGrid.extend({
       });
     },
     // override rowClass handler to add a class if the row is selected
-    rowClass: function(row) {
-      if(this.selectedRows.indexOf(row) > -1) {
-        return 'selected';
-      } else {
-        return '';
-      }
-    }
+    // rowClass: function(row) {
+    //   // if(this.selectedRows.indexOf(row) > -1) {
+    //   //   return 'selected';
+    //   // } else {
+    //   //   return '';
+    //   // }
+    // }
   },
   events: {
     '{scope.pageState} selectedBundle': function(scope, ev, newBundle) {
@@ -221,7 +221,6 @@ var BundleDetailGrid = ScrollingGrid.extend({
       // } else {
       //   this.scope.selectedRows.push(row);
       // }
-
       this.scope.selectedRows.splice(0, this.scope.selectedRows.length);
       this.scope.selectedRows.push(row);
 
@@ -271,7 +270,7 @@ var BundleDetailGrid = ScrollingGrid.extend({
         component.scope.attr('atBottom', false);
       };
       $(tbody).on('scroll', function(ev) {
-        if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight - 100 ) {
+        if( component.scope.paginateAttr.recordsAvailable && tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight - 100 ) {
           // we are at the bottom
           component.scope.attr('atBottom', true);
           component.scope.atBottomHandler.call(component, doneCallback);

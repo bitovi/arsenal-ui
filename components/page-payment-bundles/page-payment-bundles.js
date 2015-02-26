@@ -128,7 +128,7 @@ var page = Component.extend({
               }
 
               if(data.totRecCnt != undefined && data.totRecCnt==0){
-                commonUtils.displayUIMessage( data.status, data.responseText);  
+                commonUtils.displayUIMessage( data.status, data.responseText);
               }
 
             }else{

@@ -366,6 +366,7 @@ var BundleDetailTabs = Component.extend({
       this.scope.details["contentType"]=row.contentGrpName || "";
       this.scope.details["currency"]=row.paymentCcy || "";
       this.scope.details["isChild"]=className;
+
     },
     ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
       var self=this;
