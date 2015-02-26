@@ -26,7 +26,7 @@ var GridRevisionHistory = Grid.extend({
         id: 'validTo',
         title: 'Valid To',
         contents: function(row) {
-          return row.validTo == null || row.validTo == undefined || row.validTo == "0" ? "" : periodWidgetHelper.getDisplayPeriod(row.validTo,"P");
+          return typeof(row.validTo) == null || row.validTo == undefined || row.validTo == "0" ? "" : periodWidgetHelper.getDisplayPeriod(row.validTo,"P");
         }
       },
       {
