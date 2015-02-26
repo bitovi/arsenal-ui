@@ -19,14 +19,15 @@ var notification = Component.extend({
     notificationList : new can.List(),
     showUserPref: false,
     showNotification:false,
-    pref: new can.Map(),
-    fetchedPref: new can.Map(),
+    notificationType: '@',
+    defaultUserPref: '@',
+    selectedUserPref: new can.Map(),
     notificationTriggered: function(self, notificationList){
        var notificationRequest = {};
       if(self.scope.attr("count") > 0) {
         notificationRequest["notificationList"] =[];
         for(var i = 0 ;i < notificationList.length;i++) {
-          if(notificationList[0].isViewed === "N"){
+          if(notificationList[i].isViewed === "N"){
             notificationRequest["notificationList"].push(self.scope.attr("notificationList")[i].notificationId);
           }
         }
@@ -69,17 +70,35 @@ var notification = Component.extend({
       },
       // Method to show Notfication User Preferences
       '.notification_settings_icon click':function(el,e){
-        var self = this, userPrefRequest = {}, notificationOptionTemplate='', notificationTypes='', allTypesSelected = true;
+        var self = this, userPrefRequest = {reqType: 'default'}, notificationOptionTemplate='', allTypesSelected = true;
 
+        // Fetch Notification Type Master List
+        userPrefRequest = {reqType: 'getNotificationType'}
+        Promise.all([
+            Notification.findOne(UserReq.formRequestDetails(userPrefRequest))
+          ]).then(function(values) {
+            self.scope.notificationType = values[0].notificationType;
+            if(self.scope.notificationType.length > 0){
+              self.scope["defaultUserPref"] = {};
+              for(var i = 0; i < self.scope.notificationType.length; i++){
+                self.scope["defaultUserPref"][self.scope.notificationType[i].type] = "I";
+              }
+            }
+        });
+
+        // Map and render Notification Type Master List with selected user preferences
+        userPrefRequest = {reqType: 'getUserPreference'}
         Promise.all([Notification.findOne(UserReq.formRequestDetails(userPrefRequest))]).then(function(values) {
-          self.scope.pref = values[0]["userPreference"].attr();
-          self.scope.fetchedPref = values[0]["userPreference"].attr();
-          if(Object.getOwnPropertyNames(self.scope.pref).length > 0){
-            for(var items in self.scope.pref){
-              if(self.scope.pref[items]=='I'){
+          self.scope.selectedUserPref = values[0]["userPreference"].attr();
+          if(Object.getOwnPropertyNames(self.scope.defaultUserPref).length > 0){
+            for(var items in self.scope.defaultUserPref){
+              if(self.scope["selectedUserPref"][items]){
+                self.scope["defaultUserPref"][items] = self.scope["selectedUserPref"][items];
+              }
+              if(self.scope.defaultUserPref[items]=='I'){
                 allTypesSelected = false;
               }
-              notificationOptionTemplate = notificationOptionTemplate + '<div class="notificationItems"><input type="checkbox" class="'+items+'" '+((self.scope.pref[items]=='A')?'checked="checked"':'')+'/> '+items+'</div>';
+              notificationOptionTemplate = notificationOptionTemplate + '<div class="notificationItems"><input type="checkbox" class="'+items+'" '+((self.scope.defaultUserPref[items]=='A')?'checked="checked"':'')+'/> '+items+'</div>';
             }
             notificationOptionTemplate = '<div class="notification_options"><div class="notificationItems"><input type="checkbox" class ="selectall" '+((allTypesSelected)?'checked="checked"':'')+'/> <strong>Show Notification For </strong></div>'+notificationOptionTemplate+'</div>';
             $(".notification_settings_options .autoscroll").html(notificationOptionTemplate);
@@ -101,7 +120,7 @@ var notification = Component.extend({
       },
       // Method to save Notfication User Preferences changes
       '#notification_settings_save click':function(el, e){
-        var self = this, userPrefRequest = {}, preference = self.scope.pref, notificationRequest = {};
+        var self = this, userPrefRequest = {}, preference = self.scope.defaultUserPref, notificationRequest = {};
 
         userPrefRequest["type"] = [];
         userPrefRequest["type"].push(preference);
@@ -123,22 +142,22 @@ var notification = Component.extend({
             if($(el).is(':checked')){
               notificationItemsCheckboxes.each(function(){
                 $(this).prop('checked', true);
-                self.scope.pref[$(this).attr('class')] = 'A';
+                self.scope.defaultUserPref[$(this).attr('class')] = 'A';
               });
             }else{
                notificationItemsCheckboxes.each(function(el, e){
                 $(this).prop('checked', false);
-                self.scope.pref[$(this).attr('class')] = 'I';
+                self.scope.defaultUserPref[$(this).attr('class')] = 'I';
               });
             }
           }else{
             if($(el).is(':checked')){
-              self.scope.pref[$(el).attr('class')] = 'A';
+              self.scope.defaultUserPref[$(el).attr('class')] = 'A';
               if($('.notification_options input:checkbox:checked:not(.selectall)').length === notificationItemsCheckboxes.length){
                 $('.selectall').prop('checked',true);
               }
             }else{
-              self.scope.pref[$(el).attr('class')] = 'I';
+              self.scope.defaultUserPref[$(el).attr('class')] = 'I';
               $('.selectall').prop('checked',false);
             }
           }
@@ -146,7 +165,7 @@ var notification = Component.extend({
    },
   helpers:{
     isViewedStyle: function(isViewed){
-      return (isViewed == "Y")?' new':'';
+      return (isViewed() === "N")?' new':'';
     }
   }
 });
