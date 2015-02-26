@@ -182,7 +182,7 @@ Grid.extend({
 
       //alignGrid('claimLicencorGrid');
     },
-    '.open-toggle click': function(el, ev) {
+    /*'.open-toggle click': function(el, ev) {
       var row = el.closest('tr').data('row').row;
       row.attr('__isOpen', !row.attr('__isOpen'));
       //alignGrid('claimLicencorGrid');
@@ -196,7 +196,7 @@ Grid.extend({
       this.scope.attr('allOpen', !allOpen);
       can.batch.stop();
       //alignGrid('claimLicencorGrid');
-    },
+    },*/
   }
 });
 
@@ -710,46 +710,47 @@ var page = Component.extend({
           var self=this;
            //console.log($(item[0]).attr("class"));
           var val = $(item[0]).attr("class").split(" ");
+          if(val[0] !== 'sorticon'){
+            var sortableColumnName = _.pluck(_.filter(self.scope.attr().sortableColumns, { 'id': val[0] }), "sortID");
 
-          var sortableColumnName = _.pluck(_.filter(self.scope.attr().sortableColumns, { 'id': val[0] }), "sortID");
-
-          console.log(sortableColumnName);
-          var existingSortColumns =self.scope.sortColumns.attr();
-          var existingSortColumnsLen = existingSortColumns.length;
-          var sortAttr=val[0];
-          var existFlag = false;
-          if(existingSortColumnsLen==0){
-            //self.scope.attr('sortColumns').push(val[0]);
-            self.scope.attr('sortColumns').push(sortAttr);
-          } else {
-            for(var i=0;i<existingSortColumnsLen;i++){
-              /* The below condition is to selected column to be sorted in asc & dec way */
-              //console.log(sortableColumnName+","+existingSortColumns[i] )
-              //if(existingSortColumns[i] == val[0]){
-              if(existingSortColumns[i] == sortAttr){
-                existFlag = true;
-              }
-            }
-            if(existFlag==false){
-              self.scope.attr('sortColumns').replace([]);
+            var existingSortColumns =self.scope.sortColumns.attr();
+            var existingSortColumnsLen = existingSortColumns.length;
+            var sortAttr=val[0];
+            var existFlag = false;
+            if(existingSortColumnsLen==0){
               //self.scope.attr('sortColumns').push(val[0]);
               self.scope.attr('sortColumns').push(sortAttr);
             } else {
-              var sortDirection = (self.scope.attr('sortDirection') == 'asc') ? 'desc' : 'asc';
-              self.scope.attr('sortDirection', sortDirection);
+              for(var i=0;i<existingSortColumnsLen;i++){
+                /* The below condition is to selected column to be sorted in asc & dec way */
+                //console.log(sortableColumnName+","+existingSortColumns[i] )
+                //if(existingSortColumns[i] == val[0]){
+                if(existingSortColumns[i] == sortAttr){
+                  existFlag = true;
+                }
+              }
+              if(existFlag==false){
+                self.scope.attr('sortColumns').replace([]);
+                //self.scope.attr('sortColumns').push(val[0]);
+                self.scope.attr('sortColumns').push(sortAttr);
+              } else {
+                var sortDirection = (self.scope.attr('sortDirection') == 'asc') ? 'desc' : 'asc';
+                self.scope.attr('sortDirection', sortDirection);
+              }
+
             }
 
+            //console.log("aaa "+self.scope.sortColumns.attr());
+             /* The below code calls {scope.appstate} change event that gets the new data for grid*/
+             /* All the neccessary parameters will be set in that event */
+             self.scope.appstate.attr('globalSearchButtonClicked', false);
+             if(self.scope.appstate.attr('globalSearch')){
+                self.scope.appstate.attr('globalSearch', false);
+              }else{
+                self.scope.appstate.attr('globalSearch', true);
+              }
           }
 
-          //console.log("aaa "+self.scope.sortColumns.attr());
-           /* The below code calls {scope.appstate} change event that gets the new data for grid*/
-           /* All the neccessary parameters will be set in that event */
-           self.scope.appstate.attr('globalSearchButtonClicked', false);
-           if(self.scope.appstate.attr('globalSearch')){
-              self.scope.appstate.attr('globalSearch', false);
-            }else{
-              self.scope.appstate.attr('globalSearch', true);
-            }
       },
       ".token-input-list-facebook keyup": function(e,ev){
       if(ev.keyCode === 13){ //trigger search when user press enter key. This is becase user can
@@ -896,7 +897,7 @@ var page = Component.extend({
 
 
 var getClaimReviewData = function(tabView, self) {
-   commonUtils.hideUIMessage(); 
+   commonUtils.hideUIMessage();
   var claimLicSearchRequest = getClaimReviewRequest(tabView,self);
   $("#loading_img").show();
   if (tabView == "licensor") {
