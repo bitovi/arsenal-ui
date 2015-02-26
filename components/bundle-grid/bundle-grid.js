@@ -135,7 +135,7 @@ var BundleGrid = ScrollingGrid.extend({
         component.scope.attr('atBottom', false);
       };
       $(tbody).on('scroll', function(ev) {
-        if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight - 100 ) {
+        if(component.scope.pageState.recordsAvailable && tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight - 100 ) {
           // we are at the bottom
           component.scope.attr('atBottom', true);
           component.scope.atBottomHandler.call(component, doneCallback);
