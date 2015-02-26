@@ -346,17 +346,22 @@ Grid.extend({
       var self = this;
       //var row = el.closest('tr').data('row').row;
       //row.attr('__isOpen', !row.attr('__isOpen'));
-      var index=el.closest('tr').data('row').index;
-      var allRows=el.closest('table').find('tbody').find('tr'); // get all the rows from table.
-      for(var k=index+1;k<allRows.length;k++){
-        if(!$(allRows[k]).hasClass('child')){//if you encountered the next parent then break the loop and comeout
-          break;
+      if($(el.closest('tr').parent()).is('tfoot')){
+        $(el.closest('table').find('tfoot').find('tr')).not('.child').toggleClass('open');
+        $(el.closest('table').find('tfoot').find('.child')).toggleClass('visible');
+      }else{
+        var index=el.closest('tr').data('row').index;
+        var allRows=el.closest('table').find('tbody').find('tr'); // get all the rows from table.
+        for(var k=index+1;k<allRows.length;k++){
+          if(!$(allRows[k]).hasClass('child')){//if you encountered the next parent then break the loop and comeout
+            break;
+          }
+          if($(allRows[k]).hasClass('child')){
+            $(allRows[k]).toggleClass('visible');
+          }
         }
-        if($(allRows[k]).hasClass('child')){
-          $(allRows[k]).toggleClass('visible');
-        }
+        $(allRows[index]).toggleClass('open');
       }
-      $(allRows[index]).toggleClass('open');
       if(self.scope.is_aggregate == 1){
         $(".period").hide();
         $(".entityName").hide();
