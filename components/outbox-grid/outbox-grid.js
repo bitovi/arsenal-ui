@@ -15,13 +15,16 @@ var OutboxGrid = ScrollingGrid.extend({
   scope: {
     columns: [{
       id: 'type',
-      title: 'Type'
+      title: 'Type',
+      sortable: true
     }, {
       id: 'region',
-      title: 'Region'
+      title: 'Region',
+      sortable: true
     }, {
       id: 'description',
-      title: 'Description'
+      title: 'Description',
+      sortable: true
     }, {
       id: 'pendingGroupName',
       title: 'Currently With',
@@ -39,6 +42,7 @@ var OutboxGrid = ScrollingGrid.extend({
     }, {
       id: 'pendingDays',
       title: 'Pending',
+      sortable: true,
       contents: row => row.pendingDays + ' Day' + (row.pendingDays === 1 ? '' : 's')
     },  {
       id: 'approvalStage',

@@ -17,6 +17,7 @@ var proposedonAccountGrid = Grid.extend({
       {
         id: 'checkbox',
         title: '',
+        sortable: true,
         contents: function(row) {
           if(row.attr('tfooter') != undefined && row.attr('tfooter')){
             return '';
@@ -31,6 +32,7 @@ var proposedonAccountGrid = Grid.extend({
       {
         id: 'Licensor',
         title: 'Licensor',
+        sortable: true,
         contents: function(row) {
             if(row.attr('tfooter')){
             return  stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{Licensor}}')({Licensor: row.Licensor, isChild: row.__isChild});;
@@ -41,11 +43,13 @@ var proposedonAccountGrid = Grid.extend({
       {
 
        id: 'Currency',
-        title: 'Currency'
+        title: 'Currency',
+        sortable: true
       },
       {
         id: 'ContentType',
-        title: 'Content Type'
+        title: 'Content Type',
+        sortable: true
       }
      ],
      request:{},
@@ -159,6 +163,9 @@ var proposedonAccountGrid = Grid.extend({
     },
     "inserted": function(){
               var self = this;
+
+             
+
               var tbody = self.element.find('tbody');
               //setting tbody height which determines the page height- start
               var getTblBodyHght=gridUtils.getTableBodyHeight('onAccountBalanceGrid',50);
@@ -223,6 +230,12 @@ var proposedonAccountGrid = Grid.extend({
                  }
 
            }
+
+            for(var i = 0; i < self.scope.columns.length; i++){
+               if(self.scope.columns[i].attr('id')){
+                 self.scope.columns[i].attr("sortable", true);
+              }
+           } 
 
           var parentScopeVar = self.element.closest('page-on-account').scope();
           var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');

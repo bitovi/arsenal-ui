@@ -76,51 +76,63 @@ Grid.extend({
       {
         id: 'entityName',
         title: 'Licensor',
+        sortable: true,
         contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{entityName}}')({entityName: row.entityName, isChild: row.__isChild}); }
       },
       {
         id: 'fiscalPeriod',
-        title: 'Period Range'
+        title: 'Period Range',
+        sortable: true
       },
       {
         id: 'invTypeDisp',
-        title: 'Invoice Type'
+        title: 'Invoice Type',
+        sortable: true
       },
       {
         id: 'contentGrpName',
-        title: 'Content Type'
+        title: 'Content Type',
+        sortable: true
       },
       {
         id: 'country',
-        title: 'Country'
+        title: 'Country',
+        sortable: true
       },
       {
         id: 'invoiceNumber',
-        title: 'Invoice No'
+        title: 'Invoice No',
+        sortable: true
       },
       {
         id: 'invoiceCcy',
-        title: 'Currency'
+        title: 'Currency',
+        sortable: true
       },
       {
         id: 'invoiceAmount',
-        title: 'Invoice Amount'
+        title: 'Invoice Amount',
+        sortable: true
       },
       {
         id: 'invoiceDueDate',
-        title: 'Due date'
+        title: 'Due date',
+        sortable: true
       },
       {
         id: 'displayPaymentStatus',
-        title: 'Status'
+        title: 'Status',
+        sortable: true
       },
       {
         id: 'bundleName',
-        title: 'Payment Bundle Name'
+        title: 'Payment Bundle Name',
+        sortable: true
       },
       {
         id: 'comments',
-        title: 'Notes'
+        title: 'Notes',
+        sortable: true
       }
     ],
     strippedGrid:true
@@ -133,6 +145,7 @@ Grid.extend({
   events: {
     'inserted': function(){
       var self= this;
+ 
       var tbody = self.element.find('tbody');
       //setting tbody height which determines the page height- start
       var getTblBodyHght=gridUtils.getTableBodyHeight('invoiceGrid',90);

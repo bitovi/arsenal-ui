@@ -23,6 +23,7 @@ var OnAccountBalance = Grid.extend({
       {
         id: 'Licensor',
         title: 'Licensor',
+        sortable: true,
         contents: function(row) {
             if(row.attr('tfooter')){
             return  stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{Licensor}}')({Licensor: row.Licensor, isChild: row.__isChild});;
@@ -32,11 +33,13 @@ var OnAccountBalance = Grid.extend({
       },
       {
         id: 'Currency',
-        title: 'Currency'
+        title: 'Currency',
+        sortable: true
       },
       {
         id: 'ContentType',
-        title: 'Content Type'
+        title: 'Content Type',
+        sortable: true
       }
     ],
     request:{},
@@ -62,6 +65,8 @@ var OnAccountBalance = Grid.extend({
   events: {
     'inserted': function(ev) {
        var self = this;
+
+
        self.scope.attr('recordsAvailable',false);
        //console.log("inserted "+JSON.stringify(self.scope.request.searchRequest.attr()));
        var parentScopeVar = self.element.closest('page-on-account').scope();
@@ -152,6 +157,13 @@ var OnAccountBalance = Grid.extend({
 
 
        }
+
+      for(var i = 0; i < self.scope.columns.length; i++){
+             if(self.scope.columns[i].attr('id')){
+               self.scope.columns[i].attr("sortable", true);
+            }
+         } 
+
 
 
       var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');

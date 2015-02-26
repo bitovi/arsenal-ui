@@ -20,6 +20,7 @@ var columns = {
   'licensor': {
     id: 'licensor',
     title: 'Licensor',
+    sortable: true,
     contents: function(row) {
       if(row.view != undefined && row.view == "COUNTRY"){
         return row.__isChild ? row.entityName : row.entityNameCnt;
@@ -32,6 +33,7 @@ var columns = {
   'invoiceNumber': {
     id: 'invoiceNumber',
     title: 'Invoice #',
+    sortable: true,
     contents: function(row) {
       if(row.isFooterRow){
         return this.paginateAttr.attr('totRecCnt') +" Invoices";
@@ -42,11 +44,13 @@ var columns = {
   },
   'paymentCcy': {
     id: 'paymentCcy',
+    sortable: true,
     title: 'Currency'
   },
   'fiscalPeriod': {
     id: 'fiscalPeriod',
     title: 'Period',
+    sortable: true,
     contents: function(row) {
       return row.fiscalPeriodDisplay;
     }
@@ -54,14 +58,17 @@ var columns = {
   'country': {
     id: 'country',
     title: 'Country',
+    sortable: true
   },
   'contentGrpName': {
     id: 'contentGrpName',
-    title: 'Content Type'
+    title: 'Content Type',
+    sortable: true
   },
   'lineAmt': {
     id: 'lineAmt',
     title: 'Invoice',
+    sortable: true,
     format: formats.currencyFormat
   },
   'orDispAmt': {
@@ -107,11 +114,13 @@ var columns = {
   'paymentAmt': {
     id: 'paymentAmt',
     title: 'Net Payment',
+    sortable: true,
     format: formats.currencyFormat
   },
   'invoiceSaturation': {
     id: 'invoiceSaturation',
     title: 'Invoice Sat',
+    sortable: true,
     contents: function(row) {
       if(row.isFooterRow)
         {
@@ -124,6 +133,7 @@ var columns = {
   'paymentSaturation': {
     id: 'paymentSaturation',
     title: 'Pymt Sat',
+    sortable: true,
     contents: function(row) {
       if(row.isFooterRow)
         {
@@ -137,6 +147,7 @@ var columns = {
  'invoicePaymentSaturation': {
     id: 'invoicePaymentSaturation',
     title: 'Inv Pymt Sat',
+    sortable: true,
     contents: function(row) {
       return formats.formatIfValue(row.invoicePaymentSaturation,_.isNumber, formats.decimalAsPercent, '0%');
     }

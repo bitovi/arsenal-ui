@@ -44,6 +44,11 @@ var Grid = Component.extend({
       // By default, just return the className property on the column, or the ID, or nothing.
       return column.attr('className') || column.attr('id') || '';
     },
+    sortableStyle: function(column){
+      if(column.attr('sortable')){
+        return 'style="cursor:pointer;"';
+      }
+    },
     sortClass: function(column) {
       if(column.attr('sortable') && this.attr('sortedColumn') && this.attr('sortedColumn').id === column.attr('id')) {
         return 'sorted ' + this.attr('sortedDirection');
