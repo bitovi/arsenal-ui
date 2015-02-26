@@ -344,8 +344,19 @@ Grid.extend({
     },
     '.open-toggle click': function(el, ev) {
       var self = this;
-      var row = el.closest('tr').data('row').row;
-      row.attr('__isOpen', !row.attr('__isOpen'));
+      //var row = el.closest('tr').data('row').row;
+      //row.attr('__isOpen', !row.attr('__isOpen'));
+      var index=el.closest('tr').data('row').index;
+      var allRows=el.closest('table').find('tbody').find('tr'); // get all the rows from table.
+      for(var k=index+1;k<allRows.length;k++){
+        if(!$(allRows[k]).hasClass('child')){//if you encountered the next parent then break the loop and comeout
+          break;
+        }
+        if($(allRows[k]).hasClass('child')){
+          $(allRows[k]).toggleClass('visible');
+        }
+      }
+      $(allRows[index]).toggleClass('open');
       if(self.scope.is_aggregate == 1){
         $(".period").hide();
         $(".entityName").hide();
@@ -357,13 +368,23 @@ Grid.extend({
     },
     '.open-toggle-all click': function(el, ev) {
       var self = this;
-      ev.stopPropagation();
+      /*ev.stopPropagation();
       var allOpen = _.every(this.scope.rows, row => row.__isChild ? true : row.__isOpen);
       can.batch.start();
       // open parent rows if they are closed; close them if they are open
       this.scope.rows.each(row => row.__isChild || row.attr('__isOpen', !allOpen));
       this.scope.attr('allOpen', !allOpen);
-      can.batch.stop();
+      can.batch.stop();*/
+      var isOpend=el.closest('table').find('thead').find('tr').hasClass('open');
+      if(!isOpend){
+        el.closest('table').find('thead').find('tr').addClass('open');
+        $(el.closest('table').find('tbody').find('tr')).not('.child').addClass('open');
+        $(el.closest('table').find('tbody').find('.child')).addClass('visible');
+      }else{
+        el.closest('table').find('thead').find('tr').removeClass('open');
+        $(el.closest('table').find('tbody').find('tr')).not('.child').removeClass('open');
+        $(el.closest('table').find('tbody').find('.child')).removeClass('visible');
+      }
       if(self.scope.is_aggregate == 1){
         $(".period").hide();
         $(".entityName").hide();
