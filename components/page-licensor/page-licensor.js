@@ -16,6 +16,7 @@ import css_bootstrapValidator from 'bootstrapValidator.css!';
 import PeriodWidgetHelper from 'utils/periodWidgetHelpers';
 import commonUtils from 'utils/commonUtils';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
+import constants from 'utils/constants';
 
 
 var lDetails = new can.Map({
@@ -179,6 +180,47 @@ var page = Component.extend({
     },
 
     reportConfMap  : {},
+    
+    USER_ROLE : "FC",
+
+    buttonPressed : "propose",
+
+    switchButtons: function(licensorDetails) {
+
+      var self = this;
+
+      if(licensorDetails.data.status == "A" || licensorDetails.data.status == "Active") {
+
+        if(self.appstate.userInfo.roleIds[0] == constants.ROLES.BM) {
+
+          self.attr("enableButtonsApprove", "display:none");
+          self.attr("enableButtonsReject", "display:none");
+          self.attr("enableButtonsPropose", "display:none");
+
+        } else {
+
+          self.attr("enableButtonsApprove", "display:inline-block");
+          self.attr("enableButtonsReject", "display:inline-block");
+          self.attr("enableButtonsPropose", "display:none");
+
+        }
+      
+      } else {
+
+        if(self.appstate.userInfo.roleIds[0] == constants.ROLES.FA) {
+          self.attr("enableButtonsApprove", "display:none");
+          self.attr("enableButtonsReject", "display:none");
+          self.attr("enableButtonsPropose", "display:none");
+        } else {
+          self.attr("enableButtonsApprove", "display:none");
+          self.attr("enableButtonsReject", "display:none");
+          self.attr("enableButtonsPropose", "display:inline-block");
+
+        }
+
+      }
+
+    },
 
     mapCurrentCountryReportConf : function () {
 
@@ -490,11 +532,7 @@ var page = Component.extend({
 
       $('#entityGrid').hide();
 
-      $('.paymentTerms').hide();
-
       $('.uploadedFTP').hide();
-
-      $('.RepSplit').hide();
 
       $('.buttonsBottom').hide();
 
@@ -561,6 +599,8 @@ var page = Component.extend({
         self.reportConfMap = values[0].licensorDetails.reportConfMap;
 
         self.licDetails.attr("data", values[0].licensorDetails);
+
+        self.switchButtons(self.licDetails);
 
         var countries = [];
 
@@ -651,7 +691,7 @@ var page = Component.extend({
 
         } else if (self.licDetails.data.status == "N") {
 
-          self.licDetails.data.attr("status","Rejected");
+          self.licDetails.data.attr("status","New");
 
         }
 
@@ -806,15 +846,11 @@ var page = Component.extend({
 
         $('.societyContactsTab').show();
 
-        $('.RepSplit').show();
-
         $('.buttonsBottom').show();
 
         $('.status').show();
 
         $('.uploadedFTP').show();
-
-        $('.paymentTerms').show();
 
         setTimeout(function(){
           alignGridStats('revisionHistory');
@@ -1045,9 +1081,6 @@ var page = Component.extend({
           reLicencorDetails.licensorDetails.id = self.licDetails.data.id;
           reLicencorDetails.licensorDetails.commentId  = self.licDetails.data.commentId;
           reLicencorDetails.licensorDetails.entityTypeId  = self.licDetails.data.entityTypeId;
-          reLicencorDetails.licensorDetails.paymentTerms = self.licDetails.data.paymentTerms;
-          reLicencorDetails.licensorDetails.repSplit = self.licDetails.data.repSplit;
-          reLicencorDetails.licensorDetails.uploadedFilesToSFTP = self.licDetails.data.uploadedFilesToSFTP;
           reLicencorDetails.licensorDetails.contactDetails = societyContactDetails;
           reLicencorDetails.licensorDetails.licensorName = self.licDetails.data.licensorName;
           reLicencorDetails.licensorDetails.licensorId = self.licDetails.data.licensorId;
@@ -1069,32 +1102,82 @@ var page = Component.extend({
 
           var genObj = reLicencorDetails;
 
-          Promise.all([
-            Analytics.create(UserReq.formRequestDetails(genObj))
-          ]).then(function(data) {
-            if(data[0].status == "SUCCESS") {
+    if(this.attr("buttonPressed") == "Approved" || this.attr("buttonPressed") == "Rejected") {
 
-                var msg = "Licensor Details saved successfully";
-                self.attr("selectedEntity", sEntity);
-                // $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
-                // $("#invmessageDiv").show();
-                // setTimeout(function(){
-                //   $("#invmessageDiv").hide();
-                // },5000);
-                commonUtils.displayUIMessage(data[0].status, msg);
+            if(this.attr("buttonPressed") == "Approved") {
+              
+              Promise.all([
+                  Analytics.approve(UserReq.formRequestDetails(genObj))
+                ]).then(function(data) {
+                  if(data[0].status == "SUCCESS") {
 
-                self.populateLicensorDetails(self.licDetails.data.licensorName);
+                    var msg = "Entity Details Approved successfully";
+
+                    commonUtils.displayUIMessageWithDiv("#invmessageDiv", data.status, msg);
+
+                    self.populateLicensorDetails(self.licDetails.data.licensorName);
+                } else {
+
+                    var msg = "Entity Details not Approved successfully";
+
+                    commonUtils.displayUIMessageWithDiv("#invmessageDiv", data.status, msg);
+                }
+
+            });
+
             } else {
 
-                var msg = "Licensor Details was not saved successfully";
-                // $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
-                // $("#invmessageDiv").show();
-                // setTimeout(function(){
-                //   $("#invmessageDiv").hide();
-                // },5000);
-                commonUtils.displayUIMessage(data[0].status, msg);
+              Promise.all([
+                  Analytics.reject(UserReq.formRequestDetails(genObj))
+                ]).then(function(data) {
+                  if(data[0].status == "SUCCESS") {
+
+                    var msg = "Entity Details Rejected successfully";
+
+                    commonUtils.displayUIMessageWithDiv("#invmessageDiv", data.status, msg);
+
+                    self.populateLicensorDetails(self.licDetails.data.licensorName);
+                } else {
+
+                    var msg = "";
+                    if(this.attr("buttonPressed") == "Approved") {
+
+                      msg = "Entity Details not Rejected successfully";
+
+                    } else {
+
+                      msg = "Entity Details not Rejected successfully";
+                    }
+                    commonUtils.displayUIMessageWithDiv("#invmessageDiv", data.status, msg);
+                }
+
+            });
+              
             }
 
+            return;
+
+          } 
+
+          Promise.all([Analytics.create(UserReq.formRequestDetails(genObj))]).then(function(data) {
+
+              if(data[0].status == "SUCCESS") {
+
+                  var genObj = {};
+
+                  var msg = "Licensor Details updated successfully";
+
+                  commonUtils.displayUIMessageWithDiv("#invmessageDiv", data[0].status, msg);
+
+                  self.populateLicensorDetails(self.licDetails.data.licensorName);
+
+              } else {
+
+                var msg = "Licensor Details was not updated successfully";
+
+                commonUtils.displayUIMessageWithDiv("#invmessageDiv", data.status, msg);
+
+            }
           });
 
         } else {
@@ -1109,8 +1192,7 @@ var page = Component.extend({
 
           reLicencorDetails.licensorDetails.contactDetails = societyContactDetails;
           reLicencorDetails.licensorDetails.licensorName = self.licDetails.data.licensorName;
-          reLicencorDetails.licensorDetails.uploadedFilesToSFTP = self.licDetails.data.uploadedFilesToSFTP;
-
+          
           reLicencorDetails.licensorDetails.licensorId = "0";
 
           reLicencorDetails.licensorDetails.commentTxt = comments;
@@ -1286,35 +1368,48 @@ var page = Component.extend({
 
           var genObj = {"id" : "" , "licensorName":""};
 
-          if(self.appstate.attr("licensorName") != null && self.appstate.attr("licensorName") != undefined) {
+      if(self.appstate.screenLookup.attr("screendetails") != undefined && self.appstate.screenLookup.attr("screendetails") != null) {
 
-            genObj.licensorName =  self.appstate.attr("licensorName");
-            self.appstate.attr("licensorName", null);
+            genObj.id = self.appstate.screenLookup.screendetails.attr("tableId");
+            
+            Promise.all([Analytics.findById(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
-          }
-          else if (val == null){
+              self.populateAnalyticsPage(values);
+              self.appstate.screenLookup.attr("screendetails", null);
+              $("#loading_img").hide();
 
-            genObj.id = defaultEntity.id;
-            genObj.licensorName =  defaultEntity.value;
-
+            });
+              //Workflow code ends here
           } else {
+            if(self.appstate.attr("licensorName") != null && self.appstate.attr("licensorName") != undefined) {
+
+              genObj.licensorName =  self.appstate.attr("licensorName");
+              self.appstate.attr("licensorName", null);
+
+            }
+            else if (val == null){
+
+              genObj.id = defaultEntity.id;
+              genObj.licensorName =  defaultEntity.value;
+
+            } else {
 
               genObj.licensorName =  val;
 
-          }
+            }
 
-          self.attr("selectedEntity", genObj.licensorName);
+            self.attr("selectedEntity", genObj.licensorName);
 
-          Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
-            $("#loading_img").hide();
-            $("#entityLicensorBottom").show();
-            $("#buttonsubmit").show();
-            $("#buttonreset").show();
-            self.populateAnalyticsPage(values);
-            self.reValidateFiledsonLoad()
+            Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
+              $("#loading_img").hide();
+              $("#entityLicensorBottom").show();
+              $("#buttonsubmit").show();
+              $("#buttonreset").show();
+              self.populateAnalyticsPage(values);
+              self.reValidateFiledsonLoad();
 
-          });
-
+            });
+     }
           //$("#loading_img").hide();
 
       });
@@ -1386,18 +1481,6 @@ var page = Component.extend({
                   },
                   regexp: {
                       regexp: /^[0-9_\- ]*$/i,
-                      message: 'Please provide valid characters'
-                  }
-              }
-          },
-          paymentTerms: {
-              //group:'.licensors',
-              validators: {
-                  notEmpty: {
-                      message: 'Payment Terms is mandatory'
-                  },
-                  regexp: {
-                      regexp: /^[a-zA-Z0-9_\- ]*$/i,
                       message: 'Please provide valid characters'
                   }
               }
@@ -1656,7 +1739,19 @@ var page = Component.extend({
      }else{
        return '';
      }
-   }
+   },
+   
+   //Workflow code
+    enableButtons : function(ref, data){
+
+      if(this.attr("USER_ROLE") != ref)
+          return "display:none";
+      else 
+          return "display:inline";
+
+
+
+    }
 
   },
 
@@ -2132,6 +2227,7 @@ var page = Component.extend({
 
     "#buttonreset click": function(event){
 
+    this.scope.attr("buttonPressed", "Reset");
         var self = this;
         if(self.scope.licDetails.attr("data") != null) {
 
@@ -2286,6 +2382,28 @@ var page = Component.extend({
 
     '.submitButton click' : function() {
 
+        this.scope.attr("buttonPressed", "Propose");
+        this.scope.submitAnalytics();
+
+    },
+
+    '.buttonAdd click' : function() {
+
+        this.scope.attr("buttonPressed", "Submit");
+        this.scope.submitAnalytics();
+
+    },
+    
+    '.buttonApprove click' : function() {
+
+        this.scope.attr("buttonPressed", "Approve");
+        this.scope.submitAnalytics();
+
+    },
+
+    '.buttonReject click' : function() {
+
+        this.scope.attr("buttonPressed", "Reject");
         this.scope.submitAnalytics();
 
     },

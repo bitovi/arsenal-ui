@@ -204,7 +204,7 @@
 
 				<div class="col-sm-12" id="spaceBar5px"></div>
 
-				<div class="col-sm-12 col-sm-offset-0 form-group RepSplit">
+				<!-- <div class="col-sm-12 col-sm-offset-0 form-group RepSplit">
 
 					<div class="col-sm-4 textalignright small-headers align-left">
 						<label>Representation Split:</label>
@@ -213,7 +213,7 @@
 						<input type="text" name="repSplit" id="repSplit" can-value="licDetails.data.repSplit" value="{{licDetails.data.repSplit}}" class="form-control repSplit formInputs" readOnly/>
 					</div>
 
-				</div>
+				</div> -->
 
 
 
@@ -230,7 +230,7 @@
 
 
 
-				<div class="col-sm-12 col-sm-offset-0 form-group paymentTerms">
+				<!-- <div class="col-sm-12 col-sm-offset-0 form-group paymentTerms">
 
 					<div class="col-sm-4 textalignright small-headers align-left">
 						<label>Payment Terms(Days):</label>
@@ -239,10 +239,10 @@
 						<input type="text" name="paymentTerms" id="paymentTerms" can-value="licDetails.data.paymentTerms" value="{{licDetails.data.paymentTerms}}" class="form-control paymentTerms formInputs "/>
 					</div>
 
-				</div>
+				</div> -->
 
 
-				<div class="col-sm-12 col-sm-offset-0 uploadedFTP">
+				<!-- <div class="col-sm-12 col-sm-offset-0 uploadedFTP">
 
 					<div class="col-sm-4 textalignright small-headers align-left">
 						<label>Uploaded Files to sFTP: </label>
@@ -251,7 +251,7 @@
 						<input type="checkbox" id="uploadedFTP" can-value="licDetails.data.uploadedFilesToSFTP" checked="{{licDetails.data.loadedFilesToSFTP}}"/>
 					</div>
 
-				</div>
+				</div> -->
 
 
 
@@ -269,7 +269,7 @@
 				</div>
 
 
-				<div class="col-sm-12 countryModelLabel" style="padding:0px;">
+				<div class="col-sm-12 countryModelLabel" style="padding:0px;margin-top: 90px;">
 
 					<div class="col-sm-12" id="countryModelLabelId" style="padding:0px;">
 						<label class="mid-headers">Country Model Mapping</label>
@@ -448,9 +448,14 @@
 
 	</form>
 
-		<div id = "button_layout" class="col-sm-12" style="text-align:right;padding:15px;padding-right: 32px;">
-			<button type="button" id="buttonreset" name="Reset" class="btn btn-default buttonCancel btn-custom-big-disabled">Cancel</button>
-			<button type="button" id="buttonsubmit" name="SubmitPage" class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big" style="">Submit</button>
+		<div class="col-sm-12 col-sm-offset-8 buttonsBottom">
+
+			<button type="button" id="buttonreset" name="Reset" class="btn cancelButton btn-custom-small-cancel buttonreset" style="margin-left:10px;">Cancel</button>
+			<button type="button" id="buttonApprove" name="Reset" class="btn cancelButton btn-custom-small-cancel buttonApprove" style="margin-left:10px;{{enableButtonsApprove}}">Approve</button>
+			<button type="button" id="buttonReject" name="Reset" class="btn cancelButton btn-custom-small-cancel buttonReject" style="margin-left:10px;{{enableButtonsReject}}">Reject</button>
+			<button type="button" id="submitButton" name="SubmitPage" class="btn submitButton btn-custom-small buttonsubmit" style="margin-left:10px;style="{{enableButtonsPropose}}"">Propose</button>
+			<!-- <button type="button" id="buttonAdd" name="Submit" class="btn cancelButton btn-custom-small-cancel buttonAdd " style="margin-left:10px;">Submit</button> -->
+			
 		</div>
 
 
