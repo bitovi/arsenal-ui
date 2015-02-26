@@ -225,8 +225,8 @@
           <div class="col-sm-12 buttonsPlaceHolder" id = "button_layout">
             <div class="col-sm-12" style="text-align:right;padding:15px;">
 
-                <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
-                <button id="submitBtn" {{disableSubmit 4}} type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>
+                <button type="button" class="btn btn-default buttonCancel btn-custom-small-disabled" id="buttonCancel">Cancel</button>
+                <button id="submitBtn" {{disableSubmit 4}} type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-small">Submit</button>
 
             </div>
           </div>
