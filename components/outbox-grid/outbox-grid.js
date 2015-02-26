@@ -30,11 +30,11 @@ var OutboxGrid = ScrollingGrid.extend({
       title: 'Currently With',
       contents: function(row) { //we are hoping that these values will not change from DS.
         if (row.pendingGroupName == 'RINS-BusinessManager'){
-          return 'BM';
+          return 'Business';
         }else if (row.pendingGroupName == 'RINS-FinanceApprover'){
-          return 'FA';
+          return 'Finance Analyst';
         }else if (row.pendingGroupName == 'RINS-FinanceController'){
-          return 'FC';
+          return 'Controller';
         }else{
           return '';
         }
