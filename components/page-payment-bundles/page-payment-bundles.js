@@ -127,6 +127,10 @@ var page = Component.extend({
                 self.scope.pageState.attr("loadedFromDetails",undefined);
               }
 
+              if(data.totRecCnt != undefined && data.totRecCnt==0){
+                commonUtils.displayUIMessage( data.status, data.responseText);  
+              }
+
             }else{
               commonUtils.displayUIMessage( data.status, data.responseText);
               self.scope.appstate.screenLookup.attr("PBR",undefined);
