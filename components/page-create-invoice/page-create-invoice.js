@@ -1059,6 +1059,9 @@ var page = Component.extend({
                                 if(requireField[i] == "receiveddate"){
                                   $('#invoiceform').bootstrapValidator('revalidateField', 'receiveddate'); /*revalidating this field. It initialized with currentdate*/
                                 }
+                                if(requireField[i] == "invoicedate"){
+                                      $('#invoiceform').bootstrapValidator('revalidateField', 'invoicedate'); /*revalidating this field. It initialized with currentdate*/
+                                }
                                 break;
                               }
 
@@ -1131,9 +1134,7 @@ var page = Component.extend({
                             tempInvoiceData["invoiceCalcDueDate"] = dateFormatter(self.scope.calduedate, "mm/dd/yyyy");
                             if($("#invoiceduedate input[type=text]").val() != "") {
                                 tempInvoiceData["invoiceDueDate"] = dateFormatter($("#invoiceduedate input[type=text]").val(), "mm/dd/yyyy");
-                                console.log(dateFormatter($("#invoiceduedate input[type=text]").val(),"mm/dd/yyyy"));
                             }
-//                            console.log(dateFormatter($("#invoiceduedate input[type=text]").val(),"mm/dd/yyyy"));
                             tempInvoiceData["createdBy"] = UserReq.formRequestDetails().prsId;
 
                             tempInvoiceData["comments"] = [];
@@ -1240,7 +1241,7 @@ var page = Component.extend({
                                 //$('.datepicker').datepicker('remove');
                                 //$('#invoicedate').datetimepicker('remove');
                                 //$('#invoiceduedate').datetimepicker('remove');
-                                $('#invdatecont').html(stache('<date-picker name="invoicedate" placeholder=""></date-picker>'));
+                               /* $('#invdatecont').html(stache('<date-picker name="invoicedate" placeholder=""></date-picker>'));*/
                                 $('#invduedatecont').html(stache('<date-picker name="invoiceduedate" placeholder=""></date-picker>'));
 
                                 //$('#invoicedate').data("DateTimePicker").destroy();
