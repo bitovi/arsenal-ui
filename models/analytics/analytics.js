@@ -27,7 +27,7 @@ var Analytics = Model.extend({
 
   create: function(params){
         return $.ajax({
-            url: RinsCommon.UI_SERVICE_URL +'insertLicensorDetails',
+            url: RinsCommon.UI_SERVICE_URL +'proposeLicensorDetails',//RinsCommon.UI_SERVICE_URL +'insertLicensorDetails',
             type: 'POST',
             data: JSON.stringify(params),
             dataType:'json',
@@ -38,6 +38,36 @@ var Analytics = Model.extend({
    getInvoiceDetails : function(params){
         return $.ajax({
             url: RinsCommon.UI_SERVICE_URL +'getInvoiceDetailTypes',
+            type: 'POST',
+            data: JSON.stringify(params),
+            dataType:'json',
+            contentType: 'application/json'
+          });
+   },
+
+   propose : function(params){
+        return $.ajax({
+            url: RinsCommon.UI_SERVICE_URL +'proposeLicensorDetails',
+            type: 'POST',
+            data: JSON.stringify(params),
+            dataType:'json',
+            contentType: 'application/json'
+          });
+   },
+
+   approve : function(params){
+        return $.ajax({
+            url: RinsCommon.UI_SERVICE_URL +'approveLicensorDetails',
+            type: 'POST',
+            data: JSON.stringify(params),
+            dataType:'json',
+            contentType: 'application/json'
+          });
+   },
+
+   reject : function(params){
+        return $.ajax({
+            url: RinsCommon.UI_SERVICE_URL +'rejectLicensorDetails',
             type: 'POST',
             data: JSON.stringify(params),
             dataType:'json',
