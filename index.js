@@ -91,7 +91,7 @@ $(document).ajaxComplete(function(ev, xhr, options) {
   if(xhr.getResponseHeader('X-Apple-CSRF-Token') != null){
     var token = xhr.getResponseHeader('X-Apple-CSRF-Token');
     appstate.csrfToken = token;
-    console.log("token=="+token);
+    //console.log("token=="+token);
 
   }
 

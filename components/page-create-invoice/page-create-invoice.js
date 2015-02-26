@@ -35,9 +35,9 @@ import GLaccounts from 'models/glaccounts/';
 import Region from 'models/common/region/';
 
 
-var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]","ccidGLtxt[]"];
-var mandatoryFieldCA = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
-var mandatoryField = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
+var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]","ccidGLtxt[]"];
+var mandatoryFieldCA = ["invoicenumber",  "invoicedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
+var mandatoryField = ["invoicenumber",  "invoicedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
 
 fileUpload.extend({
   tag: 'rn-file-uploader-create',
@@ -224,9 +224,7 @@ var page = Component.extend({
                 var genObj = {fromCurrency:self.currencyStore, toCurrency:'USD', fiscalPeriod:periodWidgetHelper.getFiscalPeriod($("#inputMonth0").val()) ,periodType:periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0))};
                 Fxrate.findOne(UserReq.formRequestDetails(genObj),function(data){
                   self.attr("usdFxrateRatio", data.fxRate);
-                  console.log(self.attr("usdFxrateRatio"));
                 },function(xhr){
-                  console.log(xhr);
                 });
               }
             }
@@ -309,28 +307,29 @@ var page = Component.extend({
                   invoiceduedate :{
                     group:'.invduedate',
                     validators: {
-                      notEmpty: {
-                        message: 'Invoice due date is mandatory'
-                      },
+//                      notEmpty: {
+//                        message: 'Invoice due date is mandatory'
+//                      },
                       date: {
                         format: 'MM/DD/YYYY',
                         message: 'Please provide valid date in MM/DD/YYYY format'
-                      },
-                      callback: {
-                        message: 'Invoice Due date must be less than calculated due date',
-                        callback: function (value, validator, $field) {
-                          if(value != ""){
-                            var invduedate = new Date(value);
-                            if(self.scope.attr("calduedate")){
-                              var calduedate = new Date(self.scope.attr("calduedate"));
-                              if(Math.abs(invduedate.getTime()) > Math.abs(calduedate.getTime())){
-                                return false;
-                              }
-                            }
-                          }
-                          return true;
-                        }
                       }
+//                        ,
+//                      callback: {
+//                        message: 'Invoice Due date must be less than calculated due date',
+//                        callback: function (value, validator, $field) {
+//                          if(value != ""){
+//                            var invduedate = new Date(value);
+//                            if(self.scope.attr("calduedate")){
+//                              var calduedate = new Date(self.scope.attr("calduedate"));
+//                              if(Math.abs(invduedate.getTime()) > Math.abs(calduedate.getTime())){
+//                                return false;
+//                              }
+//                            }
+//                          }
+//                          return true;
+//                        }
+//                      }
                     }
                   },
                   fxrate: {
@@ -689,6 +688,9 @@ var page = Component.extend({
                                     if(requireField[i] == "receiveddate"){
                                       $('#invoiceform').bootstrapValidator('revalidateField', 'receiveddate'); /*revalidating this field. It initialized with currentdate*/
                                     }
+                                    if(requireField[i] == "invoicedate"){
+                                          $('#invoiceform').bootstrapValidator('revalidateField', 'invoicedate'); /*revalidating this field. It initialized with currentdate*/
+                                    }
                                     break;
                                   }
 
@@ -743,15 +745,10 @@ var page = Component.extend({
                   },
 
                   "#invoiceduedate dp.hide":function(event){
-                    //console.log("ddate1");
                     setTimeout(function(){
-                      //	console.log("ddate2");
                       $('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
                     }, 300);
-
                   },
-
-
                   ".form-control keyup": function(event){
                     var self = this;
                     if(event[0].id == "newPaymentBundle"){
@@ -805,7 +802,7 @@ var page = Component.extend({
                   "#invoicedate dp.hide":function(event){ /*need to repeat service call, as no way to capture date change event together with form control event*/
 
                     setTimeout(function(){
-                      //console.log("idate2");
+
                       $('#invoiceform').bootstrapValidator('revalidateField', 'invoicedate');
                     }, 300);
 
@@ -813,8 +810,7 @@ var page = Component.extend({
                     if(($("#invoicedate input[type=text]").val() != "") &&  (self.scope.licensorStore != "") && ($("#inputCountry0").val() != "")){
                       var genObj = {entityId:self.scope.licensorStore, invoiceDate:Date.parse($("#invoicedate input[type=text]").val()), countryId:$("#inputCountry0").val()};
                       CalDueDate.findOne(UserReq.formRequestDetails(genObj),function(data){
-                        //console.log("Date 1---"+moment($("#invoicedate input[type=text]").val()).unix());
-                        //console.log("Date 2----"+Date.parse($("#invoicedate input[type=text]").val()));
+
                         if(data.status == 'SUCCESS'){
                           if(data.calInvoiceDueDate != null && data.calInvoiceDueDate != undefined){
                             self.scope.attr("calduedate", getDateToDisplay(data.calInvoiceDueDate));
@@ -864,9 +860,6 @@ var page = Component.extend({
 
                     $('#invoiceform').bootstrapValidator('revalidateField', 'ccidGLtxt[]');
 
-                    //
-                    // console.log(idGL);
-                    // console.log(event[0].value);
                   },
                   ".ccidGLtxt change": function(el){
                     var rowindex = el[0].id.replace( /^\D+/g, '');
@@ -883,7 +876,6 @@ var page = Component.extend({
                         Licensor.findAll(UserReq.formRequestDetails(genObj)),
                         Currency.getCurrByRegion(self.scope.attr("regionStore"))
                         ]).then(function(values) {
-                          //console.log(values[0]);
                           self.scope.attr("licensor").replace([]);
                           self.scope.attr("currency").replace([]);
                           self.scope.attr("currencyStore", "");
@@ -1120,7 +1112,6 @@ var page = Component.extend({
                           if(self.scope.attr("tax") != null && self.scope.attr("tax") != undefined &&  self.scope.attr("tax") > 0) {
                             tempInvoiceData["tax"] = self.scope.attr("tax");
                           }
-                          console.log(typeof $("#paymentBundleNames").val());
 
                           if(typeof $("#paymentBundleNames").val() == "undefined"){
                             // tempInvoiceData["bundleId"] = "";
@@ -1211,8 +1202,6 @@ var page = Component.extend({
                             });
                             self.scope.errorMsg.attr("errorCode", "0000");
                             createInvoiceData.invoices.push(tempInvoiceData);
-
-                            //                        console.log("tempInvoiceData",tempInvoiceData.attr());
 
                             Promise.all([Invoice.create(UserReq.formRequestDetails(createInvoiceData))]).then(function(values) {
                               if(values[0]["status"]=="SUCCESS"){
@@ -1347,7 +1336,6 @@ var page = Component.extend({
                                     $(ele).parent().find('input[type=text]').val(this.scope.periodchoosen).trigger('change');
                                     $(ele).closest('.calendarcls').find('.box-modal').hide();
                                     $(ele).blur();
-                                    console.log("def");
 
                                   },
                                   '.updateperoid focus':function(el){
@@ -1671,7 +1659,7 @@ var page = Component.extend({
                                                 $(_elementID).data('options',$('#'+currentElementID+' option').clone());
                                               }
 
-                                              var serviceID = $("#inputContent0 option:selected").attr("servicetypeid"); console.log(serviceID);
+                                              var serviceID = $("#inputContent0 option:selected").attr("servicetypeid");
                                               if (typeof serviceID !== undefined) {
                                                 var options = $(_elementID).data('options').filter('[servicetypeid=' + serviceID + ']');
                                               }else{
@@ -1770,9 +1758,7 @@ var page = Component.extend({
 
       Promise.all([Country.findCountriesForRegLicCurr(UserReq.formRequestDetails(genObj))
       ]).then(function(values) {
-        console.log("Promise.all"+values[0].status);
         if(values[0].status == 'SUCCESS'){
-          console.log("Promise.all 11"+values[0].status);
           self.scope.attr('countryData',values[0].data);
         }else{
           var countryDD = $('.inputCountry');

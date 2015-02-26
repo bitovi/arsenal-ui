@@ -30,7 +30,7 @@ var headerNavigation = Component.extend({
         getCounter: function(){
           self = this;
           var getCounterRequest = {};
-                          
+
           Promise.all([
               Counter.findOne(UserReq.formRequestDetails(getCounterRequest))
             ]).then(function(values) {
@@ -74,32 +74,38 @@ var headerNavigation = Component.extend({
           }
           self.scope.attr("allowedScreenId",screenId );
 
-            var appstate = self.scope.appstate;
-            var counter = self.scope.counter;
-            $('.gParamSearchbar').append(stache('<global-parameter-bar appstate="{appstate}"></global-parameter-bar>')({appstate}));
-            $('.bookMarkPalceHolder').append(stache('<book-mark appstate={appstate}  counter={counter}></book-mark>')({appstate,counter}));
+          self.scope.getCounter();
+          var appstate = self.scope.appstate;
+          $('.gParamSearchbar').append(stache('<global-parameter-bar appstate="{appstate}"></global-parameter-bar>')({appstate}));
         });
-        
+
+        setInterval(function () {
+            self.scope.getCounter();
+        }, 20000);
+
+
+
         // Bookmark and Notification Counter Poller
-        var CounterControl = Control.extend({
-          init: function (){
-              this.interval = setInterval(function () {
-                  self.scope.getCounter();
-              }, 20000);
-          },
-
-          destroy: function () {
-              removeInterval(this.interval);
-          }
-        });
-
-        new CounterControl();
+        // var CounterControl = Control.extend({
+        //   init: function (){
+        //       this.interval =
+        //   },
+        //
+        //   destroy: function () {
+        //       removeInterval(this.interval);
+        //   }
+        // });
+        //
+        // new CounterControl();
     },
     events:{
       '#appleLogo click':function(){
           commonUtils.navigateTo("dashboard");
       },
       '.bookmark click':function(){
+          var counter = this.scope.counter;
+          var appstate = this.scope.appstate;
+          $('.bookMarkPalceHolder').append(stache('<book-mark appstate={appstate}  counter={counter}></book-mark>')({appstate,counter}));
           $('book-mark').slideToggle('fast');
       },
       '.notification click':function(){
