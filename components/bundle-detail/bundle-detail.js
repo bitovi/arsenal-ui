@@ -21,7 +21,6 @@ import Switcher from 'components/switcher/';
 import WorkflowDisplay from 'components/workflow-display/';
 import PbrDeleteConfirmModal from 'components/pbr-delete-confirm-modal/';
 
-import Alert from 'components/alert/';
 import highchartpage from 'components/highchart/';
 import Currency from 'models/common/currency/';
 
@@ -240,7 +239,9 @@ var BundleDetailTabs = Component.extend({
       var scope = this;
       scope.bundleProgress.triggerValidation = false;
 
-      if(bundle.status != 1 && !this.appstate.userInfo.roleIds.indexOf(constants.ROLES.BM)){
+      // if(bundle.status != 1 && !this.appstate.userInfo.roleIds.indexOf(constants.ROLES.BM)){
+      //No Validations when status is not 1
+      if(bundle.status != 1){
         return;
       }
 
@@ -340,6 +341,13 @@ var BundleDetailTabs = Component.extend({
     }
   },
   events: {
+    '.new-comments keyup':function(){
+      if($(".new-comments").val().trim().length > 1){
+        $(".buttons > .btn").prop( "disabled", false );
+      }else{
+        $(".buttons > .btn").prop( "disabled", true );
+      }
+    },
     '.grid-container table>tbody>tr click':function(item, el, ev){
 
       var alreadySelRow = item.closest("tbody").find("tr.selected");
