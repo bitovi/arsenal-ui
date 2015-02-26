@@ -844,7 +844,8 @@ var page = Component.extend({
           if(unDeletedInvoices.length > 0){
             //$("#messageDiv").html("<label class='errorMessage' style='padding:3px 15px !important'>Invoice "+unDeletedInvoices.toString()+" cannot be deleted! </label>");
             //$("#messageDiv").show();
-            commonUtils.showErrorMessage("Invoice "+unDeletedInvoices.toString()+" cannot be deleted!");
+           // commonUtils.showErrorMessage("Invoice "+unDeletedInvoices.toString()+" cannot be deleted!");
+           commonUtils.showErrorMessage("Selected invoices cannot be deleted as they are in transit/paid");
           } else {
             //$("#messageDiv").hide();
             var invoiceDelete = {"searchRequest":{}};
