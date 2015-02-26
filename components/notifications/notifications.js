@@ -13,33 +13,37 @@ var notification = Component.extend({
     appstate: undefined,
     counter:undefined,//passed in
     count: 0,
-    limit: "10",
+    limit: 10,
     offset: 0,
+    recordsAvailable: false,
     notificationList : new can.List(),
     showUserPref: false,
     showNotification:false,
-    pref: new can.Map(),
-    fetchedPref: new can.Map(),
-    isAnyNotification : can.compute(function() { this.count > 0 }),
-    notificationTriggered: function(self){
+    notificationType: '@',
+    defaultUserPref: '@',
+    selectedUserPref: new can.Map(),
+    notificationTriggered: function(self, notificationList){
        var notificationRequest = {};
       if(self.scope.attr("count") > 0) {
         notificationRequest["notificationList"] =[];
-        for(var i = 0 ;i < self.scope.attr("count");i++) {
-          notificationRequest["notificationList"].push(self.scope.attr("notificationList")[i].notificationId);
+        for(var i = 0 ;i < notificationList.length;i++) {
+          if(notificationList[i].isViewed === "N"){
+            notificationRequest["notificationList"].push(self.scope.attr("notificationList")[i].notificationId);
+          }
         }
-        Promise.all([
-          Notification.createNotificationViewed(UserReq.formRequestDetails(notificationRequest))
-          ]).then(function(values) {
-            $('header-navigation').scope().getCounter()
-            console.log("Return data from notification viewed save call:"+JSON.stringify(values));
-          });
-          self.scope.attr("count",0)
+        if(notificationRequest["notificationList"].length > 0){
+            Promise.all([
+              Notification.createNotificationViewed(UserReq.formRequestDetails(notificationRequest))
+              ]).then(function(values) {
+                $('header-navigation').scope().getCounter()
+                console.log("Return data from notification viewed save call:"+JSON.stringify(values));
+              });
+        }
       }
     }
  },
   init:function(){
-    var self = this, notificationRequest = {};//notificationRequest = {limit: self.scope.limit, offset: self.scope.offset};
+    var self = this, notificationRequest = {limit: self.scope.limit, offset: self.scope.offset};
     fetchNotifications(self, notificationRequest);
    },
   events:{
@@ -58,28 +62,43 @@ var notification = Component.extend({
       },
       // ShowMore functionality
       '.showButton click':function(el,e){
-        if($(el).is(":visible")){
-          $('.autoscroll').css('overflow-y','scroll');
-          $(el).parent().hide();
-        }else{
-          $('.autoscroll').scrollTop();
-          $('.autoscroll').css('overflow-y','hidden');
-          $(el).parent().show();
-        }
+          var self = this, notificationRequest = {};
+
+          self.scope.offset = self.scope.offset+1;
+          notificationRequest = {limit: self.scope.limit, offset: self.scope.offset};
+          fetchNotifications(self, notificationRequest);
       },
       // Method to show Notfication User Preferences
       '.notification_settings_icon click':function(el,e){
-        var self = this, userPrefRequest = {}, notificationOptionTemplate='', notificationTypes='', allTypesSelected = true;
+        var self = this, userPrefRequest = {reqType: 'default'}, notificationOptionTemplate='', allTypesSelected = true;
 
+        // Fetch Notification Type Master List
+        userPrefRequest = {reqType: 'getNotificationType'}
+        Promise.all([
+            Notification.findOne(UserReq.formRequestDetails(userPrefRequest))
+          ]).then(function(values) {
+            self.scope.notificationType = values[0].notificationType;
+            if(self.scope.notificationType.length > 0){
+              self.scope["defaultUserPref"] = {};
+              for(var i = 0; i < self.scope.notificationType.length; i++){
+                self.scope["defaultUserPref"][self.scope.notificationType[i].type] = "I";
+              }
+            }
+        });
+
+        // Map and render Notification Type Master List with selected user preferences
+        userPrefRequest = {reqType: 'getUserPreference'}
         Promise.all([Notification.findOne(UserReq.formRequestDetails(userPrefRequest))]).then(function(values) {
-          self.scope.pref = values[0]["userPreference"].attr();
-          self.scope.fetchedPref = values[0]["userPreference"].attr();
-          if(Object.getOwnPropertyNames(self.scope.pref).length > 0){
-            for(var items in self.scope.pref){
-              if(self.scope.pref[items]=='I'){
+          self.scope.selectedUserPref = values[0]["userPreference"].attr();
+          if(Object.getOwnPropertyNames(self.scope.defaultUserPref).length > 0){
+            for(var items in self.scope.defaultUserPref){
+              if(self.scope["selectedUserPref"][items]){
+                self.scope["defaultUserPref"][items] = self.scope["selectedUserPref"][items];
+              }
+              if(self.scope.defaultUserPref[items]=='I'){
                 allTypesSelected = false;
               }
-              notificationOptionTemplate = notificationOptionTemplate + '<div class="notificationItems"><input type="checkbox" class="'+items+'" '+((self.scope.pref[items]=='A')?'checked="checked"':'')+'/> '+items+'</div>';
+              notificationOptionTemplate = notificationOptionTemplate + '<div class="notificationItems"><input type="checkbox" class="'+items+'" '+((self.scope.defaultUserPref[items]=='A')?'checked="checked"':'')+'/> '+items+'</div>';
             }
             notificationOptionTemplate = '<div class="notification_options"><div class="notificationItems"><input type="checkbox" class ="selectall" '+((allTypesSelected)?'checked="checked"':'')+'/> <strong>Show Notification For </strong></div>'+notificationOptionTemplate+'</div>';
             $(".notification_settings_options .autoscroll").html(notificationOptionTemplate);
@@ -101,9 +120,12 @@ var notification = Component.extend({
       },
       // Method to save Notfication User Preferences changes
       '#notification_settings_save click':function(el, e){
-        var self = this, userPrefRequest = {}, preference = self.scope.pref, notificationRequest = {};
+        var self = this, userPrefRequest = {}, preference = self.scope.defaultUserPref, notificationRequest = {};
+
         userPrefRequest["type"] = [];
         userPrefRequest["type"].push(preference);
+        self.scope.offset = 0;
+        notificationRequest = {limit: self.scope.limit, offset: self.scope.offset}
         $('.notification_loader').show();
         Promise.all([Notification.create(UserReq.formRequestDetails(userPrefRequest))]).then(function(values) {
           $('.notification_loader').hide();
@@ -120,31 +142,32 @@ var notification = Component.extend({
             if($(el).is(':checked')){
               notificationItemsCheckboxes.each(function(){
                 $(this).prop('checked', true);
-                self.scope.pref[$(this).attr('class')] = 'A';
+                self.scope.defaultUserPref[$(this).attr('class')] = 'A';
               });
             }else{
                notificationItemsCheckboxes.each(function(el, e){
                 $(this).prop('checked', false);
-                self.scope.pref[$(this).attr('class')] = 'I';
+                self.scope.defaultUserPref[$(this).attr('class')] = 'I';
               });
             }
           }else{
             if($(el).is(':checked')){
-              self.scope.pref[$(el).attr('class')] = 'A';
+              self.scope.defaultUserPref[$(el).attr('class')] = 'A';
               if($('.notification_options input:checkbox:checked:not(.selectall)').length === notificationItemsCheckboxes.length){
                 $('.selectall').prop('checked',true);
               }
             }else{
-              self.scope.pref[$(el).attr('class')] = 'I';
+              self.scope.defaultUserPref[$(el).attr('class')] = 'I';
               $('.selectall').prop('checked',false);
             }
           }
       }
    },
-  helpers:function(){
-
+  helpers:{
+    isViewedStyle: function(isViewed){
+      return (isViewed() === "N")?' new':'';
+    }
   }
-
 });
 var fetchNotifications = function(self, notificationRequest){
     $('.notification_loader').show();
@@ -152,11 +175,17 @@ var fetchNotifications = function(self, notificationRequest){
         Notification.findAll(UserReq.formRequestDetails(notificationRequest))
       ]).then(function(values) {
         self.scope.attr("count", values[0].notificationCount);
-        if( self.scope.attr("count") > 0) {
-          self.scope.notificationList.replace(values[0]);
-          self.scope.notificationTriggered(self);
+        self.scope.attr("recordsAvailable", values[0].recordsAvailable);
+
+        if(self.scope.attr("count") > 0 && self.scope.offset > 0){
+          $.merge(self.scope.notificationList, values[0]);
+          self.scope.notificationList.replace(self.scope.notificationList);
         }else{
           self.scope.notificationList.replace(values[0]);
+        }
+        
+        if( self.scope.attr("count") > 0) {
+          self.scope.notificationTriggered(self, values[0]);
         }
         $('.notification_loader').hide();
     });

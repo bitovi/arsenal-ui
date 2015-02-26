@@ -27,13 +27,26 @@ var Notifications = Model.extend({
     })
   },
   findOne: function(params) {
-    return $.ajax({
-      url: RinsCommon.UI_SERVICE_URL+'getUserPreference',
-      type: 'POST',
-      contentType:'application/json',
-      dataType: 'json',
-      data: JSON.stringify(params)
-    })
+    if(params.reqType === 'getUserPreference'){
+      delete params.reqType;
+      return $.ajax({
+        url: RinsCommon.UI_SERVICE_URL+'getUserPreference',
+        type: 'POST',
+        contentType:'application/json',
+        dataType: 'json',
+        data: JSON.stringify(params)
+      })
+    }else{
+      delete params.reqType;
+      return $.ajax({
+        url: RinsCommon.UI_SERVICE_URL+'getNotificationType',
+        type: 'POST',
+        contentType:'application/json',
+        dataType: 'json',
+        data: JSON.stringify(params)
+      })
+    }
+    
   },
   createNotificationViewed: function(params){
     return $.ajax({

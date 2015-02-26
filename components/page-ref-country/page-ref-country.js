@@ -553,6 +553,14 @@ var page = Component.extend({
 
         self.populateCountryDetails(self, self.pageState.countryDetails.country.attr("countryId"), row.id, true);
     },
+    "#grid-society-model table>tbody>tr click": function(item, el, ev){
+        var self=this.scope;
+
+        var alreadySelRow = item.closest("tbody").find("tr.selected");
+        alreadySelRow.toggleClass("selected");
+
+        $(item[0]).toggleClass("selected");
+    },
     '{revisionHistory} change': function() {
       var self = this;
       var revisionHistory = self.scope.revisionHistory;
