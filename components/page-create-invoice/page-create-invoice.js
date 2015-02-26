@@ -1115,7 +1115,6 @@ var page = Component.extend({
                           if(self.scope.attr("tax") != null && self.scope.attr("tax") != undefined &&  self.scope.attr("tax") > 0) {
                             tempInvoiceData["tax"] = self.scope.attr("tax");
                           }
-
                           if(typeof $("#paymentBundleNames").val() == "undefined"){
                             // tempInvoiceData["bundleId"] = "";
                             tempInvoiceData["bundleName"] = $("#newPaymentBundle").val();

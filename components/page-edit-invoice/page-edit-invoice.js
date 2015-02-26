@@ -38,9 +38,9 @@ import commonUtils from 'utils/commonUtils';
 
 //import Invoice from 'models/invoice/';
 
-var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]", "ccidGLtxt[]"];
-var mandatoryFieldCA = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
-var mandatoryField = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
+var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]", "ccidGLtxt[]"];
+var mandatoryFieldCA = ["invoicenumber",  "invoicedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
+var mandatoryField = ["invoicenumber",  "invoicedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
 
 fileUpload.extend({
   tag: 'rn-file-uploader-edit',
@@ -334,28 +334,29 @@ var page = Component.extend({
 			            invoiceduedate :{
 			                group:'.invduedate',
 			                validators: {
-			                	notEmpty: {
-			                        message: 'Invoice due date is mandatory'
-			                    },
+//			                	notEmpty: {
+//			                        message: 'Invoice due date is mandatory'
+//			                    },
 			                    date: {
 				                        format: 'MM/DD/YYYY',
 				                        message: 'Please provide valid date in MM/DD/YYYY format'
-	                    		},
-	                			callback: {
-			                            message: 'Invoice Due date must be less than calculated due date',
-			                            callback: function (value, validator, $field) {
-			                         		if(value != ""){
-			                              	var invduedate = new Date(value);
-			                              	if(self.scope.attr("calduedate")){
-			                              		var calduedate = new Date(self.scope.attr("calduedate"));
-			                              			if(Math.abs(invduedate.getTime()) > Math.abs(calduedate.getTime())){
-														return false;
-													}
-			                              		}
-											}
-			                              return true;
-			                            }
 	                    		}
+//                                ,
+//	                			callback: {
+//			                            message: 'Invoice Due date must be less than calculated due date',
+//			                            callback: function (value, validator, $field) {
+//			                         		if(value != ""){
+//			                              	var invduedate = new Date(value);
+//			                              	if(self.scope.attr("calduedate")){
+//			                              		var calduedate = new Date(self.scope.attr("calduedate"));
+//			                              			if(Math.abs(invduedate.getTime()) > Math.abs(calduedate.getTime())){
+//														return false;
+//													}
+//			                              		}
+//											}
+//			                              return true;
+//			                            }
+//	                    		}
 				              }
 			            },
 			            fxrate: {
@@ -1294,8 +1295,10 @@ var page = Component.extend({
 				    if(self.scope.calduedate){
 				    	tempEditInvoiceData["invoiceCalcDueDate"] = dateFormatter(self.scope.calduedate, "mm/dd/yyyy");
 				    }
-				    tempEditInvoiceData["invoiceDueDate"] = dateFormatter($("#invoiceduedate input[type=text]").val(),"mm/dd/yyyy");
 
+                    if($("#invoiceduedate input[type=text]").val() != "") {
+                        tempEditInvoiceData["invoiceDueDate"] = dateFormatter($("#invoiceduedate input[type=text]").val(), "mm/dd/yyyy");
+                    }
 
 
 				   /*comment start*/

@@ -138,7 +138,7 @@
                 <div class="form-group">
                     <div class="col-sm-6 invduedate">
                         <label for="inputPassword3" class="col-sm-6 control-label">Invoice Due Date:</label>
-                        <div class="col-sm-6 invduedate requiredBar">
+                        <div class="col-sm-6 invduedate requiredBarNone">
                             <date-picker name="invoiceduedate" placeholder="{{invoiceduedate}}"></date-picker>
                         </div>
                     </div>
