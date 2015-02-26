@@ -221,24 +221,15 @@ var Grid = Component.extend({
       //get the row index
       var index=el.closest('tr').data('row').index;
       var allRows=el.closest('table').find('tbody').find('tr'); // get all the rows from table.
-      var parentOpen=$(allRows[index]).hasClass('open');
       for(var k=index+1;k<allRows.length;k++){
         if(!$(allRows[k]).hasClass('child')){//if you encountered the next parent then break the loop and comeout
           break;
         }
         if($(allRows[k]).hasClass('child')){
-          if(!parentOpen){
-            $(allRows[k]).addClass('visible');
-          }else{
-            $(allRows[k]).removeClass('visible');
-          }
+          $(allRows[k]).toggleClass('visible');
         }
       }
-      if(parentOpen){
-        $(allRows[index]).removeClass('open');
-      }else{
-        $(allRows[index]).addClass('open');
-      }
+      $(allRows[index]).toggleClass('open');
     },
     '.open-toggle-all click': function(el, ev) {
       /*ev.stopPropagation();
