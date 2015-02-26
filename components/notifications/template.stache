@@ -7,7 +7,7 @@
           <div class='autoscroll'>
           {{#if notificationList.length}}
             {{#each notificationList}}
-              <div class='notification_list {{status}}' data-pageId={{pageId}}>
+              <div class='notification_list{{isViewedStyle isViewed}}' data-pageId={{pageId}}>
                 <div class="type-text">Type:  {{type}} </div>
                 <div class="notification-text"> {{text}}</div>
                 <div class="date-text"> {{createdDate}},{{createdTime}}</div>
@@ -19,7 +19,7 @@
               <div class='notification_list' data-pageId={{pageId}}>No Notifications Available</div>
           {{/if}}
           </div>
-          {{#if isAnyNotification}}
+          {{#if recordsAvailable}}
             <div class="showMore notification_custombtns"><button type="button" class="showButton btn btn-primary btn-custom-small-disabled">Show More</button></div>
           {{/if}}  
         </div><!--list of notification end-->

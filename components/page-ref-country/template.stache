@@ -208,7 +208,7 @@
                <div class="form-group">
                <div class="col-sm-12" >
                   <label for="" class="col-sm-4 control-label small-headers">Comments: </label>
-                  <div id="multipleComments" class="col-sm-8 normalBar requiredBar">
+                  <div id="multipleComments" class="col-sm-8 normalBar requiredBar multipleCommentHeight">
                     <textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:125px;   min-height:100px;    max-height:100px;"></textarea>
                   </div>
                 </div>
@@ -338,14 +338,12 @@
 </div>
 
 <div class="col-sm-12 buttonsPlaceHolder" id ="button_layout" style="text-align:right;padding:15px;padding-right: 32px;">
-  <!--<button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
-  <button id="submitBtn" {{disableSubmit}} type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>-->
     <div class="col-sm-4"></div>
     <div class="col-sm-8">
       <button type="button" class="btn btn-default buttonCancel btn-custom-small-disabled" id="buttonCancel">Cancel</button>
-      <button id="submitBtn" {{disableSubmit 11}} type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-small" style="{{enableButtonsPropose}}">Propose</button>
-      <button id="approveBtn"  type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big" style="{{enableButtonsApprove}}">Approve</button>
-      <button id="rejectBtn"  type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big" style="{{enableButtonsReject}}">Reject</button>
+      <button id="submitBtn" {{disableSubmit 11}} type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-small marginLeft10" style="{{enableButtonsPropose}}">Propose</button>
+      <button id="approveBtn"  type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-small marginLeft10" style="{{enableButtonsApprove}}">Approve</button>
+      <button id="rejectBtn"  type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-small marginLeft10" style="{{enableButtonsReject}}">Reject</button>
      
   </div>
 </div>

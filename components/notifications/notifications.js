@@ -13,33 +13,36 @@ var notification = Component.extend({
     appstate: undefined,
     counter:undefined,//passed in
     count: 0,
-    limit: "10",
+    limit: 10,
     offset: 0,
+    recordsAvailable: false,
     notificationList : new can.List(),
     showUserPref: false,
     showNotification:false,
     pref: new can.Map(),
     fetchedPref: new can.Map(),
-    isAnyNotification : can.compute(function() { this.count > 0 }),
-    notificationTriggered: function(self){
+    notificationTriggered: function(self, notificationList){
        var notificationRequest = {};
       if(self.scope.attr("count") > 0) {
         notificationRequest["notificationList"] =[];
-        for(var i = 0 ;i < self.scope.attr("count");i++) {
-          notificationRequest["notificationList"].push(self.scope.attr("notificationList")[i].notificationId);
+        for(var i = 0 ;i < notificationList.length;i++) {
+          if(notificationList[0].isViewed === "N"){
+            notificationRequest["notificationList"].push(self.scope.attr("notificationList")[i].notificationId);
+          }
         }
-        Promise.all([
-          Notification.createNotificationViewed(UserReq.formRequestDetails(notificationRequest))
-          ]).then(function(values) {
-            $('header-navigation').scope().getCounter()
-            console.log("Return data from notification viewed save call:"+JSON.stringify(values));
-          });
-          self.scope.attr("count",0)
+        if(notificationRequest["notificationList"].length > 0){
+            Promise.all([
+              Notification.createNotificationViewed(UserReq.formRequestDetails(notificationRequest))
+              ]).then(function(values) {
+                $('header-navigation').scope().getCounter()
+                console.log("Return data from notification viewed save call:"+JSON.stringify(values));
+              });
+        }
       }
     }
  },
   init:function(){
-    var self = this, notificationRequest = {};//notificationRequest = {limit: self.scope.limit, offset: self.scope.offset};
+    var self = this, notificationRequest = {limit: self.scope.limit, offset: self.scope.offset};
     fetchNotifications(self, notificationRequest);
    },
   events:{
@@ -58,14 +61,11 @@ var notification = Component.extend({
       },
       // ShowMore functionality
       '.showButton click':function(el,e){
-        if($(el).is(":visible")){
-          $('.autoscroll').css('overflow-y','scroll');
-          $(el).parent().hide();
-        }else{
-          $('.autoscroll').scrollTop();
-          $('.autoscroll').css('overflow-y','hidden');
-          $(el).parent().show();
-        }
+          var self = this, notificationRequest = {};
+
+          self.scope.offset = self.scope.offset+1;
+          notificationRequest = {limit: self.scope.limit, offset: self.scope.offset};
+          fetchNotifications(self, notificationRequest);
       },
       // Method to show Notfication User Preferences
       '.notification_settings_icon click':function(el,e){
@@ -102,8 +102,11 @@ var notification = Component.extend({
       // Method to save Notfication User Preferences changes
       '#notification_settings_save click':function(el, e){
         var self = this, userPrefRequest = {}, preference = self.scope.pref, notificationRequest = {};
+
         userPrefRequest["type"] = [];
         userPrefRequest["type"].push(preference);
+        self.scope.offset = 0;
+        notificationRequest = {limit: self.scope.limit, offset: self.scope.offset}
         $('.notification_loader').show();
         Promise.all([Notification.create(UserReq.formRequestDetails(userPrefRequest))]).then(function(values) {
           $('.notification_loader').hide();
@@ -141,10 +144,11 @@ var notification = Component.extend({
           }
       }
    },
-  helpers:function(){
-
+  helpers:{
+    isViewedStyle: function(isViewed){
+      return (isViewed == "Y")?' new':'';
+    }
   }
-
 });
 var fetchNotifications = function(self, notificationRequest){
     $('.notification_loader').show();
@@ -152,11 +156,17 @@ var fetchNotifications = function(self, notificationRequest){
         Notification.findAll(UserReq.formRequestDetails(notificationRequest))
       ]).then(function(values) {
         self.scope.attr("count", values[0].notificationCount);
-        if( self.scope.attr("count") > 0) {
-          self.scope.notificationList.replace(values[0]);
-          self.scope.notificationTriggered(self);
+        self.scope.attr("recordsAvailable", values[0].recordsAvailable);
+
+        if(self.scope.attr("count") > 0 && self.scope.offset > 0){
+          $.merge(self.scope.notificationList, values[0]);
+          self.scope.notificationList.replace(self.scope.notificationList);
         }else{
           self.scope.notificationList.replace(values[0]);
+        }
+        
+        if( self.scope.attr("count") > 0) {
+          self.scope.notificationTriggered(self, values[0]);
         }
         $('.notification_loader').hide();
     });
