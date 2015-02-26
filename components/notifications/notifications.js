@@ -70,10 +70,10 @@ var notification = Component.extend({
       },
       // Method to show Notfication User Preferences
       '.notification_settings_icon click':function(el,e){
-        var self = this, userPrefRequest = {reqType: 'default'}, notificationOptionTemplate='', allTypesSelected = true;
+        var self = this, userPrefRequest = {reqType: 'getNotificationType'};
 
+        $('.notification_loader').show();
         // Fetch Notification Type Master List
-        userPrefRequest = {reqType: 'getNotificationType'}
         Promise.all([
             Notification.findOne(UserReq.formRequestDetails(userPrefRequest))
           ]).then(function(values) {
@@ -83,34 +83,8 @@ var notification = Component.extend({
               for(var i = 0; i < self.scope.notificationType.length; i++){
                 self.scope["defaultUserPref"][self.scope.notificationType[i].type] = "I";
               }
+              fetchUserPreferences(self, userPrefRequest);
             }
-        });
-
-        // Map and render Notification Type Master List with selected user preferences
-        userPrefRequest = {reqType: 'getUserPreference'}
-        Promise.all([Notification.findOne(UserReq.formRequestDetails(userPrefRequest))]).then(function(values) {
-          self.scope.selectedUserPref = values[0]["userPreference"].attr();
-          if(Object.getOwnPropertyNames(self.scope.defaultUserPref).length > 0){
-            for(var items in self.scope.defaultUserPref){
-              if(self.scope["selectedUserPref"][items]){
-                self.scope["defaultUserPref"][items] = self.scope["selectedUserPref"][items];
-              }
-              if(self.scope.defaultUserPref[items]=='I'){
-                allTypesSelected = false;
-              }
-              notificationOptionTemplate = notificationOptionTemplate + '<div class="notificationItems"><input type="checkbox" class="'+items+'" '+((self.scope.defaultUserPref[items]=='A')?'checked="checked"':'')+'/> '+items+'</div>';
-            }
-            notificationOptionTemplate = '<div class="notification_options"><div class="notificationItems"><input type="checkbox" class ="selectall" '+((allTypesSelected)?'checked="checked"':'')+'/> <strong>Show Notification For </strong></div>'+notificationOptionTemplate+'</div>';
-            $(".notification_settings_options .autoscroll").html(notificationOptionTemplate);
-            $('.listofnotification').slideUp('fast');
-            $('.notification_settings_options').slideDown('fast');
-          }else{
-            $(".notification_settings_options .autoscroll").html('No User Preferences');
-            $('.listofnotification').slideUp('fast');
-            $('.notification_settings_options').slideDown('fast');
-            $('#notification_settings_save').attr('disabled', true)
-            console.log("There is no User Preferences");
-          }
         });
       },
       // Method to cancel Notfication User Preferences changes
@@ -189,5 +163,36 @@ var fetchNotifications = function(self, notificationRequest){
         }
         $('.notification_loader').hide();
     });
-}
+};
+var fetchUserPreferences = function(self){
+  var userPrefRequest = {reqType: 'getUserPreference'}, notificationOptionTemplate='', allTypesSelected = true;
+  
+  // Map and render Notification Type Master List with selected user preferences
+  Promise.all([Notification.findOne(UserReq.formRequestDetails(userPrefRequest))]).then(function(values) {
+    self.scope.selectedUserPref = values[0]["userPreference"].attr();
+    if(Object.getOwnPropertyNames(self.scope.defaultUserPref).length > 0){
+      for(var items in self.scope.defaultUserPref){
+        if(self.scope["selectedUserPref"][items]){
+          self.scope["defaultUserPref"][items] = self.scope["selectedUserPref"][items];
+        }
+        if(self.scope.defaultUserPref[items]=='I'){
+          allTypesSelected = false;
+        }
+        notificationOptionTemplate = notificationOptionTemplate + '<div class="notificationItems"><input type="checkbox" class="'+items+'" '+((self.scope.defaultUserPref[items]=='A')?'checked="checked"':'')+'/> '+items+'</div>';
+      }
+      notificationOptionTemplate = '<div class="notification_options"><div class="notificationItems"><input type="checkbox" class ="selectall" '+((allTypesSelected)?'checked="checked"':'')+'/> <strong>Show Notification For </strong></div>'+notificationOptionTemplate+'</div>';
+      $(".notification_settings_options .autoscroll").html(notificationOptionTemplate);
+      $('.listofnotification').slideUp('fast');
+      $('.notification_loader').slideUp('fast');
+      $('.notification_settings_options').slideDown('fast');
+    }else{
+      $(".notification_settings_options .autoscroll").html('No User Preferences');
+      $('.listofnotification').slideUp('fast');
+      $('.notification_loader').slideUp('fast');
+      $('.notification_settings_options').slideDown('fast');
+      $('#notification_settings_save').attr('disabled', true)
+      console.log("There is no User Preferences");
+    }
+  });
+};
 export default notification;
