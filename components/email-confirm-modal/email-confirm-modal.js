@@ -32,6 +32,7 @@ var EmailConfirmModal = can.Component.extend({
           "text":"Reminder",
           "region": this.scope.approval.region,
           "roleId":null,
+          "sendEmail":"true",
           "settings":{
             "PAYMENT_BUNDLE_NAME": this.scope.approval.description,
             "PENDING_DAYS": this.scope.approval.pendingDays,
@@ -39,7 +40,7 @@ var EmailConfirmModal = can.Component.extend({
            },
           }
 
-
+        console.log(approvalObj)
         Promise.all([ReminderEmail.create(UserReq.formRequestDetails(approvalObj))]).then(function(values) {
 
         if(values[0]["status"]=="SUCCESS"){
