@@ -98,9 +98,10 @@ var BundleGrid = ScrollingGrid.extend({
     rowClass: function(row) {
       if(this.pageState.attr('selectedBundle') && this.pageState.selectedBundle != null && this.pageState.selectedBundle.bundleId === row.bundleId) {
         return 'selected';
-      } else {
-        return '';
       }
+      // else {
+      //   return '';
+      // }
     },
     cellContents: function(row, column) {
       if(this.attr('editingRow') === row && this.attr('editingColumn') === column) {
@@ -210,8 +211,12 @@ var BundleGrid = ScrollingGrid.extend({
         console.log('You cannot edit this.');
       }
     },
-    'tbody tr click': function(el, ev) {
-      //if(el.data('row') == undefined) return false;
+    'tbody tr click': function( el, ev) {
+
+      el.parent().find('tr').removeClass("selected");
+      //el.parent().find('tr').removeClass("highlight");
+      //el.addClass("selected");
+
 
       if(this.scope.attr('isEditBundleClicked')){
         //console.log("Bundle Editing is in Progress");
@@ -220,7 +225,7 @@ var BundleGrid = ScrollingGrid.extend({
         var bundle = el.data('row').row;
         this.scope.pageState.attr('selectedBundle', bundle);
       }
-
+      el.addClass("selected");
     }
   }
 });

@@ -7,7 +7,13 @@ var columns = {
   'toggle': {
     id: 'toggle',
     title: '<span class="open-toggle-all"></span>',
-    contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}}')({isChild: row.__isChild}); }
+    contents: function(row) {
+      if(row.__isChildExists != undefined && !row.__isChildExists ){
+        return "";
+      }else{
+       return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}}')({isChild: row.__isChild});
+      }
+    }
   },
   'validations': {
     id: 'validations',

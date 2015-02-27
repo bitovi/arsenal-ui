@@ -18,7 +18,7 @@ var BundleDetailGrid = ScrollingGrid.extend({
       // and each of those instances is a parent row
       // each BundleDetailGroup instance has a bundleDetails (which is a List of BundleDetail model instances)
       // and each of those is a child row
-      var contentType = [],country = [],periods = [],licensors = [],periodType="",adhocTypes= [];
+      var contentType = [],country = [],periods = [],licensors = [],periodType="",adhocTypes= [], child = true;
 
       can.batch.start();
       var rows = [];
@@ -29,6 +29,13 @@ var BundleDetailGrid = ScrollingGrid.extend({
         periodType = "";
         licensors = [];
         rows.push(group);
+        if(group.bundleDetails.length > 1){
+          child = true;
+          group.attr('__isChildExists', true);
+        }else{
+          child = false;
+          group.attr('__isChildExists', false);
+        }
         _.each(group.bundleDetails, function(detail) {
 
           if(detail.contentGrpName != undefined && detail.contentGrpName != 'TAX'){
@@ -58,10 +65,12 @@ var BundleDetailGrid = ScrollingGrid.extend({
             }
 
 
+          if(child){
+            detail.attr('__isChild', true);
+            detail.attr("view",bundle.view);
+            rows.push(detail);
+          }
 
-          detail.attr('__isChild', true);
-          detail.attr("view",bundle.view);
-          rows.push(detail);
         });
 
         var arrSize = _.size(contentType) ;

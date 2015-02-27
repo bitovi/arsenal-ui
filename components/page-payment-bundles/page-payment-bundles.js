@@ -329,7 +329,11 @@ var page = Component.extend({
     '{scope.pageState} refreshBottomGrid': function() {
       //console.log("Own change event: "+this.scope.invoiceRowsSelected.attr('length'));
       this.scope.invoiceRowsSelected.attr('length') > 0 ? $('.remove-invoice').prop('disabled', true) : "";
-    }
+    },
+    '.payBundleGrid table>tbody>tr click':function(item, el, ev){
+
+        
+      }
 
   }
 });
