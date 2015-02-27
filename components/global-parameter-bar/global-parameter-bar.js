@@ -116,22 +116,24 @@ var GlobalParameterBar = Component.extend({
       //console.log("period from change "+ this.scope.appstate.attr('periodFrom'));
       var comp = 'from';
       this.scope.attr('errorMessage', '');
+      var periodType=periodWidgetHelper.getPeriodType(this.scope.attr('periodFrom')[0]);
       this.scope.changesToApply.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(this.scope.attr('periodFrom')[0]));
-      this.scope.changesToApply.attr('periodFromType', periodWidgetHelper.getPeriodType(this.scope.attr('periodFrom')[0]));
+      this.scope.changesToApply.attr('periodFromType', periodType);
 
       var periodToValue = this.scope.attr('periodTo')[0] !== "undefined" ? this.scope.attr('periodTo')[0] : $('#periodFrom').val();
 
-      this.scope.attr('errorMessage', showErrorMsg(this.scope.attr('periodFrom')[0], periodToValue));
+      this.scope.attr('errorMessage', showErrorMsg(this.scope.attr('periodFrom')[0], periodToValue,periodType));
     },
     '{periodTo} change': function(el, ev) {
       var comp = 'to';
       this.scope.attr('errorMessage', '');
+      var periodType=periodWidgetHelper.getPeriodType(this.scope.attr('periodFrom')[0]);
       this.scope.changesToApply.attr('periodTo', periodWidgetHelper.getFiscalPeriod(this.scope.attr('periodTo')[0]));
-      this.scope.changesToApply.attr('periodToType', periodWidgetHelper.getPeriodType(this.scope.attr('periodTo')[0]));
+      this.scope.changesToApply.attr('periodToType', periodType);
 
       var periodFromValue = this.scope.attr('periodFrom')[0] !== "undefined" ? this.scope.attr('periodFrom')[0] : $('#periodFrom').val();
 
-      this.scope.attr('errorMessage', showErrorMsg(periodFromValue, this.scope.attr('periodTo')[0]));
+      this.scope.attr('errorMessage', showErrorMsg(periodFromValue, this.scope.attr('periodTo')[0],periodType));
     },
     '#store-type select change': function(el, ev) {
       //clear the error message if there is any.
@@ -634,6 +636,7 @@ var periodValidation=function(self,control){
   var periodFrom=$('#periodFrom').val();
   var periodTo=$('#periodTo').val();
   var message="";
+  var periodType=periodWidgetHelper.getPeriodType(periodFrom);
   if(control == 'periodFrom'){
     if(isDate(periodFrom)){
       self.scope.changesToApply.attr('periodFrom', periodWidgetHelper.getFiscalPeriod(periodFrom));
@@ -657,7 +660,7 @@ var periodValidation=function(self,control){
       var periodFromType = periodWidgetHelper.getPeriodType(periodFrom);
       var periodToType = periodWidgetHelper.getPeriodType(periodTo);
       if(periodFromType == periodToType){
-        message = showErrorMsg(periodFrom,periodTo);
+        message = showErrorMsg(periodFrom,periodTo,periodType);
         if(message.length > 0){
           if(control == 'periodFrom'){
             self.scope.changesToApply.attr('periodFrom', '');
@@ -705,7 +708,7 @@ var validateFilters = function(errorMsg,appstate, validateStoreType, validateReg
     var periodTo = appstate.attr('periodTo');
     var periodToType = appstate['periodToType'];
     var periodType = appstate['periodType']
-    var message = showErrorMsg(periodWidgetHelper.getDisplayPeriod(periodFrom, periodFromType), periodWidgetHelper.getDisplayPeriod(periodTo, periodToType));
+    var message = showErrorMsg(periodWidgetHelper.getDisplayPeriod(periodFrom, periodFromType), periodWidgetHelper.getDisplayPeriod(periodTo, periodToType),periodFromType);
     var validateQuarter=false;
     if(page == 'on-account'){
       var onAccScope=$('.page-container').closest('page-on-account').scope();
@@ -795,7 +798,7 @@ var validateFiscalPeriod = function(periodFrom, periodTo) {
   var yearTo = periodTO.substring(periodTO.length, periodTO.length - 2);
 }
 
-var showErrorMsg = function(periodFrom, periodTo) {
+var showErrorMsg = function(periodFrom, periodTo,periodType) {
 
   var flag = false;
   var from = periodFrom || false;
@@ -803,7 +806,11 @@ var showErrorMsg = function(periodFrom, periodTo) {
   var message1 = 'Period from is greater than period to !';
   var message2 = 'Please select one year of data !';
   var message3 = 'Invalid Month Selection !'
-
+  var allowedYear = 1;
+  if(periodType === 'Q'){
+    allowedYear=2;
+    message2='Please select two years of Quarter !'
+  }
   if (from && to) {
     var prdFromVal=periodWidgetHelper.getFiscalPeriod(from);
     var prdToVal=periodWidgetHelper.getFiscalPeriod(to);
@@ -814,13 +821,13 @@ var showErrorMsg = function(periodFrom, periodTo) {
     var yearDif=yearTo-yearFrom;
     if(yearDif < 0){
       return message1;
-    }else if(yearDif > 1){
+    }else if(yearDif > allowedYear){ // 1 or 2
       return message2;
     }else if(yearDif == 0 ){
       if(periodFrom > periodTo){
         return message1;
       }
-    }else if(yearDif == 1){
+    }else if(yearDif == allowedYear){ //1 or 2
       if(periodTo >= periodFrom){
         return message2;
       }
