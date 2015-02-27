@@ -374,6 +374,18 @@ var BundleDetailTabs = Component.extend({
       this.scope.details["__isChildExists"]= isChild;
 
     },
+    '.grid-container table>tbody>tr mouseover':function( el, ev){
+       var row = el.closest('tr').data('row').row;
+       if(row.validationColorHeader != undefined ){
+         $(el).css({"outline": "thin solid "+row.validationColorHeader+" "});
+       }
+    },
+    '.grid-container table>tbody>tr mouseout':function( el, ev){
+        var row = el.closest('tr').data('row').row;
+        if(row.validationColorHeader != undefined ){
+          $(el).css({"outline": ""});
+        }
+    },
     ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
       var self=this;
       var val = $(item[0]).attr("class").split(" ");
