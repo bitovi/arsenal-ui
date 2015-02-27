@@ -853,6 +853,13 @@ var page = Component.extend({
 
         }
 
+        var proposalPending = self.licDetails.data.proposalPending;
+        if(proposalPending != null && proposalPending != undefined && proposalPending != "" && proposalPending != true) {
+
+            $("#submitButton").hide();
+
+        }
+
         $('#entityLicensorBottom').show()
 
         $('.societyContactsTab').show();
@@ -1148,14 +1155,14 @@ var page = Component.extend({
 
                     var msg = "Entity Details Approved successfully";
 
-                    commonUtils.displayUIMessageWithDiv("#invmessageDiv", data.status, msg);
+                    commonUtils.displayUIMessageWithDiv("#invmessageDiv", data[0].status, data[0].responseText);
 
                     self.populateLicensorDetails(self.licDetails.data.licensorName);
                 } else {
 
                     var msg = "Entity Details not Approved successfully";
 
-                    commonUtils.displayUIMessageWithDiv("#invmessageDiv", data.status, msg);
+                    commonUtils.displayUIMessageWithDiv("#invmessageDiv", data[0].status, data[0].responseText);
                 }
 
             });
@@ -1169,14 +1176,14 @@ var page = Component.extend({
 
                     var msg = "Entity Details Rejected successfully";
 
-                    commonUtils.displayUIMessageWithDiv("#invmessageDiv", data.status, msg);
+                    commonUtils.displayUIMessageWithDiv("#invmessageDiv", data[0].status, data[0].responseText);
 
                     self.populateLicensorDetails(self.licDetails.data.licensorName);
                 } else {
 
                     var msg = "Entity Details not Rejected successfully";
                   }
-                  commonUtils.displayUIMessageWithDiv("#invmessageDiv", data.status, msg);
+                  commonUtils.displayUIMessageWithDiv("#invmessageDiv", data[0].status, data[0].responseText);
             });
               
             }
@@ -1193,7 +1200,7 @@ var page = Component.extend({
 
                   var msg = "Licensor Details updated successfully";
 
-                  commonUtils.displayUIMessageWithDiv("#invmessageDiv", data[0].status, msg);
+                  commonUtils.displayUIMessageWithDiv("#invmessageDiv", data[0].status, data[0].responseText);
 
                   self.populateLicensorDetails(self.licDetails.data.licensorName);
 
@@ -1201,7 +1208,7 @@ var page = Component.extend({
 
                 var msg = "Licensor Details was not updated successfully";
 
-                commonUtils.displayUIMessageWithDiv("#invmessageDiv", data.status, msg);
+                commonUtils.displayUIMessageWithDiv("#invmessageDiv", data[0].status, data[0].responseText);
 
             }
           });
@@ -1416,12 +1423,13 @@ var page = Component.extend({
             }
             else if (val == null){
 
-              genObj.id = defaultEntity.id;
+              genObj.licensorId = defaultEntity.id;
               genObj.licensorName =  defaultEntity.value;
 
             } else {
 
               genObj.licensorName =  val;
+              genObj.licensorId = self.setSelectedValue(val, "#licensorsFilter");
 
             }
 
@@ -2410,28 +2418,28 @@ var page = Component.extend({
       },100);
     },
 
-    '.submitButton click' : function() {
+    '#submitButton click' : function() {
 
         this.scope.attr("buttonPressed", "Propose");
         this.scope.submitAnalytics();
 
     },
 
-    '.buttonAdd click' : function() {
+    '#buttonAdd click' : function() {
 
         this.scope.attr("buttonPressed", "Submit");
         this.scope.submitAnalytics();
 
     },
     
-    '.buttonApprove click' : function() {
+    '#buttonApprove click' : function() {
 
         this.scope.attr("buttonPressed", "Approve");
         this.scope.submitAnalytics();
 
     },
 
-    '.buttonReject click' : function() {
+    '#buttonReject click' : function() {
 
         this.scope.attr("buttonPressed", "Reject");
         this.scope.submitAnalytics();

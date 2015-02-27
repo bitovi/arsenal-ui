@@ -92,6 +92,8 @@ var InboxGrid = ScrollingGrid.extend({
       var row = el.data('row').row;
       console.log(" Clicked "+row.tableName+", value :"+row.tableValue);
 
+      this.scope.appstate.screenLookup.attr("screendetails", null);
+
       if(row.tableName === 'RINS_PMT_BUNDLE'){
         var data = {bundleId:row.tableValue,loadedFrom:"dashboard"};
         this.scope.appstate.screenLookup.attr("PBR" ,data);
@@ -101,18 +103,18 @@ var InboxGrid = ScrollingGrid.extend({
       if(row.tableName === 'RINS_REF_ENTITY'){
         var data = {  tableName:row.tableName, tableId: row.tableValue, user:row.createdBy};
         console.log(" Entity Id :  "+ row.tableValue);
-        this.scope.appstate.attr("screendetails" ,data);
+        this.scope.appstate.screenLookup.attr("screendetails" ,data);
         commonUtils.navigateTo("licensor");
       }
       if(row.tableName === 'RINS_REF_COUNTRY'){
         var data = {  tableName:row.tableName, tableId: row.tableValue, user:row.createdBy};
-        this.scope.appstate.attr("screendetails" ,data);
+        this.scope.appstate.screenLookup.attr("screendetails" ,data);
         console.log(" Country Id :  "+ row.tableValue);
         commonUtils.navigateTo("ref-country");
       }
       if(row.tableName === 'RINS_REF_ENTITY_COUNTRY'){
         var data = {  tableName:row.tableName, tableId: row.tableValue, user:row.createdBy};
-        this.scope.appstate.attr("screendetails" ,data);
+        this.scope.appstate.screenLookup.attr("screendetails" ,data);
         console.log(" Entity Country Id :  "+ row.tableValue);
         commonUtils.navigateTo("ref-licensorcountry");
       }

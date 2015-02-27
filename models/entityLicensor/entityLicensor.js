@@ -43,6 +43,35 @@ var Analytics = Model.extend({
             dataType:'json',
             contentType: 'application/json'
           });
+   },
+   propose : function(params){
+        return $.ajax({
+            url: RinsCommon.UI_SERVICE_URL + 'proposeLicensorDetails',
+            type: 'POST',
+            data: JSON.stringify(params),
+            dataType:'json',
+            contentType: 'application/json'
+          });
+   },
+
+   approve : function(params){
+        return $.ajax({
+            url: RinsCommon.UI_SERVICE_URL +'approveLicensorDetails',
+            type: 'POST',
+            data: JSON.stringify(params),
+            dataType:'json',
+            contentType: 'application/json'
+          });
+   },
+
+   reject : function(params){
+        return $.ajax({
+            url: RinsCommon.UI_SERVICE_URL +'rejectLicensor',
+            type: 'POST',
+            data: JSON.stringify(params),
+            dataType:'json',
+            contentType: 'application/json'
+          });
    }
 
 }, {});
