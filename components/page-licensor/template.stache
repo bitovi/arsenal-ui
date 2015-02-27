@@ -345,7 +345,7 @@
 								<tfoot>
 									<tr>
 										<td  colspan="3" style="text-align:right;padding-right:2%;">
-											<button type="button" id="applyAllSelected" name="applyAll" class="btn buttonSubmit btn-custom-small3px  applyAllSelected" style="">Apply Selected</button>
+											<button type="button" id="applyAllSelected" name="applyAll" class="btn buttonSubmit btn-custom-small  applyAllSelected" style="">Apply Selected</button>
 										</td>
 									</tr>
 								</tfoot>

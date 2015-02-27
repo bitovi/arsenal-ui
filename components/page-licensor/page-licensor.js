@@ -2537,7 +2537,7 @@ function alignGridStats(divId){
           tdWidth = tbodyTdWidth;
 
         if(i==1)
-          tdWidth = 30;
+          tdWidth = 45;
         if((i==1) && divId== 'societyContacts')
           tdWidth = 100;
         if((i==3) && divId== 'societyContacts')
