@@ -167,7 +167,7 @@ var columns = {
   },
   'preview': {
     id: 'preview',
-    title: '',
+    title: 'Preview',
     contents: row => row.__isChild || row.isFooterRow ? '' : stache('<img src="/resources/images/rn_VisibleSelected.png" class="previewInv" data-invoiceid="'+row.invoiceId+'" />')(row)
   }
 };
