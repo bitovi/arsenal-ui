@@ -214,12 +214,12 @@ var page = Component.extend({
 
           self.attr("enableButtonsApprove", "display:none");
           self.attr("enableButtonsReject", "display:none");
-          self.attr("enableButtonsPropose", "display:none");
+          self.attr("enableButtonsPropose", "display:inline-block");
 
         } else {
 
-          self.attr("enableButtonsApprove", "display:inline-block");
-          self.attr("enableButtonsReject", "display:inline-block");
+          self.attr("enableButtonsApprove", "display:none");
+          self.attr("enableButtonsReject", "display:none");
           self.attr("enableButtonsPropose", "display:none");
 
         }
@@ -227,13 +227,13 @@ var page = Component.extend({
       } else {
 
         if(self.appstate.userInfo.roleIds[0] == constants.ROLES.FA) {
-          self.attr("enableButtonsApprove", "display:none");
-          self.attr("enableButtonsReject", "display:none");
+          self.attr("enableButtonsApprove", "display:inline-block");
+          self.attr("enableButtonsReject", "display:inline-block");
           self.attr("enableButtonsPropose", "display:none");
         } else {
           self.attr("enableButtonsApprove", "display:none");
           self.attr("enableButtonsReject", "display:none");
-          self.attr("enableButtonsPropose", "display:inline-block");
+          self.attr("enableButtonsPropose", "display:none");
 
         }
 
