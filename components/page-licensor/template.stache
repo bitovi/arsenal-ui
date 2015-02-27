@@ -452,7 +452,7 @@
 		<div class="col-sm-12 buttonsPlaceHolder" id ="button_layout" style="text-align:right;padding:15px;padding-right: 32px;">
 		    <div class="col-sm-4"></div>
 		    <div class="col-sm-8">
-		      <button type="buttonreset" class="btn btn-default buttonCancel btn-custom-small-disabled" id="buttonreset">Cancel</button>
+		      <button type="button"  id="buttonreset" class="btn btn-default buttonCancel btn-custom-small-disabled" id="buttonreset">Cancel</button>
 		      <button id="submitButton" type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-small marginLeft10" style="{{enableButtonsPropose}}">Propose</button>
 		      <button id="buttonApprove"  type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-small marginLeft10" style="{{enableButtonsApprove}}">Approve</button>
 		      <button id="buttonReject"  type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-small marginLeft10" style="{{enableButtonsReject}}">Reject</button>

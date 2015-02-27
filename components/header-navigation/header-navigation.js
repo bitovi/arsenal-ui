@@ -113,6 +113,15 @@ var headerNavigation = Component.extend({
           $('rn-notifications').slideToggle('fast');
           //this.element.find('rn-notifications').scope().notificationTriggered(this.element.find('rn-notifications').scope());
       },
+      '#homemenu li mouseenter': function(li) {
+          if (!li.hasClass('open')) li.addClass('open');
+      },
+        '#homemenu li mouseleave': function(li) {
+            if (li.hasClass('open')) li.removeClass('open');
+        },
+      '.dropdown-menu click': function($ul) {
+          $ul.parent().toggleClass('open');
+      },
       '.dropdown-menu li a click':function(el){
 
          //console.log(" I am heer "+el.data('screenid'));
