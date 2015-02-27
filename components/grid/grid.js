@@ -214,6 +214,7 @@ var Grid = Component.extend({
 
   events: {
     '.open-toggle click': function(el, ev) {
+      ev.stopPropagation();
       /*var row = el.closest('tr').data('row').row;
       row.attr('__isOpen', !row.attr('__isOpen'));*/
       //the above line will re render the complete tbody again.
@@ -235,8 +236,10 @@ var Grid = Component.extend({
         }
         $(allRows[index]).toggleClass('open');
       }
+
     },
     '.open-toggle-all click': function(el, ev) {
+      ev.stopPropagation();
       /*ev.stopPropagation();
       var allOpen = _.every(this.scope.rows, row => row.__isChild ? true : row.__isOpen);
       can.batch.start();
