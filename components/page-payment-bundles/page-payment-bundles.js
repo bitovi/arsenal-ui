@@ -59,7 +59,14 @@ var page = Component.extend({
 
         this.scope.appstate.attr('excelOutput',false);
 
-        PaymentBundle.loadAll({appstate: this.scope.appstate, paginate: this.scope.paginateAttr}).done(function(data) {
+        var lookForBundle = undefined;
+        if(this.scope.appstate.screenLookup.PBR != undefined ){
+          if(this.scope.appstate.screenLookup.PBR.search){
+            lookForBundle = this.scope.appstate.screenLookup.PBR.search;
+          }
+        }
+
+        PaymentBundle.loadAll({appstate: this.scope.appstate, paginate: this.scope.paginateAttr,lookForBundle:lookForBundle}).done(function(data) {
 
           if(data.status === 'SUCCESS'){
 
@@ -94,8 +101,12 @@ var page = Component.extend({
           this.scope.paginateAttr.attr('offset',  0);
 
           var lookForBundle = undefined;
-          if(this.scope.appstate.screenLookup.PBR != undefined){
-            lookForBundle = this.scope.appstate.screenLookup.PBR.bundleId;
+          if(this.scope.appstate.screenLookup.PBR != undefined ){
+            if(this.scope.appstate.screenLookup.PBR.search){
+              lookForBundle = this.scope.appstate.screenLookup.PBR.search;
+            }else{
+              lookForBundle = this.scope.appstate.screenLookup.PBR.bundleId;
+            }
           }
 
           resetGrids(pageState);
@@ -115,7 +126,7 @@ var page = Component.extend({
 
 
 
-              if(bundleLookupNeeded && lookForBundle != undefined){
+              if(bundleLookupNeeded && lookForBundle != undefined && self.scope.appstate.screenLookup.PBR.bundleId != undefined){
 
                   self.scope.pageState.attr("loadedFromDetails",self.scope.appstate.screenLookup.PBR);
                   self.scope.appstate.screenLookup.attr("PBR",undefined);

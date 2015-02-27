@@ -160,7 +160,7 @@ var GlobalParameterBar = Component.extend({
         if(newContentTypes.length<=1){
           $("input[name='selAllContentType']").closest('li').hide();
           self.scope.changesToApply.attr('contentType', [newContentTypes[0]["contentGroupId"]]);
-        }  
+        }
         else
           $("input[name='selAllContentType']").closest('li').show();
       }, 1000);
@@ -321,6 +321,10 @@ var GlobalParameterBar = Component.extend({
       //      self.scope.appstate.attr('periodTo', $('#periodTo').val());
       //$('.errorOnAccount').html('');
       var message="";
+
+      //reset the PBR global search
+      self.scope.appstate.screenLookup.attr("PBR" ,undefined);
+
       self.scope.appstate.attr('globalSearchButtonClicked', true);
       message = validateFilters(self.scope.errorMessage,self.scope.changesToApply, false, true, false, false, false,self.scope.appstate.attr('page'))
 

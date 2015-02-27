@@ -77,12 +77,27 @@ var PaymentBundle = Model.extend({
           data["excelOutput"]=true
         }
     }else{
+
       console.log("params.lookForBundle :"+params.lookForBundle);
-      data = {
-        paymentBundle: {
-          bundleId: params.lookForBundle
+      if(params.lookForBundle == "complete"){
+        var data = {"bundleSearch":{"periodFrom":-1,"periodTo":-1,"periodType":"P","serviceTypeId":-1,
+        "regionId":-1,"country":["ALL"],"entityId":[-1],"contentGrpId":[-1]}};
+
+        if (params.paginate) {
+          data.bundleSearch["offset"] = params.paginate.offset;
+          data.bundleSearch["sortBy"] =  params.paginate.sortBy.attr().toString()
+          data.bundleSearch["limit"] = appstate.attr("fetchSize");
+          data.bundleSearch["sortOrder"] = params.paginate.sortDirection;
+        }
+
+      }else{
+        data = {
+          paymentBundle: {
+            bundleId: params.lookForBundle
+          }
         }
       }
+
     }
 
     return $.ajax({
