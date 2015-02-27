@@ -18,6 +18,25 @@ import UserReq from 'utils/request/';
 import Invoice from 'models/invoice/';
 import commonUtils from 'utils/commonUtils';
 import gridUtils from 'utils/gridUtil';
+import PBConfirmModal from 'components/email-confirm-modal/';
+import pbconfirmtemplate from 'components/page-create-invoice/pbconfirm.stache!';
+
+
+
+PBConfirmModal.extend({
+  tag: 'rn-pb-confirm-modal',
+  template: pbconfirmtemplate,
+  events: {
+      '.submit click': function(el, ev) {
+            var self = this; 
+            var data = {bundleId:self.scope.pbid,loadedFrom:"icsv"};
+            self.scope.appstate.screenLookup.attr("PBR" ,data);
+            $('rn-pb-confirm-modal').remove();
+            commonUtils.navigateTo("payment-bundles");
+      }
+      
+  }
+});
 
 
 Grid.extend({
@@ -531,6 +550,15 @@ var page = Component.extend({
                                       displayMessage(msg,true);
 
                                        icsvmap.removeAttr("invoiceData");
+
+                                        var pbid = $("#paymentBundleNames").val();
+                                        var pbname = $("#paymentBundleNames option:selected").text();
+
+                                        if(pbid != "" &&  pbname != "--Select--"){
+                                            var pbobj = {"pbid":pbid, "appstate":self.scope.appstate};
+                                            $(document.body).append(stache('<rn-pb-confirm-modal pbid="{pbobj.pbid}" appstate="{pbobj.appstate}" ></rn-pb-confirm-modal>')({pbobj}));
+                                        } 
+
                                        self.scope.attr('cancelnewbundlereq',true);
 
                                         self.scope.uploadedfileinfo.replace([]);
