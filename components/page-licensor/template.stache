@@ -262,7 +262,7 @@
 						<label>Comments:</label>
 					</div>
 
-					<div class="multipleComments col-sm-8 requiredBar" id="multipleComments" style="margin-left: -15px;padding-top: 0px;">
+					<div class="multipleComments col-sm-8 requiredBar" id="multipleComments" style="margin-left: -15px;padding-top: 0px;height:92px;">
 
 					</div>
 
@@ -448,15 +448,25 @@
 
 	</form>
 
+		<!--
 		<div class="col-sm-12 col-sm-offset-8 buttonsBottom">
 
-			<button type="button" id="buttonreset" name="Reset" class="btn cancelButton btn-custom-small-cancel buttonreset" style="margin-left:10px;">Cancel</button>
+			<button type="button" id="buttonreset" name="Reset" class="buttonreset btn btn-default buttonCancel btn-custom-small-disabled cancelButton" style="margin-left:10px;">Cancel</button>
 			<button type="button" id="buttonApprove" name="Reset" class="btn cancelButton btn-custom-small-cancel buttonApprove" style="margin-left:10px;{{enableButtonsApprove}}">Approve</button>
 			<button type="button" id="buttonReject" name="Reset" class="btn cancelButton btn-custom-small-cancel buttonReject" style="margin-left:10px;{{enableButtonsReject}}">Reject</button>
 			<button type="button" id="submitButton" name="SubmitPage" class="btn submitButton btn-custom-small buttonsubmit" style="margin-left:10px;style="{{enableButtonsPropose}}"">Propose</button>
-			<!-- <button type="button" id="buttonAdd" name="Submit" class="btn cancelButton btn-custom-small-cancel buttonAdd " style="margin-left:10px;">Submit</button> -->
-			
 		</div>
+		-->
+
+		<div class="col-sm-12 buttonsPlaceHolder" id ="button_layout" style="text-align:right;padding:15px;padding-right: 32px;">
+		    <div class="col-sm-4"></div>
+		    <div class="col-sm-8">
+		      <button type="button" class="btn btn-default buttonCancel btn-custom-small-disabled" id="buttonreset">Cancel</button>
+		      <button id="submitButton" type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-small marginLeft10" style="{{enableButtonsPropose}}">Propose</button>
+		      <button id="buttonApprove"  type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-small marginLeft10" style="{{enableButtonsApprove}}">Approve</button>
+		      <button id="buttonReject"  type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-small marginLeft10" style="{{enableButtonsReject}}">Reject</button>
+		     
+		 </div>
 
 
 	<div class="col-sm-4 col-sm-offset-4" class="confirmationReportConfig" style="display:none">
