@@ -10,6 +10,8 @@ import template from './template.stache!';
 import styles from './page-dashboard.less!';
 import fieldPermission from 'utils/fieldPermission';
 
+import commonUtils from 'utils/commonUtils';
+
 var page = Component.extend({
   tag: 'page-dashboard',
   template: template,
@@ -65,7 +67,9 @@ var page = Component.extend({
       return fieldPermission.formRequestDetails(fieldId,this.attr("screenId"),role);
     },
     ifSelectedTab: function(tabText, options) {
+      commonUtils.hideUIMessage();
       return this.attr('selectedTab').text === tabText ? options.fn(this) : '';
+       
     }
   },
   events: {

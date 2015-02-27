@@ -33,6 +33,9 @@ import CalDueDate from 'models/common/calinvoiceduedate/';
 import AdhocTypes from 'models/common/adhoc-types/';
 import GLaccounts from 'models/glaccounts/';
 import Region from 'models/common/region/';
+import PBConfirmModal from 'components/email-confirm-modal/';
+import pbconfirmtemplate from './pbconfirm.stache!';
+
 
 
 var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]","ccidGLtxt[]"];
@@ -59,6 +62,23 @@ fileUpload.extend({
     }
   }
 });
+
+PBConfirmModal.extend({
+  tag: 'rn-pb-confirm-modal',
+  template: pbconfirmtemplate,
+  events: {
+      '.submit click': function(el, ev) {
+            var self = this; 
+            var data = {bundleId:self.scope.pbid,loadedFrom:"create-invoice"};
+            self.scope.appstate.screenLookup.attr("PBR" ,data);
+            $('rn-pb-confirm-modal').remove();
+            commonUtils.navigateTo("payment-bundles");
+      }
+      
+  }
+});
+
+
 
 
 
@@ -1001,43 +1021,40 @@ var page = Component.extend({
                       var pbval = $("#invoiceform #paymentBundleNames").val();
                       self.scope.attr('newpaymentbundlenamereq', "undefined");
 
-                      if(pbval=="createB"){
+                      if(pbval=="createB" && validateFieldsForCreatePB(self.scope)){
+                            var regId = self.scope.regionStore;
+                            var newBundleNameRequest = {"paymentBundle":{}};
+                            var bundleRequest = {};
 
-                        if(($("#inputMonth0").val() == "") && (self.scope.attr("invoicetypeSelect") != "2"))
-                          {
-                            $("#paymentBundleNames").val("");
+                            bundleRequest["regionId"] = regId;
 
-                            $("#paymentBundleNames").popover({"content":"Please select invoielines period", "placement":"top"});
-                            $("#paymentBundleNames").popover('show');
+                            bundleRequest["periodFrom"] = getBundleDateRange().fromDate;
 
-                            setTimeout(function(){
-                              $("#paymentBundleNames").popover('destroy');
+                            bundleRequest["periodTo"] = getBundleDateRange().toDate;
 
-                            },2000);
+                            bundleRequest["periodType"] = getBundleDateRange().periodType;
+
+                            bundleRequest["bundleType"] = $("#invoiceType option:selected").attr("name");
+
+                            var bundleDetailsGroup=[];
+                              $("[id^=breakrow]").each(function(index) { 
+                                    if (this.id != "breakrowTemplate") {
+                                      var bundledetails={};
+                                      var index = $(this).attr("rowid");
+                                      bundledetails.country = self.scope.countryStore.attr("inputCountry" + index);
+                                      bundledetails.contentGrpName = $("#inputContent"+index+" option:selected").text();
+                                      bundledetails.periodType=bundleRequest.periodType;
+                                      bundleDetailsGroup.push(bundledetails);
+                                    }
+                                });
+                              if(bundleDetailsGroup.length >0){
+                                bundleRequest.bundleDetailsGroup=bundleDetailsGroup;
+                              }
+
+                            newBundleNameRequest["paymentBundle"] = bundleRequest;
+                            self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
                           }
-                          else
-                            {
-                              var regId = self.scope.regionStore;
-                              var newBundleNameRequest = {"paymentBundle":{}};
-                              var bundleRequest = {};
 
-                              bundleRequest["regionId"] = regId;
-
-                              bundleRequest["periodFrom"] = getBundleDateRange().fromDate;
-
-                              bundleRequest["periodTo"] = getBundleDateRange().toDate;
-
-                              bundleRequest["periodType"] = getBundleDateRange().periodType;
-
-                              bundleRequest["bundleType"] = $("#invoiceType option:selected").attr("name");
-
-                              newBundleNameRequest["paymentBundle"] = bundleRequest;
-                              //console.log(JSON.stringify(newBundleNameRequest));
-                              self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
-                            }
-
-
-                          }
                         },
                         'rn-file-uploader-create onSelected': function(ele, event){
 
@@ -1233,6 +1250,16 @@ var page = Component.extend({
                                   commonUtils.showErrorMessage(msg);
 
                                 }
+
+                                var pbid = $("#paymentBundleNames").val();
+                                var pbname = $("#paymentBundleNames option:selected").text();
+
+                                if(pbid != "" &&  pbname != "--Select--" && self.scope.attr("invoicetypeSelect") != 3){
+                                    var pbobj = {"pbid":pbid, "appstate":self.scope.appstate};
+                                    $(document.body).append(stache('<rn-pb-confirm-modal pbid="{pbobj.pbid}" appstate="{pbobj.appstate}" ></rn-pb-confirm-modal>')({pbobj}));
+                                } 
+                                
+                                
                                 $("#invoiceform")[0].reset();
                                 $("#invoiceform").data('bootstrapValidator').resetForm();
                                 $("#addInvSubmit").attr("disabled", true);
@@ -1257,7 +1284,7 @@ var page = Component.extend({
                                 });
                                 //$("#breakrow0 .amountText").attr("id","amountText0").val(" ");
 
-
+                                
 
 
 
@@ -1709,6 +1736,33 @@ var page = Component.extend({
     self.scope.attr("fxrateStore", "");
     self.scope.attr("usercommentsStore", "");
     self.scope.uploadedfileinfo.replace([]);
+  }
+
+  var validateFieldsForCreatePB = function(self) {
+    var errorMess = "";
+    $("#paymentBundleNames").val("");
+    if($("#inputContent0").val().length == 0) {
+      errorMess = "Please select invoielines content Type";
+    } else if (($("#inputMonth0").val() == "") && (self.attr("invoicetypeSelect") != "2")) {
+      errorMess = "Please select invoielines period";
+    } else if ($("#inputCountry0").val().length == 0) {
+      errorMess = "Please select invoielines country";
+    }
+
+    if (errorMess.length > 0) {
+      $("#paymentBundleNames").popover({
+        "content": errorMess,
+        "placement": "top"
+      });
+      $("#paymentBundleNames").popover('show');
+
+      setTimeout(function() {
+        $("#paymentBundleNames").popover('destroy');
+
+      }, 2000);
+      return false;
+    }
+  return true;
   }
 
   var getBundleDateRange = function(){

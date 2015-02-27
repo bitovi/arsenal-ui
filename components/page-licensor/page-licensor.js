@@ -183,7 +183,26 @@ var page = Component.extend({
     
     USER_ROLE : "FC",
 
-    buttonPressed : "propose",
+    buttonPressed : "Propose",
+
+    setSelectedValue : function(text, divId) {
+
+      var obj = $(divId+ " option");
+
+      var objVal = 0;
+
+      for(var i=0; obj.length; i++) {
+        if( obj[i].text == text ) {
+          objVal =  (obj[i].id == undefined || obj[i].id == null || obj[i].id == "") ? obj[i].value : obj[i].id ;
+
+          break;
+          
+        }
+      }
+
+      return objVal;
+
+    },
 
     switchButtons: function(licensorDetails) {
 
@@ -195,12 +214,12 @@ var page = Component.extend({
 
           self.attr("enableButtonsApprove", "display:none");
           self.attr("enableButtonsReject", "display:none");
-          self.attr("enableButtonsPropose", "display:none");
+          self.attr("enableButtonsPropose", "display:inline-block");
 
         } else {
 
-          self.attr("enableButtonsApprove", "display:inline-block");
-          self.attr("enableButtonsReject", "display:inline-block");
+          self.attr("enableButtonsApprove", "display:none");
+          self.attr("enableButtonsReject", "display:none");
           self.attr("enableButtonsPropose", "display:none");
 
         }
@@ -208,13 +227,13 @@ var page = Component.extend({
       } else {
 
         if(self.appstate.userInfo.roleIds[0] == constants.ROLES.FA) {
+          self.attr("enableButtonsApprove", "display:inline-block");
+          self.attr("enableButtonsReject", "display:inline-block");
+          self.attr("enableButtonsPropose", "display:none");
+        } else {  
           self.attr("enableButtonsApprove", "display:none");
           self.attr("enableButtonsReject", "display:none");
           self.attr("enableButtonsPropose", "display:none");
-        } else {
-          self.attr("enableButtonsApprove", "display:none");
-          self.attr("enableButtonsReject", "display:none");
-          self.attr("enableButtonsPropose", "display:inline-block");
 
         }
 
@@ -570,7 +589,7 @@ var page = Component.extend({
 
       var self = this;
 
-      var commentObj = values[0].licensorDetails.commentList;
+      var commentObj = values[0].licensorDetails.commentList == null ? [] : values[0].licensorDetails.commentList ;
 
       self.clearContactDetails();
 
@@ -811,6 +830,7 @@ var page = Component.extend({
 
         }
 
+        self.attr("selectedEntity", self.licDetails.data.licensorName);
         //self.scope.countries.data.push(countries);
 
         self.licDetails.data.cs=self.countries;
@@ -833,6 +853,7 @@ var page = Component.extend({
 
         }
 
+        $('#entityLicensorBottom').show()
 
         $('.societyContactsTab').show();
 
@@ -851,6 +872,8 @@ var page = Component.extend({
         $('.status').show();
 
         $('.uploadedFTP').show();
+
+        $("#buttonreset").show();
 
         setTimeout(function(){
           alignGridStats('revisionHistory');
@@ -1035,11 +1058,19 @@ var page = Component.extend({
 
           periodFrom = PeriodWidgetHelper.getFiscalPeriod(periodFrom.toString());
 
+        } else {
+
+          periodFrom = "";
+
         }
 
         if (periodTo != 0 || periodTo != undefined || periodTo!= null) {
 
           periodTo = PeriodWidgetHelper.getFiscalPeriod(periodTo.toString());
+
+        } else {
+
+          periodTo = "";
 
         }
 
@@ -1097,14 +1128,18 @@ var page = Component.extend({
           reLicencorDetails.licensorDetails.validFrom = periodFrom;
           reLicencorDetails.licensorDetails.validTo = periodTo;
 
-          reLicencorDetails.licensorDetails.reportConfMap = self.reportConfMap.attr();
+          if(this.attr("buttonPressed") == "Propose") {
+            reLicencorDetails.licensorDetails.reportConfMap = self.reportConfMap.attr(); // != undefined ? self.reportConfMap.attr() : self.reportConfMap
+          } else {
+            reLicencorDetails.licensorDetails.reportConfMap = self.reportConfMap;
+          }
           reLicencorDetails.licensorId = 0;
 
           var genObj = reLicencorDetails;
 
-    if(this.attr("buttonPressed") == "Approved" || this.attr("buttonPressed") == "Rejected") {
+    if(this.attr("buttonPressed") == "Approve" || this.attr("buttonPressed") == "Reject") {
 
-            if(this.attr("buttonPressed") == "Approved") {
+            if(this.attr("buttonPressed") == "Approve") {
               
               Promise.all([
                   Analytics.approve(UserReq.formRequestDetails(genObj))
@@ -1139,18 +1174,9 @@ var page = Component.extend({
                     self.populateLicensorDetails(self.licDetails.data.licensorName);
                 } else {
 
-                    var msg = "";
-                    if(this.attr("buttonPressed") == "Approved") {
-
-                      msg = "Entity Details not Rejected successfully";
-
-                    } else {
-
-                      msg = "Entity Details not Rejected successfully";
-                    }
-                    commonUtils.displayUIMessageWithDiv("#invmessageDiv", data.status, msg);
-                }
-
+                    var msg = "Entity Details not Rejected successfully";
+                  }
+                  commonUtils.displayUIMessageWithDiv("#invmessageDiv", data.status, msg);
             });
               
             }
@@ -1159,7 +1185,7 @@ var page = Component.extend({
 
           } 
 
-          Promise.all([Analytics.create(UserReq.formRequestDetails(genObj))]).then(function(data) {
+          Promise.all([Analytics.propose(UserReq.formRequestDetails(genObj))]).then(function(data) {
 
               if(data[0].status == "SUCCESS") {
 
@@ -1368,15 +1394,16 @@ var page = Component.extend({
 
           var genObj = {"id" : "" , "licensorName":""};
 
-      if(self.appstate.screenLookup.attr("screendetails") != undefined && self.appstate.screenLookup.attr("screendetails") != null) {
+          if(self.appstate.screenLookup.attr("screendetails") != undefined && self.appstate.screenLookup.attr("screendetails") != null) {
 
             genObj.id = self.appstate.screenLookup.screendetails.attr("tableId");
             
             Promise.all([Analytics.findById(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
-              self.populateAnalyticsPage(values);
+              self.populateAnalyticsPage(values, null);
               self.appstate.screenLookup.attr("screendetails", null);
               $("#loading_img").hide();
+               self.attr("selectedEntity",self.licDetails.data.licensorName);
 
             });
               //Workflow code ends here
@@ -2294,6 +2321,9 @@ var page = Component.extend({
 
         var genObj = {"licensorName" : entityName};
 
+        var licensorObj = self.scope.setSelectedValue(entityName, "#licensorsFilter");
+
+        var genObj = {"licensorName" : entityName, "licensorId" : licensorObj };
 
         Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
@@ -2537,7 +2567,7 @@ function alignGridStats(divId){
           tdWidth = tbodyTdWidth;
 
         if(i==1)
-          tdWidth = 30;
+          tdWidth = 45;
         if((i==1) && divId== 'societyContacts')
           tdWidth = 100;
         if((i==3) && divId== 'societyContacts')

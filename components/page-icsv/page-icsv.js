@@ -18,6 +18,25 @@ import UserReq from 'utils/request/';
 import Invoice from 'models/invoice/';
 import commonUtils from 'utils/commonUtils';
 import gridUtils from 'utils/gridUtil';
+import PBConfirmModal from 'components/email-confirm-modal/';
+import pbconfirmtemplate from 'components/page-create-invoice/pbconfirm.stache!';
+
+
+
+PBConfirmModal.extend({
+  tag: 'rn-pb-confirm-modal',
+  template: pbconfirmtemplate,
+  events: {
+      '.submit click': function(el, ev) {
+            var self = this; 
+            var data = {bundleId:self.scope.pbid,loadedFrom:"icsv"};
+            self.scope.appstate.screenLookup.attr("PBR" ,data);
+            $('rn-pb-confirm-modal').remove();
+            commonUtils.navigateTo("payment-bundles");
+      }
+      
+  }
+});
 
 
 Grid.extend({
@@ -531,6 +550,15 @@ var page = Component.extend({
                                       displayMessage(msg,true);
 
                                        icsvmap.removeAttr("invoiceData");
+
+                                        var pbid = $("#paymentBundleNames").val();
+                                        var pbname = $("#paymentBundleNames option:selected").text();
+
+                                        if(pbid != "" &&  pbname != "--Select--"){
+                                            var pbobj = {"pbid":pbid, "appstate":self.scope.appstate};
+                                            $(document.body).append(stache('<rn-pb-confirm-modal pbid="{pbobj.pbid}" appstate="{pbobj.appstate}" ></rn-pb-confirm-modal>')({pbobj}));
+                                        } 
+
                                        self.scope.attr('cancelnewbundlereq',true);
 
                                         self.scope.uploadedfileinfo.replace([]);
@@ -580,9 +608,22 @@ var page = Component.extend({
               bundleRequest["periodTo"] = self.scope.periodToForPaymentBundle;
               bundleRequest["periodType"] =self.scope.periodTypeForPaymentBundle;
               bundleRequest["bundleType"] ="REGULAR_INV";
+              
+              var bundleDetailsGroup=[];
+              icsvmap.invoiceData.invoices.each(function(value) { 
+                        value.invoiceLines.each(function(val){
+                          var bundledetails={};
+                          bundledetails.country = val.country;
+                          bundledetails.contentGrpName = val.contentGrpName;
+                          bundledetails.periodType=val.periodType;
+                          bundleDetailsGroup.push(bundledetails);
+                        });          
+                 });
 
+              if (bundleDetailsGroup.length > 0) {
+                bundleRequest.bundleDetailsGroup = bundleDetailsGroup;
+              }
               newBundleNameRequest["paymentBundle"] = bundleRequest;
-              //console.log("New Bundle name request is "+JSON.stringify(newBundleNameRequest));
               self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
           } else {
             self.scope.attr('newpaymentbundlenamereq', "undefined");

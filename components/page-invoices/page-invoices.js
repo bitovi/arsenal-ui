@@ -38,6 +38,9 @@ import exportToExcel from 'components/export-toexcel/';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
 import copy from 'components/copy-clipboard/';
 
+import PBConfirmModal from 'components/email-confirm-modal/';
+import pbconfirmtemplate from 'components/page-create-invoice/pbconfirm.stache!';
+
 
 fileUpload.extend({
   tag: 'rn-file-uploader',
@@ -57,6 +60,23 @@ fileUpload.extend({
       }
     }
  });
+
+
+PBConfirmModal.extend({
+  tag: 'rn-pb-confirm-modal-inv',
+  template: pbconfirmtemplate,
+  events: {
+      '.submit click': function(el, ev) {
+            var self = this; 
+            var data = {bundleId:self.scope.pbid,loadedFrom:"invoices"};
+            self.scope.appstate.screenLookup.attr("PBR" ,data);
+            $('rn-pb-confirm-modal-inv').remove();
+            commonUtils.navigateTo("payment-bundles");
+      }
+      
+  }
+});
+
 
 /* Extend grid with the columns */
 Grid.extend({
@@ -901,8 +921,10 @@ var page = Component.extend({
           BundleNamesModel.create(UserReq.formRequestDetails(overAllBundleRequest),function(data){
               console.log("passing params is "+JSON.stringify(data));
 
-
-              commonUtils.displayUIMessage(data["status"],data["responseText"]);
+              setTimeout(function(){
+                commonUtils.displayUIMessage(data["status"],data["responseText"]);
+              }, 200);
+              
 
               if(data["status"]=="SUCCESS"){
                 //if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
@@ -913,6 +935,15 @@ var page = Component.extend({
                 //     //$("#messageDiv").hide();
                     self.scope.checkedRows.replace([]);
                      /* The below calls {scope.appstate} change event that gets the new data for grid*/
+                      
+                      var pbid = $("#paymentBundleNames").val();
+                      var pbname = $("#paymentBundleNames option:selected").text();
+
+                      if(pbid != "" &&  pbname != "--Select--"){
+                          var pbobj = {"pbid":pbid, "appstate":self.scope.appstate};
+                          $(document.body).append(stache('<rn-pb-confirm-modal-inv pbid="{pbobj.pbid}" appstate="{pbobj.appstate}" ></rn-pb-confirm-modal-inv>')({pbobj}));
+                      } 
+
                       var newPaymentBundleCreated = $("#newPaymentBundle").val();
                       if (newPaymentBundleCreated != undefined) {
                         self.scope.attr('cancelnewbundlereq', true);
