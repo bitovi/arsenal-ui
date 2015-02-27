@@ -37,8 +37,8 @@ import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 //import Invoice from 'models/invoice/';
 
-var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]", "ccidGLtxt[]"];
-var mandatoryField = ["invoicenumber",  "invoicedate", "invoiceduedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
+var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]", "ccidGLtxt[]"];
+var mandatoryField = ["invoicenumber",  "invoicedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
 
 fileUpload.extend({
 	tag: 'rn-file-uploader-icsv',
@@ -207,7 +207,7 @@ var page = Component.extend({
 	            	bundleNamesRequest.bundleSearch["regionId"] = regId;
 
 	           // bundleNamesRequest.bundleSearch["type"] = "invoice";
-	          console.log(bundleNamesRequest);
+
 	          this.attr("bundleNamesRequest", JSON.stringify(bundleNamesRequest));
 
 				return JSON.stringify(bundleNamesRequest);
@@ -218,7 +218,7 @@ var page = Component.extend({
 					var genObj = {fromCurrency:self.currencyStore, toCurrency:'USD', fiscalPeriod:periodWidgetHelper.getFiscalPeriod($("#inputMonth0").val()) ,periodType:periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0))};
 						Fxrate.findOne(UserReq.formRequestDetails(genObj),function(data){
 						self.attr("usdFxrateRatio", data.fxRate);
-						console.log(self.attr("usdFxrateRatio"));
+
 		            },function(xhr){
 		               console.log(xhr);
 		            });
@@ -307,28 +307,29 @@ var page = Component.extend({
 		            invoiceduedate :{
 			                group:'.invduedate',
 			                validators: {
-			                	notEmpty: {
-			                        message: 'Invoice due date is mandatory'
-			                    },
+//			                	notEmpty: {
+//			                        message: 'Invoice due date is mandatory'
+//			                    },
 			                    date: {
 				                        format: 'MM/DD/YYYY',
 				                        message: 'Please provide valid date in MM/DD/YYYY format'
-	                    		},
-	                			callback: {
-			                            message: 'Invoice Due date must be less than calculated due date',
-			                            callback: function (value, validator, $field) {
-			                         		if(value != ""){
-			                              	var invduedate = new Date(value);
-			                              	if(self.scope.attr("calduedate")){
-			                              		var calduedate = new Date(self.scope.attr("calduedate"));
-			                              			if(Math.abs(invduedate.getTime()) > Math.abs(calduedate.getTime())){
-														return false;
-													}
-			                              		}
-											}
-			                              return true;
-			                            }
 	                    		}
+//                                ,
+//	                			callback: {
+//			                            message: 'Invoice Due date must be less than calculated due date',
+//			                            callback: function (value, validator, $field) {
+//			                         		if(value != ""){
+//			                              	var invduedate = new Date(value);
+//			                              	if(self.scope.attr("calduedate")){
+//			                              		var calduedate = new Date(self.scope.attr("calduedate"));
+//			                              			if(Math.abs(invduedate.getTime()) > Math.abs(calduedate.getTime())){
+//														return false;
+//													}
+//			                              		}
+//											}
+//			                              return true;
+//			                            }
+//	                    		}
 				              }
 			        },
 		            fxrate: {
@@ -955,7 +956,7 @@ var page = Component.extend({
 						$('#multipleCommentsInv').html(stache('<multiple-comments divid="usercommentsdivinv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
 		                self.scope.changeTextOnInvType();
 
-                        console.log("invoiceData "+invoiceData.invoiceDocuments.length);
+
 		                /*Pluck only PDF as supporting documents from the invoicedocuments*/
 //						var invoicePDFDocuments = $.grep(invoiceData.invoiceDocuments, function(e) {
 //							console.log(e.fileName.split('.').pop());
@@ -970,7 +971,7 @@ var page = Component.extend({
 //						}
                         //TODO :  /*Pluck only PDF as supporting documents from the invoicedocuments*/
                         //Code to display server list of files on file upload rn-file-uploader-icsv control starts
-                        console.log(self.scope.attr("sumfileuploadedinfo"));
+
 
                         /* Below code needed to extract PDF file only*/
 
@@ -982,7 +983,7 @@ var page = Component.extend({
 						var invoicePDFDocuments = self.scope.attr("sumfileuploadedinfo");
 
                         for(var j=0;j<invoicePDFDocuments.length;j++){
-                            console.log(invoicePDFDocuments.fileName);
+
                             invoicePDFDocuments[j].isServer = true;
                             invoicePDFDocuments[j].filePath = invoicePDFDocuments[j].filePath;
                         }
@@ -1147,7 +1148,7 @@ var page = Component.extend({
 		},
 		".inputContent change": function(event){
          	this.scope.contentTypeStore.attr(event[0].id, event[0].value)
-         	console.log(this.scope.contentTypeStore.attr());
+
 
 		},
 		".inputMonth change": function(event){
@@ -1162,7 +1163,7 @@ var page = Component.extend({
 
 		".inputCountry change": function(event){
          	this.scope.countryStore.attr(event[0].id, event[0].value)
-         	console.log(this.scope.countryStore.attr());
+
 		},
 		".ccidGL change": function(event){
 			if(event.find('option:selected')[0]!=undefined)event.next('.ccidGLtxt').val(event.find('option:selected')[0].text);
@@ -1320,9 +1321,14 @@ var page = Component.extend({
 							   editInvoiceCSVData.receivedDate = $("#receiveddate input[type=text]").val();
 							   editInvoiceCSVData.invoiceDate = $("#invoicedate input[type=text]").val();
 							   editInvoiceCSVData.invoiceCalcDueDate = self.scope.calduedate;
-							   editInvoiceCSVData.invoiceDueDate = $("#invoiceduedate input[type=text]").val();
+
+                               if($("#invoiceduedate input[type=text]").val() != "") {
+                                    editInvoiceCSVData.invoiceDueDate = $("#invoiceduedate input[type=text]").val();
+                               }
+
 							   editInvoiceCSVData.createdBy = UserReq.formRequestDetails().prsId;
 							   editInvoiceCSVData.periodType = periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0));
+
 
 
 							   if(self.scope.attr("tax") != null && self.scope.attr("tax") != undefined &&  self.scope.attr("tax") >0) {
@@ -1405,7 +1411,7 @@ var page = Component.extend({
                                         tempDocument.status = "delete";
                                         tempDocument.id = deletedFiles[i].id;
                                         editInvoiceCSVData.invoiceDocuments.push(tempDocument);
-                                        console.log(tempDocument);
+
                                     }
                                 }
                             }
@@ -1420,13 +1426,12 @@ var page = Component.extend({
 						   	   $("[id^=breakrow]").each(function(i){
 									if(this.id !="breakrowTemplate"){
 										var index = $(this).attr("rowid");
-									 	console.log(index);
+
 							   			var inputContent = "inputContent"+index;
 
 										var tempArry = {};
 
 										tempArry["country"] = $('#inputCountry'+index).val();
-										console.log(self.scope.countryStore.attr("inputCountry"+index));
 								   		tempArry["fiscalPeriod"] = periodWidgetHelper.getFiscalPeriod($("#inputMonth"+index).val());
 								   		tempArry["periodType"] = periodWidgetHelper.getPeriodType($("#inputMonth"+index).val());
 								   		//tempArry["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent"+index);
@@ -1482,9 +1487,8 @@ var page = Component.extend({
 
 
 								  var selIndex = self.scope.invoiceselectIndex
-								  console.log(icsvmap.invoiceData.invoices[selIndex].attr());
 								  icsvmap.invoiceData.invoices.splice(selIndex,1);
-								  console.log(icsvmap.invoiceData.attr())
+
 								  //icsvmap.invoiceData.invoices[selIndex].attr('editInvoiceCSVData',editInvoiceCSVData);
 								  icsvmap.invoiceData.invoices.push(editInvoiceCSVData);
 
@@ -1492,7 +1496,7 @@ var page = Component.extend({
 
 								  if((typeof tempInvMap.errors.errorMap !== "undefined") && (tempInvMap.errors.errorMap != null)){
 										for(var key in tempInvMap.errors.errorMap){  /*Invoice error*/
-			     							console.log(tempInvMap.errors.errorMap[key]);
+
 			     							icsvmap.invoiceData.invoices[selIndex].errors.errorMap.attr(key, " ");
 										}
 									}
@@ -1502,13 +1506,12 @@ var page = Component.extend({
 						          for(var j =0; j < tempInvMap.invoiceLines.length; j++){
 										if(tempInvMap.invoiceLines[j].errors!= undefined && (typeof tempInvMap.invoiceLines[j].errors.errorMap !== "undefined") && (tempInvMap.invoiceLines[j].errors.errorMap != null)){
 											for(var key in tempInvMap.invoiceLines[j].errors.errorMap){  /*Invoiceline error*/
-							                      console.log(tempInvMap.invoiceLines[j].errors.errorMap[key]);
+
 							                      icsvmap.invoiceData.invoices[selIndex].invoiceLines[j].errors.errorMap.attr(key, " ");
 							                 }
 						                }
 						          	}
 
-						          	console.log(icsvmap.invoiceData.attr());
 
 					 				icsvmap.attr("showediticsv", false);
 							}
@@ -1819,7 +1822,7 @@ var _root = $("input[id^='inputMonth']").not("input[id='inputMonth0']").not(':hi
 if (_root.length == 1) {
 		disablePeriodQuarterCalendar(_root);
 	}else if (_root.length > 1){
-		console.log("_root updatePeriodCalender");console.log(_root);
+
 		for (var i = _root.length - 1; i >= 0; i--) {
 			disablePeriodQuarterCalendar(_root[i]);
 		}
@@ -1828,7 +1831,6 @@ if (_root.length == 1) {
 
 var disablePeriodQuarterCalendar = function(_root){
 
-console.log("_root disablePeriodQuarterCalendar");console.log(_root);
 var _root = $(_root);
 _root.find('.period li a').removeClass('disabled period-active');
 

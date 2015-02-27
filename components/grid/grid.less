@@ -6,11 +6,12 @@
   @border-radius: 5px; /* Removing Rounded corner */
 
   @row-hover-outline: 2px solid #1581F4; // Old color   3px solid #d3f0fe; //
+  @row-hover-background:#d3f0fe;
 
   @header-background: linear-gradient(to top, #7e7e83, #afafb4);
   @parent-background: #e4e4e4;
   @child-background: #f6f6f6;
-  @selected-background: #d3f0fe !important;
+  @selected-background:#50A2F2 !important; // old color#d3f0fe !important; //
   @odd-row-background:#F0F0F0;//#D7D7D7;
   @even-row-background:#F9F9F9;//#F3F3F3;
 
@@ -148,7 +149,8 @@ tfoot{
     }
 
     tr:hover {
-      outline: @row-hover-outline;
+      //outline: @row-hover-outline;
+      background:@row-hover-background;
     }
   }
 

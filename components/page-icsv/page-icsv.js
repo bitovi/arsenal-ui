@@ -89,7 +89,6 @@ fileUpload.extend({
         deletedFileInfo:[]
     },
     init: function(){
-        console.log('testinggggg');
         this.scope.attr('uploadedfileinfo').replace([]);
         this.scope.attr('fileList').replace([]);
     },
@@ -170,8 +169,7 @@ var page = Component.extend({
 
        this.scope.appstate.attr("renderGlobalSearch",false);
        icsvmap.delegate("invoiceData","change", function(ev, newVal){
-            //console.log(icsvmap.attr("invoiceData"));
-            $('rn-file-uploader-icsv-sum').scope().attr('fileDeletionRequired',false)
+//            $('rn-file-uploader-icsv-sum').scope().attr('fileDeletionRequired',false)
             $("#loading_img").hide();
             $('#arrowbtnCntiner').show();
             if(icsvmap.attr("invoiceData"))
@@ -351,7 +349,7 @@ var page = Component.extend({
             var self = this;
             self.scope.attr('uploadedfileinfo',val.filePropeties);
             self.scope.attr('sumfileuploadedinfo', val.filePropeties);
-            console.log(JSON.stringify(self.scope.attr('sumfileuploadedinfo')));
+
             //$('.jQfunhide').show();
             //val == 'SUCCESS' ?  $('.jQfunhide').show():$('.jQfunhide').hide();
        },
@@ -426,8 +424,7 @@ var page = Component.extend({
            var createInvoiceData = {};
              createInvoiceData.invoices = [];
 
-             console.log("tempArr",tempArr);
-            for(var i=0; i < tempArr.length; i++)
+                for(var i=0; i < tempArr.length; i++)
                 {
                     var tempInvoiceData = {};
 
@@ -465,8 +462,10 @@ var page = Component.extend({
                    tempInvoiceData["receivedDate"] = dateFormatter(tempArr[i].receivedDate,"mm/dd/yyyy");//"06/19/2014"//self.scope.receiveddate;
                    tempInvoiceData["invoiceDate"] = dateFormatter(tempArr[i].invoiceDate,"mm/dd/yyyy");//"06/19/2014"//self.scope.invoicedate;
                    tempInvoiceData["invoiceCalcDueDate"] = dateFormatter(tempArr[i].invoiceCalcDueDate, "mm/dd/yyyy");
-                   tempInvoiceData["invoiceDueDate"] = dateFormatter(tempArr[i].invoiceDueDate,"mm/dd/yyyy"); //"06/19/2014"//self.scope.invoiceduedate;
+                   if(tempArr[i].invoiceDueDate  == "undefined"){
 
+                    tempInvoiceData["invoiceDueDate"] = dateFormatter(tempArr[i].invoiceDueDate,"mm/dd/yyyy"); //"06/19/2014"//self.scope.invoiceduedate;
+                   }
                    tempInvoiceData["createdBy"] = self.scope.appstate.userInfo.prsId;
 
                    tempInvoiceData["comments"] = [];

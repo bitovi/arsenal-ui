@@ -145,7 +145,7 @@ Grid.extend({
   events: {
     'inserted': function(){
       var self= this;
- 
+
       var tbody = self.element.find('tbody');
       //setting tbody height which determines the page height- start
       var getTblBodyHght=gridUtils.getTableBodyHeight('invoiceGrid',90);
@@ -391,185 +391,10 @@ var page = Component.extend({
           refreshSearchOnfilter(self);
         }
     },
-    "{allInvoicesMap} change": function() {
-        var self = this;
-        var invoiceData = this.scope.attr().allInvoicesMap[0].invoices;
-        var footerData = this.scope.attr().allInvoicesMap[0].footer;
-
-        //console.log("dsada "+JSON.stringify(invoiceData));
-        var gridData = {"data":[],"footer":[]};
-        var currencyList = {};
-        if(invoiceData!=null && invoiceData.length!=0){
-
-          for(var i=0;i<invoiceData.length;i++){
-              var invTemp = {};
-              invTemp["invId"] = invoiceData[i]["invId"];
-              invTemp["__isChild"] = false;
-              invTemp["__isChecked"] = false;
-              //invTemp["__isOddRow"] = false;
-              invTemp["entityName"] = (invoiceData[i]["entityName"]==null)?"":invoiceData[i]["entityName"];
-              invTemp["fiscalPeriod"] = "";
-              invTemp["invoiceType"] = (invoiceData[i]["invoiceType"]==null)?"":invoiceData[i]["invoiceType"];
-              invTemp["invTypeDisp"] = (invoiceData[i]["invTypeDisp"]==null)?"":invoiceData[i]["invTypeDisp"];
-              invTemp["contentGrpName"] = "";
-              invTemp["country"] = "";
-              invTemp["invoiceNumber"] = (invoiceData[i]["invoiceNumber"]==null)?"":invoiceData[i]["invoiceNumber"];
-              invTemp["invoiceAmount"] = (invoiceData[i]["invoiceAmount"]==null)?0:parseFloat(invoiceData[i]["invoiceAmount"]);
-              invTemp["invoiceDueDate"] = (invoiceData[i]["invoiceDueDate"]==null)?"":invoiceData[i]["invoiceDueDate"];
-              invTemp["invoiceCcy"] = (invoiceData[i]["invoiceCcy"]==null)?"":invoiceData[i]["invoiceCcy"];
-              invTemp["statusId"] = (invoiceData[i]["status"]==null || invoiceData[i]["status"]==-1)?"":invoiceData[i]["status"];
-              invTemp["displayPaymentStatus"] = (invoiceData[i]["displayPaymentStatus"]==null)?"":invoiceData[i]["displayPaymentStatus"];
-              invTemp["paymentState"] = (invoiceData[i]["paymentState"]==null || invoiceData[i]["paymentState"]==-1)?"":invoiceData[i]["paymentState"];
-              invTemp["bundleName"] = (invoiceData[i]["bundleName"]==null || invoiceData[i]["bundleName"]=="--Select--")?"":invoiceData[i]["bundleName"];
-              invTemp["comments"] = (invoiceData[i]["notes"]==null || invoiceData[i]["notes"].length==0)?"":invoiceData[i]["notes"];
-              invTemp["invoiceAmount"] = CurrencyFormat(invTemp["invoiceAmount"]); //This is to format the amount with commas
-
-              //This line is added for grid alternative coloring.
-              //we need to set the flag called isOddRow based on the loop index.
-              /*if(i%2 != 0){
-                invTemp["__isOddRow"] = true;
-              }*/
-
-              gridData.data.push(invTemp);
-              var insertedId = gridData.data.length-1;
-
-              var invoiceLineItems = invoiceData[i]["invoiceLines"];
-              var contentTypeArr = [], countryArr = [];
-              var lowestPeriod = 0;
-              var highestPeriod = 0;
-              var tmpPeriod = 0;
-              var periodType = invoiceData[i]["periodType"];
-              if(periodType == null || periodType == undefined ||(periodType !=null && periodType.length ==0)){
-                periodType='P';
-              }
-              if(invoiceLineItems.length > 0){
-                for(var j=0;j<invoiceLineItems.length;j++){
-                  var invLITemp={};
-                  var period = invoiceLineItems[j]["fiscalPeriod"];
-                  invLITemp["invId"] = "";
-                  invLITemp["__isChild"] = true;
-                  invLITemp["__isChecked"] = false;
-                  //invLITemp["__isOddRow"] = false;
-                  invLITemp["entityName"] = "";
-                  invLITemp["fiscalPeriod"] = "";
-                  invLITemp["invoiceType"] = "";
-                  invLITemp["invTypeDisp"] = "";
-                  invLITemp["contentGrpName"] = (invoiceLineItems[j]["contentGrpName"]==null)?'':invoiceLineItems[j]["contentGrpName"];
-                  invLITemp["country"] = (invoiceLineItems[j]["country"]==null)?'NO_COUNTRY':invoiceLineItems[j]["country"];
-                  invLITemp["invoiceNumber"] = "";
-                  invLITemp["invoiceAmount"] = (invoiceLineItems[j]["lineAmount"]==null)?0:CurrencyFormat(invoiceLineItems[j]["lineAmount"]);
-                  invLITemp["invoiceDueDate"] = "";
-                  invLITemp["invoiceCcy"] = invTemp["invoiceCcy"];
-                  invLITemp["statusId"] = "";
-                  invLITemp["displayPaymentStatus"] = "";
-                  invLITemp["paymentState"] = "";
-                  invLITemp["bundleName"] = "";
-                  invLITemp["comments"] = "";
-                  if(period != undefined && period > 0){
-                    invLITemp["fiscalPeriod"] = periodWidgetHelper.getDisplayPeriod(period,periodType);
-                    if(lowestPeriod==0 && highestPeriod == 0){
-                      lowestPeriod=Number(period);
-                      highestPeriod=Number(period);
-                    }
-                    tmpPeriod = Number(period);
-                    if (tmpPeriod < lowestPeriod) lowestPeriod = tmpPeriod;
-                    if (tmpPeriod > highestPeriod) highestPeriod = tmpPeriod;
-                  }else if(period == 0){
-                    invLITemp["fiscalPeriod"] = '';
-                  }
-                  contentTypeArr.push(invLITemp["contentGrpName"]);
-                  countryArr.push(invLITemp["country"]);
-                  //modify befor epushing to griddata.
-                   if(invLITemp["country"] === 'NO_COUNTRY'){
-                       invLITemp["country"]='';
-                   }
-
-                  gridData.data.push(invLITemp);
-                }
-              }
-
-              /*Below function is to remove the duplicate content type and find the count */
-              contentTypeArr = contentTypeArr.filter( function( item, index, inputArray ) {
-                     return inputArray.indexOf(item) == index;//
-              });
-              contentTypeArr = contentTypeArr.filter(function (item, index, contentTypeArr) {
-                  return contentTypeArr.indexOf("TAX") != index;
-              });
-
-              if(contentTypeArr.length>1){
-
-                gridData.data[insertedId]["contentGrpName"] = contentTypeArr.length+" types of Content";
-              }
-              else if(contentTypeArr.length==1)
-                gridData.data[insertedId]["contentGrpName"] = contentTypeArr[0];
-
-              /*Below function is to remove the duplicate country and find the count */
-              countryArr = countryArr.filter( function( item, index, inputArray ) {
-                return inputArray.indexOf(item) == index;
-              });
-
-              countryArr = countryArr.filter(function (item, index, countryArr) {
-                  return countryArr.indexOf('NO_COUNTRY') != index;
-              });
-              if(countryArr.length>1){
-                gridData.data[insertedId]["country"] = countryArr.length+ " Countries";
-              }
-              else if(countryArr.length==1)
-                gridData.data[insertedId]["country"] = countryArr[0];
-
-              if(lowestPeriod != undefined && highestPeriod != undefined){
-                  gridData.data[insertedId]["fiscalPeriod"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType);
-                  if(lowestPeriod != highestPeriod){
-                    gridData.data[insertedId]["fiscalPeriod"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType)+' - '+periodWidgetHelper.getDisplayPeriod(highestPeriod,periodType);
-                  }
-                }
-            }
-
-            var first = "true";
-            var regCcyTemp = {"invId":"", "__isChild":false, "entityName":"Total in Regional Currency", "invoiceType":"", "invTypeDisp":"", "contentGrpName":"", "country":"", "invoiceNumber":"","invoiceAmount":"", "invoiceDueDate":"", "invoiceCcy":"", "displayPaymentStatus":"", "bundleName":"", "comments":""};
-            regCcyTemp["invoiceAmount"] = CurrencyFormat(footerData["regAmtTot"]);
-            regCcyTemp["invoiceNumber"] = self.scope.attr('totalRecordCount') + " Invoices";
-            regCcyTemp["invoiceCcy"] = footerData["regCcy"];
-            gridData["footer"].push(regCcyTemp);
-            for(var obj in footerData["amtCcyMap"]){
-              var ccyTemp = {"invId":"", "__isChild":true, "entityName":"", "invoiceType":"", "invTypeDisp":"", "contentGrpName":"", "country":"", "invoiceNumber":"","invoiceAmount":"", "invoiceDueDate":"", "invoiceCcy":"", "displayPaymentStatus":"", "bundleName":"", "comments":""};
-              ccyTemp["invoiceAmount"] = CurrencyFormat(footerData["amtCcyMap"][obj]);
-              ccyTemp["invoiceCcy"] = obj;
-              gridData["footer"].push(ccyTemp);
-            }
-
-          //console.log("gridData is "+JSON.stringify(gridData));
-          //console.log("Footer is "+JSON.stringify(gridData.footer));
-          var rows = new can.List(gridData.data);
-          var footerrows = new can.List(gridData.footer);
-          var sortedColumns = self.scope.sortColumns.attr();
-          var sortDir = self.scope.attr('sortDirection');
-          $("#loading_img").hide();
-          $('#invoiceGrid').html(stache('<rn-grid-invoice rows="{rows}" footerrows="{footerrows}" sortcolumnnames="{sortcolumnnames}" sortdir="{sortdir}" emptyrows="{emptyrows}"></rn-grid-invoice>')({rows, footerrows, sortcolumnnames:sortedColumns, sortdir:sortDir, emptyrows:false}));
-
-          if (self.scope.appstate.attr("invSearchPervHist") != undefined && self.scope.appstate.attr("invSearchPervHist") != null ) {
-
-            self.scope.appstate.attr("invSearchPervHist", null);
-            self.scope.getSelectedValue(self.scope.appstate.attr("invoiceId"), "#invoiceGrid");
+    /*"{allInvoicesMap} change": function() {
 
 
-          } else {
-
-            if(self.scope.appstate.attr("invoiceId") != null || self.scope.appstate.attr("invoiceId") != undefined) {
-              //var i = self.scope.getSelectedValue(self.scope.appstate.attr("invoiceId"), "#invoiceGrid");
-              $('#invoiceGrid table>tbody>tr.highlight').removeClass("highlight");
-            }
-            self.scope.appstate.attr("invoiceId", null);
-
-          }
-
-        } else {
-          $("#loading_img").hide();
-          $('#invoiceGrid').html(stache('<rn-grid-invoice emptyrows="{emptyrows}"></rn-grid-invoice>')({emptyrows:true}));
-        }
-
-
-    },
+    },*/
      "#btnAdd click": function(){
             //this.scope.appstate.attr('page','create-invoice');
             commonUtils.navigateTo("create-invoice");
@@ -1198,6 +1023,7 @@ function fetchData(self){
                   $.merge(self.allInvoicesMap[0].invoices, data.invoices);
                   self.allInvoicesMap.replace(self.allInvoicesMap);
                 }
+                reRenderGrid(self);
                // self.allInvoicesMap.replace(data);
                 //$("rn-grid-invoice td").invoiceId
               }
@@ -1320,6 +1146,185 @@ function CurrencyFormat(number)
 {
   var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
   return n;
+}
+
+function reRenderGrid(self){
+  //var self = obj;
+  var invoiceData = self.attr().allInvoicesMap[0].invoices;
+  var footerData = self.attr().allInvoicesMap[0].footer;
+
+  //console.log("dsada "+JSON.stringify(invoiceData));
+  var gridData = {"data":[],"footer":[]};
+  var currencyList = {};
+  if(invoiceData!=null && invoiceData.length!=0){
+
+    for(var i=0;i<invoiceData.length;i++){
+        var invTemp = {};
+        invTemp["invId"] = invoiceData[i]["invId"];
+        invTemp["__isChild"] = false;
+        invTemp["__isChecked"] = false;
+        //invTemp["__isOddRow"] = false;
+        invTemp["entityName"] = (invoiceData[i]["entityName"]==null)?"":invoiceData[i]["entityName"];
+        invTemp["fiscalPeriod"] = "";
+        invTemp["invoiceType"] = (invoiceData[i]["invoiceType"]==null)?"":invoiceData[i]["invoiceType"];
+        invTemp["invTypeDisp"] = (invoiceData[i]["invTypeDisp"]==null)?"":invoiceData[i]["invTypeDisp"];
+        invTemp["contentGrpName"] = "";
+        invTemp["country"] = "";
+        invTemp["invoiceNumber"] = (invoiceData[i]["invoiceNumber"]==null)?"":invoiceData[i]["invoiceNumber"];
+        invTemp["invoiceAmount"] = (invoiceData[i]["invoiceAmount"]==null)?0:parseFloat(invoiceData[i]["invoiceAmount"]);
+        invTemp["invoiceDueDate"] = (invoiceData[i]["invoiceDueDate"]==null)?"":invoiceData[i]["invoiceDueDate"];
+        invTemp["invoiceCcy"] = (invoiceData[i]["invoiceCcy"]==null)?"":invoiceData[i]["invoiceCcy"];
+        invTemp["statusId"] = (invoiceData[i]["status"]==null || invoiceData[i]["status"]==-1)?"":invoiceData[i]["status"];
+        invTemp["displayPaymentStatus"] = (invoiceData[i]["displayPaymentStatus"]==null)?"":invoiceData[i]["displayPaymentStatus"];
+        invTemp["paymentState"] = (invoiceData[i]["paymentState"]==null || invoiceData[i]["paymentState"]==-1)?"":invoiceData[i]["paymentState"];
+        invTemp["bundleName"] = (invoiceData[i]["bundleName"]==null || invoiceData[i]["bundleName"]=="--Select--")?"":invoiceData[i]["bundleName"];
+        invTemp["comments"] = (invoiceData[i]["notes"]==null || invoiceData[i]["notes"].length==0)?"":invoiceData[i]["notes"];
+        invTemp["invoiceAmount"] = CurrencyFormat(invTemp["invoiceAmount"]); //This is to format the amount with commas
+
+        //This line is added for grid alternative coloring.
+        //we need to set the flag called isOddRow based on the loop index.
+        /*if(i%2 != 0){
+          invTemp["__isOddRow"] = true;
+        }*/
+
+        gridData.data.push(invTemp);
+        var insertedId = gridData.data.length-1;
+
+        var invoiceLineItems = invoiceData[i]["invoiceLines"];
+        var contentTypeArr = [], countryArr = [];
+        var lowestPeriod = 0;
+        var highestPeriod = 0;
+        var tmpPeriod = 0;
+        var periodType = invoiceData[i]["periodType"];
+        if(periodType == null || periodType == undefined ||(periodType !=null && periodType.length ==0)){
+          periodType='P';
+        }
+        if(invoiceLineItems.length > 0){
+          for(var j=0;j<invoiceLineItems.length;j++){
+            var invLITemp={};
+            var period = invoiceLineItems[j]["fiscalPeriod"];
+            invLITemp["invId"] = "";
+            invLITemp["__isChild"] = true;
+            invLITemp["__isChecked"] = false;
+            //invLITemp["__isOddRow"] = false;
+            invLITemp["entityName"] = "";
+            invLITemp["fiscalPeriod"] = "";
+            invLITemp["invoiceType"] = "";
+            invLITemp["invTypeDisp"] = "";
+            invLITemp["contentGrpName"] = (invoiceLineItems[j]["contentGrpName"]==null)?'':invoiceLineItems[j]["contentGrpName"];
+            invLITemp["country"] = (invoiceLineItems[j]["country"]==null)?'NO_COUNTRY':invoiceLineItems[j]["country"];
+            invLITemp["invoiceNumber"] = "";
+            invLITemp["invoiceAmount"] = (invoiceLineItems[j]["lineAmount"]==null)?0:CurrencyFormat(invoiceLineItems[j]["lineAmount"]);
+            invLITemp["invoiceDueDate"] = "";
+            invLITemp["invoiceCcy"] = invTemp["invoiceCcy"];
+            invLITemp["statusId"] = "";
+            invLITemp["displayPaymentStatus"] = "";
+            invLITemp["paymentState"] = "";
+            invLITemp["bundleName"] = "";
+            invLITemp["comments"] = "";
+            if(period != undefined && period > 0){
+              invLITemp["fiscalPeriod"] = periodWidgetHelper.getDisplayPeriod(period,periodType);
+              if(lowestPeriod==0 && highestPeriod == 0){
+                lowestPeriod=Number(period);
+                highestPeriod=Number(period);
+              }
+              tmpPeriod = Number(period);
+              if (tmpPeriod < lowestPeriod) lowestPeriod = tmpPeriod;
+              if (tmpPeriod > highestPeriod) highestPeriod = tmpPeriod;
+            }else if(period == 0){
+              invLITemp["fiscalPeriod"] = '';
+            }
+            contentTypeArr.push(invLITemp["contentGrpName"]);
+            countryArr.push(invLITemp["country"]);
+            //modify befor epushing to griddata.
+             if(invLITemp["country"] === 'NO_COUNTRY'){
+                 invLITemp["country"]='';
+             }
+
+            gridData.data.push(invLITemp);
+          }
+        }
+
+        /*Below function is to remove the duplicate content type and find the count */
+        contentTypeArr = contentTypeArr.filter( function( item, index, inputArray ) {
+               return inputArray.indexOf(item) == index;//
+        });
+        contentTypeArr = contentTypeArr.filter(function (item, index, contentTypeArr) {
+            return contentTypeArr.indexOf("TAX") != index;
+        });
+
+        if(contentTypeArr.length>1){
+
+          gridData.data[insertedId]["contentGrpName"] = contentTypeArr.length+" types of Content";
+        }
+        else if(contentTypeArr.length==1)
+          gridData.data[insertedId]["contentGrpName"] = contentTypeArr[0];
+
+        /*Below function is to remove the duplicate country and find the count */
+        countryArr = countryArr.filter( function( item, index, inputArray ) {
+          return inputArray.indexOf(item) == index;
+        });
+
+        countryArr = countryArr.filter(function (item, index, countryArr) {
+            return countryArr.indexOf('NO_COUNTRY') != index;
+        });
+        if(countryArr.length>1){
+          gridData.data[insertedId]["country"] = countryArr.length+ " Countries";
+        }
+        else if(countryArr.length==1)
+          gridData.data[insertedId]["country"] = countryArr[0];
+
+        if(lowestPeriod != undefined && highestPeriod != undefined){
+            gridData.data[insertedId]["fiscalPeriod"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType);
+            if(lowestPeriod != highestPeriod){
+              gridData.data[insertedId]["fiscalPeriod"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType)+' - '+periodWidgetHelper.getDisplayPeriod(highestPeriod,periodType);
+            }
+          }
+      }
+
+      var first = "true";
+      var regCcyTemp = {"invId":"", "__isChild":false, "entityName":"Total in Regional Currency", "invoiceType":"", "invTypeDisp":"", "contentGrpName":"", "country":"", "invoiceNumber":"","invoiceAmount":"", "invoiceDueDate":"", "invoiceCcy":"", "displayPaymentStatus":"", "bundleName":"", "comments":""};
+      regCcyTemp["invoiceAmount"] = CurrencyFormat(footerData["regAmtTot"]);
+      regCcyTemp["invoiceNumber"] = self.attr('totalRecordCount') + " Invoices";
+      regCcyTemp["invoiceCcy"] = footerData["regCcy"];
+      gridData["footer"].push(regCcyTemp);
+      for(var obj in footerData["amtCcyMap"]){
+        var ccyTemp = {"invId":"", "__isChild":true, "entityName":"", "invoiceType":"", "invTypeDisp":"", "contentGrpName":"", "country":"", "invoiceNumber":"","invoiceAmount":"", "invoiceDueDate":"", "invoiceCcy":"", "displayPaymentStatus":"", "bundleName":"", "comments":""};
+        ccyTemp["invoiceAmount"] = CurrencyFormat(footerData["amtCcyMap"][obj]);
+        ccyTemp["invoiceCcy"] = obj;
+        gridData["footer"].push(ccyTemp);
+      }
+
+    //console.log("gridData is "+JSON.stringify(gridData));
+    //console.log("Footer is "+JSON.stringify(gridData.footer));
+    var rows = new can.List(gridData.data);
+    var footerrows = new can.List(gridData.footer);
+    var sortedColumns = self.sortColumns.attr();
+    var sortDir = self.attr('sortDirection');
+    $('#invoiceGrid').html(stache('<rn-grid-invoice rows="{rows}" footerrows="{footerrows}" sortcolumnnames="{sortcolumnnames}" sortdir="{sortdir}" emptyrows="{emptyrows}"></rn-grid-invoice>')({rows, footerrows, sortcolumnnames:sortedColumns, sortdir:sortDir, emptyrows:false}));
+    $("#loading_img").hide();
+
+    if (self.appstate.attr("invSearchPervHist") != undefined && self.appstate.attr("invSearchPervHist") != null ) {
+
+      self.appstate.attr("invSearchPervHist", null);
+      self.getSelectedValue(self.appstate.attr("invoiceId"), "#invoiceGrid");
+
+
+    } else {
+
+      if(self.appstate.attr("invoiceId") != null || self.appstate.attr("invoiceId") != undefined) {
+        //var i = self.scope.getSelectedValue(self.scope.appstate.attr("invoiceId"), "#invoiceGrid");
+        $('#invoiceGrid table>tbody>tr.highlight').removeClass("highlight");
+      }
+      self.appstate.attr("invoiceId", null);
+
+    }
+
+  } else {
+    $("#loading_img").hide();
+    $('#invoiceGrid').html(stache('<rn-grid-invoice emptyrows="{emptyrows}"></rn-grid-invoice>')({emptyrows:true}));
+  }
+
 }
 
 
