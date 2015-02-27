@@ -448,7 +448,7 @@
 
 	</form>
 
-		<div class="col-sm-12 col-sm-offset-8 buttonsBottom">
+		<div class="col-sm-12 buttonsBottom" style="text-align: right; padding: 15px 32px 15px 15px; display: block;"> 
 
 			<button type="button" id="buttonreset" name="Reset" class="btn cancelButton btn-custom-small-cancel buttonreset" style="margin-left:10px;">Cancel</button>
 			<button type="button" id="buttonApprove" name="Reset" class="btn cancelButton btn-custom-small-cancel buttonApprove" style="margin-left:10px;{{enableButtonsApprove}}">Approve</button>
