@@ -30,7 +30,7 @@
 
 <!-- {{#showPage}} -->
 <div class="col-lg-12">
-<div id="payBundleGrid">
+<div id="payBundleGrid" class="payBundleGrid">
   <rn-bundle-grid rows="{pageState.bundles}" page-state="{pageState}"></rn-bundle-grid>
 </div>
 
