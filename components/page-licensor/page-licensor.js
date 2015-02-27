@@ -757,8 +757,13 @@ var page = Component.extend({
               }
               if(self.licDetails.data.revisionHistories[i].status == 'N' ) {
 
-                self.licDetails.data.revisionHistories[i].status = "";
-                self.licDetails.data.revisionHistories[i]._data.status = "";
+                self.licDetails.data.revisionHistories[i].status = "New";
+                self.licDetails.data.revisionHistories[i]._data.status = "New";
+              }
+              if(self.licDetails.data.revisionHistories[i].status == 'R' ) {
+
+                self.licDetails.data.revisionHistories[i].status = "Rejected";
+                self.licDetails.data.revisionHistories[i]._data.status = "Rejected";
               }
 
             }
