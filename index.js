@@ -35,7 +35,7 @@ appstate.bind('page', function(ev, newVal, oldVal) {
     var template = '<page-' + newVal + ' appstate=  "{appstate}"></page-' + newVal + '>';
     //$("#page").css("height",$(window).height()-250); //set the page height to support 100% height. 55 is the menu height
     if($(window).innerHeight() > 900){
-      appstate.attr("fetchSize",150);
+      appstate.attr("fetchSize",60);
     }
     $('#page').html(can.stache(template)({appstate: appstate}));
     $(window).scrollTop(0);
