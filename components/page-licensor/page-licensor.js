@@ -406,6 +406,9 @@ var page = Component.extend({
           if ($.inArray(reportBox[j].getAttribute("value"), reportConf) > -1) {
             reportBox[j].checked = true;
             checked = true;
+
+            var divEl=reportBox[j];          
+            divEl.parentNode.className = divEl.parentNode.className + " tdselected";
           }
         }
         if (checked) {
@@ -414,6 +417,10 @@ var page = Component.extend({
             var obj = country[i].getAttribute("value");
             if (obj == countryObj.id) {
               country[i].checked = true;
+
+              var divElCntry=country[i];          
+              divElCntry.parentNode.className = divEl.parentNode.className + " tdselected";
+              $("#"+divElCntry.value).addClass("tdselected");
             }
           }
         }
