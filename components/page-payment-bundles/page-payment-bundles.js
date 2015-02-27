@@ -127,7 +127,7 @@ var page = Component.extend({
                 self.scope.pageState.attr("loadedFromDetails",undefined);
               }
 
-              if(data.totRecCnt != undefined && data.totRecCnt==0){
+              if(data.responseCode != '0000'){
                 commonUtils.displayUIMessage( data.status, data.responseText);
               }
 
@@ -136,7 +136,7 @@ var page = Component.extend({
               self.scope.appstate.screenLookup.attr("PBR",undefined);
             }
 
-            $(".loading_img").hide();
+            //$(".loading_img").hide();
 
           });
 
@@ -332,7 +332,7 @@ var page = Component.extend({
     },
     '.payBundleGrid table>tbody>tr click':function(item, el, ev){
 
-        
+
       }
 
   }

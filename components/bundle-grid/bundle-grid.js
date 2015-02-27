@@ -212,11 +212,9 @@ var BundleGrid = ScrollingGrid.extend({
       }
     },
     'tbody tr click': function( el, ev) {
-
+      console.log(" Clicked ");
       el.parent().find('tr').removeClass("selected");
-      //el.parent().find('tr').removeClass("highlight");
-      //el.addClass("selected");
-
+      el.addClass("selected");
 
       if(this.scope.attr('isEditBundleClicked')){
         //console.log("Bundle Editing is in Progress");
@@ -225,7 +223,7 @@ var BundleGrid = ScrollingGrid.extend({
         var bundle = el.data('row').row;
         this.scope.pageState.attr('selectedBundle', bundle);
       }
-      el.addClass("selected");
+
     }
   }
 });
