@@ -71,14 +71,12 @@ export default [
 {
   id: 'copConAmt',
   title: 'Cop Con',
-  className: "amountColumn",
   format: formats.currencyFormat,
   sortable: true
 },
 {
   id: 'unMatchedAmt',
   title: 'Unmatched',
-  className: "amountColumn",
   contents: function(row) {
     return formats.currencyFormat(row.unMatchedAmt == undefined || row.unMatchedAmt == null || row.unMatchedAmt == "" ? 0 :  row.unMatchedAmt);
   },
