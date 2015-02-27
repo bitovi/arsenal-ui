@@ -193,7 +193,7 @@ var page = Component.extend({
 
       for(var i=0; obj.length; i++) {
         if( obj[i].text == text ) {
-          objVal =  obj[i].id;
+          objVal =  (obj[i].id == undefined || obj[i].id == null || obj[i].id == "") ? obj[i].value : obj[i].id ;
 
           break;
           
@@ -230,7 +230,7 @@ var page = Component.extend({
           self.attr("enableButtonsApprove", "display:inline-block");
           self.attr("enableButtonsReject", "display:inline-block");
           self.attr("enableButtonsPropose", "display:none");
-        } else {
+        } else {  
           self.attr("enableButtonsApprove", "display:none");
           self.attr("enableButtonsReject", "display:none");
           self.attr("enableButtonsPropose", "display:none");
