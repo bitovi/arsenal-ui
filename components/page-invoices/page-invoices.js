@@ -67,13 +67,13 @@ PBConfirmModal.extend({
   template: pbconfirmtemplate,
   events: {
       '.submit click': function(el, ev) {
-            var self = this; 
+            var self = this;
             var data = {bundleId:self.scope.pbid,loadedFrom:"invoices"};
             self.scope.appstate.screenLookup.attr("PBR" ,data);
             $('rn-pb-confirm-modal-inv').remove();
             commonUtils.navigateTo("payment-bundles");
       }
-      
+
   }
 });
 
@@ -97,7 +97,14 @@ Grid.extend({
         id: 'entityName',
         title: 'Licensor',
         sortable: true,
-        contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{entityName}}')({entityName: row.entityName, isChild: row.__isChild}); }
+        contents: function(row) {
+          if(row.hasChild){
+            return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}} {{entityName}}')({entityName: row.entityName, isChild: row.__isChild});
+          }else{
+            return stache('{{#unless isChild}}<span class="open-toggle" style="visibility: hidden;"></span>{{/unless}} {{entityName}}')({entityName: row.entityName, isChild: row.__isChild});
+          }
+
+        }
       },
       {
         id: 'fiscalPeriod',
@@ -457,7 +464,7 @@ var page = Component.extend({
     },
     ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
           var self=this;
-           //console.log($(item[0]).attr("class"));
+//console.log($(item[0]).attr("class"));
           var val = $(item[0]).attr("class").split(" ");
           var existingSortColumns =self.scope.sortColumns.attr();
           var existingSortColumnsLen = existingSortColumns.length;
@@ -924,7 +931,7 @@ var page = Component.extend({
               setTimeout(function(){
                 commonUtils.displayUIMessage(data["status"],data["responseText"]);
               }, 200);
-              
+
 
               if(data["status"]=="SUCCESS"){
                 //if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
@@ -935,14 +942,14 @@ var page = Component.extend({
                 //     //$("#messageDiv").hide();
                     self.scope.checkedRows.replace([]);
                      /* The below calls {scope.appstate} change event that gets the new data for grid*/
-                      
+
                       var pbid = $("#paymentBundleNames").val();
                       var pbname = $("#paymentBundleNames option:selected").text();
 
                       if(pbid != "" &&  pbname != "--Select--"){
                           var pbobj = {"pbid":pbid, "appstate":self.scope.appstate};
                           $(document.body).append(stache('<rn-pb-confirm-modal-inv pbid="{pbobj.pbid}" appstate="{pbobj.appstate}" ></rn-pb-confirm-modal-inv>')({pbobj}));
-                      } 
+                      }
 
                       var newPaymentBundleCreated = $("#newPaymentBundle").val();
                       if (newPaymentBundleCreated != undefined) {
@@ -1026,8 +1033,10 @@ function fetchData(self){
   commonUtils.hideUIMessage();
   var invSearchRequest= getInvoiceSearchRequest(self);
   $("#loading_img").show();
+  console.log('Time before sending request',new Date())
   GetAllInvoices.findOne(UserReq.formRequestDetails(invSearchRequest),function(data){
             //console.log("response is "+JSON.stringify(data.attr()));
+            console.log('Response back',new Date());
             if(data["status"]=="SUCCESS"){
               if(self.excelOutput.attr('flag')){//when user clicks export to excel icon this block will run otherwise its goes to normal else conditon
                  if(data["status"]=="SUCCESS"){
@@ -1047,6 +1056,7 @@ function fetchData(self){
                 self.attr('recordsAvailable',data.recordsAvailable);
                 self.attr('totalRecordCount', data.totRecCnt);
                 self.checkedRows.replace([]); //Reset Checked rows scope variable
+                console.log('before assigning to Map',new Date());
                 if(parseInt(invSearchRequest.searchRequest["offset"])==0){
                   self.allInvoicesMap.replace(data);
                 } else{
@@ -1054,7 +1064,9 @@ function fetchData(self){
                   $.merge(self.allInvoicesMap[0].invoices, data.invoices);
                   self.allInvoicesMap.replace(self.allInvoicesMap);
                 }
+                console.log('before calling rendergrid Method',new Date());
                 reRenderGrid(self);
+                console.log('after calling rendergrid Method',new Date());
                // self.allInvoicesMap.replace(data);
                 //$("rn-grid-invoice td").invoiceId
               }
@@ -1194,6 +1206,7 @@ function reRenderGrid(self){
         invTemp["invId"] = invoiceData[i]["invId"];
         invTemp["__isChild"] = false;
         invTemp["__isChecked"] = false;
+        invTemp["hasChild"] = true;
         //invTemp["__isOddRow"] = false;
         invTemp["entityName"] = (invoiceData[i]["entityName"]==null)?"":invoiceData[i]["entityName"];
         invTemp["fiscalPeriod"] = "";
@@ -1226,11 +1239,12 @@ function reRenderGrid(self){
         var lowestPeriod = 0;
         var highestPeriod = 0;
         var tmpPeriod = 0;
+        var hasChild=true;
         var periodType = invoiceData[i]["periodType"];
         if(periodType == null || periodType == undefined ||(periodType !=null && periodType.length ==0)){
           periodType='P';
         }
-        if(invoiceLineItems.length > 0){
+        if(invoiceLineItems.length > 1){
           for(var j=0;j<invoiceLineItems.length;j++){
             var invLITemp={};
             var period = invoiceLineItems[j]["fiscalPeriod"];
@@ -1274,6 +1288,16 @@ function reRenderGrid(self){
 
             gridData.data.push(invLITemp);
           }
+        }else{
+          if(invoiceLineItems.length == 1){
+            hasChild=false;
+            var ctgrpName=(invoiceLineItems[0]["contentGrpName"]==null)?'':invoiceLineItems[0]["contentGrpName"];
+            var cntryName= (invoiceLineItems[0]["country"]==null)?'NO_COUNTRY':invoiceLineItems[0]["country"];
+            contentTypeArr.push(ctgrpName);
+            countryArr.push(cntryName);
+            var period = invoiceLineItems[0]["fiscalPeriod"];
+            lowestPeriod=highestPeriod=period;
+          }
         }
 
         /*Below function is to remove the duplicate content type and find the count */
@@ -1311,6 +1335,7 @@ function reRenderGrid(self){
               gridData.data[insertedId]["fiscalPeriod"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType)+' - '+periodWidgetHelper.getDisplayPeriod(highestPeriod,periodType);
             }
           }
+        gridData.data[insertedId]["hasChild"] = hasChild;
       }
 
       var first = "true";
@@ -1332,9 +1357,10 @@ function reRenderGrid(self){
     var footerrows = new can.List(gridData.footer);
     var sortedColumns = self.sortColumns.attr();
     var sortDir = self.attr('sortDirection');
+    console.log('Before calling template rendergrid Method',new Date());
     $('#invoiceGrid').html(stache('<rn-grid-invoice rows="{rows}" footerrows="{footerrows}" sortcolumnnames="{sortcolumnnames}" sortdir="{sortdir}" emptyrows="{emptyrows}"></rn-grid-invoice>')({rows, footerrows, sortcolumnnames:sortedColumns, sortdir:sortDir, emptyrows:false}));
     $("#loading_img").hide();
-
+    console.log('Before calling template rendergrid Method',new Date());
     if (self.appstate.attr("invSearchPervHist") != undefined && self.appstate.attr("invSearchPervHist") != null ) {
 
       self.appstate.attr("invSearchPervHist", null);

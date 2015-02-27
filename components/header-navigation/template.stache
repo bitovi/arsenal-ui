@@ -9,7 +9,7 @@
           <span class="icon-bar"></span>
         </button>
        <a id="appleLogo" class="navbar-brand" href="#">
-         <img src='../../resources/images/apple-chrome.png' class='applelogo'/>
+         <img src='../../resources/images/apple-clear.png' class='applelogo'/>
          <span class="logo-text-style">RightNotes</span>
        </a>
       </div>
