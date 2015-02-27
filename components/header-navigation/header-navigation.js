@@ -117,6 +117,10 @@ var headerNavigation = Component.extend({
 
          //console.log(" I am heer "+el.data('screenid'));
          this.scope.appstate.screenLookup.attr("screenid",el.data('screenid'));
+         if(el.data('screenid') == 21){
+           var data = {search:"complete"};
+           this.scope.appstate.screenLookup.attr("PBR" ,data);
+         }
 
             // if(btn.attr('id')!='show' && btn.attr('id')==undefined){
             //    $('#dynamicmenu li a').removeClass('submenuactive');
