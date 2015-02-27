@@ -345,7 +345,7 @@
 								<tfoot>
 									<tr>
 										<td  colspan="3" style="text-align:right;padding-right:2%;">
-											<button type="button" id="applyAllSelected" name="applyAll" class="btn buttonSubmit btn-custom-small3px  applyAllSelected" style="">Apply Selected</button>
+											<button type="button" id="applyAllSelected" name="applyAll" class="btn buttonSubmit btn-custom-small  applyAllSelected" style="">Apply Selected</button>
 										</td>
 									</tr>
 								</tfoot>
@@ -448,7 +448,8 @@
 
 	</form>
 
-		<div class="col-sm-12 buttonsBottom" style="text-align: right; padding: 15px 32px 15px 15px; display: block;"> 
+		<!--
+		<div class="col-sm-12 col-sm-offset-8 buttonsBottom">
 
 			<button type="button" id="buttonreset" name="Reset" class="buttonreset btn btn-default buttonCancel btn-custom-small-disabled cancelButton" style="margin-left:10px;">Cancel</button>
 			<button type="button" id="buttonApprove" name="Reset" class="btn cancelButton btn-custom-small-cancel buttonApprove" style="margin-left:10px;{{enableButtonsApprove}}">Approve</button>
