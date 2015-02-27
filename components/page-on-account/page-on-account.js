@@ -212,7 +212,7 @@ var page = Component.extend({
           // },600)
 
       },
-      ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
+      ".rn-grid>thead>tr>th:not('.checkbox') click": function(item, el, ev){
           var self=this;
            //console.log($(item[0]).attr("class"));
           var val = $(item[0]).attr("class").split(" ");
