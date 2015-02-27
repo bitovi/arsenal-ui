@@ -608,9 +608,22 @@ var page = Component.extend({
               bundleRequest["periodTo"] = self.scope.periodToForPaymentBundle;
               bundleRequest["periodType"] =self.scope.periodTypeForPaymentBundle;
               bundleRequest["bundleType"] ="REGULAR_INV";
+              
+              var bundleDetailsGroup=[];
+              icsvmap.invoiceData.invoices.each(function(value) { 
+                        value.invoiceLines.each(function(val){
+                          var bundledetails={};
+                          bundledetails.country = val.country;
+                          bundledetails.contentGrpName = val.contentGrpName;
+                          bundledetails.periodType=val.periodType;
+                          bundleDetailsGroup.push(bundledetails);
+                        });          
+                 });
 
+              if (bundleDetailsGroup.length > 0) {
+                bundleRequest.bundleDetailsGroup = bundleDetailsGroup;
+              }
               newBundleNameRequest["paymentBundle"] = bundleRequest;
-              //console.log("New Bundle name request is "+JSON.stringify(newBundleNameRequest));
               self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
           } else {
             self.scope.attr('newpaymentbundlenamereq', "undefined");
