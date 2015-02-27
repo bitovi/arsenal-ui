@@ -382,6 +382,9 @@ var PaymentBundle = Model.extend({
     bundleData.bundleDetailsGroup && bundleData.bundleDetailsGroup.forEach(function(group) {
       delete group.__isChild;
       delete group.__isOpen;
+      delete group.__isChildExists;
+      delete group.fiscalPeriod;
+      delete group.periodType;
 
       delete group.contentGrpName;
       delete group.country;

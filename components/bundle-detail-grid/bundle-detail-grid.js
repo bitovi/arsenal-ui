@@ -32,7 +32,7 @@ var BundleDetailGrid = ScrollingGrid.extend({
         if(group.bundleDetails.length > 1){
           child = true;
           group.attr('__isChildExists', true);
-        }else{
+          }else{
           child = false;
           group.attr('__isChildExists', false);
         }
@@ -69,6 +69,10 @@ var BundleDetailGrid = ScrollingGrid.extend({
             detail.attr('__isChild', true);
             detail.attr("view",bundle.view);
             rows.push(detail);
+          }else{
+            group.attr('fiscalPeriod',detail.fiscalPeriod);
+            group.attr('periodType',detail.periodType);
+
           }
 
         });

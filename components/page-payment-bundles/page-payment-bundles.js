@@ -143,6 +143,7 @@ var page = Component.extend({
               }
 
             }else{
+              $(".loading_img").hide();
               commonUtils.displayUIMessage( data.status, data.responseText);
               self.scope.appstate.screenLookup.attr("PBR",undefined);
             }

@@ -358,6 +358,11 @@ var BundleDetailTabs = Component.extend({
 
       var className = item.closest('tr').hasClass("child");
 
+      var isChild = true;
+      if (row.__isChildExists != undefined ){
+        isChild = row.__isChildExists ;
+      }
+
       this.scope.details["countryId"]=row.country || "";
       this.scope.details["requestFrom"]=$(".switcher li.selected").text();
       this.scope.details["licensorId"]=row.entityName || "";
@@ -366,6 +371,7 @@ var BundleDetailTabs = Component.extend({
       this.scope.details["contentType"]=row.contentGrpName || "";
       this.scope.details["currency"]=row.paymentCcy || "";
       this.scope.details["isChild"]=className;
+      this.scope.details["__isChildExists"]= isChild;
 
     },
     ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
@@ -411,7 +417,9 @@ var BundleDetailTabs = Component.extend({
     '.show-chart click': function(el, ev) {
       // show the chart
       //{"requestFrom":"Licensor","licensorId":"CELAS","countryId":"GBR","fiscalPeriod":201307,"periodType":"P","contentType":"Music"}
-      if(this.scope.details.isChild && this.scope.details.contentType !== "TAX"){
+      if( (!this.scope.details.__isChildExists
+         || this.scope.details.isChild)
+        && this.scope.details.contentType !== "TAX"){
         var data = this.scope.details;
         console.log("chart data");console.log(data);
         //$("#chartContainer").addClass("highcharts_Overlay");
