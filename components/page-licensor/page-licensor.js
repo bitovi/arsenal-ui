@@ -2044,7 +2044,7 @@ var page = Component.extend({
             if(divElement != undefined){
               divElement.removeClass('tdselected');
             }
-            //el.parent().addClass('tdselected');//Selected Value for the other checkbox parent
+            el.parent().addClass('tdselected');//Selected Value for the other checkbox parent
             var reportConfig = self.scope.getExistCountryReportConf(el[0].value);
             var reportBox = $("input.reportBox");
             uncheckAllReports(reportBox);
@@ -2092,8 +2092,8 @@ var page = Component.extend({
 
          $(".tableDiv input[value="+el[0].id+"]").prop("checked",true);
          //Selected Value for the other checkbox parent
-         /*$(".selected td:first-child>.tableDiv").removeClass("tdselected");
-         $(".tableDiv input[value="+el[0].id+"]").parent().addClass("tdselected");*/
+         $(".selected td:first-child>.tableDiv").removeClass("tdselected");
+         $(".tableDiv input[value="+el[0].id+"]").parent().addClass("tdselected");
     },
 
     ".reportBox click": function(el, ev){
@@ -2538,6 +2538,8 @@ function alignGridStats(divId){
 
         if(i==1)
           tdWidth = 45;
+        if(i==1 && divId == 'repConfiguration')
+          tdWidth = 30;
         if((i==1) && divId== 'societyContacts')
           tdWidth = 100;
         if((i==3) && divId== 'societyContacts')
