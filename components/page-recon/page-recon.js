@@ -218,9 +218,11 @@ var page = Component.extend({
           }
       },
       'tbody tr click': function(el, ev) {
-        $(el).parent().find('tr').removeClass("selected");
-        $(el).parent().find('tr').removeClass("highlight");
-        $(el).addClass("selected");
+        if(ev.target.nodeName !== 'INPUT'){
+          $(el).parent().find('tr').removeClass("selected");
+          $(el).parent().find('tr').removeClass("highlight");
+          $(el).addClass("selected");
+        }
       },
     ".downloadLink.badLines click": function(item, el, ev){
       var self=this.scope;
