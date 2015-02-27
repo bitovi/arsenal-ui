@@ -63,14 +63,14 @@ fileUpload.extend({
 
 
 PBConfirmModal.extend({
-  tag: 'rn-pb-confirm-modal',
+  tag: 'rn-pb-confirm-modal-inv',
   template: pbconfirmtemplate,
   events: {
       '.submit click': function(el, ev) {
             var self = this; 
             var data = {bundleId:self.scope.pbid,loadedFrom:"invoices"};
             self.scope.appstate.screenLookup.attr("PBR" ,data);
-            $('rn-pb-confirm-modal').remove();
+            $('rn-pb-confirm-modal-inv').remove();
             commonUtils.navigateTo("payment-bundles");
       }
       
@@ -941,7 +941,7 @@ var page = Component.extend({
 
                       if(pbid != "" &&  pbname != "--Select--"){
                           var pbobj = {"pbid":pbid, "appstate":self.scope.appstate};
-                          $(document.body).append(stache('<rn-pb-confirm-modal pbid="{pbobj.pbid}" appstate="{pbobj.appstate}" ></rn-pb-confirm-modal>')({pbobj}));
+                          $(document.body).append(stache('<rn-pb-confirm-modal-inv pbid="{pbobj.pbid}" appstate="{pbobj.appstate}" ></rn-pb-confirm-modal-inv>')({pbobj}));
                       } 
 
                       var newPaymentBundleCreated = $("#newPaymentBundle").val();
