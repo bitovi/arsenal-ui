@@ -42,9 +42,9 @@ var newOnAccountGrid = Grid.extend({
       if(column.editable && row.__isChild) {
         var returnValue = column.getEditingValue(row,column.title);
         if(returnValue == undefined || !$.isNumeric(returnValue)){
-          return stache('<div style="float: right;text-align: right;" valign="middle"><input value="{{value}}" tabindex="0" class="editing form-control invalid" style="width:130px;padding: 4px !important;text-align: right; title="Please provide onAccount amount in [##########.########] format""/></div>')({value: returnValue});
+          return stache('<div style="float: right;text-align: right;width:100%" valign="middle"><input value="{{value}}" tabindex="0" class="editing form-control invalid" style="width:98%;padding: 4px !important;text-align: right; title="Please provide onAccount amount in [##########.########] format""/></div>')({value: returnValue});
         }else{
-          return stache('<div style="float: right;text-align: right;" valign="middle"><input value="{{value}}" tabindex="0" class="editing form-control" style="width:130px;padding: 4px !important;text-align: right;"/></div>')({value: returnValue});
+          return stache('<div style="float: right;text-alignwidth:100%: right;" valign="middle"><input value="{{value}}" tabindex="0" class="editing form-control" style="width:98%;padding: 4px !important;text-align: right;"/></div>')({value: returnValue});
         }
       } else {
         if(column.title == 'Total' && row.__isChild && column.getEditingValue(row,column.id) != null)
