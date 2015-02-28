@@ -196,6 +196,21 @@ var page = Component.extend({
               bundleRequest.periodTo=self.scope.appstate.attr('periodTo');
               bundleRequest.periodType=self.scope.appstate.attr('periodType');
               bundleRequest.bundleType ="ON_ACCOUNT";
+              var bundleDetailsGroup=[];
+              var bundledetails={};
+              var contentTyes = self.scope.appstate.attr('contentType');
+              if(contentTyes.length>1){
+                // This is an error condition as we cannot propose multiple onAccount invoice for same contentType
+              }else{
+                bundledetails={};
+                bundledetails.contentGrpName=$('#contentTypesFilter option:selected').text();
+                bundledetails.periodType=bundleRequest.periodType;
+                bundleDetailsGroup.push(bundledetails);
+              }
+              
+              if(bundleDetailsGroup.length >0){
+                bundleRequest.bundleDetailsGroup=bundleDetailsGroup;
+              }
               newBundleNameRequest["paymentBundle"] = bundleRequest;
               self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
           } else {

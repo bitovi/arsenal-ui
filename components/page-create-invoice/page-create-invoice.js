@@ -1042,7 +1042,9 @@ var page = Component.extend({
                                       var bundledetails={};
                                       var index = $(this).attr("rowid");
                                       bundledetails.country = self.scope.countryStore.attr("inputCountry" + index);
-                                      bundledetails.contentGrpName = $("#inputContent"+index+" option:selected").text();
+                                      if(self.scope.attr("invoicetypeSelect") != '2'){
+                                        bundledetails.contentGrpName = $("#inputContent"+index+" option:selected").text();  
+                                      } 
                                       bundledetails.periodType=bundleRequest.periodType;
                                       bundleDetailsGroup.push(bundledetails);
                                     }
@@ -1741,9 +1743,9 @@ var page = Component.extend({
   var validateFieldsForCreatePB = function(self) {
     var errorMess = "";
     $("#paymentBundleNames").val("");
-    if($("#inputContent0").val().length == 0) {
+    if($("#inputContent0").val().length == 0 && self.attr("invoicetypeSelect") != '2') {
       errorMess = "Please select invoielines content Type";
-    } else if (($("#inputMonth0").val() == "") && (self.attr("invoicetypeSelect") != "2")) {
+    } else if ($("#inputMonth0").val() == "") {
       errorMess = "Please select invoielines period";
     } else if ($("#inputCountry0").val().length == 0) {
       errorMess = "Please select invoielines country";
