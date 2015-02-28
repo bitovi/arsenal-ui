@@ -137,17 +137,18 @@ var PaymentBundle = Model.extend({
   findOne: function(params) {
     var appstate = params.appstate;
     if(params.appstate.excelOutput){
+      var bundle = params.selectedBundle;
        var excelOutput = appstate.attr('excelOutput') != undefined ? appstate.attr('excelOutput') : false;
        var paymentOption = params.paymentType,
             view =  params.view.toUpperCase(),
-            bundleId = appstate.bundleId;
+            bundleId = bundle.bundleId;
 
        var data = {
            paymentBundle: {
               bundleId,
               paymentOption,
               view,
-              periodType: params.appstate.periodType
+              periodType: bundle.periodType
             },
             bundleSearch: requestHelper.formGlobalRequest(appstate).searchRequest
        };
