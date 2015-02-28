@@ -194,7 +194,7 @@ var BundleDetailTabs = Component.extend({
         scope.attr('gettingDetails', false);
         scope.bottomGridPaginateAttr.attr("isInProgress",false);
 
-        if(bundle.status === 'FAILURE' || bundle.bundleDetailsGroup == undefined){
+        if(bundle.status === 'FAILURE'){
 
           commonUtils.displayUIMessage( bundle.status, bundle.responseText);
           scope.pageState.attr('isPmtBundleDetailsAvl',false);
@@ -203,6 +203,11 @@ var BundleDetailTabs = Component.extend({
           scope.pageState.attr('isPmtBundleDetailsAvl',true);
           scope.bundleProgress.triggerValidation ? scope.getNewValidations(bundle) : "";
         }
+
+        if(bundle.status == "SUCCESS" && bundle.bundleDetailsGroup.length == 0){
+          commonUtils.displayUIMessage( bundle.status, bundle.responseText);  
+        }
+
 
         var commentsCollected = bundle.approvalComments;
 

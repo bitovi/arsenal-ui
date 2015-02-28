@@ -13,6 +13,7 @@ var BundleDetailGrid = ScrollingGrid.extend({
     paginateAttr:null,//passed in value
     localOffsetTracker:0,
     strippedGrid:true,
+    pageState:undefined,
     makeRowsFromBundle: function(bundle) {
       // so the bundle has a bundleDetailsGroup (which is a List of BundleDetailGroup model instances)
       // and each of those instances is a parent row
@@ -200,7 +201,7 @@ var BundleDetailGrid = ScrollingGrid.extend({
     // }
   },
   events: {
-    '{scope.pageState} selectedBundle': function(scope, ev, newBundle) {
+    '{scope} pageState.selectedBundle': function(scope, ev, newBundle) {
       this.scope.localOffsetTracker = 0;
       this.scope.rows.splice(0, this.scope.rows.length, ...(newBundle ? this.scope.makeRowsFromBundle(newBundle) : []));
       this.scope.aggregateRows.splice(0, this.scope.aggregateRows.length, ...(newBundle ? this.scope.makeAggregateRowsFromBundle(newBundle) : []));
