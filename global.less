@@ -5,10 +5,20 @@ html{
   height: 100%;
 }
 
+
+@font-face {
+  font-family: MyriadPro-Regular;
+  src: url(../../resources/fonts/myriad-set-pro_text.woff);  /* first font == regular */
+}
+
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "MyriadPro-Regular", "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
   min-height: 100%;
 }
+
+
+
+
 
 .large-headers{
   font-size: 24px !important;
@@ -17,7 +27,7 @@ body {
   font-size: 16px !important;
 }
 .small-headers{
-  font-family: "HelveticaNeue-Medium", Helvetica, Arial, sans-serif;
+  font-family: "MyriadPro-Regular", "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
   font-size: 12px !important;
   font-weight: normal;
   color: #3d3d3d;
@@ -62,19 +72,19 @@ h3 {
 table {
   thead {
     tr>th{
-      font-family: "HelveticaNeue-medium";
+      font-family: "MyriadPro-Regular";
       font-size: 12px;
     }
   }
   tbody {
     tr>td{
-      font-family: "Helvetica Neue";
+      font-family: "MyriadPro-Regular";
       font-size: 12px;
     }
   }
   tfoot {
     tr>td, tr>th{
-      font-family: "Helvetica Neue";
+      font-family: "MyriadPro-Regular";
       font-size: 12px;
     }
   }
@@ -338,7 +348,7 @@ input.datetimePickerCal{
     background-color: #d0e3c3;
     font-size:14px !important;
     color:#3d3d3d!important;
-    font-family:HelveticaNeue!important;
+    font-family:MyriadPro-Regular !important;
     //white-space: nowrap;
     word-break: break-all;
     //box-shadow: 3px 5px 15px #B0B0B5;
@@ -351,7 +361,7 @@ input.datetimePickerCal{
     padding: 3px 15px;
     background-color: #f7e472;
     font-size:14px !important;
-    font-family:HelveticaNeue !important;
+    font-family:MyriadPro-Regular !important;
     font-size:14px !important;
     color:#3d3d3d!important;
     //white-space: nowrap;

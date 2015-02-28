@@ -79,7 +79,7 @@ var highchartpage = Component.extend({
                 //text: servicedata[0].countryName+"-"+servicedata[0].licensorName,
                 text: chartdata.countryId+"-"+chartdata.licensorId,
                 x: -20, //center
-                style:{"font-family": "Helvetica Neue",
+                style:{"font-family": "MyriadPro-Regular",
                        "font-size": "16px",
                        "font-weight":"Bold"}
               },
@@ -94,7 +94,7 @@ var highchartpage = Component.extend({
                 title: {
                   text: 'Period',
                   align: 'middle',
-                  style:{"font-family": "Helvetica Neue",
+                  style:{"font-family": "MyriadPro-Regular",
                          "font-weight":"Bold"}
                 },
                 categories: highChartdata["FISCAL_PERIOD"],
@@ -105,7 +105,7 @@ var highchartpage = Component.extend({
               yAxis: {
                 title: {
                   text: 'Amount',
-                  style:{"font-family": "Helvetica Neue",
+                  style:{"font-family": "MyriadPro-Regular",
                          "font-weight":"Bold"}
                 },
                 plotLines: [{
@@ -118,14 +118,14 @@ var highchartpage = Component.extend({
                 formatter: function () {
                   return '<b>' + this.series.name + '</b><br/>' + this.x + ': ' + currencyFormat(this.y) +' '+chartdata.currency;
                 },
-                style:{"font-family": "Helvetica Neue"}
+                style:{"font-family": "MyriadPro-Regular"}
               },
               legend: {
                 layout: 'horizontal',
                 align: 'center',
                 verticalAlign: 'bottom',
                 borderWidth: 0,
-                style:{"font-family": "Helvetica Neue"}
+                style:{"font-family": "MyriadPro-Regular"}
               },
               exporting: {
                 enabled: false
