@@ -114,7 +114,12 @@ var page = Component.extend({
           this.scope.isPageSearch  = this.scope.appstate.globalSearch;
           PaymentBundle.loadAll ({appstate: this.scope.appstate,paginate: this.scope.paginateAttr, lookForBundle : lookForBundle}).done(function(data) {
 
-            if(data.status === 'SUCCESS'){
+            if(data.status === 'SUCCESS' && data.totRecCnt == 0){
+
+              commonUtils.displayUIMessage( data.status, data.responseText);
+              $(".loading_img").hide();
+
+            }else if(data.status === 'SUCCESS' && data.totRecCnt > 0 ){
               var bundleLookupNeeded = false;
               can.batch.start();
               pageState.bundles.splice(0, pageState.bundles.length);
