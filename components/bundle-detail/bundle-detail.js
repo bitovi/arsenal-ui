@@ -131,14 +131,22 @@ var BundleDetailTabs = Component.extend({
 
       scope.getNewDetails(selectedBundle)
       .then(function(bundle) {
-        return WorkflowStep.loadWorkFlowView({
-          workflowInstanceId: bundle.approvalId
-        });
+
+        if(bundle.approvalId != undefined ){
+          return WorkflowStep.loadWorkFlowView({
+            workflowInstanceId: bundle.approvalId
+          });
+        }
+
       }).done(function(steps) {
         $(".loading_img").show();
         //console.log(JSON.stringify(steps.workflowView.nodes))
         scope.workflowSteps.splice(0, scope.workflowSteps.length);
-        scope.workflowSteps.replace(steps.workflowView.nodes);
+        if(steps != undefined){
+          scope.workflowSteps.replace(steps.workflowView.nodes);
+        }
+
+
         $(".loading_img").hide();
       });
       scope.bundleProgress.isBundleSelectionChange = false;
@@ -186,15 +194,18 @@ var BundleDetailTabs = Component.extend({
         scope.attr('gettingDetails', false);
         scope.bottomGridPaginateAttr.attr("isInProgress",false);
 
-        if(bundle.status === 'FAILURE'){
+        if(bundle.status === 'FAILURE' || bundle.bundleDetailsGroup == undefined){
+
           commonUtils.displayUIMessage( bundle.status, bundle.responseText);
           scope.pageState.attr('isPmtBundleDetailsAvl',false);
+
         }else{
           scope.pageState.attr('isPmtBundleDetailsAvl',true);
           scope.bundleProgress.triggerValidation ? scope.getNewValidations(bundle) : "";
         }
 
         var commentsCollected = bundle.approvalComments;
+
         // _.each(bundle.approvalComments, function(commentsObj) {
         //
         //   var createdDateFormat = moment(commentsObj.createdDate).format("Do MMM, YYYY");

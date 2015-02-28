@@ -267,7 +267,7 @@ var PaymentBundle = Model.extend({
     return PaymentBundle.findOne(params).then(function(bundle) {
 
       can.batch.start();
-        if(bundle.status == "FAILURE" ){
+        if((bundle.status == "SUCCESS" &&  bundle.paymentBundle == undefined)  ||   bundle.status == "FAILURE" ){
 
 
           self.attr('status',bundle.status);
