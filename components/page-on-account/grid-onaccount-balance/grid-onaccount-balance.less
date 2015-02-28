@@ -15,6 +15,7 @@ rn-onaccount-balance-grid {
   table {
 
     width: 100%;
+    //min-width:1300px;
 
     thead, tbody,tfoot {
       display: block;
@@ -28,12 +29,16 @@ rn-onaccount-balance-grid {
     thead {
       background: @header-background;
       color: white;
-      height:25px;
+      //height:25px;
       tr {
-        height : 25px;
+        min-height : 25px;
+        height:auto;
+        word-wrap: break-word;
         th, td {
           font-weight: normal;
-          height: 25px;
+          min-height : 25px;
+          height:auto;
+          word-wrap: break-word;
           //padding: .3em .5em .3em .5em !important;
           //border-right: @dark-border;
           //border-top: @dark-border;
@@ -48,10 +53,14 @@ rn-onaccount-balance-grid {
       color: white;
       //height:24px !important;
       tr {
-        height : 24px !important;
+        min-height : 24px !important;
+        height:auto;
+        word-wrap: break-word;
         td {
           font-weight: normal;
-          height: 24px !important;
+          min-height : 24px !important;
+          height:auto;
+          word-wrap: break-word;
           border-bottom: @dark-border;
         }
       }
@@ -64,9 +73,13 @@ rn-onaccount-balance-grid {
       border-left: 1px solid #a1a1a1;
       border-right: 1px solid #a1a1a1;
       tr {
-        height : 22px;
+        height : auto;
+        min-height:22px;
+        word-wrap: break-word !important;
         td {
-          height : 22px;
+          height : auto;
+          min-height:22px;
+          word-wrap: break-word !important;
           padding-top:1px;
         }
       }
@@ -75,11 +88,11 @@ rn-onaccount-balance-grid {
     tr > th, tr > td {
       //padding: .3em .5em;
       &.Licensor { .flex-grow(2); .flex-basis(160px); }
-      &.Currency { .flex-grow(2); .flex-basis(40px); }
-      &.ContentType { .flex-grow(2); .flex-basis(50px); }
-      &.others { .flex-grow(2); .flex-basis(100px); }
-      &.onAccountBalance { .flex-grow(2); .flex-basis(100px); }
-      &.cashAdjust { .flex-grow(2); .flex-basis(100px); }
+      &.Currency { .flex-grow(1); .flex-basis(70px); }
+      &.ContentType { .flex-grow(2); .flex-basis(80px); }
+      &.others {  .flex-grow(1);.flex-basis(100px); }
+      &.onAccountBalance { .flex-grow(1); .flex-basis(100px); }
+      &.cashAdjust { .flex-grow(1); .flex-basis(100px); }
     }
 
     tbody > tr {
