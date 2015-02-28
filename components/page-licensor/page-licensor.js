@@ -2115,11 +2115,20 @@ var page = Component.extend({
 
     ".countryDiv click":function(el,ev){
        var self = this;
+       var country = el[0].id;
        var divElement=el.closest("td").find('div.tdselected');
         if(divElement != undefined){
           divElement.removeClass('tdselected');
         }
         el.addClass('tdselected');
+        el.closest('td').prev('td').find('.tableDiv').each(function() {
+            if($(this).find("input[type='checkbox']").val() == country){
+              $(this).addClass('tdselected');
+            }else{
+              $(this).removeClass('tdselected');
+            }
+          });
+
         var reportConfig = self.scope.getExistCountryReportConf(el[0].id);
         var reportBox = $("input.reportBox");
         uncheckAllReports(reportBox);
@@ -2130,7 +2139,7 @@ var page = Component.extend({
          }
 
 
-         $(".tableDiv input[value="+el[0].id+"]").prop("checked",true);
+         $(".tableDiv input[value="+country+"]").prop("checked",true);
          //Selected Value for the other checkbox parent
          /*$(".selected td:first-child>.tableDiv").removeClass("tdselected");
          $(".tableDiv input[value="+el[0].id+"]").parent().addClass("tdselected");*/
