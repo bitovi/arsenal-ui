@@ -205,7 +205,7 @@ var BundleDetailTabs = Component.extend({
         }
 
         if(bundle.status == "SUCCESS" && bundle.bundleDetailsGroup.length == 0){
-          commonUtils.displayUIMessage( bundle.status, bundle.responseText);  
+          commonUtils.displayUIMessage( bundle.status, bundle.responseText);
         }
 
 
@@ -465,7 +465,7 @@ var BundleDetailTabs = Component.extend({
       // export data to Excel
 
       var self = this;
-      self.scope.appstate = self.scope.pageState.selectedBundle;
+      //self.scope.appstate = self.scope.pageState.selectedBundle;
       self.scope.appstate.attr('excelOutput', true);
       self.scope.appstate.attr('detail', true);
       if(this.scope.appstate.excelOutput ) {
@@ -483,10 +483,11 @@ var BundleDetailTabs = Component.extend({
           appstate: this.scope.appstate,
           view: view,
           paymentType: this.scope.paymentType,
-          preferredCcy: this.scope.preferredCurr
+          preferredCcy: this.scope.preferredCurr,
+          selectedBundle:this.scope.pageState.selectedBundle
         };
         PaymentBundle.findOne(params).then(function(data) {
-          console.log(data);
+          //console.log(data);
          if (data != undefined && data["status"] == "SUCCESS" && data["exportExcelFileInfo"] != null) {
             $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
           }
