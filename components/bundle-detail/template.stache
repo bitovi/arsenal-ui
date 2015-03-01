@@ -78,9 +78,11 @@
       <option value="4">Payment Over Rep Disputes</option>
     </select>
 
+    {{#isBM}}
       <div class="priority">
         <input type="checkbox" can-value="{isBundlePrioritySet}" id="priority" />&nbsp;<label for="priority">Set Priority</label>
       </div>
+    {{/isBM}}  
     {{#else}}
 
       <label>Payment Option</label>
