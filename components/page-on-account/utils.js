@@ -32,7 +32,7 @@ getQuarter:function(periodFrom,periodTO){
     }
     return obj;
 },
-frameCreateRequest:function(request,onAccountRows,documents,comments,quarters,paymentBundleNameText,bundleId){
+frameCreateRequest:function(request,onAccountRows,documents,comments,quarters,paymentBundleNameText,bundleId,userInfo){
 var onAccountCreateRequest ={};
     onAccountCreateRequest.searchRequest = {};
     onAccountCreateRequest.searchRequest.regionId=request.searchRequest.regionId;
@@ -79,7 +79,7 @@ var onAccountCreateRequest ={};
     if(comments != null && comments.length>0 ){
         var commentobj={};
         commentobj.comments=comments;
-        commentobj.createdBy="2002005722";
+        commentobj.createdBy=userInfo.prsId;
         commentobj.createdDate=Date.now();
         onAccountCreateRequest.onAccount.comments.push(commentobj);
     }
@@ -161,7 +161,7 @@ frameDeleteRequest:function(rowsToBedeleted,comments,quarters){
      }
      return onAccountDeleteRequest;
 },
-frameUpdateRequest:function(request,onAccountRows,documents,comments,quarters){
+frameUpdateRequest:function(request,onAccountRows,documents,comments,quarters,userInfo){
 var onAccountUpdateRequest ={};
 
     onAccountUpdateRequest.searchRequest = {};
@@ -203,7 +203,7 @@ var onAccountUpdateRequest ={};
                       onAccountDetails.periodType=this.getOnAccountPeriodType();
                       //onAccountDetails.createdBy=onAccountRows[i].createdBy;
                       //onAccountDetails.createdDate=onAccountRows[i].createdDate;
-                      onAccountDetails.modifiedBy="2002005722";
+                      onAccountDetails.modifiedBy=userInfo.prsId;
                       onAccountDetails.modifiedDate=Date.now();
                       onAccountDetails.serviceTypeId=onAccountRows[i].serviceTypeId;
                       if(onAccountRows[i][fiscalPeriod] != undefined){
@@ -221,7 +221,7 @@ var onAccountUpdateRequest ={};
     if(comments != null && comments.length>0 ){
         var commentobj={};
         commentobj.comments=comments;
-        commentobj.createdBy="2002005722";
+        commentobj.createdBy=userInfo.prsId;
         commentobj.createdDate=Date.now();
         onAccountUpdateRequest.onAccount.comments.push(commentobj);
     }

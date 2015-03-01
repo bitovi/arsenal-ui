@@ -412,7 +412,8 @@ var page = Component.extend({
               }
           }
 
-        var createrequest = utils.frameCreateRequest(self.scope.request,self.scope.onAccountRows,self.scope.documents,self.scope.usercommentsStore,self.scope.quarters,paymentBundleName,self.scope.paymentBundleName);
+        var createrequest = utils.frameCreateRequest(self.scope.request,self.scope.onAccountRows,self.scope.documents,
+          self.scope.usercommentsStore,self.scope.quarters,paymentBundleName,self.scope.paymentBundleName,self.scope.appstate.userInfo);
         if(createrequest.onAccount.onAccountDetails.length>0){
           var request = requestHelper.formRequestDetails(createrequest);
           //console.log('Request:'+JSON.stringify(request));
@@ -534,7 +535,7 @@ var page = Component.extend({
                   }
               }
 
-           var updateRequest = utils.frameUpdateRequest(self.scope.request,updatableRows,proposedDocs,comments,self.scope.quarters);
+           var updateRequest = utils.frameUpdateRequest(self.scope.request,updatableRows,proposedDocs,comments,self.scope.quarters,self.scope.appstate.userInfo);
            updateRequest.searchRequest=requestHelper.formGlobalRequest(self.scope.appstate).searchRequest;
             proposedOnAccount.update(requestHelper.formRequestDetails(updateRequest),"UPDATE",function(data){
             //console.log("Update response is "+JSON.stringify(data));
