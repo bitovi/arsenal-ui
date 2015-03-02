@@ -589,6 +589,8 @@ var BundleDetailTabs = Component.extend({
               self.pageState.selectedBundle.attr("recallable",response.paymentBundle.recallable);
               self.pageState.selectedBundle.attr("editable",response.paymentBundle.editable);
               self.pageState.selectedBundle.attr("approvable",response.paymentBundle.approvable);
+              self.pageState.selectedBundle.attr("pendingDays",response.paymentBundle.pendingDays);
+
 
               //else the ROLE is not FC, reload the bottom grid
               self.selectedBundleChanged(self);
