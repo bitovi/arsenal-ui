@@ -61,7 +61,7 @@
 					{{#if editstate}}
                             <div class="col-sm-6 form-group" style="margin-left:0px;">
                                 <div class="singleField">
-                                    <label for="inputEmail3" class="col-sm-3 control-label">Version:</label>
+                                    <label for="inputEmail3" class="col-sm-3 control-label">Versions:</label>
                                     <div class="col-sm-4 requiredBar">
                                         <select  class="form-control" name="version" id="version" can-value="selectedModelId">
                                             <option value="">Select</option>
