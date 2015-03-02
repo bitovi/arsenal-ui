@@ -59,6 +59,18 @@ var PeriodCalendar = Component.extend({
       }
       li.closest('.calendarcls').find('input[type=text]').val(this.scope.attr('selectedperiod')[0].value).blur();
       li.closest('.calendarcls').find('.box-modal').hide();
+
+      /*New implementation for not clearing existing periods and clear only if the fiscal period changes from Period to Quater*/
+      if(which == 'inputMonth0'){
+        var _rootElement = $("input[id^='inputMonth0']").val().charAt(0);
+        var _root = $("input[id^='inputMonth']").not("input[id='inputMonth0']").not(':hidden').parent();
+        for(var i = 0; i < _root.length; i++){
+          if( $(_root[i]).find("input[id^='inputMonth']").val().charAt(0) !== _rootElement ){
+            $(_root[i]).find("input[id^='inputMonth']").val(" ");
+          }
+        } 
+      }
+
     },
     /*'{periodFrom} change': function(el, ev) {
          var comp ='from';
@@ -121,16 +133,18 @@ var PeriodCalendar = Component.extend({
         setActiveStyle(selectedPeriod,this.scope);
     },
     '{inputMonth} change': function(el, ev) {
-      var comp = 'inputMonth0';
-      var _root = $("input[id^='inputMonth']").not("input[id='inputMonth0']").not(':hidden').parent();
-      if (_root.length > 0) {
-        $("input[id^='inputMonth']").not("input[id='inputMonth0']").not(':hidden').val(" ");
-      }
-      showErrorMsg(this.scope.attr('inputMonth0'),this.scope.attr('inputDynamicMonth'),comp);
+      //Commented as per the new requirement from Sudesna: Similar logic implmented in .period li a click
+      // var comp = 'inputMonth0';
+      // var _root = $("input[id^='inputMonth']").not("input[id='inputMonth0']").not(':hidden').parent();
+      // if (_root.length > 0) {
+      //   $("input[id^='inputMonth']").not("input[id='inputMonth0']").not(':hidden').val(" ");
+      // }
+      // showErrorMsg(this.scope.attr('inputMonth0'),this.scope.attr('inputDynamicMonth'),comp);
     },
     '{inputDynamicMonth} click': function(el, ev) {
-      var comp = 'inputMonth0';
-      showErrorMsg(this.scope.attr('inputMonth0'),this.scope.attr('inputDynamicMonth'),comp);
+      //Commented as per the new requirement from Sudesna: Similar logic implmented in .period li a click
+      // var comp = 'inputMonth0';
+      // showErrorMsg(this.scope.attr('inputMonth0'),this.scope.attr('inputDynamicMonth'),comp);
     },
     '.period-calendar-yearbtn change': function(el, ev) {
       var self = this;

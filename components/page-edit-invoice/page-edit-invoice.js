@@ -1123,6 +1123,7 @@ var page = Component.extend({
 		                	self.scope.uploadedfileinfo.replace(invoiceData.invoiceDocuments);
 		                } else {
 		                	self.scope.uploadedfileinfo.replace([]);
+		                	$('rn-file-uploader-edit').scope().fileList.replace([]);
 		                }
                     //Code to display server list of files on file upload rn-file-uploader-edit control ends
                     self.scope.attr("invselectedbundle", invoiceData.bundleId);

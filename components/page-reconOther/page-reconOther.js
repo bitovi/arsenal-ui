@@ -211,45 +211,26 @@ var page = Component.extend({
       var self = this.scope;
       var row = item.closest('tr').data('row').row;
 
-      // var request = {
-      //   "files":[
-      //   {
-
-      //   }
-      //   ]
-      // }
-      // if(row.invFileId == 0 || row.invFileId == "" || row.invFileId == null){
-      //   request.files[0]["filePath"] = row.filePath;
-      //   request.files[0]["fileName"] = row.invFileName;
-      // }else{
-      //   request.files[0]["fileId"] = row.invFileId;
-      //   request.files[0]["boundType"] = row.invFileType;
-      // }
-      // console.log(JSON.stringify(request));
-
-      // FileManager.downloadFile(request);
-
-      var file = {};
-      file.fileId = row.invFileId;
-      file.boundType = 'INBOUND';
-
-      //FileManager.findOne(request);
-
-      FileManager.findOne(file, function(data) {
-        if (data["status"] == "SUCCESS") {
-
-        } else {
-          // $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-          // $("#messageDiv").show();
-          // setTimeout(function(){
-          //     $("#messageDiv").hide();
-          // },2000)
-          commonUtils.showErrorMessage(data["responseText"]);
-        }
-      }, function(xhr) {
-        console.error("Error while downloading the file with fileId: " + fileId + xhr);
-      });
-
+      if (self.pagename.toUpperCase() == "RECONOTHER") {
+        FileManager.downloadFile(row.invFileName, function(data) {
+          if (data["status"] == "FAILURE") {
+            commonUtils.showErrorMessage(data["responseText"]);
+          }
+        }, function(xhr) {
+          console.error("Error while downloading the file :" + row.invFileName);
+        });
+      } else {
+        var file = {};
+        file.fileId = row.invFileId;
+        file.boundType = 'INBOUND';
+        FileManager.findOne(file, function(data) {
+          if (data["status"] == "FAILURE") {
+            commonUtils.showErrorMessage(data["responseText"]);
+          }
+        }, function(xhr) {
+          console.error("Error while downloading the file with fileId: " + fileId + xhr);
+        });
+      }
 
     },
     '#copyToClipboard click': function() {
