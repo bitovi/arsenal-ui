@@ -38,7 +38,7 @@
     {{/showVerboseToggle}}
   </div>
   <div class="currencies">
-    <select can-value={preferredCurr}>
+    <select class="form-control" can-value={preferredCurr}>
       <option value="">CCY</option>
       {{#each regionCurr}}
       <option>{{value}}</option>
@@ -82,7 +82,7 @@
       <div class="priority">
         <input type="checkbox" can-value="{isBundlePrioritySet}" id="priority" />&nbsp;<label for="priority">Set Priority</label>
       </div>
-    {{/isBM}}  
+    {{/isBM}}
     {{#else}}
 
       <label>Payment Option</label>
