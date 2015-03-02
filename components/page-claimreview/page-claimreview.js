@@ -1267,7 +1267,7 @@ var generateTableData = function(invoiceData,footerData){
 
               if(licensorTypeArr.length>1){
 
-                gridData.data[insertedId]["entityName"] = (licensorTypeArr.indexOf('TAX')!== -1)?(licensorTypeArr.length-1)+" types of Licensor":licensorTypeArr.length+" types of Licensor";
+                gridData.data[insertedId]["entityName"] = (licensorTypeArr.indexOf('TAX')!== -1)?(licensorTypeArr.length-1)+" Licensors":licensorTypeArr.length+" Licensors";
               }
               else if(licensorTypeArr.length==1)
                 gridData.data[insertedId]["entityName"] = licensorTypeArr[0];
