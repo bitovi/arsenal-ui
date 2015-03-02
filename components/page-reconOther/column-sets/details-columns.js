@@ -61,7 +61,7 @@ export default [
   title: 'File Name',
   contents: function(row) {
     if(row.invFileName != undefined && row.invFileName != null){
-      return can.stache('<a class="downloadLink fileName" href="#download">'+row.invFileName+'</a>')();
+      return can.stache('<a class="downloadLink fileName" href="#">'+row.invFileName+'</a>')();
     }else{
       return "null";
     }
