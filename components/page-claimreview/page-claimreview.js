@@ -1173,87 +1173,108 @@ var generateTableData = function(invoiceData,footerData){
               var hasChild=true;
 
             if(invoiceLineItems.length > 0){
-              if(invoiceLineItems.length === 1){
-                hasChild=false;
-              }
-              for(var j=0;j<invoiceLineItems.length;j++){
-                var invLITemp={};
-                var periodType = invoiceLineItems[j]["periodType"];
-                if(periodType == null || periodType == undefined ||(periodType !=null && periodType.length ==0)){
-                  periodType='P';
-                }
-
-                invLITemp["entityId"] = invTemp["entityId"]+","+  invTemp["entityName"] ;
-                invLITemp["__isChild"] = true;
-                invLITemp["entityName"] = "";
-                invLITemp["invoiceNumber"] = invoiceLineItems[j]["invoiceNumber"];
-                invLITemp["currency"] = invTemp["currency"];
-
-                var period = invoiceLineItems[j]["period"];
-
-                invLITemp["period"] = "";
-                invTemp["period"] = invoiceLineItems[j]["period"];
-
-                invLITemp["country"] = invoiceLineItems[j]["countryId"];
-                invLITemp["contentType"] = invoiceLineItems[j]["contentTypeName"];
-
-                invLITemp["invoiceAmount"] = CurrencyFormat(invoiceLineItems[j]["invoiceAmount"]);
-
-                invLITemp["overrepAmount"] = (invoiceLineItems[j]["overrepAmount"])==null?0.00:CurrencyFormat(invoiceLineItems[j]["overrepAmount"]);
-
-                invLITemp["lineDisputeAmount"] = (invoiceLineItems[j]["lineDisputeAmount"])==null?0.00:CurrencyFormat(invoiceLineItems[j]["lineDisputeAmount"]);
-
-                invLITemp["reconAmount"] = CurrencyFormat(invoiceLineItems[j]["reconAmount"]);
-
-                invLITemp["oaAllocated"] = CurrencyFormat(invoiceLineItems[j]["oaAllocated"]);
-
-                invLITemp["caAllocated"] = CurrencyFormat(invoiceLineItems[j]["caAllocated"]);
-
-                invLITemp["balance"] = (invoiceLineItems[j]["balance"]==null)?0:CurrencyFormat(invoiceLineItems[j]["balance"]);
-
-                invLITemp["priorPaid"] = CurrencyFormat(invoiceLineItems[j]["priorPaid"]);
-
-                invLITemp["invPmtSaturation"] = CurrencyFormat(invoiceLineItems[j]["invPmtSaturation"]);
-
-                invLITemp["pmtSaturation"] = CurrencyFormat(invoiceLineItems[j]["pmtSaturation"]);
-
-                invLITemp["overrepDispPer"] = (invoiceLineItems[j]["overrepDispPer"]==null)?0.00:CurrencyFormat(invoiceLineItems[j]["overrepDispPer"]);
-
-                invLITemp["liDispPer"] = (invoiceLineItems[j]["liDispPer"]==null)?0.00:CurrencyFormat(invoiceLineItems[j]["liDispPer"]);
-
-                invLITemp["status"] = getInvoiceStatus(invoiceLineItems[j]["status"]);
-                invTemp["status"] = invLITemp["status"];
-
-                //added for licensor
-                invLITemp["entityName"] = invoiceLineItems[j]["entityName"];
-                //end
-
-                if(period != undefined && period > 0){
-                    invLITemp["period"] = periodWidgetHelper.getDisplayPeriod(period,periodType);
-                    if(lowestPeriod==0 && highestPeriod == 0){
-                      lowestPeriod=Number(period);
-                      highestPeriod=Number(period);
-                    }
-                    tmpPeriod = Number(period);
-                    if (tmpPeriod < lowestPeriod) lowestPeriod = tmpPeriod;
-                    if (tmpPeriod > highestPeriod) highestPeriod = tmpPeriod;
-                  }else if(period == 0){
-                    invLITemp["period"] = '';
+              if(invoiceLineItems.length > 1){
+                for(var j=0;j<invoiceLineItems.length;j++){
+                  var invLITemp={};
+                  var periodType = invoiceLineItems[j]["periodType"];
+                  if(periodType == null || periodType == undefined ||(periodType !=null && periodType.length ==0)){
+                    periodType='P';
                   }
 
-                if(invLITemp["contentType"]!= undefined && invLITemp["contentType"].indexOf('TAX') == -1){
-                    contentTypeArr.push(invLITemp["contentType"]);
-                }
-                if(invLITemp["country"] != undefined && typeof(invLITemp["country"]) != 'null'){
-                  countryArr.push(invLITemp["country"]);
-                }
+                  invLITemp["entityId"] = invTemp["entityId"]+","+  invTemp["entityName"] ;
+                  invLITemp["__isChild"] = true;
+                  invLITemp["entityName"] = "";
+                  invLITemp["invoiceNumber"] = invoiceLineItems[j]["invoiceNumber"];
+                  invLITemp["currency"] = invTemp["currency"];
 
-                if(invLITemp["entityName"] != undefined && typeof(invLITemp["entityName"]) != 'null'){
-                  licensorTypeArr.push(invLITemp["entityName"]);
-                }
+                  var period = invoiceLineItems[j]["period"];
 
-                invoiceNumberArr.push(invLITemp["invoiceNumber"]);
-                gridData.data.push(invLITemp);
+                  invLITemp["period"] = "";
+                  invTemp["period"] = invoiceLineItems[j]["period"];
+
+                  invLITemp["country"] = invoiceLineItems[j]["countryId"];
+                  invLITemp["contentType"] = invoiceLineItems[j]["contentTypeName"];
+
+                  invLITemp["invoiceAmount"] = CurrencyFormat(invoiceLineItems[j]["invoiceAmount"]);
+
+                  invLITemp["overrepAmount"] = (invoiceLineItems[j]["overrepAmount"])==null?0.00:CurrencyFormat(invoiceLineItems[j]["overrepAmount"]);
+
+                  invLITemp["lineDisputeAmount"] = (invoiceLineItems[j]["lineDisputeAmount"])==null?0.00:CurrencyFormat(invoiceLineItems[j]["lineDisputeAmount"]);
+
+                  invLITemp["reconAmount"] = CurrencyFormat(invoiceLineItems[j]["reconAmount"]);
+
+                  invLITemp["oaAllocated"] = CurrencyFormat(invoiceLineItems[j]["oaAllocated"]);
+
+                  invLITemp["caAllocated"] = CurrencyFormat(invoiceLineItems[j]["caAllocated"]);
+
+                  invLITemp["balance"] = (invoiceLineItems[j]["balance"]==null)?0:CurrencyFormat(invoiceLineItems[j]["balance"]);
+
+                  invLITemp["priorPaid"] = CurrencyFormat(invoiceLineItems[j]["priorPaid"]);
+
+                  invLITemp["invPmtSaturation"] = CurrencyFormat(invoiceLineItems[j]["invPmtSaturation"]);
+
+                  invLITemp["pmtSaturation"] = CurrencyFormat(invoiceLineItems[j]["pmtSaturation"]);
+
+                  invLITemp["overrepDispPer"] = (invoiceLineItems[j]["overrepDispPer"]==null)?0.00:CurrencyFormat(invoiceLineItems[j]["overrepDispPer"]);
+
+                  invLITemp["liDispPer"] = (invoiceLineItems[j]["liDispPer"]==null)?0.00:CurrencyFormat(invoiceLineItems[j]["liDispPer"]);
+
+                  invLITemp["status"] = getInvoiceStatus(invoiceLineItems[j]["status"]);
+                  invTemp["status"] = invLITemp["status"];
+
+                  //added for licensor
+                  invLITemp["entityName"] = invoiceLineItems[j]["entityName"];
+                  //end
+
+                  if(period != undefined && period > 0){
+                      invLITemp["period"] = periodWidgetHelper.getDisplayPeriod(period,periodType);
+                      if(lowestPeriod==0 && highestPeriod == 0){
+                        lowestPeriod=Number(period);
+                        highestPeriod=Number(period);
+                      }
+                      tmpPeriod = Number(period);
+                      if (tmpPeriod < lowestPeriod) lowestPeriod = tmpPeriod;
+                      if (tmpPeriod > highestPeriod) highestPeriod = tmpPeriod;
+                    }else if(period == 0){
+                      invLITemp["period"] = '';
+                    }
+
+                  if(invLITemp["contentType"]!= undefined && invLITemp["contentType"].indexOf('TAX') == -1){
+                      contentTypeArr.push(invLITemp["contentType"]);
+                  }
+                  if(invLITemp["country"] != undefined && typeof(invLITemp["country"]) != 'null'){
+                    countryArr.push(invLITemp["country"]);
+                  }
+
+                  if(invLITemp["entityName"] != undefined && typeof(invLITemp["entityName"]) != 'null'){
+                    licensorTypeArr.push(invLITemp["entityName"]);
+                  }
+
+                  invoiceNumberArr.push(invLITemp["invoiceNumber"]);
+                  gridData.data.push(invLITemp);
+                }
+              }else{
+                if(invoiceLineItems.length == 1){
+                  hasChild=false;
+                  var contentType=invoiceLineItems[0]["contentTypeName"];
+                  var country=invoiceLineItems[0]["countryId"];
+                  var entityName=invoiceLineItems[0]["entityName"];
+                  if(contentType != undefined && contentType.indexOf('TAX') == -1){
+                      contentTypeArr.push(contentType);
+                  }
+                  if(country != undefined && typeof(country) != 'null'){
+                    countryArr.push(country);
+                  }
+
+                  if(entityName != undefined && typeof(entityName) != 'null'){
+                    licensorTypeArr.push(entityName);
+                  }
+
+                  invoiceNumberArr.push(invoiceLineItems[0]["invoiceNumber"]);
+
+                  var period = invoiceLineItems[0]["period"];
+                  lowestPeriod=highestPeriod=period;
+                }
               }
 
             }
