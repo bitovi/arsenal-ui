@@ -1,7 +1,15 @@
+@row-hover-background:#d3f0fe;
 rn-dashboard-payments-detail {
   display: block;
 
   .popover {
     max-width: none;
+  }
+
+  #detailsChart {
+    li:hover {
+      //outline: @row-hover-outline;
+      background:@row-hover-background;
+    }
   }
 }
