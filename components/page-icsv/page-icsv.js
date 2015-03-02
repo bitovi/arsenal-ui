@@ -302,7 +302,7 @@ var page = Component.extend({
                                  return inputArray.indexOf(item) == index;
                           });
                           if(contentTypeArr.length>1){
-                            tempObj.contentType = contentTypeArr.length+" types of Content";
+                            tempObj.contentType = contentTypeArr.length+" content types";
                           }
                           else if(contentTypeArr.length==1)
                             tempObj.contentType = contentTypeArr[0];

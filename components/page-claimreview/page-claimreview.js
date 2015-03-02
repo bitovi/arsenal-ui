@@ -1254,7 +1254,7 @@ var generateTableData = function(invoiceData,footerData){
                    return inputArray.indexOf(item) == index;
             });
             if(contentTypeArr.length>1){
-              gridData.data[insertedId]["contentType"] = (contentTypeArr.indexOf('TAX')!== -1)?(contentTypeArr.length-1)+" types of Content":contentTypeArr.length+" types of Content";
+              gridData.data[insertedId]["contentType"] = (contentTypeArr.indexOf('TAX')!== -1)?(contentTypeArr.length-1)+" content types":contentTypeArr.length+" content types";
             }
             else if(contentTypeArr.length==1)
               gridData.data[insertedId]["contentType"] = contentTypeArr[0];

@@ -1310,7 +1310,7 @@ function reRenderGrid(self){
 
         if(contentTypeArr.length>1){
 
-          gridData.data[insertedId]["contentGrpName"] = contentTypeArr.length+" types of Content";
+          gridData.data[insertedId]["contentGrpName"] = contentTypeArr.length+" content types";
         }
         else if(contentTypeArr.length==1)
           gridData.data[insertedId]["contentGrpName"] = contentTypeArr[0];

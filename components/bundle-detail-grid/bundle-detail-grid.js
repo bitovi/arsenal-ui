@@ -79,7 +79,7 @@ var BundleDetailGrid = ScrollingGrid.extend({
         });
 
         var arrSize = _.size(contentType) ;
-        arrSize > 1 ? group.attr('contentGrpName', arrSize+" types of Content") : group.attr('contentGrpName',contentType[0]) ;
+        arrSize > 1 ? group.attr('contentGrpName', arrSize+" content types") : group.attr('contentGrpName',contentType[0]) ;
 
         arrSize = _.size(country) ;
         arrSize > 1 ? group.attr('country',arrSize+" Countries") : group.attr('country',country[0]) ;
