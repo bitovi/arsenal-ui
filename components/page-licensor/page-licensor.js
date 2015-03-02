@@ -407,6 +407,7 @@ var page = Component.extend({
       var self = this;
       var countryObj;
       var reportBox = $("input.reportBox");
+
       for(var i=0; i<reportBox.length; i++) {
         if(reportBox[i].checked) {
           reportBox[i].checked = false;
@@ -423,7 +424,8 @@ var page = Component.extend({
         var checked = false;
         for (var j = 0; j < reportBox.length; j++) {
           if ($.inArray(reportBox[j].getAttribute("value"), reportConf) > -1) {
-            reportBox[j].checked = true;
+            reportBox[j].checked = true;        
+            reportBox[j].parentNode.className = reportBox[j].parentNode.className + " tdselected";
             checked = true;
           }
         }
@@ -432,7 +434,9 @@ var page = Component.extend({
           for (var i = 0; i < country.length; i++) {
             var obj = country[i].getAttribute("value");
             if (obj == countryObj.id) {
-              country[i].checked = true;
+              country[i].checked = true;        
+              country[i].parentNode.className = country[i].parentNode.className + " tdselected";
+               $('#'+country[i].value).addClass('tdselected');
             }
           }
         }
