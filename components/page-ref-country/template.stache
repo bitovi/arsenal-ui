@@ -341,9 +341,9 @@
     <div class="col-sm-4"></div>
     <div class="col-sm-8">
       <button type="button" class="btn btn-default buttonCancel btn-custom-small-disabled" id="buttonCancel">Cancel</button>
-      <button id="submitBtn" {{disableSubmit 11}} type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-small marginLeft10" style="{{enableButtonsPropose}}">Propose</button>
-      <button id="approveBtn"  type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-small marginLeft10" style="{{enableButtonsApprove}}">Approve</button>
-      <button id="rejectBtn"  type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-small marginLeft10" style="{{enableButtonsReject}}">Reject</button>
+      <button id="submitBtn" {{disableSubmit 11}} type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-small marginLeft10" style="{{enableButtonsPropose}}">Submit</button>
+      <!--<button id="approveBtn"  type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-small marginLeft10" style="{{enableButtonsApprove}}">Approve</button>
+      <button id="rejectBtn"  type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-small marginLeft10" style="{{enableButtonsReject}}">Reject</button>-->
      
   </div>
 </div>

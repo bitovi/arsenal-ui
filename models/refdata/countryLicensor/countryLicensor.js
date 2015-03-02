@@ -55,7 +55,7 @@ var CountryLicensor = Model.extend({
 
   propose: function(params){
    return $.ajax({
-      url: 'http://localhost:10645/api/v1/rinsui/' + 'proposeEntityCountryDetails',
+      url: RinsCommon.UI_SERVICE_URL + 'proposeEntityCountryDetails',
       type: 'POST',
       data: JSON.stringify(params),
       dataType: 'json',
@@ -64,7 +64,7 @@ var CountryLicensor = Model.extend({
   },
   approve: function(params){
    return $.ajax({
-      url: 'http://localhost:10645/api/v1/rinsui/' + 'approveEntityCountryDetails',
+      url: RinsCommon.UI_SERVICE_URL + 'approveEntityCountryDetails',
       type: 'POST',
       data: JSON.stringify(params),
       dataType: 'json',
@@ -73,7 +73,7 @@ var CountryLicensor = Model.extend({
   },
   reject: function(params){
    return $.ajax({
-      url: 'http://localhost:10645/api/v1/rinsui/' + 'rejectEntityCountryDetails',
+      url: RinsCommon.UI_SERVICE_URL + 'rejectEntityCountryDetails',
       type: 'POST',
       data: JSON.stringify(params),
       dataType: 'json',
