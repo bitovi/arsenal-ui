@@ -943,7 +943,7 @@ var getClaimReviewData = function(tabView, self) {
               $("#messageDiv").hide();
           },4000);
           */
-          if(values["responseText"].indexOf("No Data found") > -1){
+          if(values["responseText"].indexOf("No Data found") > -1 || values["responseCode"] == "IN1015"){
             commonUtils.showSuccessMessage(values["responseText"]);
           }
           self.attr('licensorRecordsAvailable', values.recordsAvailable);
