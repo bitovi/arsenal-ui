@@ -672,6 +672,7 @@ var BundleDetailTabs = Component.extend({
 
     },
     '{scope} pageState.selectedBundle': function(scope) {
+      console.log(" BUndle Chnage Identified");
       commonUtils.hideUIMessage();
       this.scope.selectedBundleChanged(this.scope);
     },
