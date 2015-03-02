@@ -729,12 +729,12 @@ var resetSelectedBundle = function(scope){
 
   var selectedBundle = scope.pageState.selectedBundle;
 
-  can.batch.start();
+ can.batch.start();
   scope.resetToken();
   scope.attr("paymentType", selectedBundle.paymentOption);
   // clear out selectedRows
   scope.selectedRows.splice(0, scope.selectedRows.length);
-  scope.attr("isBundlePrioritySet", false);
+  scope.attr("isBundlePrioritySet", selectedBundle.priority == "Y" ? true:false );
   //$("#messageDiv").hide();
   $(".previousComments").val();
   $(".previousComments").hide();
@@ -743,7 +743,7 @@ var resetSelectedBundle = function(scope){
   scope.pageState.attr('validationGrid',false);
   scope.pageState.attr('expandBottomGrid',false);
 
-  var region = scope.appstate.attr('region') != undefined ? scope.appstate.attr('region').id : "";
+  var region = selectedBundle.attr('regionId') != undefined ? selectedBundle.attr('regionId') : "2";
   Currency.getCurrByRegion(region).done(function(curr) {
     scope.regionCurr.splice(0, scope.regionCurr.length, ...curr.data);
   });
