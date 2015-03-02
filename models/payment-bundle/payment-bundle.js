@@ -319,11 +319,12 @@ var PaymentBundle = Model.extend({
       var rulesCompleted = 0,
           rulesTotal = 0;
 
+
       if(validationResponse.status != "FAILURE" && validationResponse.paymentBundle != undefined){ // On success
 
         // only update these if validation is done
         if(validationResponse.paymentBundle.vldtnStatus === 5) {
-            can.batch.start();
+          can.batch.start();
             validationResponse.paymentBundle.bundleDetailsGroup.forEach(function(group) {
               var target = undefined;
 
@@ -356,10 +357,13 @@ var PaymentBundle = Model.extend({
             //   validationRulesTotal: rulesTotal
             // });
 
-            can.batch.stop();
+          can.batch.stop();
 
-          }
+        }
 
+      }else if(validationResponse.status == "FAILURE"){
+
+        bundle.attr('validationStatus', validationResponse.status);
       }
 
       return bundle;
