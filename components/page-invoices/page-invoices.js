@@ -509,6 +509,7 @@ var page = Component.extend({
 
     },
     '.select-toggle-all change': function(){
+      commonUtils.hideUIMessage();
       var self=this;
       if($('.select-toggle-all').is(":checked")){
         var invoiceData = self.scope.attr().allInvoicesMap[0].invoices;
@@ -539,6 +540,7 @@ var page = Component.extend({
       }
     },
     '.invId :checkbox click': function(item, el, ev) {
+      commonUtils.hideUIMessage();
       var self = this;
       var val = parseInt($(item[0]).attr("value"));
       var row = item.closest('tr').data('row').row;
@@ -601,6 +603,7 @@ var page = Component.extend({
       //alignGrid('invoiceGrid');
     },
     "{checkedRows} change": function(item,el,ev){
+          commonUtils.hideUIMessage();
           var self = this;
           console.log("Checked rows "+JSON.stringify(self.scope.checkedRows.attr()));
           if(self.scope.attr('checkedRows').length > 0){

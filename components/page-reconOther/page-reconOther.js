@@ -193,6 +193,7 @@ var page = Component.extend({
       });
     },
     'tbody tr click': function(el, ev) {
+      commonUtils.hideUIMessage();
       $(el).parent().find('tr').removeClass("selected");
       $(el).parent().find('tr').removeClass("highlight");
       $(el).addClass("selected");
