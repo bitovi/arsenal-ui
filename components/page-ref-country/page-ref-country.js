@@ -391,7 +391,7 @@ var page = Component.extend({
     disableSubmit:function(fieldId){
       var screenId = this.appstate.screenLookup.attr("screenid");
        if(this.attr("state") == "Read" || commonUtils.getFieldAttribute(screenId,fieldId)){
-         return 'disabled';
+         //return 'disabled';
        }else{
          return '';
        }
@@ -500,10 +500,14 @@ var page = Component.extend({
         }
       }).on('error.field.bv', function(e, data) {
           $('*[data-bv-icon-for="'+data.field +'"]').popover('show');
-      $('#submitBtn').prop('disabled',true);
+          $('#submitBtn').prop('disabled',true);
       }).on('success.field.bv', function(e, data) {
-          data.bv.disableSubmitButtons(false);
-      $('#submitBtn').prop('disabled',false);
+          //data.bv.disableSubmitButtons(false);
+          if($('#editableText').val().length==0){/*Check the textarea editable - Onload*/  
+            $("#submitBtn").prop("disabled", true);
+          }else{
+            $('#submitBtn').prop('disabled',false);
+          }
       });
 
       if(commonUtils.isReadOnly()=='true'){
@@ -576,6 +580,13 @@ var page = Component.extend({
       self.scope.attr("footerrowspresent", true);
       self.scope.attr("footerdatasocmod",  self.scope.societyModelMapping != null && self.scope.societyModelMapping.length >0 ? self.scope.societyModelMapping.length : 0);
 
+    },
+    '#editableText keyup':function(){   
+      if($('#editableText').val().length==0){
+        $("#submitBtn").prop("disabled", true);
+      }else{
+        $("#submitBtn").prop("disabled", false);
+      }
     },
     '#fetchDetailsBtn click':function(){
       var self = this.scope;

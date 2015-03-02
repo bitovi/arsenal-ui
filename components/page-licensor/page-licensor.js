@@ -1684,8 +1684,24 @@ var page = Component.extend({
           //setTimeout(function(){
             //$('*[data-bv-icon-for="'+data.field +'"]').popover('hide');
           //},10000);
-
+        $("#submitButton").attr("disabled", true);//Disable checkbox if all valid
       }).on('added.field.bv', function(e, data) {
+
+      }).on('success.field.bv', function(e, data) {   
+
+        $("#submitButton").attr("disabled", false);//Enable checkbox if all valid
+
+        if($('#editableText').val().length==0){/*Check the textarea editable - Onload*/  
+            $("#submitButton").attr("disabled", true);
+          } 
+        /*Check the textarea editable*/  
+        $("#editableText").on('keyup',function(){   
+          if($(this).val().length==0){
+            $("#submitButton").attr("disabled", true);
+          }else{
+            $("#submitButton").attr("disabled", false);
+          }
+        });
       });
 
       $('#entityLicensorTop').on('init.field.bv', function(e, data) {
