@@ -535,20 +535,55 @@ var page = Component.extend({
     	},
     	"#highChart click":function(){
         commonUtils.hideUIMessage();
-        if(this.scope.details.isChild){
-          //$("#messageDiv").hide();
-          //$("#chartContainer").addClass("highcharts_Overlay");
-          var data = this.scope.details;
-             $("#highChartDetails").append(stache('<high-chart details={data}></high-chart>')({data}));
-        }else{
-          // $("#messageDiv").html("<label class='errorMessage'>Please select Invoice from child row to see Historical Trends</label>");
-          // $("#messageDiv").show();
-          // setTimeout(function(){
-          //     $("#messageDiv").hide();
-          // },4000);
-          commonUtils.showErrorMessage("Please select Invoice from child row to see Historical Trends.");
+        var rowData = null;
+        //console.log($(".rn-grid > tbody > tr.selected").data('row'));
+        if($('#licensorView').is(':visible')){ //take it from licensor view
+          if($("#claimLicencorGrid .rn-grid > tbody > tr.selected").length > 0 ){
+            rowData=$("#claimLicencorGrid .rn-grid > tbody > tr.selected").data('row').row;
+          }
+        }else if($('#countryView').is(':visible')){
+          if($("#claimCountryGrid .rn-grid > tbody > tr.selected").length > 0 ){
+            rowData=$("#claimCountryGrid .rn-grid > tbody > tr.selected").data('row').row;
+          }
         }
-    	},
+        if(rowData !== null){
+          var data = null;
+          if(rowData.hasChild || rowData.__isChild){ //this row has child record. So enforce the user to select child record
+            if(this.scope.details.isChild){
+                data = this.scope.details;
+            }else{
+              commonUtils.showErrorMessage("Please select Invoice from child row to see Historical Trends.");
+            }
+          }else if(!rowData.hasChild || !rowData.__isChild){
+            //if there is no child then we can take the data from the selected record
+            var requestFrom='Licensor';
+            if($("#couView").parent().hasClass("active")){
+              requestFrom="Country";
+            }
+            var entityName=rowData['entityName']
+            var licensor=rowData['entityId'];
+            if(licensor == null || licensor == undefined){
+              entityName=row.entityId.split(",")[1];
+            }
+            data={
+              'countryId':rowData['country'],
+              'licensorId':entityName,
+              'requestFrom':requestFrom,
+              'fiscalPeriod':rowData['periodNo'],
+              'periodType':rowData['periodType'],
+              'contentType':rowData['contentType'],
+              'currency':rowData['currency']
+            };
+          }else{
+           commonUtils.showErrorMessage("Please select Invoice from child row to see Historical Trends.");
+         }
+          if(data !== null && data['contentType'] !== 'TAX'){
+            $("#highChartDetails").append(stache('<high-chart details={data}></high-chart>')({data}));
+          }
+        }else{
+          commonUtils.showErrorMessage("Please select Invoice line to see Historical Trends.");
+        }
+      },
       "#highChartDetails mousedown": function(item, el, ev){
         if(el.toElement.id == 'close'){
           $("#highChartDetails").addClass("highcharts_Hide");
@@ -1274,6 +1309,8 @@ var generateTableData = function(invoiceData,footerData){
 
                   var period = invoiceLineItems[0]["period"];
                   lowestPeriod=highestPeriod=period;
+                  gridData.data[insertedId]["periodNo"]=period;
+                  gridData.data[insertedId]["periodType"]=periodType;
                 }
               }
 
@@ -1317,11 +1354,11 @@ var generateTableData = function(invoiceData,footerData){
               gridData.data[insertedId]["country"] = countryArr[0];
 
             if(lowestPeriod != undefined && highestPeriod != undefined){
-                  gridData.data[insertedId]["period"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType);
-                  if(lowestPeriod != highestPeriod){
-                    gridData.data[insertedId]["period"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType)+' - '+periodWidgetHelper.getDisplayPeriod(highestPeriod,periodType);
-                  }
-                }
+              gridData.data[insertedId]["period"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType);
+              if(lowestPeriod != highestPeriod){
+                gridData.data[insertedId]["period"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType)+' - '+periodWidgetHelper.getDisplayPeriod(highestPeriod,periodType);
+              }
+            }
 
 
             invoiceNumberArr = $.unique(invoiceNumberArr);
