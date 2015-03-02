@@ -22,6 +22,8 @@ var PeriodCalendar = Component.extend({
       var parent=li.closest('.calendarcls').find('input[type=text]');
       li.closest('.periods').find('.period li a').removeClass('period-active');
       li.addClass('period-active');
+      this.scope.year = $(".period-calendar-yearbtn").filter(':visible:first').val() === this.scope.year ? this.scope.year :  $(".period-calendar-yearbtn").filter(':visible:first').val();
+
       if (li.find('span:first').text() == '') {
         //var addZ = li.text().slice(1)!=4 ? '0':''
         var value = li.text() + 'FY' + this.scope.year.slice(-2);
@@ -132,7 +134,7 @@ var PeriodCalendar = Component.extend({
     },
     '.period-calendar-yearbtn change': function(el, ev) {
       var self = this;
-      self.scope.year = $(".period-calendar-yearbtn").val() === self.scope.year ? self.scope.year :  $(".period-calendar-yearbtn").val();
+      self.scope.year = $(".period-calendar-yearbtn").filter(':visible:first').val() === self.scope.year ? self.scope.year :  $(".period-calendar-yearbtn").filter(':visible:first').val();
     }
   },
   helpers:function(){

@@ -43,7 +43,14 @@ Grid.extend({
         id: 'sorticon',
         title: '<span class="open-toggle-all"></span>',
         sortable: false,
-        contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}}')({isChild: row.__isChild}); }
+        //contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}}')({isChild: row.__isChild}); }
+        contents: function(row) {
+          if (row.hasChild) {
+            return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}}')({isChild: row.__isChild});
+          } else {
+            return stache('{{#unless isChild}}<span class="open-toggle" style="visibility: hidden;"></span>{{/unless}}')({isChild: row.__isChild});
+          }
+        }
       },
       {
         id: 'entityName',
@@ -943,7 +950,7 @@ var getClaimReviewData = function(tabView, self) {
               $("#messageDiv").hide();
           },4000);
           */
-          if(values["responseText"].indexOf("No Data found") > -1){
+          if(values["responseText"].indexOf("No Data found") > -1 || values["responseCode"] == "IN1015"){
             commonUtils.showSuccessMessage(values["responseText"]);
           }
           self.attr('licensorRecordsAvailable', values.recordsAvailable);
@@ -1131,6 +1138,7 @@ var generateTableData = function(invoiceData,footerData){
             var invTemp = {};
             invTemp["entityId"] = invoiceData[i]["entityId"]+","+ invoiceData[i]["entityName"];
             invTemp["__isChild"] = false;
+            invTemp["hasChild"] = true;
             invTemp["entityName"] = (invoiceData[i]["entityName"]==null)?"":invoiceData[i]["entityName"];
             invTemp["invoiceNumber"] = "";
             invTemp["currency"] = invoiceData[i]["currency"];
@@ -1162,8 +1170,12 @@ var generateTableData = function(invoiceData,footerData){
              var lowestPeriod = 0;
               var highestPeriod = 0;
               var tmpPeriod = 0;
+              var hasChild=true;
 
             if(invoiceLineItems.length > 0){
+              if(invoiceLineItems.length === 1){
+                hasChild=false;
+              }
               for(var j=0;j<invoiceLineItems.length;j++){
                 var invLITemp={};
                 var periodType = invoiceLineItems[j]["periodType"];
@@ -1295,6 +1307,7 @@ var generateTableData = function(invoiceData,footerData){
              if(invoiceNumberArr.length==1){
               gridData.data[insertedId]["invoiceNumber"] = invoiceNumberArr[0];
              }
+             gridData.data[insertedId]["hasChild"] = hasChild;
           }
           var footerJson = {"entityId":"","__isChild":false,
           "entityName":"Total in Regional Currency (EUR)","invoiceNumber":"","currency":"","period":"","country":"","contentType":"","invoiceAmount":"350000","overrepAmount":"20000","lineDisputeAmount":"40000","reconAmount":"30000","oaAllocated":"2000","caAllocated":"2000","balance":"76",

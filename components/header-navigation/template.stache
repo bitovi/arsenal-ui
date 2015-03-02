@@ -19,7 +19,8 @@
             <li><a href="/dashboard">Dashboard</a></li>
 
               <li name='Approvals' class="dropdown" >
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Approvals<span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Approvals<!--<span class="caret"></span>-->
+                </a>
                 <ul class="dropdown-menu" role="menu">
                     <li><a href='{{url}}approvals/accrualApproval' class="old" target="_blank">Accrual</a></li>
                  <!--   <li><a href='{{url}}approvals/refDataApproval' class="old" target="_blank">Ref Data</a></li>-->
@@ -31,7 +32,7 @@
 
 
             <li name='Invoices' class="dropdown" >
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Invoices<span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Invoices<!--<span class="caret"></span>--></a>
                 <ul class="dropdown-menu" role="menu">
                     <li {{isScreenEnabled 3}}><a href="/create-invoice" data-screenid="3">Invoice Entry</a></li>
                     <li {{isScreenEnabled 4}}><a href='/icsv'  data-screenid="4">iCSV Entry</a></li>
@@ -43,7 +44,7 @@
             </li>
 
              <li {{isScreenEnabled 20}} name='Analytics' class="dropdown" >
-                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Analytics<span class="caret"></span></a>
+                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Analytics<!--<span class="caret"></span>--></a>
                  <ul class="dropdown-menu" role="menu">
 
                      <li {{isScreenEnabled 22}}><a href='/claimreview'  data-screenid="22">Claim Review</a></li>
@@ -53,7 +54,7 @@
              </li>
 
             <li name='Reference' class="dropdown" >
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reference<span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reference<!--<span class="caret"></span>--></a>
                 <ul class="dropdown-menu" role="menu">
                     <li {{isScreenEnabled 16}}><a href='/licensor'  data-screenid="16">Licensor</a></li>
                     <li {{isScreenEnabled 17}}><a href='/ref-country'  data-screenid="17">Country</a></li>
@@ -63,7 +64,7 @@
              </li>
 
              <li name='Accruals' class="dropdown" >
-                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Accruals<span class="caret"></span></a>
+                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Accruals<!--<span class="caret"></span>--></a>
                  <ul class="dropdown-menu" role="menu">
                      <li {{isScreenEnabled 11}}><a href='{{url}}accrualJV' class="old" target="_blank">Accrual Journal Voucher</a></li>
                      <li {{isScreenEnabled 12}}><a href='{{url}}accrualDetails' class="old" target="_blank">Accrual Details</a></li>
@@ -74,7 +75,7 @@
              </li>
 
               <li name='System' class="dropdown" >
-                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">System<span class="caret"></span></a>
+                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">System<!--<span class="caret"></span>--></a>
                    <ul class="dropdown-menu" role="menu">
                        <li {{isScreenEnabled 25}}><a href='{{url}}jobStatistics' class="old" target="_blank">Job Statistics</a></li>
                        <li {{isScreenEnabled 26}}><a href='{{url}}reportDownloads' class="old" target="_blank">Report Downloads</a></li>
@@ -82,7 +83,7 @@
               </li>
 
               <li name='Approval History' class="dropdown" >
-               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Approval History<span class="caret"></span></a>
+               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Approval History<!--<span class="caret"></span-->></a>
                <ul class="dropdown-menu" role="menu">
                    <li {{isScreenEnabled 27}}><a href='{{url}}accrualApprovalHistory' class="old" target="_blank">Accrual Approval</a></li>
                    <li {{isScreenEnabled 28}}><a href='{{url}}refDataHistory' class="old" target="_blank">Ref Data</a></li>
