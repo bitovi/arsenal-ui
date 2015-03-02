@@ -50,6 +50,35 @@ var CountryLicensor = Model.extend({
       dataType: 'json',
       contentType: 'application/json'
     })
+  },
+
+
+  propose: function(params){
+   return $.ajax({
+      url: 'http://localhost:10645/api/v1/rinsui/' + 'proposeEntityCountryDetails',
+      type: 'POST',
+      data: JSON.stringify(params),
+      dataType: 'json',
+      contentType: 'application/json'
+    })
+  },
+  approve: function(params){
+   return $.ajax({
+      url: 'http://localhost:10645/api/v1/rinsui/' + 'approveEntityCountryDetails',
+      type: 'POST',
+      data: JSON.stringify(params),
+      dataType: 'json',
+      contentType: 'application/json'
+    })
+  },
+  reject: function(params){
+   return $.ajax({
+      url: 'http://localhost:10645/api/v1/rinsui/' + 'rejectEntityCountryDetails',
+      type: 'POST',
+      data: JSON.stringify(params),
+      dataType: 'json',
+      contentType: 'application/json'
+    })
   }
 }, {});
 

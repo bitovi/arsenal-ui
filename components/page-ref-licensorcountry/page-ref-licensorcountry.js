@@ -72,6 +72,9 @@ var page = Component.extend({
     footerdatarepconf : "",
     footerdata : "",
     appstate: undefined,// this gets passed in
+    enableButtonsApprove: "display:none",
+    enableButtonsReject: "display:none",
+    enableButtonsPropose: "display:none",
 
       getPricingModelsOnLoad : function(modelId, versionNo) {
         var self = this;
@@ -94,8 +97,44 @@ var page = Component.extend({
           return $(this).text() == text;
         }).prop('selected', true);
 
+      },
+
+      switchButtons: function(status) {
+
+      var self = this;
+
+      if(status == "N") {
+
+        if(self.appstate.userInfo.roleIds[0] == constants.ROLES.BM) {
+
+          self.attr("enableButtonsApprove", "display:none");
+          self.attr("enableButtonsReject", "display:none");
+          self.attr("enableButtonsPropose", "display:none");
+
+        } else {
+
+          self.attr("enableButtonsApprove", "display:inline-block");
+          self.attr("enableButtonsReject", "display:inline-block");
+          self.attr("enableButtonsPropose", "display:none");
+
+        }
+
+      } else {
+
+        if(self.appstate.userInfo.roleIds[0] == constants.ROLES.FA) {
+          self.attr("enableButtonsApprove", "display:none");
+          self.attr("enableButtonsReject", "display:none");
+          self.attr("enableButtonsPropose", "display:none");
+        } else {
+          self.attr("enableButtonsApprove", "display:none");
+          self.attr("enableButtonsReject", "display:none");
+          self.attr("enableButtonsPropose", "display:inline-block");
+
+        }
+
       }
 
+    }
 
 
   },
@@ -128,6 +167,32 @@ var page = Component.extend({
         //self.scope.attr("pricingModels").replace(values[1].modelTypes);
         self.scope.attr("pricingMethods").replace(values[2].pricingMethodList);
 
+    if(self.scope.appstate.screenLookup.attr("screendetails") != undefined && self.scope.appstate.screenLookup.attr("screendetails") != null) {
+        
+          var requestObj  = {
+            entityCountryDetails:{
+              entityCountry:{
+                id: self.scope.appstate.screenLookup.screendetails.attr("tableId")
+              }
+            }
+          }
+          
+          CountryLicensor.findOne(UserReq.formRequestDetails(requestObj),function(data){
+
+            loadPage(self, data);
+
+            $("#loading_img").hide();
+            $(".mainLayoutId").show();
+
+          },function(xhr){
+            console.error("Error while loading: country-Entity Details"+xhr);
+          });
+
+        } else {
+
+            self.scope.pageState.entityCountryDetails.entityCountry.attr("entityId", licensor);
+        }
+        
         var pricingmodelTemps  = [];
 
         var saved = false;
@@ -252,7 +317,8 @@ var page = Component.extend({
 
           }
 
-
+      $(".multicomments-required").hide();
+         
           var self = this;
 
           reportConfigurationList = new can.List();
@@ -588,7 +654,9 @@ var page = Component.extend({
             };
 
             //console.log("requestObj: "+JSON.stringify(requestObj));
-            CountryLicensor.create(UserReq.formRequestDetails(requestObj), function(data){
+            Promise.all([CountryLicensor.propose(UserReq.formRequestDetails(requestObj))]).then(function(values){
+
+            var data = values[0];
             if(data.status == "SUCCESS") {
 
                 var msg = "Country-Licensor details saved successfully";
@@ -633,6 +701,99 @@ var page = Component.extend({
               }
             },function(xhr){
               console.error("Failed :"+xhr);
+            });
+
+
+          },
+          '#approveBtn click': function() {
+
+            var entityCountry_data  = this.scope.pageState.entityCountryDetails.attr("entityCountry")._data;
+            var comments = $(".new-comments").val();
+
+            if(comments != null && comments == "") {
+
+              $(".multicomments-required").show();
+              setTimeout(function(){
+                $(".multicomments-required").hide();
+              },2000);
+              return;
+
+            }
+            var reportConfigurationListObj =  [];
+            var requestObj  = {
+              id : entityCountry_data.id,
+              entityCountryDetails  :{
+                entityCountry:entityCountry_data,
+                reportConfigurationList:reportConfigurationListObj,
+                pricingModelVersionNo: this.scope.pageState.entityCountryDetails.pricingModelVersionNumber,
+                pricingModelId:this.scope.pageState.entityCountryDetails.pricingModelId,
+                comment: $(".new-comments").val(),
+                commentType:"ENTITY_COUNTRY",//TODO: Should be handled at server side. Not required to pass it.
+              },
+
+            };
+            //var genObj = {};
+
+            Promise.all([CountryLicensor.approve(UserReq.formRequestDetails(requestObj))]).then(function(data) {
+
+              if(data[0].status == "SUCCESS") {
+
+                  var msg = "Changes are Approved by workflow";
+
+                  $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
+                  $("#invmessageDiv").show();
+                  setTimeout(function(){
+                    $("#invmessageDiv").hide();
+                  },5000);
+
+              } 
+
+            });
+
+          },
+
+          '#rejectBtn click': function() {
+
+            var entityCountry_data  = this.scope.pageState.entityCountryDetails.attr("entityCountry")._data;
+            
+            var comments = $(".new-comments").val();
+
+            if(comments != null && comments == "") {
+
+              $(".multicomments-required").show();
+              setTimeout(function(){
+                $(".multicomments-required").hide();
+              },2000);
+              return;
+
+            }
+            var reportConfigurationListObj =  [];
+            var requestObj  = {
+              entityCountryDetails  :{
+                entityCountry:entityCountry_data,
+                reportConfigurationList:reportConfigurationListObj,
+                pricingModelVersionNo: this.scope.pageState.entityCountryDetails.pricingModelVersionNumber,
+                pricingModelId:this.scope.pageState.entityCountryDetails.pricingModelId,
+                comment: $(".new-comments").val(),
+                commentType:"ENTITY_COUNTRY",//TODO: Should be handled at server side. Not required to pass it.
+              },
+
+            };
+
+            Promise.all([CountryLicensor.reject(UserReq.formRequestDetails(requestObj))]).then(function(data) {
+
+              if(data[0].status == "SUCCESS") {
+
+                  var msg = "Changes are Rejected by workflow";
+
+                  $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
+                  $("#invmessageDiv").show();
+                  setTimeout(function(){
+                    $("#invmessageDiv").hide();
+                  },5000);
+
+              } 
+
             });
 
 
@@ -805,10 +966,16 @@ var loadPage = function(scope,data){
   var status = data.entityCountryDetails.entityCountry.attr("status");
   if(status == "A"){
     data.entityCountryDetails.entityCountry.attr("status","Active");
-  }else{
+  }if(status == "I"){
     data.entityCountryDetails.entityCountry.attr("status","InActive");
+  }if(status == "N"){
+    data.entityCountryDetails.entityCountry.attr("status","New");
+  }if(status == "R"){
+    data.entityCountryDetails.entityCountry.attr("status","Rejected");
   }
 
+
+  scope.switchButtons(status);
 
   scope.pageState.entityCountryDetails.attr("pricingModelVersionNo", data.entityCountryDetails.pricingModelVersionNo);
   scope.pageState.entityCountryDetails.attr("pricingModelId", data.entityCountryDetails.pricingModelId);

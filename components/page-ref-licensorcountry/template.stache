@@ -72,7 +72,7 @@
       <div class="col-sm-12" id="loading_img"></div>
       <div class="col-sm-12 mainLayoutId" >
 
-          <div class="col-sm-6 right-border maxContHieght" id = "left_layout"><!-- LEFT Layout START-->
+          <div class="col-sm-6 right-border maxContHieght" id = "left_layout" ><!-- LEFT Layout START-->
             <div class="form-group">
              <!-- <div class="col-sm-12">
                 <label for="forId" class="col-sm-4 control-label">ID: </label>
@@ -225,9 +225,11 @@
           <div class="col-sm-12 buttonsPlaceHolder" id = "button_layout">
             <div class="col-sm-12" style="text-align:right;padding:15px;">
 
-                <button type="button" class="btn btn-default buttonCancel btn-custom-small-disabled" id="buttonCancel">Cancel</button>
-                <button id="submitBtn" {{disableSubmit 4}} type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-small">Submit</button>
-
+                <button id="approveBtn"  type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big" style="{{enableButtons 'FC'}}">Approve</button>
+                <button id="rejectBtn"  type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big" style="{{enableButtons 'FC'}}">Reject</button>
+                <button id="submitBtn" {{disableSubmit}} type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big" style="{{enableButtons 'BM'}}">Propose</button>
+                <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
+              
             </div>
           </div>
               <div id="viewPricingModelDivBlock">
