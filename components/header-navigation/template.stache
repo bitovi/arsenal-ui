@@ -83,7 +83,7 @@
               </li>
 
               <li name='Approval History' class="dropdown" >
-               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Approval History<!--<span class="caret"></span-->></a>
+               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Approval History<!--<span class="caret"></span--></a>
                <ul class="dropdown-menu" role="menu">
                    <li {{isScreenEnabled 27}}><a href='{{url}}accrualApprovalHistory' class="old" target="_blank">Accrual Approval</a></li>
                    <li {{isScreenEnabled 28}}><a href='{{url}}refDataHistory' class="old" target="_blank">Ref Data</a></li>
