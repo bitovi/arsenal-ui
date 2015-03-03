@@ -448,6 +448,8 @@ var page = Component.extend({
             }
           }
         }
+      }else{
+        self.reportTypes.replace([]);
       }
     },
 
