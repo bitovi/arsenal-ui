@@ -105,7 +105,7 @@ var headerNavigation = Component.extend({
       '.bookmark click':function(){
           var counter = this.scope.counter;
           var appstate = this.scope.appstate;
-          $('.bookMarkPalceHolder').append(stache('<book-mark appstate={appstate}  counter={counter}></book-mark>')({appstate,counter}));
+          $('.bookMarkPalceHolder').html(stache('<book-mark appstate={appstate}  counter={counter}></book-mark>')({appstate,counter}));
           $('book-mark').slideToggle('fast');
       },
       '.notification click':function(){
