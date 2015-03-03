@@ -223,8 +223,6 @@ var bookmark = Component.extend({
           total-1 > i ? addspl=',':addspl=''
           bookMarkItems.bookmarkName = $(el).find('.bookmarkchkbox').attr('id');
           deleteId.push(bookMarkItems);
-
-
         }
       });
       root["idsToBeDeleted"] =deleteId;
@@ -242,6 +240,7 @@ var bookmark = Component.extend({
             "timer":true
           };
           commonUtils.showMessage(params);
+          $('header-navigation').scope().getCounter()
         }
       });
     },
@@ -304,6 +303,7 @@ var bookmark = Component.extend({
                 $('.listofbookmark').slideDown('fast');
               }
             });
+            $('header-navigation').scope().getCounter()
           }
         });
       }
