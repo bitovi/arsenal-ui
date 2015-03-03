@@ -2274,7 +2274,7 @@ var page = Component.extend({
 
 
     ".rn-grid-revisionhistory>tbody>tr td dblclick" : function(el, ev){
-      commonUtils.hideUIMessage();
+          commonUtils.hideUIMessage();
 
           var self = this;
 
@@ -2283,22 +2283,32 @@ var page = Component.extend({
 
           var genObj = {"id" : "" , "licensorName":""};
 
-          genObj.id = id;
-          genObj.licensorName =  licensor;
+          var status=el.closest('tr').data('row').row.status; 
 
-          self.scope.reValidateFiledsonLoad();
+          if(status == "Inctive"){
+              commonUtils.showErrorMessage("Selected revision cannot be modified as it is Inactive");
+          }else if(status=="Rejected"){
+              commonUtils.showErrorMessage("Selected revision cannot be modified as it is Rejected");
+          }else{            
+            genObj.id = id;
+            genObj.licensorName =  licensor;
 
-          self.scope.clearContactDetails();
+            self.scope.reValidateFiledsonLoad();
 
-          self.scope.clearRepConfDetails();
+            self.scope.clearContactDetails();
 
-          self.scope.disableTabs();
+            self.scope.clearRepConfDetails();
 
-          Promise.all([Analytics.findById(UserReq.formRequestDetails(genObj))]).then(function(values) {
+            self.scope.disableTabs();
 
-            self.scope.populateAnalyticsPage(values, "getHistroy");
+            Promise.all([Analytics.findById(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
-          });
+              self.scope.populateAnalyticsPage(values, "getHistroy");
+
+            });
+          }
+
+          
     },
 
     "#buttonreset click": function(event){
