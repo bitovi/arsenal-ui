@@ -9,16 +9,6 @@
 			<div id="entityDetails">
 
 				<form id="entityLicensorTop">
-
-					<!--
-					<div class="col-sm-4" id="entityDetailsHeading">Licensor Details</div>
-
-					<div class="col-sm-6 col-sm-offset-1">
-						<div id="invmessageDiv" role="alert"></div>
-					</div>
-
-					<div class="col-sm-12"></div>
-					-->
 					<div class="div-warn-container">
 				      	<div class="row pagetitle-div-parent">
 				          	<div class="col-sm-5 pageTitleInv">
@@ -32,6 +22,19 @@
 
 
 					<div class="col-sm-12">
+							<div class="col-sm-1"></div>
+							 <div class="col-sm-5">
+
+								    <label for="inputEmail3" class="col-sm-1 control-label">Region: </label>
+								    <div class="col-sm-4  region">
+								      <select id="invoiceRegion" class="form-control"  name="region" can-value="regionStore">
+										       <option value="">Select</option>
+										       {{#each regions}}
+										       		<option value="{{id}}" class="fontmyriad">{{value}}</option>
+										       	{{/each}}
+									   </select>
+								    </div>
+							  	</div>
 
 						<div class="col-sm-6">
 
@@ -39,18 +42,13 @@
 
 								<!-- <div class="col-sm-12"> -->
 
-								<div class="col-sm-4 small-headers textalignright align-left">
+								<div class="col-sm-1 small-headers textalignright align-left">
 									<label>Licensor:</label>
 								</div>
-								<div class="col-sm-3 form-group requiredBar">
+								<div class="col-sm-3 form-group">
 
 									{{getselectedEntity selectedEntity}}
 									<select id="licensorsFilter" name="licensorsFilter" can-value="selectedEntity" class="form-control resizeBox licensors">
-									<!--	<optgroup>
-
-											<option value="">Select</option>
-
-										</optgroup>-->
 										{{#each licensors}}
 										<optgroup label="{{entityType}}">
 											{{#each entities}}
