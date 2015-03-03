@@ -1695,19 +1695,23 @@ var page = Component.extend({
         }
       }).on('error.field.bv', function(e, data) {
 
-          //$('*[data-bv-icon-for="'+data.field +'"]').popover('show');
+          $('*[data-bv-icon-for="'+data.field +'"]').popover('show');
 
           //setTimeout(function(){
             //$('*[data-bv-icon-for="'+data.field +'"]').popover('hide');
           //},10000);
-        $("#submitButton").attr("disabled", true);//Disable checkbox if all valid
+        $("#submitButton").attr("disabled", true);//Disable submit button if all valid
       }).on('added.field.bv', function(e, data) {
 
-      }).on('success.field.bv', function(e, data) {   
+      }).on('success.field.bv', function(e, data) { 
 
-        $("#submitButton").attr("disabled", false);//Enable checkbox if all valid
+        if(!data.bv.isValid()){
+          data.bv.disableSubmitButtons(true);
+        }
 
-        if($('#editableText').val().length==0){/*Check the textarea editable - Onload*/  
+        $("#submitButton").attr("disabled", false);//Enable submit button if all valid
+
+          if($('#editableText').val().length === 0 || $("#sapVendor").val().length === 0 || $("#invoiceType").val() === "" || $(".accountName").val().length === 0 || $(".periodFromInput").filter(':visible:first').val().length === 0 ){/*Check the textarea editable - Onload*/  
             $("#submitButton").attr("disabled", true);
           } 
         /*Check the textarea editable*/  
@@ -2632,7 +2636,9 @@ function alignGridStats(divId){
   var tableWidth = 0;
   var tdWidth, cellWidthArr = [];
   if(rowLength>0){
-    $('#'+divId+' table').css("width",divWidth);
+      if(divId !== 'societyContacts'){
+        $('#'+divId+' table').css("width",divWidth);
+      }  
       for(var i=1;i<=colLength;i++){
         var theadTdWidth = $('#'+divId+' table>thead>tr>th:nth-child('+i+')').outerWidth();
         var tbodyTdWidth = $('#'+divId+' table>tbody>tr>td:nth-child('+i+')').outerWidth();
@@ -2681,7 +2687,10 @@ function alignGridStats(divId){
           $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
 
         }
-        $('#'+divId+' table').css("width",divWidth);
+        //$('#'+divId+' table').css("width",divWidth);
+        if(divId !== 'societyContacts'){
+          $('#'+divId+' table').css("width",divWidth);
+        }   
       } else {
         for(var j=1;j<=cellWidthArr.length;j++){
           var width = cellWidthArr[j-1];
@@ -2693,7 +2702,10 @@ function alignGridStats(divId){
           $('#societyContacts table>thead>tr>th:last-child').css("width",width-1);
 
         }
-        $('#'+divId+' table').css("width",tableWidth);
+        //$('#'+divId+' table').css("width",tableWidth);
+        if(divId !== 'societyContacts'){
+          $('#'+divId+' table').css("width",divWidth);
+        } 
       }
   }
 

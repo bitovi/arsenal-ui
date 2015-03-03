@@ -93,8 +93,8 @@
   img.addSocContactsAdd {
     height: 15px;
     cursor:pointer;
-    position:absolute;
-    right:3px;
+    position:relative;
+    float: right;
   }
 
   img.addSocContactsRemove {
@@ -749,9 +749,12 @@
             display: block;
           }
           tbody{
-              max-height: 85px;
+            height: 6em;
+              max-height: 6em;
               overflow-y: overlay;
               overflow-x: hidden;
+              border-left:1px solid #bfbfbf;
+              border-right:1px solid #bfbfbf;
           }
         }
       }
