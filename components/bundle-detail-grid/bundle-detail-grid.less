@@ -1,0 +1,65 @@
+@import '../grid/grid.less';
+@import '../grid/examples/scrolling-grid/scrolling-grid.less';
+
+.flex-basis(@basis) {
+  -webkit-flex-basis: @basis;
+  flex-basis: @basis;
+}
+
+.flex-grow(@grow) {
+  -webkit-flex-grow: @grow;
+  flex-grow: @grow;
+}
+
+
+rn-bundle-detail-grid {
+  .grid-mixin();
+  .scrolling-grid-mixin();
+
+  font-size: 10pt;
+
+  table.scrolling {
+    // width: 100%;
+    // min-width:1900px;
+    tbody {
+      height: 10em;
+      //border-bottom: 0;
+    }
+    tbody tr {
+      min-height: 1.5625em;
+    }
+
+
+    tr > th, tr > td {
+      //padding: .3em .5em;
+      &.toggle { .flex-basis(75px); }
+      &.validations { .flex-basis(75px); }
+      &.licensor {.flex-grow(1); .flex-basis(150px); }
+      &.invoiceNumber {  .flex-grow(1); .flex-basis(350px); word-wrap: break-word; }
+      &.paymentCcy { .flex-basis(120px); }
+      &.fiscalPeriod {.flex-basis(175px); }
+      &.country { .flex-basis(120px); }
+      &.contentGrpName { .flex-basis(205px); }
+      &.lineAmt { .flex-basis(150px); }
+      &.orDispAmt { .flex-basis(150px); }
+      &.liDispAmt { .flex-basis(150px); }
+      &.reconAmt { .flex-basis(150px); }
+      &.onaccountAllocatedAmt {  .flex-basis(150px); }
+      &.cashadjAllocatedAmt { .flex-basis(150px); }
+      &.priorPaid { .flex-basis(150px); }
+      &.paymentAmt { .flex-basis(150px); }
+      &.invoicePaymentSaturation { .flex-basis(150px); }
+      &.invoiceSaturation { .flex-basis(150px); }
+      &.paymentSaturation { .flex-basis(150px); }
+      &.preview { .flex-basis(75px); }
+      &.adhocTypeId { .flex-basis(200px); }
+
+    }
+  }
+
+  .lineAmt, .orDispAmt, .liDispAmt, .reconAmt,
+  .onaccountAllocatedAmt, .cashadjAllocatedAmt, .priorPaid,
+  .paymentAmt, .invoiceSaturation, .paymentSaturation, .invoicePaymentSaturation {
+    text-align: right;
+  }
+}

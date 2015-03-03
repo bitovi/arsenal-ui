@@ -1,0 +1,218 @@
+<div style="padding:0 15px;">
+
+
+			<div  class="form-inline" >
+				<div class="col-md-12" style="text-align:right;padding: 0px;padding-top:10px;padding-bottom:10px">
+					<!--<label  for="inputAnalyze">Convert to Currency </label>-->
+
+					<select id="currency" class="currency" name="currency" {{isIngestCcidsSelected 0}} can-value="currency" style="vertical-align: bottom;">
+						<option value="">Select</option>
+						{{#each currencyList}}
+						<option value="{{id}}">{{id}}</option>
+						{{/each}}
+					</select>
+
+					<button type="button"   name="refreshReconStatsName"
+					class="btn buttonSubmit btn-custom-small refreshReconStats"
+					style="margin-left:10px;" {{isIngestCcidsSelected 0}}>
+					Refresh</button>
+				</div>
+				<div class="accordin-div col-md-12" id="arrowbtnCntiner">
+					<img id="arrowbutton" class="pull-up-arrow" style="margin:0 auto;" src="/resources/images/approval_arrow_up.png"></img>
+				</div>
+			</div>
+
+
+
+				<table class="statsTable" style="display:none">
+					<tr>
+						<td>
+
+							<div width="100%">
+
+								<!-- todo export buttons -->
+								<!--<div class="spaceDiv1">&nbsp;</div>-->
+
+								<table style="width:100%;">
+									<tr width="100%" style="vertical-align: top;" colspan="3">
+										<td width="55%">
+											<fieldset id="ingestionStatsDiv" style="padding-left: 0px;">
+
+												<table id="ingestionStatsDiv" style="padding-left: 0px;">
+													<tr>
+														<td width="50%">
+															<label class="mid-headers">Ingestion Stats</label>
+														</td>
+
+														<td style="width:20%;">
+															<!-- <div style="float: right;">
+																<img class="exportToExcel" id="exportExcelSum">
+				        										<img class="copyToClipboard" id="copyToClipboardSum">
+															</div> -->
+
+														</td>
+													</tr>
+												</table>
+
+												<div id="ingestionStatsDivSub">
+													<div id="ingestionReconStats"><div>
+												</div>
+										</fieldset>
+
+										</td>
+
+										<td width="43%" class="summaryStatsTab">
+
+										<fieldset id="summaryStatsDiv" style="width:100%;padding-right: 0px;">
+												<table id="summaryStatsDiv" style="width:100%;padding-left: 0px;">
+													<tr>
+														<td width="50%">
+															<label class="mid-headers">Summary Stats</label>
+														</td>
+														<td width="35%"></td>
+
+														<td style="float: right;">
+															<!-- <div style="display:block">
+																<img class="exportToExcel" id="exportExcel">
+				        								 		<img class="copyToClipboard" id="copyToClipboard">
+															</div> -->
+														</td>
+													</tr>
+												</table>
+
+
+												<table id="summaryStatsTab" style="width:100%" class="rn-summary-stat">
+													<thead>
+														<tr>
+													 		<th class="ssStatus" style="width:55%">Stats</th>
+													 		<th class="ssvalue value" style="width:45%" >Value</th>
+													 	</tr>
+													</thead>
+
+													<!-- can js -->
+													<tbody>
+													{{#each summaryStatsData}}
+
+													<tr>
+														<td style="width:55%">
+															Recon Records #
+														</td>
+														<td style="width:45%" class="value">
+															{{noOfReconRecords}}
+														</td>
+
+
+													</tr>
+
+													<tr>
+														<td style="width:55%">
+															Recon Records %
+														</td>
+														<td style="width:45%" class="value">
+															{{reconRecordsPercentage}}
+														</td>
+
+
+													</tr>
+
+														<tr>
+														<td style="width:55%">
+															Recon Amt
+														</td>
+														<td style="width:45%" class="value">
+															{{reconAmount}}
+														</td>
+
+
+													</tr>
+
+														<tr>
+														<td style="width:55%">
+															Recon Amt %
+														</td>
+														<td style="width:45%" class="value">
+															{{reconAmountPercentage}}
+														</td>
+
+
+													</tr>
+
+													<tr>
+														<td style="width:55%">
+															Lineitem Dispute
+														</td>
+														<td style="width:45%" class="value">
+															{{lineItemDispute}}
+														</td>
+
+													</tr>
+
+													<tr>
+
+														<td style="width:55%">
+															Overrep Dispute
+														</td>
+														<td style="width:45%" class="value">
+															{{overRepDispute}}
+														</td>
+
+													</tr>
+
+													<tr>
+														<td style="width:55%">
+															Total Pub fee
+														</td>
+														<td style="width:45%" class="value">
+															{{totalPubFee}}
+														</td>
+
+													</tr>
+
+													<tr>
+														<td style="width:55%">
+															Recommended Payment
+														</td>
+														<td style="width:45%" class="value">
+															{{recommendedPayment}}
+														</td>
+
+
+													</tr>
+
+													<tr>
+
+														<td style="width:55%">
+															Actual Payment
+														</td>
+														<td style="width:45%" class="value">
+															{{actualPayment}}
+														</td>
+
+													</tr>
+
+												{{/each}}
+												</tbody>
+												<tfoot>
+											        <tr class="open">
+											          <td colspan="2">Number of summary stats: 9</td>
+											        </tr>
+											    </tfoot>
+												</table>
+											</fieldset>
+
+
+
+										</td>
+
+
+									</tr>
+								</table>
+							</div>
+
+						</td>
+					</tr>
+
+				</table>
+
+
+</div>

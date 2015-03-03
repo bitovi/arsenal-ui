@@ -1,0 +1,28 @@
+<table class="rn-grid-revisionhistory {{tableClass}}">
+  <thead>
+    <tr>
+      {{#filteredColumns}}
+      <th class="{{columnClass column}}" {{data 'column'}}>{{columnTitle column}} </th>
+      {{/filteredColumns}}
+    </tr>
+  </thead>
+  <tbody>
+    {{#filteredRows}}
+    <tr class="{{rowClass row}}" {{data 'row'}}>
+      {{#filteredColumns}}
+      <td class="{{columnClass column}} {{cellClass row column}}" {{data 'column'}}>{{cellContents row column}}</td>
+      {{/filteredColumns}}
+    </tr>
+    {{/filteredRows}}
+  </tbody>
+  <tfoot>
+      {{#footerRows}}
+      <tr class="{{rowClass row}}" {{data 'row'}}>
+        {{#filteredColumns}}
+        <td class="{{columnClass column}} {{cellClass row column}}" {{data 'column'}}>{{cellContents row column}}</td>
+        {{/filteredColumns}}
+      </tr>
+      {{/footerRows}}
+      
+  </tfoot>
+</table>

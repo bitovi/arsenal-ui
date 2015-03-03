@@ -1,0 +1,316 @@
+<form class="form-horizontal" id="countryLicForm" role="form">
+
+  <div class="container-fluid">
+   <!--  <div class="row">
+      <div class="col-sm-5 pageTitle">
+        <span class="large-headers">Country-Licensor Details</span>
+      </div>
+      <div class="col-sm-4">
+         TODO - Keep the message outside
+         <div style="{{displayMessage}}" class="alert-success alert-dimension" role="alert">
+          <a href="#" class="close" data-dismiss="alert">&times;</a>
+          New Country-Society Details Changes Saved Successfully.
+        </div>
+        <div class="cols-sm-4">
+          <div id="invmessageDiv" role="alert"></div>
+        </div>
+
+
+      </div>
+    </div>
+-->
+
+      <div class="div-warn-container">
+          <div class="row pagetitle-div-parent">
+              <div class="col-sm-5 pageTitleInv">
+                <div class="pageHead">Licensor-Country Details</div>
+              </div>
+          </div>
+          <div class="col-sm-7 div-warn-parent">
+            <div id="invmessageDiv" class="center messageDiv" role="alert"></div>
+        </div>
+      </div>
+
+    <div class="row">
+
+      <div class="form-group col-sm-12" style="padding-top:10px">
+
+        <div class="col-sm-4 licensorDrop">
+          <label for="forEntity" class="col-sm-4 control-label">Licensor: </label>
+          <div class="col-sm-6">
+            <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.entityId' id="licensorId" name="licensorId">
+    <!--          <option value="">Select</option>-->
+              {{#each entities}}
+              <optgroup label="{{entityType}}">
+                {{#each entities}}
+                <option value="{{id}}">{{value}}</option>
+                {{/each}}
+              </optgroup>
+              {{/each}}
+
+            </div>
+          </div>
+          <div class="col-sm-6 countryDrop">
+            <label for="forCountry" class="col-sm-2 control-label">Country: </label>
+            <div class="col-sm-6">
+              <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.countryId' id="countryId">
+              <!--  <option value="">Select</option>-->
+                {{#each countries}}
+                <option value="{{id}}">{{value}}</option>
+                {{/each}}
+              </select>
+            </div>
+            <div class="col-sm-2 ">
+              <button class="btn btn-primary btn-custom-small" id="fetchDetailsBtn" style="margin: -4px 0 0 70px;">Fetch</button>
+            </div>
+          </div>
+
+        </div>
+
+
+      <div class="col-sm-12 lineDividerLiceCountry"></div><!-- Main Layout START-->
+      <div class="col-sm-12" id="loading_img"></div>
+      <div class="col-sm-12 mainLayoutId" >
+
+          <div class="col-sm-6 right-border maxContHieght" id = "left_layout" ><!-- LEFT Layout START-->
+            <div class="form-group">
+             <!-- <div class="col-sm-12">
+                <label for="forId" class="col-sm-4 control-label">ID: </label>
+                <div class="col-sm-8" style="text-align:left;padding-left:0px;font-size: 12px;">{{pageState.entityCountryDetails.entityCountry.id}}</div>
+              </div>-->
+
+            </div>
+            <div class="form-group">
+              <div class="col-sm-12">
+                <label for="forStatus" class="col-sm-4 control-label">Status: </label>
+                <div class="col-sm-8" style="text-align:left;padding-left:0px;font-size: 12px;">{{pageState.entityCountryDetails.entityCountry.status}}</div>
+              </div>
+
+            </div>
+            <div id="ref-period-container">
+              <div class="form-group">
+                <div class="col-sm-12 validFrom">
+                  <label for="forValidFrom" class="col-sm-4 control-label">Valid From: </label>
+                  <div class="col-sm-4 requiredBar" style="padding-left: 1px;">
+                    <div class="calendarcls">
+                      <input type='text' id="validFrom" name="validFrom" class="form-control inputMonth updateperoid"  can-value='pageState.entityCountryDetails.entityCountry.validFrom'/>
+                      <span class="calendarDateIcon" data-type="periodFrom"><i class="glyphicon-calendar glyphicon"></i></span>
+                      <period-calendar  selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4"><div class='period-invalid'> Invalid Period !</div></div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-12 ">
+                  <label for="forValidTo" class="col-sm-4 control-label">Valid To: </label>
+                  <div class="col-sm-8 normalBar">
+                    <div class="calendarcls">
+                      <input type='text' id="validTo" name="validTo" class="form-control updateperoid inputMonth"  can-value='pageState.entityCountryDetails.entityCountry.validTo'/>
+                      <span class="calendarDateIcon" data-type="periodTo"><i class="glyphicon-calendar glyphicon"></i></span>
+                      <period-calendar selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-12">
+                <label for="forInvoiceCurr" class="col-sm-4 control-label">Invoice Currency: </label>
+                <div class="col-sm-8 requiredBarNone">
+                  <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.invoiceCurr' name="invoiceCurr" id="invoiceCurr">
+                    <option value="">Select</option>
+                    {{#each currencies}}
+                    <option value="{{id}}">{{value}}</option>
+                    {{/each}}
+                  </select>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="form-group">
+               <div class="col-sm-12">
+                  <label for="forInvoiceCurr" class="col-sm-4 control-label">Pricing Model: </label>
+
+                    <div class="col-sm-8" style="padding-left:0px;">
+
+                        <div class="col-sm-5 requiredBar" style="padding-left: 2px;width: 160px;padding-right: 0;">
+                          <select class="form-control" can-value='pageState.entityCountryDetails.pricingModelVersionNo' name="entityPricingModelId" id="entityPricingModelId">
+                            {{#each pricingModels}}
+                            <option value="{{modelName}}">{{modelName}}</option>
+                            {{/each}}
+                          </select>
+                        </div>
+
+                        <div class="col-sm-7" style="padding: 0;">
+                          <div class="col-sm-2" style="padding-left:0px;width: 65px;">
+                            <select style="width:auto;margin-left:3px;" class="form-control" can-value='pageState.entityCountryDetails.pricingModelId' id="entityPricingModelVersionId" >
+                              {{#each pricingModelVersions}}
+                              <option value="{{id}}">{{value}}</option>
+                              {{/each}}
+                            </select>
+                          </div>
+                          <button type="button" class="btn btn-primary btn-xs btn-custom-xs" id="pricingModelBtn" style="margin-left: -10px;">View</button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+              <div class="col-sm-12 ">
+                <label for="forValidTo" class="col-sm-4 control-label">Pricing Method: </label>
+                <div class="col-sm-8 normalBar">
+                  <select  class="form-control inputMonth" can-value='pageState.entityCountryDetails.entityCountry.pricingMethod'>
+                    {{#each pricingMethods}}
+                    <option value="{{exp_method}}">{{exp_method}}</option>
+                    {{/each}}
+                  </select>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-12 ">
+                <label for="forValidTo" class="col-sm-4 control-label">London Agreement: </label>
+                <div class="col-sm-8 normalBar">
+                  <input type="checkbox" can-value="pageState.entityCountryDetails.entityCountry.laEnabled" class="laCheckBox">
+                </div>
+              </div>
+
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-12 singleField">
+                <label for="forStatus" class="col-sm-4 control-label">Comments: </label>
+                <div class="col-sm-8 requiredBarNone">
+                  <!-- <textarea id="historyComments"  class="form-control multiple-comments-editable form-control-comments new-comments multiple-comments-editable-height" style="min-height:120px;    max-height:200px;"  can-value="pageState.historyComments" readonly=true></textarea>
+                  <textarea class="form-control new-comments" maxlength="1024" name="usercommentsdiv"  style="height:50px;   min-height:50px;    max-height:50px;" can-value="pageState.entityCountryDetails.comment"></textarea> -->
+                  <div class="multipleComments col-sm-12 requiredBar" id="multipleComments" style="padding-left: 2px; height:100px;">
+                  </div>
+                  <div class="col-sm-4 multicomments-required"> Enter comments !</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <!-- LEFT Layout END-->
+
+
+
+
+          <div class="col-sm-6 left-border maxContHieght" id = "right_layout"> <!-- RIGHT Layout START-->
+
+            <div class="form-group">
+              <div class="col-sm-12 greyHeader"> Report Configuration</div>
+              <div id="grid-report-config" style="max-height:200px;padding-left:15px;">
+                <rn-grid-report-configuration rows="{reportConfigurationList}" footerrowspresent="{footerrowspresent}" footerdata="{footerdata}"></rn-grid-report-configuration>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-12 greyHeader"> Revision History</div>
+              <div id="grid-revision-history" style="max-height:200px;padding-left:15px;">
+                <rn-grid-revision-history rows="{revisionHistory}" footerrowspresent="{footerrowspresent}" footerdata="{footerdata}"></rn-grid-revision-history>
+              </div>
+            </div><!-- RIGHT Layout END-->
+          </div>
+
+          <div class="col-sm-12 buttonsPlaceHolder" id = "button_layout">
+            <div class="col-sm-12" style="text-align:right;padding:15px;">
+
+                <button id="approveBtn"  type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big" style="{{enableButtons 'FC'}}">Approve</button>
+                <button id="rejectBtn"  type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big" style="{{enableButtons 'FC'}}">Reject</button>
+                <button id="submitBtn" {{disableSubmit}} type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big" style="{{enableButtons 'BM'}}">Propose</button>
+                <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
+              
+            </div>
+          </div>
+              <div id="viewPricingModelDivBlock">
+                <div id="viewPricingModelDiv" style="background:#fff">
+
+
+                 <!-- View Pricing Model start --->
+                 {{#if displayPMDetails}}
+                   <div class="col-sm-12" style="border-bottom: 1px solid #ddd;padding: 0px;">
+                      <div class="col-sm-11" >
+                         <h4> View Pricing Model</h4>
+                      </div>
+                      <div class="col-sm-1" style="padding-top: 10px;text-align: right;" id="priModelClose">
+                         <a href="javascript:void(0)"><img src="resources/images/rn_RemoveFile@2x.png"></a>
+                      </div>
+                   </div>
+
+                     <div class="col-sm-12" style="padding-top: 10px;">
+                        <div class="col-sm-5 form-group">
+                           <div class="singleField">
+                              <label for="" class="col-sm-6 control-label">Country:</label>
+                              <div class="col-sm-6">
+                                 <span>{{getPricingModelDetails.country}}</span>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-sm-7 form-group">
+                           <div class="singleField">
+                              <label for="" class="col-sm-6 control-label">Entity:</label>
+                              <div class="col-sm-6">
+                                 <span>{{getPricingModelDetails.entity}}</span>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-sm-5 form-group">
+                           <div class="singleField">
+                              <label for="inputEmail3" class="col-sm-6 control-label">Pricing Model:</label>
+                              <div class="col-sm-6">
+                                 <span>{{getPricingModelDetails.pricingModel.modelName}}</span>
+                                 </select>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-sm-7 form-group">
+                           <div class="singleField">
+                              <label for="inputEmail3" class="col-sm-6 control-label">Model Name:</label>
+                              <div class="col-sm-6">
+                                 <span>{{getPricingModelDetails.pricingModel.modelDescription}}</span>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-sm-12">
+                           <fieldset class="scheduler-border">
+                              <legend class="scheduler-border">Base Model parameter</legend>
+                              <div id="baseModelParameterDiv">
+                                 <div class="tab-pane active grid-custBaseom-overflow" id="incomingDetails">
+                                    <rn-recon-grid columns="{detailGridColumns}" rows="{incomingDetails.headerRows}" footerrows="{incomingDetails.footerRows}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}" emptyrows="{emptyrows}" pagename="{pagename}"></rn-recon-grid>
+                                 </div>
+                              </div>
+                           </fieldset>
+                           <fieldset class="scheduler-border">
+                              <legend class="scheduler-border">Track Counts</legend>
+                              <div id="trackCountsDiv"></div>
+                           </fieldset>
+                        </div>
+                        <!--
+                        Removed as part of this below radar!
+                        <rdar://problem/19800926> UI : Wave - M2 - Ref data - Country Licensors - Comments are not visible in the View pricing Model Popup
+
+                        <div class="col-sm-12">
+                           <label for="" class="col-sm-2 control-label" style="text-align: left;padding-left: 0px;">Comments: </label>
+                           <div id="priceModelmultipleComments" class="col-sm-10 normalBar">
+                              <textarea class="form-control" maxlength="1024" style="height:125px;   min-height:100px;    max-height:100px;"></textarea>
+                           </div>
+                        </div>
+                        -->
+                     </div>
+
+                  </div>
+                {{/if}}<!-- View Pricing Model ends --->
+              </div>
+          </div><!-- Main Layout END-->
+      </div>
+    </form>

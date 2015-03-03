@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>RightNotes</title>
+  <link rel="stylesheet" href="../bower_components/qunit/qunit/qunit.css"/>
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <div id="qunit-test-area"></div>
+  <script src="../bower_components/qunit/qunit/qunit.js"></script>
+  <script>
+  QUnit.config.autostart = false;
+  </script>
+  <script src="../bower_components/steal/steal.js" data-main="test/"></script>
+  <script>
+  // socket.io is too smart for its own good, wants to use its own define.
+  delete window.define;
+  </script>
+</body>
+</html>

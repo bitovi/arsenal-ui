@@ -1,0 +1,244 @@
+@title-background: linear-gradient(to top, rgba(229,229,229, 0.9), rgba(229,229,229. 0.9));
+
+book-mark{
+	display:none;
+	position: absolute;
+	right:0px;
+	.newbookmark, .bookmark_sharing_settings{
+		display:none;
+	}
+	.bookmarkContainer{
+		width: 328px;
+		min-height: 400px;
+		position: absolute;
+		font-family: "MyriadPro-Regular";
+		font-size:12px;
+		background: rgba(247, 247, 247, 0.9);
+		-webkit-background-clip: padding-box;
+		background-clip: padding-box;
+		border: 1px solid #e5e5e5;
+		border: 1px solid rgba(0, 0, 0, 0.2);
+		outline: 0;
+		-webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+		box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+		right: 50px;
+		top: 50px;
+		z-index: 200;
+		border-radius:6px;
+		color:#4d4d4d;
+
+		.arrow_box {
+			position: relative;
+			background: transparent;
+		}
+		.arrow_box:after, .arrow_box:before {
+			bottom: 100%;
+			right: 10px;
+			border: solid transparent;
+			content: " ";
+			height: 0;
+			width: 0;
+			position: absolute;
+			pointer-events: none;
+		}
+		.arrow_box:after {
+			border-color: rgba(136, 183, 213, 0);
+			border-bottom-color: #f7f7f7;
+			border-width: 14px;
+			margin-right: 2px;
+
+		}
+		.arrow_box:before {
+			border-color: rgba(194, 225, 245, 0);
+			border-bottom-color: #e5e5e5;
+			border-width: 15.99px;
+			margin-right: 0px;
+		}
+		.listofbookmark, .bookmark_sharing_settings, .newbookmark{
+			max-height:400px;
+			overflow:hidden;
+
+			.listtitle{
+				height:25px;
+				vertical-align:middle;
+				background:@title-background;
+				border-bottom: 1px solid #c6c6c6;
+				font-size:12px;
+				padding: 4px 10px;
+			}
+		}
+	}
+
+	.btns{
+		height:40px;
+		border-bottom: 1px solid #e5e5e5;
+		background: rgb(247, 247, 247);
+		padding:5px;
+	}
+	.bookmark_custombtns{
+		float: right;
+		margin-right: 20px;
+		height: 25px;
+		padding: 4px;
+		margin-top: 2px;
+		width: 66px;
+		background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#1581f4), to(#63adf1))
+	}
+	.btn-custom-small-disabled {
+	  color: #ffffff;
+	  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	  background-color: #1581F4;
+	  background-image: -moz-linear-gradient(top, #7e7e83, #afafb4);
+	  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#7e7e83), to(#afafb4));
+	  background-image: -webkit-linear-gradient(top, #7e7e83, #afafb4);
+	  background-image: -o-linear-gradient(top, #7e7e83, #afafb4);
+	  background-image: linear-gradient(to bottom, #7e7e83, #afafb4);
+	  background-repeat: repeat-x;
+	  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff00aaff', GradientType=0);
+	  border-color: rgba(132, 132, 132, 0.8) rgba(132, 132, 132, 0.8) rgba(132, 132, 132, 0.8);
+	  *background-color: #7e7e83;
+	  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+	  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+	  border-radius: 6px !important;
+	  padding: 3px 22px !important;
+	}
+	.bookmark_list{
+		min-height:80px;
+		padding: 12px;
+		position:relative;
+		background:#f6f6f6;
+
+		div{
+			float:left;
+		}
+		.divider{
+			border-bottom:1px solid #c6c6c6;
+			position:absolute;
+			bottom:0px;
+			width:90%;
+		}
+	}
+	.bookmark_list:nth-child(odd){
+		background:#ebebeb;
+	}
+
+	.checkbox_list{
+		width:18px;
+	}
+	.bookmark_subject{
+		width:85%;
+		font-size:14px;
+	}
+	.bookmark_settings{
+		width:30px;
+	}
+	.bookmark_settings{
+		background:url(../../resources/images/rn_OptionsActive@2x.png)no-repeat center center;
+		height: 16px;
+		width: 16px;
+		background-size:100% 100%;
+	}
+	.clr{
+		clear:both;
+	}
+	.creationdate{
+		font-size:12px;
+		font-weight:normal;
+		color:#888;
+		width:146px;
+	}
+	.owner{
+		width:100%;
+		padding-left:65%;
+	}
+	.create{
+		width:65%;
+		overflow:hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		font-size:12px;
+		padding-left:18px;
+		margin-top:1.5em;
+	}
+	.shared{
+		float:right;
+		margin-top:1.5em;
+		margin-right: 1em;
+		width:20%;
+	}
+	.bookmarkinput, .bookmark_sharing{
+		padding:0px 10px;
+		font-size:12px;
+	}
+	.bookmark_sharing{
+		height: 222px;
+	}
+	.newbookmark .bookmark_sharing{
+		height: 154px;
+	}
+	.checkboxtxt{
+		padding-left:5px;
+		font-size:12px;
+		font-weight:bold;
+	}
+	.btnsfor_new{
+		width: 100%;
+		text-align: center;
+		margin: 0px;
+		border-top: 1px solid #888;
+		padding: 10px 0px;
+	}
+	.newbookmark .btnsfor_new{
+		border-top:1px solid #888;
+	}
+	.custombtns{
+		height: 25px;
+		padding: 4px;
+		margin-top: 2px;
+		width: 66px;
+		background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#1581f4), to(#63adf1))
+	}
+	.autoscroll{
+		height:320px;
+		overflow-y:scroll;
+	}
+	.autoscrollforuser{
+		height: 260px;
+		overflow-y: auto;
+	}
+	.autoscrollfornew{
+		height: 320px;
+		overflow-y: auto;
+	}
+	.shareerror{
+		color:red;
+		font-weight:bold;
+		padding:10px 0px 0px;
+		visibility:hidden;
+	}
+	.bookmark_loader{
+		min-height:290px;
+		min-width:260px;
+		position:absolute;
+		top:0px;
+		z-index:1;
+		display: none;
+	}
+	.loader{
+	   position: absolute;
+	   left: 50%;
+	   top: 50%;
+	   background: transparent url('../../resources/images/spinner.gif') no-repeat center center;
+	   background-size: 100% 100%;
+	   margin: -10px 0 0 -10px;
+	   z-index: 100;
+	   height: 22px;
+	   width: 22px;
+	   color: transparent;
+	}
+
+	.messageDivBK{
+		position: absolute;
+		z-index: 10;
+	}
+}

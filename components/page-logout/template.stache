@@ -1,0 +1,15 @@
+<div class="div-warn-container">
+	<div class="row pagetitle-div-parent">
+
+		<div class="col-sm-10 pageTitle" style="padding-left: 250px;">
+
+			<div class="pageHead" style="text-align:center">
+				You are Logged out.
+				</div>
+			<div style="text-align:center">
+				<a href="#" class="login">Login Again</a>
+			</div>
+		</div>
+	</div>
+
+</div>

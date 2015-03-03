@@ -1,0 +1,148 @@
+@import '../../grid/grid.less';
+
+.flex-basis(@basis) {
+  -webkit-flex-basis: @basis;
+  flex-basis: @basis;
+}
+
+.flex-grow(@grow) {
+  -webkit-flex-grow: @grow;
+  flex-grow: @grow;
+}
+
+rn-onaccount-balance-grid {
+  .grid-mixin();
+  table {
+
+    width: 100%;
+    //min-width:1300px;
+
+    thead, tbody,tfoot {
+      display: block;
+
+      tr {
+        display: -webkit-flex;
+        width: 100%;
+      }
+    }
+
+    thead {
+      background: @header-background;
+      color: white;
+      //height:25px;
+      tr {
+        min-height : 25px;
+        height:auto;
+        word-wrap: break-word;
+        th, td {
+          font-weight: normal;
+          min-height : 25px;
+          height:auto;
+          word-wrap: break-word;
+          //padding: .3em .5em .3em .5em !important;
+          //border-right: @dark-border;
+          //border-top: @dark-border;
+          border-bottom: @dark-border;
+
+        }
+      }
+    }
+
+    tfoot {
+      background: @header-background;
+      color: white;
+      //height:24px !important;
+      tr {
+        min-height : 24px !important;
+        height:auto;
+        word-wrap: break-word;
+        td {
+          font-weight: normal;
+          min-height : 24px !important;
+          height:auto;
+          word-wrap: break-word;
+          border-bottom: @dark-border;
+        }
+      }
+    }
+
+    tbody {
+      //max-height: 8em;
+      overflow-y: overlay;
+      overflow-x: hidden;
+      border-left: 1px solid #a1a1a1;
+      border-right: 1px solid #a1a1a1;
+      tr {
+        height : auto;
+        min-height:22px;
+        word-wrap: break-word !important;
+        td {
+          height : auto;
+          min-height:22px;
+          word-wrap: break-word !important;
+          padding-top:1px;
+        }
+      }
+    }
+
+    tr > th, tr > td {
+      //padding: .3em .5em;
+      &.Licensor { .flex-grow(2); .flex-basis(160px); }
+      &.Currency { .flex-grow(1); .flex-basis(70px); }
+      &.ContentType { .flex-grow(2); .flex-basis(80px); }
+      &.others {  .flex-grow(1);.flex-basis(100px); }
+      &.onAccountBalance { .flex-grow(1); .flex-basis(100px); }
+      &.cashAdjust { .flex-grow(1); .flex-basis(100px); }
+    }
+
+    tbody > tr {
+
+      &.child {
+        display: none;
+
+        &.visible {
+          display: -webkit-flex;
+          border:none;
+        }
+      }
+    }
+
+    tfoot > tr {
+      &.child {
+        display: none;
+          &.visible {
+            display: -webkit-flex;
+          }
+        }
+    }
+  }
+
+
+  //Set the coloumn specifc properties here
+  .Licensor {
+
+  }
+
+  .Currency {
+
+  }
+
+  .ContentType {
+
+  }
+
+  .others {
+    text-align:right;
+    padding-right: 10px;
+  }
+
+  .onAccountBalance {
+    text-align:right;
+    padding-right: 10px;
+  }
+
+  .cashAdjust {
+    text-align:right;
+    padding-right: 10px;
+  }
+}

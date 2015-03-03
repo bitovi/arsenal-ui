@@ -1,0 +1,27 @@
+
+<div class="col-lg-12 page-container">
+
+	<div class="div-warn-container">
+	  <div class="row pagetitle-div-parent">
+	      <div class="col-sm-5 pageTitleInv">
+	          <div class="pageHead">Dashboard</div>
+	      </div>
+	  </div>
+	  <div class="col-sm-7 div-warn-parent">
+	      <div id="messageDiv" class="center messageDiv" role="alert"></div>
+	  </div>
+	</div>
+
+	<rn-switcher options="{tabs}" selected-option="{selectedTab}" value-property="text" class="tabs"></rn-switcher>
+	<div class="dashboard-container">
+		{{#ifSelectedTab 'Approvals'}}
+		<rn-dashboard-approvals appstate="{appstate}"></rn-dashboard-approvals>
+		{{/ifSelectedTab}}
+		{{#ifSelectedTab 'Invoices Received'}}
+		<rn-dashboard-invoices appstate="{appstate}"></rn-dashboard-invoices>
+		{{/ifSelectedTab}}
+		{{#ifSelectedTab 'Payments'}}
+		<rn-dashboard-payments appstate="{appstate}"></rn-dashboard-payments>
+		{{/ifSelectedTab}}
+	</div>
+</div>

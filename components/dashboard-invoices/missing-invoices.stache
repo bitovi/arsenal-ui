@@ -1,0 +1,24 @@
+{{#if missingInvoices.length}}
+<table class="missing-invoices">
+  <thead>
+    <tr>
+      <th>Country</th>
+      <th>Licensor</th>
+      <th>Period</th><!--TODO: Future requirement, currently its hardcoded to P1FY15 -->
+      <th>Missing</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#missingInvoices}}
+    <tr>
+      <td>{{Country}}</td>
+      <td style="white-space: nowrap;">{{Licensor}}</td>
+      <td>P1FY15</td><!--TODO: Future requirement, currently its hardcoded to P1FY15 -->
+      <td style="white-space: nowrap;">{{Missing}}</td>
+    </tr>
+    {{/missingInvoices}}
+  </tbody>
+</table>
+{{else}}
+<span class="missing-invoices-empty">No Missing Invoices found.</span><!--TODO:Find the correct message -->
+{{/if}}

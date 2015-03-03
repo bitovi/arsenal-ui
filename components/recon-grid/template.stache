@@ -1,0 +1,35 @@
+<table class="rn-grid {{tableClass}}">
+  <colgroup>
+    {{#filteredColumns}}
+    <col class="{{columnClass column}}">
+    {{/filteredColumns}}
+  </colgroup>
+  <thead>
+    <tr class="{{#if allOpen}}open{{/if}}">
+      {{#filteredColumns}}
+      <th class="{{columnClass column}} {{sortClass column}}" {{data 'column'}} {{sortableStyle column}}>{{{columnTitle column}}} <span class="sort-arrow">{{{sortArrow column}}}</span></th>
+      {{/filteredColumns}}
+    </tr>
+  </thead>
+  <tbody>
+    {{#filteredRows}}
+    <tr class="{{rowClass row}} {{#if isOpen}}open{{/if}} {{#if isChild}}child{{/if}} {{#if isVisible}}visible{{/if}}" {{data 'row'}}>
+      {{#filteredColumns}}
+      <td class="{{columnClass column}} {{cellClass row column}}" {{data 'column'}}>{{{cellContents row column}}}</td>
+      {{/filteredColumns}}
+    </tr>
+    {{/filteredRows}}
+    {{#if emptyrows}}
+        <tr><td style="text-align:center;background:#fff;color:#000;min-width:100% !important;" colspan="{{getColumnLength}}">No Records Found</td></tr>
+    {{/if}}
+  </tbody>
+  <tfoot>
+    {{#footerRows}}
+    <tr class="open" {{data 'row'}}>
+      {{#filteredColumns}}
+      <td class="{{columnClass column}} {{cellClass row column}}" {{data 'column'}}>{{cellContents row column}}</td>
+      {{/filteredColumns}}
+    </tr>
+    {{/footerRows}}
+    </tfoot>
+</table>

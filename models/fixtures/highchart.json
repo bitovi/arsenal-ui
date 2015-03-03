@@ -1,0 +1,10 @@
+[
+    {
+    "highCharts":
+    		[{"countryName":"United States","fiscalPeriod":"201401","invoiceAmount":100.02,"overRepAmount":99.8,"lineItemsAmount":100.03,"licensorName":"CELAS"},
+    		{"countryName":"United States","fiscalPeriod":"201402","invoiceAmount":98.02,"overRepAmount":77.8,"lineItemsAmount":10.03,"licensorName":"CELAS"}
+    		],
+    		"responseCode":"0000","status":null,"responseText":"SUCESS"
+    		
+    }
+]

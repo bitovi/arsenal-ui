@@ -1,0 +1,5 @@
+<div class="stats-parent-bar">
+  <div  class="title">{{text}}</div>
+  <div  class="chart" {{renderChart}}></div>
+  <div  class="value">{{percent}}%</div>
+</div>

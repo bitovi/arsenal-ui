@@ -1,0 +1,67 @@
+@import '../../grid/grid.less';
+
+rn-grid-society-model {
+	.grid-mixin();
+	td{
+		font-size: 12px;
+		padding-left: 10px !important;
+	}
+	th.checkbox, td.checkbox {
+		width: 30px;
+	}
+	thead {
+
+		display: block;
+
+	}
+	tbody {
+
+		max-height: 11em;
+		overflow-y: overlay;
+		overflow-x: hidden;
+		display: block;
+		tr:nth-child(odd){
+	       background: #f9f9f9;
+	    }
+
+	    tr:nth-child(even){
+	    	background: #f0f0f0;
+	    }
+	}
+	tfoot {
+
+		tr {
+
+			td {
+				//padding: 0.5em 1em 0.5em 1em;
+
+				border-top: @light-border;
+				border-right: 0px !important;
+				border-left: 0px !important;
+				border-bottom-right-radius:5px;
+				border-bottom-left-radius:5px;
+				border-bottom: 0px !important;
+
+				&:first-child {
+					border-left: @light-border;
+				}
+				&:last-child {
+					border-right: @light-border;
+				}
+			}
+
+			&:first-child td {
+				border-top: none;
+
+			}
+		}
+
+		tr.child {
+			display: none;
+
+			&.visible {
+				display: table-row;
+			}
+		}
+	}
+}

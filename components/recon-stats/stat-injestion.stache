@@ -1,0 +1,23 @@
+<table class="rn-grid-ingestionstats {{tableClass}}">
+  <thead>
+    <tr>
+      {{#filteredColumns}}
+      <th class="{{columnClass column}}" {{data 'column'}}>{{columnTitle column}} </th>
+      {{/filteredColumns}}
+    </tr>
+  </thead>
+  <tbody>
+    {{#filteredRows}}
+    <tr class="{{rowClass row}}" {{data 'row'}}>
+      {{#filteredColumns}}
+      <td class="{{columnClass column}} {{cellClass row column}}" {{data 'column'}}>{{cellContents row column}}</td>
+      {{/filteredColumns}}
+    </tr>
+    {{/filteredRows}}
+  </tbody>
+  <tfoot>
+      <tr class="open">
+        <td colspan="2">Number of ingestion stats: {{rows.length}}</td>
+      </tr>
+  </tfoot>
+</table>

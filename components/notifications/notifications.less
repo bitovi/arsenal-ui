@@ -1,0 +1,180 @@
+@title-background: linear-gradient(to top, rgba(229,229,229, 0.9), rgba(229,229,229. 0.9));
+
+rn-notifications{
+	display:none;
+	position: absolute;
+	right:0px;
+	.newnotification, .notification_settings_options{
+		display:none;
+	}
+	.notificationContainer{
+		width: 328px;
+		min-height: 400px;
+		position: absolute;
+		font-family: "MyriadPro-Regular",HelveticaNeue-Medium;
+		font-size:11px;
+		background: rgba(247, 247, 247, 0.9);
+		-webkit-background-clip: padding-box;
+		background-clip: padding-box;
+		border: 1px solid #e5e5e5;
+		border: 1px solid rgba(0, 0, 0, 0.2);
+		outline: 0;
+		-webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+		box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+		right: 18px;
+		top: 50px;
+		z-index: 200;
+		border-radius:6px;
+		color:#4d4d4d;
+
+		.arrow_box {
+			position: relative;
+			background: transparent;
+		}
+		.arrow_box:after, .arrow_box:before {
+			bottom: 100%;
+			right: 10px;
+			border: solid transparent;
+			content: " ";
+			height: 0;
+			width: 0;
+			position: absolute;
+			pointer-events: none;
+		}
+		.arrow_box:after {
+			border-color: rgba(136, 183, 213, 0);
+			border-bottom-color: #f7f7f7;
+			border-width: 14px;
+			margin-right: 2px;
+
+		}
+		.arrow_box:before {
+			border-color: rgba(194, 225, 245, 0);
+			border-bottom-color: #e5e5e5;
+			border-width: 15.99px;
+			margin-right: 0px;
+		}
+		.listofnotification, .notification_settings_options{
+
+			.listtitle{
+				height:25px;
+				vertical-align:middle;
+				background:@title-background;
+				border-bottom: 1px solid #c6c6c6;
+				font-size:12px;
+				padding: 4px 10px;
+			}
+
+			.notification_settings_icon{
+				background:url(../../resources/images/rn_OptionsActive@2x.png)no-repeat center center;
+				height: 16px;
+				width: 16px;
+				background-size:100% 100%;
+				position: absolute;
+				top: 5px;
+				right: 5px;
+				cursor: pointer;
+			}
+
+			.autoscroll{
+				height:340px;
+				overflow-y:scroll;
+
+				.notification_list{
+					min-height:80px;
+					padding:0 12px;
+					line-height: 22px;
+					position:relative;
+					background:#ebebeb;
+					float:left;
+					width:100%;
+
+					div{
+						float:left;
+					}
+					.type-text {
+						font-size:11px;
+						float:right;
+					}
+					.notification-text {
+						font-size:14px;
+						padding:15px 0 5px;
+					}
+					.date-text {
+						font-size:12px;
+						clear:both;
+						padding:10px 0;
+					}
+					.user-text {
+						font-size:12px;
+						float:right;
+						padding:10px 0;
+					}
+					.divider{
+						border-bottom:1px solid #c6c6c6;
+						width:100%;
+					}
+				}
+				.new{
+					background:#f7f7f7;
+				}
+				.showMore{
+					text-align:center;
+					margin-top:5px;
+				}
+				.notification_options{
+					padding:10px;
+				}
+			}
+		}
+	}
+
+	.btn-custom-small-disabled {
+	  color: #ffffff;
+	  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	  background-color: #1581F4;
+	  background-image: -moz-linear-gradient(top, #7e7e83, #afafb4);
+	  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#7e7e83), to(#afafb4));
+	  background-image: -webkit-linear-gradient(top, #7e7e83, #afafb4);
+	  background-image: -o-linear-gradient(top, #7e7e83, #afafb4);
+	  background-image: linear-gradient(to bottom, #7e7e83, #afafb4);
+	  background-repeat: repeat-x;
+	  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff00aaff', GradientType=0);
+	  border-color: rgba(132, 132, 132, 0.8) rgba(132, 132, 132, 0.8) rgba(132, 132, 132, 0.8);
+	  *background-color: #7e7e83;
+	  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+	  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+	  border-radius: 6px !important;
+	  padding: 3px 22px !important;
+	}
+	
+	.notification_custombtns{
+		width: 100%;
+		text-align: center;
+		margin: 0px;
+		border-top: 1px solid #888;
+		padding: 10px 0px;
+	}
+	
+	.notification_loader{
+		width: 326px;
+		min-height: 378px;
+		position:absolute;
+		top:26px;
+		z-index:1;
+		background: rgba(247, 247, 247, 1);
+		border-radius:6px;
+	}
+	.loader{
+	   position: absolute;
+	   left: 50%;
+	   top: 50%;
+	   background: transparent url('../../resources/images/spinner.gif') no-repeat center center;
+	   background-size: 100% 100%;
+	   margin: -10px 0 0 -10px;
+	   z-index: 100;
+	   height: 22px;
+	   width: 22px;
+	   color: transparent;
+	}
+}

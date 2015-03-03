@@ -1,0 +1,142 @@
+.fileupload-mixin() {
+
+    .outer {
+        /*margin: 1em auto;*/
+        background: #EFEFEF;
+        border: 2px dashed #aaa;
+        padding: 8px 1em 0 1em;
+        width:98%;
+        height: 100%;
+        //margin: 1em 0 0 4px;
+        overflow:hidden;
+        text-align:center;
+        //overflow-y: scroll;
+        border-radius: 0.5em;
+        float:left;
+     }
+
+     .requiredContainer {
+        width:0px;
+        height: 100%;
+        overflow:hidden;
+        border-left-width: 2px;
+        border-left-style: solid;
+        border-left-color: rgb(210, 72, 73);
+        padding:0px;
+        //margin: 1em 0 0 0;
+        float:left;
+        padding-right: 3px;
+     }
+
+     .filelist {
+        list-style: none;
+        margin-left: 0;
+        padding-left: 1em;
+      }
+
+
+  .filelist li {
+    padding: .2em 0 .2em 1em;
+    text-align: left;
+    background-color: white;
+    border-radius: 0.25em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    font-weight: 300;
+    font-size: 0.9em;
+  }
+
+  .filelist li.uploaded::before {
+    content: '✔';
+    color: green;
+  }
+
+      .action-link {
+        float: right;
+        margin-right: 1em;
+        cursor: pointer;
+      }
+
+      .uploadFiles {
+        border-radius: 0.25em;
+        background-color: #ccc;
+        color: white;
+        border: none;
+        font-size: 0.85em;
+        padding: 0.3em 0.75em 0.2em;
+        background: -webkit-linear-gradient(#aaa, #999); /* For Safari 5.1 to 6.0 */
+        background: -o-linear-gradient(#aaa, #999); /* For Opera 11.1 to 12.0 */
+        background: -moz-linear-gradient(#aaa, #999); /* For Firefox 3.6 to 15 */
+        background: linear-gradient(#aaa, #999); /* Standard syntax  */
+      }
+
+  .fade {
+    opacity: 0;
+    -webkit-transition: opacity 3.0s linear;
+    -moz-transition: opacity 3.0s linear;
+    -o-transition: opacity 3.0s linear;
+    transition: opacity 3.0s linear;
+  }
+  .fade.in {
+    opacity: 1;
+    -webkit-transition: opacity 3.0s linear;
+    -moz-transition: opacity 3.0s linear;
+    -o-transition: opacity 3.0s linear;
+    transition: opacity 3.0s linear;
+  }
+
+  #showSuccess{
+    font-size: 12px;
+    font-weight: bold;
+    color: #0088cc;
+    padding: 5px;
+  }
+  .success, .fileError, .validFormatError{
+    font-size: 12px;
+    font-weight: bold;
+    color: green;
+    padding: 5px;
+  }
+  .fileError, .validFormatError{
+    color:red;
+  }
+
+  .progress-bar-style{
+    height: 20px;
+    margin: 5px;
+    padding: 0px;
+    margin-right: 0px;
+  }
+
+  .file-component-div {
+    width:450px;
+    height:150px;
+    padding:0 0 20px 0;
+  }
+
+  .inValid-style{
+    color:red;
+    font-style: italic;
+  }
+
+  .file-container {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    min-height: 80%;
+    max-height: 100%;
+    height: 80%;
+    padding-bottom: 25px;
+  }
+
+  .disabled-button{
+    background:rgb(204, 204, 204) none repeat scroll 0% 0%;
+  }
+
+}
+
+
+
+/* Mix them under the appropriate tag like this: */
+rn-file-uploader {
+  .fileupload-mixin();
+}

@@ -1,0 +1,369 @@
+@import '../grid/grid.less';
+@white-border: 1px solid #fff;
+
+.flex-basis(@basis) {
+  -webkit-flex-basis: @basis;
+  flex-basis: @basis;
+}
+
+.flex-grow(@grow) {
+  -webkit-flex-grow: @grow;
+  flex-grow: @grow;
+}
+
+rn-claim-licensor-grid {
+  .grid-mixin();
+  table {
+
+    width: 100%;
+    min-width:2100px;
+
+    thead, tbody,tfoot {
+      display: block;
+
+      tr {
+        display: -webkit-flex;
+        width: 100%;
+      }
+    }
+
+    thead, tfoot {
+      background: @header-background;
+      color: white;
+      //height:24px;
+      tr {
+        min-height: 24px;
+        height : auto;
+        word-wrap: break-word;
+        th, td {
+          font-weight: normal;
+          height : auto;
+          min-height: 24px;
+          //padding: .3em .5em .3em .5em !important;
+          //border-right: @dark-border;
+          //border-top: @dark-border;
+          border-bottom: @dark-border;
+
+        }
+      }
+    }
+    /*thead {
+      tr {
+        th, td {
+          text-align:center !important;
+        }
+      }
+    }*/
+    tbody {
+      //max-height: 8em;
+      overflow-y: overlay;
+      overflow-x: hidden;
+      border-left: 1px solid #a1a1a1;
+      //border-right: 1px solid #a1a1a1;
+      tr {
+        height : auto;
+        min-height:22px;
+        word-wrap: break-word;
+        td {
+          height : auto;
+          min-height:22px;
+          padding-top:1px;
+        }
+      }
+    }
+    tr > th, tr > td {
+      //padding: .3em .5em;
+      &.sorticon { .flex-basis(50px);text-align:center; }
+      &.entityName { .flex-grow(1); .flex-basis(170px); }
+      &.invoiceNumber { .flex-grow(1); .flex-basis(200px); }
+      &.currency {  .flex-basis(50px); }
+      &.period {  .flex-basis(150px); }
+      &.country {  .flex-basis(70px); }
+      &.contentType {  .flex-basis(150px); }
+      &.invoiceAmount { .flex-grow(2); .flex-basis(120px); }
+      &.overrepAmount { .flex-grow(1); .flex-basis(120px); }
+      &.lineDisputeAmount { .flex-grow(1); .flex-basis(120px); }
+      &.reconAmount { .flex-grow(1); .flex-basis(120px); }
+      &.oaAllocated { .flex-grow(1); .flex-basis(120px); }
+      &.caAllocated { .flex-grow(1); .flex-basis(120px); }
+      &.priorPaid { .flex-grow(1); .flex-basis(120px); }
+      &.invPmtSaturation { .flex-grow(1); .flex-basis(120px); }
+      &.pmtSaturation { .flex-grow(1); .flex-basis(120px); }
+      &.balance { .flex-grow(1); .flex-basis(120px); }
+      &.overrepDispPer { .flex-basis(110px); }
+      &.liDispPer { .flex-basis(110px); }
+      &.status {  .flex-basis(60px); }
+    }
+
+    tbody > tr {
+
+      &.child {
+        display: none;
+
+        &.visible {
+          display: -webkit-flex;
+          border:none;
+        }
+      }
+    }
+
+    tfoot {
+
+      tr.child {
+
+        display: none;
+        td:first-child{
+          border-left: 1px solid #666666;
+        }
+        &.visible {
+          display: -webkit-flex;
+        }
+      }
+    }
+
+  }
+
+}
+
+rn-claim-country-grid {
+  .grid-mixin();
+  table {
+
+    width: 100%;
+    min-width:1700px;
+
+    thead, tbody,tfoot {
+      display: block;
+
+      tr {
+        display: -webkit-flex;
+        width: 100%;
+      }
+    }
+    /*thead {
+      tr {
+        th, td {
+          text-align:center !important;
+        }
+      }
+    }*/
+
+    thead, tfoot {
+      background: @header-background;
+      color: white;
+      //height:24px;
+      tr {
+        min-height: 24px;
+        height : auto;
+        word-wrap: break-word;
+        th, td {
+          font-weight: normal;
+          height : auto;
+          min-height: 24px;
+          //padding: .3em .5em .3em .5em !important;
+          //border-right: @dark-border;
+          //border-top: @dark-border;
+          border-bottom: @dark-border;
+
+        }
+      }
+    }
+
+    tbody {
+      //max-height: 8em;
+      overflow-y: overlay;
+      overflow-x: hidden;
+      border-left: 1px solid #a1a1a1;
+      //border-right: 1px solid #a1a1a1;
+      tr {
+        height : auto;
+        word-wrap: break-word;
+        min-height:22px;
+        td {
+          height : auto;
+          min-height:22px;
+          padding-top:1px;
+        }
+      }
+    }
+    thead{
+      tr{
+        td{
+          text-align:center;
+        }
+      }
+    }
+
+    tr > th, tr > td {
+      //padding: .3em .5em;
+      &.sorticon { .flex-basis(50px);text-align:center; }
+      &.entityName { .flex-grow(1); .flex-basis(200px); }
+      //&.invoiceNumber { .flex-grow(1); .flex-basis(150px); }
+      &.currency {  .flex-basis(50px); }
+      &.period {  .flex-basis(150px); }
+      &.country {  .flex-basis(70px); }
+      &.contentType {  .flex-basis(150px); }
+      &.invoiceAmount { .flex-grow(2); .flex-basis(150px); }
+      &.overrepAmount { .flex-grow(1); .flex-basis(120px); }
+      &.lineDisputeAmount { .flex-grow(1); .flex-basis(120px); }
+      &.reconAmount { .flex-grow(1); .flex-basis(120px); }
+      &.oaAllocated { .flex-grow(1); .flex-basis(120px); }
+      &.caAllocated { .flex-grow(1); .flex-basis(120px); }
+      &.priorPaid { .flex-grow(1); .flex-basis(120px); }
+      &.invPmtSaturation { .flex-grow(1); .flex-basis(120px); }
+      &.pmtSaturation { .flex-grow(1); .flex-basis(120px); }
+      &.balance { .flex-grow(1); .flex-basis(120px); }
+      &.overrepDispPer {  .flex-basis(110px); }
+      &.liDispPer {  .flex-basis(110px); }
+      //&.status {  .flex-basis(50px); }
+    }
+
+    tbody > tr {
+
+      &.child {
+        display: none;
+
+        &.visible {
+          display: -webkit-flex;
+          border:none;
+        }
+      }
+    }
+
+    tfoot {
+
+      tr.child {
+
+        display: none;
+
+        td:first-child{
+          border-left: 1px solid #666666;
+        }
+
+        &.visible {
+
+          display: -webkit-flex;
+        }
+      }
+    }
+
+  }
+
+}
+
+/*.pageTitle{
+padding-bottom:0px !important;
+padding-left:25px !important;
+}*/
+
+
+.claimReviewContainer{
+  border: 0px !important;
+  border-top:0px;
+  border-bottom:0px;
+  margin: 0px;
+  padding: 0px;
+  //	padding:0px 10px 10px 0px;
+
+
+  #aggregate {
+    padding-left:10px;
+    line-height: 0px;
+    padding-top:10px;
+    float:left;
+  }
+  #loading_img
+  {
+    background:url('../../resources/images/spinner.gif') no-repeat center center;
+    padding:10%;
+    position: absolute;
+    top: 50px;
+    margin: 0 auto;
+    display:none;
+    width: 100%;
+  }
+  #searchDiv > *{
+    float:left;
+    margin:0px 5px 0px 0px;
+  }
+  ul.token-input-list-facebook{
+    width:280px !important;
+    height: 22px !important;
+    border-radius: 4px;
+    border-color: #C6C6C6;
+  }
+  li.token-input-token-facebook{
+      height: 18px !important;
+      padding-top:0px;
+      margin-top: 1px;
+      background-color:#d3f0fe;
+  }
+  input#token-input-tokenSearch{
+    padding-top:0;
+  }
+  #licensorView, #countryView {
+    //min-height: 200px;
+    /*padding: 10px;
+    border-top:1px solid #808080;*/
+    background-color: #F8F8F8;
+    overflow: hidden;
+    padding:0px;
+  }
+  #claimLicencorGrid, #claimCountryGrid {
+    //min-height: 200px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    clear: both;
+    //border: 1px solid #a1a1a1;
+    border-right:1px solid #a1a1a1;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+
+    .selected td{
+      background: #D1F0FF;
+    }
+    .invoiceAmount , .overrepAmount, .lineDisputeAmount, .reconAmount, .oaAllocated, .caAllocated, .balance, .priorPaid {
+      text-align: right;
+    }
+    .invPmtSaturation, .pmtSaturation, .overrepDispPer, .liDispPer {
+      text-align: right;
+    }
+  }
+
+  .buttonSubmit{
+    margin-left:10px;
+  }
+
+  #chartContainer {
+    margin: 0px auto;
+  }
+
+  .customLI{
+    background-color: transparent
+    !important;
+    border: none !important;
+  }
+  .marginTop-10{
+    margin-top:10px;
+  }
+  .tab-content{
+    padding: 10px 10px 1em 10px;
+
+  }
+  .paddingLeft0{
+    padding-left:0 !important;
+  }
+
+  .toolbox-img-style{
+    position: relative;
+    bottom: -5px;
+  }
+}
+
+
+/*#messageDiv{
+position: absolute;
+text-align:center;
+}*/

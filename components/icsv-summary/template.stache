@@ -1,0 +1,107 @@
+<div class="">
+	<div class="col-sm-5 fontSize">
+	<label class="fontSizeMedium" style='margin-left:-160px;'>iCSV Add Summary</label>
+				<div class="addSummaryClass">
+
+
+						<label class="addSummaryClassLabel">
+							Number of files
+						</label>
+						<label class="addSummaryClassLabel">
+							Number of invoices
+						</label>
+						<label class="addSummaryClassLabel">
+							Number of PDFs
+						</label>
+						<label class="addSummaryClassLabel">
+							Number of licensors
+						</label>
+						<label class="addSummaryClassLabel">
+							Number of errors
+						</label>
+						<label class="addSummaryClassLabel">
+							Number of rows
+						</label>
+				</div>
+
+				<div class="addSummaryNumber">
+						<label class="addSummaryClassNumber">{{fileCount}}</label>
+
+			            <label class="addSummaryClassNumber">{{invoiceCount}}</label>
+
+					    <label class="addSummaryClassNumber">{{noOfPdf}}</label>
+
+			            <label class="addSummaryClassNumber">{{licensorsCount}}</label>
+
+				        <label class="addSummaryClassNumber">{{errorCount}}</label>
+
+				        <label class="addSummaryClassNumber">{{rowCount}}</label>
+		       </div>
+      </div>
+
+    <div class="col-sm-7 fontSize alignR">
+
+	<div class="fontSize">
+			<div class="addSummaryClassLabel">
+				&nbsp;
+			</div>
+             <label class="fontSizeMedium invoiceTotal">
+				<label class="col-sm-1">
+					&nbsp;
+				</label>
+				Invoice Total:
+		     </label>
+			{{#each invoiceTotal}}
+       			 <label class="addSummaryClassLabel fontBlk">
+					{{localAmt}}
+				</label>
+				<label class="addSummaryClassLabel">
+					{{localCcy}}
+				</label>
+				<label class="addSummaryClassLabel">
+				&nbsp;
+				</label>
+<div class="linebrk">&nbsp;</div>
+				<label class="addSummaryClassLabel silvercolor" style='font-size:10px;'>
+					{{altAmt}}
+				</label>
+				<label class="addSummaryClassLabel silvercolor" style='font-size:10px;'>
+					{{altCcy}}
+				</label>
+				<label class="addSummaryClassLabel">
+				&nbsp;
+				</label>
+<div class="linebrk">&nbsp;</div>
+				<label class="addSummaryClassLabel">
+					&nbsp;
+				</label>
+				<label class="addSummaryClassLabel">
+					&nbsp;
+				</label>
+				<label class="addSummaryClassLabel">
+					&nbsp;
+				</label>
+
+
+       		{{/each}}
+
+	</div>
+
+
+
+	</div>
+	<hr class="hrbdr">
+	<div class="col-sm-12 GrandTotal">
+			<div class="">
+
+			</div>
+			<label class="silvercolor" style="align:left;font-size:18px;">
+				Grand Total:
+			</label>
+			<label class="silvercolor" style="color:#000;font-size:21px;">
+				{{totalAmount}}
+			</label>
+			<label class="silvercolor" style="font-size:12px;">
+				USD
+			</label>
+	</div>

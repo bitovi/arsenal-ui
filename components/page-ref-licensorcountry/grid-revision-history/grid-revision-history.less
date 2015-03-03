@@ -1,0 +1,57 @@
+@import '../../grid/grid.less';
+
+rn-grid-revision-history {
+	.grid-mixin();
+
+  width:100%;
+  table {
+
+    width:100%;
+
+  }
+
+  	thead {
+
+		display: block;
+
+	}
+	tbody {
+
+		max-height: 10em;
+		overflow-y: overlay;
+		overflow-x: hidden;
+		display: block;
+		tr:nth-child(odd){
+	       background: #f9f9f9;
+	    }
+
+	    tr:nth-child(even){
+	    	background: #f0f0f0;
+	    }
+	}
+
+	th, td {
+		white-space: nowrap;
+	    padding-right: 0.5625em;
+	    padding-left: 0.5625em;
+	    padding-top: 0.2em;
+	}
+
+	tbody {
+
+		tr:nth-child(odd){
+	       background: #f9f9f9;
+	    }
+
+	    tr:nth-child(even){
+	    	background: #f0f0f0;
+	    }
+	}
+	tfoot tr td:first-child {
+
+  		border-bottom-left-radius: 5px;
+		border-bottom-right-radius: 5px;
+		border-bottom: 0px;
+  	}
+
+}

@@ -1,0 +1,193 @@
+import Component from 'can/component/';
+
+import template from './template.stache!';
+import styles from './create-pb.less!';
+
+import BundleNamesModel from 'models/payment/bundleNames/';
+import NewBundleNameModel from 'models/payment/newName/';
+
+import UserReq from 'utils/request/';
+
+
+
+var page = Component.extend({
+  tag: 'create-pb',
+  template: template,
+  scope: {
+    request: "@",
+    newbundlenamereq: "@",
+    cancelnewbundlereq:false,
+    /*
+    Ex: Create
+    {
+        mode:"Create",//Create or Read
+        //Other request object is mentioned below
+        "searchRequest":{
+        bundleSearch:{
+          type:"invoices"
+        },
+      },
+      "newNameRequest":{
+        paymentBundle:{
+          region:"Europe",
+          periodFrom:'201303',
+          periodTo:'201304',
+          bundleType:'Regular'
+        }
+      }
+      };
+
+      Ex: Read
+      {
+        mode:"Read",
+        paymentBundleName:<bundlename>,
+        paymentBundleId:<bundleId>
+      };
+
+    */
+    createPBFlag: {
+      select: true
+    },
+    "bundleNames": [],
+    "paymentBundleId": "",
+    "paymentBundleName": "",
+    "bundleSearch": {},
+    value: []
+  },
+  init: function() {
+
+    var self = this;
+
+    var requestObj = JSON.parse(self.scope.attr("request"));
+    //console.log("requestObj is "+JSON.stringify(requestObj));
+
+    if (self.scope.request != undefined) {
+      BundleNamesModel.findOne(UserReq.formRequestDetails(requestObj), function(data) {
+        //console.log(" BundleNamesModel response is "+JSON.stringify(data.attr()));
+        self.scope.bundleNames.replace(data["paymentBundles"]);
+      }, function(xhr) {
+        console.error("Error while loading: bundleNames" + xhr);
+      });
+
+    } else if (requestObj != null && requestObj.mode == "Read") {
+
+      self.scope.attr("createPBFlag", {
+        read: true
+      });
+      self.scope.attr("paymentBundleName", requestObj.paymentBundleName);
+      self.scope.attr("paymentBundleId", requestObj.paymentBundleId);
+
+    }
+    // else if(self.scope.cancelnewbundlereq){
+    //   this.scope.attr("createPBFlag", {
+    //     select: true
+    //   });
+    //   this.scope.attr("paymentBundleId", '');
+    //   self.scope.attr('newbundlenamereq', "undefined");
+    //   self.scope.attr('paymentBundleName','');
+    // }
+    else {
+      console.error("Craete Payment Bundle: Invalid Mode!!");
+    }
+  },
+  events: {
+    '{value} change': function() {
+      var self = this;
+      var requestObj = self.scope.attr("value");
+
+      if (self.scope.request != undefined) {
+        BundleNamesModel.findOne(UserReq.formRequestDetails(JSON.parse(requestObj[0])), function(data) {
+          self.scope.bundleNames.replace(data["paymentBundles"]);
+        }, function(xhr) {
+          console.error("Error while loading: bundleNames" + xhr);
+        });
+
+      } else {
+        console.error("Craete Payment Bundle: Invalid Mode!!");
+      }
+    },
+    "#btnCancel click": function() {
+      var self = this;
+      this.scope.attr("createPBFlag", {
+        select: true
+      });
+      this.scope.attr("paymentBundleId", '');
+      self.scope.attr('newbundlenamereq', "undefined");
+      self.scope.attr('paymentBundleName','');
+
+    },
+    "{scope} request": function() {
+      var self = this;
+
+      var requestObj = JSON.parse(self.scope.attr("request"));
+      if (self.scope.request != undefined) {
+        BundleNamesModel.findOne(UserReq.formRequestDetails(requestObj), function(data) {
+          //console.log(" BundleNamesModel response is "+JSON.stringify(data.attr()));
+          self.scope.bundleNames.replace(data["paymentBundles"]);
+        }, function(xhr) {
+          console.error("Error while loading: bundleNames" + xhr);
+        });
+
+      } else if (requestObj.mode == "Read") {
+
+        self.scope.attr("createPBFlag", {
+          read: true
+        });
+        self.scope.attr("paymentBundleName", requestObj.paymentBundleName);
+        self.scope.attr("paymentBundleId", requestObj.paymentBundleId);
+
+      } else {
+        console.error("Craete Payment Bundle: Invalid Mode!!");
+      }
+    },
+    "{scope} newbundlenamereq": function() {
+      var self = this;
+      //alert('comming inside');
+      var requestObj = self.scope.attr("newbundlenamereq");
+      if (requestObj != "undefined") {
+        requestObj = JSON.parse(requestObj);
+        self.scope.attr("createPBFlag", {
+          input: true
+        });
+        NewBundleNameModel.findOne(UserReq.formRequestDetails(requestObj), function(data) {
+          if (data.status == "FAILURE") {
+            console.error("Failed to load the bundleName: " + data.responseText);
+          } else {
+            self.scope.attr("paymentBundleName", data.paymentBundle.bundleName);
+          }
+        }, function(xhr) {
+          console.error("Error while loading: bundleNames" + xhr);
+        });
+      }
+    },
+    "{scope} cancelnewbundlereq": function() {
+      var self = this;
+      if(self.scope.cancelnewbundlereq){
+          this.scope.attr("createPBFlag", {
+        select: true
+      });
+      this.scope.attr("paymentBundleId", '');
+      self.scope.attr('newbundlenamereq', "undefined");
+      self.scope.attr('paymentBundleName','');
+      var requestObj = JSON.parse(self.scope.attr("request"));
+      if (self.scope.request != undefined) {
+          BundleNamesModel.findOne(UserReq.formRequestDetails(requestObj), function(data) {
+            if(data.status == 'SUCCESS' && data.paymentBundles != undefined && data.paymentBundles.length >0){
+              self.scope.bundleNames.replace(data["paymentBundles"]);
+            }else{
+              console.error("Failed to load the bundleName: " + data.responseText);
+            }
+          }, function(xhr) {
+            console.error("Error while loading: bundleNames" + xhr);
+          });
+       }
+       //self.scope.attr('cancelnewbundlereq',false);
+
+      }
+
+    }
+  }
+});
+
+
+export default page;

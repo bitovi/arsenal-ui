@@ -1,0 +1,14 @@
+[
+	{
+		"invoiceTypes":[
+			{"description":"Regular","invoiceTypeId":"1","invoiceTypeName":"REGULAR_INV"},
+			{"description":"Adhoc","invoiceTypeId":"2","invoiceTypeName":"ADHOC_INV"},
+			{"description":"Cash Adjustments","invoiceTypeId":"3","invoiceTypeName":"CASHADJ_INV"}
+		],
+		"responseHeader":{
+			"statusCode":"200",
+			"exceptionID":"000",
+			"exceptionMessage":"SUCCESS"
+		}
+	}
+]

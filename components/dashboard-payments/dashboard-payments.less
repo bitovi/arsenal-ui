@@ -1,0 +1,126 @@
+@dark-grey: #3d3d3d;
+@medium-grey: #ececec;
+@border-grey: #dddddd;
+@blue: #3191F3;
+
+@bar-color: #81ED6A;
+@value-color: #BDBDBD;
+@row-hover-background:#d3f0fe;
+
+rn-dashboard-payments {
+  color: @dark-grey;
+
+  display: flex;
+  padding: 1em 0;
+
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  ul.chart-list li {
+    padding: .5em 0;
+    position: relative;
+    list-style: none;
+    padding-top: 0.2em;
+
+    &.selected {
+      background-color: @blue !important;
+
+      &::after {
+        content: '>';
+        position: absolute;
+        top: 0;
+        right: 2px;
+        bottom: 0;
+        padding: 0.7em 0;
+        line-height: 1em;
+      }
+    }
+
+    rn-payment-chart {
+      .value {
+        color: @value-color;
+      }
+
+    }
+  }
+
+  .sidebar {
+    flex: 1 0;
+  /*  padding: 1em;*/
+    //border-right: 1px solid @border-grey;
+
+    rn-switcher {
+      font-size: 13px;
+      display: block;
+      margin: 0 auto 2em;
+      width: 50%;
+
+      ul.switcher li {
+        padding: 0 .33em;
+
+        &:not(.selected) {
+          background: white;
+          color: @dark-grey;
+        }
+      }
+    }
+    .chart-list {
+      li:hover {
+        //outline: @row-hover-outline;
+        background:@row-hover-background;
+      }
+    }
+
+  }
+
+  .detail {
+    flex: 3 0;
+    padding: 1em;
+
+    .pay-overview-heading{
+      padding-top: 41px;
+      margin: 0 auto;
+      text-align: center;
+      width: 50%;
+    }
+
+    .legend {
+      border: 1px solid @border-grey;
+      width: 150px;
+      float: right;
+      padding-top: 0px;
+      height: 60px;
+      margin-bottom: 6px;
+
+      & > div {
+        margin: .5em;
+      }
+      .square {
+        display: inline-block;
+        height: 1em;
+        width: 1em;
+      }
+      .paid .square {
+        background-color: @bar-color;
+      }
+      .unpaid .square {
+        background-color: @value-color;
+      }
+    }
+  }
+
+  .select-message {
+    padding: 1.5em;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .vertical-line{
+    width: 1px; /* Line width */
+    background-color: #97979C; /* Line color */
+    height: 100%; /* Override in-line if you want specific height. */
+    float:left;
+  }
+}

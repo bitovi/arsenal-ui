@@ -1,0 +1,268 @@
+@import '../grid/grid.less';
+
+@white-border: 1px solid #fff;
+.flex-basis(@basis) {
+  -webkit-flex-basis: @basis;
+  flex-basis: @basis;
+}
+
+.flex-grow(@grow) {
+  -webkit-flex-grow: @grow;
+  flex-grow: @grow;
+}
+
+rn-grid-invoice {
+  .grid-mixin();
+  table {
+
+    width: 100%;
+    min-width:1850px;
+
+    thead, tbody,tfoot {
+      display: block;
+
+      tr {
+        display: -webkit-flex;
+        width: 100%;
+      }
+    }
+
+    thead, tfoot {
+      background: @header-background;
+      color: white;
+      //height:24px;
+      tr {
+        height : 24px;
+        th, td {
+          font-weight: normal;
+
+          height: 24px;
+          //padding: .3em .5em .3em .5em !important;
+          //border-right: @dark-border;
+          //border-top: @dark-border;
+          border-bottom: @dark-border;
+
+        }
+      }
+    }
+    /*thead {
+      tr {
+        th, td {
+          text-align:center !important;
+        }
+      }
+    }*/
+    tbody {
+      //max-height: 8em;
+      overflow-y: overlay;
+      overflow-x: hidden;
+      border-left: 1px solid #a1a1a1;
+      //border-right: 1px solid #a1a1a1;
+      tr {
+        height : auto;
+        min-height:22px;
+        word-wrap: break-word;
+        td {
+          height : auto;
+          min-height:22px;
+          padding-top:1px;
+        }
+      }
+    }
+
+    tr > th, tr > td {
+      //padding: .3em .5em;
+      &.invId { .flex-basis(35px);text-align:center; }
+      &.entityName {  .flex-basis(180px); }
+      &.fiscalPeriod {  .flex-basis(150px); }
+      &.invTypeDisp  {  .flex-basis(130px); }
+      &.contentGrpName {  .flex-basis(130px); }
+      &.country {  .flex-basis(100px); }
+      &.invoiceNumber { .flex-grow(1); .flex-basis(200px); }
+      &.invoiceCcy {  .flex-basis(100px); }
+      &.invoiceAmount  { .flex-grow(1); .flex-basis(140px); }
+      &.invoiceDueDate {  .flex-basis(110px); }
+      &.displayPaymentStatus {  .flex-basis(110px); }
+      &.bundleName { .flex-grow(1); .flex-basis(280px); }
+      &.comments { .flex-grow(1); .flex-basis(280px); }
+    }
+
+    tbody > tr {
+
+      &.child {
+        display: none;
+
+        &.visible {
+          display: -webkit-flex;
+          border:none;
+        }
+      }
+    }
+
+    tfoot {
+
+      tr.child {
+
+        display: none;
+        td:first-child{
+          border-left: 1px solid #666666;
+        }
+        &.visible {
+          display: -webkit-flex;
+        }
+      }
+    }
+
+  }
+  .entity, .invoiceTypeDisp, .contentType, .country, .invoiceNum, .dueDate, .currency, .displayPaymentStatus, .bundleName, .comments{
+    text-align: left;
+  }
+
+  .invoiceAmount{
+    text-align: right;
+  }
+}
+
+.table-cell-color{
+  background-color: blue;
+}
+
+.button-ctrls{
+  height: 35px;
+  padding-top: 2px;
+  text-align: center;
+
+  #searchDiv > *{
+    float:left;
+    margin:0px 5px 0px 0px;
+  }
+
+  #searchDiv {
+    float:right;
+    width:25%;
+    padding-top:4px;
+    padding-right: 0px;
+  }
+
+  .vertical-line{
+    width: 1px !important; /* Line width */
+    background-color: #97979C; /* Line color */
+    height: 26px; /* Override in-line if you want specific height. */
+    display: inline-block;
+    vertical-align: middle;
+
+  }
+
+  .center {
+    margin: 0 auto;
+    //position: relative;
+
+    padding-right: 10px;
+    //float:left;
+    width: 98%;
+    position: absolute;
+    //display:inline-block;
+    height:35px
+  }
+
+  ul.token-input-list-facebook{
+    width:80% !important;
+    height: 22px !important;
+    border-radius: 4px;
+    border-color: #C6C6C6;
+  }
+
+  li.token-input-selected-token-facebook{
+    padding-bottom:0px;
+    padding-top:0px;
+    border-top-width: 0px;
+    margin-top: 2px;
+    text-align:center;
+  }
+
+  li.token-input-token-facebook {
+    height: 18px !important;
+    padding-top:0px;
+    margin-top: 1px;
+    background-color:#d3f0fe;
+  }
+
+  input#token-input-tokenSearch{
+    padding-top: 0px;
+  }
+
+  .buttonSubmit{
+    margin-left:10px;
+  }
+}
+
+.invoiceContainer{
+	border: 0px !important;
+	padding:0px;
+	position: relative;
+  min-height: 100%;
+  height:100%;
+
+	.pageTitle{
+	  padding-left: 75px;
+	  padding-right:5px;
+	  padding-bottom:25px;
+	}
+	#loading_img
+	{
+		background:url('../../resources/images/spinner.gif') no-repeat center center;
+		padding:10%;
+		position: absolute;
+		top: 50px;
+		margin: 0 auto;
+		display:none;
+		width: 100%;
+	}
+
+
+	#invoiceGrid {
+		background: #f4f4f4;
+		clear: both;
+		overflow-x: scroll;
+		overflow-y: scroll;
+    border-radius: 5px;
+    border:1px solid #97979C;
+    border-top:0px;
+    border-bottom:0px;
+    border-left: 0px;
+		.invoiceAmt {
+			text-align: right;
+		}
+	}
+	.buttonSubmit{
+		margin-left:10px;
+	}
+
+	#attachDocumentDiv{
+		position: absolute;
+		width: 450px;
+		height:auto;
+		border: 1px solid #ddd;
+		margin: 0px auto;
+		left: 350px;
+		top: 10px;
+		background: #fff;
+		display:none;
+		border-radius: 5px;
+		padding:0 0 10px 0;
+
+		.outer {
+			width: 95%;
+		}
+	}
+}
+.paymentBundleDiv #paymentBundleNames{
+	min-width:250px;
+}
+.export-toexcel{
+	height:0px;
+}
+
+ rn-pb-confirm-modal-inv .modal-content{
+   top:140px;
+ }

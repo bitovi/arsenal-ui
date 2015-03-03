@@ -1,0 +1,388 @@
+<form class="form-horizontal"  id="invoiceform" role="form">
+
+    <div class="container-fluid create-invoice">
+
+        <div class="div-warn-container">
+            <div class="row pagetitle-div-parent">
+                <div class="col-sm-5 pageTitleInv">
+              {{#if editpage}}
+		      	
+                    <div class="pageHead">Edit Invoice</div>
+		      {{else}}
+		      	
+                    <div class="pageHead">Invoice Entry</div>
+		      {{/if}}
+          
+                </div>
+            </div>
+            <div class="col-sm-7 div-warn-parent">
+                <div id="invmessageDiv" class="center messageDiv" role="alert"></div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="form-group col-sm-12">
+                <div class="col-sm-6">
+                    <div class="col-sm-6 singleField">
+                        <label for="inputEmail3" class="col-sm-6 control-label">Invoice Type: </label>
+                        <div class="col-sm-4 requiredBarNone">
+                            <select id="invoiceType" class="form-control" can-value="invoicetypeSelect" name="invoiceType" disabled>
+    					        {{#each invoiceTypes}}
+                                    <option name="{{invoiceTypeName}}" value="{{invoiceTypeId}}">{{description}}</option>
+						       	{{/each}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 lineDividerInvoice"></div>
+            
+            <div class="col-sm-6 right-border" {{setHeight}}>
+                
+                <div class="form-group">
+                    <div class="col-sm-6">
+                        <label for="inputEmail3" class="col-sm-6 control-label">Region: </label>
+                        <div class="col-sm-4 requiredBar region">
+                            <select id="invoiceRegion" class="form-control" name="region" can-value="regionStore">
+                                <option value="">Select</option>
+							    {{#each regions}}
+                                <option value="{{id}}">{{value}}</option>
+							    {{/each}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6"></div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-6">
+                        <label for="inputEmail3" class="col-sm-6 control-label">Licensor: </label>
+                        <div class="col-sm-4 requiredBar licensor">
+                            <select id="invoicelicensor" class="form-control calduefield" name="licensor" can-value="licensorStore">
+                                <option value="">Select</option>
+							    {{#each licensor}}
+                                <optgroup label="{{entityType}}">
+    						        {{#each entities}}
+                                    <option value="{{id}}">{{value}}</option>
+    						        {{/each}}
+                                </optgroup>
+						        {{/each}}						   
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6"></div>
+                </div>
+
+                <div class="form-group">
+                    
+                    <div class="col-sm-6">
+                        <label for="inputPassword3" class="col-sm-6 control-label">Currency:</label>
+                        <div class="col-sm-4 requiredBar currency">
+                            <select id="currency" class="form-control" name="currency" can-value="currencyStore">
+                                <option value="">Select</option>
+								{{#each currency}}
+                                <option value="{{id}}">{{value}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="col-sm-6 ">
+                        <label for="inputPassword3" class="col-sm-6 control-label">FX Rate:</label>
+                        <div class="col-sm-6 fxrate" style="padding-left:2px;">
+                            <input type="text" class="form-control" name ="fxrate" id="fxrate" placeholder="" can-value="fxrateStore">
+                            <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "fxrate-err" style="display:none;">
+                        </div>
+                    </div>
+                </div>
+                        
+                <div class="form-group">
+                    <div class="col-sm-6">
+                        <label for="inputEmail3" class="col-sm-6 control-label">Invoice #: </label>
+                        <div class="col-sm-6 requiredBar invoicenumber">
+                            <input type="text" class="form-control" id="invoicenumber" name="invoicenumber" placeholder=""  can-value="invoicenumberStore">
+                            <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "invoicenumber-err" style="display:none;">
+                        </div>
+                    </div>
+                    <div class="col-sm-6"></div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="col-sm-12 singleField">
+                        <label for="inputEmail3" class="col-sm-3 control-label">Licensor Notes: </label>
+                        <div class="col-sm-9 requiredBarNone licnotes">
+                            <textarea class="form-control" id ="licnotes" name="licnotes"  can-value="licnotesStore"></textarea>
+                            <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "licnotes-err" style="display:none;">
+                        </div>
+                    </div>
+                        <!-- <div class="col-sm-6"></div>  -->
+                </div>
+                
+                <div class="form-group">
+                    <div class="col-sm-6 ">
+                        <label for="inputPassword3" class="col-sm-6 control-label">Invoice Date:</label>
+                        <div class="col-sm-6 invdate requiredBar">
+                            <date-picker name="invoicedate" placeholder="{{invoicedate}}"></date-picker>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 ">
+                        <label for="inputPassword3" class="col-sm-6 control-label">Received Date:</label>
+                        <div class="col-sm-6 recdate requiredBar">
+                            <date-picker name="receiveddate" placeholder="{{receiveddate}}"></date-picker>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="form-group">
+                    <div class="col-sm-6 invduedate">
+                        <label for="inputPassword3" class="col-sm-6 control-label">Invoice Due Date:</label>
+                        <div class="col-sm-6 invduedate requiredBarNone">
+                            <date-picker name="invoiceduedate" placeholder="{{invoiceduedate}}"></date-picker>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="inputPassword3" class="col-sm-6 control-label">Calculated Due Date:</label>
+                        <div class="col-sm-4 textDate">
+                	 		{{#if editpage}}
+                			    {{calduedate}}
+                			{{else}}
+                			    {{calculatedDueDate}}
+                		  	{{/if}}
+            	       </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12 singleField">
+                        <label for="inputEmail3" class="col-sm-3 control-label">Supporting Documents: </label>
+                        <div id="icsvFileUploader">
+                            <div class="col-sm-6 file-component-div">
+                                <rn-file-uploader-icsv uploadedfileinfo="{uploadedfileinfo}" deletedFileInfo="{deletedFileInfo}" required='true' ></rn-file-uploader-icsv>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12 singleField">
+                        <label for="inputEmail3" class="col-sm-3 control-label">User Comments: </label>
+                        <div class="col-sm-9 requiredBarNone usercomments">
+                            <div id="multipleCommentsInv"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 left-border" {{setHeight}}>
+                <div class="col-sm-12">
+                    <div class="table-responsive breakdown-div" {{setMinHeightBreak}}>
+                        <table class="table table-condensed table-striped breakdown" id="breakTable">
+                            <thead>
+                                <tr>
+                                    <th class="breakdownHead">{{isAdhocStrore.contentAdhoc}}</th>
+                                    <th class="breakdownHead">Period</th>
+                                    <th class="breakdownHead">Amount</th>
+                                    <th class="breakdownHead">Country</th>
+                                    <th class="breakdownHead">{{isAdhocStrore.ccidGL}}</th>
+                                    <th class="breakdownIcon">
+                                        <img src="resources/images/button_plus_blue.png" class="breakDownIconSize addRow" id="addRow">
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#unless editpage}}
+                                    <tr id="breakrow0" rowid="0">
+                                        <td class="form-group">
+                                            <div class="breakdownContent requiredBar">
+                                                <select id="inputContent0" name="inputContent[]" class="form-control inputContent">
+                                                    <option value="">Select</option>
+                        		        			{{#if isAdhocStrore.adhoc}}
+                        			        			{{#each adhocType}}
+                                                            <option serviceTypeId="{{serviceTypeId}}" value="{{adhocTypeId}}">{{adhocName}}</option>
+    	       						                    {{/each}}
+    	       					                    {{else}}
+    		       					                    {{#each contentType}}
+                                                        <option serviceTypeId="{{serviceTypeId}}" value="{{contentGroupId}}">{{contentGroupName}}</option>
+                        			        			{{/each}}
+    	       			     		                {{/if}}
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td class="form-group">
+                                            <div class="breakdownPeriod calendarcls requiredBar">
+                                                <input type='text' id="inputMonth0" name="inputMonth[]" class="updateperoid form-control inputMonth"/>
+                                                <period-calendar selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
+                                            </div>
+                                        </td>
+                                        <td class="form-group">
+                                            <div class="requiredBar">
+                                                <input type="text" class="form-control amountText classAmtTotal" name="amount[]" id="amountText0" placeholder="" can-value="val0" >
+                                                </div>
+                                        </td>
+                                        <td class="form-group">
+                                            <div class="breakdownCountry">
+                                                <select id="inputCountry0"  name="inputCountry[]" class="form-control inputCountry calduefield" >
+                                                    <option value="">Select</option>
+    			        	                        {{#each country}}    			        		
+                                                        <option value="{{id}}">{{value}}</option>
+           					                        {{/each}}            		
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                	                       {{#if isAdhocStrore.invtype}}
+                                                <!--select id="ccidGL0" name="ccidGL" class="form-control ccidGL"><option value="">Select</option>
+                						        {{#each glaccounts}}
+    		              	        				<option value="{{id}}">{{value}}</option>
+           							            {{/each}}
+    			        	                    </select-->
+                                                <div class="select-editable">
+                                                    <select  id="ccidGL0" name="ccidGL" class="form-control ccidGL">
+                                                        <option value="">Select</option>
+    						                            {{#each glaccounts}}
+                                                        <option value="{{id}}">{{value}}</option>
+                               							{{/each}}
+                                                    </select>
+                                                    <input type="text" name="format" value="" class="ccidGL ccidGLtxt"/>
+                                                </div>
+                                        	   {{else}}
+                                                <input type="text" class="form-control ccidGL" id="ccidGL0" name="ccidGL" placeholder="" readonly="true">
+                	                           {{/if}}
+                                                </td>
+                                                <td>
+                                                    <img src="resources/images/button_minus_red.png" class="breakDownIconSize removeRow" id="removeRow" style="display:none;">
+                                                    </td>
+                                                </tr>
+             {{/unless}}
+             
+                                                <tr class="hide" id="breakrowTemplate">
+                                                    <td class="form-group">
+                                                        <div class="breakdownContent requiredBar">
+                                                            <select id="inputContent" name="inputContent[]"  class="form-control inputContent">
+                                                                <option value="">Select</option>
+    		        			{{#if isAdhocStrore.adhoc}}
+    			        			{{#each adhocType}}
+    		        					
+                                                                <option serviceTypeId="{{serviceTypeId}}" value="{{adhocTypeId}}">{{adhocName}}</option>
+    	       						{{/each}}
+    	       					{{else}}
+    		       					{{#each contentType}}
+    			        				
+                                                                <option serviceTypeId="{{serviceTypeId}}" value="{{contentGroupId}}">{{contentGroupName}}</option>
+    			        			{{/each}}
+    	       					{{/if}}
+    	        		
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td class="form-group">
+                                                        <div class="breakdownPeriod calendarcls requiredBar">
+                                                            <input type='text' id="inputMonth" name="inputMonth[]" class="updateperoid form-control inputMonth"/>
+                                                        </div>
+                                                    </td>
+                                                    <td class="form-group">
+                                                        <div class="requiredBar">
+                                                            <input type="text" class="form-control amountText classAmtTotal"  name="amount[]" placeholder="" can-value="val0">
+                                                            </div>
+                                                        </td>
+                                                        <td class="form-group">
+                                                            <div class="breakdownCountry">
+                                                                <select id="inputCountry" name="inputCountry[]" class="form-control inputCountry calduefield">
+                                                                    <option value="">Select</option>
+    			        	{{#each country}}
+    			        		
+                                                                    <option value="{{id}}">{{value}}</option>
+           					{{/each}}
+            		
+                                                                </select>
+                                                            </div>
+                                                        </td>
+                                                        <td class="form-group">
+                	{{#if isAdhocStrore.invtype}}
+    		            	
+                                                            <!--select id="ccidGL" name="ccidGL" class="form-control ccidGL"><option value="">Select</option>
+    						        {{#each glaccounts}}
+    			        				<option value="{{id}}">{{value}}</option>
+           							{{/each}}
+    			        	</select-->
+                                                            <div class="requiredBar">
+                                                                <div class="select-editable">
+                                                                    <select  id="ccidGL" name="ccidGL" class="form-control ccidGL">
+                                                                        <option value="">Select</option>
+    							        {{#each glaccounts}}
+    				        				
+                                                                        <option value="{{id}}">{{value}}</option>
+
+    	       							{{/each}}
+    							    
+                                                                    </select>
+                                                                    <input type="text" name="format" value="" class="ccidGL ccidGLtxt"/>
+                                                                    <input type="text" id="ccidGLtxt" name="ccidGLtxt[]" value="" class="form-control ccidGL ccidGLtxt"/>
+                                                                </div>
+                                                            </div>	
+                	  {{else}}
+                	 		
+                                                            <input type="text" class="form-control ccidGL" id="ccidGL" name="ccidGL" placeholder="" readonly="true">
+                	 {{/if}}
+               
+                                                            </td>
+                                                            <td>
+                                                                <img src="resources/images/button_minus_red.png" class="breakDownIconSize removeRow" id="removeRow" style="display:none;">
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="col-sm-9 totalbox" style="padding-top:8px;">
+                                                    <label class="control-label">Gross Total: </label>
+                                                </div>
+                                                <div class="col-sm-3 totalboxlabel" style="padding-top:8px;">{{netTotal}}</div>
+                                            </div>
+                                            <div>
+                                                <div class="col-sm-9 totalbox">
+                                                    <label  class="control-label">Tax:</label>
+                                                </div>
+                                                <div class="col-sm-3 totalboxlabel taxAmountCont">
+                                                    <input type="text" name="taxAmount" id="taxAmount" class="form-control taxAmount" can-value="tax" >
+                                                        <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "taxAmount-err" style="display:none">
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="col-sm-9 totalbox">
+                                                            <label class="control-label">Tax %:</label>
+                                                        </div>
+                                                        <div class="col-sm-3 totalboxlabel">{{calculateTaxPercent}}</div>
+                                                    </div>
+                                                    <div style="text-align:right">
+                                                        <div class="col-sm-12 invoice-total-container">
+                                                            <div class="col-sm-12" style="text-align:right">
+                                                                <label class="control-label invtotal-head">Invoice Total:</label>
+                                                                <label class="invtotal-value">{{grossTotal}}</label>
+                                                                <label class="control-label inv-total">{{currencyStore}}</label>
+                                                                <!--Currency -->
+                                                            </div>
+                                                            <div class="col-sm-12">
+    	   {{#if totalAmountVal}}
+    	   		{{#if usdFxrateRatio}}
+    	   			
+                                                                <label class="control-label">{{calculateUSD}} USD</label>
+    	   		{{/if}}
+    	   {{/if}}
+        
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12" style="text-align:right;padding-right:0px">
+                                                        <div class="submit-button-style"></div>
+                                                        <div class="col-sm-12" style="padding:15px;width:50%">
+                                                            <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="icsvEditCancel">Cancel</button>
+                                                            <button id="addInvSubmit" type="submit"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Validate</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>

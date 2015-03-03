@@ -1,0 +1,64 @@
+@import '../grid/grid.less';
+@import '../grid/examples/scrolling-grid/scrolling-grid.less';
+
+.flex-basis(@basis) {
+  -webkit-flex-basis: @basis;
+  flex-basis: @basis;
+}
+
+.flex-grow(@grow) {
+  -webkit-flex-grow: @grow;
+  flex-grow: @grow;
+}
+
+rn-outbox-grid {
+  .grid-mixin();
+  .scrolling-grid-mixin();
+  position:relative;
+
+  tbody{
+    overflow-y: overlay;
+  }
+
+  	table.scrolling {
+	    tbody {
+	      height: 10em;
+	     // border-bottom: 1px solid #666;
+	    }
+	    tbody tr {
+	      min-height: 1.5625em;
+	    }
+
+	    // tbody td {
+	    //   padding: 0.3em;
+      //   word-wrap: break-word;
+	    // }
+
+	    tbody > tr:last-child {
+	      //border-bottom: 1px solid #bfbfbf;
+	     }
+
+      //  thead {
+      //    tr {
+      //      th, td {
+      //        text-align:center !important;
+      //      }
+      //    }
+      //  }
+
+      .remind{
+        text-align: center;
+      }
+
+	    tr > th, tr > td {
+	      &.type { .flex-basis(150px); }
+	      &.description { .flex-grow(1); .flex-basis(250px); }
+	      &.region { .flex-basis(150px); }
+        &.remind { .flex-basis(150px);text-align:center;}
+	      &.comments { .flex-grow(1); .flex-basis(300px); }
+	      &.pendingDays { .flex-basis(150px); }
+	      &.pendingGroupName  { .flex-basis(150px); }
+	      &.approvalStage { .flex-basis(150px);}
+	    }
+	  }
+}

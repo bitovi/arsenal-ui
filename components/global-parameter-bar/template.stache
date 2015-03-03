@@ -1,0 +1,93 @@
+<div class="form-inline globalFilterContainer" id = "globalFilterContainer" >
+  <ul class="parameters">
+   <li id="periodFromcontainer">
+      <div class="box">
+        <span class="parameter-name">Period From:</span>
+         <div class="calendarcls">
+            <input type='text' id="periodFrom" class="form-control updatePeriod"/>
+            <span class="calendarDateIcon" data-type="periodFrom"><i class="glyphicon-calendar glyphicon"></i></span>
+            <period-calendar selectedperiod="{selectedperiod}"  appstate="{appstate}"></period-calendar>
+         </div>
+          </div>
+    </li>
+
+     <li id="periodTocontainer">
+        <div class="box">
+          <span class="parameter-name">Period To:</span>
+          <div class="calendarcls">
+            <input type='text' id="periodTo" class="form-control updatePeriod"/>
+            <span class="calendarDateIcon" data-type="periodTo"><i class="glyphicon-calendar glyphicon"></i></span>
+            <period-calendar selectedperiod="{selectedperiod}" appstate="{appstate}"></period-calendar>
+          </div>
+
+         </div>
+      </li>
+
+    <li id="store-type">
+      <div class="box">
+        <span class="parameter-name">Store Type:</span>
+        <select id="storeTypesFilter" class="form-control resizeBox">
+               {{#each storeTypes}}
+                  <option value="{{id}}" {{isSelected 'storetype' id}} {{data 'storetype'}}>{{value}}</option>
+                {{/each}}
+         </select>
+       </div>
+    </li>
+
+    <li id="region">
+      <div class="box">
+        <span class="parameter-name">Region:</span>
+        <select id="regionsFilter" class="form-control resizeBox">
+                <option value="">Select</option>
+               {{#each regions}}
+                  <option value="{{id}}" {{isSelected 'region' id}} {{data 'region'}}>{{value}}</option>
+                {{/each}}
+         </select>
+       </div>
+    </li>
+    <li id="country">
+      <div class="box">
+        <span class="parameter-name">Country:</span>
+        <select id="countriesFilter" class="form-control resizeBox" multiple="multiple">
+          {{#each countries}}
+            <option value="{{id}}">{{value}}</option>
+
+          {{/each}}
+        </select>
+      </div>
+    </li>
+
+    <li id="licensor">
+      <div class="box">
+        <span class="parameter-name">Licensor:</span>
+         <select id="licensorsFilter" class="form-control resizeBox" multiple="multiple">
+             {{#each licensors}}
+              <optgroup label="{{entityType}}">
+                {{#each entities}}
+                 <option value="{{id}}">{{value}}</option>
+                {{/each}}
+              </optgroup>
+            {{/each}}
+         </select>
+
+       </div>
+
+    </li>
+    <li id="contentType">
+      <div class="box">
+        <span class="parameter-name">Content Type:</span>
+        <select id="contentTypesFilter" class="form-control resizeBox" multiple="multiple">
+               {{#each contentTypes}}
+                  <option value="{{contentGroupId}}:{{serviceTypeId}}" data-servicetypeid={{serviceTypeId}}>{{contentGroupName}}</option>
+                {{/each}}
+         </select>
+      </div>
+    </li>
+
+    <li id="btnFetch">
+      <button type="button" id="globalSearch" class="btn btn-primary buttonSubmit btn-custom-small" style="margin-left:10px;">Fetch</button>
+    </li>
+
+  </ul>
+  <div class='error'> {{errorMessage}}</div>
+</div>

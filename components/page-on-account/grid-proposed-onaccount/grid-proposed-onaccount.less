@@ -1,0 +1,101 @@
+@import '../../grid/grid.less';
+
+
+ rn-proposed-onaccount-grid {
+  .grid-mixin();
+    table {
+
+    width: 100%;
+    tr>th, tr > td {
+      width:2%;
+    }
+
+    thead, tbody, tfoot {
+      display: block;
+    }
+    tbody {
+      //max-height: 8em;
+      overflow-y: overlay;
+      overflow-x: hidden;
+      border-left: 1px solid #a1a1a1;
+      border-right: 1px solid #a1a1a1;
+    }
+    th, td {
+      white-space: nowrap;
+    }
+  }
+
+  th, td {
+      white-space: nowrap;
+      text-align: right;
+    }
+
+  input.invalid {
+    background: red;
+    color: white;
+  }
+  .toggle, .licensor, .Licensor , .currency, .Currency, .ContentType{
+      text-align: left;
+      width: 40%;
+    }
+    .checkbox{
+      text-align: center;
+    }
+    tfoot {
+    tr.child {
+      display: none;
+
+      &.visible {
+        display: table-row;
+      }
+    }
+  }
+
+}
+/*
+#proposedonAccountGrid .rn-grid td input[type="checkbox"]{
+    margin-left:0px;
+    display:inherit;
+}
+ #proposedonAccountGrid .rn-grid .radio, .checkbox {
+  position: relative;
+  display: inherit;
+  min-height: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+*/
+
+
+
+#proposedTblGrid td.checkbox input[type="checkbox"]{
+    margin-left: 0px !important;
+    margin-top: 5px;
+}
+
+#proposedTblGrid .checkbox {
+  position: relative;
+  display: block;
+  min-height: 25px;
+  margin-top: 0px;
+  margin-bottom: -1px;
+}
+rn-proposed-onaccount-grid thead th:first-child{
+  margin-top:0px;
+}
+rn-proposed-onaccount-grid thead th{
+   padding: .3em .5em .3em .5em;
+}
+
+.quarter {
+    width: 10%;
+     box-sizing: border-box;
+     -webkit-box-sizing:border-box;
+     -moz-box-sizing: border-box;
+}
+.quarter  input[type="text"] {
+     width: 100%;
+     box-sizing: border-box;
+     -webkit-box-sizing:border-box;
+     -moz-box-sizing: border-box;
+}

@@ -1,0 +1,35 @@
+<div style="width:100%">
+  <h3 style="padding-bottom: 10px;" class="pay-overview-heading">Payments in {{appstate.region.value}} for {{getDisplayFromPeriod}} - {{getDisplayToPeriod}}</h3>
+</div>
+<div class="region-chart"  {{renderBigChart}}></div>
+<h3 style="padding-top: 5px;">{{percent}}% Paid</h3>
+</div>
+<div class="column-container" style="margin:0 auto;width:80%;height:100%">
+<div class="column top-not-paid-countries" style="width:45%;float:left">
+  <h3>Top Not Paid - Countries</h3>
+  <ul class="chart-list country-list">
+    {{#each cntryNotPaideList}}
+    <li>
+      <rn-payment-chart text="{ctry}" value="{totPaidPrcnt}"></rn-payment-chart>
+    </li>
+    {{/each}}
+  </ul>
+</div>
+<div style="float:left;width:10%"><span style="visibility: hidden">&nbsp;</span></div>
+<div class="column top-not-paid-licensors" style="float:left;width:45%">
+  <div style="text-align: right;">
+    <h3>Top Not Paid - Licensors</h3>
+  </div>
+  <!--<ul class="licensor-list" style="text-align: center;">
+    {{#each summary.topNotPaidCtyEntys}}
+    <li>{{.}}</li>
+    {{/each}}
+  </ul>-->
+  <ul class="chart-list licensor-list">
+    {{#each entityNotPaideList}}
+    <li>
+      <rn-payment-chart text="{{entyName}}" value="{totPaidPrcnt}" chartWidth="50" valueWidth="25" ></rn-payment-chart>
+    </li>
+    {{/each}}
+  </ul>
+</div>

@@ -1,0 +1,364 @@
+@dark-grey: #3d3d3d;
+@medium-grey: #ececec;
+@border-grey: #dddddd;
+
+rn-dashboard-invoices {
+
+  .select-message {
+    padding: 1.5em;
+    text-align: center;
+    font-weight: bold;
+    color: @dark-grey;
+  }
+
+  table.holes-report {
+    width: 100%;
+    overflow: auto;
+    margin: 0 auto;
+    color: @dark-grey;
+    z-index: -1;
+    display:inline-block;
+    border: 0px solid grey;
+    float:left;
+
+    thead.tableFloatingHeaderOriginal{
+      top: inherit !important;
+    }
+
+    tbody {
+      height: 200px;
+      width: 200px;
+      overflow: auto;
+    }
+
+    tr {
+      height: 2em;
+    }
+
+    th {
+
+        width: 1%;
+        padding-left: 10px;
+        height: 1.5em;
+        padding-top: 5px;
+        padding-right: 10px;
+        color: #ffffff;
+        font-size: 12px;
+        background: linear-gradient(to bottom, #bfbfbf, #808080);
+        border-right: 1px solid #666666 !important;
+        border-left: 1px solid #666666 !important;
+        border-top: 1px solid #666666 !important;
+        border-bottom: 1px solid #666666 !important;
+    }
+
+    td {
+      border: 1px solid @border-grey;
+      position: relative;
+      background-color: white;
+
+      &.invoice-expected {
+        background-color: @medium-grey;
+      }
+
+      .circle {
+        margin: 0 auto;
+        background-color: green;
+        width: 1em;
+        height: .5em;
+
+        &.top {
+          border-radius: .5em .5em 0 0;
+        }
+        &.bottom {
+          border-radius: 0 0 .5em .5em;
+        }
+      }
+
+      .la {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 1.3em;
+      }
+
+      .checkMark{
+        width:25px;
+        height:25px;
+      }
+    }
+
+    .greenHighlight{
+      background-color:#669933;
+    }
+
+    .entity, .hole{
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .country {
+      text-align: center;
+      width: 5em;
+      /*background-color: #669933;
+      // span {
+      //   display: inline-block;
+      //   width: 50px;
+
+      //   padding: .25em;
+      //   background: @medium-grey;
+      //   border-radius: .5em;
+      // }*/
+    }
+
+    .local-society {
+      padding-left: 1em;
+
+    }
+  }
+
+  table.holes-reports-country, table.holes-reports-local {
+
+    overflow: auto;
+    margin: 0 auto;
+    color: @dark-grey;
+    display: inline-table;
+    z-index: 100;
+    width:4%;
+    background-color: #f6f6f6;
+    float:left;
+
+    thead{
+      z-index:100 !important;
+    }
+
+    tbody {
+      height: 200px;
+      width: 200px;
+      overflow: auto;
+    }
+
+    tr {
+      height: 2em;
+    }
+
+    th {
+        width:88%;
+        //text-align: left;
+        padding-left: 10px;
+        height: 1.5em;
+        padding-top: 5px;
+        padding-right: 10px;
+        //color: #ffffff;
+        font-size: 12px;
+        background: linear-gradient(to bottom, #bfbfbf, #808080);
+        border-right: 1px solid #666666 !important;
+        border-left: 1px solid #666666 !important;
+        border-top: 1px solid #666666 !important;
+        border-bottom: 1px solid #666666 !important;
+    }
+
+    td {
+      font-weight: normal;
+      padding: .25em .5em;
+      color: @dark-grey;
+    }
+
+    .entity, .hole{
+      text-align: center;
+    }
+
+    .country {
+      text-align: center;
+      width: 5em;
+      //background-color: #669933;
+    }
+  }
+
+  table.holes-reports-local{
+    width:12%;
+  }
+
+  table.missing-invoices {
+    color: @dark-grey;
+
+    tr {
+      height: auto;
+    }
+
+    th {
+      font-weight: normal;
+      min-width: 6em;
+    }
+
+    th, td {
+      padding: .5em 1em;
+      border: 0px none transparent;
+    }
+
+    tbody tr {
+      border-top: 1px solid @border-grey;
+    }
+  }
+
+  .missing-invoices-empty{
+    color:#3d3d3d;
+    font-weight:normal;
+  }
+
+  .popover {
+    width:400px;
+    max-width: none;
+
+    th{
+      color:#fff;
+    }
+
+    td{
+      font-weight:normal;
+    }
+  }
+
+  .popover-title {
+    color:#3d3d3d;
+    font-weight:bold;
+  }
+
+  label{
+  /*  font-family:HelveticaNeue, "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif; ;*/
+    font-size:12px;
+    color:#848484;
+    font-weight:normal;
+  }
+
+  .checkMark{
+    width:18px;
+    height:15px;
+    padding-right: 3px;
+  }
+
+  .la {
+    width: 1.2em;
+    padding-right:3px;
+  }
+
+  .tableDiv{
+    overflow:scroll;
+    width:96%;
+    //  min-height:290px;
+    margin: 0px auto;
+    z-index:inherit;
+  }
+
+  .imgBlock{
+    float: right;
+    padding-top: 10px;
+    right: 0;
+    width: 8%;
+  }
+
+  .copytoclipboardContainer{
+    display: none;
+  }
+
+  .legend-style {
+    width: 12%;
+    margin:0 auto;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top:10px;
+  }
+//  19770183 UI - Look & feel changes accross mulitple screens --start
+  .all-received-square {
+    height: 10px;
+    width: 10px;
+    background-color: #669933;
+    margin-top: 6px;
+    float: left;
+  }
+
+  .all-received-label{
+    float:left;
+    width:90%;
+    padding-left: 5px;
+    padding-top: 3px;
+  }
+//19770183 UI - Look & feel changes accross mulitple screens --end  
+
+
+table.holes-reports {
+    width: 90%;
+    margin: 0 auto;
+    color: @dark-grey;
+
+    tr {
+      height: 3em;
+    }
+
+    th {
+      font-weight: normal;
+      padding: .25em .5em;
+      color: @dark-grey;
+      font-size: 12px;
+      background: linear-gradient(to bottom, #bfbfbf, #808080);
+      border-right: 1px solid #666666 !important;
+      border-left: 1px solid #666666 !important;
+      border-top: 1px solid #666666 !important;
+      border-bottom: 1px solid #666666 !important;
+    }
+
+    td {
+      border: 1px solid @border-grey;
+      position: relative;
+      background-color: white;
+
+      &.invoice-expected {
+        background-color: @medium-grey;
+      }
+
+      .circle {
+        margin: 0 auto;
+        background-color: green;
+        width: 1em;
+        height: .5em;
+
+        &.top {
+          border-radius: .5em .5em 0 0;
+        }
+        &.bottom {
+          border-radius: 0 0 .5em .5em;
+        }
+      }
+
+      .la {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 1em;
+      }
+    }
+
+    .entity {
+      text-align: center;
+    }
+
+    .country {
+      text-align: center;
+      width: 8em;
+
+      span {
+        display: inline-block;
+        width: 50px;
+
+        padding: .25em;
+        background: @medium-grey;
+        border-radius: .5em;
+      }
+    }
+
+    .local-society {
+      padding-left: 1em;
+
+    }
+  }
+
+}

@@ -1,0 +1,97 @@
+rn-workflow-display {
+  display: block;
+  padding: .5em;
+
+  color: #3d3d3d;
+
+  h3 {
+    font-size: 13px;
+    margin-top: 0;
+    margin-bottom: 1em;
+  }
+
+  ul {
+    display: -webkit-flex;
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    & > li.step {
+      display: block;
+      position: relative;
+      width: 162px;
+
+      background: white;
+      border: 1px solid black;
+      border-radius: .3em;
+      padding: .3em;
+
+      .person-icon {
+        position: absolute;
+        height: 20px;
+        width: 20px;
+        top: .3em;
+        right: .3em;
+      }
+
+      .actor {
+      }
+
+      .step-name {
+        font-weight: bold;
+        font-size: 14px;
+        margin-top: .3em;
+        margin-bottom: .3em;
+      }
+
+      .recieved, .sent {
+        margin-top: .33em;
+
+        img {
+          height: 14px;
+          width: 14px;
+        }
+
+        span {
+          margin-left: .5em;
+          position: relative;
+          top: 2px;
+        }
+      }
+
+      &.approved {
+        color: #848484;
+        background: #D0E3C3; 
+      }
+
+      &.not-approved {
+        border-color: blue;
+      }
+
+      &.not-approved ~ .not-approved {
+        border-color: black;
+        color: #848484;
+      }
+    }
+
+    & > li.arrow {
+      display: block;
+      position: relative;
+      -webkit-flex: 0;
+      flex: 0;
+      min-width: 2em;
+      text-align: center;
+
+      span {
+        display: block;
+        height: 100%;
+        width: 100%;
+        margin-top: ~"calc(-50% + .5em)";
+        position: absolute;
+        top: 50%;
+      }
+    }
+  }
+
+}

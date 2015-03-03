@@ -1,0 +1,145 @@
+@import '../grid/grid.less';
+
+.flex-basis(@basis) {
+  -webkit-flex-basis: @basis;
+  flex-basis: @basis;
+}
+
+.flex-grow(@grow) {
+  -webkit-flex-grow: @grow;
+  flex-grow: @grow;
+}
+
+rn-recon-grid {
+  .grid-mixin();
+  table {
+    /* You have to specify widths */
+    width: 100%;
+    min-width:1950px;
+
+    thead, tbody,tfoot {
+      display: block;
+
+      tr {
+        display: -webkit-flex;
+        width: 100%;
+      }
+    }
+
+    /*tr>th, tr > td {
+      width:2%;
+    }*/
+
+    thead, tfoot {
+      background: @header-background;
+      color: white;
+      //height:24px;
+      tr {
+        min-height: 24px;
+        height : auto;
+        word-wrap: break-word;
+        th, td {
+          font-weight: normal;
+          height : auto;
+          min-height: 24px;
+          //padding: .3em .5em .3em .5em !important;
+          //border-right: @dark-border;
+          //border-top: @dark-border;
+          border-bottom: @dark-border;
+
+        }
+      }
+    }
+
+    tbody {
+      //max-height: 11em !important;
+      overflow-y: overlay;
+      overflow-x: hidden;
+      border-left: 1px solid #a1a1a1;
+      border-right: 1px solid #a1a1a1;
+      tr:nth-child(odd){
+        background: #f9f9f9;
+      }
+      tr:nth-child(even){
+        background: #f0f0f0;
+      }
+      tr {
+        height : auto;
+        min-height:22px;
+        word-wrap: break-word;
+        td {
+          height : auto;
+          min-height:22px;
+          padding-top:1px;
+        }
+      }
+      tr:hover {
+        //outline: @row-hover-outline;
+        background:@row-hover-background;
+      }
+    }
+
+  /*  th, td {
+      white-space: nowrap;
+    }*/
+
+    tr > th, tr > td {
+      //padding: .3em .5em;
+      &.toggle { .flex-basis(35px);text-align:center; }
+      &.entityName { .flex-grow(1); .flex-basis(150px); }
+      &.countryId {  .flex-basis(70px); }
+      &.ccidId {  .flex-basis(100px); }
+      &.ccy  { .flex-basis(50px); }
+      &.contType { .flex-basis(100px); }
+      &.fiscalPeriod {  .flex-basis(80px); }
+      &.pubFee { .flex-grow(1); .flex-basis(110px); }
+      &.reconAmt  { .flex-grow(1); .flex-basis(110px); }
+      &.liDispAmt { .flex-grow(1); .flex-basis(120px); }
+      &.copConAmt  { .flex-grow(1); .flex-basis(80px); }
+      &.unMatchedAmt { .flex-grow(1); .flex-basis(85px); }
+      &.badLines {  .flex-basis(80px); }
+      &.ingstdDate {  .flex-basis(105px); }
+      &.invFileName { .flex-grow(2); .flex-basis(540px); }
+      &.status {  .flex-basis(120px); }
+    }
+
+    tbody > tr {
+
+      &.child {
+        display: none;
+
+        &.visible {
+          display: -webkit-flex;
+          border:none;
+        }
+      }
+    }
+
+    tfoot {
+
+      tr.child {
+
+        display: none;
+        td:first-child{
+          border-left: 1px solid #666666;
+        }
+        &.visible {
+          display: -webkit-flex;
+        }
+      }
+    }
+
+    .amountColumn, .copConAmt, .unMatchedAmt, .badLines, .pubFee, .reconAmt,.liDispAmt,{
+      text-align: right;
+    }
+  }
+
+
+}
+
+/*rn-recon-grid thead th:last-child, rn-recon-grid tfoot th:last-child, rn-recon-grid thead td:last-child, rn-recon-grid tfoot td:last-child {
+  border-right: 3px solid #868080 !important;
+}
+rn-recon-grid tbody tr td:last-child{
+  border-right: 3px solid #FFFFFF !important;
+}*/

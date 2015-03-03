@@ -1,0 +1,57 @@
+[{  
+   "details":{  
+      "country":"GBR",
+      "region":null,
+      "modelId":0,
+      "pricingModel":{  
+         "region":"Europe",
+         "modelId":61,
+         "comments":null,
+         "createdBy":299221510,
+         "modelName":"STANDARD",
+         "modelDescription":"",
+         "commentId":7148,
+         "version":4
+      },
+      "entity":null,
+      "entityId":19,
+      "trackCounts":[  
+         {  
+            "description":"JUnitTest",
+            "modelId":61,
+            "tierId":41,
+            "minima":"EUR",
+            "paramId":null,
+            "to":2,
+            "from":1
+         }
+      ],
+      "createdBy":0,
+      "userComments":"JUnitUserComment",
+      "versionNo":1,
+      "baseModelParameters":[  
+         {  
+            "modelId":61,
+            "contentGroup":3,
+            "baseRate":0.08,
+            "minima":10.0,
+            "discount":0.0,
+            "isDefault":1,
+            "baseId":20,
+            "listenerMinima":100.0
+         }
+         
+
+         
+
+      ],
+      "modelName":null,
+      "modelType":null
+   },
+   "prsId":1,
+   "appId":33,
+   "secretKey":null,
+   "authToken":44,
+   "requestTimeStamp":null,
+   "roleIds":null
+}]

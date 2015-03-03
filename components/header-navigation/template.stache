@@ -1,0 +1,130 @@
+{{#if appstate.userInfo}}
+<div class="navbar navbar-inverse" id = "navigation-bar" role="navigation" >
+  <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+       <a id="appleLogo" class="navbar-brand" href="#">
+         <img src='../../resources/images/apple-clear.png' class='applelogo'/>
+         <span class="logo-text-style">RightNotes</span>
+       </a>
+      </div>
+      <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav" id='homemenu'>
+
+            <li><a href="/dashboard">Dashboard</a></li>
+
+              <li name='Approvals' class="dropdown" >
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Approvals<!--<span class="caret"></span>-->
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href='{{url}}approvals/accrualApproval' class="old" target="_blank">Accrual</a></li>
+                 <!--   <li><a href='{{url}}approvals/refDataApproval' class="old" target="_blank">Ref Data</a></li>-->
+                    <li {{isScreenEnabled 21}}><a href='/payment-bundles' data-screenid="21" >Payment Bundle Review</a></li>
+                    <li><a href='{{url}}approvals/salesReportApproval' class="old" target="_blank">Sales Report</a></li>
+                    <li><a href='{{url}}approvals/unClaimedReportApproval' class="old" target="_blank">Unclaimed Report</a></li>
+                </ul>
+            </li>
+
+
+            <li name='Invoices' class="dropdown" >
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Invoices<!--<span class="caret"></span>--></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li {{isScreenEnabled 3}}><a href="/create-invoice" data-screenid="3">Invoice Entry</a></li>
+                    <li {{isScreenEnabled 4}}><a href='/icsv'  data-screenid="4">iCSV Entry</a></li>
+                    <li {{isScreenEnabled 5}}><a href='/invoices'  data-screenid="5">Search Invoice</a></li>
+                    <li {{isScreenEnabled 7}}><a href='/recon'  data-screenid="7">Recon Stats</a></li>
+                    <li {{isScreenEnabled 8}}><a href='/reconOther'  data-screenid="8">Incoming Other</a></li>
+                    <li {{isScreenEnabled 9}}><a href='/on-account'  data-screenid="9">On Account</a></li>
+                </ul>
+            </li>
+
+             <li {{isScreenEnabled 20}} name='Analytics' class="dropdown" >
+                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Analytics<!--<span class="caret"></span>--></a>
+                 <ul class="dropdown-menu" role="menu">
+
+                     <li {{isScreenEnabled 22}}><a href='/claimreview'  data-screenid="22">Claim Review</a></li>
+                     <li {{isScreenEnabled 23}}><a href='{{url}}globalRevenue' class="old" target="_blank">Global Revenue</a></li>
+                     <li {{isScreenEnabled 24}}><a href='{{url}}bwReport' class="old" target="_blank">Monthly Billings Reconciliation</a></li>
+                 </ul>
+             </li>
+
+            <li name='Reference' class="dropdown" >
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reference<!--<span class="caret"></span>--></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li {{isScreenEnabled 16}}><a href='/licensor'  data-screenid="16">Licensor</a></li>
+                    <li {{isScreenEnabled 17}}><a href='/ref-country'  data-screenid="17">Country</a></li>
+                    <li {{isScreenEnabled 18}}><a href='/ref-licensorcountry'  data-screenid="18">Licensor Country</a></li>
+                    <li {{isScreenEnabled 19}}><a href='/pricing-models'  data-screenid="19">Pricing Model</a></li>
+                </ul>
+             </li>
+
+             <li name='Accruals' class="dropdown" >
+                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Accruals<!--<span class="caret"></span>--></a>
+                 <ul class="dropdown-menu" role="menu">
+                     <li {{isScreenEnabled 11}}><a href='{{url}}accrualJV' class="old" target="_blank">Accrual Journal Voucher</a></li>
+                     <li {{isScreenEnabled 12}}><a href='{{url}}accrualDetails' class="old" target="_blank">Accrual Details</a></li>
+                     <li {{isScreenEnabled 13}}><a href='{{url}}accrualsAgingReport' class="old" target="_blank">Accruals Aging Report</a></li>
+                     <li {{isScreenEnabled 14}}><a href='{{url}}accrualTrueUp' class="old" target="_blank">Accrual Trueup</a></li>
+                     <li {{isScreenEnabled 15}}><a href='{{url}}accrualAnalysis' class="old" target="_blank">Accrual Analysis</a></li>
+                 </ul>
+             </li>
+
+              <li name='System' class="dropdown" >
+                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">System<!--<span class="caret"></span>--></a>
+                   <ul class="dropdown-menu" role="menu">
+                       <li {{isScreenEnabled 25}}><a href='{{url}}jobStatistics' class="old" target="_blank">Job Statistics</a></li>
+                       <li {{isScreenEnabled 26}}><a href='{{url}}reportDownloads' class="old" target="_blank">Report Downloads</a></li>
+                   </ul>
+              </li>
+
+              <li name='Approval History' class="dropdown" >
+               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Approval History<!--<span class="caret"></span--></a>
+               <ul class="dropdown-menu" role="menu">
+                   <li {{isScreenEnabled 27}}><a href='{{url}}accrualApprovalHistory' class="old" target="_blank">Accrual Approval</a></li>
+                   <li {{isScreenEnabled 28}}><a href='{{url}}refDataHistory' class="old" target="_blank">Ref Data</a></li>
+                   <li {{isScreenEnabled 29}}><a href='{{url}}reconPaymentHistory' class="old" target="_blank">Recon Payment</a></li>
+                   <li {{isScreenEnabled 30}}><a href='{{url}}salesReportHistory' class="old" target="_blank">Sales Report</a></li>
+                   <li ><a href='{{url}}paymentReportHistory' class="old" target="_blank">Payment Report</a></li>
+                   <li ><a href='{{url}}unClaimedReportHistory' class="old" target="_blank">Unclaimed Report</a></li>
+                   <li {{isScreenEnabled 31}}><a href='{{url}}onAccountAmountHistory' class="old" target="_blank">OnAccount</a></li>
+                   <li {{isScreenEnabled 32}}><a href='{{url}}lineItemHistory' class="old" target="_blank">Dispute Report</a></li>
+                   <li {{isScreenEnabled 33}}><a href='{{url}}accrualRerunHistory' class="old" target="_blank">Accrual Rerun</a></li>
+               </ul>
+           </li>
+        </ul>
+
+          <ul class="nav navbar-nav"></ul>
+          <ul id='rightsidemenu'>
+            <li class='username'><img src='../../resources/images/rn_WorkflowTypePerson_completed.png' class='logedinimg'/>{{appstate.userInfo.displayName}}</li>
+               <li class='bar'>|</li>
+               <li class='rightmenu bookmark' title="Bookmark">
+                 {{#if counter.bookmark}}
+                 <span class='bookmark-bubble'>{{counter.bookmark}}</span>
+                 {{/if}}
+                </li>
+               <li class='rightmenu notification' title="Notification">
+                 {{#if counter.notifications}}
+                  <span class='notification-bubble'>{{counter.notifications}}</span>
+                {{/if}}
+                </li>
+               <li name = 'logout' class='rightmenu logout' title="Logout">&nbsp;</li>
+               <!--Bookmark  - Palceholder -->
+               <div class="bookMarkPalceHolder">
+                 <!-- <book-mark appstate="{appstate}" counter="{counter}"></book-mark> -->
+                </div>
+               <div class="notificationPlaceHolder">
+                 <!-- <rn-notifications appstate="{appstate}"></rn-notifications> -->
+               </div>
+          </ul>
+      </div>
+  </div>
+</div>
+<!--GloablSearch Parameter - Palceholder -->
+<div class="gParamSearchbar" {{renderGlobalSearch}} >
+</div>
+{{/if}}

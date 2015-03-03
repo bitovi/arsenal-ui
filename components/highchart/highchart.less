@@ -1,0 +1,70 @@
+	.highcharts_Overlay{
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		min-width: 100%;
+		height: 100%;
+		z-index: 20;
+		background: rgba(0, 0, 0, 0.5);
+		transition: all 0.5s;
+		overflow: hidden;
+	}
+
+	#highChartDetails{
+	    position: absolute;
+	    top: 90px;
+	    left: 300px;
+	    /*height: 50%;*/
+	    width: 50%;
+	    background-color: rgba(0,0,0,0.5);
+	    z-index: 10;
+	}
+
+	.highcharts_Hide {
+		display: none;
+	}
+
+	.highcharts_Close{
+		display: block;
+		outline: none;
+		text-indent: -9999px;
+		position: absolute;
+		top: -10px;
+		left: -13px;
+		width: 28px;
+		height: 28px;
+		background-image: url("/rinsresources/images/close.png");
+		background-repeat: no-repeat;
+		z-index: 100000;
+		cursor: pointer;
+	}
+
+	.chartRight{
+		display: block;
+		outline: none;
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		z-index: 9999;
+	}
+	.switch-toggle {
+	    background: url("/resources/images/switch.png") no-repeat;
+	    display: inline !important;
+	    height: 11px;
+	    padding-left: 26px;
+	    margin-left: 5px;
+	    cursor: pointer;
+	    display: none;
+	    z-index: 16000;
+	}
+	.switch-toggle.on {
+		background: url("/resources/images/switch_on.png") no-repeat;
+		background-position: 0px 4px;
+	}
+	.switch-toggle.off {
+		background: url("/resources/images/switch_off.png") no-repeat;
+		background-position: 0px 4px;
+	}	
+	.switch-toggle.hidden {
+		display: none;
+	}

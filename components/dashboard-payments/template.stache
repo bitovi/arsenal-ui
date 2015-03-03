@@ -1,0 +1,37 @@
+{{#showPage}}
+{{#if fetching}}
+<div class="select-message">Loading Payments report...</div>
+{{else}}
+<div id="parentcontainer" style="height:100%;width:100%;padding-top: 1em">
+<div class="sidebar" style="height:auto; width:30%;float:left;">
+  <rn-switcher options="{tabs}" selected-option="{selectedTab}"></rn-switcher>
+  <ul class="chart-list">
+  {{#selectedItems}}
+  <li class="{{isSelected .}}" {{data 'item'}}>
+    <rn-payment-chart text="{name}" value="{item.totPaidPrcnt}"</rn-payment-chart>
+  </li>
+  {{/selectedItems}}
+  </ul>
+</div>
+<div class="vertical-line"></div>
+<div class="detail" style="height:auto; width:69%;float:left;padding-top: 0px;display: table;margin: 0 auto;" >
+  <div class="legend">
+    <div class="paid"><div class="square"></div> Paid</div>
+    <div class="unpaid"><div class="square"></div> Unpaid</div>
+  </div>
+    {{#if selectedItem}}
+    <div style="width:100%;">
+    <rn-dashboard-payments-detail name-property="{selectedTab.detailNameProperty}" detail-items="{selectedItem.payments}" appstate="{appstate}"></rn-dashboard-payments-detail>
+    </div>
+    {{else}}
+    <rn-dashboard-payments-overview summary="{summary}" appstate="{appstate}" dispcount="5"></rn-dashboard-payments-overview>
+    {{/if}}
+
+</div>
+</div>
+
+</div>
+{{/if}}
+{{else}}
+<div class="select-message">Please select parameters above for the Payments report.</div>
+{{/showPage}}

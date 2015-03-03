@@ -1,0 +1,13 @@
+
+
+<div id="multipleCommentsContainer">
+<div  class="multiple-comments-parent">
+  <span class="corner BR"/>
+  <textarea maxlength="1000"  can-value="{modulestate.approvalComment}" id ="editableText" placeholder="Please add your comments.." class="multiple-comments-editable form-control-comments new-comments multiple-comments-editable-height" />
+  <div  id="{{divid}}" class="multiple-comments-child">
+
+  </div>
+</div>
+
+<img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "{{textareaid}}-err" style="display:none;">
+</div>

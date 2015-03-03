@@ -1,0 +1,48 @@
+<div id="showTableInfo">
+<table class="information" border="0" cellpadding="0" cellspacing="0" width="100%" align="center">
+  <thead width="100%" cellpadding="0" cellspacing="0" height="0px">
+    <tr>
+      <th>Column Name</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="even">
+      <td>Line Item Dispute</td>
+      <td>Errors in the licensor CCID (e.g. rate is too high, waiver not respected)</td>
+    </tr>
+    <tr class="odd">
+        <td>Recon</td>
+        <td>Reconciled amount</td>
+    </tr>
+    <tr class="even">
+      <td>OA Allocated</td>
+      <td>Onaccount allocated</td>
+    </tr>
+    <tr class="odd">
+      <td>CA Allocated</td>
+      <td>Cash adjustment allocated</td>
+    </tr>
+    <tr class="even">
+      <td>Prior Paid</td>
+      <td>Portion of invoices that were previously paid</td>
+    </tr>
+    <tr class="odd">
+      <td>Net Payment</td>
+      <td>PNet amount payable for the invoicee</td>
+    </tr>
+    <tr class="even">
+      <td>Invoice Payment Sat</td>
+      <td>Paid amount/Total invoice</td>
+    </tr>
+    <tr class="odd">
+      <td>Invoice Sat</td>
+      <td>Total invoice/Accrual</td>
+    </tr>
+    <tr class="odd">
+        <td>Payment Sat</td>
+        <td>Paid amount/Accrual</td>
+    </tr>
+  </tbody>
+</table>
+</div>

@@ -1,0 +1,469 @@
+@import '../file-uploader/file-uploader.less';
+
+rn-file-uploader-create{
+	.fileupload-mixin();
+}
+
+
+page-create-invoice{
+
+	.file-component-div {
+		width:450px;
+		height:150px;
+		padding:0 0 1px 0;
+	}
+
+	.invoiceContainer{
+		border:2px solid #DAD7D7;
+		padding:10px;
+	}
+
+	.pageTitleInv{
+	  	padding-left:20px !important;
+	}
+
+	.lineDividerInvoice{
+		border-top:1px solid #c6c6c6;
+	}
+
+	.textLeftAlign{
+		text-align:left;
+	}
+
+	.fileUploadContainer{
+		height:70px;
+		background-color:#D6D6D6;
+	}
+
+	.fileUploadButtonPosition{
+		position:absolute;
+		right:5px;
+		top:5px;
+	}
+
+	.breakDown{
+		margin-left:5px;
+		text-align:left;
+		margin-bottom:8px;
+	}
+
+	.breakDownBorder{
+	 	border:1px solid #000000;
+	}
+
+	.breakDownIconSize{
+		width:16px;
+		height:16px;
+	}
+
+	.buttonCancel{
+		 margin-left:70px;
+	}
+
+	.buttonSubmit{
+		margin-left:10px;
+	}
+
+	/*invoice list based on new UX */
+
+	.topFilterContainer{
+		margin: 15px 0px 15px 0px;
+	}
+
+	.gridControlsContainer{
+		 margin: 15px 35px 15px 35px;
+	}
+
+	.bottomContainer{
+		margin: 15px 35px 15px 35px;
+	}
+
+
+	.btn-custom-small.active {
+	  color: rgba(255, 255, 255, 0.75);
+	}
+
+
+	.field-invalid{
+		right:-10px !important;
+		height:20px;
+		width:20px;
+		top:4px;
+	}
+
+	.field-invalid-date{
+		right:-30px !important;
+		height:20px;
+		width:20px;
+
+	}
+
+	table.breakdown thead {
+		background-color: linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+		background: -moz-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+		background: -webkit-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+		background: -o-linear-gradient(bottom, #7e7e83, #afafb4 100%, #b0b0b5);
+		font-size: small;
+		color: white;
+	}
+
+	table.breakdown thead th{
+		border: 1px solid #848484;
+		font-weight:normal;
+	}
+
+	.breakdown-div{
+		border: 1px solid #B0B0B5;
+		border-radius:4px;
+		margin-right:5px;
+	}
+	.hide {
+		display:none;
+	}
+
+	.requiredBar{
+		border-left: 2px solid #d24849;
+	    padding-left: 2px;
+	    box-sizing: none;
+	    height:20px;
+	}
+
+	.rbar{
+		border-left: 2px solid #d24849;
+	    padding-left: 2px;
+	    box-sizing: none;
+	    height:20px;
+	    float:left;
+	}
+
+	.requiredBarNone{
+		border-left: 2px solid transparent;
+	    padding-left: 2px;
+	    box-sizing: none;
+	}
+
+	.alert-rnotes{
+		width:1px;
+		height:1px;
+		padding:0px;
+		margin:0px;
+		}
+	.valid-rnotes{
+		width:1px;
+		height:1px;
+		padding:0px;
+		margin:0px;
+		}
+
+	.taxAmount, .classAmtTotal{
+		text-align:right;
+	}
+
+	.taxAmount {
+		padding-right:0px !important;
+	}
+
+	.alert-dimension{
+		padding: 15px;
+		margin-bottom: 20px;
+		border-radius: 4px;
+		margin-top:10px;
+		text-align:center;
+	}
+
+
+	.has-success .form-control{
+		border-color:#CCCCCC !important;
+	}
+
+	.has-success .form-control:focus{
+		border-color:#CCCCCC !important;
+		box-shadow:none;
+	}
+
+	.has-feedback .form-control {
+		padding-right: 10px;
+	}
+
+	#fxrate{
+		text-align:right;
+	}
+
+	input[type=text]:not(.ccidGL) {
+		padding: 4px !important;
+	}
+
+	.ccidGL{
+		padding-left: 4px !important;
+	}
+
+	textarea{
+		padding: 4px !important;
+	}
+
+	.totalbox {
+		text-align:right;
+		float:left;
+		padding-bottom:8px;
+	}
+
+	.totalboxlabel {
+		text-align:right;
+		float:left;
+		margin:0;
+		padding-bottom:8px;
+		padding-right:20px;
+	}
+
+	.submit-button-style {
+		float:left;
+		padding:22px 0 20px 0;
+		width:50%;
+		margin:0px;
+	}
+
+	/*UX CHANGES*/
+	.form-control{
+		height:20px;
+	}
+
+	#paymentBundleNames{
+		min-width:200px;
+	}
+
+	@-moz-document url-prefix() {
+	  .form-control{
+		padding-top:0px;
+		padding-bottom:0px;
+	}
+	}
+
+	.input-group-addon{
+		padding:0px;
+	}
+
+	.has-success .input-group-addon {
+		color: #555;
+		background-color: #eee;
+		border-color: #ccc;
+	}
+	.has-success .control-label{
+		color: #848484 !important;
+	}
+
+	.has-error .control-label{
+		color: #848484 !important;
+	}
+	.right-border{
+		border-right:1px solid #C6C6C6;
+		padding-top:20px;
+		background-color:#f6f6f6;
+	}
+
+	.left-border{
+		border-right:1px solid #C6C6C6;
+		padding-top:20px;
+		background-color:#E4E4E4;
+	}
+	label{
+		font-family:"MyriadPro-Regular", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif; ;
+		font-size:12px;
+		color:#848484;
+		font-weight:normal;
+	}
+
+	.mid-header{
+		font-family:"MyriadPro-Regular", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif; ;
+		font-size:16px;
+		color:#848484;
+	}
+
+	.total-amount{
+		padding-right:32px;
+	}
+
+	.invoice-total-container{
+		border-top: 1px solid #c6c6c6;
+		border-bottom:1px solid #c6c6c6;
+		padding: 10px 0;
+	}
+	.large-value{
+		font-family:"MyriadPro-Regular", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif; ;
+		font-size:21px;
+		color:#3D3D3D;
+
+	}
+
+	.control-label{
+		padding-top:0px !important;
+	}
+
+	smaller-value{
+		font-family:"MyriadPro-Regular", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif; ;
+		font-size:12;
+		color:#3D3D3D;
+	}
+
+	.taxpercent{
+		padding-right:32px !important;
+	}
+
+	.singleField{
+	padding-left:5px;
+	}
+
+	.breakdownHead{
+	width:19%;
+	}
+
+	.breakdownIcon{
+	width:5%;
+	}
+
+	textarea#licnotes, textarea#usercomments{
+		height:100% !important;
+		resize: none;
+	}
+
+	select#invoiceType, select#invoicelicensor, select#currency, select#invoiceRegion{
+		min-width:140px;
+	}
+
+	.popover{
+		max-width:500px;
+		width:250px;
+	}
+
+	.pageHead{
+		margin-top:0px;
+		padding-top:0px;
+		margin-bottom:20px;
+		color:#1e2025;
+		font-size:24px;
+	}
+
+	.textDate{
+		text-align:left;
+		padding-left:0px;
+		font-size:12px;
+	}
+
+	.invtotal-head{
+		font-size:21px;
+		color:#1e2025;
+		font-weight:normal;
+	}
+
+	.invtotal-value{
+		font-weight:bold;
+		font-size:21px;
+		color:#3d3d3d;
+	}
+
+	.popover-content{
+		font-size:14px;
+	}
+
+	.bundelTitle{
+		padding-right:0px;
+	}
+
+	.marginLeft20{
+		margin-left: 20px;
+	}
+
+	.div-warn-container .center{
+		width:100%;
+		height:auto;
+	}
+
+}
+/*Bootstrap validator popover*/
+
+.popover{
+	max-width:500px;
+
+}
+
+.popover .arrow{
+	top:auto;
+}
+
+.popover-content{
+	font-size:14px;
+}
+
+.datepicker th{
+	color:#000000;
+}
+.select-editable {
+     position: relative;
+	background-color: white;
+	width: 144px;
+	height: 20px;
+	border-radius: 4px;
+	border: 1px solid #ccc;
+ }
+ .select-editable select {
+    position: absolute;
+	top: 0px;
+	left: 0px;
+	border: none;
+	width: 142px;
+	margin: 0;
+	height: 17px !important;
+	outline: 0;
+ }
+ .select-editable input {
+    position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 115px;
+	padding: 1px;
+	font-size: 12px;
+	border: none;
+	border-radius: 4px;
+	height: 16px !important;
+	padding-left: 2px;
+	border-right: 1px solid #ccc;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+ }
+ .select-editable select:focus, .select-editable input:focus {
+     outline:none;
+ }
+.arrow {
+	//left: auto !important;
+	right: 20px !important;
+	top: auto !important;
+}
+
+  .has-error .select-editable{
+ 	border-color: #a94442;
+ }
+
+ rn-pb-confirm-modal .modal-content{
+   top:80px;
+ }
+
+period-calendar .box-modal {
+  position: fixed;
+}
+
+/*.region select option {
+  font-family: 'MyriadPro-Regular';
+}*/
+
+/*
+select {
+  border: 0;
+  font: MyriadPro-Regular;
+}
+
+option.fontmyriad {
+  -webkit-appearance: none;
+  font-family: "MyriadPro-Regular";
+  font-size: 14px;
+  padding: 5px;
+  background: #5c5c5c;
+}*/

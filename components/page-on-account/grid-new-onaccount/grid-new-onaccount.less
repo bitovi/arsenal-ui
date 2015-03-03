@@ -1,0 +1,114 @@
+@import '../../grid/grid.less';
+
+.flex-basis(@basis) {
+  -webkit-flex-basis: @basis;
+  flex-basis: @basis;
+}
+
+.flex-grow(@grow) {
+  -webkit-flex-grow: @grow;
+  flex-grow: @grow;
+}
+
+rn-new-onaccount-grid {
+  .grid-mixin();
+  table {
+
+    width: 100%;
+    //min-width:1300px;
+
+    thead, tbody,tfoot {
+      display: block;
+
+      tr {
+        display: -webkit-flex;
+        width: 100%;
+      }
+    }
+
+    thead, tfoot {
+      background: @header-background;
+      color: white;
+      height:25px;
+      tr {
+        height : 25px;
+        th, td {
+          font-weight: normal;
+
+          height: 25px;
+          //padding: .3em .5em .3em .5em !important;
+          //border-right: @dark-border;
+          //border-top: @dark-border;
+          border-bottom: @dark-border;
+
+        }
+      }
+    }
+
+    tbody {
+      //max-height: 8em;
+      overflow-y: overlay;
+      overflow-x: hidden;
+      border-left: 1px solid #a1a1a1;
+      border-right: 1px solid #a1a1a1;
+      tr {
+        height : 22px;
+        td {
+          height : 22px;
+          padding-top:1px;
+        }
+      }
+    }
+
+    tr > th, tr > td {
+      //padding: .3em .5em;
+      &.col-toggle-width { .flex-grow(1); .flex-basis(50px); }
+      &.col-lic-width { .flex-grow(2); .flex-basis(200px); }
+      &.col-currency-width { .flex-grow(1); .flex-basis(100px); }
+      &.col-total-width { .flex-grow(1); .flex-basis(200px); }
+      &.col-others-width { .flex-grow(1); .flex-basis(200px); }
+    }
+
+    tbody > tr {
+
+      &.child {
+        display: none;
+
+        &.visible {
+          display: -webkit-flex;
+          border:none;
+        }
+      }
+    }
+
+  }
+
+  input.invalid {
+    background: red;
+    color: white;
+  }
+
+
+//Set the coloumn specifc properties here
+  .col-toggle-width {
+
+  }
+
+  .col-lic-width {
+
+  }
+
+  .col-currency-width {
+
+  }
+
+  .col-total-width {
+    text-align:right;
+  }
+
+  .col-others-width {
+    text-align:right;
+    padding-right: 3px;
+  }
+
+}

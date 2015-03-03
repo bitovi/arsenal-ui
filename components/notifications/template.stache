@@ -1,0 +1,36 @@
+<div class='notificationContainer'>
+  <div class="arrow_box"></div>
+    <div class='notificationlist'>
+        <div class='listofnotification'>
+          <div class='listtitle'>Notifications</div>
+          <div class='notification_settings_icon'>&nbsp;</div>
+          <div class='autoscroll'>
+          {{#if notificationList.length}}
+            {{#each notificationList}}
+              <div class='notification_list{{isViewedStyle isViewed}}' data-pageId={{pageId}}>
+                <div class="type-text">Type:  {{type}} </div>
+                <div class="notification-text"> {{text}}</div>
+                <div class="date-text"> {{createdDate}},{{createdTime}}</div>
+                <div class="user-text"> {{firstName}} {{lastName}}</div>
+                <div role="presentation" class="divider"></div>
+              </div>
+            {{/each}}
+          {{else}}
+              <div class='notification_list' data-pageId={{pageId}}>No Notifications Available</div>
+          {{/if}}
+          </div>
+          {{#if recordsAvailable}}
+            <div class="showMore notification_custombtns"><button type="button" class="showButton btn btn-primary btn-custom-small-disabled">Show More</button></div>
+          {{/if}}  
+        </div><!--list of notification end-->
+        <div class='notification_settings_options'>
+          <div class='listtitle'>Notifications Settings</div>
+            <div class='autoscroll'></div>
+            <div class='notification_custombtns'>
+              <button type="button" class="btn btn-primary btn-custom-small-disabled" id='notification_settings_cancel'>Cancel</button> 
+              <button type="button" class="btn btn-primary btn-custom-small" id='notification_settings_save'>Save</button> 
+            </div>
+        </div>
+        <div class='notification_loader'><div class='loader'>&nbsp;</div></div>
+  </div>
+</div>

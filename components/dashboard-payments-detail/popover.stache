@@ -1,0 +1,72 @@
+<div class="unpaid-popover">
+  <div class="column-chart" style="float:left;height:200px"></div>
+  <div style="width:80%;float:left">
+    <table class="unpaid-details" id="UnpaidPopup">
+      <!--tr style="width:100%;height: 60px;border-bottom: 1px solid #C6C6C6;">
+        <td style="width:20px"></td>
+        <td><div class="stats-header-style" style="width: 128px;">Total Paid:</div></td>
+        <td><div class="stats-val-style">{{item.totBalPrcnt}}%</div></td>
+        <td>
+          <div class="gbl-curr-val-style"><span>{{item.totBalGblCcy}}</span></div>
+          <div class="local-curr-val-style"><span>{{item.totBalAmt}}</span></div>
+        </td>
+        <td>
+          <div class="gbl-currency-style"><span>{{globalCurrency}}</span> </div>
+          <div class="local-currency-style"><span>{{localCurrency}}</span> </div>
+        </td>
+      </tr-->
+      <tr style="width:100%;height: 60px;border-bottom: 1px solid #C6C6C6;">
+        <td style="width:20px"></td>
+        <td><div class="stats-header-style" style="width: 128px;"><a class="claim-link" href="#">Total Unpaid:</a></div></td>
+        <td><div class="stats-val-style">{{item.totBalPrcnt}}%</div></td>
+        <td>
+            <div class="gbl-curr-val-style"><span>{{item.totBalGblCcy}}</span></div>
+            <div class="local-curr-val-style"><span>{{item.totBalAmt}}</span></div>
+        </td>
+        <td>
+            <div class="gbl-currency-style"><span>{{globalCurrency}}</span> </div>
+            <div class="local-currency-style"><span>{{localCurrency}}</span> </div>
+        </td>
+      </tr>
+      <tr style="width:100%;height: 40px;">
+        <td style="width:20px"><div class="recon-square">&nbsp;</div></td>
+        <td><div class="stats-header-style">Reconciled Unpaid:</div></td>
+        <td><div class="stats-val-style">{{item.reconPrcnt}}%</div></td>
+        <td>
+          <div class="gbl-curr-val-style"><span>{{item.reconGblCcy}}</span></div>
+          <div class="local-curr-val-style"><span>{{item.reconAmt}}</span></div>
+        </td>
+        <td>
+          <div class="gbl-currency-style"><span>{{globalCurrency}}</span> </div>
+          <div class="local-currency-style"><span>{{localCurrency}}</span> </div>
+        </td>
+      </tr>
+      <tr style="width:100%;height: 40px;">
+        <td style="width:20px"><div class="li-square">&nbsp;</div></td>
+        <td><div class="stats-header-style">Line item disputes:</div></td>
+        <td><div class="stats-val-style">{{item.liPrcnt}}%</div></td>
+        <td>
+          <div class="gbl-curr-val-style"><span>{{item.liGblCcy}}</span></div>
+          <div class="local-curr-val-style"><span>{{item.liAmt}}</span></div>
+        </td>
+        <td>
+          <div class="gbl-currency-style"><span>{{globalCurrency}}</span> </div>
+          <div class="local-currency-style"><span>{{localCurrency}}</span> </div>
+        </td>
+      </tr>
+      <tr style="width:100%;height: 40px;">
+        <td style="width:20px"><div class="or-square">&nbsp;</div></td>
+        <td><div class="stats-header-style">Overrep disputes:</div></td>
+        <td><div class="stats-val-style">{{formatPercent item.orPrcnt}}</div></td>
+        <td>
+          <div class="gbl-curr-val-style"><span>{{item.orGblCcy}}</span></div>
+          <div class="local-curr-val-style"><span>{{item.orAmt}}</span></div>
+        </td>
+        <td>
+          <div class="gbl-currency-style"><span>{{globalCurrency}}</span> </div>
+          <div class="local-currency-style"><span>{{localCurrency}}</span> </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

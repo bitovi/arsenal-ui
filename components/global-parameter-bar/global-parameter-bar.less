@@ -1,0 +1,186 @@
+global-parameter-bar {
+
+  .globalFilterContainer {
+    border-bottom: 1px solid #C6C6C6;
+  }
+  ul {
+    list-style: none;
+    padding: 15px 35px 0;
+
+    li {
+      display: inline;
+      padding: 10px 0px;
+
+      .box{
+        display:inline-block;
+        min-width: 150px;
+        margin-bottom:5px;
+
+        .parameter-name {
+          margin-right: 0px;
+          display:block;
+          padding: 0px 0px 3px 2px;
+        }
+
+        select.resizeBox {
+
+          margin-top: 2px;
+          width: 135px;
+        }
+
+        button.multiselect{
+          height: 20px !important;
+          padding: 1px 12px;
+          width: 125px;
+          text-align: left;
+          b.caret {
+            float: right;
+            position:relative;
+            top: 6px;
+          }
+        }
+        button.btn-default:hover, .btn-default:focus, .btn-default:active{
+           background-color: white;
+        }
+        .dropdown-menu {
+          min-width: 125px;
+          li > a{
+            padding: 1px;
+          }
+        }
+      }
+    }
+
+  }
+  #periodFrom, #periodTo{
+      width:120px;
+      height:20px;
+      font-size:12px;
+      padding-left: 8.5px;
+      padding-top: 8px;
+  }
+
+  #storeTypesFilter, #country, #licensor{
+      width:135px;
+  }
+
+  .multiselect-container>li.multiselect-group label{
+    padding-left:5px;
+    font-weight:normal;
+    color:#000000 !important;
+  }
+
+  #contentTypesFilter {
+    width: 100px;
+  }
+  period-calendar{
+      .periods ul li{
+        padding:0px;
+      }
+
+  }
+   .no-data, .error{
+      position:absolute;
+      visibility: hidden;
+      font-size:12px;
+      color:red;
+      padding-left:42px;
+      float: left;
+      margin-top:-15px;
+  }
+  /*:focus{
+    border:1px solid red;
+  }*/
+
+  .form-control{
+    height: 20px !important;
+  }
+  .error{
+    visibility: visible;
+  }
+
+  .safari-style{
+    -webkit-appearance: menulist;
+    float:none !important;
+  }
+
+  #country, #licensor, #contentType{
+    .dropdown-menu {
+        background-color: #EEEEEE;
+        border: 1px solid #D6D6D6;
+        border-top-color: #EEEEEE;
+        border-radius: 5px;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+    .dropdown-menu > li{
+      height:21px;
+    }
+    .dropdown-menu > li > a {
+        color: #515151;
+        padding: 2px 2px 0;
+        font-size: 12px;
+        .checkbox {
+          padding-left:30px;
+        }
+    }
+    .dropdown-menu > li > a:hover,
+    .dropdown-menu > li > a:focus {
+        color: #FFF;
+        background-color: #489CE4;
+    }
+
+  /*  .dropdown-menu > li .multiselect-all {
+      border-bottom: 1px solid;
+      margin-right: 3px;
+      margin-left: 3px;
+      padding-left: 0px;
+    } */
+
+    .dropdown-menu > .active > a,
+    .dropdown-menu > .active > a:hover,
+    .dropdown-menu > .active > a:focus{
+      color: #FFF;
+      background-color: #489CE4;
+    }
+  }
+
+
+  .updatePeriod {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .calendarDateIcon{
+    border-left:0px;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 18px;
+    color: #555;
+    /* text-align: center; */
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-radius: 0 4px 4px 0;
+    /* position: relative; */
+    bottom: 0px;
+    display: inline-block;
+    /* left: 146px; */
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    z-index: 3;
+    margin-left: -5px;
+    padding-left: 3px;
+  }
+
+}
+
+option {
+  font-family: "MyriadPro-Regular";
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.glyphicon {
+  top: 2px;
+}

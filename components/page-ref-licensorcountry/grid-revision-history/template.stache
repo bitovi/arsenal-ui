@@ -1,0 +1,25 @@
+<table class="rn-grid {{tableClass}}">
+  <thead>
+    <tr>
+      {{#filteredColumns}}
+      <th class="{{columnClass column}}" {{data 'column'}}>{{columnTitle column}}</th>
+      {{/filteredColumns}}
+    </tr>
+  </thead>
+  <tbody>
+    {{#filteredRows}}
+    <tr class="{{rowClass row}} {{#if isOpen}}open{{/if}} {{#if isChild}}child{{/if}} {{#if isVisible}}visible{{/if}}" {{data 'row'}}>
+      {{#filteredColumns}}
+      <td class="{{columnClass column}} {{cellClass row column}}" {{data 'column'}}>{{cellContents row column}}</td>
+      {{/filteredColumns}}
+    </tr>
+    {{/filteredRows}}
+  </tbody>
+  <tfoot>
+    {{#if footerrowspresent}}
+        <tr class="open">
+          <td colspan="{{getColumnLength}}">Number of records: {{footerdata}}</td>
+        </tr>
+    {{/if}}
+  </tfoot>
+</table>

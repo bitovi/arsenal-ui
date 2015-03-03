@@ -1,0 +1,90 @@
+@import '../grid/grid.less';
+@import '../grid/examples/scrolling-grid/scrolling-grid.less';
+
+.flex-basis(@basis) {
+  -webkit-flex-basis: @basis;
+  flex-basis: @basis;
+}
+
+.flex-grow(@grow) {
+  -webkit-flex-grow: @grow;
+  flex-grow: @grow;
+}
+
+rn-bundle-grid {
+  .grid-mixin();
+  .scrolling-grid-mixin();
+
+  font-size: 10pt;
+
+  .paymentAmt {
+    text-align: right;
+  }
+
+  input.error {
+    background: red;
+    color: white;
+  }
+
+  table.scrolling {
+
+    tbody {
+    //  height: 10em;
+      //border-bottom: 0;
+    // border-bottom: 1px solid #666;
+      // border-bottom-left-radius: 5px;
+      // border-bottom-right-radius: 5px;
+
+    }
+    tfoot td{
+        border-bottom: 0px;
+    }
+    tbody tr {
+      min-height: 1.5625em;
+    }
+
+    tr.highlight{
+      background: #d3f0fe !important;
+    }
+
+    tr.selected {
+      background: #50A2F2 !important;
+    }
+
+    tbody > tr:last-child {
+        //border-bottom: 1px solid #bfbfbf;
+     }
+
+    tr > th, tr > td {
+      &.isHighPriority { .flex-basis(25px); }
+      &.bundleName { .flex-grow(1); .flex-basis(200px); }
+      &.paymentCcy { .flex-basis(100px); }
+      &.paymentAmt {.flex-basis(125px); word-wrap: break-word; }
+      &.bundleType { .flex-basis(100px); }
+      &.periodRange { .flex-basis(200px); }
+      &.region { .flex-basis(100px); }
+      &.pendingWith { .flex-basis(200px); }
+      &.pendingDays { .flex-basis(105px);
+            white-space: nowrap;
+            padding-right: 1.5em;text-align: right;}
+    }
+  }
+}
+
+
+
+.editName, .cancelBundleEdit{
+  padding-top: 0px;
+  height: 15pt;
+  margin-top: 0px;
+  background: #B5B5B5;
+  font-weight: bold;
+  z-index: 1000;
+}
+
+#bundleEditImage {
+  margin-bottom: 0.4em;
+  height: 13px;
+  margin-left: 0.3em;
+  cursor: pointer;
+}
