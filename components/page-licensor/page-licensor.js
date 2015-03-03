@@ -606,8 +606,9 @@ var page = Component.extend({
         $("#loading_img").hide();
         //$("#button_layout").hide();
 
-        $("#buttonsubmit").hide();
-        $("#buttonreset").hide();
+        //$("#buttonsubmit").hide();
+        //$("#buttonreset").hide();
+        $("#button_layout").hide();
         
         var msg = "No details present";
         
@@ -1392,9 +1393,10 @@ var page = Component.extend({
       var genObj = {};
 
       $("#loading_img").show();
+      $("#button_layout").hide();
       $("#entityLicensorBottom").hide();
-      $("#buttonsubmit").hide();
-      $("#buttonreset").hide();
+      //$("#buttonsubmit").hide();
+      //$("#buttonreset").hide();
 
 
 
@@ -1447,10 +1449,11 @@ var page = Component.extend({
             Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
               $("#loading_img").hide();
               $("#entityLicensorBottom").show();
-              $("#buttonsubmit").show();
-              $("#buttonreset").show();
+              //$("#buttonsubmit").show();
+              //$("#buttonreset").show();
               self.populateAnalyticsPage(values);
               self.reValidateFiledsonLoad();
+              $("#button_layout").show();
 
             });
      }
@@ -1881,15 +1884,21 @@ var page = Component.extend({
     },
 
     'tbody tr click': function(el, ev) {
+        commonUtils.hideUIMessage();
         $(el).parent().find('tr').removeClass("selected");
         $(el).parent().find('tr').removeClass("highlight");
         $(el).addClass("selected");
-      },
+    },
+    '#licensorsFilter change':function(){
+      commonUtils.hideUIMessage();
+    },
 
     '.updatePeroid focus':function(el){
+      commonUtils.hideUIMessage();
        $(el).closest('.calendarcls').find('.box-modal').show().trigger( "focus" );
     },
     '.calendarDateIcon click': function(el){
+      commonUtils.hideUIMessage();
       $('.box-modal').hide(); // hide all other open calendar popups before opening the new one.
       $(el).closest('.calendarcls').find('.box-modal').show(0,function(){
         //$($(el).closest('.calendarcls').find('.box-modal')).data("selected-period",el[0].value);
@@ -1906,6 +1915,7 @@ var page = Component.extend({
     },
 
     '{selectedperiod} change':function(val){
+      commonUtils.hideUIMessage();
 
        var periodValue = val[0].value;
 
@@ -1959,6 +1969,7 @@ var page = Component.extend({
 
 
     ".applyAll click" : function(el, ev){
+      commonUtils.hideUIMessage();
         var self = this;
 
         if(self.scope.submitAllReports == false) {
@@ -1988,6 +1999,7 @@ var page = Component.extend({
     },
 
     ".selectAllRepChkBox click" : function(el, ev){
+      commonUtils.hideUIMessage();
 
         var self = this;
 
@@ -2006,6 +2018,7 @@ var page = Component.extend({
     },
 
     ".selectAllChkBox click" : function(el, ev){
+      commonUtils.hideUIMessage();
 
         var self = this;
 
@@ -2085,6 +2098,7 @@ var page = Component.extend({
     },
 
     ".countryBox click": function(el, ev){
+      commonUtils.hideUIMessage();
 
         var self = this;
 
@@ -2134,6 +2148,7 @@ var page = Component.extend({
     },
 
     ".countryDiv click":function(el,ev){
+      commonUtils.hideUIMessage();
        var self = this;
        var country = el[0].id;
        var divElement=el.closest("td").find('div.tdselected');
@@ -2166,6 +2181,7 @@ var page = Component.extend({
     },
 
     ".reportBox click": function(el, ev){
+      commonUtils.hideUIMessage();
 
         var self = this;
 
@@ -2192,6 +2208,7 @@ var page = Component.extend({
     },
 
     ".addRow click": function(event){
+      commonUtils.hideUIMessage();
 
       var self = this;
       self.scope.addRow();
@@ -2201,6 +2218,7 @@ var page = Component.extend({
     },
 
     ".countryReportColumn div dblclick" : function (el, ev)  {
+      commonUtils.hideUIMessage();
 
       var self = this;
 
@@ -2258,6 +2276,7 @@ var page = Component.extend({
     },
 
     ".applyAllSelected click" : function(el, ev){
+      commonUtils.hideUIMessage();
       this.scope.mapCurrentCountryReportConf();
       this.scope.confirmSubmit();
       setTimeout(function(){
@@ -2268,6 +2287,7 @@ var page = Component.extend({
 
 
     ".rn-grid-revisionhistory>tbody>tr td dblclick" : function(el, ev){
+      commonUtils.hideUIMessage();
 
           var self = this;
 
@@ -2325,8 +2345,9 @@ var page = Component.extend({
         //clear elements
 
         $("#loading_img").show();
-        $("#buttonsubmit").hide();
-        $("#buttonreset").hide();
+        //$("#buttonsubmit").hide();
+        //$("#buttonreset").hide();
+        $("#button_layout").hide();
 
 
         var entityName = self.scope.attr("selectedEntity");
@@ -2336,8 +2357,9 @@ var page = Component.extend({
         if($('#entityLicensorTop').data('bootstrapValidator').isValid() == false) {
 
           $("#loading_img").hide();
-          $("#buttonsubmit").show();
-          $("#buttonreset").show();
+          //$("#buttonsubmit").show();
+          //$("#buttonreset").show();
+          $("#button_layout").show();
 
           return;
 
@@ -2372,16 +2394,18 @@ var page = Component.extend({
           if(values[0].status == "SUCCESS") {
              if(values[0].licensorDetails != undefined && values[0].licensorDetails.id == 0) {
                 $("#loading_img").hide();
-                $("#buttonsubmit").hide();
-                $("#buttonreset").hide();             
+                //$("#buttonsubmit").hide();
+                //$("#buttonreset").hide();  
+                $("#button_layout").hide();           
                 var msg = "No details present";               
                 commonUtils.displayUIMessageWithDiv("#invmessageDiv", "FAILURE", msg);
               }else{
                 self.scope.populateAnalyticsPage(values);
                  $("#loading_img").hide();
                 self.scope.reValidateFiledsonLoad();
-                $("#buttonsubmit").show();
-                $("#buttonreset").show();
+                //$("#buttonsubmit").show();
+                //$("#buttonreset").show();
+                $("#button_layout").show();
               }
 
           } else {
@@ -2404,6 +2428,7 @@ var page = Component.extend({
     },
 
     "#analyticsAdd click": function(event){
+      commonUtils.hideUIMessage();
 
       setTimeout(function(){
         alignGridStats('societyContacts');
