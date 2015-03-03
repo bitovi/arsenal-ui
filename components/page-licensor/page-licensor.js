@@ -422,6 +422,7 @@ var page = Component.extend({
         reportConf =self.getExistCountryReportConf(value.id);
        return (!(reportConf != undefined && reportConf.length>0));
       });
+      $('#repConfiguration tbody>tr>td:nth-child(3)>.tdselected').remove();
       if (countryObj != undefined && countryObj != null) {
         $('input.countryBox').prop("checked", false);
         var checked = false;
@@ -432,6 +433,10 @@ var page = Component.extend({
             checked = true;
           }
         }
+        var selectedReports=$('#repConfiguration tbody>tr>td:nth-child(3)>.tdselected').clone();
+        $('#repConfiguration tbody>tr>td:nth-child(3)>.tdselected').remove();
+        $(selectedReports).insertBefore('#repConfiguration tbody>tr>td:nth-child(3)>div:nth-child(1)');
+
         if (checked) {
            var country = $('input.countryBox');
           for (var i = 0; i < country.length; i++) {
@@ -1448,6 +1453,7 @@ var page = Component.extend({
             }
 
             self.attr("selectedEntity", genObj.licensorName);
+            //self.attr("licensors")[0].entities[0].id = genObj.licensorId;
 
             Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
               $("#loading_img").hide();
