@@ -225,9 +225,9 @@
           <div class="col-sm-12 buttonsPlaceHolder" id = "button_layout">
             <div class="col-sm-12" style="text-align:right;padding:15px;">
 
-                <button id="approveBtn"  type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big" style="{{enableButtons 'FC'}}">Approve</button>
-                <button id="rejectBtn"  type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big" style="{{enableButtons 'FC'}}">Reject</button>
-                <button id="submitBtn" {{disableSubmit}} type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big" style="{{enableButtons 'BM'}}">Propose</button>
+                <!--<button id="approveBtn"  type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Approve</button>
+                <button id="rejectBtn"  type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Reject</button>-->
+                <button id="submitBtn" {{disableSubmit}} type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>
                 <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
               
             </div>
