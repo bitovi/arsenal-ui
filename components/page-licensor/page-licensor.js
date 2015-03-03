@@ -871,10 +871,14 @@ var page = Component.extend({
 
         }
 
-        var proposalPending = self.licDetails.data.proposalPending;
-        if(proposalPending != null && proposalPending != undefined && proposalPending != "" && proposalPending != true) {
+        var proposalPending = values[0].proposalPending;
+        if(proposalPending != null && proposalPending != undefined && proposalPending != "" && proposalPending == true) {
 
-            $("#submitButton").hide();
+          $("#submitButton").hide();
+
+        } else {
+
+            $("#submitButton").show();
 
         }
 
@@ -1859,6 +1863,8 @@ var page = Component.extend({
           $('#entityGrid').find('input, textarea,button, select').attr('disabled','disabled');
 
            $('#button_layout').find('input, textarea, button').attr('disabled','disabled');
+
+           $('#button_layout').find('button#buttonApprove, button#buttonReject').prop('disabled', false);
 
            $('#add_layout').find('input, textarea, button').attr('disabled','disabled');
 
@@ -2896,7 +2902,7 @@ function hideFieldsOnLoad(){
       $(".reportConfErr").hide();
       $("#loading_img").hide();
       $(".confirmationReportConfig").hide();
-      $("#buttonsubmit").attr("disabled", true);
+      //$("#buttonsubmit").attr("disabled", true);
       $("#buttonsubmit").hide();
       $("#buttonreset").hide();
 }
