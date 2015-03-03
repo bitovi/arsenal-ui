@@ -2300,29 +2300,29 @@ var page = Component.extend({
 
           var status=el.closest('tr').data('row').row.status; 
 
+          genObj.id = id;
+          genObj.licensorName =  licensor;
+
+          self.scope.reValidateFiledsonLoad();
+
+          self.scope.clearContactDetails();
+
+          self.scope.clearRepConfDetails();
+
+          self.scope.disableTabs();
+
+          Promise.all([Analytics.findById(UserReq.formRequestDetails(genObj))]).then(function(values) {
+
+            self.scope.populateAnalyticsPage(values, "getHistroy");
+
+          });
+
           if(status == "Inctive"){
+
               commonUtils.showErrorMessage("Selected revision cannot be modified as it is Inactive");
           }else if(status=="Rejected"){
               commonUtils.showErrorMessage("Selected revision cannot be modified as it is Rejected");
-          }else{            
-            genObj.id = id;
-            genObj.licensorName =  licensor;
-
-            self.scope.reValidateFiledsonLoad();
-
-            self.scope.clearContactDetails();
-
-            self.scope.clearRepConfDetails();
-
-            self.scope.disableTabs();
-
-            Promise.all([Analytics.findById(UserReq.formRequestDetails(genObj))]).then(function(values) {
-
-              self.scope.populateAnalyticsPage(values, "getHistroy");
-
-            });
           }
-
           
     },
 
