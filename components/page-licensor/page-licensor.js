@@ -1408,15 +1408,15 @@ var page = Component.extend({
 
 
 
-      Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
+      //Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
           self.mode = "fetch";
 
           $("#societyContacts .noRecords").remove();
 
-          self.licensors.replace(values[0].entities[0]);
+          //self.licensors.replace(values[0].entities[0]);
 
-          var defaultEntity = values[0].entities[0].entities[0];
+          //var defaultEntity = values[0].entities[0].entities[0];
 
           var genObj = {"id" : "" , "licensorName":""};
 
@@ -1442,8 +1442,8 @@ var page = Component.extend({
             }
             else if (val == null){
 
-              genObj.licensorId = defaultEntity.id;
-              genObj.licensorName =  defaultEntity.value;
+              //genObj.licensorId = defaultEntity.id;
+              //genObj.licensorName =  defaultEntity.value;
 
             } else {
 
@@ -1468,7 +1468,7 @@ var page = Component.extend({
      }
           //$("#loading_img").hide();
 
-      });
+     // });
 
     },
 
@@ -1766,15 +1766,7 @@ var page = Component.extend({
     var self = this;
 
     self.scope.appstate.attr("renderGlobalSearch", false);
-    var genObj = {};
-    Promise.all([
-      Region.findAll(UserReq.formRequestDetails(genObj))
-      ]).then(function(values) {
-        self.scope.attr("regions").replace(values[0]);
-      });
-      setTimeout(function(){
-        self.scope.attr("regionStore",DefaultGlobalParameters.Region.id+'');
-    },1000);
+
   },
 
   helpers:  {
@@ -1840,63 +1832,41 @@ var page = Component.extend({
 
 
     'inserted': function() {
-
       var self = this;
-
       var genObj = {};
+      hideFieldsOnLoad();
+    Promise.all([
+      Region.findAll(UserReq.formRequestDetails(genObj)),
+      Licensor.findAll(UserReq.formRequestDetails(genObj))
+      ]).then(function(values) {
+        self.scope.attr("regions").replace(values[0]);
+        self.scope.licensors.replace(values[1].entities[0]);
 
-      $('#multipleComments').hide();
+        self.scope.attr("regionStore",DefaultGlobalParameters.Region.id+'');
+        self.scope.attr("selectedEntity",values[1].entities[0].entities[0].value);
 
-      $('.countryModelLabel').hide();
+        //fetching the licensor details --start
+         self.scope.populateLicensorDetails(self.scope.selectedEntity);
+          Promise.all([Analytics.getInvoiceDetails(UserReq.formRequestDetails(genObj))]).then(function(values) {
+              self.scope.invoiceTypeList.replace(values[0].invoiceDetailTypes);
+              self.scope.populateInvoiceTypes();
+          });
 
-      $('.revHistCollapser').hide();
+          self.scope.loadBootStrapPlugin();
 
-      $('#entityGrid').hide();
+          if(commonUtils.isReadOnly()=='true' || commonUtils.isReadOnlyScreen()=='R' ){
 
-      $('.repConfigurationTab').hide();
+          $('#entityGrid').find('input, textarea,button, select').attr('disabled','disabled');
 
-      $('.societyContactsTab').hide();
+           $('#button_layout').find('input, textarea, button').attr('disabled','disabled');
 
-      $('.buttonsBottom').hide();
+           $('#add_layout').find('input, textarea, button').attr('disabled','disabled');
 
-      $(".multicomments-required").hide();
-
-      $(".invoiceTypeerr").hide();
-
-      $(".reportConfErr").hide();
-
-      $("#loading_img").hide();
-
-      $(".confirmationReportConfig").hide();
-
-      $("#buttonsubmit").attr("disabled", true);
-
-      $("#buttonsubmit").hide();
-      $("#buttonreset").hide();
-
-      var defaultEntity = [];
-
-      //$("#loading_img").show();
-      self.scope.populateLicensorDetails(null);
-      //$("#loading_img").hide();
-
-
-      Promise.all([Analytics.getInvoiceDetails(UserReq.formRequestDetails(genObj))]).then(function(values) {
-          self.scope.invoiceTypeList.replace(values[0].invoiceDetailTypes);
-          self.scope.populateInvoiceTypes();
+          }
+        //fetching the licensor details --start
       });
-
-      self.scope.loadBootStrapPlugin();
-
-      if(commonUtils.isReadOnly()=='true' || commonUtils.isReadOnlyScreen()=='R' ){
-
-      $('#entityGrid').find('input, textarea,button, select').attr('disabled','disabled');
-
-       $('#button_layout').find('input, textarea, button').attr('disabled','disabled');
-
-       $('#add_layout').find('input, textarea, button').attr('disabled','disabled');
-
-      }
+      
+      
 
     },
 
@@ -2593,8 +2563,8 @@ var page = Component.extend({
           Licensor.findAll(UserReq.formRequestDetails(genObj))
           ]).then(function(values) {
             self.scope.attr("licensors").replace([]);
-            self.scope.attr("selectedEntity", "");
             self.scope.attr("licensors").replace(values[0]["entities"]);
+            self.scope.attr("selectedEntity",values[0].entities[0].entities[0].value);
           });
         }else{
           self.scope.attr("licensors").splice(0, self.scope.licensor.length);
@@ -2611,7 +2581,6 @@ var showErrorMsg = function(periodFrom,periodTo){
   var from = periodFrom || false;
   var to = periodTo || false;
   var message1 = 'Period from is greater than period to !';
-  var message2 = 'Please select one year of data !';
   var message3 = 'Invalid Month Selection !'
 
   if (from && to) {
@@ -2624,15 +2593,9 @@ var showErrorMsg = function(periodFrom,periodTo){
     var yearDif=yearTo-yearFrom;
     if(yearDif < 0){
       return message1;
-    }else if(yearDif > 1){
-      return message2;
     }else if(yearDif == 0 ){
       if(periodFrom > periodTo){
         return message1;
-      }
-    }else if(yearDif == 1){
-      if(periodTo >= periodFrom){
-        return message2;
       }
     }
   }
@@ -2918,6 +2881,24 @@ for (var j = 0; j < reportBox.length; j++) {
           divEl.parentNode.className = divEl.parentNode.className + " tdselected";
         }
       }
+}
+
+function hideFieldsOnLoad(){
+     $('#multipleComments').hide();
+      $('.countryModelLabel').hide();
+      $('.revHistCollapser').hide();
+      $('#entityGrid').hide();
+      $('.repConfigurationTab').hide();
+      $('.societyContactsTab').hide();
+      $('.buttonsBottom').hide();
+      $(".multicomments-required").hide();
+      $(".invoiceTypeerr").hide();
+      $(".reportConfErr").hide();
+      $("#loading_img").hide();
+      $(".confirmationReportConfig").hide();
+      $("#buttonsubmit").attr("disabled", true);
+      $("#buttonsubmit").hide();
+      $("#buttonreset").hide();
 }
 
 export default page;
