@@ -194,11 +194,10 @@ var BundleDetailTabs = Component.extend({
         scope.attr('gettingDetails', false);
         scope.bottomGridPaginateAttr.attr("isInProgress",false);
 
-        if(bundle.status === 'FAILURE'){
 
+        if(bundle.status === 'FAILURE'){
           commonUtils.displayUIMessage( bundle.status, bundle.responseText);
           scope.pageState.attr('isPmtBundleDetailsAvl',false);
-
         }else{
           scope.pageState.attr('isPmtBundleDetailsAvl',true);
           scope.bundleProgress.triggerValidation ? scope.getNewValidations(bundle) : "";
@@ -208,18 +207,7 @@ var BundleDetailTabs = Component.extend({
           commonUtils.displayUIMessage( bundle.status, bundle.responseText);
         }
 
-
         var commentsCollected = bundle.approvalComments;
-
-        // _.each(bundle.approvalComments, function(commentsObj) {
-        //
-        //   var createdDateFormat = moment(commentsObj.createdDate).format("Do MMM, YYYY");
-        //
-        //   commentsCollected = commentsCollected + "-- " + commentsObj.createdByName +" on "+createdDateFormat+" --"+"\n"+commentsObj.comments;
-        //   commentsCollected = commentsCollected + "\n";
-        //
-        // });
-
         $('.multipleCommentsInv').html(stache('<multiple-comments divid="usercommentsdivinv" modulestate="{scope}" divheight="100" isreadOnly="n"></multiple-comments>')({scope}));
 
         if(commentsCollected !== ''){
@@ -273,8 +261,9 @@ var BundleDetailTabs = Component.extend({
       }
 
       if('payment-bundles' === scope.appstate.page &&  scope.pageState.selectedBundle === bundle) {
-        return bundle.getValidations(view).then(function(bundle) {
-          if(bundle.validationStatus == "FAILURE"){
+        var moreRecords = (scope.appstate.attr("fetchSize") <= bundle.totRecCnt);
+        return bundle.getValidations(view,this.bottomGridPaginateAttr.attr("recordsAvailable")).then(function(bundle) {
+          if(bundle.validationStatus == "FAILURE" ){
             console.error("Pyament Validation is failed!!");
           }else if(bundle.status == 1 && bundle.validationStatus !== 5) {
             setTimeout(function() {
@@ -430,7 +419,7 @@ var BundleDetailTabs = Component.extend({
           self.scope.bottomGridPaginateAttr.attr('sortDirection', sortDirection);
         }
       }
-      console.log(self.scope.bottomGridPaginateAttr.sortBy);
+      //console.log(self.scope.bottomGridPaginateAttr.sortBy);
       //commonUtils.triggerGlobalSearch();
       self.scope.getNewDetails(self.scope.pageState.selectedBundle);
 
@@ -578,6 +567,8 @@ var BundleDetailTabs = Component.extend({
               // remove it from the list of bundles too, since the user can't act on it anymore
               var index = pageState.bundles.indexOf(selectedBundle);
               pageState.bundles.splice(index, 1);
+
+
             }else{
 
               self.pageState.selectedBundle.attr("pendingWith",response.paymentBundle.pendingWith);
@@ -682,6 +673,11 @@ var BundleDetailTabs = Component.extend({
       scope.getNewDetails(scope.pageState.selectedBundle);
     },
     '{scope} paymentType': function(scope) {
+
+    //to trigger the Validation again when the paymet option is changed
+    //  delete scope.pageState.selectedBundle.validationStatus;
+    //  delete scope.pageState.selectedBundle.validationBundlesCache;
+
       scope.getNewDetails(scope.pageState.selectedBundle);
     },
     '.previewInv click': function(el, ev) {
@@ -744,6 +740,7 @@ var resetSelectedBundle = function(scope){
   scope.attr("preferredCurr", '');
   scope.pageState.attr('validationGrid',false);
   scope.pageState.attr('expandBottomGrid',false);
+  // scope.attr('preferredCurr',selectedBundle.paymentCcy);
 
   var region = selectedBundle.attr('regionId') != undefined ? selectedBundle.attr('regionId') : "2";
   Currency.getCurrByRegion(region).done(function(curr) {
