@@ -4,7 +4,7 @@
 
 	<div class="col-sm-12 paddingLicensor" id="entityDetailsTab">
 
-		<div class="col-sm-12">
+		<div class="col-sm-12" style="padding:0;">
 
 			<div id="entityDetails">
 
@@ -32,13 +32,13 @@
 
 					<div class="col-sm-12">					
 
-						<div class="col-sm-6 paddingLeft">
+						<div class="col-sm-7 paddingLeft">
 
-						 	<div>
+						 	<div class="col-md-4" >
 
-						 		<label for="inputEmail3" class="col-sm-1 control-label">Region: </label>
+						 		<label for="inputEmail3" class="col-md-3 control-label" style="text-align: right;padding: 0;">Region: </label>
 
-							    <div class="col-sm-3  region">
+							    <div class="col-md-9  region">
 
 							      <select id="invoiceRegion" class="form-control formInputs"  name="region" can-value="regionStore">
 
@@ -56,11 +56,11 @@
 
 						 	</div>								    
 
-						 	<div>
+						 	<div class="col-md-4">
 
-						 		<label for="inputEmail3" class="col-sm-1 control-label">Licensor:</label>
+						 		<label for="inputEmail3" class="col-md-4 control-label">Licensor:</label>
 
-						 		<div class="col-sm-3 form-group">
+						 		<div class="col-md-8 form-group">
 
 									{{getselectedEntity selectedEntity}}
 
@@ -84,9 +84,13 @@
 
 								</div>
 
-						 	</div>					 	
+						 	</div>		
 
-							<button type="button" id="analyticsFetch"  name="analyticsFetch" class="btn buttonSubmit btn-custom-small">Fetch</button>						
+						 	<div class="col-md-3" style="text-align:center;">			 	
+
+							<button type="button" id="analyticsFetch"  name="analyticsFetch" class="btn buttonSubmit btn-custom-small">Fetch</button>		
+
+							</div>				
 
 						</div>
 
