@@ -427,7 +427,7 @@
 										{{#if contactDetails.length}}
 									        <td colspan="3" style="text-align:left;padding-right:2%;">Number of contacts: {{contactDetails.length}}</td>
 									    {{else}}
-									    	<td colspan="3" style="text-align:left;padding-right:2%;">No Records Found</td>
+									    	<td colspan="3" style="text-align:left;padding-right:2%;">Number of contacts: {{contactDetails.length}}</td>
 									    {{/if}}
 									</tr>
 								</tfoot>

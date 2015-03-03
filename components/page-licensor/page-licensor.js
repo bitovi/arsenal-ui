@@ -1695,19 +1695,23 @@ var page = Component.extend({
         }
       }).on('error.field.bv', function(e, data) {
 
-          //$('*[data-bv-icon-for="'+data.field +'"]').popover('show');
+          $('*[data-bv-icon-for="'+data.field +'"]').popover('show');
 
           //setTimeout(function(){
             //$('*[data-bv-icon-for="'+data.field +'"]').popover('hide');
           //},10000);
-        $("#submitButton").attr("disabled", true);//Disable checkbox if all valid
+        $("#submitButton").attr("disabled", true);//Disable submit button if all valid
       }).on('added.field.bv', function(e, data) {
 
-      }).on('success.field.bv', function(e, data) {   
+      }).on('success.field.bv', function(e, data) { 
 
-        $("#submitButton").attr("disabled", false);//Enable checkbox if all valid
+        if(!data.bv.isValid()){
+          data.bv.disableSubmitButtons(true);
+        }
 
-        if($('#editableText').val().length==0){/*Check the textarea editable - Onload*/  
+        $("#submitButton").attr("disabled", false);//Enable submit button if all valid
+
+          if($('#editableText').val().length === 0 || $("#sapVendor").val().length === 0 || $("#invoiceType").val() === "" || $(".accountName").val().length === 0 || $(".periodFromInput").filter(':visible:first').val().length === 0 ){/*Check the textarea editable - Onload*/  
             $("#submitButton").attr("disabled", true);
           } 
         /*Check the textarea editable*/  
