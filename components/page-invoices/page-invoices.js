@@ -90,7 +90,7 @@ Grid.extend({
         title: '<input type="checkbox" class="select-toggle-all"/> ',
         sortable: true,
         contents: function(row) {
-          return stache('{{#invId}}<input type="checkbox" value="{{invId}}" {{#if isChecked}}checked{{/if}}/>{{/invId}}')({invId: row.invId, isChecked: row.__isChecked});
+          return stache('{{#invId}}<input type="checkbox" value="{{invId}}" class="childCheckbox" {{#if isChecked}}checked{{/if}}/>{{/invId}}')({invId: row.invId, isChecked: row.__isChecked});
         }
       },
       {
@@ -223,11 +223,21 @@ Grid.extend({
     },*/
     '.select-toggle-all click': function(el, ev) {
       ev.stopPropagation();
-      var allChecked = _.every(this.scope.rows, row => row.__isChecked ? true : false);
+      /*var allChecked = _.every(this.scope.rows, row => row.__isChecked ? true : false);
       can.batch.start();
       // open parent rows if they are closed; close them if they are open
       this.scope.rows.each(row => row.attr('__isChecked', !allChecked));
-      can.batch.stop();
+      can.batch.stop();*/
+
+      //<rdar://problem/20018163> Invoice Search: Checkboxes take >1s to click -- Start
+      //Changing the row property will re render the row again.
+      //Did the below workaround solution untill we find out the proper fix
+      if($('.select-toggle-all').is(":checked")){
+        $('.childCheckbox').prop("checked", true);
+      }else{
+        $('.childCheckbox').prop("checked", false);
+      }
+      //<rdar://problem/20018163> Invoice Search: Checkboxes take >1s to click -- end
       //alignGrid('invoiceGrid');
     },
   }
@@ -560,8 +570,9 @@ var page = Component.extend({
           flag=true; // Allow deleteing the invoice
         }
       }
-
+      //<rdar://problem/20018163> Invoice Search: Checkboxes take >1s to click -- Start
       if($(item[0]).is(":checked")){
+        $(item[0]).prop("checked", true);
            if(bundleStatus.toUpperCase() == "UNBUNDLED"){
               self.scope.bundleState.attr(val, true);
             }
@@ -574,7 +585,7 @@ var page = Component.extend({
               self.scope.bundleState.attr(val, false);
             }
 
-          row.attr('__isChecked', true);
+          //row.attr('__isChecked', true);
           self.scope.attr('checkedRows').push(val);
           if(flag==false){
             self.scope.attr('unDeletedInvoices').push(invoiceno);
@@ -583,8 +594,9 @@ var page = Component.extend({
 
       } else {
         self.scope.bundleState.removeAttr(val);
+        $(item[0]).prop("checked", false);
           self.scope.attr('checkedRows').each(function(value, key) {
-              row.attr('__isChecked', false);
+              //row.attr('__isChecked', false);
               if(val == value){
                   var i = self.scope.attr('checkedRows').indexOf(value);
                   self.scope.attr('checkedRows').splice(i,1);
@@ -598,6 +610,7 @@ var page = Component.extend({
               }
           });
       }
+      //<rdar://problem/20018163> Invoice Search: Checkboxes take >1s to click -- end
       //console.log("Checked rows: "+JSON.stringify(self.scope.checkedRows.attr()));
       //console.log("unDeleted Invoices: "+JSON.stringify(self.scope.attr('unDeletedInvoices')));
       //alignGrid('invoiceGrid');
