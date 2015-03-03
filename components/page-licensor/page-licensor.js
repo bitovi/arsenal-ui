@@ -2581,7 +2581,6 @@ var showErrorMsg = function(periodFrom,periodTo){
   var from = periodFrom || false;
   var to = periodTo || false;
   var message1 = 'Period from is greater than period to !';
-  var message2 = 'Please select one year of data !';
   var message3 = 'Invalid Month Selection !'
 
   if (from && to) {
@@ -2594,15 +2593,9 @@ var showErrorMsg = function(periodFrom,periodTo){
     var yearDif=yearTo-yearFrom;
     if(yearDif < 0){
       return message1;
-    }else if(yearDif > 1){
-      return message2;
     }else if(yearDif == 0 ){
       if(periodFrom > periodTo){
         return message1;
-      }
-    }else if(yearDif == 1){
-      if(periodTo >= periodFrom){
-        return message2;
       }
     }
   }
