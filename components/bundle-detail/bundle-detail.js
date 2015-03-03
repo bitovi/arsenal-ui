@@ -101,6 +101,7 @@ var BundleDetailTabs = Component.extend({
     workflowSteps: new WorkflowStep.List([]),
     gettingDetails: false,
     expandBottomGrid:false,
+    cache:{validationBundlesCache:undefined},
     bundleProgress:{
       //To controll the multiple get calls when the tab changed
       isBundleSelectionChange: false,
@@ -185,7 +186,8 @@ var BundleDetailTabs = Component.extend({
         paymentType: this.paymentType,
         filterData: tokenInput,
         paginate: this.bottomGridPaginateAttr,
-        preferredCcy: this.preferredCurr
+        preferredCcy: this.preferredCurr,
+        validationBundlesCache: this.cache.validationBundlesCache
       };
 
       return bundle.getDetails(params
@@ -262,7 +264,7 @@ var BundleDetailTabs = Component.extend({
 
       if('payment-bundles' === scope.appstate.page &&  scope.pageState.selectedBundle === bundle) {
         var moreRecords = (scope.appstate.attr("fetchSize") <= bundle.totRecCnt);
-        return bundle.getValidations(view,this.bottomGridPaginateAttr.attr("recordsAvailable")).then(function(bundle) {
+        return bundle.getValidations(view,scope.cache).then(function(bundle) {
           if(bundle.validationStatus == "FAILURE" ){
             console.error("Pyament Validation is failed!!");
           }else if(bundle.status == 1 && bundle.validationStatus !== 5) {
@@ -598,6 +600,7 @@ var BundleDetailTabs = Component.extend({
       if(newTab && oldTab && !scope.bundleProgress.isBundleSelectionChange) { // only when *changing* tabs
         this.scope.attr('gridColumns', newTab.columns);
         scope.bundleProgress.triggerValidation = true;
+        scope.cache.attr("validationBundlesCache",undefined);
         scope.pageState.attr("validationGrid",false);
         this.scope.resetToken();
         //Switching b/w tab s.
@@ -667,7 +670,6 @@ var BundleDetailTabs = Component.extend({
     '{scope} pageState.selectedBundle': function(scope) {
       console.log(" BUndle Chnage Identified");
       scope.pageState.selectedBundle.attr("validationStatus",undefined);
-      scope.pageState.selectedBundle.attr("validationBundlesCache",undefined);
       commonUtils.hideUIMessage();
       this.scope.selectedBundleChanged(this.scope);
     },
@@ -676,13 +678,9 @@ var BundleDetailTabs = Component.extend({
     },
     '.paymentType change': function() {
       var scope = this.scope ;
-
-    //to trigger the Validation again when the paymet option is changed
-    //  delete scope.pageState.selectedBundle.validationStatus;
-    //  delete scope.pageState.selectedBundle.validationBundlesCache;
+      //to trigger the Validation again when the paymet option is changed
+      scope.cache.attr("validationBundlesCache",undefined);
       scope.bundleProgress.triggerValidation = true;
-      // scope.pageState.selectedBundle.attr("validationStatus",undefined);
-      // scope.pageState.selectedBundle.attr("validationBundlesCache",undefined);
       scope.getNewDetails(scope.pageState.selectedBundle);
     },
     '.previewInv click': function(el, ev) {

@@ -263,7 +263,7 @@ var PaymentBundle = Model.extend({
 
   getDetails: function(params) {
     var self = this;
-
+    var validationBundlesCache = params.validationBundlesCache
     params["bundleID"] = self.bundleId;
 
     return PaymentBundle.findOne(params).then(function(bundle) {
@@ -296,9 +296,9 @@ var PaymentBundle = Model.extend({
             self.attr('bundleFooter', transformFooter(bundle.bdlFooter));
           }
 
-          if(self.validationBundlesCache != undefined){
+          if(validationBundlesCache != undefined){
 
-            self.validationBundlesCache.forEach(function(group) {
+            validationBundlesCache.forEach(function(group) {
               var target = undefined;
 
                 if(group.key != undefined){
@@ -331,7 +331,7 @@ var PaymentBundle = Model.extend({
      return self;
     });
   },
-  getValidations: function(view) {
+  getValidations: function(view,cache) {
     var bundle = this;
 
     return $.ajax({
@@ -384,7 +384,7 @@ var PaymentBundle = Model.extend({
 
             bundle.attr('validationStatus', validationResponse.paymentBundle.vldtnStatus);
 
-            bundle.attr('validationBundlesCache', validationResponse.paymentBundle.bundleDetailsGroup);
+            cache.attr("validationBundlesCache" ,  validationResponse.paymentBundle.bundleDetailsGroup);
 
 
 
@@ -417,48 +417,49 @@ var PaymentBundle = Model.extend({
 
 
     delete bundleData.validationStatus;
-    delete bundleData.validationBundlesCache;
     //delete bundleData.validationRulesCompleted;
     //delete bundleData.validationRulesTotal;
 
+    delete bundleData.bundleDetailsGroup;
+    delete bundleData.bdlFooter;
 
 
-    bundleData.bundleDetailsGroup && bundleData.bundleDetailsGroup.forEach(function(group) {
-      delete group.__isChild;
-      delete group.__isOpen;
-      delete group.__isChildExists;
-      delete group.fiscalPeriod;
-      delete group.periodType;
-
-      delete group.contentGrpName;
-      delete group.country;
-      delete group.fiscalPeriodDisplay;
-      delete group.adhocTypeNameDisplay;
-      delete group.entityNameCnt;
-      delete group.view;
-      delete group.validationMessages;
-      delete group.validationColorHeader;
-
-      group.bundleDetails.forEach(function(detail) {
-        delete detail.__isChild;
-        delete detail.__isOpen;
-        delete detail.view;
-        delete detail.validationMessages;
-        delete detail.validationColor;
-        delete detail.fiscalPeriodDisplay;
-      });
-    });
-
-    if(bundleData.bdlFooter) {
-      delete bundleData.bdlFooter.paymentCcy;
-      delete bundleData.bdlFooter.isFooterRow;
-      delete bundleData.bdlFooter.view;
-      bundleData.bdlFooter.bdlFooterDetails.forEach(function(detail) {
-        delete detail.__isChild;
-        delete detail.__isOpen;
-        delete detail.paymentCcy;
-      });
-    }
+    // bundleData.bundleDetailsGroup && bundleData.bundleDetailsGroup.forEach(function(group) {
+    //   delete group.__isChild;
+    //   delete group.__isOpen;
+    //   delete group.__isChildExists;
+    //   delete group.fiscalPeriod;
+    //   delete group.periodType;
+    //
+    //   delete group.contentGrpName;
+    //   delete group.country;
+    //   delete group.fiscalPeriodDisplay;
+    //   delete group.adhocTypeNameDisplay;
+    //   delete group.entityNameCnt;
+    //   delete group.view;
+    //   delete group.validationMessages;
+    //   delete group.validationColorHeader;
+    //
+    //   group.bundleDetails.forEach(function(detail) {
+    //     delete detail.__isChild;
+    //     delete detail.__isOpen;
+    //     delete detail.view;
+    //     delete detail.validationMessages;
+    //     delete detail.validationColor;
+    //     delete detail.fiscalPeriodDisplay;
+    //   });
+    // });
+    //
+    // if(bundleData.bdlFooter) {
+    //   delete bundleData.bdlFooter.paymentCcy;
+    //   delete bundleData.bdlFooter.isFooterRow;
+    //   delete bundleData.bdlFooter.view;
+    //   bundleData.bdlFooter.bdlFooterDetails.forEach(function(detail) {
+    //     delete detail.__isChild;
+    //     delete detail.__isOpen;
+    //     delete detail.paymentCcy;
+    //   });
+    // }
 
     bundleData = can.extend(bundleData, {
       comments: params.approvalComment,
