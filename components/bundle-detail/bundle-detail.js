@@ -666,18 +666,23 @@ var BundleDetailTabs = Component.extend({
     },
     '{scope} pageState.selectedBundle': function(scope) {
       console.log(" BUndle Chnage Identified");
+      scope.pageState.selectedBundle.attr("validationStatus",undefined);
+      scope.pageState.selectedBundle.attr("validationBundlesCache",undefined);
       commonUtils.hideUIMessage();
       this.scope.selectedBundleChanged(this.scope);
     },
     '{scope} aggregatePeriod': function(scope) {
       scope.getNewDetails(scope.pageState.selectedBundle);
     },
-    '{scope} paymentType': function(scope) {
+    '.paymentType change': function() {
+      var scope = this.scope ;
 
     //to trigger the Validation again when the paymet option is changed
     //  delete scope.pageState.selectedBundle.validationStatus;
     //  delete scope.pageState.selectedBundle.validationBundlesCache;
-
+      scope.bundleProgress.triggerValidation = true;
+      // scope.pageState.selectedBundle.attr("validationStatus",undefined);
+      // scope.pageState.selectedBundle.attr("validationBundlesCache",undefined);
       scope.getNewDetails(scope.pageState.selectedBundle);
     },
     '.previewInv click': function(el, ev) {
@@ -740,9 +745,8 @@ var resetSelectedBundle = function(scope){
   scope.attr("preferredCurr", '');
   scope.pageState.attr('validationGrid',false);
   scope.pageState.attr('expandBottomGrid',false);
-  // scope.attr('preferredCurr',selectedBundle.paymentCcy);
 
-  var region = selectedBundle.attr('regionId') != undefined ? selectedBundle.attr('regionId') : "2";
+  var region = selectedBundle.attr('regionId');
   Currency.getCurrByRegion(region).done(function(curr) {
     scope.regionCurr.splice(0, scope.regionCurr.length, ...curr.data);
   });

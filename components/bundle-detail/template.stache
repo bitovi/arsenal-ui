@@ -71,7 +71,7 @@
 
     {{#if pageState.selectedBundle.approvable}}
     <label>Payment Option</label>
-    <select {{paymentOptionEditable}} can-value="{paymentType}">
+    <select {{paymentOptionEditable}} can-value="{paymentType}" class="paymentType">
       <option value="1">Payment - In Full</option>
       <option value="2">Payment Recon Amount</option>
       <option value="3">Payment LI Disputes</option>
