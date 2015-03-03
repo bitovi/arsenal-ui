@@ -17,6 +17,8 @@ import PeriodWidgetHelper from 'utils/periodWidgetHelpers';
 import commonUtils from 'utils/commonUtils';
 import periodWidgetHelper from 'utils/periodWidgetHelpers';
 import constants from 'utils/constants';
+import Region from 'models/common/region/';
+import DefaultGlobalParameters from 'components/global-parameter-bar/default-global-parameter';
 
 
 var lDetails = new can.Map({
@@ -178,7 +180,8 @@ var page = Component.extend({
       repconf : []
 
     },
-
+    regions:[],
+    regionStore:"",
     reportConfMap  : {},
     
     USER_ROLE : "FC",
@@ -1754,7 +1757,15 @@ var page = Component.extend({
     var self = this;
 
     self.scope.appstate.attr("renderGlobalSearch", false);
-
+    var genObj = {};
+    Promise.all([
+      Region.findAll(UserReq.formRequestDetails(genObj))
+      ]).then(function(values) {
+        self.scope.attr("regions").replace(values[0]);
+      });
+      setTimeout(function(){
+        self.scope.attr("regionStore",DefaultGlobalParameters.Region.id+'');
+    },1000);
   },
 
   helpers:  {
@@ -2539,9 +2550,25 @@ var page = Component.extend({
         $(".sctCntNoRecords").hide();
       }
 
-    }
-
-
+    },
+    "{scope} regionStore": function(){
+      var self = this;
+      var regnId = self.scope.attr("regionStore");
+      if (regnId != undefined && regnId.length > 0) {
+        var genObj = {
+          regionId: regnId
+        };
+        Promise.all([
+          Licensor.findAll(UserReq.formRequestDetails(genObj))
+          ]).then(function(values) {
+            self.scope.attr("licensors").replace([]);
+            self.scope.attr("selectedEntity", "");
+            self.scope.attr("licensors").replace(values[0]["entities"]);
+          });
+        }else{
+          self.scope.attr("licensors").splice(0, self.scope.licensor.length);
+        }
+      }  
 
   }
 
