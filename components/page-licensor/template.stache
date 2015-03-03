@@ -8,85 +8,91 @@
 
 			<div id="entityDetails">
 
-				<form id="entityLicensorTop">
+				<form id="entityLicensorTop">				
+
 					<div class="div-warn-container">
+
 				      	<div class="row pagetitle-div-parent">
+
 				          	<div class="col-sm-5 pageTitleInv">
+
 				            	<div class="pageHead">Licensor Details</div>
+
 				          	</div>
+
 				      	</div>
+
 				      	<div class="col-sm-7 div-warn-parent">
+
 				          <div id="invmessageDiv" class="center messageDiv" role="alert"></div>
+
 				    	</div>
+
 				  	</div>
 
+					<div class="col-sm-12">					
 
-					<div class="col-sm-12">
-							<div class="col-sm-1"></div>
-							 <div class="col-sm-5">
+						<div class="col-sm-6 paddingLeft">
 
-								    <label for="inputEmail3" class="col-sm-1 control-label">Region: </label>
-								    <div class="col-sm-4  region">
-								      <select id="invoiceRegion" class="form-control"  name="region" can-value="regionStore">
-										       <option value="">Select</option>
-										       {{#each regions}}
-										       		<option value="{{id}}" class="fontmyriad">{{value}}</option>
-										       	{{/each}}
-									   </select>
-								    </div>
-							  	</div>
+						 	<div>
 
-						<div class="col-sm-6">
+						 		<label for="inputEmail3" class="col-sm-1 control-label">Region: </label>
 
-							<div class="col-sm-12" style="margin-left: 0px">
+							    <div class="col-sm-3  region">
 
-								<!-- <div class="col-sm-12"> -->
+							      <select id="invoiceRegion" class="form-control formInputs"  name="region" can-value="regionStore">
 
-								<div class="col-sm-1 small-headers textalignright align-left">
-									<label>Licensor:</label>
-								</div>
-								<div class="col-sm-3 form-group">
+									       <option value="">Select</option>
+
+									       {{#each regions}}
+
+									       		<option value="{{id}}" class="fontmyriad">{{value}}</option>
+
+									       	{{/each}}
+
+								   </select>
+
+							    </div>
+
+						 	</div>								    
+
+						 	<div>
+
+						 		<label for="inputEmail3" class="col-sm-1 control-label">Licensor:</label>
+
+						 		<div class="col-sm-3 form-group">
 
 									{{getselectedEntity selectedEntity}}
+
 									<select id="licensorsFilter" name="licensorsFilter" can-value="selectedEntity" class="form-control resizeBox licensors">
+
 										{{#each licensors}}
+
 										<optgroup label="{{entityType}}">
+
 											{{#each entities}}
+
 											<option id="{{id}}">{{value}}</option>
+
 											{{/each}}
+
 										</optgroup>
+
 										{{/each}}
+
 									</select>
 
 								</div>
 
-								<div class="col-sm-2 align-left" id = "add_layout" style="margin:-4px 0 0 0;width:100px;">
+						 	</div>					 	
 
-									<!--<button type="button" id="analyticsAdd"  name="analyticsAdd"
-									class="btn buttonSubmit btn-custom-small" style="margin-left:15px;">Add</button>-->
-
-
-								</div>
-
-								<div class="col-sm-2 align-left" style="margin:-4px 0 0 0">
-
-									<button type="button" id="analyticsFetch"  name="analyticsFetch"
-									class="btn buttonSubmit btn-custom-small">Fetch</button>
-
-								</div>
-
-
-								<!-- </div> -->
-
-							</div>
+							<button type="button" id="analyticsFetch"  name="analyticsFetch" class="btn buttonSubmit btn-custom-small">Fetch</button>						
 
 						</div>
 
 					</div>
 
-
-
-				</form>
+			</form>
 
 			</div>
 
