@@ -225,7 +225,17 @@ Grid.extend({
         id: 'sorticon',
         title: '<span class="open-toggle-all"></span>',
         sortable: false,
-        contents: function(row) { return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}}')({isChild: row.__isChild}); }
+        contents: function(row) {
+          //changed for <rdar://problem/20018279> Claim Review: Triangles exist with no data underneath -start
+          //return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}}')({isChild: row.__isChild});
+          if (row.hasChild) {
+            return stache('{{#unless isChild}}<span class="open-toggle"></span>{{/unless}}')({isChild: row.__isChild});
+          } else {
+            return stache('{{#unless isChild}}<span class="open-toggle" style="visibility: hidden;"></span>{{/unless}}')({isChild: row.__isChild});
+          }
+          //changed for <rdar://problem/20018279> Claim Review: Triangles exist with no data underneath -end
+        }
+
       },
       {
         id: 'country',
@@ -370,11 +380,13 @@ Grid.extend({
         $(allRows[index]).toggleClass('open');
       }
       if(self.scope.is_aggregate == 1){
-        $(".period").hide();
+        $(".rn-grid .period").hide(); //chnagd for <rdar://problem/20018582> Date Widget Disappears
         $(".entityName").hide();
+        $(".sorticon").hide(); //added for <rdar://problem/20018279> Claim Review: Triangles exist with no data underneath
       } else {
-        $(".period").show();
+        $(".rn-grid .period").show(); //chnagd for <rdar://problem/20018582> Date Widget Disappears
         $(".entityName").show();
+        $(".sorticon").show(); //added for <rdar://problem/20018279> Claim Review: Triangles exist with no data underneath
       }
       //alignGrid('claimCountryGrid', self.scope.is_aggregate);
     },
@@ -398,11 +410,13 @@ Grid.extend({
         $(el.closest('table').find('tbody').find('.child')).removeClass('visible');
       }
       if(self.scope.is_aggregate == 1){
-        $(".period").hide();
+        $(".rn-grid .period").hide(); //chnagd for <rdar://problem/20018582> Date Widget Disappears
         $(".entityName").hide();
+        $(".sorticon").hide(); //added for <rdar://problem/20018279> Claim Review: Triangles exist with no data underneath
       } else {
-        $(".period").show();
+        $(".rn-grid .period").show(); //chnagd for <rdar://problem/20018582> Date Widget Disappears
         $(".entityName").show();
+        $(".sorticon").show(); //added for <rdar://problem/20018279> Claim Review: Triangles exist with no data underneath
       }
       //alignGrid('claimCountryGrid', self.scope.is_aggregate);
     }
@@ -688,6 +702,7 @@ var page = Component.extend({
       },
       "#licView click": function(el, ev){
         var self = this;
+        $('#highChart').show(); //added for <rdar://problem/20018279> Claim Review: Triangles exist with no data underneath
           //$("#aggregate").css("display","none");
           $("#aggregate").addClass("hide");
           self.scope.attr('view',"licensor");
@@ -704,11 +719,16 @@ var page = Component.extend({
       },
       "#couView click": function(el, ev){
           var self = this;
+          $('#highChart').show(); //added for <rdar://problem/20018279> Claim Review: Triangles exist with no data underneath
           $("#aggregate").removeClass("hide");
           self.scope.attr('view',"country");
           ev.preventDefault();
           //console.log("fdfsdfsdf "+self.scope.attr("allClaimCountryMap").length);
-
+          //rdar://problem/20018279> -start
+          if($("#chkAggregate").is(':visible') && $("#chkAggregate").is(":checked")){
+            $('#highChart').hide();
+          }
+          //rdar://problem/20018279> -end
           var invoiceData = self.scope.attr("allClaimCountryMap").length;
           if(invoiceData == 0){
             var is_aggregate = self.scope.attr("is_aggregate");
@@ -733,8 +753,7 @@ var page = Component.extend({
         } else {
             self.scope.attr('view',"country");
             self.scope.attr("is_aggregate", 0);
-
-        }
+          }
         /* The below code calls {scope.appstate} change event that gets the new data for grid*/
         /* All the neccessary parameters will be set in that event */
         self.scope.appstate.attr('globalSearchButtonClicked',true);
@@ -887,12 +906,13 @@ var page = Component.extend({
           $('#claimCountryGrid').html(stache('<rn-claim-country-grid emptyrows="{emptyrows}" is_aggregate="{{is_aggregate}}"></rn-claim-country-grid>')({emptyrows:true, is_aggregate}));
         }
         if(self.scope.attr("view") == "country-aggregate"){
-          $(".period").hide();
+          $(".rn-grid .period").hide(); //chnagd for <rdar://problem/20018582> Date Widget Disappears
           $(".entityName").hide();
-
+          $(".sorticon").hide(); //added for <rdar://problem/20018279> Claim Review: Triangles exist with no data underneath
         } else {
-          $(".period").show();
+          $(".rn-grid .period").show(); //chnagd for <rdar://problem/20018582> Date Widget Disappears
           $(".entityName").show();
+          $(".sorticon").show(); //added for <rdar://problem/20018279> Claim Review: Triangles exist with no data underneath
         }
         //alignGrid('claimCountryGrid', self.scope.is_aggregate); ////added for 19727470 UI : Wave - M2 - Claim Review - UI is not proper when navigating between Licensor and Country tab in Claim Review
 
@@ -1168,7 +1188,12 @@ var appstate = self.appstate;
 var generateTableData = function(invoiceData,footerData){
   //console.log("invoiceData is "+JSON.stringify(invoiceData));
   var gridData = {"data":[], "footer":[]};
-
+  var aggregateFlag=false;
+  //rdar://problem/20018279> -start
+  if($("#chkAggregate").is(':visible') && $("#chkAggregate").is(":checked")){
+    aggregateFlag=true;
+  }
+  //rdar://problem/20018279> -end
         for(var i=0;i<invoiceData.length;i++){
             var invTemp = {};
             invTemp["entityId"] = invoiceData[i]["entityId"]+","+ invoiceData[i]["entityName"];
@@ -1286,7 +1311,11 @@ var generateTableData = function(invoiceData,footerData){
                   }
 
                   invoiceNumberArr.push(invLITemp["invoiceNumber"]);
-                  gridData.data.push(invLITemp);
+                  //rdar://problem/20018279> -start
+                  if(!aggregateFlag){
+                    gridData.data.push(invLITemp);
+                  }
+                  //rdar://problem/20018279> -end
                 }
               }else{
                 if(invoiceLineItems.length == 1){
@@ -1315,7 +1344,11 @@ var generateTableData = function(invoiceData,footerData){
               }
 
             }
-
+            //rdar://problem/20018279> -start
+            if(aggregateFlag){
+              hasChild=false;
+            }
+            //rdar://problem/20018279> -end
             //console.log("gridData is ffsdfs "+JSON.stringify(gridData));
             //console.log("countryArr is ffsdfs "+JSON.stringify(countryArr));
 
