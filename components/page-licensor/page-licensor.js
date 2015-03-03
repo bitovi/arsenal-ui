@@ -1034,6 +1034,8 @@ var page = Component.extend({
 
     submitAnalytics : function() {
 
+       $("#button_layout").hide();
+
       var self = this;
 
         var isValid = self.reValidateFiledsonLoad();
@@ -2122,6 +2124,7 @@ var page = Component.extend({
             uncheckAllCountries($('input.countryBox'));
 
             $(".countryDiv").removeClass('tdselected');
+            $('input[value='+el[0].value+']').parent().addClass('tdselected');
             $("#"+el[0].value).addClass('tdselected');
 
            if(reportConfig != null && reportConfig.length>0){
@@ -2341,6 +2344,11 @@ var page = Component.extend({
 
     "#analyticsFetch click": function(event){
         commonUtils.hideUIMessage();
+        $("#loading_img").show();
+        //$("#buttonsubmit").hide();
+        //$("#buttonreset").hide();
+        $("#button_layout").hide();
+
         setTimeout(function(){
           alignGridStats('societyContacts');
           $("#societyContacts .noRecords").remove();
@@ -2351,10 +2359,7 @@ var page = Component.extend({
         self.scope.mode = "fetch";
         //clear elements
 
-        $("#loading_img").show();
-        //$("#buttonsubmit").hide();
-        //$("#buttonreset").hide();
-        $("#button_layout").hide();
+        
 
 
         var entityName = self.scope.attr("selectedEntity");

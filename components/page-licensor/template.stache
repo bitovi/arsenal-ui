@@ -30,7 +30,7 @@
 
 				  	</div>
 
-					<div class="col-sm-12">					
+					<div class="col-sm-12" style="padding-top:12px;">					
 
 						<div class="col-sm-7 paddingLeft">
 
@@ -277,7 +277,7 @@
 				</div>
 
 
-				<div class="col-sm-12 countryModelLabel" style="padding:0px;margin-top: 60px;">
+				<div class="col-sm-12 countryModelLabel" style="padding:0px;margin-top: 128px;">
 
 					<div class="col-sm-12" id="countryModelLabelId" style="padding:0px;">
 						<label class="mid-headers">Country Model Mapping</label>
@@ -466,7 +466,7 @@
 	</form>
 
 
-		<div class="col-sm-12 buttonsPlaceHolder" id ="button_layout" style="text-align:right;padding:15px;padding-right: 32px;">
+		<div class="col-sm-12 buttonsPlaceHolder" id ="button_layout" style="text-align:right;padding:15px;padding-right: 32px;display:none;">
 		    <div class="col-sm-4"></div>
 		    <div class="col-sm-8">
 		      <button type="button"  id="buttonreset" class="btn btn-default buttonCancel btn-custom-small-disabled" id="buttonreset">Cancel</button>
