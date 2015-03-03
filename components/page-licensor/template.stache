@@ -4,89 +4,99 @@
 
 	<div class="col-sm-12 paddingLicensor" id="entityDetailsTab">
 
-		<div class="col-sm-12">
+		<div class="col-sm-12" style="padding:0;">
 
 			<div id="entityDetails">
 
-				<form id="entityLicensorTop">
+				<form id="entityLicensorTop">				
+
 					<div class="div-warn-container">
+
 				      	<div class="row pagetitle-div-parent">
+
 				          	<div class="col-sm-5 pageTitleInv">
+
 				            	<div class="pageHead">Licensor Details</div>
+
 				          	</div>
+
 				      	</div>
+
 				      	<div class="col-sm-7 div-warn-parent">
+
 				          <div id="invmessageDiv" class="center messageDiv" role="alert"></div>
+
 				    	</div>
+
 				  	</div>
 
+					<div class="col-sm-12" style="padding-top:12px;">					
 
-					<div class="col-sm-12">
-							<div class="col-sm-1"></div>
-							 <div class="col-sm-5">
+						<div class="col-sm-7 paddingLeft">
 
-								    <label for="inputEmail3" class="col-sm-1 control-label">Region: </label>
-								    <div class="col-sm-4  region">
-								      <select id="invoiceRegion" class="form-control"  name="region" can-value="regionStore">
-										       <option value="">Select</option>
-										       {{#each regions}}
-										       		<option value="{{id}}" class="fontmyriad">{{value}}</option>
-										       	{{/each}}
-									   </select>
-								    </div>
-							  	</div>
+						 	<div class="col-md-4" >
 
-						<div class="col-sm-6">
+						 		<label for="inputEmail3" class="col-md-3 control-label" style="text-align: right;padding: 0;">Region: </label>
 
-							<div class="col-sm-12" style="margin-left: 0px">
+							    <div class="col-md-9  region">
 
-								<!-- <div class="col-sm-12"> -->
+							      <select id="invoiceRegion" class="form-control formInputs"  name="region" can-value="regionStore">
 
-								<div class="col-sm-1 small-headers textalignright align-left">
-									<label>Licensor:</label>
-								</div>
-								<div class="col-sm-3 form-group">
+									       <option value="">Select</option>
+
+									       {{#each regions}}
+
+									       		<option value="{{id}}" class="fontmyriad">{{value}}</option>
+
+									       	{{/each}}
+
+								   </select>
+
+							    </div>
+
+						 	</div>								    
+
+						 	<div class="col-md-4">
+
+						 		<label for="inputEmail3" class="col-md-4 control-label">Licensor:</label>
+
+						 		<div class="col-md-8 form-group">
 
 									{{getselectedEntity selectedEntity}}
+
 									<select id="licensorsFilter" name="licensorsFilter" can-value="selectedEntity" class="form-control resizeBox licensors">
+
 										{{#each licensors}}
+
 										<optgroup label="{{entityType}}">
+
 											{{#each entities}}
+
 											<option id="{{id}}">{{value}}</option>
+
 											{{/each}}
+
 										</optgroup>
+
 										{{/each}}
+
 									</select>
 
 								</div>
 
-								<div class="col-sm-2 align-left" id = "add_layout" style="margin:-4px 0 0 0;width:100px;">
+						 	</div>		
 
-									<!--<button type="button" id="analyticsAdd"  name="analyticsAdd"
-									class="btn buttonSubmit btn-custom-small" style="margin-left:15px;">Add</button>-->
+						 	<div class="col-md-3" style="text-align:center;">			 	
 
+							<button type="button" id="analyticsFetch"  name="analyticsFetch" class="btn buttonSubmit btn-custom-small">Fetch</button>		
 
-								</div>
-
-								<div class="col-sm-2 align-left" style="margin:-4px 0 0 0">
-
-									<button type="button" id="analyticsFetch"  name="analyticsFetch"
-									class="btn buttonSubmit btn-custom-small">Fetch</button>
-
-								</div>
-
-
-								<!-- </div> -->
-
-							</div>
+							</div>				
 
 						</div>
 
 					</div>
 
-
-
-				</form>
+			</form>
 
 			</div>
 
@@ -369,10 +379,10 @@
 											Name
 										</th>
 										<th class="contactEmail">
-											E-Mail <img src="resources/images/button_plus_blue.png" class="addSocContactsAdd addRow"  style=""></img>
+											E-Mail 
 										</th>
 										<th class="deleteCheckBox">
-											Delete
+											Delete<img src="resources/images/button_plus_blue.png" class="addSocContactsAdd addRow"  style=""></img>
 										</th>
 									</tr>
 								</thead>
@@ -408,21 +418,30 @@
 									</tr>
 									{{/each}}
 								</tbody>
+								<!--
 								<tfoot>
 									<tr>
 										<td colspan="3" style="text-align:left;padding-right:2%;">Number of contacts: {{contactDetails.length}}</td>
 									</tr>
 								</tfoot>
 								<tfoot class="sctCntNoRecords" style="display: table-footer-group;"><tr><td style="text-align: center; color: rgb(0, 0, 0); width: 225.333333333333px; background: rgb(255, 255, 255);" colspan="3">No Records Found</td></tr></tfoot>
+								-->
+								<tfoot>
+									<tr>
+										{{#if contactDetails.length}}
+									        <td colspan="3" style="text-align:left;padding-right:2%;">Number of contacts: {{contactDetails.length}}</td>
+									    {{else}}
+									    	<td colspan="3" style="text-align:left;padding-right:2%;">Number of contacts: {{contactDetails.length}}</td>
+									    {{/if}}
+									</tr>
+								</tfoot>
 							</table>
 
 						</div>
 
 					</div>
 
-					<div class="col-sm-12 adjustHeight"></div>
-
-
+					
 					<div class="col-sm-12 revHistCollapser">
 
 						<div class="col-sm-12 revHistCollapserId" style="padding-left: 0px;">
@@ -447,7 +466,7 @@
 	</form>
 
 
-		<div class="col-sm-12 buttonsPlaceHolder" id ="button_layout" style="text-align:right;padding:15px;padding-right: 32px;">
+		<div class="col-sm-12 buttonsPlaceHolder" id ="button_layout" style="text-align:right;padding:15px;padding-right: 32px;display:none;">
 		    <div class="col-sm-4"></div>
 		    <div class="col-sm-8">
 		      <button type="button"  id="buttonreset" class="btn btn-default buttonCancel btn-custom-small-disabled" id="buttonreset">Cancel</button>
@@ -498,7 +517,7 @@
 
 			<div class="col-sm-12" id="spaceBar"></div>
 
-			<div class="col-sm-12 col-sm-offset-3 buttonsBottom">
+			<div class="col-sm-12 buttonsBottom">
 				<button type="button" id="bcsubmit" class="btn btn-custom-small" style="margin-left:10px;">Ok</button>
 				<button type="button" id="bccancel" class="btn btn-custom-small" style="margin-left:10px;">Cancel</button>
 			</div>

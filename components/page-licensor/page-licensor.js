@@ -448,6 +448,8 @@ var page = Component.extend({
             }
           }
         }
+      }else{
+        self.reportTypes.replace([]);
       }
     },
 
@@ -871,10 +873,14 @@ var page = Component.extend({
 
         }
 
-        var proposalPending = self.licDetails.data.proposalPending;
-        if(proposalPending != null && proposalPending != undefined && proposalPending != "" && proposalPending != true) {
+        var proposalPending = values[0].proposalPending;
+        if(proposalPending != null && proposalPending != undefined && proposalPending != "" && proposalPending == true) {
 
-            $("#submitButton").hide();
+          $("#submitButton").hide();
+
+        } else {
+
+            $("#submitButton").show();
 
         }
 
@@ -1029,6 +1035,8 @@ var page = Component.extend({
     },
 
     submitAnalytics : function() {
+
+       $("#button_layout").hide();
 
       var self = this;
 
@@ -1691,19 +1699,23 @@ var page = Component.extend({
         }
       }).on('error.field.bv', function(e, data) {
 
-          //$('*[data-bv-icon-for="'+data.field +'"]').popover('show');
+          $('*[data-bv-icon-for="'+data.field +'"]').popover('show');
 
           //setTimeout(function(){
             //$('*[data-bv-icon-for="'+data.field +'"]').popover('hide');
           //},10000);
-        $("#submitButton").attr("disabled", true);//Disable checkbox if all valid
+        $("#submitButton").attr("disabled", true);//Disable submit button if all valid
       }).on('added.field.bv', function(e, data) {
 
-      }).on('success.field.bv', function(e, data) {   
+      }).on('success.field.bv', function(e, data) { 
 
-        $("#submitButton").attr("disabled", false);//Enable checkbox if all valid
+        if(!data.bv.isValid()){
+          data.bv.disableSubmitButtons(true);
+        }
 
-        if($('#editableText').val().length==0){/*Check the textarea editable - Onload*/  
+        $("#submitButton").attr("disabled", false);//Enable submit button if all valid
+
+          if($('#editableText').val().length === 0 || $("#sapVendor").val().length === 0 || $("#invoiceType").val() === "" || $(".accountName").val().length === 0 || $(".periodFromInput").filter(':visible:first').val().length === 0 ){/*Check the textarea editable - Onload*/  
             $("#submitButton").attr("disabled", true);
           } 
         /*Check the textarea editable*/  
@@ -1859,6 +1871,8 @@ var page = Component.extend({
           $('#entityGrid').find('input, textarea,button, select').attr('disabled','disabled');
 
            $('#button_layout').find('input, textarea, button').attr('disabled','disabled');
+
+           $('#button_layout').find('button#buttonApprove, button#buttonReject').prop('disabled', false);
 
            $('#add_layout').find('input, textarea, button').attr('disabled','disabled');
 
@@ -2112,6 +2126,7 @@ var page = Component.extend({
             uncheckAllCountries($('input.countryBox'));
 
             $(".countryDiv").removeClass('tdselected');
+            $('input[value='+el[0].value+']').parent().addClass('tdselected');
             $("#"+el[0].value).addClass('tdselected');
 
            if(reportConfig != null && reportConfig.length>0){
@@ -2274,7 +2289,7 @@ var page = Component.extend({
 
 
     ".rn-grid-revisionhistory>tbody>tr td dblclick" : function(el, ev){
-      commonUtils.hideUIMessage();
+          commonUtils.hideUIMessage();
 
           var self = this;
 
@@ -2282,6 +2297,8 @@ var page = Component.extend({
           var licensor = el.closest('tr').data('row').row.entity;
 
           var genObj = {"id" : "" , "licensorName":""};
+
+          var status=el.closest('tr').data('row').row.status; 
 
           genObj.id = id;
           genObj.licensorName =  licensor;
@@ -2299,6 +2316,14 @@ var page = Component.extend({
             self.scope.populateAnalyticsPage(values, "getHistroy");
 
           });
+
+          if(status == "Inctive"){
+
+              commonUtils.showErrorMessage("Selected revision cannot be modified as it is Inactive");
+          }else if(status=="Rejected"){
+              commonUtils.showErrorMessage("Selected revision cannot be modified as it is Rejected");
+          }
+          
     },
 
     "#buttonreset click": function(event){
@@ -2321,6 +2346,11 @@ var page = Component.extend({
 
     "#analyticsFetch click": function(event){
         commonUtils.hideUIMessage();
+        $("#loading_img").show();
+        //$("#buttonsubmit").hide();
+        //$("#buttonreset").hide();
+        $("#button_layout").hide();
+
         setTimeout(function(){
           alignGridStats('societyContacts');
           $("#societyContacts .noRecords").remove();
@@ -2331,10 +2361,7 @@ var page = Component.extend({
         self.scope.mode = "fetch";
         //clear elements
 
-        $("#loading_img").show();
-        //$("#buttonsubmit").hide();
-        //$("#buttonreset").hide();
-        $("#button_layout").hide();
+        
 
 
         var entityName = self.scope.attr("selectedEntity");
@@ -2616,7 +2643,9 @@ function alignGridStats(divId){
   var tableWidth = 0;
   var tdWidth, cellWidthArr = [];
   if(rowLength>0){
-    $('#'+divId+' table').css("width",divWidth);
+      if(divId !== 'societyContacts'){
+        $('#'+divId+' table').css("width",divWidth);
+      }  
       for(var i=1;i<=colLength;i++){
         var theadTdWidth = $('#'+divId+' table>thead>tr>th:nth-child('+i+')').outerWidth();
         var tbodyTdWidth = $('#'+divId+' table>tbody>tr>td:nth-child('+i+')').outerWidth();
@@ -2665,7 +2694,10 @@ function alignGridStats(divId){
           $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
 
         }
-        $('#'+divId+' table').css("width",divWidth);
+        //$('#'+divId+' table').css("width",divWidth);
+        if(divId !== 'societyContacts'){
+          $('#'+divId+' table').css("width",divWidth);
+        }   
       } else {
         for(var j=1;j<=cellWidthArr.length;j++){
           var width = cellWidthArr[j-1];
@@ -2677,7 +2709,10 @@ function alignGridStats(divId){
           $('#societyContacts table>thead>tr>th:last-child').css("width",width-1);
 
         }
-        $('#'+divId+' table').css("width",tableWidth);
+        //$('#'+divId+' table').css("width",tableWidth);
+        if(divId !== 'societyContacts'){
+          $('#'+divId+' table').css("width",divWidth);
+        } 
       }
   }
 
@@ -2896,7 +2931,7 @@ function hideFieldsOnLoad(){
       $(".reportConfErr").hide();
       $("#loading_img").hide();
       $(".confirmationReportConfig").hide();
-      $("#buttonsubmit").attr("disabled", true);
+      //$("#buttonsubmit").attr("disabled", true);
       $("#buttonsubmit").hide();
       $("#buttonreset").hide();
 }

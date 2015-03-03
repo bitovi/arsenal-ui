@@ -93,8 +93,8 @@
   img.addSocContactsAdd {
     height: 15px;
     cursor:pointer;
-    position:absolute;
-    right:3px;
+    position:relative;
+    float: right;
   }
 
   img.addSocContactsRemove {
@@ -255,6 +255,7 @@
       padding: 0px;
       margin-left: 15px;
       overflow-x:auto;
+      overflow-y:hidden;
   }
 
   div.repConfiguration {
@@ -603,7 +604,7 @@
       }
 
       .confirmationReportConfig {
-          margin: 200px 36%;
+          margin: -500px 36%;
           z-index: 200;
           width: 400px;
           max-height: 350px;
@@ -692,6 +693,7 @@
             display: block;
           }
           tbody{
+            height: 5em;
               max-height: 5em;
               overflow-y: overlay;
               overflow-x: hidden;
@@ -748,9 +750,11 @@
             display: block;
           }
           tbody{
-              max-height: 85px;
+              max-height: 6em;
               overflow-y: overlay;
               overflow-x: hidden;
+              border-left:1px solid #bfbfbf;
+              border-right:1px solid #bfbfbf;
           }
         }
       }
@@ -859,4 +863,8 @@ multiple-comments .multiple-comments-parent{
   
   .marginLeft10{
     margin-left: 10px;
+  }
+  
+  .paddingLeft{
+    padding-left: 10.5%;
   }
