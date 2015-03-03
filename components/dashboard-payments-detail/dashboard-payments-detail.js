@@ -113,6 +113,8 @@ var DashboardPaymentsDetail = Component.extend({
           var chart = $('#' + popoverID).find('.column-chart');
           chart.empty();
           columnChartHelper(el.data('item').item, chart[0]);
+          $('#detailsChart li').removeClass('selected');
+          $(el).addClass('selected');
       },
       /*'li.total div.category>a click':function(el, ev){
           var self = this;
