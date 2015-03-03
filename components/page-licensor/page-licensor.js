@@ -1162,7 +1162,7 @@ var page = Component.extend({
           reLicencorDetails.licensorDetails.validTo = periodTo;
 
           if(this.attr("buttonPressed") == "Propose") {
-            reLicencorDetails.licensorDetails.reportConfMap = self.reportConfMap.attr(); // != undefined ? self.reportConfMap.attr() : self.reportConfMap
+            reLicencorDetails.licensorDetails.reportConfMap = self.reportConfMap != undefined || self.reportConfMap != null? self.reportConfMap.attr() : self.reportConfMap;
           } else {
             reLicencorDetails.licensorDetails.reportConfMap = self.reportConfMap;
           }
