@@ -273,7 +273,7 @@
 				</div>
 
 
-				<div class="col-sm-12 countryModelLabel" style="padding:0px;margin-top: 65px;">
+				<div class="col-sm-12 countryModelLabel" style="padding:0px;margin-top: 60px;">
 
 					<div class="col-sm-12" id="countryModelLabelId" style="padding:0px;">
 						<label class="mid-headers">Country Model Mapping</label>
@@ -375,10 +375,10 @@
 											Name
 										</th>
 										<th class="contactEmail">
-											E-Mail <img src="resources/images/button_plus_blue.png" class="addSocContactsAdd addRow"  style=""></img>
+											E-Mail 
 										</th>
 										<th class="deleteCheckBox">
-											Delete
+											Delete<img src="resources/images/button_plus_blue.png" class="addSocContactsAdd addRow"  style=""></img>
 										</th>
 									</tr>
 								</thead>
@@ -414,21 +414,30 @@
 									</tr>
 									{{/each}}
 								</tbody>
+								<!--
 								<tfoot>
 									<tr>
 										<td colspan="3" style="text-align:left;padding-right:2%;">Number of contacts: {{contactDetails.length}}</td>
 									</tr>
 								</tfoot>
 								<tfoot class="sctCntNoRecords" style="display: table-footer-group;"><tr><td style="text-align: center; color: rgb(0, 0, 0); width: 225.333333333333px; background: rgb(255, 255, 255);" colspan="3">No Records Found</td></tr></tfoot>
+								-->
+								<tfoot>
+									<tr>
+										{{#if contactDetails.length}}
+									        <td colspan="3" style="text-align:left;padding-right:2%;">Number of contacts: {{contactDetails.length}}</td>
+									    {{else}}
+									    	<td colspan="3" style="text-align:left;padding-right:2%;">No Records Found</td>
+									    {{/if}}
+									</tr>
+								</tfoot>
 							</table>
 
 						</div>
 
 					</div>
 
-					<div class="col-sm-12 adjustHeight"></div>
-
-
+					
 					<div class="col-sm-12 revHistCollapser">
 
 						<div class="col-sm-12 revHistCollapserId" style="padding-left: 0px;">

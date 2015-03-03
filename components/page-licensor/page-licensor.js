@@ -2632,7 +2632,9 @@ function alignGridStats(divId){
   var tableWidth = 0;
   var tdWidth, cellWidthArr = [];
   if(rowLength>0){
-    $('#'+divId+' table').css("width",divWidth);
+      if(divId !== 'societyContacts'){
+        $('#'+divId+' table').css("width",divWidth);
+      }  
       for(var i=1;i<=colLength;i++){
         var theadTdWidth = $('#'+divId+' table>thead>tr>th:nth-child('+i+')').outerWidth();
         var tbodyTdWidth = $('#'+divId+' table>tbody>tr>td:nth-child('+i+')').outerWidth();
@@ -2681,7 +2683,10 @@ function alignGridStats(divId){
           $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
 
         }
-        $('#'+divId+' table').css("width",divWidth);
+        //$('#'+divId+' table').css("width",divWidth);
+        if(divId !== 'societyContacts'){
+          $('#'+divId+' table').css("width",divWidth);
+        }   
       } else {
         for(var j=1;j<=cellWidthArr.length;j++){
           var width = cellWidthArr[j-1];
@@ -2693,7 +2698,10 @@ function alignGridStats(divId){
           $('#societyContacts table>thead>tr>th:last-child').css("width",width-1);
 
         }
-        $('#'+divId+' table').css("width",tableWidth);
+        //$('#'+divId+' table').css("width",tableWidth);
+        if(divId !== 'societyContacts'){
+          $('#'+divId+' table').css("width",divWidth);
+        } 
       }
   }
 
