@@ -29,9 +29,37 @@
             <div id="invmessageDiv" class="center messageDiv" role="alert"></div>
         </div>
       </div>
+      <div class="col-sm-12" style="padding-top:12px;">
+        <div class="col-sm-7 paddingLeft">
+          <div class="col-md-4" >
+            <label for="inputEmail3" class="col-md-3 control-label" style="text-align: right;padding: 0;">Region: </label>
+            <div class="col-md-9  region">
+              <select id="countryRegion" class="form-control formInputs"  name="region" can-value="regionStore">
+                <option value="">Select</option>
+                {{#each regions}}
+                  <option value="{{id}}" class="fontmyriad">{{value}}</option>
+                {{/each}}
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label for="inputEmail3" class="col-md-4 control-label">Country:</label>
+            <div class="col-md-8 form-group">
+              <select class="form-control" id="selCountry" can-value='pageState.countryDetails.country.countryId'>
+                {{#each countries}}
+                  <option value="{{id}}">{{value}}</option>
+                {{/each}}
+              </select>
+            </div>
+          </div>
+          <div class="col-md-3" style="text-align:center;">
+            <button id="fetchDetailsBtn" class="btn btn-primary btn-custom-small">Fetch</button> 
+          </div>
+        </div>
+      </div>
 
     <div class="row">
-         <div class="form-group col-sm-12">
+        <!-- <div class="form-group col-sm-12">
               <div class="col-sm-5">
               <label for="inputEmail3" class="col-sm-6 control-label">Region: </label>
               <div class="col-sm-4 region">
@@ -58,7 +86,7 @@
                  </div>
                </div>
                <div class="col-sm-2"></div>
-        </div>
+        </div>-->
 
 
   <div class="col-sm-12 lineDividerInvoice main-layout"><!-- Main Layout START-->
@@ -78,7 +106,7 @@
                  <div class="col-sm-12" id="periodFromcontainer">
                   <label for="forValidFrom" class="col-sm-4 control-label small-headers">Valid From: </label>
                   <div class="col-sm-4 requiredBar calendarcls">
-                    <input type='text' id="validFrom" class="validFrom form-control updatePeroid" name="validFrom" place-holder="Select Period" can-value='pageState.countryDetails.country.validFrom'/>
+                    <input type='text' id="validFrom" class="validFrom form-control updatePeroid formInputs" name="validFrom" place-holder="Select Period" can-value='pageState.countryDetails.country.validFrom'/>
                     <span class="calendarDateIcon" data-type="periodFrom"><i class="glyphicon-calendar glyphicon"></i></span>
                     <period-calendar selectedperiod={selectedperiod} appstate="{appstate}"></period-calendar>
                   </div><div class="col-sm-3"><div class='period-invalid'> Invalid Period !</div></div>
@@ -89,7 +117,7 @@
                <div class="col-sm-12 " id="periodTocontainer">
                   <label for="forValidTo" class="col-sm-4 control-label small-headers">Valid To: </label>
                   <div class="col-sm-8 normalBar calendarcls">
-                    <input type='text' id="validTo" class="validTo form-control updatePeroid" place-holder="Select Period" can-value='pageState.countryDetails.country.validTo'/>
+                    <input type='text' id="validTo" class="validTo form-control updatePeroid formInputs" place-holder="Select Period" can-value='pageState.countryDetails.country.validTo'/>
                     <span class="calendarDateIcon" data-type="periodTo"><i class="glyphicon-calendar glyphicon"></i></span>
                     <period-calendar selectedperiod={selectedperiod} appstate="{appstate}"></period-calendar>
                   </div>
