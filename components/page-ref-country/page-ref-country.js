@@ -78,6 +78,7 @@ var page = Component.extend({
     enableButtonsReject : "display:none",
     regions:[],
     regionStore:"",
+    reloadCountries:true,
 
     switchButtons: function() {
 
@@ -358,7 +359,11 @@ var page = Component.extend({
         self.scope.appstate.attr("renderGlobalSearch",false);
         var requestObj = {};
         var modelObj = {reqType:'modeltype'};
-        var conObj = {regionId: DefaultGlobalParameters.Region.id+''};
+        var regionId = DefaultGlobalParameters.Region.id+'';
+        if(self.scope.appstate.attr("screendetails") != null && self.scope.appstate.attr("screendetails") != undefined){
+          regionId=self.scope.appstate.screendetails.regionId;
+        }
+        var conObj = {regionId: regionId};
         $("#viewPricingModelDivBlock").hide();
         Promise.all([
             Region.findAll(UserReq.formRequestDetails(requestObj)),
@@ -368,26 +373,21 @@ var page = Component.extend({
             PricingMethods.findOne(UserReq.formRequestDetails(requestObj))
         ]).then(function(values) {
               //self.scope.attr("entities").replace(values[0]["entities"][0]);
+              //var countryId=values[2][0].id;
               self.scope.attr("regions").replace(values[0]);
               self.scope.attr("pricingModelTypes").replace(values[1].modelTypes);
-              self.scope.attr("countries").replace(values[2][0]);
-
-              self.scope.attr("regionStore",DefaultGlobalParameters.Region.id+'');
-              $("#selCountry").val((values[2])[0].id);
+              self.scope.attr("countries").replace(values[2]);
+              self.scope.attr("reloadCountries",false);
+              self.scope.attr("regionStore",regionId);
+              //$("#selCountry").val((values[2])[0].id);
+              self.scope.pageState.countryDetails.country.attr("countryId", values[2][0].id);
               if(self.scope.appstate.attr("screendetails") != null && self.scope.appstate.attr("screendetails") != undefined) {
-
+                  //countryId=self.scope.appstate.screendetails.tableId;
                   self.scope.populateCountryDetails(self.scope, "", self.scope.appstate.screendetails.tableId, false)
                   self.scope.appstate.attr("screendetails", null);
-
-
               } else {
-
-                self.scope.pageState.countryDetails.country.attr("countryId", (values[2])[0].id);
                 $("#fetchDetailsBtn").click();
-
               }
-
-
               self.scope.attr("pricingMethods").replace(values[3].pricingMethodList);
         }).then(function(values) {
               //self.scope.pageState.entityCountryDetails.entityCountry.attr("countryId",self.scope.attr("countries")[0].id);
@@ -922,7 +922,7 @@ var page = Component.extend({
     "{scope} regionStore": function(){
       var self = this;
       var regnId = self.scope.attr("regionStore");
-      if (regnId != undefined && regnId.length > 0) {
+      if (regnId != undefined && regnId.length > 0 && self.scope.reloadCountries) {
         var genObj = {
           regionId: regnId
         };
@@ -932,9 +932,10 @@ var page = Component.extend({
             self.scope.attr("countries").replace([]);
             //self.scope.attr("licensors").replace(values[0]["entities"]);
             self.scope.attr("countries").replace(values[0]);
-            self.scope.attr("#selCountry",values[0][0].id);
+            self.scope.pageState.countryDetails.country.attr("countryId",values[0][0].id)
           });
         }
+        self.scope.attr("reloadCountries",true);
       },
     '#accuralModelBtn click': function(){
       var self = this.scope;
