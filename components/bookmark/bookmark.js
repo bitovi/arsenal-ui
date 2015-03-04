@@ -214,9 +214,9 @@ var bookmark = Component.extend({
       var total = $('[name="bookmark"]:checked').length,addspl='';
       var root = {"idsToBeDeleted":[]};
       var deleteId = [];
-      var bookMarkItems = {};
       var self = this;
       $('.bookmarklist .bookmark_list .bookmarkchkbox').closest('.bookmark_list').each(function(i,el){
+        var bookMarkItems = {};
         if($(el).find('.bookmarkchkbox').is(':checked')){
           $(el).closest('.bookmark_list').remove();
           $('.bookmarklist .bookmark_list .bookmarkchkbox').is(':checked') ? $('#bookmarkitem_remove').removeAttr('disabled'):$('#bookmarkitem_remove').attr('disabled','disabled');
