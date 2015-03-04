@@ -751,10 +751,11 @@ var page = Component.extend({
         if($("#chkAggregate").is(":checked")){
             self.scope.attr("view","country-aggregate");
             self.scope.attr("is_aggregate", 1);
-
+            $('#highChart').hide();
         } else {
             self.scope.attr('view',"country");
             self.scope.attr("is_aggregate", 0);
+            $('#highChart').show();
           }
         /* The below code calls {scope.appstate} change event that gets the new data for grid*/
         /* All the neccessary parameters will be set in that event */
