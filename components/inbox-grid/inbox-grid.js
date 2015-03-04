@@ -25,7 +25,8 @@ var InboxGrid = ScrollingGrid.extend({
     }, {
       id: 'createdBy',
       title: 'Initiated By',
-      contents: row => row.createdBy || ''
+      contents: row => row.createdBy || '',
+      sortable: true
     }, {
       id: 'pendingDays',
       title: 'Pending',
@@ -44,10 +45,12 @@ var InboxGrid = ScrollingGrid.extend({
     }, {
       id: 'comments',
       title: 'Comments',
+      sortable: true,
       contents: row => row.comments || ''
     },  {
       id: 'previousApprover',
       title: 'Previous Approver',
+      sortable: true,
       contents: row => row.previousApproverName || ''
     }],
     strippedGrid:true
@@ -129,8 +132,8 @@ var InboxGrid = ScrollingGrid.extend({
         var existFlag = false;
         var sortAttr = val[0];
 
-        if (sortAttr === "createdBy" || sortAttr === "approvalStage") {
-          commonUtils.showErrorMessage("SortBy not permitted for Initiated-By & Approvals.");
+        if (sortAttr === "approvalStage") {
+          commonUtils.showErrorMessage("SortBy not permitted for Approvals.");
           return false;
         } else {
           commonUtils.hideUIMessage();
