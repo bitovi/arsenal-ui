@@ -26,6 +26,10 @@
                  <!--   <li><a href='{{url}}approvals/refDataApproval' class="old" target="_blank">Ref Data</a></li>-->
                     <li {{isScreenEnabled 21}}><a href='/payment-bundles' data-screenid="21" >Payment Bundle Review</a></li>
                     <li><a href='{{url}}approvals/salesReportApproval' class="old" target="_blank">Sales Report</a></li>
+                    <li><a href='{{url}}approvals/redactedReportApproval' class="old" target="_blank">Redacted Report</a></li>
+                    <li><a href='{{url}}approvals/lineItemOrApproval' class="old" target="_blank">Dispute Report</a></li>
+                    <li><a href='{{url}}approvals/paymentReport' class="old" target="_blank">Payment Report</a></li>
+                    <li><a href='{{url}}approvals/accrualRerun' class="old" target="_blank">Accrual Rerun</a></li>
                     <li><a href='{{url}}approvals/unClaimedReportApproval' class="old" target="_blank">Unclaimed Report</a></li>
                 </ul>
             </li>
@@ -50,6 +54,9 @@
                      <li {{isScreenEnabled 22}}><a href='/claimreview'  data-screenid="22">Claim Review</a></li>
                      <li {{isScreenEnabled 23}}><a href='{{url}}globalRevenue' class="old" target="_blank">Global Revenue</a></li>
                      <li {{isScreenEnabled 24}}><a href='{{url}}bwReport' class="old" target="_blank">Monthly Billings Reconciliation</a></li>
+                     <li><a href='{{url}}unClaimedStats' class="old" target="_blank">Unclaimed Stats configuration</a></li>
+                     <li><a href='{{url}}unClaimedSummary' class="old" target="_blank">Unclaimed Summary</a></li>
+                     <li><a href='{{url}}keyPerformanceIndicators' class="old" target="_blank">Key Performance Indicators</a></li>
                  </ul>
              </li>
 
