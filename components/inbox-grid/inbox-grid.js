@@ -94,7 +94,7 @@ var InboxGrid = ScrollingGrid.extend({
     "tbody tr dblclick": function(el, ev){
       var row = el.data('row').row;
       console.log(" Clicked "+row.tableName+", value :"+row.tableValue);
-
+      var regionId=$('#regionsFilter option:selected').val();
       this.scope.appstate.screenLookup.attr("screendetails", null);
 
       if(row.tableName === 'RINS_PMT_BUNDLE'){
@@ -104,13 +104,13 @@ var InboxGrid = ScrollingGrid.extend({
         commonUtils.navigateTo("payment-bundles");
       }
       if(row.tableName === 'RINS_REF_ENTITY'){
-        var data = {  tableName:row.tableName, tableId: row.tableValue, user:row.createdBy};
+        var data = {  tableName:row.tableName, tableId: row.tableValue, user:row.createdBy,regionId:regionId};
         console.log(" Entity Id :  "+ row.tableValue);
         this.scope.appstate.screenLookup.attr("screendetails" ,data);
         commonUtils.navigateTo("licensor");
       }
       if(row.tableName === 'RINS_REF_COUNTRY'){
-        var data = {  tableName:row.tableName, tableId: row.tableValue, user:row.createdBy};
+        var data = {  tableName:row.tableName, tableId: row.tableValue, user:row.createdBy,regionId:regionId};
         this.scope.appstate.screenLookup.attr("screendetails" ,data);
         console.log(" Country Id :  "+ row.tableValue);
         commonUtils.navigateTo("ref-country");
