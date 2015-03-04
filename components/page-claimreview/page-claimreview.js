@@ -723,6 +723,8 @@ var page = Component.extend({
           $("#aggregate").removeClass("hide");
           self.scope.attr('view',"country");
           ev.preventDefault();
+          $("#chkAggregate").prop('checked',false);
+          //self.scope.attr("is_aggregate",false);
           //console.log("fdfsdfsdf "+self.scope.attr("allClaimCountryMap").length);
           //rdar://problem/20018279> -start
           if($("#chkAggregate").is(':visible') && $("#chkAggregate").is(":checked")){
@@ -749,10 +751,11 @@ var page = Component.extend({
         if($("#chkAggregate").is(":checked")){
             self.scope.attr("view","country-aggregate");
             self.scope.attr("is_aggregate", 1);
-
+            $('#highChart').hide();
         } else {
             self.scope.attr('view',"country");
             self.scope.attr("is_aggregate", 0);
+            $('#highChart').show();
           }
         /* The below code calls {scope.appstate} change event that gets the new data for grid*/
         /* All the neccessary parameters will be set in that event */
