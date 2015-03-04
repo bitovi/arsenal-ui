@@ -2317,24 +2317,24 @@ var page = Component.extend({
 
           self.scope.clearRepConfDetails();
 
-          //self.scope.disableTabs();
+          self.scope.disableTabs();
 
           $("#loading_img").show();
+          $("#button_layout").hide();
 
           Promise.all([Analytics.findById(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
             self.scope.populateAnalyticsPage(values, "getHistroy");
 
             $("#loading_img").hide();
+            $("#button_layout").show();
+            if(status == "Inctive"){
+                commonUtils.showErrorMessage("Selected revision cannot be modified as it is Inactive");
+            }else if(status=="Rejected"){
+                commonUtils.showErrorMessage("Selected revision cannot be modified as it is Rejected");
+            }
 
           });
-
-          if(status == "Inctive"){
-
-              commonUtils.showErrorMessage("Selected revision cannot be modified as it is Inactive");
-          }else if(status=="Rejected"){
-              commonUtils.showErrorMessage("Selected revision cannot be modified as it is Rejected");
-          }
           
     },
 
