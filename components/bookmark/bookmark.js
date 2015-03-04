@@ -176,6 +176,11 @@ var bookmark = Component.extend({
               }
             }
           }
+          if(self.scope.userList.length === data[0].prsIdList.length){
+            $('.setshareall').prop('checked', true);
+          }else{
+            $('.setshareall').prop('checked', false);
+          }
           $('.bookmark_loader').hide();
           self.scope.shareList.replace('');
           self.scope.shareList.replace(self.scope.settingsList);
