@@ -2,10 +2,10 @@
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-body">
-        <p>These invoices will be removed from this payment bundle. Are you sure?</p>
+        <p>Invoice ({{invoicelineId}}) will be removed from the payment bundle ({{bundlescope.pageState.selectedBundle.bundleName}}) ?</p>
         <div class="buttons">
           <button class="cancel">Cancel</button>
-          <button class="submit">Delete</button>
+          <button class="submit">Remove</button>
         </div>
       </div>
     </div>
