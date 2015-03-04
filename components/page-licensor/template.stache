@@ -68,7 +68,7 @@
 
 										{{#each licensors}}
 
-										<optgroup label="{{entityType}}">
+										<!--<optgroup label="{{entityType}}">-->
 
 											{{#each entities}}
 

@@ -41,7 +41,7 @@
             <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.entityId' id="licensorId" name="licensorId">
     <!--          <option value="">Select</option>-->
               {{#each entities}}
-              <optgroup label="{{entityType}}">
+              <!--  <optgroup label="{{entityType}}"> -->
                 {{#each entities}}
                 <option value="{{id}}">{{value}}</option>
                 {{/each}}

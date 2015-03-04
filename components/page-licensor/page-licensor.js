@@ -1464,13 +1464,17 @@ var page = Component.extend({
             //self.attr("licensors")[0].entities[0].id = genObj.licensorId;
 
             Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
+              if(values[0].status == "FAILURE") {
+                  var msg = "No data fetched";            
+                  commonUtils.displayUIMessage(values[0].status, msg);
+                }else{
+                  $("#entityLicensorBottom").show();
+                  self.populateAnalyticsPage(values);
+                  self.reValidateFiledsonLoad();
+                  $("#button_layout").show();
+                }
               $("#loading_img").hide();
-              $("#entityLicensorBottom").show();
-              //$("#buttonsubmit").show();
-              //$("#buttonreset").show();
-              self.populateAnalyticsPage(values);
-              self.reValidateFiledsonLoad();
-              $("#button_layout").show();
+              
 
             });
      }
@@ -1845,7 +1849,10 @@ var page = Component.extend({
 
     'inserted': function() {
       var self = this;
-      var genObj = {};
+      var genObj = {
+          regionId: DefaultGlobalParameters.Region.id+''
+          //regionId: '3'
+        };
       hideFieldsOnLoad();
     Promise.all([
       Region.findAll(UserReq.formRequestDetails(genObj)),
@@ -1858,6 +1865,7 @@ var page = Component.extend({
         self.scope.attr("selectedEntity",values[1].entities[0].entities[0].value);
 
         //fetching the licensor details --start
+        genObj={};
          self.scope.populateLicensorDetails(self.scope.selectedEntity);
           Promise.all([Analytics.getInvoiceDetails(UserReq.formRequestDetails(genObj))]).then(function(values) {
               self.scope.invoiceTypeList.replace(values[0].invoiceDetailTypes);
@@ -2590,7 +2598,8 @@ var page = Component.extend({
           Licensor.findAll(UserReq.formRequestDetails(genObj))
           ]).then(function(values) {
             self.scope.attr("licensors").replace([]);
-            self.scope.attr("licensors").replace(values[0]["entities"]);
+            //self.scope.attr("licensors").replace(values[0]["entities"]);
+            self.scope.attr("licensors").replace(values[0]["entities"][0]);
             self.scope.attr("selectedEntity",values[0].entities[0].entities[0].value);
           });
         }else{
