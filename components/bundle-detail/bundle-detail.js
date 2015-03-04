@@ -128,7 +128,7 @@ var BundleDetailTabs = Component.extend({
 
       resetSelectedBundle(scope);
 
-
+      console.log(" Calling the Details ");
 
       scope.getNewDetails(selectedBundle)
       .then(function(bundle) {
@@ -179,7 +179,7 @@ var BundleDetailTabs = Component.extend({
       } else {
         view = 'licensor';
       }
-
+      var bundleLineItems = this.pageState.bundleLineItems;
       var params = {
         appstate: this.appstate,
         view: view,
@@ -187,7 +187,8 @@ var BundleDetailTabs = Component.extend({
         filterData: tokenInput,
         paginate: this.bottomGridPaginateAttr,
         preferredCcy: this.preferredCurr,
-        validationBundlesCache: this.cache.validationBundlesCache
+        validationBundlesCache: this.cache.validationBundlesCache,
+        bundleLineItems:bundleLineItems
       };
 
       return bundle.getDetails(params
@@ -205,7 +206,7 @@ var BundleDetailTabs = Component.extend({
           scope.bundleProgress.triggerValidation ? scope.getNewValidations(bundle) : "";
         }
 
-        if(bundle.status == "SUCCESS" && bundle.bundleDetailsGroup.length == 0){
+        if(bundle.status == "SUCCESS" && bundleLineItems.bundleDetailsGroup != undefined ){
           commonUtils.displayUIMessage( bundle.status, bundle.responseText);
         }
 
@@ -264,7 +265,7 @@ var BundleDetailTabs = Component.extend({
 
       if('payment-bundles' === scope.appstate.page &&  scope.pageState.selectedBundle === bundle) {
         var moreRecords = (scope.appstate.attr("fetchSize") <= bundle.totRecCnt);
-        return bundle.getValidations(view,scope.cache).then(function(bundle) {
+        return bundle.getValidations(view,scope.cache,scope.pageState.bundleLineItems).then(function(bundle) {
           if(bundle.validationStatus == "FAILURE" ){
             console.error("Pyament Validation is failed!!");
           }else if(bundle.status == 1 && bundle.validationStatus !== 5) {
@@ -727,10 +728,10 @@ var BundleDetailTabs = Component.extend({
 
 
 var resetSelectedBundle = function(scope){
-
+  console.log(" resetSelectedBundle >");
   var selectedBundle = scope.pageState.selectedBundle;
 
- can.batch.start();
+ //can.batch.start();
   scope.resetToken();
   scope.attr("paymentType", selectedBundle.paymentOption);
   // clear out selectedRows
@@ -749,6 +750,8 @@ var resetSelectedBundle = function(scope){
     scope.regionCurr.splice(0, scope.regionCurr.length, ...curr.data);
   });
 
+  console.log(" resetSelectedBundle >>");
+
   // change the columns to be correct
   var tabs = [],
   columns;
@@ -761,14 +764,19 @@ var resetSelectedBundle = function(scope){
     // no tabs
     columns = bundleTypeColumnSets[selectedBundle.bundleType][0].columns;
   }
-  scope.tabs.splice(0, scope.tabs.length, ...tabs);
-  scope.attr('selectedTab', scope.tabs.length ? scope.tabs[0] : null);
-  scope.gridColumns.splice(0, scope.gridColumns.length);
+  console.log(" resetSelectedBundle >>>");
+
+//  scope.attr("tabs", []);
+  scope.attr("tabs", tabs);
+  scope.attr('selectedTab',scope.tabs[0]);
+  //scope.attr("gridColumns", []);
   scope.gridColumns.attr(columns);
   // clear out the workflow steps
-  scope.workflowSteps.splice(0, scope.workflowSteps.length);
-  can.batch.stop();
+  scope.attr("workflowSteps",new WorkflowStep.List([]));
+  console.log(" resetSelectedBundle >>>>");
+  //can.batch.stop();
 
+  console.log(" resetSelectedBundle <<");
 }
 
 

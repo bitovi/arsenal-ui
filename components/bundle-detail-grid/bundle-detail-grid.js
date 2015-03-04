@@ -14,7 +14,7 @@ var BundleDetailGrid = ScrollingGrid.extend({
     localOffsetTracker:0,
     strippedGrid:true,
     pageState:undefined,
-    makeRowsFromBundle: function(bundle) {
+    makeRowsFromBundle: function(bundleLineItems) {
       // so the bundle has a bundleDetailsGroup (which is a List of BundleDetailGroup model instances)
       // and each of those instances is a parent row
       // each BundleDetailGroup instance has a bundleDetails (which is a List of BundleDetail model instances)
@@ -23,7 +23,7 @@ var BundleDetailGrid = ScrollingGrid.extend({
 
       can.batch.start();
       var rows = [];
-      bundle.bundleDetailsGroup && _.each(bundle.bundleDetailsGroup, function(group) {
+      bundleLineItems.bundleDetailsGroup && _.each(bundleLineItems.bundleDetailsGroup, function(group) {
         contentType = [];
         country = [];
         periods = [];
@@ -60,7 +60,7 @@ var BundleDetailGrid = ScrollingGrid.extend({
           }
 
 
-          if(bundle.view != undefined && bundle.view == "COUNTRY"
+          if(bundleLineItems.view != undefined && bundleLineItems.view == "COUNTRY"
               &&   detail.entityName != undefined ){
                 _.contains(licensors, detail.entityName) ?  "" : licensors.push(detail.entityName);
             }
@@ -68,7 +68,7 @@ var BundleDetailGrid = ScrollingGrid.extend({
 
           if(child){
             detail.attr('__isChild', true);
-            detail.attr("view",bundle.view);
+            detail.attr("view",bundleLineItems.view);
             rows.push(detail);
           }else{
             group.attr('fiscalPeriod',detail.fiscalPeriod);
@@ -87,11 +87,11 @@ var BundleDetailGrid = ScrollingGrid.extend({
         arrSize = _.size(periods) ;
         arrSize > 1 ? group.attr('fiscalPeriodDisplay',"Multiple") : group.attr('fiscalPeriodDisplay',PeriodWidgetHelper.getDisplayPeriod(periods[0].toString(), periodType)) ;
 
-        if(bundle.view == "COUNTRY"){
+        if(bundleLineItems.view == "COUNTRY"){
           //<rdar://problem/19396429> UI-PBR: Country tab missing licensor
           arrSize = _.size(licensors) ;
           arrSize > 1 ? group.attr('entityNameCnt',arrSize+" Licensors") : group.attr('entityNameCnt',licensors[0])  ;
-          group.attr("view",bundle.view);
+          group.attr("view",bundleLineItems.view);
         }
 
         arrSize = _.size(adhocTypes) ;
@@ -201,26 +201,40 @@ var BundleDetailGrid = ScrollingGrid.extend({
     // }
   },
   events: {
-    '{scope} pageState.selectedBundle': function(scope, ev, newBundle) {
-      this.scope.localOffsetTracker = 0;
-      this.scope.rows.splice(0, this.scope.rows.length, ...(newBundle ? this.scope.makeRowsFromBundle(newBundle) : []));
-      this.scope.aggregateRows.splice(0, this.scope.aggregateRows.length, ...(newBundle ? this.scope.makeAggregateRowsFromBundle(newBundle) : []));
-    },
-    '{scope.pageState.selectedBundle.bundleDetailsGroup} length': function() {
-
+    // '{scope} pageState.selectedBundle': function(scope, ev, newBundle) {
+    //   this.scope.localOffsetTracker = 0;
+    //   this.scope.rows.splice(0, this.scope.rows.length, ...(newBundle ? this.scope.makeRowsFromBundle(newBundle) : []));
+    //   this.scope.aggregateRows.splice(0, this.scope.aggregateRows.length, ...(newBundle ? this.scope.makeAggregateRowsFromBundle(newBundle) : []));
+    // },
+    '{scope} pageState.bundleLineItems.bundleDetailsGroup': function() {
       if(this.scope.paginateAttr.attr("offset") > 0) {
           if(this.scope.paginateAttr.attr("offset") != this.scope.localOffsetTracker){
             this.scope.localOffsetTracker = this.scope.paginateAttr.attr("offset")
-            $.merge(this.scope.rows, this.scope.makeRowsFromBundle(this.scope.pageState.selectedBundle));
+            $.merge(this.scope.rows, this.scope.makeRowsFromBundle(this.scope.pageState.bundleLineItems));
             this.scope.rows.replace(this.scope.rows);
           }
       }else{
         this.scope.localOffsetTracker = 0;
-        this.scope.rows.splice(0, this.scope.rows.length, ...this.scope.makeRowsFromBundle(this.scope.pageState.selectedBundle));
+        this.scope.rows.splice(0, this.scope.rows.length, ...this.scope.makeRowsFromBundle(this.scope.pageState.bundleLineItems));
       }
-      this.scope.aggregateRows.splice(0, this.scope.aggregateRows.length, ...this.scope.makeAggregateRowsFromBundle(this.scope.pageState.selectedBundle));
+      this.scope.aggregateRows.splice(0, this.scope.aggregateRows.length, ...this.scope.makeAggregateRowsFromBundle(this.scope.pageState.bundleLineItems));
 
     },
+    // '{scope.pageState.selectedBundle.bundleDetailsGroup} length': function() {
+    //
+    //   if(this.scope.paginateAttr.attr("offset") > 0) {
+    //       if(this.scope.paginateAttr.attr("offset") != this.scope.localOffsetTracker){
+    //         this.scope.localOffsetTracker = this.scope.paginateAttr.attr("offset")
+    //         $.merge(this.scope.rows, this.scope.makeRowsFromBundle(this.scope.pageState.selectedBundle));
+    //         this.scope.rows.replace(this.scope.rows);
+    //       }
+    //   }else{
+    //     this.scope.localOffsetTracker = 0;
+    //     this.scope.rows.splice(0, this.scope.rows.length, ...this.scope.makeRowsFromBundle(this.scope.pageState.selectedBundle));
+    //   }
+    //   this.scope.aggregateRows.splice(0, this.scope.aggregateRows.length, ...this.scope.makeAggregateRowsFromBundle(this.scope.pageState.selectedBundle));
+    //
+    // },
     'tbody tr click': function(el, ev) {
       if(ev.target.classList.contains('open-toggle')) {
         return;

@@ -263,7 +263,9 @@ var PaymentBundle = Model.extend({
 
   getDetails: function(params) {
     var self = this;
-    var validationBundlesCache = params.validationBundlesCache
+    var validationBundlesCache = params.validationBundlesCache;
+    var bundleLineItems = params.bundleLineItems;
+
     params["bundleID"] = self.bundleId;
 
     return PaymentBundle.findOne(params).then(function(bundle) {
@@ -274,7 +276,7 @@ var PaymentBundle = Model.extend({
 
           self.attr('status',bundle.status);
           self.attr('responseText',bundle.responseText);
-          self.attr('bundleDetailsGroup', undefined);
+          //self.attr('bundleDetailsGroup', undefined);
 
 
         }else{
@@ -287,13 +289,25 @@ var PaymentBundle = Model.extend({
           bundle = bundle.hasOwnProperty('responseCode') ? bundle.paymentBundle : bundle;
           if(params.paginate.offset > 0){
 
-            self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
-            self.attr('bundleFooter', transformFooter(bundle.bdlFooter));
+            bundleLineItems.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
+            bundleLineItems.attr('bundleFooter', transformFooter(bundle.bdlFooter));
+            bundleLineItems.attr('view',bundle.view);
+
+            // self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
+            // self.attr('bundleFooter', transformFooter(bundle.bdlFooter));
 
           }else{
             self.attr(bundle.attr());
-            self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
-            self.attr('bundleFooter', transformFooter(bundle.bdlFooter));
+
+            bundleLineItems.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
+            bundleLineItems.attr('bundleFooter', transformFooter(bundle.bdlFooter));
+            bundleLineItems.attr('view',bundle.view);
+
+            delete self.bundleDetailsGroup;
+            delete self.bdlFooter;
+
+            // self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
+            // self.attr('bundleFooter', transformFooter(bundle.bdlFooter));
           }
 
           if(validationBundlesCache != undefined){
@@ -302,7 +316,7 @@ var PaymentBundle = Model.extend({
               var target = undefined;
 
                 if(group.key != undefined){
-                  var target = _.find(self.bundleDetailsGroup, {key: group.key});
+                  var target = _.find(bundleLineItems.bundleDetailsGroup, {key: group.key});
                   if(target != undefined ){
                     group.vldtnMessage == undefined ? target.attr('validationMessages', "") : target.attr('validationMessages', group.vldtnMessage);
                     group.vldtnBatchResultColor == undefined ? target.attr('validationColorHeader', "") : target.attr('validationColorHeader', group.vldtnBatchResultColor);
@@ -331,7 +345,7 @@ var PaymentBundle = Model.extend({
      return self;
     });
   },
-  getValidations: function(view,cache) {
+  getValidations: function(view,cache,bundleLineItems) {
     var bundle = this;
 
     return $.ajax({
@@ -361,7 +375,7 @@ var PaymentBundle = Model.extend({
               var target = undefined;
 
                 if(group.key != undefined){
-                  var target = _.find(bundle.bundleDetailsGroup, {key: group.key});
+                  var target = _.find(bundleLineItems.bundleDetailsGroup, {key: group.key});
                   if(target != undefined ){
                     group.vldtnMessage == undefined ? target.attr('validationMessages', "") : target.attr('validationMessages', group.vldtnMessage);
                     group.vldtnBatchResultColor == undefined ? target.attr('validationColorHeader', "") : target.attr('validationColorHeader', group.vldtnBatchResultColor);
@@ -420,8 +434,8 @@ var PaymentBundle = Model.extend({
     //delete bundleData.validationRulesCompleted;
     //delete bundleData.validationRulesTotal;
 
-    delete bundleData.bundleDetailsGroup;
-    delete bundleData.bdlFooter;
+    // delete bundleData.bundleDetailsGroup;
+    // delete bundleData.bdlFooter;
 
 
     // bundleData.bundleDetailsGroup && bundleData.bundleDetailsGroup.forEach(function(group) {

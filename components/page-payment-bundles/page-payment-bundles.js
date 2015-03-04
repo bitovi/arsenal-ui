@@ -33,7 +33,13 @@ var pageState = new Map({
   refreshBottomGrid:false,
   loadedFromDetails:undefined,
   isPmtBundleDetailsAvl:true,//Default true and it will set to false when PB has no details
-  displayWFSection:true//Used accordian display
+  displayWFSection:true,//Used accordian display
+  bundleLineItems:{
+    bundleDetailsGroup:undefined,
+    bundleFooter:undefined,
+    view:undefined
+  }
+
 });
 
 var page = Component.extend({
@@ -191,8 +197,7 @@ var page = Component.extend({
     'inserted': function(ev, el) {
       this.scope.appstate.attr('renderGlobalSearch', true);
       this.scope.appstate.attr('excelOutput',false);
-    //  this.scope.refreshBundles.apply(this);
-     commonUtils.triggerGlobalSearch();
+      commonUtils.triggerGlobalSearch();
     },
     '{scope} change': function(scope, ev, attr) {
       var self=this;

@@ -222,6 +222,12 @@ var BundleGrid = ScrollingGrid.extend({
         el.parent().find('tr').removeClass("selected");
         el.addClass("selected");
         var bundle = el.data('row').row;
+
+        if(this.scope.pageState.bundleLineItems.bundleDetailsGroup != undefined){
+          delete this.scope.pageState.bundleLineItems.bundleDetailsGroup;
+          delete this.scope.pageState.bundleLineItems.bdlFooter;
+        }
+        
         this.scope.pageState.attr('selectedBundle', bundle);
       }
 
