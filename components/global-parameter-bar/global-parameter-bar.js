@@ -203,8 +203,9 @@ var GlobalParameterBar = Component.extend({
             self.scope.attr('errorMessage', ' No data available for search criteria !');
           }
           self.scope.countries.replace(values[0]);
-          self.scope.licensors.replace(values[1]["entities"]);
 
+          //self.scope.licensors.replace(values[1]["entities"]);
+          self.scope.licensors.replace(values[1]["entities"][0]);
 
             $("#countriesFilter").multiselect('selectAll', false);
             $('#countriesFilter').multiselect('updateButtonText');

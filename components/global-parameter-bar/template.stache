@@ -62,7 +62,8 @@
         <span class="parameter-name">Licensor:</span>
          <select id="licensorsFilter" class="form-control resizeBox" multiple="multiple">
              {{#each licensors}}
-              <optgroup label="{{entityType}}">
+              <!-- Commented for Business please don not delete this comment
+              <optgroup label="{{entityType}}">-->
                 {{#each entities}}
                  <option value="{{id}}">{{value}}</option>
                 {{/each}}

@@ -905,7 +905,8 @@ var page = Component.extend({
                           countryDD.empty();
                           countryDD.html($('<option>').text("Select").val(""));
 
-                          self.scope.attr("licensor").replace(values[0]["entities"]);
+                          //self.scope.attr("licensor").replace(values[0]["entities"]);
+                          self.scope.attr("licensor").replace(values[0]["entities"][0]);
                           self.scope.attr("currency").replace(values[1].data);
                           if (self.scope.editpage) {
                             var invoiceData = self.scope.attr().invoiceContainer[0];
