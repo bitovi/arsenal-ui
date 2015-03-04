@@ -293,8 +293,8 @@ var PaymentBundle = Model.extend({
             bundleLineItems.attr('bundleFooter', transformFooter(bundle.bdlFooter));
             bundleLineItems.attr('view',bundle.view);
 
-            // self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
-            // self.attr('bundleFooter', transformFooter(bundle.bdlFooter));
+            self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
+            self.attr('bundleFooter', transformFooter(bundle.bdlFooter));
 
           }else{
             self.attr(bundle.attr());
@@ -303,11 +303,11 @@ var PaymentBundle = Model.extend({
             bundleLineItems.attr('bundleFooter', transformFooter(bundle.bdlFooter));
             bundleLineItems.attr('view',bundle.view);
 
-            delete self.bundleDetailsGroup;
-            delete self.bdlFooter;
+            // delete self.bundleDetailsGroup;
+            // delete self.bdlFooter;
 
-            // self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
-            // self.attr('bundleFooter', transformFooter(bundle.bdlFooter));
+            self.attr('bundleDetailsGroup', bundle.bundleDetailsGroup);
+            self.attr('bundleFooter', transformFooter(bundle.bdlFooter));
           }
 
           if(validationBundlesCache != undefined){
@@ -438,42 +438,42 @@ var PaymentBundle = Model.extend({
     // delete bundleData.bdlFooter;
 
 
-    // bundleData.bundleDetailsGroup && bundleData.bundleDetailsGroup.forEach(function(group) {
-    //   delete group.__isChild;
-    //   delete group.__isOpen;
-    //   delete group.__isChildExists;
-    //   delete group.fiscalPeriod;
-    //   delete group.periodType;
+    bundleData.bundleDetailsGroup && bundleData.bundleDetailsGroup.forEach(function(group) {
+      delete group.__isChild;
+      delete group.__isOpen;
+      delete group.__isChildExists;
+      delete group.fiscalPeriod;
+      delete group.periodType;
+
+      delete group.contentGrpName;
+      delete group.country;
+      delete group.fiscalPeriodDisplay;
+      delete group.adhocTypeNameDisplay;
+      delete group.entityNameCnt;
+      delete group.view;
+      delete group.validationMessages;
+      delete group.validationColorHeader;
+
+      group.bundleDetails.forEach(function(detail) {
+        delete detail.__isChild;
+        delete detail.__isOpen;
+        delete detail.view;
+        delete detail.validationMessages;
+        delete detail.validationColor;
+        delete detail.fiscalPeriodDisplay;
+      });
+    });
     //
-    //   delete group.contentGrpName;
-    //   delete group.country;
-    //   delete group.fiscalPeriodDisplay;
-    //   delete group.adhocTypeNameDisplay;
-    //   delete group.entityNameCnt;
-    //   delete group.view;
-    //   delete group.validationMessages;
-    //   delete group.validationColorHeader;
-    //
-    //   group.bundleDetails.forEach(function(detail) {
-    //     delete detail.__isChild;
-    //     delete detail.__isOpen;
-    //     delete detail.view;
-    //     delete detail.validationMessages;
-    //     delete detail.validationColor;
-    //     delete detail.fiscalPeriodDisplay;
-    //   });
-    // });
-    //
-    // if(bundleData.bdlFooter) {
-    //   delete bundleData.bdlFooter.paymentCcy;
-    //   delete bundleData.bdlFooter.isFooterRow;
-    //   delete bundleData.bdlFooter.view;
-    //   bundleData.bdlFooter.bdlFooterDetails.forEach(function(detail) {
-    //     delete detail.__isChild;
-    //     delete detail.__isOpen;
-    //     delete detail.paymentCcy;
-    //   });
-    // }
+    if(bundleData.bdlFooter) {
+      delete bundleData.bdlFooter.paymentCcy;
+      delete bundleData.bdlFooter.isFooterRow;
+      delete bundleData.bdlFooter.view;
+      bundleData.bdlFooter.bdlFooterDetails.forEach(function(detail) {
+        delete detail.__isChild;
+        delete detail.__isOpen;
+        delete detail.paymentCcy;
+      });
+    }
 
     bundleData = can.extend(bundleData, {
       comments: params.approvalComment,
@@ -524,7 +524,7 @@ var PaymentBundle = Model.extend({
       data: requestData,
       processData: false
     }).then(function(response) {
-      
+
       // if(response.status === 'SUCCESS') {
       //   //debugger;
       //   groups.forEach(group => group.destroy());
