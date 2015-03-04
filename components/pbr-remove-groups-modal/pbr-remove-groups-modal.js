@@ -13,13 +13,16 @@ var PbrRemoveGroupsModal = can.Component.extend({
   tag: 'rn-pbr-remove-groups-modal',
   template: template,
   scope: {
-    bundlescope: null
+    bundlescope: null,
+    invoicelineId:null
   },
   events: {
     init: function() {
       $('rn-pbr-remove-groups-modal').remove();
     },
     inserted: function() {
+      console.log(this.scope.bundlescope.invoiceRowsSelected[0].invoiceNumber);
+      this.scope.attr("invoicelineId", this.scope.bundlescope.invoiceRowsSelected[0].invoiceNumber);
       this.element.find('.modal').modal({keyboard: false, backdrop: false});
     },
     '.cancel click': function(el, ev) {
@@ -30,9 +33,7 @@ var PbrRemoveGroupsModal = can.Component.extend({
       var self = this;
       this.scope.bundlescope.pageState.selectedBundle.removeBundleGroups(this.scope.bundlescope.invoiceRowsSelected, this.scope.bundlescope.appstate).then(function(response) {
         if(response.status === 'SUCCESS') {
-          //Alert.displayAlert(response.responseText, 'success');
           self.scope.bundlescope.pageState.attr("refreshBottomGrid",!self.scope.bundlescope.pageState.refreshBottomGrid);
-          //getNewDetails(self.scope.bundlescope.pageState.selectedBundle);
         }
         commonUtils.displayUIMessage( response.status, response.responseText);
       });

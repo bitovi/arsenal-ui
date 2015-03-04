@@ -765,7 +765,6 @@ var resetSelectedBundle = function(scope){
     columns = bundleTypeColumnSets[selectedBundle.bundleType][0].columns;
   }
   console.log(" resetSelectedBundle >>>");
-
 //  scope.attr("tabs", []);
   scope.attr("tabs", tabs);
   scope.attr('selectedTab',scope.tabs[0]);

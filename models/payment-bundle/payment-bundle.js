@@ -524,11 +524,12 @@ var PaymentBundle = Model.extend({
       data: requestData,
       processData: false
     }).then(function(response) {
-      if(response.status === 'SUCCESS') {
-        //debugger;
-        groups.forEach(group => group.destroy());
-
-      }
+      
+      // if(response.status === 'SUCCESS') {
+      //   //debugger;
+      //   groups.forEach(group => group.destroy());
+      //
+      // }
 
       return response;
     });

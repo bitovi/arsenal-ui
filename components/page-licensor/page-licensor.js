@@ -182,6 +182,7 @@ var page = Component.extend({
     },
     regions:[],
     regionStore:"",
+    reloadCountries:true,
     reportConfMap  : {},
     
     USER_ROLE : "FC",
@@ -1444,35 +1445,23 @@ var page = Component.extend({
             });
               //Workflow code ends here
           } else {
-            if(self.appstate.attr("licensorId") != null && self.appstate.attr("licensorId") != undefined) {
+            // if(self.appstate.attr("licensorId") != null && self.appstate.attr("licensorId") != undefined) {
 
-              genObj.licensorId =  self.appstate.attr("licensorId");
-              self.appstate.attr("licensorId", null);
-              self.attr("regionStore", self.appstate.attr("region"));
 
-            }
-            else if (val == null){
 
-              //genObj.licensorId = defaultEntity.id;
-              //genObj.licensorName =  defaultEntity.value;
+            // }
+            // else if (val == null){
 
-            } else {
+            //   //genObj.licensorId = defaultEntity.id;
+            //   //genObj.licensorName =  defaultEntity.value;
+
+            // } else {
 
               genObj.licensorName =  val;
+              genObj.licensorId = self.setSelectedValue(val, "#licensorsFilter");
 
-              if(valId != undefined && valId != null) {
-                
-                genObj.licensorId = valId;
-
-              } else {
-
-                genObj.licensorId = self.setSelectedValue(val, "#licensorsFilter");
-              }
- 
-            }
-
-            self.attr("selectedEntity", genObj.licensorName);
-            //self.attr("licensors")[0].entities[0].id = genObj.licensorId;
+            // self.attr("selectedEntity", genObj.licensorName);
+            // //self.attr("licensors")[0].entities[0].id = genObj.licensorId;
 
             Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
               if(values[0].status == "FAILURE") {
@@ -1860,20 +1849,28 @@ var page = Component.extend({
 
     'inserted': function() {
       var self = this;
-      var genObj = {
-          regionId: DefaultGlobalParameters.Region.id+''
-          //regionId: '3'
-        };
+      var regionId = DefaultGlobalParameters.Region.id+'';
+        if(self.scope.appstate.attr("screendetails") != null && self.scope.appstate.attr("screendetails") != undefined){
+          regionId=self.scope.appstate.screendetails.regionId;
+        } else if(self.scope.appstate.screenLookup.attr("licensorScreenDetails") != undefined){
+          regionId=self.scope.appstate.screenLookup.licensorScreenDetails.regionId;
+        }
+      var genObj = {regionId: regionId};
       hideFieldsOnLoad();
     Promise.all([
       Region.findAll(UserReq.formRequestDetails(genObj)),
       Licensor.findAll(UserReq.formRequestDetails(genObj))
       ]).then(function(values) {
+        var licensor=values[1].entities[0].entities[0].value;
         self.scope.attr("regions").replace(values[0]);
         self.scope.licensors.replace(values[1].entities[0]);
-
-        self.scope.attr("regionStore",DefaultGlobalParameters.Region.id+'');
-        self.scope.attr("selectedEntity",values[1].entities[0].entities[0].value);
+        self.scope.attr("reloadCountries",false);
+        self.scope.attr("regionStore",regionId);
+        if(self.scope.appstate.screenLookup.attr("licensorScreenDetails") != undefined){
+          licensor=self.scope.appstate.screenLookup.licensorScreenDetails.licensor;
+          self.scope.appstate.screenLookup.attr("licensorScreenDetails" ,undefined);
+        }
+        self.scope.attr("selectedEntity",licensor);
 
         //fetching the licensor details --start
         genObj={};
@@ -2606,7 +2603,7 @@ var page = Component.extend({
     "{scope} regionStore": function(){
       var self = this;
       var regnId = self.scope.attr("regionStore");
-      if (regnId != undefined && regnId.length > 0) {
+      if (regnId != undefined && regnId.length > 0 && self.scope.reloadCountries) {
         var genObj = {
           regionId: regnId
         };
@@ -2618,9 +2615,8 @@ var page = Component.extend({
             self.scope.attr("licensors").replace(values[0]["entities"][0]);
             self.scope.attr("selectedEntity",values[0].entities[0].entities[0].value);
           });
-        }else{
-          self.scope.attr("licensors").splice(0, self.scope.licensor.length);
         }
+        self.scope.attr("reloadCountries",true);
       }  
 
   }
