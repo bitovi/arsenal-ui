@@ -878,6 +878,8 @@ var page = Component.extend({
 
           $("#submitButton").hide();
 
+          commonUtils.displayUIMessageWithDiv("#invmessageDiv", "SUCCESS", "A Proposal is already pending for the licensor");
+
         } else {
 
             $("#submitButton").show();
@@ -1183,7 +1185,7 @@ var page = Component.extend({
 
                     commonUtils.displayUIMessageWithDiv("#invmessageDiv", data[0].status, data[0].responseText);
 
-                    self.populateLicensorDetails(self.licDetails.data.licensorName);
+                    self.populateLicensorDetails(self.licDetails.data.licensorId);
                 } else {
 
                     var msg = "Entity Details not Approved successfully";
@@ -1204,7 +1206,7 @@ var page = Component.extend({
 
                     commonUtils.displayUIMessageWithDiv("#invmessageDiv", data[0].status, data[0].responseText);
 
-                    self.populateLicensorDetails(self.licDetails.data.licensorName);
+                    self.populateLicensorDetails(self.licDetails.data.licensorId);
                 } else {
 
                     var msg = "Entity Details not Rejected successfully";
@@ -1228,7 +1230,7 @@ var page = Component.extend({
 
                   commonUtils.displayUIMessageWithDiv("#invmessageDiv", data[0].status, data[0].responseText);
 
-                  self.populateLicensorDetails(self.licDetails.data.licensorName);
+                  self.populateLicensorDetails(self.licDetails.data.licensorId);
 
               } else {
 
@@ -1287,7 +1289,7 @@ var page = Component.extend({
                 // },5000);
                 commonUtils.displayUIMessage(data[0].status, msg);
 
-                self.populateLicensorDetails(self.licDetails.data.licensorName);
+                self.populateLicensorDetails(self.licDetails.data.licensorId);
 
                 Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
@@ -2317,24 +2319,24 @@ var page = Component.extend({
 
           self.scope.clearRepConfDetails();
 
-          //self.scope.disableTabs();
+          self.scope.disableTabs();
 
           $("#loading_img").show();
+          $("#button_layout").hide();
 
           Promise.all([Analytics.findById(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
             self.scope.populateAnalyticsPage(values, "getHistroy");
 
             $("#loading_img").hide();
+            $("#button_layout").show();
+            if(status == "Inctive"){
+                commonUtils.showErrorMessage("Selected revision cannot be modified as it is Inactive");
+            }else if(status=="Rejected"){
+                commonUtils.showErrorMessage("Selected revision cannot be modified as it is Rejected");
+            }
 
           });
-
-          if(status == "Inctive"){
-
-              commonUtils.showErrorMessage("Selected revision cannot be modified as it is Inactive");
-          }else if(status=="Rejected"){
-              commonUtils.showErrorMessage("Selected revision cannot be modified as it is Rejected");
-          }
           
     },
 
