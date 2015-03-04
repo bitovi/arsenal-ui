@@ -891,9 +891,11 @@ var page = Component.extend({
     'td .society click': function(el, ev){
 
         var self = this;
-        var licensor = el[0].getAttribute("value");
+        var licensor = el[0].text;
+
         if(licensor != undefined && licensor.length>0){
-           self.scope.appstate.attr("licensorId",licensor);
+           var data = {  licensor:licensor, regionId: $('#countryRegion option:selected').val()};
+           self.scope.appstate.screenLookup.attr("licensorScreenDetails" ,data);
            commonUtils.navigateTo("licensor");
         }
         // self.scope.appstate.attr("licensorName", (el[0].getElementsByTagName("a")).length > 0 ?  ((el[0].getElementsByTagName("a"))[0]).getAttribute("value") : "") ;
