@@ -146,19 +146,6 @@ var page = Component.extend({
           //console.log("Response data is "+JSON.stringify(data.attr()));
           self.pageState.countryDetails.attr("country",data.countryDetails);
 
-          if(data.countryDetails.proposalPending != null && data.countryDetails.proposalPending != undefined
-            && data.countryDetails.proposalPending == true ) {
-
-            $('#submitBtn').hide();
-
-            commonUtils.displayUIMessage( "SUCCESS", "A Proposal is already pending for the licensor");
-
-          } else {  
-
-            $('#submitBtn').show();
-
-          }
-
           /* if the data.countryDetails.countryId is null then set the country dropdown using requestObj*/
           if(data.countryDetails.countryId==null){
             self.pageState.countryDetails.country.attr("countryId",requestObj.countryId);
@@ -343,6 +330,19 @@ var page = Component.extend({
           },50);
 
           self.switchButtons();
+
+          if(data.countryDetails.proposalPending != null && data.countryDetails.proposalPending != undefined
+            && data.countryDetails.proposalPending == true ) {
+
+            $('#submitBtn').hide();
+
+            commonUtils.displayUIMessage( "SUCCESS", "A Proposal is already pending for the licensor");
+
+          } else {  
+
+            $('#submitBtn').show();
+
+          }
       } else {
 
         commonUtils.displayUIMessage(data.status, data.responseText);
@@ -797,6 +797,19 @@ var page = Component.extend({
           },50);
 
           self.switchButtons();
+
+          if(data.countryDetails.proposalPending != null && data.countryDetails.proposalPending != undefined
+            && data.countryDetails.proposalPending == true ) {
+
+            $('#submitBtn').hide();
+
+            commonUtils.displayUIMessage( "SUCCESS", "A Proposal is already pending for the licensor");
+
+          } else {  
+
+            $('#submitBtn').show();
+
+          }
          
 
         } else {
