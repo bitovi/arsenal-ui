@@ -1148,8 +1148,6 @@ var page = Component.extend({
     '#submitBtn click': function(el, ev){
       ev.preventDefault();
 
-      $("#loading_img").show();
-
       var self = this.scope;
       var validFrom = $("#validFrom").val();
       var formatValidFrom = PeriodHelper.getFiscalPeriod(validFrom);
@@ -1169,6 +1167,8 @@ var page = Component.extend({
         return;
 
       }
+
+      $("#loading_img").show();
 
       var requestObj  = {
           countryDetails  :{
