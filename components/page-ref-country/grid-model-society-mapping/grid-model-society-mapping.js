@@ -15,7 +15,7 @@ var GridSocietyModelMapping = Grid.extend({
         id: 'society',
         title: 'Society',
         contents: function(row){
-          return "<a href='javascript:void(0)' class='society' value='" + row.society + "'>"+row.society+"</a>";
+          return "<a href='javascript:void(0)' class='society' value='" + row.societyId + "'>"+row.society+"</a>";
         }
       },
       {

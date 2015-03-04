@@ -875,7 +875,7 @@ var page = Component.extend({
         var self = this;
         var licensor = el[0].getAttribute("value");
         if(licensor != undefined && licensor.length>0){
-           self.scope.appstate.attr("licensorName",licensor);
+           self.scope.appstate.attr("licensorId",licensor);
            commonUtils.navigateTo("licensor");
         }
         // self.scope.appstate.attr("licensorName", (el[0].getElementsByTagName("a")).length > 0 ?  ((el[0].getElementsByTagName("a"))[0]).getAttribute("value") : "") ;

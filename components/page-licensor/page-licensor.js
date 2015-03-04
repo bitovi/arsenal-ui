@@ -1444,10 +1444,10 @@ var page = Component.extend({
             });
               //Workflow code ends here
           } else {
-            if(self.appstate.attr("licensorName") != null && self.appstate.attr("licensorName") != undefined) {
+            if(self.appstate.attr("licensorId") != null && self.appstate.attr("licensorId") != undefined) {
 
-              genObj.licensorName =  self.appstate.attr("licensorName");
-              self.appstate.attr("licensorName", null);
+              genObj.licensorName =  self.appstate.attr("licensorId");
+              self.appstate.attr("licensorId", null);
 
             }
             else if (val == null){
@@ -1864,7 +1864,7 @@ var page = Component.extend({
         self.scope.licensors.replace(values[1].entities[0]);
 
         self.scope.attr("regionStore",DefaultGlobalParameters.Region.id+'');
-        self.scope.attr("selectedEntity",values[1].entities[0].entities[1].value);
+        self.scope.attr("selectedEntity",values[1].entities[0].entities[0].value);
 
         //fetching the licensor details --start
         genObj={};
