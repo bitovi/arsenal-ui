@@ -724,7 +724,7 @@ var page = Component.extend({
           self.scope.attr('view',"country");
           ev.preventDefault();
           $("#chkAggregate").prop('checked',false);
-          self.scope.attr("is_aggregate",false);
+          //self.scope.attr("is_aggregate",false);
           //console.log("fdfsdfsdf "+self.scope.attr("allClaimCountryMap").length);
           //rdar://problem/20018279> -start
           if($("#chkAggregate").is(':visible') && $("#chkAggregate").is(":checked")){
