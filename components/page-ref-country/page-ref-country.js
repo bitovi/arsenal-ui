@@ -338,11 +338,7 @@ var page = Component.extend({
 
             commonUtils.displayUIMessage( "SUCCESS", "A Proposal is already pending for the licensor");
 
-          } else {  
-
-            $('#submitBtn').show();
-
-          }
+          } 
       } else {
 
         commonUtils.displayUIMessage(data.status, data.responseText);
@@ -805,10 +801,6 @@ var page = Component.extend({
 
             commonUtils.displayUIMessage( "SUCCESS", "A Proposal is already pending for the licensor");
 
-          } else {  
-
-            $('#submitBtn').show();
-
           }
          
 
@@ -894,6 +886,7 @@ var page = Component.extend({
         var licensor = el[0].getAttribute("value");
         if(licensor != undefined && licensor.length>0){
            self.scope.appstate.attr("licensorId",licensor);
+           self.scope.appstate.attr("region",self.scope.attr("regionStore"));
            commonUtils.navigateTo("licensor");
         }
         // self.scope.appstate.attr("licensorName", (el[0].getElementsByTagName("a")).length > 0 ?  ((el[0].getElementsByTagName("a"))[0]).getAttribute("value") : "") ;
