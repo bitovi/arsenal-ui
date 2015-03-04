@@ -1855,7 +1855,7 @@ var page = Component.extend({
         self.scope.licensors.replace(values[1].entities[0]);
 
         self.scope.attr("regionStore",DefaultGlobalParameters.Region.id+'');
-        self.scope.attr("selectedEntity",values[1].entities[0].entities[0].value);
+        self.scope.attr("selectedEntity",values[1].entities[0].entities[1].value);
 
         //fetching the licensor details --start
          self.scope.populateLicensorDetails(self.scope.selectedEntity);
@@ -2309,11 +2309,15 @@ var page = Component.extend({
 
           self.scope.clearRepConfDetails();
 
-          self.scope.disableTabs();
+          //self.scope.disableTabs();
+
+          $("#loading_img").show();
 
           Promise.all([Analytics.findById(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
             self.scope.populateAnalyticsPage(values, "getHistroy");
+
+            $("#loading_img").hide();
 
           });
 
@@ -2398,6 +2402,7 @@ var page = Component.extend({
 
 
         var genObj = {"licensorName" : entityName};
+
 
         var licensorObj = self.scope.setSelectedValue(entityName, "#licensorsFilter");
 
