@@ -908,12 +908,11 @@ var page = Component.extend({
                   //  setTimeout(function(){
                   //     $("#messageDiv").hide();
                   //  },4000);
-                  commonUtils.showErrorMessage("Paid/already bundles invoices cannot be bundled.");
+                  commonUtils.showErrorMessage("Paid/already bundled invoices cannot be bundled.");
                    return false;
                 }
                 var lineType = invoiceData[i]["invoiceType"];
                 var periodType = invoiceData[i]["periodType"];
-
                 var temp = {};
                 temp["refLineId"] = invId;
                 temp["refLineType"] = lineType;
