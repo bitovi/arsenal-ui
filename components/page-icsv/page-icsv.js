@@ -462,7 +462,7 @@ var page = Component.extend({
                    tempInvoiceData["finalInvoiceAmount"] = tempArr[i].grossTotal;
                    tempInvoiceData["periodType"] = tempArr[i].periodType;
                    tempInvoiceData["netTotal"] = tempArr[i].netTotal;
-                   if(tempArr[i].tax== undefined && tempArr[i].tax != null && parseInt(tempArr[i].tax) > 0) {
+                   if(tempArr[i].tax != undefined && tempArr[i].tax != null && parseInt(tempArr[i].tax) > 0) {
                       tempInvoiceData["tax"] = tempArr[i].tax;
                    }
 
