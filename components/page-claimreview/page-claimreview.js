@@ -134,12 +134,12 @@ Grid.extend({
       },
       {
         id: 'overrepDispPer',
-        title: 'OR Dispute %',
+        title: 'OR Dispute',
         sortable: true
       },
       {
         id: 'liDispPer',
-        title: 'LI Dispute %',
+        title: 'LI Dispute',
         sortable: true
       },
       {
@@ -314,12 +314,12 @@ Grid.extend({
       },
       {
         id: 'overrepDispPer',
-        title: 'OR Disp %',
+        title: 'OR Disp',
         sortable: true
       },
       {
         id: 'liDispPer',
-        title: 'LI Disp %',
+        title: 'LI Disp',
         sortable: true
       }
     ],
@@ -1217,10 +1217,10 @@ var generateTableData = function(invoiceData,footerData){
             invTemp["caAllocated"] = CurrencyFormat(invoiceData[i]["caAllocated"]);
             invTemp["balance"] = "";
             invTemp["priorPaid"] = CurrencyFormat(invoiceData[i]["priorPaid"]);
-            invTemp["invPmtSaturation"] = CurrencyFormat(invoiceData[i]["invPmtSaturation"]);
-            invTemp["pmtSaturation"] = CurrencyFormat(invoiceData[i]["pmtSaturation"]);
-            invTemp["overrepDispPer"] = CurrencyFormat(invoiceData[i]["overrepDispPer"]);
-            invTemp["liDispPer"] = CurrencyFormat(invoiceData[i]["liDispPer"]);
+            invTemp["invPmtSaturation"] = CurrencyFormat(Number(invoiceData[i]["invPmtSaturation"])*100)+'%';
+            invTemp["pmtSaturation"] = CurrencyFormat(Number(invoiceData[i]["pmtSaturation"])*100)+'%';
+            invTemp["overrepDispPer"] = CurrencyFormat(invoiceData[i]["overrepDispPer"])+'%';
+            invTemp["liDispPer"] = CurrencyFormat(invoiceData[i]["liDispPer"])+'%';
             invTemp["status"] = "";
 
             gridData.data.push(invTemp);
@@ -1274,13 +1274,13 @@ var generateTableData = function(invoiceData,footerData){
 
                   invLITemp["priorPaid"] = CurrencyFormat(invoiceLineItems[j]["priorPaid"]);
 
-                  invLITemp["invPmtSaturation"] = CurrencyFormat(invoiceLineItems[j]["invPmtSaturation"]);
+                  invLITemp["invPmtSaturation"] = CurrencyFormat(Number(invoiceLineItems[j]["invPmtSaturation"])*100)+'%';
 
-                  invLITemp["pmtSaturation"] = CurrencyFormat(invoiceLineItems[j]["pmtSaturation"]);
+                  invLITemp["pmtSaturation"] = CurrencyFormat(Number(invoiceLineItems[j]["pmtSaturation"])*100)+'%';
 
-                  invLITemp["overrepDispPer"] = (invoiceLineItems[j]["overrepDispPer"]==null)?0.00:CurrencyFormat(invoiceLineItems[j]["overrepDispPer"]);
+                  invLITemp["overrepDispPer"] = (invoiceLineItems[j]["overrepDispPer"]==null)?'0.00%':CurrencyFormat(invoiceLineItems[j]["overrepDispPer"])+'%';
 
-                  invLITemp["liDispPer"] = (invoiceLineItems[j]["liDispPer"]==null)?0.00:CurrencyFormat(invoiceLineItems[j]["liDispPer"]);
+                  invLITemp["liDispPer"] = (invoiceLineItems[j]["liDispPer"]==null)?'0.00%':CurrencyFormat(invoiceLineItems[j]["liDispPer"])+'%';
 
                   invLITemp["status"] = getInvoiceStatus(invoiceLineItems[j]["status"]);
                   invTemp["status"] = invLITemp["status"];
@@ -1437,8 +1437,8 @@ var generateFooterData = function(footerData){
     footTemp["caAllocated"] = CurrencyFormat(Number(footerData["caAllocated"]));
     footTemp["balance"] = 0;
     footTemp["priorPaid"] = CurrencyFormat(Number(footerData["priorPaid"]));
-    footTemp["invPmtSaturation"] = 0.00;
-    footTemp["pmtSaturation"] = 0.00;
+    footTemp["invPmtSaturation"] = "";
+    footTemp["pmtSaturation"] = "";
     footTemp["overrepDispPer"] = "";
     footTemp["liDispPer"] = "";
     footTemp["status"] = "";
@@ -1464,8 +1464,8 @@ var generateFooterData = function(footerData){
       footLITemp["caAllocated"] = CurrencyFormat(Number(footerLineItems[i]["caAllocated"]));
       footLITemp["balance"] = 0.00;
       footLITemp["priorPaid"] = CurrencyFormat(Number(footerLineItems[i]["priorPaid"]));
-      footLITemp["invPmtSaturation"] = 0.00;
-      footLITemp["pmtSaturation"] = 0.00;
+      footLITemp["invPmtSaturation"] = "";
+      footLITemp["pmtSaturation"] = "";
       footLITemp["overrepDispPer"] = "";
       footLITemp["liDispPer"] = "";
       footLITemp["status"] = "";
