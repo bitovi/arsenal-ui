@@ -17,7 +17,7 @@
 					style="margin-left:10px;" {{isIngestCcidsSelected 0}}>
 					Refresh</button>
 				</div>
-				<div class="accordin-div col-md-12" id="arrowbtnCntiner">
+				<div class="accordin-div col-md-12 according-bg-color" id="arrowbtnCntiner">
 					<img id="arrowbutton" class="pull-up-arrow" style="margin:0 auto;" src="/resources/images/approval_arrow_up.png"></img>
 				</div>
 			</div>

@@ -30,7 +30,7 @@
 
     <div id="bottomContainer" style="float: left;width: 100%;">
 
-        <div style="width:100%;text-align:center;cursor:pointer;height:20px;display:none" id="arrowbtnCntiner">
+        <div style="width:100%;text-align:center;cursor:pointer;height:20px;display:none" class="according-bg-color" id="arrowbtnCntiner">
         	<img id="arrowbutton" class="pull-up-arrow" style="margin:0 auto;" src="/resources/images/approval_arrow_up.png"></img>
         </div>
 
