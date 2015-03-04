@@ -1186,7 +1186,7 @@ var page = Component.extend({
 
                     commonUtils.displayUIMessageWithDiv("#invmessageDiv", data[0].status, data[0].responseText);
 
-                    self.populateLicensorDetails(self.licDetails.data.licensorId);
+                    self.populateLicensorDetails(self.licDetails.data.licensorName, self.licDetails.data.licensorId);
                 } else {
 
                     var msg = "Entity Details not Approved successfully";
@@ -1207,7 +1207,7 @@ var page = Component.extend({
 
                     commonUtils.displayUIMessageWithDiv("#invmessageDiv", data[0].status, data[0].responseText);
 
-                    self.populateLicensorDetails(self.licDetails.data.licensorId);
+                    self.populateLicensorDetails(self.licDetails.data.licensorName, self.licDetails.data.licensorId);
                 } else {
 
                     var msg = "Entity Details not Rejected successfully";
@@ -1231,7 +1231,7 @@ var page = Component.extend({
 
                   commonUtils.displayUIMessageWithDiv("#invmessageDiv", data[0].status, data[0].responseText);
 
-                  self.populateLicensorDetails(self.licDetails.data.licensorId);
+                  self.populateLicensorDetails(self.licDetails.data.licensorName, self.licDetails.data.licensorId);
 
               } else {
 
@@ -1290,7 +1290,7 @@ var page = Component.extend({
                 // },5000);
                 commonUtils.displayUIMessage(data[0].status, msg);
 
-                self.populateLicensorDetails(self.licDetails.data.licensorId);
+                self.populateLicensorDetails(self.licDetails.data.licensorName, self.licDetails.data.licensorId);
 
                 Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
@@ -1405,7 +1405,7 @@ var page = Component.extend({
 
     },
 
-    populateLicensorDetails : function(val) {
+    populateLicensorDetails : function(val, valId) {
 
       var self = this;
 
@@ -1447,8 +1447,7 @@ var page = Component.extend({
           } else {
             // if(self.appstate.attr("licensorId") != null && self.appstate.attr("licensorId") != undefined) {
 
-            //   genObj.licensorName =  self.appstate.attr("licensorId");
-            //   self.appstate.attr("licensorId", null);
+
 
             // }
             // else if (val == null){
@@ -1460,8 +1459,6 @@ var page = Component.extend({
 
               genObj.licensorName =  val;
               genObj.licensorId = self.setSelectedValue(val, "#licensorsFilter");
-
-            // }
 
             // self.attr("selectedEntity", genObj.licensorName);
             // //self.attr("licensors")[0].entities[0].id = genObj.licensorId;
@@ -1708,9 +1705,9 @@ var page = Component.extend({
 
           $('*[data-bv-icon-for="'+data.field +'"]').popover('show');
 
-          //setTimeout(function(){
-            //$('*[data-bv-icon-for="'+data.field +'"]').popover('hide');
-          //},10000);
+          setTimeout(function(){
+            $('*[data-bv-icon-for="'+data.field +'"]').popover('hide');
+          },1000);
         $("#submitButton").attr("disabled", true);//Disable submit button if all valid
       }).on('added.field.bv', function(e, data) {
 

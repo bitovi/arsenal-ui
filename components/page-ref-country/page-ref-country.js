@@ -339,11 +339,7 @@ var page = Component.extend({
 
             commonUtils.displayUIMessage( "SUCCESS", "A Proposal is already pending for the licensor");
 
-          } else {  
-
-            $('#submitBtn').show();
-
-          }
+          } 
       } else {
 
         commonUtils.displayUIMessage(data.status, data.responseText);
@@ -804,10 +800,6 @@ var page = Component.extend({
             $('#submitBtn').hide();
 
             commonUtils.displayUIMessage( "SUCCESS", "A Proposal is already pending for the licensor");
-
-          } else {  
-
-            $('#submitBtn').show();
 
           }
          
