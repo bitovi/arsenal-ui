@@ -878,6 +878,8 @@ var page = Component.extend({
 
           $("#submitButton").hide();
 
+          commonUtils.displayUIMessageWithDiv("#invmessageDiv", "SUCCESS", "A Proposal is already pending for the licensor");
+
         } else {
 
             $("#submitButton").show();
@@ -1183,7 +1185,7 @@ var page = Component.extend({
 
                     commonUtils.displayUIMessageWithDiv("#invmessageDiv", data[0].status, data[0].responseText);
 
-                    self.populateLicensorDetails(self.licDetails.data.licensorName);
+                    self.populateLicensorDetails(self.licDetails.data.licensorId);
                 } else {
 
                     var msg = "Entity Details not Approved successfully";
@@ -1204,7 +1206,7 @@ var page = Component.extend({
 
                     commonUtils.displayUIMessageWithDiv("#invmessageDiv", data[0].status, data[0].responseText);
 
-                    self.populateLicensorDetails(self.licDetails.data.licensorName);
+                    self.populateLicensorDetails(self.licDetails.data.licensorId);
                 } else {
 
                     var msg = "Entity Details not Rejected successfully";
@@ -1228,7 +1230,7 @@ var page = Component.extend({
 
                   commonUtils.displayUIMessageWithDiv("#invmessageDiv", data[0].status, data[0].responseText);
 
-                  self.populateLicensorDetails(self.licDetails.data.licensorName);
+                  self.populateLicensorDetails(self.licDetails.data.licensorId);
 
               } else {
 
@@ -1287,7 +1289,7 @@ var page = Component.extend({
                 // },5000);
                 commonUtils.displayUIMessage(data[0].status, msg);
 
-                self.populateLicensorDetails(self.licDetails.data.licensorName);
+                self.populateLicensorDetails(self.licDetails.data.licensorId);
 
                 Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
