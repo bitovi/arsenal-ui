@@ -935,7 +935,8 @@ var page = Component.extend({
 				Currency.getCurrByRegion(self.scope.attr("regionStore"))
 			     ]).then(function(values) {
 		     			self.scope.attr("licensor").replace([]);
-			    		self.scope.attr("licensor").replace(values[0]["entities"]);
+			    		//self.scope.attr("licensor").replace(values[0]["entities"]);
+			    		self.scope.attr("licensor").replace(values[0]["entities"][0]);
 			    		  self.scope.attr("currency").replace([]);
 					     self.scope.attr("currency").replace(values[1].data);
 			    		if(self.scope.editpage){

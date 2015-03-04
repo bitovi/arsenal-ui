@@ -28,6 +28,7 @@ var OutboxGrid = ScrollingGrid.extend({
     }, {
       id: 'pendingGroupName',
       title: 'Currently With',
+      sortable: true,
       contents: function(row) { //we are hoping that these values will not change from DS.
         if (row.pendingGroupName == 'RINS-BusinessManager'){
           return 'Business';
@@ -56,7 +57,8 @@ var OutboxGrid = ScrollingGrid.extend({
       }
     }, {
       id: 'comments',
-      title: 'Comments'
+      title: 'Comments',
+      sortable: true
     }, {
       id: 'remind',
       title: 'Remind',
@@ -116,8 +118,8 @@ var OutboxGrid = ScrollingGrid.extend({
         var existFlag = false;
         var sortAttr = val[0];
 
-        if (sortAttr === "groupName" || sortAttr === "approvalStage" || sortAttr === "remind") {
-          commonUtils.showErrorMessage("SortBy not permitted for Approvals, Remind & currently-with.");
+        if (sortAttr === "approvalStage" || sortAttr === "remind") {
+          commonUtils.showErrorMessage("SortBy not permitted for Approvals, Remind");
           return false;
         }
 
