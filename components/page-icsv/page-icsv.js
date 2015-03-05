@@ -28,13 +28,13 @@ PBConfirmModal.extend({
   template: pbconfirmtemplate,
   events: {
       '.submit click': function(el, ev) {
-            var self = this; 
+            var self = this;
             var data = {bundleId:self.scope.pbid,loadedFrom:"icsv"};
             self.scope.appstate.screenLookup.attr("PBR" ,data);
             $('rn-pb-confirm-modal').remove();
             commonUtils.navigateTo("payment-bundles");
       }
-      
+
   }
 });
 
@@ -431,9 +431,9 @@ var page = Component.extend({
           });
         }
        },
-       "#arrowbutton click" :function(){
+       /*"#arrowbutton click" :function(){
          accordin(this);
-       },
+       },*/
        "#arrowbtnCntiner click" :function(){
          accordin(this);
        },
@@ -557,7 +557,7 @@ var page = Component.extend({
                                         if(pbid != "" &&  pbname != "--Select--"){
                                             var pbobj = {"pbid":pbid, "appstate":self.scope.appstate};
                                             $(document.body).append(stache('<rn-pb-confirm-modal pbid="{pbobj.pbid}" appstate="{pbobj.appstate}" ></rn-pb-confirm-modal>')({pbobj}));
-                                        } 
+                                        }
 
                                        self.scope.attr('cancelnewbundlereq',true);
 
@@ -608,16 +608,16 @@ var page = Component.extend({
               bundleRequest["periodTo"] = self.scope.periodToForPaymentBundle;
               bundleRequest["periodType"] =self.scope.periodTypeForPaymentBundle;
               bundleRequest["bundleType"] ="REGULAR_INV";
-              
+
               var bundleDetailsGroup=[];
-              icsvmap.invoiceData.invoices.each(function(value) { 
+              icsvmap.invoiceData.invoices.each(function(value) {
                         value.invoiceLines.each(function(val){
                           var bundledetails={};
                           bundledetails.country = val.country;
                           bundledetails.contentGrpName = val.contentGrpName;
                           bundledetails.periodType=val.periodType;
                           bundleDetailsGroup.push(bundledetails);
-                        });          
+                        });
                  });
 
               if (bundleDetailsGroup.length > 0) {

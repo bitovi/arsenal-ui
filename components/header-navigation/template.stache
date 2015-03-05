@@ -22,11 +22,15 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Approvals<!--<span class="caret"></span>-->
                 </a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href='{{url}}approvals/accrualApproval' class="old" target="_blank">Accrual</a></li>
+                    <li {{isScreenEnabled 40}}><a href='{{url}}approvals/accrualApproval' data-screenid="40" class="old" target="_blank">Accrual</a></li>
                  <!--   <li><a href='{{url}}approvals/refDataApproval' class="old" target="_blank">Ref Data</a></li>-->
                     <li {{isScreenEnabled 21}}><a href='/payment-bundles' data-screenid="21" >Payment Bundle Review</a></li>
-                    <li><a href='{{url}}approvals/salesReportApproval' class="old" target="_blank">Sales Report</a></li>
-                    <li><a href='{{url}}approvals/unClaimedReportApproval' class="old" target="_blank">Unclaimed Report</a></li>
+                    <li {{isScreenEnabled 41}}><a href='{{url}}approvals/salesReportApproval' data-screenid="41" class="old" target="_blank">Sales Report</a></li>
+                    <li {{isScreenEnabled 42}}><a href='{{url}}approvals/redactedReportApproval' data-screenid="42" class="old" target="_blank">Redacted Report</a></li>
+                    <li {{isScreenEnabled 43}}><a href='{{url}}approvals/lineItemOrApproval' data-screenid="43" class="old" target="_blank">Dispute Report</a></li>
+                    <li {{isScreenEnabled 44}}><a href='{{url}}approvals/paymentReport' data-screenid="44" class="old" target="_blank">Payment Report</a></li>
+                    <li {{isScreenEnabled 45}}><a href='{{url}}approvals/accrualRerun' data-screenid="45" class="old" target="_blank">Accrual Rerun</a></li>
+                    <li {{isScreenEnabled 46}}><a href='{{url}}approvals/unClaimedReportApproval' data-screenid="46" class="old" target="_blank">Unclaimed Report</a></li>
                 </ul>
             </li>
 
@@ -48,8 +52,11 @@
                  <ul class="dropdown-menu" role="menu">
 
                      <li {{isScreenEnabled 22}}><a href='/claimreview'  data-screenid="22">Claim Review</a></li>
-                     <li {{isScreenEnabled 23}}><a href='{{url}}globalRevenue' class="old" target="_blank">Global Revenue</a></li>
-                     <li {{isScreenEnabled 24}}><a href='{{url}}bwReport' class="old" target="_blank">Monthly Billings Reconciliation</a></li>
+                     <li {{isScreenEnabled 23}}><a href='{{url}}globalRevenue' data-screenid="23" class="old" target="_blank">Global Revenue</a></li>
+                     <li {{isScreenEnabled 24}}><a href='{{url}}bwReport' class="old" data-screenid="24" target="_blank">Monthly Billings Reconciliation</a></li>
+                     <li {{isScreenEnabled 47}}><a href='{{url}}unClaimedStats' class="old" data-screenid="47" target="_blank">Unclaimed Stats configuration</a></li>
+                     <li {{isScreenEnabled 48}}><a href='{{url}}unClaimedSummary' class="old" data-screenid="48" target="_blank">Unclaimed Summary</a></li>
+                     <li {{isScreenEnabled 49}}><a href='{{url}}keyPerformanceIndicators' class="old" data-screenid="49" target="_blank">Key Performance Indicators</a></li>
                  </ul>
              </li>
 
@@ -89,8 +96,8 @@
                    <li {{isScreenEnabled 28}}><a href='{{url}}refDataHistory' class="old" target="_blank">Ref Data</a></li>
                    <li {{isScreenEnabled 29}}><a href='{{url}}reconPaymentHistory' class="old" target="_blank">Recon Payment</a></li>
                    <li {{isScreenEnabled 30}}><a href='{{url}}salesReportHistory' class="old" target="_blank">Sales Report</a></li>
-                   <li ><a href='{{url}}paymentReportHistory' class="old" target="_blank">Payment Report</a></li>
-                   <li ><a href='{{url}}unClaimedReportHistory' class="old" target="_blank">Unclaimed Report</a></li>
+                   <li {{isScreenEnabled 50}}><a href='{{url}}paymentReportHistory' class="old" data-screenid="50" target="_blank">Payment Report</a></li>
+                   <li {{isScreenEnabled 51}}><a href='{{url}}unClaimedReportHistory' class="old" data-screenid="51" target="_blank">Unclaimed Report</a></li>
                    <li {{isScreenEnabled 31}}><a href='{{url}}onAccountAmountHistory' class="old" target="_blank">OnAccount</a></li>
                    <li {{isScreenEnabled 32}}><a href='{{url}}lineItemHistory' class="old" target="_blank">Dispute Report</a></li>
                    <li {{isScreenEnabled 33}}><a href='{{url}}accrualRerunHistory' class="old" target="_blank">Accrual Rerun</a></li>
