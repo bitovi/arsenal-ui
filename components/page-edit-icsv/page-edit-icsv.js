@@ -1511,14 +1511,19 @@ var page = Component.extend({
 									// 	}
 									// }
 
-								if(tempInvMap.invoiceLines != undefined && tempInvMap.invoiceLines.length>0 && tempInvMap.invoiceLines[j].errors != undefined && tempInvMap.invoiceLines[j].errors.length>0){
-								  	for(var i=0; i<tempInvMap.invoiceLines[j].errors;i++){
-								  		if(tempInvMap.invoiceLines[j].errors[i].errorMap != undefined && tempInvMap.invoiceLines[j].errors[i].errorMap.length>0){
-								  			for(var k=0; k<tempInvMap.invoiceLines[j].errors[i].errorMap.length;k++){
-								  				icsvmap.invoiceData.invoices[selIndex].invoiceLines[j].errors[i].errorMap[k].attr(key, " ");
-								  			}
-								  		}
-								  	}
+								if(tempInvMap.invoiceLines != undefined && tempInvMap.invoiceLines.length>0){
+									for(var m=0;m<tempInvMap.invoiceLines.length;m++){
+										if(tempInvMap.invoiceLines[m].errors != undefined && tempInvMap.invoiceLines[m].errors.length>0){
+											for(var i=0; i<tempInvMap.invoiceLines[m].errors;i++){
+										  		if(tempInvMap.invoiceLines[m].errors[i].errorMap != undefined && tempInvMap.invoiceLines[m].errors[i].errorMap.length>0){
+										  			for(var k=0; k<tempInvMap.invoiceLines[m].errors[i].errorMap.length;k++){
+										  				icsvmap.invoiceData.invoices[selIndex].invoiceLines[m].errors[i].errorMap[k].attr(key, " ");
+										  			}
+										  		}
+										  	}
+										}
+									}
+									
 								  }
 
 						    //       for(var j =0; j < tempInvMap.invoiceLines.length; j++){
