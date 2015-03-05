@@ -308,9 +308,6 @@ var page = Component.extend({
 
       }
     },
-    '.btn-Ingest click': function() {
-      processRejectIngestRequest(this.scope,"ingest");
-    },
     '.btn-ingested-reject click': function() {
 
       $('#rejectModal').modal({
@@ -331,7 +328,7 @@ var page = Component.extend({
     },
     '.btn-confirm-ok click': function(){
       $('#rejectModal').modal('hide');
-      processRejectIngestRequest(this.scope,"reject");
+      processRejectRequest(this.scope,"reject");
     },
 
     '{scope.appstate} change': function() {
@@ -474,7 +471,7 @@ var createIngestedReconRequestForExportToExcel=function(appstate){
 
 
 
-var processRejectIngestRequest = function(scope,requestType){
+var processRejectRequest = function(scope,requestType){
     var ccidList ;
     var type ;
     var ccidSelected = [];
@@ -491,7 +488,6 @@ var processRejectIngestRequest = function(scope,requestType){
         ccidSelected.push(value);
       }
     );
-
     if(requestType == "reject"){
 
         var rejectSearchRequestObj =   {
@@ -500,7 +496,6 @@ var processRejectIngestRequest = function(scope,requestType){
           "ids" : ccidSelected
           }
         }
-        //console.log(JSON.stringify((rejectSearchRequestObj)));
 
       Promise.all([Recon.reject(rejectSearchRequestObj)]).then(function(values) {
 
@@ -527,22 +522,6 @@ var processRejectIngestRequest = function(scope,requestType){
         }
 
         });
-
-    }else if(requestType == "ingest"){
-
-
-      var rejectSearchRequestObj =   {
-        "searchRequest": {
-          "ids" : ccidSelected
-        }
-      }
-
-      //console.log(JSON.stringify((rejectSearchRequestObj)));
-
-      Recon.ingest((rejectSearchRequestObj)).done(function(data){
-        commonUtils.displayUIMessage(data.status, data["responseText"]);
-      });
-
     }
 }
 
@@ -591,17 +570,15 @@ var fetchReconIngest = function(scope, load){
       var data = values[0];
       dataLowerGrid = data;
       if(data.status == "FAILURE"){
-        //displayErrorMessage(data.responseText,"Failed to load the Recon Ingest Tab:");
-        commonUtils.displayUIMessageWithDiv("#messageDiv", "FAILURE", data["responseText"]);
+        commonUtils.displayUIMessage(data.status, data["responseText"]);
       }else  {
 
         if(data.reconStatsDetails == undefined || (data.reconStatsDetails != null && data.reconStatsDetails.length <= 0)) {
 
           scope.attr("emptyrows", true);
           if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
-              commonUtils.showSuccessMessage(data["responseText"]);
-            }
-          //commonUtils.displayUIMessageWithDiv("#messageDiv", "SUCCESS", data["responseText"]);
+              commonUtils.displayUIMessage(data.status, data["responseText"]);
+          }
 
         } else {
 
@@ -701,7 +678,7 @@ var fetchReconIngest = function(scope, load){
 
     $("#loading_img").hide();
   });
-  //scope.attr('populateDefaultData',false);
+  
 }
 
 var refreshChekboxSelection = function(el,scope){
