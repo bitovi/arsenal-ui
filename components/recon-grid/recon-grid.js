@@ -3,6 +3,7 @@ import Grid from 'components/grid/';
 
 import template from './template.stache!';
 import _less from './recon-grid.less!';
+import commonUtils from 'utils/commonUtils';
 
 var reconGrid = Grid.extend({
   tag: 'rn-recon-grid',
@@ -25,30 +26,26 @@ var reconGrid = Grid.extend({
 
       if(self.scope.attr("pagename")=="recon"){
         var parentScopeVar = self.element.closest('page-recon').scope();
-        var tableScrollTopVal = parentScopeVar.attr('ingestedScrollTop');
+        var tableScrollTopVal = parentScopeVar.paginateReq.attr('ingestedScrollTop');
         $(tbody[0]).scrollTop(tableScrollTopVal);
           $(tbody).on('scroll', function(ev) {
-            if(parentScopeVar.recordsAvailable && tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight) {
-              //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
-
+            if(parentScopeVar.paginateReq.recordsAvailable && tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight) {
               var tabSelected = parentScopeVar.attr('tabSelected');
 
               /* Reset the offset value and call the webservice to fetch next set of records */
               if(tabSelected ==="Ingested"){
-                var offsetVal = parentScopeVar.attr('ingestedOffset');
-                parentScopeVar.attr('ingestedOffset', (parseInt(offsetVal)+1));
-                parentScopeVar.attr('ingestedScrollTop', (tbody[0].scrollHeight-100));
+                
+                parentScopeVar.paginateReq.attr("paginate",true);
+
+                parentScopeVar.paginateReq.attr('ingestedScrollTop', (tbody[0].scrollHeight-100));
               }
-              parentScopeVar.appstate.attr('globalSearchButtonClicked', false);
-              parentScopeVar.attr("load", true);
+
+              //parentScopeVar.appstate.attr('globalSearchButtonClicked', false);
+
 
               /* The below code calls {scope.appstate} change event that gets the new data for grid*/
               /* All the neccessary parameters will be set in that event */
-             if(parentScopeVar.appstate.attr('globalSearch')){
-                parentScopeVar.appstate.attr('globalSearch', false);
-              }else{
-                parentScopeVar.appstate.attr('globalSearch', true);
-              }
+              //commonUtils.triggerGlobalSearch();
             }
           });
         } else if(self.scope.attr("pagename")=="reconOther"){
@@ -79,11 +76,7 @@ var reconGrid = Grid.extend({
 
               /* The below code calls {scope.appstate} change event that gets the new data for grid*/
               /* All the neccessary parameters will be set in that event */
-             if(parentScopeVar.appstate.attr('globalSearch')){
-                parentScopeVar.appstate.attr('globalSearch', false);
-              }else{
-                parentScopeVar.appstate.attr('globalSearch', true);
-              }
+              commonUtils.triggerGlobalSearch();
             }
           });
         }
@@ -97,8 +90,7 @@ var reconGrid = Grid.extend({
         var tableScrollTopVal=0;
         if(tabSelected=="Ingested"){
           setTimeout(function(){
-            //alignGrid("ingested");
-            tableScrollTopVal = parentScopeVar.attr('ingestedScrollTop');
+            tableScrollTopVal = parentScopeVar.paginateReq.attr('ingestedScrollTop');
             $(tbody[0]).scrollTop(tableScrollTopVal);
           },10);
         }

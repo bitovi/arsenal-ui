@@ -63,61 +63,62 @@
                             <select id="invoicelicensor" class="form-control calduefield" name="licensor" can-value="licensorStore">
                                 <option value="">Select</option>
 							    {{#each licensor}}
-                                <optgroup label="{{entityType}}">
-    						        {{#each entities}}
-                                    <option value="{{id}}">{{value}}</option>
-    						        {{/each}}
-                                </optgroup>
-						        {{/each}}						   
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-sm-6"></div>
-                </div>
+                                <!-- Commented for Business please don not delete this comment
+                               <optgroup label="{{entityType}}"> -->
+                                   {{#each entities}}
+                                   <option value="{{id}}">{{value}}</option>
+                                   {{/each}}
+                               </optgroup>
+                               {{/each}}
+                           </select>
+                       </div>
+                   </div>
+                   <div class="col-sm-6"></div>
+               </div>
 
-                <div class="form-group">
-                    
-                    <div class="col-sm-6">
-                        <label for="inputPassword3" class="col-sm-6 control-label">Currency:</label>
-                        <div class="col-sm-4 requiredBar currency">
-                            <select id="currency" class="form-control" name="currency" can-value="currencyStore">
-                                <option value="">Select</option>
-								{{#each currency}}
-                                <option value="{{id}}">{{value}}</option>
-                                {{/each}}
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="col-sm-6 ">
-                        <label for="inputPassword3" class="col-sm-6 control-label">FX Rate:</label>
-                        <div class="col-sm-6 fxrate" style="padding-left:2px;">
-                            <input type="text" class="form-control" name ="fxrate" id="fxrate" placeholder="" can-value="fxrateStore">
-                            <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "fxrate-err" style="display:none;">
-                        </div>
-                    </div>
-                </div>
-                        
-                <div class="form-group">
-                    <div class="col-sm-6">
-                        <label for="inputEmail3" class="col-sm-6 control-label">Invoice #: </label>
-                        <div class="col-sm-6 requiredBar invoicenumber">
-                            <input type="text" class="form-control" id="invoicenumber" name="invoicenumber" placeholder=""  can-value="invoicenumberStore">
-                            <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "invoicenumber-err" style="display:none;">
-                        </div>
-                    </div>
-                    <div class="col-sm-6"></div>
-                </div>
-                
-                <div class="form-group">
-                    <div class="col-sm-12 singleField">
-                        <label for="inputEmail3" class="col-sm-3 control-label">Licensor Notes: </label>
-                        <div class="col-sm-9 requiredBarNone licnotes">
-                            <textarea class="form-control" id ="licnotes" name="licnotes"  can-value="licnotesStore"></textarea>
-                            <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "licnotes-err" style="display:none;">
-                        </div>
-                    </div>
-                        <!-- <div class="col-sm-6"></div>  -->
+               <div class="form-group">
+
+                   <div class="col-sm-6">
+                       <label for="inputPassword3" class="col-sm-6 control-label">Currency:</label>
+                       <div class="col-sm-4 requiredBar currency">
+                           <select id="currency" class="form-control" name="currency" can-value="currencyStore">
+                               <option value="">Select</option>
+                               {{#each currency}}
+                               <option value="{{id}}">{{value}}</option>
+                               {{/each}}
+                           </select>
+                       </div>
+                   </div>
+
+                   <div class="col-sm-6 ">
+                       <label for="inputPassword3" class="col-sm-6 control-label">FX Rate:</label>
+                       <div class="col-sm-6 fxrate" style="padding-left:2px;">
+                           <input type="text" class="form-control" name ="fxrate" id="fxrate" placeholder="" can-value="fxrateStore">
+                           <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "fxrate-err" style="display:none;">
+                       </div>
+                   </div>
+               </div>
+
+               <div class="form-group">
+                   <div class="col-sm-6">
+                       <label for="inputEmail3" class="col-sm-6 control-label">Invoice #: </label>
+                       <div class="col-sm-6 requiredBar invoicenumber">
+                           <input type="text" class="form-control" id="invoicenumber" name="invoicenumber" placeholder=""  can-value="invoicenumberStore">
+                           <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "invoicenumber-err" style="display:none;">
+                       </div>
+                   </div>
+                   <div class="col-sm-6"></div>
+               </div>
+
+               <div class="form-group">
+                   <div class="col-sm-12 singleField">
+                       <label for="inputEmail3" class="col-sm-3 control-label">Licensor Notes: </label>
+                       <div class="col-sm-9 requiredBarNone licnotes">
+                           <textarea class="form-control" id ="licnotes" name="licnotes"  can-value="licnotesStore"></textarea>
+                           <img src="resources/images/alert.png" class="form-control-feedback field-invalid" id = "licnotes-err" style="display:none;">
+                       </div>
+                   </div>
+                       <!-- <div class="col-sm-6"></div>  -->
                 </div>
                 
                 <div class="form-group">

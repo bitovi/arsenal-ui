@@ -28,7 +28,7 @@
 
 <div class="tab-pane active grid-custom-overflow" id="ingested">
     <div id="reconStatsGrd" style="width:100%;overflow-x: auto;overflow-y: hidden;">
-      <rn-recon-grid columns="{ingestGridColumns}" rows="{ingestList.headerRows}" footerrows="{ingestList.footerRows}" sortcolumnnames="{sortColumns}" sortdir="{sortDirection}" emptyrows="{emptyrows}" pagename="{pagename}"></rn-recon-grid>
+      <rn-recon-grid columns="{ingestGridColumns}" rows="{ingestList.headerRows}" footerrows="{ingestList.footerRows}" sortcolumnnames="{paginateReq.sortColumns}" sortdir="{paginateReq.sortDirection}" emptyrows="{emptyrows}" pagename="{pagename}"></rn-recon-grid>
     </div>
 </div>
 <!-- Recon Stats -->

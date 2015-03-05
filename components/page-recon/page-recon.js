@@ -38,25 +38,26 @@ var page = Component.extend({
     tabSelected :tabNameObj.ingest.name,
     tabName:tabNameObj,
     ingestGridColumns: ingestedColumns,
-    //detailGridColumns: detailsColumns,
     ingestList:{
       headerRows: new can.List(),
       footerRows: new can.List()
     },
-
+    paginateReq:{
+      recordsAvailable : true,
+      sortColumns:[],
+      sortDirection: "asc",
+      ingestedOffset: 0,
+      ingestedScrollTop: 0,
+      paginate : false
+    },
     ingestCcidSelected:[],
     size_ingestCcidSelected:0,
     currencyScope:[],
     currencyList:[],
     reconRefresh : [],
     emptyrows : true,
-    ingestedScrollTop: 0,
-    ingestedOffset: 0,
     pagename : "recon",
-    sortColumns:[],
-    sortDirection: "asc",
-    load : true,
-    recordsAvailable : true,
+
     totalRecordCount:'@',
     reconStatsDetailsSelected : [],
     fetchSize:10,
@@ -128,7 +129,8 @@ var page = Component.extend({
     // this.scope.attr("isGlobalSearchIngested",this.scope.appstate.attr("globalSearch"));
     // console.log(" ")
     //this.scope.attr('populateDefaultData',true);
-     fetchReconIngest(this.scope,true);
+    //  fetchReconIngest(this.scope,true);
+    commonUtils.triggerGlobalSearch();
   },
   events:{
     "inserted": function(){
@@ -176,14 +178,15 @@ var page = Component.extend({
           onDelete: function (item) {
                self.scope.refreshTokenInput(item,"Delete");
                //after deleting call refresh method
-               fetchReconIngest(self.scope, false);
+               fetchReconIngest(self.scope);
           },
           queryDB:function(items){
              //Call Db fetch for the filter conditions.
              //this call back function will be called when the last token is added.
              //if the limit of the token is 3 then when the user add the last token this method
              //get invoked
-             fetchReconIngest(self.scope, false);
+
+             fetchReconIngest(self.scope);
           }
       });
 
@@ -199,8 +202,7 @@ var page = Component.extend({
             //console.log(this.scope.tokenInput);
             /* The below code calls {scope.appstate} change event that gets the new data for grid*/
             /* All the neccessary parameters will be set in that event */
-            //commonUtils.triggerGlobalSearch();
-            fetchReconIngest(self.scope, false);
+            fetchReconIngest(self.scope);
           }
       },
       'tbody tr click': function(el, ev) {
@@ -336,8 +338,14 @@ var page = Component.extend({
       if(this.scope.isGlobalSearchIngested != this.scope.appstate.attr('globalSearch')){
         this.scope.attr("isGlobalSearchIngested",this.scope.appstate.attr("globalSearch"));
         if(this.scope.tabSelected == this.scope.tabName.ingest.attr("name")){
-          fetchReconIngest(this.scope, this.scope.load);
+          fetchReconIngest(this.scope);
         }
+      }
+    },
+    '{scope.paginateReq} change': function() {
+
+      if(this.scope.paginateReq.attr("paginate")){
+        fetchReconIngest(this.scope);
       }
     },
     '{scope.currencyScope} change': function() {
@@ -355,11 +363,11 @@ var page = Component.extend({
           var self=this;
           //console.log($(item[0]).attr("class"));
           var val = $(item[0]).attr("class").split(" ");
-          var existingSortColumns =self.scope.sortColumns.attr();
+          var existingSortColumns =self.scope.paginateReq.sortColumns.attr();
           var existingSortColumnsLen = existingSortColumns.length;
           var existFlag = false;
           if(existingSortColumnsLen==0){
-            self.scope.attr('sortColumns').push(val[0]);
+            self.scope.paginateReq.attr('sortColumns').push(val[0]);
           } else {
             for(var i=0;i<existingSortColumnsLen;i++){
               /* The below condition is to selected column to be sorted in asc & dec way */
@@ -369,11 +377,11 @@ var page = Component.extend({
               }
             }
             if(existFlag==false){
-              self.scope.attr('sortColumns').replace([]);
-              self.scope.attr('sortColumns').push(val[0]);
+              self.scope.paginateReq.attr('sortColumns').replace([]);
+              self.scope.paginateReq.attr('sortColumns').push(val[0]);
             } else {
-              var sortDirection = (self.scope.attr('sortDirection') == 'asc') ? 'desc' : 'asc';
-              self.scope.attr('sortDirection', sortDirection);
+              var sortDirection = (self.scope.paginateReq.attr('sortDirection') == 'asc') ? 'desc' : 'asc';
+              self.scope.paginateReq.attr('sortDirection', sortDirection);
             }
 
           }
@@ -382,11 +390,7 @@ var page = Component.extend({
           self.scope.attr('isSortsearch',true);
            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
            /* All the neccessary parameters will be set in that event */
-           if(self.scope.appstate.attr('globalSearch')){
-              self.scope.appstate.attr('globalSearch', false);
-            }else{
-              self.scope.appstate.attr('globalSearch', true);
-            }
+           commonUtils.triggerGlobalSearch();
 
     },
     '#copyToClipboard click':function(){  console.log($('#myTabs').next('.tab-content').find('.tab-pane:visible table:visible').clone(true));
@@ -402,8 +406,8 @@ var page = Component.extend({
         console.log(self.scope.tabSelected);
        if(self.scope.tabSelected=="Ingested"){
               Recon.findOne(createIngestedReconRequestForExportToExcel(self.scope.appstate),function(data){
-                console.log(data);
-                console.log(JSON.stringify(data));
+                // console.log(data);
+                // console.log(JSON.stringify(data));
                       if(data["status"]=="SUCCESS"){
                         $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
                       }else{
@@ -517,7 +521,7 @@ var processRejectRequest = function(scope,requestType){
 
             $('.statsTable').hide();
 
-            fetchReconIngest(scope, scope.load);
+            fetchReconIngest(scope);
           }
         }
 
@@ -528,29 +532,27 @@ var processRejectRequest = function(scope,requestType){
 
 
 /**/
-var fetchReconIngest = function(scope, load){
+var fetchReconIngest = function(scope){
   commonUtils.hideUIMessage();
   //console.log("Loading Started");
   setTimeout(function(){$("#loading_img").show()},50);
   var searchRequestObj = getSearchReqObj(scope);
   searchRequestObj.searchRequest["type"] =  scope.tabName.ingest.attr("type");
-  //TODO During pagination / scrolling, the below values has tobe chnaged.
-
-  if(load) {
+  if(scope.paginateReq.attr("paginate")) {
+    scope.paginateReq.attr("paginate",false);
     scope.attr("ingestCcidSelected").splice(0, scope.attr("ingestCcidSelected").length);
-    searchRequestObj.searchRequest["offset"] = scope.ingestedOffset;
+    scope.paginateReq.attr("ingestedOffset",scope.paginateReq.ingestedOffset + 1);
+    searchRequestObj.searchRequest["offset"] = scope.paginateReq.attr("ingestedOffset");
   }else{
     searchRequestObj.searchRequest["offset"] = 0;
+    scope.paginateReq.attr("ingestedOffset",0);
+    scope.paginateReq.attr("ingestedScrollTop",0);
   }
 
-  if(scope.appstate.attr('globalSearchButtonClicked')==true){
-      scope.attr("ingestedOffset",0);
-      scope.attr("ingestedScrollTop",0);
-  }
   searchRequestObj.searchRequest["limit"] = scope.attr("fetchSize");
 
-  searchRequestObj.searchRequest["sortBy"] = scope.sortColumns.attr().toString();
-  searchRequestObj.searchRequest["sortOrder"] = scope.sortDirection;
+  searchRequestObj.searchRequest["sortBy"] = scope.paginateReq.sortColumns.attr().toString();
+  searchRequestObj.searchRequest["sortOrder"] = scope.paginateReq.sortDirection;
 
   var filterData = scope.tokenInput.attr();
   var newFilterData = [];
@@ -564,7 +566,7 @@ var fetchReconIngest = function(scope, load){
   var dataLowerGrid = {};
 
   Promise.all([Recon.findOne(searchRequestObj)]).then(function(values){
-    console.log("Loading Done");
+    //console.log("Loading Done");
 
     if(values != undefined && values != null) {
       var data = values[0];
@@ -591,7 +593,7 @@ var fetchReconIngest = function(scope, load){
           $.merge(scope.ingestList.headerRows, data.reconStatsDetails);
           scope.ingestList.headerRows.replace(scope.ingestList.headerRows);
         }
-        scope.recordsAvailable = data.recordsAvailable;
+        scope.paginateReq.recordsAvailable = data.recordsAvailable;
         scope.reconStatsDetailsSelected = data.reconStatsDetails;
         scope.totalRecordCount = data.totRecCnt;
         scope.currencyScope.replace(data.currency);
@@ -669,7 +671,7 @@ var fetchReconIngest = function(scope, load){
       scope.setHeaderChkBox();
 
       if(load){
-        if(scope.attr("ingestedOffset") == 0){
+        if(scope.paginateReq.attr("ingestedOffset") == 0){
           scope.reconRefresh[0].loadRefreshStats(dataLowerGrid, scope.reconRefresh[0]);
         }
       }else{
