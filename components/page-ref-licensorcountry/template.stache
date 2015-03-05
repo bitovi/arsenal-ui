@@ -34,34 +34,35 @@
     <div class="row">
 
       <div class="form-group col-sm-12" style="padding-top:10px">
-
-        <div class="col-sm-4 licensorDrop">
-          <label for="forEntity" class="col-sm-4 control-label">Licensor: </label>
-          <div class="col-sm-6">
-            <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.entityId' id="licensorId" name="licensorId">
-    <!--          <option value="">Select</option>-->
-              {{#each entities}}
-              <!--  <optgroup label="{{entityType}}"> -->
+        <div class="col-md-7" style="padding-left:12%;">
+          <div class="col-sm-4 licensorDrop">
+            <label for="forEntity" class="col-sm-4 control-label">Licensor: </label>
+            <div class="col-sm-8">
+              <select style="width:140px !important;" class="form-control" can-value='pageState.entityCountryDetails.entityCountry.entityId' id="licensorId" name="licensorId">
+      <!--          <option value="">Select</option>-->
                 {{#each entities}}
-                <option value="{{id}}">{{value}}</option>
+                <!--  <optgroup label="{{entityType}}"> -->
+                  {{#each entities}}
+                  <option value="{{id}}">{{value}}</option>
+                  {{/each}}
+                </optgroup>
                 {{/each}}
-              </optgroup>
-              {{/each}}
 
+              </div>
             </div>
-          </div>
-          <div class="col-sm-6 countryDrop">
-            <label for="forCountry" class="col-sm-2 control-label">Country: </label>
-            <div class="col-sm-6">
-              <select class="form-control" can-value='pageState.entityCountryDetails.entityCountry.countryId' id="countryId">
-              <!--  <option value="">Select</option>-->
-                {{#each countries}}
-                <option value="{{id}}">{{value}}</option>
-                {{/each}}
-              </select>
+            <div class="col-sm-4 countryDrop">
+              <label for="forCountry" class="col-sm-3 control-label">Country: </label>
+              <div class="col-sm-9">
+                <select style="width:140px !important;" class="form-control" can-value='pageState.entityCountryDetails.entityCountry.countryId' id="countryId">
+                <!--  <option value="">Select</option>-->
+                  {{#each countries}}
+                  <option value="{{id}}">{{value}}</option>
+                  {{/each}}
+                </select>
+              </div>              
             </div>
-            <div class="col-sm-2 ">
-              <button class="btn btn-primary btn-custom-small" id="fetchDetailsBtn" style="margin: -4px 0 0 70px;">Fetch</button>
+            <div class="col-sm-3">
+                <button class="btn btn-primary btn-custom-small" id="fetchDetailsBtn" style="margin: -4px 0 0 0px;">Fetch</button>
             </div>
           </div>
 
