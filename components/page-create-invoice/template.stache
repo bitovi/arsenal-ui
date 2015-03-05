@@ -60,7 +60,8 @@
 					      <select id="invoicelicensor" class="form-control" name="licensor" can-value="licensorStore">
 							       <option value="" selected>Select</option>
 							   		{{#each licensor}}
-						              <optgroup label="{{entityType}}">
+                              <!-- Commented for Business please don not delete this comment
+						              <optgroup label="{{entityType}}">-->
 						                {{#each entities}}
 						                 <option value="{{id}}">{{value}}</option>
 						                {{/each}}
