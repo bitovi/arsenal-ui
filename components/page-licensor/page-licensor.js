@@ -617,7 +617,7 @@ var page = Component.extend({
 
         //$("#buttonsubmit").hide();
         //$("#buttonreset").hide();
-        $("#buttonsPlaceHolder").hide();
+        $(".buttonsPlaceHolder").hide();
         
         var msg  = "";
         if(values[0].status == "SUCCESS") {
@@ -889,7 +889,9 @@ var page = Component.extend({
 
         } else {
 
+          if(self.appstate.userInfo.roleIds[0] == constants.ROLES.BM) {
             $("#submitButton").show();
+          }
 
         }
 
@@ -915,7 +917,7 @@ var page = Component.extend({
 
         $("#buttonreset").show();
 
-        $("#buttonsPlaceHolder").show();
+        $(".buttonsPlaceHolder").show();
 
         setTimeout(function(){
           alignGridStats('revisionHistory');
@@ -2135,6 +2137,9 @@ var page = Component.extend({
 
             self.scope.addRemoveElement(self.scope.reqCountries, name, "remove");
 
+            var par= el[0].parentElement;
+            par.classList.remove("tdselected");
+
             self.scope.submitAllCountires = false;
 
         } else {
@@ -2218,6 +2223,9 @@ var page = Component.extend({
         if(!el[0].checked) {
 
           self.scope.addRemoveElement(self.scope.reqReportTypes, name, "remove");
+
+          var par= el[0].parentElement;
+          par.classList.remove("tdselected");
 
           self.scope.submitAllReports = false;
 
