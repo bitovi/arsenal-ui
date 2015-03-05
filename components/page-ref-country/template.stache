@@ -116,7 +116,7 @@
             <div class="form-group">
                <div class="col-sm-12 " id="periodTocontainer">
                   <label for="forValidTo" class="col-sm-4 control-label small-headers">Valid To: </label>
-                  <div class="col-sm-8 normalBar calendarcls">
+                  <div class="col-sm-8 normalBar calendarcls requiredBarNone">
                     <input type='text' id="validTo" class="validTo form-control updatePeroid formInputs" place-holder="Select Period" can-value='pageState.countryDetails.country.validTo'/>
                     <span class="calendarDateIcon" data-type="periodTo"><i class="glyphicon-calendar glyphicon"></i></span>
                     <period-calendar selectedperiod={selectedperiod} appstate="{appstate}"></period-calendar>
@@ -154,7 +154,7 @@
             <div class="form-group">
                <div class="col-sm-12 ">
                   <label for="" class="col-sm-4 control-label small-headers">Alternate Pricing Method: </label>
-                  <div class="col-sm-8 normalBar">
+                  <div class="col-sm-8 normalBar requiredBarNone">
                     <select  class="form-control inputMonth" id="altPricingMethod" can-value='pageState.countryDetails.country.altPricingMethod'>
                       <option value="">Select</option>
                       {{#each pricingMethods}}
@@ -199,7 +199,7 @@
             <div class="form-group">
                <div class="col-sm-12">
                   <label for="" class="col-sm-4 control-label small-headers">Alternate Currency: </label>
-                  <div class="col-sm-8 normalBar">
+                  <div class="col-sm-8 normalBar requiredBarNone">
                     <select class="form-control" id="altCurrSel" can-value='pageState.countryDetails.country.altCurrency' name="invoiceCurr" >
                       {{#each altcurrencies}}
                         <option value="{{.}}">{{.}}</option>
@@ -307,7 +307,7 @@
 
 
         <div id="viewPricingModelDivBlock">
-          <div id="viewPricingModelDiv"> <!-- View Pricing Model start --->
+          <div id="viewPricingModelDiv"> <!-- View Pricing Model start -->
               <div class="col-sm-12" style="border-bottom: 1px solid #ddd;padding: 0px;">
                 <div class="col-sm-11 mid-headers" style="padding-top: 10px;">
                   View Pricing Model
@@ -326,12 +326,14 @@
                       </div>
                    </div>
                   <div class="col-sm-7 form-group">
+                    {{#if getPricingModelDetails.entity}}
                     <div class="singleField">
                         <label for="" class="col-sm-6 control-label small-headers">Entity:</label>
                         <div class="col-sm-6">
                             <span>{{getPricingModelDetails.entity}}</span>
                         </div>
                       </div>
+                    {{/if}}
                   </div>
                 </div>
                 <div class="col-sm-12" style="padding-top: 10px;">
@@ -363,14 +365,16 @@
                     <div id="trackCountsDiv"></div>
                   </fieldset>
                 </div>
+                {{#if commentFlag}}
                 <div class="col-sm-12">
                   <label for="" class="col-sm-2 control-label small-headers" style="text-align: left;padding-left: 0px;">Comments: </label>
                   <div id="priceModelmultipleComments" class="col-sm-10 normalBar">
                     <textarea class="form-control" maxlength="1024" style="height:125px;min-height:100px;max-height:100px;"></textarea>
                   </div>
                 </div>
+                {{/if}}
               </div>
-          </div><!-- View Pricing Model ends --->
+          </div><!-- View Pricing Model ends -->
         </div>
       </div> <!-- Main Layout END-->
     </form>
