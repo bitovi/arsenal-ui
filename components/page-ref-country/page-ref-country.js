@@ -792,6 +792,8 @@ var page = Component.extend({
             alignGrid("grid-society-model");
           },50);
 
+          $('#submitBtn').show();
+
           self.switchButtons();
 
           if(data.countryDetails.proposalPending != null && data.countryDetails.proposalPending != undefined
