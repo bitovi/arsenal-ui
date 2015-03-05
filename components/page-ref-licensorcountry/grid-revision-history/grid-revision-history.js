@@ -42,7 +42,7 @@ Grid.extend({
         id: 'status',
         title: 'Status',
         contents: function(row) {
-          return row.status === "A" ? "Active" : "InActive";
+          return row.status === "A" ? "Active" : row.status === "I" ? "Inactive" : row.status === "N" : "New" : "Rejected" ;
         }
       },
       {
