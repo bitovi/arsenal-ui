@@ -8,7 +8,6 @@ import RinsCommon from 'utils/urls';
 import UserReq from 'utils/request/';
 import reconGrid from  'components/recon-grid/';
 import ingestedColumns from './column-sets/ingest-columns';
-//import detailsColumns from './column-sets/details-columns';
 import Recon from 'models/recon/';
 
 import tokeninput from 'rinsTokeninput';
@@ -56,7 +55,6 @@ var page = Component.extend({
     pagename : "recon",
     sortColumns:[],
     sortDirection: "asc",
-    //populateDefaultData:'@',
     load : true,
     recordsAvailable : true,
     totalRecordCount:'@',
@@ -117,10 +115,6 @@ var page = Component.extend({
     isIngestCcidsSelected:function(ref){
       //if the size of the list is greater than 0, enables the Reject button
       return ( this.attr("size_ingestCcidSelected") == ref || commonUtils.isReadOnly()=='true' ? 'disabled' : '' ) ;
-    },
-
-    isTabSelectedAs:function(tabName){
-      return 'style="display:' + ( this.attr("tabSelected") == tabName  ? 'block' : 'none') + '"';
     }
 
   },
@@ -137,14 +131,6 @@ var page = Component.extend({
      fetchReconIngest(this.scope,true);
   },
   events:{
-    'shown.bs.tab': function(el, ev) {
-      this.scope.attr("tabSelected", $('.nav-tabs .active').text());
-      //this.scope.appstate.attr("renderGlobalSearch",true);
-      //Load when the list is empty
-      if(_.size(this.scope.ingestList.headerRows) == 0 ){
-        commonUtils.triggerGlobalSearch();
-      }
-    },
     "inserted": function(){
       var self = this;
 
@@ -241,25 +227,6 @@ var page = Component.extend({
     ".downloadLink.fileName click": function(item, el, ev){
       var self=this.scope;
       var row = item.closest('tr').data('row').row;
-
-      // var request = {
-      //       "files":[
-      //         {
-
-      //         }
-      //       ]
-      // }
-
-      // if(row.invFileId == 0 || row.invFileId == "" || row.invFileId == null){
-      //   request.files[0]["filePath"] = row.filePath;
-      //   request.files[0]["fileName"] = row.invFileName;
-      // }else{
-      //   request.files[0]["fileId"] = row.invFileId;
-      //   request.files[0]["boundType"] = row.invFileType;
-      // }
-
-      // console.log(JSON.stringify(request));
-
       var file={};
       file.fileId= row.invFileId;
       file.boundType='INBOUND';
@@ -267,33 +234,13 @@ var page = Component.extend({
       //FileManager.findOne(request);
 
       FileManager.findOne(file,function(data){
-          if(data["status"]=="SUCCESS"){
-
-          }else{
-            // $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-            // $("#messageDiv").show();
-            // setTimeout(function(){
-            //     $("#messageDiv").hide();
-            // },2000)
-            commonUtils.showErrorMessage(data["responseText"]);
+          if(data["status"]!="SUCCESS"){
+            commonUtils.displayUIMessage(data["status"],data["responseText"]);
           }
     }, function(xhr) {
           console.error("Error while downloading the file with fileId: "+fileId+xhr);
     });
 
-
-     //Promise.all([FileManager.findOne(request)]).then(function(values) {
-
-       //download("sampleFile" , values[0].responseText);
-
-    //});
-      //FileManager.findOne({request}, function(values) {
-
-        //download("sample.csv", values[0].responseText);
-
-      //}, function(xhr) {
-          // handle errors
-      //});
 
     },
     ".downloadLink.liDispAmt click": function(item, el, ev){
@@ -361,9 +308,6 @@ var page = Component.extend({
 
       }
     },
-    '.btn-Ingest click': function() {
-      processRejectIngestRequest(this.scope,"ingest");
-    },
     '.btn-ingested-reject click': function() {
 
       $('#rejectModal').modal({
@@ -384,7 +328,7 @@ var page = Component.extend({
     },
     '.btn-confirm-ok click': function(){
       $('#rejectModal').modal('hide');
-      processRejectIngestRequest(this.scope,"reject");
+      processRejectRequest(this.scope,"reject");
     },
 
     '{scope.appstate} change': function() {
@@ -409,7 +353,7 @@ var page = Component.extend({
     },
     ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
           var self=this;
-//console.log($(item[0]).attr("class"));
+          //console.log($(item[0]).attr("class"));
           var val = $(item[0]).attr("class").split(" ");
           var existingSortColumns =self.scope.sortColumns.attr();
           var existingSortColumnsLen = existingSortColumns.length;
@@ -463,12 +407,7 @@ var page = Component.extend({
                       if(data["status"]=="SUCCESS"){
                         $('#exportExcel').html(stache('<export-toexcel csv={data}></export-toexcel>')({data}));
                       }else{
-                        // $("#messageDiv").html("<label class='errorMessage'>"+data["responseText"]+"</label>");
-                        // $("#messageDiv").show();
-                        // setTimeout(function(){
-                        //     $("#messageDiv").hide();
-                        // },2000)
-                        commonUtils.showErrorMessage(data["responseText"]);
+                        commonUtils.displayUIMessage(data["status"], data["responseText"]);
                         self.scope.attr('emptyrows',true);
                       }
                 }, function(xhr) {
@@ -532,7 +471,7 @@ var createIngestedReconRequestForExportToExcel=function(appstate){
 
 
 
-var processRejectIngestRequest = function(scope,requestType){
+var processRejectRequest = function(scope,requestType){
     var ccidList ;
     var type ;
     var ccidSelected = [];
@@ -549,7 +488,6 @@ var processRejectIngestRequest = function(scope,requestType){
         ccidSelected.push(value);
       }
     );
-
     if(requestType == "reject"){
 
         var rejectSearchRequestObj =   {
@@ -558,7 +496,6 @@ var processRejectIngestRequest = function(scope,requestType){
           "ids" : ccidSelected
           }
         }
-        //console.log(JSON.stringify((rejectSearchRequestObj)));
 
       Promise.all([Recon.reject(rejectSearchRequestObj)]).then(function(values) {
 
@@ -567,10 +504,11 @@ var processRejectIngestRequest = function(scope,requestType){
 
         if(values != null && values.length > 0) {
           var data = values[0];
+
+          commonUtils.displayUIMessage(data.status ,data["responseText"]);
+
           if(data.status == "SUCCESS"){
 
-            // $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
-            // $("#messageDiv").show();
 
             if(tab == "ingest") {
               scope.reconRefresh[0].summaryStatsData.splice(0,1);
@@ -579,63 +517,15 @@ var processRejectIngestRequest = function(scope,requestType){
 
             $('.statsTable').hide();
 
-            // setTimeout(function(){
-            //   $("#messageDiv").hide();
-            // },3000);
-
-            commonUtils.showSuccessMessage(data["responseText"]);
-
             fetchReconIngest(scope, scope.load);
           }
-        } else{
+        }
 
-              //error text has to be shared. TODO - not sure how service responds to it
-              displayErrorMessage(data.responseText,"Failed to Ingest:");
-
-          }
         });
-
-    }else if(requestType == "ingest"){
-
-
-      var rejectSearchRequestObj =   {
-        "searchRequest": {
-          "ids" : ccidSelected
-        }
-      }
-
-      //console.log(JSON.stringify((rejectSearchRequestObj)));
-
-      Recon.ingest((rejectSearchRequestObj)).done(function(data){
-        if(data.status == "SUCCESS"){
-          // $("#messageDiv").html("<label class='successMessage'>"+data.responseText+"</label>")
-          // $("#messageDiv").show();
-          // setTimeout(function(){
-          //   $("#messageDiv").hide();
-          // },4000);
-          commonUtils.showSuccessMessage(data["responseText"]);
-        }else{
-          //error text has to be shared. TODO - not sure how service responds to it
-          displayErrorMessage(data.responseText,"Failed to Ingest:");
-        }
-      });
-
     }
 }
 
 
-var displayErrorMessage = function(message,log){
-
-  // $("#messageDiv").html("<label class='errorMessage'>"+message+"</label>");
-  // $("#messageDiv").show();
-  // setTimeout(function(){
-  //   $("#messageDiv").hide();
-  // },4000);
-  // console.error(log+message);
-
-  commonUtils.showErrorMessage(message);
-
-}
 
 /**/
 var fetchReconIngest = function(scope, load){
@@ -680,17 +570,15 @@ var fetchReconIngest = function(scope, load){
       var data = values[0];
       dataLowerGrid = data;
       if(data.status == "FAILURE"){
-        //displayErrorMessage(data.responseText,"Failed to load the Recon Ingest Tab:");
-        commonUtils.displayUIMessageWithDiv("#messageDiv", "FAILURE", data["responseText"]);
+        commonUtils.displayUIMessage(data.status, data["responseText"]);
       }else  {
 
         if(data.reconStatsDetails == undefined || (data.reconStatsDetails != null && data.reconStatsDetails.length <= 0)) {
 
           scope.attr("emptyrows", true);
           if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
-              commonUtils.showSuccessMessage(data["responseText"]);
-            }
-          //commonUtils.displayUIMessageWithDiv("#messageDiv", "SUCCESS", data["responseText"]);
+              commonUtils.displayUIMessage(data.status, data["responseText"]);
+          }
 
         } else {
 
@@ -787,31 +675,10 @@ var fetchReconIngest = function(scope, load){
         scope.attr("load", true);
       }
 
-   /* } else {
-      scope.attr("load", true);
-
-      var ccidCheckbox = $("input.selectRow");
-
-      for(var i=0; i<ccidCheckbox.length  ;i++) {
-
-        for(var j=0; j< scope.ingestCcidSelected.length; j++ ) {
-
-          if (scope.ingestCcidSelected[j] == ccidCheckbox[i].getAttribute("value")) {
-
-            ccidCheckbox[i].checked = true;
-
-          }
-        }
-
-      }
-      scope.setHeaderChkBox();
-
-    }*/
-
 
     $("#loading_img").hide();
   });
-  //scope.attr('populateDefaultData',false);
+  
 }
 
 var refreshChekboxSelection = function(el,scope){
@@ -842,53 +709,7 @@ var linkDownload = function(a, filename, request) {
 
 function getSearchReqObj(self) {
   var appstate= self.appstate;
-  // if (self.populateDefaultData) {
-  //   appstate = commonUtils.getDefaultParameters(appstate);
-
-  //   var periodFrom = appstate.periodFrom;
-  //   var periodTo = appstate.periodTo;
-  //   var serTypeId = appstate.storeType;
-  //   var regId = appstate.region;
-  //   var countryId = appstate.country.attr();
-  //   var licId = appstate.licensor.attr();
-  //   var contGrpId = appstate.contentType.attr();
-  //   var periodType = appstate.periodType;
-  //   var searchRequestObj = {};
-  //   searchRequestObj.searchRequest = {};
-  //   searchRequestObj.searchRequest["periodFrom"] = appstate.periodFrom;
-  //   searchRequestObj.searchRequest["periodTo"] = appstate.periodTo;
-  //   searchRequestObj.searchRequest["periodType"] = appstate.periodType;
-  //   searchRequestObj.searchRequest["serviceTypeId"] = "";
-  //   searchRequestObj.searchRequest["regionId"] = "";
-  //   searchRequestObj.searchRequest["country"] = [];
-  //   searchRequestObj.searchRequest["entityId"] = [];
-  //   searchRequestObj.searchRequest["contentGrpId"] = [];
-
-  //   if (typeof(serTypeId) != "undefined") {
-  //     searchRequestObj.searchRequest["serviceTypeId"] = serTypeId.id;
-  //   }
-
-  //   if (typeof(region) != "undefined") {
-  //     searchRequestObj.searchRequest["regionId"] = regId.id;
-  //   }
-
-  //   if (typeof(countryId) != "undefined") {
-  //     searchRequestObj.searchRequest["country"] = countryId;
-  //   }
-
-  //   if (typeof(licId) != "undefined") {
-  //     searchRequestObj.searchRequest["entityId"] = licId;
-  //   }
-
-  //   if (typeof(contGrpId) != "undefined") {
-  //     searchRequestObj.searchRequest["contentGrpId"] = contGrpId;
-  //   }
-
-  //   return searchRequestObj;
-  // } else {
-    return UserReq.formGlobalRequest(appstate);
- // }
-
+  return UserReq.formGlobalRequest(appstate);
 }
 
 export default page;

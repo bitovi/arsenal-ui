@@ -276,7 +276,7 @@ var PaymentBundle = Model.extend({
 
           self.attr('status',bundle.status);
           self.attr('responseText',bundle.responseText);
-          //self.attr('bundleDetailsGroup', undefined);
+          bundleLineItems.attr('bundleDetailsGroup', undefined);
 
 
         }else{

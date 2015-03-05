@@ -206,7 +206,7 @@ var BundleDetailTabs = Component.extend({
           scope.bundleProgress.triggerValidation ? scope.getNewValidations(bundle) : "";
         }
 
-        if(bundle.status == "SUCCESS" && bundleLineItems.bundleDetailsGroup != undefined ){
+        if(bundle.status == "SUCCESS" && bundleLineItems.bundleDetailsGroup == undefined ){
           commonUtils.displayUIMessage( bundle.status, bundle.responseText);
         }
 
