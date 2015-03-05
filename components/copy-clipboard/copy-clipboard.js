@@ -8,10 +8,10 @@ var copyClipboard = Component.extend({
   scope: {
     appstate: undefined,
     table:[]
-   
+
  },
   init:function(){
-    
+
   },
   events:{
     '.clipboardClose click':function(){
@@ -46,13 +46,25 @@ var copyClipboard = Component.extend({
                 range.selectNode(el);
                 sel.addRange(range);
             }
-        } else if (body.createTextRange) { 
-            range = body.createTextRange(); 
+        } else if (body.createTextRange) {
+            range = body.createTextRange();
             range.moveToElementText(el);
             range.select();
             range.execCommand("Copy");
         }
-        return; 
+
+
+        //debugger;
+        //IE Search is failing in Safri ( mi allignment). To fix, added the &nbsp; for the liencor. 
+        $('td:nth-child(2 )').each(function() {
+          var cellText = $(this).text();
+         if ($.trim(cellText) == ''){
+           $(this).html("&nbsp;");
+         }
+        });
+
+        //$(".entityName:empty").html("&nbsp;");
+        return;
       }
       selectElementContents(document.getElementById('dynamic'))
     }
@@ -60,6 +72,6 @@ var copyClipboard = Component.extend({
   helpers:function(){
 
   }
- 
+
 });
 export default copyClipboard;
