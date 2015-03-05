@@ -102,7 +102,7 @@ Grid.extend({
       var tbody = self.element.find('tbody');
       //setting tbody height which determines the page height- start
       var getTblBodyHght=gridUtils.getTableBodyHeight('icsvinvoiceGrid',89);
-      gridUtils.setElementHeight(tbody,getTblBodyHght,getTblBodyHght);
+      gridUtils.setElementHeight(tbody,"initial",getTblBodyHght);
       //setting tbody height - end
     }
   }
