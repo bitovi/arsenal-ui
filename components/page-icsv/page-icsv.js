@@ -66,7 +66,16 @@ Grid.extend({
       },
       {
         id: 'invoiceNum',
-        title: 'Invoice No'
+        title: 'Invoice No',
+        //rdar://problem/20042024> Links for page navigation instead of grid row double click - Multiple screens -start
+        contents: function(row) {
+          if(row.invoiceNum != undefined && row.invoiceNum != null ) {
+            return can.stache('<a class="downloadLink invoiceNum">'+row.invoiceNum+'</a>')();
+          } else {
+            return "";
+          }
+        }
+        //rdar://problem/20042024> Links for page navigation instead of grid row double click - Multiple screens -end
       },
       {
         id: 'dueDate',
@@ -577,13 +586,22 @@ var page = Component.extend({
                                     }
                                 });
       },
-      ".rn-grid>tbody>tr td dblclick": function(el, ev){
+      //rdar://problem/20042024> Links for page navigation instead of grid row double click - Multiple screens -start
+      /*".rn-grid>tbody>tr td dblclick": function(el, ev){
           var invoiceid = el.closest('tr').data('row').row.invoiceOrigNum;
           var societyName=el.closest('tr').data('row').row.licensor;
           icsvmap.attr("invoiceid", invoiceid);
           icsvmap.attr("licensor", societyName);
           icsvmap.attr("showediticsv", true);
+      },*/
+      ".downloadLink.invoiceNum click": function(el, ev){
+        var invoiceid = el.closest('tr').data('row').row.invoiceOrigNum;
+        var societyName=el.closest('tr').data('row').row.licensor;
+        icsvmap.attr("invoiceid", invoiceid);
+        icsvmap.attr("licensor", societyName);
+        icsvmap.attr("showediticsv", true);
       },
+      //rdar://problem/20042024> Links for page navigation instead of grid row double click - Multiple screens -end
       ".erroricon mouseover":function(el, ev){
           el.popover({'html': true});
           el.popover('show');

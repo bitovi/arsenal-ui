@@ -129,7 +129,16 @@ Grid.extend({
       {
         id: 'invoiceNumber',
         title: 'Invoice No',
-        sortable: true
+        //rdar://problem/20042024> Links for page navigation instead of grid row double click - Multiple screens -start
+        sortable: true,
+        contents: function(row) {
+          if(row.invoiceNumber != undefined && row.invoiceNumber != null ) {
+            return can.stache('<a class="downloadLink invoiceNumber">'+row.invoiceNumber+'</a>')();
+          } else {
+            return "";
+          }
+        }
+        //rdar://problem/20042024> Links for page navigation instead of grid row double click - Multiple screens -end  
       },
       {
         id: 'invoiceCcy',
@@ -441,7 +450,8 @@ var page = Component.extend({
             //this.scope.appstate.attr('page','icsv');
             commonUtils.navigateTo("icsv");
     },
-    ".rn-grid>tbody>tr:not('.child') td dblclick": function(item, el, ev){
+    //rdar://problem/20042024> Links for page navigation instead of grid row double click - Multiple screens -start
+    /*".rn-grid>tbody>tr:not('.child') td dblclick": function(item, el, ev){
           //var invoiceid = el.closest('tr').data('row').row.id;
           var self=this;
           var flag=false;
@@ -454,7 +464,7 @@ var page = Component.extend({
           self.scope.appstate.attr("invoiceId", row.invId);
           //console.log("row is "+JSON.stringify(row));
 
-          /* An invoice can be Edited only if it satisfies the below criteria */
+          // An invoice can be Edited only if it satisfies the below criteria
           if(statusId==0){
             if(paymentState==0 || paymentState==1 || paymentState==9){
               invoicemap.attr('invoiceid',invoiceid);
@@ -471,7 +481,38 @@ var page = Component.extend({
               //self.scope.appstate.attr('page','edit-invoice');
               commonUtils.navigateTo("edit-invoice");
           }
+    },*/
+    ".downloadLink.invoiceNumber click": function(el, ev){
+      var self=this;
+      var flag=false;
+      var row = el.closest('tr').data('row').row;
+      var invoiceid = row.invId;
+      var statusId = row.statusId;
+      var paymentState = row.paymentState;
+      var invoiceno = row.invoiceNumber;
+      self.scope.appstate.attr("invSearchPervHist", self.scope.appstate);
+      self.scope.appstate.attr("invoiceId", row.invId);
+      //console.log("row is "+JSON.stringify(row));
+
+      /* An invoice can be Edited only if it satisfies the below criteria */
+      if(statusId==0){
+        if(paymentState==0 || paymentState==1 || paymentState==9){
+          invoicemap.attr('invoiceid',invoiceid);
+          flag=true;
+          self.scope.appstate.attr('viewinvoicemode',false);
+          commonUtils.navigateTo("edit-invoice");
+          //self.scope.appstate.attr('page','edit-invoice');
+        }
+      }
+
+      if(flag==false) {
+          invoicemap.attr('invoiceid',invoiceid);
+          self.scope.appstate.attr('viewinvoicemode',true);
+          //self.scope.appstate.attr('page','edit-invoice');
+          commonUtils.navigateTo("edit-invoice");
+      }
     },
+    //rdar://problem/20042024> Links for page navigation instead of grid row double click - Multiple screens -end
     ".rn-grid>thead>tr>th:gt(0) click": function(item, el, ev){
           var self=this;
 //console.log($(item[0]).attr("class"));
