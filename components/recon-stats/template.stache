@@ -5,7 +5,7 @@
 				<div class="col-md-12" style="text-align:right;padding: 0px;padding-top:10px;padding-bottom:10px">
 					<!--<label  for="inputAnalyze">Convert to Currency </label>-->
 
-					<select id="currency" class="currency" name="currency" {{isIngestCcidsSelected 0}} can-value="currency" style="vertical-align: bottom;">
+					<select id="currency" class="form-control currency" name="currency" {{isIngestCcidsSelected 0}} can-value="currency" style="vertical-align: bottom;">
 						<option value="">Select</option>
 						{{#each currencyList}}
 						<option value="{{id}}">{{id}}</option>
