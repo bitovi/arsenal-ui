@@ -874,9 +874,9 @@ var page = Component.extend({
 												var invoicevalid = $("#invoiceform").data('bootstrapValidator').isValid();
 													if(!invoicevalid){
 														$("#invoiceform").data('bootstrapValidator').validate();
-														$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
+														//$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
 													}
-												}, "500");
+												}, 500);
 									}
 						},
 
@@ -1098,7 +1098,7 @@ var page = Component.extend({
 
 
 				        			self.scope.ajaxRequestStatus.attr("allDataLoaded", true);
-
+				        			
 
 								$(".removeRow").click(function(event){
 		              	           $option.each(function(index){
@@ -1494,23 +1494,41 @@ var page = Component.extend({
 
 								  var tempInvMap = icsvmap.invoiceData.invoices[selIndex].attr();
 
-								  if((typeof tempInvMap.errors.errorMap !== "undefined") && (tempInvMap.errors.errorMap != null)){
-										for(var key in tempInvMap.errors.errorMap){  /*Invoice error*/
+								  if(tempInvMap.errors != undefined && tempInvMap.errors.length>0){
+								  	for(var i=0; i<tempInvMap.errors;i++){
+								  		if(tempInvMap.errors[i].errorMap != undefined && tempInvMap.errors[i].errorMap.length>0){
+								  			for(var k=0; k<tempInvMap.errors[i].errorMap.length;k++){
+								  				icsvmap.invoiceData.invoices[selIndex].errors[i].errorMap[k].attr(key, " ");
+								  			}
+								  		}
+								  	}
+								  }
 
-			     							icsvmap.invoiceData.invoices[selIndex].errors.errorMap.attr(key, " ");
-										}
-									}
+								 //  if((typeof tempInvMap.errors.errorMap !== "undefined") && (tempInvMap.errors.errorMap != null)){
+									// 	for(var key in tempInvMap.errors.errorMap){  /*Invoice error*/
 
+			     	// 						icsvmap.invoiceData.invoices[selIndex].errors.errorMap.attr(key, " ");
+									// 	}
+									// }
 
+								if(tempInvMap.invoiceLines != undefined && tempInvMap.invoiceLines.length>0 && tempInvMap.invoiceLines[j].errors != undefined && tempInvMap.invoiceLines[j].errors.length>0){
+								  	for(var i=0; i<tempInvMap.invoiceLines[j].errors;i++){
+								  		if(tempInvMap.invoiceLines[j].errors[i].errorMap != undefined && tempInvMap.invoiceLines[j].errors[i].errorMap.length>0){
+								  			for(var k=0; k<tempInvMap.invoiceLines[j].errors[i].errorMap.length;k++){
+								  				icsvmap.invoiceData.invoices[selIndex].invoiceLines[j].errors[i].errorMap[k].attr(key, " ");
+								  			}
+								  		}
+								  	}
+								  }
 
-						          for(var j =0; j < tempInvMap.invoiceLines.length; j++){
-										if(tempInvMap.invoiceLines[j].errors!= undefined && (typeof tempInvMap.invoiceLines[j].errors.errorMap !== "undefined") && (tempInvMap.invoiceLines[j].errors.errorMap != null)){
-											for(var key in tempInvMap.invoiceLines[j].errors.errorMap){  /*Invoiceline error*/
+						    //       for(var j =0; j < tempInvMap.invoiceLines.length; j++){
+										// if(tempInvMap.invoiceLines[j].errors!= undefined && (typeof tempInvMap.invoiceLines[j].errors.errorMap !== "undefined") && (tempInvMap.invoiceLines[j].errors.errorMap != null)){
+										// 	for(var key in tempInvMap.invoiceLines[j].errors.errorMap){  /*Invoiceline error*/
 
-							                      icsvmap.invoiceData.invoices[selIndex].invoiceLines[j].errors.errorMap.attr(key, " ");
-							                 }
-						                }
-						          	}
+							   //                    icsvmap.invoiceData.invoices[selIndex].invoiceLines[j].errors.errorMap.attr(key, " ");
+							   //               }
+						    //             }
+						    //       	}
 
 
 					 				icsvmap.attr("showediticsv", false);

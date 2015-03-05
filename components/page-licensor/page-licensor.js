@@ -604,28 +604,34 @@ var page = Component.extend({
 
       var self = this;
 
-      var commentObj = values[0].licensorDetails.commentList == null ? [] : values[0].licensorDetails.commentList ;
-
       self.clearContactDetails();
 
       self.clearRepConfDetails();
 
       self.editable = "";
 
-      if(values[0].licensorDetails.id == 0) {
+      if(values[0].licensorDetails == null || values[0].licensorDetails.id == 0) {
 
         $("#loading_img").hide();
         //$("#button_layout").hide();
 
         //$("#buttonsubmit").hide();
         //$("#buttonreset").hide();
-        $("#button_layout").hide();
+        $("#buttonsPlaceHolder").hide();
         
-        var msg = "No details present";
+        var msg  = "";
+        if(values[0].status == "SUCCESS") {
+          msg = "No data found";
+        } else {
+          msg = values[0].responseText;
+
+        }
         
         commonUtils.displayUIMessageWithDiv("#invmessageDiv", "FAILURE", msg);
     
       } else {
+
+        var commentObj = values[0].licensorDetails.commentList == null ? [] : values[0].licensorDetails.commentList ;
 
         var countryModelObj = values[0].licensorDetails.commentList;
 
@@ -908,6 +914,8 @@ var page = Component.extend({
         $('.uploadedFTP').show();
 
         $("#buttonreset").show();
+
+        $("#buttonsPlaceHolder").show();
 
         setTimeout(function(){
           alignGridStats('revisionHistory');
