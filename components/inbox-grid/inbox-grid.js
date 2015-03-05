@@ -21,7 +21,10 @@ var InboxGrid = ScrollingGrid.extend({
     }, {
       id: 'description',
       title: 'Description',
-      sortable: true
+      sortable: true,
+      contents: function(row) {
+        return stache('<a href="javascript:void(0)">{{description}}</a>')(row);
+      }
     }, {
       id: 'createdBy',
       title: 'Initiated By',
