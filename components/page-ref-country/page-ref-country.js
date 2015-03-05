@@ -340,6 +340,9 @@ var page = Component.extend({
             commonUtils.displayUIMessage( "SUCCESS", "A Proposal is already pending for the licensor");
 
           } 
+
+          $('#countryForm').bootstrapValidator('validate');
+
       } else {
 
         commonUtils.displayUIMessage(data.status, data.responseText);
