@@ -94,7 +94,7 @@ var InboxGrid = ScrollingGrid.extend({
     "tbody tr td.description click": function(el, ev){
       var row = el.parent().data('row').row;
       console.log(" Clicked "+row.tableName+", value :"+row.tableValue);
-      var regionId=$('#regionsFilter option:selected').val();
+      var regionId=$("#regionsFilter option:contains('"+row.region+"')").val();
       this.scope.appstate.screenLookup.attr("screendetails", null);
 
       if(row.tableName === 'RINS_PMT_BUNDLE'){
