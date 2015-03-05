@@ -332,7 +332,7 @@ var page = Component.extend({
           },50);
 
           $('#submitBtn').show();
-          
+
           self.switchButtons();
 
           if(data.countryDetails.proposalPending != null && data.countryDetails.proposalPending != undefined
@@ -387,10 +387,12 @@ var page = Component.extend({
               self.scope.attr("regionStore",regionId);
               //$("#selCountry").val((values[2])[0].id);
               self.scope.pageState.countryDetails.country.attr("countryId", values[2][0].id);
-              if(self.scope.appstate.attr("screendetails") != null && self.scope.appstate.attr("screendetails") != undefined) {
+              if(self.scope.appstate.screenLookup.attr("screendetails") != null && self.scope.appstate.screenLookup.attr("screendetails") != undefined) {
                   //countryId=self.scope.appstate.screendetails.tableId;
-                  self.scope.populateCountryDetails(self.scope, "", self.scope.appstate.screendetails.tableId, false)
-                  self.scope.appstate.attr("screendetails", null);
+                  self.scope.attr("regionStore",self.scope.appstate.screenLookup.screendetails.regionId);
+                  self.scope.populateCountryDetails(self.scope, "", self.scope.appstate.screenLookup.screendetails.tableId, false)
+                  self.scope.appstate.screenLookup.attr("screendetails", null);
+
               } else {
                 $("#fetchDetailsBtn").click();
               }
