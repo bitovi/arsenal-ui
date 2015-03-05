@@ -1858,8 +1858,8 @@ var page = Component.extend({
     'inserted': function() {
       var self = this;
       var regionId = DefaultGlobalParameters.Region.id+'';
-        if(self.scope.appstate.attr("screendetails") != null && self.scope.appstate.attr("screendetails") != undefined){
-          regionId=self.scope.appstate.screendetails.regionId;
+        if(self.scope.appstate.screenLookup.attr("screendetails") != null && self.scope.appstate.screenLookup.attr("screendetails") != undefined){
+          regionId=self.scope.appstate.screenLookup.screendetails.regionId;
         } else if(self.scope.appstate.screenLookup.attr("licensorScreenDetails") != undefined){
           regionId=self.scope.appstate.screenLookup.licensorScreenDetails.regionId;
         }

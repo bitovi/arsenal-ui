@@ -28,7 +28,7 @@ var notification = Component.extend({
         notificationRequest["notificationList"] =[];
         for(var i = 0 ;i < notificationList.length;i++) {
           if(notificationList[i].isViewed === "N"){
-            notificationRequest["notificationList"].push(self.scope.attr("notificationList")[i].notificationId);
+            notificationRequest["notificationList"].push(notificationList[i].notificationId);
           }
         }
         if(notificationRequest["notificationList"].length > 0){
