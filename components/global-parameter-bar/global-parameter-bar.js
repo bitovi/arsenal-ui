@@ -409,7 +409,7 @@ var GlobalParameterBar = Component.extend({
           selectAllText: 'Select All',
           //selectAllValue: 'selectAll',
           selectAllName: 'selAllCountry',
-          maxHeight: 200,
+          maxHeight: 500,
           buttonClass: 'dropdown-toggle btn btn-default safari-style',
           onChange: function(option, checked, select) {
             $("#countriesFilter").multiselect("refresh");
@@ -450,7 +450,7 @@ var GlobalParameterBar = Component.extend({
           selectAllText: 'Select All',
           //selectAllValue: 'selectAll',
           selectAllName: 'selAllLicensor',
-          maxHeight: 200,
+          maxHeight: 500, //rdar://problem/20028372> Drop Downs should show more rows
           buttonClass: 'dropdown-toggle btn btn-default safari-style',
           onChange: function(option, checked, select) {
             $("#licensorsFilter").multiselect("refresh");
@@ -489,7 +489,7 @@ var GlobalParameterBar = Component.extend({
           selectAllText: 'Select All',
           //selectAllValue: 'selectAll',
           selectAllName: 'selAllContentType',
-          maxHeight: 200,
+          maxHeight: 500, //rdar://problem/20028372> Drop Downs should show more rows
           buttonClass: 'dropdown-toggle btn btn-default safari-style',
           onChange: function(option, checked, select) {
             $("#contentTypesFilter").multiselect("refresh");
