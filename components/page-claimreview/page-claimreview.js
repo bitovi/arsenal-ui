@@ -1234,12 +1234,13 @@ var generateTableData = function(invoiceData,footerData){
               var highestPeriod = 0;
               var tmpPeriod = 0;
               var hasChild=true;
+              var periodType="";
 
             if(invoiceLineItems.length > 0){
               if(invoiceLineItems.length > 1){
                 for(var j=0;j<invoiceLineItems.length;j++){
                   var invLITemp={};
-                  var periodType = invoiceLineItems[j]["periodType"];
+                   periodType = invoiceLineItems[j]["periodType"];
                   if(periodType == null || periodType == undefined ||(periodType !=null && periodType.length ==0)){
                     periodType='P';
                   }
@@ -1341,8 +1342,9 @@ var generateTableData = function(invoiceData,footerData){
 
                   var period = invoiceLineItems[0]["period"];
                   lowestPeriod=highestPeriod=period;
-                  gridData.data[insertedId]["periodNo"]=period;
-                  gridData.data[insertedId]["periodType"]=periodType;
+                  periodType=invoiceLineItems[0]["periodType"];
+                  //gridData.data[insertedId]["period"]=periodWidgetHelper.getDisplayPeriod(period,invoiceLineItems[0]["periodType"]);
+                  //gridData.data[insertedId]["periodType"]=invoiceLineItems[0]["periodType"];
                 }
               }
 

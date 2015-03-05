@@ -331,6 +331,8 @@ var page = Component.extend({
             alignGrid("grid-society-model");
           },50);
 
+          $('#submitBtn').show();
+          
           self.switchButtons();
 
           if(data.countryDetails.proposalPending != null && data.countryDetails.proposalPending != undefined
@@ -341,6 +343,9 @@ var page = Component.extend({
             commonUtils.displayUIMessage( "SUCCESS", "A Proposal is already pending for the licensor");
 
           } 
+
+          $('#countryForm').bootstrapValidator('validate');
+
       } else {
 
         commonUtils.displayUIMessage(data.status, data.responseText);
@@ -793,6 +798,8 @@ var page = Component.extend({
             alignGrid("grid-society-model");
           },50);
 
+          $('#submitBtn').show();
+
           self.switchButtons();
 
           if(data.countryDetails.proposalPending != null && data.countryDetails.proposalPending != undefined
@@ -803,6 +810,8 @@ var page = Component.extend({
             commonUtils.displayUIMessage( "SUCCESS", "A Proposal is already pending for the licensor");
 
           }
+
+          $('#countryForm').bootstrapValidator('validate');
          
 
         } else {
