@@ -79,6 +79,7 @@ var page = Component.extend({
     regions:[],
     regionStore:"",
     reloadCountries:true,
+    commentFlag: false,
 
     switchButtons: function() {
 
@@ -911,8 +912,12 @@ var page = Component.extend({
             self.attr("trackCounts").replace(data.pricingModel.trackCounts);
 
             var tempcommentObj = data.pricingModel.pricingModel.comments;
-            if(tempcommentObj!=null)
+            if(tempcommentObj.length > 0){
+              self.attr("commentFlag", true);
               $('#priceModelmultipleComments').html(stache('<multiple-comments divid="priceModelmultipleComments" options="{tempcommentObj}" divheight="100" isreadOnly="y"></multiple-comments>')({tempcommentObj}));
+            }else{
+              self.attr("commentFlag", false);
+            }
 
             $("#viewPricingModelDivBlock").show();
         }).then(function(){
@@ -972,8 +977,12 @@ var page = Component.extend({
           self.attr("trackCounts").replace(data.pricingModel.trackCounts);
 
           var tempcommentObj = data.pricingModel.pricingModel.comments;
-          if(tempcommentObj!=null)
+          if(tempcommentObj.length > 0){
+            self.attr("commentFlag", true);
             $('#priceModelmultipleComments').html(stache('<multiple-comments divid="priceModelmultipleComments" options="{tempcommentObj}" divheight="100" isreadOnly="y"></multiple-comments>')({tempcommentObj}));
+          }else{
+            self.attr("commentFlag", false);
+          }
 
           $("#viewPricingModelDivBlock").show();
       }).then(function(){
