@@ -132,7 +132,7 @@ Grid.extend({
         //rdar://problem/20042024> Links for page navigation instead of grid row double click - Multiple screens -start
         sortable: true,
         contents: function(row) {
-          //if it is an footer row we should give the link.
+          //if it is an footer row we should not give the link.
           //as of now we can determine by the row values.
           if(row.invId != undefined && row.invId != null && row.invId != ""){
             if(row.invoiceNumber != undefined && row.invoiceNumber != null ) {
