@@ -132,13 +132,20 @@ Grid.extend({
         //rdar://problem/20042024> Links for page navigation instead of grid row double click - Multiple screens -start
         sortable: true,
         contents: function(row) {
-          if(row.invoiceNumber != undefined && row.invoiceNumber != null ) {
-            return can.stache('<a class="downloadLink invoiceNumber">'+row.invoiceNumber+'</a>')();
-          } else {
-            return "";
+          console.log('PEter test row',row);
+          //if it is an footer row we should give the link.
+          //as of now we can determine by the row values.
+          if(row.invId != undefined && row.invId != null && row.invId != ""){
+            if(row.invoiceNumber != undefined && row.invoiceNumber != null ) {
+              return can.stache('<a class="downloadLink invoiceNumber">'+row.invoiceNumber+'</a>')();
+            } else {
+              return "";
+            }
+          }else{
+            return row.invoiceNumber;
           }
         }
-        //rdar://problem/20042024> Links for page navigation instead of grid row double click - Multiple screens -end  
+        //rdar://problem/20042024> Links for page navigation instead of grid row double click - Multiple screens -end
       },
       {
         id: 'invoiceCcy',
