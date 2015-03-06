@@ -151,7 +151,6 @@ var page = Component.extend({
     var objDiv = $('#usercommentsdiv');
     objDiv.scrollTop = objDiv.scrollHeight;
     $("#viewPricingModelDivBlock").show();
-
     Promise.all([
       Licensor.findAll(UserReq.formRequestDetails(requestObj)),
       CountryLicensor.findOne(UserReq.formRequestDetails( {reqType:'modelListAndVersion'})) ,
@@ -163,7 +162,7 @@ var page = Component.extend({
 
         var licensor  = self.scope.attr("entities")[0].entities[0].id;
 
-        self.scope.pageState.entityCountryDetails.entityCountry.attr("entityId", licensor);
+        //self.scope.pageState.entityCountryDetails.entityCountry.attr("entityId", licensor);
         //licId = self.scope.attr("entities")[0].entities[0].id;
         //self.scope.attr("pricingModels").replace(values[1].modelTypes);
         self.scope.attr("pricingMethods").replace(values[2].pricingMethodList);
@@ -454,29 +453,21 @@ var page = Component.extend({
         },
 
         '{scope} pageState.entityCountryDetails.entityCountry.entityId': function() {
-
           var self = this;
-
           if(self.scope.attr("refreshEntityId")) {
             $('#fetchDetailsBtn').attr("disabled", true);
-
-
             var requestObj = {entityId:self.scope.pageState.entityCountryDetails.entityCountry.entityId};
             Promise.all([Country.findAllCountriesByLicenesor(UserReq.formRequestDetails(requestObj))]).then(function(values) {
               $('#fetchDetailsBtn').attr("disabled", false);
               self.scope.attr("countries").replace(values[0].data);
-              //if(self.scope.attr("onload")) {
-
-                self.scope.attr("onload", false);
                 $("#countryId").val(values[0].data[0].id);
                 self.scope.pageState.entityCountryDetails.entityCountry.attr("countryId", values[0].data[0].id);
-                $('#fetchDetailsBtn').click();
-
-              //}
-
+                if(self.scope.attr("onload")) {
+                  $('#fetchDetailsBtn').click();
+                  self.scope.attr("onload", false);
+                }
             });
           }
-          //this.scope.currencies.replace(Currency.findAll(UserReq.formRequestDetails(requestObj)));
         },
 
         '{scope} pageState.entityCountryDetails.pricingModelVersionNo': function() {
