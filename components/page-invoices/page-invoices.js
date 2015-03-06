@@ -557,7 +557,12 @@ var page = Component.extend({
           //console.log("aaa "+self.scope.sortColumns.attr());
            /* The below code calls {scope.appstate} change event that gets the new data for grid*/
            /* All the neccessary parameters will be set in that event */
-           self.scope.appstate.attr('globalSearchButtonClicked', true);
+           //rdar://problem/20057843> Scrolling down to see more entries in Search Invoice will deselect all entires -Start
+           self.scope.appstate.attr('globalSearchButtonClicked', false);
+           //reset the fetch index
+           self.scope.attr("offset",0);
+           self.scope.attr("tableScrollTop",0);
+           //rdar://problem/20057843> Scrolling down to see more entries in Search Invoice will deselect all entires -end
            if(self.scope.appstate.attr('globalSearch')){
               self.scope.appstate.attr('globalSearch', false);
             }else{
@@ -1066,15 +1071,19 @@ function getAllInvoices(self) {
   /* When fetch button is clicked the first set of records should be brought */
   /* Reset the offset to 0 only when global search Fetch button is clicked */
   /* In the case of scroll, globalSearchButtonClicked attr will be false */
+  //rdar://problem/20057843> Scrolling down to see more entries in Search Invoice will deselect all entires -Start
   if(self.appstate.attr('globalSearchButtonClicked')==true){
     self.attr("offset",0);
     self.attr("tableScrollTop",0);
+    /*unselect all checkbox on click of fetch*/
+      self.attr('checkedRows').replace([]);
+      self.attr('unDeletedInvoices').replace([]);
+  }else if($('.select-toggle-all').is(":checked")){
+    /*unselect all checkbox on click of fetch*/
+      self.attr('checkedRows').replace([]);
+      self.attr('unDeletedInvoices').replace([]);
   }
-
- /*unselect all checkbox on click of fetch*/
-   self.attr('checkedRows').replace([]);
-   self.attr('unDeletedInvoices').replace([]);
-
+  //rdar://problem/20057843> Scrolling down to see more entries in Search Invoice will deselect all entires -end
   /* Page is not allowed to do search by default when page is loaded */
   /* This can be checked using 'localGlobalSearch' parameter, it will be undefined when page loaded */
   // if(self.attr("localGlobalSearch") != undefined){
@@ -1117,7 +1126,9 @@ function fetchData(self){
                 }
                 self.attr('recordsAvailable',data.recordsAvailable);
                 self.attr('totalRecordCount', data.totRecCnt);
-                self.checkedRows.replace([]); //Reset Checked rows scope variable
+                //rdar://problem/20057843> Scrolling down to see more entries in Search Invoice will deselect all entires -Start
+                //self.checkedRows.replace([]); //Reset Checked rows scope variable
+                //rdar://problem/20057843> Scrolling down to see more entries in Search Invoice will deselect all entires -end
                 console.log('before assigning to Map',new Date());
                 if(parseInt(invSearchRequest.searchRequest["offset"])==0){
                   self.allInvoicesMap.replace(data);
@@ -1257,7 +1268,14 @@ function reRenderGrid(self){
   //var self = obj;
   var invoiceData = self.attr().allInvoicesMap[0].invoices;
   var footerData = self.attr().allInvoicesMap[0].footer;
-
+  //rdar://problem/20057843> Scrolling down to see more entries in Search Invoice will deselect all entires -Start
+  var checkedRow=false;
+  var isToggleSelected=false;
+  if($('.select-toggle-all').is(":checked")){
+    checkedRow=true;
+    isToggleSelected=true;
+  }
+  //rdar://problem/20057843> Scrolling down to see more entries in Search Invoice will deselect all entires -End
   //console.log("dsada "+JSON.stringify(invoiceData));
   var gridData = {"data":[],"footer":[]};
   var currencyList = {};
@@ -1267,7 +1285,19 @@ function reRenderGrid(self){
         var invTemp = {};
         invTemp["invId"] = invoiceData[i]["invId"];
         invTemp["__isChild"] = false;
-        invTemp["__isChecked"] = false;
+        //rdar://problem/20057843> Scrolling down to see more entries in Search Invoice will deselect all entires -Start
+        if(!isToggleSelected && self.attr('checkedRows').length > 0){
+          for(var index=0;index<self.attr('checkedRows').length;index++){
+            if(invTemp["invId"] === self.attr('checkedRows')[index]){
+              checkedRow=true;
+              break;
+            }else{
+              checkedRow=false;
+            }
+          }
+        }
+        invTemp["__isChecked"] = checkedRow;
+        //rdar://problem/20057843> Scrolling down to see more entries in Search Invoice will deselect all entires -End
         invTemp["hasChild"] = true;
         //invTemp["__isOddRow"] = false;
         invTemp["entityName"] = (invoiceData[i]["entityName"]==null)?"":invoiceData[i]["entityName"];
@@ -1442,61 +1472,18 @@ function reRenderGrid(self){
       self.appstate.attr("invoiceId", null);
 
     }
-
+    //rdar://problem/20057843> Scrolling down to see more entries in Search Invoice will deselect all entires -Start
+    if(isToggleSelected){
+      $('.select-toggle-all').prop('checked',true);
+      $('.select-toggle-all').trigger('change'); //this is to triger the action when clicking the toggle
+    }else if(self.attr('checkedRows').length > 0){
+      self.attr('checkedRows').replace(self.attr('checkedRows')); //this to trigger the validation
+    }
+    //rdar://problem/20057843> Scrolling down to see more entries in Search Invoice will deselect all entires -End
   } else {
     $("#loading_img").hide();
     $('#invoiceGrid').html(stache('<rn-grid-invoice emptyrows="{emptyrows}"></rn-grid-invoice>')({emptyrows:true}));
   }
 
 }
-
-
-/*function alignGrid(divId){
-  var colLength = $('#'+divId+' table>thead>tr>th').length;
-  var rowLength = $('#'+divId+' table>tbody>tr').length;
-  var divWidth = $('#'+divId).outerWidth();
-  var tableWidth = 0;
-  var tdWidth, cellWidthArr = [];
-  if(rowLength>0){
-    $('#'+divId+' table').css("width",divWidth-300);
-      for(var i=1;i<=colLength;i++){
-        var theadTdWidth = $('#'+divId+' table>thead>tr>th:nth-child('+i+')').outerWidth();
-        var tbodyTdWidth = $('#'+divId+' table>tbody>tr>td:nth-child('+i+')').outerWidth();
-        var tfootTdWidth = $('#'+divId+' table>tfoot>tr>td:nth-child('+i+')').outerWidth();
-
-        if(theadTdWidth >= tbodyTdWidth && theadTdWidth >= tfootTdWidth)
-          tdWidth = theadTdWidth;
-        else if(tfootTdWidth >= tbodyTdWidth && tfootTdWidth >= theadTdWidth)
-          tdWidth = tfootTdWidth;
-        else
-          tdWidth = tbodyTdWidth;
-
-        if(i==1) //For the column holding 'check box'
-            tdWidth = 35;
-
-        tableWidth += tdWidth;
-        cellWidthArr.push(tdWidth);
-      }
-
-      if(tableWidth < divWidth){
-        var moreWidth = (divWidth-tableWidth)/colLength;
-        for(var j=1;j<=cellWidthArr.length;j++){
-          var width = cellWidthArr[j-1]+moreWidth;
-          $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
-          $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width);
-          $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
-        }
-        $('#'+divId+' table').css("width",divWidth);
-      } else {
-        for(var j=1;j<=cellWidthArr.length;j++){
-          var width = cellWidthArr[j-1];
-          $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
-          $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width);
-          $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
-        }
-        $('#'+divId+' table').css("width",tableWidth);
-      }
-  }
-
-}*/
 export default page;
