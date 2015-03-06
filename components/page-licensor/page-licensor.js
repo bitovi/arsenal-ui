@@ -1241,7 +1241,7 @@ var page = Component.extend({
 
                   commonUtils.displayUIMessageWithDiv("#invmessageDiv", data[0].status, data[0].responseText);
 
-                  self.populateLicensorDetails(self.licDetails.data.licensorName, self.licDetails.data.licensorId);
+                  //self.populateLicensorDetails(self.licDetails.data.licensorName, self.licDetails.data.licensorId);
 
               } else {
 
