@@ -259,13 +259,16 @@ var BundleDetailTabs = Component.extend({
       } else {
         view = 'licensor';
       }
-
+      console.log("Fetching Payment Validation...");
       if('payment-bundles' === scope.appstate.page &&  scope.pageState.selectedBundle === bundle) {
         var moreRecords = (scope.appstate.attr("fetchSize") <= bundle.totRecCnt);
         return bundle.getValidations(view,this.bottomGridPaginateAttr.attr("recordsAvailable")).then(function(bundle) {
-          if(bundle.validationStatus == "FAILURE" ){
+          console.log("Payment Validation Returned.")
+          if(bundle.validationStatus === "FAILURE" ){
             console.error("Pyament Validation is failed!!");
-          }else if(bundle.status == 1 && bundle.validationStatus !== 5) {
+          } else if(bundle.validationStatus === "NO DATA") {
+            console.log("Payment Validation returned NO DATA")
+          } else if(bundle.status == 1 && bundle.validationStatus !== 5) {
             setTimeout(function() {
               scope.getNewValidations(bundle);
             }, VALIDATION_CHECK_INTERVAL);
@@ -678,7 +681,7 @@ var BundleDetailTabs = Component.extend({
     //  delete scope.pageState.selectedBundle.validationStatus;
     //  delete scope.pageState.selectedBundle.validationBundlesCache;
 
-      scope.getNewDetails(scope.pageState.selectedBundle);
+      //scope.getNewDetails(scope.pageState.selectedBundle);
     },
     '.previewInv click': function(el, ev) {
        PaymentBundle.preview(el.data('invoiceid'));

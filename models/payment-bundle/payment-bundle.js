@@ -350,8 +350,15 @@ var PaymentBundle = Model.extend({
       var rulesCompleted = 0,
           rulesTotal = 0;
 
+      //if no data found on the server..
+      if(validationResponse.status === "SUCCESS" &&
+        validationResponse.paymentBundle == undefined &&
+        validationResponse.responseCode && validationResponse.responseCode === "0001"
+      ) {
+        
+        bundle.attr('validationStatus', "NO DATA");
 
-      if(validationResponse.status != "FAILURE" && validationResponse.paymentBundle != undefined){ // On success
+      } else if(validationResponse.status !== "FAILURE" && validationResponse.paymentBundle != undefined){ // On success
 
         // only update these if validation is done
         if(validationResponse.paymentBundle.vldtnStatus === 5) {
@@ -360,25 +367,23 @@ var PaymentBundle = Model.extend({
             validationResponse.paymentBundle.bundleDetailsGroup.forEach(function(group) {
               var target = undefined;
 
-                if(group.key != undefined){
-                  var target = _.find(bundle.bundleDetailsGroup, {key: group.key});
-                  if(target != undefined ){
-                    group.vldtnMessage == undefined ? target.attr('validationMessages', "") : target.attr('validationMessages', group.vldtnMessage);
-                    group.vldtnBatchResultColor == undefined ? target.attr('validationColorHeader', "") : target.attr('validationColorHeader', group.vldtnBatchResultColor);
-                  }
+              if(group.key != undefined){
+                var target = _.find(bundle.bundleDetailsGroup, {key: group.key});
+                if(target != undefined ){
+                  group.vldtnMessage == undefined ? target.attr('validationMessages', "") : target.attr('validationMessages', group.vldtnMessage);
+                  group.vldtnBatchResultColor == undefined ? target.attr('validationColorHeader', "") : target.attr('validationColorHeader', group.vldtnBatchResultColor);
+                
+                  group.bundleDetails.forEach(function(detail) {
+                    // only update these if validation is done
+                    //TODO code modification is needed when the servcice s is ready with Proper JSON.
+                    // if(validationResponse.paymentBundle.vldtnStatus === 5) {
+                      var lineTarget = _.find(target.bundleDetails, {bndlLineId: detail.bndlLineId});
+                      lineTarget.attr('validationMessages', detail.vldtnMessage);
+                      detail.vldtnBatchResultColor != undefined  ?  lineTarget.attr('validationColor', detail.vldtnBatchResultColor ) :  lineTarget.attr('validationColor', "" );
+                    // }
+                  });
                 }
-
-                group.bundleDetails.forEach(function(detail) {
-                  // only update these if validation is done
-                  //TODO code modification is needed when the servcice s is ready with Proper JSON.
-                  // if(validationResponse.paymentBundle.vldtnStatus === 5) {
-                  if(target != undefined ){
-                    var lineTarget = _.find(target.bundleDetails, {bndlLineId: detail.bndlLineId});
-                    lineTarget.attr('validationMessages', detail.vldtnMessage);
-                    detail.vldtnBatchResultColor != undefined  ?  lineTarget.attr('validationColor', detail.vldtnBatchResultColor ) :  lineTarget.attr('validationColor', "" );
-                  }
-                  // }
-                });
+              }
 
             });
 
@@ -398,7 +403,7 @@ var PaymentBundle = Model.extend({
 
         }
 
-      }else if(validationResponse.status == "FAILURE"){
+      } else if(validationResponse.status === "FAILURE"){
 
         bundle.attr('validationStatus', validationResponse.status);
       }
