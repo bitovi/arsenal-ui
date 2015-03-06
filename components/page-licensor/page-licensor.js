@@ -1480,7 +1480,7 @@ var page = Component.extend({
                   $("#entityLicensorBottom").show();
                   self.populateAnalyticsPage(values);
                   self.reValidateFiledsonLoad();
-                  $("#button_layout").show();
+                  //$("#button_layout").show();
                 }
               $("#loading_img").hide();
 
