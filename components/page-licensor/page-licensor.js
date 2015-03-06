@@ -2466,7 +2466,7 @@ var page = Component.extend({
                 self.scope.reValidateFiledsonLoad();
                 //$("#buttonsubmit").show();
                 //$("#buttonreset").show();
-                $("#button_layout").show();
+                //$("#button_layout").show();
               }
 
           } else {
