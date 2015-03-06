@@ -329,7 +329,7 @@ var page = Component.extend({
           setTimeout(function(){
             alignGrid("grid-revision-history-country");
             alignGrid("grid-society-model");
-          },50);
+          },10);
 
           $('#submitBtn').show();
 
@@ -798,7 +798,7 @@ var page = Component.extend({
           setTimeout(function(){
             alignGrid("grid-revision-history-country");
             alignGrid("grid-society-model");
-          },50);
+          },10);
 
           $('#submitBtn').show();
 
