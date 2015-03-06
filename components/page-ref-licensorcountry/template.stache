@@ -253,7 +253,7 @@
                            <div class="singleField">
                               <label for="" class="col-sm-6 control-label">Country:</label>
                               <div class="col-sm-6">
-                                 <span>{{getPricingModelDetails.country}}</span>
+                                 <span>{{pageState.entityCountryDetails.entityCountry.countryId}}</span>
                               </div>
                            </div>
                         </div>
@@ -261,7 +261,7 @@
                            <div class="singleField">
                               <label for="" class="col-sm-6 control-label">Entity:</label>
                               <div class="col-sm-6">
-                                 <span>{{getPricingModelDetails.entity}}</span>
+                                 <span>{{pageState.entityCountryDetails.entityCountry.entityName}}</span>
                               </div>
                            </div>
                         </div>
