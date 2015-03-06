@@ -56,7 +56,7 @@ var DashboardInvoices = Component.extend({
         var entities = [];
         var holesByCountry = {};
         var data = holesReportResponse;
-        if (self.appstate.attr('excelOutput') != undefined || self.appstate.excelOutput) {
+        if (self.appstate.attr('excelOutput') != undefined && self.appstate.excelOutput) {
 
           if (data["status"] == "SUCCESS" && data["exportExcelFileInfo"] != null) {
             self.appstate.attr('excelOutput', false);
@@ -83,7 +83,7 @@ var DashboardInvoices = Component.extend({
             $('.holes-report').stickyTableHeaders({ scrollableArea: $(".holes-report")[0], "fixedOffset": 2, fixedColumn: true });
             $('.holes-reports-country').stickyTableHeaders({scrollableArea: $(".holes-reports-country")[0], "fixedOffset": 2, fixedColumn: true});
             $('.holes-reports-local').stickyTableHeaders({scrollableArea: $(".holes-reports-local")[0], "fixedOffset": 2, fixedColumn: true});
-            
+
             $(window).resize(function() {
               $(window).trigger('resize.stickyTableHeaders');
             });
@@ -91,7 +91,7 @@ var DashboardInvoices = Component.extend({
 
           $(window).trigger('resize');
 
-          
+
           // var height = $(window).height() - 300;
           //
           // console.log(height);
