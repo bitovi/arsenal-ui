@@ -1049,8 +1049,6 @@ var page = Component.extend({
 
     submitAnalytics : function() {
 
-       $("#button_layout").hide();
-
       var self = this;
 
         var isValid = self.reValidateFiledsonLoad();
@@ -1062,6 +1060,7 @@ var page = Component.extend({
           return;
 
         }
+        $("#button_layout").hide();
 
         var societyContactDetails = self.getSocietyContactDetails();
 
@@ -1714,6 +1713,17 @@ var page = Component.extend({
       }).on('error.field.bv', function(e, data) {
 
           $('*[data-bv-icon-for="'+data.field +'"]').popover('show');
+          if((data.field != "contactName[]") && (data.field != "contactEmail[]")){
+              $("#"+data.field+"-err").css("display", "block");
+            }else{
+              if($('*[data-bv-icon-for="'+data.field +'"]').length > 1){
+                $('*[data-bv-icon-for="'+data.field +'"]').each(function(index){
+                  if(index != 0){
+                    $(this).popover('hide');
+                  }
+                });
+              }
+            }
 
           setTimeout(function(){
             $('*[data-bv-icon-for="'+data.field +'"]').popover('hide');
