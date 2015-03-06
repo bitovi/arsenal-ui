@@ -228,8 +228,8 @@
 
                 <!--<button id="approveBtn"  type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Approve</button>
                 <button id="rejectBtn"  type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Reject</button>-->
-                <button id="submitBtn" {{disableSubmit}} type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>
                 <button type="button" class="btn btn-default buttonCancel btn-custom-big-disabled" id="buttonCancel">Cancel</button>
+                <button id="submitBtn" {{disableSubmit}} type="button"  class="btn btn-primary buttonSubmit addInvSubmit btn-custom-big">Submit</button>
               
             </div>
           </div>
