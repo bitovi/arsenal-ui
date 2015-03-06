@@ -1401,10 +1401,14 @@ function reRenderGrid(self){
       }
 
       var first = "true";
-      var regCcyTemp = {"invId":"", "__isChild":false, "entityName":"Total in Regional Currency", "invoiceType":"", "invTypeDisp":"", "contentGrpName":"", "country":"", "invoiceNumber":"","invoiceAmount":"", "invoiceDueDate":"", "invoiceCcy":"", "displayPaymentStatus":"", "bundleName":"", "comments":""};
+      var regCcyTemp = {"invId":"", "__isChild":false,"hasChild":true, "entityName":"Total in Regional Currency",
+      "invoiceType":"", "invTypeDisp":"", "contentGrpName":"", "country":"", "invoiceNumber":"","invoiceAmount":"", "invoiceDueDate":"", "invoiceCcy":"", "displayPaymentStatus":"", "bundleName":"", "comments":""};
       regCcyTemp["invoiceAmount"] = CurrencyFormat(footerData["regAmtTot"]);
       regCcyTemp["invoiceNumber"] = self.attr('totalRecordCount') + " Invoices";
       regCcyTemp["invoiceCcy"] = footerData["regCcy"];
+      if(footerData["amtCcyMap"].length == 0){
+        regCcyTemp["hasChild"]=false;
+      }
       gridData["footer"].push(regCcyTemp);
       for(var obj in footerData["amtCcyMap"]){
         var ccyTemp = {"invId":"", "__isChild":true, "entityName":"", "invoiceType":"", "invTypeDisp":"", "contentGrpName":"", "country":"", "invoiceNumber":"","invoiceAmount":"", "invoiceDueDate":"", "invoiceCcy":"", "displayPaymentStatus":"", "bundleName":"", "comments":""};
