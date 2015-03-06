@@ -210,7 +210,7 @@ rn-claim-country-grid {
       &.oaAllocated { .flex-grow(1); .flex-basis(120px); }
       &.caAllocated { .flex-grow(1); .flex-basis(120px); }
       &.priorPaid { .flex-grow(1); .flex-basis(120px); }
-      &.invPmtSaturation { .flex-grow(1); .flex-basis(120px); }
+      &.invoiceSaturation { .flex-grow(1); .flex-basis(120px); }
       &.pmtSaturation { .flex-grow(1); .flex-basis(120px); }
       &.balance { .flex-grow(1); .flex-basis(120px); }
       &.overrepDispPer {  .flex-basis(110px); }
@@ -324,12 +324,12 @@ padding-left:25px !important;
     .selected td{
       background: #D1F0FF;
     }
-    .invoiceAmount , .overrepAmount, .lineDisputeAmount, .reconAmount, .oaAllocated, .caAllocated, .balance, .priorPaid {
-      text-align: right;
-    }
+    .invoiceAmount , .overrepAmount, .lineDisputeAmount, .reconAmount,
+    .oaAllocated, .caAllocated, .balance, .priorPaid,.invoiceSaturation,
     .invPmtSaturation, .pmtSaturation, .overrepDispPer, .liDispPer {
       text-align: right;
     }
+    
   }
 
   .buttonSubmit{

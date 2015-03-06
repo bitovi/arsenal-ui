@@ -298,7 +298,7 @@ Grid.extend({
         sortable: true
       },
       {
-        id: 'invPmtSaturation',
+        id: 'invoiceSaturation',
         title: 'Inv Sat',
         sortable: true
       },
@@ -1218,6 +1218,7 @@ var generateTableData = function(invoiceData,footerData){
             invTemp["balance"] = "";
             invTemp["priorPaid"] = CurrencyFormat(invoiceData[i]["priorPaid"]);
             invTemp["invPmtSaturation"] = CurrencyFormat(Number(invoiceData[i]["invPmtSaturation"])*100)+'%';
+            invTemp["invoiceSaturation"] = CurrencyFormat(Number(invoiceData[i]["invoiceSaturation"])*100)+'%';
             invTemp["pmtSaturation"] = CurrencyFormat(Number(invoiceData[i]["pmtSaturation"])*100)+'%';
             invTemp["overrepDispPer"] = CurrencyFormat(invoiceData[i]["overrepDispPer"])+'%';
             invTemp["liDispPer"] = CurrencyFormat(invoiceData[i]["liDispPer"])+'%';
@@ -1276,6 +1277,8 @@ var generateTableData = function(invoiceData,footerData){
                   invLITemp["priorPaid"] = CurrencyFormat(invoiceLineItems[j]["priorPaid"]);
 
                   invLITemp["invPmtSaturation"] = CurrencyFormat(Number(invoiceLineItems[j]["invPmtSaturation"])*100)+'%';
+                  invLITemp["invoiceSaturation"] = CurrencyFormat(Number(invoiceLineItems[j]["invoiceSaturation"])*100)+'%';
+
 
                   invLITemp["pmtSaturation"] = CurrencyFormat(Number(invoiceLineItems[j]["pmtSaturation"])*100)+'%';
 
@@ -1407,7 +1410,7 @@ var generateTableData = function(invoiceData,footerData){
           }
           var footerJson = {"entityId":"","__isChild":false,
           "entityName":"Total in Regional Currency (EUR)","invoiceNumber":"","currency":"","period":"","country":"","contentType":"","invoiceAmount":"350000","overrepAmount":"20000","lineDisputeAmount":"40000","reconAmount":"30000","oaAllocated":"2000","caAllocated":"2000","balance":"76",
-          "priorPaid":"0","invPmtSaturation":"","pmtSaturation":"","overrepDispPer":"","liDispPer":"","status":""};
+          "priorPaid":"0","invPmtSaturation":"","invoiceSaturation":"","pmtSaturation":"","overrepDispPer":"","liDispPer":"","status":""};
           //gridData.footer.push(footerJson);
 
           //console.log("footerData is "+JSON.stringify(footerData));
@@ -1440,6 +1443,8 @@ var generateFooterData = function(footerData){
     footTemp["balance"] = 0;
     footTemp["priorPaid"] = CurrencyFormat(Number(footerData["priorPaid"]));
     footTemp["invPmtSaturation"] = "";
+    footTemp["invoiceSaturation"] = "";
+
     footTemp["pmtSaturation"] = "";
     footTemp["overrepDispPer"] = "";
     footTemp["liDispPer"] = "";
@@ -1467,6 +1472,8 @@ var generateFooterData = function(footerData){
       footLITemp["balance"] = 0.00;
       footLITemp["priorPaid"] = CurrencyFormat(Number(footerLineItems[i]["priorPaid"]));
       footLITemp["invPmtSaturation"] = "";
+      footLITemp["invoiceSaturation"] = "";
+
       footLITemp["pmtSaturation"] = "";
       footLITemp["overrepDispPer"] = "";
       footLITemp["liDispPer"] = "";
