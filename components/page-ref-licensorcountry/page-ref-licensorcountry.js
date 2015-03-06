@@ -75,6 +75,7 @@ var page = Component.extend({
     enableButtonsApprove: "display:none",
     enableButtonsReject: "display:none",
     enableButtonsPropose: "display:none",
+    commentFlag : false,
 
       getPricingModelsOnLoad : function(modelId, versionNo) {
         var self = this;
@@ -830,18 +831,22 @@ var page = Component.extend({
 
               } else {
 
-                $("#viewPricingModelDivBlock").show();
+                  $("#viewPricingModelDivBlock").show();
                   self.attr("displayPMDetails",true);
-              }
+                   self.attr("getPricingModelDetails",data.pricingModel);
+                  self.attr("baseModelParameter").replace(data.pricingModel != undefined && data.pricingModel != null && data.pricingModel.baseModelParameters != null  ? data.pricingModel.baseModelParameters : []);
+                  self.attr("trackCounts").replace(data.pricingModel != undefined && data.pricingModel != null && data.pricingModel.trackCounts != null  ? data.pricingModel.trackCounts : []);
 
-              self.attr("getPricingModelDetails",data.pricingModel);
-              self.attr("baseModelParameter").replace(data.pricingModel != undefined && data.pricingModel != null && data.pricingModel.baseModelParameters != null  ? data.pricingModel.baseModelParameters : []);
-              self.attr("trackCounts").replace(data.pricingModel != undefined && data.pricingModel != null && data.pricingModel.trackCounts != null  ? data.pricingModel.trackCounts : []);
+                  var tempcommentObj = (data.pricingModel != undefined && data.pricingModel != null) ? 
+                          ((data.pricingModel.pricingModel != undefined && data.pricingModel.pricingModel != null) ? data.pricingModel.pricingModel.comments : "") : "";
+                  if(tempcommentObj!=null) {
+                    self.attr("commentFlag", true);
+                    $('#priceModelmultipleComments').html(stache('<multiple-comments divid="usercommentsdiv1" options="{tempcommentObj}" divheight="100" isreadOnly="y"></multiple-comments>')({tempcommentObj}));
+                  } else {
+                    self.attr("commentFlag", false);
+                  }
+                }
 
-              var tempcommentObj = (data.pricingModel != undefined && data.pricingModel != null) ? 
-                      ((data.pricingModel.pricingModel != undefined && data.pricingModel.pricingModel != null) ? data.pricingModel.pricingModel.comments : "") : "";
-              if(tempcommentObj!=null)
-                $('#priceModelmultipleComments').html(stache('<multiple-comments divid="priceModelmultipleComments" options="{tempcommentObj}" divheight="100" isreadOnly="y"></multiple-comments>')({tempcommentObj}));
               }).then(function(){
               });
             },

@@ -918,19 +918,25 @@ var page = Component.extend({
         console.log("Request is " +JSON.stringify(UserReq.formRequestDetails(genObj)));
         CountryLicensor.findOne(UserReq.formRequestDetails(genObj),function(data){
             //console.log("Pricing model details "+ JSON.stringify(data.pricingModel.attr()));
-            self.attr("getPricingModelDetails",data.pricingModel);
-            self.attr("baseModelParameter").replace(data.pricingModel.baseModelParameters);
-            self.attr("trackCounts").replace(data.pricingModel.trackCounts);
+            if(data.pricingModel != null) {
+              self.attr("getPricingModelDetails",data.pricingModel);
+              self.attr("baseModelParameter").replace(data.pricingModel.baseModelParameters);
+              self.attr("trackCounts").replace(data.pricingModel.trackCounts);
 
-            var tempcommentObj = data.pricingModel.pricingModel.comments;
-            if(tempcommentObj.length > 0){
-              self.attr("commentFlag", true);
-              $('#priceModelmultipleComments').html(stache('<multiple-comments divid="priceModelmultipleComments" options="{tempcommentObj}" divheight="100" isreadOnly="y"></multiple-comments>')({tempcommentObj}));
-            }else{
-              self.attr("commentFlag", false);
+              var tempcommentObj = data.pricingModel.pricingModel.comments;
+              if(tempcommentObj.length > 0){
+                self.attr("commentFlag", true);
+                $('#priceModelmultipleComments').html(stache('<multiple-comments divid="usercommentsdiv" options="{tempcommentObj}" divheight="100" isreadOnly="y"></multiple-comments>')({tempcommentObj}));
+              }else{
+                self.attr("commentFlag", false);
+              }
+
+              $("#viewPricingModelDivBlock").show();
+            } else {
+
+              commonUtils.displayUIMessage("FAILURE", "No details present");
+
             }
-
-            $("#viewPricingModelDivBlock").show();
         }).then(function(){
           console.log("ERROR");
         });
@@ -980,22 +986,23 @@ var page = Component.extend({
           } else {
 
             $("#viewPricingModelDivBlock").show();
+            self.attr("getPricingModelDetails",data.pricingModel);
+            self.attr("baseModelParameter").replace(data.pricingModel.baseModelParameters );
+            self.attr("trackCounts").replace(data.pricingModel.trackCounts);
+
+            var tempcommentObj = data.pricingModel.pricingModel.comments;
+            if(tempcommentObj.length > 0){
+              self.attr("commentFlag", true);
+              $('#priceModelmultipleComments').html(stache('<multiple-comments divid="usercommentsdiv1" options="{tempcommentObj}" divheight="100" isreadOnly="y" dividfromparent="noneditdiv"></multiple-comments>')({tempcommentObj}));
+            }else{
+              self.attr("commentFlag", false);
+            }
+
+            $("#viewPricingModelDivBlock").show();
 
           }
 
-          self.attr("getPricingModelDetails",data.pricingModel);
-          self.attr("baseModelParameter").replace(data.pricingModel.baseModelParameters);
-          self.attr("trackCounts").replace(data.pricingModel.trackCounts);
-
-          var tempcommentObj = data.pricingModel.pricingModel.comments;
-          if(tempcommentObj.length > 0){
-            self.attr("commentFlag", true);
-            $('#priceModelmultipleComments').html(stache('<multiple-comments divid="priceModelmultipleComments" options="{tempcommentObj}" divheight="100" isreadOnly="y"></multiple-comments>')({tempcommentObj}));
-          }else{
-            self.attr("commentFlag", false);
-          }
-
-          $("#viewPricingModelDivBlock").show();
+          
       }).then(function(){
         console.log("ERROR");
       });

@@ -16,8 +16,8 @@ var comments = Component.extend({
     isreadonly:"n",
     divheight:"@",
     divid:"@",
-    textareaid:"@"
-
+    textareaid:"@",
+    tempDivIDFromParent : ""
   },
   events: {
       '.corner click':function(){
@@ -28,7 +28,7 @@ var comments = Component.extend({
         var self = this;
         var commentsData=self.scope.options;
         //Specific to PBR module - start
-        if(self.scope.modulestate != undefined){
+        if(self.scope.modulestate != undefined){  
            commentsData = self.scope.modulestate.pageState.selectedBundle.approvalComments;
 
            if(commentsData.length > 1){
@@ -54,6 +54,7 @@ var comments = Component.extend({
         }
         //Specific to PBR module - End
 
+        var divElement = self.scope.divid;
         var divid = $("#"+self.scope.divid);
         divid.empty();
 
@@ -65,20 +66,22 @@ var comments = Component.extend({
               var textAreactrl=getTextArea();
 
               var tempDivID = "nonedit-div"+i;
-               $(".multiple-comments-child").append("<div id="+tempDivID+" class='comment-env '></div>");
+              divid.append("<div id="+tempDivID+" class='comment-env '></div>");
+
+              var childDiv = "#"+divElement + " #"+tempDivID;
 
               if(val.createdDate != null){
 //                 var createdDateFormat = moment(val.createdDate).format("Do MMM, YYYY - HH:mm:ss");
                   var createdDateFormat = moment(val.createdDate).format("Do MMM, YYYY");
                 if((val.createdByName != null) && (typeof val.createdByName != "undefined")){
-                    $("#"+tempDivID).html("<span class='commentuser'>"+val.createdByName +"</span> <span class='commentdate'>on "+createdDateFormat+"</span><br><span class='commenttext'>"+val.comments+"</span>");
+                    $(childDiv).html("<span class='commentuser'>"+val.createdByName +"</span> <span class='commentdate'>on "+createdDateFormat+"</span><br><span class='commenttext'>"+val.comments+"</span>");
                 }else{
-                  $("#"+tempDivID).html("<span class='commentuser'></span> <span class='commentdate'>on "+createdDateFormat+"</span><br><span class='commenttext'>"+val.comments+"</span>");
+                  $(childDiv).html("<span class='commentuser'></span> <span class='commentdate'>on "+createdDateFormat+"</span><br><span class='commenttext'>"+val.comments+"</span>");
                 }
               }
               else
               {
-                $("#"+tempDivID).html("<span class='commenttext'>"+val.comments+"</span>");
+                $(childDiv).html("<span class='commenttext'>"+val.comments+"</span>");
               }
 
 
