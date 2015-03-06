@@ -1,6 +1,16 @@
   @import '../grid/grid.less';
 
 
+  .flex-basis(@basis) {
+    -webkit-flex-basis: @basis;
+    flex-basis: @basis;
+  }
+
+  .flex-grow(@grow) {
+    -webkit-flex-grow: @grow;
+    flex-grow: @grow;
+  }
+
 
   .licensor-container {
 
@@ -335,7 +345,7 @@
     }
 /*
     //Below classes are repatative classes
-    
+
     .btn-custom-small {
       color: #ffffff;
       text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
@@ -661,7 +671,7 @@
         table{
           width: 100%;
           tr>th, tr > td {
-            white-space: nowrap;
+            word-wrap: break-word;
           }
           tr{
             width:100%;
@@ -678,6 +688,19 @@
           thead, tfoot{
             border-left:0px !important;
           }
+
+
+
+          tr > th, tr > td {
+            //padding: .3em .5em;
+            &.id { .flex-basis(100px); }
+            &.entity { .flex-grow(1); .flex-basis(150px); }
+            &.validFrom { .flex-basis(150px); }
+            &.validTo {  .flex-basis(150px); }
+            &.commentText { .flex-grow(1);  .flex-basis(250px);  word-wrap: break-word; }
+            &.status {  .flex-basis(100px); }
+          }
+
         }
       }
 
@@ -874,11 +897,11 @@ multiple-comments .multiple-comments-parent{
   .tdselected{
     background: #d3f0fe !important;
   }
-  
+
   .marginLeft10{
     margin-left: 10px;
   }
-  
+
   .paddingLeft{
     padding-left: 10.5%;
   }

@@ -23,6 +23,6 @@
         {{/filteredColumns}}
       </tr>
       {{/footerRows}}
-      
+
   </tfoot>
 </table>

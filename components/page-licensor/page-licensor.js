@@ -184,7 +184,7 @@ var page = Component.extend({
     regionStore:"",
     reloadCountries:true,
     reportConfMap  : {},
-    
+
     USER_ROLE : "FC",
 
     buttonPressed : "Propose",
@@ -200,7 +200,7 @@ var page = Component.extend({
           objVal =  (obj[i].id == undefined || obj[i].id == null || obj[i].id == "") ? obj[i].value : obj[i].id ;
 
           break;
-          
+
         }
       }
 
@@ -227,14 +227,14 @@ var page = Component.extend({
           self.attr("enableButtonsPropose", "display:none");
 
         }
-      
+
       } else {
 
         if(self.appstate.userInfo.roleIds[0] == constants.ROLES.FA) {
           self.attr("enableButtonsApprove", "display:inline-block");
           self.attr("enableButtonsReject", "display:inline-block");
           self.attr("enableButtonsPropose", "display:none");
-        } else {  
+        } else {
           self.attr("enableButtonsApprove", "display:none");
           self.attr("enableButtonsReject", "display:none");
           self.attr("enableButtonsPropose", "display:none");
@@ -429,7 +429,7 @@ var page = Component.extend({
         var checked = false;
         for (var j = 0; j < reportBox.length; j++) {
           if ($.inArray(reportBox[j].getAttribute("value"), reportConf) > -1) {
-            reportBox[j].checked = true;        
+            reportBox[j].checked = true;
             reportBox[j].parentNode.className = reportBox[j].parentNode.className + " tdselected";
             checked = true;
           }
@@ -443,7 +443,7 @@ var page = Component.extend({
           for (var i = 0; i < country.length; i++) {
             var obj = country[i].getAttribute("value");
             if (obj == countryObj.id) {
-              country[i].checked = true;        
+              country[i].checked = true;
               country[i].parentNode.className = country[i].parentNode.className + " tdselected";
                $('#'+country[i].value).addClass('tdselected');
             }
@@ -618,7 +618,7 @@ var page = Component.extend({
         //$("#buttonsubmit").hide();
         //$("#buttonreset").hide();
         $(".buttonsPlaceHolder").hide();
-        
+
         var msg  = "";
         if(values[0].status == "SUCCESS") {
           msg = "No data found";
@@ -626,9 +626,9 @@ var page = Component.extend({
           msg = values[0].responseText;
 
         }
-        
+
         commonUtils.displayUIMessageWithDiv("#invmessageDiv", "FAILURE", msg);
-    
+
       } else {
 
         var commentObj = values[0].licensorDetails.commentList == null ? [] : values[0].licensorDetails.commentList ;
@@ -1186,7 +1186,7 @@ var page = Component.extend({
     if(this.attr("buttonPressed") == "Approve" || this.attr("buttonPressed") == "Reject") {
 
             if(this.attr("buttonPressed") == "Approve") {
-              
+
               Promise.all([
                   Analytics.approve(UserReq.formRequestDetails(genObj))
                 ]).then(function(data) {
@@ -1224,12 +1224,12 @@ var page = Component.extend({
                   }
                   commonUtils.displayUIMessageWithDiv("#invmessageDiv", data[0].status, data[0].responseText);
             });
-              
+
             }
 
             return;
 
-          } 
+          }
 
           Promise.all([Analytics.propose(UserReq.formRequestDetails(genObj))]).then(function(data) {
 
@@ -1264,7 +1264,7 @@ var page = Component.extend({
 
           reLicencorDetails.licensorDetails.contactDetails = societyContactDetails;
           reLicencorDetails.licensorDetails.licensorName = self.licDetails.data.licensorName;
-          
+
           reLicencorDetails.licensorDetails.licensorId = "0";
 
           reLicencorDetails.licensorDetails.commentTxt = comments;
@@ -1444,7 +1444,7 @@ var page = Component.extend({
           if(self.appstate.screenLookup.attr("screendetails") != undefined && self.appstate.screenLookup.attr("screendetails") != null) {
 
             genObj.id = self.appstate.screenLookup.screendetails.attr("tableId");
-            
+
             Promise.all([Analytics.findById(UserReq.formRequestDetails(genObj))]).then(function(values) {
 
               self.populateAnalyticsPage(values, null);
@@ -1475,7 +1475,7 @@ var page = Component.extend({
 
             Promise.all([Analytics.findOne(UserReq.formRequestDetails(genObj))]).then(function(values) {
               if(values[0].status == "FAILURE") {
-                  var msg = "No data fetched";            
+                  var msg = "No data fetched";
                   commonUtils.displayUIMessage(values[0].status, msg);
                 }else{
                   $("#entityLicensorBottom").show();
@@ -1484,7 +1484,7 @@ var page = Component.extend({
                   $("#button_layout").show();
                 }
               $("#loading_img").hide();
-              
+
 
             });
      }
@@ -1688,7 +1688,7 @@ var page = Component.extend({
          },
           periodToInp: {
              validators: {
-                 
+
                  callback: {
                     //message: 'Valid From is mandatory',
                     callback: function (value, validator, $field) {
@@ -1721,7 +1721,7 @@ var page = Component.extend({
         $("#submitButton").attr("disabled", true);//Disable submit button if all valid
       }).on('added.field.bv', function(e, data) {
 
-      }).on('success.field.bv', function(e, data) { 
+      }).on('success.field.bv', function(e, data) {
 
         if(!data.bv.isValid()){
           data.bv.disableSubmitButtons(true);
@@ -1729,11 +1729,11 @@ var page = Component.extend({
 
         $("#submitButton").attr("disabled", false);//Enable submit button if all valid
 
-          if($('#editableText').val().length === 0 || $("#sapVendor").val().length === 0 || $("#invoiceType").val() === "" || $(".accountName").val().length === 0 || $(".periodFromInput").filter(':visible:first').val().length === 0 ){/*Check the textarea editable - Onload*/  
+          if($('#editableText').val().length === 0 || $("#sapVendor").val().length === 0 || $("#invoiceType").val() === "" || $(".accountName").val().length === 0 || $(".periodFromInput").filter(':visible:first').val().length === 0 ){/*Check the textarea editable - Onload*/
             $("#submitButton").attr("disabled", true);
-          } 
-        /*Check the textarea editable*/  
-        $("#editableText").on('keyup',function(){   
+          }
+        /*Check the textarea editable*/
+        $("#editableText").on('keyup',function(){
           if($(this).val().length==0){
             $("#submitButton").attr("disabled", true);
           }else{
@@ -1838,13 +1838,13 @@ var page = Component.extend({
        return '';
      }
    },
-   
+
    //Workflow code
     enableButtons : function(ref, data){
 
       if(this.attr("USER_ROLE") != ref)
           return "display:none";
-      else 
+      else
           return "display:inline";
 
 
@@ -1905,8 +1905,8 @@ var page = Component.extend({
           }
         //fetching the licensor details --start
       });
-      
-      
+
+
 
     },
 
@@ -1972,14 +1972,14 @@ var page = Component.extend({
 
 
      '{periodFrom} change': function(el, ev) {
-         
+
       // var isValidPeriod = showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0]);
       // if (isValidPeriod !== "") {
       //   commonUtils.showErrorMessage(isValidPeriod);
       // }
      },
      '{periodTo} change': function(el, ev) {
-          
+
         // var isValidPeriod = showErrorMsg(this.scope.attr('periodFrom')[0],this.scope.attr('periodTo')[0]);
         // if (isValidPeriod !== "") {
         //   commonUtils.showErrorMessage(isValidPeriod);
@@ -2330,7 +2330,7 @@ var page = Component.extend({
 
           var genObj = {"id" : "" , "licensorName":""};
 
-          var status=el.closest('tr').data('row').row.status; 
+          var status=el.closest('tr').data('row').row.status;
 
           genObj.id = id;
           genObj.licensorName =  licensor;
@@ -2359,7 +2359,7 @@ var page = Component.extend({
             }
 
           });
-          
+
     },
 
     "#buttonreset click": function(event){
@@ -2397,7 +2397,7 @@ var page = Component.extend({
         self.scope.mode = "fetch";
         //clear elements
 
-        
+
 
 
         var entityName = self.scope.attr("selectedEntity");
@@ -2446,9 +2446,9 @@ var page = Component.extend({
              if(values[0].licensorDetails != undefined && values[0].licensorDetails.id == 0) {
                 $("#loading_img").hide();
                 //$("#buttonsubmit").hide();
-                //$("#buttonreset").hide();  
-                $("#button_layout").hide();           
-                var msg = "No details present";               
+                //$("#buttonreset").hide();
+                $("#button_layout").hide();
+                var msg = "No details present";
                 commonUtils.displayUIMessageWithDiv("#invmessageDiv", "FAILURE", msg);
               }else{
                 self.scope.populateAnalyticsPage(values);
@@ -2541,7 +2541,7 @@ var page = Component.extend({
         this.scope.submitAnalytics();
 
     },
-    
+
     '#buttonApprove click' : function() {
 
         this.scope.attr("buttonPressed", "Approve");
@@ -2633,7 +2633,7 @@ var page = Component.extend({
           });
         }
         self.scope.attr("reloadCountries",true);
-      }  
+      }
 
   }
 
@@ -2682,7 +2682,7 @@ function alignGridStats(divId){
   if(rowLength>0){
       if(divId !== 'societyContacts'){
         $('#'+divId+' table').css("width",divWidth);
-      }  
+      }
       for(var i=1;i<=colLength;i++){
         var theadTdWidth = $('#'+divId+' table>thead>tr>th:nth-child('+i+')').outerWidth();
         var tbodyTdWidth = $('#'+divId+' table>tbody>tr>td:nth-child('+i+')').outerWidth();
@@ -2734,7 +2734,7 @@ function alignGridStats(divId){
         //$('#'+divId+' table').css("width",divWidth);
         if(divId !== 'societyContacts'){
           $('#'+divId+' table').css("width",divWidth);
-        }   
+        }
       } else {
         for(var j=1;j<=cellWidthArr.length;j++){
           var width = cellWidthArr[j-1];
@@ -2749,7 +2749,7 @@ function alignGridStats(divId){
         //$('#'+divId+' table').css("width",tableWidth);
         if(divId !== 'societyContacts'){
           $('#'+divId+' table').css("width",divWidth);
-        } 
+        }
       }
   }
 
@@ -2917,7 +2917,7 @@ function uncheckAllReports(reportBox){
         if(reportBox[i].checked) {
           reportBox[i].checked = false;
 
-          var divEl=reportBox[i];          
+          var divEl=reportBox[i];
           divEl.parentNode.className = "tableDiv";
         }
       }
@@ -2949,7 +2949,7 @@ for (var j = 0; j < reportBox.length; j++) {
         if ($.inArray(reportBox[j].getAttribute("value"), reportConf) > -1) {
           reportBox[j].checked = true;
 
-          var divEl=reportBox[j];          
+          var divEl=reportBox[j];
           divEl.parentNode.className = divEl.parentNode.className + " tdselected";
         }
       }
