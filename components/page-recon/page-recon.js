@@ -616,6 +616,7 @@ var fetchReconIngest = function(scope){
             "pubFee": data.summary.totalPubFee,
             "reconAmt": data.summary.totalRecon,
             "liDispAmt": data.summary.totalLi,
+            "orDispAmt": data.summary.totalOrDisp, //Changed for rdar://problem/20018861> Recon Stats: Over-Rep is missing
             "copConAmt": data.summary.totalCopCon,
             "unMatchedAmt": data.summary.totalUnMatched!= undefined && data.summary.totalUnMatched!= null ? data.summary.totalUnMatched : 0.00,
             "badLines": data.summary.totalBadLines,

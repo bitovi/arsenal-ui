@@ -95,6 +95,14 @@ export default [
     },
     sortable: true
   },
+  //Changed for rdar://problem/20018861> Recon Stats: Over-Rep is missing - Start
+  {
+    id: 'orDispAmt',
+    title: 'Overrep',
+    format: formats.currencyFormat,
+    sortable: true
+  },
+  //Changed for rdar://problem/20018861> Recon Stats: Over-Rep is missing - end
   {
     id: 'copConAmt',
     title: 'Cop Con',

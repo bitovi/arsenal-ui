@@ -95,6 +95,7 @@ rn-recon-grid {
       &.pubFee { .flex-grow(1); .flex-basis(110px); }
       &.reconAmt  { .flex-grow(1); .flex-basis(110px); }
       &.liDispAmt { .flex-grow(1); .flex-basis(120px); }
+      &.orDispAmt { .flex-grow(1); .flex-basis(120px); } //Changed for rdar://problem/20018861> Recon Stats: Over-Rep is missing
       &.copConAmt  { .flex-grow(1); .flex-basis(80px); }
       &.unMatchedAmt { .flex-grow(1); .flex-basis(85px); }
       &.badLines {  .flex-basis(80px); }
@@ -129,7 +130,7 @@ rn-recon-grid {
       }
     }
 
-    .amountColumn, .copConAmt, .unMatchedAmt, .badLines, .pubFee, .reconAmt,.liDispAmt,{
+    .amountColumn, .copConAmt, .unMatchedAmt, .badLines, .pubFee, .reconAmt,.liDispAmt,.orDispAmt{ //Changed for rdar://problem/20018861> Recon Stats: Over-Rep is missing
       text-align: right;
     }
   }
