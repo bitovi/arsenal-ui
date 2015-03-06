@@ -28,9 +28,9 @@ rn-inbox-grid, rn-outbox-grid {
     padding: .5em 1em;
   //  border-bottom: @light-border;
 
-    &.approvalStage {
+  /*  &.approvalStage { //changed to reduce the height of column.
       padding-top: 1em;
-    }
+    }*/
   }
 
   .step {
@@ -39,7 +39,7 @@ rn-inbox-grid, rn-outbox-grid {
     height: 1em;
     width: 1em;
     border-radius: 1em;
-
+    vertical-align: middle; //changed to reduce the height of column.
     &.approved {
       background-color: @approved-color;
     }
@@ -48,7 +48,8 @@ rn-inbox-grid, rn-outbox-grid {
   .step-connector {
     color: @step-border-color;
     display: inline-block;
-    position: relative;
+    //position: relative;
+    vertical-align: middle; //changed to reduce the height of column.
     top: -3px;
     margin-left: -2px; //changed to resolve overlapping
     margin-right: -2px;//changed to resolve overlapping
