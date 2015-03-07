@@ -48,7 +48,7 @@ var DashboardApprovals = Component.extend({
 
       var tbody = self.element.find('tbody');
       //setting tbody height which determines the page height- start
-      var getTblBodyHght=gridUtils.getTableBodyHeight('inboxGrid',42);
+      var getTblBodyHght=gridUtils.getTableBodyHeight('inboxGrid',49);
       gridUtils.setElementHeight(tbody[0],getTblBodyHght,getTblBodyHght);
       gridUtils.setElementHeight(tbody[1],getTblBodyHght,getTblBodyHght);
 
@@ -60,7 +60,7 @@ var DashboardApprovals = Component.extend({
         fetchInboxOutbox(self.scope);
         //$('.pendingDays').trigger('click');
       },500);
-      
+
       //$('.pendingDays').trigger('click');
     },
     "tbody>tr td dblclick": function(item, el, ev){
@@ -143,7 +143,7 @@ var validOutbox = false;
     }
 
     if(scope.mailboxType == 'inbox' || validInbox){
-      
+
       validInbox = false;
 
       scope.sortColumns.length === 0 ? scope.sortColumns.push("pendingDays"): scope.sortColumns[0];
@@ -167,7 +167,7 @@ var validOutbox = false;
                   $.merge(scope.inboxRows, approvals);
                   scope.inboxRows.replace(scope.inboxRows);
                 }
-                
+
                 scope.inboxRows.attr('recordsAvailable', approvals.recordsAvailable);
                 scope.attr('inboxnumberofrows', approvals.totalRecords);
 
@@ -189,7 +189,7 @@ var validOutbox = false;
         validOutbox = false;
 
         scope.sortColumns.length === 0 ? scope.sortColumns.push("pendingDays"): scope.sortColumns[0]
-        
+
         Approval.findAll({
             mailbox: 'outbox',
             offset: scope.outboxOffset,
