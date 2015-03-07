@@ -704,6 +704,10 @@ var page = Component.extend({
             var entityCountry_data  = this.scope.pageState.entityCountryDetails.attr("entityCountry")._data;
             var comments = $(".new-comments").val();
 
+             entityCountry_data.validFrom = periodWidgetHelper.getFiscalPeriod($("#validFrom").val());
+
+             entityCountry_data.validTo = periodWidgetHelper.getFiscalPeriod($("#validTo").val());
+
             if(comments != null && comments == "") {
 
               $(".multicomments-required").show();
@@ -749,6 +753,10 @@ var page = Component.extend({
           '#rejectBtn click': function() {
 
             var entityCountry_data  = this.scope.pageState.entityCountryDetails.attr("entityCountry")._data;
+
+             entityCountry_data.validFrom = periodWidgetHelper.getFiscalPeriod($("#validFrom").val());
+
+             entityCountry_data.validTo = periodWidgetHelper.getFiscalPeriod($("#validTo").val());
             
             var comments = $(".new-comments").val();
 
