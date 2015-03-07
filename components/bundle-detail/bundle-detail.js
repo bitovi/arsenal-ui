@@ -386,13 +386,13 @@ var BundleDetailTabs = Component.extend({
     },
     '.grid-container table>tbody>tr mouseover':function( el, ev){
        var row = el.closest('tr').data('row').row;
-       if(row.validationColorHeader != undefined ){
+       if(row.validationColorHeader != undefined  && row.validationColorHeader != ""){
          $(el).css({"outline": "thin solid "+row.validationColorHeader+" "});
        }
     },
     '.grid-container table>tbody>tr mouseout':function( el, ev){
         var row = el.closest('tr').data('row').row;
-        if(row.validationColorHeader != undefined ){
+        if(row.validationColorHeader != undefined &&  row.validationColorHeader != ""){
           $(el).css({"outline": ""});
         }
     },
@@ -561,7 +561,7 @@ var BundleDetailTabs = Component.extend({
 
           //reset Cache
           if(self.cache != undefined){
-            self.cache.attr("validationBundlesCache",undefined);  
+            self.cache.attr("validationBundlesCache",undefined);
           }
 
 
