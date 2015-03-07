@@ -646,7 +646,7 @@ var page = Component.extend({
             };
 
             //console.log("requestObj: "+JSON.stringify(requestObj));
-            Promise.all([CountryLicensor.create(UserReq.formRequestDetails(requestObj))]).then(function(values){
+            Promise.all([CountryLicensor.propose(UserReq.formRequestDetails(requestObj))]).then(function(values){
 
             var data = values[0];
             if(data.status == "SUCCESS") {
