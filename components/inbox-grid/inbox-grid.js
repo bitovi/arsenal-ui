@@ -23,7 +23,7 @@ var InboxGrid = ScrollingGrid.extend({
       title: 'Description',
       sortable: true,
       contents: function(row) {
-        return stache('<a href="javascript:void(0)">{{description}}</a>')(row);
+        return stache('<a href="javascript:void(0)" class="descriptionLink">{{description}}</a>')(row);
       }
     }, {
       id: 'createdBy',
@@ -94,8 +94,9 @@ var InboxGrid = ScrollingGrid.extend({
           }
         });
     },
-    "tbody tr td.description click": function(el, ev){
-      var row = el.parent().data('row').row;
+    ".descriptionLink click": function(el, ev){
+
+      var row =  el.closest('tr').data('row').row;
       console.log(" Clicked "+row.tableName+", value :"+row.tableValue);
       var regionId=$("#regionsFilter option:contains('"+row.region+"')").val();
       this.scope.appstate.screenLookup.attr("screendetails", null);
