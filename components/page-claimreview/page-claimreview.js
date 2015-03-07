@@ -263,7 +263,7 @@ Grid.extend({
         sortable: true
       },
       {
-        id: 'invoiceAmount',
+        id: 'lineItemAmount',
         title: 'Invoice',
         sortable: true
       },
@@ -1210,6 +1210,8 @@ var generateTableData = function(invoiceData,footerData){
             invTemp["country"] = "";
             invTemp["contentType"] = "";
             invTemp["invoiceAmount"] = CurrencyFormat(invoiceData[i]["invoiceAmount"]);
+            invTemp["lineItemAmount"] = CurrencyFormat(invoiceData[i]["lineItemAmount"]);
+
             invTemp["overrepAmount"] = (invoiceData[i]["overrepAmount"])==null?0.00:CurrencyFormat(invoiceData[i]["overrepAmount"]);
             invTemp["lineDisputeAmount"] = (invoiceData[i]["lineDisputeAmount"])==null?0.00:CurrencyFormat(invoiceData[i]["lineDisputeAmount"]);
             invTemp["reconAmount"] = CurrencyFormat(invoiceData[i]["reconAmount"]);
@@ -1261,6 +1263,8 @@ var generateTableData = function(invoiceData,footerData){
                   invLITemp["contentType"] = invoiceLineItems[j]["contentTypeName"];
 
                   invLITemp["invoiceAmount"] = CurrencyFormat(invoiceLineItems[j]["invoiceAmount"]);
+                  invLITemp["lineItemAmount"] = CurrencyFormat(invoiceLineItems[j]["lineItemAmount"]);
+
 
                   invLITemp["overrepAmount"] = (invoiceLineItems[j]["overrepAmount"])==null?0.00:CurrencyFormat(invoiceLineItems[j]["overrepAmount"]);
 
@@ -1435,6 +1439,7 @@ var generateFooterData = function(footerData){
     footTemp["country"] = "";
     footTemp["contentType"] = "";
     footTemp["invoiceAmount"] = CurrencyFormat(Number(footerData["invoiceAmount"]));
+    footTemp["lineItemAmount"] = CurrencyFormat(Number(footerData["lineItemAmount"]));
     footTemp["overrepAmount"] = CurrencyFormat(Number(footerData["overrepAmount"]));
     footTemp["lineDisputeAmount"] = CurrencyFormat(Number(footerData["lineDisputeAmount"]));
     footTemp["reconAmount"] = CurrencyFormat(Number(footerData["reconAmount"]));
@@ -1464,6 +1469,7 @@ var generateFooterData = function(footerData){
       footLITemp["country"] = "";
       footLITemp["contentType"] = "";
       footLITemp["invoiceAmount"] = CurrencyFormat(Number(footerLineItems[i]["invoiceAmount"]));
+      footLITemp["lineItemAmount"] = CurrencyFormat(Number(footerLineItems[i]["lineItemAmount"]));
       footLITemp["overrepAmount"] = CurrencyFormat(Number(footerLineItems[i]["overrepAmount"]));
       footLITemp["lineDisputeAmount"] = CurrencyFormat(Number(footerLineItems[i]["lineDisputeAmount"]));
       footLITemp["reconAmount"] = CurrencyFormat(Number(footerLineItems[i]["reconAmount"]));
