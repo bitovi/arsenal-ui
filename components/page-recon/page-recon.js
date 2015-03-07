@@ -417,6 +417,8 @@ var page = Component.extend({
                 }, function(xhr) {
                       console.error("Error while loading: onAccount balance Details"+xhr);
                 } );
+
+
          }
        },
        "#arrowbtnCntiner click" :function(){
@@ -538,6 +540,7 @@ var fetchReconIngest = function(scope){
   setTimeout(function(){$("#loading_img").show()},50);
   var searchRequestObj = getSearchReqObj(scope);
   searchRequestObj.searchRequest["type"] =  scope.tabName.ingest.attr("type");
+  var load = scope.paginateReq.attr("paginate");
   if(scope.paginateReq.attr("paginate")) {
     scope.paginateReq.attr("paginate",false);
     scope.attr("ingestCcidSelected").splice(0, scope.attr("ingestCcidSelected").length);
@@ -580,6 +583,7 @@ var fetchReconIngest = function(scope){
           scope.attr("emptyrows", true);
           if(data["responseCode"] == "IN1013" || data["responseCode"] == "IN1015"){
               commonUtils.displayUIMessage(data.status, data["responseText"]);
+
           }
 
         } else {
@@ -670,13 +674,13 @@ var fetchReconIngest = function(scope){
       var ccids = scope.ingestCcidSelected;
       scope.setHeaderChkBox();
 
-      if(load){
-        if(scope.paginateReq.attr("ingestedOffset") == 0){
-          scope.reconRefresh[0].loadRefreshStats(dataLowerGrid, scope.reconRefresh[0]);
-        }
-      }else{
-        scope.attr("load", true);
+      // if(!load){//Not a Paginate Request, load the stats
+      if(scope.paginateReq.attr("ingestedOffset") == 0){
+        scope.reconRefresh[0].loadRefreshStats(dataLowerGrid, scope.reconRefresh[0]);
       }
+      // }else{
+      //   scope.attr("load", true);
+      // }
 
 
     $("#loading_img").hide();
