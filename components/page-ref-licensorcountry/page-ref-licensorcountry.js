@@ -618,7 +618,9 @@ var page = Component.extend({
             //   periodFP =
             // }
 
-             entityCountry_data.validTo = periodWidgetHelper.getFiscalPeriod($("#validTo").val());;
+             entityCountry_data.validTo = periodWidgetHelper.getFiscalPeriod($("#validTo").val());
+
+             entityCountry_data.entityTypeId = 1;
 
 
 
