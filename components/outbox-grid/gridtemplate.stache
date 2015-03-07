@@ -15,9 +15,10 @@
     </tr>
     {{/filteredRows}}
   </tbody>
-  <tfoot>
+  <!--rdar://problem/20009060> Dashboard: Inbox/Outbox has redundant item count
+<!--  <tfoot>
       {{#if outboxnumberofrows}}
         <tr><td colspan="{{outboxnumberofrows}}">Number of records in outbox: {{outboxnumberofrows}}</td</tr>
       {{/if}}
-  </tfoot>
+  </tfoot> -->
 </table>
