@@ -411,10 +411,18 @@ var page = Component.extend({
             }
           }).on('error.field.bv', function(e, data) {
             $('*[data-bv-icon-for="'+data.field +'"]').popover('show');
-
+            $('#submitBtn').prop('disabled',false);
           }).on('success.field.bv', function(e, data) {
 
             $('*[data-bv-icon-for="'+data.field +'"]').popover('destroy');
+
+            $('#submitBtn').prop('disabled',false);
+
+            if($('#editableText').val().length==0){/*Check the textarea editable - Onload*/  
+              $("#submitBtn").prop("disabled", true);
+            }else{
+              $('#submitBtn').prop('disabled',false);
+            }
 
           }).on('success.form.bv', function(e) {
             e.preventDefault();
@@ -520,6 +528,14 @@ var page = Component.extend({
 
           var trackCounts = self.scope.trackCounts;
             $('#trackCountsDiv').html(stache('<rn-grid-pricing-trackcounts rows="{trackCounts}"></rn-grid-pricing-trackcounts>')({trackCounts}));
+        },
+        
+        '#editableText keyup':function(){   
+          if($('#editableText').val().length==0){
+            $("#submitBtn").prop("disabled", true);
+          }else{
+            $("#submitBtn").prop("disabled", false);
+          }
         },
 
         '#fetchDetailsBtn click':function(){
