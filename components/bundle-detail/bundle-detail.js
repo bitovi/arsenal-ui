@@ -559,6 +559,12 @@ var BundleDetailTabs = Component.extend({
 
           commonUtils.displayUIMessage( response.status, response.responseText);
 
+          //reset Cache
+          if(self.cache != undefined){
+            self.cache.attr("validationBundlesCache",undefined);  
+          }
+
+
           if(response.status === 'SUCCESS') {
             //Alert.displayAlert(response.responseText, 'success' );
 
