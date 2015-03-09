@@ -809,7 +809,7 @@ var page = Component.extend({
 
             $('#submitBtn').hide();
 
-            commonUtils.displayUIMessage( "SUCCESS", "A Proposal is already pending for the licensor");
+            commonUtils.displayUIMessage( "SUCCESS", "A Proposal is already pending for the country");
 
           }
 
