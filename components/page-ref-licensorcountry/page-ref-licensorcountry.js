@@ -76,6 +76,7 @@ var page = Component.extend({
     enableButtonsReject: "display:inline-block",
     enableButtonsPropose: "display:inline-block",
     commentFlag : false,
+    currentCountry : "",
 
       getPricingModelsOnLoad : function(modelId, versionNo) {
         var self = this;
@@ -172,7 +173,8 @@ var page = Component.extend({
           var requestObj  = {
             entityCountryDetails:{
               entityCountry:{
-                id: self.scope.appstate.screenLookup.screendetails.attr("tableId")
+                id: self.scope.appstate.screenLookup.screendetails.attr("tableId"),
+                entityId : undefined
               }
             }
           }
@@ -180,15 +182,15 @@ var page = Component.extend({
           CountryLicensor.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
             loadPage(self.scope, data);
-
+            self.scope.attr("onload", false);
             $("#loading_img").hide();
             $(".mainLayoutId").show();
             $('#countryLicForm').bootstrapValidator('validate');
+            $("#countryId").val(data.entityCountryDetails.entityCountry.attr("countryId"));
+            self.scope.attr("currentCountry", data.entityCountryDetails.entityCountry.attr("countryId"));
             //self.scope.attr("refreshEntityId", false);
           },function(xhr){
             console.error("Error while loading: country-Entity Details"+xhr);
-          }).then(function(data)  {
-            $("#countryId").val(self.scope.page-ref-licensorcountrytate.entityCountryDetails.entityCountry.attr("countryId"));
           });
 
         } else {
@@ -483,7 +485,12 @@ var page = Component.extend({
             Promise.all([Country.findAllCountriesByLicenesor(UserReq.formRequestDetails(requestObj))]).then(function(values) {
               $('#fetchDetailsBtn').attr("disabled", false);
               self.scope.attr("countries").replace(values[0].data);
+              if(self.scope.attr("currentCountry") != "") {
+                $("#countryId").val(self.scope.attr("currentCountry"));
+                self.scope.attr("currentCountry", "");
+              } else {
                 $("#countryId").val(values[0].data[0].id);
+              }
                 self.scope.pageState.entityCountryDetails.entityCountry.attr("countryId", values[0].data[0].id);
                 if(self.scope.attr("onload")) {
                   $('#fetchDetailsBtn').click();
@@ -1085,10 +1092,12 @@ var loadPage = function(scope,data){
     $('#submitBtn').show();
   }
 
+  $(".buttonsPlaceHolder").show();
+
   scope.switchButtons(status);
 
   if(data.proposalPending != null && data.proposalPending != undefined
-  && data.proposalPending == true ) {
+  && data.proposalPending == true && scope.appstate.userInfo.roleIds[0] == constants.ROLES.BM) {
 
     $('#submitBtn').hide();
 
