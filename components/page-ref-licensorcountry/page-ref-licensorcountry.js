@@ -71,10 +71,10 @@ var page = Component.extend({
     reportConfigurationList : reportConfigurationList,
     footerdatarepconf : "",
     footerdata : "",
-    appstate: undefined,// this gets passed in
-    enableButtonsApprove: "display:none",
-    enableButtonsReject: "display:none",
-    enableButtonsPropose: "display:none",
+    appstate: undefined,// this gets passed 
+    enableButtonsApprove: "display:inline-block",
+    enableButtonsReject: "display:inline-block",
+    enableButtonsPropose: "display:inline-block",
     commentFlag : false,
 
       getPricingModelsOnLoad : function(modelId, versionNo) {
@@ -167,7 +167,7 @@ var page = Component.extend({
         //self.scope.attr("pricingModels").replace(values[1].modelTypes);
         self.scope.attr("pricingMethods").replace(values[2].pricingMethodList);
 
-    if(self.scope.appstate.screenLookup.attr("screendetails") != undefined && self.scope.appstate.screenLookup.attr("screendetails") != null) {
+        if(self.scope.appstate.screenLookup.attr("screendetails") != undefined && self.scope.appstate.screenLookup.attr("screendetails") != null) {
         
           var requestObj  = {
             entityCountryDetails:{
@@ -183,6 +183,7 @@ var page = Component.extend({
 
             $("#loading_img").hide();
             $(".mainLayoutId").show();
+            $('#countryLicForm').bootstrapValidator('validate');
 
           },function(xhr){
             console.error("Error while loading: country-Entity Details"+xhr);
@@ -317,7 +318,7 @@ var page = Component.extend({
 
           }
 
-      $(".multicomments-required").hide();
+         $(".multicomments-required").hide();
          
           var self = this;
 
@@ -411,17 +412,28 @@ var page = Component.extend({
             }
           }).on('error.field.bv', function(e, data) {
             $('*[data-bv-icon-for="'+data.field +'"]').popover('show');
+
+            setTimeout(function(){
+              $('*[data-bv-icon-for="'+data.field +'"]').popover('hide');
+            },1000);
+
             $('#submitBtn').prop('disabled',false);
           }).on('success.field.bv', function(e, data) {
 
             $('*[data-bv-icon-for="'+data.field +'"]').popover('destroy');
 
-            $('#submitBtn').prop('disabled',false);
+            $("#submitBtn").prop("disabled", false);
+            $("#approveBtn").prop("disabled", false);
+            $("#rejectBtn").prop("disabled", false);
 
             if($('#editableText').val().length==0){/*Check the textarea editable - Onload*/  
               $("#submitBtn").prop("disabled", true);
+              $("#approveBtn").prop("disabled", true);
+              $("#rejectBtn").prop("disabled", true);
             }else{
-              $('#submitBtn').prop('disabled',false);
+              $("#submitBtn").prop("disabled", false);
+              $("#approveBtn").prop("disabled", false);
+              $("#rejectBtn").prop("disabled", false);
             }
 
           }).on('success.form.bv', function(e) {
@@ -435,7 +447,7 @@ var page = Component.extend({
           var self=this.scope;
           var row = item.closest('tr').data('row').row;
 
-          $(".mainLayoutId").hide();
+          //$(".mainLayoutId").hide();
           $("#loading_img").show();
 
           var requestObj  = {
@@ -452,6 +464,7 @@ var page = Component.extend({
 
             $("#loading_img").hide();
             $(".mainLayoutId").show();
+            $('#countryLicForm').bootstrapValidator('validate');
 
           },function(xhr){
             console.error("Error while loading: country-Entity Details"+xhr);
@@ -533,8 +546,12 @@ var page = Component.extend({
         '#editableText keyup':function(){   
           if($('#editableText').val().length==0){
             $("#submitBtn").prop("disabled", true);
+            $("#approveBtn").prop("disabled", true);
+            $("#rejectBtn").prop("disabled", true);
           }else{
             $("#submitBtn").prop("disabled", false);
+            $("#approveBtn").prop("disabled", false);
+            $("#rejectBtn").prop("disabled", false);
           }
         },
 
@@ -567,6 +584,7 @@ var page = Component.extend({
               self.attr("refreshEntityId", true);
               $("#loading_img").hide();
               $(".mainLayoutId").show();
+              $('#countryLicForm').bootstrapValidator('validate');  
             },function(xhr){
               console.error("Error while loading: country-Entity Details"+xhr);
             });
@@ -693,6 +711,8 @@ var page = Component.extend({
 
                     //$("#loading_img").hide();
                     $(".mainLayoutId").show();
+
+                    $('#countryLicForm').bootstrapValidator('validate');
 
                   },function(xhr){
                     console.error("Error while loading: country-Entity Details"+xhr);
@@ -1053,6 +1073,17 @@ var loadPage = function(scope,data){
     //$("#grid-revision-history-heading table").append($(".rn-grid thead"));
     //$(".rn-grid thead").remove();
   },10);
+
+  $('#submitBtn').show();
+
+  if(data.proposalPending != null && data.proposalPending != undefined
+  && data.proposalPending == true ) {
+
+    $('#submitBtn').hide();
+
+    commonUtils.displayUIMessage( "SUCCESS", "A Proposal is already pending for the Licensor-Country");
+
+  }
 
 }
 
