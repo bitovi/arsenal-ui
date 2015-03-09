@@ -56,14 +56,14 @@ var headerNavigation = Component.extend({
           self.scope.appstate.userInfo.attr(role);
           self.scope.roles.replace(values[0]);
           self.scope.appstate.userInfo.attr("displayName",role.permissions[0].firstName +" "+role.permissions[0].lastName);
-          self.scope.appstate.userInfo.attr("prsId",'2002005719');
+          self.scope.appstate.userInfo.attr("prsId",role.permissions[0].userId);
           //Remove the existing role, if any
           if(self.scope.appstate.userInfo.roleIds !=undefined ){
             self.scope.appstate.userInfo.roleIds.splice(0);
-            self.scope.appstate.userInfo.roleIds.push("3");
+            self.scope.appstate.userInfo.roleIds.push(role.permissions[0].roleId);
           }else{
             var roleIds = [];
-            roleIds.push("3");
+            roleIds.push(role.permissions[0].roleId);
             self.scope.appstate.userInfo.attr("roleIds",roleIds);
           }
 
