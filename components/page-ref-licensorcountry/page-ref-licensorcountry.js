@@ -986,11 +986,11 @@ var loadPage = function(scope,data){
 
   scope.attr("footerrowspresent", true);
 
-  self.scope.attr("refreshEntityId", true);
+  scope.attr("refreshEntityId", true);
 
   var entityIdVar = data.entityCountryDetails.entityCountry.entityId;
 
-  self.scope.pageState.entityCountryDetails.entityCountry.attr("entityId", entityId);
+  scope.pageState.entityCountryDetails.entityCountry.attr("entityId", entityIdVar);
 
   scope.reportConfigurationList.replace(data.entityCountryDetails.reportConfigurationList);
 
@@ -1025,8 +1025,6 @@ var loadPage = function(scope,data){
     data.entityCountryDetails.entityCountry.attr("status","Rejected");
   }
 
-
-  scope.switchButtons(status);
 
   scope.pageState.entityCountryDetails.attr("pricingModelVersionNo", data.entityCountryDetails.pricingModelVersionNo);
   scope.pageState.entityCountryDetails.attr("pricingModelId", data.entityCountryDetails.pricingModelId);
@@ -1084,6 +1082,8 @@ var loadPage = function(scope,data){
   },10);
 
   $('#submitBtn').show();
+
+  scope.switchButtons(status);
 
   if(data.proposalPending != null && data.proposalPending != undefined
   && data.proposalPending == true ) {
