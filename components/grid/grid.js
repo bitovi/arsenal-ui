@@ -5,29 +5,6 @@ import can from 'can/';
 import template from './template.stache!';
 import _less from './grid.less!';
 
-var VM = can.Map.extend({
-  columns: [/*
-    {
-      id: 'example',
-      title: 'Example Column', // could also be a function, returns whatever you can from a helper
-      className: 'example', // optional
-      sortable: true,
-      compare: function(a, b) { return a[this.id] - b[this.id]; }, // `this` is the column def, a and b are rows.
-      defaultSortDirection: 'asc', // or 'desc' - which way do we sort first?
-      contents: function(row) { return row.prop; }, // optional, returns whatever you can return from a helper,
-      valueProperty: 'example', // optional, which property on the row to use, defaults to whatever's in 'id'
-      format: function(value) { return format(value); } // optional, used if you don't include `contents`, most useful with utils/formats.js
-    }, ...
-  */],
-  rows: [],
-  __rows: [],
-  footerrows:[],
-  allOpen: false,
-  sortedColumn: null,
-  sortedDirection: null, // should be 'asc' or 'desc'
-  strippedGrid:false
-});
-
 var Grid = Component.extend({
   tag: 'rn-grid',
   template: template,
@@ -162,7 +139,7 @@ var Grid = Component.extend({
       return '';
     },
     cellContents: function(row, column) {
-      row = row();
+      row = typeof row === 'function' ? row() : row;
       // By default, if column has a contents function, run the row through that.
       // Else, use the value in the property named by 'valueProperty' (fall back to 'id'), and run it through 'format' if it exists.
       if(_.isFunction(column.contents)) {
