@@ -1081,7 +1081,9 @@ var loadPage = function(scope,data){
     //$(".rn-grid thead").remove();
   },10);
 
-  $('#submitBtn').show();
+  if(scope.appstate.userInfo.roleIds[0] == constants.ROLES.BM) { 
+    $('#submitBtn').show();
+  }
 
   scope.switchButtons(status);
 
