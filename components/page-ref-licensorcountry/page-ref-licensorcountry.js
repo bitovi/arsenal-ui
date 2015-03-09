@@ -179,10 +179,11 @@ var page = Component.extend({
           
           CountryLicensor.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
-            loadPage(self, data);
+            loadPage(self.scope, data);
 
             $("#loading_img").hide();
             $(".mainLayoutId").show();
+            $("#countryId").val(self.scope.pageState.entityCountryDetails.entityCountry.attr("countryId"));
             $('#countryLicForm').bootstrapValidator('validate');
 
           },function(xhr){
@@ -1025,6 +1026,7 @@ var loadPage = function(scope,data){
   scope.getPricingModelsOnLoad(data.entityCountryDetails.pricingModelName, data.entityCountryDetails.pricingModelVersionNo);
 
   scope.pageState.entityCountryDetails.attr("entityCountry",data.entityCountryDetails.entityCountry);
+  scope.pageState.entityCountryDetails.entityCountry.attr("entityId",data.entityCountryDetails.entityCountry.entityId);
 
   scope.pageState.entityCountryDetails.attr("pricingModelVersionNumber", data.entityCountryDetails.pricingModelVersionNo);
 

@@ -233,7 +233,7 @@
               
             </div>
           </div>
-              <div id="viewPricingModelDivBlock">
+              <div id="viewPricingModelDivBlock" style="display: none">
                 <div id="viewPricingModelDiv" style="background:#fff">
 
 
