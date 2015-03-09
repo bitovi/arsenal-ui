@@ -71,7 +71,7 @@ var page = Component.extend({
     reportConfigurationList : reportConfigurationList,
     footerdatarepconf : "",
     footerdata : "",
-    appstate: undefined,// this gets passed 
+    appstate: undefined,// this gets passed
     enableButtonsApprove: "display:inline-block",
     enableButtonsReject: "display:inline-block",
     enableButtonsPropose: "display:inline-block",
@@ -169,7 +169,7 @@ var page = Component.extend({
         self.scope.attr("pricingMethods").replace(values[2].pricingMethodList);
 
         if(self.scope.appstate.screenLookup.attr("screendetails") != undefined && self.scope.appstate.screenLookup.attr("screendetails") != null) {
-        
+
           var requestObj  = {
             entityCountryDetails:{
               entityCountry:{
@@ -178,7 +178,9 @@ var page = Component.extend({
               }
             }
           }
-          
+
+          self.scope.appstate.screenLookup.attr("screendetails",undefined);
+
           CountryLicensor.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
             loadPage(self.scope, data);
@@ -186,7 +188,7 @@ var page = Component.extend({
             $("#loading_img").hide();
             $(".mainLayoutId").show();
             $('#countryLicForm').bootstrapValidator('validate');
-            $("#countryId").val(data.entityCountryDetails.entityCountry.attr("countryId"));
+            //$("#countryId").val(data.entityCountryDetails.entityCountry.attr("countryId"));
             self.scope.attr("currentCountry", data.entityCountryDetails.entityCountry.attr("countryId"));
             //self.scope.attr("refreshEntityId", false);
           },function(xhr){
@@ -197,7 +199,7 @@ var page = Component.extend({
 
             self.scope.pageState.entityCountryDetails.entityCountry.attr("entityId", licensor);
         }
-        
+
         var pricingmodelTemps  = [];
 
         var saved = false;
@@ -323,7 +325,7 @@ var page = Component.extend({
           }
 
          $(".multicomments-required").hide();
-         
+
           var self = this;
 
           reportConfigurationList = new can.List();
@@ -430,7 +432,7 @@ var page = Component.extend({
             $("#approveBtn").prop("disabled", false);
             $("#rejectBtn").prop("disabled", false);
 
-            if($('#editableText').val().length==0){/*Check the textarea editable - Onload*/  
+            if($('#editableText').val().length==0){/*Check the textarea editable - Onload*/
               $("#submitBtn").prop("disabled", true);
               $("#approveBtn").prop("disabled", true);
               $("#rejectBtn").prop("disabled", true);
@@ -487,11 +489,13 @@ var page = Component.extend({
               self.scope.attr("countries").replace(values[0].data);
               if(self.scope.attr("currentCountry") != "") {
                 $("#countryId").val(self.scope.attr("currentCountry"));
+                self.scope.pageState.entityCountryDetails.entityCountry.attr("countryId", self.scope.attr("currentCountry"));
                 self.scope.attr("currentCountry", "");
               } else {
                 $("#countryId").val(values[0].data[0].id);
-              }
                 self.scope.pageState.entityCountryDetails.entityCountry.attr("countryId", values[0].data[0].id);
+              }
+                //
                 if(self.scope.attr("onload")) {
                   $('#fetchDetailsBtn').click();
                   self.scope.attr("onload", false);
@@ -551,8 +555,8 @@ var page = Component.extend({
           var trackCounts = self.scope.trackCounts;
             $('#trackCountsDiv').html(stache('<rn-grid-pricing-trackcounts rows="{trackCounts}"></rn-grid-pricing-trackcounts>')({trackCounts}));
         },
-        
-        '#editableText keyup':function(){   
+
+        '#editableText keyup':function(){
           if($('#editableText').val().length==0){
             $("#submitBtn").prop("disabled", true);
             $("#approveBtn").prop("disabled", true);
@@ -587,13 +591,13 @@ var page = Component.extend({
             CountryLicensor.findOne(UserReq.formRequestDetails(requestObj),function(data){
               loadPage(self, data);
               self.attr("refreshEntityId", false);
-              self.pageState.entityCountryDetails.entityCountry.attr("entityId", requestObj.entityCountryDetails.entityCountry.entityId);
+              //self.pageState.entityCountryDetails.entityCountry.attr("entityId", requestObj.entityCountryDetails.entityCountry.entityId);
               self.pageState.entityCountryDetails.entityCountry.attr("invoiceCurr", data.entityCountryDetails.entityCountry.invoiceCurr);
-              $("#countryId").val(requestObj.entityCountryDetails.entityCountry.countryId);
+              //$("#countryId").val(requestObj.entityCountryDetails.entityCountry.countryId);
               self.attr("refreshEntityId", true);
               $("#loading_img").hide();
               $(".mainLayoutId").show();
-              $('#countryLicForm').bootstrapValidator('validate');  
+              $('#countryLicForm').bootstrapValidator('validate');
             },function(xhr){
               console.error("Error while loading: country-Entity Details"+xhr);
             });
@@ -789,7 +793,7 @@ var page = Component.extend({
                     $("#invmessageDiv").hide();
                   },5000);
 
-              } 
+              }
 
             });
 
@@ -802,7 +806,7 @@ var page = Component.extend({
              entityCountry_data.validFrom = periodWidgetHelper.getFiscalPeriod($("#validFrom").val());
 
              entityCountry_data.validTo = periodWidgetHelper.getFiscalPeriod($("#validTo").val());
-            
+
             var comments = $(".new-comments").val();
 
             if(comments != null && comments == "") {
@@ -839,7 +843,7 @@ var page = Component.extend({
                     $("#invmessageDiv").hide();
                   },5000);
 
-              } 
+              }
 
             });
 
@@ -883,7 +887,7 @@ var page = Component.extend({
                   self.attr("baseModelParameter").replace(data.pricingModel != undefined && data.pricingModel != null && data.pricingModel.baseModelParameters != null  ? data.pricingModel.baseModelParameters : []);
                   self.attr("trackCounts").replace(data.pricingModel != undefined && data.pricingModel != null && data.pricingModel.trackCounts != null  ? data.pricingModel.trackCounts : []);
 
-                  var tempcommentObj = (data.pricingModel != undefined && data.pricingModel != null) ? 
+                  var tempcommentObj = (data.pricingModel != undefined && data.pricingModel != null) ?
                           ((data.pricingModel.pricingModel != undefined && data.pricingModel.pricingModel != null) ? data.pricingModel.pricingModel.comments : "") : "";
                   if(tempcommentObj!=null) {
                     self.attr("commentFlag", true);
@@ -1088,7 +1092,7 @@ var loadPage = function(scope,data){
     //$(".rn-grid thead").remove();
   },10);
 
-  if(scope.appstate.userInfo.roleIds[0] == constants.ROLES.BM) { 
+  if(scope.appstate.userInfo.roleIds[0] == constants.ROLES.BM) {
     $('#submitBtn').show();
   }
 
