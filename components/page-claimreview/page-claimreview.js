@@ -1056,7 +1056,7 @@ var getClaimReviewData = function(tabView, self) {
               $("#messageDiv").hide();
           },4000);
           */
-          if(values["responseText"].indexOf("No Data found") > -1){
+          if(values["responseText"].indexOf("No Data found") > -1 || values["responseCode"] == "IN1015"){
             commonUtils.showSuccessMessage(values["responseText"]);
           }
           self.attr('countryRecordsAvailable', values.recordsAvailable);
@@ -1243,9 +1243,12 @@ var generateTableData = function(invoiceData,footerData){
               if(invoiceLineItems.length > 1){
                 for(var j=0;j<invoiceLineItems.length;j++){
                   var invLITemp={};
-                   periodType = invoiceLineItems[j]["periodType"];
-                  if(periodType == null || periodType == undefined ||(periodType !=null && periodType.length ==0)){
-                    periodType='P';
+                  var liPeriodtype=""
+                   liPeriodtype = invoiceLineItems[j]["periodType"];
+                   periodType=(periodType != null && periodType.length>0 && periodType != liPeriodtype) ? 'Multiple':liPeriodtype;
+                  if(liPeriodtype == null || liPeriodtype == undefined ||(liPeriodtype !=null && liPeriodtype.length ==0)){
+                    //periodType='P';
+                    liPeriodtype="P";
                   }
 
                   invLITemp["entityId"] = invTemp["entityId"]+","+  invTemp["entityName"] ;
@@ -1298,7 +1301,7 @@ var generateTableData = function(invoiceData,footerData){
                   //end
 
                   if(period != undefined && period > 0){
-                      invLITemp["period"] = periodWidgetHelper.getDisplayPeriod(period,periodType);
+                      invLITemp["period"] = periodWidgetHelper.getDisplayPeriod(period,liPeriodtype);
                       if(lowestPeriod==0 && highestPeriod == 0){
                         lowestPeriod=Number(period);
                         highestPeriod=Number(period);
@@ -1398,11 +1401,13 @@ var generateTableData = function(invoiceData,footerData){
             else if(countryArr.length==1)
               gridData.data[insertedId]["country"] = countryArr[0];
 
-            if(lowestPeriod != undefined && highestPeriod != undefined){
+            if(lowestPeriod != undefined && highestPeriod != undefined && periodType != 'Multiple'){
               gridData.data[insertedId]["period"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType);
               if(lowestPeriod != highestPeriod){
                 gridData.data[insertedId]["period"] = periodWidgetHelper.getDisplayPeriod(lowestPeriod,periodType)+' - '+periodWidgetHelper.getDisplayPeriod(highestPeriod,periodType);
               }
+            }else{
+              gridData.data[insertedId]["period"]='Multiple';
             }
 
 
