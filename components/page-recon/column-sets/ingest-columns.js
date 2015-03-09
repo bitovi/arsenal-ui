@@ -32,11 +32,11 @@ export default [
     sortable: true
   },
   {
-    id: 'ccidId',
-    title: 'CCID ID',
+    id: 'dtlHdrId',
+    title: 'Invoice ID',
     sortable: true,
     contents: function(row) {
-        return (row.ccidId == null || row.ccidId == "0" ) ? "": row.ccidId ;
+        return (row.dtlHdrId == null || row.dtlHdrId == "0" ) ? "": row.dtlHdrId ;
     }
   },
   {
