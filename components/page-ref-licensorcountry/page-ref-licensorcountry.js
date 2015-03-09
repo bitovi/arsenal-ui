@@ -76,7 +76,7 @@ var page = Component.extend({
     enableButtonsReject: "display:inline-block",
     enableButtonsPropose: "display:inline-block",
     commentFlag : false,
-    currentCountry : "";
+    currentCountry : "",
 
       getPricingModelsOnLoad : function(modelId, versionNo) {
         var self = this;
