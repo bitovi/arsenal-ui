@@ -180,14 +180,16 @@ var page = Component.extend({
           CountryLicensor.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
             loadPage(self.scope, data);
-
+            self.scope.attr("refreshEntityId", false);
+            self.scope.pageState.entityCountryDetails.entityCountry.attr("entityId",data.entityCountryDetails.entityCountry.entityId);
             $("#loading_img").hide();
             $(".mainLayoutId").show();
-            $("#countryId").val(self.scope.pageState.entityCountryDetails.entityCountry.attr("countryId"));
             $('#countryLicForm').bootstrapValidator('validate');
-
+            //self.scope.attr("refreshEntityId", false);
           },function(xhr){
             console.error("Error while loading: country-Entity Details"+xhr);
+          }).then(function(data)  {
+            $("#countryId").val(self.scope.pageState.entityCountryDetails.entityCountry.attr("countryId"));
           });
 
         } else {
@@ -1026,7 +1028,6 @@ var loadPage = function(scope,data){
   scope.getPricingModelsOnLoad(data.entityCountryDetails.pricingModelName, data.entityCountryDetails.pricingModelVersionNo);
 
   scope.pageState.entityCountryDetails.attr("entityCountry",data.entityCountryDetails.entityCountry);
-  scope.pageState.entityCountryDetails.entityCountry.attr("entityId",data.entityCountryDetails.entityCountry.entityId);
 
   scope.pageState.entityCountryDetails.attr("pricingModelVersionNumber", data.entityCountryDetails.pricingModelVersionNo);
 
