@@ -180,8 +180,7 @@ var page = Component.extend({
           CountryLicensor.findOne(UserReq.formRequestDetails(requestObj),function(data){
 
             loadPage(self.scope, data);
-            self.scope.attr("refreshEntityId", false);
-            self.scope.pageState.entityCountryDetails.entityCountry.attr("entityId",data.entityCountryDetails.entityCountry.entityId);
+
             $("#loading_img").hide();
             $(".mainLayoutId").show();
             $('#countryLicForm').bootstrapValidator('validate');
@@ -189,7 +188,7 @@ var page = Component.extend({
           },function(xhr){
             console.error("Error while loading: country-Entity Details"+xhr);
           }).then(function(data)  {
-            $("#countryId").val(self.scope.pageState.entityCountryDetails.entityCountry.attr("countryId"));
+            $("#countryId").val(self.scope.page-ref-licensorcountrytate.entityCountryDetails.entityCountry.attr("countryId"));
           });
 
         } else {
@@ -986,6 +985,13 @@ var loadPage = function(scope,data){
   //reportConfigurationList.splice(0, reportConfigurationList.length);
 
   scope.attr("footerrowspresent", true);
+
+  self.scope.attr("refreshEntityId", true);
+
+  var entityIdVar = data.entityCountryDetails.entityCountry.entityId;
+
+  self.scope.pageState.entityCountryDetails.entityCountry.attr("entityId", entityId);
+
   scope.reportConfigurationList.replace(data.entityCountryDetails.reportConfigurationList);
 
   scope.attr("footerdatarepconf",  data.entityCountryDetails.reportConfigurationList != null && data.entityCountryDetails.reportConfigurationList.length >0 ? data.entityCountryDetails.reportConfigurationList.length : 0);
