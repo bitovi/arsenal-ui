@@ -25,6 +25,9 @@ var OutboxGrid = ScrollingGrid.extend({
       id: 'description',
       title: 'Description',
       sortable: true
+      // contents: function(row) {
+      //   return stache('<a href="javascript:void(0)" class="descriptionLink">{{description}}</a>')(row);
+      // }
     }, {
       id: 'pendingGroupName',
       title: 'Currently With',
@@ -108,6 +111,39 @@ var OutboxGrid = ScrollingGrid.extend({
             }
           }
         });
+    },
+    ".descriptionLink click": function(el, ev){
+
+      var row =  el.closest('tr').data('row').row;
+      console.log(" Clicked "+row.tableName+", value :"+row.tableValue);
+      var regionId=$("#regionsFilter option:contains('"+row.region+"')").val();
+      this.scope.appstate.screenLookup.attr("screendetails", null);
+
+      if(row.tableName === 'RINS_PMT_BUNDLE'){
+        var data = {bundleId:row.tableValue,loadedFrom:"dashboard"};
+        this.scope.appstate.screenLookup.attr("PBR" ,data);
+        console.log(" Bundle Id Selected :  "+this.scope.appstate.screenLookup.PBR.bundleId);
+        commonUtils.navigateTo("payment-bundles");
+      }
+      if(row.tableName === 'RINS_REF_ENTITY'){
+        var data = {  tableName:row.tableName, tableId: row.tableValue, user:row.createdBy,regionId:regionId};
+        console.log(" Entity Id :  "+ row.tableValue);
+        this.scope.appstate.screenLookup.attr("screendetails" ,data);
+        commonUtils.navigateTo("licensor");
+      }
+      if(row.tableName === 'RINS_REF_COUNTRY'){
+        var data = {  tableName:row.tableName, tableId: row.tableValue, user:row.createdBy,regionId:regionId};
+        this.scope.appstate.screenLookup.attr("screendetails" ,data);
+        console.log(" Country Id :  "+ row.tableValue);
+        commonUtils.navigateTo("ref-country");
+      }
+      if(row.tableName === 'RINS_REF_ENTITY_COUNTRY'){
+        var data = {  tableName:row.tableName, tableId: row.tableValue, user:row.createdBy};
+        this.scope.appstate.screenLookup.attr("screendetails" ,data);
+        console.log(" Entity Country Id :  "+ row.tableValue);
+        commonUtils.navigateTo("ref-licensorcountry");
+      }
+
     },
     ".rn-grid>thead>tr>th click": function(item, el, ev) {
         var self = this;
