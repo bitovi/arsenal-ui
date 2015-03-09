@@ -37,7 +37,8 @@
     "draggable-legend": "https://rawgithub.com/highslide-software/draggable-legend/master/draggable-legend.js",
     "jquery-tokeninput": "~1.7.0",
     "pdfjs-bower": "1.0.233",
-    "jquery-ui": "~1.11.2"
+    "jquery-ui": "~1.11.2",
+    "knockout": "3.3.0"
   },
   "resolutions": {
     "jquery": "~2.1.1"

@@ -65,7 +65,8 @@ var InboxGrid = ScrollingGrid.extend({
       var tableScrollTopVal = parentScopeVar.attr('inboxScrollTop');
       $(tbody[0]).scrollTop(tableScrollTopVal);
       $(tbody).on('scroll', function(ev) {
-          if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight-1  && parentScopeVar.inboxRows.recordsAvailable) {
+          if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight-1
+            && parentScopeVar.inboxRows.recordsAvailable) {
 
             var offsetVal = parentScopeVar.attr('inboxOffset');
 
