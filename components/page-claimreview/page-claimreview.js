@@ -1245,7 +1245,7 @@ var generateTableData = function(invoiceData,footerData){
                   var invLITemp={};
                   var liPeriodtype=""
                    liPeriodtype = invoiceLineItems[j]["periodType"];
-                   periodType=(periodType.length>0 && periodType != liPeriodtype) ? 'Multiple':liPeriodtype;
+                   periodType=(periodType != null && periodType.length>0 && periodType != liPeriodtype) ? 'Multiple':liPeriodtype;
                   if(liPeriodtype == null || liPeriodtype == undefined ||(liPeriodtype !=null && liPeriodtype.length ==0)){
                     //periodType='P';
                     liPeriodtype="P";
