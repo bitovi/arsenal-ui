@@ -496,14 +496,14 @@ var page = Component.extend({
               self.scope.attr("countries").replace(values[0].data);
               if(self.scope.attr("currentCountry") != "") {
                 $("#countryId").val(self.scope.attr("currentCountry"));
-                self.scope.pageState.entityCountryDetails.entityCountry.attr("countryId", self.scope.attr("currentCountry"));
+                var currentCountry = self.scope.attr("currentCountry");
                 self.scope.attr("currentCountry", "");
+                self.scope.pageState.entityCountryDetails.entityCountry.attr("countryId", currentCountry);
               } else {
                 $("#countryId").val(values[0].data[0].id);
                 self.scope.pageState.entityCountryDetails.entityCountry.attr("countryId", values[0].data[0].id);
               }
-                //
-                if(self.scope.attr("onload")) {
+                 if(self.scope.attr("onload")) {
                   $('#fetchDetailsBtn').click();
                   self.scope.attr("onload", false);
                 }
@@ -608,7 +608,10 @@ var page = Component.extend({
               self.attr("refreshEntityId", false);
               //self.pageState.entityCountryDetails.entityCountry.attr("entityId", requestObj.entityCountryDetails.entityCountry.entityId);
               self.pageState.entityCountryDetails.entityCountry.attr("invoiceCurr", data.entityCountryDetails.entityCountry.invoiceCurr);
+              self.attr("currentCountry", requestObj.entityCountryDetails.entityCountry.countryId);
+              $("#countryId").val(requestObj.entityCountryDetails.entityCountry.countryId);
               //$("#countryId").val(requestObj.entityCountryDetails.entityCountry.countryId);
+
               self.attr("refreshEntityId", true);
               $("#loading_img").hide();
               $(".mainLayoutId").show();
@@ -836,6 +839,7 @@ var page = Component.extend({
             }
             var reportConfigurationListObj =  [];
             var requestObj  = {
+                id : this.scope.pageState.entityCountryDetails.attr("entityCountry").id,
               entityCountryDetails  :{
                 entityCountry:entityCountry_data,
                 reportConfigurationList:reportConfigurationListObj,
