@@ -24,10 +24,10 @@ var OutboxGrid = ScrollingGrid.extend({
     }, {
       id: 'description',
       title: 'Description',
-      sortable: true
-      // contents: function(row) {
-      //   return stache('<a href="javascript:void(0)" class="descriptionLink">{{description}}</a>')(row);
-      // }
+      sortable: true,
+      contents: function(row) {
+         return stache('<a href="javascript:void(0)" class="descriptionLink">{{description}}</a>')(row);
+      }
     }, {
       id: 'pendingGroupName',
       title: 'Currently With',
