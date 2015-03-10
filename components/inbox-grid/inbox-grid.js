@@ -109,8 +109,8 @@ var InboxGrid = ScrollingGrid.extend({
       }
       if(row.tableName === 'RINS_REF_ENTITY'){
         var data = {  tableName:row.tableName, tableId: row.tableValue, user:row.createdBy,regionId:regionId};
-        console.log(" Entity Id :  "+ row.tableValue);
-        //this.scope.appstate.screenLookup.attr("screendetails" ,data);
+        //console.log(" Entity Id :  "+ row.tableValue);
+        this.scope.appstate.screenLookup.attr("screendetails" ,data);
         commonUtils.navigateTo("licensor");
       }
       if(row.tableName === 'RINS_REF_COUNTRY'){
