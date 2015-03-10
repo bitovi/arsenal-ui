@@ -719,47 +719,24 @@ var page = Component.extend({
             var data = values[0];
             if(data.status == "SUCCESS") {
 
-                var msg = "Country-Licensor details saved successfully";
+                var msg = "Country-Licensor details proposed successfully";
 
                 // $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
                 // $("#invmessageDiv").show();
                 // setTimeout(function(){
                 //   $("#invmessageDiv").hide();
                 // },5000);
-                commonUtils.displayUIMessage(data.status, msg);
-
-                  var requestObj  = {
-                    entityCountryDetails:{
-                      entityCountry:{
-                        entityId:self.scope.pageState.entityCountryDetails.entityCountry.entityId,
-                        countryId:self.scope.pageState.entityCountryDetails.entityCountry.attr("countryId")
-                      }
-                    }
-                  }
-
-                 CountryLicensor.findOne(UserReq.formRequestDetails(requestObj),function(data){
-
-                    loadPage(self.scope, data);
-
-                    //$("#loading_img").hide();
-                    $(".mainLayoutId").show();
-
-                    $('#countryLicForm').bootstrapValidator('validate');
-
-                  },function(xhr){
-                    console.error("Error while loading: country-Entity Details"+xhr);
-                  });
-
+                commonUtils.displayUIMessage(data.status, data.responseText);
 
               } else {
 
-                  var msg = "Country-Licensor Detials was not saved successfully";
+                  var msg = "Country-Licensor Detials was not proposed successfully";
                   // $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>");
                   // $("#invmessageDiv").show();
                   // setTimeout(function(){
                   //   $("#invmessageDiv").hide();
                   // },5000);
-                  commonUtils.displayUIMessage(data.status, msg);
+                  commonUtils.displayUIMessage(data.status, data.responseText);
               }
             },function(xhr){
               console.error("Failed :"+xhr);
@@ -804,19 +781,45 @@ var page = Component.extend({
 
               if(data[0].status == "SUCCESS") {
 
-                  var msg = "Changes are Approved by workflow";
+                  var msg = "Changes are Approved successfully";
 
-                  $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
-                  $("#invmessageDiv").show();
-                  setTimeout(function(){
-                    $("#invmessageDiv").hide();
-                  },5000);
+                  commonUtils.displayUIMessage("SUCCESS", msg);
+
+                  var requestObj  = {
+                    entityCountryDetails:{
+                      entityCountry:{
+                        countryId:this.scope.pageState.entityCountryDetails.entityCountry.attr("countryId")
+                        //entityId:this.scope.pageState.entityCountryDetails.entityCountry.attr("entityId")
+                      }
+                    }
+                  }
+
+                 CountryLicensor.findOne(UserReq.formRequestDetails(requestObj),function(data){
+
+                    loadPage(self.scope, data);
+
+                    //$("#loading_img").hide();
+                    $(".mainLayoutId").show();
+
+                    $('#countryLicForm').bootstrapValidator('validate');
+
+                  },function(xhr){
+                    console.error("Error while loading: country-Entity Details"+xhr);
+                  });
+
+              } else {
+
+
+                  var msg = "Changes are not Approved successfully";
+
+                  commonUtils.displayUIMessage("FAILURE", msg);
 
               }
 
             });
 
           },
+
 
           '#rejectBtn click': function() {
             commonUtils.hideUIMessage();
@@ -855,13 +858,37 @@ var page = Component.extend({
 
               if(data[0].status == "SUCCESS") {
 
-                  var msg = "Changes are Rejected by workflow";
+                  var msg = "Changes are Rejected successfully";
 
-                  $("#invmessageDiv").html("<label class='successMessage'>"+msg+"</label>");
-                  $("#invmessageDiv").show();
-                  setTimeout(function(){
-                    $("#invmessageDiv").hide();
-                  },5000);
+                  commonUtils.displayUIMessage("SUCCESS", msg);
+
+                  var requestObj  = {
+                    entityCountryDetails:{
+                      entityCountry:{
+                        countryId:this.scope.pageState.entityCountryDetails.entityCountry.attr("countryId")
+                        //entityId:this.scope.pageState.entityCountryDetails.entityCountry.attr("entityId")
+                      }
+                    }
+                  }
+
+                 CountryLicensor.findOne(UserReq.formRequestDetails(requestObj),function(data){
+
+                    loadPage(self.scope, data);
+
+                    //$("#loading_img").hide();
+                    $(".mainLayoutId").show();
+
+                    $('#countryLicForm').bootstrapValidator('validate');
+
+                  },function(xhr){
+                    console.error("Error while loading: country-Entity Details"+xhr);
+                  });
+
+              } else {
+
+                var msg = "Changes are not Rejected successfully: please try again";
+
+                commonUtils.displayUIMessage("FAILURE", msg);
 
               }
 
