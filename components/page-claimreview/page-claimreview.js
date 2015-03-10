@@ -1364,8 +1364,7 @@ var generateTableData = function(invoiceData,footerData){
                   var period = invoiceLineItems[0]["period"];
                   lowestPeriod=highestPeriod=period;
                   periodType=invoiceLineItems[0]["periodType"];
-                  //gridData.data[insertedId]["period"]=periodWidgetHelper.getDisplayPeriod(period,invoiceLineItems[0]["periodType"]);
-                  //gridData.data[insertedId]["periodType"]=invoiceLineItems[0]["periodType"];
+                  gridData.data[insertedId]["status"] = getInvoiceStatus(invoiceLineItems[0]["status"]);
               }
 
             //rdar://problem/20018279> -start
