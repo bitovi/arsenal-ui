@@ -448,7 +448,14 @@ var page = Component.extend({
 
 
         },
+        '#licensorId change':function(){
+          commonUtils.hideUIMessage();
+        },
+        '#countryId change':function(){
+          commonUtils.hideUIMessage();
+        },
         "#grid-revision-history table>tbody>tr td dblclick": function(item, el, ev){
+          commonUtils.hideUIMessage();
           //var invoiceid = el.closest('tr').data('row').row.id;
           var self=this.scope;
           var row = item.closest('tr').data('row').row;
@@ -536,12 +543,14 @@ var page = Component.extend({
         },
 
         '#entityPricingModelVersionId change': function(el, ev) {
+          commonUtils.hideUIMessage();
           var self=this.scope;
           var selected = $(el[0].selectedOptions).val();
           self.pageState.entityCountryDetails.attr("pricingModelId", selected);
         },
 
         '{baseModelParameter} change': function() {
+          commonUtils.hideUIMessage();
           var self = this;
           console.log("here");
           var baseModelParameter = self.scope.baseModelParameter;
@@ -549,6 +558,7 @@ var page = Component.extend({
         },
 
         '{trackCounts} change': function() {
+          commonUtils.hideUIMessage();
           var self = this;
           console.log("here");
 
@@ -557,6 +567,7 @@ var page = Component.extend({
         },
 
         '#editableText keyup':function(){
+          commonUtils.hideUIMessage();
           if($('#editableText').val().length==0){
             $("#submitBtn").prop("disabled", true);
             $("#approveBtn").prop("disabled", true);
@@ -567,8 +578,12 @@ var page = Component.extend({
             $("#rejectBtn").prop("disabled", false);
           }
         },
-
+        '#countryLicForm change':function(){
+          commonUtils.hideUIMessage();
+        },
         '#fetchDetailsBtn click':function(){
+
+            commonUtils.hideUIMessage();
 
             if($('#countryId').val=='Select'){
               console.log('please select values');
@@ -605,7 +620,7 @@ var page = Component.extend({
 
           },
           '#buttonCancel click': function(){
-
+            commonUtils.hideUIMessage();
             //form Reset
             $(".mainLayoutId").hide();
             $(".buttonsPlaceHolder").hide();
@@ -625,6 +640,7 @@ var page = Component.extend({
 
           },
           '#submitBtn click': function(){
+            commonUtils.hideUIMessage();
             var self=this;
             var entityCountry_data  = this.scope.pageState.entityCountryDetails.attr("entityCountry")._data;
             pageState.entityCountryDetails.entityCountry.validFrom
@@ -749,7 +765,7 @@ var page = Component.extend({
 
           },
           '#approveBtn click': function() {
-
+            commonUtils.hideUIMessage();
             var entityCountry_data  = this.scope.pageState.entityCountryDetails.attr("entityCountry")._data;
             var comments = $(".new-comments").val();
 
@@ -800,7 +816,7 @@ var page = Component.extend({
           },
 
           '#rejectBtn click': function() {
-
+            commonUtils.hideUIMessage();
             var entityCountry_data  = this.scope.pageState.entityCountryDetails.attr("entityCountry")._data;
 
              entityCountry_data.validFrom = periodWidgetHelper.getFiscalPeriod($("#validFrom").val());
@@ -853,6 +869,7 @@ var page = Component.extend({
             $("#viewPricingModelDivBlock").hide();
           },
           '#pricingModelBtn click': function(){
+            commonUtils.hideUIMessage();
             var self = this.scope;
 
             var selmodelid =  $("#entityPricingModelVersionId").val();
@@ -901,6 +918,7 @@ var page = Component.extend({
               });
             },
           'period-calendar onSelected': function (ele, event, val) {  
+            commonUtils.hideUIMessage();
             this.scope.attr('periodchoosen', val);
             $(ele).parent().find('input[type=text]').val(this.scope.periodchoosen).trigger('change');
             $(ele).closest('.calendarcls').find('.box-modal').hide();
@@ -910,6 +928,7 @@ var page = Component.extend({
             $(el).closest('.calendarcls').find('.box-modal').show().trigger( "focus" );
           },
           '.calendarDateIcon click': function(el){
+            commonUtils.hideUIMessage();
             $('.box-modal').hide(); // hide all other open calendar popups before opening the new one.
             $(el).closest('.calendarcls').find('.box-modal').show(0,function(){
               //$($(el).closest('.calendarcls').find('.box-modal')).data("selected-period",el[0].value);
@@ -926,7 +945,7 @@ var page = Component.extend({
           },
           '{selectedperiod} change':function(val){
             //var period = periodWidgetHelper.getFiscalPeriod();
-
+            commonUtils.hideUIMessage();
             if(val[0].which=='validFrom'){
               $("#validFrom").val(val[0].value);
             }else{
