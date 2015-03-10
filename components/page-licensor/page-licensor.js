@@ -1728,7 +1728,7 @@ var page = Component.extend({
           setTimeout(function(){
             $('*[data-bv-icon-for="'+data.field +'"]').popover('hide');
           },1000);
-        $("#submitButton").attr("disabled", true);//Disable submit button if all valid
+        $("#submitBtn, #buttonApprove, #buttonReject").attr("disabled", true);//Disable submit button if all valid
       }).on('added.field.bv', function(e, data) {
 
       }).on('success.field.bv', function(e, data) {
@@ -1737,17 +1737,17 @@ var page = Component.extend({
           data.bv.disableSubmitButtons(true);
         }
 
-        $("#submitButton").attr("disabled", false);//Enable submit button if all valid
+        $("#submitButton, #buttonApprove, #buttonReject").attr("disabled", false);//Enable submit button if all valid
 
           if($('#editableText').val().length === 0 || $("#sapVendor").val().length === 0 || $("#invoiceType").val() === "" || $(".accountName").val().length === 0 || $(".periodFromInput").filter(':visible:first').val().length === 0 ){/*Check the textarea editable - Onload*/
-            $("#submitButton").attr("disabled", true);
+            $("#submitButton, #buttonApprove, #buttonReject").attr("disabled", true);
           }
         /*Check the textarea editable*/
         $("#editableText").on('keyup',function(){
           if($(this).val().length==0){
-            $("#submitButton").attr("disabled", true);
+            $("#submitButton, #buttonApprove, #buttonReject").attr("disabled", true);
           }else{
-            $("#submitButton").attr("disabled", false);
+            $("#submitButton, #buttonApprove, #buttonReject").attr("disabled", false);
           }
         });
       });

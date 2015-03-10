@@ -2,4 +2,4 @@
 
 <div class="setMaxHeight"><rn-inbox-grid rows="{inboxRows}" appstate="{appstate}" sortcolumnnames="{sortcolumnnames}" sortdir="{sortdir}" id="inboxGrid"></rn-inbox-grid></div>
 <h2>Outbox {{outboxItemCount}}</h2>
-<div class="setMaxHeight"><rn-outbox-grid rows="{outboxRows}" sortcolumnnames="{sortcolumnnames}" sortdir="{sortdir}" id="outboxGrid"></rn-outbox-grid></div>
+<div class="setMaxHeight"><rn-outbox-grid rows="{outboxRows}" appstate="{appstate}" sortcolumnnames="{sortcolumnnames}" sortdir="{sortdir}" id="outboxGrid"></rn-outbox-grid></div>
