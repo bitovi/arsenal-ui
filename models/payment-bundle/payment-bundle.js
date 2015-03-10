@@ -329,8 +329,10 @@ var PaymentBundle = Model.extend({
                   // if(validationResponse.paymentBundle.vldtnStatus === 5) {
                   if(target != undefined ){
                     var lineTarget = _.find(target.bundleDetails, {bndlLineId: detail.bndlLineId});
-                    lineTarget.attr('validationMessages', detail.vldtnMessage);
-                    detail.vldtnBatchResultColor != undefined  ?  lineTarget.attr('validationColor', detail.vldtnBatchResultColor ) :  lineTarget.attr('validationColor', "" );
+                    if(lineTarget != undefined){
+                      lineTarget.attr('validationMessages', detail.vldtnMessage);
+                      detail.vldtnBatchResultColor != undefined  ?  lineTarget.attr('validationColor', detail.vldtnBatchResultColor ) :  lineTarget.attr('validationColor', "" );
+                    }
                   }
                   // }
                 });
@@ -388,8 +390,10 @@ var PaymentBundle = Model.extend({
                   // if(validationResponse.paymentBundle.vldtnStatus === 5) {
                   if(target != undefined ){
                     var lineTarget = _.find(target.bundleDetails, {bndlLineId: detail.bndlLineId});
-                    lineTarget.attr('validationMessages', detail.vldtnMessage);
-                    detail.vldtnBatchResultColor != undefined  ?  lineTarget.attr('validationColor', detail.vldtnBatchResultColor ) :  lineTarget.attr('validationColor', "" );
+                    if(lineTarget != undefined){
+                      lineTarget.attr('validationMessages', detail.vldtnMessage);
+                      detail.vldtnBatchResultColor != undefined  ?  lineTarget.attr('validationColor', detail.vldtnBatchResultColor ) :  lineTarget.attr('validationColor', "" );
+                    }
                   }
                   // }
                 });

@@ -1,5 +1,6 @@
 import Component from 'can/component/';
 import stache from 'can/view/stache/';
+import _ from 'lodash';
 
 import template from './template.stache!';
 import styles from './page-claimreview.less!';
@@ -165,7 +166,7 @@ Grid.extend({
       var tableScrollTopVal = parentScopeVar.attr('tableScrollTop');
       $(tbody[0]).scrollTop(tableScrollTopVal);
         $(tbody).on('scroll', function(ev) {
-          if(tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight && parentScopeVar.licensorRecordsAvailable) {
+          if(parentScopeVar.licensorRecordsAvailable && tbody[0].scrollTop + tbody[0].clientHeight >= tbody[0].scrollHeight) {
             //console.log(JSON.stringify(self.element.closest('page-invoices').scope().appstate.attr()));
 
 
@@ -1239,7 +1240,7 @@ var generateTableData = function(invoiceData,footerData){
               var hasChild=true;
               var periodType="";
 
-            if(invoiceLineItems.length > 0){
+
               if(invoiceLineItems.length > 1){
                 for(var j=0;j<invoiceLineItems.length;j++){
                   var invLITemp={};
@@ -1313,40 +1314,50 @@ var generateTableData = function(invoiceData,footerData){
                       invLITemp["period"] = '';
                     }
 
-                  if(invLITemp["contentType"]!= undefined && invLITemp["contentType"].indexOf('TAX') == -1){
-                      contentTypeArr.push(invLITemp["contentType"]);
+                  if(invLITemp["contentType"]!= undefined && invLITemp["contentType"] != 'TAX' && !_.contains(contentTypeArr, invLITemp["contentType"]) ){
+                      contentTypeArr.push(invLITemp["contentType"]) ;
+                      //contentTypeArr.push(invLITemp["contentType"]);
                   }
-                  if(invLITemp["country"] != undefined && typeof(invLITemp["country"]) != 'null'){
+                  if(invLITemp["country"] != undefined && typeof(invLITemp["country"]) != 'null' && !_.contains(countryArr, invLITemp["country"])){
                     countryArr.push(invLITemp["country"]);
                   }
 
-                  if(invLITemp["entityName"] != undefined && typeof(invLITemp["entityName"]) != 'null'){
-                    licensorTypeArr.push(invLITemp["entityName"]);
+                  if(invLITemp["entityName"] != undefined && typeof(invLITemp["entityName"]) != 'null' && !_.contains(licensorTypeArr, invLITemp["entityName"])){
+                      licensorTypeArr.push(invLITemp["entityName"]);
                   }
 
-                  invoiceNumberArr.push(invLITemp["invoiceNumber"]);
+                  if(invLITemp["invoiceNumber"] != undefined && !  _.contains(invoiceNumberArr, invLITemp["invoiceNumber"]) ){
+                      invoiceNumberArr.push(invLITemp["invoiceNumber"]);
+                  }
+
+
                   //rdar://problem/20018279> -start
                   if(!aggregateFlag){
                     gridData.data.push(invLITemp);
                   }
                   //rdar://problem/20018279> -end
                 }
-              }else{
-                if(invoiceLineItems.length == 1){
+              }else if(invoiceLineItems.length == 1){
                   hasChild=false;
                   var contentType=invoiceLineItems[0]["contentTypeName"];
                   var country=invoiceLineItems[0]["countryId"];
                   var entityName=invoiceLineItems[0]["entityName"];
-                  if(contentType != undefined && contentType.indexOf('TAX') == -1){
-                      contentTypeArr.push(contentType);
+
+                  if(contentType != undefined && contentType != 'TAX'){
+                    _.contains(contentTypeArr, contentType) ?  "": contentTypeArr.push(contentType);
+
                   }
+
                   if(country != undefined && typeof(country) != 'null'){
-                    countryArr.push(country);
+                    _.contains(countryArr, contentType) ?  "": countryArr.push(country);
+                    // countryArr.push(country);
                   }
 
                   if(entityName != undefined && typeof(entityName) != 'null'){
-                    licensorTypeArr.push(entityName);
+                    _.contains(licensorTypeArr, entityName) ?  "": licensorTypeArr.push(entityName);
+                    //licensorTypeArr.push(entityName);
                   }
+
 
                   invoiceNumberArr.push(invoiceLineItems[0]["invoiceNumber"]);
 
@@ -1355,10 +1366,8 @@ var generateTableData = function(invoiceData,footerData){
                   periodType=invoiceLineItems[0]["periodType"];
                   //gridData.data[insertedId]["period"]=periodWidgetHelper.getDisplayPeriod(period,invoiceLineItems[0]["periodType"]);
                   //gridData.data[insertedId]["periodType"]=invoiceLineItems[0]["periodType"];
-                }
               }
 
-            }
             //rdar://problem/20018279> -start
             if(aggregateFlag){
               hasChild=false;
@@ -1368,35 +1377,34 @@ var generateTableData = function(invoiceData,footerData){
             //console.log("countryArr is ffsdfs "+JSON.stringify(countryArr));
 
             /*Below function is to remove the duplicate content type and find the count */
-            contentTypeArr = contentTypeArr.filter( function( item, index, inputArray ) {
-                   return inputArray.indexOf(item) == index;
-            });
+            // contentTypeArr = contentTypeArr.filter( function( item, index, inputArray ) {
+            //        return inputArray.indexOf(item) == index;
+            // });
             if(contentTypeArr.length>1){
-              gridData.data[insertedId]["contentType"] = (contentTypeArr.indexOf('TAX')!== -1)?(contentTypeArr.length-1)+" content types":contentTypeArr.length+" content types";
+              gridData.data[insertedId]["contentType"] = contentTypeArr.length+" content types";
             }
             else if(contentTypeArr.length==1)
               gridData.data[insertedId]["contentType"] = contentTypeArr[0];
 
 
               /*Below function is to remove the duplicate Licensor and find the count */
-              licensorTypeArr = licensorTypeArr.filter( function( item, index, inputArray ) {
-                     return inputArray.indexOf(item) == index;
-              });
+              // licensorTypeArr = licensorTypeArr.filter( function( item, index, inputArray ) {
+              //        return inputArray.indexOf(item) == index;
+              // });
 
               if(licensorTypeArr.length>1){
-
-                gridData.data[insertedId]["entityName"] = (licensorTypeArr.indexOf('TAX')!== -1)?(licensorTypeArr.length-1)+" Licensors":licensorTypeArr.length+" Licensors";
+                gridData.data[insertedId]["entityName"] = licensorTypeArr.length+" Licensors";
               }
               else if(licensorTypeArr.length==1)
                 gridData.data[insertedId]["entityName"] = licensorTypeArr[0];
                 //end
 
             /*Below function is to remove the duplicate country and find the count */
-            countryArr = countryArr.filter( function( item, index, inputArray ) {
-              return inputArray.indexOf(item) == index;
-            });
+            // countryArr = countryArr.filter( function( item, index, inputArray ) {
+            //   return inputArray.indexOf(item) == index;
+            // });
             if(countryArr.length>1){
-              gridData.data[insertedId]["country"] = (contentTypeArr.indexOf('TAX')!== -1)?(countryArr.length-1)+" Countries":countryArr.length+ " Countries";
+              gridData.data[insertedId]["country"] = countryArr.length+ " Countries";
             }
             else if(countryArr.length==1)
               gridData.data[insertedId]["country"] = countryArr[0];
@@ -1411,7 +1419,7 @@ var generateTableData = function(invoiceData,footerData){
             }
 
 
-            invoiceNumberArr = $.unique(invoiceNumberArr);
+            //invoiceNumberArr = $.unique(invoiceNumberArr);
              if(invoiceNumberArr.length==1){
               gridData.data[insertedId]["invoiceNumber"] = invoiceNumberArr[0];
              }
@@ -1520,60 +1528,7 @@ var status ="";
   }
   return status;
 }
-function alignGrid(divId, is_aggregate){
-/*  console.log("&&&&&&&&&&&&&&Align Grid Called &&&&&&&&&&&");
-  var colLength = $('#'+divId+' table>thead>tr>th').length;
-  var rowLength = $('#'+divId+' table>tbody>tr').length;
-  var divWidth = $('#'+divId).outerWidth();
-  var tableWidth = 0;
-  var tdWidth, cellWidthArr = [];
-  if(rowLength>0){
-    $('#'+divId+' table').css("width",divWidth-300);
-      for(var i=1;i<=colLength;i++){
-        var theadTdWidth = $('#'+divId+' table>thead>tr>th:nth-child('+i+')').outerWidth();
-        var tbodyTdWidth = $('#'+divId+' table>tbody>tr>td:nth-child('+i+')').outerWidth();
-        var tfootTdWidth = $('#'+divId+' table>tfoot>tr>td:nth-child('+i+')').outerWidth();
 
-        if(theadTdWidth >= tbodyTdWidth && theadTdWidth >= tfootTdWidth)
-          tdWidth = theadTdWidth;
-        else if(tfootTdWidth >= tbodyTdWidth && tfootTdWidth >= theadTdWidth)
-          tdWidth = tfootTdWidth;
-        else
-          tdWidth = tbodyTdWidth;
-
-        if(is_aggregate==1){
-          if(i==2 || i==3)
-            tdWidth = 0;
-        }
-
-        tableWidth += tdWidth;
-        cellWidthArr.push(tdWidth);
-      }
-
-      if(tableWidth < divWidth){
-        var moreWidth = (divWidth-tableWidth)/colLength;
-        for(var j=1;j<=cellWidthArr.length;j++){
-          var width = Math.round(cellWidthArr[j-1]+moreWidth);
-          if(is_aggregate==1){
-            if(j==2 || j==3)
-              width = 0;
-          }
-          $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
-          $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width);
-          $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
-        }
-        $('#'+divId+' table').css("width",divWidth);
-      } else {
-        for(var j=1;j<=cellWidthArr.length;j++){
-          var width = cellWidthArr[j-1];
-          $('#'+divId+' table>thead>tr>th:nth-child('+j+')').css("width",width);
-          $('#'+divId+' table>tbody>tr>td:nth-child('+j+')').css("width",width);
-          $('#'+divId+' table>tfoot>tr>td:nth-child('+j+')').css("width",width);
-        }
-        $('#'+divId+' table').css("width",tableWidth);
-      }
-  }*/
-}
 
 function getVisibleGridHeight(){
   if($('#licensorView').is(':visible')){
