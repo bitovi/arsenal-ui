@@ -580,12 +580,14 @@ var page = Component.extend({
             if(licensor == null || licensor == undefined){
               entityName=row.entityId.split(",")[1];
             }
+            var period = periodWidgetHelper.getFiscalPeriod(rowData['period']);
+            var periodType = periodWidgetHelper.getPeriodType(rowData['period']);
             data={
               'countryId':rowData['country'],
               'licensorId':entityName,
               'requestFrom':requestFrom,
-              'fiscalPeriod':rowData['periodNo'],
-              'periodType':rowData['periodType'],
+              'fiscalPeriod':period,
+              'periodType':periodType,
               'contentType':rowData['contentType'],
               'currency':rowData['currency']
             };
