@@ -443,9 +443,13 @@ var BundleDetailTabs = Component.extend({
          || this.scope.details.isChild)
         && this.scope.details.contentType !== "TAX"){
         var data = this.scope.details;
-        console.log("chart data");console.log(data);
+        //console.log("chart data");console.log(data);
         //$("#chartContainer").addClass("highcharts_Overlay");
-        $("#highChartDetails").append(stache('<high-chart details={data}></high-chart>')({data}));
+        if(can.isEmptyObject(data)){
+          commonUtils.displayUIMessage('FAILURE', 'Please select Invoice line to see Historical Trends.');
+        }else{
+          $("#highChartDetails").append(stache('<high-chart details={data}></high-chart>')({data}));
+        } 
       }else{
         console.log('Data not set so not showing the chart');
         if (this.scope.details.contentType === "TAX") {
