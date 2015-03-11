@@ -188,7 +188,8 @@ var BundleDetailTabs = Component.extend({
         paginate: this.bottomGridPaginateAttr,
         preferredCcy: this.preferredCurr,
         validationBundlesCache: this.cache.validationBundlesCache,
-        bundleLineItems:bundleLineItems
+        bundleLineItems:bundleLineItems,
+        selectedBundle:bundle
       };
 
       return bundle.getDetails(params

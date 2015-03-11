@@ -194,7 +194,8 @@ var PaymentBundle = Model.extend({
             bundleId,
             paymentOption,
             view,
-            periodType: params.appstate.periodType
+            //periodType: params.appstate.periodType,
+            periodType: params.selectedBundle.periodType
           },
          bundleSearch: {
            filter: filterFormatted
