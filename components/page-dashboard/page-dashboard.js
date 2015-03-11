@@ -50,7 +50,7 @@ var page = Component.extend({
       var fieldId = this.scope.tabs[i].id ;
 
       var attr = fieldPermission.formRequestDetails(fieldId,screenId);
-
+      console.log("Before Hide="+attr);
       if(attr == 'hidden')
       {
         this.scope.tabs.splice(i, 1);
@@ -69,7 +69,7 @@ var page = Component.extend({
     ifSelectedTab: function(tabText, options) {
       commonUtils.hideUIMessage();
       return this.attr('selectedTab').text === tabText ? options.fn(this) : '';
-       
+
     }
   },
   events: {
@@ -89,7 +89,7 @@ var page = Component.extend({
 
       this.scope.attr('selectedTab', this.scope.tabs[tabIndex]);
       self.scope.appstate.screenLookup.attr('screenid',this.scope.tabs[tabIndex].id);
-      
+
       console.log(self.scope.appstate.screenLookup.attr('screenid'));
 
     }
