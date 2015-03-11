@@ -1428,9 +1428,9 @@ var page = Component.extend({
                                     // 	this.scope.contentTypeFilter.replace(this.scope.contentType);
 
                                     var self = this;
-                                    if(self.scope.attr("invoicetypeSelect") != '2'){
+                                    //if(self.scope.attr("invoicetypeSelect") != '2'){
                                       updateContentType(el);
-                                    }
+                                    //}
 
                                   },
                                   '#inputMonth0 change':function(el){ /*validation for period*/
@@ -1696,6 +1696,10 @@ var page = Component.extend({
                                               var serviceID = $("#inputContent0 option:selected").attr("servicetypeid");
                                               if (typeof serviceID !== undefined) {
                                                 var options = $(_elementID).data('options').filter('[servicetypeid=' + serviceID + ']');
+                                                if(options .length == 0){
+                                                  $(_elementID).data('options',$('#'+currentElementID+' option').clone());
+                                                  options=$(_elementID).data('options').filter('[servicetypeid=' + serviceID + ']');
+                                                }
                                               }else{
                                                 var options = $(_elementID).data('options').filter('[servicetypeid >' + serviceID + ']');
                                               }
