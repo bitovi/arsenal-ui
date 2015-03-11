@@ -1,3 +1,4 @@
+import jquerysorter from 'jquerysorter';
 import Component from 'can/component/';
 
 import stache from 'can/view/stache/';
@@ -1138,6 +1139,12 @@ var loadPage = function(scope,data){
   setTimeout(function(){
     alignGridStats('grid-revision-history');
     alignGridStats('grid-report-config');
+    $('rn-grid-revision-history').children('table').tablesorter({
+      // manipulate the template string after is it created
+      onRenderTemplate : function(i, t){
+        return t+'<span class="sort-arrow-asc">△</span><span class="sort-arrow-desc">▽</span>';
+      }
+    });
     //$("#grid-revision-history-heading table").append($(".rn-grid thead"));
     //$(".rn-grid thead").remove();
   },10);

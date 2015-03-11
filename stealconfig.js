@@ -32,6 +32,7 @@
 		paths: {
 			"jquery": "bower_components/jquery/dist/jquery.js",
 			"jqueryui": "bower_components/jquery-ui/jquery-ui.js",
+			"jquerysorter": "bower_components/jquery.tablesorter/dist/js/jquery.tablesorter.js",
 			"jqueryui_core.css": "bower_components/jquery-ui/themes/base/core.csscss",
 			"jqueryui_dialog.css": "bower_components/jquery-ui/themes/base/dialog.csscss",
 			"lodash": "bower_components/lodash/dist/lodash.js",

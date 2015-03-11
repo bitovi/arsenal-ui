@@ -420,3 +420,34 @@ div#grid-revision-history-country {
 rn-grid-revision-history-country thead, rn-grid-revision-history-country tfoot,rn-grid-society-model thead, rn-grid-society-model tfoot{
 	border-left: 1px solid rgba(134, 128, 128, 0) !important;
 }
+rn-grid-society-model table, rn-grid-revision-history-country table{
+	th.tablesorter-header{
+      span{
+        font-size:0.5em;
+      }
+    }
+    th.tablesorter-headerAsc{
+      .sort-arrow-asc{
+        display:inline-block;
+      }
+      .sort-arrow-desc{
+        display:none;
+      }
+    }
+    th.tablesorter-headerDesc{
+      .sort-arrow-desc{
+        display:inline-block;
+      }
+      .sort-arrow-asc{
+        display:none;
+      }
+    }
+    th.tablesorter-headerUnSorted{
+      .sort-arrow-asc{
+        display:none;
+      }
+      .sort-arrow-desc{
+        display:none;
+      }
+    }
+}

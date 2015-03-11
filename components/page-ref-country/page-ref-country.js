@@ -1,3 +1,4 @@
+import jquerysorter from 'jquerysorter';
 import Component from 'can/component/';
 
 import stache from 'can/view/stache/';
@@ -329,6 +330,18 @@ var page = Component.extend({
           setTimeout(function(){
             alignGrid("grid-revision-history-country");
             alignGrid("grid-society-model");
+            $('rn-grid-society-model').children('table').tablesorter({
+              // manipulate the template string after is it created
+              onRenderTemplate : function(i, t){
+                return t+'<span class="sort-arrow-asc">△</span><span class="sort-arrow-desc">▽</span>';
+              }
+            });
+            $('rn-grid-revision-history-country').children('table').tablesorter({
+              // manipulate the template string after is it created
+              onRenderTemplate : function(i, t){
+                return t+'<span class="sort-arrow-asc">△</span><span class="sort-arrow-desc">▽</span>';
+              }
+            });
           },10);
 
           $('#submitBtn').show();
@@ -798,6 +811,18 @@ var page = Component.extend({
           setTimeout(function(){
             alignGrid("grid-revision-history-country");
             alignGrid("grid-society-model");
+            $('rn-grid-society-model').children('table').tablesorter({
+              // manipulate the template string after is it created
+              onRenderTemplate : function(i, t){
+                return t+'<span class="sort-arrow-asc">△</span><span class="sort-arrow-desc">▽</span>';
+              }
+            });
+            $('rn-grid-revision-history-country').children('table').tablesorter({
+              // manipulate the template string after is it created
+              onRenderTemplate : function(i, t){
+                return t+'<span class="sort-arrow-asc">△</span><span class="sort-arrow-desc">▽</span>';
+              }
+            });
           },10);
 
           $('#submitBtn').show();
