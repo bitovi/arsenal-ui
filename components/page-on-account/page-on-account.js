@@ -157,6 +157,13 @@ var page = Component.extend({
           disableCopyOnAccount(true);
           $("#onAccountEditDeleteDiv").hide();
       },
+      '#toolTipIcons img mouseover': function(el, ev) {
+        $(".overlay").html("<label class='tooltipMessage'>"+el.data('tooltip')+"</label>");
+        $(".overlay").show();
+      },
+      '#toolTipIcons img mouseout': function(el, ev) {
+        //$(".overlay").hide();
+      },
       'period-calendar onSelected': function (ele, event, val) {  
          this.scope.attr('periodchoosen', val);
         var which = $(ele).parent().find('input[type=text]').attr('id');

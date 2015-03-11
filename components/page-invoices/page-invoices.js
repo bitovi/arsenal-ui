@@ -230,7 +230,6 @@ Grid.extend({
       $(el).parent().find('tr').removeClass("highlight");
       $(el).addClass("selected");
     },
-
     /*'.open-toggle click': function(el, ev) {
       var row = el.closest('tr').data('row').row;
       row.attr('__isOpen', !row.attr('__isOpen'));
@@ -416,6 +415,14 @@ var page = Component.extend({
           //self.scope.appstate.attr("invSearchPervHist", null);
 
         }
+    },
+
+    '#searchDiv img mouseover': function(el, ev) {
+      $(".overlay").html("<label class='tooltipMessage'>"+el.data('tooltip')+"</label>");
+      $(".overlay").show();
+    },
+    '#searchDiv img mouseout': function(el, ev) {
+      $(".overlay").hide();
     },
 
     '#exportExcel click':function(){

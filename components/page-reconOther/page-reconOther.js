@@ -192,6 +192,13 @@ var page = Component.extend({
           }
       });
     },
+    '#searchDiv img mouseover': function(el, ev) {
+      $(".overlay").html("<label class='tooltipMessage'>"+el.data('tooltip')+"</label>");
+      $(".overlay").show();
+    },
+    '#searchDiv img mouseout': function(el, ev) {
+      $(".overlay").hide();
+    },
     'tbody tr click': function(el, ev) {
       commonUtils.hideUIMessage();
       $(el).parent().find('tr').removeClass("selected");

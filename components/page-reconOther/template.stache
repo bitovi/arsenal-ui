@@ -25,10 +25,11 @@
           </li>
           <li class="pull-right marginLeft-5 marginTop-10 width25 reconOther" style="position:relative;bottom:6px; background:none;">
               <div id="searchDiv">
+                  <div class="overlay" ></div>
                   <input type="text" class="form-control" id="tokenSearch" placeholder="Search">
-                  </div>
-                  <img class="exportToExcel" id="exportExcel">
-                  <img class="copyToClipboard" id="copyToClipboard">
+                  <img class="exportToExcel" data-tooltip="Export Excel" id="exportExcel">
+                  <img class="copyToClipboard" data-tooltip="Copy to Clipboard" id="copyToClipboard">
+              </div>    
           </li>
           <li class="pull-right marginTop-10 customLI width55"  {{isTabSelectedAs 'Invoices'}} >
               <div class="col-sm-9 btn-display-center">

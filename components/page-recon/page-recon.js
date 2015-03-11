@@ -195,6 +195,13 @@ var page = Component.extend({
         }
 
       },
+      '#searchDiv img mouseover': function(el, ev) {
+        $(".overlay").html("<label class='tooltipMessage'>"+el.data('tooltip')+"</label>");
+        $(".overlay").show();
+      },
+      '#searchDiv img mouseout': function(el, ev) {
+        $(".overlay").hide();
+      },
       ".token-input-list-facebook keyup": function(e,ev){
         if(ev.keyCode === 13){ //trigger search when user press enter key. This is becase user can
             //select multiple search token and can trigger the search
