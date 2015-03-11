@@ -1694,14 +1694,15 @@ var page = Component.extend({
                                               }
 
                                               var serviceID = $("#inputContent0 option:selected").attr("servicetypeid");
+                                              var options;
                                               if (typeof serviceID !== undefined) {
-                                                var options = $(_elementID).data('options').filter('[servicetypeid=' + serviceID + ']');
+                                                 options = $(_elementID).data('options').filter('[servicetypeid=' + serviceID + ']');
                                                 if(options .length == 0){
                                                   $(_elementID).data('options',$('#'+currentElementID+' option').clone());
                                                   options=$(_elementID).data('options').filter('[servicetypeid=' + serviceID + ']');
                                                 }
                                               }else{
-                                                var options = $(_elementID).data('options').filter('[servicetypeid >' + serviceID + ']');
+                                                 options = $(_elementID).data('options').filter('[servicetypeid >' + serviceID + ']');
                                               }
                                               for (var i = 0; i < _listofselect.length; i++) {
                                                 var currentID = $(_listofselect)[i].id;
