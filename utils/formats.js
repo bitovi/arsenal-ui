@@ -57,9 +57,12 @@ var formats = {
     return value => test.call(null, value) ? format(value) : elseValue
   },
   formatIfValue: function(valuePassed,test, format, elseValue) {
-    if(valuePassed == undefined){
+    if ( valuePassed == null){
+      return elseValue;
+    }else if(valuePassed == undefined){
       return "";
-    }else{
+    }
+    else{
       return test.call(null, valuePassed) ? format(valuePassed) : elseValue;
     }
   },
