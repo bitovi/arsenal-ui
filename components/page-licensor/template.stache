@@ -519,7 +519,7 @@
 
 			<div class="col-sm-12 buttonsBottom">
 				<button type="button" id="bcsubmit" class="btn btn-custom-small" style="margin-left:10px;">Ok</button>
-				<button type="button" id="bccancel" class="btn btn-custom-small" style="margin-left:10px;">Cancel</button>
+				<button type="button" id="bccancel" class="btn btn-custom-small btn-custom-small-disabled" style="margin-left:10px;">Cancel</button>
 			</div>
 			<div class="col-sm-12" id="spaceBar"></div>
 		</div>
