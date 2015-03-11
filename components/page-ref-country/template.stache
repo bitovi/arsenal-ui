@@ -117,7 +117,7 @@
                <div class="col-sm-12 " id="periodTocontainer">
                   <label for="forValidTo" class="col-sm-4 control-label small-headers">Valid To: </label>
                   <div class="col-sm-8 normalBar calendarcls requiredBarNone">
-                    <input type='text' id="validTo" class="validTo form-control updatePeroid formInputs" place-holder="Select Period" can-value='pageState.countryDetails.country.validTo'/>
+                    <input type='text' id="validTo" name="validTo" class="validTo form-control updatePeroid formInputs" place-holder="Select Period" can-value='pageState.countryDetails.country.validTo'/>
                     <span class="calendarDateIcon" data-type="periodTo"><i class="glyphicon-calendar glyphicon"></i></span>
                     <period-calendar selectedperiod={selectedperiod} appstate="{appstate}"></period-calendar>
                   </div>

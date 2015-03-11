@@ -1558,9 +1558,9 @@ var page = Component.extend({
 						  	// 	this.scope.contentTypeFilter.replace(this.scope.contentType);
 						  		
 						  		var self = this;
-						  		if(self.scope.attr("invoicetypeSelect") != '2'){
+						  		//if(self.scope.attr("invoicetypeSelect") != '2'){
 						  			updateContentType(el);
-						  		}
+						  		//}
 							},
 						   '#inputMonth0 change':function(el){ /*validation for period*/
 						  		var self = this;
@@ -1951,11 +1951,15 @@ var page = Component.extend({
 						}
 
 						var serviceID = $("#inputContent0 option:selected").attr("servicetypeid");
-						console.log(serviceID);
+						var options;
 						if (typeof serviceID !== undefined) {
-							var options = $(_elementID).data('options').filter('[servicetypeid=' + serviceID + ']');
+							options = $(_elementID).data('options').filter('[servicetypeid=' + serviceID + ']');
+							if(options .length == 0){
+                              $(_elementID).data('options',$('#'+currentElementID+' option').clone());
+                              options=$(_elementID).data('options').filter('[servicetypeid=' + serviceID + ']');
+                              }
 						} else {
-							var options = $(_elementID).data('options').filter('[servicetypeid >' + serviceID + ']');
+							options = $(_elementID).data('options').filter('[servicetypeid >' + serviceID + ']');
 						}
 						for (var i = 0; i < _listofselect.length; i++) {
 							var currentID = $(_listofselect)[i].id;

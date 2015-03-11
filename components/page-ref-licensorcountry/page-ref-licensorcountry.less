@@ -585,3 +585,34 @@ rn-grid-report-configuration thead, rn-grid-report-configuration tfoot, rn-grid-
 rn-grid-revision-history table td.commentText{
 	white-space: normal;
 }
+rn-grid-revision-history table{
+	th.tablesorter-header{
+      span{
+        font-size:0.5em;
+      }
+    }
+    th.tablesorter-headerAsc{
+      .sort-arrow-asc{
+        display:inline-block;
+      }
+      .sort-arrow-desc{
+        display:none;
+      }
+    }
+    th.tablesorter-headerDesc{
+      .sort-arrow-desc{
+        display:inline-block;
+      }
+      .sort-arrow-asc{
+        display:none;
+      }
+    }
+    th.tablesorter-headerUnSorted{
+      .sort-arrow-asc{
+        display:none;
+      }
+      .sort-arrow-desc{
+        display:none;
+      }
+    }
+}

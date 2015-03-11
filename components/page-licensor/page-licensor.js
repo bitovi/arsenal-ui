@@ -1,3 +1,4 @@
+import jquerysorter from 'jquerysorter';
 import Component from 'can/component/';
 import template from './template.stache!';
 import styles from './page-licensor.less!';
@@ -65,6 +66,17 @@ Grid.extend({
         }
       }
     ]
+  },
+  events: {
+    'inserted': function(el) {
+      $(el).children('table').tablesorter({
+        // manipulate the template string after is it created
+        onRenderTemplate : function(i, t){
+          return t+'<span class="sort-arrow-asc">△</span><span class="sort-arrow-desc">▽</span>';
+        }
+      });
+    }
+
   }
 });
 
@@ -104,6 +116,17 @@ Grid.extend({
 
 
     ]
+  },
+  events: {
+    'inserted': function(el) {
+      $(el).children('table').tablesorter({
+        // manipulate the template string after is it created
+        onRenderTemplate : function(i, t){
+          return t+'<span class="sort-arrow-asc">△</span><span class="sort-arrow-desc">▽</span>';
+        }
+      });
+    }
+
   }
 });
 
@@ -929,6 +952,9 @@ var page = Component.extend({
           var socTableWidthChild=$('#societyContacts table>thead>tr>th').outerWidth();
           $('#societyContacts table>tbody>tr>th').css("width",socTableWidthChild);
         },100);
+
+        $('#entityLicensorBottom').bootstrapValidator('validate');
+
       }
 
     },

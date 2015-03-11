@@ -40,8 +40,11 @@
                 <a id = "newonAccount" href="#NewonAccountDiv" data-toggle="tab">New On Account</a>
             </li>
             <li class="pull-right marginLeft-5 marginTop-10">
-                <img class="exportToExcel toolbox-img-style" id="proposeExportToExcel">
-                <img class="copyToClipboard toolbox-img-style" id="proposeCopyToClipboard">
+                <div id='toolTipIcons'>
+                    <div class="overlay" ></div>
+                    <img class="exportToExcel  toolbox-img-style" data-tooltip="Export Excel" id="proposeExportToExcel">
+                    <img class="copyToClipboard toolbox-img-style" data-tooltip="Copy to Clipboard" id="proposeCopyToClipboard">
+                </div>
             </li>
             <li class="pull-right marginTop-10 customLI">
                 <div id="onAccountEditDeleteDiv">

@@ -382,8 +382,8 @@ Grid.extend({
       }
       if(self.scope.is_aggregate == 1){
         $(".rn-grid .period").hide(); //chnagd for <rdar://problem/20018582> Date Widget Disappears
-        $(".entityName").hide();
-        $(".sorticon").hide(); //added for <rdar://problem/20018279> Claim Review: Triangles exist with no data underneath
+        //$(".entityName").hide();
+       // $(".sorticon").hide(); //added for <rdar://problem/20018279> Claim Review: Triangles exist with no data underneath
       } else {
         $(".rn-grid .period").show(); //chnagd for <rdar://problem/20018582> Date Widget Disappears
         $(".entityName").show();
@@ -412,8 +412,8 @@ Grid.extend({
       }
       if(self.scope.is_aggregate == 1){
         $(".rn-grid .period").hide(); //chnagd for <rdar://problem/20018582> Date Widget Disappears
-        $(".entityName").hide();
-        $(".sorticon").hide(); //added for <rdar://problem/20018279> Claim Review: Triangles exist with no data underneath
+        //$(".entityName").hide();
+        //$(".sorticon").hide(); //added for <rdar://problem/20018279> Claim Review: Triangles exist with no data underneath
       } else {
         $(".rn-grid .period").show(); //chnagd for <rdar://problem/20018582> Date Widget Disappears
         $(".entityName").show();
@@ -913,8 +913,8 @@ var page = Component.extend({
         }
         if(self.scope.attr("view") == "country-aggregate"){
           $(".rn-grid .period").hide(); //chnagd for <rdar://problem/20018582> Date Widget Disappears
-          $(".entityName").hide();
-          $(".sorticon").hide(); //added for <rdar://problem/20018279> Claim Review: Triangles exist with no data underneath
+          //$(".entityName").hide();
+          //$(".sorticon").hide(); //added for <rdar://problem/20018279> Claim Review: Triangles exist with no data underneath
         } else {
           $(".rn-grid .period").show(); //chnagd for <rdar://problem/20018582> Date Widget Disappears
           $(".entityName").show();
@@ -1220,7 +1220,7 @@ var generateTableData = function(invoiceData,footerData){
             invTemp["reconAmount"] = CurrencyFormat(invoiceData[i]["reconAmount"]);
             invTemp["oaAllocated"] = CurrencyFormat(invoiceData[i]["oaAllocated"]);
             invTemp["caAllocated"] = CurrencyFormat(invoiceData[i]["caAllocated"]);
-            invTemp["balance"] = "";
+            invTemp["balance"] = CurrencyFormat(invoiceData[i]["balance"]);
             invTemp["priorPaid"] = CurrencyFormat(invoiceData[i]["priorPaid"]);
             invTemp["invPmtSaturation"] = CurrencyFormat(Number(invoiceData[i]["invPmtSaturation"])*100)+'%';
             invTemp["invoiceSaturation"] = CurrencyFormat(Number(invoiceData[i]["invoiceSaturation"])*100)+'%';
@@ -1248,9 +1248,9 @@ var generateTableData = function(invoiceData,footerData){
                   var invLITemp={};
                   var liPeriodtype=""
                    liPeriodtype = invoiceLineItems[j]["periodType"];
-                   periodType=(periodType != null && periodType.length>0 && periodType != liPeriodtype) ? 'Multiple':liPeriodtype;
+                   periodType=(periodType != null && periodType.length>0 && periodType != liPeriodtype && liPeriodtype != null) ? 'Multiple':liPeriodtype;
                   if(liPeriodtype == null || liPeriodtype == undefined ||(liPeriodtype !=null && liPeriodtype.length ==0)){
-                    //periodType='P';
+                    periodType='P';
                     liPeriodtype="P";
                   }
 
@@ -1334,9 +1334,9 @@ var generateTableData = function(invoiceData,footerData){
 
 
                   //rdar://problem/20018279> -start
-                  if(!aggregateFlag){
+                  //if(!aggregateFlag){
                     gridData.data.push(invLITemp);
-                  }
+                  //}
                   //rdar://problem/20018279> -end
                 }
               }else if(invoiceLineItems.length == 1){
@@ -1370,9 +1370,9 @@ var generateTableData = function(invoiceData,footerData){
               }
 
             //rdar://problem/20018279> -start
-            if(aggregateFlag){
-              hasChild=false;
-            }
+            // if(aggregateFlag){
+            //   //hasChild=false;
+            // }
             //rdar://problem/20018279> -end
             //console.log("gridData is ffsdfs "+JSON.stringify(gridData));
             //console.log("countryArr is ffsdfs "+JSON.stringify(countryArr));

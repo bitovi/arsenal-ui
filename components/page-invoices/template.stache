@@ -23,9 +23,10 @@
       </div>
 
       <div class="col-sm-7" id="searchDiv">
+          <div class="overlay" ></div>
           <input type="text" class="form-control" id="tokenSearch" style="height: 20px !important;" >
-          <img class="exportToExcel" id="exportExcel" style="padding-top: 1px;height:18px;width:18px;">
-          <img class="copyToClipboard" id="copyToClipboard" style="padding-top: 1px;height:18px;width:18px;">
+          <img class="exportToExcel" data-tooltip="Export Excel" id="exportExcel" style="padding-top: 1px;height:18px;width:18px;">
+          <img class="copyToClipboard" data-tooltip="Copy to Clipboard" id="copyToClipboard" style="padding-top: 1px;height:18px;width:18px;">
       </div>
   </div>
 

@@ -1,3 +1,4 @@
+import jquerysorter from 'jquerysorter';
 import Component from 'can/component/';
 
 import stache from 'can/view/stache/';
@@ -329,6 +330,18 @@ var page = Component.extend({
           setTimeout(function(){
             alignGrid("grid-revision-history-country");
             alignGrid("grid-society-model");
+            $('rn-grid-society-model').children('table').tablesorter({
+              // manipulate the template string after is it created
+              onRenderTemplate : function(i, t){
+                return t+'<span class="sort-arrow-asc">△</span><span class="sort-arrow-desc">▽</span>';
+              }
+            });
+            $('rn-grid-revision-history-country').children('table').tablesorter({
+              // manipulate the template string after is it created
+              onRenderTemplate : function(i, t){
+                return t+'<span class="sort-arrow-asc">△</span><span class="sort-arrow-desc">▽</span>';
+              }
+            });
           },10);
 
           $('#submitBtn').show();
@@ -469,7 +482,31 @@ var page = Component.extend({
                 validators: {
                     notEmpty: {
                         message: 'The ValidFrom is required'
-                    }
+                    },
+
+                    callback: {
+                    message: 'Valid From is required',
+                    callback: function (value, validator, $field) {
+                      var periodTo = $("input[name='validTo']").val();
+                        if(value == "" || value == "0"){
+                          return {
+                                valid: false,
+                                message: 'Valid From is required'
+                            }
+                        } else {
+                          if(periodTo.length > 0){
+                            var isValid = showErrorMsg(value, periodTo);
+                            if(isValid !== ""){
+                                return{
+                                  valid: false,
+                                  message: isValid
+                                }
+                              }
+                            }
+                        }
+                        return true;
+                      }
+                  }
                 }
             },
             localSociety :{
@@ -798,6 +835,18 @@ var page = Component.extend({
           setTimeout(function(){
             alignGrid("grid-revision-history-country");
             alignGrid("grid-society-model");
+            $('rn-grid-society-model').children('table').tablesorter({
+              // manipulate the template string after is it created
+              onRenderTemplate : function(i, t){
+                return t+'<span class="sort-arrow-asc">△</span><span class="sort-arrow-desc">▽</span>';
+              }
+            });
+            $('rn-grid-revision-history-country').children('table').tablesorter({
+              // manipulate the template string after is it created
+              onRenderTemplate : function(i, t){
+                return t+'<span class="sort-arrow-asc">△</span><span class="sort-arrow-desc">▽</span>';
+              }
+            });
           },10);
 
           $('#submitBtn').show();
@@ -844,6 +893,15 @@ var page = Component.extend({
 
        }
        $('input[name=validFrom]').change();
+
+       if(val[0].which == "validTo") {
+         $("input[name='validTo']").val(periodValue);
+         $("input[name='validTo']").on('change', function(e) {
+             // Revalidate the date when user change it
+           //$('#entityLicensorBottom').bootstrapValidator('revalidateField', 'periodToInp');
+         });
+       }
+       $('input[name=validTo]').change();
 
        //val[0].which=='validFrom' ? this.scope.validFrom.replace(val[0].value):this.scope.validTo.replace(val[0].value);
     },
@@ -1298,33 +1356,30 @@ var page = Component.extend({
 
 var showErrorMsg = function(periodFrom,periodTo,whichcomp){
 
-        if(whichcomp=='from'){
-          var _root = $('#ref-period-container');
-          //_root.find('#periodTo').val('');
-          _root.find('.period-calendar .period li a').removeClass('disabled period-active');
-          if(periodFrom.charAt(0)=='Q'){
-            _root.find('.period-calendar .q1 li').not(":first").find('a').addClass('disabled');
-            _root.find('.period-calendar .q2 li').not(":first").find('a').addClass('disabled');
-            _root.find('.period-calendar .q3 li').not(":first").find('a').addClass('disabled');
-            _root.find('.period-calendar .q4 li').not(":first").find('a').addClass('disabled');
-          }else{
-            _root.find('.period-calendar .q1 li').first().find('a').addClass('disabled');
-            _root.find('.period-calendar .q2 li').first().find('a').addClass('disabled');
-            _root.find('.period-calendar .q3 li').first().find('a').addClass('disabled');
-            _root.find('.period-calendar .q4 li').first().find('a').addClass('disabled');
+        var flag = false;
+        var from = periodFrom || false;
+        var to = periodTo || false;
+        var message1 = 'Period from is greater than period to !';
+        var message3 = 'Invalid Month Selection !'
+
+        if (from && to) {
+          var prdFromVal=PeriodHelper.getFiscalPeriod(from);
+          var prdToVal=PeriodHelper.getFiscalPeriod(to);
+          var periodFrom=prdFromVal%100;
+          var periodTo=prdToVal%100;
+          var yearFrom=(prdFromVal-periodFrom)/100;
+          var yearTo=(prdToVal-periodTo)/100;
+          var yearDif=yearTo-yearFrom;
+          alert(" data " + yearDif + " " + periodFrom + " " + periodTo + " " + prdFromVal + " " + prdToVal);
+          if(yearDif < 0){
+            return message1;
+          }else if(yearDif == 0 ){
+            if(prdFromVal > prdToVal){
+              return message1;
+            }
           }
         }
-
-        var showFlg=false;
-        var from = periodFrom,to =  periodTo;
-        if(from!=undefined &&  to!=undefined){
-          from = from.split('FY');
-          to = to.split('FY');   //console.log(from[1].slice(-2)+'--------'+ to[1].slice(-2));
-          if(from[1].slice(-2) > to[1].slice(-2)) showFlg=true;
-          if(from[1].slice(-2) >= to[1].slice(-2) && from[0].charAt(0)!=to[0].charAt(0) )showFlg=true;
-          if(from[1].slice(-2) >= to[1].slice(-2) && parseInt(from[0].substring(1,3)) > parseInt(to[0].substring(1,3)))showFlg=true;
-        }
-        if(showFlg==true){ $('.period-invalid').show(); return false;}else {showFlg=false; $('.period-invalid').hide();}
+        return "";
     }
 
 
@@ -1392,7 +1447,6 @@ function alignGrid(divId){
       }
   }
 }
-
 
 
 export default page;
