@@ -929,6 +929,9 @@ var page = Component.extend({
           var socTableWidthChild=$('#societyContacts table>thead>tr>th').outerWidth();
           $('#societyContacts table>tbody>tr>th').css("width",socTableWidthChild);
         },100);
+
+        $('#entityLicensorBottom').bootstrapValidator('validate');
+
       }
 
     },
