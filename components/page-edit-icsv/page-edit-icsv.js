@@ -37,693 +37,688 @@ import periodWidgetHelper from 'utils/periodWidgetHelpers';
 
 //import Invoice from 'models/invoice/';
 
-var mandatoryFieldAdhoc = ["invoicenumber",  "invoicedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]", "ccidGLtxt[]"];
-var mandatoryField = ["invoicenumber",  "invoicedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
+var mandatoryFieldAdhoc = ["invoicenumber", "invoicedate", "receiveddate", "amount[]", "inputMonth[]", "licensor", "currency", "inputContent[]", "ccidGLtxt[]"];
+var mandatoryField = ["invoicenumber", "invoicedate", "receiveddate", "amount[]", "inputMonth[]", "inputCountry[]", "licensor", "currency", "inputContent[]"];
 
 fileUpload.extend({
 	tag: 'rn-file-uploader-icsv',
-    scope: {
-        fileList : new can.List(),
-        uploadedfileinfo:[],
-        deletedFileInfo:[]
-    },
-    events:{
-        "{uploadedfileinfo} change":function () {
-            //Handling this using data as scope is not accessible from page-edit -invoice.
-            $('rn-file-uploader-icsv').data('_d_uploadedFileInfo', this.scope.uploadedfileinfo);
-            this.scope.fileList.replace(this.scope.uploadedfileinfo);
-        },
-        "{deletedFileInfo} change":function () {
-            $('rn-file-uploader-icsv').data('_d_deletedFileInfo', this.scope.deletedFileInfo);
-        }
-    }
+	scope: {
+		fileList: new can.List(),
+		uploadedfileinfo: [],
+		deletedFileInfo: []
+	},
+	events: {
+		"{uploadedfileinfo} change": function() {
+			//Handling this using data as scope is not accessible from page-edit -invoice.
+			$('rn-file-uploader-icsv').data('_d_uploadedFileInfo', this.scope.uploadedfileinfo);
+			this.scope.fileList.replace(this.scope.uploadedfileinfo);
+		},
+		"{deletedFileInfo} change": function() {
+			$('rn-file-uploader-icsv').data('_d_deletedFileInfo', this.scope.deletedFileInfo);
+		}
+	}
 });
 
 var page = Component.extend({
-  tag: 'page-edit-icsv',
-  template: template,
-  scope: {
-    appstate:undefined,
-  	rowindex:1,
-  	invoiceTypes:[],
-  	invoiceTypesMap:[],
-  	licensor:[],
-  	currency:[],
-  	country:[],
-  	contentType:[],
-  	adhocType:[],
-  	contentTypeFilter:[],
-  	fxrate:[],
-  	glaccounts:[],
-  	regions:[],
-  	AmountStore:{},
- 	totalAmountVal:0,
-  	calduedate:0,
-  	tax:"",
-  	taxStore:{},
-  	isAdhocStrore:{"ccidGL":"CCID Filename", "contentAdhoc":"Content Type"},
-  	editcommentArr:[],
-  	/*Form value*/
-  	invoicetypeSelect:"",
-  	licensorStore:{},
-  	regionStore:"",
-  	currencyStore:"",
-  	fxrateStore:"",
-  	invoicenumberStore:"",
-  	licnotesStore:"",
-  	usercommentsStore:"",
-  	receiveddate:"",
-  	invoicedate:"",
-  	invoiceduedate:"",
-  	contentTypeStore:{},
-  	countryStore:{},
-  	ccidGLStore:{},
-  	yearStore:{},
-  	monthStore:{},
-  	grossTotalStore:{},
-  	paymentBundleName:"",
-  	paymentBundleId:"",
-  	newpaymentbundlenamereq:undefined,
-	/*Form value*/
-
-  	errorMsg:{},
-  	errorStatus:{},
-  	invoiceContainer:[],
-  	showPBR:true,
-  	DelInvoiceline:[],
-  	currentdate:"",
-    //invoiceid:"",
-  	editpage:false,
-  	formSuccessCount:1,
-    uploadedfileinfo:[],
-    deletedFileInfo:[],
-  	periodType:"",
-  	ajaxRequestStatus:{},
-  	usdFxrateRatio:"",
-  	sumfileuploadedinfo:[],
-    isRequired: function(){
-  	 		if(this.attr("invoicetypeSelect") != "2"){  /*Adhoc*/
-  	 				$(".breakdownCountry").addClass("requiredBar");
-  	 		}else{
-  	 			$(".breakdownCountry").removeClass("requiredBar");
-  	 		}
+	tag: 'page-edit-icsv',
+	template: template,
+	scope: {
+		appstate: undefined,
+		rowindex: 1,
+		invoiceTypes: [],
+		invoiceTypesMap: [],
+		licensor: [],
+		currency: [],
+		country: [],
+		contentType: [],
+		adhocType: [],
+		contentTypeFilter: [],
+		fxrate: [],
+		glaccounts: [],
+		regions: [],
+		AmountStore: {},
+		totalAmountVal: 0,
+		calduedate: 0,
+		tax: "",
+		taxStore: {},
+		isAdhocStrore: {
+			"ccidGL": "CCID Filename",
+			"contentAdhoc": "Content Type"
 		},
-	createBreakline: function(rowindex){
+		editcommentArr: [],
+		/*Form value*/
+		invoicetypeSelect: "",
+		licensorStore: {},
+		regionStore: "",
+		currencyStore: "",
+		fxrateStore: "",
+		invoicenumberStore: "",
+		licnotesStore: "",
+		usercommentsStore: "",
+		receiveddate: "",
+		invoicedate: "",
+		invoiceduedate: "",
+		contentTypeStore: {},
+		countryStore: {},
+		ccidGLStore: {},
+		yearStore: {},
+		monthStore: {},
+		grossTotalStore: {},
+		paymentBundleName: "",
+		paymentBundleId: "",
+		newpaymentbundlenamereq: undefined,
+		/*Form value*/
+
+		errorMsg: {},
+		errorStatus: {},
+		invoiceContainer: [],
+		showPBR: true,
+		DelInvoiceline: [],
+		currentdate: "",
+		//invoiceid:"",
+		editpage: false,
+		formSuccessCount: 1,
+		uploadedfileinfo: [],
+		deletedFileInfo: [],
+		periodType: "",
+		ajaxRequestStatus: {},
+		usdFxrateRatio: "",
+		sumfileuploadedinfo: [],
+		isRequired: function() {
+			if (this.attr("invoicetypeSelect") != "2") { /*Adhoc*/
+				$(".breakdownCountry").addClass("requiredBar");
+			} else {
+				$(".breakdownCountry").removeClass("requiredBar");
+			}
+		},
+		createBreakline: function(rowindex) {
 			var self = this;
 			var $template = $('#breakrowTemplate'),
-            $clone  = $template.clone().removeClass('hide').removeAttr('id').attr("id","breakrow"+rowindex).attr("rowid", rowindex).insertBefore($template);
-            $("#breakrow"+rowindex+" .amountText").attr("id","amountText"+rowindex).val(" ");
-            $("#breakrow"+rowindex+" #inputContent").attr("id","inputContent"+rowindex);
-            $("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).parent().append(stache('<period-calendar></period-calendar>'));
-            $("#breakrow"+rowindex+" #inputCountry").attr("id","inputCountry"+rowindex);
-           	$("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val("");
-           	$("#breakrow"+rowindex+" #ccidGLtxt").attr("id","ccidGLtxt"+rowindex).val("");
-           	if(rowindex != 0)
-           	$("#breakrow"+rowindex+" .removeRow").css("display", "block");
+				$clone = $template.clone().removeClass('hide').removeAttr('id').attr("id", "breakrow" + rowindex).attr("rowid", rowindex).insertBefore($template);
+			$("#breakrow" + rowindex + " .amountText").attr("id", "amountText" + rowindex).val(" ");
+			$("#breakrow" + rowindex + " #inputContent").attr("id", "inputContent" + rowindex);
+			$("#breakrow" + rowindex + " #inputMonth").attr("id", "inputMonth" + rowindex).parent().append(stache('<period-calendar></period-calendar>'));
+			$("#breakrow" + rowindex + " #inputCountry").attr("id", "inputCountry" + rowindex);
+			$("#breakrow" + rowindex + " #ccidGL").attr("id", "ccidGL" + rowindex).val("");
+			$("#breakrow" + rowindex + " #ccidGLtxt").attr("id", "ccidGLtxt" + rowindex).val("");
+			if (rowindex != 0)
+				$("#breakrow" + rowindex + " .removeRow").css("display", "block");
 
-			var servictypeid=$("#inputContent0 option:selected").attr("servicetypeid");
-		   	if (typeof servictypeid !== "undefined" && self.attr("invoicetypeSelect") != '2') {
-		        $('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
-		        $('#inputContent'+rowindex).prepend("<option value>Select</option>").val('')
-		    }
+			var servictypeid = $("#inputContent0 option:selected").attr("servicetypeid");
+			if (typeof servictypeid !== "undefined" && self.attr("invoicetypeSelect") != '2') {
+				$('#inputContent' + rowindex + ' option[ servicetypeid!=' + servictypeid + ' ]').remove();
+				$('#inputContent' + rowindex).prepend("<option value>Select</option>").val('')
+			}
 
 			var $option = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"], [name="ccidGLtxt[]"]');
 
-            $option.each(function(index){
-            	$('#invoiceform').bootstrapValidator('addField', $(this));
-            });
+			$option.each(function(index) {
+				$('#invoiceform').bootstrapValidator('addField', $(this));
+			});
 
-            $("#addInvSubmit").attr("disabled", true);
-			$(".removeRow").click(function(event){
-					// $option.each(function(index){
-	        //         	$('#invoiceform').bootstrapValidator('removeField', $(this));
-	        //         });
+			$("#addInvSubmit").attr("disabled", true);
+			$(".removeRow").click(function(event) {
+				// $option.each(function(index){
+				//         	$('#invoiceform').bootstrapValidator('removeField', $(this));
+				//         });
 
-           		$(this).closest("tr").remove();
-	            self.AmountStore.removeAttr("amountText"+rowindex);
+				$(this).closest("tr").remove();
+				self.AmountStore.removeAttr("amountText" + rowindex);
 
-		          if($("#invoiceform").data('bootstrapValidator').isValid()){
-		            $("#invoiceform").data('bootstrapValidator').disableSubmitButtons(false);
-		          }else{
-		            $("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
-		          }
-	        });
-		},
-		changeTextOnInvType:function(){
-			if(this.attr("invoicetypeSelect") == "2"){  /*Adhoc*/
-				this.isAdhocStrore.attr("ccidGL", "GL Account");
-	  	 		this.isAdhocStrore.attr("contentAdhoc", "Adhoc Type");
-	  	 		this.isAdhocStrore.attr("invtype", "Adhoc");
-	  	 		this.isAdhocStrore.attr("adhoc", true);
-	  	 		this.attr("showPBR", true);
-
-	  	 	 }
-	  	 	 else if(this.attr("invoicetypeSelect") == "3"){
-			  	 this.isAdhocStrore.attr("ccidGL", "CCID Filename");
-			  	 this.isAdhocStrore.attr("contentAdhoc", "Content Type");
-			  	 this.isAdhocStrore.attr("invtype", "");
-			  	 this.isAdhocStrore.attr("adhoc", false);
-				 this.attr("showPBR", false);
-			 }
-			 else{
-			  	 this.isAdhocStrore.attr("ccidGL", "CCID Filename");
-			  	 this.isAdhocStrore.attr("contentAdhoc", "Content Type");
-			  	 this.isAdhocStrore.attr("invtype", "");
-			  	 this.isAdhocStrore.attr("adhoc", false);
-			  	 this.attr("showPBR", true);
-			}
-		},
-		createPBRequest: function(){
-	          	var bundleNamesRequest = {"bundleSearch":{}};
-	          	var serTypeId = $("#invoiceType option:selected").attr("name");
-	          	var regId = this.regionStore;
-
-			  	if(typeof(serTypeId)!="undefined")
-	            	bundleNamesRequest.bundleSearch["type"] = serTypeId;
-
-				if(typeof(regId)=="undefined")
-	            	bundleNamesRequest.bundleSearch["regionId"] = "";
-	          	else
-	            	bundleNamesRequest.bundleSearch["regionId"] = regId;
-
-	           // bundleNamesRequest.bundleSearch["type"] = "invoice";
-
-	          this.attr("bundleNamesRequest", JSON.stringify(bundleNamesRequest));
-
-				return JSON.stringify(bundleNamesRequest);
-       		},
-       		getFxrate:function(){
-	     		var self = this;
-	     		if($("#inputMonth0").val() && self.currencyStore){
-					var genObj = {fromCurrency:self.currencyStore, toCurrency:'USD', fiscalPeriod:periodWidgetHelper.getFiscalPeriod($("#inputMonth0").val()) ,periodType:periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0))};
-						Fxrate.findOne(UserReq.formRequestDetails(genObj),function(data){
-						self.attr("usdFxrateRatio", data.fxRate);
-
-		            },function(xhr){
-		               console.log(xhr);
-		            });
+				if ($("#invoiceform").data('bootstrapValidator').isValid()) {
+					$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(false);
+				} else {
+					$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
 				}
+			});
+		},
+		changeTextOnInvType: function() {
+			if (this.attr("invoicetypeSelect") == "2") { /*Adhoc*/
+				this.isAdhocStrore.attr("ccidGL", "GL Account");
+				this.isAdhocStrore.attr("contentAdhoc", "Adhoc Type");
+				this.isAdhocStrore.attr("invtype", "Adhoc");
+				this.isAdhocStrore.attr("adhoc", true);
+				this.attr("showPBR", true);
+
+			} else if (this.attr("invoicetypeSelect") == "3") {
+				this.isAdhocStrore.attr("ccidGL", "CCID Filename");
+				this.isAdhocStrore.attr("contentAdhoc", "Content Type");
+				this.isAdhocStrore.attr("invtype", "");
+				this.isAdhocStrore.attr("adhoc", false);
+				this.attr("showPBR", false);
+			} else {
+				this.isAdhocStrore.attr("ccidGL", "CCID Filename");
+				this.isAdhocStrore.attr("contentAdhoc", "Content Type");
+				this.isAdhocStrore.attr("invtype", "");
+				this.isAdhocStrore.attr("adhoc", false);
+				this.attr("showPBR", true);
 			}
- },
-  events: {
-    	"inserted": function(){
-          	var self = this;
+		},
+		createPBRequest: function() {
+			var bundleNamesRequest = {
+				"bundleSearch": {}
+			};
+			var serTypeId = $("#invoiceType option:selected").attr("name");
+			var regId = this.regionStore;
+
+			if (typeof(serTypeId) != "undefined")
+				bundleNamesRequest.bundleSearch["type"] = serTypeId;
+
+			if (typeof(regId) == "undefined")
+				bundleNamesRequest.bundleSearch["regionId"] = "";
+			else
+				bundleNamesRequest.bundleSearch["regionId"] = regId;
+
+			// bundleNamesRequest.bundleSearch["type"] = "invoice";
+
+			this.attr("bundleNamesRequest", JSON.stringify(bundleNamesRequest));
+
+			return JSON.stringify(bundleNamesRequest);
+		},
+		getFxrate: function() {
+			var self = this;
+			if ($("#inputMonth0").val() && self.currencyStore) {
+				var genObj = {
+					fromCurrency: self.currencyStore,
+					toCurrency: 'USD',
+					fiscalPeriod: periodWidgetHelper.getFiscalPeriod($("#inputMonth0").val()),
+					periodType: periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0))
+				};
+				Fxrate.findOne(UserReq.formRequestDetails(genObj), function(data) {
+					self.attr("usdFxrateRatio", data.fxRate);
+
+				}, function(xhr) {
+					console.log(xhr);
+				});
+			}
+		}
+	},
+	events: {
+		"inserted": function() {
+			var self = this;
 
 
 			this.scope.isRequired(); /*For breakdown required field*/
 			$('#invoiceform').on('init.form.bv', function(e, data) {
-			           	data.bv.disableSubmitButtons(true);
+					data.bv.disableSubmitButtons(true);
 
-			        }).on('init.field.bv', function(e, data) {
+				}).on('init.field.bv', function(e, data) {
 
 
-			      	})
-	    			.bootstrapValidator({
-	    			container: 'popover',
-			        feedbackIcons: {
-			            valid: 'valid-rnotes',
-			            invalid: 'alert-rnotes',
-			            validating: 'glyphicon glyphicon-refreshas'
-			        },
-			        fields: {
-			            invoicenumber: {
-			            	group:'.invoicenumber',
-			                validators: {
-			                    notEmpty: {
-			                        message: 'Invoice number is mandatory'
-			                    },
-			                    stringLength: {
-			                        max:50,
-			                        message: 'Maximum 50 characters allowed',
-			                        utf8Bytes: true
-			                    },
-                                callback: {
-                                    callback: function (value, validator, $field) {
-                                        var inputval=value.trim();
-//                                            if(inputval != ""){
-//                                                return {
-//                                                    valid: false,
-//                                                    message: 'Please provide invoice number'
-//                                                }
-//                                            }else
-                                        if (inputval != "" && inputval != undefined && inputval.length != 0){
-                                            var invoice_validate_RE=/^(0|[a-zA-Z0-9_ \/\-']*)$/g;
-                                            if(!invoice_validate_RE.test(inputval)){
-                                                return {
-                                                    valid: false,
-                                                    message: "Special characters allowed in invoice number space,_,/,-,'"
-                                                }
-                                            }
-                                        }
-                                        return true;
-                                    }
-                                }
-			                }
-		            },
-		            invoicedate :{
-		                group:'.invdate',
-		                validators: {
-		                    notEmpty: {
-		                        message: 'Invoice date is mandatory'
-		                    },
-		                    date: {
-			                        format: 'MM/DD/YYYY',
-			                        message: 'Please provide valid date in MM/DD/YYYY format'
-                    		}
-			              }
-		            },
-		            receiveddate :{
-		                group:'.recdate',
-		                validators: {
-		                    notEmpty: {
-		                        message: 'Received date is mandatory'
-		                    },
-		                    date: {
-			                        format: 'MM/DD/YYYY',
-			                        message: 'Please provide valid date in MM/DD/YYYY format'
-                    		}
-			              }
-		            },
-		            invoiceduedate :{
-			                group:'.invduedate',
-			                validators: {
-//			                	notEmpty: {
-//			                        message: 'Invoice due date is mandatory'
-//			                    },
-			                    date: {
-				                        format: 'MM/DD/YYYY',
-				                        message: 'Please provide valid date in MM/DD/YYYY format'
-	                    		}
-//                                ,
-//	                			callback: {
-//			                            message: 'Invoice Due date must be less than calculated due date',
-//			                            callback: function (value, validator, $field) {
-//			                         		if(value != ""){
-//			                              	var invduedate = new Date(value);
-//			                              	if(self.scope.attr("calduedate")){
-//			                              		var calduedate = new Date(self.scope.attr("calduedate"));
-//			                              			if(Math.abs(invduedate.getTime()) > Math.abs(calduedate.getTime())){
-//														return false;
-//													}
-//			                              		}
-//											}
-//			                              return true;
-//			                            }
-//	                    		}
-				              }
-			        },
-		            fxrate: {
-		                group:'.fxrate',
-		                validators: {
-		                    numeric: {
-		                        separator:',',
-		                        message: 'Please provide numeric value for Fx Rate'
-                			},
-                			callback: {
-		                            callback: function (value, validator, $field) {
-		                              if((value != "")  && (parseFloat(value) < 0)){
-                                    return {
-                                      valid: false,
-                                      message: 'Please provide positive Fx Rate'
-                                    }
-  	                              }else if (value != undefined && value.length != 0){
-                                    var decimal_validate_RE=/^\d{0,10}(\.\d{0,8})?$/;
-                                    if(!decimal_validate_RE.test(value)){
-                                      return {
-                                        valid: false,
-                                        message: 'Please provide Fx Rate in [##########.########] format'
-                                      }
-                                    }
+				})
+				.bootstrapValidator({
+					container: 'popover',
+					feedbackIcons: {
+						valid: 'valid-rnotes',
+						invalid: 'alert-rnotes',
+						validating: 'glyphicon glyphicon-refreshas'
+					},
+					fields: {
+						invoicenumber: {
+							group: '.invoicenumber',
+							validators: {
+								notEmpty: {
+									message: 'Invoice number is mandatory'
+								},
+								stringLength: {
+									max: 50,
+									message: 'Maximum 50 characters allowed',
+									utf8Bytes: true
+								},
+								callback: {
+									callback: function(value, validator, $field) {
+										var inputval = value.trim();
+										//                                            if(inputval != ""){
+										//                                                return {
+										//                                                    valid: false,
+										//                                                    message: 'Please provide invoice number'
+										//                                                }
+										//                                            }else
+										if (inputval != "" && inputval != undefined && inputval.length != 0) {
+											var invoice_validate_RE = /^(0|[a-zA-Z0-9_ \/\-']*)$/g;
+											if (!invoice_validate_RE.test(inputval)) {
+												return {
+													valid: false,
+													message: "Special characters allowed in invoice number space,_,/,-,'"
+												}
+											}
+										}
+										return true;
+									}
+								}
+							}
+						},
+						invoicedate: {
+							group: '.invdate',
+							validators: {
+								notEmpty: {
+									message: 'Invoice date is mandatory'
+								},
+								date: {
+									format: 'MM/DD/YYYY',
+									message: 'Please provide valid date in MM/DD/YYYY format'
+								}
+							}
+						},
+						receiveddate: {
+							group: '.recdate',
+							validators: {
+								notEmpty: {
+									message: 'Received date is mandatory'
+								},
+								date: {
+									format: 'MM/DD/YYYY',
+									message: 'Please provide valid date in MM/DD/YYYY format'
+								}
+							}
+						},
+						invoiceduedate: {
+							group: '.invduedate',
+							validators: {
+								//			                	notEmpty: {
+								//			                        message: 'Invoice due date is mandatory'
+								//			                    },
+								date: {
+									format: 'MM/DD/YYYY',
+									message: 'Please provide valid date in MM/DD/YYYY format'
+								}
+								//                                ,
+								//	                			callback: {
+								//			                            message: 'Invoice Due date must be less than calculated due date',
+								//			                            callback: function (value, validator, $field) {
+								//			                         		if(value != ""){
+								//			                              	var invduedate = new Date(value);
+								//			                              	if(self.scope.attr("calduedate")){
+								//			                              		var calduedate = new Date(self.scope.attr("calduedate"));
+								//			                              			if(Math.abs(invduedate.getTime()) > Math.abs(calduedate.getTime())){
+								//														return false;
+								//													}
+								//			                              		}
+								//											}
+								//			                              return true;
+								//			                            }
+								//	                    		}
+							}
+						},
+						fxrate: {
+							group: '.fxrate',
+							validators: {
+								numeric: {
+									separator: ',',
+									message: 'Please provide numeric value for Fx Rate'
+								},
+								callback: {
+									callback: function(value, validator, $field) {
+										if ((value != "") && (parseFloat(value) < 0)) {
+											return {
+												valid: false,
+												message: 'Please provide positive Fx Rate'
+											}
+										} else if (value != undefined && value.length != 0) {
+											var decimal_validate_RE = /^\d{0,10}(\.\d{0,8})?$/;
+											if (!decimal_validate_RE.test(value)) {
+												return {
+													valid: false,
+													message: 'Please provide Fx Rate in [##########.########] format'
+												}
+											}
 
-		                              }
-		                              return true;
-		                            }
-                    		}
+										}
+										return true;
+									}
+								}
 
-		                }
-		            },
-		         	    'amount[]': {
-			                validators: {
-			                    notEmpty: {
-			                        message: 'Amount is mandatory'
-			                    },
-			                 	callback: {
-			                            message: 'Please provide positive value for amount',
-			                            callback: function (value, validator, $field) {
-                                      var inputval=value.trim();
-				                              if((inputval != "")  && (parseFloat(inputval) < 0)){
-				                              	return {
-					                                    valid: false,
-					                                    message: 'Please provide positive invoice amount'
-					                                }
-				                              }else if (inputval != "" && inputval != undefined && inputval.length != 0){
-		                                        var decimal_validate_RE=/^[0-9\,]*(\.[0-9]{0,8})?$/g;
-		                                        if(!decimal_validate_RE.test(inputval)){
-		                                          return {
-		                                            valid: false,
-		                                            message: 'Please provide valid invoice amount. Example: [###,###,####.########]'
-		                                          }
-		                                        }
-				                              }
-											return true;
-			                            }
-	                    			}
-			                	}
-			            	},
-		            	usercomments: {
-		            	 group:'.usercomments',
-			                 validators: {
-			                   	stringLength: {
-				                        max:1024,
-				                        message: 'Maximum 1024 characters allowed',
-				                        utf8Bytes: true
-				                    }
+							}
+						},
+						'amount[]': {
+							validators: {
+								notEmpty: {
+									message: 'Amount is mandatory'
+								},
+								callback: {
+									message: 'Please provide positive value for amount',
+									callback: function(value, validator, $field) {
+										var inputval = value.trim();
+										if ((inputval != "") && (parseFloat(inputval) < 0)) {
+											return {
+												valid: false,
+												message: 'Please provide positive invoice amount'
+											}
+										} else if (inputval != "" && inputval != undefined && inputval.length != 0) {
+											var decimal_validate_RE = /^[0-9\,]*(\.[0-9]{0,8})?$/g;
+											if (!decimal_validate_RE.test(inputval)) {
+												return {
+													valid: false,
+													message: 'Please provide valid invoice amount. Example: [###,###,####.########]'
+												}
+											}
+										}
+										return true;
+									}
+								}
+							}
+						},
+						usercomments: {
+							group: '.usercomments',
+							validators: {
+								stringLength: {
+									max: 1024,
+									message: 'Maximum 1024 characters allowed',
+									utf8Bytes: true
+								}
 
-			                }
+							}
 						},
 						licnotes: {
-		            	 group:'.licnotes',
-			                 validators: {
-			                   	stringLength: {
-				                        max:1024,
-				                        message: 'Maximum 1024 characters allowed',
-				                        utf8Bytes: true
-				                    }
+							group: '.licnotes',
+							validators: {
+								stringLength: {
+									max: 1024,
+									message: 'Maximum 1024 characters allowed',
+									utf8Bytes: true
+								}
 
-			                }
+							}
 						},
 						licensor: {
-			            	 group:'.licensor',
-			                 validators: {
-			                   	callback: {
-			                            message: 'Licensor is mandatory',
-			                            callback: function (value, validator, $field) {
-			                              if(value == "" || value == "Select" || value == null){
-			                              	   return false;
-			                              }
-			                              return true;
-			                            }
-	                    		}
+							group: '.licensor',
+							validators: {
+								callback: {
+									message: 'Licensor is mandatory',
+									callback: function(value, validator, $field) {
+										if (value == "" || value == "Select" || value == null) {
+											return false;
+										}
+										return true;
+									}
+								}
 
-			                }
+							}
 						},
 						currency: {
-			            	 group:'.currency',
-			                 validators: {
-			                   	callback: {
-			                            message: 'Currency is mandatory',
-			                            callback: function (value, validator, $field) {
-			                              if(value == "" || value == "Select" || value == null){
-			                              	   return false;
-			                              }
-			                              return true;
-			                            }
-	                    		}
+							group: '.currency',
+							validators: {
+								callback: {
+									message: 'Currency is mandatory',
+									callback: function(value, validator, $field) {
+										if (value == "" || value == "Select" || value == null) {
+											return false;
+										}
+										return true;
+									}
+								}
 
-			                }
+							}
 						},
 						'ccidGLtxt[]': {
-			                      validators: {
-			                        callback: {
-										callback: function (value, validator, $field) {
-			                            if(value == "" || value == "Select" || value == null){
-			                              return {
-			                                valid: false,    // or false
-			                                message: 'GL Account is mandatory'
-			                              }
-			                            }else if(!$.isNumeric(value)){
-			                              return {
-			                                valid: false,    // or false
-			                                message: 'Please provide numeric value'
-			                              }
-			                            }else if(Math.ceil(parseFloat(value)) != value){
-			                            	return {
-			                                valid: false,    // or false
-			                                message: 'Please provide long value'
-			                              }
-			                            }
-			                            return true;
-			                          }
-			                        }
-			                      }
-		                 	},
+							validators: {
+								callback: {
+									callback: function(value, validator, $field) {
+										if (value == "" || value == "Select" || value == null) {
+											return {
+												valid: false, // or false
+												message: 'GL Account is mandatory'
+											}
+										} else if (!$.isNumeric(value)) {
+											return {
+												valid: false, // or false
+												message: 'Please provide numeric value'
+											}
+										} else if (Math.ceil(parseFloat(value)) != value) {
+											return {
+												valid: false, // or false
+												message: 'Please provide long value'
+											}
+										}
+										return true;
+									}
+								}
+							}
+						},
 						region: {
-			            	 group:'.region',
-			                 validators: {
-			                   	callback: {
-			                            message: 'Region is mandatory',
-			                            callback: function (value, validator, $field) {
-			                              if(value == "" || value == "Select" || value == null){
-			                              	   return false;
-			                              }
-			                              return true;
-			                            }
-	                    		}
+							group: '.region',
+							validators: {
+								callback: {
+									message: 'Region is mandatory',
+									callback: function(value, validator, $field) {
+										if (value == "" || value == "Select" || value == null) {
+											return false;
+										}
+										return true;
+									}
+								}
 
-			                }
+							}
 						},
 						'taxAmount': {
-		                     group:'.taxAmountCont',
-		                      validators: {
-		                        callback: {
+							group: '.taxAmountCont',
+							validators: {
+								callback: {
 
-		                          callback: function (value, validator, $field) {
-				                    if($.isNumeric(value)){
-											if((parseFloat(value) < 0)){
+									callback: function(value, validator, $field) {
+										if ($.isNumeric(value)) {
+											if ((parseFloat(value) < 0)) {
 												return {
-					                                valid: false,    // or false
-					                                message: 'Please provide positive Tax'
-					                              }
-											}else {
+													valid: false, // or false
+													message: 'Please provide positive Tax'
+												}
+											} else {
 												var decimal_validate_RE = /^\d{0,10}(\.\d{0,8})?$/;
 												if (!decimal_validate_RE.test(value)) {
 													return {
-													 	valid: false,    // or false
-					                                 	message: 'Please provide Tax value in [##########.########] format'
-					                            	 }
+														valid: false, // or false
+														message: 'Please provide Tax value in [##########.########] format'
+													}
 												}
 											}
-										}else if(value != ""){
-												return {
-													 	valid: false,    // or false
-					                                 	message: 'Please provide numeric value for Tax'
-					                            }
+										} else if (value != "") {
+											return {
+												valid: false, // or false
+												message: 'Please provide numeric value for Tax'
+											}
 										}
-		                            return true;
-		                          }
-		                        }
-		                      }
-		                    },
+										return true;
+									}
+								}
+							}
+						},
 						'inputContent[]': {
-				 	                validators: {
-				                    callback: {
+							validators: {
+								callback: {
 
-				                                 callback: function (value, validator, $field) {
-				                              if((value == "") && (self.scope.attr("invoicetypeSelect") != "2")){
-				                              	   return {
-												            valid: false,    // or false
-												            message: 'Content type is mandatory'
-												    }
-				                              }
-				                              else if((value == "") && (self.scope.attr("invoicetypeSelect") == "2")){
-				                              	   return {
-												            valid: false,    // or false
-												            message: 'Adhoc type is mandatory'
-												    }
-				                              }
-				                              else
-				                              {
-				                              		var duplicateCont = false;
-						                              	$(".inputContent").not(':hidden').each(function(index){   /*duplicate Content type validation*/
-															if($(this).attr("id") != $field.attr("id"))
-															{
+									callback: function(value, validator, $field) {
+										if ((value == "") && (self.scope.attr("invoicetypeSelect") != "2")) {
+											return {
+												valid: false, // or false
+												message: 'Content type is mandatory'
+											}
+										} else if ((value == "") && (self.scope.attr("invoicetypeSelect") == "2")) {
+											return {
+												valid: false, // or false
+												message: 'Adhoc type is mandatory'
+											}
+										} else {
+											var duplicateCont = false;
+											$(".inputContent").not(':hidden').each(function(index) { /*duplicate Content type validation*/
+												if ($(this).attr("id") != $field.attr("id")) {
 
-																var strEl = $field.attr("id");
-																var rowEl = strEl.replace(/[^0-9]/g, '');
-																var inputMonthEl = "inputMonth"+rowEl;
-																var inputCountryEl = "inputCountry"+rowEl;
+													var strEl = $field.attr("id");
+													var rowEl = strEl.replace(/[^0-9]/g, '');
+													var inputMonthEl = "inputMonth" + rowEl;
+													var inputCountryEl = "inputCountry" + rowEl;
 
-																var strNow = $(this).attr("id");
-																var rowNow = strNow.replace(/[^0-9]/g, '');
-																var inputMonthNow = "inputMonth"+rowNow;
-																var inputCountryNow = "inputCountry"+rowNow;
+													var strNow = $(this).attr("id");
+													var rowNow = strNow.replace(/[^0-9]/g, '');
+													var inputMonthNow = "inputMonth" + rowNow;
+													var inputCountryNow = "inputCountry" + rowNow;
 
-																var validMonth = (($("#"+inputMonthEl).val() != "")?($("#"+inputMonthEl).val() == $("#"+inputMonthNow).val()):false);
-																var validCountry = (($("#"+inputCountryEl).val() != "")?($("#"+inputCountryEl).val() == $("#"+inputCountryNow).val()):false);
+													var validMonth = (($("#" + inputMonthEl).val() != "") ? ($("#" + inputMonthEl).val() == $("#" + inputMonthNow).val()) : false);
+													var validCountry = (($("#" + inputCountryEl).val() != "") ? ($("#" + inputCountryEl).val() == $("#" + inputCountryNow).val()) : false);
 
 
-																if( ($(this).val() == $field.val()) && (validMonth ) && (validCountry) ){
-																	$field.val("");
-																	duplicateCont = true;
+													if (($(this).val() == $field.val()) && (validMonth) && (validCountry)) {
+														$field.val("");
+														duplicateCont = true;
 
-																    return false;
-															    }
-															}
-
-														});
-
-														if(duplicateCont){
-															if(self.scope.attr("invoicetypeSelect") != 2)
-													        {
-													        	return {
-															            valid: false,    // or false
-															            message: 'Two invoicelines can not have same period, content type and country.'
-															    }
-													        }
-														    else
-														    {
-														    	return {
-															            valid: false,    // or false
-															            message: 'Two invoicelines can not have same period, adhoc type and country.'
-															    }
-														    }
-
-														}
-
+														return false;
+													}
 												}
 
-				                             return true;
-				                            }
-		                    		}
-				                }
-			            	},
+											});
+
+											if (duplicateCont) {
+												if (self.scope.attr("invoicetypeSelect") != 2) {
+													return {
+														valid: false, // or false
+														message: 'Two invoicelines can not have same period, content type and country.'
+													}
+												} else {
+													return {
+														valid: false, // or false
+														message: 'Two invoicelines can not have same period, adhoc type and country.'
+													}
+												}
+
+											}
+
+										}
+
+										return true;
+									}
+								}
+							}
+						},
 						'inputMonth[]': {
-			                validators: {
-				                    callback: {
-				                            //message: 'Period is mandatory',
-				                            callback: function (value, validator, $field) {
-				                            	if(value == ""){
-				                              	   	return {
-				                              	   		valid: false,
-				                              	   		message: 'Period is mandatory'
-				                              	   	}
-				                              	}else if(value != undefined && value.length > 0){
-													  var rxDatePattern = /^[P-Q]{1}\d{1,2}[FY]{2}\d{2}$/;
-													  var dtArray = value.match(rxDatePattern); // is format OK?
-													  var result = (dtArray == null) ? false : true;
-													  return{
-													  	valid:result,
-													  	message: 'Invalid period'
-													  }
-				                              	}
+							validators: {
+								callback: {
+									//message: 'Period is mandatory',
+									callback: function(value, validator, $field) {
+										if (value == "") {
+											return {
+												valid: false,
+												message: 'Period is mandatory'
+											}
+										} else if (value != undefined && value.length > 0) {
+											var rxDatePattern = /^[P-Q]{1}\d{1,2}[FY]{2}\d{2}$/;
+											var dtArray = value.match(rxDatePattern); // is format OK?
+											var result = (dtArray == null) ? false : true;
+											return {
+												valid: result,
+												message: 'Invalid period'
+											}
+										}
 
-												return true;
-				                            }
-		                    		}
-				                }
-		            	},
-		            	'inputCountry[]': {
-								validators: {
-				                    callback: {
-				                            callback: function (value, validator, $field) {
-				                               if((value == "") && (self.scope.attr("invoicetypeSelect") != "2") && (self.scope.attr("invoicetypeSelect") != "3")){
-				                              	   return{
-				                              	   		valid: false,    // or false
-												   		message: 'Country is mandatory'
-				                              	   }
-				                              }
-				                              else{
+										return true;
+									}
+								}
+							}
+						},
+						'inputCountry[]': {
+							validators: {
+								callback: {
+									callback: function(value, validator, $field) {
+										if ((value == "") && (self.scope.attr("invoicetypeSelect") != "2") && (self.scope.attr("invoicetypeSelect") != "3")) {
+											return {
+												valid: false, // or false
+												message: 'Country is mandatory'
+											}
+										} else {
 
-				                              		var duplicateCont = false;
-						                              	$(".inputCountry").not(':hidden').each(function(index){   /*duplicate Content type validation*/
-															if($(this).attr("id") != $field.attr("id"))
-															{
+											var duplicateCont = false;
+											$(".inputCountry").not(':hidden').each(function(index) { /*duplicate Content type validation*/
+												if ($(this).attr("id") != $field.attr("id")) {
 
-																var strEl = $field.attr("id");
-																var rowEl = strEl.replace(/[^0-9]/g, '');
-																var inputMonthEl = "inputMonth"+rowEl;
-																var inputContentEl = "inputContent"+rowEl;
+													var strEl = $field.attr("id");
+													var rowEl = strEl.replace(/[^0-9]/g, '');
+													var inputMonthEl = "inputMonth" + rowEl;
+													var inputContentEl = "inputContent" + rowEl;
 
-																var strNow = $(this).attr("id");
-																var rowNow = strNow.replace(/[^0-9]/g, '');
-																var inputMonthNow = "inputMonth"+rowNow;
-																var inputContentNow = "inputContent"+rowNow;
+													var strNow = $(this).attr("id");
+													var rowNow = strNow.replace(/[^0-9]/g, '');
+													var inputMonthNow = "inputMonth" + rowNow;
+													var inputContentNow = "inputContent" + rowNow;
 
-																var validContent = (($("#"+inputContentEl).val() != "")?($("#"+inputContentEl).val() == $("#"+inputContentNow).val()):false);
-																var validMonth = (($("#"+inputMonthEl).val() != "")?($("#"+inputMonthEl).val() == $("#"+inputMonthNow).val()):false);
+													var validContent = (($("#" + inputContentEl).val() != "") ? ($("#" + inputContentEl).val() == $("#" + inputContentNow).val()) : false);
+													var validMonth = (($("#" + inputMonthEl).val() != "") ? ($("#" + inputMonthEl).val() == $("#" + inputMonthNow).val()) : false);
 
 
-																if( ($(this).val() == $field.val()) && (validContent ) && (validMonth) ){
-																	$field.val("");
-																	duplicateCont = true;
+													if (($(this).val() == $field.val()) && (validContent) && (validMonth)) {
+														$field.val("");
+														duplicateCont = true;
 
-																    return false;
-															    }
-															}
+														return false;
+													}
+												}
 
-														});
+											});
 
-														if(duplicateCont){
-															if(self.scope.attr("invoicetypeSelect") != 2)
-													        {
-													        	return {
-															            valid: false,    // or false
-															            message: 'Two invoicelines can not have same period, content type and country.'
-															    }
-													        }
-														    else
-														    {
-														    	return {
-															            valid: false,    // or false
-															            message: 'Two invoicelines can not have same period, adhoc type and country.'
-															    }
-														    }
+											if (duplicateCont) {
+												if (self.scope.attr("invoicetypeSelect") != 2) {
+													return {
+														valid: false, // or false
+														message: 'Two invoicelines can not have same period, content type and country.'
+													}
+												} else {
+													return {
+														valid: false, // or false
+														message: 'Two invoicelines can not have same period, adhoc type and country.'
+													}
+												}
 
-														}
+											}
 
-				                              }
-				                              return true;
-				                            }
-		                    			}
-				                	}
-		            			}
-
+										}
+										return true;
+									}
+								}
+							}
 						}
-			    }).on('error.field.bv', function(e, data) {
-			        	$('*[data-bv-icon-for="'+data.field +'"]').popover('show');
-				    	if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]") && (data.field != "ccidGLtxt[]")){
-				    		$("#"+data.field+"-err").css("display", "block");
 
-				    	}else{
-				    		$('*[data-bv-icon-for="'+data.field +'"]').popover('hide');
-				    	}
+					}
+				}).on('error.field.bv', function(e, data) {
+					$('*[data-bv-icon-for="' + data.field + '"]').popover('show');
+					if ((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]") && (data.field != "ccidGLtxt[]")) {
+						$("#" + data.field + "-err").css("display", "block");
 
+					} else {
+						$('*[data-bv-icon-for="' + data.field + '"]').popover('hide');
+					}
 
 
 
 				}).on('success.field.bv', function(e, data) {
-        				//$('*[data-bv-icon-for="'+data.field +'"]').popover('destroy');
-        				if((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]") && (data.field != "ccidGLtxt[]")){
-				    		$("#"+data.field+"-err").css("display", "none");
-				    	}
+					//$('*[data-bv-icon-for="'+data.field +'"]').popover('destroy');
+					if ((data.field != "amount[]") && (data.field != "inputMonth[]") && (data.field != "inputCountry[]") && (data.field != "inputContent[]") && (data.field != "ccidGLtxt[]")) {
+						$("#" + data.field + "-err").css("display", "none");
+					}
 
-        				if(!self.scope.editpage){
-	        				var requireField = (self.scope.attr("invoicetypeSelect") == "2")?mandatoryFieldAdhoc:mandatoryField;
+					if (!self.scope.editpage) {
+						var requireField = (self.scope.attr("invoicetypeSelect") == "2") ? mandatoryFieldAdhoc : mandatoryField;
 
-	        				for(var i= 0; i < requireField.length; i++){
-	        					if(!data.bv.isValidField(mandatoryField[i])){
-	        						 data.bv.disableSubmitButtons(true);
-	        						 if(mandatoryField[i] == "receiveddate"){
-		        						 	$('#invoiceform').bootstrapValidator('revalidateField', 'receiveddate'); /*revalidating this field. It initialized with currentdate*/
-		        						 }
-	        						 break;
-	        					}
-	        				}
-
-	        			 	if($("#invoiceform").data('bootstrapValidator').getInvalidFields().length > 0){  /*needed only for icsv*/
-
-								$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
-
+						for (var i = 0; i < requireField.length; i++) {
+							if (!data.bv.isValidField(mandatoryField[i])) {
+								data.bv.disableSubmitButtons(true);
+								if (mandatoryField[i] == "receiveddate") {
+									$('#invoiceform').bootstrapValidator('revalidateField', 'receiveddate'); /*revalidating this field. It initialized with currentdate*/
+								}
+								break;
 							}
 						}
 
-        			}).on('success.form.bv', function(e) {
+						if ($("#invoiceform").data('bootstrapValidator').getInvalidFields().length > 0) { /*needed only for icsv*/
 
-        				e.preventDefault();
-					});
+							$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
+
+						}
+					}
+
+				}).on('success.form.bv', function(e) {
+
+					e.preventDefault();
+				});
 
 
-					/*	$('#invoicedate').on('dp.change', function (e) {
+			/*	$('#invoicedate').on('dp.change', function (e) {
 			            			$('#invoiceform').bootstrapValidator('revalidateField', 'invoicedate');
 			        	});
 
@@ -736,1115 +731,1130 @@ var page = Component.extend({
 				            		$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
 				        }); */
 
-						if(!self.scope.editpage){
-							self.scope.attr("invoiceduedate", getCurrentDate());
-						}
+			if (!self.scope.editpage) {
+				self.scope.attr("invoiceduedate", getCurrentDate());
+			}
 
 
 
+		},
+		"#receiveddate dp.change": function(event) {
+			$('#invoiceform').bootstrapValidator('revalidateField', 'receiveddate');
+		},
 
-				},
-					"#receiveddate dp.change":function(event){
-			      		$('#invoiceform').bootstrapValidator('revalidateField', 'receiveddate');
-			      	},
+		"#invoiceduedate dp.change": function(event) {
+			$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
+		},
 
-			      	"#invoiceduedate dp.change":function(event){
-			      	 	$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
-			      	},
+		".form-control keyup": function(event) {
 
-				".form-control keyup": function(event){
+			var self = this;
 
-					var self = this;
+			if (event[0].id == "newPaymentBundle") {
+				if (String(event[0].value).length > 0) {
+					if (String(event[0].value).length > 100) {
+						showError(event[0].id, "Maximum 100 characters allowed");
+					} else {
+						removeError(event[0].id);
 
-					if(event[0].id == "newPaymentBundle"){
-						if(String(event[0].value).length > 0){
-							if(String(event[0].value).length > 100){
-								showError(event[0].id, "Maximum 100 characters allowed");
-							}
-							else{
-								removeError(event[0].id);
+					}
+				}
+			}
 
-							}
+
+			if (self.scope.editpage) {
+				if (event[0].id == "usercomments") {
+					if (String(event[0].value).length > 0) {
+						if (String(event[0].value).length > 1024) {
+
+							showError(event[0].id, "Maximum 1024 characters allowed");
+						} else {
+
+							removeError(event[0].id);
 						}
 					}
+				}
+			}
 
 
-					if(self.scope.editpage){
-						if(event[0].id == "usercomments"){
-							if(String(event[0].value).length > 0){
-								if(String(event[0].value).length > 1024){
 
-									showError(event[0].id, "Maximum 1024 characters allowed");
-								}
-								else{
-
-									removeError(event[0].id);
-								}
-							}
+		},
+		".calduefield change": function(event) {
+			var self = this;
+			if (($("#invoicedate input[type=text]").val() != "") && (self.scope.licensorStore != "") && ($("#inputCountry0").val() != "")) {
+				var genObj = {
+					entityId: self.scope.licensorStore,
+					invoiceDate: Date.parse($("#invoicedate input[type=text]").val()),
+					countryId: $("#inputCountry0").val()
+				};
+				CalDueDate.findOne(UserReq.formRequestDetails(genObj), function(data) {
+					//console.log(data.calInvoiceDueDate);
+					if (data.status == 'SUCCESS') {
+						if (data.calInvoiceDueDate != null && data.calInvoiceDueDate != undefined) {
+							self.scope.attr("calduedate", getDateToDisplay(data.calInvoiceDueDate));
+							$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
 						}
-				   }
-
-
-
-				},
-				".calduefield change":function(event){
-					var self = this;
-					if(($("#invoicedate input[type=text]").val() != "") &&  (self.scope.licensorStore != "") && ($("#inputCountry0").val() != "")){
-					var genObj = {entityId:self.scope.licensorStore, invoiceDate:Date.parse($("#invoicedate input[type=text]").val()), countryId:$("#inputCountry0").val()};
-					CalDueDate.findOne(UserReq.formRequestDetails(genObj),function(data){
-                  		//console.log(data.calInvoiceDueDate);
-                  		if(data.status == 'SUCCESS'){
-                  			if(data.calInvoiceDueDate != null && data.calInvoiceDueDate != undefined){
-                  				self.scope.attr("calduedate", getDateToDisplay(data.calInvoiceDueDate));
-                  				$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
-                  			}
-                  		  }
-                  		  else{
-	                  			self.scope.attr("calduedate", "");
-	                  			$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
-	                  		}
-		                },function(xhr){
-		                /*Error condition*/
-		           		 });
+					} else {
+						self.scope.attr("calduedate", "");
+						$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
 					}
-				},
-				"#invoicedate dp.change":function(event){ /*need to repeat service call, as no way to capture date change event together with form control event*/
-					$('#invoiceform').bootstrapValidator('revalidateField', 'invoicedate');
-					var self = this;
-					if(($("#invoicedate input[type=text]").val() != "") &&  (self.scope.licensorStore != "") && ($("#inputCountry0").val() != "")){
-					var genObj = {entityId:self.scope.licensorStore, invoiceDate:Date.parse($("#invoicedate input[type=text]").val()), countryId:$("#inputCountry0").val()};
-					CalDueDate.findOne(UserReq.formRequestDetails(genObj),function(data){
-						//console.log("Date 1---"+moment($("#invoicedate input[type=text]").val()).unix());
-						//console.log("Date 2----"+Date.parse($("#invoicedate input[type=text]").val()));
-                  		if(data.status == 'SUCCESS'){
-                  			if(data.calInvoiceDueDate != null && data.calInvoiceDueDate != undefined){
-                  				self.scope.attr("calduedate", getDateToDisplay(data.calInvoiceDueDate));
-                  				$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
-                  			}
-                  		 }
-                  		 else{
-	                  			self.scope.attr("calduedate", "");
-	                  			$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
-	                  		}
-		                },function(xhr){
-		                /*Error condition*/
-		           		 });
-					}
-				},
-
-				 "{scope} regionStore": function(){
-					  	var self = this;
-						var genObj = {regionId:self.scope.attr("regionStore")};
-
-						if(!self.scope.ajaxRequestStatus.attr("licensorLoaded")){
-							Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))
-							     ]).then(function(values) {
-							     	self.scope.attr("licensor").replace([]);
-								    self.scope.attr("licensor").replace(values[0]["entities"]);
-								    var invoiceData = self.scope.attr().invoiceContainer[0];
-								    self.scope.attr("licensorStore", invoiceData.entityId);
-										self.scope.ajaxRequestStatus.attr("licensorLoaded", true);
-							 });
+				}, function(xhr) {
+					/*Error condition*/
+				});
+			}
+		},
+		"#invoicedate dp.change": function(event) { /*need to repeat service call, as no way to capture date change event together with form control event*/
+			$('#invoiceform').bootstrapValidator('revalidateField', 'invoicedate');
+			var self = this;
+			if (($("#invoicedate input[type=text]").val() != "") && (self.scope.licensorStore != "") && ($("#inputCountry0").val() != "")) {
+				var genObj = {
+					entityId: self.scope.licensorStore,
+					invoiceDate: Date.parse($("#invoicedate input[type=text]").val()),
+					countryId: $("#inputCountry0").val()
+				};
+				CalDueDate.findOne(UserReq.formRequestDetails(genObj), function(data) {
+					//console.log("Date 1---"+moment($("#invoicedate input[type=text]").val()).unix());
+					//console.log("Date 2----"+Date.parse($("#invoicedate input[type=text]").val()));
+					if (data.status == 'SUCCESS') {
+						if (data.calInvoiceDueDate != null && data.calInvoiceDueDate != undefined) {
+							self.scope.attr("calduedate", getDateToDisplay(data.calInvoiceDueDate));
+							$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
 						}
+					} else {
+						self.scope.attr("calduedate", "");
+						$('#invoiceform').bootstrapValidator('revalidateField', 'invoiceduedate');
+					}
+				}, function(xhr) {
+					/*Error condition*/
+				});
+			}
+		},
+
+		"{scope} regionStore": function() {
+			var self = this;
+			var genObj = {
+				regionId: self.scope.attr("regionStore")
+			};
+
+			if (!self.scope.ajaxRequestStatus.attr("licensorLoaded")) {
+				Promise.all([Licensor.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
+					self.scope.attr("licensor").replace([]);
+					self.scope.attr("licensor").replace(values[0]["entities"]);
+					var invoiceData = self.scope.attr().invoiceContainer[0];
+					self.scope.attr("licensorStore", invoiceData.entityId);
+					self.scope.ajaxRequestStatus.attr("licensorLoaded", true);
+				});
+			}
 
 
-					},
-					"{scope} licensorStore": function(event){
-						var self = this;
-						var genObj = {licensorId:self.scope.attr("licensorStore")};
-						if(!self.scope.ajaxRequestStatus.attr("currencyStore")){
-							Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))
-							     ]).then(function(values) {
-							     	self.scope.attr("currency").replace([]);
-								    self.scope.attr("currency").replace(values[0]);
-								     if(self.scope.editpage){
-										    var invoiceData = self.scope.attr().invoiceContainer[0];
-										    self.scope.attr("currencyStore", invoiceData.invoiceCcy);
-										    self.scope.ajaxRequestStatus.attr("currencyStore", true);
-										}
-								  });
-						 }
-						},
-
-						"{ajaxRequestStatus} change":function(event){
-								var self = this;
-								if((self.scope.ajaxRequestStatus.currencyStore == true) && (self.scope.ajaxRequestStatus.licensorLoaded == true) && (self.scope.ajaxRequestStatus.countryLoaded == true) && (self.scope.ajaxRequestStatus.allDataLoaded == true)){
-
-										setTimeout(function(){
-												var invoicevalid = $("#invoiceform").data('bootstrapValidator').isValid();
-													if(!invoicevalid){
-														$("#invoiceform").data('bootstrapValidator').validate();
-														//$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
-													}
-												}, 500);
-									}
-						},
-
-					"#currency change": function(){
-						var self = this;
-						// var genObj = {
-						//    regionId:self.scope.attr("regionStore"),
-						//   entityId:self.scope.attr("licensorStore"),
-						//   currency:self.scope.attr("currencyStore")
-						// };
-
-						// Promise.all([Country.findCountriesForRegLicCurr(UserReq.formRequestDetails(genObj))
-						//      ]).then(function(values) {
-						//      	if(values[0].status == 'SUCCESS'){
-			   //            			self.scope.attr("country").replace([]);
-			   //                 		self.scope.attr("country").replace(values[0].data);
-
-			   //                 		  var countryDD = $('.inputCountry');
-						// 	            countryDD.options = function(data) {
-						// 	                var self = this;
-						// 	                $.each(data, function(key, value) {
-						// 	                    var option = $('<option>').text(value.value).val(value.id);
-						// 	                    data.push(option);
-						// 	                });
-						// 	                self.html(data);
-						// 	            }
-						// 	            countryDD.options(values[0].data);
-
-			   //            		}else{
-			   //            			self.scope.attr("country").replace([]);
-			   //            			 	var countryDD = $('.inputCountry');
-						// 	         	countryDD.empty();
-						// 	         	countryDD.html($('<option>').text("Select"));
-
-						// 				showMessages(values[0].responseText);
-				  //             		}
-						// 	});
-						},
-
-						"{scope} currencyStore": function(){
-							var self = this;
-							self.scope.getFxrate();
-						},
-
-					"{invoiceContainer} change": function() {
-						var self = this;
-
-				 		  /*This block is used to update data in view */
-
+		},
+		"{scope} licensorStore": function(event) {
+			var self = this;
+			var genObj = {
+				licensorId: self.scope.attr("licensorStore")
+			};
+			if (!self.scope.ajaxRequestStatus.attr("currencyStore")) {
+				Promise.all([Currency.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
+					self.scope.attr("currency").replace([]);
+					self.scope.attr("currency").replace(values[0]);
+					if (self.scope.editpage) {
 						var invoiceData = self.scope.attr().invoiceContainer[0];
-				 		self.scope.attr("invoicenumberStore", invoiceData.invoiceNumber);
-				 		self.scope.attr("invoicetypeSelect", invoiceData.invoiceTypeId);
-				 		self.scope.attr("regionStore", invoiceData.regionId);
-						//self.scope.attr("licensorStore", invoiceData.entityId);
-						self.scope.attr("fxrateStore", invoiceData.fxRate);
-				 		self.scope.attr("licnotesStore", invoiceData.notes);
+						self.scope.attr("currencyStore", invoiceData.invoiceCcy);
+						self.scope.ajaxRequestStatus.attr("currencyStore", true);
+					}
+				});
+			}
+		},
 
-				 		self.scope.attr("invoicedate", (invoiceData.invoiceDate == null)?"":moment(invoiceData.invoiceDate).format("MM/DD/YYYY"));
-				 		self.scope.attr("receiveddate", (invoiceData.receivedDate == null)?moment().format("MM/DD/YYYY"):moment(invoiceData.receivedDate).format("MM/DD/YYYY"));
-				 		self.scope.attr("invoiceduedate", (invoiceData.invoiceDueDate == null)?"":moment(invoiceData.invoiceDueDate).format("MM/DD/YYYY"));
+		"{ajaxRequestStatus} change": function(event) {
+			var self = this;
+			if ((self.scope.ajaxRequestStatus.currencyStore == true) && (self.scope.ajaxRequestStatus.licensorLoaded == true) && (self.scope.ajaxRequestStatus.countryLoaded == true) && (self.scope.ajaxRequestStatus.allDataLoaded == true)) {
 
-				 		if(invoiceData.invoiceCalcDueDate != ""){
-				 			self.scope.attr("calduedate",moment(invoiceData.invoiceCalcDueDate).format("MM/DD/YYYY"));
-				 		}
-				 		else
-				 		{
-				 			self.scope.attr("calduedate","");
-				 		}
+				setTimeout(function() {
+					var invoicevalid = $("#invoiceform").data('bootstrapValidator').isValid();
+					if (!invoicevalid) {
+						$("#invoiceform").data('bootstrapValidator').validate();
+						//$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
+					}
+				}, 500);
+			}
+		},
 
-						self.scope.attr("tax", "");
-				 		if(invoiceData.tax != null){
-				 			self.scope.attr("tax", invoiceData.tax);
-				 		}
-						self.scope.attr("invoiceId",invoiceData.invId);
+		"#currency change": function() {
+			var self = this;
+			// var genObj = {
+			//    regionId:self.scope.attr("regionStore"),
+			//   entityId:self.scope.attr("licensorStore"),
+			//   currency:self.scope.attr("currencyStore")
+			// };
 
-						var tempcommentObj = invoiceData.comments;
-						$('#multipleCommentsInv').html(stache('<multiple-comments divid="usercommentsdivinv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({tempcommentObj}));
-		                self.scope.changeTextOnInvType();
+			// Promise.all([Country.findCountriesForRegLicCurr(UserReq.formRequestDetails(genObj))
+			//      ]).then(function(values) {
+			//      	if(values[0].status == 'SUCCESS'){
+			//            			self.scope.attr("country").replace([]);
+			//                 		self.scope.attr("country").replace(values[0].data);
+
+			//                 		  var countryDD = $('.inputCountry');
+			// 	            countryDD.options = function(data) {
+			// 	                var self = this;
+			// 	                $.each(data, function(key, value) {
+			// 	                    var option = $('<option>').text(value.value).val(value.id);
+			// 	                    data.push(option);
+			// 	                });
+			// 	                self.html(data);
+			// 	            }
+			// 	            countryDD.options(values[0].data);
+
+			//            		}else{
+			//            			self.scope.attr("country").replace([]);
+			//            			 	var countryDD = $('.inputCountry');
+			// 	         	countryDD.empty();
+			// 	         	countryDD.html($('<option>').text("Select"));
+
+			// 				showMessages(values[0].responseText);
+			//             		}
+			// 	});
+		},
+
+		"{scope} currencyStore": function() {
+			var self = this;
+			self.scope.getFxrate();
+		},
+
+		"{invoiceContainer} change": function() {
+			var self = this;
+
+			/*This block is used to update data in view */
+
+			var invoiceData = self.scope.attr().invoiceContainer[0];
+			self.scope.attr("invoicenumberStore", invoiceData.invoiceNumber);
+			self.scope.attr("invoicetypeSelect", invoiceData.invoiceTypeId);
+			self.scope.attr("regionStore", invoiceData.regionId);
+			//self.scope.attr("licensorStore", invoiceData.entityId);
+			self.scope.attr("fxrateStore", invoiceData.fxRate);
+			self.scope.attr("licnotesStore", invoiceData.notes);
+
+			self.scope.attr("invoicedate", (invoiceData.invoiceDate == null) ? "" : moment(invoiceData.invoiceDate).format("MM/DD/YYYY"));
+			self.scope.attr("receiveddate", (invoiceData.receivedDate == null) ? moment().format("MM/DD/YYYY") : moment(invoiceData.receivedDate).format("MM/DD/YYYY"));
+			self.scope.attr("invoiceduedate", (invoiceData.invoiceDueDate == null) ? "" : moment(invoiceData.invoiceDueDate).format("MM/DD/YYYY"));
+
+			if (invoiceData.invoiceCalcDueDate !== "" && invoiceData.invoiceCalcDueDate !== null) {
+				self.scope.attr("calduedate", moment(invoiceData.invoiceCalcDueDate).format("MM/DD/YYYY"));
+			} else {
+				self.scope.attr("calduedate", "");
+			}
+
+			self.scope.attr("tax", "");
+			if (invoiceData.tax != null) {
+				self.scope.attr("tax", invoiceData.tax);
+			}
+			self.scope.attr("invoiceId", invoiceData.invId);
+
+			var tempcommentObj = invoiceData.comments;
+			$('#multipleCommentsInv').html(stache('<multiple-comments divid="usercommentsdivinv" options="{tempcommentObj}" divheight="100" isreadOnly="n"></multiple-comments>')({
+				tempcommentObj
+			}));
+			self.scope.changeTextOnInvType();
 
 
-		                /*Pluck only PDF as supporting documents from the invoicedocuments*/
-//						var invoicePDFDocuments = $.grep(invoiceData.invoiceDocuments, function(e) {
-//							console.log(e.fileName.split('.').pop());
-//							return e.fileName.split('.').pop() === "pdf";
-//						});
-//
-//						if (invoicePDFDocuments.length > 0) {
-//							$('#icsvFileUploader').html(stache('<rn-file-uploader-icsv uploadedfileinfo={docs}></rn-file-uploader-icsv>')({
-//								docs: invoicePDFDocuments
-//							}));
-//							}));
-//						}
-                        //TODO :  /*Pluck only PDF as supporting documents from the invoicedocuments*/
-                        //Code to display server list of files on file upload rn-file-uploader-icsv control starts
+			/*Pluck only PDF as supporting documents from the invoicedocuments*/
+			//						var invoicePDFDocuments = $.grep(invoiceData.invoiceDocuments, function(e) {
+			//							console.log(e.fileName.split('.').pop());
+			//							return e.fileName.split('.').pop() === "pdf";
+			//						});
+			//
+			//						if (invoicePDFDocuments.length > 0) {
+			//							$('#icsvFileUploader').html(stache('<rn-file-uploader-icsv uploadedfileinfo={docs}></rn-file-uploader-icsv>')({
+			//								docs: invoicePDFDocuments
+			//							}));
+			//							}));
+			//						}
+			//TODO :  /*Pluck only PDF as supporting documents from the invoicedocuments*/
+			//Code to display server list of files on file upload rn-file-uploader-icsv control starts
 
 
-                        /* Below code needed to extract PDF file only*/
+			/* Below code needed to extract PDF file only*/
 
-                     /*   var invoicePDFDocuments = $.grep(invoiceData.invoiceDocuments, function(e) {
+			/*   var invoicePDFDocuments = $.grep(invoiceData.invoiceDocuments, function(e) {
 							console.log(e.fileName, ' is a valid file? ', /.pdf$/.test(e.fileName) || /.pdf.zip$/.test(e.fileName));
 							return /.pdf$/.test(e.fileName) || /.pdf.zip$/.test(e.fileName) ;
 						});*/
 
-						var invoicePDFDocuments = self.scope.attr("sumfileuploadedinfo");
+			var invoicePDFDocuments = self.scope.attr("sumfileuploadedinfo");
 
-                        for(var j=0;j<invoicePDFDocuments.length;j++){
+			for (var j = 0; j < invoicePDFDocuments.length; j++) {
 
-                            invoicePDFDocuments[j].isServer = true;
-                            invoicePDFDocuments[j].filePath = invoicePDFDocuments[j].filePath;
-                        }
+				invoicePDFDocuments[j].isServer = true;
+				invoicePDFDocuments[j].filePath = invoicePDFDocuments[j].filePath;
+			}
 
-                        if(invoicePDFDocuments.length > 0){
-                            self.scope.uploadedfileinfo.replace(invoicePDFDocuments);
-                        } else {
-                            self.scope.uploadedfileinfo.replace([]);
-                        }
-                        //Code to display server list of files on file upload rn-file-uploader-icsv control ends
-
-
-		                var $template = $('#breakrowTemplate');
-
-				        	//alert("yes");
-
-				        	var isInvlineExist = false;
-
-				        	$("[id^=breakrow]").not(":hidden").each(function(i){
-								//this.remove();
-								isInvlineExist = true;
-							});
-									if(!isInvlineExist){
-
-				               	 var genObj = {
-					                			regionId:invoiceData.regionId
-											  };
-
-									Promise.all([Country.findAll(UserReq.formRequestDetails(genObj))
-								     ]).then(function(values) {
-								     	if(values[0].status == 'SUCCESS'){
-					              			self.scope.attr("country").replace([]);
-					                   		self.scope.attr("country").replace(values[0]);
-					                   		self.scope.ajaxRequestStatus.attr("countryLoaded", true);
-					              		}else{
-					              			self.scope.attr("country").replace([]);
-					              			showMessages(values[0].responseText);
-					              		}
-									}).then(function(){
-
-				        			for(var i=0;i<invoiceData.invoiceLines.length;i++){
-					         				self.scope.attr("rowindex",i)
-											var rowindex = self.scope.attr("rowindex");
-
-											var $clone = $template.clone().removeClass('hide').removeAttr('id').attr("id","breakrow"+rowindex).attr("rowid", rowindex).insertBefore($template);
-
-						                	$("#breakrow"+rowindex).attr("data-invLineId",invoiceData.invoiceLines[i].invLineId);
-
-						                	$("#breakrow"+rowindex).attr("data-lineStatus",invoiceData.invoiceLines[i].lineStatus);
+			if (invoicePDFDocuments.length > 0) {
+				self.scope.uploadedfileinfo.replace(invoicePDFDocuments);
+			} else {
+				self.scope.uploadedfileinfo.replace([]);
+			}
+			//Code to display server list of files on file upload rn-file-uploader-icsv control ends
 
 
-											$("#breakrow"+rowindex+" .amountText").attr("id","amountText"+rowindex).val(invoiceData.invoiceLines[i].lineAmount);
-					                       	self.scope.AmountStore.attr("amountText"+rowindex, invoiceData.invoiceLines[i].lineAmount);
+			var $template = $('#breakrowTemplate');
 
-					                       	$("#breakrow"+rowindex+" #inputContent").attr("id","inputContent"+rowindex);
+			//alert("yes");
 
-					                       var servictypeid = $("#inputContent0 option:selected").attr("servicetypeid");
-											if (typeof servictypeid !== "undefined" && rowindex > 0) {
-												$('#inputContent'+rowindex +' option[ servicetypeid!='+ servictypeid + ' ]').remove();
-												$('#inputContent'+rowindex).prepend("<option value>Select</option>").val('');
-											}
+			var isInvlineExist = false;
 
-					                       	$('#inputContent'+rowindex).val(invoiceData.invoiceLines[i].contentGrpId);
+			$("[id^=breakrow]").not(":hidden").each(function(i) {
+				//this.remove();
+				isInvlineExist = true;
+			});
+			if (!isInvlineExist) {
 
-					                       	if(self.scope.attr("invoicetypeSelect") == "2"){
-					                       		self.scope.contentTypeStore.attr("inputContent"+rowindex, invoiceData.invoiceLines[i].adhocTypeId);
-											}
-									 		else
-									 		{
-												self.scope.contentTypeStore.attr("inputContent"+rowindex, invoiceData.invoiceLines[i].contentGrpId);
-									 		}
+				var genObj = {
+					regionId: invoiceData.regionId
+				};
 
+				Promise.all([Country.findAll(UserReq.formRequestDetails(genObj))]).then(function(values) {
+					if (values[0].status == 'SUCCESS') {
+						self.scope.attr("country").replace([]);
+						self.scope.attr("country").replace(values[0]);
+						self.scope.ajaxRequestStatus.attr("countryLoaded", true);
+					} else {
+						self.scope.attr("country").replace([]);
+						showMessages(values[0].responseText);
+					}
+				}).then(function() {
 
+					for (var i = 0; i < invoiceData.invoiceLines.length; i++) {
+						self.scope.attr("rowindex", i)
+						var rowindex = self.scope.attr("rowindex");
 
-									 		var displayPeriod = "";
-									 		if(invoiceData.invoiceLines[i].fiscalPeriod != null && invoiceData.invoiceLines[i].periodType != null){
-									 			 displayPeriod = periodWidgetHelper.getDisplayPeriod(invoiceData.invoiceLines[i].fiscalPeriod+'',invoiceData.invoiceLines[i].periodType);
-									 		}
+						var $clone = $template.clone().removeClass('hide').removeAttr('id').attr("id", "breakrow" + rowindex).attr("rowid", rowindex).insertBefore($template);
 
+						$("#breakrow" + rowindex).attr("data-invLineId", invoiceData.invoiceLines[i].invLineId);
 
-					  						$("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).val(displayPeriod).parent().append(stache('<period-calendar></period-calendar>'));
-					                       	//$("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).parent().append(stache('<period-calendar></period-calendar>'));
-					                        //console.log($("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).parent());
-					                       	self.scope.monthStore.attr("inputMonth"+rowindex, displayPeriod);
-					                      // $("#breakrow"+rowindex+" #inputYear").attr("id","inputYear"+rowindex);
-					                       	$("#breakrow"+rowindex+" #inputCountry").attr("id","inputCountry"+rowindex).val(invoiceData.invoiceLines[i].country);
-					                         self.scope.countryStore.attr("inputCountry"+rowindex, invoiceData.invoiceLines[i].country);
-
-
-
-					                       	if(self.scope.attr("invoicetypeSelect") == "2"){
-					                       		//$("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val(invoiceData.invoiceLines[i].glAccount);
-					                       		$("#breakrow" + rowindex + " #ccidGL").attr("id", "ccidGL" + rowindex).val(invoiceData.invoiceLines[i].glAccRefId);
-          										$("#breakrow" + rowindex + " #ccidGLtxt").attr("id", "ccidGLtxt" + rowindex).val(invoiceData.invoiceLines[i].glAccNum);
-												self.scope.ccidGLStore.attr("ccidGL"+rowindex, invoiceData.invoiceLines[i].glAccount);
-									 		}
-									 		else
-									 		{
-												$("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val(invoiceData.invoiceLines[i].ccidFileName);
-												self.scope.ccidGLStore.attr("ccidGL"+rowindex, invoiceData.invoiceLines[i].ccidFileName);
-									 		}
-
-											if(rowindex != 0)
-					                       		$("#breakrow"+rowindex+" .removeRow").css("display", "block");
-												var $option   = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"], [name="ccidGLtxt[]"]');
-
-						                        $option.each(function(index){
-						                        	$('#invoiceform').bootstrapValidator('addField', $(this));
-						                        });
-										}
+						$("#breakrow" + rowindex).attr("data-lineStatus", invoiceData.invoiceLines[i].lineStatus);
 
 
+						$("#breakrow" + rowindex + " .amountText").attr("id", "amountText" + rowindex).val(invoiceData.invoiceLines[i].lineAmount);
+						self.scope.AmountStore.attr("amountText" + rowindex, invoiceData.invoiceLines[i].lineAmount);
 
-				        			self.scope.ajaxRequestStatus.attr("allDataLoaded", true);
-				        			
+						$("#breakrow" + rowindex + " #inputContent").attr("id", "inputContent" + rowindex);
 
-								$(".removeRow").click(function(event){
-		              	           $option.each(function(index){
-		                            	$('#invoiceform').bootstrapValidator('removeField', $(this));
-		                           	});
-
-						           	var rowindex = $(this).closest("tr").attr("rowid");
-
-										var inputContent = "inputContent"+rowindex;
-										var tempDelObj = {};
-										tempDelObj["country"] = self.scope.countryStore.attr("inputCountry"+rowindex);
-								   		tempDelObj["fiscalPeriod"] =  periodWidgetHelper.getFiscalPeriod($("#inputMonth"+rowindex).val());
-								   		tempDelObj["periodType"] = periodWidgetHelper.getPeriodType($("#inputMonth"+rowindex).val().charAt(0));
-								   		tempDelObj["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent"+rowindex);
-								   		tempDelObj["contentGrpName"] = $("#inputContent"+rowindex+" option:selected").text();
-								   		tempDelObj["lineAmount"] = self.scope.AmountStore.attr("amountText"+rowindex);
-								   		tempDelObj["lineStatus"] = "";
-								   		tempDelObj["status"] = "DELETE";
-								   		tempDelObj["lineType"] = "";
-								   		if(self.scope.attr("invoicetypeSelect") == "2"){
-
-								  	 		tempDelObj["glAccRefId"] = self.scope.ccidGLStore.attr(inputContent);
-								  	 		tempDelObj["ccidFileName"] = "";
-								  	 	}
-								  	 	else{
-								  	 		tempDelObj["glAccRefId"] = "";
-								  	 		tempDelObj["ccidFileName"] = self.scope.ccidGLStore.attr(inputContent);
-								  	 	}
-
-
-									self.scope.DelInvoiceline.push(tempDelObj);
-									$(this).closest("tr").remove();
-						           	self.scope.AmountStore.removeAttr("amountText"+rowindex);
-						           	self.scope.contentTypeStore.removeAttr("inputContent"+rowindex);
-								});
-
-							});
-
+						var servictypeid = $("#inputContent0 option:selected").attr("servicetypeid");
+						if (typeof servictypeid !== "undefined" && rowindex > 0) {
+							$('#inputContent' + rowindex + ' option[ servicetypeid!=' + servictypeid + ' ]').remove();
+							$('#inputContent' + rowindex).prepend("<option value>Select</option>").val('');
 						}
-						/*Breakdown end*/
 
-         },
- 		".classAmtTotal blur": function(event){
- 			var amountStr = event[0].value;
- 			this.scope.AmountStore.attr(event[0].id, parseFloat(amountStr.replace(/,/g, '')));
+						$('#inputContent' + rowindex).val(invoiceData.invoiceLines[i].contentGrpId);
+
+						if (self.scope.attr("invoicetypeSelect") == "2") {
+							self.scope.contentTypeStore.attr("inputContent" + rowindex, invoiceData.invoiceLines[i].adhocTypeId);
+						} else {
+							self.scope.contentTypeStore.attr("inputContent" + rowindex, invoiceData.invoiceLines[i].contentGrpId);
+						}
+
+
+
+						var displayPeriod = "";
+						if (invoiceData.invoiceLines[i].fiscalPeriod != null && invoiceData.invoiceLines[i].periodType != null) {
+							displayPeriod = periodWidgetHelper.getDisplayPeriod(invoiceData.invoiceLines[i].fiscalPeriod + '', invoiceData.invoiceLines[i].periodType);
+						}
+
+
+						$("#breakrow" + rowindex + " #inputMonth").attr("id", "inputMonth" + rowindex).val(displayPeriod).parent().append(stache('<period-calendar></period-calendar>'));
+						//$("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).parent().append(stache('<period-calendar></period-calendar>'));
+						//console.log($("#breakrow"+rowindex+" #inputMonth").attr("id","inputMonth"+rowindex).parent());
+						self.scope.monthStore.attr("inputMonth" + rowindex, displayPeriod);
+						// $("#breakrow"+rowindex+" #inputYear").attr("id","inputYear"+rowindex);
+						$("#breakrow" + rowindex + " #inputCountry").attr("id", "inputCountry" + rowindex).val(invoiceData.invoiceLines[i].country);
+						self.scope.countryStore.attr("inputCountry" + rowindex, invoiceData.invoiceLines[i].country);
+
+
+
+						if (self.scope.attr("invoicetypeSelect") == "2") {
+							//$("#breakrow"+rowindex+" #ccidGL").attr("id","ccidGL"+rowindex).val(invoiceData.invoiceLines[i].glAccount);
+							$("#breakrow" + rowindex + " #ccidGL").attr("id", "ccidGL" + rowindex).val(invoiceData.invoiceLines[i].glAccRefId);
+							$("#breakrow" + rowindex + " #ccidGLtxt").attr("id", "ccidGLtxt" + rowindex).val(invoiceData.invoiceLines[i].glAccNum);
+							self.scope.ccidGLStore.attr("ccidGL" + rowindex, invoiceData.invoiceLines[i].glAccount);
+						} else {
+							$("#breakrow" + rowindex + " #ccidGL").attr("id", "ccidGL" + rowindex).val(invoiceData.invoiceLines[i].ccidFileName);
+							self.scope.ccidGLStore.attr("ccidGL" + rowindex, invoiceData.invoiceLines[i].ccidFileName);
+						}
+
+						if (rowindex != 0)
+							$("#breakrow" + rowindex + " .removeRow").css("display", "block");
+						var $option = $clone.find('[name="amount[]"], [name="inputMonth[]"], [name="inputCountry[]"], [name="inputContent[]"], [name="ccidGLtxt[]"]');
+
+						$option.each(function(index) {
+							$('#invoiceform').bootstrapValidator('addField', $(this));
+						});
+					}
+
+
+
+					self.scope.ajaxRequestStatus.attr("allDataLoaded", true);
+
+
+					$(".removeRow").click(function(event) {
+						$option.each(function(index) {
+							$('#invoiceform').bootstrapValidator('removeField', $(this));
+						});
+
+						var rowindex = $(this).closest("tr").attr("rowid");
+
+						var inputContent = "inputContent" + rowindex;
+						var tempDelObj = {};
+						tempDelObj["country"] = self.scope.countryStore.attr("inputCountry" + rowindex);
+						tempDelObj["fiscalPeriod"] = periodWidgetHelper.getFiscalPeriod($("#inputMonth" + rowindex).val());
+						tempDelObj["periodType"] = periodWidgetHelper.getPeriodType($("#inputMonth" + rowindex).val().charAt(0));
+						tempDelObj["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent" + rowindex);
+						tempDelObj["contentGrpName"] = $("#inputContent" + rowindex + " option:selected").text();
+						tempDelObj["lineAmount"] = self.scope.AmountStore.attr("amountText" + rowindex);
+						tempDelObj["lineStatus"] = "";
+						tempDelObj["status"] = "DELETE";
+						tempDelObj["lineType"] = "";
+						if (self.scope.attr("invoicetypeSelect") == "2") {
+
+							tempDelObj["glAccRefId"] = self.scope.ccidGLStore.attr(inputContent);
+							tempDelObj["ccidFileName"] = "";
+						} else {
+							tempDelObj["glAccRefId"] = "";
+							tempDelObj["ccidFileName"] = self.scope.ccidGLStore.attr(inputContent);
+						}
+
+
+						self.scope.DelInvoiceline.push(tempDelObj);
+						$(this).closest("tr").remove();
+						self.scope.AmountStore.removeAttr("amountText" + rowindex);
+						self.scope.contentTypeStore.removeAttr("inputContent" + rowindex);
+					});
+
+				});
+
+			}
+			/*Breakdown end*/
 
 		},
-		".inputContent change": function(event){
-         	this.scope.contentTypeStore.attr(event[0].id, event[0].value)
+		".classAmtTotal blur": function(event) {
+			var amountStr = event[0].value;
+			this.scope.AmountStore.attr(event[0].id, parseFloat(amountStr.replace(/,/g, '')));
+
+		},
+		".inputContent change": function(event) {
+			this.scope.contentTypeStore.attr(event[0].id, event[0].value)
 
 
 		},
-		".inputMonth change": function(event){
-         	this.scope.monthStore.attr(event[0].id, event[0].value)
+		".inputMonth change": function(event) {
+			this.scope.monthStore.attr(event[0].id, event[0].value)
 		},
-		".inputMonth click": function(event){
-         	updatePeriodCalender(event[0].id);
+		".inputMonth click": function(event) {
+			updatePeriodCalender(event[0].id);
 		},
-		".inputMonth blur": function(event){
-         	$('#invoiceform').bootstrapValidator('revalidateField', 'inputMonth[]');
-        },
+		".inputMonth blur": function(event) {
+			$('#invoiceform').bootstrapValidator('revalidateField', 'inputMonth[]');
+		},
 
-		".inputCountry change": function(event){
-         	this.scope.countryStore.attr(event[0].id, event[0].value)
+		".inputCountry change": function(event) {
+			this.scope.countryStore.attr(event[0].id, event[0].value)
 
 		},
-		".ccidGL change": function(event){
-			if(event.find('option:selected')[0]!=undefined)event.next('.ccidGLtxt').val(event.find('option:selected')[0].text);
-         	var idGL = event[0].id;
-			idGL =  idGL.indexOf("ccidGLtxt") > -1 ? idGL.replace("ccidGLtxt","ccidGL") :  idGL;
+		".ccidGL change": function(event) {
+			if (event.find('option:selected')[0] != undefined) event.next('.ccidGLtxt').val(event.find('option:selected')[0].text);
+			var idGL = event[0].id;
+			idGL = idGL.indexOf("ccidGLtxt") > -1 ? idGL.replace("ccidGLtxt", "ccidGL") : idGL;
 			this.scope.ccidGLStore.attr(idGL, event[0].value);
 			$('#invoiceform').bootstrapValidator('revalidateField', 'ccidGLtxt[]');
 
 		},
-		".ccidGLtxt change": function(el){
-			var rowindex = el[0].id.replace( /^\D+/g, '');
-			$("#ccidGL"+rowindex).val("");
+		".ccidGLtxt change": function(el) {
+			var rowindex = el[0].id.replace(/^\D+/g, '');
+			$("#ccidGL" + rowindex).val("");
 		},
-		"#invoiceType change": function(){
+		"#invoiceType change": function() {
 			this.scope.isRequired();
 			var self = this;
-            //Resetting the region
-            self.scope.attr("regionStore",'');
-			$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
-				if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
+			//Resetting the region
+			self.scope.attr("regionStore", '');
+			$("[id^=breakrow]").each(function(index) { /*removing added row in break down when invoice type changes to adhoc.*/
+				if ((this.id != "breakrow0") && (this.id != "breakrowTemplate")) {
 					$(this).remove();
 
-					}
-			  });
-			$("#breakrow0 .amountText").attr("id","amountText0").val(" ");
+				}
+			});
+			$("#breakrow0 .amountText").attr("id", "amountText0").val(" ");
 
-			self.scope.attr("AmountStore").each(function(val, key){
-  	 				self.scope.AmountStore.removeAttr(key);
-  	 			});
+			self.scope.attr("AmountStore").each(function(val, key) {
+				self.scope.AmountStore.removeAttr(key);
+			});
 
 			this.scope.attr("totalAmountVal", 0);
 			self.scope.changeTextOnInvType();
-			if(self.scope.attr("invoicetypeSelect") == "3"){
-				$("#paymentBundleNames").attr("disabled","disabled");
-			} else{
-				 $("#paymentBundleNames").removeAttr("disabled");
+			if (self.scope.attr("invoicetypeSelect") == "3") {
+				$("#paymentBundleNames").attr("disabled", "disabled");
+			} else {
+				$("#paymentBundleNames").removeAttr("disabled");
 			}
 
 		},
-         "{AmountStore} change": function() {
-         		var self = this;
-         		var totalAmount = 0;
-  	 			this.scope.attr("AmountStore").each(function(val, key){
-  	 				if(val == ""){
-  	 					val =0;
-  	 				}
-  	 				totalAmount += parseFloat(val);
-  	 			});
+		"{AmountStore} change": function() {
+			var self = this;
+			var totalAmount = 0;
+			this.scope.attr("AmountStore").each(function(val, key) {
+				if (val == "") {
+					val = 0;
+				}
+				totalAmount += parseFloat(val);
+			});
 
-  	 			if(!isNaN(totalAmount)){
-  	 				this.scope.attr("totalAmountVal", totalAmount);
-  	 			}
-  	 			else{
-  	 				this.scope.attr("totalAmountVal", "");
-  	 			}
-  	 			self.scope.getFxrate();
+			if (!isNaN(totalAmount)) {
+				this.scope.attr("totalAmountVal", totalAmount);
+			} else {
+				this.scope.attr("totalAmountVal", "");
+			}
+			self.scope.getFxrate();
 
-         },
+		},
 
-  	     "#icsv-edit-invoice #paymentBundleNames change": function(){
-	          var self = this;
-	          var pbval = $("#invoiceform #paymentBundleNames").val();
-	          if(pbval=="createB"){
+		"#icsv-edit-invoice #paymentBundleNames change": function() {
+			var self = this;
+			var pbval = $("#invoiceform #paymentBundleNames").val();
+			if (pbval == "createB") {
 
-	              var regId = self.scope.regionStore;
-				  var newBundleNameRequest = {"paymentBundle":{}};
-	              var bundleRequest = {};
+				var regId = self.scope.regionStore;
+				var newBundleNameRequest = {
+					"paymentBundle": {}
+				};
+				var bundleRequest = {};
 
-	              bundleRequest["regionId"] = regId;
+				bundleRequest["regionId"] = regId;
 
-	              bundleRequest["bundleType"] = $("#invoiceType option:selected").attr("name");
+				bundleRequest["bundleType"] = $("#invoiceType option:selected").attr("name");
 
-	              newBundleNameRequest["paymentBundle"] = bundleRequest;
-	              self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
-	          } else {
-	            self.scope.attr('newpaymentbundlenamereq', "undefined");
-	          }
-	      },
-         ".addRow click":function(){
+				newBundleNameRequest["paymentBundle"] = bundleRequest;
+				self.scope.attr('newpaymentbundlenamereq', JSON.stringify(newBundleNameRequest));
+			} else {
+				self.scope.attr('newpaymentbundlenamereq', "undefined");
+			}
+		},
+		".addRow click": function() {
 
-         	var self = this;
-         	var rowindex = self.scope.attr("rowindex");
-         	self.scope.attr("rowindex", rowindex + 1);
+			var self = this;
+			var rowindex = self.scope.attr("rowindex");
+			self.scope.attr("rowindex", rowindex + 1);
 			self.scope.createBreakline(self.scope.attr("rowindex"));
 		},
-	      'rn-file-uploader-icsv onSelected': function(ele, event){
+		'rn-file-uploader-icsv onSelected': function(ele, event) {
 
-	     	var self = this;
+			var self = this;
 
-	     	var errObj=validateMandatory();
-          	if(errObj.isFailed == false){
-           	 	$("#addInvSubmit").attr("disabled", false);
-          	}else{
-          		$("#addInvSubmit").attr("disabled", true);
-          	}
+			var errObj = validateMandatory();
+			if (errObj.isFailed == false) {
+				$("#addInvSubmit").attr("disabled", false);
+			} else {
+				$("#addInvSubmit").attr("disabled", true);
+			}
 
-          	if(!self.scope.editpage){
-				var requireField = (self.scope.attr("invoicetypeSelect") == "2")? mandatoryFieldAdhoc: (self.scope.attr("invoicetypeSelect") == "3") ? mandatoryFieldCA  : mandatoryField;
+			if (!self.scope.editpage) {
+				var requireField = (self.scope.attr("invoicetypeSelect") == "2") ? mandatoryFieldAdhoc : (self.scope.attr("invoicetypeSelect") == "3") ? mandatoryFieldCA : mandatoryField;
 
-				for(var i= 0; i < requireField.length; i++){
-					if(!$("#invoiceform").data('bootstrapValidator').isValidField(requireField[i])){
-						 $("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
-						 if(requireField[i] == "receiveddate"){
-						 	$('#invoiceform').bootstrapValidator('revalidateField', 'receiveddate'); /*revalidating this field. It initialized with currentdate*/
-						 }
-						 break;
+				for (var i = 0; i < requireField.length; i++) {
+					if (!$("#invoiceform").data('bootstrapValidator').isValidField(requireField[i])) {
+						$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
+						if (requireField[i] == "receiveddate") {
+							$('#invoiceform').bootstrapValidator('revalidateField', 'receiveddate'); /*revalidating this field. It initialized with currentdate*/
+						}
+						break;
 					}
 
 				}
 			}
-			if(self.scope.editpage){
-				if(!$("#invoiceform").data('bootstrapValidator').isValid()){
+			if (self.scope.editpage) {
+				if (!$("#invoiceform").data('bootstrapValidator').isValid()) {
 					$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
 				}
-		   }
+			}
 
-	      },
-		"#addInvSubmit click":function(){
+		},
+		"#addInvSubmit click": function() {
 
-		  var errObj=validateMandatory();
-          if(errObj.isFailed == true){
-            var msg =showErrorDetails(errObj.errorMsgs, "Error");
-         		showMessages(msg);
-            return false;
-          }
+			var errObj = validateMandatory();
+			if (errObj.isFailed == true) {
+				var msg = showErrorDetails(errObj.errorMsgs, "Error");
+				showMessages(msg);
+				return false;
+			}
 
-					 $("#invoiceform").data('bootstrapValidator').resetForm();
+			$("#invoiceform").data('bootstrapValidator').resetForm();
 
-							$("#invoiceform").data('bootstrapValidator').validate();
+			$("#invoiceform").data('bootstrapValidator').validate();
 
-				            if($("#invoiceform").data('bootstrapValidator').getInvalidFields().length > 0){
+			if ($("#invoiceform").data('bootstrapValidator').getInvalidFields().length > 0) {
 
-							$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
+				$("#invoiceform").data('bootstrapValidator').disableSubmitButtons(true);
+
+			} else {
+				var self = this;
+
+				var editInvoiceData = {};
+				editInvoiceData.invoices = [];
+
+				var editInvoiceCSVData = {};
+				editInvoiceCSVData.invoiceNumber = self.scope.invoicenumberStore;
+				editInvoiceCSVData.invoiceTypeId = self.scope.invoicetypeSelect;
+				editInvoiceCSVData.serviceTypeId = $("#invoiceType option:selected").val();
+				editInvoiceCSVData.invoiceType = $("#invoiceType option:selected").attr("name");
+				editInvoiceCSVData.entityId = self.scope.licensorStore;
+				editInvoiceCSVData.regionId = self.scope.regionStore;
+				editInvoiceCSVData.entityName = $("#invoicelicensor option:selected").text();
+				editInvoiceCSVData.invoiceCcy = self.scope.currencyStore;
+				editInvoiceCSVData.fxRate = self.scope.fxrateStore;
+				editInvoiceCSVData.notes = self.scope.licnotesStore;
+				editInvoiceCSVData.invoiceAmount = self.scope.totalAmountVal;
+				editInvoiceCSVData.grossTotal = self.scope.grossTotalStore;
+				//finalInvoiceAmount
+				editInvoiceCSVData.periodType = periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0));
+				editInvoiceCSVData.netTotal = self.scope.totalAmountVal;
+				editInvoiceCSVData.receivedDate = dateFormatter($("#receiveddate input[type=text]").val(), "mm/dd/yyyy"); //$("#receiveddate input[type=text]").val(); 
+				editInvoiceCSVData.invoiceDate = dateFormatter($("#invoicedate input[type=text]").val(), "mm/dd/yyyy"); //$("#invoicedate input[type=text]").val();
+				if (self.scope.calduedate) {
+					editInvoiceCSVData.invoiceCalcDueDate = dateFormatter(self.scope.calduedate, "mm/dd/yyyy");
+				}
+				editInvoiceCSVData.createdBy = UserReq.formRequestDetails().prsId;
+				editInvoiceCSVData.comments = [];
+				/*comment start*/
+				for (var j = 0; j < self.scope.attr().invoiceContainer[0].comments.length; j++) { /*old comments*/
+					var tempComments = {};
+					tempComments.comments = self.scope.attr().invoiceContainer[0].comments[j].comments;
+					tempComments.id = self.scope.attr().invoiceContainer[0].comments[j].id;
+					tempComments.createdBy = self.scope.attr().invoiceContainer[0].comments[j].createdBy;
+					var tempComDate = self.scope.attr().invoiceContainer[0].comments[j].createdDate
+					if (tempComDate != null && tempComDate != undefined) {
+						tempComments.createdDate = dateFormatter(getDateToDisplay(tempComDate), "mm/dd/yyyy");
+					}
+					editInvoiceCSVData.comments.push(tempComments);
+				}
+				var tempComments = {}; /*new comments*/
+				if ($("#editableText").val() != null && (typeof $("#editableText").val() != "undefined") && $("#editableText").val() != "") {
+					tempComments.comments = $("#editableText").val(); //self.scope.usercommentsStore;
+					tempComments.createdBy = UserReq.formRequestDetails().prsId;
+					tempComments.createdDate = moment().format("YYYY-MM-DD");
+					editInvoiceCSVData["comments"].push(tempComments);
+				}
+				/*comment end*/
+
+				/*document start*/
+				editInvoiceCSVData.invoiceDocuments = [];
+				//Code to send the updated list of files on file upload rn-file-uploader-icsv to backend starts
+				/* adding new document */
+				var uploadedfiles = $('rn-file-uploader-icsv').data('_d_uploadedFileInfo');
+
+				if ((typeof uploadedfiles !== 'undefined') && (uploadedfiles != null)) {
+
+					for (var i = 0; i < uploadedfiles.length; i++) {
+						if (uploadedfiles[i].ftype === 'pushedToServer') {
+							// This is the list of newly uploaded files.
+							var tempDocument = {};
+							tempDocument.fileName = uploadedfiles[i].fileName;
+							tempDocument.location = uploadedfiles[i].filePath;
+							tempDocument.status = "add";
+							editInvoiceCSVData.invoiceDocuments.push(tempDocument);
+						} else if (uploadedfiles[i].isServer) {
+							// This is the existing server file list which will be send back as-is with no change.
+							var tempDocument = {};
+							tempDocument.fileName = uploadedfiles[i].fileName;
+							tempDocument.location = uploadedfiles[i].location;
+							tempDocument.docId = uploadedfiles[i].docId;
+							tempDocument.id = uploadedfiles[i].id;
+							tempDocument.status = uploadedfiles[i].status;
+							editInvoiceCSVData.invoiceDocuments.push(tempDocument);
+						}
+					}
+				}
+				/* deleting existing documents */
+				var deletedFiles = $('rn-file-uploader-icsv').data('_d_deletedFileInfo');
+
+				if (typeof deletedFiles !== 'undefined') {
+					for (var i = 0; i < deletedFiles.length; i++) {
+						if (deletedFiles[i].isServer) {
+							var tempDocument = {};
+							tempDocument.fileName = deletedFiles[i].fileName;
+							tempDocument.location = deletedFiles[i].location;
+							tempDocument.docId = deletedFiles[i].docId;
+							tempDocument.status = "delete";
+							tempDocument.id = deletedFiles[i].id;
+							editInvoiceCSVData.invoiceDocuments.push(tempDocument);
 
 						}
-				        else
-						{
-							  var self = this;
+					}
+				}
+				//Code to send the updated list of files on file upload rn-file-uploader-icsv to backend ends
+				/*document end*/
+				if ($("#invoiceduedate input[type=text]").val() != "") {
+					editInvoiceCSVData.invoiceDueDate = dateFormatter($("#invoiceduedate input[type=text]").val(), "mm/dd/yyyy"); //$("#invoiceduedate input[type=text]").val();
+				}
+				if (self.scope.attr("tax") != null && self.scope.attr("tax") != undefined && self.scope.attr("tax") > 0) {
+					editInvoiceCSVData["tax"] = self.scope.attr("tax");
+				}
 
-							   var editInvoiceCSVData = {};
-							   editInvoiceCSVData.serviceTypeId = $("#invoiceType option:selected").val();
-							   editInvoiceCSVData.invoiceNumber = self.scope.invoicenumberStore;
-							   editInvoiceCSVData.invoiceTypeId = self.scope.invoicetypeSelect;
-							   editInvoiceCSVData.invoiceType = $("#invoiceType option:selected").attr("name");
-							   editInvoiceCSVData.regionId = self.scope.regionStore;
-							   editInvoiceCSVData.entityId = self.scope.licensorStore;
-							   editInvoiceCSVData.entityName = $("#invoicelicensor option:selected").text();
-							   editInvoiceCSVData.invoiceCcy = self.scope.currencyStore;
-							   editInvoiceCSVData.fxRate = self.scope.fxrateStore;
-							   editInvoiceCSVData.notes = self.scope.licnotesStore;
-							   editInvoiceCSVData.invoiceAmount = self.scope.totalAmountVal;
-							   //editInvoiceCSVData.tax = self.scope.tax;
-							   editInvoiceCSVData.grossTotal = self.scope.grossTotalStore;
-							   editInvoiceCSVData.netTotal = self.scope.totalAmountVal;
-							   editInvoiceCSVData.receivedDate = $("#receiveddate input[type=text]").val();
-							   editInvoiceCSVData.invoiceDate = $("#invoicedate input[type=text]").val();
-							   editInvoiceCSVData.invoiceCalcDueDate = self.scope.calduedate;
+				editInvoiceCSVData.invoiceLines = [];
 
-                               if($("#invoiceduedate input[type=text]").val() != "") {
-                                    editInvoiceCSVData.invoiceDueDate = $("#invoiceduedate input[type=text]").val();
-                               }
+				var rowNumber = 0;
+				$("[id^=breakrow]").each(function(i) {
+					if (this.id != "breakrowTemplate") {
+						var index = $(this).attr("rowid");
 
-							   editInvoiceCSVData.createdBy = UserReq.formRequestDetails().prsId;
-							   editInvoiceCSVData.periodType = periodWidgetHelper.getPeriodType($("#inputMonth0").val().charAt(0));
+						var inputContent = "inputContent" + index;
 
+						var tempArry = {};
+
+						tempArry["country"] = $('#inputCountry' + index).val();
+						tempArry["fiscalPeriod"] = periodWidgetHelper.getFiscalPeriod($("#inputMonth" + index).val());
+						tempArry["periodType"] = periodWidgetHelper.getPeriodType($("#inputMonth" + index).val());
+						//tempArry["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent"+index);
+						//tempArry["contentGrpName"] = $("#inputContent"+index+" option:selected").text();
+						tempArry["lineAmount"] = $("#amountText" + index).val()
 
 
-							   if(self.scope.attr("tax") != null && self.scope.attr("tax") != undefined &&  self.scope.attr("tax") >0) {
-								   	editInvoiceCSVData["tax"] = self.scope.attr("tax");
-								}
+						if (self.scope.attr("invoicetypeSelect") == "2") {
 
-							   editInvoiceCSVData.comments = [];
+							if ($('#ccidGL' + index).val() != undefined && $('#ccidGL' + index).val().length > 0) {
+								tempArry["glAccRefId"] = $("#ccidGL" + index).val();
+							} else {
+								tempArry["glAccNum"] = $("#ccidGLtxt" + index).val();
+							}
+							tempArry["adhocTypeId"] = self.scope.contentTypeStore.attr("inputContent" + index);
+						} else {
+							tempArry["contentGrpId"] = $("#inputContent" + index).val();
+							//console.log(tempArry["contentGrpName"]);
+							var tempContentGrpName = $("#inputContent" + index + " option:selected").text();
+							tempArry["contentGrpName"] = tempContentGrpName;
+							tempArry["ccidFileName"] = $("#ccidGL" + index).val();
+						}
 
-							   	/*comment start*/
-								 //  tempEditInvoiceData["comments"] = [];
-								   for(var j=0;j<self.scope.attr().invoiceContainer[0].comments.length;j++){  /*old comments*/
-							   		  	var tempComments = {};
-							   		  	tempComments.comments = self.scope.attr().invoiceContainer[0].comments[j].comments;
-							   		  	tempComments.id = self.scope.attr().invoiceContainer[0].comments[j].id;
-							   		  	tempComments.createdBy = self.scope.attr().invoiceContainer[0].comments[j].createdBy;
-							   		  	var tempComDate = self.scope.attr().invoiceContainer[0].comments[j].createdDate
-							   		  	if(tempComDate != null && tempComDate != undefined){
-							   		  		tempComments.createdDate = dateFormatter(getDateToDisplay(tempComDate),"mm/dd/yyyy");
-							   		  	}
-							   		  	editInvoiceCSVData.comments.push(tempComments);
-									}
-									var tempComments = {};  /*new comments*/
-									if($("#editableText").val() != null && (typeof $("#editableText").val() != "undefined") && $("#editableText").val() != ""){
-										tempComments.comments = $("#editableText").val();//self.scope.usercommentsStore;
-									   	//tempComments.id = "";
-									   	tempComments.createdBy = UserReq.formRequestDetails().prsId;
-									   	tempComments.createdDate = moment().format("YYYY-MM-DD");
-									   	editInvoiceCSVData["comments"].push(tempComments);
-									}
-									 /*comment end*/
+						editInvoiceCSVData.invoiceLines.push(tempArry);
+					}
+					rowNumber++;
+				});
 
-									  /*document start*/
-							    		editInvoiceCSVData.invoiceDocuments = [];
-//										for(var i =0; i < self.scope.uploadedFileInfo.length; i++){
-//				      						var tempDocument = {};
-//								   			tempDocument.fileName = self.scope.uploadedFileInfo[i].attr("fileName");
-//								   			tempDocument.location = self.scope.uploadedFileInfo[i].attr("filePath");
-//								   			editInvoiceCSVData.invoiceDocuments.push(tempDocument);
-//							   			}
+				editInvoiceData.invoices.push(editInvoiceCSVData);
 
-                            //Code to send the updated list of files on file upload rn-file-uploader-icsv to backend starts
+				Promise.all([Invoice.validate(UserReq.formRequestDetails(editInvoiceData))]).then(function(values) {
+					if (values[0]["status"] == "SUCCESS") {
 
-                            /* adding new document */
-                            var uploadedfiles = $('rn-file-uploader-icsv').data('_d_uploadedFileInfo');
+						// var msg = values[0].responseText;
+						// commonUtils.showSuccessMessage(msg);
 
-                            if((typeof uploadedfiles !== 'undefined') &&  (uploadedfiles != null)){
+						// if (values[0].invoices[0].errors) {
+						// 	var errorMap = values[0].invoices[0].errors.errorMap;
+						// }
 
-	                            for(var i =0; i < uploadedfiles.length; i++){
-	                                if (uploadedfiles[i].ftype === 'pushedToServer') {
-	                                    // This is the list of newly uploaded files.
-	                                    var tempDocument = {};
-	                                    tempDocument.fileName = uploadedfiles[i].fileName;
-	                                    tempDocument.location = uploadedfiles[i].filePath;
-	                                    tempDocument.status = "add";
-	                                    editInvoiceCSVData.invoiceDocuments.push(tempDocument);
-	                                } else if (uploadedfiles[i].isServer) {
-	                                    // This is the existing server file list which will be send back as-is with no change.
-	                                    var tempDocument = {};
-	                                    tempDocument.fileName = uploadedfiles[i].fileName;
-	                                    tempDocument.location = uploadedfiles[i].location;
-	                                    tempDocument.docId = uploadedfiles[i].docId;
-	                                    tempDocument.id = uploadedfiles[i].id;
-	                                    tempDocument.status = uploadedfiles[i].status;
-	                                    editInvoiceCSVData.invoiceDocuments.push(tempDocument);
-	                                }
-	                            }
-                            }
+						// if (errorMap) {
+						// 	var msg = showErrorDetails(errorMap, "Warning");
+						// 	commonUtils.showErrorMessage(msg);
+						// }
+						
+						var msg = handleErrorMsg(values[0].invoices[0]);
 
+						if(msg != "" && msg != null){
+							commonUtils.showErrorMessage(msg);
+						
+							$("#addInvSubmit").attr("disabled", true);	
+						}else {						
+							
+							msg = values[0].responseText;
+							
+							commonUtils.showSuccessMessage(msg);	
+							
+							var selIndex = self.scope.invoiceselectIndex
 
-                            /* deleting existing documents */
-                            var deletedFiles = $('rn-file-uploader-icsv').data('_d_deletedFileInfo');
+							icsvmap.invoiceData.invoices.splice(selIndex, 1);
 
-                            if (typeof deletedFiles !== 'undefined') {
-                                for (var i = 0; i < deletedFiles.length; i++) {
-                                    if (deletedFiles[i].isServer) {
-                                        var tempDocument = {};
-                                        tempDocument.fileName = deletedFiles[i].fileName;
-                                        tempDocument.location = deletedFiles[i].location;
-                                        tempDocument.docId = deletedFiles[i].docId;
-                                        tempDocument.status = "delete";
-                                        tempDocument.id = deletedFiles[i].id;
-                                        editInvoiceCSVData.invoiceDocuments.push(tempDocument);
+							//icsvmap.invoiceData.invoices[selIndex].attr('editInvoiceCSVData',editInvoiceCSVData);
+							icsvmap.invoiceData.invoices.push(editInvoiceCSVData);
 
-                                    }
-                                }
-                            }
+							var tempInvMap = icsvmap.invoiceData.invoices[selIndex].attr();
 
-                            //Code to send the updated list of files on file upload rn-file-uploader-icsv to backend ends
-
-							   /*document end*/
-
-							   editInvoiceCSVData.invoiceLines = [];
-
-							   var rowNumber = 0;
-						   	   $("[id^=breakrow]").each(function(i){
-									if(this.id !="breakrowTemplate"){
-										var index = $(this).attr("rowid");
-
-							   			var inputContent = "inputContent"+index;
-
-										var tempArry = {};
-
-										tempArry["country"] = $('#inputCountry'+index).val();
-								   		tempArry["fiscalPeriod"] = periodWidgetHelper.getFiscalPeriod($("#inputMonth"+index).val());
-								   		tempArry["periodType"] = periodWidgetHelper.getPeriodType($("#inputMonth"+index).val());
-								   		//tempArry["contentGrpId"] = self.scope.contentTypeStore.attr("inputContent"+index);
-								   		//tempArry["contentGrpName"] = $("#inputContent"+index+" option:selected").text();
-								   		tempArry["lineAmount"] = $("#amountText"+index).val()
-
-
-								   		if(self.scope.attr("invoicetypeSelect") == "2"){
-
-							   				if($('#ccidGL'+index).val()!=undefined  && $('#ccidGL'+index).val().length>0){
-							   						tempArry["glAccRefId"] = $("#ccidGL"+index).val();
-							   					}else{
-							   						tempArry["glAccNum"] = $("#ccidGLtxt"+index).val();
-							   				}
-                    						tempArry["adhocTypeId"] = self.scope.contentTypeStore.attr("inputContent"+index);
-						  	 			}
-								  	 	else{
-								  	 		tempArry["contentGrpId"] = $("#inputContent"+index).val();
-								  	 		//console.log(tempArry["contentGrpName"]);
-								  	 		var tempContentGrpName = $("#inputContent"+index+" option:selected").text();
-								  	 		tempArry["contentGrpName"] = tempContentGrpName;
-								  	 		tempArry["ccidFileName"] = $("#ccidGL"+index).val();
-								  	 	}
-
-
-
-
-								  	 	  tempArry["errors"] = [];
-								  	 	  var tempErrLine = {};
-										  tempErrLine["status"] = "rwerqr";
-										  tempErrLine["errorMap"] = [];
-										  var tempErrMapLine = {};
-										  tempErrLine["errorMap"].push(tempErrMapLine);
-										  tempArry["errors"].push(tempErrLine);
-
-									      editInvoiceCSVData.invoiceLines.push(tempArry);
-									}
-										rowNumber++;
-									});
-
-
-								  editInvoiceCSVData.errors = [];
-
-								  var tempErr = {};
-								  tempErr["status"] = "rsfsd";
-								  tempErr["errorMap"] = [];
-								  var tempErrMap = {};
-
-								  tempErr["errorMap"].push(tempErrMap);
-
-
-								  editInvoiceCSVData.errors.push(tempErr);
-
-
-								  var selIndex = self.scope.invoiceselectIndex
-								  icsvmap.invoiceData.invoices.splice(selIndex,1);
-
-								  //icsvmap.invoiceData.invoices[selIndex].attr('editInvoiceCSVData',editInvoiceCSVData);
-								  icsvmap.invoiceData.invoices.push(editInvoiceCSVData);
-
-								  var tempInvMap = icsvmap.invoiceData.invoices[selIndex].attr();
-
-								  if(tempInvMap.errors != undefined && tempInvMap.errors.length>0){
-								  	for(var i=0; i<tempInvMap.errors;i++){
-								  		if(tempInvMap.errors[i].errorMap != undefined && tempInvMap.errors[i].errorMap.length>0){
-								  			for(var k=0; k<tempInvMap.errors[i].errorMap.length;k++){
-								  				icsvmap.invoiceData.invoices[selIndex].errors[i].errorMap[k].attr(key, " ");
-								  			}
-								  		}
-								  	}
-								  }
-
-								 //  if((typeof tempInvMap.errors.errorMap !== "undefined") && (tempInvMap.errors.errorMap != null)){
-									// 	for(var key in tempInvMap.errors.errorMap){  /*Invoice error*/
-
-			     	// 						icsvmap.invoiceData.invoices[selIndex].errors.errorMap.attr(key, " ");
-									// 	}
-									// }
-
-								if(tempInvMap.invoiceLines != undefined && tempInvMap.invoiceLines.length>0){
-									for(var m=0;m<tempInvMap.invoiceLines.length;m++){
-										if(tempInvMap.invoiceLines[m].errors != undefined && tempInvMap.invoiceLines[m].errors.length>0){
-											for(var i=0; i<tempInvMap.invoiceLines[m].errors;i++){
-										  		if(tempInvMap.invoiceLines[m].errors[i].errorMap != undefined && tempInvMap.invoiceLines[m].errors[i].errorMap.length>0){
-										  			for(var k=0; k<tempInvMap.invoiceLines[m].errors[i].errorMap.length;k++){
-										  				icsvmap.invoiceData.invoices[selIndex].invoiceLines[m].errors[i].errorMap[k].attr(key, " ");
-										  			}
-										  		}
-										  	}
+							if (tempInvMap.errors != undefined && tempInvMap.errors.length > 0) {
+								for (var i = 0; i < tempInvMap.errors; i++) {
+									if (tempInvMap.errors[i].errorMap != undefined && tempInvMap.errors[i].errorMap.length > 0) {
+										for (var k = 0; k < tempInvMap.errors[i].errorMap.length; k++) {
+											icsvmap.invoiceData.invoices[selIndex].errors[i].errorMap[k].attr(key, " ");
 										}
 									}
-									
-								  }
-
-						    //       for(var j =0; j < tempInvMap.invoiceLines.length; j++){
-										// if(tempInvMap.invoiceLines[j].errors!= undefined && (typeof tempInvMap.invoiceLines[j].errors.errorMap !== "undefined") && (tempInvMap.invoiceLines[j].errors.errorMap != null)){
-										// 	for(var key in tempInvMap.invoiceLines[j].errors.errorMap){  /*Invoiceline error*/
-
-							   //                    icsvmap.invoiceData.invoices[selIndex].invoiceLines[j].errors.errorMap.attr(key, " ");
-							   //               }
-						    //             }
-						    //       	}
-
-
-					 				icsvmap.attr("showediticsv", false);
-							}
-					 return false;
-				},
-				"#icsvEditCancel click":function(){
-				   $('.popover').popover('destroy');
-					 setTimeout(function(){
-                          icsvmap.attr("showediticsv", false);
-                      },500);
-
-                    this.scope.uploadedfileinfo.replace([]);
-                    this.scope.deletedFileInfo.replace([]);
-
-				},
-				'period-calendar onSelected': function (ele, event, val) {
-   					this.scope.attr('periodchoosen', val);
-   					$(ele).parent().find('input[type=text]').val(this.scope.periodchoosen).trigger('change');
-   					$(ele).closest('.calendarcls').find('.box-modal').hide();
-       				$(ele).blur();
-   				},
-			   '.updateperoid focus':function(el){
-			   	 var self = this;
-			      $(el).closest('.calendarcls').find('.box-modal').show();
-			    	if(el[0].id == "inputMonth0"){
-				     		self.scope.getFxrate();
-					}
-				},
-				'.updateperoid blur':function(el){
-						   	 	var self = this;
-								$(".updateperoid").not(':hidden').each(function(index){
-									if($(this).attr("id") != el[0].id){
-										var strEl = el[0].id;
-										var rowEl = strEl.replace(/[^0-9]/g, '');
-										var inputContentEl = "inputContent"+rowEl;
-										var inputCountryEl = "inputCountry"+rowEl;
-
-										var strNow = $(this).attr("id");
-										var rowNow = strNow.replace(/[^0-9]/g, '');
-										var inputContentNow = "inputContent"+rowNow;
-										var inputCountryNow = "inputCountry"+rowNow;
-
-										var validContent = (($("#"+inputContentEl).val() != "")?($("#"+inputContentEl).val() == $("#"+inputContentNow).val()):false);
-										var validCountry = (($("#"+inputCountryEl).val() != "")?($("#"+inputCountryEl).val() == $("#"+inputCountryNow).val()):false);
-
-
-
-										if(($(this).val() == el[0].value) && (validContent ) && (validCountry)){
-						        			$(el).val("");
-						        			showError(el[0].id, "Two invoiceline can not have same period, content type and country");
-						        			return false;
-						        		}
-
-						        	}
-						        	else{
-						        		removeError(el[0].id, "no");
-						        	}
-						        });
-				},
-			   '#inputContent0 change':function(el){  /*validation for servicetypeid*/
-			   // 		$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
-						// if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
-						// 		$("#"+this.id+' .inputContent').val("");
-
-						// }
-			  	// 	});
-
-			  	// 	this.scope.contentTypeFilter.replace(this.scope.contentType);
-			  		var self = this;
-			  		if(self.scope.attr("invoicetypeSelect") != '2'){
-			  			updateContentType(el);
-			  		}
-				},
-			   '#inputMonth0 change':function(el){ /*validation for period*/
-			  		var self = this;
-			  		self.scope.attr("periodType", $(el).val().charAt(0));
-
-			  	}
-
-
-   },
-  	init: function(){
-  		$('.popover').popover('destroy');
-   	 	var self = this;
-   	 	var i = 1;
-      this.scope.appstate.attr("renderGlobalSearch",false);
-
-
-   	 	var genObj = {};
-   	 	Promise.all([
-			      	InvoiceType.findAll(UserReq.formRequestDetails(genObj)),
-			     	//Licensor.findAll(UserReq.formRequestDetails(genObj)),
-			     	//Currency.findAll(UserReq.formRequestDetails(genObj)),
-			        ContentType.findAll(UserReq.formRequestDetails(genObj)),
-			      //	Country.findAll(UserReq.formRequestDetails(genObj)),
-					AdhocTypes.findAll(UserReq.formRequestDetails(genObj)),
-			      	GLaccounts.findAll(UserReq.formRequestDetails(genObj)),
-			      	Region.findAll(UserReq.formRequestDetails(genObj))
-
-
-				]).then(function(values) {
-		     		 self.scope.attr("invoiceTypes").replace(values[0]["invoiceTypes"]);
-
-		     		 self.scope.attr("contentType").replace(values[1].contentTypes);
-
-		     		// self.scope.attr("country").replace(values[2]);
-
-		     		 self.scope.attr("adhocType").replace(values[2].adhocTypes);
-		     		 self.scope.attr("glaccounts").replace(values[3]);
-		     		 self.scope.attr("regions").replace(values[4]);
-
-
-		     	     /*Getting data from icsv map*/
-
-							for(var i = 0; i < icsvmap.attr().invoiceData.invoices.length; i++){
-								if(icsvmap.attr().invoiceData.invoices[i].invoiceNumber == icsvmap.attr().invoiceid
-									&& icsvmap.attr().invoiceData.invoices[i].entityName == icsvmap.attr().licensor){
-									//console.log(icsvmap.attr().invoiceData.invoices[i]);
-									self.scope.attr("editpage", true);
-									self.scope.attr("invoiceContainer").replace(icsvmap.attr().invoiceData.invoices[i]);
-									self.scope.attr("invoiceselectIndex", i);
-									break;
 								}
+							}
+							if (tempInvMap.invoiceLines != undefined && tempInvMap.invoiceLines.length > 0) {
+								for (var m = 0; m < tempInvMap.invoiceLines.length; m++) {
+									if (tempInvMap.invoiceLines[m].errors != undefined && tempInvMap.invoiceLines[m].errors.length > 0) {
+										for (var i = 0; i < tempInvMap.invoiceLines[m].errors; i++) {
+											if (tempInvMap.invoiceLines[m].errors[i].errorMap != undefined && tempInvMap.invoiceLines[m].errors[i].errorMap.length > 0) {
+												for (var k = 0; k < tempInvMap.invoiceLines[m].errors[i].errorMap.length; k++) {
+													icsvmap.invoiceData.invoices[selIndex].invoiceLines[m].errors[i].errorMap[k].attr(key, " ");
+												}
+											}
+										}
+									}
+								}
+							}
+
+							icsvmap.attr("showediticsv", false);
+							self.scope.deletedFileInfo.replace([]);
 						}
 
+					} else {
+
+						var msg = handleErrorMsg(values[0].invoices[0]);
+
+						commonUtils.showErrorMessage(msg);
+						
+						$("#addInvSubmit").attr("disabled", true);
+						
+
+						// var msg = "";
+						// if (values[0].invoices[0].errors != "undefined" && values[0].invoices[0].errors != null) {
+						// 	var errorMap1 = values[0].invoices[0].errors.errorMap;
+						// 	msg = showErrorDetails(errorMap1, "Error");
+						// } else {
+						// 	msg = values[0].responseText;
+						// }
+						// var invoiceLinesErrorObj = values[0].invoices[0].invoiceLines;
+						// for (var i = 0; i < invoiceLinesErrorObj.length; i++) {
+						// 	if (invoiceLinesErrorObj[i].errors != undefined && invoiceLinesErrorObj[i].errors != null) {
+						// 		var errorMap2 = invoiceLinesErrorObj[i].errors.errorMap;
+						// 		msg = msg + ", " + showErrorDetails(errorMap2, "Error");
+						// 	}
+						// }
+
+						// commonUtils.showErrorMessage(msg);
+
+					}
+				});
+			}
+			return false;
+		},
+		"#icsvEditCancel click": function() {
+			$('.popover').popover('destroy');
+			setTimeout(function() {
+				icsvmap.attr("showediticsv", false);
+			}, 500);
+
+			this.scope.uploadedfileinfo.replace([]);
+			this.scope.deletedFileInfo.replace([]);
+
+		},
+		'period-calendar onSelected': function(ele, event, val) {
+			this.scope.attr('periodchoosen', val);
+			$(ele).parent().find('input[type=text]').val(this.scope.periodchoosen).trigger('change');
+			$(ele).closest('.calendarcls').find('.box-modal').hide();       
+			$(ele).blur();
+		},
+		'.updateperoid focus': function(el) {
+			var self = this;
+			$(el).closest('.calendarcls').find('.box-modal').show();
+			if (el[0].id == "inputMonth0") {
+				self.scope.getFxrate();
+			}
+		},
+		'.updateperoid blur': function(el) {
+			var self = this;
+			$(".updateperoid").not(':hidden').each(function(index) {
+				if ($(this).attr("id") != el[0].id) {
+					var strEl = el[0].id;
+					var rowEl = strEl.replace(/[^0-9]/g, '');
+					var inputContentEl = "inputContent" + rowEl;
+					var inputCountryEl = "inputCountry" + rowEl;
+
+					var strNow = $(this).attr("id");
+					var rowNow = strNow.replace(/[^0-9]/g, '');
+					var inputContentNow = "inputContent" + rowNow;
+					var inputCountryNow = "inputCountry" + rowNow;
+
+					var validContent = (($("#" + inputContentEl).val() != "") ? ($("#" + inputContentEl).val() == $("#" + inputContentNow).val()) : false);
+					var validCountry = (($("#" + inputCountryEl).val() != "") ? ($("#" + inputCountryEl).val() == $("#" + inputCountryNow).val()) : false);
 
 
-		     	});
+
+					if (($(this).val() == el[0].value) && (validContent) && (validCountry)) {
+						$(el).val("");
+						showError(el[0].id, "Two invoiceline can not have same period, content type and country");
+						return false;
+					}
+
+				} else {
+					removeError(el[0].id, "no");
+				}
+			});
+		},
+		'#inputContent0 change': function(el) { /*validation for servicetypeid*/
+			// 		$("[id^=breakrow]").each(function(index){  /*removing added row in break down when invoice type changes to adhoc.*/
+			// if((this.id !="breakrow0") && (this.id !="breakrowTemplate")){
+			// 		$("#"+this.id+' .inputContent').val("");
+
+			// }
+			// 	});
+
+			// 	this.scope.contentTypeFilter.replace(this.scope.contentType);
+			var self = this;
+			if (self.scope.attr("invoicetypeSelect") != '2') {
+				updateContentType(el);
+			}
+		},
+		'#inputMonth0 change': function(el) { /*validation for period*/
+			var self = this;
+			self.scope.attr("periodType", $(el).val().charAt(0));
+
+		}
 
 
 	},
-  	helpers: {
+	init: function() {
+		$('.popover').popover('destroy');
+		var self = this;
+		var i = 1;
+		this.scope.appstate.attr("renderGlobalSearch", false);
 
-			  	currentDate: function(){
-			  	 	var date = new Date();
-			  	 	this.attr("currentdate", (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear());
-					return this.attr("currentdate");
-			  	},
-			  	calculatedDueDate: function(){
-		  			var calduedate = this.attr("calduedate");
-					return calduedate;
 
-			  	},
-			  	calculateTaxPercent: function(){
-			  		var tax = 0;
-			  		if((this.attr("tax").length>0) || (this.attr("tax") > 0)){
-			  			tax = Number(this.attr("tax"));
-			  		}
-			  	 	this.attr("taxStore", tax);
-			  	 	var percent = (tax/this.attr("totalAmountVal"))*100;
-			  	 	if(!isFinite(percent))
-			  	 	return ""
-			  	 	else
-			  	 	return percent.toFixed(2); //Round to Two decimal only
-			  	},
-			  	isAdhoc: function(){
-			  	 	if(this.attr("invoicetypeSelect") == "2"){  /*Adhoc*/
-						return "Adhoc";
-			  	 	}
-			  	 	else{
-			  	 		this.isAdhocStrore.attr("ccidGL", "CCID Filename");
-			  	 		return this.isAdhocStrore;
+		var genObj = {};
+		Promise.all([
+			InvoiceType.findAll(UserReq.formRequestDetails(genObj)),
+			//Licensor.findAll(UserReq.formRequestDetails(genObj)),
+			//Currency.findAll(UserReq.formRequestDetails(genObj)),
+			ContentType.findAll(UserReq.formRequestDetails(genObj)),
+			//	Country.findAll(UserReq.formRequestDetails(genObj)),
+			AdhocTypes.findAll(UserReq.formRequestDetails(genObj)),
+			GLaccounts.findAll(UserReq.formRequestDetails(genObj)),
+			Region.findAll(UserReq.formRequestDetails(genObj))
 
-			  	 	}
-			  	},
-			  	grossTotal: function(){
-			  		var tax = 0;
-			  		if(this.attr("tax") > 0){
-			  			tax = Number(this.attr("tax"));
-			  		}
-			  	// 	console.log(this.attr("totalAmountVal"));
-			  	 	var grossTotal = (parseFloat(tax) + parseFloat(this.attr("totalAmountVal")));
-			  	 	this.attr("grossTotalStore", grossTotal);
-			  	 	if(isNaN(grossTotal)){
-			  	 		grossTotal = 0;
-			  	 	}
-			  	 	return CurrencyFormat(grossTotal);
-			  	},
-			  	setHeight: function(){
-								  	 	var vph = $(window).height();
-			  	 	return 'Style="height:'+vph+'px"';
-				},
-				setMinHeightBreak: function(){
 
-			  	 	var vph = 282;
-					return 'Style="height:'+vph+'px;overflow-y:auto;"';
-				},
-				calculateUSD:function(){
+		]).then(function(values) {
+			self.scope.attr("invoiceTypes").replace(values[0]["invoiceTypes"]);
 
-					var fxrate = this.attr("usdFxrateRatio");
-					var calUSD = this.attr("grossTotalStore") * fxrate;
+			self.scope.attr("contentType").replace(values[1].contentTypes);
 
-					if(isNaN(calUSD)){
-						calUSD = 0;
-					}
-					return CurrencyFormat(calUSD);
-				},
-				disableInvoiceType:function(){
-					if(this.attr("editpage"))
-					{
-					  return "disabled";
-					}
-					else
-					{
-						return "";
-					}
-				},
-				netTotal:function(){
-					var netTotal = this.attr("totalAmountVal");
-					if(isNaN(netTotal)){
-						netTotal = 0;
-					}
-					return CurrencyFormat(netTotal);
+			// self.scope.attr("country").replace(values[2]);
+
+			self.scope.attr("adhocType").replace(values[2].adhocTypes);
+			self.scope.attr("glaccounts").replace(values[3]);
+			self.scope.attr("regions").replace(values[4]);
+
+
+			/*Getting data from icsv map*/
+
+			for (var i = 0; i < icsvmap.attr().invoiceData.invoices.length; i++) {
+				if (icsvmap.attr().invoiceData.invoices[i].invoiceNumber == icsvmap.attr().invoiceid && icsvmap.attr().invoiceData.invoices[i].entityName == icsvmap.attr().licensor) {
+					//console.log(icsvmap.attr().invoiceData.invoices[i]);
+					self.scope.attr("editpage", true);
+					self.scope.attr("invoiceContainer").replace(icsvmap.attr().invoiceData.invoices[i]);
+					self.scope.attr("invoiceselectIndex", i);
+					break;
 				}
+			}
 
-  	 	}
+
+
+		});
+
+
+	},
+	helpers: {
+
+		currentDate: function() {
+			var date = new Date();
+			this.attr("currentdate", (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear());
+			return this.attr("currentdate");
+		},
+		calculatedDueDate: function() {
+			var calduedate = this.attr("calduedate");
+			return calduedate;
+
+		},
+		calculateTaxPercent: function() {
+			var tax = 0;
+			if ((this.attr("tax").length > 0) || (this.attr("tax") > 0)) {
+				tax = Number(this.attr("tax"));
+			}
+			this.attr("taxStore", tax);
+			var percent = (tax / this.attr("totalAmountVal")) * 100;
+			if (!isFinite(percent))
+				return ""
+			else
+				return percent.toFixed(2); //Round to Two decimal only
+		},
+		isAdhoc: function() {
+			if (this.attr("invoicetypeSelect") == "2") { /*Adhoc*/
+				return "Adhoc";
+			} else {
+				this.isAdhocStrore.attr("ccidGL", "CCID Filename");
+				return this.isAdhocStrore;
+
+			}
+		},
+		grossTotal: function() {
+			var tax = 0;
+			if (this.attr("tax") > 0) {
+				tax = Number(this.attr("tax"));
+			}
+			// 	console.log(this.attr("totalAmountVal"));
+			var grossTotal = (parseFloat(tax) + parseFloat(this.attr("totalAmountVal")));
+			this.attr("grossTotalStore", grossTotal);
+			if (isNaN(grossTotal)) {
+				grossTotal = 0;
+			}
+			return CurrencyFormat(grossTotal);
+		},
+		setHeight: function() {
+			var vph = $(window).height();
+			return 'Style="height:' + vph + 'px"';
+		},
+		setMinHeightBreak: function() {
+
+			var vph = 282;
+			return 'Style="height:' + vph + 'px;overflow-y:auto;"';
+		},
+		calculateUSD: function() {
+
+			var fxrate = this.attr("usdFxrateRatio");
+			var calUSD = this.attr("grossTotalStore") * fxrate;
+
+			if (isNaN(calUSD)) {
+				calUSD = 0;
+			}
+			return CurrencyFormat(calUSD);
+		},
+		disableInvoiceType: function() {
+			if (this.attr("editpage")) {
+				return "disabled";
+			} else {
+				return "";
+			}
+		},
+		netTotal: function() {
+			var netTotal = this.attr("totalAmountVal");
+			if (isNaN(netTotal)) {
+				netTotal = 0;
+			}
+			return CurrencyFormat(netTotal);
+		}
+
+	}
 });
 
-function CurrencyFormat(number)
-{
-  if($.isNumeric(number)){
+function handleErrorMsg(errObj){
+	var msg = [];
+	if (errObj.errors != "undefined" && errObj.errors != null) {
+		var errorMap1 = errObj.errors.errorMap;
+		if(errorMap1 != null){
+			msg.push(showErrorDetails(errorMap1, ""));
+		}		
+	} 
+	
+	var invoiceLinesErrorObj = errObj.invoiceLines;
+	for (var i = 0; i < invoiceLinesErrorObj.length; i++) {
+		if (invoiceLinesErrorObj[i].errors != undefined && invoiceLinesErrorObj[i].errors != null) {
+			var errorMap2 = invoiceLinesErrorObj[i].errors.errorMap;
+			//msg = (msg === "") ? showErrorDetails(errorMap2, "") :  msg + ", " + showErrorDetails(errorMap2, "");
+			msg.push(showErrorDetails(errorMap2, ""));
+		}
+	}
+	msg = _.uniq(msg, true);
 
-  	var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
-    return n;
-  }else{
-  	return 0;
-  }
+	var errorMsg = msg.join(", ");
 
+	return  (errorMsg !== "") ? "Error: " + errorMsg : errorMsg;	
 }
 
-function showError(id, message){
-	$('#'+id).popover({"content":message, "placement":"top"});
-	$('#'+id).popover('show');
-	$("#"+id+"-err").css("display", "block");
-	$('#'+id).parent().addClass("has-error");
+function CurrencyFormat(number) {
+	if ($.isNumeric(number)) {
+		var n = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+		return n;
+	} else {
+		return 0;
+	}
+}
+
+function showError(id, message) {
+	$('#' + id).popover({
+		"content": message,
+		"placement": "top"
+	});
+	$('#' + id).popover('show');
+	$("#" + id + "-err").css("display", "block");
+	$('#' + id).parent().addClass("has-error");
 	$("#addInvSubmit").attr("disabled", true);
 }
 
-function removeError(id, buttonState){
-	$('#'+id).popover('destroy');
-	$("#"+id+"-err").css("display", "none");
-	$('#'+id).parent().removeClass("has-error");
-	if(buttonState != "no"){
+function removeError(id, buttonState) {
+	$('#' + id).popover('destroy');
+	$("#" + id + "-err").css("display", "none");
+	$('#' + id).parent().removeClass("has-error");
+	if (buttonState != "no") {
 		$("#addInvSubmit").attr("disabled", false);
 	}
 
 }
 
-function dateFormatter(datestring, currentformat){
-	if(datestring != "")
-		{
-			if(currentformat == "mm/dd/yyyy")
-			{
-				var date = new Date(datestring);
-				return  date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate();
-			}
-			else if(currentformat == "yyyy-mm-dd")
-			{
-				var date = new Date(datestring);
-				return  (date.getMonth() + 1)+'/'+date.getDate()+'/'+date.getFullYear();
-			}
+function dateFormatter(datestring, currentformat) {
+	if (datestring != "") {
+		if (currentformat == "mm/dd/yyyy") {
+			var date = new Date(datestring);
+			return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+		} else if (currentformat == "yyyy-mm-dd") {
+			var date = new Date(datestring);
+			return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
 		}
+	}
 }
 
-function getCurrentDate(){
+function getCurrentDate() {
 	var date = new Date();
-	return (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear();
-					}
+	return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
+}
 
-          function validateMandatory(){
-          	var isError=false;
-            var errObj={isFailed:false,errorMsgs:[]};
-            //Upload file Validation
-            var uploadedfiles = $('rn-file-uploader-icsv').data('_d_uploadedFileInfo');
-            if(uploadedfiles == undefined || uploadedfiles.length == 0){
-            	isError=true;
-            }else if(uploadedfiles != undefined && uploadedfiles.length >0){
-            	//check whether atleast one fiel is moved to server
-            	isError=true;
-            	for(var i=0;i<uploadedfiles.length;i++){
-            		if(uploadedfiles[i].ftype.toUpperCase() == 'PUSHEDTOSERVER' || uploadedfiles[i].isServer){
-            			isError=false;
-            			break;
-            		}
-            	}
-            }
+function validateMandatory() {
+	var isError = false;
+	var errObj = {
+		isFailed: false,
+		errorMsgs: []
+	};
+	//Upload file Validation
+	var uploadedfiles = $('rn-file-uploader-icsv').data('_d_uploadedFileInfo');
+	if (uploadedfiles == undefined || uploadedfiles.length == 0) {
+		isError = true;
+	} else if (uploadedfiles != undefined && uploadedfiles.length > 0) {
+		//check whether atleast one fiel is moved to server
+		isError = true;
+		for (var i = 0; i < uploadedfiles.length; i++) {
+			if (uploadedfiles[i].ftype.toUpperCase() == 'PUSHEDTOSERVER' || uploadedfiles[i].isServer) {
+				isError = false;
+				break;
+			}
+		}
+	}
 
-            if(isError){
-            	errObj.isFailed=true;
-              	errObj.errorMsgs.push('Please attach atleast one supporting document');
-            }
+	if (isError) {
+		errObj.isFailed = true;
+		errObj.errorMsgs.push('Please attach atleast one supporting document');
+	}
 
-            return errObj;
-          }
+	return errObj;
+}
 
-          function showMessages(msg){
-            // $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
-            //  $("#invmessageDiv").show();
-            //  setTimeout(function(){
-            //     $("#invmessageDiv").hide();
-            //  },5000)
-            commonUtils.showErrorMessage(msg);
-          }
+function showMessages(msg) {
+	// $("#invmessageDiv").html("<label class='errorMessage'>"+msg+"</label>")
+	//  $("#invmessageDiv").show();
+	//  setTimeout(function(){
+	//     $("#invmessageDiv").hide();
+	//  },5000)
+	commonUtils.showErrorMessage(msg);
+}
 
-var updatePeriodCalender = function(elementID){
+var updatePeriodCalender = function(elementID) {
 
-var _root = $("input[id^='inputMonth']").not("input[id='inputMonth0']").not(':hidden').parent();
-if (_root.length == 1) {
+	var _root = $("input[id^='inputMonth']").not("input[id='inputMonth0']").not(':hidden').parent();
+	if (_root.length == 1) {
 		disablePeriodQuarterCalendar(_root);
-	}else if (_root.length > 1){
+	} else if (_root.length > 1) {
 
 		for (var i = _root.length - 1; i >= 0; i--) {
 			disablePeriodQuarterCalendar(_root[i]);
@@ -1852,19 +1862,19 @@ if (_root.length == 1) {
 	}
 }
 
-var disablePeriodQuarterCalendar = function(_root){
+var disablePeriodQuarterCalendar = function(_root) {
 
-var _root = $(_root);
-_root.find('.period li a').removeClass('disabled period-active');
+	var _root = $(_root);
+	_root.find('.period li a').removeClass('disabled period-active');
 
-if ($("#inputMonth0").val().indexOf('Q') != "-1") {
-	    _root.find('.q1 li').not(":first").find('a').addClass('disabled');
-	    _root.find('.q2 li').not(":first").find('a').addClass('disabled');
-	    _root.find('.q3 li').not(":first").find('a').addClass('disabled');
-	    _root.find('.q4 li').not(":first").find('a').addClass('disabled');
-	 } else {
-	    _root.find('.period li:first-child').find('a').addClass('disabled');
-	 }
+	if ($("#inputMonth0").val().indexOf('Q') != "-1") {
+		_root.find('.q1 li').not(":first").find('a').addClass('disabled');
+		_root.find('.q2 li').not(":first").find('a').addClass('disabled');
+		_root.find('.q3 li').not(":first").find('a').addClass('disabled');
+		_root.find('.q4 li').not(":first").find('a').addClass('disabled');
+	} else {
+		_root.find('.period li:first-child').find('a').addClass('disabled');
+	}
 }
 
 // var getDateToDisplay=function(longDate){
@@ -1872,13 +1882,13 @@ if ($("#inputMonth0").val().indexOf('Q') != "-1") {
 // 	return calculateDueDate.getMonth()+1 + "/" + calculateDueDate.getDate() + "/" + calculateDueDate.getFullYear();
 // }
 
-var getDateToDisplay=function(longDate){
-    var calculateDueDate = new Date(longDate);
-    var calMonth = ("0" + (calculateDueDate.getMonth())).slice(-2);
-    var calDate =  ("0" + calculateDueDate.getDate()).slice(-2);
-    var calYear = calculateDueDate.getFullYear();
+var getDateToDisplay = function(longDate) {
+	var calculateDueDate = new Date(longDate);
+	var calMonth = ("0" + (calculateDueDate.getMonth())).slice(-2);
+	var calDate = ("0" + calculateDueDate.getDate()).slice(-2);
+	var calYear = calculateDueDate.getFullYear();
 
-    return calMonth + "/" + calDate + "/" + calYear;
+	return calMonth + "/" + calDate + "/" + calYear;
 }
 
 var updateContentType = function(element) {
@@ -1900,21 +1910,27 @@ var updateContentType = function(element) {
 	for (var i = 0; i < _listofselect.length; i++) {
 		var currentID = $(_listofselect)[i].id;
 		$("#" + currentID).html(options.clone());
-		$("#"+currentID).prepend("<option value>Select</option>").val('');
+		$("#" + currentID).prepend("<option value>Select</option>").val('');
 	}
 
 }
 
-var showErrorDetails = function(errormap, errortype){
-		var errorStr = "";
-      	for(var key in errormap){
-      		errorStr += errormap[key]+", ";
-      		//console.log(key);
-      	}
-      	errorStr = errorStr.replace(/,\s*$/, "");
-		var msg = errortype+": "+ errorStr;
-
-      	return msg;
+var showErrorDetails = function(errormap, errortype) {
+	var errorStr = "";
+	for (var key in errormap) {
+		errorStr += errormap[key] + ", ";
+		//console.log(key);
 	}
+	errorStr = errorStr.replace(/,\s*$/, "");
+	var msg = "";
+	if(errortype !== ""){
+		msg = errortype + ": " + errorStr;
+	}else{
+		msg = errorStr;
+	}
+	
+
+	return msg;
+}
 
 export default page;
