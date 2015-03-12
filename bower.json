@@ -19,7 +19,7 @@
     "tests"
   ],
   "dependencies": {
-    "steal": "0.6.x",
+    "steal": "0.7.1",
     "jquery": "~2.1.1",
     "canjs": "git://github.com/bitovi/canjs.git#1295-extending-components",
     "bootstrap": "~3.2.0",
@@ -38,7 +38,8 @@
     "jquery-tokeninput": "~1.7.0",
     "pdfjs-bower": "1.0.233",
     "jquery-ui": "~1.11.2",
-    "jquery.tablesorter": "~2.21.1"
+    "jquery.tablesorter": "~2.21.1",
+    "knockout": "3.3.0"
   },
   "resolutions": {
     "jquery": "~2.1.1"
