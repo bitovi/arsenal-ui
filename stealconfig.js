@@ -61,6 +61,7 @@
 			"bootstrap-multiselect": "bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect.js",
 			"bootstrap-multiselect.css": "bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.csscss",
 			"pdfjs": "bower_components/pdfjs-bower/dist/pdf.js",
+			"knockout": "bower_components/knockout/dist/knockout.debug.js"
 		},
 		meta: {
 			jquery: {
@@ -78,6 +79,9 @@
 			exporting: {
 				format: 'global',
 				deps: ['highcharts']
+			},
+			'bootstrap-multiselect': {
+				deps: ['knockout']
 			}
 		},
 		ext: {
