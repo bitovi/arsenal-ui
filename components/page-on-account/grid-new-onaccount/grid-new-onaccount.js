@@ -39,6 +39,7 @@ var newOnAccountGrid = Grid.extend({
   },
    helpers: {
     cellContents: function(row, column) {
+      row = typeof row === 'function' ? row() : row;
       if(column.editable && row.__isChild) {
         var returnValue = column.getEditingValue(row,column.title);
         if(returnValue == undefined || !$.isNumeric(returnValue)){

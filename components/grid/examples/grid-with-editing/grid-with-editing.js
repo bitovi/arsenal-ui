@@ -11,6 +11,7 @@ var GridWithEditing = Grid.extend({
   },
   helpers: {
     cellContents: function(row, column) {
+      row = typeof row === 'function' ? row() : row;
       if(this.attr('editingRow') === row && this.attr('editingColumn') === column) {
         return stache('<input class="editing" value="{{value}}"/>')({value: column.getEditingValue(row)});
       } else {

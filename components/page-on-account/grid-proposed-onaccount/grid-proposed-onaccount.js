@@ -69,6 +69,7 @@ var proposedonAccountGrid = Grid.extend({
 
   helpers: {
     cellContents:function(row, column){
+      row = typeof row === 'function' ? row() : row;
       if(column.editable && row.__isChecked && row.__isEditable) {
         var returnValue = column.getEditingValue(row,column.title);
         if(returnValue == undefined){
