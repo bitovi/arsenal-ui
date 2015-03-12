@@ -24,6 +24,8 @@ import index_template from 'index.stache!';
 import less_index from 'index.less!';
 import token from 'models/common/token/';
 
+import 'utils/helpers';
+
 // Fixtures?
 //import _fixtures from 'models/fixtures/';
 

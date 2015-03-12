@@ -24,6 +24,7 @@ var Grid = Component.extend({
       }, ...
     */],
     rows: [],
+    __rows: [],
     footerrows:[],
     allOpen: false,
     sortedColumn: null,
@@ -91,55 +92,7 @@ var Grid = Component.extend({
       }
     },
     filteredRows: function(options) {
-      // By default, rows are a bit more complex.
-      // We have to account for child rows being invisible when their parents aren't open.
-
-      var isRowAChild = function(row) {
-        // by default, just looking for __isChild = true
-        return !!row.attr('__isChild');
-      };
-
-      var isRowOpen = function(row) {
-        // by default, just looking for __isOpen = true
-        return !!row.attr('__isOpen');
-      };
-
-      var out = [],parentRowIndex=-1,rowindex=-1,
-      childRowsAreVisible = false;
-      can.__reading(this.rows, 'change'); // TODO: figure out if there's a better way to do this.
-                                          // Note for others - don't use can.__reading yourself!
-      return _.map(this.rows, function(row) {
-        var isChild = isRowAChild(row);
-        var isOddRow=false;
-        var isStrippedGrid=false;
-
-        // if the row is a parent and isn't open, its children shouldn't be visible -
-        // this flag is only true for the children of an open parent row
-        if(!isChild) {
-          childRowsAreVisible = isRowOpen(row);
-          parentRowIndex++;
-          if( parentRowIndex % 2 != 0){isOddRow=true;}
-        }
-
-        //if stripped grid parameter enables and if it is not a child record then
-        //set true to isStrippedGrid. This check will disable to apply the bg color to child
-        //rows
-        if(options.context.attr('strippedGrid') && !isChild){
-          isStrippedGrid=true;
-        }
-
-        //console.log(this);
-        //console.log("Testing ssdfsfsdf",row.attr("invId"),isChild,isOddRow);
-        return options.fn({
-          row: row,
-          isOpen: isChild ? false : isRowOpen(row), // child rows are never open
-          isChild: isChild,
-          isVisible: isChild ? childRowsAreVisible : true, // parent rows are always visible
-          isOddRow:isOddRow,
-          index:++rowindex,
-          isStrippedGd:isStrippedGrid
-        });
-      });
+      return can.stache.getHelper('each', {attr: function() {}}).fn.call(this, this.attr('__rows'), options);
     },
     footerRows: function(options) {
       // By default, rows are a bit more complex.
@@ -187,7 +140,7 @@ var Grid = Component.extend({
       return '';
     },
     cellContents: function(row, column) {
-      row.attr();
+      row = typeof row === 'function' ? row() : row;
       // By default, if column has a contents function, run the row through that.
       // Else, use the value in the property named by 'valueProperty' (fall back to 'id'), and run it through 'format' if it exists.
       if(_.isFunction(column.contents)) {
@@ -278,6 +231,44 @@ var Grid = Component.extend({
     },
     '{scope} sortedDirection': function() {
       return resort.apply(this, arguments);
+    },
+
+    _mapRow: function(row) {
+      var isChild = !!row.attr('__isChild'),
+      isOpen = !!row.attr('__isOpen'),
+      isStrippedGrid = false;
+
+      // //if stripped grid parameter enables and if it is not a child record then
+      // //set true to isStrippedGrid. This check will disable to apply the bg color to child rows
+      // if(options.context.attr('strippedGrid') && !isChild) {
+      //   isStrippedGrid = true;
+      // }
+
+      return {
+        row: row,
+        isOpen: isChild ? false : isOpen, // child rows are never open
+        isChild: isChild,
+        // if the row is a parent and isn't open, its children shouldn't be visible -
+        // this flag is only true for the children of an open parent row
+        isVisible: isChild ? isOpen : true, // parent rows are always visible
+        //TODO-alexis: is this ever false?
+        isStrippedGd:true
+      };
+    },
+
+    '{rows} set': function(ev, rows, i) {
+      this.scope.attr('__rows.' + i, this._mapRow(rows));
+    },
+
+    '{rows} add': function(list, ev, rows, i) {
+      rows = rows instanceof Array ? rows : [rows];
+      var __rows = this.scope.attr('__rows');
+      __rows.splice.apply(__rows, [i, 0].concat(_.map(rows, this._mapRow)));
+    },
+
+    '{rows} remove': function(ev, rows, i) {
+      var howMany = rows instanceof Array ? rows.length : 1;
+      this.scope.attr('__rows').splice(i, howMany);
     }
   }
 });

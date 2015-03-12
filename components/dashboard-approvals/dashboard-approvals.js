@@ -164,8 +164,8 @@ var validOutbox = false;
                 if(scope.inboxOffset===0){
                   scope.inboxRows.replace(approvals);
                 }else {
-                  $.merge(scope.inboxRows, approvals);
-                  scope.inboxRows.replace(scope.inboxRows);
+                  var inboxRows = scope.attr('inboxRows');
+                  inboxRows.push.apply(inboxRows, approvals);
                 }
 
                 scope.inboxRows.attr('recordsAvailable', approvals.recordsAvailable);
@@ -206,8 +206,8 @@ var validOutbox = false;
                 if(scope.outboxOffset===0){
                   scope.outboxRows.replace(approvals);
                 }else {
-                  $.merge(scope.outboxRows, approvals);
-                  scope.outboxRows.replace(scope.outboxRows);
+                  var outboxRows = scope.attr('outboxRows');
+                  outboxRows.push.apply(outboxRows, approvals);
                 }
                 scope.outboxRows.attr('recordsAvailable', approvals.recordsAvailable);
                 scope.attr('outboxnumberofrows', approvals.totalRecords);

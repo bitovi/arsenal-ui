@@ -8,7 +8,7 @@
   </thead>
   <tbody>
     {{#filteredRows}}
-    <tr class="{{rowClass row}} {{#if isOpen}}open{{/if}} {{#if isChild}}child{{/if}} {{#if isVisible}}visible{{/if}} {{#if isStrippedGd}}{{#if isOddRow}}odd-row{{else}}even-row{{/if}}{{/if}}" {{data 'row'}}>
+    <tr class="{{rowClass row}} {{#if isOpen}}open{{/if}} {{#if isChild}}child{{/if}} {{#if isVisible}}visible{{/if}} {{#if isStrippedGd}}{{#odd @index}}odd-row{{/odd}}{{#even @index}}even-row{{/even}}" {{data 'row'}}>
       {{#filteredColumns}}
       <td class="{{columnClass column}} {{cellClass row column}}" {{data 'column'}}>{{cellContents row column}}</td>
       {{/filteredColumns}}
