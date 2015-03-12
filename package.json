@@ -14,7 +14,7 @@
     "license": "Proprietary",
     "devDependencies": {
         "grunt": "~0.4.5",
-        "steal-tools": "0.7.1",
+        "steal-tools": "git://github.com/bitovi/steal-tools.git#0c17032f47940ad66fcf84a59d46b41709e2a06c",
         "testee": "~0.1.1",
         "grunt-shell": "~1.1.1",
         "grunt-contrib-connect": "~0.8.0",
