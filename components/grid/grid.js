@@ -257,7 +257,7 @@ var Grid = Component.extend({
     },
 
     '{rows} set': function(ev, rows, i) {
-      this.scope.attr('__rows.'  i, this._mapRow(rows));
+      this.scope.attr('__rows.' + i, this._mapRow(rows));
     },
 
     '{rows} add': function(list, ev, rows, i) {
